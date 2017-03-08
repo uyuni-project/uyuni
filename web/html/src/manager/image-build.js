@@ -131,6 +131,7 @@ class BuildImage extends React.Component {
                         return {severity: "info", text: msgMap[msg]};
                     })}/>
                 });
+                window.location = "/rhn/manager/cm/images";
             } else {
                 this.setState({
                     messages: <Messages items={data.messages.map(msg => {
