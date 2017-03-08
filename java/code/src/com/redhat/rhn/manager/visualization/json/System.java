@@ -18,6 +18,8 @@ package com.redhat.rhn.manager.visualization.json;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * POJO representing system to be displayed in visualization.
@@ -36,6 +38,7 @@ public class System {
     private String baseEntitlement;
     private Long checkin;
     private String type = "system";
+    private Set<String> installedProducts = new HashSet<>();
 
     /**
      * Standard constructor
@@ -261,6 +264,26 @@ public class System {
      */
     public System setContactMethod(String contactMethodIn) {
         contactMethod = contactMethodIn;
+        return this;
+    }
+
+    /**
+     * Gets the installedProducts.
+     *
+     * @return installedProducts
+     */
+    public Set<String> getInstalledProducts() {
+        return installedProducts;
+    }
+
+    /**
+     * Sets the installedProducts.
+     *
+     * @param installedProductsIn - the installedProducts
+     * @return this
+     */
+    public System setInstalledProducts(Set<String> installedProductsIn) {
+        installedProducts = installedProductsIn;
         return this;
     }
 }

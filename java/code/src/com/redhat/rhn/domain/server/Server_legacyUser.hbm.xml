@@ -280,6 +280,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     ]]>
     </query>
 
+    <query name="Server.serverInstalledProductNames">
+        <![CDATA[ select
+                s.id, ip.name
+                from Server s
+                    left join s.installedProducts ip
+                where
+                    s.org = :org
+    ]]>
+    </query>
+
     <sql-query name="Server.serverIdVirtualHostManagerId">
         <return-scalar column="server_id" type="long"/>
         <return-scalar column="vhmserver_id" type="long"/>
