@@ -15,11 +15,14 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
 
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -34,6 +37,8 @@ public class ImageStoreFactory extends HibernateFactory {
 
     private static ImageStoreFactory instance = new ImageStoreFactory();
     private static Logger log = Logger.getLogger(ImageStoreFactory.class);
+    public static final String USER_KEY = "username";
+    public static final String PASS_KEY = "password";
 
     /**
      * Default constructor.
@@ -161,5 +166,25 @@ public class ImageStoreFactory extends HibernateFactory {
         Root<ImageStore> root = criteria.from(ImageStore.class);
         criteria.where(builder.equal(root.get("org"), org));
         return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Creates a db entity for credentials if the input params contain
+     * entry for username and password.
+     * @param params - non-null map of gatherer parameters
+     * @param ist - image store type
+     * @return new Credentials instance
+     */
+    public static Credentials createCredentials(Map<String, String> params,
+            ImageStoreType ist) {
+        String type = "";
+        if (ist.getLabel().equals(ImageStore.TYPE_REGISTRY)) {
+            type = Credentials.TYPE_REGISTRY;
+        }
+        else {
+            return null;
+        }
+        return CredentialsFactory.createCredentials(params.get(USER_KEY),
+                params.get(PASS_KEY), type, null);
     }
 }
