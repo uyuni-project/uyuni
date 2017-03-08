@@ -25,7 +25,8 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         ImageStore store = new ImageStore();
         store.setLabel("mystore");
         store.setUri("my.store.uri");
-        store.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
+        store.setStoreType(
+                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
         store.setOrg(user.getOrg());
         ImageStoreFactory.save(store);
 
@@ -51,7 +52,8 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         ImageStore store = new ImageStore();
         store.setLabel("mystore");
         store.setUri("my.store.uri");
-        store.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
+        store.setStoreType(
+                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
         store.setOrg(user.getOrg());
         ImageStoreFactory.save(store);
 
@@ -84,7 +86,8 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         ImageStore iStore = new ImageStore();
         iStore.setLabel("myregistry");
         iStore.setUri("registry.domain.top");
-        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
+        iStore.setStoreType(
+                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
         iStore.setOrg(user.getOrg());
         ImageStoreFactory.save(iStore);
 
@@ -110,7 +113,8 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         ImageStore iStore = new ImageStore();
         iStore.setLabel("myregistry");
         iStore.setUri("registry.domain.top");
-        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
+        iStore.setStoreType(
+                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
         iStore.setOrg(user.getOrg());
         ImageStoreFactory.save(iStore);
 
@@ -141,7 +145,8 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         ImageStore iStore = new ImageStore();
         iStore.setLabel("myregistry");
         iStore.setUri("registry.domain.top");
-        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
+        iStore.setStoreType(
+                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
         iStore.setOrg(user.getOrg());
         ImageStoreFactory.save(iStore);
 
@@ -171,7 +176,8 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         ImageStore iStore = new ImageStore();
         iStore.setLabel("myregistry");
         iStore.setUri("registry.domain.top");
-        iStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY));
+        iStore.setStoreType(
+                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
         iStore.setOrg(user.getOrg());
         ImageStoreFactory.save(iStore);
 
