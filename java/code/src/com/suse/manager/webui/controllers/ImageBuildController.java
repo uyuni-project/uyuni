@@ -75,14 +75,13 @@ public class ImageBuildController {
     public static ModelAndView buildView(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
 
-        // Parse optional profile id
-        if (StringUtils.isNotBlank(req.params("profileId"))) {
-            Long profileId = Long.parseLong(req.params("profileId"));
-            model.put("profileId", profileId);
-        }
-        else {
-            model.put("profileId", null);
-        }
+        // Parse optional query string parameters
+        model.put("profileId", StringUtils.isNotBlank(req.queryParams("profile")) ?
+                Long.parseLong(req.queryParams("profile")) : null);
+        model.put("hostId", StringUtils.isNotBlank(req.queryParams("host")) ?
+                Long.parseLong(req.queryParams("host")) : null);
+        model.put("tag", StringUtils.isNotBlank(req.queryParams("tag")) ?
+                req.queryParams("tag") : null);
 
         return new ModelAndView(model, "content_management/build.jade");
     }

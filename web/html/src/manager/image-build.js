@@ -21,7 +21,7 @@ class BuildImage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tag: "",
+            tag: tag || "",
             host: "",
             profileId: "",
             profile: {
@@ -90,6 +90,10 @@ class BuildImage extends React.Component {
             this.setState({
                 hosts: res
             });
+
+            if(hostId) {
+                this.setState({host: hostId});
+            }
         });
     }
 
