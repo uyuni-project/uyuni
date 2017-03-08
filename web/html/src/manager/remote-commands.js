@@ -91,13 +91,13 @@ class MinionResultView extends React.Component {
 
 function isPreviewDone(minionsMap, waitForSSH) {
   return Array.from(minionsMap, (e) => e[1])
-        .every((v) => v.type == "matched" || v.type == "timedOut") &&
+        .every((v) => v.type == "matched" || v.type == "timedOut" || v.type == "error") &&
         !waitForSSH
 }
 
 function isRunDone(minionsMap) {
   return Array.from(minionsMap, (e) => e[1])
-        .every((v) => v.type == "result" || v == "timedOut");
+        .every((v) => v.type == "result" || v == "timedOut" || v.type == "error");
 }
 
 function isTimedOutDone(minionsMap, waitForSSH, timedOutSSH) {
@@ -393,6 +393,7 @@ class RemoteCommand extends React.Component {
             });
             break;
         case "error":
+            var globalErr = [];
             if (event.minion) {
                 var minionsMap = this.state.result.minions;
                 minionsMap.set(event.minion, {type: "error", value: event.message});
@@ -405,10 +406,15 @@ class RemoteCommand extends React.Component {
                 window.location.href = "/rhn/Login2.do";
                 return;
             } else if (event.code == "ERR_TARGET_NO_MATCH") {
-                this.setState({
-                    warnings: [t("No minions matched the target expression.")]
-                });
-            } else {
+                globalErr = [t("No minions matched the target expression.")];
+            } else if (!event.minion) {
+                globalErr = [t("Server returned an error: {0}", event.message)];
+            }
+
+            const noPending = Array.from(minionsMap, (e) => e[1])
+                    .every((v) => v.type != "pending") &&
+                    !this.state.result.waitForSSH;
+            if (noPending) {
                 var previewed = this.state.previewed;
                 var ran = this.state.ran;
                 if (previewed && previewed.state() == "pending") {
@@ -424,7 +430,7 @@ class RemoteCommand extends React.Component {
                 this.setState({
                     previewed: previewed,
                     ran: ran,
-                    errors: [t("Server returned an error: {0}", event.message)]
+                    errors: globalErr
                 });
             }
             break;
