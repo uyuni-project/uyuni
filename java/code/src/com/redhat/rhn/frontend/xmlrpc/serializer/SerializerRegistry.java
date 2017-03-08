@@ -125,6 +125,8 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(VirtualHostManagerSerializer.class);
         SERIALIZER_CLASSES.add(PinnedSubscriptionSerializer.class);
         SERIALIZER_CLASSES.add(SUSEInstalledProductSerializer.class);
+        SERIALIZER_CLASSES.add(ImageStoreTypeSerializer.class);
+        SERIALIZER_CLASSES.add(ImageStoreSerializer.class);
     }
 
     /**
