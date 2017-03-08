@@ -25,6 +25,7 @@ import java.util.Date;
 public class System {
 
     private String id;
+    private String rawId;
     private String parentId;
     private String name;
     @SerializedName("contact_method")
@@ -44,7 +45,7 @@ public class System {
 
     /**
      * Standard constructor
-     * @param idIn idIn
+     * @param rawIdIn the real system id
      * @param parentIdIn idIn of parent
      * @param nameIn nameIn
      * @param contactMethodIn contact method
@@ -52,13 +53,16 @@ public class System {
      * @param baseEntitlementIn base entitlement
      * @param checkinIn check-in
      */
-    public System(Long idIn, Long parentIdIn, String nameIn, String contactMethodIn,
+    public System(Long rawIdIn, Long parentIdIn, String nameIn, String contactMethodIn,
             String baseChannelIn, String baseEntitlementIn, Date checkinIn) {
-        if (idIn != null) {
-            this.id = idIn.toString();
+        this.id = "";
+        if (rawIdIn != null) {
+            this.rawId = rawIdIn.toString();
+            this.id += this.rawId;
         }
         if (parentIdIn != null) {
             this.parentId = parentIdIn.toString();
+            this.id += this.parentId;
         }
         this.name = nameIn;
         this.contactMethod = contactMethodIn;
@@ -71,17 +75,19 @@ public class System {
 
     /**
      * Standard constructor
-     * @param idIn idIn
+     * @param rawIdIn the real system id
      * @param nameIn nameIn
      * @param contactMethodIn contact method
      * @param baseChannelIn base channel
      * @param baseEntitlementIn base entitlement
      * @param checkinIn check-in
      */
-    public System(Long idIn, String nameIn, String contactMethodIn, String baseChannelIn,
+    public System(Long rawIdIn, String nameIn, String contactMethodIn, String baseChannelIn,
             String baseEntitlementIn, Date checkinIn) {
-        if (idIn != null) {
-            this.id = idIn.toString();
+        this.id = "";
+        if (rawIdIn != null) {
+            this.rawId = rawIdIn.toString();
+            this.id += this.rawId;
         }
         this.name = nameIn;
         this.contactMethod = contactMethodIn;
@@ -117,6 +123,26 @@ public class System {
      */
     public System setId(String idIn) {
         id = idIn;
+        return this;
+    }
+
+    /**
+     * Gets the rawId.
+     *
+     * @return rawId
+     */
+    public String getRawId() {
+        return rawId;
+    }
+
+    /**
+     * Sets the rawId.
+     *
+     * @param rawIdIn - the rawId
+     * @return this
+     */
+    public System setRawId(String rawIdIn) {
+        rawId = rawIdIn;
         return this;
     }
 
