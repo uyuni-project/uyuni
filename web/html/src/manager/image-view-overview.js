@@ -134,6 +134,25 @@ function ImageInfo(props) {
     );
 }
 
+class ImageCustomInfo extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const data = this.props.data.customData;
+        return (
+        <div className="table-responsive">
+            <table className="table">
+                <tbody>
+                    { Object.entries(data).map(e => <tr><td>{e[0]}:</td><td>{e[1] || "-"}</td></tr>)}
+                </tbody>
+            </table>
+        </div>
+        );
+    }
+}
+
 class ImageViewOverview extends React.Component {
     constructor(props) {
         super(props);
@@ -202,6 +221,15 @@ class ImageViewOverview extends React.Component {
                     </BootstrapPanel>
                 </div>
             </div>
+            {data.customData && Object.keys(data.customData).length > 0 &&
+                <div className="row-0">
+                    <div className="col-md-12">
+                        <BootstrapPanel title={t("Custom Image Information")}>
+                            <ImageCustomInfo data={data}/>
+                        </BootstrapPanel>
+                    </div>
+                </div>
+            }
             </div>
         );
     }

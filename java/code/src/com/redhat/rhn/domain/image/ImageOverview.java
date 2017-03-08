@@ -157,7 +157,7 @@ public class ImageOverview extends BaseDomainHelper {
     /**
      * @return the custom data values
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
     public Set<ImageInfoCustomDataValue> getCustomDataValues() {
         return customDataValues;
     }

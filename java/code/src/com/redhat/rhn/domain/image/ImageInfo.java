@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.ServerArch;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -179,7 +180,7 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the custom data values
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo", cascade = CascadeType.ALL)
     public Set<ImageInfoCustomDataValue> getCustomDataValues() {
         return customDataValues;
     }

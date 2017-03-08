@@ -314,6 +314,8 @@ public class ImageInfoJson {
                 )
         );
         json.setInstalledProducts(installedProductsJson.orElse(null));
+        json.setCustomData(imageOverview.getCustomDataValues());
+
         return json;
     }
 }

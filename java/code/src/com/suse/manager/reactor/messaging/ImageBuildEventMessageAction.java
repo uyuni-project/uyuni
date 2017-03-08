@@ -18,6 +18,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -34,6 +35,7 @@ import org.apache.log4j.Logger;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * Applies states to a server
@@ -100,7 +102,11 @@ public class ImageBuildEventMessageAction extends AbstractDatabaseAction {
 
             // Checksum will be available from inspect
 
-            //TODO: Set customDataValues
+            //Copy custom data values from image profile
+            info.setCustomDataValues(imageProfile.getCustomDataValues().stream()
+                    .map(val -> new ImageInfoCustomDataValue(val, info))
+                    .collect(Collectors.toSet()));
+
             ImageInfoFactory.save(info);
         }
     }
