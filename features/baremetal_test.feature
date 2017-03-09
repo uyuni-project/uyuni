@@ -15,11 +15,11 @@ Feature: Test Bare-metal discovery
     Then I should see a "Automatic bare-metal system discovery has been successfully enabled" text
     And the pxe-default-profile should be enabled
 
-  Scenario: Register a client
+  Scenario: Register a client for bare-metal
     When I register using "1-spacewalk-bootstrap-activation-key" key
     Then I should see this client in spacewalk
 
-  Scenario: check registration values
+  Scenario: check registration values of client
     Given I am on the Systems overview page of this "sle-client"
     Then I should see a "System Info" text
     And I should see a "Edit These Properties" link
@@ -42,7 +42,7 @@ Feature: Test Bare-metal discovery
     And I should see a "MAC Address(es)" text
     And I check the MAC address value
 
-  Scenario: check tab links "Details"
+  Scenario: check tab links "Details" bare metal
     Given I am on the Systems page
     And I click Systems, under Systems node 
     When I follow this client link
@@ -61,7 +61,7 @@ Feature: Test Bare-metal discovery
     And I should see a "Notes" link in the content area
     And I should not see a "Custom Info" link in the content area
 
-  Scenario: check tab links "Provisioning"
+  Scenario: check tabs Schedule and Power Management for sle-client
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
     Then I should see a "Kickstart" link in the content area

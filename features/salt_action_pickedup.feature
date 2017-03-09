@@ -6,7 +6,7 @@ Feature: Test the remote commands via salt
   As an authorized user
   I want to verify that the remote command show status picked up as long as the command is running
 
-  Scenario: Run a remote command from the systems overview page
+  Scenario: Run a remote command from the systems overview page (pickedup-test)
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
     Then I follow this minion link

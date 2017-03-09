@@ -10,5 +10,4 @@ install:
 script:
   - bundle exec rubocop
   - bundle exec cucumber_lint
-# don't allow duplicata scenarios name
-  - cat features/*.feature | grep Scenario | sort | uniq -cd
+  - ruby unit-tests/check_duplicata.scenario.rb

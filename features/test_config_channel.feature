@@ -4,7 +4,7 @@
 Feature: Test configuration channel basic functions
   Subscribe system to channel, deploy some files
 
-  Scenario: Successfully create configuration channel
+  Scenario: Successfully create newtestchannel configuration channel
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
@@ -132,26 +132,7 @@ Feature: Test configuration channel basic functions
     And I follow "Local Sandbox" in the content area
     Then I should see a table line with "/etc/mgr-test-file.cnf", "Revision 1"
 
-  Scenario: Import the changed file
-    Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu 
-    And I follow this "sle-client" link
-    When I follow "Configuration" in the content area
-    And I follow "Add Files" in the content area
-    And I follow "Import Files" in the content area
-    And I enter "/etc/sysconfig/cron" as "contents"
-    And I click on "Import Configuration Files"
-    And I click on "Confirm"
-    Then I should see a "1 files scheduled for upload." text
-    When I run rhn_check on this client
-    And I follow "Configuration" in the content area
-    And I follow "View/Modify Files" in the content area
-    And I follow "Local Sandbox" in the content area
-    Then I should see a table line with "/etc/sysconfig/cron", "Revision 1"
-
-  Scenario: Copy Sandbox file to Centrally-Managed
+    Scenario: Copy Sandbox file to Centrally-Managed
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     When I follow "Systems" in the left menu
