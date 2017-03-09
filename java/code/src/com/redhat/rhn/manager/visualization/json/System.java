@@ -24,8 +24,8 @@ import java.util.Date;
  */
 public class System {
 
-    private String id;
-    private String rawId;
+    private String id = "";
+    private String rawId = "";
     private String parentId;
     private String name;
     @SerializedName("contact_method")
@@ -55,7 +55,6 @@ public class System {
      */
     public System(Long rawIdIn, Long parentIdIn, String nameIn, String contactMethodIn,
             String baseChannelIn, String baseEntitlementIn, Date checkinIn) {
-        this.id = "";
         if (rawIdIn != null) {
             this.rawId = rawIdIn.toString();
             this.id += this.rawId;
@@ -84,7 +83,6 @@ public class System {
      */
     public System(Long rawIdIn, String nameIn, String contactMethodIn, String baseChannelIn,
             String baseEntitlementIn, Date checkinIn) {
-        this.id = "";
         if (rawIdIn != null) {
             this.rawId = rawIdIn.toString();
             this.id += this.rawId;
