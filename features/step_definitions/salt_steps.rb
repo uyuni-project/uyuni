@@ -1,4 +1,4 @@
-# Copyright 2015-16 SUSE LLC
+# Copyright 2015-2017 SUSE LLC
 require 'timeout'
 
 Given(/^the Salt Minion is configured$/) do
@@ -233,24 +233,6 @@ Then(/^all local repositories are disabled$/) do
     end
 end
 
-Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
-  found = false
-  begin
-    Timeout.timeout(30) do
-      loop do
-        if page.has_content?(debrand_string(arg1))
-          found = true
-          break
-        end
-        visit current_url
-      end
-    end
-  rescue Timeout::Error
-    raise "'#{arg1}' cannot be found after wait and reload page"
-  end
-  fail unless found
-end
-
 And(/^I follow the sle minion$/) do
  step %(I follow "#{$minion_fullhostname}")
 end
@@ -317,7 +299,6 @@ Then(/^I should see "([^"]*)" in the command output$/) do |text|
   end
 end
 
-# salt_pkgset_beacon_steps.rb
 Then(/^I manually install the "([^"]*)" package in the minion$/) do |package|
   if file_exists?($minion, "/usr/bin/zypper")
     cmd = "zypper --non-interactive install -y #{package}"
@@ -375,4 +356,87 @@ end
 
 When(/^I select the state "(.*)"$/) do |state|
   find("input##{state}-cbox").click
+end
+
+# salt formulas
+When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
+  $server.run("zypper --non-interactive install -y #{package}-formula", false)
+end
+
+When(/^I check the "([^"]*)" formula$/) do |formula|
+  # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']"
+  if all(:xpath, xpath_query).any?
+    fail unless find(:xpath, xpath_query).click
+  else
+    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']"
+    assert all(:xpath, xpath_query).any?, "Checkbox could not be found"
+  end
+end
+
+Then(/^the "([^"]*)" formula should be checked$/) do |formula|
+  # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']"
+  if all(:xpath, xpath_query).any?
+    fail "Checkbox is not checked"
+  end
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']"
+  assert all(:xpath, xpath_query).any?, "Checkbox could not be found"
+end
+
+When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
+  boxid = case box
+    when "timezone name"
+      "timezone\$name"
+    when "language"
+      "keyboard_and_language\$language"
+    when "keyboard layout"
+      "keyboard_and_language\$keyboard_layout"
+  end
+  select(value, :from => boxid)
+end
+
+Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
+  if minion == "sle-minion"
+    target = $minion
+  elsif minion == "ceos-minion"
+    target = $ceos_minion
+  else
+    fail "Invalid target"
+  end
+  output, _code = target.run("date +%Z")
+  fail unless output.strip == timezone
+end
+
+Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
+  if minion == "sle-minion"
+    target = $minion
+  elsif minion == "ceos-minion"
+    target = $ceos_minion
+  else
+    fail "Invalid target"
+  end
+  output, _code = target.run("cat /etc/vconsole.conf")
+  fail unless output.strip == "KEYMAP=#{keymap}"
+end
+
+Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
+  if minion == "sle-minion"
+    target = $minion
+  elsif minion == "ceos-minion"
+    target = $ceos_minion
+  else
+    fail "Invalid target"
+  end
+  output, _code = target.run("grep 'RC_LANG=' /etc/sysconfig/language")
+  fail unless output.strip == "RC_LANG=\"#{language}\""
+end
+
+When(/^I refresh the pillar data$/) do
+  $server.run("salt '*' saltutil.refresh_pillar")
+end
+
+Then(/^the pillar data for "([^"]*)" should be "([^"]*)"$/) do |key, value|
+  output, _code = $server.run("salt '*' pillar.get '#{key}'")
+  fail unless output.split("\n")[1].strip == value
 end
