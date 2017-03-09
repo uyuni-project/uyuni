@@ -24,11 +24,9 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
                 ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get();
         assertEquals(expected, stype);
 
-        try {
-            ImageStoreFactory.lookupStoreTypeByLabel("non-existent-label");
-            fail("Should throw NoResultException");
+        if (ImageStoreFactory.lookupStoreTypeByLabel("non-existent-label").isPresent()) {
+            fail("Should not be present");
         }
-        catch (NoResultException ignored) { }
     }
 
     public void testListImageStore() throws Exception {
@@ -136,11 +134,9 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
         org.setName("foreign org");
         org = OrgFactory.save(org);
 
-        try {
-            ImageStoreFactory.lookupBylabelAndOrg("myregistry", org);
-            fail("Should throw NoResultException");
+        if (ImageStoreFactory.lookupBylabelAndOrg("myregistry", org).isPresent()) {
+            fail("Should not be present");
         }
-        catch (NoResultException ignored) { }
     }
 
     public void testLookupImageStoreWithCredentials() throws Exception {
@@ -179,10 +175,9 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
                 ImageStoreFactory.lookupBylabelAndOrg("myregistry", user.getOrg()).get();
 
         ImageStoreFactory.delete(i);
-        try {
-            ImageStoreFactory.lookupBylabelAndOrg("myregistry", user.getOrg());
-            fail("Should throw NoResultException");
+        if (ImageStoreFactory.lookupBylabelAndOrg("myregistry",
+                user.getOrg()).isPresent()) {
+            fail("Should not be present anymore");
         }
-        catch (NoResultException ignored) { }
     }
 }
