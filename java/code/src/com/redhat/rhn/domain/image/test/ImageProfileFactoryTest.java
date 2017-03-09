@@ -191,7 +191,8 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         profile = TestUtils.saveAndReload(profile);
 
         CustomDataKey key = CustomDataKeyTest.createTestCustomDataKey(user);
-        ProfileCustomDataValue val = createTestProfileCustomDataValue(user, key, profile);
+        ProfileCustomDataValue val =
+                createTestProfileCustomDataValue("Test value", user, key, profile);
 
         Set<ProfileCustomDataValue> values = profile.getCustomDataValues();
         assertNotNull(values);
@@ -199,7 +200,8 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
             assertEquals(val, v);
         }
         CustomDataKey key2 = CustomDataKeyTest.createTestCustomDataKey(user);
-        ProfileCustomDataValue val2 = createTestProfileCustomDataValue(user, key2, profile);
+        ProfileCustomDataValue val2 =
+                createTestProfileCustomDataValue("Test value", user, key2, profile);
 
         profile = TestUtils.saveAndReload(profile);
         Set<ProfileCustomDataValue> values2 = profile.getCustomDataValues();
@@ -215,13 +217,13 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         assertEquals(2, values2.size());
     }
 
-    public static ProfileCustomDataValue createTestProfileCustomDataValue(User user,
-            CustomDataKey key, ImageProfile profile) {
+    public static ProfileCustomDataValue createTestProfileCustomDataValue(String value,
+            User user, CustomDataKey key, ImageProfile profile) {
         ProfileCustomDataValue val = new ProfileCustomDataValue();
         val.setCreator(user);
         val.setKey(key);
         val.setProfile(profile);
-        val.setValue("Test value");
+        val.setValue(value);
 
         TestUtils.saveAndFlush(val);
 
