@@ -68,7 +68,7 @@ public class VisualizationManager {
                 .setParameter("org", user.getOrg())
                 .list()
                 .stream())
-                .map(p -> p.setInstalledProducts((installedProducts.get(p.getId()))))
+                .map(p -> p.setInstalledProducts(installedProducts.get(p.getId())))
                 .map(p -> p.setParentId(serverVhmMapping.getOrDefault(
                         p.getId(),
                         unknownVirtualHostManager.getId()
@@ -79,7 +79,7 @@ public class VisualizationManager {
                 .setParameter("org", user.getOrg())
                 .list()
                 .stream())
-                .map(p -> p.setInstalledProducts((installedProducts.get(p.getId()))));
+                .map(p -> p.setInstalledProducts(installedProducts.get(p.getId())));
 
         return concatStreams(
                 Stream.of(root),
