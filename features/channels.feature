@@ -26,7 +26,7 @@ Feature: Explore the Channels page
     And I should see a "Shared Channels" link in the content area
     And I should see a "Retired Channels" link in the content area
 
-  Scenario: Completeness of Channels page
+  Scenario: Completeness of Channels page part 2
     Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
     And I follow "Software Channels"

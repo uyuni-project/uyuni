@@ -57,7 +57,7 @@ Feature: Create an activation key
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
 
-  Scenario: create an activation key with Channel and package list
+  Scenario: create an activation key with Channel and package list (x64)
     Given I am on the Systems page
     And I follow "Activation Keys" in the left menu
     And I follow "Create Key"
@@ -77,7 +77,7 @@ Feature: Create an activation key
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
 
-  Scenario: create an activation key with Channel and package list
+  Scenario: create an activation key with Channel and package list (i586)
     Given I am on the Systems page
     And I follow "Activation Keys" in the left menu
     And I follow "Create Key"

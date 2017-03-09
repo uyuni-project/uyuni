@@ -33,7 +33,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager
     And I run rhn_check on this client
     Then I should see a "XCCDF scan has been scheduled" text
 
-  Scenario: Check results of the audit job
+  Scenario: Check results of the audit job suse profile
     Given I am on the Systems overview page of this "sle-client"
     And I follow "Audit" in the content area
     When I follow "xccdf_org.open-scap_testresult_Default"

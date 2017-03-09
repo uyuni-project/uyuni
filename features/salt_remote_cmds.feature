@@ -6,7 +6,7 @@ Feature: Test the remote commands via salt
   As an authorized user
   I want to verify that the remote commands function works
 
-  Scenario: Run a remote command
+  Scenario: Run a remote command and expand results for sles-minion
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
     And I follow "Remote Commands"
@@ -19,7 +19,7 @@ Feature: Test the remote commands via salt
     And I expand the results
     Then I should see "SuSE-release" in the command output
 
-  Scenario: Run a remote command as non authorized user
+  Scenario: Run a remote command as non authorized user for sles-minion
     Given I am authorized as an example user with no roles
     And I follow "Salt"
     And I follow "Remote Commands"
@@ -28,7 +28,7 @@ Feature: Test the remote commands via salt
     Then I should not see my hostname
     And I can cleanup the no longer needed user
 
-  Scenario: Run a remote command from the systems overview page
+  Scenario: Run a remote command from the systems overview page sles-minion
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
     Then I follow this minion link
