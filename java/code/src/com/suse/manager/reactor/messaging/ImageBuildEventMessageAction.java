@@ -98,9 +98,11 @@ public class ImageBuildEventMessageAction extends AbstractDatabaseAction {
 
             // Checksum will be available from inspect
 
-            //Copy custom data values from image profile
-            imageProfile.getCustomDataValues().forEach(cdv -> info.getCustomDataValues()
-                    .add(new ImageInfoCustomDataValue(cdv, info)));
+            // Copy custom data values from image profile
+            if (imageProfile.getCustomDataValues() != null) {
+                imageProfile.getCustomDataValues().forEach(cdv -> info.getCustomDataValues()
+                        .add(new ImageInfoCustomDataValue(cdv, info)));
+            }
 
             ImageInfoFactory.save(info);
         }
