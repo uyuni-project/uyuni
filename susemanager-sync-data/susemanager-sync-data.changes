@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 09 15:34:19 CET 2017 - mc@suse.de
+
+- version 3.0.15-1
+- add SUSE Manager Proxy 3.0 as extension for SLES12 SP2 (bsc#1026696)
+
+-------------------------------------------------------------------
 Mon Feb 13 13:08:33 CET 2017 - jrenner@suse.com
 
 - version 3.0.14-1
