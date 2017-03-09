@@ -177,9 +177,9 @@ Given(/^I am on the Systems overview page of this "(.*?)"$/) do |target|
   when "ceos-minion"
     step %(I follow "#{$ceos_minion_fullhostname}")
   when "sle-client"
-    step %(I follow "#{$client_hostname}")
+    step %(I follow "#{$client_fullhostname}")
   when "sle-migrated-minion"
-    step %(I follow "#{$client_hostname}")
+    step %(I follow "#{$client_fullhostname}")
   else
     raise "No valid target."
   end
@@ -189,7 +189,7 @@ When(/^I follow this "(.*?)" link$/) do |target|
   step %(I follow "#{$minion_fullhostname}") if target == "sle-minion"
   step %(I follow "#{$ssh_minion_fullhostname}") if target == "ssh-minion"
   step %(I follow "#{$ceos_minion_fullhostname}") if target == "ceos-minion"
-  step %(I follow "#{$client_hostname}") if target == "sle-client"
+  step %(I follow "#{$client_fullhostname}") if target == "sle-client"
 end
 
 Given(/^I am on the groups page$/) do
@@ -200,7 +200,7 @@ Given(/^I am on the groups page$/) do
 end
 
 When(/^I check this client$/) do
-  step %(I check "#{$client_hostname}" in the list)
+  step %(I check "#{$client_fullhostname}" in the list)
 end
 
 Given(/^I am on the active Users page$/) do
