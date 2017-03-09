@@ -150,7 +150,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
 
     private System extractSingleSystem(Stream<?> stream, String id) {
         List<System> list = stream
-                .filter(o -> o instanceof System && ((System) o).getId().equals(id))
+                .filter(o -> o instanceof System && ((System) o).getRawId().equals(id))
                 .map(o -> ((System) o))
                 .collect(Collectors.toList());
 
