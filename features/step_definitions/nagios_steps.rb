@@ -2,12 +2,12 @@
 # Licensed under the terms of the MIT license.
 
 When(/^I perform a nagios check patches$/) do
-  command = "/usr/lib/nagios/plugins/check_suma_patches #{$client_hostname} > /tmp/nagios.out"
+  command = "/usr/lib/nagios/plugins/check_suma_patches #{$client_fullhostname} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
 When(/^I perform a nagios check last event$/) do
-  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{$client_hostname} > /tmp/nagios.out"
+  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{$client_fullhostname} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
