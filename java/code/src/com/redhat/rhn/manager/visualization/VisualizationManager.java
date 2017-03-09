@@ -160,7 +160,9 @@ public class VisualizationManager {
 
     private static <T> Set<T> set(T elem) {
         HashSet<T> ts = new HashSet<>();
-        ts.add(elem);
+        if (elem != null) {
+            ts.add(elem);
+        }
         return ts;
     }
 
