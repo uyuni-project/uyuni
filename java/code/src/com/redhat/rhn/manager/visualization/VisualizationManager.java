@@ -41,7 +41,7 @@ public class VisualizationManager {
      * @return Data for virtualization hierarchy
      */
     public static List<Object> virtualizationHierarchy(User user) {
-        Map<String, Set<String>> installedProducts = installedProducts(user);
+        Map<String, Set<String>> installedProducts = fetchInstalledProducts(user);
 
         System root = new System();
         root.setId("root");
@@ -109,7 +109,7 @@ public class VisualizationManager {
      * @return Data for proxy hierarchy
      */
     public static List<Object> proxyHierarchy(User user) {
-        Map<String, Set<String>> installedProducts = installedProducts(user);
+        Map<String, Set<String>> installedProducts = fetchInstalledProducts(user);
 
         System root = new System();
         root.setId("root");
@@ -142,7 +142,7 @@ public class VisualizationManager {
      * @param user user
      * @return map of system id as string -> set of installed product names
      */
-    private static Map<String, Set<String>> installedProducts(User user) {
+    private static Map<String, Set<String>> fetchInstalledProducts(User user) {
         return ((List<Object[]>) HibernateFactory.getSession()
                 .getNamedQuery("Server.serverInstalledProductNames")
                 .setParameter("org", user.getOrg())
