@@ -287,7 +287,7 @@ When(/^I click on preview$/) do
 end
 
 When(/^I click on run$/) do
-  sleep(15)
+  sleep(30)
   find('button#run').click
 end
 
