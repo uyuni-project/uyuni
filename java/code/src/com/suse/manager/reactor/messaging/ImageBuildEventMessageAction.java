@@ -35,7 +35,6 @@ import org.apache.log4j.Logger;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 /**
  * Applies states to a server
@@ -78,23 +77,20 @@ public class ImageBuildEventMessageAction extends AbstractDatabaseAction {
             MessageQueue.publish(new ActionScheduledEventMessage(action,
                     false));
 
-            ImageInfo info = ImageInfoFactory
-                    .lookupByName(imageProfile.getLabel(),
-                            imageBuildEvent.getTag(),
-                            imageProfile.getProfileId())
-                    .orElseGet(() -> {
-                        ImageInfo i = new ImageInfo();
-                        i.setName(imageProfile.getLabel());
-                        i.setVersion(imageBuildEvent.getTag().isEmpty() ? "latest" :
-                                imageBuildEvent.getTag());
-                        i.setStore(imageProfile.getTargetStore());
-                        return i;
-                    });
+            ImageInfoFactory
+                    .lookupByName(imageProfile.getLabel(), imageBuildEvent.getTag(),
+                            imageProfile.getTargetStore().getId())
+                    .ifPresent(ImageInfoFactory::delete);
 
+            ImageInfo info = new ImageInfo();
+            info.setName(imageProfile.getLabel());
+            info.setVersion(imageBuildEvent.getTag().isEmpty() ? "latest" :
+                    imageBuildEvent.getTag());
+            info.setStore(imageProfile.getTargetStore());
             info.setOrg(server.getOrg());
             info.setAction(action);
             info.setProfile(imageProfile);
-            info.setBuildServer((MinionServer)server);
+            info.setBuildServer((MinionServer) server);
             info.setChannels(new HashSet<>(imageProfile.getToken().getChannels()));
 
             // Image arch should be the same as the build host
@@ -103,9 +99,8 @@ public class ImageBuildEventMessageAction extends AbstractDatabaseAction {
             // Checksum will be available from inspect
 
             //Copy custom data values from image profile
-            info.setCustomDataValues(imageProfile.getCustomDataValues().stream()
-                    .map(val -> new ImageInfoCustomDataValue(val, info))
-                    .collect(Collectors.toSet()));
+            imageProfile.getCustomDataValues().forEach(cdv -> info.getCustomDataValues()
+                    .add(new ImageInfoCustomDataValue(cdv, info)));
 
             ImageInfoFactory.save(info);
         }
