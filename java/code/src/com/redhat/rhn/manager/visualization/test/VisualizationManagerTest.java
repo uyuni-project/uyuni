@@ -16,6 +16,8 @@
 package com.redhat.rhn.manager.visualization.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
@@ -30,6 +32,7 @@ import com.redhat.rhn.manager.visualization.json.VirtualHostManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,6 +61,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         String proxyHostname = "proxyHostname";
 
         Server client1 = ServerFactoryTest.createTestServer(user);
+        addInstalledProduct(client1, "SLES");
         Server client2 = ServerFactoryTest.createTestServer(user);
         Server client3 = ServerFactoryTest.createTestServer(user);
 
@@ -82,16 +86,22 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
                 client1.getId().toString());
         assertEquals(client1.getName(), client1Profile.getName());
         assertEquals(proxy.getId().toString(), client1Profile.getParentId());
+        assertEquals(1, client1Profile.getInstalledProducts().size());
+        assertEquals(
+                client1.getInstalledProducts().iterator().next().getName(),
+                client1Profile.getInstalledProducts().iterator().next());
 
         System client2Profile = extractSingleSystemByRawId(hierarchy.stream(),
                 client2.getId().toString());
         assertEquals(client2.getName(), client2Profile.getName());
         assertEquals(proxy.getId().toString(), client2Profile.getParentId());
+        assertEquals(0, client2Profile.getInstalledProducts().size());
 
         System client3Profile = extractSingleSystemByRawId(hierarchy.stream(),
                 client3.getId().toString());
         assertEquals(client3.getName(), client3Profile.getName());
         assertEquals(proxy.getId().toString(), client3Profile.getParentId());
+        assertEquals(0, client3Profile.getInstalledProducts().size());
 
         assertEquals(1, hierarchy.stream()
                 .filter(o -> (o instanceof System))
@@ -115,6 +125,8 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         VirtualInstance vi = new GuestBuilder(user).createGuest().build();
         vi.setHostSystem(host);
         HibernateFactory.getSession().save(vi);
+        addInstalledProduct(host, "SLES");
+        addInstalledProduct(vi.getGuestSystem(), "SUSE-Manager-Proxy");
 
         com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager vhm =
                 VirtualHostManagerFactory.getInstance().createVirtualHostManager("myVHM",
@@ -132,10 +144,18 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         System hostProfile = extractSingleSystemByRawId(hierarchy.stream(), host.getId().toString());
         assertEquals(host.getName(), hostProfile.getName());
         assertEquals(vhm.getId().toString(), hostProfile.getParentId());
+        assertEquals(1, hostProfile.getInstalledProducts().size());
+        assertEquals(
+                host.getInstalledProducts().iterator().next().getName(),
+                hostProfile.getInstalledProducts().iterator().next());
 
         System guestProfile = extractSingleSystemByRawId(hierarchy.stream(), vi.getGuestSystem().getId().toString());
         assertEquals(vi.getGuestSystem().getName(), guestProfile.getName());
         assertEquals(host.getId().toString(), guestProfile.getParentId());
+        assertEquals(1, guestProfile.getInstalledProducts().size());
+        assertEquals(
+                vi.getGuestSystem().getInstalledProducts().iterator().next().getName(),
+                guestProfile.getInstalledProducts().iterator().next());
 
         VirtualHostManager vhmProfile = extractSingleVHM(hierarchy.stream(), vhm.getId().toString());
         assertEquals("root", vhmProfile.getParentId());
@@ -143,6 +163,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         System hostProfile2 = extractSingleSystemByRawId(hierarchy.stream(), host2.getId().toString());
         assertEquals(host2.getName(), hostProfile2.getName());
         assertEquals("unknown-vhm", hostProfile2.getParentId());
+        assertEquals(0, hostProfile2.getInstalledProducts().size());
 
         System root = extractSingleSystemById(hierarchy.stream(), "root");
         assertNull(root.getParentId());
@@ -186,5 +207,18 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
      */
     private Server createTestProxy() throws Exception {
         return ServerFactoryTest.createTestProxyServer(user, true);
+    }
+
+    private void addInstalledProduct(Server server, String name) throws Exception {
+        InstalledProduct installedPrd = new InstalledProduct();
+        installedPrd.setName(name);
+        installedPrd.setVersion("12.1");
+        installedPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+        installedPrd.setBaseproduct(true);
+        assertNull(installedPrd.getId());
+
+        Set<InstalledProduct> products = new HashSet<>();
+        products.add(installedPrd);
+        server.setInstalledProducts(products);
     }
 }
