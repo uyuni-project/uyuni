@@ -142,6 +142,11 @@ function initHierarchy() {
           t();
         }
 
+        function resetTree() {
+          myCriteria.get()['checkin-criteria'] = d => { return ''};
+          t();
+        }
+
         const checkinTimeCriteria = d3.select('#filter-wrapper')
           .append('div').attr('class', 'filter');
 
@@ -171,7 +176,12 @@ function initHierarchy() {
           .append('button')
           .attr('type', 'button')
           .on('click', updateTree)
-          .text('Apply partitioning');
+          .text('Apply');
+        checkinTimeCriteria
+          .append('button')
+          .attr('type', 'button')
+          .on('click', resetTree)
+          .text('Reset');
       }, (xhr) => {
           d3.select('#svg-wrapper')
             .text(t('There was an error fetching data from the server.'));
