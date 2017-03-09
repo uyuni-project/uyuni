@@ -73,22 +73,22 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
 
         List<Object> hierarchy = VisualizationManager.proxyHierarchy(user);
 
-        System proxyProfile = extractSingleSystem(hierarchy.stream(),
+        System proxyProfile = extractSingleSystemByRawId(hierarchy.stream(),
                 proxy.getId().toString());
         assertEquals(proxy.getName(), proxyProfile.getName());
         assertEquals("root", proxyProfile.getParentId());
 
-        System client1Profile = extractSingleSystem(hierarchy.stream(),
+        System client1Profile = extractSingleSystemByRawId(hierarchy.stream(),
                 client1.getId().toString());
         assertEquals(client1.getName(), client1Profile.getName());
         assertEquals(proxy.getId().toString(), client1Profile.getParentId());
 
-        System client2Profile = extractSingleSystem(hierarchy.stream(),
+        System client2Profile = extractSingleSystemByRawId(hierarchy.stream(),
                 client2.getId().toString());
         assertEquals(client2.getName(), client2Profile.getName());
         assertEquals(proxy.getId().toString(), client2Profile.getParentId());
 
-        System client3Profile = extractSingleSystem(hierarchy.stream(),
+        System client3Profile = extractSingleSystemByRawId(hierarchy.stream(),
                 client3.getId().toString());
         assertEquals(client3.getName(), client3Profile.getName());
         assertEquals(proxy.getId().toString(), client3Profile.getParentId());
@@ -129,28 +129,38 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
 
         List<Object> hierarchy = VisualizationManager.virtualizationHierarchy(user);
 
-        System hostProfile = extractSingleSystem(hierarchy.stream(), host.getId().toString());
+        System hostProfile = extractSingleSystemByRawId(hierarchy.stream(), host.getId().toString());
         assertEquals(host.getName(), hostProfile.getName());
         assertEquals(vhm.getId().toString(), hostProfile.getParentId());
 
-        System guestProfile = extractSingleSystem(hierarchy.stream(), vi.getGuestSystem().getId().toString());
+        System guestProfile = extractSingleSystemByRawId(hierarchy.stream(), vi.getGuestSystem().getId().toString());
         assertEquals(vi.getGuestSystem().getName(), guestProfile.getName());
         assertEquals(host.getId().toString(), guestProfile.getParentId());
 
         VirtualHostManager vhmProfile = extractSingleVHM(hierarchy.stream(), vhm.getId().toString());
         assertEquals("root", vhmProfile.getParentId());
 
-        System hostProfile2 = extractSingleSystem(hierarchy.stream(), host2.getId().toString());
+        System hostProfile2 = extractSingleSystemByRawId(hierarchy.stream(), host2.getId().toString());
         assertEquals(host2.getName(), hostProfile2.getName());
         assertEquals("unknown-vhm", hostProfile2.getParentId());
 
-        System root = extractSingleSystem(hierarchy.stream(), "root");
+        System root = extractSingleSystemById(hierarchy.stream(), "root");
         assertNull(root.getParentId());
     }
 
-    private System extractSingleSystem(Stream<?> stream, String id) {
+    private System extractSingleSystemByRawId(Stream<?> stream, String id) {
         List<System> list = stream
                 .filter(o -> o instanceof System && ((System) o).getRawId().equals(id))
+                .map(o -> ((System) o))
+                .collect(Collectors.toList());
+
+        assertEquals(1, list.size());
+        return list.get(0);
+    }
+
+    private System extractSingleSystemById(Stream<?> stream, String id) {
+        List<System> list = stream
+                .filter(o -> o instanceof System && ((System) o).getId().equals(id))
                 .map(o -> ((System) o))
                 .collect(Collectors.toList());
 
