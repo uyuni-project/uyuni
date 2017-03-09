@@ -239,7 +239,7 @@ public class ImageProfileController {
                 GSON.fromJson(req.body(), ImageProfileCreateRequest.class);
 
         ImageProfile profile;
-        if ("dockerfile".equals(reqData.getImageType())) {
+        if (ImageProfile.TYPE_DOCKERFILE.equals(reqData.getImageType())) {
             //Throw NoSuchElementException if not found
             ImageStore store = ImageStoreFactory
                     .lookupBylabelAndOrg(reqData.getStoreLabel(), user.getOrg()).get();

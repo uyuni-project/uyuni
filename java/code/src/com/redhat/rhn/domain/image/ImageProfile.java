@@ -51,6 +51,8 @@ import javax.persistence.Transient;
 @DiscriminatorColumn(name = "image_type")
 public abstract class ImageProfile extends BaseDomainHelper {
 
+    public static final String TYPE_DOCKERFILE = "dockerfile";
+
     /** The profileId. */
     private Long profileId;
     private String label;
