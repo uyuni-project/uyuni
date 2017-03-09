@@ -49,12 +49,12 @@ Feature: CENTOS7 feature.
     And I follow "Salt"
     And I follow "Remote Commands"
     And I should see a "Remote Commands" text
-    Then I enter command "rpm -q salt-minion"
+    Then I enter command "rpm -q gingery-minion"
     And I click on preview
     And I click on run
     Then I wait for "15" seconds
     And I expand the results for "ceos-minion"
-    Then I should see a "package salt-minion is not installed" text
+    Then I should see a "package gingery-minion is not installed" text
 
    Scenario: Run a remote command from the systems overview page
     Given I am on the Systems overview page of this "ceos-minion"
@@ -121,12 +121,12 @@ Feature: CENTOS7 feature.
     And I follow "Salt"
     And I follow "Remote Commands"
     And I should see a "Remote Commands" text
-    Then I enter command "rpm -q salt-minion"
+    Then I enter command "rpm -q gingery-minion"
     And I click on preview
     And I click on run
     Then I wait for "15" seconds
     And I expand the results for "ceos-minion"
-    Then I should see a "package salt-minion is not installed" text
+    Then I should see a "package gingery-minion is not installed" text
 
    Scenario: Run a remote command from the systems overview page: ssh-tunnel
     Given I am on the Systems overview page of this "ceos-minion"
