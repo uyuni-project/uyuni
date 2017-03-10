@@ -22,12 +22,14 @@ def __virtual__():
     '''
     Only works if /usr/bin/read_values is accessible
     '''
-    return os.access("/usr/bin/read_values", os.X_OK)
+    return os.access('/usr/bin/read_values', os.X_OK) or \
+        os.access('/proc/sysinfo', os.R_OK)
 
 
 def read_values():
     '''
-    Cat the specified file.
+    Executes /usr/bin/read_values or if not available
+    falls back to 'cat /proc/sysinfo'
 
     CLI Example:
 
@@ -35,7 +37,10 @@ def read_values():
 
         salt '*' mainframesysinfo.read_values
     '''
-    cmd = '/usr/bin/read_values -s'
+    if os.access('/usr/bin/read_values', os.X_OK):
+        cmd = '/usr/bin/read_values -s'
+    else:    
+        cmd = 'cat /proc/sysinfo'
     result = __salt__['cmd.run_all'](cmd, output_loglevel='quiet')
 
     if result['retcode'] != 0:
