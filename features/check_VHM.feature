@@ -20,7 +20,7 @@ Feature: Test "virtualhostmanager" Web UI.
     And I should see a "Username:" text
     And I should see a "Password:" text
 
-  Scenario: Check create
+  Scenario: Check create Virtual Host
    Given I am on the Systems page
     When I follow "Virtual Host Managers"
     And I follow "Add File-based Virtual Host Manager"
@@ -40,7 +40,7 @@ Feature: Test "virtualhostmanager" Web UI.
     When I click on "Refresh data from this Virtual Host Manager"
     Then I should see a "Refresh for Virtual Host Manager with label 'file-vmware' was triggered." text
 
-  Scenario: Check new Virtual Hosts
+  Scenario: Check new Virtual Hosts vhm page
     Given I am on the Systems page
     When I follow "10.162.186.111"
     Then I should see a "OS: VMware ESXi" text

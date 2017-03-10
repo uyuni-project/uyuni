@@ -12,7 +12,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     Given no Salt packages are installed on remote "ssh-minion"
     And remote minion host is not registered in Spacewalk
     
-  Scenario: Bootstrap a system via salt-ssh
+  Scenario: Bootstrap a system (sles-salt-ssh managed)
     Given I am authorized
     When I follow "Salt"
     Then I should see a "Bootstrapping" text
@@ -43,7 +43,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
 
-  Scenario: Run a remote command on ssh-minion
+  Scenario: Run a remote command on ssh-minion sles
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
     And I follow "Remote Commands"
@@ -55,7 +55,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I expand the results for "ssh-minion"
     Then I should see a "package salt-minion is not installed" text
 
-   Scenario: Run a remote command from the systems overview page
+   Scenario: Run a remote command from the systems overview page (sles-ssh-managed)
     Given I am authorized as "testing" with password "testing"
     And I follow "Home" in the left menu
     And I follow "Systems" in the left menu
@@ -84,7 +84,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I wait for "100" seconds
     And "hoag-dummy-1.1-2.1" is installed on "ssh-minion"
 
-   Scenario: Delete minion system profile
+   Scenario: Delete sle-ssh-minion system profile
     Given I am on the Systems overview page of this "ssh-minion" 
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
@@ -110,7 +110,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I follow remote ssh-minion hostname
     Then I should see a "Push via SSH tunnel" text
 
-   Scenario: Subscribe ssh-tunnel-minion to a base-channel for testing
+   Scenario: Subscribe sles-ssh-tunnel-minion to a base-channel for testing
     Given I am authorized as "testing" with password "testing"
     And I follow "Home" in the left menu
     And I follow "Systems" in the left menu
@@ -135,7 +135,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I expand the results for "ssh-minion"
     Then I should see a "package salt-minion is not installed" text
 
-   Scenario: Run a remote command from the systems overview page: ssh-tunnel
+   Scenario: Run a remote command from the systems overview page: ssh-tunnel sles
     Given I am authorized as "testing" with password "testing"
     And I follow "Home" in the left menu
     And I follow "Systems" in the left menu
@@ -158,7 +158,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
    Given I am authorized as "testing" with password "testing"
    Then I run "zypper lr -u | grep :1233/rhn" on "ssh-minion"
 
-   Scenario: Install a package to ssh-tunnel-minion
+   Scenario: Install a package to ssh-tunnel-minion (SLES)
     Given I am authorized as "testing" with password "testing"
     And I follow "Home" in the left menu
     And I follow "Systems" in the left menu

@@ -6,7 +6,7 @@ Feature: Explore the Errata page
   As a authorized user
   I want to see all the texts and links
 
-  Scenario: Completeness of the side navigation bar and the content frame
+  Scenario: Completeness of the Patches left menu
     Given I am on the errata page
     Then I should see a "Errata Relevant to Your Systems" text
     And I should see a "Relevant" link in the left menu

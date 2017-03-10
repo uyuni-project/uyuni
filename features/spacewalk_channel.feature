@@ -6,7 +6,7 @@ Feature: Listing and adding/removing channels using the spacewalk-channel comman
   As user root
   I want to be able to list available channels and add or remove them
 
-  Scenario: list available channels
+  Scenario: list available channels, verify child channels
     When I execute spacewalk-channel and pass "--available-channels -u admin -p admin"
     And I want to see all valid child channels
 

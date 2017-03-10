@@ -102,7 +102,7 @@ Feature: Lock packages on client
     And Package "milkyway-dummy-2.0-1.1" is reported as unlocked
     And Package "orion-dummy-1.1-1.1" is reported as locked
 
-  Scenario: Mix package locks and unlock events
+  Scenario: Mix package locks and unlock events part 2
     And I follow "Software" in the content area
     And I follow "Lock"
     When I select all the packages
