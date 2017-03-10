@@ -6,6 +6,9 @@ const Panel = require("../components/panel").Panel;
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, LinkButton} = require("../components/buttons");
+const DateTimePicker = require("../components/datetimepicker").DateTimePicker;
+const Functions = require("../utils/functions");
+const Formats = Functions.Formats;
 
 const typeMap = {
     "dockerfile": "Dockerfile"
@@ -33,12 +36,12 @@ class BuildImage extends React.Component {
             },
             profiles: [],
             hosts: [],
-            messages: []
+            messages: [],
+            earliest: Functions.Utils.dateWithTimezone(localTime)
         };
 
         ["getProfiles", "getProfileDetails", "getBuildHosts", "handleChange",
-            "handleProfileChange", "changeProfile", "onBuild", "renderField",
-            "renderProfileSelect", "renderProfileSummary", "renderButtons"]
+            "handleProfileChange", "handleDateTimeChange", "changeProfile", "onBuild"]
                 .forEach(method => this[method] = this[method].bind(this));
 
         this.getProfiles();
@@ -109,6 +112,10 @@ class BuildImage extends React.Component {
         this.changeProfile(event.target.value);
     }
 
+    handleDateTimeChange(date) {
+        this.setState({"earliest": date});
+    }
+
     changeProfile(id) {
         this.setState({ profileId: id });
 
@@ -123,7 +130,8 @@ class BuildImage extends React.Component {
         event.preventDefault();
         const payload = {
             tag: this.state.tag,
-            buildHostId: this.state.host
+            buildHostId: this.state.host,
+            earliest: Formats.LocalDateTime(this.state.earliest)
         };
         Network.post("/rhn/manager/api/cm/build/" + this.state.profileId,
             JSON.stringify(payload),
@@ -194,7 +202,7 @@ class BuildImage extends React.Component {
     renderProfileSummary() {
         var p = this.state.profile;
         var pselected = p.label ? true : false;
-        return <div className="col-md-6">
+        return <div className="col-md-5">
                 <div className="panel panel-default">
                     <div className="panel-heading">
                         <h4>{t("Profile Summary")}</h4>
@@ -256,15 +264,27 @@ class BuildImage extends React.Component {
         return buttons;
     }
 
+    renderDateTimePicker() {
+        return (<div className="form-group">
+            <label className="col-md-3 control-label">
+                Schedule no sooner than<span className="required-form-field"> *</span>:
+            </label>
+            <div className="col-md-9">
+                <DateTimePicker onChange={this.handleDateTimeChange} value={this.state.earliest} timezone={timezone} />
+            </div>
+        </div>);
+    }
+
     render() {
         return (
         <Panel title={t("Build Image")} icon="fa fa-cogs">
             {this.state.messages}
             <form className="image-build-form" onSubmit={ this.onBuild }>
-                <div className="col-md-6 form-horizontal">
+                <div className="col-md-7 form-horizontal">
                     { this.renderField("tag", t("Tag"), this.state.tag, "latest", false, false) }
                     { this.renderProfileSelect() }
                     { this.renderBuildHostSelect() }
+                    { this.renderDateTimePicker() }
                     <div className="form-group">
                         <div className="col-md-offset-3 col-md-9">
                             { this.renderButtons() }
