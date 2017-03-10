@@ -77,7 +77,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "linux" as "password"
      And I select "1-MINION-TEST" from "activationKeys"
      And I click on "Bootstrap"
-     And I wait for "100" seconds
+     And I wait for "300" seconds
      Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
 
   Scenario: verify minion bootstrapped with activation key, packages
