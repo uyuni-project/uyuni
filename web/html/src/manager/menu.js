@@ -17,7 +17,7 @@ const Link = (props) =>
 const NodeLink = (props) =>
   <div className={props.isLeaf ? " leafLink " : " nodeLink "}>
     {
-      !props.isLeaf ?
+      !props.isLeaf && !props.isSearchActive ?
       <div className="showSubMenu" onClick={props.handleClick}>
         <i className={props.isOpen ? "fa fa-minus-square" : "fa fa-plus-square"}></i>
       </div>
@@ -37,16 +37,22 @@ const Element = React.createClass({
     this.setState({open: nextProps.element.open});
   },
 
+  isCurrentVisible(element, search) {
+    if (search == null || search.length == 0) {
+      return true;
+    }
+
+    return element.label.toLowerCase().includes(search.toLowerCase());
+  },
+
   isVisible: function(element, search) {
     if (search == null || search.length == 0) {
       return true;
     }
 
-    if (this.isLeaf(element)) {
-      return element.label.toLowerCase().includes(search.toLowerCase());
-    }
-
-    return element.submenu.filter(l => this.isVisible(l, search)).length > 0;
+    const leafVisible = this.isCurrentVisible(element, search);
+    const childrenVisible = this.isLeaf(element) ? leafVisible : element.submenu.filter(l => this.isVisible(l, search)).length > 0;
+    return leafVisible || childrenVisible;
   },
 
   isLeaf: function(element) {
@@ -64,7 +70,7 @@ const Element = React.createClass({
   render: function() {
     const element = this.props.element;
     return (
-      this.isVisible(element, this.props.searchString) ?
+      this.isVisible(element, this.props.searchString) || this.props.visiblityForcedByParent ?
         <li className={
           (element.active ? " active" : "") +
           (this.state.open ? " open " : "") +
@@ -73,14 +79,17 @@ const Element = React.createClass({
         >
           <NodeLink isLeaf={this.isLeaf(element)}
               handleClick={this.isLeaf(element) ? null : this.toggleView}
-              isOpen={this.state.open}>
+              isOpen={this.state.open} isSearchActive={this.props.searchString}>
               <Link url={this.getUrl(element)}
                   label={element.label} target={element.target} icon={element.icon} />
           </NodeLink>
           {
             this.isLeaf(element) ? null :
             <MenuLevel level={this.props.level+1} elements={element.submenu}
-                searchString={this.props.searchString} />
+                searchString={this.props.searchString}
+                visiblityForcedByParent={this.props.visiblityForcedByParent ||
+                  this.isCurrentVisible(element, this.props.searchString)}
+            />
           }
         </li>
       : null
@@ -96,6 +105,7 @@ const MenuLevel = React.createClass({
         key={el.label + '_' + this.props.level}
         level={this.props.level}
         searchString={this.props.searchString}
+        visiblityForcedByParent={this.props.visiblityForcedByParent}
       />
     );
     return (
