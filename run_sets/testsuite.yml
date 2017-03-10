@@ -90,7 +90,7 @@
 - features/minion_centos_bootstrap.feature
 - features/centos_salt_remote_cmds.feature
 - features/centos_salt_reboot_test.feature
-- features/centos_salt_ssh.feature 
+# - features/centos_salt_ssh.feature  FIXME: this feature at moment is unstable
 
 # end-tests
 - features/spacewalk_debug.feature
