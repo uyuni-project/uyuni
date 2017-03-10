@@ -25,7 +25,7 @@ Feature: register a salt-minion via bootstrap
      # sle-minion = sles, rh_minion = redhat
      And the salt-master can reach "sle-minion"
   # testing GUI
-  Scenario: Run a remote command
+  Scenario: Run a remote command sles-minion (salt-service)
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
     And I follow "Remote Commands"
@@ -42,7 +42,7 @@ Feature: register a salt-minion via bootstrap
     Given I am on the Systems overview page of this "sle-minion"
     Then I run spacecmd listevents for sle-minion
  
-  Scenario: Delete minion system profile
+  Scenario: Delete sles-minion system profile
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
@@ -120,7 +120,7 @@ Feature: register a salt-minion via bootstrap
      And I should see a "A salt key for this host" text
      And I should see a "seems to already exist, please check!" text
 
-  Scenario: Delete minion system profile
+  Scenario: Delete sles-minion system profile (second-time)
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
@@ -171,7 +171,7 @@ Feature: register a salt-minion via bootstrap
      And I wait for "15" seconds
      And I should not see a "dmesg: read kernel buffer failed:" text
 
-  Scenario: bootstrap a sles minion with wrong ssh-credentials
+  Scenario: bootstrap a sles minion with wrong ssh-port-number
      Given I am authorized
      When I follow "Salt"
      Then I should see a "Bootstrapping" text

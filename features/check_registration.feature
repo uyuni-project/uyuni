@@ -318,8 +318,7 @@ Feature: Check client registration
     Then I should see a "System Snapshots" text
     And I should see a "Package profile changed" link
 
-  @unsure
-  Scenario: check tab links "Provisioning" => "Snapshots"
+  Scenario: check tab links "Provisioning" => "Snapshots Rolloback"
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
     And I follow "Snapshots" in the content area
