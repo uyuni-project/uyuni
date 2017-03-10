@@ -34,7 +34,6 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.suse.manager.reactor.messaging.ImageBuildEventMessage;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.ImageInfoJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
@@ -188,10 +187,7 @@ public class ImageBuildController {
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
         return maybeProfile.flatMap(ImageProfile::asDockerfileProfile).map(profile -> {
-            MessageQueue.publish(new ImageBuildEventMessage(
-                    buildRequest.getBuildHostId(), user.getId(), buildRequest.getTag(),
-                    profile.getProfileId()
-            ));
+            //TODO: Schedule the build
             //TODO: Add action ID as a message parameter
             return GSON.toJson(new JsonResult(true, "build_scheduled"));
         }).orElseGet(
