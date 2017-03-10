@@ -432,6 +432,9 @@ find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
 %endif
 
+# prevent file conflict with spacewalk-usix
+rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py*
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -734,7 +737,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/stringutils.py*
 %{pythonrhnroot}/common/rhnLib.py*
 %{pythonrhnroot}/__init__.py*
-%{pythonrhnroot}/common/__init__.py*
+#%{pythonrhnroot}/common/__init__.py*
 
 %if 0%{?fedora} && 0%{?fedora} >= 23
 %files -n python3-%{name}-libs
