@@ -39,7 +39,7 @@ Feature: Use salt formulas
      And I follow "Formulas" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     And I wait for "5" seconds
+     And I wait for "40" seconds
      ### following test always fails because of salt states left by sumaform
      # And the timezone on "sle-minion" should be "+05"
      ### disabling temporarily
