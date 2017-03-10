@@ -46,7 +46,6 @@ import com.suse.manager.webui.utils.gson.JsonResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.jfree.util.Log;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

@@ -44,7 +44,6 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -69,12 +68,9 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.modules.Schedule;
-import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
-import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -302,10 +298,9 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 new Result<>(Xor.right(new Schedule.Result(null, true))));
         result.put(sa[1].getServer().asMinionServer().get().getMinionId(),
                 new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
+
         context().checking(new Expectations() { {
-            // minion 2 is down -> did not return anything
             allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())));
-            will(returnValue(result));
         } });
 
         assertServerActionCount(parent, 3);
@@ -313,7 +308,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         ActionManager.cancelActions(user, actionList);
 
-        assertServerActionCount(parent, 1);
+        assertServerActionCount(parent, 0);
         assertActionsForUser(user, 1); // shouldn't have been deleted
         context().assertIsSatisfied();
     }
@@ -349,10 +344,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 new Result<>(Xor.right(new Schedule.Result(null, true))));
         result.put(sa.get(1).getServer().asMinionServer().get().getMinionId(),
                 new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
-        // minion 2 is down -> did not return anything
         context().checking(new Expectations() { {
             allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())));
-            will(returnValue(result));
         } });
         Optional<ServerAction> traditionalServerAction = parent.getServerActions().stream()
                 .filter(s -> !s.getServer().asMinionServer().isPresent())
@@ -363,7 +356,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         ActionManager.cancelActions(user, actionList);
 
-        assertServerActionCount(parent, 1);
+        assertServerActionCount(parent, 0);
         assertActionsForUser(user, 1); // shouldn't have been deleted
         context().assertIsSatisfied();
     }
@@ -530,7 +523,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotEmpty(dr);
     }
 
-    public void testLookupFailLoookupAction() throws Exception {
+    public void testLookupFailLookupAction() throws Exception {
         User user1 = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         try {
@@ -547,6 +540,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 "testOrg" + this.getClass().getSimpleName());
         Action a1 = ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
 
         sa.setStatus(ActionFactory.STATUS_FAILED);
         sa.setRemainingTries(new Long(0));
