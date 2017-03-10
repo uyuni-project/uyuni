@@ -413,10 +413,10 @@ public class HardwareMapper {
             String arch = cpuarch;
             Long totalIfls = null;
             try {
-                totalIfls = Long.parseLong(sysvalues.getOrDefault("CPUs IFL", "0"));
+                totalIfls = Long.parseLong(sysvalues.getOrDefault("CPUs Total", "0"));
             }
             catch (NumberFormatException e) {
-                LOG.warn("Invalid 'CPUs IFL' value: " + e.getMessage());
+                LOG.warn("Invalid 'CPUs Total' value: " + e.getMessage());
             }
             String type = sysvalues.get("Type");
 
@@ -471,7 +471,7 @@ public class HardwareMapper {
             if (hostcpu == null || (hostcpu.getNrsocket() != null &&
                     hostcpu.getNrsocket().longValue() != totalIfls)) {
                 LOG.debug("Update host cpu: " + totalIfls);
-                hostcpu = new CPU();
+                hostcpu = Optional.ofNullable(hostcpu).orElseGet(CPU::new);
                 hostcpu.setNrCPU(totalIfls);
                 hostcpu.setVersion(null);
                 hostcpu.setMHz("0");
