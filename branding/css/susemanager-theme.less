@@ -211,34 +211,18 @@ header, nav.navbar-pf {
     }
   }
 
-  .toggle-box:after {
-    content: '\25BE';
-  }
-  .toggle-box:hover {
-    color: @spacewalk-orange;
-  }
-  .toggle-box.open {
-    color: @spacewalk-orange;
-    background-color: @spacewalk-gray-light;
+  a.toggle-box:hover,
+  a.toggle-box.open {
+    color: @susemanager-green;
   }
   .box-wrapper {
     position: absolute;
     top: 100%;
-    background-color: @spacewalk-gray-light;
+    background-color: @spacewalk-blue;
     border-radius: 0px 2px 2px 2px;
     z-index: 1000;
-    border: 1px solid @spacewalk-gray;
     box-shadow: 0px 4px 4px 0px @spacewalk-gray;
-    margin-top: 11px;
-    .triangle-top {
-      margin-top: -12px;
-      margin-left: 8px;
-      width: 12px;
-      border-top: none;
-      border-bottom: 12px solid @spacewalk-gray-light;
-      border-right: 10px solid transparent;
-      border-left: 10px solid transparent;
-    }
+    margin-top: 8px;
   }
 
   /* overwrite the padding the grid columns give */
@@ -909,15 +893,16 @@ i.spacewalk-help-link {
         .btn-primary {
           display: block;
           width: 100%;
-          background: @spacewalk-gray-dark;
-          color: @spacewalk-gray-light;
+          background: @spacewalk-gray-light;
+          color: @spacewalk-gray-dark;
           border: 0;
           border-radius: 2px;
           height: 1.8em;
           padding: 0;
         }
         .btn-primary:hover {
-          color: @spacewalk-orange;
+          background: @susemanager-green;
+          color: #333;
         }
       }
     }
