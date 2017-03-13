@@ -150,6 +150,7 @@
         <exclude name="**/websocket-api*" />
         <exclude name="**/checkstyle*" />
         <exclude name="**/jacocoant*" />
+        <exclude name="**/xalan-j2-serializer*" />
       </fileset>
       <fileset dir="${rhn-home}/buildconf/tempjars">
         <include name="**/*.jar" />

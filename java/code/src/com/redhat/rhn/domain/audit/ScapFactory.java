@@ -15,13 +15,16 @@
 package com.redhat.rhn.domain.audit;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * ScapFactory - the singleton class used to fetch and store
@@ -74,6 +77,77 @@ public class ScapFactory extends HibernateFactory {
     }
 
     /**
+     * Delete XCCDF TestResults for the given server and action.
+     * @param serverId the server id
+     * @param actionId the action id
+     */
+    public static void clearTestResult(long serverId, long actionId) {
+        List<XccdfTestResult> results = getSession()
+                .getNamedQuery("XccdfTestResult.findByActionId")
+                .setLong("serverId", serverId)
+                .setLong("actionId", actionId)
+                .list();
+        results.forEach(tr -> delete(tr));
+    }
+
+    /**
+     * Find a {@link XccdfBenchmark} by id.
+     * @param benchmarkId benchmark id
+     * @return the {@link XccdfBenchmark} if any
+     */
+    public static Optional<XccdfBenchmark> lookupBenchmarkById(long benchmarkId) {
+        return Optional.ofNullable(
+                (XccdfBenchmark)getSession().get(XccdfBenchmark.class, benchmarkId));
+    }
+
+    /**
+     * Find a {@link XccdfIdent} by id.
+     * @param identId ident id
+     * @return the {@link XccdfIdent} if any
+     */
+    public static Optional<XccdfIdent> lookupIdentById(long identId) {
+        return Optional.ofNullable((XccdfIdent)getSession().get(XccdfIdent.class, identId));
+    }
+
+    /**
+     * Find a {@link XccdfProfile} by id.
+     * @param profileId profile id
+     * @return the {@link XccdfProfile} if any
+     */
+    public static Optional<XccdfProfile> lookupProfileById(long profileId) {
+        return Optional.ofNullable(
+                (XccdfProfile)getSession().get(XccdfProfile.class, profileId));
+    }
+
+    /**
+     * Find a {@link XccdfRuleResultType} by id.
+     * @param label label id
+     * @return the {@link XccdfRuleResultType} if any
+     */
+    public static Optional<XccdfRuleResultType> lookupRuleResultType(String label) {
+        return getSession().createCriteria(XccdfRuleResultType.class)
+                .add(Restrictions.eq("label", label))
+                .list()
+                .stream().findFirst();
+    }
+
+    /**
+     * Persist {@link XccdfTestResult} to db.
+     * @param result entity to persist
+     */
+    public static void save(XccdfTestResult result) {
+        getSession().persist(result);
+    }
+
+    /**
+     * Persist {@link XccdfRuleResult} to db.
+     * @param ruleResult entity to persist
+     */
+    public static void save(XccdfRuleResult ruleResult) {
+        getSession().persist(ruleResult);
+    }
+
+    /**
      * Get the Logger for the derived class so log messages
      * show up on the correct class.
      * @return Logger
@@ -81,4 +155,5 @@ public class ScapFactory extends HibernateFactory {
      protected Logger getLogger() {
          return log;
      }
+
 }

@@ -86,8 +86,17 @@ public class ScapFileManager {
             tr.getServer().getId(), tr.getScapActionDetails().getParentAction().getId());
     }
 
-    private static String getActionPath(Long orgId, Long systemId, Long actionId) {
+    /**
+     * Get the relative path of the storage directory assigned to a given org,
+     * system and action.
+     * @param orgId the org
+     * @param systemId the system
+     * @param actionId the action
+     * @return the path
+     */
+    public static String getActionPath(Long orgId, Long systemId, Long actionId) {
         // an equivalent of rhnLib.get_action_path()
         return "systems/" + orgId + "/" + systemId + "/actions/" + actionId;
     }
+
 }

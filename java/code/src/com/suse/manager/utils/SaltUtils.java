@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
+import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -42,13 +43,16 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
@@ -63,6 +67,11 @@ import com.suse.utils.Opt;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -89,6 +98,10 @@ public class SaltUtils {
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
 
     public static final SaltUtils INSTANCE = new SaltUtils();
+
+    private SaltService saltService = SaltService.INSTANCE;
+
+    private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
     /**
      * Constructor for testing purposes.
@@ -307,6 +320,9 @@ public class SaltUtils {
             }
 
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_SCAP_XCCDF_EVAL)) {
+            handleScapXccdfEval(serverAction, jsonResult, action);
+        }
         else {
             // Pretty-print the whole return map (or whatever fits into 1024 characters)
             Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
@@ -314,6 +330,72 @@ public class SaltUtils {
             String json = gson.toJson(returnObject);
             serverAction.setResultMsg(json.length() > 1024 ?
                     json.substring(0, 1024) : json);
+        }
+    }
+
+    private void handleScapXccdfEval(ServerAction serverAction,
+                                     JsonElement jsonResult, Action action) {
+        ScapAction scapAction = (ScapAction)action;
+        Openscap.OpenscapResult openscapResult;
+        try {
+            openscapResult = Json.GSON.fromJson(
+                    jsonResult, Openscap.OpenscapResult.class);
+        }
+        catch (JsonSyntaxException e) {
+            serverAction.setResultMsg("Error parsing minion response: " + jsonResult);
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            return;
+        }
+        if (openscapResult.isSuccess()) {
+            serverAction.getServer().asMinionServer().ifPresent(
+                    minion -> {
+                        try {
+                            Map<Boolean, String> moveRes = saltService.storeMinionScapFiles(
+                                    minion, openscapResult.getUploadDir(), action.getId());
+                            moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
+                                if (moved.getKey()) {
+                                    Path resultsFile = Paths.get(moved.getValue(),
+                                            "results.xml");
+                                    try (InputStream resultsFileIn =
+                                                 new FileInputStream(
+                                                         resultsFile.toFile())) {
+                                        ScapManager.xccdfEval(
+                                                minion, scapAction,
+                                                openscapResult.getReturnCode(),
+                                                openscapResult.getError(),
+                                                resultsFileIn,
+                                                new File(xccdfResumeXsl));
+                                        serverAction.setResultMsg("Success");
+                                    }
+                                    catch (Exception e) {
+                                        LOG.error(
+                                                "Error processing SCAP results file " +
+                                                        resultsFile.toString(), e);
+                                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                        serverAction.setResultMsg(
+                                                "Error processing SCAP results file " +
+                                                        resultsFile.toString() + ": " +
+                                                        e.getMessage());
+                                    }
+                                }
+                                else {
+                                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                                    serverAction.setResultMsg(
+                                            "Could not store SCAP files on server: " +
+                                                    moved.getValue());
+                                }
+                            });
+                        }
+                        catch (Exception e) {
+                            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                            serverAction.setResultMsg(
+                                    "Error saving SCAP result: " + e.getMessage());
+                        }
+                    });
+        }
+        else {
+            serverAction.setResultMsg(openscapResult.getError());
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
         }
     }
 
@@ -615,5 +697,21 @@ public class SaltUtils {
                 (sa.getStatus().equals(ActionFactory.STATUS_QUEUED) ||
                         sa.getStatus().equals(ActionFactory.STATUS_PICKED_UP)) &&
                 bootTime.after(sa.getParentAction().getEarliestAction());
+    }
+
+
+    /**
+     * For unit testing only.
+     * @param saltServiceIn the {@link SaltService} to set
+     */
+    public void setSaltService(SaltService saltServiceIn) {
+        this.saltService = saltServiceIn;
+    }
+
+    /**
+     * @param xccdfResumeXslIn to set
+     */
+    public void setXccdfResumeXsl(String xccdfResumeXslIn) {
+        this.xccdfResumeXsl = xccdfResumeXslIn;
     }
 }
