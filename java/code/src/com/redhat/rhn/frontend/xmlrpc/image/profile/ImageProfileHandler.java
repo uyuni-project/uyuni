@@ -19,14 +19,24 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.ProfileCustomDataValue;
+import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
+import org.apache.commons.lang.StringUtils;
 
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ImageProfileHandler
@@ -50,13 +60,38 @@ public class ImageProfileHandler extends BaseHandler {
     }
 
     /**
+     * List all configured image profiles visible for the logged in user
+     * @param loggedInUser The current User
+     * @return Array of ImageProfile Objects
+     *
+     * @xmlrpc.doc List available Image Profiles
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.returntype #array() $ImageProfileSerializer #array_end()
+     */
+    public List<ImageProfile> listImageProfiles(User loggedInUser) {
+        ensureImageAdmin(loggedInUser);
+        return ImageProfileFactory.listImageProfiles(loggedInUser.getOrg());
+    }
+
+    /**
+     * Get Image Store Details
+     * @param loggedInUser The Current User
+     * @param label the Image Store Label
+     * @return $ImageProfileSerializer
+     */
+    public ImageProfile getDetails(User loggedInUser, String label) {
+        ensureImageAdmin(loggedInUser);
+        return getValidImageProfile(loggedInUser, label);
+    }
+
+    /**
      * Create a new Image Profile
      * @param loggedInUser the current User
      * @param label the label
      * @param type the profile type label
      * @param storeLabel the image store label
      * @param path the path or git uri to the source
-     * @param activationkey the activation key which defines the channels
+     * @param activationKey the activation key which defines the channels
      * @return 1 on success
      *
      * @xmlrpc.doc Create a new Image Profile
@@ -65,28 +100,43 @@ public class ImageProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "type")
      * @xmlrpc.param #param("string", "storeLabel")
      * @xmlrpc.param #param("string", "path")
-     * @xmlrpc.param #param("string", "activationkey")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Optional")
      * @xmlrpc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String label, String type, String storeLabel,
-            String path, String activationkey) {
+            String path, String activationKey) {
         ensureImageAdmin(loggedInUser);
 
-        if (!listImageProfileTypes(loggedInUser).contains(type)) {
-            throw new IllegalArgumentException("type does not exist.");
+        if (StringUtils.isEmpty(label)) {
+            throw new IllegalArgumentException("Label cannot be empty.");
         }
+        if (StringUtils.isEmpty(type)) {
+            throw new IllegalArgumentException("Type cannot be empty.");
+        }
+        if (StringUtils.isEmpty(storeLabel)) {
+            throw new IllegalArgumentException("Store label cannot be empty.");
+        }
+        if (StringUtils.isEmpty(path)) {
+            throw new IllegalArgumentException("Path cannot be empty.");
+        }
+        if (!listImageProfileTypes(loggedInUser).contains(type)) {
+            throw new IllegalArgumentException("Type does not exist.");
+        }
+        ActivationKey ak = null;
+        if (StringUtils.isNotEmpty(activationKey)) {
+            ak = ActivationKeyFactory.lookupByKey(activationKey);
+            if (ak == null) {
+                throw new IllegalArgumentException("Activation key does not exist.");
+            }
+        }
+
         ImageStore store;
         try {
             store = ImageStoreFactory.lookupBylabelAndOrg(storeLabel,
                     loggedInUser.getOrg()).get();
         }
         catch (NoSuchElementException e) {
-            throw new IllegalArgumentException("image store does not exist.");
-        }
-
-        ActivationKey ak = ActivationKeyFactory.lookupByKey(activationkey);
-        if (ak == null) {
-            throw new IllegalArgumentException("activationkey does not exist.");
+            throw new NoSuchImageStoreException();
         }
 
         ImageProfile profile;
@@ -98,7 +148,7 @@ public class ImageProfileHandler extends BaseHandler {
             dockerfileProfile.setPath(path);
             dockerfileProfile.setTargetStore(store);
             dockerfileProfile.setOrg(loggedInUser.getOrg());
-            dockerfileProfile.setToken(ak.getToken());
+            dockerfileProfile.setToken(ak != null ? ak.getToken() : null);
 
             profile = dockerfileProfile;
         }
@@ -108,5 +158,213 @@ public class ImageProfileHandler extends BaseHandler {
         ImageProfileFactory.save(profile);
 
         return 1;
+    }
+
+    /**
+     * Delete an Image Profile
+     * @param loggedInUser The current User
+     * @param label the image profile label
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Delete an Image Profile
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int delete(User loggedInUser, String label) {
+        ensureImageAdmin(loggedInUser);
+        ImageProfileFactory.delete(getValidImageProfile(loggedInUser, label));
+        return 1;
+    }
+
+    /**
+     * Set details of an Image Profile
+     * @param loggedInUser the current User
+     * @param label the label
+     * @param details A map containing the new details
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Set details of an Image Profile
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.param
+     *   #struct("image profile details")
+     *     #prop("string", "storeLabel")
+     *     #prop("string", "path")
+     *     #prop_desc("string", "activationKey", "set empty string to unset")
+     *   #struct_end()
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int setDetails(User loggedInUser, String label, Map details) {
+        ensureImageAdmin(loggedInUser);
+        Set<String> validKeys = new HashSet<>();
+        validKeys.add("storeLabel");
+        validKeys.add("path");
+        validKeys.add("activationKey");
+        validateMap(validKeys, details);
+
+        ImageProfile profile = getValidImageProfile(loggedInUser, label);
+
+        if (details.containsKey("storeLabel")) {
+            String storeLabel = (String) details.get("storeLabel");
+            if (StringUtils.isEmpty(storeLabel)) {
+                throw new IllegalArgumentException("Store label cannot be empty.");
+            }
+            profile.setTargetStore(ImageStoreFactory
+                    .lookupBylabelAndOrg(storeLabel,
+                            loggedInUser.getOrg())
+                    .orElseThrow(NoSuchImageStoreException::new));
+        }
+        if (details.containsKey("path")) {
+            String path = (String) details.get("path");
+            if (StringUtils.isEmpty(path)) {
+                throw new IllegalArgumentException("Path cannot be empty.");
+            }
+            profile.asDockerfileProfile()
+                    .orElseThrow(() -> new IllegalArgumentException("The type " +
+                            profile.getImageType() + " doesn't support 'Path' property"))
+                    .setPath(path);
+        }
+        if (details.containsKey("activationKey")) {
+            String activationKey = (String) details.get("activationKey");
+            ActivationKey ak = null;
+            if (StringUtils.isNotEmpty(activationKey)) {
+                ak = ActivationKeyFactory.lookupByKey(activationKey);
+                if (ak == null) {
+                    throw new IllegalArgumentException("Activation key does not exist.");
+                }
+            }
+            profile.setToken(ak != null ? ak.getToken() : null);
+        }
+
+        ImageProfileFactory.save(profile);
+        return 1;
+    }
+
+    /**
+     * Get the custom data values defined for the Image Profile
+     * @param loggedInUser The current user
+     * @param label the profile label
+     * @return Returns a map containing the defined custom data values for the
+     * given Image Profile.
+     *
+     * @xmlrpc.doc Get the custom data values defined for the Image Profile.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.returntype
+     *    #struct("Map of custom labels to custom values")
+     *      #prop("string", "custom info label")
+     *      #prop("string", "value")
+     *    #struct_end()
+     */
+    public Map<String, String> getCustomValues(User loggedInUser, String label) {
+        ensureImageAdmin(loggedInUser);
+        return getValidImageProfile(loggedInUser, label).getCustomDataValues().stream()
+                .collect(Collectors.toMap(a -> a.getKey().getLabel(), a -> a.getValue()));
+    }
+
+    /**
+     * Set custom values for the specified Image Profile.
+     * @param loggedInUser The current user
+     * @param label the profile label
+     * @param values A map containing the new set of custom data values for this profile
+     * @return Returns a 1 if successful, exception otherwise
+     *
+     * @xmlrpc.doc Set custom values for the specified Image Profile.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.param
+     *    #struct("Map of custom labels to custom values")
+     *      #prop("string", "custom info label")
+     *      #prop("string", "value")
+     *    #struct_end()
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int setCustomValues(User loggedInUser, String label,
+            Map<String, String> values) {
+        ImageProfile profile = getValidImageProfile(loggedInUser, label);
+
+        Set<CustomDataKey> orgKeys = loggedInUser.getOrg().getCustomDataKeys();
+        values.forEach((key, val) -> {
+            if (StringUtils.isEmpty(key)) {
+                throw new IllegalArgumentException("Key label cannot be empty.");
+            }
+
+            // Find the key in organization
+            CustomDataKey orgKey = orgKeys.stream().filter(ok -> ok.getLabel().equals(key))
+                    .findFirst().orElseThrow(() -> new IllegalArgumentException(
+                            "The key '" + key + "' doesn't exist."));
+
+            // Find the key in profile, or create a new one
+            if (profile.getCustomDataValues() == null) {
+                profile.setCustomDataValues(new HashSet<>());
+            }
+            ProfileCustomDataValue profileVal = profile.getCustomDataValues().stream()
+                    .filter(cdv -> cdv.getKey().getLabel().equals(key)).findFirst()
+                    .orElseGet(() -> {
+                        ProfileCustomDataValue newVal = new ProfileCustomDataValue();
+                        newVal.setKey(orgKey);
+                        newVal.setCreator(loggedInUser);
+                        newVal.setProfile(profile);
+                        profile.getCustomDataValues().add(newVal);
+                        return newVal;
+                    });
+
+            // Create or update the key
+            profileVal.setValue(val);
+            profileVal.setLastModifier(loggedInUser);
+        });
+
+        // Save changes
+        ImageProfileFactory.save(profile);
+        return 1;
+    }
+
+    /**
+     * Delete the custom values defined for the specified Image Profile.
+     * @param loggedInUser The current user
+     * @param label the profile label
+     * @param keys A list of custom data labels/keys to delete from the profile
+     * @return Returns a 1 if successful, exception otherwise
+     *
+     * @xmlrpc.doc Delete the custom values defined for the specified Image Profile.<br/>
+     * (Note: Attempt to delete values of non-existing keys throws exception. Attempt to
+     * delete value of existing key which has assigned no values doesn't throw exception.)
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.param  #array_single("string", "customDataKeys")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int deleteCustomValues(User loggedInUser, String label, List<String> keys) {
+        ImageProfile profile = getValidImageProfile(loggedInUser, label);
+        Set<CustomDataKey> orgKeys = loggedInUser.getOrg().getCustomDataKeys();
+
+        Set<ProfileCustomDataValue> values = profile.getCustomDataValues();
+        keys.forEach(key -> {
+            if (StringUtils.isEmpty(key)) {
+                throw new IllegalArgumentException("Key label cannot be empty.");
+            }
+            orgKeys.stream().filter(k -> key.equals(k.getLabel())).findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "The key '" + key + "' doesn't exist."));
+
+            values.stream().filter(v -> key.equals(v.getKey().getLabel())).findFirst()
+                    .ifPresent(values::remove);
+        });
+
+        return 1;
+    }
+
+    private ImageProfile getValidImageProfile(User user, String label) {
+        if (StringUtils.isEmpty(label)) {
+            throw new IllegalArgumentException("Label cannot be empty.");
+        }
+
+        try {
+            return ImageProfileFactory.lookupByLabelAndOrg(label, user.getOrg());
+        }
+        catch (NoResultException e) {
+            throw new NoSuchImageProfileException();
+        }
     }
 }

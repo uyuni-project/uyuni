@@ -41,8 +41,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, ret);
 
         List<ImageStore> stores = handler.listImageStores(admin);
-        assertTrue(stores.size() == 1);
-        ImageStore store = stores.get(0);
+        ImageStore store = handler.getDetails(admin, "registry.mgr");
         assertEquals("registry.mgr", store.getLabel());
         assertEquals("registry.domain.top", store.getUri());
         assertEquals(ImageStore.TYPE_REGISTRY, store.getStoreType().getLabel());
@@ -53,6 +52,14 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         int ret = handler.create(admin, "registry.mgr", "registry.domain.top",
                 ImageStore.TYPE_REGISTRY, null);
         assertEquals(1, ret);
+
+        // Try with no label
+        try {
+            handler.getDetails(admin, "");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Label cannot be empty.", e.getMessage());
+        }
 
         ImageStore store = handler.getDetails(admin, "registry.mgr");
         assertEquals("registry.mgr", store.getLabel());
