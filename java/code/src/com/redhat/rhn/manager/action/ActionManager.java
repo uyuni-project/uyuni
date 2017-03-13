@@ -130,25 +130,6 @@ public class ActionManager extends BaseManager {
      */
     private static final Long REMAINING_TRIES = 10L;
 
-
-    /**
-     * The status of the minion job canceling.
-     */
-    public enum CancelServerActionStatus {
-        CANCELED,
-        CANCELED_NO_MINION_JOB,
-        CANCEL_FAILED_MINION_DOWN,
-        CANCEL_FAILED;
-
-        /**
-         * @return <code>true</code> if the status is failed.
-         */
-        public boolean isFailed() {
-            return this.equals(CANCEL_FAILED_MINION_DOWN) ||
-                    this.equals(CANCEL_FAILED);
-        }
-    }
-
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private ActionManager() {
