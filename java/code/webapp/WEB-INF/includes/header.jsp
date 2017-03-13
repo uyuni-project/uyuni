@@ -62,7 +62,6 @@
           <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
         <div id="legend-box" class="box-wrapper collapse">
-          <div class="triangle-top"></div>
           <jsp:include page="/WEB-INF/includes/legends.jsp" />
         </div>
       </li>
@@ -72,7 +71,6 @@
         <i class="fa fa-search" aria-hidden="true"></i>
       </a>
       <form id="search-form" name="form1" class="box-wrapper form-inline collapse" role="form" action="/rhn/Search.do">
-        <div class="triangle-top"></div>
         <rhn:csrf />
         <rhn:submitted />
         <div class="form-group">
