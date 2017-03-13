@@ -355,7 +355,6 @@ header, nav.navbar-pf {
       display: inline-block;
       font-size: inherit;
       color: @spacewalk-gray-light;
-      // color: @spacewalk-aside-menu-hyperlink;
       height: 100%;
       width: 19px;
       margin-left: -19px;
@@ -364,6 +363,9 @@ header, nav.navbar-pf {
       i {
         margin: 0;
       }
+    }
+    div.showSubMenu:hover {
+      color: @spacewalk-aside-menu-hyperlink-hover;
     }
     ul, li {
       padding: 0;
@@ -404,13 +406,6 @@ header, nav.navbar-pf {
       }
     }
     /* Every level */
-    li.node {
-      div.nodeLink {
-        > div.showSubMenu:hover {
-          color: @spacewalk-aside-menu-hyperlink-hover;
-        }
-      }
-    }
     li.active > div > * {
       color: @spacewalk-aside-menu-active;
     }
@@ -424,9 +419,9 @@ header, nav.navbar-pf {
           }
         }
       }
-      > li:hover {
-        > .nodeLink,
-        > .leafLink {
+      > li{
+        > .nodeLink:hover,
+        > .leafLink:hover {
           border-right-color: @spacewalk-aside-menu-hyperlink-hover;
           background-color: @spacewalk-blue-light;
         }
