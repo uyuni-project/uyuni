@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.taskomatic.task.sshpush.SSHPushSystem;
@@ -44,6 +45,8 @@ import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_PICKED_UP;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
+
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 /**
  * SSHPushWorkerSaltTest
@@ -450,6 +453,11 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         assertEquals(Long.valueOf(5L), futureServerAction.getRemainingTries());
         assertNull(futureServerAction.getResultCode());
         assertTrue(minion.getLastBoot() > 1L);
+
+        // explicitly remove any row created by the worker, as it commits
+        OrgFactory.deleteOrg(user.getOrg().getId(), user);
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
     }
 
     private void assertRebootCompleted(ServerAction serverAction) {
