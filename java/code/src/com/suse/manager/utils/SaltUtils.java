@@ -66,6 +66,7 @@ import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
+import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
@@ -511,6 +512,9 @@ public class SaltUtils {
 
     private static void handleImagePackageProfileUpdate(ImageInfo imageInfo,
                                                    ImagesProfileUpdateSlsResult result) {
+        ImageInspectSlsResult iret = result.getDockerngInspect().getChanges().getRet();
+        imageInfo.setChecksum(iret.getId().getChecksum());
+
         PkgProfileUpdateSlsResult ret = result.getDockerngSlsBuild().getChanges().getRet();
 
         Optional.of(ret.getInfoInstalled().getChanges().getRet())
