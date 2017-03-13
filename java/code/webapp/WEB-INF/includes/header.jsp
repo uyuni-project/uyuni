@@ -56,6 +56,17 @@
     </li>
   </ul>
   <ul class="nav navbar-nav navbar-primary">
+    <c:if test="${requestScope.legends != null}">
+      <li class="legend">
+        <a href="#" class="toggle-box" data-toggle="collapse" data-target="#legend-box">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        </a>
+        <div id="legend-box" class="box-wrapper collapse">
+          <div class="triangle-top"></div>
+          <jsp:include page="/WEB-INF/includes/legends.jsp" />
+        </div>
+      </li>
+    </c:if>
     <li class="search">
       <a href="#" class="toggle-box" data-toggle="collapse" data-target="form#search-form">
         <i class="fa fa-search" aria-hidden="true"></i>
