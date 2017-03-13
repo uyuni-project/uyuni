@@ -429,8 +429,8 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
   else
     fail "Invalid target"
   end
-  output, _code = target.run("grep 'RC_LANG=' /etc/sysconfig/language")
-  fail unless output.strip == "RC_LANG=\"#{language}\""
+  output, _code = target.run("grep 'LANG=' /etc/locale.conf")
+  fail unless output.strip == "LANG=#{language}"
 end
 
 When(/^I refresh the pillar data$/) do
@@ -438,6 +438,6 @@ When(/^I refresh the pillar data$/) do
 end
 
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)"$/) do |key, value|
-  output, _code = $server.run("salt '*' pillar.get '#{key}'")
+  output, _code = $server.run("salt '#{$minion_ip}' pillar.get '#{key}'")
   fail unless output.split("\n")[1].strip == value
 end
