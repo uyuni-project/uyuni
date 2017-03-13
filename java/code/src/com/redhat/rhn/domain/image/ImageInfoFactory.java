@@ -15,7 +15,12 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.Org;
+
+import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA256Checksum;
+
 import org.apache.log4j.Logger;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -178,4 +183,23 @@ public class ImageInfoFactory extends HibernateFactory {
         return getSession().createQuery(criteria).getResultList();
     }
 
+    public static com.redhat.rhn.domain.common.Checksum convertChecksum(Checksum saltChecksum) {
+        com.redhat.rhn.domain.common.Checksum chk =
+                new com.redhat.rhn.domain.common.Checksum();
+        if (saltChecksum instanceof SHA256Checksum) {
+            chk.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
+        }
+        chk.setChecksum(saltChecksum.getChecksum());
+        instance.saveObject(chk);
+        return chk;
+    }
+
+    public static Checksum convertChecksum(com.redhat.rhn.domain.common.Checksum checksum) {
+        switch (checksum.getChecksumType().getLabel()) {
+        case "sha256":
+            return new SHA256Checksum(checksum.getChecksum());
+        default:
+            throw new IllegalArgumentException("Checksumtype not supported");
+        }
+    }
 }

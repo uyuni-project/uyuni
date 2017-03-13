@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.image;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.InstalledProduct;
@@ -53,7 +54,7 @@ public class ImageOverview extends BaseDomainHelper {
     private Long id;
     private String name;
     private String version;
-    private String checksum;
+    private Checksum checksum;
     private String arch;
     private ImageProfile profile;
     private ImageStore store;
@@ -107,8 +108,9 @@ public class ImageOverview extends BaseDomainHelper {
     /**
      * @return the checksum
      */
-    @Column(name = "image_checksum")
-    public String getChecksum() {
+    @ManyToOne
+    @JoinColumn(name = "checksum_id")
+    public Checksum getChecksum() {
         return checksum;
     }
 
@@ -280,7 +282,7 @@ public class ImageOverview extends BaseDomainHelper {
     /**
      * @param checksumIn the checksum
      */
-    public void setChecksum(String checksumIn) {
+    public void setChecksum(Checksum checksumIn) {
         this.checksum = checksumIn;
     }
 
