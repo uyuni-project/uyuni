@@ -55,10 +55,10 @@ public class ImageStoreHandler extends BaseHandler {
             Map<String, String> parameters) {
         ensureImageAdmin(loggedInUser);
         if (StringUtils.isEmpty(label)) {
-            throw new IllegalArgumentException("Label cannot not be empty.");
+            throw new IllegalArgumentException("Label cannot be empty.");
         }
         if (StringUtils.isEmpty(uri)) {
-            throw new IllegalArgumentException("Uri cannot not be empty.");
+            throw new IllegalArgumentException("Uri cannot be empty.");
         }
         Optional<ImageStoreType> st = ImageStoreFactory.lookupStoreTypeByLabel(storeType);
         if (!st.isPresent()) {
@@ -114,6 +114,11 @@ public class ImageStoreHandler extends BaseHandler {
      */
     public ImageStore getDetails(User loggedInUser, String label) {
         ensureImageAdmin(loggedInUser);
+
+        if (StringUtils.isEmpty(label)) {
+            throw new IllegalArgumentException("Label cannot be empty.");
+        }
+
         Optional<ImageStore> store = ImageStoreFactory.lookupBylabelAndOrg(label,
                 loggedInUser.getOrg());
         if (!store.isPresent()) {
@@ -151,13 +156,13 @@ public class ImageStoreHandler extends BaseHandler {
      * @param details A map containing the new details
      * @return 1 on success
      *
-     * @xmlrpc.doc List available Image Store Types
+     * @xmlrpc.doc Set details of an Image Store
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.param
      *   #struct("image store details")
      *     #prop("string", "uri")
-     *     #prop_desc("string", "username", "set NULL to unset credentials")
+     *     #prop_desc("string", "username", "pass empty string to unset credentials")
      *     #prop("string", "password")
      *   #struct_end()
      * @xmlrpc.returntype #return_int_success()
@@ -171,7 +176,7 @@ public class ImageStoreHandler extends BaseHandler {
         validateMap(validKeys, details);
 
         if (StringUtils.isEmpty(label)) {
-            throw new IllegalArgumentException("Label cannot not be empty.");
+            throw new IllegalArgumentException("Label cannot be empty.");
         }
         Optional<ImageStore> optstore = ImageStoreFactory.lookupBylabelAndOrg(label,
                 loggedInUser.getOrg());
@@ -190,5 +195,4 @@ public class ImageStoreHandler extends BaseHandler {
         ImageStoreFactory.save(store);
         return 1;
     }
-
 }
