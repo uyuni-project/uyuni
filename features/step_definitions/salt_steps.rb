@@ -434,7 +434,7 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
 end
 
 When(/^I refresh the pillar data$/) do
-  $server.run("salt '*' saltutil.refresh_pillar")
+  $server.run("salt '#{$minion_ip}' saltutil.refresh_pillar")
 end
 
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)"$/) do |key, value|
