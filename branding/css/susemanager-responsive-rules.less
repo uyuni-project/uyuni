@@ -204,14 +204,21 @@
   }
 }
 
+.sideleg-always-visible {
+  .sideleg {
+    display: block!important;
+  }
+}
+
 //classes that will take effect on tablets and mobiles screens
 @media (max-width: 1140px) {
   .fullPanelsNoMargin;
   .responsive-main-column;
   .override-spacwewalk-responsive-rules;
+  .sideleg-always-visible;
 }
 @media (max-width: @screen-desktop) {
-
+.sideleg-always-visible;
 }
 @media (max-width: @screen-tablet) {
   .columns-no-padding;
@@ -221,6 +228,7 @@
 
   .header-navbar-responsive;
   .smaller-logo;
+  .sideleg-always-visible;
 }
 //classes that will take effect only on mobiles screens
 @media (max-width: @screen-phone) {
@@ -230,6 +238,7 @@
   .aside-toggled;
   .no-text-logo;
   .smaller-footer;
+  .sideleg-always-visible;
 
   .spacewalk-main-column-layout {
     aside, section{

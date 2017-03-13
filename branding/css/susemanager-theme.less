@@ -344,7 +344,6 @@ header, nav.navbar-pf {
 //Nav menu in left column
 #nav {
   nav {
-    border-bottom: 3px double darken(@spacewalk-blue-light, 10%);
     padding: 0px;
     .nav-search-box {
       text-align: center;
@@ -395,6 +394,9 @@ header, nav.navbar-pf {
     /* First Level */
     > ul {
       margin-top: 10px;
+      > li:last-of-type {
+        border-bottom: 1px solid darken(@spacewalk-blue-light, 5%);
+      }
       > li {
         border-top: 1px solid darken(@spacewalk-blue-light, 5%);
         > div {
@@ -545,20 +547,19 @@ header, nav.navbar-pf {
 }
 
 /* Icons Legend */
-aside .sideleg {
+.sideleg {
   background: @spacewalk-icon-legend;
-  width: 90%;
   color: @spacewalk-icon-legend-text;
   padding: .5em 1em;
   border: 1px solid @spacewalk-gray-dark;
-  border-radius: 4px;
-  margin: 2em auto;
+  border-radius: 0px 0px 4px 4px;
   .hidden-sm;
   .hidden-xs;
   li {
     list-style: none;
     margin: 0.5em 0;
     padding:0;
+    white-space: nowrap;
   }
   ul {
     margin: 0;
@@ -892,7 +893,7 @@ i.spacewalk-help-link {
 .navbar-pf {
   ul.navbar-utility, ul.navbar-primary {
     font-size: 13px;
-    li {
+    > li {
       display: inline-block;
       float: none;
       margin: 0;
