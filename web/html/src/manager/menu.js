@@ -29,12 +29,16 @@ const NodeLink = (props) =>
 const Element = React.createClass({
   getInitialState: function() {
     return {
-      open: (this.props.element.active ? true : false)
+      open: (this.props.element.active ? true : false),
+      visiblityForcedByParent: false
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState({open: nextProps.element.open});
+    this.setState({
+      open: nextProps.element.open,
+      visiblityForcedByParent: nextProps.visiblityForcedByParent
+    });
   },
 
   isCurrentVisible(element, search) {
@@ -70,10 +74,10 @@ const Element = React.createClass({
   render: function() {
     const element = this.props.element;
     return (
-      this.isVisible(element, this.props.searchString) || this.props.visiblityForcedByParent ?
+      this.isVisible(element, this.props.searchString) || this.state.visiblityForcedByParent ?
         <li className={
           (element.active ? " active" : "") +
-          (this.state.open ? " open " : "") +
+          (this.state.open || this.state.visiblityForcedByParent ? " open " : "") +
           (this.isLeaf(element) ? " leaf " : " node ")
           }
         >
@@ -87,8 +91,8 @@ const Element = React.createClass({
             this.isLeaf(element) ? null :
             <MenuLevel level={this.props.level+1} elements={element.submenu}
                 searchString={this.props.searchString}
-                visiblityForcedByParent={this.props.visiblityForcedByParent ||
-                  this.isCurrentVisible(element, this.props.searchString)}
+                visiblityForcedByParent={this.state.visiblityForcedByParent ||
+                  (this.props.searchString && this.isCurrentVisible(element, this.props.searchString))}
             />
           }
         </li>
