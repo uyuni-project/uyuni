@@ -14,9 +14,9 @@ require 'capybara'
 require 'capybara/cucumber'
 require File.join(File.dirname(__FILE__), 'cobbler_test')
 require 'simplecov'
+require 'capybara/poltergeist'
 SimpleCov.start
-browser = (ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil) || :firefox
-host = ENV['TESTHOST'] || 'andromeda.suse.de'
+host = ENV['TESTHOST']
 
 require 'minitest/unit'
 World(MiniTest::Assertions)
@@ -85,36 +85,20 @@ ENV['IGNORECERT'] = "1"
 
 Capybara.default_wait_time = 10
 
-# Setup browsers
-case browser
-when :phantomjs
-  require 'capybara/poltergeist'
-  Capybara.register_driver :poltergeist do |app|
-    Capybara::Poltergeist::Driver.new(app,
-                                      :phantomjs_options => ['--debug=no',
-                                                             '--ignore-ssl-errors=yes',
-                                                             '--ssl-protocol=TLSv1',
-                                                             '--web-security=false'],
-                                      :js_errors => false,
-                                      :timeout => 250,
-                                      :debug => false)
-  end
-  Capybara.default_driver = :poltergeist
-  Capybara.javascript_driver = :poltergeist
-  Capybara.app_host = host
-when :firefox
-  require 'selenium-webdriver'
-  Capybara.register_driver :selenium do |app|
-    profile = Selenium::WebDriver::Firefox::Profile.new
-    driver = Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
-    driver.browser.manage.window.resize_to(1280, 1024)
-    driver
-  end
-  Capybara.default_driver = :selenium
-  Capybara.app_host = host
-else
-  raise "Unsupported browser '#{browser}'"
+# Setup browser: phantomjs
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app,
+                                    :phantomjs_options => ['--debug=no',
+                                                           '--ignore-ssl-errors=yes',
+                                                           '--ssl-protocol=TLSv1',
+                                                           '--web-security=false'],
+                                    :js_errors => false,
+                                    :timeout => 250,
+                                    :debug => false)
 end
+Capybara.default_driver = :poltergeist
+Capybara.javascript_driver = :poltergeist
+Capybara.app_host = host
 
 # don't run own server on a random port
 Capybara.run_server = false
