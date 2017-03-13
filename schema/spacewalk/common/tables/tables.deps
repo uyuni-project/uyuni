@@ -226,7 +226,8 @@ suseCredentials                :: suseCredentialsType web_contact
 suseDockerfileProfile          :: suseImageProfile
 suseProfileCustomDataValue     :: rhnCustomDataKey suseImageProfile web_contact
 suseImageCustomDataValue       :: rhnCustomDataKey suseImageInfo web_contact
-suseImageInfo                  :: rhnServerAction suseImageProfile suseImageStore suseMinionInfo
+suseImageInfo                  :: rhnServerAction suseImageProfile suseImageStore suseMinionInfo \
+                                  rhnChecksum
 suseImageInfoPackage           :: suseImageInfo rhnPackageName rhnPackageEVR rhnPackageArch
 suseImageInfoChannel           :: suseImageInfo rhnChannel
 suseImageInfoInstalledProduct  :: suseInstalledProduct suseImageInfo

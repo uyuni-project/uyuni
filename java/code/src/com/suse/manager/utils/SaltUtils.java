@@ -513,7 +513,7 @@ public class SaltUtils {
     private static void handleImagePackageProfileUpdate(ImageInfo imageInfo,
                                                    ImagesProfileUpdateSlsResult result) {
         ImageInspectSlsResult iret = result.getDockerngInspect().getChanges().getRet();
-        imageInfo.setChecksum(iret.getId().getChecksum());
+        imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
 
         PkgProfileUpdateSlsResult ret = result.getDockerngSlsBuild().getChanges().getRet();
 
