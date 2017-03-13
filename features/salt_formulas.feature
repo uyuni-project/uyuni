@@ -40,9 +40,7 @@ Feature: Use salt formulas
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
      And I wait for "40" seconds
-     ### following test always fails because of salt states left by sumaform
-     # And the timezone on "sle-minion" should be "+05"
-     ### disabling temporarily
+     And the timezone on "sle-minion" should be "+05"
      And the keymap on "sle-minion" should be "ca.map.gz"
      And the language on "sle-minion" should be "fr_FR.UTF-8"
 
