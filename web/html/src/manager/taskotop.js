@@ -99,7 +99,7 @@ const TaskoTop = React.createClass({
         <h1>
           <i className="fa fa-tachometer"></i>
           {t('Task Engine Status')}
-          <a href="/rhn/help/reference/en-US/s2-sattools-task-engine.jsp"
+          <a href="/rhn/help/reference/en-US/ref.webui.admin.status.jsp"
               target="_blank"><i className="fa fa-question-circle spacewalk-help-link"></i>
           </a>
         </h1>
