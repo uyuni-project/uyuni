@@ -39,8 +39,7 @@ public interface PersistOperation {
      * Layer.
      * @return ValidatorError if there was an error trying
      * to store the object.
+     * @throws Throwable in case of errors
      */
     ValidatorError store();
-
-
 }

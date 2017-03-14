@@ -67,6 +67,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import org.apache.commons.lang.StringUtils;
@@ -1634,9 +1635,12 @@ public class ErrataManager extends BaseManager {
      * @param errataIds List of errata IDs to apply (as Integers)
      * @param earliestOccurrence Earliest occurrence of the errata update
      * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static List<Long> applyErrataHelper(User loggedInUser, List<Long> systemIds,
-            List<Integer> errataIds, Date earliestOccurrence) {
+            List<Integer> errataIds, Date earliestOccurrence)
+        throws TaskomaticApiException {
 
         if (systemIds.isEmpty()) {
             throw new InvalidParameterException("No systems specified.");
@@ -1657,9 +1661,11 @@ public class ErrataManager extends BaseManager {
      * @param earliest schedule time
      * @param serverIds server ids
      * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static List<Long> applyErrata(User user, List errataIds, Date earliest,
-        List<Long> serverIds) {
+        List<Long> serverIds) throws TaskomaticApiException {
         return applyErrata(user, errataIds, earliest, null, serverIds);
     }
 
@@ -1674,10 +1680,13 @@ public class ErrataManager extends BaseManager {
      * @param actionChain the action chain to add the action to or null
      * @param serverIds server ids
      * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static List<Long> applyErrata(User user, List errataIds, Date earliest,
-                                         ActionChain actionChain, List<Long> serverIds) {
-        return  applyErrata(user, errataIds, earliest, actionChain, serverIds, true);
+            ActionChain actionChain, List<Long> serverIds)
+        throws TaskomaticApiException {
+        return applyErrata(user, errataIds, earliest, actionChain, serverIds, true);
     }
 
     /**
@@ -1696,9 +1705,12 @@ public class ErrataManager extends BaseManager {
      *        If false, InvalidErrataException is thrown if an errata does not apply
      *        to a system.
      * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     private static List<Long> applyErrata(User user, List errataIds, Date earliest,
-        ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant) {
+            ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant)
+        throws TaskomaticApiException {
 
         List<Errata> updateStackErrata = new ArrayList<Errata>();
         List<Errata> otherErrata = new ArrayList<Errata>();

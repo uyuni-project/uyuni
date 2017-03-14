@@ -61,6 +61,7 @@ import com.redhat.rhn.manager.system.BaseSystemOperation;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -518,7 +519,19 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
+        try {
+            return storeInternal();
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Taskomatic Exception during kickstart schedule:");
+            log.error(e);
+            return new ValidatorError("taskscheduler.down");
+        }
+    }
+
+    private ValidatorError storeInternal() throws TaskomaticApiException {
 
         ValidatorError e = this.doValidation();
         if (e != null) {
@@ -739,8 +752,11 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      * @param prereqAction the prerequisite for this action
      *
      * @return Returns the KickstartAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public Action scheduleKickstartAction(Action prereqAction) {
+    public Action scheduleKickstartAction(Action prereqAction)
+        throws TaskomaticApiException {
 
         // We will schedule the kickstart action against the host server, since the host
         // server is the liason for the target server.
@@ -775,8 +791,10 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      * @param prereqAction the prerequisite for this action
      *
      * @return Returns the rebootAction (if any)
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public Action scheduleRebootAction(Action prereqAction) {
+    public Action scheduleRebootAction(Action prereqAction) throws TaskomaticApiException {
 
         // All actions must be scheduled against the host server.
 

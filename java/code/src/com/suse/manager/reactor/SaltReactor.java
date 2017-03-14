@@ -19,6 +19,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
@@ -26,8 +27,6 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
-import com.suse.manager.reactor.messaging.RunnableEventMessage;
-import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
@@ -103,8 +102,6 @@ public class SaltReactor implements EventListener {
                 JobReturnEventMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
                 RefreshGeneratedSaltFilesEventMessage.class);
-        MessageQueue.registerAction(new RunnableEventMessageAction(),
-                RunnableEventMessage.class);
         MessageQueue.registerAction(new VirtpollerBeaconEventMessageAction(),
                 VirtpollerBeaconEventMessage.class);
 
@@ -240,16 +237,21 @@ public class SaltReactor implements EventListener {
     private Runnable onBeaconEvent(BeaconEvent beaconEvent) {
         return () -> {
             if (beaconEvent.getBeacon().equals("pkgset") &&
-                    beaconEvent.getAdditional().equals("changed")) {
-                MessageQueue.publish(
-                    new RunnableEventMessage("ZypperEvent.PackageSetChanged", () -> {
-                        MinionServerFactory
-                            .findByMinionId(beaconEvent.getMinionId())
-                            .ifPresent(minionServer ->
-                                ActionManager.schedulePackageRefresh(minionServer.getOrg(),
-                                        minionServer)
-                            );
-                }));
+                beaconEvent.getAdditional().equals("changed")) {
+
+                MinionServerFactory
+                    .findByMinionId(beaconEvent.getMinionId())
+                    .ifPresent(minionServer -> {
+                        try {
+                            ActionManager.schedulePackageRefresh(minionServer.getOrg(),
+                                    minionServer);
+                        }
+                        catch (TaskomaticApiException e) {
+                            LOG.error("Could not schedule package refresh for minion: " +
+                                minionServer.getMinionId());
+                            LOG.error(e);
+                        }
+                    });
             }
             else if (beaconEvent.getBeacon().equals("virtpoller")) {
                 TypeToken<Map<String, JsonElement>> tt =

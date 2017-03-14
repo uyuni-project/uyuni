@@ -32,6 +32,7 @@ import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -362,8 +363,10 @@ public class ServerSnapshot extends BaseDomainHelper {
      * rollback server packages to snapshot
      * @param user who schedules file deployment
      * @return true if package update has been scheduled
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public boolean rollbackPackages(User user) {
+    public boolean rollbackPackages(User user) throws TaskomaticApiException {
         // schedule package delta, if needed
         if (packageDiffs(this.server.getId()) > 0) {
             DataResult pkgs = preparePackagesForSync();
@@ -379,8 +382,10 @@ public class ServerSnapshot extends BaseDomainHelper {
      * rollback server chonfig files to snapshot
      * @param user who schedules file deployment
      * @return true if any config files has been deployed
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public boolean rollbackConfigFiles(User user) {
+    public boolean rollbackConfigFiles(User user) throws TaskomaticApiException {
         boolean deployed = false;
         // current config_channels
         Set<ConfigChannel> ccs = new HashSet<ConfigChannel>(

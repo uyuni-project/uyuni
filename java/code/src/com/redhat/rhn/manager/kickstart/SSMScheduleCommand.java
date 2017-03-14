@@ -24,7 +24,9 @@ import com.redhat.rhn.frontend.action.kickstart.ScheduleKickstartWizardAction;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
 import org.cobbler.Profile;
 
 import java.util.ArrayList;
@@ -37,6 +39,8 @@ import java.util.List;
  * @version $Rev$
  */
 public class SSMScheduleCommand {
+    private static Logger log = Logger.getLogger(SSMScheduleCommand.class);
+
     // Required attributes
     private User user;
     private Date scheduleDate;
@@ -173,15 +177,23 @@ public class SSMScheduleCommand {
         List<ValidatorError> errors = new ArrayList<ValidatorError>();
 
         for (SystemOverview sys : systems) {
-            ValidatorError e = scheduleSystem(sys.getId());
-            if (e != null) {
-                errors.add(e);
+            ValidatorError e;
+            try {
+                e = scheduleSystem(sys.getId());
+                if (e != null) {
+                    errors.add(e);
+                }
+            }
+            catch (TaskomaticApiException taskomaticApiException) {
+                log.error("Taskomatic Exception during kickstart schedule:");
+                log.error(taskomaticApiException);
+                errors.add(new ValidatorError("taskscheduler.down"));
             }
         }
         return errors;
     }
 
-    private ValidatorError scheduleSystem(Long sid) {
+    private ValidatorError scheduleSystem(Long sid) throws TaskomaticApiException {
 
         KickstartData uniqueKs = ksdata;
         String profileId = "";
