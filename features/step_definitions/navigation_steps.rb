@@ -151,3 +151,25 @@ end
 When(/^I enter "(.*?)" in the editor$/) do |arg1|
   page.execute_script("ace.edit('contents-editor').setValue('#{arg1}')")
 end
+
+Then(/^I reload the page$/) do
+  visit current_url
+end
+
+Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
+  found = false
+  begin
+    Timeout.timeout(30) do
+      loop do
+        if page.has_content?(debrand_string(arg1))
+          found = true
+          break
+        end
+        visit current_url
+      end
+    end
+  rescue Timeout::Error
+    raise "'#{arg1}' cannot be found after wait and reload page"
+  end
+  fail unless found
+end

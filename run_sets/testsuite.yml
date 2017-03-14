@@ -82,6 +82,7 @@
 # this feature need another vm/client - features/salt_ssh.feature
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
+- features/salt_formulas.feature
 - features/minion_bootstrap.feature
 # Regression test
 - features/salt_regression_topsls.feature
