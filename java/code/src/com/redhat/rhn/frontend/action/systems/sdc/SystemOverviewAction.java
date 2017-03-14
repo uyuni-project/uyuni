@@ -20,10 +20,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
@@ -117,8 +119,16 @@ public class SystemOverviewAction extends RhnAction {
 
         SdcHelper.ssmCheck(request, sid, user);
 
+        //Order entitlements
+        List<Entitlement> entitlements = s.getEntitlements().stream().sorted(
+                (e1, e2) -> (e1.isBase() && e2.isBase()) || (!e1.isBase() && !e2.isBase()) ?
+                        e1.getHumanReadableLabel().compareTo(e2.getHumanReadableLabel()) :
+                        (e1.isBase() ? -1 : 1))
+                .collect(Collectors.toList());
+
         request.setAttribute("rebootRequired", Boolean.valueOf(rebootRequired));
         request.setAttribute("unentitled", Boolean.valueOf(s.getEntitlements().isEmpty()));
+        request.setAttribute("entitlements", entitlements);
         request.setAttribute("systemInactive", Boolean.valueOf(s.isInactive()));
         request.setAttribute("criticalErrataCount", criticalErrataCount);
         request.setAttribute("nonCriticalErrataCount", nonCriticalErrataCount);
