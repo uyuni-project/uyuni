@@ -16,24 +16,42 @@ Feature:  Build Container images with SUSE Manager
 
   Scenario: Apply the highstate to container buid host
   Given I am on the Systems overview page of this "sle-minion"
-  And I should see a "[Container Build Host]" text
-  And I follow "States" in the content area
-  And I follow "Highstate"
-
+  Then I should see a "[Container Build Host]" text
+  And I run "zypper mr -e Devel_Galaxy_Manager_Head_SLE-Manager-Tools-12-x86_64" on "sle-minion"
+  And I run "zypper mr -e SUSE_Updates_SLE-Module-Containers_12_x86_64" on "sle-minion"
+  And I run "zypper mr -e SUSE_Pool_SLE-Module-Containers_12_x86_64" on "sle-minion"
+  And I run "zypper mr -e SLE-12-SP2-x86_64-Pool" on "sle-minion"
+  And I run "zypper mr -e SLE-12-SP2-x86_64-Update" on "sle-minion"
+  And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
+  And I apply highstate on Sles minion
+  Then I wait until "docker" service is up and running on "sle-minion"
+  # FIXME: add certicates.. 
   Scenario: Create an Image Store without credentials
   Given I am authorized as "admin" with password "admin"
-
-  Scenario: Create an Image Store with authentication
-  Given I am authorized as "admin" with password "admin"
-
-  Scenario: Create an Activation Key to define the used channels during building
-  Given I am authorized as "admin" with password "admin"
+  And I follow "Images" in the left menu
+  And I follow "Stores" in the left menu
+  And I follow "Create"
+  And I enter "galaxy-registry" as "label"
+  And I enter "registry.suse.de" as "uri"
+  And I click on "create-btn"
 
   Scenario: Create an Image Profile
   Given I am authorized as "admin" with password "admin"
+  And I follow "Images" in the left menu
+  And I follow "Profiles" in the left menu
+  And I follow "Create"
+  And I enter "opensuse" as "label"
+  And I select "galaxy-registry" from "imageStore"
+  And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile" as "path"
+  And I click on "create-btn"
 
   Scenario: Build a docker Image
   Given I am authorized as "admin" with password "admin"
-
-  Scenario: Check the Event Log of the build host
+  And I follow "Images" in the left menu
+  And I follow "Build" in the left menu
+  And I select "opensuse" from "profileId"
+  And I select "galaxy-registry" from "host"
+  And I click on "submit-btn"
+  # this maybe is another feature.
+  Scenario: Create an Image Store with authentication
   Given I am authorized as "admin" with password "admin"
