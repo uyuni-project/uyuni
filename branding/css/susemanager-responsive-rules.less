@@ -15,39 +15,24 @@
 }
 .header-navbar-responsive {
   header {
-    height: 80px;
-    .navbar-brand {
-      img {
-        width: auto!important;
-      }
-    }
     .nav {
       margin-top: 10px;
     }
     .navbar-header {
       display: block;
     }
-    .navbar-utility {
-      float: left;
-      width: auto;
-    }
+    .navbar-utility,
     .navbar-primary {
-      float: right;
+      display: inline-block;
+      float: none;
       width: auto;
     }
   }
 }
 .header-navbar-mobile {
   header {
-    height: auto;
     .navbar-header {
-      display: inline-block;
-    }
-    .navbar-utility,
-    .navbar-primary {
-      display: block;
-      float: none;
-      width: 100%;
+    display: inline-block;
     }
   }
 }
@@ -191,14 +176,15 @@
 // smaller-logo
 .smaller-logo {
   header {
-    .navbar-brand {
-      line-height: 1em;
-      vertical-align: top;
-      span {
-        font-size: 0.8em;
-      }
-      img {
-        height: 1em;
+    .navbar-header {
+       width: 80%;
+      .navbar-brand {
+        width: 83%;
+        line-height: 1em;
+        vertical-align: top;
+        span {
+          font-size: 0.9em;
+        }
       }
     }
   }
@@ -206,9 +192,15 @@
 // logo with no text
 .no-text-logo {
   header {
-    .navbar-brand {
-      span {
-        display: none;
+    .navbar-header {
+       width: 80%;
+      .navbar-brand {
+        span {
+          display: none;
+        }
+        > i {
+          display: block;
+        }
       }
     }
   }
@@ -273,10 +265,6 @@
 /* --- changes after Pattern Fly  ---- */
 
 @media (max-width: 767px) {
-  nav .navbar-brand img {
-    width: auto !important;
-    padding: 0;
-  }
   footer div:nth-child(2) {
     display: block!important;
     height:4px;
