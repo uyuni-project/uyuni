@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.system;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -24,8 +23,7 @@ import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.common.UninitializedCommandException;
-
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import org.apache.log4j.Logger;
 
@@ -40,6 +38,7 @@ import java.util.Map;
 public class VirtualizationActionCommand {
 
     private static Logger log = Logger.getLogger(VirtualizationActionCommand.class);
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     private User user;
     private Date scheduleDate;
@@ -108,7 +107,7 @@ public class VirtualizationActionCommand {
 
         log.debug("saving virtAction.");
         ActionFactory.save(virtAction);
-        MessageQueue.publish(new ActionScheduledEventMessage(virtAction));
+        TASKOMATIC_API.scheduleActionExecution(virtAction);
         action = virtAction;
         return null;
     }

@@ -66,9 +66,8 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
-
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -99,6 +98,7 @@ import redstone.xmlrpc.XmlRpcFault;
 public class ErrataManager extends BaseManager {
 
     private static Logger log = Logger.getLogger(ErrataManager.class);
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     public static final String DATE_FORMAT_PARSE_STRING = "yyyy-MM-dd";
     public static final long MAX_ADVISORY_RELEASE = 9999;
 
@@ -1786,7 +1786,7 @@ public class ErrataManager extends BaseManager {
         List<Long> actionIds = new ArrayList<Long>();
         for (ErrataAction errataAction : errataActions) {
             Action action = ActionManager.storeAction(errataAction);
-            MessageQueue.publish(new ActionScheduledEventMessage(action));
+            TASKOMATIC_API.scheduleActionExecution(action);
             actionIds.add(action.getId());
         }
         return actionIds;

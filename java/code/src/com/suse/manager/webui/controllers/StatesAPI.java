@@ -15,7 +15,6 @@
 package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.org.Org;
@@ -47,7 +46,8 @@ import com.google.gson.GsonBuilder;
 
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
@@ -108,6 +108,7 @@ public class StatesAPI {
 
     /** Logger */
     private static final Logger LOG = Logger.getLogger(StatesAPI.class);
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     private static final Gson GSON = new GsonBuilder().create();
     public static final String SALT_PACKAGE_FILES = "packages";
@@ -469,7 +470,7 @@ public class StatesAPI {
                     }
             );
 
-            MessageQueue.publish(new ActionScheduledEventMessage(scheduledAction));
+            TASKOMATIC_API.scheduleActionExecution(scheduledAction);
 
             return GSON.toJson(scheduledAction.getId());
         }

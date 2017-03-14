@@ -18,7 +18,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -34,8 +33,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -55,6 +53,7 @@ import java.util.regex.Pattern;
 public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
 
     private static Logger log = Logger.getLogger(ProvisionVirtualInstanceCommand.class);
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     public static final int MIN_NAME_SIZE = 4;
     public static final int MAX_CPU = 32;
@@ -201,7 +200,7 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
         ksSession.setAction(ksAction);
         ksAction.setPrerequisite(prereqAction);
         ActionFactory.save(ksAction);
-        MessageQueue.publish(new ActionScheduledEventMessage(ksAction));
+        TASKOMATIC_API.scheduleActionExecution(ksAction);
         return ksAction;
     }
 

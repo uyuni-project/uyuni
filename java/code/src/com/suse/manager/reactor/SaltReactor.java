@@ -22,8 +22,6 @@ import com.redhat.rhn.manager.action.ActionManager;
 
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessageAction;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
@@ -101,8 +99,6 @@ public class SaltReactor implements EventListener {
                 ChannelsChangedEventMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
-        MessageQueue.registerAction(new ActionScheduledEventMessageAction(),
-                ActionScheduledEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(),
                 JobReturnEventMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),

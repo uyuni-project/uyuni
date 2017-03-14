@@ -22,7 +22,6 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
@@ -84,8 +83,6 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
 
@@ -540,7 +537,7 @@ public class ActionManager extends BaseManager {
         }
 
         ActionFactory.save(a);
-        MessageQueue.publish(new ActionScheduledEventMessage(a));
+        taskomaticApi.scheduleActionExecution(a);
         return a;
     }
 
@@ -587,7 +584,7 @@ public class ActionManager extends BaseManager {
             return null;
         }
         ActionFactory.save(a);
-        MessageQueue.publish(new ActionScheduledEventMessage(a));
+        taskomaticApi.scheduleActionExecution(a);
         return a;
     }
 
@@ -764,7 +761,7 @@ public class ActionManager extends BaseManager {
         else {
             ActionFactory.rescheduleAllServerActions(action, 5L);
         }
-        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        taskomaticApi.scheduleActionExecution(action);
     }
 
     /**
@@ -1134,7 +1131,7 @@ public class ActionManager extends BaseManager {
         sa.setParentAction(action);
 
         ActionFactory.save(action);
-        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        taskomaticApi.scheduleActionExecution(action);
         return (PackageAction) action;
     }
 
@@ -1165,12 +1162,12 @@ public class ActionManager extends BaseManager {
             Action hwrefresh =
                     scheduleHardwareRefreshAction(scheduler, server, earliest);
             ActionFactory.save(hwrefresh);
-            MessageQueue.publish(new ActionScheduledEventMessage(hwrefresh));
+            taskomaticApi.scheduleActionExecution(hwrefresh);
             action.setPrerequisite(hwrefresh);
         }
 
         ActionFactory.save(action);
-        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        taskomaticApi.scheduleActionExecution(action);
 
         PackageDelta pd = new PackageDelta();
         pd.setLabel("delta-" + System.currentTimeMillis());
@@ -1388,7 +1385,7 @@ public class ActionManager extends BaseManager {
                 ActionFactory.TYPE_SCRIPT_RUN, name, earliest, sidSet);
         sra.setScriptActionDetails(script);
         ActionFactory.save(sra);
-        MessageQueue.publish(new ActionScheduledEventMessage(sra));
+        taskomaticApi.scheduleActionExecution(sra);
         return sra;
     }
 
@@ -1696,7 +1693,7 @@ public class ActionManager extends BaseManager {
 
         ActionFactory.save(action);
 
-        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        taskomaticApi.scheduleActionExecution(action);
         return action;
     }
 
@@ -1828,7 +1825,7 @@ public class ActionManager extends BaseManager {
         ActionFactory.save(action);
 
         addPackageActionDetails(action, pkgs);
-        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        taskomaticApi.scheduleActionExecution(action);
         return action;
     }
 
@@ -1997,7 +1994,7 @@ public class ActionManager extends BaseManager {
                 earliestAction, serverIds);
         action.setScapActionDetails(scapDetails);
         ActionFactory.save(action);
-        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        taskomaticApi.scheduleActionExecution(action);
         return action;
     }
 
@@ -2020,7 +2017,7 @@ public class ActionManager extends BaseManager {
                                                       new Date() :
                                                       earliestAction));
         ActionFactory.save(action);
-        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        taskomaticApi.scheduleActionExecution(action);
         return action;
     }
 
@@ -2044,7 +2041,7 @@ public class ActionManager extends BaseManager {
                         ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT.getName(),
                         (earliestAction == null ? new Date() : earliestAction));
         ActionFactory.save(action);
-        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        taskomaticApi.scheduleActionExecution(action);
         return action;
     }
 
@@ -2072,7 +2069,7 @@ public class ActionManager extends BaseManager {
         // Add the details and save
         action.setDetails(details);
         ActionFactory.save(action);
-        MessageQueue.publish(new ActionScheduledEventMessage(action));
+        taskomaticApi.scheduleActionExecution(action);
         return action;
     }
 
