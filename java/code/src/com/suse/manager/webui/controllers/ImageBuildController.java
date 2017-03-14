@@ -22,29 +22,22 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
-import com.redhat.rhn.domain.image.ImageInfo;
-import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
+
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.ImageInfoJson;
@@ -57,7 +50,6 @@ import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -215,61 +207,14 @@ public class ImageBuildController {
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
         return maybeProfile.flatMap(ImageProfile::asDockerfileProfile).map(profile -> {
-            scheduleBuild(buildRequest.buildHostId, buildRequest.getTag(), profile,
-                    scheduleDate, user);
+            ImageInfoFactory.scheduleBuild(buildRequest.buildHostId, buildRequest.getTag(),
+                    profile, scheduleDate, user);
             //TODO: Add action ID as a message parameter
             return GSON.toJson(new JsonResult(true, "build_scheduled"));
         }).orElseGet(
                 () -> GSON.toJson(new JsonResult(true, Collections.singletonList(
                         "unknown_error")))
         );
-    }
-
-    private static void scheduleBuild(long buildHostId, String tag, ImageProfile profile,
-            Date earliest, User user) {
-        MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
-
-        if (!server.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST)) {
-            throw new IllegalArgumentException("Server is not a build host.");
-        }
-
-        // LOG.debug("Schedule image.build for " + server.getName() + ": " +
-        // imageProfile.getLabel() + " " +
-        // imageBuildEvent.getTag());
-
-        // Schedule the build
-        tag = tag.isEmpty() ? "latest" : tag;
-        ImageBuildAction action = ActionManager.scheduleImageBuild(user,
-                Collections.singletonList(server.getId()), tag, profile, earliest);
-        MessageQueue.publish(new ActionScheduledEventMessage(action, false));
-
-        // Create image info entry
-        ImageInfoFactory
-                .lookupByName(profile.getLabel(), tag, profile.getTargetStore().getId())
-                .ifPresent(ImageInfoFactory::delete);
-
-        ImageInfo info = new ImageInfo();
-        info.setName(profile.getLabel());
-        info.setVersion(tag);
-        info.setStore(profile.getTargetStore());
-        info.setOrg(server.getOrg());
-        info.setAction(action);
-        info.setProfile(profile);
-        info.setBuildServer(server);
-        info.setChannels(new HashSet<>(profile.getToken().getChannels()));
-
-        // Image arch should be the same as the build host
-        info.setImageArch(server.getServerArch());
-
-        // Checksum will be available from inspect
-
-        // Copy custom data values from image profile
-        if (profile.getCustomDataValues() != null) {
-            profile.getCustomDataValues().forEach(cdv -> info.getCustomDataValues()
-                    .add(new ImageInfoCustomDataValue(cdv, info)));
-        }
-
-        ImageInfoFactory.save(info);
     }
 
     /**

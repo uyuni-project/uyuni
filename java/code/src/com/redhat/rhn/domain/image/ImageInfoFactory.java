@@ -15,9 +15,16 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionManager;
 
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA256Checksum;
 
@@ -26,6 +33,10 @@ import org.apache.log4j.Logger;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +65,62 @@ public class ImageInfoFactory extends HibernateFactory {
             log = Logger.getLogger(ImageInfoFactory.class);
         }
         return log;
+    }
+
+    /**
+     * Schedule an Image Build
+     * @param buildHostId The ID of the build host
+     * @param tag the tag/version of the resulting image
+     * @param profile the profile
+     * @param earliest earliest build
+     * @param user the current user
+     * @return the action ID
+     */
+    public static Long scheduleBuild(long buildHostId, String tag, ImageProfile profile,
+            Date earliest, User user) {
+        MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
+
+        if (!server.hasContainerBuildHostEntitlement()) {
+            throw new IllegalArgumentException("Server is not a build host.");
+        }
+
+        // LOG.debug("Schedule image.build for " + server.getName() + ": " +
+        // imageProfile.getLabel() + " " +
+        // imageBuildEvent.getTag());
+
+        // Schedule the build
+        tag = tag.isEmpty() ? "latest" : tag;
+        ImageBuildAction action = ActionManager.scheduleImageBuild(user,
+                Collections.singletonList(server.getId()), tag, profile, earliest);
+        MessageQueue.publish(new ActionScheduledEventMessage(action, false));
+
+        // Create image info entry
+        lookupByName(profile.getLabel(), tag, profile.getTargetStore().getId())
+                .ifPresent(ImageInfoFactory::delete);
+
+        ImageInfo info = new ImageInfo();
+        info.setName(profile.getLabel());
+        info.setVersion(tag);
+        info.setStore(profile.getTargetStore());
+        info.setOrg(server.getOrg());
+        info.setAction(action);
+        info.setProfile(profile);
+        info.setBuildServer(server);
+        info.setChannels(new HashSet<>(profile.getToken().getChannels()));
+
+        // Image arch should be the same as the build host
+        info.setImageArch(server.getServerArch());
+
+        // Checksum will be available from inspect
+
+        // Copy custom data values from image profile
+        if (profile.getCustomDataValues() != null) {
+            profile.getCustomDataValues().forEach(cdv -> info.getCustomDataValues()
+                    .add(new ImageInfoCustomDataValue(cdv, info)));
+        }
+
+        save(info);
+        return action.getId();
     }
 
     /**
@@ -183,18 +250,30 @@ public class ImageInfoFactory extends HibernateFactory {
         return getSession().createQuery(criteria).getResultList();
     }
 
-    public static com.redhat.rhn.domain.common.Checksum convertChecksum(Checksum saltChecksum) {
+    /**
+     * Convert a docker Checksum into a DB checksum
+     * @param dockerChecksum the docker checksum
+     * @return the db checksum
+     */
+    public static com.redhat.rhn.domain.common.Checksum convertChecksum(
+            Checksum dockerChecksum) {
         com.redhat.rhn.domain.common.Checksum chk =
                 new com.redhat.rhn.domain.common.Checksum();
-        if (saltChecksum instanceof SHA256Checksum) {
+        if (dockerChecksum instanceof SHA256Checksum) {
             chk.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
         }
-        chk.setChecksum(saltChecksum.getChecksum());
+        chk.setChecksum(dockerChecksum.getChecksum());
         instance.saveObject(chk);
         return chk;
     }
 
-    public static Checksum convertChecksum(com.redhat.rhn.domain.common.Checksum checksum) {
+    /**
+     * Convert the DB checksum into a docker checksum
+     * @param checksum the db checksum
+     * @return the docker checksum
+     */
+    public static Checksum convertChecksum(
+            com.redhat.rhn.domain.common.Checksum checksum) {
         switch (checksum.getChecksumType().getLabel()) {
         case "sha256":
             return new SHA256Checksum(checksum.getChecksum());
