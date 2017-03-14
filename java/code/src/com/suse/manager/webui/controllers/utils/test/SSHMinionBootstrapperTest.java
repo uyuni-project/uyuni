@@ -41,7 +41,7 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
                 RegisterMinionEventMessageAction action =
                         mock(RegisterMinionEventMessageAction.class);
                 context().checking(new Expectations() {{
-                    allowing(action).registerSSHMinion("myhost", activationKeyLabel);
+                    allowing(action).registerSSHMinion("myhost", Optional.empty(), activationKeyLabel);
                 }});
                 return action;
             }

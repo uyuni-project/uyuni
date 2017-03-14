@@ -220,6 +220,9 @@ public class ConfigDefaults {
     public static final String TOKEN_LIFETIME =
             "server.susemanager.token_lifetime";
 
+    public static final String SALT_SSH_CONNECT_TIMEOUT =
+            "salt_ssh_connect_timeout";
+
     private ConfigDefaults() {
     }
 
@@ -766,4 +769,12 @@ public class ConfigDefaults {
     public int getConfigFileEditSize() {
         return Config.get().getInt(CONFIG_FILE_EDIT_SIZE, 32);
     }
+
+    /**
+     * @return connection timeout for salt-ssh
+     */
+    public int getSaltSSHConnectTimeout() {
+        return Config.get().getInt(SALT_SSH_CONNECT_TIMEOUT, 180);
+    }
+
 }

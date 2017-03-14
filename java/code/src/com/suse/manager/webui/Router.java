@@ -34,6 +34,7 @@ import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
+import com.suse.manager.webui.controllers.SaltSSHController;
 import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
@@ -276,5 +277,7 @@ public class Router implements SparkApplication {
                 withOrgAdmin(VisualizationController::showProxyHierarchy), jade);
         get("/manager/api/visualization/proxy-hierarchy/data",
                 withOrgAdmin(VisualizationController::proxyHierarchyData));
+
+        get("/manager/download/saltssh/pubkey", SaltSSHController::getPubKey);
     }
 }
