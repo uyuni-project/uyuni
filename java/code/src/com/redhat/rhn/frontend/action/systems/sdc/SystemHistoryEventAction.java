@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.systems.sdc;
 
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
@@ -26,6 +27,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 
+import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -88,6 +90,7 @@ public class SystemHistoryEventAction extends RhnAction {
         if (isSubmitted((DynaActionForm)formIn)) {
             createSuccessMessage(request, "system.event.rescheduled", action.getName());
             ActionFactory.rescheduleSingleServerAction(action, 5L, server.getId());
+            MessageQueue.publish(new ActionScheduledEventMessage(action));
             return mapping.findForward("continue");
         }
 
