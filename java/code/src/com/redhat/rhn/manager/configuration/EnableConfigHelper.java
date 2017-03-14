@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,8 +49,11 @@ public class EnableConfigHelper {
      * Enable the set of systems given for configuration management.
      * @param setLabel The label for the set that contains systems selected for enablement
      * @param earliestIn The earliest time package actions will be scheduled.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public void enableSystems(String setLabel, Date earliestIn) {
+    public void enableSystems(String setLabel, Date earliestIn)
+        throws TaskomaticApiException {
         // earliest = earliestIn;
         ConfigurationManager cm = ConfigurationManager.getInstance();
         //Get the list of systems and what we need to do to them.
@@ -85,7 +89,8 @@ public class EnableConfigHelper {
         RhnSetManager.store(set);
     }
 
-    private int enableSystem(ConfigSystemDto dto, Server current, Date earliest) {
+    private int enableSystem(ConfigSystemDto dto, Server current, Date earliest)
+        throws TaskomaticApiException {
         //subscribe the system to RhnTools child channel if they need it.
         if (!dto.isRhnTools()) {
             if (ChannelManager.subscribeToChildChannelWithPackageName(user, current,
@@ -102,7 +107,8 @@ public class EnableConfigHelper {
         return ConfigurationManager.ENABLE_SUCCESS;
     }
 
-    private boolean installPackages(ConfigSystemDto dto, Server current, Date earliest) {
+    private boolean installPackages(ConfigSystemDto dto, Server current, Date earliest)
+        throws TaskomaticApiException {
         boolean error = false;
         List packages = new ArrayList();
 

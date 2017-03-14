@@ -65,6 +65,7 @@ import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -161,8 +162,11 @@ public class ActionFactory extends HibernateFactory {
      * @param setLabel the set label to pull the ids from
      * @param user the user witht he set
      * @return the number of failed systems to remove an action for.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static int removeActionForSystemSet(long actionId, String setLabel, User user) {
+    public static int removeActionForSystemSet(long actionId, String setLabel, User user)
+        throws TaskomaticApiException {
 
         RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
         TASKOMATIC_API.deleteScheduledAction(actionId);

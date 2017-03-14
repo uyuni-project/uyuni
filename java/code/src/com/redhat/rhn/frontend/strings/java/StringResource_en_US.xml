@@ -5313,6 +5313,9 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="taskomatic.notavailable">
         <source>Taskomatic is not available.</source>
       </trans-unit>
+      <trans-unit id="taskscheduler.down">
+        <source>There was an error while scheduling a task. Please make sure that the task scheduler is running.</source>
+      </trans-unit>
       <trans-unit id="kickstart.software.success">
         <source>Kickstart Operating System selection successfully updated.</source>
         <context-group name="ctx">

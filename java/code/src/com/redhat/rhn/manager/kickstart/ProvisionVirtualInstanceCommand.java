@@ -34,6 +34,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -186,9 +187,12 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
      * @param prereqAction the prerequisite for this action
      *
      * @return Returns the KickstartGuestAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     @Override
-    public Action scheduleKickstartAction(Action prereqAction) {
+    public Action scheduleKickstartAction(Action prereqAction)
+        throws TaskomaticApiException {
 
         KickstartSession ksSession = getKickstartSession();
         Long sessionId = (ksSession != null) ? ksSession.getId() : null;

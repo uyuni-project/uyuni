@@ -84,6 +84,8 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.commons.lang.BooleanUtils;
@@ -1825,7 +1827,12 @@ public class SystemManager extends BaseManager {
                         ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME + " installed.");
                 return result;
             }
-            scheduleVirtualizationHostPackageInstall(server, user, result);
+            try {
+                scheduleVirtualizationHostPackageInstall(server, user, result);
+            }
+            catch (TaskomaticApiException e) {
+                result.addError(new ValidatorError("taskscheduler.down"));
+            }
         }
 
         return result;
@@ -1842,9 +1849,11 @@ public class SystemManager extends BaseManager {
      * @param server Server to schedule install for.
      * @param user User performing the operation.
      * @param result Validation result we'll be returning for the UI to render.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     private static void scheduleVirtualizationHostPackageInstall(Server server,
-            User user, ValidatorResult result) {
+            User user, ValidatorResult result) throws TaskomaticApiException {
         // Now subscribe to a child channel with rhn-virtualization-host (RHN Tools in the
         // case of Satellite) and schedule it for installation, or warn if we cannot find
         // a child with the package:
@@ -3315,8 +3324,11 @@ public class SystemManager extends BaseManager {
      * Set auto_update for all systems in the system set
      * @param user The user
      * @param value True if the servers should audo update
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static void setAutoUpdateBulk(User user, Boolean value) {
+    public static void setAutoUpdateBulk(User user, Boolean value)
+        throws TaskomaticApiException {
         if (value) {
             // schedule all existing applicable errata
             List<SystemOverview> systems = inSet(user, "system_list");

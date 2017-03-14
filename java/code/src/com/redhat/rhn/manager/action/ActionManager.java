@@ -83,7 +83,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.domain.rhnpackage.Package;
 
 import com.suse.manager.webui.utils.MinionServerUtils;
@@ -286,8 +286,11 @@ public class ActionManager extends BaseManager {
      * Cancels all actions in given list.
      * @param user User associated with the set of actions.
      * @param actionsToCancel List of actions to be cancelled.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static void cancelActions(User user, List actionsToCancel) {
+    public static void cancelActions(User user, List actionsToCancel)
+        throws TaskomaticApiException {
         Iterator it = actionsToCancel.iterator();
         while (it.hasNext()) {
             Action a = (Action) it.next();
@@ -305,8 +308,11 @@ public class ActionManager extends BaseManager {
      *
      * @param user User requesting the action be cancelled.
      * @param action Action to be cancelled.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static void cancelAction(User user, Action action) {
+    public static void cancelAction(User user, Action action)
+        throws TaskomaticApiException {
         ActionManager.cancelAction(user, action, null);
     }
 
@@ -321,8 +327,11 @@ public class ActionManager extends BaseManager {
      * @param user User requesting the action be cancelled.
      * @param action Action to be cancelled.
      * @param cancelParams Canceling params to the specific cancelled action.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static void cancelAction(User user, Action action, Map cancelParams) {
+    public static void cancelAction(User user, Action action, Map cancelParams)
+        throws TaskomaticApiException {
         log.debug("Cancelling action: " + action.getId() + " for user: " + user.getLogin());
 
         // Can only cancel top level actions:
@@ -346,7 +355,7 @@ public class ActionManager extends BaseManager {
     }
 
     private static void cancelServerActions(long actionId,
-            Set<ServerAction> serverActions) {
+            Set<ServerAction> serverActions) throws TaskomaticApiException {
         Set<ServerAction> minionServerActions = new HashSet<>();
 
         // fail any Kickstart sessions for this action and servers
@@ -385,9 +394,11 @@ public class ActionManager extends BaseManager {
      * @param actionId the action to remove
      * @param setLabel the set label to pull the ids from
      * @param user the user witht he set
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static void cancelActionForSystemSet(long actionId, String setLabel, User user) {
-
+    public static void cancelActionForSystemSet(long actionId, String setLabel, User user)
+        throws TaskomaticApiException {
         RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
         cancelActionForSystems(actionId, set.getElementValues());
     }
@@ -399,8 +410,11 @@ public class ActionManager extends BaseManager {
      *
      * @param actionId the id of the action
      * @param serverIds the id of the servers
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static void cancelActionForSystems(long actionId, Collection<Long> serverIds) {
+    public static void cancelActionForSystems(long actionId, Collection<Long> serverIds)
+        throws TaskomaticApiException {
         Action action = ActionFactory.lookupById(actionId);
         Set<ServerAction> setServerActions = action.getServerActions().stream()
                 .filter(sa -> serverIds.contains(sa.getServer().getId()))
@@ -496,9 +510,12 @@ public class ActionManager extends BaseManager {
      * @param channel The config channel to which files will be uploaded.
      * @param earliest The soonest time that this action could be executed.
      * @return The created upload action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static Action createConfigUploadAction(User user, Set filenames,
-            Server server, ConfigChannel channel, Date earliest) {
+    public static Action createConfigUploadAction(User user, Set filenames, Server server,
+            ConfigChannel channel, Date earliest)
+        throws TaskomaticApiException {
         //TODO: right now, our general rule is that upload actions will
         //always upload into the sandbox for a system. If we ever wish to
         //make that a strict business rule, here is where we can verify that
@@ -547,10 +564,12 @@ public class ActionManager extends BaseManager {
      * @param revisions A set of revision ids as Longs
      * @param serverIds A set of server ids as Longs
      * @return The created diff action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Action createConfigDiffAction(User user,
             Collection<Long> revisions,
-            Collection<Long> serverIds) {
+            Collection<Long> serverIds) throws TaskomaticApiException {
         //diff actions are non-destructive, so there is no point to schedule them for any
         //later than now.
         return createConfigAction(user, revisions, serverIds,
@@ -565,11 +584,13 @@ public class ActionManager extends BaseManager {
      * @param type The type of config action
      * @param earliest The earliest time this action could execute.
      * @return The created config action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Action createConfigActionForServers(User user,
             Collection<Long> revisions,
             Collection<Server> servers,
-            ActionType type, Date earliest) {
+            ActionType type, Date earliest) throws TaskomaticApiException {
         ConfigAction a = createConfigAction(user, type, earliest);
         for (Server server : servers) {
             checkConfigActionOnServer(type, server);
@@ -655,9 +676,12 @@ public class ActionManager extends BaseManager {
      * @param type The type of config action
      * @param earliest The earliest time this action could execute.
      * @return The created config action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Action createConfigAction(User user, Collection<Long> revisions,
-            Collection<Long> serverIds, ActionType type, Date earliest) {
+            Collection<Long> serverIds, ActionType type, Date earliest)
+        throws TaskomaticApiException {
 
         List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
         return createConfigActionForServers(user, revisions, servers, type, earliest);
@@ -742,8 +766,10 @@ public class ActionManager extends BaseManager {
      * Reschedule the action so it can be attempted again.
      *
      * @param action Action to reschedule
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static void rescheduleAction(Action action) {
+    public static void rescheduleAction(Action action) throws TaskomaticApiException {
         rescheduleAction(action, false);
     }
 
@@ -752,8 +778,11 @@ public class ActionManager extends BaseManager {
      *
      * @param action Action to reschedule
      * @param onlyFailed reschedule only the ServerActions w/failed status
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static void rescheduleAction(Action action, boolean onlyFailed) {
+    public static void rescheduleAction(Action action, boolean onlyFailed)
+        throws TaskomaticApiException {
         //5 was hardcoded from perl :/
         if (onlyFailed) {
             ActionFactory.rescheduleFailedServerActions(action, 5L);
@@ -1083,8 +1112,11 @@ public class ActionManager extends BaseManager {
      * @param scheduler User scheduling the action.
      * @param server Server for which the action affects.
      * @return The scheduled PackageAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static PackageAction schedulePackageRefresh(User scheduler, Server server) {
+    public static PackageAction schedulePackageRefresh(User scheduler, Server server)
+        throws TaskomaticApiException {
         return (schedulePackageRefresh(scheduler, server, new Date()));
     }
 
@@ -1094,10 +1126,12 @@ public class ActionManager extends BaseManager {
      * @param server Server for which the action affects.
      * @param earliest The earliest time this action should be run.
      * @return The scheduled PackageAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @throws MissingEntitlementException if the server is not entitled
      */
     public static PackageAction schedulePackageRefresh(User scheduler, Server server,
-            Date earliest) {
+            Date earliest) throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
         PackageAction pa = (PackageAction) schedulePackageAction(scheduler,
@@ -1112,8 +1146,11 @@ public class ActionManager extends BaseManager {
      * @param schedulerOrg the organization the server belongs to
      * @param server the server
      * @return the scheduled PackageRefreshListAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static PackageAction schedulePackageRefresh(Org schedulerOrg, Server server) {
+    public static PackageAction schedulePackageRefresh(Org schedulerOrg, Server server)
+        throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(server.getId());
 
         Action action = ActionFactory.createAction(
@@ -1142,9 +1179,11 @@ public class ActionManager extends BaseManager {
      * @param pkgs List of PackageMetadata's to be run.
      * @param earliest The earliest time this action should be run.
      * @return The scheduled PackageAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static PackageAction schedulePackageRunTransaction(User scheduler,
-            Server server, List pkgs, Date earliest) {
+            Server server, List pkgs, Date earliest) throws TaskomaticApiException {
 
         if (pkgs == null || pkgs.isEmpty()) {
             return null;
@@ -1282,13 +1321,14 @@ public class ActionManager extends BaseManager {
      * @param pkgs The set of packages to be removed.
      * @param earliestAction Date of earliest action to be executed
      * @return Currently scheduled PackageAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static PackageAction schedulePackageRemoval(User scheduler,
-            Server srvr, RhnSet pkgs, Date earliestAction) {
+            Server srvr, RhnSet pkgs, Date earliestAction) throws TaskomaticApiException {
         return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
                 ActionFactory.TYPE_PACKAGES_REMOVE, earliestAction);
     }
-
 
     /**
      * Schedules one or more package removal actions for the given server.
@@ -1297,9 +1337,12 @@ public class ActionManager extends BaseManager {
      * @param pkgs The list of packages to be removed.
      * @param earliestAction Date of earliest action to be executed
      * @return Currently scheduled PackageAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static PackageAction schedulePackageRemoval(User scheduler,
-            Server srvr, List<Map<String, Long>> pkgs, Date earliestAction) {
+    public static PackageAction schedulePackageRemoval(User scheduler, Server srvr,
+            List<Map<String, Long>> pkgs, Date earliestAction)
+        throws TaskomaticApiException {
         return (PackageAction) schedulePackageAction(scheduler, pkgs,
                 ActionFactory.TYPE_PACKAGES_REMOVE, earliestAction, srvr);
     }
@@ -1311,9 +1354,11 @@ public class ActionManager extends BaseManager {
      * @param pkgs The set of packages to be removed.
      * @param earliestAction Date of earliest action to be executed
      * @return Currently scheduled PackageAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static PackageAction schedulePackageInstall(User scheduler,
-            Server srvr, List pkgs, Date earliestAction) {
+            Server srvr, List pkgs, Date earliestAction) throws TaskomaticApiException {
         return (PackageAction) schedulePackageAction(scheduler, pkgs,
                 ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, srvr);
     }
@@ -1325,9 +1370,11 @@ public class ActionManager extends BaseManager {
      * @param pkgs The set of packages to be removed.
      * @param earliest Earliest occurrence of the script.
      * @return Currently scheduled PackageAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static PackageAction schedulePackageVerify(User scheduler,
-            Server srvr, RhnSet pkgs, Date earliest) {
+            Server srvr, RhnSet pkgs, Date earliest) throws TaskomaticApiException {
         return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
                 ActionFactory.TYPE_PACKAGES_VERIFY, earliest);
     }
@@ -1339,11 +1386,12 @@ public class ActionManager extends BaseManager {
      * @param packages set of packages
      * @param earliest earliest occurrence of this action
      * @return Currently scheduled PackageAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static Action schedulePackageLock(User scheduler,
-                                                    Server server,
-                                                    Set<Package> packages,
-                                                    Date earliest) {
+    public static Action schedulePackageLock(User scheduler, Server server,
+            Set<Package> packages, Date earliest)
+        throws TaskomaticApiException {
         List<Map<String, Long>> packagesList = new ArrayList<Map<String, Long>>();
         for (Package pkg : packages) {
             Map<String, Long> pkgMeta = new HashMap<String, Long>();
@@ -1371,11 +1419,14 @@ public class ActionManager extends BaseManager {
      * @param name Name of Script action.
      * @param earliest Earliest occurrence of the script.
      * @return Currently scheduled ScriptRunAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @throws MissingCapabilityException if any server in the list is missing script.run;
      *             schedule fails
      */
     public static ScriptRunAction scheduleScriptRun(User scheduler, List<Long> sids,
-            String name, ScriptActionDetails script, Date earliest) {
+            String name, ScriptActionDetails script, Date earliest)
+        throws TaskomaticApiException {
 
         checkScriptingOnServers(sids);
 
@@ -1670,10 +1721,13 @@ public class ActionManager extends BaseManager {
      * @param srvr Server for which the action affects.
      * @param earliestAction Date run the Action
      * @return Currently scheduled HardwareRefreshAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @throws MissingCapabilityException if scripts cannot be run
      */
     public static Action scheduleHardwareRefreshAction(Org schedulerOrg, Server srvr,
-                                                       Date earliestAction) {
+            Date earliestAction)
+        throws TaskomaticApiException {
         checkSaltOrManagementEntitlement(srvr.getId());
 
         Action action = ActionFactory
@@ -1714,9 +1768,11 @@ public class ActionManager extends BaseManager {
      * @param scheduler Person scheduling the action.
      * @param srvr Server whose errata is going to be scheduled.
      * @param earliest Earliest possible time action will occur.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static void scheduleAllErrataUpdate(User scheduler, Server srvr,
-            Date earliest) {
+            Date earliest) throws TaskomaticApiException {
         // Do not elaborate, we need only the IDs in here
         DataResult<Errata> errata = SystemManager.unscheduledErrata(scheduler,
                 srvr.getId(), null);
@@ -1736,9 +1792,11 @@ public class ActionManager extends BaseManager {
      * @param evrId evrId of package
      * @param archId archId of package
      * @return The action that has been scheduled.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Action schedulePackageInstall(User scheduler, Server srvr,
-            Long nameId, Long evrId, Long archId) {
+            Long nameId, Long evrId, Long archId) throws TaskomaticApiException {
         List packages = new LinkedList();
         Map row = new HashMap();
         row.put("name_id", nameId);
@@ -1755,9 +1813,12 @@ public class ActionManager extends BaseManager {
      * @param server The server that this action is for.
      * @param earliestAction The earliest time that this action could happen.
      * @return The action that has been scheduled.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Action schedulePackageInstall(User scheduler, List<Package> pkgs,
-            Server server, Date earliestAction) {
+            Server server, Date earliestAction)
+        throws TaskomaticApiException {
         if (pkgs.isEmpty()) {
             return null;
         }
@@ -1787,12 +1848,14 @@ public class ActionManager extends BaseManager {
      * @param earliestAction The earliest time that this action could happen.
      * @param servers The server(s) that this action is for.
      * @return The action that has been scheduled.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Action schedulePackageAction(User scheduler,
             List pkgs,
             ActionType type,
             Date earliestAction,
-            Server...servers) {
+            Server...servers) throws TaskomaticApiException {
         Set<Long> serverIds = new HashSet<Long>();
         for (Server s : servers) {
             serverIds.add(s.getId());
@@ -1812,12 +1875,12 @@ public class ActionManager extends BaseManager {
      * @param earliestAction The earliest time that this action could happen.
      * @param serverIds The server ids that this action is for.
      * @return The action that has been scheduled.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static Action schedulePackageAction(User scheduler,
-            List pkgs,
-            ActionType type,
-            Date earliestAction,
-            Set<Long> serverIds) {
+    public static Action schedulePackageAction(User scheduler, List pkgs, ActionType type,
+            Date earliestAction, Set<Long> serverIds)
+        throws TaskomaticApiException {
 
         String name = getActionName(type);
 
@@ -1919,9 +1982,12 @@ public class ActionManager extends BaseManager {
      * @param type The Action Type
      * @param earliestAction Date of earliest action to be executed
      * @return scheduled Package Action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    private static Action schedulePackageAction(User scheduler,
-            Server srvr, RhnSet pkgs, ActionType type, Date earliestAction) {
+    private static Action schedulePackageAction(User scheduler, Server srvr, RhnSet pkgs,
+            ActionType type, Date earliestAction)
+        throws TaskomaticApiException {
 
         List packages = new LinkedList();
         Iterator i = pkgs.getElements().iterator();
@@ -1946,9 +2012,11 @@ public class ActionManager extends BaseManager {
      * @param parameters Additional parameters for oscap tool.
      * @param earliestAction Date of earliest action to be executed.
      * @return scheduled Scap Action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static ScapAction scheduleXccdfEval(User scheduler, Server srvr, String path,
-            String parameters, Date earliestAction) {
+            String parameters, Date earliestAction) throws TaskomaticApiException {
         Set<Long> serverIds = new HashSet<Long>();
         serverIds.add(srvr.getId());
         return scheduleXccdfEval(scheduler, serverIds, path, parameters, earliestAction);
@@ -1962,10 +2030,13 @@ public class ActionManager extends BaseManager {
      * @param parameters Additional parameters for oscap tool.
      * @param earliestAction Date of earliest action to be executed.
      * @return scheduled Scap Action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @throws MissingCapabilityException if scripts cannot be run
      */
     public static ScapAction scheduleXccdfEval(User scheduler, Set<Long> serverIds,
-            String path, String parameters, Date earliestAction) {
+            String path, String parameters, Date earliestAction)
+        throws TaskomaticApiException {
         if (serverIds.isEmpty()) {
             return null;
         }
@@ -2005,10 +2076,11 @@ public class ActionManager extends BaseManager {
      * @param server Server, which is going to be rebooted
      * @param earliestAction Earliest date. If null, then date is current.
      * @return scheduled reboot action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static Action scheduleReboot(User scheduler,
-                                        Server server,
-                                        Date earliestAction) {
+    public static Action scheduleReboot(User scheduler, Server server, Date earliestAction)
+        throws TaskomaticApiException {
         Action action = ActionManager.scheduleAction(scheduler,
                                                      server,
                                                      ActionFactory.TYPE_REBOOT,
@@ -2027,10 +2099,12 @@ public class ActionManager extends BaseManager {
      * @param server Server, to update the certificate for
      * @param earliestAction Earliest date. If null, use current date
      * @return scheduled certificate update action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static Action scheduleCertificateUpdate(User scheduler,
-                                                   Server server,
-                                                   Date earliestAction) {
+    public static Action scheduleCertificateUpdate(User scheduler, Server server,
+            Date earliestAction)
+        throws TaskomaticApiException {
         if (!SystemManager.clientCapable(server.getId(), "clientcert.update_client_cert")) {
             throw new MissingCapabilityException("spacewalk-client-cert", server);
         }
@@ -2053,9 +2127,12 @@ public class ActionManager extends BaseManager {
      * @param details action details
      * @param earliestAction date of earliest action
      * @return the scheduled action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static DistUpgradeAction scheduleDistUpgrade(User scheduler, Server server,
-            DistUpgradeActionDetails details, Date earliestAction) {
+            DistUpgradeActionDetails details, Date earliestAction)
+        throws TaskomaticApiException {
         // Construct the action name
         String name = ActionFactory.TYPE_DIST_UPGRADE.getName();
         if (details.isDryRun()) {

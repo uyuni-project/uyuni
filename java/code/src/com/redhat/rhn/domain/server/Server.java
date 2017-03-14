@@ -35,6 +35,8 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -1397,8 +1399,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * Base entitlement for the Server.
      * @param baseIn to update to
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public void setBaseEntitlement(Entitlement baseIn) {
+    public void setBaseEntitlement(Entitlement baseIn) throws TaskomaticApiException {
         ServerGroupType verify = ServerFactory.
                 lookupServerGroupTypeByLabel(baseIn.getLabel());
         if (!verify.isBase()) {
