@@ -21,10 +21,10 @@ header {
   padding: 12px 10px;
   background: @spacewalk-header;
   a {
-    color: #ccc;
+    color: @spacewalk-gray-light;
   }
   a:hover {
-    color: @susemanager-green;
+    color: @spacewalk-gray-light;
   }
   img {
     float: left;
@@ -277,6 +277,10 @@ header, nav.navbar-pf {
         margin-right: 5px;
       }
     }
+    a#manage-ssm:hover {
+      text-decoration: none;
+      color: @susemanager-green;
+    }
     a {
       display: inline-block;
       border-radius: 0;
@@ -284,7 +288,7 @@ header, nav.navbar-pf {
     }
     a#clear-ssm {
       margin-left: -4px;
-      border-left: 1px solid @spacewalk-gray-dark;
+      border-left: 1px dashed @spacewalk-gray-dark;
       color: @spacewalk-gray-light;
       i {
         margin: 0;
@@ -885,7 +889,8 @@ i.spacewalk-help-link {
       vertical-align: top;
       border-radius: 2px;
       a:hover {
-        background-color: lighten(@spacewalk-blue-light, 10%);
+        background-color: @spacewalk-header;
+        text-decoration: underline;
       }
     }
     .search {
