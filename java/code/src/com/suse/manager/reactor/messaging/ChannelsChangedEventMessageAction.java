@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
@@ -69,14 +70,20 @@ public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
                     Optional.ofNullable(event.getUserId()), prodPkgs);
         });
         if (!optMinion.isPresent()) {
-            // This code acts only on traditional systems
-            if (event.getUserId() != null) {
-                User user = UserFactory.lookupById(event.getUserId());
-                ActionManager.schedulePackageInstall(user, prodPkgs, s, new Date());
+            try {
+                // This code acts only on traditional systems
+                if (event.getUserId() != null) {
+                    User user = UserFactory.lookupById(event.getUserId());
+                    ActionManager.schedulePackageInstall(user, prodPkgs, s, new Date());
+                }
+                else if (s.getCreator() != null) {
+                    ActionManager.schedulePackageInstall(s.getCreator(), prodPkgs, s,
+                            new Date());
+                }
             }
-            else if (s.getCreator() != null) {
-                ActionManager.schedulePackageInstall(s.getCreator(), prodPkgs, s,
-                        new Date());
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule state application for system: " + s.getId());
+                throw new RuntimeException(e);
             }
         }
     }

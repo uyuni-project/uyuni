@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -68,7 +69,8 @@ public class SsmVerifyPackagesAction extends AbstractDatabaseAction {
 
     }
 
-    private void scheduleVerifications(SsmVerifyPackagesEvent event, User user) {
+    private void scheduleVerifications(SsmVerifyPackagesEvent event, User user)
+        throws TaskomaticApiException {
 
         Date earliest = event.getEarliest();
         ActionChain actionChain = ActionChainFactory.getActionChain(
