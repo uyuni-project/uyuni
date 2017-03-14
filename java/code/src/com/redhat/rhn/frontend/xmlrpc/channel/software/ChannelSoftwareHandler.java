@@ -2182,8 +2182,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
         return mergedErrata.toArray();
     }
 
-    private Set<Errata> mergeErrataToChannel(User user, Set<Errata> errataToMerge,
+    private Set<Errata> mergeErrataToChannel(User user, Set<Errata> errataToMergeIn,
             Channel toChannel, Channel fromChannel) {
+
+        Set<Errata> errataToMerge = new HashSet<>(errataToMergeIn);
 
         // find errata that we do not need to merge
         List<Errata> same = ErrataManager.listSamePublishedInChannels(
