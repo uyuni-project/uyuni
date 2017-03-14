@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -91,7 +92,13 @@ public class CompareConfigFilesTask extends RhnJavaJob {
 
             log.info("  saving comparison for " + server.getId());
             ActionFactory.save(act);
-            TASKOMATIC_API.scheduleActionExecution(act);
+            try {
+                TASKOMATIC_API.scheduleActionExecution(act);
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule diff action");
+                log.error(e);
+            }
         }
     }
 }
