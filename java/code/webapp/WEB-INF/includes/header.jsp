@@ -12,7 +12,6 @@
 
 <div class="navbar-header">
   <a class="navbar-brand" href="/" title="<bean:message key="layout.jsp.productname"/> homepage">
-    <img src="/img/susemanager/logo-header.png" id="rhLogo" />
     <span>SUSE<i class="fa fa-registered" aria-hidden="true"></i>Manager</span>
   </a>
   <c:if test="${! empty custom_header}">
