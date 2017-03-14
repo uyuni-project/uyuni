@@ -477,6 +477,18 @@ public class TaskomaticApi {
     }
 
     /**
+     * Schedule an Action execution for Salt minions, without forced
+     * package refresh.
+     *
+     * @param action the action to be executed
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleActionExecution(Action action)
+        throws TaskomaticApiException {
+        scheduleActionExecution(action, false);
+    }
+
+    /**
      * Delete a scheduled Action.
      *
      * @param actionId the action id to be removed

@@ -141,8 +141,8 @@ import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.SystemRecord;
@@ -176,6 +176,7 @@ import java.util.stream.Collectors;
 public class SystemHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(SystemHandler.class);
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /**
      * Get a reactivation key for this server.
@@ -3572,7 +3573,7 @@ public class SystemHandler extends BaseHandler {
             Action a = ActionManager.scheduleHardwareRefreshAction(loggedInUser, server,
                     earliestOccurrence);
             Action action = ActionFactory.save(a);
-            MessageQueue.publish(new ActionScheduledEventMessage(a));
+            TASKOMATIC_API.scheduleActionExecution(action);
             return action.getId();
         }
         catch (MissingEntitlementException e) {
@@ -3897,7 +3898,7 @@ public class SystemHandler extends BaseHandler {
         Action a = ActionManager.scheduleRebootAction(loggedInUser, server,
                 earliestOccurrence);
         a = ActionFactory.save(a);
-        MessageQueue.publish(new ActionScheduledEventMessage(a));
+        TASKOMATIC_API.scheduleActionExecution(a);
         return a.getId();
     }
 

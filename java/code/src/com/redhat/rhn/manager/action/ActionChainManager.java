@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.action;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -30,7 +29,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,6 +49,7 @@ import java.util.Set;
  * @author Silvio Moioli <smoioli@suse.de>
  */
 public class ActionChainManager {
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /**
      * Utility class constructor.
@@ -493,7 +493,7 @@ public class ActionChainManager {
             ActionManager.scheduleForExecution(action, serverIds);
             result.add(action);
 
-            MessageQueue.publish(new ActionScheduledEventMessage(action));
+            TASKOMATIC_API.scheduleActionExecution(action);
         }
         else {
             Integer nextSortOrder = sortOrder;
