@@ -205,6 +205,14 @@ DELETE FROM rhnServerNeededCache SNC
   </query>
 </write-mode>
 
+<write-mode name="insert_image_needed_errata_cache">
+  <query params="image_id, errata_id, package_id">
+INSERT INTO rhnImageNeededCache
+            (image_id, errata_id, package_id)
+     VALUES (:image_id, :errata_id, :package_id)
+  </query>
+</write-mode>
+
 <callable-mode name="update_image_needed_cache">
   <query params="image_id">
       {call update_image_needed_cache(:image_id)}
