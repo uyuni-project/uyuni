@@ -24,16 +24,34 @@
     .nav {
       margin-top: 10px;
     }
+    .navbar-header {
+      display: block;
+    }
     .navbar-utility {
-      float: none;
+      float: left;
+      width: auto;
     }
     .navbar-primary {
-      position: absolute;
-      right: 10px;
-      top: 0px;
+      float: right;
+      width: auto;
     }
   }
 }
+.header-navbar-mobile {
+  header {
+    height: auto;
+    .navbar-header {
+      display: inline-block;
+    }
+    .navbar-utility,
+    .navbar-primary {
+      display: block;
+      float: none;
+      width: 100%;
+    }
+  }
+}
+
 .responsive-main-column {
   .spacewalk-main-column-layout {
     aside {
@@ -220,7 +238,8 @@
   .sideleg-always-visible;
 }
 @media (max-width: @screen-desktop) {
-.sideleg-always-visible;
+  .sideleg-always-visible;
+  .header-navbar-responsive;
 }
 @media (max-width: @screen-tablet) {
   .columns-no-padding;
@@ -228,10 +247,11 @@
   .buttons-full-size;
   .fullPanels;
 
-  .header-navbar-responsive;
+  .header-navbar-mobile;
   .smaller-logo;
   .sideleg-always-visible;
 }
+
 //classes that will take effect only on mobiles screens
 @media (max-width: @screen-phone) {
   .logoLetter;
