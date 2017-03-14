@@ -320,7 +320,7 @@
                 <bean:message key="none.message"/>
               </c:when>
               <c:otherwise>
-                <c:forEach items="${system.entitlements}" var="entitlement">
+                <c:forEach items="${entitlements}" var="entitlement">
                  [<c:out value="${entitlement.humanReadableLabel}" />]
                 </c:forEach>
                </c:otherwise>
