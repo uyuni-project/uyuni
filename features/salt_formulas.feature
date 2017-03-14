@@ -19,6 +19,8 @@ Feature: Use salt formulas
      When I follow "Formula Catalog" in the content area
      And I follow "Formulas" in the content area
      Then I should see a "Choose formulas:" text
+     And I should see a "General System Configuration" text
+     And I should see a "Locale" text
      When I check the "locale" formula
      And I click on "Save"
      Then the "locale" formula should be checked
