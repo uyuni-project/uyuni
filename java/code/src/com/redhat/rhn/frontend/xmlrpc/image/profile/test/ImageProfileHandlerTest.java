@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.image.profile.test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
@@ -33,6 +34,8 @@ import com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.apache.commons.lang.RandomStringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,7 +78,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     public final void testListImageProfiles() {
-        ImageStore store = createImageStore("myregistry", admin);
+        createImageStore("myregistry", admin);
         int result = handler.create(admin, "newprofile1", ImageProfile.TYPE_DOCKERFILE,
                 "myregistry", "/path/to/dockerfile", "");
         assertEquals(1, result);
@@ -187,7 +190,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     public final void testDeleteProfile() {
-        ImageStore store = createImageStore("myregistry", admin);
+        createImageStore("myregistry", admin);
         int result = handler.create(admin, "myprofile", ImageProfile.TYPE_DOCKERFILE,
                 "myregistry", "/path/to/dockerfile", "");
         assertEquals(1, result);
@@ -495,7 +498,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         assertEquals("myvalue2", val.getValue());
     }
 
-    private ImageStore createImageStore(String label, User user) {
+    public static ImageStore createImageStore(String label, User user) {
         ImageStore store = new ImageStore();
         store.setLabel(label);
         store.setUri("registry.domain.top");
@@ -506,16 +509,31 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         return store;
     }
 
-    private ActivationKey createActivationKey(User user) throws Exception {
+    public static ActivationKey createActivationKey(User user) throws Exception {
         Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
         Channel childChannel = ChannelFactoryTest.createTestChannel(user);
         Set<Channel> channels = new HashSet<>();
         channels.add(baseChannel);
         channels.add(childChannel);
-        ActivationKey key = ActivationKeyFactory.createNewKey(admin, "mykey");
+        ActivationKey key = ActivationKeyFactory.createNewKey(user, "mykey");
         key.setChannels(channels);
         ActivationKeyFactory.save(key);
 
         return key;
+    }
+
+    public static ImageProfile createImageProfile(User user, ImageStore store,
+            ActivationKey key) throws Exception {
+        String profileName = "profile-" + RandomStringUtils.randomAscii(20);
+
+        DockerfileProfile dockerfileProfile = new DockerfileProfile();
+
+        dockerfileProfile.setLabel(profileName);
+        dockerfileProfile.setPath("/path/to/dockerfile");
+        dockerfileProfile.setTargetStore(store);
+        dockerfileProfile.setOrg(user.getOrg());
+        dockerfileProfile.setToken(key.getToken());
+        ImageProfileFactory.save(dockerfileProfile);
+        return dockerfileProfile;
     }
 }
