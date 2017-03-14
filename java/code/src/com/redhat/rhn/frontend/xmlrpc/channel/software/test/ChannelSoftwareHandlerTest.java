@@ -861,6 +861,46 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(mergeResult.length, fromList.size());
     }
 
+    public void testMergeAlreadyMergedErrata() throws Exception {
+        Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
+        Channel mergeTo = ChannelFactoryTest.createTestChannel(admin);
+
+        Map<String, Object> errataInfo = new HashMap<String, Object>();
+        String advisoryName = TestUtils.randomString();
+        errataInfo.put("synopsis", TestUtils.randomString());
+        errataInfo.put("advisory_name", advisoryName);
+        errataInfo.put("advisory_release", 2);
+        errataInfo.put("advisory_type", "Bug Fix Advisory");
+        errataInfo.put("product", TestUtils.randomString());
+        errataInfo.put("topic", TestUtils.randomString());
+        errataInfo.put("description", TestUtils.randomString());
+        errataInfo.put("solution", TestUtils.randomString());
+        errataInfo.put("references", TestUtils.randomString());
+        errataInfo.put("notes", TestUtils.randomString());
+
+        List<Integer> packages = new ArrayList<Integer>();
+        List<Map<String, Object>> bugs = new ArrayList<Map<String, Object>>();
+        List<String> keywords = new ArrayList<String>();
+        List<String> channels = new ArrayList<String>();
+        channels.add(mergeFrom.getLabel());
+        channels.add(mergeTo.getLabel());
+
+        Errata errata = errataHandler.create(admin, errataInfo,
+            bugs, keywords, packages, true, channels);
+        TestUtils.flushAndEvict(errata);
+
+        List<Map<String, Object>> fromList = handler
+                .listErrata(admin, mergeFrom.getLabel());
+        assertEquals(1, fromList.size());
+
+        Object[] mergeResult = handler.mergeErrata(
+            admin, mergeFrom.getLabel(), mergeTo.getLabel());
+
+        fromList = handler.listErrata(admin, mergeFrom.getLabel());
+        assertEquals(1, fromList.size());
+        assertEquals(0, mergeResult.length);
+    }
+
     public void testMergeErrataByDate() throws Exception {
         Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
         Channel mergeTo = ChannelFactoryTest.createTestChannel(admin);
