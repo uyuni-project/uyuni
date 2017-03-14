@@ -33,6 +33,27 @@ rescue Timeout::Error
     raise "ERR: Machine didn't Went-up!"
 end
 
+Then(/^I apply highstate on Sles minion$/) do
+  cmd = "salt '*minsles12sp2*' state.highstate"
+  out, code = $server.run(cmd)
+  puts out
+  raise "Apply highstate FAILED!"  if code.nonzero?
+end
+
+Then(/^I wait until "([^"]*)" service is up and running on "([^"]*)"$/) do |service, target|
+  cmd = "systemctl is-active #{service}"
+  node = get_target(target)
+  Timeout.timeout(200) do
+    loop do
+      out, code = node.run(cmd, false, 200)
+      if code.zero?
+        puts "#{service} service is up and running \n #{out}"
+        break
+      end
+    end
+  end
+end
+
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
   $command_output = sshcmd("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", ignore_err: true)[:stdout]
 end
