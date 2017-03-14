@@ -16,15 +16,25 @@ const Link = (props) =>
   ;
 
 const NodeLink = (props) =>
-  <div className={props.isLeaf ? " leafLink " : " nodeLink "}>
+  <div className={props.isLeaf ? " leafLink " : " nodeLink "} >
     {
       !props.isLeaf && !props.isSearchActive ?
-      <div className="showSubMenu" onClick={props.handleClick}>
-        <i className={props.isOpen ? "fa fa-minus-square" : "fa fa-plus-square"}></i>
-      </div>
+      <i className={'showSubMenu ' + (props.isOpen ? "fa fa-angle-down" : "fa fa-angle-right")}></i>
       : null
     }
-    {props.children}
+    {
+      props.isLeaf ?
+      <Link url={props.url} target={props.target} label={props.label} />
+      : <div className="node-text" onClick={props.handleClick}>
+          {props.icon ? <i className={'fa ' + props.icon}></i> : null}{props.label}
+        </div>
+    }
+    {
+      !props.isLeaf ?
+      <Link url={props.url} title={props.label} label={<i className="fa fa-bolt"></i>}
+        cssClass="direct-link" target={props.target} />
+      : null
+    }
   </div>;
 
 const Element = React.createClass({
@@ -82,12 +92,12 @@ const Element = React.createClass({
           (this.isLeaf(element) ? " leaf " : " node ")
           }
         >
-          <NodeLink isLeaf={this.isLeaf(element)}
+          <NodeLink isLeaf={this.isLeaf(element)} url={this.getUrl(element)}
+              label={element.label} target={element.target}
               handleClick={this.isLeaf(element) ? null : this.toggleView}
-              isOpen={this.state.open} isSearchActive={this.props.searchString}>
-              <Link url={this.getUrl(element)}
-                  label={element.label} target={element.target} icon={element.icon} />
-          </NodeLink>
+              isOpen={this.state.open} isSearchActive={this.props.searchString}
+              icon={element.icon}
+          />
           {
             this.isLeaf(element) ? null :
             <MenuLevel level={this.props.level+1} elements={element.submenu}
