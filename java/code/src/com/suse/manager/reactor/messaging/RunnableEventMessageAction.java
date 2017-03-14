@@ -26,7 +26,7 @@ public class RunnableEventMessageAction extends AbstractDatabaseAction {
 
     /* Logger for this class */
     private static final Logger LOG = Logger
-            .getLogger(ActionScheduledEventMessageAction.class);
+            .getLogger(RunnableEventMessageAction.class);
 
     @Override
     protected void doExecute(EventMessage msg) {
