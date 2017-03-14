@@ -326,32 +326,28 @@ header, nav.navbar-pf {
       text-align: center;
       padding: 0 10px;
     }
-    a {
+    a, .node-text {
       display: inline-block;
       padding: 6px 2px;
       color: @spacewalk-aside-menu-hyperlink;
       width: 100%;
       vertical-align: middle;
+      cursor:pointer;
     }
-    a:hover, a:focus {
+    a:hover, a:focus,
+    .node-text:hover, .node-text:focus {
       text-decoration: none;
       color: @spacewalk-aside-menu-hyperlink-hover;
     }
-    div.showSubMenu {
+    .showSubMenu {
       display: inline-block;
       font-size: inherit;
       color: @spacewalk-gray-light;
       height: 100%;
       width: 19px;
-      margin-left: -19px;
+      margin: 0 0 0 -19px;
       text-align: center;
       cursor: default;
-      i {
-        margin: 0;
-      }
-    }
-    div.showSubMenu:hover {
-      color: @spacewalk-aside-menu-hyperlink-hover;
     }
     ul, li {
       padding: 0;
@@ -367,6 +363,24 @@ header, nav.navbar-pf {
       margin-left: 18px;
       display: block;
       border-right: 4px solid transparent;
+    }
+    div.leafLink > a {
+      width: 100%;
+    }
+    div.nodeLink {
+      div.node-text {
+        display: inline-block;
+        width: 85%;
+      }
+      a.direct-link {
+        background: none;
+        width: 15%;
+        text-align: center;
+        border-left: 1px dashed #333;
+      }
+      a.direct-link:hover {
+        background-color: lighten(@spacewalk-blue-light, 5%);
+      }
     }
     /* First Level */
     > ul {
@@ -401,14 +415,14 @@ header, nav.navbar-pf {
     ul {
       padding-left: 8px;
       li {
-        a {
+        a, .node-text {
           border-right: 4px solid transparent;
           span {
             padding-right: 10px;
           }
         }
       }
-      > li{
+      > li {
         > .nodeLink:hover,
         > .leafLink:hover {
           border-right-color: @spacewalk-aside-menu-hyperlink-hover;
@@ -427,7 +441,7 @@ header, nav.navbar-pf {
         padding-top: 1px;
         li {
           > div {
-            > a {
+            > a, .node-text {
               padding-left: 10px;
               background-image: url('/img/susemanager/sub-list.png');
               background-repeat: no-repeat;
@@ -435,7 +449,8 @@ header, nav.navbar-pf {
             }
           }
         }
-        > li:last-of-type > div > a  {
+        > li:last-of-type > div > a,
+        > li:last-of-type > div > .node-text  {
           background-image: url('/img/susemanager/sub-list-last.png');
         }
         > li:last-of-type ul {
