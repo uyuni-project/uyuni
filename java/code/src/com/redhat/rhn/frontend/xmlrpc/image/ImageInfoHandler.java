@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.image;
 
+import com.redhat.rhn.FaultException;
+import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
@@ -22,6 +25,7 @@ import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
@@ -29,9 +33,13 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * ImageInfoHandler
@@ -110,5 +118,106 @@ public class ImageInfoHandler extends BaseHandler {
 
         return ImageInfoFactory.scheduleBuild(buildHostId, version, prof,
                 earliestOccurrence, loggedInUser);
+    }
+
+    /**
+     * Returns a list of all errata that are relevant for the image
+     *
+     * @param loggedInUser The current user
+     * @param imageId The id of the image in question
+     * @return Returns an array of maps representing the errata that can be applied
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * imageId cannot be found.
+     *
+     * @xmlrpc.doc Returns a list of all errata that are relevant for the image
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "imageId")
+     * @xmlrpc.returntype
+     *      #array()
+     *          $ErrataOverviewSerializer
+     *      #array_end()
+     */
+    public List<ErrataOverview> getRelevantErrata(User loggedInUser, long imageId) {
+        ensureImageAdmin(loggedInUser);
+        Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
+                loggedInUser.getOrg());
+        if (!opt.isPresent()) {
+            throw new NoSuchImageException();
+        }
+
+        List<Long> eids = opt.get().getPatches().stream()
+                .map(PublishedErrata::getId)
+                .collect(Collectors.toList());
+        return ErrataFactory.search(eids, loggedInUser.getOrg());
+    }
+
+    /**
+     * List the installed packages on the given Image.
+     * @param loggedInUser The current user
+     * @param imageId The id of the image in question
+     * @return Returns an array of maps representing the packages installed on an image
+     * @throws FaultException A FaultException is thrown if the image corresponding to
+     * imageId cannot be found.
+     *
+     * @xmlrpc.doc List the installed packages on the given image.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "imageId")
+     * @xmlrpc.returntype
+     *      #array()
+     *          #struct("package")
+     *                 #prop("string", "name")
+     *                 #prop("string", "version")
+     *                 #prop("string", "release")
+     *                 #prop("string", "epoch")
+     *                 #prop("string", "arch")
+     *          #struct_end()
+     *      #array_end()
+     */
+    public List<Map<String, Object>> listPackages(User loggedInUser, Long imageId)
+            throws FaultException {
+        ensureImageAdmin(loggedInUser);
+        Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
+                loggedInUser.getOrg());
+        if (!opt.isPresent()) {
+            throw new NoSuchImageException();
+        }
+        List<Map<String, Object>> ret = new ArrayList<>();
+        opt.get().getPackages().forEach(pkg -> {
+            Map<String, Object> pmap = new HashMap<>();
+            pmap.put("name", pkg.getName().getName());
+            pmap.put("version", pkg.getEvr().getVersion());
+            pmap.put("release", pkg.getEvr().getRelease());
+            pmap.put("epoch", pkg.getEvr().getEpoch());
+            pmap.put("arch", pkg.getArch().getLabel());
+            ret.add(pmap);
+        });
+        return ret;
+    }
+
+    /**
+     * Get the custom data values defined for the Image
+     * @param loggedInUser The current user
+     * @param imageId the image ID
+     * @return Returns a map containing the defined custom data values for the
+     * given Image.
+     *
+     * @xmlrpc.doc Get the custom data values defined for the Image.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "imageId")
+     * @xmlrpc.returntype
+     *    #struct("Map of custom labels to custom values")
+     *      #prop("string", "custom info label")
+     *      #prop("string", "value")
+     *    #struct_end()
+     */
+    public Map<String, String> getCustomValues(User loggedInUser, Long imageId) {
+        ensureImageAdmin(loggedInUser);
+        Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
+                loggedInUser.getOrg());
+        if (!opt.isPresent()) {
+            throw new NoSuchImageException();
+        }
+        return opt.get().getCustomDataValues().stream()
+                .collect(Collectors.toMap(a -> a.getKey().getLabel(), a -> a.getValue()));
     }
 }
