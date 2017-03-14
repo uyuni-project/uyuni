@@ -4,12 +4,13 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 
 const Link = (props) =>
-  <a href={props.url} target={props.target}>
+  <a href={props.url} className={props.cssClass} target={props.target} title={props.title}>
     {
       props.icon ?
       <i className={'fa ' + props.icon}></i>
       : null
     }
+    {props.responsiveLabel}
     {props.label}
   </a>
   ;
@@ -161,7 +162,12 @@ const Breadcrumb = React.createClass({
     }
     return (
       <div>
-        <Link key='home' url='/' label={<i className='fa fa-home'></i>} target='' />
+        <Link key='home' cssClass="navbar-brand" url='/'
+          responsiveLabel={<i className='fa fa-home' title="SUSE Manager homepage"></i>}
+          label={<span>SUSE<i className="fa fa-registered"></i>Manager</span>}
+          target=''
+          title={t("SUSE Manager homepage")}
+        />
         <span>></span>
         {
           breadcrumbArray.map((a, i) => {

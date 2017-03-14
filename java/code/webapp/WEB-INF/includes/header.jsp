@@ -11,9 +11,7 @@
 </a>
 
 <div class="navbar-header">
-  <a class="navbar-brand" href="/" title="<bean:message key="layout.jsp.productname"/> homepage">
-    <span>SUSE<i class="fa fa-registered" aria-hidden="true"></i>Manager</span>
-  </a>
+  <div id="breadcrumb"></div>
   <c:if test="${! empty custom_header}">
     <div class="custom-text">
       <c:out value="${custom_header}" escapeXml="false"/>
