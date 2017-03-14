@@ -17,7 +17,7 @@
       <jsp:include page="/WEB-INF/includes/header.jsp" />
     </header>
     <div class="spacewalk-main-column-layout">
-      <aside id="spacewalk-aside" class="collapse">
+      <aside id="spacewalk-aside" class="navbar-collapse collapse">
         <div id="nav"></div>
         <jsp:include page="/WEB-INF/includes/leftnav.jsp" />
       </aside>

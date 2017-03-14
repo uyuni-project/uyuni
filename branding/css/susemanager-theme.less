@@ -125,17 +125,10 @@ p {
   }
 }
 
-
 /* override spacewalk rules */
 section {
   transition: none!important;
   -webkit-transition: none!important;
-}
-
-
-.indipendent-scroll {
-  overflow-y: auto!important;
-  height: 100%!important;
 }
 
 .spacewalk-main-column-layout {
@@ -144,13 +137,11 @@ section {
   margin-right: 0;
   margin-left: 0;
    aside {
-     display: block;
     .make-xs-column(2);
     background: @spacewalk-aside;
     border-right: 1px solid @spacewalk-aside-border;
     /* erasing the predefined paddings in the columns */
     padding: 1em 0 2em 0;
-    .indipendent-scroll;
   }
 
   /* fixing margins in the 1st and last columns */
@@ -160,7 +151,6 @@ section {
     padding-right: 2em;
     padding-top: 0;
     padding-bottom: 2em;
-    .indipendent-scroll;
   }
 }
 
