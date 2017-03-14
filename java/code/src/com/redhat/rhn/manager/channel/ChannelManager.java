@@ -68,6 +68,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import org.apache.commons.lang.StringUtils;
@@ -601,11 +602,13 @@ public class ChannelManager extends BaseManager {
      * @param label Channel label
      * @throws InvalidChannelRoleException thrown if User does not have access
      * to delete channel.
-     * @throws NoSuchChannelException thrown if no channel exists with the
-     * given label
+     * @throws NoSuchChannelException thrown if no channel exists with the given
+     * label
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static void deleteChannel(User user, String label)
-        throws InvalidChannelRoleException, NoSuchChannelException {
+        throws InvalidChannelRoleException, NoSuchChannelException, TaskomaticApiException {
         deleteChannel(user, label, false);
     }
 
@@ -618,9 +621,11 @@ public class ChannelManager extends BaseManager {
      * to delete channel.
      * @throws NoSuchChannelException thrown if no channel exists with the
      * given label
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static void deleteChannel(User user, String label, boolean skipTaskomatic)
-        throws InvalidChannelRoleException, NoSuchChannelException {
+        throws InvalidChannelRoleException, NoSuchChannelException, TaskomaticApiException {
 
         Channel toRemove = ChannelFactory.lookupByLabel(user.getOrg(), label);
 
@@ -656,8 +661,11 @@ public class ChannelManager extends BaseManager {
      * Unschedule eventual repo sync schedule
      * @param channel relevant channel
      * @param user executive
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public static void unscheduleEventualRepoSync(Channel channel, User user) {
+    public static void unscheduleEventualRepoSync(Channel channel, User user)
+        throws TaskomaticApiException {
         TaskomaticApi tapi = new TaskomaticApi();
         try {
             String cronExpr = tapi.getRepoSyncSchedule(channel, user);
@@ -667,7 +675,7 @@ public class ChannelManager extends BaseManager {
                 tapi.unscheduleRepoSync(channel, user);
             }
         }
-        catch (RuntimeException e) {
+        catch (TaskomaticApiException e) {
             log.warn("Failed to unschedule repo sync for channel " + channel.getLabel());
             throw e;
         }

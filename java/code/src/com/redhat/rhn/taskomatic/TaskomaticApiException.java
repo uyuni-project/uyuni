@@ -19,7 +19,7 @@ package com.redhat.rhn.taskomatic;
  * TaskomaticApiException
  * @version $Rev$
  */
-public class TaskomaticApiException extends RuntimeException {
+public class TaskomaticApiException extends Exception {
 
     /**
      * constructor
