@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.utils.SaltUtils;
@@ -136,7 +137,15 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId())
                     .ifPresent(minionServer -> {
-                ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
+                try {
+                    ActionManager.schedulePackageRefresh(minionServer.getOrg(),
+                        minionServer);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Could not schedule package refresh for minion: " +
+                        minionServer.getMinionId());
+                    throw new RuntimeException(e);
+                }
             });
         }
 

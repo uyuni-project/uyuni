@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * Handles removing packages from servers in the SSM.
@@ -43,7 +44,7 @@ public class SsmUpgradePackagesAction extends SsmPackagesAction {
     }
 
     protected List<Action> doSchedule(SsmPackageEvent event, User user, List<Long> sids,
-        Date earliest, ActionChain actionChain) {
+        Date earliest, ActionChain actionChain) throws TaskomaticApiException {
 
         SsmUpgradePackagesEvent supe = (SsmUpgradePackagesEvent) event;
         Map<Long, List<Map<String, Long>>> packageListItems = supe.getSysPackageSet();

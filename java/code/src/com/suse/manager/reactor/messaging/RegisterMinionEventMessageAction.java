@@ -47,6 +47,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -644,7 +645,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     }
 
     private void triggerHardwareRefresh(MinionServer server) {
-        ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server, new Date());
+        try {
+            ActionManager.scheduleHardwareRefreshAction(server.getOrg(), server,
+                    new Date());
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Could not schedule hardware refresh for system: " + server.getId());
+            throw new RuntimeException(e);
+        }
     }
-
 }
