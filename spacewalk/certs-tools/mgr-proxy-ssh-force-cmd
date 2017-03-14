@@ -1,0 +1,8 @@
+#!/bin/bash -fue
+set -- $SSH_ORIGINAL_COMMAND
+cmd="$1"
+shift
+case "$cmd" in
+  '/usr/bin/scp'|'/usr/bin/ssh'|'cat') exec "$cmd" "$@" ;;
+  *) echo "ERROR: command not allowed" ;;
+esac

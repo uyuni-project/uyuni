@@ -31,6 +31,7 @@ public class JSONBootstrapHosts {
     private String password;
     private List<String> activationKeys;
     private boolean ignoreHostKeys;
+    private Long proxy;
 
     /**
      * @return the host
@@ -72,6 +73,13 @@ public class JSONBootstrapHosts {
      */
     public List<String> getActivationKeys() {
         return activationKeys;
+    }
+
+    /**
+     * @return the id of the proxy
+     */
+    public Long getProxy() {
+        return proxy;
     }
 
     /**

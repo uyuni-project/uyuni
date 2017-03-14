@@ -119,7 +119,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      */
     public void doExecute(EventMessage msg) {
         registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false,
-                Optional.empty());
+                Optional.empty(), Optional.empty());
     }
 
     /**
@@ -128,9 +128,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      * @param minionId minion id
      * @param activationKeyOverride label of activation key to be applied to the system.
      *                              If left empty, activation key from grains will be used.
+     * @param proxyId the proxy to which the minion connects, if any
      */
-    public void registerSSHMinion(String minionId, Optional<String> activationKeyOverride) {
-        registerMinion(minionId, true, activationKeyOverride);
+    public void registerSSHMinion(String minionId, Optional<Long> proxyId,
+                                  Optional<String> activationKeyOverride) {
+        registerMinion(minionId, true, proxyId, activationKeyOverride);
     }
 
     /**
@@ -142,7 +144,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
      *                              If left empty, activation key from grains will be used.
      */
     private void registerMinion(String minionId, boolean isSaltSSH,
-            Optional<String> activationKeyOverride) {
+                                Optional<Long> saltSSHProxyId,
+                                Optional<String> activationKeyOverride) {
         // Match minions via their machine id
         Optional<String> optMachineId = SALT_SERVICE.getMachineId(minionId);
         if (!optMachineId.isPresent()) {
@@ -291,11 +294,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     .orElseThrow(() -> new SaltException(
                             "master not found in minion configuration"));
 
-            ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
-                Set<ServerPath> proxyPaths = ServerFactory
-                        .createServerPaths(server, proxy, master);
-                server.getServerPaths().addAll(proxyPaths);
-            });
+            setServerPaths(server, master, isSaltSSH, saltSSHProxyId);
 
             ServerFactory.save(server);
 
@@ -395,6 +394,26 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
+        }
+    }
+
+    private void setServerPaths(MinionServer server, String master,
+                                boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
+        if (isSaltSSH) {
+            saltSSHProxyId
+                .map(proxyId -> ServerFactory.lookupById(proxyId))
+                .ifPresent(proxy -> {
+                    Set<ServerPath> proxyPaths = ServerFactory
+                            .createServerPaths(server, proxy, proxy.getHostname());
+                    server.getServerPaths().addAll(proxyPaths);
+                });
+        }
+        else {
+            ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
+                Set<ServerPath> proxyPaths = ServerFactory
+                        .createServerPaths(server, proxy, master);
+                server.getServerPaths().addAll(proxyPaths);
+            });
         }
     }
 

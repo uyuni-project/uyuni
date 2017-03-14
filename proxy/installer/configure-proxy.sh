@@ -610,6 +610,23 @@ sed -e "s|^[\t ]*SSLCertificateFile.*$|SSLCertificateFile $HTTPDCONF_DIR/ssl.crt
     -e "s|</VirtualHost>|SSLProtocol all -SSLv2 -SSLv3\nRewriteEngine on\nRewriteOptions inherit\nSSLProxyEngine on\n</VirtualHost>|" \
     < $HTTPDCONF_DIR/vhosts.d/ssl.conf.bak  > $HTTPDCONF_DIR/vhosts.d/ssl.conf
 
+
+default_or_input "Do you want to use an existing ssh key for proxying ssh-push Salt minions ?" USE_EXISTING_SSH_PUSH_KEY 'y/N'
+USE_EXISTING_SSH_PUSH_KEY=$(yes_no $USE_EXISTING_SSH_PUSH_KEY)
+
+if [ "$USE_EXISTING_SSH_PUSH_KEY" -eq "1" ]; then
+    default_or_input "Private SSH key for connecting to the next proxy in the chain (if any) for ssh-push minions" EXISTING_SSH_KEY ''
+    while [[ -z "$EXISTING_SSH_KEY" || ( ! -r "$EXISTING_SSH_KEY" || ! -r "${EXISTING_SSH_KEY}.pub" ) ]]; do
+        echo "'$EXISTING_SSH_KEY' or '${EXISTING_SSH_KEY}.pub' don't exist or are not readable."
+        unset EXISTING_SSH_KEY
+        default_or_input "Supply a valid path" EXISTING_SSH_KEY ''
+    done
+    /usr/sbin/mgr-proxy-ssh-push-init -k $EXISTING_SSH_KEY
+else
+    /usr/sbin/mgr-proxy-ssh-push-init
+fi
+
+
 CHANNEL_LABEL="rhn_proxy_config_$SYSTEM_ID"
 default_or_input "Create and populate configuration channel $CHANNEL_LABEL?" POPULATE_CONFIG_CHANNEL 'Y/n'
 POPULATE_CONFIG_CHANNEL=$(yes_no $POPULATE_CONFIG_CHANNEL)
