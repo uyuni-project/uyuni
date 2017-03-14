@@ -52,7 +52,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -216,10 +215,14 @@ public class SaltSSHService {
         return futures;
     }
 
-    public static List<String> proxyPathToHostnames(Set<ServerPath> serverPaths, Server lastProxy) {
-        if (serverPaths == null || serverPaths.isEmpty()) {
-            return Collections.emptyList();
-        }
+    /**
+     * @param serverPaths a set ot {@link ServerPath}
+     * @param lastProxy the last proxy in the chain
+     * @return a list of proxy hostnames, the last one being connected
+     * directly to the minion
+     */
+    public static List<String> proxyPathToHostnames(Set<ServerPath> serverPaths,
+                                                    Server lastProxy) {
         String lastProxyHostname = lastProxy.getHostname();
         return proxyPathToHostnames(serverPaths, Optional.of(lastProxyHostname));
     }
