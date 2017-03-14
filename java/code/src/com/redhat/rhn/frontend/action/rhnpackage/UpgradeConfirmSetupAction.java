@@ -28,7 +28,6 @@ import java.util.Map;
 
 /**
  * UpgradeConfirmSetupAction
- * @version $Rev$
  */
 public class UpgradeConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     private static final UpgradableListSetupAction DECL_ACTION =

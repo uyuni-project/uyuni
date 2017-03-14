@@ -45,9 +45,7 @@ import redstone.xmlrpc.XmlRpcFault;
 
 
 /**
- *
  * TaskomaticApi
- * @version $Rev$
  */
 public class TaskomaticApi {
 

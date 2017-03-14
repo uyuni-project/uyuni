@@ -55,7 +55,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ScheduleKickstartAction
- * @version $Rev$
  */
 public class SsmKSScheduleAction extends RhnAction implements Listable {
     private static final String SCHEDULE_TYPE_IP = "isIP";

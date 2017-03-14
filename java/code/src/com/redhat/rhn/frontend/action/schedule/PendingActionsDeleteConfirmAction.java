@@ -47,7 +47,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * PendingActionsConfirmAction
- * @version $Rev: 101893 $
  */
 public class PendingActionsDeleteConfirmAction extends RhnAction implements Listable {
 

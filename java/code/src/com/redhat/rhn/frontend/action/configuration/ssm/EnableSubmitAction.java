@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * EnableSubmitAction
  * Does all the real work for enabling configuration.
- * @version $Rev$
  */
 public class EnableSubmitAction extends RhnListDispatchAction {
 

@@ -27,7 +27,6 @@ import java.util.List;
 
 /**
  * ScheduleHandler
- * @version $Rev$
  * @xmlrpc.namespace schedule
  * @xmlrpc.doc Methods to retrieve information about scheduled actions.
  */

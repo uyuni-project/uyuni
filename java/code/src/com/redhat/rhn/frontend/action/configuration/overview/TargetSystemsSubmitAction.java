@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
  * TargetSystemsSubmitAction
  * Handles pagination and RhnSet until the enable button is clicked, then
  * redirects to the confirm page.
- * @version $Rev$
  */
 public class TargetSystemsSubmitAction extends RhnSetAction {
 

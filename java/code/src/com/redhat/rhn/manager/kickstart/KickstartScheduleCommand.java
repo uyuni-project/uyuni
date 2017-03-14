@@ -109,8 +109,6 @@ import java.util.Set;
  * Because of the distinction between host and target servers, constructors in this
  * class which accept a single server ID will automatically assume that the system
  * being kickstarted is both the host and the target system.
- *
- * @version $Rev $
  */
 public class KickstartScheduleCommand extends BaseSystemOperation {
 

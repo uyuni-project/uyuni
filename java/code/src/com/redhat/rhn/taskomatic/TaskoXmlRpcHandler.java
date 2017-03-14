@@ -29,9 +29,7 @@ import java.util.Map;
 
 
 /**
- *
  * TaskoXmlRpcHandler
- * @version $Rev$
  */
 public class TaskoXmlRpcHandler {
 

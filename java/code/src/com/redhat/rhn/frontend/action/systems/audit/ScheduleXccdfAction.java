@@ -44,9 +44,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * ScheduleXccdfAction
- * @version $Rev$
  */
-
 public class ScheduleXccdfAction extends ScapSetupAction {
 
     /** Logger instance */

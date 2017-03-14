@@ -48,8 +48,6 @@ import java.util.regex.Pattern;
 
 /**
  * Provides frequently used data for scheduling a kickstart
- *
- * @version $Rev $
  */
 public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
 

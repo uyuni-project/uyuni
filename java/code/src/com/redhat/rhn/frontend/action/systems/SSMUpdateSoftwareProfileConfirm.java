@@ -50,7 +50,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SSMUpdateSoftwareProfileConfirm
- * @version $Rev$
  */
 public class SSMUpdateSoftwareProfileConfirm extends RhnAction implements Listable {
 

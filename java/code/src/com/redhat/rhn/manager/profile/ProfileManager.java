@@ -64,7 +64,6 @@ import java.util.Set;
 
 /**
  * ProfileManager
- * @version $Rev$
  */
 public class ProfileManager extends BaseManager {
 

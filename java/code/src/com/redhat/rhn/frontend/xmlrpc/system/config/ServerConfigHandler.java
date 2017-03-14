@@ -47,7 +47,6 @@ import java.util.Set;
 
 /**
  * ServerConfigChannelHandler
- * @version $Rev$
  * @xmlrpc.namespace system.config
  * @xmlrpc.doc Provides methods to access and modify many aspects of
  * configuration channels and server association.

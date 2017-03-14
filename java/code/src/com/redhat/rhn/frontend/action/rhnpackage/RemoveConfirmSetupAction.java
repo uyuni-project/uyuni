@@ -28,7 +28,6 @@ import java.util.Map;
 
 /**
  * RemoveConfirmSetupAction
- * @version $Rev$
  */
 public class RemoveConfirmSetupAction extends BaseSystemPackagesConfirmAction {
 

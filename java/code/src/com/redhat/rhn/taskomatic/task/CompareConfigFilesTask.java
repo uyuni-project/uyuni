@@ -36,8 +36,6 @@ import java.util.Set;
 /**
  * Compare Config Files
  *  Schedules a comparison of config files on all systems
- *
- * @version $Rev$
  */
 public class CompareConfigFilesTask extends RhnJavaJob {
 

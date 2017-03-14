@@ -28,7 +28,6 @@ import java.util.Map;
 
 /**
  * VerifyConfirmSetupAction
- * @version $Rev$
  */
 public class VerifyConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     private static final VerifyPackageSetupAction DECL_ACTION =

@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * PackageIndexAction
- * @version $Rev$
  */
 public class PackageIndexAction extends LookupDispatchAction {
 

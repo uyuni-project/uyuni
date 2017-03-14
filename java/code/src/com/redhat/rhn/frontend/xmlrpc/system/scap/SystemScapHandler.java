@@ -37,7 +37,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * SystemScapHandler
- * @version $Rev$
  * @xmlrpc.namespace system.scap
  * @xmlrpc.doc Provides methods to schedule SCAP scans and access the results.
  */
