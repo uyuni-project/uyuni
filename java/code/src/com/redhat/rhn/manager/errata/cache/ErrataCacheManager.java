@@ -409,4 +409,20 @@ public class ErrataCacheManager extends HibernateFactory {
 
     }
 
+    /**
+     * Inserts record into ImageNeededErrata cache table
+     * @param iid image Id
+     * @param eid Errata Id
+     * @param pid Package Id
+     * @return number of rows affected.
+     */
+    public static int insertImageNeededErrataCache(Long iid, Long eid, Long pid) {
+        WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
+                "insert_image_needed_errata_cache");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("image_id", iid);
+        params.put("errata_id", eid);
+        params.put("package_id", pid);
+        return m.executeUpdate(params);
+    }
 }
