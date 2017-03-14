@@ -53,7 +53,6 @@ import java.util.Set;
 
 /**
  * ConfigHandler
- * @version $Rev$
  * @xmlrpc.namespace configchannel
  * @xmlrpc.doc Provides methods to access and modify many aspects of
  * configuration channels.

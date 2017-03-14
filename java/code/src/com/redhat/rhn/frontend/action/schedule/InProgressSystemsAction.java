@@ -42,7 +42,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * InProgressSystemsAction
- * @version $Rev$
  */
 public class InProgressSystemsAction extends RhnSetAction {
 

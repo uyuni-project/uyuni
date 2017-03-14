@@ -94,7 +94,6 @@ import redstone.xmlrpc.XmlRpcFault;
  * ErrataManager is the singleton class used to provide business operations
  * on Errata, where those operations interact with other top tier business
  * objects.  Operations that require changes to the Errata.
- * @version $Rev$
  */
 public class ErrataManager extends BaseManager {
 

@@ -34,9 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
  * SSMScheduleCommand
- * @version $Rev$
  */
 public class SSMScheduleCommand {
     private static Logger log = Logger.getLogger(SSMScheduleCommand.class);

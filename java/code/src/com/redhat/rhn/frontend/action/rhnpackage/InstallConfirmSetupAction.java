@@ -28,7 +28,6 @@ import java.util.Map;
 
 /**
  * InstallConfirmSetupAction
- * @version $Rev$
  */
 public class InstallConfirmSetupAction extends BaseSystemPackagesConfirmAction {
 

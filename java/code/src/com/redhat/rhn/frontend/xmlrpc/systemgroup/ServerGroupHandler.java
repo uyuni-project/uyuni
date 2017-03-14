@@ -45,7 +45,6 @@ import java.util.List;
 
 /**
  * ServerGroupHandler
- * @version $Rev$
  * @xmlrpc.namespace systemgroup
  * @xmlrpc.doc Provides methods to access and modify system groups.
  */

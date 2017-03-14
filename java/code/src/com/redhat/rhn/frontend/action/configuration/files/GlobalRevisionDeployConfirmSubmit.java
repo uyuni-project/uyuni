@@ -50,7 +50,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * GlobalRevisionDeployConfirmSubmit
- * @version $Rev$
  */
 public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
 

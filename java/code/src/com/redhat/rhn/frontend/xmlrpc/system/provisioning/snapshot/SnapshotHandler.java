@@ -42,7 +42,6 @@ import java.util.Set;
 
 /**
  * SnapshotHandler
- * @version $Rev$
  * @xmlrpc.namespace system.provisioning.snapshot
  * @xmlrpc.doc Provides methods to access and delete system snapshots.
  */

@@ -33,8 +33,6 @@ import java.util.Map;
 
 /**
  * Command class for schedule virtualization-related actions
- *
- * @version $Rev $
  */
 public class VirtualizationActionCommand {
 

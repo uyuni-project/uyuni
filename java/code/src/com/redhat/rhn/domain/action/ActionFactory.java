@@ -89,7 +89,6 @@ import static java.util.stream.Collectors.toList;
  * ActionFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.action.Action objects from the
  * database.
- * @version $Rev$
  */
 public class ActionFactory extends HibernateFactory {
 

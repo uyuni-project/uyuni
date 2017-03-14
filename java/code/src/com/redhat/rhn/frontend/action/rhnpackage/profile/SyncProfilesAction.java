@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SyncProfilesAction
- * @version $Rev$
  */
 public class SyncProfilesAction extends BaseProfilesAction {
 

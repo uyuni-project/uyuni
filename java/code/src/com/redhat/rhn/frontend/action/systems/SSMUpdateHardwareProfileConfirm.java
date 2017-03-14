@@ -50,7 +50,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SSMUpdateHardwareProfileConfirm
- * @version $Rev$
  */
 public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listable {
     /** Logger instance */

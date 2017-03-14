@@ -43,7 +43,6 @@ import static java.util.Collections.singleton;
 
 /**
  * SystemPendingEventsCancelAction
- * @version $Rev$
  */
 public class SystemPendingEventsCancelAction extends RhnAction {
 

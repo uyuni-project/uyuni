@@ -41,7 +41,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 /**
  * SSM OpenSCAP XCCDF scanning.
  * This action dispatches the second submit and commits the action.
- * @version $Rev$
  */
 public class SsmScheduleXccdfConfirmAction extends BaseSsmScheduleXccdfAction {
 

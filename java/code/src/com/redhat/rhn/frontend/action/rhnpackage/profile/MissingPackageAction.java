@@ -42,7 +42,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * MissingPackageAction
- * @version $Rev$
  */
 public class MissingPackageAction extends BaseProfilesAction {
 

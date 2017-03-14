@@ -49,7 +49,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ErrataConfirmAction
- * @version $Rev$
  */
 public class ErrataConfirmAction extends RhnListDispatchAction {
 

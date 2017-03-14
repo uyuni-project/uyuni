@@ -48,7 +48,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * VirtualGuestsListAction
- * @version $Rev$
  */
 public class VirtualGuestsConfirmAction extends BaseSystemListAction {
 

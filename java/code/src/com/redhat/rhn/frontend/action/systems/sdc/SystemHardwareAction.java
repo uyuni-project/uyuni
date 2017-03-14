@@ -52,7 +52,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * SystemHardwareAction handles the interaction of the ChannelDetails page.
- * @version $Rev$
  */
 public class SystemHardwareAction extends RhnAction {
 
