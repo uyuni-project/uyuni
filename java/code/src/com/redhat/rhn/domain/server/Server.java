@@ -1497,6 +1497,16 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Return <code>true</code> if this system has container buildhost entitlement,
+     * <code>false</code> otherwise.
+     * @return <code>true</code> if this system has container buildhost entitlement,
+     *      <code>false</code> otherwise.
+     */
+    public boolean hasContainerBuildHostEntitlement() {
+        return hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST);
+    }
+
+    /**
      * Return <code>true</code> if this is a bare metal system.
      * @return <code>true</code> if this is bare metal
      */
