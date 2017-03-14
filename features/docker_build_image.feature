@@ -16,7 +16,7 @@ Feature:  Build Container images with SUSE Manager
 
   Scenario: Apply the highstate to container buid host
   Given I am on the Systems overview page of this "sle-minion"
-  And I should see a "System Types: 	[Salt] [Container Build Host]" text
+  And I should see a "[Container Build Host]" text
   And I follow "States" in the content area
   And I follow "Highstate"
 
