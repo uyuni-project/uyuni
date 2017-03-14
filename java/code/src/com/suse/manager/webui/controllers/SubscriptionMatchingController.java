@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.PinnedSubscriptionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -108,8 +109,13 @@ public class SubscriptionMatchingController {
      * @return null
      */
     public static String scheduleMatcherRun(Request request, Response response, User user) {
-        new TaskomaticApi().scheduleSingleSatBunch(user, "gatherer-matcher-bunch",
-                new HashMap<>());
+        try {
+            new TaskomaticApi().scheduleSingleSatBunch(user, "gatherer-matcher-bunch",
+                    new HashMap<>());
+        }
+        catch (TaskomaticApiException e) {
+            new RuntimeException(e);
+        }
         return "";
     }
 
