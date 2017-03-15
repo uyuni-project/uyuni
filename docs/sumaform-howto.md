@@ -21,7 +21,7 @@ ___
 
 
 ___
-### Run the testsuite with custum spacewalk-branch server
+### Run the testsuite with custom spacewalk-branch server
 
 1)  Build the infrastructure needed  ```https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example```
 2)  Deploy your custom  server to  the sumaform created server( see spacewalk wiki)
