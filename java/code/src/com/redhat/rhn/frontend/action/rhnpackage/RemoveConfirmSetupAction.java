@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.struts.action.ActionForm;
 
@@ -54,7 +55,7 @@ public class RemoveConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     @Override
     protected PackageAction schedulePackageAction(ActionForm formIn,
         RequestContext context, List<Map<String, Long>> pkgs, Date earliest,
-        ActionChain actionChain) {
+        ActionChain actionChain) throws TaskomaticApiException {
         return ActionChainManager.schedulePackageRemoval(context.getCurrentUser(),
             context.lookupAndBindServer(), pkgs, earliest, actionChain);
     }

@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -35,6 +36,7 @@ import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.MissingEntitlementException;
 import com.redhat.rhn.manager.audit.ScapManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * SSM OpenSCAP XCCDF scanning.
@@ -42,6 +44,9 @@ import com.redhat.rhn.manager.audit.ScapManager;
  * @version $Rev$
  */
 public class SsmScheduleXccdfConfirmAction extends BaseSsmScheduleXccdfAction {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(SsmScheduleXccdfConfirmAction.class);
 
     /**
      * {@inheritDoc}
@@ -83,6 +88,11 @@ public class SsmScheduleXccdfConfirmAction extends BaseSsmScheduleXccdfAction {
         catch (MissingEntitlementException e) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                 new ActionMessage("message.entitlement.missing", e.getMessage()));
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule XCCDF evaluation:");
+            log.error(e);
+            strutsDelegate.addError(errors, "taskscheduler.down");
         }
 
         if (scapAction == null) {

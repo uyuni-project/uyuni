@@ -21,7 +21,10 @@ import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -39,6 +42,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class FailedSystemsAction extends RhnSetAction {
 
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(FailedSystemsAction.class);
 
     /**
      * Resechedules the action whose id is found in the aid formvar.
@@ -59,14 +64,22 @@ public class FailedSystemsAction extends RhnSetAction {
         Action action = ActionManager.lookupAction(requestContext.getCurrentUser(),
                                                    aid);
         updateSet(request);
-        ActionManager.rescheduleAction(action, true);
+        try {
+            ActionManager.rescheduleAction(action, true);
 
-        ActionMessages msgs = new ActionMessages();
-
-        msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                new ActionMessage("message.actionrescheduled",
-                        action.getActionType().getName()));
-        getStrutsDelegate().saveMessages(request, msgs);
+            ActionMessages msgs = new ActionMessages();
+            msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage("message.actionrescheduled",
+                            action.getActionType().getName()));
+            getStrutsDelegate().saveMessages(request, msgs);
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not reschedule action:");
+            log.error(e);
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError(errors, "taskscheduler.down");
+            getStrutsDelegate().saveMessages(request, errors);
+        }
 
         return getStrutsDelegate().forwardParam(
                 mapping.findForward("scheduled"), "aid", String.valueOf(aid));

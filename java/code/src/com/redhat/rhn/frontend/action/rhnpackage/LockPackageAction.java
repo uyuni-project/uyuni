@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
@@ -109,21 +110,28 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             Date scheduleDate = this.getStrutsDelegate().readDatePicker(
                     form, "date", DatePicker.YEAR_RANGE_POSITIVE);
             if (!pkgsToSelect.isEmpty()) {
-                if (context.wasDispatched("pkg.lock.requestlock")) {
-                    this.lockSelectedPackages(pkgsAlreadyLocked,
-                                              scheduleDate,
-                                              server,
-                                              request);
-                    this.getStrutsDelegate().addInfo("pkg.lock.message.locksuccess",
-                                                     infoMessages);
+                try {
+                    if (context.wasDispatched("pkg.lock.requestlock")) {
+                        this.lockSelectedPackages(pkgsAlreadyLocked,
+                                                  scheduleDate,
+                                                  server,
+                                                  request);
+                        this.getStrutsDelegate().addInfo("pkg.lock.message.locksuccess",
+                                                         infoMessages);
+                    }
+                    else if (context.wasDispatched("pkg.lock.requestunlock")) {
+                        this.unlockSelectedPackages(pkgsAlreadyLocked,
+                                                    scheduleDate,
+                                                    server,
+                                                    request);
+                        this.getStrutsDelegate().addInfo("pkg.lock.message.unlocksuccess",
+                                                         infoMessages);
+                    }
                 }
-                else if (context.wasDispatched("pkg.lock.requestunlock")) {
-                    this.unlockSelectedPackages(pkgsAlreadyLocked,
-                                                scheduleDate,
-                                                server,
-                                                request);
-                    this.getStrutsDelegate().addInfo("pkg.lock.message.unlocksuccess",
-                                                     infoMessages);
+                catch (TaskomaticApiException e) {
+                    LOG.error("Could not schedule package lock action:");
+                    LOG.error(e);
+                    this.getStrutsDelegate().addError(errorMessages, "taskscheduler.down");
                 }
             }
             else {
@@ -168,11 +176,12 @@ public class LockPackageAction extends BaseSystemPackagesAction {
      * @param scheduleDate
      * @param server
      * @param request
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    private void unlockSelectedPackages(Set<Package> pkgsAlreadyLocked,
-                                        Date scheduleDate,
-                                        Server server,
-                                        HttpServletRequest request) {
+    private void unlockSelectedPackages(Set<Package> pkgsAlreadyLocked, Date scheduleDate,
+            Server server, HttpServletRequest request)
+        throws TaskomaticApiException {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
@@ -201,11 +210,12 @@ public class LockPackageAction extends BaseSystemPackagesAction {
      * @param scheduleDate
      * @param server
      * @param request
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    private void lockSelectedPackages(Set<Package> pkgsAlreadyLocked,
-                                      Date scheduleDate,
-                                      Server server,
-                                      HttpServletRequest request) {
+    private void lockSelectedPackages(Set<Package> pkgsAlreadyLocked, Date scheduleDate,
+            Server server, HttpServletRequest request)
+        throws TaskomaticApiException {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
