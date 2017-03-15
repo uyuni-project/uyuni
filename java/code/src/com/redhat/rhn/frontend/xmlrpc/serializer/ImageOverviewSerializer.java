@@ -29,6 +29,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * ImageOverviewSerializer
+ * @xmlrpc.doc
+ * #struct("Image Overview information")
+ *   #prop("int", "id")
+ *   #prop("string", "name")
+ *   #prop("string", "version")
+ *   #prop("string", "arch")
+ *   #prop("string", "checksum")
+ *   #prop("string", "profileLabel")
+ *   #prop("int", "buildServerId")
+ *   #prop("int", "securityErrata")
+ *   #prop("int", "bugErrata")
+ *   #prop("int", "enhancementErrata")
+ *   #prop("int", "outdatedPackages")
+ * #struct_end()
  */
 public class ImageOverviewSerializer extends RhnXmlRpcCustomSerializer {
 

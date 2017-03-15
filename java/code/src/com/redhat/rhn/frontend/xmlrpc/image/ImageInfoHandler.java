@@ -43,6 +43,8 @@ import java.util.stream.Collectors;
 
 /**
  * ImageInfoHandler
+ * @xmlrpc.namespace image
+ * @xmlrpc.doc Provides methods to access and modify images.
  */
 public class ImageInfoHandler extends BaseHandler {
 
@@ -64,7 +66,12 @@ public class ImageInfoHandler extends BaseHandler {
      * Get Image Details
      * @param loggedInUser The Current User
      * @param imageId the Image id
-     * @return $ImageOverviewSerializer
+     * @return ImageOverview Object
+     *
+     * @xmlrpc.doc Get details of an Image
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "imageId")
+     * @xmlrpc.returntype $ImageOverviewSerializer
      */
     public ImageOverview getDetails(User loggedInUser, long imageId) {
         ensureImageAdmin(loggedInUser);
@@ -89,8 +96,8 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "profileLabel")
      * @xmlrpc.param #param_descr("string", "version", "version to build or empty")
-     * @xmlrpc.param #param_desc("int", "buildHostId", "system id of the build host")
-     * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
+     * @xmlrpc.param #param_descr("int", "buildHostId", "system id of the build host")
+     * @xmlrpc.param #param_descr("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the build can run.")
      * @xmlrpc.returntype int - ID of the build action created.
      */

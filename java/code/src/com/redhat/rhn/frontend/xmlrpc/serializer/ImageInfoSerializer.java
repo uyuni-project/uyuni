@@ -26,6 +26,14 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
  * ImageInfoSerializer
+ * @xmlrpc.doc
+ * #struct("Image information")
+ *   #prop("int", "id")
+ *   #prop("string", "name")
+ *   #prop("string", "version")
+ *   #prop("string", "arch")
+ *   #prop("string", "checksum")
+ * #struct_end()
  */
 public class ImageInfoSerializer extends RhnXmlRpcCustomSerializer {
 

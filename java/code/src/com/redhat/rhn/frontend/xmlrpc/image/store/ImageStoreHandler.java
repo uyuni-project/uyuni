@@ -31,6 +31,8 @@ import java.util.Set;
 
 /**
  * ImageStoreHandler
+ * @xmlrpc.namespace image.store
+ * @xmlrpc.doc Provides methods to access and modify image stores.
  */
 public class ImageStoreHandler extends BaseHandler {
 
@@ -48,7 +50,7 @@ public class ImageStoreHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.param #param("string", "uri")
      * @xmlrpc.param #param("string", "store type")
-     * @xmlrpc.param #param_desc("parameters", "parameters" "optional parameters")
+     * @xmlrpc.param #param_desc("parameters", "parameters", "optional parameters")
      * @xmlrpc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String label, String uri, String storeType,
@@ -110,7 +112,12 @@ public class ImageStoreHandler extends BaseHandler {
      * Get Image Store Details
      * @param loggedInUser The Current User
      * @param label the Image Store Label
-     * @return $ImageStoreSerializer
+     * @return ImageStore Object
+     *
+     * @xmlrpc.doc Get details of an Image Store
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.returntype $ImageStoreSerializer
      */
     public ImageStore getDetails(User loggedInUser, String label) {
         ensureImageAdmin(loggedInUser);
