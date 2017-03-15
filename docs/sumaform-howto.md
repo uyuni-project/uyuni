@@ -26,8 +26,8 @@ manger30 = Manager 30
 ### Run the testsuite with custum spacewalk-branch server
 
 1)  Build the infrastructure needed  ```https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example```
-2)  Deploy on the server your new-custum spacewalk server( see spacewalk wiki)
-3)  Log-in on the control-node and run the testsuite:
+2)  Deploy your custom  server to  the sumaform created server( see spacewalk wiki)
+3) Now, just log-in on the control-node and run the testsuite:
      ```console
      ssh -t root@control-node.tf.local
      run-testsuite
