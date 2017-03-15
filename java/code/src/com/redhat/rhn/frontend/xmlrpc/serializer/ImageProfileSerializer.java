@@ -34,6 +34,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "imageType")
  *   #prop("string", "imageStore")
  *   #prop("string", "activationKey")
+ *   #prop_desc("string", "path", "in case type support path")
  * #struct_end()
  */
 public class ImageProfileSerializer extends RhnXmlRpcCustomSerializer {
@@ -54,6 +55,10 @@ public class ImageProfileSerializer extends RhnXmlRpcCustomSerializer {
         String activationKey = profile.getToken() != null ?
                 ActivationKeyFactory.lookupByToken(profile.getToken()).getKey() : "";
         helper.add("activationKey", activationKey);
+
+        if (profile.asDockerfileProfile().isPresent()) {
+            helper.add("path", profile.asDockerfileProfile().get().getPath());
+        }
 
         helper.writeTo(output);
     }
