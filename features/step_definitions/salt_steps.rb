@@ -248,7 +248,7 @@ end
 
 # salt formulas
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
-  $server.run("zypper --non-interactive install -y #{package}-formula", false)
+  $server.run("zypper --non-interactive install -y #{package}-formula")
 end
 
 When(/^I check the "([^"]*)" formula$/) do |formula|
