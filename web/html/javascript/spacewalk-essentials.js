@@ -32,6 +32,7 @@ $(document).on("ready", function(){
 // On window load
 $(window).load(function () {
   columnHeight();
+  adjustDistanceForFixedHeader();
 });
 
 // On window resize
@@ -43,6 +44,13 @@ $(window).resize(function () {
 // to set HTML tag dimensions
 function alignContentDimensions() {
   columnHeight();
+  adjustDistanceForFixedHeader();
+}
+
+// Header is fixed, the main content column needs
+// padding-top equals the header height to be fully visible
+function adjustDistanceForFixedHeader() {
+  $('.spacewalk-main-column-layout').css('padding-top', $('header').outerHeight());
 }
 
 // Make columns 100% in height
