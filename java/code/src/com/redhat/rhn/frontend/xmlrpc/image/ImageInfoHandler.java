@@ -31,6 +31,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
+import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -124,8 +125,13 @@ public class ImageInfoHandler extends BaseHandler {
                     " is not a valid container buildhost");
         }
 
-        return ImageInfoFactory.scheduleBuild(buildHostId, version, oprof.get(),
-                earliestOccurrence, loggedInUser);
+        try {
+            return ImageInfoFactory.scheduleBuild(buildHostId, version, oprof.get(),
+                    earliestOccurrence, loggedInUser);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
