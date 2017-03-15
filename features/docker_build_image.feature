@@ -55,3 +55,12 @@ Feature:  Build Container images with SUSE Manager
   # this maybe is another feature.
   Scenario: Create an Image Store with authentication
   Given I am authorized as "admin" with password "admin"
+
+
+
+
+
+
+
+
+
