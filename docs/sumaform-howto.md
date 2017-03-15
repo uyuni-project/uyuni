@@ -6,23 +6,21 @@ master = Manager-Devel Head
 
 manger30 = Manager 30
 
-
+___
 #### Run the normal testsuite (master)
 
 1) Get sumaform ( https://github.com/moio/sumaform) and follow the installation doc.
 1b) Use this main.tf for the machines: ```https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example```
 2) Once you get the machines up and running, log in on the control-node:
 
-**take care to use your prefix name for machine**
-
-
-```ssh -t root@control-node.tf.local```
+```ssh -t root@$YOURPREFIXcontrol-node.tf.local```
 
 3) Run the tests with the command ```run-testsuite ``` 
 
 4) The results are stored also in html format ```spacewalk-testsuite-base/output.html ``` 
 
 
+___
 ### Run the testsuite with custum spacewalk-branch server
 
 1)  Build the infrastructure needed  ```https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example```
@@ -32,6 +30,8 @@ manger30 = Manager 30
      ssh -t root@control-node.tf.local
      run-testsuite
      ```
+
+___
 ### Run the testsuite with custom testsuite branch
 
 1)  Build the infrastructure needed  ```https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example```
@@ -43,7 +43,7 @@ manger30 = Manager 30
      run-testsuite
      ```
     
-
+___
 ### Analyze log:
  
  ``` scp root@control-node.tf.local:spacewalk-testsuite-base/output.html . ```
