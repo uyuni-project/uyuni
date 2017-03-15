@@ -26,7 +26,8 @@ suseImageOverview
     security_errata,
     bug_errata,
     enhancement_errata,
-    outdated_packages
+    outdated_packages,
+    installed_packages
 )
 as
 select
@@ -47,9 +48,11 @@ select
         and ietv.errata_type = 'Product Enhancement Advisory'),
     ( select count(distinct p.name_id) from rhnPackage p, rhnImageNeededPackageCache inpc
       where
-             inpc.image_id = i.id
-	 and p.id = inpc.package_id
-	 )
+            inpc.image_id = i.id
+        and p.id = inpc.package_id),
+    (select count(*) from suseImageInfoPackage iip
+     where
+            iip.image_info_id = i.id)
 from
     suseImageInfo i
 ;

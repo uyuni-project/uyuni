@@ -325,6 +325,9 @@ public class ImageBuildController {
         if (imageOverview.getOutdatedPackages() != null) {
             json.addProperty("packages", imageOverview.getOutdatedPackages());
         }
+        if (imageOverview.getInstalledPackages() != null) {
+            json.addProperty("installedPackages", imageOverview.getInstalledPackages());
+        }
 
         if (imageOverview.getSecurityErrata() != null) {
             JsonObject patches = new JsonObject();

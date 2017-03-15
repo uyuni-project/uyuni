@@ -50,6 +50,7 @@ public class ImageInfoJson {
     private Map<String, String> customData;
     private JsonObject patches;
     private Integer packages;
+    private Integer installedPackages;
 
     /**
      * @return the id
@@ -276,6 +277,20 @@ public class ImageInfoJson {
     }
 
     /**
+     * @return the number of installed packages
+     */
+    public Integer getInstalledPackages() {
+        return installedPackages;
+    }
+
+    /**
+     * @param packagesIn the number of installed packages
+     */
+    public void setInstalledPackages(Integer packagesIn) {
+        this.installedPackages = packagesIn;
+    }
+
+    /**
      * @param installedProductsIn installed products
      */
     public void setInstalledProducts(InstalledProductsJson installedProductsIn) {
@@ -303,6 +318,7 @@ public class ImageInfoJson {
         json.setPatches(imageOverview.getSecurityErrata(), imageOverview.getBugErrata(),
                 imageOverview.getEnhancementErrata());
         json.setPackages(imageOverview.getOutdatedPackages());
+        json.setInstalledPackages(imageOverview.getInstalledPackages());
 
         Map<Boolean, List<InstalledProduct>> collect = imageOverview.getInstalledProducts()
                 .stream().collect(Collectors.partitioningBy(ip -> ip.isBaseproduct()));
