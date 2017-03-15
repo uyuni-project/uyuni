@@ -19,7 +19,10 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -33,6 +36,9 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Rev: 1 $
  */
 public class ConfirmSystemPreferencesAction extends RhnAction {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(ConfirmSystemPreferencesAction.class);
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -48,29 +54,38 @@ public class ConfirmSystemPreferencesAction extends RhnAction {
             String notify = form.getString("notify");
             String summary = form.getString("summary");
             String update = form.getString("update");
-            if (notify.equals("yes") || notify.equals("no")) {
-                SystemManager.setUserSystemPreferenceBulk(user, "receive_notifications",
-                        notify.equals("yes"), true);
-            }
-            if (summary.equals("yes") || summary.equals("no")) {
-                SystemManager.setUserSystemPreferenceBulk(user, "include_in_daily_summary",
-                        summary.equals("yes"), true);
-            }
-            if (update.equals("yes") || update.equals("no")) {
-                SystemManager.setAutoUpdateBulk(user, update.equals("yes"));
-                if (update.equals("yes")) {
-                    getStrutsDelegate().saveMessage(
-                            "ssm.misc.changeprefs.updatesscheduled", context.getRequest());
+            try {
+                if (notify.equals("yes") || notify.equals("no")) {
+                    SystemManager.setUserSystemPreferenceBulk(user, "receive_notifications",
+                            notify.equals("yes"), true);
                 }
-            }
+                if (summary.equals("yes") || summary.equals("no")) {
+                    SystemManager.setUserSystemPreferenceBulk(user,
+                            "include_in_daily_summary", summary.equals("yes"), true);
+                }
+                if (update.equals("yes") || update.equals("no")) {
+                    SystemManager.setAutoUpdateBulk(user, update.equals("yes"));
+                    if (update.equals("yes")) {
+                        getStrutsDelegate().saveMessage(
+                                "ssm.misc.changeprefs.updatesscheduled",
+                                context.getRequest());
+                    }
+                }
 
-            getStrutsDelegate().saveMessage("ssm.misc.changeprefs.changed",
-                    context.getRequest());
+                getStrutsDelegate().saveMessage("ssm.misc.changeprefs.changed",
+                        context.getRequest());
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not unschedule action:");
+                log.error(e);
+                ActionErrors errors = new ActionErrors();
+                getStrutsDelegate().addError(errors, "taskscheduler.down");
+                getStrutsDelegate().saveMessages(request, errors);
+            }
 
             return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
         }
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
-
 }

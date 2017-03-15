@@ -27,7 +27,10 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -50,8 +53,11 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Rev$
  */
 public class SSMUpdateSoftwareProfileConfirm extends RhnAction implements Listable {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(SSMUpdateSoftwareProfileConfirm.class);
+
     /**
-     *
      * {@inheritDoc}
      */
     public ActionForward execute(ActionMapping mapping,
@@ -75,20 +81,30 @@ public class SSMUpdateSoftwareProfileConfirm extends RhnAction implements Listab
                 Server server = SystemManager.lookupByIdAndUser(sid, user);
             }
             Date now = new Date();
-            PackageAction a = (PackageAction) ActionManager.schedulePackageAction(user,
-                    (List) null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, now, serverIds);
-            ActionFactory.save(a);
-            ActionMessages msg = new ActionMessages();
-            String profileStr = "profiles";
-            if (set.size() == 1) {
-                profileStr = "profile";
+            try {
+                PackageAction a = (PackageAction) ActionManager.schedulePackageAction(user,
+                        (List) null, ActionFactory.TYPE_PACKAGES_REFRESH_LIST, now,
+                        serverIds);
+                ActionFactory.save(a);
+                ActionMessages msg = new ActionMessages();
+                String profileStr = "profiles";
+                if (set.size() == 1) {
+                    profileStr = "profile";
+                }
+                msg.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("ssm.sw.systems.confirmmessage", set.size(),
+                        profileStr));
+                getStrutsDelegate().saveMessages(request, msg);
+                return getStrutsDelegate().forwardParams(
+                        mapping.findForward("success"), params);
             }
-            msg.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("ssm.sw.systems.confirmmessage", set.size(),
-                    profileStr));
-            getStrutsDelegate().saveMessages(request, msg);
-            return getStrutsDelegate().forwardParams(
-                    mapping.findForward("success"), params);
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule package refresh:");
+                log.error(e);
+                ActionErrors errors = new ActionErrors();
+                getStrutsDelegate().addError(errors, "taskscheduler.down");
+                getStrutsDelegate().saveMessages(request, errors);
+            }
         }
 
         return getStrutsDelegate().forwardParams(

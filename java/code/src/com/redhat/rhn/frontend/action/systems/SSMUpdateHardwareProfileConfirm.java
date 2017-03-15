@@ -27,7 +27,10 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -50,11 +53,12 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Rev$
  */
 public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listable {
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(SSMUpdateHardwareProfileConfirm.class);
 
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /**
-     *
      * {@inheritDoc}
      */
     public ActionForward execute(ActionMapping mapping,
@@ -80,19 +84,28 @@ public class SSMUpdateHardwareProfileConfirm extends RhnAction implements Listab
 
             Action a = ActionManager.scheduleHardwareRefreshAction(user, now, serverIds);
             ActionFactory.save(a);
-            TASKOMATIC_API.scheduleActionExecution(a);
-            ActionMessages msg = new ActionMessages();
-            String profileStr = "profiles";
-            if (set.size() == 1) {
-                profileStr = "profile";
-            }
-            msg.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("ssm.hw.systems.confirmmessage", set.size(),
-                    profileStr));
-            getStrutsDelegate().saveMessages(request, msg);
+            try {
+                TASKOMATIC_API.scheduleActionExecution(a);
+                ActionMessages msg = new ActionMessages();
+                String profileStr = "profiles";
+                if (set.size() == 1) {
+                    profileStr = "profile";
+                }
+                msg.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("ssm.hw.systems.confirmmessage", set.size(),
+                        profileStr));
+                getStrutsDelegate().saveMessages(request, msg);
 
-            return getStrutsDelegate().forwardParams(
-                    mapping.findForward("success"), params);
+                return getStrutsDelegate().forwardParams(
+                        mapping.findForward("success"), params);
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule hardware refresh:");
+                log.error(e);
+                ActionErrors errors = new ActionErrors();
+                getStrutsDelegate().addError(errors, "taskscheduler.down");
+                getStrutsDelegate().saveMessages(request, errors);
+            }
         }
 
         return getStrutsDelegate().forwardParams(

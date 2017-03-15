@@ -25,7 +25,10 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -41,17 +44,29 @@ import javax.servlet.http.HttpServletResponse;
  * RollbackToTagAction
  */
 public class RollbackToTagAction extends RhnAction implements Listable {
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(RollbackToTagAction.class);
+
     protected static final String TAG_ID = "tag_id";
     protected static final String TAG_NAME = "tag_name";
     /**
      * ${@inheritDoc}
      */
     public ActionForward execute(ActionMapping mapping, ActionForm form,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         Long tagId = context.getRequiredParam(TAG_ID);
         if (context.wasDispatched("ssm.provisioning.rollbacktotag.rollback-button")) {
-            rollback(context, tagId);
+            try {
+                rollback(context, tagId);
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule rollback to tag:");
+                log.error(e);
+                ActionErrors errors = new ActionErrors();
+                getStrutsDelegate().addError(errors, "taskscheduler.down");
+                getStrutsDelegate().saveMessages(request, errors);
+            }
             return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
         }
 
@@ -77,7 +92,8 @@ public class RollbackToTagAction extends RhnAction implements Listable {
         return SystemManager.systemsInSetWithTag(uid, tagid);
     }
 
-    private void rollback(RequestContext context, Long tagId) {
+    private void rollback(RequestContext context, Long tagId)
+        throws TaskomaticApiException {
         User user = context.getCurrentUser();
         DataResult<Map<String, Object>> systems =
                     SystemManager.systemsInSetWithTag(user.getId(), tagId);

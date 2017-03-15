@@ -22,7 +22,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -36,6 +38,8 @@ import javax.servlet.http.HttpServletResponse;
  * SnapshotRollbackAction
  */
 public class SnapshotRollbackAction extends RhnAction {
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(SnapshotRollbackAction.class);
 
     private static final String SNAPSHOT_ID = "ss_id";
     private static final String SNAPSHOT_NAME = "snapshot_name";
@@ -103,16 +107,23 @@ public class SnapshotRollbackAction extends RhnAction {
         snapshot.cancelPendingActions();
         snapshot.rollbackChannels();
         snapshot.rollbackGroups();
-        packagesChanged = snapshot.rollbackPackages(user);
-        configsChanged   = snapshot.rollbackConfigFiles(user);
+        try {
+            packagesChanged = snapshot.rollbackPackages(user);
+            configsChanged = snapshot.rollbackConfigFiles(user);
+            createSuccessMessage(request, GROUPS_CHANGED_MSG, null);
+            if (packagesChanged) {
+                createSuccessMessage(request, PACKAGES_CHANGED_MSG, null);
+            }
+            if (configsChanged) {
+                createSuccessMessage(request, CONFIGS_CHANGED_MSG, null);
+            }
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule rollbacks:");
+            log.error(e);
+            createErrorMessage(request, "taskscheduler.down", null);
+        }
 
-        createSuccessMessage(request, GROUPS_CHANGED_MSG, null);
-        if (packagesChanged) {
-            createSuccessMessage(request, PACKAGES_CHANGED_MSG, null);
-        }
-        if (configsChanged) {
-            createSuccessMessage(request, CONFIGS_CHANGED_MSG, null);
-        }
         return HISTORY_FORWARD;
     }
 }

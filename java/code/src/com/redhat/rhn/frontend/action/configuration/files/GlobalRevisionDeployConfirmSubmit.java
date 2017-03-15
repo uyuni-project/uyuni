@@ -29,7 +29,9 @@ import com.redhat.rhn.frontend.struts.RhnListDispatchAction;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -51,6 +53,9 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Rev$
  */
 public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(GlobalRevisionDeployConfirmSubmit.class);
 
     /**
      * {@inheritDoc}
@@ -110,10 +115,15 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
             Long sid = ((RhnSetElement)itr.next()).getElement();
             servers.add(sid);
             //created the action.  One action per server.
-            if (revisions.size() > 0 &&
-                !ActionChainManager.createConfigActions(user, revisions, servers, deploy,
-                    earliest, actionChain).isEmpty()) {
-                successes++;
+            try {
+                if (revisions.size() > 0 && !ActionChainManager.createConfigActions(user,
+                        revisions, servers, deploy, earliest, actionChain).isEmpty()) {
+                    successes++;
+                }
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule configuration deploy:");
+                log.error(e);
             }
         }
 

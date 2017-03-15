@@ -30,6 +30,8 @@ import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -158,7 +160,13 @@ public class VirtualGuestsConfirmAction extends BaseSystemListAction {
                                                           system,
                                                           next.getUuid(),
                                                           context);
-                    cmd.store();
+                    try {
+                        cmd.store();
+                    }
+                    catch (TaskomaticApiException e) {
+                        log.error("Could not schedule virtualization action:");
+                        log.error(e);
+                    }
                 }
                 key = "actions.scheduled";
             }

@@ -31,7 +31,10 @@ import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -55,6 +58,9 @@ import javax.servlet.http.HttpServletResponse;
  * BaseSystemPackagesAction
  */
 public abstract class BaseSystemPackagesConfirmAction extends RhnAction {
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(BaseSystemPackagesConfirmAction.class);
+
     private static final String DATA_SET = RequestContext.PAGE_LIST;
     private static final String WIDGET_SUMMARY = "widgetSummary";
     private static final String HEADER_KEY = "header";
@@ -166,45 +172,53 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction {
         //The action chain to append this action to, if any
         ActionChain actionChain = ActionChainHelper.readActionChain(dynaActionForm, user);
 
-        PackageAction pa = schedulePackageAction(formIn, requestContext, data, earliest,
-            actionChain);
+        try {
+            ActionMessages msgs = new ActionMessages();
+
+            PackageAction pa = schedulePackageAction(formIn, requestContext, data, earliest,
+                    actionChain);
+
+            if (actionChain == null) {
+                /**
+                 * If there was only one action archived, display the "action"
+                 * archived message, else display the "actions" archived
+                 * message.
+                 */
+                if (numPackages == 1) {
+                    msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                            new ActionMessage(getMessageKeyForOne(),
+                                    LocalizationService.getInstance()
+                                            .formatNumber(numPackages),
+                                    pa.getId().toString(), sid.toString(),
+                                    StringUtil.htmlifyText(server.getName())));
+                }
+                else {
+                    msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                            new ActionMessage(getMessageKeyForMany(),
+                                    LocalizationService.getInstance()
+                                            .formatNumber(numPackages),
+                                    pa.getId().toString(), sid.toString(),
+                                    StringUtil.htmlifyText(server.getName())));
+                }
+            }
+            else {
+                msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("message.addedtoactionchain", actionChain.getId(),
+                                StringUtil.htmlifyText(actionChain.getLabel())));
+            }
+            strutsDelegate.saveMessages(request, msgs);
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule package action:");
+            log.error(e);
+            ActionErrors errors = new ActionErrors();
+            strutsDelegate.addError("taskscheduler.down", errors);
+            strutsDelegate.saveMessages(request, errors);
+        }
 
         //Remove the actions from the users set
         SessionSetHelper.obliterate(request, getDecl(sid));
 
-        ActionMessages msgs = new ActionMessages();
-
-        if (actionChain == null) {
-            /**
-             * If there was only one action archived, display the "action" archived
-             * message, else display the "actions" archived message.
-             */
-            if (numPackages == 1) {
-                msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                         new ActionMessage(getMessageKeyForOne(),
-                                 LocalizationService.getInstance()
-                                     .formatNumber(numPackages),
-                                 pa.getId().toString(),
-                                 sid.toString(),
-                                 StringUtil.htmlifyText(server.getName())));
-            }
-            else {
-                msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                         new ActionMessage(getMessageKeyForMany(),
-                                 LocalizationService.getInstance()
-                                 .formatNumber(numPackages),
-                             pa.getId().toString(),
-                             sid.toString(),
-                             StringUtil.htmlifyText(server.getName())));
-            }
-        }
-        else {
-            msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                new ActionMessage("message.addedtoactionchain", actionChain.getId(),
-                    StringUtil.htmlifyText(actionChain.getLabel())));
-        }
-
-        strutsDelegate.saveMessages(request, msgs);
         Map<String, Object> params = new HashMap<String, Object>();
         processParamMap(formIn, request, params);
         return strutsDelegate.forwardParams(
@@ -271,9 +285,11 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction {
      * @param earliest the earliest date to perform the action
      * @param actionChain the action chain to add the action to or null
      * @return the schedule package action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     protected abstract PackageAction schedulePackageAction(ActionForm formIn,
         RequestContext context, List<Map<String, Long>> pkgs, Date earliest,
-        ActionChain actionChain);
+        ActionChain actionChain) throws TaskomaticApiException;
 
 }

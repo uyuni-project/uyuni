@@ -22,7 +22,10 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -43,6 +46,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MissingPackageAction extends BaseProfilesAction {
 
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(MissingPackageAction.class);
+
     private static final CompareProfileSetupAction DECL_PROFILE_ACTION =
         new CompareProfileSetupAction();
     private static final CompareSystemSetupAction DECL_SYSTEM_ACTION =
@@ -59,7 +65,7 @@ public class MissingPackageAction extends BaseProfilesAction {
     }
 
     private PackageAction syncToVictim(RequestContext requestContext, Long sid,
-            Set pkgIdCombos, String option) {
+            Set pkgIdCombos, String option) throws TaskomaticApiException {
 
         PackageAction pa = null;
         Date time = new Date(requestContext.getParamAsLong("time"));
@@ -152,7 +158,16 @@ public class MissingPackageAction extends BaseProfilesAction {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", sid);
 
-        syncToVictim(context, sid, pkgIdCombos, ProfileManager.OPTION_REMOVE);
+        try {
+            syncToVictim(context, sid, pkgIdCombos, ProfileManager.OPTION_REMOVE);
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule package synchronization:");
+            log.error(e);
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError(errors, "taskscheduler.down");
+            getStrutsDelegate().saveMessages(request, errors);
+        }
         return getStrutsDelegate().forwardParams(mapping.findForward("showprofile"),
                     params);
     }
@@ -177,8 +192,17 @@ public class MissingPackageAction extends BaseProfilesAction {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", sid);
 
-        syncToVictim(requestContext, sid, pkgIdCombos,
-                ProfileManager.OPTION_SUBSCRIBE);
+        try {
+            syncToVictim(requestContext, sid, pkgIdCombos,
+                    ProfileManager.OPTION_SUBSCRIBE);
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule package synchronization:");
+            log.error(e);
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError(errors, "taskscheduler.down");
+            getStrutsDelegate().saveMessages(request, errors);
+        }
         return getStrutsDelegate().forwardParams(
                 mapping.findForward("showprofile"), params);
     }
