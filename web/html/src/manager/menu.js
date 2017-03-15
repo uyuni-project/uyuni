@@ -31,7 +31,7 @@ const NodeLink = (props) =>
     }
     {
       !props.isLeaf ?
-      <Link url={props.url} title={props.label} label={<i className="fa fa-bolt"></i>}
+      <Link url={props.url} title={props.label} label={<i className="fa fa-share"></i>}
         cssClass="direct-link" target={props.target} />
       : null
     }
