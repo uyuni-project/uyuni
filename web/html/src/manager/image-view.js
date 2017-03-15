@@ -178,7 +178,7 @@ class ImageViewList extends React.Component {
     renderUpdatesIcon(row) {
         let icon;
 
-        if(!row.patches) {
+        if(!row.patches || !row.packages) {
             icon = <i className="fa fa-question-circle fa-1-5x" title="No information"/>
         } else if (row.patches.critical > 0) {
             icon = <i className="fa fa-exclamation-circle fa-1-5x text-danger" title={"Critical updates available"}/>
