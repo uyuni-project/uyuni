@@ -1,7 +1,9 @@
 # How to run the spacewalk-testsuite with sumaform.
 
-######  Branches
-master = Manager-Devel
+######  Branches of spacewalt-testsuite-base:
+
+master = Manager-Devel Head
+
 manger30 = Manager 30
 
 
