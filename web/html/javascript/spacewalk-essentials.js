@@ -40,6 +40,16 @@ $(window).resize(function () {
   alignContentDimensions();
 });
 
+// On window scroll
+$(window).scroll(function () {
+  if ((document.documentElement.scrollTop || document.body.scrollTop) < 100) {
+    $('#scroll-top').hide();
+  }
+  else {
+    $('#scroll-top').show();
+  }
+});
+
 // A container function for what should be fired
 // to set HTML tag dimensions
 function alignContentDimensions() {
