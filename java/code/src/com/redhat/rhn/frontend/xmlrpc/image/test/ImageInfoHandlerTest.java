@@ -71,7 +71,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = dr.size();
 
         long ret = handler.scheduleImageBuild(admin, prof.getLabel(), "1.0.0",
-                server.getId(), getNow());
+                server.getId().intValue(), getNow());
         assertTrue(ret > 0);
 
         dr = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -92,7 +92,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         ImageStore store = ImageProfileHandlerTest.createImageStore("registry.reg", admin);
         ImageInfo inf1 = createImageInfo(admin, "1.0.0", store);
 
-        ImageOverview imageOverview = handler.getDetails(admin, inf1.getId());
+        ImageOverview imageOverview = handler.getDetails(admin, inf1.getId().intValue());
         assertEquals(inf1.getVersion(), imageOverview.getVersion());
     }
 
@@ -117,7 +117,8 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         Package p = e.getPackages().iterator().next();
         ErrataCacheManager.insertImageNeededErrataCache(
                 inf1.getId(), e.getId(), p.getId());
-        List<ErrataOverview> array = handler.getRelevantErrata(admin, inf1.getId());
+        List<ErrataOverview> array = handler.getRelevantErrata(admin,
+                inf1.getId().intValue());
         assertEquals(1, array.size());
         ErrataOverview errata = array.get(0);
         assertEquals(e.getId().intValue(), errata.getId().intValue());
@@ -149,7 +150,8 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         UserFactory.save(admin);
         TestUtils.flushAndEvict(admin);
 
-        List<Map<String, Object>> result = handler.listPackages(admin, inf1.getId());
+        List<Map<String, Object>> result = handler.listPackages(admin,
+                inf1.getId().intValue());
         assertEquals(2, result.size());
     }
 
@@ -181,7 +183,8 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         inf1.setCustomDataValues(cdSet);
         TestUtils.saveAndFlush(inf1);
 
-        Map<String, String> result = handler.getCustomValues(admin, inf1.getId());
+        Map<String, String> result = handler.getCustomValues(admin,
+                inf1.getId().intValue());
         assertEquals(2, result.size());
         assertEquals("newvalue2", result.get(orgKey2.getLabel()));
         assertEquals("newvalue1", result.get(orgKey1.getLabel()));
