@@ -42,6 +42,7 @@ import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.modules.Timezone;
 import com.suse.salt.netapi.calls.runner.Jobs;
+import com.suse.salt.netapi.calls.runner.Manage;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.config.ClientConfig;
@@ -108,6 +109,10 @@ public class SaltService {
     private final String SALT_USER = "admin";
     private final String SALT_PASSWORD = "";
     private final AuthModule AUTH_MODULE = AuthModule.AUTO;
+
+    // Salt manage runner properties
+    private final Integer MANAGE_UP_TIMEOUT = 4;
+    private final Integer MANAGE_UP_GATHER_JOB_TIMEOUT = 1;
 
     // Shared salt client instance
     private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
@@ -628,6 +633,21 @@ public class SaltService {
         List<String> regularMinionIds = minionPartitions.get(false);
 
         Map<String, Result<T>> results = new HashMap<>();
+
+        // To avoid blocking if any targetted minion is down, we first check
+        // the minions that are actually up and running, then we will exclude
+        // the unreachable minions from the present synchronous call.
+        List<String> activeMinions = callSync(Manage.up(Optional.of(MANAGE_UP_TIMEOUT),
+                Optional.of(MANAGE_UP_GATHER_JOB_TIMEOUT)));
+
+        if (!activeMinions.containsAll(regularMinionIds)) {
+            HashSet<String> unreachableMinions = new HashSet<String>(regularMinionIds);
+            unreachableMinions.removeAll(activeMinions);
+            LOG.warn("Some of the targetted minions cannot be reached: " +
+                    unreachableMinions.toString() +
+                    ". Excluding them from the synchronious call.");
+            regularMinionIds.retainAll(activeMinions);
+        }
 
         if (!sshMinionIds.isEmpty()) {
             results.putAll(saltSSHService.callSyncSSH(
