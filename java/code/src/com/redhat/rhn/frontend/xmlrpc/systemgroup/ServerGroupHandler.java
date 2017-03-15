@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.LookupServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.ServerGroupAccessChangeException;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
+import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -515,8 +516,13 @@ public class ServerGroupHandler extends BaseHandler {
      */
     public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
                                 List<Integer> errataIds, Date earliestOccurrence) {
-        List<Long> systemIds = activeSystemsInGroup(loggedInUser, systemGroupName);
-        return ErrataManager.applyErrataHelper(loggedInUser, systemIds, errataIds,
-                earliestOccurrence);
+        try {
+            List<Long> systemIds = activeSystemsInGroup(loggedInUser, systemGroupName);
+            return ErrataManager.applyErrataHelper(loggedInUser, systemIds, errataIds,
+                    earliestOccurrence);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 }
