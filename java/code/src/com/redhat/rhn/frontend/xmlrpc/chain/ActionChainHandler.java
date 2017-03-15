@@ -495,7 +495,6 @@ public class ActionChainHandler extends BaseHandler {
      *               #array_end()
      * @xmlrpc.returntype #return_int_success()
      */
-    @SuppressWarnings("unchecked")
     public Integer addConfigurationDeployment(User loggedInUser,
             String chainLabel,
             Integer serverId,
