@@ -40,6 +40,8 @@ import java.util.stream.Collectors;
 
 /**
  * ImageProfileHandler
+ * @xmlrpc.namespace image.profile
+ * @xmlrpc.doc Provides methods to access and modify image profiles.
  */
 public class ImageProfileHandler extends BaseHandler {
 
@@ -74,10 +76,15 @@ public class ImageProfileHandler extends BaseHandler {
     }
 
     /**
-     * Get Image Store Details
+     * Get Image Profile Details
      * @param loggedInUser The Current User
-     * @param label the Image Store Label
-     * @return $ImageProfileSerializer
+     * @param label the Image Profile Label
+     * @return ImageProfile Object
+     *
+     * @xmlrpc.doc Get details of an Image Profile
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "label")
+     * @xmlrpc.returntype $ImageProfileSerializer
      */
     public ImageProfile getDetails(User loggedInUser, String label) {
         ensureImageAdmin(loggedInUser);
