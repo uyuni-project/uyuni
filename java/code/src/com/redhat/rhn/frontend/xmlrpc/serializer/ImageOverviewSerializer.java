@@ -42,6 +42,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("int", "bugErrata")
  *   #prop("int", "enhancementErrata")
  *   #prop("int", "outdatedPackages")
+ *   #prop("int", "installedPackages")
  * #struct_end()
  */
 public class ImageOverviewSerializer extends RhnXmlRpcCustomSerializer {
@@ -68,6 +69,7 @@ public class ImageOverviewSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("bugErrata", image.getBugErrata());
         helper.add("enhancementErrata", image.getEnhancementErrata());
         helper.add("outdatedPackages", image.getOutdatedPackages());
+        helper.add("installedPackages", image.getInstalledPackages());
         helper.writeTo(writer);
     }
 

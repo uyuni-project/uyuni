@@ -70,6 +70,7 @@ public class ImageOverview extends BaseDomainHelper {
     private Integer bugErrata;
     private Integer enhancementErrata;
     private Integer outdatedPackages;
+    private Integer installedPackages;
 
     /**
      * @return the id
@@ -252,6 +253,14 @@ public class ImageOverview extends BaseDomainHelper {
         return outdatedPackages;
     }
 
+    /**
+     * @return the installed package count
+     */
+    @Column(name = "installed_packages")
+    public Integer getInstalledPackages() {
+        return installedPackages;
+    }
+
     @Override
     @Column(name = "modified")
     public Date getModified() {
@@ -382,6 +391,13 @@ public class ImageOverview extends BaseDomainHelper {
      */
     public void setOutdatedPackages(Integer outdatedPackagesIn) {
         this.outdatedPackages = outdatedPackagesIn;
+    }
+
+    /**
+     * @param installedPackagesIn the installed packages
+     */
+    public void setInstalledPackages(Integer installedPackagesIn) {
+        this.installedPackages = installedPackagesIn;
     }
 
     /**

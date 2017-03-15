@@ -161,7 +161,7 @@ class ImageViewOverview extends React.Component {
     renderStatus(row) {
         let status, statusText;
 
-        if(!row.patches) {
+        if(!row.patches || row.installedPackages === 0) {
             status = [<i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>,t("No information ")];
         } else if (row.patches.security > 0) {
             status = [<i className="fa fa-exclamation-circle fa-1-5x text-danger" title={t("Critical updates available")}/>,t("Critical updates available ")];
