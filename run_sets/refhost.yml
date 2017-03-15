@@ -36,6 +36,11 @@
 - features/centos_salt_remote_cmds.feature
 - features/centos_salt_reboot_test.feature
 
+
+#### Docker releated features tests.  ###
+## ** SLES ***
+- features/docker_build_image.feature
+
 ## REPO_SYNC FEATURES, only refhost will execute this
 # We sync real channels
 # we run out of diskspace
