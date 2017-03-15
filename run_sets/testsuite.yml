@@ -96,6 +96,7 @@
 #### * Docker releated features tests.  ###
 
 - features/docker_build_image.feature
+- features/docker_remove_image.feature 
 
 # end-tests
 - features/spacewalk_debug.feature
