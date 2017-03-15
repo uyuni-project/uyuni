@@ -73,7 +73,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "imageId")
      * @xmlrpc.returntype $ImageOverviewSerializer
      */
-    public ImageOverview getDetails(User loggedInUser, long imageId) {
+    public ImageOverview getDetails(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
                 loggedInUser.getOrg());
@@ -102,7 +102,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.returntype int - ID of the build action created.
      */
     public Long scheduleImageBuild(User loggedInUser, String profileLabel, String version,
-            long buildHostId, Date earliestOccurrence) {
+            Integer buildHostId, Date earliestOccurrence) {
         ensureImageAdmin(loggedInUser);
         if (StringUtils.isEmpty(profileLabel)) {
             throw new IllegalArgumentException("Profile label cannot be empty.");
@@ -113,7 +113,7 @@ public class ImageInfoHandler extends BaseHandler {
             throw new NoSuchImageProfileException();
         }
 
-        Server buildHost = ServerFactory.lookupByIdAndOrg(buildHostId,
+        Server buildHost = ServerFactory.lookupByIdAndOrg(new Long(buildHostId),
                 loggedInUser.getOrg());
         if (buildHost == null) {
             throw new NoSuchSystemException();
@@ -144,7 +144,7 @@ public class ImageInfoHandler extends BaseHandler {
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
-    public List<ErrataOverview> getRelevantErrata(User loggedInUser, long imageId) {
+    public List<ErrataOverview> getRelevantErrata(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
                 loggedInUser.getOrg());
@@ -180,7 +180,7 @@ public class ImageInfoHandler extends BaseHandler {
      *          #struct_end()
      *      #array_end()
      */
-    public List<Map<String, Object>> listPackages(User loggedInUser, Long imageId)
+    public List<Map<String, Object>> listPackages(User loggedInUser, Integer imageId)
             throws FaultException {
         ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
@@ -217,7 +217,7 @@ public class ImageInfoHandler extends BaseHandler {
      *      #prop("string", "value")
      *    #struct_end()
      */
-    public Map<String, String> getCustomValues(User loggedInUser, Long imageId) {
+    public Map<String, String> getCustomValues(User loggedInUser, Integer imageId) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageOverview> opt = ImageInfoFactory.lookupOverviewByIdAndOrg(imageId,
                 loggedInUser.getOrg());
