@@ -322,9 +322,23 @@ header, nav.navbar-pf {
 #nav {
   nav {
     padding: 0px;
-    .nav-search-box {
+    .nav-tool-box {
       text-align: center;
       padding: 0 10px;
+      input, button {
+        margin: auto;
+        vertical-align: top;
+        width: 95%;
+      }
+      .collapse-menu {
+        .btn;
+        height: 20px;
+        min-width: 100px;
+        margin-bottom: 10px;
+        padding: 0 5px;
+        background-color: @spacewalk-gray-light;
+        color: @spacewalk-gray-dark;
+      }
     }
     a, .node-text {
       display: inline-block;
@@ -377,9 +391,11 @@ header, nav.navbar-pf {
         width: 15%;
         text-align: center;
         border-left: 1px dashed #333;
+        color: @spacewalk-gray;
       }
       a.direct-link:hover {
         background-color: lighten(@spacewalk-blue-light, 5%);
+        color: @spacewalk-aside-menu-hyperlink-hover;
       }
     }
     /* First Level */
