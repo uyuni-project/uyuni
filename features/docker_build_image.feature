@@ -47,20 +47,6 @@ Feature:  Build Container images with SUSE Manager
 
   Scenario: Build a docker Image
   Given I am authorized as "admin" with password "admin"
-  And I follow "Images" in the left menu
-  And I follow "Build" in the left menu
-  And I select "opensuse" from "profileId"
-  And I select "galaxy-registry" from "host"
-  And I click on "submit-btn"
   # this maybe is another feature.
   Scenario: Create an Image Store with authentication
   Given I am authorized as "admin" with password "admin"
-
-
-
-
-
-
-
-
-
