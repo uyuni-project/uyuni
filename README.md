@@ -58,7 +58,6 @@ You can run the Spacewalk Testsuite:
 
 * [with sumaform (Official way)](docs/sumaform-howto.md)
 
-* [Static run howto](docs/static-run.md)
 
 ## Tests order: 
 The tests are ordered and executed with the order of this yaml file:
