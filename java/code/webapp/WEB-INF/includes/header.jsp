@@ -30,7 +30,7 @@
   <rhn:require acl="user_authenticated()">
     <ul class="nav navbar-nav navbar-utility">
       <li class="hidden-xs"><a href="https://www.suse.com/support/kb/product.php?id=SUSE_Manager" target="_blank"><bean:message key="header.jsp.knowledgebase" /></a></li>
-      <li class="hidden-xs"><a href="https://www.suse.com/documentation/suse_manager/" target="_blank"><bean:message key="header.jsp.documentation" /></a></li>
+      <li class="hidden-xs"><a href="https://www.suse.com/documentation/suse-manager-3/" target="_blank"><bean:message key="header.jsp.documentation" /></a></li>
       <li><a href="/rhn/account/UserDetails.do"><rhn:icon type="header-user" /> <c:out escapeXml="true" value="${requestScope.session.user.login}" /></a></li>
       <li class="hidden-sm hidden-xs hidden-md"><span class="spacewalk-header-non-link"><rhn:icon type="header-sitemap" /> <c:out escapeXml="true" value="${requestScope.session.user.org.name}" /></span></li>
       <li><a href="/rhn/account/UserPreferences.do"><rhn:icon type="header-preferences" title="header.jsp.preferences" /></a></li>
