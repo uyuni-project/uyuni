@@ -40,7 +40,9 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.salt.netapi.utils.Xor;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.log4j.Logger;
@@ -50,7 +52,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -357,7 +358,7 @@ public class SaltSSHService {
     }
 
     private boolean addSaltSSHMinionsFromDb(SaltRoster roster) {
-        List<ServeR> minions = MinionServerFactory
+        List<MinionServer> minions = MinionServerFactory
                 .listSSHMinions();
         minions.forEach(minion -> {
             List<String> proxyPath = proxyPathToHostnames(minion.getServerPaths(),
