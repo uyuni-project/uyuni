@@ -47,7 +47,7 @@ const Element = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     this.setState({
-      open: nextProps.element.open,
+      open: nextProps.element.open && !nextProps.forceCollapse,
       visiblityForcedByParent: nextProps.visiblityForcedByParent
     });
   },
@@ -121,6 +121,7 @@ const MenuLevel = React.createClass({
         level={this.props.level}
         searchString={this.props.searchString}
         visiblityForcedByParent={this.props.visiblityForcedByParent}
+        forceCollapse={this.props.forceCollapse}
       />
     );
     return (
@@ -133,21 +134,26 @@ const MenuLevel = React.createClass({
 
 const Nav = React.createClass({
   getInitialState: function () {
-    return {search: ''}
+    return {search: '', forceCollapse: false}
   },
 
   onSearch: function(e) {
     this.setState({ search: e.target.value });
   },
 
+  closeEmAll: function() {
+    this.setState({search: '', forceCollapse: true});
+  },
+
   render: function() {
     return (
       <nav className={this.state.search != null && this.state.search.length > 0 ? '' : 'collapsed'}>
-        <div className="nav-search-box">
+        <div className="nav-tool-box">
+          <button className="collapse-menu" onClick={this.closeEmAll}><i className='fa fa-indent'></i>{t('Clear Menu')}</button>
           <input type="text" className="form-control" name="nav-search" id="nav-search" value={this.state.search}
             onChange={this.onSearch} placeholder="Search page" />
         </div>
-        <MenuLevel level={1} elements={JSONMenu} searchString={this.state.search} />
+        <MenuLevel level={1} elements={JSONMenu} searchString={this.state.search} forceCollapse={this.state.forceCollapse} />
       </nav>
     );
   }
