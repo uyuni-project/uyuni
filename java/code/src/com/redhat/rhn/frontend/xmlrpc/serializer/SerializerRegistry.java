@@ -127,6 +127,9 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(SUSEInstalledProductSerializer.class);
         SERIALIZER_CLASSES.add(ImageStoreTypeSerializer.class);
         SERIALIZER_CLASSES.add(ImageStoreSerializer.class);
+        SERIALIZER_CLASSES.add(ImageProfileSerializer.class);
+        SERIALIZER_CLASSES.add(ImageInfoSerializer.class);
+        SERIALIZER_CLASSES.add(ImageOverviewSerializer.class);
     }
 
     /**
