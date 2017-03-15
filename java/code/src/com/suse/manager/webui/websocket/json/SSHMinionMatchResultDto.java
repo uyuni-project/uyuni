@@ -14,34 +14,27 @@
  */
 package com.suse.manager.webui.websocket.json;
 
+import java.util.List;
+
 /**
- * Action timed out DTO.
+ * salt-ssh minions match result DTO.
  */
-public class ActionTimedOutEventDto extends AbstractSaltEventDto {
+public class SSHMinionMatchResultDto extends AbstractSaltEventDto  {
 
-    private boolean timedOutSSH;
+    private List<String> minions;
 
     /**
-     * @param minionId the minion id
-     * @param actionType the action type
+     * @param minionsIn minions that matched
      */
-    public ActionTimedOutEventDto(String minionId, String actionType) {
-        super("timedOut", minionId, actionType);
+    public SSHMinionMatchResultDto(List<String> minionsIn) {
+        super("matchSSH");
+        this.minions = minionsIn;
     }
 
     /**
-     * @param timedOutSSHIn waiting for salt-ssh timed out
-     * @param actionType the action type
+     * @return minions that matched
      */
-    public ActionTimedOutEventDto(boolean timedOutSSHIn, String actionType) {
-        super("timedOut", null, actionType);
-        this.timedOutSSH = timedOutSSHIn;
-    }
-
-    /**
-     * @return waiting for salt-ssh timed out
-     */
-    public boolean isTimedOutSSH() {
-        return timedOutSSH;
+    public List<String> getMinions() {
+        return minions;
     }
 }

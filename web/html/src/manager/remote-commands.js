@@ -37,7 +37,7 @@ class MinionResultView extends React.Component {
     return (
       <div className="panel panel-default">
         <div id={id} className="panel-heading" onClick={this.onClick} style={props.result ? {cursor: "pointer"} : {cursor: "default"}}>
-           <span>{id}</span>
+           <span>{ props.label ? props.label : id }</span>
            {(() => {
               if(resultType == "pending") {
                   return (
@@ -89,17 +89,28 @@ class MinionResultView extends React.Component {
   }
 }
 
-function isPreviewDone(minionsMap) {
-  return Array.from(minionsMap, (e) => e[1]).every((v) => v.type == "matched" || v.type == "timedOut");
+function isPreviewDone(minionsMap, waitForSSH) {
+  return Array.from(minionsMap, (e) => e[1])
+        .every((v) => v.type == "matched" || v.type == "timedOut" || v.type == "error") &&
+        !waitForSSH
 }
 
 function isRunDone(minionsMap) {
-  return Array.from(minionsMap, (e) => e[1]).every((v) => v.type == "result" || v == "timedOut");
+  return Array.from(minionsMap, (e) => e[1])
+        .every((v) => v.type == "result" || v == "timedOut" || v.type == "error");
 }
 
-function isTimedOutDone(minionsMap) {
+function isTimedOutDone(minionsMap, waitForSSH, timedOutSSH) {
+  if (!minionsMap && minionsMap.size == 0) {
+    return timedOutSSH;
+  }
   const results = Array.from(minionsMap, (e) => e[1]);
-  return results.every((v) => v.type != "pending") && results.some((v) => v.type == "timedOut");
+  const noMinionsPending = results.every((v) => v.type != "pending")
+  const anyTimedOutMinion = results.some((v) => v.type == "timedOut");
+  if (waitForSSH) {
+    return timedOutSSH && noMinionsPending;
+  }
+  return noMinionsPending && anyTimedOutMinion;
 }
 
 class RemoteCommand extends React.Component {
@@ -193,7 +204,7 @@ class RemoteCommand extends React.Component {
             </div>
             <div className="panel-body" style={this.state.result.minions.size ? style : undefined}>
               {(() => {
-                if (!this.state.result.minions.size) {
+                if (!this.state.result.minions.size && !this.state.result.waitForSSH) {
                    return(<span>{this.state.previewed.state() != "pending" ? t("No target systems previewed") : t("No target systems have been found")}</span>)
                 } else {
                   return(this.commandResult(this.state.result))
@@ -291,23 +302,40 @@ class RemoteCommand extends React.Component {
         case "asyncJobStart":
             this.setState({
                 executing: $.Deferred(),
+                errors: [],
+                warnings: [],
                 result: {
-                    errors: [],
-                    warnings: [],
-                    minions: event.minions.reduce((map, minionId) => map.set(minionId, {type: "pending", value: null}), new Map())
+                    minions: event.minions.reduce((map, minionId) => map.set(minionId, {type: "pending", value: null}), new Map()),
+                    waitForSSH: event.waitForSSHMinions
                 }
             });
             break;
         case "match":
             var minionsMap = this.state.result.minions;
             minionsMap.set(event.minion, {type: "matched", value: null});
-            if (isPreviewDone(minionsMap)) {
+            if (isPreviewDone(minionsMap, this.state.result.waitForSSH)) {
                 this.state.previewed.resolve();
                 this.state.executing.resolve();
             }
             this.setState({
                 result: {
-                    minions: minionsMap
+                    minions: minionsMap,
+                    waitForSSH: this.state.result.waitForSSH
+                }
+            });
+            break;
+        case "matchSSH":
+            var minionsMap = event.minions.reduce(
+                (map, minionId) => map.set(minionId, {type: "matched", value: null}),
+                 this.state.result.minions);
+            if (isPreviewDone(minionsMap, false)) {
+                this.state.previewed.resolve();
+                this.state.executing.resolve();
+            }
+            this.setState({
+                result: {
+                    minions: minionsMap,
+                    waitForSSH: false
                 }
             });
             break;
@@ -326,10 +354,18 @@ class RemoteCommand extends React.Component {
             break;
         case "timedOut":
             var minionsMap = this.state.result.minions;
+            var waitForSSH = this.state.result.waitForSSH;
+            var timedOutSSH = this.state.result.timedOutSSH;
             var timedOutDone;
             if (event.minion) {
                 minionsMap.set(event.minion, {type: "timedOut", value: null});
-                timedOutDone = isTimedOutDone(minionsMap);
+                timedOutDone = isTimedOutDone(minionsMap,
+                    waitForSSH,
+                    this.state.result.timedOutSSH);
+            } else if (event.timedOutSSH) {
+                timedOutDone = isTimedOutDone(minionsMap, waitForSSH, true);
+                waitForSSH = false;
+                timedOutSSH = true;
             } else {
                 timedOutDone = true;
             }
@@ -350,11 +386,14 @@ class RemoteCommand extends React.Component {
                 ran: ran,
                 executing: timedOutDone ? this.state.executing.resolve() : this.state.executing,
                 result: {
-                    minions: minionsMap
+                    minions: minionsMap,
+                    waitForSSH: waitForSSH,
+                    timedOutSSH: timedOutSSH
                 }
             });
             break;
         case "error":
+            var globalErr = [];
             if (event.minion) {
                 var minionsMap = this.state.result.minions;
                 minionsMap.set(event.minion, {type: "error", value: event.message});
@@ -367,10 +406,15 @@ class RemoteCommand extends React.Component {
                 window.location.href = "/rhn/Login2.do";
                 return;
             } else if (event.code == "ERR_TARGET_NO_MATCH") {
-                this.setState({
-                    warnings: [t("No minions matched the target expression.")]
-                });
-            } else {
+                globalErr = [t("No minions matched the target expression.")];
+            } else if (!event.minion) {
+                globalErr = [t("Server returned an error: {0}", event.message)];
+            }
+
+            const noPending = Array.from(minionsMap, (e) => e[1])
+                    .every((v) => v.type != "pending") &&
+                    !this.state.result.waitForSSH;
+            if (noPending) {
                 var previewed = this.state.previewed;
                 var ran = this.state.ran;
                 if (previewed && previewed.state() == "pending") {
@@ -386,7 +430,7 @@ class RemoteCommand extends React.Component {
                 this.setState({
                     previewed: previewed,
                     ran: ran,
-                    errors: [t("Server returned an error: {0}", event.message)]
+                    errors: globalErr
                 });
             }
             break;
@@ -428,6 +472,15 @@ class RemoteCommand extends React.Component {
       elements.push(
         <MinionResultView key={id} id={id} result={value}/>
       );
+    }
+    if (result.waitForSSH) {
+        elements.push(
+            <MinionResultView key="waitForSSH" id="waitForSSH" label={t("Matching ssh-push minions...")} result={ {type: "pending", value: null} }/>
+        );
+    } else if (result.timedOutSSH) {
+        elements.push(
+            <MinionResultView key="waitForSSH" id="waitForSSH" label={t("Matching ssh-push minions...")} result={ {type: "timedOut", value: null} }/>
+        );
     }
     return <div>{elements}</div>;
   }

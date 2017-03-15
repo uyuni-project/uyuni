@@ -27,6 +27,7 @@ import com.suse.manager.webui.websocket.json.ActionTimedOutEventDto;
 import com.suse.manager.webui.websocket.json.MinionCommandResultEventDto;
 import com.suse.manager.webui.websocket.json.ActionErrorEventDto;
 import com.suse.manager.webui.websocket.json.AbstractSaltEventDto;
+import com.suse.manager.webui.websocket.json.SSHMinionMatchResultDto;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Json;
@@ -40,8 +41,12 @@ import javax.websocket.Session;
 import javax.websocket.EndpointConfig;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeoutException;
@@ -104,17 +109,9 @@ public class RemoteMinionCommands {
         ExecuteMinionActionDto msg = Json.GSON.fromJson(
                 messageBody, ExecuteMinionActionDto.class);
         WebSession webSession = WebSessionFactory.lookupById(sessionId);
-        if (webSession == null || webSession.getUser() == null) {
-            LOG.debug("Invalid web sessionId. Closing the web socket.");
-            sendMessage(session, new ActionErrorEventDto(null,
-                    "INVALID_SESSION", "Invalid user session."));
-            try {
-                session.close();
-                return;
-            }
-            catch (IOException e) {
-                LOG.debug("Error closing web socket session", e);
-            }
+
+        if (invalidWebSession(session, webSession)) {
+            return;
         }
 
         int timeOut = 600; // 10 minutes
@@ -126,22 +123,29 @@ public class RemoteMinionCommands {
                         .collect(Collectors.toList());
 
                 this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
-                Map<String, CompletionStage<Result<Boolean>>> res;
+
+                Optional<CompletionStage<Map<String, Result<Boolean>>>> resSSH =
+                        SaltService.INSTANCE.matchAsyncSSH(msg.getTarget(), failAfter);
+
+                Map<String, CompletionStage<Result<Boolean>>> res = new HashMap<>();
                 try {
                     res = SaltService.INSTANCE
                             .matchAsync(msg.getTarget(), failAfter);
                 }
                 catch (NullPointerException e) {
-                    sendMessage(session, new ActionErrorEventDto(null,
-                            "ERR_TARGET_NO_MATCH", e.getMessage()));
-                    return;
+                    if (!resSSH.isPresent()) {
+                        // just return, no need to wait for salt-ssh results
+                        sendMessage(session, new ActionErrorEventDto(null,
+                                "ERR_TARGET_NO_MATCH", e.getMessage()));
+                        return;
+                    }
                 }
 
-                previewedMinions = res.keySet().stream()
-                        .collect(Collectors.toList());
+                previewedMinions = Collections
+                        .synchronizedList(new ArrayList<>(res.size()));
+                previewedMinions.addAll(
+                        res.keySet().stream().collect(Collectors.toList()));
                 previewedMinions.retainAll(allVisibleMinions);
-                sendMessage(session, new AsyncJobStartEventDto("preview",
-                        previewedMinions));
 
                 res.forEach((minionId, future) -> {
                     future.whenComplete((matchResult, err) -> {
@@ -149,7 +153,7 @@ public class RemoteMinionCommands {
                             // minion is not visible to this user
                             return;
                         }
-                        if (matchResult != null) {
+                        if (matchResult != null && matchResult.result().orElse(false)) {
                             sendMessage(session, new MinionMatchResultEventDto(minionId));
                         }
                         if (err != null) {
@@ -170,6 +174,49 @@ public class RemoteMinionCommands {
                         }
                     });
                 });
+
+                resSSH.ifPresent(future -> {
+                    future.whenComplete((result, err) -> {
+                        if (err != null) {
+                            if (err instanceof TimeoutException) {
+                                sendMessage(session,
+                                        new ActionTimedOutEventDto(true, "preview"));
+                                LOG.debug(
+                                    "Timed out waiting for response from salt-ssh minions");
+                            }
+                            else {
+                                LOG.error("Error waiting for salt-ssh minions", err);
+                                sendMessage(session,
+                                        new ActionErrorEventDto(null,
+                                                "ERR_WAIT_SSH_MATCH",
+                                                "Error waiting for matching: " +
+                                                        err.getMessage()));
+                            }
+                            return;
+                        }
+                        if (result != null) {
+                            List<String> sshMinions = result.entrySet().stream()
+                                    .filter((entry) -> {
+                                        if (!allVisibleMinions.contains(entry.getKey())) {
+                                            // minion is not visible to this user
+                                            return false;
+                                        }
+                                        return entry.getValue() != null &&
+                                                entry.getValue().result().orElse(false);
+                                    })
+                                    .map((entry) -> entry.getKey())
+                                    .collect(Collectors.toList());
+
+                            previewedMinions.addAll(sshMinions);
+
+                            sendMessage(session,
+                                    new SSHMinionMatchResultDto(sshMinions));
+                        }
+                    });
+                });
+
+                sendMessage(session, new AsyncJobStartEventDto("preview",
+                        previewedMinions, resSSH.isPresent()));
             }
             else if (msg.isCancel()) {
                 if (this.failAfter != null) {
@@ -188,6 +235,11 @@ public class RemoteMinionCommands {
                                     "ERR_NO_PREVIEW",
                                     "Please execute preview first."));
                 }
+                else if (previewedMinions.isEmpty()) {
+                    sendMessage(session, new ActionErrorEventDto(null,
+                            "ERR_TARGET_NO_MATCH", ""));
+                    return;
+                }
                 this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
                 Map<String, CompletionStage<Result<String>>> res;
                 try {
@@ -203,7 +255,7 @@ public class RemoteMinionCommands {
 
                 List<String> allMinions = res.keySet().stream()
                         .collect(Collectors.toList());
-                sendMessage(session, new AsyncJobStartEventDto("run", allMinions));
+                sendMessage(session, new AsyncJobStartEventDto("run", allMinions, false));
 
                 res.forEach((minionId, future) -> {
                     future.whenComplete((cmdResult, err) -> {
@@ -248,21 +300,39 @@ public class RemoteMinionCommands {
 
     }
 
+    private boolean invalidWebSession(Session session, WebSession webSession) {
+        if (webSession == null || webSession.getUser() == null) {
+            LOG.debug("Invalid web sessionId. Closing the web socket.");
+            sendMessage(session, new ActionErrorEventDto(null,
+                    "INVALID_SESSION", "Invalid user session."));
+            try {
+                session.close();
+                return true;
+            }
+            catch (IOException e) {
+                LOG.debug("Error closing web socket session", e);
+            }
+        }
+        return false;
+    }
+
     /**
      * Must be synchronized. Sending messages concurrently from separate threads
      * will result in IllegalStateException.
      */
-    private synchronized void sendMessage(Session session, AbstractSaltEventDto dto) {
-        try {
-            if (session.isOpen()) {
-                session.getBasicRemote().sendText(Json.GSON.toJson(dto));
+    private void sendMessage(Session session, AbstractSaltEventDto dto) {
+        synchronized (session) {
+            try {
+                if (session.isOpen()) {
+                    session.getBasicRemote().sendText(Json.GSON.toJson(dto));
+                }
+                else {
+                    LOG.debug("Could not send websocket message. Session is closed.");
+                }
             }
-            else {
-                LOG.debug("Could not send websocket message. Session is closed.");
+            catch (IOException e) {
+                LOG.error("Error sending websocket message", e);
             }
-        }
-        catch (IOException e) {
-            LOG.error("Error sending websocket message", e);
         }
     }
 
