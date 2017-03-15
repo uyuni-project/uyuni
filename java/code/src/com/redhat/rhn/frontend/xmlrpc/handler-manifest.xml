@@ -13,6 +13,8 @@
   <template name="errata" classname="com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler" />
   <template name="formula" classname="com.redhat.rhn.frontend.xmlrpc.formula.FormulaHandler" />
   <template name="image.store" classname="com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler" />
+  <template name="image.profile" classname="com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler" />
+  <template name="image" classname="com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler" />
   <template name="kickstart" classname="com.redhat.rhn.frontend.xmlrpc.kickstart.KickstartHandler" />
   <template name="kickstart.filepreservation" classname="com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler" />
   <template name="kickstart.keys" classname="com.redhat.rhn.frontend.xmlrpc.kickstart.keys.CryptoKeysHandler" />
