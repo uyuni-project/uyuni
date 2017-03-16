@@ -228,4 +228,26 @@ public class ImageInfoHandler extends BaseHandler {
         return opt.get().getCustomDataValues().stream()
                 .collect(Collectors.toMap(a -> a.getKey().getLabel(), a -> a.getValue()));
     }
+
+    /**
+     * Delete an Image
+     * @param loggedInUser The current User
+     * @param imageId the image id
+     * @return 1 on success
+     *
+     * @xmlrpc.doc Delete an Image
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "imageId")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int delete(User loggedInUser, Integer imageId) {
+        ensureImageAdmin(loggedInUser);
+        Optional<ImageInfo> opt = ImageInfoFactory.lookupByIdAndOrg(imageId,
+                loggedInUser.getOrg());
+        if (!opt.isPresent()) {
+            throw new NoSuchImageException();
+        }
+        ImageInfoFactory.delete(opt.get());
+        return 1;
+    }
 }
