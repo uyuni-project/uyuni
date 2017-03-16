@@ -21,7 +21,7 @@ Feature: Test that Manager doesn't hang if a salt minion is down.
     Then I wait for "10" seconds
     And I click on "stop"
     Then I should see "sle-minion" hostname
-    Then I wait for "10" seconds
+    And I wait for "10" seconds
     And I click on "run"
     And I click on "stop"
     And I click on "run"
