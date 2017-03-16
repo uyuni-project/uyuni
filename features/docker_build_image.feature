@@ -32,7 +32,7 @@ Feature:  Build Container images with SUSE Manager
   And I follow "Stores" in the left menu
   And I follow "Create"
   And I enter "galaxy-registry" as "label"
-  And I enter "registry.suse.de" as "uri"
+  And I enter "registry.mgr.suse.de" as "uri"
   And I click on "create-btn"
 
   Scenario: Create an Image Profile
