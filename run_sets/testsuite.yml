@@ -80,7 +80,6 @@
 
 # salt regression
 - features/salt_regression_topsls.feature
-# - features/salt_regression_multiminion.feature Unstable test
 
 - features/salt_ssh.feature 
 - features/salt_ssh_reboot_test.feature
@@ -91,6 +90,7 @@
 - features/minion_centos_bootstrap.feature
 - features/centos_salt_remote_cmds.feature
 - features/centos_salt_reboot_test.feature
+- features/salt_regression_multiminion.feature 
 # - features/centos_salt_ssh.feature  FIXME: this feature at moment is unstable
 
 #### * Docker releated features tests.  ###

@@ -288,6 +288,7 @@ end
 When(/^I expand the results for "(.*)"$/) do |host|
  find("div[id='#{$ceos_minion_fullhostname}']").click if host == "ceos-minion"
  find("div[id='#{$ssh_minion_fullhostname}']").click if host == "ssh-minion"
+ find("div[id='#{$minion_fullhostname}']").click if host == "sle-minion"
 end
 
 Then(/^I enter command "([^"]*)"$/) do |arg1|
