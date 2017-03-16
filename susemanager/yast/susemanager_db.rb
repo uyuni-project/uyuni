@@ -68,75 +68,8 @@ module Yast
       end
 
       @contents = HBox(
-        HSpacing(3),
-        VBox(
-          RadioButtonGroup(
-            Id(:rb),
-            Frame(
-              "",
-              HBox(
-                HSpacing(0.2),
-                VBox(
-                  VSpacing(0.4), # hbox
-                  Left(
-                    RadioButton(
-                      Id(:localdb),
-                      Opt(:notify),
-                      # radio button label
-                      _("Embedded Database"),
-                      Ops.get(@settings, "MANAGER_DB_HOST", "") == "localhost"
-                    )
-                  ),
-                  @text_mode ? Empty() : VSpacing(),
-                  Left(
-                    RadioButton(
-                      Id(:remotedb),
-                      Opt(:notify),
-                      # radio button label
-                      _("Remote Database"),
-                      Ops.get(@settings, "MANAGER_DB_HOST", "") != "localhost"
-                    )
-                  ),
-                  HBox(
-                    HSpacing(3),
-                    VBox(
-                      # text entry label
-                      InputField(
-                        Id("MANAGER_DB_NAME"),
-                        Opt(:hstretch),
-                        _("&Database Name"),
-                        Ops.get(@settings, "MANAGER_DB_NAME", "")
-                      ),
-                      # text entry label
-                      InputField(
-                        Id("MANAGER_DB_HOST"),
-                        Opt(:hstretch),
-                        _("&Hostname"),
-                        Ops.get(@settings, "MANAGER_DB_HOST", "")
-                      ),
-                      HBox(
-                        # text entry label
-                        InputField(
-                          Id("MANAGER_DB_PORT"),
-                          Opt(:hstretch),
-                          _("&Port"),
-                          Ops.get(@settings, "MANAGER_DB_PORT", "")
-                        ),
-                        # text entry label
-                        InputField(
-                          Id("MANAGER_DB_PROTOCOL"),
-                          Opt(:hstretch),
-                          _("Pro&tocol"),
-                          Ops.get(@settings, "MANAGER_DB_PROTOCOL", "")
-                        )
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          ),
-          VSpacing(0.4),
+        HSpacing(1),
+          VBox(
           # text entry label
           InputField(
             Id("MANAGER_USER"),
@@ -144,6 +77,7 @@ module Yast
             _("Database &User"),
             Ops.get(@settings, "MANAGER_USER", "")
           ),
+          VSpacing(1),
           # text entry label
           Password(
             Id("MANAGER_PASS"),
@@ -151,6 +85,7 @@ module Yast
             _("Database &Password"),
             Ops.get(@settings, "MANAGER_PASS", "")
           ),
+          VSpacing(1),
           # text entry label
           Password(
             Id("MANAGER_PASS2"),
@@ -158,17 +93,18 @@ module Yast
             _("R&epeat Password"),
             Ops.get(@settings, "MANAGER_PASS", "")
           ),
-          VSpacing(0.4)
         ),
         HSpacing(1)
-      )
+	)
 
       # help text
       @help_text = _(
-        "<p>Decide if to use the embedded or a remote database for SUSE Manager. If you select Local Database, Port and Protocol are set automatically.</p>\n" +
-          "<p>For Remote Database you need to fill <b>Database Name</b>, Hostname, Port and Protocol.</p>\n" +
-          "<p>\n" +
-          "If you use the local database, set a user name and a password for the SUSE Manager database user that should be created. For a remote database, enter a user name that already exists in the database configuration and enter the correct password for this user</p>"
+        "<p>By default SUSE Manager is using an internal postgresql database named 'susemanager'. " +
+        "If you want to use an external database or a custom database name, you will " +
+        "need to modify the answer file created by this user interface (/etc/setup_env.sh) " +
+        "and run the setup procedure manually with the following command:</p>\n\n" +
+        "<p>\n\n/usr/lib/susemanager/bin/mgr-setup -s</p>\n\n" +
+        "after collecting all data with this user interface."
       )
 
       # dialog caption
@@ -179,30 +115,10 @@ module Yast
         Ops.get_boolean(@args, "enable_back", true),
         Ops.get_boolean(@args, "enable_next", true)
       )
-      UI.ChangeWidget(Id("MANAGER_DB_PORT"), :ValidChars, "1234567890")
-      UI.SetFocus(Id(:localdb))
-
-      Builtins.foreach(@local_db) do |key, value|
-        UI.ChangeWidget(
-          Id(key),
-          :Enabled,
-          Ops.get(@settings, "MANAGER_DB_HOST", "") != "localhost"
-        )
-      end
-      UI.ChangeWidget(
-        Id("MANAGER_DB_PORT"),
-        :Enabled,
-        Ops.get(@settings, "MANAGER_DB_HOST", "") != "localhost"
-      )
+      UI.SetFocus(Id("MANAGER_USER"))
 
       while true
         @ret = UI.UserInput
-        if @ret == :remotedb || @ret == :localdb
-          Builtins.foreach(@local_db) do |key, value|
-            UI.ChangeWidget(Id(key), :Enabled, @ret == :remotedb)
-          end
-          UI.ChangeWidget(Id("MANAGER_DB_PORT"), :Enabled, @ret == :remotedb)
-        end
         break if @ret == :back
         break if @ret == :abort && Popup.ConfirmAbort(:incomplete)
         if @ret == :next
@@ -253,7 +169,7 @@ module Yast
             UI.SetFocus(Id("MANAGER_PASS"))
             next
           end
-          @localdb = UI.QueryWidget(Id(:rb), :CurrentButton) == :localdb
+          @localdb = 1
           Builtins.foreach(@settings) do |key, value|
             val = ""
             if key == "DB_BACKEND"
@@ -307,7 +223,10 @@ module Yast
                 end
               end
             else
-              val = Convert.to_string(UI.QueryWidget(Id(key), :Value))
+              if key != "MANAGER_DB_HOST" && key != "MANAGER_DB_PORT" &&
+                 key != "MANAGER_DB_PROTOCOL" && key != "MANAGER_DB_NAME"
+                val = Convert.to_string(UI.QueryWidget(Id(key), :Value))
+              end
             end
             if @localdb
               if Builtins.haskey(@local_db, key)
