@@ -74,7 +74,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
                 ImageStore.TYPE_REGISTRY, null);
         assertEquals(1, ret);
 
-        ret = handler.deleteImageStore(admin, "registry.mgr");
+        ret = handler.delete(admin, "registry.mgr");
         assertEquals(1, ret);
 
         try {
