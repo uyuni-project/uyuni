@@ -123,7 +123,7 @@ public class ImageProfileFactory extends HibernateFactory {
      * @param org the organization
      * @return Returns the ImageProfile
      */
-    public static ImageProfile lookupByLabelAndOrg(String label, Org org) {
+    public static Optional<ImageProfile> lookupByLabelAndOrg(String label, Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ImageProfile> criteria = builder.createQuery(ImageProfile.class);
         Root<ImageProfile> root = criteria.from(ImageProfile.class);
@@ -132,7 +132,7 @@ public class ImageProfileFactory extends HibernateFactory {
                         builder.equal(root.get("label"), label),
                         builder.equal(root.get("org"), org))
                 );
-        return getSession().createQuery(criteria).getSingleResult();
+        return getSession().createQuery(criteria).uniqueResultOptional();
     }
 
     /**

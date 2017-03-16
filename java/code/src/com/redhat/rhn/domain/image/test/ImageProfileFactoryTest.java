@@ -125,18 +125,17 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         ImageProfileFactory.save(profile);
         profile = TestUtils.saveAndReload(profile);
 
-        ImageProfile prf = ImageProfileFactory.lookupByLabelAndOrg("suma-3.1-base", user.getOrg());
+        ImageProfile prf = ImageProfileFactory.lookupByLabelAndOrg("suma-3.1-base",
+                user.getOrg()).get();
         assertEquals(profile, prf);
 
         Org org = OrgFactory.createOrg();
         org.setName("foreign org");
         org = OrgFactory.save(org);
 
-        try {
-            ImageProfileFactory.lookupByLabelAndOrg("suma-3.1-base", org);
+        if (ImageProfileFactory.lookupByLabelAndOrg("suma-3.1-base", org).isPresent()) {
             fail("Should throw NoResultException");
         }
-        catch (NoResultException ignored) { }
     }
 
     public void testListImageProfiles() throws Exception {
