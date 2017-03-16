@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 import com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler;
@@ -66,7 +67,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         try {
             handler.getDetails(admin, "");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Label cannot be empty.", e.getMessage());
         }
 
@@ -130,7 +131,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
                     "/path/to/dockerfile/", key.getKey());
             fail("Invalid type provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Type does not exist.", e.getMessage());
         }
 
@@ -148,7 +149,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
                     "/path/to/dockerfile/", "invalidkey");
             fail("Invalid activation key provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Activation key does not exist.", e.getMessage());
         }
 
@@ -157,7 +158,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
                     "/path/to/dockerfile/", key.getKey());
             fail("No label provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Label cannot be empty.", e.getMessage());
         }
 
@@ -166,7 +167,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
                     key.getKey());
             fail("No type provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Type cannot be empty.", e.getMessage());
         }
 
@@ -175,7 +176,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
                     "/path/to/dockerfile/", key.getKey());
             fail("No store label provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Store label cannot be empty.", e.getMessage());
         }
 
@@ -184,7 +185,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
                     "", key.getKey());
             fail("No path provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Path cannot be empty.", e.getMessage());
         }
     }
@@ -199,7 +200,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.delete(admin, "");
             fail("No Label provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Label cannot be empty.", e.getMessage());
         }
 
@@ -238,7 +239,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.setDetails(admin, "", details);
             fail("No label provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Label cannot be empty.", e.getMessage());
         }
 
@@ -262,7 +263,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.setDetails(admin, "myprofile", details);
             fail("No store label provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Store label cannot be empty.", e.getMessage());
         }
 
@@ -272,7 +273,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.setDetails(admin, "myprofile", details);
             fail("No path provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Path cannot be empty.", e.getMessage());
         }
 
@@ -282,7 +283,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.setDetails(admin, "myprofile", details);
             fail("Invalid activation key provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Activation key does not exist.", e.getMessage());
         }
 
@@ -329,7 +330,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.getCustomValues(admin, "");
             fail("No Label provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Label cannot be empty.", e.getMessage());
         }
 
@@ -368,7 +369,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.setCustomValues(admin, "", values);
             fail("No Label provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Label cannot be empty.", e.getMessage());
         }
 
@@ -383,7 +384,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.setCustomValues(admin, "myprofile", values);
             fail("Invalid key provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("The key 'invalidkey' doesn't exist.", e.getMessage());
         }
 
@@ -465,7 +466,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.deleteCustomValues(admin, "", keysToDelete);
             fail("No Label provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Label cannot be empty.", e.getMessage());
         }
 
@@ -480,7 +481,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             handler.deleteCustomValues(admin, "myprofile", keysToDelete);
             fail("Invalid key provided.");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("The key 'invalidkey' doesn't exist.", e.getMessage());
         }
 
