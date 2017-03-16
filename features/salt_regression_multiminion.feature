@@ -34,7 +34,7 @@ Feature: Test that Manager doesn't hang if a salt minion is down.
     Given I am authorized as "testing" with password "testing"
     And  I run "systemctl restart salt-minion" on "ceos-minion"
     And I wait until "salt-minion" service is up and running on "ceos-minion"
-
+    And I wait for "10" seconds
    Scenario: Test centos7 minion reachability and that it works again after restart
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
