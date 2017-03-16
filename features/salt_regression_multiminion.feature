@@ -26,7 +26,7 @@ Feature: Test that Manager doesn't hang if a salt minion is down.
     And I click on "stop"
     And I click on "run"
     Then I wait for "10" seconds
-    And I click on stop
+    And I click on "stop"
     And I expand the results for "sle-minion"
     Then I should see a "SUSE Linux Enterprise Server" text
 
