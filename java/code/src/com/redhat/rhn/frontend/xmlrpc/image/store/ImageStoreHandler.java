@@ -149,7 +149,7 @@ public class ImageStoreHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.returntype #return_int_success()
      */
-    public int deleteImageStore(User loggedInUser, String label) {
+    public int delete(User loggedInUser, String label) {
         ensureImageAdmin(loggedInUser);
         Optional<ImageStore> store = ImageStoreFactory.lookupBylabelAndOrg(label,
                 loggedInUser.getOrg());
