@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.systems.audit;
 
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
@@ -30,13 +33,29 @@ public abstract class ScapSetupAction extends RhnAction {
     private static final String SCAP_ENABLED = "scapEnabled";
     private static final String REQUIRED_PKG = "requiredPackage";
     private static final String SPACEWALK_OSCAP = "spacewalk-oscap";
+    private static final String OPENSCAP_SUSE_PKG = "openscap-utils";
+    private static final String OPENSCAP_REDHAT_PKG = "openscap-scanner";
 
     protected void setupScapEnablementInfo(RequestContext context) {
         Server server = context.lookupAndBindServer();
         User user = context.getCurrentUser();
-        boolean enabled = ScapManager.isScapEnabled(server, user);
+        boolean enabled = false;
+        String requiredPkg = SPACEWALK_OSCAP;
+        if (server.asMinionServer().isPresent()) {
+            MinionServer minion = server.asMinionServer().get();
+            requiredPkg = minion.getOsFamily().equals("Suse") ?
+                    OPENSCAP_SUSE_PKG : OPENSCAP_REDHAT_PKG;
+            InstalledPackage installedPkg =
+                    PackageFactory.lookupByNameAndServer(requiredPkg, server);
+            if (installedPkg != null) {
+                enabled = true;
+            }
+        }
+        else {
+            enabled = ScapManager.isScapEnabled(server, user);
+        }
         context.getRequest().setAttribute(SCAP_ENABLED, enabled);
-        context.getRequest().setAttribute(REQUIRED_PKG, SPACEWALK_OSCAP);
+        context.getRequest().setAttribute(REQUIRED_PKG, requiredPkg);
 
         SdcHelper.ssmCheck(context.getRequest(), server.getId(), user);
     }
