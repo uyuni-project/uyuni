@@ -108,9 +108,9 @@ public class ImageInfoHandler extends BaseHandler {
         if (StringUtils.isEmpty(profileLabel)) {
             throw new InvalidParameterException("Profile label cannot be empty.");
         }
-        ImageProfile prof = ImageProfileFactory.lookupByLabelAndOrg(profileLabel,
+        Optional<ImageProfile> oprof = ImageProfileFactory.lookupByLabelAndOrg(profileLabel,
                 loggedInUser.getOrg());
-        if (prof == null) {
+        if (!oprof.isPresent()) {
             throw new NoSuchImageProfileException();
         }
 
@@ -124,7 +124,7 @@ public class ImageInfoHandler extends BaseHandler {
                     " is not a valid container buildhost");
         }
 
-        return ImageInfoFactory.scheduleBuild(buildHostId, version, prof,
+        return ImageInfoFactory.scheduleBuild(buildHostId, version, oprof.get(),
                 earliestOccurrence, loggedInUser);
     }
 

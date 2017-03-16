@@ -103,8 +103,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
         assertEquals(1, result);
 
-        ImageProfile profile =
-                ImageProfileFactory.lookupByLabelAndOrg("newprofile", admin.getOrg());
+        ImageProfile profile = ImageProfileFactory.lookupByLabelAndOrg(
+                "newprofile", admin.getOrg()).get();
 
         assertEquals("newprofile", profile.getLabel());
         assertEquals(ImageProfile.TYPE_DOCKERFILE, profile.getImageType());
@@ -119,7 +119,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
                 "myregistry", "/path/to/dockerfile", key.getKey());
 
         assertEquals(1, result);
-        profile = ImageProfileFactory.lookupByLabelAndOrg("newprofile2", admin.getOrg());
+        profile = ImageProfileFactory.lookupByLabelAndOrg("newprofile2",
+                admin.getOrg()).get();
         assertEquals(key.getToken(), profile.getToken());
     }
 
@@ -295,7 +296,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
         assertEquals(1, result);
         ImageProfile profile =
-                ImageProfileFactory.lookupByLabelAndOrg("myprofile", admin.getOrg());
+                ImageProfileFactory.lookupByLabelAndOrg("myprofile", admin.getOrg()).get();
         assertEquals("newstore", profile.getTargetStore().getLabel());
         assertEquals("/new/path", profile.asDockerfileProfile().get().getPath());
         assertEquals(newKey.getToken(), profile.getToken());
@@ -305,7 +306,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         details.put("activationKey", "");
         result = handler.setDetails(admin, "myprofile", details);
         assertEquals(1, result);
-        profile = ImageProfileFactory.lookupByLabelAndOrg("myprofile", admin.getOrg());
+        profile = ImageProfileFactory.lookupByLabelAndOrg("myprofile",
+                admin.getOrg()).get();
         assertNull(profile.getToken());
     }
 

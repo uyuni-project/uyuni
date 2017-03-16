@@ -30,7 +30,6 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 import org.apache.commons.lang.StringUtils;
 
-import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -371,11 +370,7 @@ public class ImageProfileHandler extends BaseHandler {
             throw new InvalidParameterException("Label cannot be empty.");
         }
 
-        try {
-            return ImageProfileFactory.lookupByLabelAndOrg(label, user.getOrg());
-        }
-        catch (NoResultException e) {
-            throw new NoSuchImageProfileException();
-        }
+        return ImageProfileFactory.lookupByLabelAndOrg(label, user.getOrg())
+                .orElseThrow(NoSuchImageProfileException::new);
     }
 }
