@@ -118,8 +118,13 @@ module Yast
         end
       end
 
-      if !Popup.YesNo(_("All data is collected. Run setup now?"))
-        return deep_copy(@ret)
+      if !Popup.YesNo(_("Now you can either start the setup process directly or exit the\n" +
+                        "user interface and make custom modifications to the answer file\n" +
+                        "/root/setup_env.sh. If you choose to do so, you will need to run\n" +
+                        "the actual setup manually by running\n\n" +
+                        "/usr/lib/susemanager/bin/mgr-setup -s\n\n" +
+                        "Run setup now?"))
+        return :abort
       end
 
       UI.ReplaceWidget(
