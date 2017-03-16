@@ -101,7 +101,7 @@ module Yast
       @help_text = _(
         "<p>By default SUSE Manager is using an internal postgresql database named 'susemanager'. " +
         "If you want to use an external database or a custom database name, you will " +
-        "need to modify the answer file created by this user interface (/etc/setup_env.sh) " +
+        "need to modify the answer file created by this user interface (/root/setup_env.sh) " +
         "and run the setup procedure manually with the following command:</p>\n\n" +
         "<p>\n\n/usr/lib/susemanager/bin/mgr-setup -s</p>\n\n" +
         "after collecting all data with this user interface."
