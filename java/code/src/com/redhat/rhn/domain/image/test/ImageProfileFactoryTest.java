@@ -99,14 +99,12 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         profile.setTargetStore(iStore);
         ImageProfileFactory.save(profile);
 
-        ImageProfile prf = ImageProfileFactory.lookupByLabel("suma-3.1-base");
+        ImageProfile prf = ImageProfileFactory.lookupByLabel("suma-3.1-base").get();
         assertEquals(profile, prf);
 
-        try {
-            ImageProfileFactory.lookupByLabel("non-exixtent-label");
+        if (ImageProfileFactory.lookupByLabel("non-exixtent-label").isPresent()) {
             fail("Should throw NoResultException");
         }
-        catch (NoResultException ignored) { }
     }
 
     public void testLookupByLabelAndOrg() throws Exception {
