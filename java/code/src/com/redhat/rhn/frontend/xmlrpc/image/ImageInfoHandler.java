@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
@@ -105,7 +106,7 @@ public class ImageInfoHandler extends BaseHandler {
             Integer buildHostId, Date earliestOccurrence) {
         ensureImageAdmin(loggedInUser);
         if (StringUtils.isEmpty(profileLabel)) {
-            throw new IllegalArgumentException("Profile label cannot be empty.");
+            throw new InvalidParameterException("Profile label cannot be empty.");
         }
         ImageProfile prof = ImageProfileFactory.lookupByLabelAndOrg(profileLabel,
                 loggedInUser.getOrg());

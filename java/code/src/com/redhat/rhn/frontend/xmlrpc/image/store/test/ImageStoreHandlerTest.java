@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.image.store.test;
 
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreType;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 import com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
@@ -57,7 +58,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         try {
             handler.getDetails(admin, "");
         }
-        catch (IllegalArgumentException e) {
+        catch (InvalidParameterException e) {
             assertEquals("Label cannot be empty.", e.getMessage());
         }
 

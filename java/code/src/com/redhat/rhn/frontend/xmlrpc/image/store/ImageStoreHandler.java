@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 
 import org.apache.commons.lang.StringUtils;
@@ -57,14 +58,17 @@ public class ImageStoreHandler extends BaseHandler {
             Map<String, String> parameters) {
         ensureImageAdmin(loggedInUser);
         if (StringUtils.isEmpty(label)) {
-            throw new IllegalArgumentException("Label cannot be empty.");
+            throw new InvalidParameterException("Label cannot be empty.");
+        }
+        else if (ImageStoreFactory.lookupBylabel(label) != null) {
+            throw new InvalidParameterException("Image store already exists.");
         }
         if (StringUtils.isEmpty(uri)) {
-            throw new IllegalArgumentException("Uri cannot be empty.");
+            throw new InvalidParameterException("Uri cannot be empty.");
         }
         Optional<ImageStoreType> st = ImageStoreFactory.lookupStoreTypeByLabel(storeType);
         if (!st.isPresent()) {
-            throw new IllegalArgumentException("Unknown image store type: " + storeType);
+            throw new InvalidParameterException("Unknown image store type: " + storeType);
         }
         ImageStore imageStore = new ImageStore();
         imageStore.setLabel(label);
@@ -123,7 +127,7 @@ public class ImageStoreHandler extends BaseHandler {
         ensureImageAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(label)) {
-            throw new IllegalArgumentException("Label cannot be empty.");
+            throw new InvalidParameterException("Label cannot be empty.");
         }
 
         Optional<ImageStore> store = ImageStoreFactory.lookupBylabelAndOrg(label,
@@ -183,7 +187,7 @@ public class ImageStoreHandler extends BaseHandler {
         validateMap(validKeys, details);
 
         if (StringUtils.isEmpty(label)) {
-            throw new IllegalArgumentException("Label cannot be empty.");
+            throw new InvalidParameterException("Label cannot be empty.");
         }
         Optional<ImageStore> optstore = ImageStoreFactory.lookupBylabelAndOrg(label,
                 loggedInUser.getOrg());

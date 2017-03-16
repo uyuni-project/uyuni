@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 import org.apache.commons.lang.StringUtils;
@@ -115,25 +116,28 @@ public class ImageProfileHandler extends BaseHandler {
         ensureImageAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(label)) {
-            throw new IllegalArgumentException("Label cannot be empty.");
+            throw new InvalidParameterException("Label cannot be empty.");
+        }
+        else if (ImageProfileFactory.lookupByLabel(label) != null) {
+            throw new InvalidParameterException("Image already exist.");
         }
         if (StringUtils.isEmpty(type)) {
-            throw new IllegalArgumentException("Type cannot be empty.");
+            throw new InvalidParameterException("Type cannot be empty.");
         }
         if (StringUtils.isEmpty(storeLabel)) {
-            throw new IllegalArgumentException("Store label cannot be empty.");
+            throw new InvalidParameterException("Store label cannot be empty.");
         }
         if (StringUtils.isEmpty(path)) {
-            throw new IllegalArgumentException("Path cannot be empty.");
+            throw new InvalidParameterException("Path cannot be empty.");
         }
         if (!listImageProfileTypes(loggedInUser).contains(type)) {
-            throw new IllegalArgumentException("Type does not exist.");
+            throw new InvalidParameterException("Type does not exist.");
         }
         ActivationKey ak = null;
         if (StringUtils.isNotEmpty(activationKey)) {
             ak = ActivationKeyFactory.lookupByKey(activationKey);
             if (ak == null) {
-                throw new IllegalArgumentException("Activation key does not exist.");
+                throw new InvalidParameterException("Activation key does not exist.");
             }
         }
 
@@ -215,7 +219,7 @@ public class ImageProfileHandler extends BaseHandler {
         if (details.containsKey("storeLabel")) {
             String storeLabel = (String) details.get("storeLabel");
             if (StringUtils.isEmpty(storeLabel)) {
-                throw new IllegalArgumentException("Store label cannot be empty.");
+                throw new InvalidParameterException("Store label cannot be empty.");
             }
             profile.setTargetStore(ImageStoreFactory
                     .lookupBylabelAndOrg(storeLabel,
@@ -225,10 +229,10 @@ public class ImageProfileHandler extends BaseHandler {
         if (details.containsKey("path")) {
             String path = (String) details.get("path");
             if (StringUtils.isEmpty(path)) {
-                throw new IllegalArgumentException("Path cannot be empty.");
+                throw new InvalidParameterException("Path cannot be empty.");
             }
             profile.asDockerfileProfile()
-                    .orElseThrow(() -> new IllegalArgumentException("The type " +
+                    .orElseThrow(() -> new InvalidParameterException("The type " +
                             profile.getImageType() + " doesn't support 'Path' property"))
                     .setPath(path);
         }
@@ -238,7 +242,7 @@ public class ImageProfileHandler extends BaseHandler {
             if (StringUtils.isNotEmpty(activationKey)) {
                 ak = ActivationKeyFactory.lookupByKey(activationKey);
                 if (ak == null) {
-                    throw new IllegalArgumentException("Activation key does not exist.");
+                    throw new InvalidParameterException("Activation key does not exist.");
                 }
             }
             profile.setToken(ak != null ? ak.getToken() : null);
@@ -294,12 +298,12 @@ public class ImageProfileHandler extends BaseHandler {
         Set<CustomDataKey> orgKeys = loggedInUser.getOrg().getCustomDataKeys();
         values.forEach((key, val) -> {
             if (StringUtils.isEmpty(key)) {
-                throw new IllegalArgumentException("Key label cannot be empty.");
+                throw new InvalidParameterException("Key label cannot be empty.");
             }
 
             // Find the key in organization
             CustomDataKey orgKey = orgKeys.stream().filter(ok -> ok.getLabel().equals(key))
-                    .findFirst().orElseThrow(() -> new IllegalArgumentException(
+                    .findFirst().orElseThrow(() -> new InvalidParameterException(
                             "The key '" + key + "' doesn't exist."));
 
             // Find the key in profile, or create a new one
@@ -349,10 +353,10 @@ public class ImageProfileHandler extends BaseHandler {
         Set<ProfileCustomDataValue> values = profile.getCustomDataValues();
         keys.forEach(key -> {
             if (StringUtils.isEmpty(key)) {
-                throw new IllegalArgumentException("Key label cannot be empty.");
+                throw new InvalidParameterException("Key label cannot be empty.");
             }
             orgKeys.stream().filter(k -> key.equals(k.getLabel())).findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException(
+                    .orElseThrow(() -> new InvalidParameterException(
                             "The key '" + key + "' doesn't exist."));
 
             values.stream().filter(v -> key.equals(v.getKey().getLabel())).findFirst()
@@ -364,7 +368,7 @@ public class ImageProfileHandler extends BaseHandler {
 
     private ImageProfile getValidImageProfile(User user, String label) {
         if (StringUtils.isEmpty(label)) {
-            throw new IllegalArgumentException("Label cannot be empty.");
+            throw new InvalidParameterException("Label cannot be empty.");
         }
 
         try {
