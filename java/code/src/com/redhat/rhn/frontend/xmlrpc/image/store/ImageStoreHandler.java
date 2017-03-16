@@ -60,7 +60,7 @@ public class ImageStoreHandler extends BaseHandler {
         if (StringUtils.isEmpty(label)) {
             throw new InvalidParameterException("Label cannot be empty.");
         }
-        else if (ImageStoreFactory.lookupBylabel(label) != null) {
+        else if (ImageStoreFactory.lookupBylabel(label).isPresent()) {
             throw new InvalidParameterException("Image store already exists.");
         }
         if (StringUtils.isEmpty(uri)) {
