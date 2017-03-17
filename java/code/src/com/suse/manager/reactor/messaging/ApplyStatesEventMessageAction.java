@@ -15,7 +15,6 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -24,6 +23,8 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.utils.MinionServerUtils;
 
@@ -37,6 +38,7 @@ import java.util.Date;
  */
 public class ApplyStatesEventMessageAction extends AbstractDatabaseAction {
 
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     private static final Logger LOG = Logger.getLogger(ApplyStatesEventMessageAction.class);
 
     /**
@@ -59,19 +61,26 @@ public class ApplyStatesEventMessageAction extends AbstractDatabaseAction {
             User scheduler = event.getUserId() != null ?
                     UserFactory.lookupById(event.getUserId()) : null;
 
-            // Schedule a "state.apply" action to happen right now
-            ApplyStatesAction action = ActionManager.scheduleApplyStates(
-                    scheduler,
-                    Arrays.asList(server.getId()),
-                    applyStatesEvent.getStateNames(),
-                    new Date());
-            MessageQueue.publish(new ActionScheduledEventMessage(action,
-                    applyStatesEvent.isForcePackageListRefresh()));
+            try {
+                // Schedule a "state.apply" action to happen right now
+                ApplyStatesAction action = ActionManager.scheduleApplyStates(
+                        scheduler,
+                        Arrays.asList(server.getId()),
+                        applyStatesEvent.getStateNames(),
+                        new Date());
+                TASKOMATIC_API.scheduleActionExecution(action,
+                        applyStatesEvent.isForcePackageListRefresh());
 
-            // For Salt SSH: simply schedule package profile update (no job metadata)
-            if (MinionServerUtils.isSshPushMinion(server) &&
-                    applyStatesEvent.isForcePackageListRefresh()) {
-                ActionManager.schedulePackageRefresh(server.getOrg(), server);
+                // For Salt SSH: simply schedule package profile update (no job metadata)
+                if (MinionServerUtils.isSshPushMinion(server) &&
+                        applyStatesEvent.isForcePackageListRefresh()) {
+                    ActionManager.schedulePackageRefresh(server.getOrg(), server);
+                }
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error("Could not schedule state application for system: " +
+                        server.getId());
+                throw new RuntimeException(e);
             }
         }
     }

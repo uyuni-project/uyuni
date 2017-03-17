@@ -37,6 +37,7 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.webui.utils.ViewHelper;
@@ -44,6 +45,7 @@ import com.suse.manager.webui.utils.gson.ImageInfoJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -68,6 +70,7 @@ public class ImageBuildController {
     private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
 
     private static final ViewHelper VIEW_HELPER = ViewHelper.INSTANCE;
+    private static Logger log = Logger.getLogger(ImageBuildController.class);
 
     private ImageBuildController() { }
 
@@ -207,10 +210,17 @@ public class ImageBuildController {
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
         return maybeProfile.flatMap(ImageProfile::asDockerfileProfile).map(profile -> {
-            ImageInfoFactory.scheduleBuild(buildRequest.buildHostId, buildRequest.getTag(),
-                    profile, scheduleDate, user);
-            //TODO: Add action ID as a message parameter
-            return GSON.toJson(new JsonResult(true, "build_scheduled"));
+            try {
+                ImageInfoFactory.scheduleBuild(buildRequest.buildHostId,
+                        buildRequest.getTag(), profile, scheduleDate, user);
+                // TODO: Add action ID as a message parameter
+                return GSON.toJson(new JsonResult(true, "build_scheduled"));
+            }
+            catch (TaskomaticApiException e) {
+                log.error("could not schedule image build:");
+                log.error(e);
+                return GSON.toJson(new JsonResult(false, "taskomatic_error"));
+            }
         }).orElseGet(
                 () -> GSON.toJson(new JsonResult(true, Collections.singletonList(
                         "unknown_error")))

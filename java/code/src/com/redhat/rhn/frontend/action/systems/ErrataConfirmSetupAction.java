@@ -28,7 +28,10 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListRhnSetHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -49,10 +52,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ErrataConfirmSetupAction
- * @version $Rev$
  */
 public class ErrataConfirmSetupAction extends RhnAction implements Listable {
 
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(ErrataConfirmSetupAction.class);
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -127,35 +131,46 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable {
             ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
             List<Long> serverIds = Arrays.asList(server.getId());
             List<Long> errataIds = new ArrayList<Long>(errataList);
-            ErrataManager.applyErrata(user, errataIds, earliest, actionChain, serverIds);
+            try {
+                ErrataManager.applyErrata(user, errataIds, earliest, actionChain,
+                        serverIds);
 
-            ActionMessages msg = new ActionMessages();
-            Object[] args = null;
-            String messageKey = null;
+                ActionMessages msg = new ActionMessages();
+                Object[] args = null;
+                String messageKey = null;
 
-            if (actionChain == null) {
-                messageKey = "errata.schedule";
-                if (errataList.size() != 1) {
-                    messageKey += ".plural";
+                if (actionChain == null) {
+                    messageKey = "errata.schedule";
+                    if (errataList.size() != 1) {
+                        messageKey += ".plural";
+                    }
+                    args = new Object[3];
+                    args[0] = new Long(errataList.size());
+                    args[1] = server.getName();
+                    args[2] = server.getId().toString();
                 }
-                args = new Object[3];
-                args[0] = new Long(errataList.size());
-                args[1] = server.getName();
-                args[2] = server.getId().toString();
-            }
-            else {
-                messageKey = "message.addedtoactionchain";
-                args = new Object[2];
-                args[0] = actionChain.getId();
-                args[1] = actionChain.getLabel();
-            }
+                else {
+                    messageKey = "message.addedtoactionchain";
+                    args = new Object[2];
+                    args[0] = actionChain.getId();
+                    args[1] = actionChain.getLabel();
+                }
 
-            msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(messageKey, args));
-            strutsDelegate.saveMessages(request, msg);
-            hparams.put("sid", sid);
+                msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(messageKey, args));
+                strutsDelegate.saveMessages(request, msg);
+                hparams.put("sid", sid);
 
-            ErrataSetupAction.getSetDecl(sid).clear(user);
-            return strutsDelegate.forwardParams(mapping.findForward("confirmed"), hparams);
+                ErrataSetupAction.getSetDecl(sid).clear(user);
+                return strutsDelegate.forwardParams(mapping.findForward("confirmed"),
+                        hparams);
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule errata application:");
+                log.error(e);
+                ActionErrors errors = new ActionErrors();
+                strutsDelegate.addError(errors, "taskscheduler.down");
+                strutsDelegate.saveMessages(request, errors);
+            }
         }
         /*
          * Everything is not ok.

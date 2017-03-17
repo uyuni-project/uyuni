@@ -58,6 +58,8 @@ import com.redhat.rhn.manager.audit.scap.xml.TestResult;
 import com.redhat.rhn.manager.audit.scap.xml.TestResultRuleResult;
 import com.redhat.rhn.manager.audit.scap.xml.TestResultRuleResultIdent;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
@@ -331,9 +333,11 @@ public class ScapManager extends BaseManager {
      * @param parameters additional parameters for xccdf scan
      * @param earliest time of earliest action occurence
      * @return the newly created ScapAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static ScapAction scheduleXccdfEvalInSsm(User scheduler, String path,
-            String parameters, Date earliest) {
+            String parameters, Date earliest) throws TaskomaticApiException {
         HashSet<Long> systemIds = idsInDataResultToSet(scapCapableSystemsInSsm(scheduler));
         return ActionManager.scheduleXccdfEval(
                 scheduler, systemIds, path, parameters, earliest);

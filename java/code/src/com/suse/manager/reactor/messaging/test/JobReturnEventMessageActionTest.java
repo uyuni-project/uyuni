@@ -22,6 +22,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -66,6 +67,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public static final JsonParser<Event> EVENTS =
             new JsonParser<>(new TypeToken<Event>(){});
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
@@ -584,6 +586,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("state.apply.with.failures.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
         messageAction.doExecute(message);
@@ -596,6 +606,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // Verify the action status
         assertTrue(sa.getStatus().equals(ActionFactory.STATUS_FAILED));
+        context().assertIsSatisfied();
     }
 
     public void testOpenscap() throws Exception {

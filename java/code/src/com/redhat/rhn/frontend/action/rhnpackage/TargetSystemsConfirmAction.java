@@ -25,6 +25,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -49,6 +51,7 @@ import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.domain.rhnpackage.Package;
 
 /**
@@ -56,6 +59,9 @@ import com.redhat.rhn.domain.rhnpackage.Package;
  * @author sherr
  */
 public class TargetSystemsConfirmAction extends RhnAction {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(TargetSystemsConfirmAction.class);
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
@@ -149,23 +155,32 @@ public class TargetSystemsConfirmAction extends RhnAction {
         //The action chain to append this action to, if any
         ActionChain actionChain = ActionChainHelper.readActionChain(dynaActionForm, user);
 
-        ActionChainManager.schedulePackageInstalls(user, serverIds, pkgMapList, earliest,
-                actionChain);
+        try {
+            ActionChainManager.schedulePackageInstalls(user, serverIds, pkgMapList,
+                    earliest, actionChain);
 
-        ActionMessages msgs = new ActionMessages();
+            ActionMessages msgs = new ActionMessages();
+            if (actionChain == null) {
+                msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                        "message.systeminstalls", LocalizationService.getInstance()
+                                .formatNumber(numSystems)));
+            }
+            else {
+                msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                        "message.addedtoactionchain", actionChain.getId(), StringUtil
+                                .htmlifyText(actionChain.getLabel())));
+            }
 
-        if (actionChain == null) {
-            msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-                    "message.systeminstalls", LocalizationService.getInstance()
-                            .formatNumber(numSystems)));
+            strutsDelegate.saveMessages(request, msgs);
         }
-        else {
-            msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-                    "message.addedtoactionchain", actionChain.getId(), StringUtil
-                            .htmlifyText(actionChain.getLabel())));
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule package installs:");
+            log.error(e);
+            ActionErrors errors = new ActionErrors();
+            strutsDelegate.addError(errors, "taskscheduler.down");
+            strutsDelegate.saveMessages(request, errors);
         }
 
-        strutsDelegate.saveMessages(request, msgs);
         Map<String, Object> params = new HashMap<String, Object>();
         processParamMap(formIn, request, params);
         return strutsDelegate.forwardParams(mapping.findForward(RhnHelper.CONFIRM_FORWARD),

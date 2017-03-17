@@ -2774,11 +2774,11 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="toolbar.create.systems">
         <source>Add Systems</source>
       </trans-unit>
-      <trans-unit id="system.event.pending.canceled.minion.down">
-        <source>Could not cancel selected event(s). Minion {0} is down.</source>
+      <trans-unit id="system.event.pending.canceled.taskscheduler.down">
+        <source>Could not cancel event(s). Please make sure that the task scheduler is running.</source>
       </trans-unit>
-      <trans-unit id="message.actionCancelServerFailure.minion.down">
-        <source>Could not cancel action. Minion {0} is down.</source>
+      <trans-unit id="message.actionCancelServerFailure.taskscheduler.down">
+        <source>Could not cancel action. Please make sure that the task scheduler is running.</source>
       </trans-unit>
       <trans-unit id="message.actionsCancelledWithErrors">
         <source>{0} action(s) could not be canceled or canceled only partially. {1} action(s) canceled completely.</source>

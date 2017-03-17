@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * Base functionality for responding to SSM package install/update/remove.
@@ -88,6 +89,11 @@ public abstract class SsmPackagesAction extends AbstractDatabaseAction {
                         (System.currentTimeMillis() - actionStart));
             }
         }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule package action:");
+            log.error(e);
+            throw new RuntimeException(e);
+        }
         catch (Exception e) {
             log.error("Error scheduling package installations for event " + event, e);
         }
@@ -98,7 +104,8 @@ public abstract class SsmPackagesAction extends AbstractDatabaseAction {
         }
     }
 
-    protected void scheduleAction(SsmPackageEvent event, User user) {
+    protected void scheduleAction(SsmPackageEvent event, User user)
+        throws TaskomaticApiException {
 
         log.debug("Scheduling package actions.");
         Date earliest = event.getEarliest();
@@ -122,5 +129,6 @@ public abstract class SsmPackagesAction extends AbstractDatabaseAction {
 
 
     protected abstract List<Action> doSchedule(SsmPackageEvent event, User user,
-        List<Long> sid, Date earliest, ActionChain actionChain);
+            List<Long> sid, Date earliest, ActionChain actionChain)
+        throws TaskomaticApiException;
 }

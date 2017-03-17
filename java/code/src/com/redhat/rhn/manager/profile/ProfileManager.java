@@ -47,6 +47,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
 
@@ -63,7 +64,6 @@ import java.util.Set;
 
 /**
  * ProfileManager
- * @version $Rev$
  */
 public class ProfileManager extends BaseManager {
 
@@ -631,9 +631,12 @@ public class ProfileManager extends BaseManager {
      * ask the user.
      * @param earliest The earliest Date to perform this action
      * @return The PackageAction which was scheduled containing the sync information.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static PackageAction syncToSystem(User user, Long sid, Long sid1,
-            Set pkgIdCombos, String missingoption, Date earliest) {
+            Set pkgIdCombos, String missingoption, Date earliest)
+        throws TaskomaticApiException {
 
         if (log.isDebugEnabled()) {
             log.debug("in syncToSystem: " + missingoption);
@@ -828,9 +831,12 @@ public class ProfileManager extends BaseManager {
      * ask the user.
      * @param earliest The earliest time to perform this action
      * @return The PackageAction which was scheduled containing the sync information.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static PackageAction syncToProfile(User user, Long sid, Long prid,
-            Set pkgIdCombos, String missingoption, Date earliest) {
+            Set pkgIdCombos, String missingoption, Date earliest)
+        throws TaskomaticApiException {
 
         DataResult dr = prepareSyncToProfile(sid, prid, user.getOrg().getId(),
                 null, pkgIdCombos);

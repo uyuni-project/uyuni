@@ -54,9 +54,11 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -108,6 +110,7 @@ public class SaltUtils {
             "pkg.install", "pkg.remove", "pkg_installed", "pkg_latest", "pkg_removed");
 
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     public static final SaltUtils INSTANCE = new SaltUtils();
 
@@ -437,7 +440,13 @@ public class SaltUtils {
                             .getTargetStore(),
                     Date.from(Instant.now())
             );
-            MessageQueue.publish(new ActionScheduledEventMessage(iAction, false));
+            try {
+                TASKOMATIC_API.scheduleActionExecution(iAction);
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error("Could not schedule image inspection");
+                LOG.error(e);
+            }
         }
         // Pretty-print the whole return map (or whatever fits into 1024 characters)
         Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);

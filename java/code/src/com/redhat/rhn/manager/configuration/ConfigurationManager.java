@@ -55,6 +55,7 @@ import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
 
@@ -2023,8 +2024,11 @@ public class ConfigurationManager extends BaseManager {
      * @param set The set that contains systems selected for enablement
      * @param user The user requesting to enable systems
      * @param earliest The earliest time package actions will be scheduled.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public void enableSystems(RhnSetDecl set, User user, Date earliest) {
+    public void enableSystems(RhnSetDecl set, User user, Date earliest)
+        throws TaskomaticApiException {
         EnableConfigHelper helper = new EnableConfigHelper(user);
         helper.enableSystems(set.getLabel(), earliest);
     }
@@ -2095,10 +2099,12 @@ public class ConfigurationManager extends BaseManager {
      * @param servers The list of servers, to whom the deploy action
      *                  needs to be scheduled
      * @param datePicked date to deploy or null for the earliest date
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public void deployConfiguration(User user,
             Collection<Server> servers,
-            Date datePicked) {
+            Date datePicked) throws TaskomaticApiException {
         deployConfiguration(user, servers, null, datePicked);
     }
 
@@ -2112,11 +2118,13 @@ public class ConfigurationManager extends BaseManager {
      *                  needs to be scheduled
      * @param channel ConfigChannel to deploy files from
      * @param datePicked date to deploy or null for the earliest date
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public void deployConfiguration(User user,
             Collection<Server> servers,
             ConfigChannel channel,
-            Date datePicked) {
+            Date datePicked) throws TaskomaticApiException {
         if (datePicked == null) {
             datePicked = new Date();
         }

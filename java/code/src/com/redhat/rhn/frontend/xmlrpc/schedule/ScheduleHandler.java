@@ -19,6 +19,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.manager.action.ActionManager;
 
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ import java.util.List;
 
 /**
  * ScheduleHandler
- * @version $Rev$
  * @xmlrpc.namespace schedule
  * @xmlrpc.doc Methods to retrieve information about scheduled actions.
  */
@@ -57,8 +57,14 @@ public class ScheduleHandler extends BaseHandler {
                 actions.add(action);
             }
         }
-        ActionManager.cancelActions(loggedInUser, actions);
-        return 1;
+
+        try {
+            ActionManager.cancelActions(loggedInUser, actions);
+            return BaseHandler.VALID;
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -293,14 +299,20 @@ public class ScheduleHandler extends BaseHandler {
      */
     public int rescheduleActions(User loggedInUser, List<Integer> actionIds,
             boolean onlyFailed) throws FaultException {
-        for (Integer actionId : actionIds) {
-            Action action = ActionManager.lookupAction(loggedInUser, new Long(actionId));
-            if (action != null) {
-                ActionManager.rescheduleAction(action, onlyFailed);
+        try {
+            for (Integer actionId : actionIds) {
+                Action action =
+                        ActionManager.lookupAction(loggedInUser, new Long(actionId));
+                if (action != null) {
+                    ActionManager.rescheduleAction(action, onlyFailed);
+                }
             }
-        }
 
-        return 1;
+            return BaseHandler.VALID;
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**

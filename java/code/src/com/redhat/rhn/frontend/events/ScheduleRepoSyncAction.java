@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
 
@@ -63,7 +64,14 @@ public class ScheduleRepoSyncAction implements MessageAction {
                 .map(label -> ChannelManager.lookupByLabel(org, label))
                 .collect(Collectors.toList());
 
-            new TaskomaticApi().scheduleSingleRepoSync(channels);
+            try {
+                new TaskomaticApi().scheduleSingleRepoSync(channels);
+            }
+            catch (TaskomaticApiException e) {
+                logger.error("Could not schedule repository synchronization for: " +
+                        channels.toString());
+                logger.error(e);
+            }
         }
     }
 }

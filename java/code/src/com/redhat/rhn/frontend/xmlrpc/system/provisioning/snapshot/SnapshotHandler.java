@@ -29,6 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchSnapshotException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.SnapshotLookupException;
 import com.redhat.rhn.frontend.xmlrpc.SnapshotTagAlreadyExistsException;
+import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -41,7 +42,6 @@ import java.util.Set;
 
 /**
  * SnapshotHandler
- * @version $Rev$
  * @xmlrpc.namespace system.provisioning.snapshot
  * @xmlrpc.doc Provides methods to access and delete system snapshots.
  */
@@ -329,18 +329,24 @@ public class SnapshotHandler extends BaseHandler {
      */
     public int rollbackToSnapshot(User loggedInUser, Integer serverId,
             Integer snapshotId) {
-        Server server = lookupServer(loggedInUser, serverId);
+        try {
+            Server server = lookupServer(loggedInUser, serverId);
 
-        if (server == null) {
-            throw new InvalidSystemException();
-        }
+            if (server == null) {
+                throw new InvalidSystemException();
+            }
 
-        ServerSnapshot snapshot = ServerFactory.lookupSnapshotById(snapshotId.intValue());
-        if (snapshot == null) {
-            throw new SnapshotLookupException(snapshotId);
+            ServerSnapshot snapshot =
+                    ServerFactory.lookupSnapshotById(snapshotId.intValue());
+            if (snapshot == null) {
+                throw new SnapshotLookupException(snapshotId);
+            }
+            doRollback(loggedInUser, snapshot);
+            return BaseHandler.VALID;
         }
-        doRollback(loggedInUser, snapshot);
-        return 1;
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -356,13 +362,18 @@ public class SnapshotHandler extends BaseHandler {
      */
     public int rollbackToTag(User loggedInUser, Integer serverId,
             String tagName) {
-        SnapshotTag tag = ServerFactory.lookupSnapshotTagbyName(tagName);
-        for (ServerSnapshot snapshot : tag.getSnapshots()) {
-            if (snapshot.getServer().getId() == serverId.longValue()) {
-                doRollback(loggedInUser, snapshot);
+        try {
+            SnapshotTag tag = ServerFactory.lookupSnapshotTagbyName(tagName);
+            for (ServerSnapshot snapshot : tag.getSnapshots()) {
+                if (snapshot.getServer().getId() == serverId.longValue()) {
+                    doRollback(loggedInUser, snapshot);
+                }
             }
+            return BaseHandler.VALID;
         }
-        return 1;
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -375,14 +386,20 @@ public class SnapshotHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int rollbackToTag(User loggedInUser, String tagName) {
-        SnapshotTag tag = ServerFactory.lookupSnapshotTagbyName(tagName);
-        for (ServerSnapshot snapshot : tag.getSnapshots()) {
-            doRollback(loggedInUser, snapshot);
+        try {
+            SnapshotTag tag = ServerFactory.lookupSnapshotTagbyName(tagName);
+            for (ServerSnapshot snapshot : tag.getSnapshots()) {
+                doRollback(loggedInUser, snapshot);
+            }
+            return BaseHandler.VALID;
         }
-        return 1;
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
-    private void doRollback(User loggedInUser, ServerSnapshot snapshot) {
+    private void doRollback(User loggedInUser, ServerSnapshot snapshot)
+        throws com.redhat.rhn.taskomatic.TaskomaticApiException {
         SystemManager.ensureAvailableToUser(loggedInUser, snapshot.getServer().getId());
         ActionManager.checkConfigActionOnServer(ActionFactory.TYPE_CONFIGFILES_DEPLOY,
                 snapshot.getServer());

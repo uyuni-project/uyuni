@@ -20,7 +20,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
@@ -61,8 +60,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.BaseSystemOperation;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
-
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -110,12 +109,11 @@ import java.util.Set;
  * Because of the distinction between host and target servers, constructors in this
  * class which accept a single server ID will automatically assume that the system
  * being kickstarted is both the host and the target system.
- *
- * @version $Rev $
  */
 public class KickstartScheduleCommand extends BaseSystemOperation {
 
     private static Logger log = Logger.getLogger(KickstartScheduleCommand.class);
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     public  static final String DHCP_NETWORK_TYPE = "dhcp";
     public  static final String LINK_NETWORK_TYPE = "link";
 
@@ -519,7 +517,19 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
+        try {
+            return storeInternal();
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Taskomatic Exception during kickstart schedule:");
+            log.error(e);
+            return new ValidatorError("taskscheduler.down");
+        }
+    }
+
+    private ValidatorError storeInternal() throws TaskomaticApiException {
 
         ValidatorError e = this.doValidation();
         if (e != null) {
@@ -621,7 +631,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         ActionFactory.save(kickstartAction);
-        MessageQueue.publish(new ActionScheduledEventMessage(kickstartAction));
+        TASKOMATIC_API.scheduleActionExecution(kickstartAction);
         log.debug("** Created ksaction: " + kickstartAction.getId());
 
         this.scheduledAction = kickstartAction;
@@ -740,8 +750,11 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      * @param prereqAction the prerequisite for this action
      *
      * @return Returns the KickstartAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public Action scheduleKickstartAction(Action prereqAction) {
+    public Action scheduleKickstartAction(Action prereqAction)
+        throws TaskomaticApiException {
 
         // We will schedule the kickstart action against the host server, since the host
         // server is the liason for the target server.
@@ -776,8 +789,10 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      * @param prereqAction the prerequisite for this action
      *
      * @return Returns the rebootAction (if any)
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
-    public Action scheduleRebootAction(Action prereqAction) {
+    public Action scheduleRebootAction(Action prereqAction) throws TaskomaticApiException {
 
         // All actions must be scheduled against the host server.
 
@@ -790,7 +805,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         rebootAction.setName(rebootAction.getActionType().getName());
         log.debug("** saving reboot action: " + rebootAction.getName());
         ActionFactory.save(rebootAction);
-        MessageQueue.publish(new ActionScheduledEventMessage(rebootAction));
+        TASKOMATIC_API.scheduleActionExecution(rebootAction);
         log.debug("** Saved rebootAction: " + rebootAction.getId());
 
         return rebootAction;

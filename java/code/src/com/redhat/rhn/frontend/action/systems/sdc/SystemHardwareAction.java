@@ -25,10 +25,8 @@ import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
-
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -49,12 +47,18 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * SystemHardwareAction handles the interaction of the ChannelDetails page.
- * @version $Rev$
  */
 public class SystemHardwareAction extends RhnAction {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(SystemHardwareAction.class);
+
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     public static final String SID = "sid";
 
     /** {@inheritDoc} */
@@ -85,15 +89,22 @@ public class SystemHardwareAction extends RhnAction {
             else {
                 Action a = ActionManager.scheduleHardwareRefreshAction(user, server, now);
                 ActionFactory.save(a);
-                MessageQueue.publish(new ActionScheduledEventMessage(a));
-                createSuccessMessage(request, "message.refeshScheduled", server.getName());
+                try {
+                    TASKOMATIC_API.scheduleActionExecution(a);
+                    createSuccessMessage(request, "message.refeshScheduled",
+                            server.getName());
+                }
+                catch (TaskomaticApiException e) {
+                    log.error("Could not unschedule action:");
+                    log.error(e);
+                    createErrorMessage(request, "taskscheduler.down", StringUtils.EMPTY);
+                }
 
                 // No idea why I have to do this  :(
                 params.put(SID, sid);
 
                 fwd = "success";
             }
-
         }
 
         setupForm(request, cpu, server, form);

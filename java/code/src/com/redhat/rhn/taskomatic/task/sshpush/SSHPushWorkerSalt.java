@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.dto.SystemPendingEventDto;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
@@ -148,8 +149,16 @@ public class SSHPushWorkerSalt implements QueueWorker {
 
                 // Perform a package profile update in the end if needed
                 if (packageListRefreshNeeded) {
-                    Action pkgList = ActionManager.schedulePackageRefresh(m.getOrg(), m);
-                    executeAction(pkgList, m);
+                    Action pkgList;
+                    try {
+                        pkgList = ActionManager.schedulePackageRefresh(m.getOrg(), m);
+                        executeAction(pkgList, m);
+                    }
+                    catch (TaskomaticApiException e) {
+                        log.error("Could not schedule package refresh for minion: " +
+                            m.getMinionId());
+                        log.error(e);
+                    }
                 }
 
                 // Perform a check-in if there is no pending actions

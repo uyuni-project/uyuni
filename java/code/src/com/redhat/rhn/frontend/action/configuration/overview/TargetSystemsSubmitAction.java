@@ -24,7 +24,9 @@ import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -41,9 +43,11 @@ import javax.servlet.http.HttpServletResponse;
  * TargetSystemsSubmitAction
  * Handles pagination and RhnSet until the enable button is clicked, then
  * redirects to the confirm page.
- * @version $Rev$
  */
 public class TargetSystemsSubmitAction extends RhnSetAction {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(TargetSystemsSubmitAction.class);
 
     /**
      * {@inheritDoc}
@@ -109,7 +113,14 @@ public class TargetSystemsSubmitAction extends RhnSetAction {
             getStrutsDelegate().saveMessages(request, errors);
             return mapping.findForward("default");
         }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule configuration enablement:");
+            log.error(e);
+            ValidatorError verrors = new ValidatorError("taskscheduler.down");
+            ActionErrors errors = RhnValidationHelper.validatorErrorToActionErrors(verrors);
+            getStrutsDelegate().saveMessages(request, errors);
+            return mapping.findForward("default");
+        }
         return mapping.findForward("summary");
     }
-
 }

@@ -112,6 +112,7 @@ import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
 import com.redhat.rhn.frontend.xmlrpc.SnapshotTagAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.SystemIdInstantiationException;
 import com.redhat.rhn.frontend.xmlrpc.SystemsNotDeletedException;
+import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.UndefinedCustomFieldsException;
 import com.redhat.rhn.frontend.xmlrpc.UnrecognizedCountryException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
@@ -141,8 +142,8 @@ import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.SystemRecord;
@@ -176,6 +177,7 @@ import java.util.stream.Collectors;
 public class SystemHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(SystemHandler.class);
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /**
      * Get a reactivation key for this server.
@@ -2447,9 +2449,6 @@ public class SystemHandler extends BaseHandler {
         return cmd.getScheduledAction().getId().intValue();
     }
 
-
-
-
     /**
      * Provision a guest on the server specified.
      *
@@ -2902,8 +2901,13 @@ public class SystemHandler extends BaseHandler {
             longServerIds.add(new Long(it.next()));
         }
 
-        return ErrataManager.applyErrataHelper(loggedInUser,
-                longServerIds, errataIds, earliestOccurrence);
+        try {
+            return ErrataManager.applyErrataHelper(loggedInUser,
+                    longServerIds, errataIds, earliestOccurrence);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -3151,6 +3155,9 @@ public class SystemHandler extends BaseHandler {
             }
             catch (MissingEntitlementException e) {
                 throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
+            }
+            catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+                throw new TaskomaticApiException(e.getMessage());
             }
 
             actionIds.add(action.getId());
@@ -3572,11 +3579,14 @@ public class SystemHandler extends BaseHandler {
             Action a = ActionManager.scheduleHardwareRefreshAction(loggedInUser, server,
                     earliestOccurrence);
             Action action = ActionFactory.save(a);
-            MessageQueue.publish(new ActionScheduledEventMessage(a));
+            TASKOMATIC_API.scheduleActionExecution(action);
             return action.getId();
         }
         catch (MissingEntitlementException e) {
             throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
         }
     }
 
@@ -3609,6 +3619,9 @@ public class SystemHandler extends BaseHandler {
         }
         catch (MissingEntitlementException e) {
             throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
         }
     }
 
@@ -3670,6 +3683,9 @@ public class SystemHandler extends BaseHandler {
         }
         catch (MissingEntitlementException e) {
             throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
         }
 
         return new Integer(action.getId().intValue());
@@ -3891,14 +3907,19 @@ public class SystemHandler extends BaseHandler {
      */
     public Long scheduleReboot(User loggedInUser, Integer sid,
             Date earliestOccurrence) {
-        Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
-                loggedInUser);
+        try {
+            Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+                    loggedInUser);
 
-        Action a = ActionManager.scheduleRebootAction(loggedInUser, server,
-                earliestOccurrence);
-        a = ActionFactory.save(a);
-        MessageQueue.publish(new ActionScheduledEventMessage(a));
-        return a.getId();
+            Action a = ActionManager.scheduleRebootAction(loggedInUser, server,
+                    earliestOccurrence);
+            a = ActionFactory.save(a);
+            TASKOMATIC_API.scheduleActionExecution(a);
+            return a.getId();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -4015,7 +4036,12 @@ public class SystemHandler extends BaseHandler {
             String selectedEnt = (String)details.get("base_entitlement");
             Entitlement base = EntitlementManager.getByName(selectedEnt);
             if (base != null) {
-                server.setBaseEntitlement(base);
+                try {
+                    server.setBaseEntitlement(base);
+                }
+                catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+                    throw new TaskomaticApiException(e.getMessage());
+                }
             }
             else if (selectedEnt.equals("unentitle")) {
                 SystemManager.removeAllServerEntitlements(server.getId());
@@ -4028,7 +4054,13 @@ public class SystemHandler extends BaseHandler {
             if (autoUpdate.booleanValue()) {
                 if (server.getAutoUpdate().equals("N")) {
                     // schedule errata update only it if the value has changed
-                    ActionManager.scheduleAllErrataUpdate(loggedInUser, server, new Date());
+                    try {
+                        ActionManager.scheduleAllErrataUpdate(loggedInUser, server,
+                                new Date());
+                    }
+                    catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+                        throw new TaskomaticApiException(e.getMessage());
+                    }
                 }
                 server.setAutoUpdate("Y");
             }
@@ -4177,41 +4209,46 @@ public class SystemHandler extends BaseHandler {
 
         validateEntitlements(entitlementL);
 
-        List<String> addOnEnts = new LinkedList<String>(entitlements);
-        // first process base entitlements
-        for (Entitlement en : EntitlementManager.getBaseEntitlements()) {
-            if (addOnEnts.contains(en.getLabel())) {
-                addOnEnts.remove(en.getLabel());
-                server.setBaseEntitlement(en);
-            }
-        }
-
-        // put a more intelligible exception
-        if ((server.getBaseEntitlement() == null) && (!addOnEnts.isEmpty())) {
-            throw new InvalidEntitlementException("Base entitlement missing");
-        }
-
-        for (Iterator<String> it = addOnEnts.iterator(); it.hasNext();) {
-
-            Entitlement ent = EntitlementManager.getByName(it.next());
-
-            // Ignore if the system already has this entitlement:
-            if (server.hasEntitlement(ent)) {
-                log.debug("System " + server.getName() + " already has entitlement: " +
-                        ent.getLabel());
-                continue;
+        try {
+            List<String> addOnEnts = new LinkedList<String>(entitlements);
+            // first process base entitlements
+            for (Entitlement en : EntitlementManager.getBaseEntitlements()) {
+                if (addOnEnts.contains(en.getLabel())) {
+                    addOnEnts.remove(en.getLabel());
+                    server.setBaseEntitlement(en);
+                }
             }
 
-            if (SystemManager.canEntitleServer(server, ent)) {
-                ValidatorResult vr = SystemManager.entitleServer(server, ent);
-                needsSnapshot = true;
-                if (vr.getErrors().size() > 0) {
+            // put a more intelligible exception
+            if ((server.getBaseEntitlement() == null) && (!addOnEnts.isEmpty())) {
+                throw new InvalidEntitlementException("Base entitlement missing");
+            }
+
+            for (Iterator<String> it = addOnEnts.iterator(); it.hasNext();) {
+
+                Entitlement ent = EntitlementManager.getByName(it.next());
+
+                // Ignore if the system already has this entitlement:
+                if (server.hasEntitlement(ent)) {
+                    log.debug("System " + server.getName() + " already has entitlement: " +
+                            ent.getLabel());
+                    continue;
+                }
+
+                if (SystemManager.canEntitleServer(server, ent)) {
+                    ValidatorResult vr = SystemManager.entitleServer(server, ent);
+                    needsSnapshot = true;
+                    if (vr.getErrors().size() > 0) {
+                        throw new InvalidEntitlementException();
+                    }
+                }
+                else {
                     throw new InvalidEntitlementException();
                 }
             }
-            else {
-                throw new InvalidEntitlementException();
-            }
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
         }
 
         if (needsSnapshot) {
@@ -4624,6 +4661,9 @@ public class SystemHandler extends BaseHandler {
         catch (MissingEntitlementException e) {
             throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
         }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
         if (action == null) {
             throw new InvalidParameterException("No packages to sync");
         }
@@ -4892,8 +4932,13 @@ public class SystemHandler extends BaseHandler {
                 vi.getHostSystem(),
                 vi.getUuid(),
                 context);
-        cmd.store();
-        return cmd.getAction().getId().intValue();
+        try {
+            cmd.store();
+            return cmd.getAction().getId().intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
 
@@ -4927,8 +4972,13 @@ public class SystemHandler extends BaseHandler {
                 vi.getHostSystem(),
                 vi.getUuid(),
                 context);
-        cmd.store();
-        return cmd.getAction().getId().intValue();
+        try {
+            cmd.store();
+            return cmd.getAction().getId().intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -4980,8 +5030,13 @@ public class SystemHandler extends BaseHandler {
                         vi.getHostSystem(),
                         vi.getUuid(),
                         new HashMap<String, String>());
-        cmd.store();
-        return cmd.getAction().getId().intValue();
+        try {
+            cmd.store();
+            return cmd.getAction().getId().intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -5760,7 +5815,9 @@ public class SystemHandler extends BaseHandler {
         catch (MissingCapabilityException e) {
             throw new com.redhat.rhn.frontend.xmlrpc.MissingCapabilityException();
         }
-
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
 
         return action.getId().intValue();
     }
@@ -6010,25 +6067,32 @@ public class SystemHandler extends BaseHandler {
             // See if vendor channels are matching the given base channel
             EssentialChannelDto baseChannel = DistUpgradeManager.getProductBaseChannelDto(
                     targetProducts.getBaseProduct().getId(), arch);
-            if (baseChannel != null && baseChannel.getLabel().equals(baseChannelLabel)) {
-                List<EssentialChannelDto> channels = DistUpgradeManager.
-                        getRequiredChannels(targetProducts, baseChannel.getId());
-                for (EssentialChannelDto channel : channels) {
-                    channelIDs.add(channel.getId());
-                }
-                return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
-                        targetProducts, channelIDs, dryRun, earliest);
-            }
 
-            // Consider alternatives (cloned channel trees)
-            Map<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
-                    getAlternatives(targetProducts, arch, loggedInUser);
-            for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
-                if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
-                    channelIDs.addAll(alternatives.get(clonedBaseChannel));
+            try {
+                if (baseChannel != null &&
+                        baseChannel.getLabel().equals(baseChannelLabel)) {
+                    List<EssentialChannelDto> channels = DistUpgradeManager.
+                            getRequiredChannels(targetProducts, baseChannel.getId());
+                    for (EssentialChannelDto channel : channels) {
+                        channelIDs.add(channel.getId());
+                    }
                     return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
                             targetProducts, channelIDs, dryRun, earliest);
                 }
+
+                // Consider alternatives (cloned channel trees)
+                Map<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
+                        getAlternatives(targetProducts, arch, loggedInUser);
+                for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
+                    if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
+                        channelIDs.addAll(alternatives.get(clonedBaseChannel));
+                        return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
+                                targetProducts, channelIDs, dryRun, earliest);
+                    }
+                }
+            }
+            catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+                throw new TaskomaticApiException(e.getMessage());
             }
         }
 
@@ -6079,13 +6143,15 @@ public class SystemHandler extends BaseHandler {
         Set<Long> channelIDs = null;
         try {
             channelIDs = DistUpgradeManager.performChannelChecks(channels, loggedInUser);
+            return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server, null,
+                    channelIDs, dryRun, earliest);
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
         }
-
-        return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server, null,
-                channelIDs, dryRun, earliest);
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
     /**
      * Method to list systems that require reboot

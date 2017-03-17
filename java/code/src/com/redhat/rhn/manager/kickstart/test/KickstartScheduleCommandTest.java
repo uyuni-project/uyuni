@@ -56,7 +56,6 @@ import java.util.List;
 
 /**
  * KickstartScheduleCommandTest
- * @version $Rev$
  */
 public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
 

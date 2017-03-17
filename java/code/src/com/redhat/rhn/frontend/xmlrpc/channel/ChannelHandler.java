@@ -29,7 +29,6 @@ import java.util.Map;
 
 /**
  * ChannelHandler
- * @version $Rev$
  * @xmlrpc.namespace channel
  * @xmlrpc.doc Provides method to get back a list of Software Channels.
  */

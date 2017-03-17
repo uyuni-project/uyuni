@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltGrains;
@@ -452,8 +453,13 @@ public class HardwareMapper {
 
                 ServerFactory.save(zhost);
 
-                zhost.setBaseEntitlement(EntitlementManager
-                        .getByName(EntitlementManager.FOREIGN_ENTITLED));
+                try {
+                    zhost.setBaseEntitlement(EntitlementManager
+                            .getByName(EntitlementManager.FOREIGN_ENTITLED));
+                }
+                catch (TaskomaticApiException e) {
+                    // never happens for foreign
+                }
                 LOG.debug("New host created: " + identifier);
             }
 

@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.configuration.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
@@ -51,12 +52,18 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang.math.RandomUtils;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,6 +83,11 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
     private static final ConfigFileCount EXPECTED_COUNT =
                                     ConfigFileCount.create(3, 1, 0);
 
+    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+    }};
+
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         //Create a user and an org
@@ -84,8 +96,10 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         pc.setStart(1);
         pc.setPageSize(20);
         cm = ConfigurationManager.getInstance();
+        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
     }
 
+    @Override
     protected void tearDown() throws Exception {
         user = null;
         pc = null;
@@ -767,7 +781,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         addFilesAndDirs(cc);
         Server s = ConfigTestUtils.giveUserChanAccess(user, cc);
         ServerFactory.save(s);
-        s = (Server)TestUtils.reload(s);
+        s = TestUtils.reload(s);
         return s;
     }
 
@@ -884,7 +898,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         ServerFactory.save(s);
         assertTrue(s.unsubscribe(cc));
         ServerFactory.save(s);
-        s = (Server)TestUtils.reload(s);
+        s = TestUtils.reload(s);
         assertEquals(2, s.getConfigChannels().size());
     }
 
@@ -978,6 +992,13 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
     public void testDeployConfiguration() throws Exception {
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
         ConfigurationManager mgr = ConfigurationManager.getInstance();
+
+        TaskomaticApi taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
 
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
@@ -1351,7 +1372,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
              * including gcc2.
              */
             cm.copyConfigFile(cr, gcc2, user);
-            gcc2 = (ConfigChannel) TestUtils.reload(gcc2);
+            gcc2 = TestUtils.reload(gcc2);
             assertNotNull(gcc2);
             assertNotNull(gcc2.getConfigFiles());
             assertEquals(1, gcc2.getConfigFiles().size());

@@ -15,13 +15,12 @@
 package com.redhat.rhn.frontend.action.systems.sdc;
 
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.redhat.rhn.domain.server.MinionServer;
-
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -37,17 +36,23 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.manager.action.ActionManager;
+
+import static java.util.Collections.singleton;
 
 /**
  * SystemPendingEventsCancelAction
- * @version $Rev$
  */
 public class SystemPendingEventsCancelAction extends RhnAction {
+
+    private static final Logger LOG =
+            Logger.getLogger(SystemPendingEventsCancelAction.class);
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
             HttpServletRequest request,
             HttpServletResponse response) {
@@ -64,23 +69,19 @@ public class SystemPendingEventsCancelAction extends RhnAction {
         request.setAttribute(RequestContext.PAGE_LIST, result);
 
         if (context.wasDispatched("system.event.pending.cancel")) {
-            int canceledEventsCount = 0;
-            for (SystemPendingEventDto action : result) {
-                Optional<ActionManager.CancelServerActionStatus> cancelStatus =
-                        ActionManager.cancelServerAction(action.getId(), sid);
-
-                if (cancelStatus.isPresent() && ActionManager.CancelServerActionStatus
-                        .CANCEL_FAILED_MINION_DOWN.equals(cancelStatus.get())) {
-                    createErrorMessage(request,
-                            "system.event.pending.canceled.minion.down",
-                            server.asMinionServer()
-                                    .map(MinionServer::getMinionId).orElse(""));
-                    break; // skip the remaining events if the minion is down
+            try {
+                for (SystemPendingEventDto action : result) {
+                    ActionManager.cancelActionForSystems(action.getId(), singleton(sid));
                 }
-                canceledEventsCount++;
+                createSuccessMessage(request, "system.event.pending.canceled",
+                        Integer.toString(result.size()));
             }
-            createSuccessMessage(request, "system.event.pending.canceled",
-                    Integer.toString(canceledEventsCount));
+            catch (TaskomaticApiException e) {
+                LOG.error(e);
+                createErrorMessage(request,
+                        "system.event.pending.canceled.taskscheduler.down",
+                        StringUtils.EMPTY);
+            }
 
             set.clear();
             RhnSetManager.store(set);
@@ -89,7 +90,6 @@ public class SystemPendingEventsCancelAction extends RhnAction {
             return getStrutsDelegate().forwardParams(
                     mapping.findForward(RhnHelper.CONFIRM_FORWARD), params);
         }
-
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 

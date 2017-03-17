@@ -40,13 +40,21 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeException;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.*;
 
@@ -54,6 +62,16 @@ import java.util.*;
  * Tests for {@link DistUpgradeManager} methods.
  */
 public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
+
+    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+    }};
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
     /**
      * Verify that the correct product base channels are returned for a given
@@ -367,6 +385,13 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         List<Channel> subscribedChannels = new ArrayList<Channel>(
                 Arrays.asList(subscribedChannel));
         Server server = ErrataTestUtils.createTestServer(user, subscribedChannels);
+
+        TaskomaticApi taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
 
         // Setup product upgrade
         ChannelFamily family = createTestChannelFamily();

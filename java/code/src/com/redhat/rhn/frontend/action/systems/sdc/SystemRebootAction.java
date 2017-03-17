@@ -26,7 +26,10 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -42,6 +45,9 @@ import javax.servlet.http.HttpServletResponse;
  * SystemRebootAction handles the interaction of the system reboot.
  */
 public class SystemRebootAction extends RhnAction {
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(SystemRebootAction.class);
+
     /** Success forward name. */
     private static final String CONFIRM_FORWARD = "confirm";
 
@@ -64,22 +70,29 @@ public class SystemRebootAction extends RhnAction {
             Date earliest = getStrutsDelegate().readDatePicker(form, "date",
                 DatePicker.YEAR_RANGE_POSITIVE);
             ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
-            Action action = ActionChainManager.scheduleRebootAction(user, server, earliest,
-                actionChain);
-            ActionFactory.save(action);
+            try {
+                Action action = ActionChainManager.scheduleRebootAction(user, server,
+                        earliest, actionChain);
+                ActionFactory.save(action);
 
-            if (actionChain == null) {
-                String[] messageParams = new String[3];
-                messageParams[0] = server.getName();
-                messageParams[1] = earliest.toString();
-                messageParams[2] = action.getId().toString();
-                createMessage(request, "system.reboot.scheduled", messageParams);
+                if (actionChain == null) {
+                    String[] messageParams = new String[3];
+                    messageParams[0] = server.getName();
+                    messageParams[1] = earliest.toString();
+                    messageParams[2] = action.getId().toString();
+                    createMessage(request, "system.reboot.scheduled", messageParams);
+                }
+                else {
+                    String[] messageParams = new String[2];
+                    messageParams[0] = actionChain.getId().toString();
+                    messageParams[1] = actionChain.getLabel();
+                    createMessage(request, "message.addedtoactionchain", messageParams);
+                }
             }
-            else {
-                String[] messageParams = new String[2];
-                messageParams[0] = actionChain.getId().toString();
-                messageParams[1] = actionChain.getLabel();
-                createMessage(request, "message.addedtoactionchain", messageParams);
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule rollback to tag:");
+                log.error(e);
+                createErrorMessage(request, "taskscheduler.down", StringUtils.EMPTY);
             }
 
             // goes to sdc/overview.jsp
