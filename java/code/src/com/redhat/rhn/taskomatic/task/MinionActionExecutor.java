@@ -21,12 +21,17 @@ import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.quartz.JobExecutionContext;
 
+import java.time.Duration;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 /**
  * Execute SUSE Manager actions via Salt.
  */
 public class MinionActionExecutor extends RhnJavaJob {
 
     private static final int ACTION_DATABASE_GRACE_TIME = 10000;
+    private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 10; // minutes
 
     /**
      * @param context the job execution context
@@ -59,13 +64,26 @@ public class MinionActionExecutor extends RhnJavaJob {
             action = ActionFactory.lookupById(actionId);
         }
 
-        if (action != null) {
-            log.info("Executing action: " + actionId);
-            SaltServerActionService.INSTANCE.execute(action, forcePackageListRefresh);
-        }
-        else {
+        if (action == null) {
             log.error("Action not found: " + actionId);
+            return;
         }
+        // calculate offset between scheduled time of
+        // actions and (now)
+        long timeDelta = Duration
+                .between(ZonedDateTime.ofInstant(action.getEarliestAction().toInstant(),
+                        ZoneId.systemDefault()), ZonedDateTime.now())
+                .toMinutes();
+        if (timeDelta >= MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS) {
+            log.warn("Scheduled action " + action.getId() +
+                    " was scheduled to be executed more than " +
+                    MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS +
+                    " minute(s) ago. Skipping it.");
+            return;
+        }
+
+        log.info("Executing action: " + actionId);
+        SaltServerActionService.INSTANCE.execute(action, forcePackageListRefresh);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
