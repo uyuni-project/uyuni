@@ -36,17 +36,18 @@ header {
 }
 
 footer {
+  border-top: 2px solid darken(@susemanager-green, 10%);
   background: @spacewalk-footer;
-  padding: 0;
+  padding: 6px 0 6px 12px;
   color: @spacewalk-footer-text;
   font-weight: normal;
   font-size: 0.9em;
   height: auto;
   min-height: auto;
   clear: both;
-  position: relative;
-  text-align: center;
-
+  position: absolute;
+  bottom: -1px;
+  width: 100%;
   .make-row(0);
 
   a {
@@ -60,21 +61,19 @@ footer {
   div:nth-child(1),
   div:nth-child(2) {
     float: none;
-    width: auto;
+    width: 100%;
     margin: 0;
-    padding: 0;
     min-height: auto;
-    .text-center;
+    text-align: left!important;
+    padding: 0;
   }
 
   div.wrapper {
     background: url('/img/susemanager/logo-footer-small.png') no-repeat right center;
     min-height: 28px;
-    div:first-of-type {
-      padding-top: 3px;
-    }
-    div:last-of-type {
-      padding-bottom: 3px;
+    padding-right: 55px!important;
+    > div {
+      padding: 3px 0 2px 0;
     }
   }
 }
@@ -83,6 +82,7 @@ footer {
   height: 8px;
   width: 100%;
   background: @susemanager-green;
+  display: none;
 }
 
 /* titles */
@@ -323,6 +323,7 @@ header, nav.navbar-pf {
 
 //Nav menu in left column
 #nav {
+  margin-bottom: 60px;
   nav {
     padding: 0px;
     .nav-tool-box {

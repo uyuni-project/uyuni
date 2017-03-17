@@ -60,7 +60,8 @@ function alignContentDimensions() {
 // Header is fixed, the main content column needs
 // padding-top equals the header height to be fully visible
 function adjustDistanceForFixedHeader() {
-  $('.spacewalk-main-column-layout').css('padding-top', $('header').outerHeight());
+  // subtract 1px in case the outerHeight comes to us already upper rounded
+  $('.spacewalk-main-column-layout').css('padding-top', $('header').outerHeight()-1);
 }
 
 // Make columns 100% in height
@@ -70,7 +71,7 @@ function columnHeight() {
   aside.css('min-height', 0);
   section.css('min-height', 0);
   const headerHeight = $('header').outerHeight();
-  const footerHeight = $('footer').outerHeight();
+  const footerHeight = $('.login-page footer').outerHeight();
   const docHeight = $(document).height();
   // Column heights should equal the document height minus the header height and footer height
   aside.css('min-height', docHeight - headerHeight - footerHeight);
