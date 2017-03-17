@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.utils.gson;
 
+import java.util.Map;
+
 /**
  * Image profile POST request object
  */
@@ -25,6 +27,7 @@ public class ImageProfileCreateRequest {
     private String imageType;
     private String storeLabel;
     private String activationKey;
+    private Map<String, String> customData;
 
     /**
      * @return the label
@@ -59,5 +62,12 @@ public class ImageProfileCreateRequest {
      */
     public String getActivationKey() {
         return activationKey;
+    }
+
+    /**
+     * @return the custom data
+     */
+    public Map<String, String> getCustomData() {
+        return customData;
     }
 }

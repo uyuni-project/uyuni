@@ -22,6 +22,8 @@ import com.google.gson.JsonPrimitive;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.reactor.utils.ZonedDateTimeISOAdapter;
+import com.suse.manager.webui.utils.salt.custom.ChecksumAdapter;
+import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.Checksum;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -41,6 +43,7 @@ public class Json {
    public static final Gson GSON = new GsonBuilder()
            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
            .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeISOAdapter())
+           .registerTypeAdapter(Checksum.class, new ChecksumAdapter())
            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
            .create();
 

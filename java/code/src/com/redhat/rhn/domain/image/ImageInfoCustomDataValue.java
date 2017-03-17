@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,6 +48,27 @@ public class ImageInfoCustomDataValue {
     private User lastModifier;
     private Date created;
     private Date modified;
+
+    /**
+     * Instantiates a new image info custom data value.
+     */
+    public ImageInfoCustomDataValue() { }
+
+    /**
+     * Instantiates a new image info custom data value from a
+     * {@link ProfileCustomDataValue} instance
+     *
+     * @param customDataValueIn the profile custom data value
+     * @param imageInfoIn the image info
+     */
+    public ImageInfoCustomDataValue(
+            ProfileCustomDataValue customDataValueIn, ImageInfo imageInfoIn) {
+        this.setImageInfo(imageInfoIn);
+        this.setKey(customDataValueIn.getKey());
+        this.setValue(customDataValueIn.getValue());
+        this.setCreator(customDataValueIn.getCreator());
+        this.setLastModifier(customDataValueIn.getLastModifier());
+    }
 
     /**
      * @return Returns the Id
@@ -86,7 +106,7 @@ public class ImageInfoCustomDataValue {
     /**
      * @return Returns the creator.
      */
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = UserImpl.class)
+    @ManyToOne(targetEntity = UserImpl.class)
     @JoinColumn(name = "created_by", nullable = true)
     public User getCreator() {
         return creator;
@@ -94,7 +114,7 @@ public class ImageInfoCustomDataValue {
     /**
      * @return Returns the lastModifier.
      */
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = UserImpl.class)
+    @ManyToOne(targetEntity = UserImpl.class)
     @JoinColumn(name = "last_modified_by", nullable = true)
     public User getLastModifier() {
         return lastModifier;

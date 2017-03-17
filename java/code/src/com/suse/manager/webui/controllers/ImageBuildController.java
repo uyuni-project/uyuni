@@ -15,12 +15,14 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.redhat.rhn.common.messaging.MessageQueue;
+
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -30,27 +32,32 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.suse.manager.reactor.messaging.ImageBuildEventMessage;
+
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.ImageInfoJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
-import org.apache.commons.lang.StringUtils;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
 
 /**
  * Spark controller class for image building and listing.
@@ -75,14 +82,13 @@ public class ImageBuildController {
     public static ModelAndView buildView(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
 
-        // Parse optional profile id
-        if (StringUtils.isNotBlank(req.params("profileId"))) {
-            Long profileId = Long.parseLong(req.params("profileId"));
-            model.put("profileId", profileId);
-        }
-        else {
-            model.put("profileId", null);
-        }
+        // Parse optional query string parameters
+        model.put("profileId", StringUtils.isNotBlank(req.queryParams("profile")) ?
+                Long.parseLong(req.queryParams("profile")) : null);
+        model.put("hostId", StringUtils.isNotBlank(req.queryParams("host")) ?
+                Long.parseLong(req.queryParams("host")) : null);
+        model.put("tag", StringUtils.isNotBlank(req.queryParams("tag")) ?
+                req.queryParams("tag") : null);
 
         return new ModelAndView(model, "content_management/build.jade");
     }
@@ -150,6 +156,7 @@ public class ImageBuildController {
     public static class BuildRequest {
         private long buildHostId;
         private String tag;
+        private LocalDateTime earliest;
 
         /**
          * @return the build host id
@@ -169,6 +176,13 @@ public class ImageBuildController {
                 return tag;
             }
         }
+
+        /**
+         * @return the earliest
+         */
+        public LocalDateTime getEarliest() {
+            return earliest;
+        }
     }
 
     /**
@@ -182,17 +196,19 @@ public class ImageBuildController {
     public static Object build(Request request, Response response, User user) {
         response.type("application/json");
 
-        BuildRequest buildRequest = GSON.fromJson(request.body(), BuildRequest.class);
+        BuildRequest buildRequest = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+                .create().fromJson(request.body(), BuildRequest.class);
+
+        Date scheduleDate = getScheduleDate(buildRequest);
 
         Long profileId = Long.parseLong(request.params("id"));
         Optional<ImageProfile> maybeProfile =
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
         return maybeProfile.flatMap(ImageProfile::asDockerfileProfile).map(profile -> {
-            MessageQueue.publish(new ImageBuildEventMessage(
-                    buildRequest.getBuildHostId(), user.getId(), buildRequest.getTag(),
-                    profile.getProfileId()
-            ));
+            ImageInfoFactory.scheduleBuild(buildRequest.buildHostId, buildRequest.getTag(),
+                    profile, scheduleDate, user);
             //TODO: Add action ID as a message parameter
             return GSON.toJson(new JsonResult(true, "build_scheduled"));
         }).orElseGet(
@@ -309,6 +325,9 @@ public class ImageBuildController {
         if (imageOverview.getOutdatedPackages() != null) {
             json.addProperty("packages", imageOverview.getOutdatedPackages());
         }
+        if (imageOverview.getInstalledPackages() != null) {
+            json.addProperty("installedPackages", imageOverview.getInstalledPackages());
+        }
 
         if (imageOverview.getSecurityErrata() != null) {
             JsonObject patches = new JsonObject();
@@ -369,5 +388,10 @@ public class ImageBuildController {
         obj.add("patchlist", list);
 
         return obj;
+    }
+
+    private static Date getScheduleDate(BuildRequest json) {
+        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        return Date.from(json.getEarliest().atZone(zoneId).toInstant());
     }
 }

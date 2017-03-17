@@ -75,7 +75,7 @@ const Column = (props) => {
 const Header = (props) => {
   const thStyle = props.width ? { width: props.width } : null;
 
-  let thClass = props.className;
+  let thClass = props.className || "";
 
   if (props.comparator) {
     thClass += (thClass ? " " : "") + (props.sortDirection == 0 ? "" : (props.sortDirection > 0 ? "ascSort" : "descSort"));

@@ -19,6 +19,7 @@ class CreateImageProfile extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
             imageTypes: [
                 "dockerfile"
@@ -29,13 +30,12 @@ class CreateImageProfile extends React.Component {
             imageStore: "",
             path: "",
             label: "",
-            activationKey: ""
+            activationKey: "",
+            customData: {}
         };
 
-        ["setValues", "getChannels", "handleTokenChange", "handleChange",
-            "handleImageTypeChange", "onUpdate", "onCreate", "clearFields",
-            "getImageStores", "renderField", "renderTypeInputs", "renderImageTypeSelect",
-            "renderStoreSelect", "renderButtons"]
+        ["getChannels", "handleTokenChange", "handleChange", "handleImageTypeChange",
+            "clearFields", "getImageStores"]
                 .forEach(method => this[method] = this[method].bind(this));
 
         this.getImageStores(typeMap[this.state.imageType].storeType);
@@ -58,7 +58,8 @@ class CreateImageProfile extends React.Component {
                     path: data.path,
                     imageType: data.imageType,
                     imageStore: data.store,
-                    initLabel: data.label
+                    initLabel: data.label,
+                    customData: data.customData
                 });
                 this.getChannels(data.activationKey.key);
             } else {
@@ -106,6 +107,28 @@ class CreateImageProfile extends React.Component {
         this.getImageStores(typeMap[val].storeType);
     }
 
+    addCustomData(label) {
+        if(label) {
+            const data = this.state.customData;
+            data[label] = "";
+
+            this.setState({
+                customData: data
+            });
+        }
+    }
+
+    removeCustomData(label) {
+        if(label) {
+            const data = this.state.customData;
+            delete data[label];
+
+            this.setState({
+                customData: data
+            });
+        }
+    }
+
     onUpdate(event) {
         event.preventDefault();
 
@@ -118,7 +141,8 @@ class CreateImageProfile extends React.Component {
             path: this.state.path,
             imageType: this.state.imageType,
             storeLabel: this.state.imageStore,
-            activationKey: this.state.activationKey
+            activationKey: this.state.activationKey,
+            customData: this.state.customData
         };
 
         return Network.post(
@@ -150,7 +174,8 @@ class CreateImageProfile extends React.Component {
             path: this.state.path,
             imageType: this.state.imageType,
             storeLabel: this.state.imageStore,
-            activationKey: this.state.activationKey
+            activationKey: this.state.activationKey,
+            customData: this.state.customData
         };
         return Network.post(
             "/rhn/manager/api/cm/imageprofiles",
@@ -174,7 +199,8 @@ class CreateImageProfile extends React.Component {
           label: "",
           path: "",
           imageStore: "",
-          activationKey: ""
+          activationKey: "",
+          customData: {}
       });
     }
 
@@ -277,6 +303,54 @@ class CreateImageProfile extends React.Component {
         </div>;
     }
 
+    renderCustomDataFields() {
+        const fields = Object.entries(this.state.customData).map(d => {
+            const key = customDataKeys.find(k => k.label === d[0]);
+
+            return key && (
+                <div className="form-group">
+                    <label className="col-md-3 control-label">
+                        {key.label}:
+                    </label>
+                    <div className="col-md-6">
+                        <div className="input-group">
+                            <input name={key.label} className="form-control input-sm" type="text" value={this.state.customData[key.label]}
+                                onChange={(event) => {
+                                    const target = event.target;
+
+                                    let data = this.state.customData;
+                                    data[target.name] = target.value;
+
+                                    this.setState({
+                                        customData: data
+                                    });
+                                }}
+                            />
+                            <span className="input-group-btn">
+                                <Button title={t("Remove entry")} icon="fa-minus" className="btn-default btn-sm" handler={() => this.removeCustomData(key.label)}/>
+                            </span>
+                        </div>
+                    </div>
+                </div>);
+        });
+
+        const select = <div className="form-group">
+                <label className="col-md-3 control-label">Custom Info Values:</label>
+                <div className="col-md-6">
+                    <select value="0" onChange={(e) => this.addCustomData(e.target.value)} className="form-control">
+                        <option key="0" disabled="disabled">{t("Create additional custom info values")}</option>
+                        {
+                            customDataKeys
+                                .filter(k => !Object.keys(this.state.customData).includes(k.label))
+                                .map(k => <option key={k.label} value={k.label}>{ k.label }</option>)
+                        }
+                    </select>
+                </div>
+            </div>;
+
+        return [select, fields];
+    }
+
     renderButtons() {
         var buttons = [
             <Button id="clear-btn" className="btn-default pull-right" icon="fa-eraser" text={t("Clear fields")} handler={this.clearFields}/>
@@ -300,6 +374,8 @@ class CreateImageProfile extends React.Component {
                     { this.renderImageTypeSelect() }
                     { this.renderTypeInputs(this.state.imageType) }
                     { this.renderTokenSelect() }
+                    <hr/>
+                    { this.renderCustomDataFields() }
                     <div className="form-group">
                         <div className="col-md-offset-3 col-md-6">
                             { this.renderButtons() }

@@ -109,12 +109,12 @@ public class ImageProfileFactory extends HibernateFactory {
      * @param label the label
      * @return Returns the image profile
      */
-    public static ImageProfile lookupByLabel(String label) {
+    public static Optional<ImageProfile> lookupByLabel(String label) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ImageProfile> criteria = builder.createQuery(ImageProfile.class);
         Root<ImageProfile> root = criteria.from(ImageProfile.class);
         criteria.where(builder.equal(root.get("label"), label));
-        return getSession().createQuery(criteria).getSingleResult();
+        return getSession().createQuery(criteria).uniqueResultOptional();
     }
 
     /**
@@ -123,7 +123,7 @@ public class ImageProfileFactory extends HibernateFactory {
      * @param org the organization
      * @return Returns the ImageProfile
      */
-    public static ImageProfile lookupByLabelAndOrg(String label, Org org) {
+    public static Optional<ImageProfile> lookupByLabelAndOrg(String label, Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ImageProfile> criteria = builder.createQuery(ImageProfile.class);
         Root<ImageProfile> root = criteria.from(ImageProfile.class);
@@ -132,7 +132,7 @@ public class ImageProfileFactory extends HibernateFactory {
                         builder.equal(root.get("label"), label),
                         builder.equal(root.get("org"), org))
                 );
-        return getSession().createQuery(criteria).getSingleResult();
+        return getSession().createQuery(criteria).uniqueResultOptional();
     }
 
     /**
@@ -146,5 +146,23 @@ public class ImageProfileFactory extends HibernateFactory {
         Root<ImageProfile> root = criteria.from(ImageProfile.class);
         criteria.where(builder.equal(root.get("org"), org));
         return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Save a {@link ProfileCustomDataValue}.
+     *
+     * @param customDataValue the image profile to save
+     */
+    public static void save(ProfileCustomDataValue customDataValue) {
+        instance.saveObject(customDataValue);
+    }
+
+    /**
+     * Delete a {@link ProfileCustomDataValue}.
+     *
+     * @param customDataValue the profile custom data value to delete
+     */
+    public static void delete(ProfileCustomDataValue customDataValue) {
+        instance.removeObject(customDataValue);
     }
 }
