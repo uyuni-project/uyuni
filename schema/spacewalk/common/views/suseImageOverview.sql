@@ -16,7 +16,7 @@ suseImageOverview
     image_id,
     image_name,
     image_version,
-    image_checksum,
+    checksum_id,
     modified,
     image_arch_name,
     action_id,
@@ -26,11 +26,12 @@ suseImageOverview
     security_errata,
     bug_errata,
     enhancement_errata,
-    outdated_packages
+    outdated_packages,
+    installed_packages
 )
 as
 select
-    i.org_id, i.id, i.name, i.version, i.checksum, i.modified,
+    i.org_id, i.id, i.name, i.version, i.checksum_id, i.modified,
     ( select name from rhnServerArch where id = i.image_arch_id),
     i.action_id, i.profile_id, i.store_id, i.build_server_id,
     ( select count(*) from rhnImageErrataTypeView ietv
@@ -47,9 +48,11 @@ select
         and ietv.errata_type = 'Product Enhancement Advisory'),
     ( select count(distinct p.name_id) from rhnPackage p, rhnImageNeededPackageCache inpc
       where
-             inpc.image_id = i.id
-	 and p.id = inpc.package_id
-	 )
+            inpc.image_id = i.id
+        and p.id = inpc.package_id),
+    (select count(*) from suseImageInfoPackage iip
+     where
+            iip.image_info_id = i.id)
 from
     suseImageInfo i
 ;

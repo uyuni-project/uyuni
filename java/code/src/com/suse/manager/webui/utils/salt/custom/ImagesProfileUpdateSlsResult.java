@@ -26,10 +26,20 @@ public class ImagesProfileUpdateSlsResult {
     @SerializedName("module_|-mgr_image_profileupdate_|-dockerng.sls_build_|-run")
     private StateApplyResult<Ret<PkgProfileUpdateSlsResult>> dockerngSlsBuild;
 
+    @SerializedName("module_|-mgr_image_inspect_|-dockerng.inspect_|-run")
+    private StateApplyResult<Ret<ImageInspectSlsResult>> dockerngInspect;
+
     /**
      * @return getter
      */
     public StateApplyResult<Ret<PkgProfileUpdateSlsResult>> getDockerngSlsBuild() {
         return dockerngSlsBuild;
+    }
+
+    /**
+     * @return getter
+     */
+    public StateApplyResult<Ret<ImageInspectSlsResult>> getDockerngInspect() {
+        return dockerngInspect;
     }
 }

@@ -24,6 +24,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorValue;
@@ -49,6 +50,8 @@ import javax.persistence.Transient;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "image_type")
 public abstract class ImageProfile extends BaseDomainHelper {
+
+    public static final String TYPE_DOCKERFILE = "dockerfile";
 
     /** The profileId. */
     private Long profileId;
@@ -106,7 +109,7 @@ public abstract class ImageProfile extends BaseDomainHelper {
     /**
      * @return the custom data values
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile", cascade = CascadeType.ALL)
     public Set<ProfileCustomDataValue> getCustomDataValues() {
         return customDataValues;
     }

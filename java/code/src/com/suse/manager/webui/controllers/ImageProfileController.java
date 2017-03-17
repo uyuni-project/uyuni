@@ -22,6 +22,9 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.image.ProfileCustomDataValue;
+import com.redhat.rhn.domain.org.CustomDataKey;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -40,9 +43,11 @@ import spark.Response;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
@@ -83,7 +88,7 @@ public class ImageProfileController {
     public static ModelAndView createView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("activationKeys", getActivationKeys(user));
-
+        data.put("customDataKeys", getCustomDataKeys(user.getOrg()));
         return new ModelAndView(data, "content_management/edit-profile.jade");
     }
 
@@ -106,6 +111,7 @@ public class ImageProfileController {
         Map<String, Object> data = new HashMap<>();
         data.put("profileId", profileId);
         data.put("activationKeys", getActivationKeys(user));
+        data.put("customDataKeys", getCustomDataKeys(user.getOrg()));
         return new ModelAndView(data, "content_management/edit-profile.jade");
     }
 
@@ -199,16 +205,20 @@ public class ImageProfileController {
         JsonResult result = profile.map(p -> {
             if (p instanceof DockerfileProfile) {
                 DockerfileProfile dp = (DockerfileProfile) p;
+
+                //Throw NoSuchElementException if not found
                 ImageStore store = ImageStoreFactory
-                        .lookupBylabelAndOrg(reqData.getStoreLabel(), user.getOrg());
+                        .lookupBylabelAndOrg(reqData.getStoreLabel(), user.getOrg()).get();
 
                 dp.setLabel(reqData.getLabel());
                 dp.setPath(reqData.getPath());
                 dp.setTargetStore(store);
                 dp.setToken(getToken(reqData.getActivationKey()));
+
             }
 
             ImageProfileFactory.save(p);
+            updateCustomDataValues(p, reqData, user);
 
             return new JsonResult(true);
         }).orElseGet(() -> new JsonResult(false, "not_found"));
@@ -229,9 +239,11 @@ public class ImageProfileController {
                 GSON.fromJson(req.body(), ImageProfileCreateRequest.class);
 
         ImageProfile profile;
-        if ("dockerfile".equals(reqData.getImageType())) {
+        if (ImageProfile.TYPE_DOCKERFILE.equals(reqData.getImageType())) {
+            //Throw NoSuchElementException if not found
             ImageStore store = ImageStoreFactory
-                    .lookupBylabelAndOrg(reqData.getStoreLabel(), user.getOrg());
+                    .lookupBylabelAndOrg(reqData.getStoreLabel(), user.getOrg()).get();
+
             DockerfileProfile dockerfileProfile = new DockerfileProfile();
 
             dockerfileProfile.setLabel(reqData.getLabel());
@@ -247,6 +259,8 @@ public class ImageProfileController {
         }
 
         ImageProfileFactory.save(profile);
+        updateCustomDataValues(profile, reqData, user);
+
         return json(res, new JsonResult(true));
     }
 
@@ -316,5 +330,79 @@ public class ImageProfileController {
         json.setActivationKey(activationKey.getKey());
 
         return json;
+    }
+
+    /**
+     * Get a list of custom data keys for a specific organization, as a JSON array.
+     *
+     * @param org the organization
+     * @return a JSON array of custom data keys
+     */
+    private static String getCustomDataKeys(Org org) {
+        return org.getCustomDataKeys().stream().map(k -> {
+            JsonObject obj = new JsonObject();
+            obj.addProperty("id", k.getId());
+            obj.addProperty("label", k.getLabel());
+            obj.addProperty("description", k.getDescription());
+            return obj;
+        }).collect(Collectors.collectingAndThen(Collectors.toList(), GSON::toJson));
+    }
+
+    /**
+     * Updates custom data value entries for a specific image profile
+     *
+     * @param profile the image profile
+     * @param reqData the request data object
+     * @param user the authorized user
+     */
+    private static void updateCustomDataValues(ImageProfile profile,
+            ImageProfileCreateRequest reqData, User user) {
+
+        if (profile.getCustomDataValues() == null) {
+            profile.setCustomDataValues(new HashSet<>());
+        }
+
+        Set<ProfileCustomDataValue> oldVals = profile.getCustomDataValues();
+        Set<CustomDataKey> orgKeys = user.getOrg().getCustomDataKeys();
+
+        // Loop through the values in the request
+        Set<ProfileCustomDataValue> newValues =
+                reqData.getCustomData().entrySet().stream().map(reqVal -> {
+
+                    // Find the key in organization keys, ignore if not found.
+                    return orgKeys.stream()
+                            .filter(orgKey -> orgKey.getLabel().equals(reqVal.getKey()))
+                            .findFirst().map(k -> {
+
+                                // Find if we already have an entry for this key-val pair,
+                                ProfileCustomDataValue val = oldVals.stream()
+                                        .filter(oldVal -> oldVal.getKey().getLabel()
+                                                .equals(reqVal.getKey()))
+                                        .findFirst().orElseGet(() -> {
+                                            // otherwise create a new one.
+                                            ProfileCustomDataValue newVal =
+                                                    new ProfileCustomDataValue();
+                                            newVal.setProfile(profile);
+                                            newVal.setCreator(k.getCreator());
+                                            newVal.setKey(k);
+                                            return newVal;
+                                        });
+
+                                // Save the individual value entry
+                                // (For inserts and updates)
+                                val.setValue(reqVal.getValue());
+                                ImageProfileFactory.save(val);
+
+                                return val;
+                            });
+                }).filter(Optional::isPresent).map(Optional::get)
+                        .collect(Collectors.toSet());
+
+        // Remove deleted values
+        oldVals.stream()
+                .filter(oldVal -> !newValues.stream()
+                        .filter(newVal -> oldVal.getId().equals(newVal.getId())).findAny()
+                        .isPresent())
+                .forEach(ImageProfileFactory::delete);
     }
 }

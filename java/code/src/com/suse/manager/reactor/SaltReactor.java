@@ -28,8 +28,10 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
-import com.suse.manager.reactor.messaging.ImageBuildEventMessage;
-import com.suse.manager.reactor.messaging.ImageBuildEventMessageAction;
+import com.suse.manager.reactor.messaging.RunnableEventMessage;
+import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
+import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
+import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
@@ -39,10 +41,6 @@ import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
-import com.suse.manager.reactor.messaging.RunnableEventMessage;
-import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
-import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
-import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.reactor.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
@@ -103,8 +101,6 @@ public class SaltReactor implements EventListener {
                 ChannelsChangedEventMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
-        MessageQueue.registerAction(new ImageBuildEventMessageAction(),
-                ImageBuildEventMessage.class);
         MessageQueue.registerAction(new ActionScheduledEventMessageAction(),
                 ActionScheduledEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(),

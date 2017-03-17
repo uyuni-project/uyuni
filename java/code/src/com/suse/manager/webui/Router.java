@@ -94,8 +94,6 @@ public class Router implements SparkApplication {
 
         get("/manager/cm/build", withCsrfToken(withUser(ImageBuildController::buildView)),
                 jade);
-        get("/manager/cm/build/:profileId",
-                withCsrfToken(withImageAdmin(ImageBuildController::buildView)), jade);
 
         get("/manager/api/cm/build/hosts", withUser(ImageBuildController::getBuildHosts));
         post("/manager/api/cm/build/:id", withUser(ImageBuildController::build));

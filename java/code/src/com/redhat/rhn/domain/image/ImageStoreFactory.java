@@ -15,11 +15,14 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
 
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -34,6 +37,8 @@ public class ImageStoreFactory extends HibernateFactory {
 
     private static ImageStoreFactory instance = new ImageStoreFactory();
     private static Logger log = Logger.getLogger(ImageStoreFactory.class);
+    public static final String USER_KEY = "username";
+    public static final String PASS_KEY = "password";
 
     /**
      * Default constructor.
@@ -77,12 +82,23 @@ public class ImageStoreFactory extends HibernateFactory {
      * @param label the label to search for
      * @return Returns the ImageStoreType
      */
-    public static ImageStoreType lookupStoreTypeByLabel(String label) {
+    public static Optional<ImageStoreType> lookupStoreTypeByLabel(String label) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ImageStoreType> criteria = builder.createQuery(ImageStoreType.class);
         Root<ImageStoreType> root = criteria.from(ImageStoreType.class);
         criteria.where(builder.equal(root.get("label"), label));
-        return (ImageStoreType) getSession().createQuery(criteria).getSingleResult();
+        return getSession().createQuery(criteria).uniqueResultOptional();
+    }
+
+    /**
+     * Return a list of ImageStoreTypes
+     * @return list of image store types
+     */
+    public static List<ImageStoreType> listImageStoreTypes() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageStoreType> criteria = builder.createQuery(ImageStoreType.class);
+        criteria.from(ImageStoreType.class);
+        return getSession().createQuery(criteria).getResultList();
     }
 
     /**
@@ -91,14 +107,27 @@ public class ImageStoreFactory extends HibernateFactory {
      * @param org the organization
      * @return Returns the ImageStore
      */
-    public static ImageStore lookupBylabelAndOrg(String label, Org org) {
+    public static Optional<ImageStore> lookupBylabelAndOrg(String label, Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ImageStore> criteria = builder.createQuery(ImageStore.class);
         Root<ImageStore> root = criteria.from(ImageStore.class);
         criteria.where(builder.and(
                 builder.equal(root.get("label"), label),
                 builder.equal(root.get("org"), org)));
-        return (ImageStore) getSession().createQuery(criteria).getSingleResult();
+        return getSession().createQuery(criteria).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup ImageStore by label
+     * @param label the label
+     * @return Returns the ImageStore
+     */
+    public static Optional<ImageStore> lookupBylabel(String label) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageStore> criteria = builder.createQuery(ImageStore.class);
+        Root<ImageStore> root = criteria.from(ImageStore.class);
+        criteria.where(builder.equal(root.get("label"), label));
+        return getSession().createQuery(criteria).uniqueResultOptional();
     }
 
     /**
@@ -161,5 +190,25 @@ public class ImageStoreFactory extends HibernateFactory {
         Root<ImageStore> root = criteria.from(ImageStore.class);
         criteria.where(builder.equal(root.get("org"), org));
         return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Creates a db entity for credentials if the input params contain
+     * entry for username and password.
+     * @param params - non-null map of gatherer parameters
+     * @param ist - image store type
+     * @return new Credentials instance
+     */
+    public static Credentials createCredentials(Map<String, String> params,
+            ImageStoreType ist) {
+        String type = "";
+        if (ist.getLabel().equals(ImageStore.TYPE_REGISTRY)) {
+            type = Credentials.TYPE_REGISTRY;
+        }
+        else {
+            return null;
+        }
+        return CredentialsFactory.createCredentials(params.get(USER_KEY),
+                params.get(PASS_KEY), type, null);
     }
 }

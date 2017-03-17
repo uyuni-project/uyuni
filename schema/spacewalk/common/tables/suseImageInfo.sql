@@ -19,7 +19,9 @@ CREATE TABLE suseImageInfo
                      CONSTRAINT suse_imginfo_imgid_pk PRIMARY KEY,
     name           VARCHAR2(128) NOT NULL,
     version        VARCHAR2(128) NOT NULL,
-    checksum       VARCHAR2(128),
+    checksum_id    NUMBER
+                     CONSTRAINT suse_imginfo_chsum_fk
+                       REFERENCES rhnChecksum (id),
     image_arch_id  NUMBER NOT NULL
                        CONSTRAINT rhn_imginfo_said_fk
                            REFERENCES rhnServerArch (id),
@@ -32,7 +34,7 @@ CREATE TABLE suseImageInfo
                      CONSTRAINT suse_imginfo_pid_fk
                        REFERENCES suseImageProfile (profile_id)
                        ON DELETE SET NULL,
-    store_id       NUMBER NOT NULL
+    store_id       NUMBER
                       CONSTRAINT suse_imginfo_sid_fk
                          REFERENCES suseImageStore (id)
                          ON DELETE SET NULL,

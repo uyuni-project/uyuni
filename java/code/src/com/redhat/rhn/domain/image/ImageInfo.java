@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -25,6 +26,7 @@ import com.redhat.rhn.domain.server.ServerArch;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -53,7 +55,7 @@ public class ImageInfo extends BaseDomainHelper {
     private Long id;
     private String name;
     private String version;
-    private String checksum;
+    private Checksum checksum;
     private ImageProfile profile;
     private ImageStore store;
     private MinionServer buildServer;
@@ -114,7 +116,9 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the checksum
      */
-    public String getChecksum() {
+    @ManyToOne
+    @JoinColumn(name = "checksum_id")
+    public Checksum getChecksum() {
         return checksum;
     }
 
@@ -179,7 +183,7 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the custom data values
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo", cascade = CascadeType.ALL)
     public Set<ImageInfoCustomDataValue> getCustomDataValues() {
         return customDataValues;
     }
@@ -224,7 +228,7 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @param checksumIn checksum to set
      */
-    public void setChecksum(String checksumIn) {
+    public void setChecksum(Checksum checksumIn) {
         this.checksum = checksumIn;
     }
 

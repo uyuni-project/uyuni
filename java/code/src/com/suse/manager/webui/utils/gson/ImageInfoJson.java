@@ -17,6 +17,7 @@ package com.suse.manager.webui.utils.gson;
 
 import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -49,6 +50,7 @@ public class ImageInfoJson {
     private Map<String, String> customData;
     private JsonObject patches;
     private Integer packages;
+    private Integer installedPackages;
 
     /**
      * @return the id
@@ -275,6 +277,20 @@ public class ImageInfoJson {
     }
 
     /**
+     * @return the number of installed packages
+     */
+    public Integer getInstalledPackages() {
+        return installedPackages;
+    }
+
+    /**
+     * @param packagesIn the number of installed packages
+     */
+    public void setInstalledPackages(Integer packagesIn) {
+        this.installedPackages = packagesIn;
+    }
+
+    /**
      * @param installedProductsIn installed products
      */
     public void setInstalledProducts(InstalledProductsJson installedProductsIn) {
@@ -288,11 +304,12 @@ public class ImageInfoJson {
      * @return the image info json
      */
     public static ImageInfoJson fromImageInfo(ImageOverview imageOverview) {
+        Checksum c = imageOverview.getChecksum();
         ImageInfoJson json = new ImageInfoJson();
         json.setId(imageOverview.getId());
         json.setName(imageOverview.getName());
         json.setVersion(imageOverview.getVersion());
-        json.setChecksum(imageOverview.getChecksum());
+        json.setChecksum(c != null ? c.getChecksum() : "");
         json.setProfile(imageOverview.getProfile());
         json.setStore(imageOverview.getStore());
         json.setBuildServer(imageOverview.getBuildServer());
@@ -301,6 +318,7 @@ public class ImageInfoJson {
         json.setPatches(imageOverview.getSecurityErrata(), imageOverview.getBugErrata(),
                 imageOverview.getEnhancementErrata());
         json.setPackages(imageOverview.getOutdatedPackages());
+        json.setInstalledPackages(imageOverview.getInstalledPackages());
 
         Map<Boolean, List<InstalledProduct>> collect = imageOverview.getInstalledProducts()
                 .stream().collect(Collectors.partitioningBy(ip -> ip.isBaseproduct()));
@@ -314,6 +332,8 @@ public class ImageInfoJson {
                 )
         );
         json.setInstalledProducts(installedProductsJson.orElse(null));
+        json.setCustomData(imageOverview.getCustomDataValues());
+
         return json;
     }
 }

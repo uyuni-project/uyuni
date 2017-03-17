@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.credentials;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -179,6 +180,40 @@ public class CredentialsFactory extends HibernateFactory {
         creds.setType(CredentialsFactory
                 .findCredentialsTypeByLabel(Credentials.TYPE_REGISTRY));
         return creds;
+    }
+
+    /**
+     * Create Credentials of a specific type
+     * @param username - the username
+     * @param password - the password
+     * @param credentialsType - credentials type
+     * @param params - optional paramaters
+     * @return new Credentials instance
+     */
+    public static Credentials createCredentials(String username, String password,
+            String credentialsType, Map<String, String> params) {
+        if (StringUtils.isEmpty(username)) {
+            return null;
+        }
+
+        Credentials credentials = null;
+        if (credentialsType.equals(Credentials.TYPE_REGISTRY)) {
+            credentials = CredentialsFactory.createRegistryCredentials();
+        }
+        else if (credentialsType.equals(Credentials.TYPE_VIRT_HOST_MANAGER)) {
+            credentials = CredentialsFactory.createVHMCredentials();
+        }
+        else if (credentialsType.equals(Credentials.TYPE_SCC)) {
+            credentials = CredentialsFactory.createSCCCredentials();
+        }
+        else {
+            return credentials;
+        }
+        credentials.setUsername(username);
+        credentials.setPassword(password);
+        CredentialsFactory.storeCredentials(credentials);
+
+        return credentials;
     }
 
     @Override

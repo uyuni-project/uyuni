@@ -5,5 +5,9 @@ include ../common.jade
 script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
     const profileId = "#{profileId}";
+    const hostId = "#{hostId}";
+    const tag = "#{tag}";
+    const timezone = "#{h.renderTimezone()}";
+    const localTime = "#{h.renderLocalTime()}";
 
 script(src='/javascript/manager/image-build.bundle.js', type='text/javascript')
