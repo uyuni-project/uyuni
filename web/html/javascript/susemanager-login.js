@@ -9,6 +9,12 @@ $(document).on("ready", function() {
   formFocus('loginForm', 'username');
   $("body").addClass('login-page');
   $('header').wrapInner('<div class="wrap"></div>').addClass('Raleway-font');
+
+  // move and keep only the logo at the beginning of the header
+  const logo = $('.navbar-brand');
+  $('#breadcrumb').remove();
+  $('header .wrap').prepend(logo);
+
   $('section').wrapInner('<div class="wrap"></div>');
   $('footer .wrapper').addClass('wrap');
 });
