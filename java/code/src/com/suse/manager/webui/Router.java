@@ -68,6 +68,8 @@ public class Router implements SparkApplication {
         get("/manager/api/cm/imagestores/type/:type",
                 withUser(ImageStoreController::listAllWithType));
         get("/manager/api/cm/imagestores/:id", withUser(ImageStoreController::getSingle));
+        get("/manager/api/cm/imagestores/find/:label",
+                withUser(ImageStoreController::getSingleByLabel));
         post("/manager/api/cm/imagestores", withImageAdmin(ImageStoreController::create));
         post("/manager/api/cm/imagestores/:id",
                 withImageAdmin(ImageStoreController::update));
@@ -83,6 +85,8 @@ public class Router implements SparkApplication {
         get("/manager/api/cm/imageprofiles", withUser(ImageProfileController::list));
         get("/manager/api/cm/imageprofiles/:id",
                 withUser(ImageProfileController::getSingle));
+        get("/manager/api/cm/imageprofiles/find/:label",
+                withUser(ImageProfileController::getSingleByLabel));
         get("/manager/api/cm/imageprofiles/channels/:token",
                 withImageAdmin(ImageProfileController::getChannels));
         post("/manager/api/cm/imageprofiles",
