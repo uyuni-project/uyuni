@@ -51,7 +51,7 @@ Feature:  Build Container images with SUSE Manager
   And I follow "Images" in the left menu
   And I follow "Build" in the left menu
   And I enter "opensuse" as "profileId"
-  And I enter sle-minion hostname in Build Host
+  And I select sle-minion hostname in Build Host
   And I click on "submit-btn"
 
   Scenario: Verify that the docker image was sucessefully created
