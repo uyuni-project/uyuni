@@ -18,14 +18,12 @@ const Link = (props) =>
 const NodeLink = (props) =>
   <div className={props.isLeaf ? " leafLink " : " nodeLink "} >
     {
-      !props.isLeaf && !props.isSearchActive ?
-      <i className={'showSubMenu ' + (props.isOpen ? "fa fa-angle-down" : "fa fa-angle-right")}></i>
-      : null
-    }
-    {
       props.isLeaf ?
       <Link url={props.url} target={props.target} label={props.label} />
       : <div className="node-text" onClick={props.handleClick}>
+          { !props.isSearchActive ?
+          <i className={'submenuIcon ' + (props.isOpen ? "fa fa-angle-down" : "fa fa-angle-right")}></i>
+          : null }
           {props.icon ? <i className={'fa ' + props.icon}></i> : null}{props.label}
         </div>
     }

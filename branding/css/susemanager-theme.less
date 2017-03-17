@@ -387,13 +387,12 @@ header, nav.navbar-pf {
       text-decoration: none;
       color: @spacewalk-aside-menu-hyperlink-hover;
     }
-    .showSubMenu {
+    i.submenuIcon {
       display: inline-block;
       font-size: inherit;
-      color: @spacewalk-gray-light;
       height: 100%;
       width: 19px;
-      margin: 0 0 0 -19px;
+      margin: 0 8px 0 -27px;
       text-align: center;
       cursor: default;
     }
@@ -426,6 +425,12 @@ header, nav.navbar-pf {
         text-align: center;
         border-left: 1px dashed #333;
         color: @spacewalk-gray;
+        i {
+          font-size: 0.8em;
+          width: 15px;
+          display: inline-block;
+          text-align: center;
+        }
       }
       a.direct-link:hover {
         background-color: lighten(@spacewalk-blue-light, 5%);
@@ -447,12 +452,6 @@ header, nav.navbar-pf {
             > span {
               display: inline-block;
               vertical-align: middle;
-            }
-            i {
-              font-size: 0.8em;
-              width: 15px;
-              display: inline-block;
-              text-align: center;
             }
           }
         }
@@ -497,7 +496,7 @@ header, nav.navbar-pf {
               background-repeat: no-repeat;
               background-position: left center;
               i {
-                font-size: 0.8em;
+                font-size: 1em;
               }
             }
           }
