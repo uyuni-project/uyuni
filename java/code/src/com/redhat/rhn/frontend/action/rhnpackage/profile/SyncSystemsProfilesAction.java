@@ -22,8 +22,10 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -109,6 +111,20 @@ public class SyncSystemsProfilesAction extends BaseProfilesAction {
                     params);
         }
         catch (MissingPackagesException mpe) {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put(RequestContext.SID, sid);
+            params.put(RequestContext.SID1, sid1);
+            params.put("sync", "system");
+            params.put("time", new Long(time.getTime()));
+            return getStrutsDelegate().forwardParams(mapping.findForward("missing"),
+                    params);
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule package synchronization:");
+            log.error(e);
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError(errors, "taskscheduler.down");
+            getStrutsDelegate().saveMessages(request, errors);
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(RequestContext.SID, sid);
             params.put(RequestContext.SID1, sid1);

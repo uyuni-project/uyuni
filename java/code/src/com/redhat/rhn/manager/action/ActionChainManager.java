@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.action;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -30,7 +29,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,6 +50,7 @@ import java.util.Set;
  * @author Silvio Moioli <smoioli@suse.de>
  */
 public class ActionChainManager {
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /**
      * Utility class constructor.
@@ -65,10 +66,13 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageInstall
      */
     public static PackageAction schedulePackageInstall(User user, Server server,
-        List<Map<String, Long>> packages, Date earliest, ActionChain actionChain) {
+            List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
+        throws TaskomaticApiException {
         return schedulePackageActionByOs(user, server, packages, earliest, actionChain,
                 null, ActionFactory.TYPE_PACKAGES_UPDATE);
     }
@@ -81,10 +85,13 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageRemoval
      */
     public static PackageAction schedulePackageRemoval(User user, Server server,
-        List<Map<String, Long>> packages, Date earliest, ActionChain actionChain) {
+            List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
+        throws TaskomaticApiException {
         return schedulePackageActionByOs(user, server, packages, earliest, actionChain,
                 null, ActionFactory.TYPE_PACKAGES_REMOVE);
     }
@@ -97,11 +104,13 @@ public class ActionChainManager {
      * @param earliestAction Date of earliest action to be executed
      * @param actionChain the action chain or null
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @see ActionManager#addPackageActionDetails(Action, List) for "package map"
      */
     public static List<Action> schedulePackageUpgrades(User user,
             Map<Long, List<Map<String, Long>>> packageMaps, Date earliestAction,
-            ActionChain actionChain) {
+            ActionChain actionChain) throws TaskomaticApiException {
         List<Action> actions = new ArrayList<Action>();
 
         Integer sortOrder = null;
@@ -125,10 +134,13 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @see ActionManager#addPackageActionDetails(Action, List) for "package map"
      */
     public static PackageAction schedulePackageUpgrade(User user, Server server,
-        List<Map<String, Long>> packages, Date earliest, ActionChain actionChain) {
+            List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
+        throws TaskomaticApiException {
         return schedulePackageInstall(user, server, packages, earliest, actionChain);
     }
 
@@ -140,15 +152,17 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageVerify
      * @see ActionManager#addPackageActionDetails(Action, List) for "package map"
      */
     public static PackageAction schedulePackageVerify(User user, Server server,
-        List<Map<String, Long>> packages, Date earliest, ActionChain actionChain) {
+            List<Map<String, Long>> packages, Date earliest, ActionChain actionChain)
+        throws TaskomaticApiException {
         return (PackageAction) schedulePackageAction(user, packages,
             ActionFactory.TYPE_PACKAGES_VERIFY, earliest, actionChain, null, server);
     }
-
 
     /**
      * Schedules a generic package action on a single server.
@@ -160,12 +174,15 @@ public class ActionChainManager {
      * @param sortOrder the sort order or null
      * @param server the server
      * @return scheduled action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageAction
      * @see ActionManager#addPackageActionDetails(Action, List) for "package map"
      */
-    private static Action schedulePackageAction(User user,
-        List<Map<String, Long>> packages, ActionType type, Date earliest,
-        ActionChain actionChain, Integer sortOrder, Server server) {
+    private static Action schedulePackageAction(User user, List<Map<String, Long>> packages,
+            ActionType type, Date earliest, ActionChain actionChain, Integer sortOrder,
+            Server server)
+        throws TaskomaticApiException {
         Set<Long> serverIds = new HashSet<Long>();
         serverIds.add(server.getId());
         return schedulePackageActions(user, packages, type, earliest, actionChain,
@@ -182,12 +199,15 @@ public class ActionChainManager {
      * @param sortOrder the sort order or null
      * @param servers the servers involved
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageAction
      * @see ActionManager#addPackageActionDetails(Action, List) for "package map"
      */
     private static Set<Action> schedulePackageActions(User user,
-        List<Map<String, Long>> packages, ActionType type, Date earliestAction,
-        ActionChain actionChain, Integer sortOrder, Set<Long> serverIds) {
+            List<Map<String, Long>> packages, ActionType type, Date earliestAction,
+            ActionChain actionChain, Integer sortOrder, Set<Long> serverIds)
+        throws TaskomaticApiException {
 
         String name = ActionManager.getActionName(type);
 
@@ -210,6 +230,8 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @throws com.redhat.rhn.manager.MissingCapabilityException if any server
      *             in the list is missing script.run schedule fails
      * @throws com.redhat.rhn.manager.MissingEntitlementException if any server
@@ -217,8 +239,9 @@ public class ActionChainManager {
      * @see com.redhat.rhn.manager.action.ActionManager#scheduleScriptRun
      * @see ActionManager#addPackageActionDetails(Action, List) for "package map"
      */
-    public static Set<Action> scheduleScriptRuns(User user, List<Long> sids,
-        String name, ScriptActionDetails script, Date earliest, ActionChain actionChain) {
+    public static Set<Action> scheduleScriptRuns(User user, List<Long> sids, String name,
+            ScriptActionDetails script, Date earliest, ActionChain actionChain)
+        throws TaskomaticApiException {
 
         ActionManager.checkScriptingOnServers(sids);
 
@@ -246,10 +269,12 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Set<Action> createConfigActions(User user, Collection<Long> revisions,
         Collection<Long> serverIds, ActionType type, Date earliest,
-        ActionChain actionChain) {
+        ActionChain actionChain) throws TaskomaticApiException {
 
         List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
         return createConfigActionForServers(user, revisions, servers, type, earliest,
@@ -265,10 +290,12 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Set<Action> createConfigActionForServers(User user,
         Collection<Long> revisions, Collection<Server> servers, ActionType type,
-        Date earliest, ActionChain actionChain) {
+        Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         Set<Action> result = new HashSet<Action>();
         if (actionChain == null) {
             Action action = ActionManager.createConfigActionForServers(user, revisions,
@@ -365,9 +392,11 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Action scheduleRebootAction(User user, Server server, Date earliest,
-        ActionChain actionChain) {
+        ActionChain actionChain) throws TaskomaticApiException {
         Set<Long> serverIds = new HashSet<Long>();
         serverIds.add(server.getId());
         Set<Action> actions = scheduleRebootActions(user, serverIds, earliest, actionChain);
@@ -381,9 +410,11 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Set<Action> scheduleRebootActions(User user, Set<Long> serverIds,
-        Date earliest, ActionChain actionChain) {
+        Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         Set<Action> actions = scheduleActions(user, ActionFactory.TYPE_REBOOT,
             ActionFactory.TYPE_REBOOT.getName(), earliest, actionChain, null, serverIds);
         return actions;
@@ -445,11 +476,13 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @see ActionManager#addPackageActionDetails(Action, List) for "package map"
      */
     public static List<Action> schedulePackageInstalls(User user,
         Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
-        ActionChain actionChain) {
+        ActionChain actionChain) throws TaskomaticApiException {
 
         return schedulePackageActionsByOs(user, serverIds, packages, earliest, actionChain,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
@@ -463,11 +496,13 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @see ActionManager#addPackageActionDetails(Action, List) for "package map"
      */
     public static List<Action> schedulePackageRemovals(User user,
         Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
-        ActionChain actionChain) {
+        ActionChain actionChain) throws TaskomaticApiException {
         return schedulePackageActionsByOs(user, serverIds, packages, earliest, actionChain,
                 ActionFactory.TYPE_PACKAGES_REMOVE);
     }
@@ -482,10 +517,13 @@ public class ActionChainManager {
      * @param sortOrder the sort order or null
      * @param serverIds the affected servers' IDs
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      * @see com.redhat.rhn.manager.action.ActionManager#scheduleAction
      */
     private static Set<Action> scheduleActions(User user, ActionType type, String name,
-        Date earliest, ActionChain actionChain, Integer sortOrder, Set<Long> serverIds) {
+            Date earliest, ActionChain actionChain, Integer sortOrder, Set<Long> serverIds)
+        throws TaskomaticApiException {
         Set<Action> result = new HashSet<Action>();
 
         if (actionChain == null) {
@@ -493,7 +531,7 @@ public class ActionChainManager {
             ActionManager.scheduleForExecution(action, serverIds);
             result.add(action);
 
-            MessageQueue.publish(new ActionScheduledEventMessage(action));
+            TASKOMATIC_API.scheduleActionExecution(action);
         }
         else {
             Integer nextSortOrder = sortOrder;
@@ -521,10 +559,12 @@ public class ActionChainManager {
      * @param sortOrder the sort order or null
      * @param linuxActionType the action type to apply to Linux servers
      * @return scheduled action
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     private static PackageAction schedulePackageActionByOs(User user, Server server,
         List<Map<String, Long>> packages, Date earliest, ActionChain actionChain,
-            Integer sortOrder, ActionType linuxActionType) {
+            Integer sortOrder, ActionType linuxActionType) throws TaskomaticApiException {
         return (PackageAction) schedulePackageAction(user, packages, linuxActionType,
             earliest, actionChain, sortOrder, server);
     }
@@ -538,10 +578,13 @@ public class ActionChainManager {
      * @param actionChain the action chain or null
      * @param linuxActionType the action type to apply to Linux servers
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     private static List<Action> schedulePackageActionsByOs(User user,
-        Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
-            ActionChain actionChain, ActionType linuxActionType) {
+            Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
+            ActionChain actionChain, ActionType linuxActionType)
+        throws TaskomaticApiException {
 
         List<Action> result = new LinkedList<Action>();
         Set<Long> rhelServers = new HashSet<Long>();

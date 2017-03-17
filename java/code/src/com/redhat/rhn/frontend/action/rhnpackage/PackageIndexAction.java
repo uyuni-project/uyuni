@@ -24,7 +24,10 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -40,9 +43,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * PackageIndexAction
- * @version $Rev$
  */
 public class PackageIndexAction extends LookupDispatchAction {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(PackageIndexAction.class);
 
     private StrutsDelegate getStrutsDelegate() {
         return StrutsDelegate.getInstance();
@@ -67,18 +72,29 @@ public class PackageIndexAction extends LookupDispatchAction {
         Long sid = requestContext.getRequiredParam("sid");
         Server server = SystemManager.lookupByIdAndUser(sid, user);
 
-        PackageAction pa = ActionManager.schedulePackageRefresh(user, server);
+        try {
+            PackageAction pa = ActionManager.schedulePackageRefresh(user, server);
 
-        ActionMessages msg = new ActionMessages();
-        Object[] args = new Object[3];
-        args[0] = pa.getId().toString();
-        args[1] = sid.toString();
-        args[2] = StringUtil.htmlifyText(server.getName());
+            ActionMessages msg = new ActionMessages();
+            Object[] args = new Object[3];
+            args[0] = pa.getId().toString();
+            args[1] = sid.toString();
+            args[2] = StringUtil.htmlifyText(server.getName());
 
-        msg.add(ActionMessages.GLOBAL_MESSAGE,
-                new ActionMessage("message.packagerefresh", args));
-        getStrutsDelegate().saveMessages(request, msg);
-        SdcHelper.ssmCheck(request, sid, user);
+            msg.add(ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage("message.packagerefresh", args));
+            getStrutsDelegate().saveMessages(request, msg);
+            SdcHelper.ssmCheck(request, sid, user);
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule package refresh action:");
+            log.error(e);
+
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError("taskscheduler.down", errors);
+            getStrutsDelegate().saveMessages(request, errors);
+        }
+
         request.setAttribute("system", server);
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

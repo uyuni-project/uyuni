@@ -34,6 +34,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
@@ -141,7 +142,17 @@ public class SystemDetailsEditAction extends RhnAction {
         Entitlement base = EntitlementManager.getByName(selectedEnt);
         log.debug("base: " + base);
         if (base != null) {
-            s.setBaseEntitlement(base);
+            try {
+                s.setBaseEntitlement(base);
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule entitlement change:");
+                log.error(e);
+                ActionErrors errors = new ActionErrors();
+                getStrutsDelegate().addError("taskscheduler.down", errors);
+                getStrutsDelegate().saveMessages(request, errors);
+                success = false;
+            }
         }
         else if (selectedEnt.equals(UNENTITLE)) {
             SystemManager.removeAllServerEntitlements(s.getId());
@@ -175,9 +186,19 @@ public class SystemDetailsEditAction extends RhnAction {
                 // only set it if it has changed
                 s.setAutoUpdate("Y");
 
-                ActionManager.scheduleAllErrataUpdate(user, s, new Date());
-                createSuccessMessage(request,
-                       "sdc.details.edit.propertieschangedupdate", s.getName());
+                try {
+                    ActionManager.scheduleAllErrataUpdate(user, s, new Date());
+                    createSuccessMessage(request,
+                            "sdc.details.edit.propertieschangedupdate", s.getName());
+                }
+                catch (TaskomaticApiException e) {
+                    log.error("Could not schedule errata update:");
+                    log.error(e);
+                    ActionErrors errors = new ActionErrors();
+                    getStrutsDelegate().addError("taskscheduler.down", errors);
+                    getStrutsDelegate().saveMessages(request, errors);
+                    success = false;
+                }
             }
             else if (daForm.get(AUTO_UPDATE) == null) {
                 s.setAutoUpdate("N");

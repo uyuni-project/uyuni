@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.frontend.dto.XccdfTestResultDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
+import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.MissingEntitlementException;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -36,7 +37,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * SystemScapHandler
- * @version $Rev$
  * @xmlrpc.namespace system.scap
  * @xmlrpc.doc Provides methods to schedule SCAP scans and access the results.
  */
@@ -178,6 +178,9 @@ public class SystemScapHandler extends BaseHandler {
         catch (MissingCapabilityException e) {
            throw new com.redhat.rhn.frontend.xmlrpc.MissingCapabilityException(
                    e.getCapability(), e.getServer());
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
         }
     }
 

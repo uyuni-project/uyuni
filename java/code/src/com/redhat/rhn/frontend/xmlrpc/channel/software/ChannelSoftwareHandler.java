@@ -537,6 +537,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
         catch (PermissionException e) {
             throw new FaultException(1234, "permissions", e.getMessage(), new String[] {});
         }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
 
         return 1;
     }
@@ -2876,18 +2879,18 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype  #return_int_success()
      */
     public int syncRepo(User loggedInUser, List<String> channelLabels) {
-        List<Channel> channels = new ArrayList<>(channelLabels.size());
-        for (String channelLabel : channelLabels) {
-            channels.add(lookupChannelByLabel(loggedInUser, channelLabel));
-        }
-        TaskomaticApi tapi = new TaskomaticApi();
-        if (tapi.isRunning()) {
+        try {
+            List<Channel> channels = new ArrayList<>(channelLabels.size());
+            for (String channelLabel : channelLabels) {
+                channels.add(lookupChannelByLabel(loggedInUser, channelLabel));
+            }
+            TaskomaticApi tapi = new TaskomaticApi();
             tapi.scheduleSingleRepoSync(channels);
-            return BaseHandler.VALID;
         }
-        else {
-            throw new TaskomaticApiException("Taskomatic is not running");
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
         }
+        return BaseHandler.VALID;
     }
 
     /**
@@ -2903,7 +2906,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public int syncRepo(User loggedInUser, String channelLabel) {
         Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
-        new TaskomaticApi().scheduleSingleRepoSync(chan, loggedInUser);
+        try {
+            new TaskomaticApi().scheduleSingleRepoSync(chan, loggedInUser);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
         return 1;
     }
 
@@ -2928,7 +2936,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
     public int syncRepo(User loggedInUser, String channelLabel,
                                                Map<String, String> params) {
         Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
-        new TaskomaticApi().scheduleSingleRepoSync(chan, loggedInUser, params);
+        try {
+            new TaskomaticApi().scheduleSingleRepoSync(chan, loggedInUser, params);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
         return 1;
     }
 
@@ -2947,14 +2960,19 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype  #return_int_success()
      */
     public int syncRepo(User loggedInUser, String channelLabel, String cronExpr) {
-        Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
-        if (StringUtils.isEmpty(cronExpr)) {
-            new TaskomaticApi().unscheduleRepoSync(chan, loggedInUser);
+        try {
+            Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
+            if (StringUtils.isEmpty(cronExpr)) {
+                new TaskomaticApi().unscheduleRepoSync(chan, loggedInUser);
+            }
+            else {
+                new TaskomaticApi().scheduleRepoSync(chan, loggedInUser, cronExpr);
+            }
+            return 1;
         }
-        else {
-            new TaskomaticApi().scheduleRepoSync(chan, loggedInUser, cronExpr);
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
         }
-        return 1;
     }
 
     /**
@@ -2980,21 +2998,26 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public int syncRepo(User loggedInUser,
             String channelLabel, String cronExpr, Map<String, String> params) {
-        Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
-        TaskomaticApi tapi = new TaskomaticApi();
-        if (!tapi.isRunning()) {
-            tapi.scheduleSingleRepoSync(chan, loggedInUser);
-            throw new TaskomaticApiException("Taskomatic is not running");
-        }
+        try {
+            Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
+            TaskomaticApi tapi = new TaskomaticApi();
+            if (!tapi.isRunning()) {
+                tapi.scheduleSingleRepoSync(chan, loggedInUser);
+                throw new TaskomaticApiException("Taskomatic is not running");
+            }
 
-        if (StringUtils.isEmpty(cronExpr)) {
-            tapi.unscheduleRepoSync(chan, loggedInUser);
-        }
-        else {
-            tapi.scheduleRepoSync(chan, loggedInUser, cronExpr, params);
-        }
+            if (StringUtils.isEmpty(cronExpr)) {
+                tapi.unscheduleRepoSync(chan, loggedInUser);
+            }
+            else {
+                tapi.scheduleRepoSync(chan, loggedInUser, cronExpr, params);
+            }
 
-        return 1;
+            return 1;
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -3009,12 +3032,17 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype string quartz expression
      */
     public String getRepoSyncCronExpression(User loggedInUser, String channelLabel) {
-        Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
+        try {
+            Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
             String cronExpr = new TaskomaticApi().getRepoSyncSchedule(chan, loggedInUser);
             if (StringUtils.isEmpty(cronExpr)) {
                 return new String("");
             }
             return cronExpr;
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
    /**

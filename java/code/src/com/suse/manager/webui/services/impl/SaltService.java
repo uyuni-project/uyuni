@@ -18,29 +18,27 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.state.StateFactory;
-
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
+
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
-import com.suse.salt.netapi.calls.modules.Config;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.WheelResult;
 import com.suse.salt.netapi.calls.modules.Cmd;
+import com.suse.salt.netapi.calls.modules.Config;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
-import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
-import com.suse.salt.netapi.calls.modules.Timezone;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
@@ -59,13 +57,10 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -78,7 +73,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Singleton class acting as a service layer for accessing the salt API.
@@ -279,21 +273,6 @@ public class SaltService {
               return Optional.empty();
           }
         });
-    }
-
-    /**
-     * Get the timezone offsets for a target, e.g. a list of minions.
-     *
-     * @param target the targeted minions
-     * @return the timezone offsets of the targeted minions
-     */
-    public Map<String, Result<String>> getTimezoneOffsets(MinionList target) {
-        try {
-            return callSync(Timezone.getOffset(), target);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**
@@ -559,46 +538,6 @@ public class SaltService {
     }
 
     /**
-     * Schedule a function call for a given target.
-     *
-     * @param name the name to use for the scheduled job
-     * @param call the module call to schedule
-     * @param target the target
-     * @param scheduleDate schedule date
-     * @param metadata metadata to pass to the salt job
-     * @return the result of the schedule call
-     * @throws SaltException in case there is an error scheduling the job
-     */
-    public Map<String, Result<Schedule.Result>> schedule(String name,
-            LocalCall<?> call, MinionList target, ZonedDateTime scheduleDate,
-            Map<String, ?> metadata) throws SaltException {
-        // We do one Salt call per timezone: group minions by their timezone offsets
-        Map<String, Result<String>> minionOffsets = getTimezoneOffsets(target);
-        Map<String, List<String>> offsetMap = minionOffsets.keySet().stream()
-                .collect(Collectors.groupingBy(k -> minionOffsets.get(k).result().get()));
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Minions grouped by timezone offsets: " + offsetMap);
-        }
-
-        // The return type is a map of minion ids to their schedule results
-        return offsetMap.entrySet().stream().flatMap(entry -> {
-            LocalDateTime targetScheduleDate = scheduleDate.toOffsetDateTime()
-                    .withOffsetSameInstant(ZoneOffset.of(entry.getKey())).toLocalDateTime();
-            try {
-                MinionList timezoneTarget = new MinionList(entry.getValue());
-                Map<String, Result<Schedule.Result>> result = callSync(
-                        Schedule.add(name, call, targetScheduleDate, metadata),
-                        timezoneTarget);
-                return result.entrySet().stream();
-            }
-            catch (SaltException e) {
-                LOG.error(String.format("Error scheduling actions: %s", e.getMessage()));
-                return Stream.empty();
-            }
-        }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    /**
      * Execute a LocalCall synchronously on the default Salt client.
      * Note that salt-ssh systems are also called by this method.
      *
@@ -662,50 +601,6 @@ public class SaltService {
             throws SaltException {
         return call.callAsync(
                 SALT_CLIENT, target, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-    }
-
-    /**
-     * Remove a scheduled job from the minion
-     *
-     * @param name the name of the job to delete from the schedule
-     * @param target the target
-     * @return the result
-     */
-    public Map<String, Result<Schedule.Result>> deleteSchedule(
-            String name, MinionList target) {
-        try {
-            return callSync(Schedule.delete(name), target);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Remove a scheduled task (referenced via action id) on a list of servers.
-     *
-     * @param sids server ids
-     * @param aid action id
-     * @return the list of server ids that successfully removed the action
-     */
-    public List<Long> deleteSchedulesForActionId(List<Long> sids, long aid) {
-        List<MinionServer> minions = MinionServerFactory
-                .lookupByIds(sids)
-                .collect(Collectors.toList());
-
-        Map<String, Result<Schedule.Result>> results = deleteSchedule(
-                "scheduled-action-" + aid,
-                new MinionList(minions.stream()
-                        .map(MinionServer::getMinionId)
-                        .collect(Collectors.toList())
-                )
-        );
-        return minions.stream().filter(minionServer -> {
-            Schedule.Result result = results.get(minionServer.getMinionId()).result().get();
-            return result != null && result.getResult();
-        })
-          .map(MinionServer::getId)
-          .collect(Collectors.toList());
     }
 
     /**

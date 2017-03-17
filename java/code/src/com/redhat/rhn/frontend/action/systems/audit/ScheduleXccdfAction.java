@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -39,13 +40,15 @@ import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * ScheduleXccdfAction
- * @version $Rev$
  */
-
 public class ScheduleXccdfAction extends ScapSetupAction {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(ScheduleXccdfAction.class);
 
     /**
      * {@inheritDoc}
@@ -93,14 +96,23 @@ public class ScheduleXccdfAction extends ScapSetupAction {
         String path = (String) f.get("path");
         Date earliest = getStrutsDelegate().readDatePicker(f, "date",
                 DatePicker.YEAR_RANGE_POSITIVE);
-        ScapAction action = ActionManager.scheduleXccdfEval(user, server,
-            path, params, earliest);
+        try {
+            ScapAction action = ActionManager.scheduleXccdfEval(user, server,
+                path, params, earliest);
 
-        ActionMessages msgs = new ActionMessages();
-        msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("message.xccdfeval",
-                action.getId().toString(), server.getId().toString(),
-                StringUtil.htmlifyText(server.getName())));
-        return msgs;
+            ActionMessages msgs = new ActionMessages();
+            msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("message.xccdfeval",
+                    action.getId().toString(), server.getId().toString(),
+                    StringUtil.htmlifyText(server.getName())));
+            return msgs;
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule package refresh:");
+            log.error(e);
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError(errors, "taskscheduler.down");
+            return errors;
+        }
     }
 
     private void forwardValuesOnError(DynaActionForm form, StrutsDelegate strutsDelegate,

@@ -29,6 +29,7 @@ import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * Schedules package installations on systems in the SSM.
@@ -54,8 +55,9 @@ public class SsmInstallPackagesAction extends SsmPackagesAction {
         return serverIds;
     }
 
+    @Override
     protected List<Action> doSchedule(SsmPackageEvent event, User user, List<Long> sids,
-                    Date earliest, ActionChain actionChain) {
+                    Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         SsmInstallPackagesEvent sipe = (SsmInstallPackagesEvent) event;
 
         Set<String> data = sipe.getPackages();

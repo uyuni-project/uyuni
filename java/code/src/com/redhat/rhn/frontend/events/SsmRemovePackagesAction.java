@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * Handles removing packages from servers in the SSM.
@@ -53,7 +54,7 @@ public class SsmRemovePackagesAction extends SsmPackagesAction {
     }
 
     protected List<Action> doSchedule(SsmPackageEvent event, User user, List<Long> sids,
-        Date earliest, ActionChain actionChain) {
+        Date earliest, ActionChain actionChain) throws TaskomaticApiException {
 
         SsmRemovePackagesEvent srpe = (SsmRemovePackagesEvent) event;
 

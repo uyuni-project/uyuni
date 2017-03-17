@@ -44,7 +44,6 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -63,17 +62,15 @@ import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.modules.Schedule;
-import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
-import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -90,6 +87,7 @@ import java.util.stream.Collectors;
 public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = Logger.getLogger(ActionManagerTest.class);
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
@@ -291,8 +289,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action parent = createActionWithMinionServerActions(user, 3);
         List actionList = createActionList(user, new Action [] {parent});
 
-        SaltService saltServiceMock = mock(SaltService.class);
-        ActionManager.setSaltService(saltServiceMock);
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
 
         ServerAction[] sa = parent.getServerActions().toArray(new ServerAction[3]);
         Map<String, Result<Schedule.Result>> result = new HashMap<>();
@@ -300,23 +298,17 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 new Result<>(Xor.right(new Schedule.Result(null, true))));
         result.put(sa[1].getServer().asMinionServer().get().getMinionId(),
                 new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
+
         context().checking(new Expectations() { {
-            // minion 2 is down -> did not return anything
-            allowing(saltServiceMock).deleteSchedule(with(equal("scheduled-action-" + parent.getId())), with(any(MinionList.class)));
-            will(returnValue(result));
+            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())));
         } });
 
         assertServerActionCount(parent, 3);
         assertActionsForUser(user, 1);
 
-        Map<Action, Map<Server, ActionManager.CancelServerActionStatus>> cancelResult = ActionManager.cancelActions(user, actionList);
+        ActionManager.cancelActions(user, actionList);
 
-        assertEquals(1, cancelResult.size());
-        assertEquals(3, cancelResult.get(parent).size());
-        assertEquals(cancelResult.get(parent).get(sa[0].getServer()), ActionManager.CancelServerActionStatus.CANCELED);
-        assertEquals(cancelResult.get(parent).get(sa[1].getServer()), ActionManager.CancelServerActionStatus.CANCELED_NO_MINION_JOB);
-        assertEquals(cancelResult.get(parent).get(sa[2].getServer()), ActionManager.CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN);
-        assertServerActionCount(parent, 1);
+        assertServerActionCount(parent, 0);
         assertActionsForUser(user, 1); // shouldn't have been deleted
         context().assertIsSatisfied();
     }
@@ -341,8 +333,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 });
         List actionList = createActionList(user, new Action [] {parent});
 
-        SaltService saltServiceMock = mock(SaltService.class);
-        ActionManager.setSaltService(saltServiceMock);
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
 
         List<ServerAction> sa = parent.getServerActions().stream()
                 .filter(s -> s.getServer().asMinionServer().isPresent())
@@ -352,10 +344,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 new Result<>(Xor.right(new Schedule.Result(null, true))));
         result.put(sa.get(1).getServer().asMinionServer().get().getMinionId(),
                 new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
-        // minion 2 is down -> did not return anything
         context().checking(new Expectations() { {
-            allowing(saltServiceMock).deleteSchedule(with(equal("scheduled-action-" + parent.getId())), with(any(MinionList.class)));
-            will(returnValue(result));
+            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())));
         } });
         Optional<ServerAction> traditionalServerAction = parent.getServerActions().stream()
                 .filter(s -> !s.getServer().asMinionServer().isPresent())
@@ -364,16 +354,9 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertServerActionCount(parent, 4);
         assertActionsForUser(user, 1);
 
-        Map<Action, Map<Server, ActionManager.CancelServerActionStatus>> cancelResult = ActionManager.cancelActions(user, actionList);
+        ActionManager.cancelActions(user, actionList);
 
-        assertEquals(1, cancelResult.size());
-        assertEquals(4, cancelResult.get(parent).size());
-        assertEquals(cancelResult.get(parent).get(sa.get(0).getServer()), ActionManager.CancelServerActionStatus.CANCELED);
-        assertEquals(cancelResult.get(parent).get(sa.get(1).getServer()), ActionManager.CancelServerActionStatus.CANCELED_NO_MINION_JOB);
-        assertEquals(cancelResult.get(parent).get(sa.get(2).getServer()), ActionManager.CancelServerActionStatus.CANCEL_FAILED_MINION_DOWN);
-        assertEquals(cancelResult.get(parent).get(traditionalServerAction.get().getServer()),
-                ActionManager.CancelServerActionStatus.CANCELED);
-        assertServerActionCount(parent, 1);
+        assertServerActionCount(parent, 0);
         assertActionsForUser(user, 1); // shouldn't have been deleted
         context().assertIsSatisfied();
     }
@@ -479,7 +462,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server,
                 ksData, user, parentAction);
         TestUtils.saveAndFlush(ksSession);
-        ksSession = (KickstartSession)RhnBaseTestCase.reload(ksSession);
+        ksSession = RhnBaseTestCase.reload(ksSession);
 
         List actionList = createActionList(user, new Action [] {parentAction});
 
@@ -540,7 +523,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotEmpty(dr);
     }
 
-    public void testLookupFailLoookupAction() throws Exception {
+    public void testLookupFailLookupAction() throws Exception {
         User user1 = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         try {
@@ -557,6 +540,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 "testOrg" + this.getClass().getSimpleName());
         Action a1 = ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
 
         sa.setStatus(ActionFactory.STATUS_FAILED);
         sa.setRemainingTries(new Long(0));

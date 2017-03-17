@@ -58,6 +58,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import static com.suse.utils.Lists.listOfListComparator;
 
@@ -625,10 +626,12 @@ public class DistUpgradeManager extends BaseManager {
      * @param dryRun perform a dry run
      * @param earliest earliest schedule date
      * @return the action ID
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Long scheduleDistUpgrade(User user, Server server,
             SUSEProductSet targetSet, Collection<Long> channelIDs,
-            boolean dryRun, Date earliest) {
+            boolean dryRun, Date earliest) throws TaskomaticApiException {
         // Create action details
         DistUpgradeActionDetails details = new DistUpgradeActionDetails();
 

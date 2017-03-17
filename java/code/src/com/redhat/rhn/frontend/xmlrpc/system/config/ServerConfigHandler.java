@@ -27,6 +27,7 @@ import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchConfigFilePathException;
+import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.XmlRpcConfigChannelHelper;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigFileNameDtoSerializer;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigRevisionSerializer;
@@ -46,7 +47,6 @@ import java.util.Set;
 
 /**
  * ServerConfigChannelHandler
- * @version $Rev$
  * @xmlrpc.namespace system.config
  * @xmlrpc.doc Provides methods to access and modify many aspects of
  * configuration channels and server association.
@@ -406,6 +406,9 @@ public class ServerConfigHandler extends BaseHandler {
         catch (MissingCapabilityException e) {
             throw new com.redhat.rhn.frontend.xmlrpc.MissingCapabilityException(
                     e.getCapability(), e.getServer());
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
         }
         return 1;
     }

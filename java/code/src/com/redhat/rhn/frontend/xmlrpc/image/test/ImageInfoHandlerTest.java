@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.image.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -46,9 +47,15 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.HashSet;
 import java.util.List;
@@ -60,7 +67,25 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
     private ImageInfoHandler handler = new ImageInfoHandler();
 
+    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+    }};
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+
+    }
+
     public final void testScheduleImageBuild() throws Exception {
+        TaskomaticApi taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
+        ImageInfoFactory.setTaskomaticApi(taskomaticMock);
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
         ImageStore store = ImageProfileHandlerTest.createImageStore("registry.reg", admin);

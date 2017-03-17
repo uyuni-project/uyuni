@@ -35,7 +35,9 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -57,6 +59,9 @@ import javax.servlet.http.HttpServletResponse;
  * ImportFileConfirmSubmitAction, for sdc configuration
  */
 public class FileListConfirmSubmitAction extends RhnListDispatchAction {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(FileListConfirmSubmitAction.class);
 
     /**
      * {@inheritDoc}
@@ -96,7 +101,8 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         Set cfnids = getCfnids(set);
         //if they don't have a set, don't do anything.
         if (cfnids.size() < 1) {
-            return createNoSelectedMessage(request, mapping, formIn, server.getId());
+            return createErrorMessage(request, mapping, formIn, server.getId(),
+                    "sdcfilelist.jsp.noSelected");
         }
 
         //The channel to which files will be uploaded
@@ -104,16 +110,24 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         //The earliest time to perform the action.
         Date earliest = getStrutsDelegate().readDatePicker((DynaActionForm)formIn,
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
-        ConfigUploadAction upload = (ConfigUploadAction)ActionManager
-                .createConfigUploadAction(user, cfnids, server, sandbox, earliest);
+        try {
+            ConfigUploadAction upload = (ConfigUploadAction)ActionManager
+                    .createConfigUploadAction(user, cfnids, server, sandbox, earliest);
 
-        //clear the set, we are done with it.
-        RhnSetManager.remove(set);
+            //clear the set, we are done with it.
+            RhnSetManager.remove(set);
 
-        //Create a success message
-        if (upload != null) {
-            createSuccessMessage(upload, upload.getConfigFileNameAssociations().size(),
-                    "config.import.success", request, null);
+            //Create a success message
+            if (upload != null) {
+                createSuccessMessage(upload, upload.getConfigFileNameAssociations().size(),
+                        "config.import.success", request, null);
+            }
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule config upload:");
+            log.error(e);
+            return createErrorMessage(request, mapping, formIn, server.getId(),
+                    "taskscheduler.down");
         }
 
         return getStrutsDelegate().forwardParam(
@@ -159,7 +173,8 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         Set revisions = getCrids(set, sid);
         //if they don't have a set, don't do anything.
         if (revisions.size() < 1) {
-            return createNoSelectedMessage(request, mapping, form, sid);
+            return createErrorMessage(request, mapping, form, sid,
+                    "sdcfilelist.jsp.noSelected");
         }
 
         //we need a set, so add our one server to a set.
@@ -171,17 +186,24 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
         ActionChain actionChain = ActionChainHelper.readActionChain((DynaActionForm) form,
             user);
-        Set<Action> actions = ActionChainManager.createConfigActions(user,
-                revisions, servers, type, earliest, actionChain);
+        try {
+            Set<Action> actions = ActionChainManager.createConfigActions(user,
+                    revisions, servers, type, earliest, actionChain);
 
-        //clean-up the set we just worked with
-        RhnSetManager.remove(set);
+            //clean-up the set we just worked with
+            RhnSetManager.remove(set);
 
-        //create a success message
-        if (!actions.isEmpty()) {
-            ConfigAction action = (ConfigAction)actions.iterator().next();
-            createSuccessMessage(action, action.getConfigRevisionActions().size(),
-                    successKey, request, actionChain);
+            //create a success message
+            if (!actions.isEmpty()) {
+                ConfigAction action = (ConfigAction)actions.iterator().next();
+                createSuccessMessage(action, action.getConfigRevisionActions().size(),
+                        successKey, request, actionChain);
+            }
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule config actions:");
+            log.error(e);
+            return createErrorMessage(request, mapping, form, sid, "taskscheduler.down");
         }
 
         //success, go to the config file manage page
@@ -238,11 +260,11 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         return revisions;
     }
 
-    private ActionForward createNoSelectedMessage(HttpServletRequest request,
-            ActionMapping mapping, ActionForm formIn, Long sid) {
+    private ActionForward createErrorMessage(HttpServletRequest request,
+            ActionMapping mapping, ActionForm formIn, Long sid, String message) {
         ActionErrors errors = new ActionErrors();
         errors.add(ActionMessages.GLOBAL_MESSAGE,
-                new ActionMessage("sdcfilelist.jsp.noSelected"));
+                new ActionMessage(message));
         addErrors(request, errors);
         return getStrutsDelegate().forwardParam(
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD),

@@ -15,10 +15,10 @@
 package com.redhat.rhn.taskomatic;
 
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
-
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
+
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
@@ -29,9 +29,7 @@ import java.util.Map;
 
 
 /**
- *
  * TaskoXmlRpcHandler
- * @version $Rev$
  */
 public class TaskoXmlRpcHandler {
 
@@ -244,6 +242,22 @@ public class TaskoXmlRpcHandler {
     }
 
     /**
+     * schedule a one time satellite bunch
+     * @param bunchName bunch name
+     * @param jobLabel job label
+     * @param params job parameters
+     * @param start schedule time
+     * @return date of the schedule
+     * @throws NoSuchBunchTaskException thrown if bunch name not known
+     * @throws InvalidParamException shall not be thrown
+     */
+    public Date scheduleSingleSatBunchRun(String bunchName, String jobLabel,
+            Map<?, ?> params, Date start)
+        throws NoSuchBunchTaskException, InvalidParamException {
+        return scheduleSingleBunchRun(null, bunchName, jobLabel, params, start);
+    }
+
+    /**
      * schedule a one time organizational bunch
      * @param orgId organization id
      * @param bunchName bunch name
@@ -258,9 +272,32 @@ public class TaskoXmlRpcHandler {
             throws NoSuchBunchTaskException,
                    InvalidParamException {
         String jobLabel = null;
-        TaskoBunch bunch = null;
         try {
             jobLabel = getUniqueSingleJobLabel(orgId, bunchName);
+        }
+        catch (SchedulerException se) {
+            return null;
+        }
+        return scheduleSingleBunchRun(orgId, bunchName, jobLabel, params, start);
+    }
+
+    /**
+     * schedule a one time organizational bunch
+     * @param orgId organization id
+     * @param bunchName bunch name
+     * @param jobLabel job label
+     * @param params job parameters
+     * @param start schedule time
+     * @return date of the schedule
+     * @throws NoSuchBunchTaskException thrown if bunch name not known
+     * @throws InvalidParamException shall not be thrown
+     */
+    public Date scheduleSingleBunchRun(Integer orgId, String bunchName, String jobLabel,
+            Map params, Date start)
+            throws NoSuchBunchTaskException,
+                   InvalidParamException {
+        TaskoBunch bunch = null;
+        try {
             bunch = doBasicCheck(orgId, bunchName, jobLabel);
         }
         catch (SchedulerException se) {

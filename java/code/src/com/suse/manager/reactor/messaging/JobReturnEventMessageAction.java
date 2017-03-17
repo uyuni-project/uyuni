@@ -25,13 +25,12 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
-import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.event.JobReturnEvent;
 
 import org.apache.log4j.Logger;
@@ -42,7 +41,6 @@ import java.util.Optional;
  * Handler class for {@link JobReturnEventMessage}.
  */
 public class JobReturnEventMessageAction extends AbstractDatabaseAction {
-
 
     /**
      * Converts an event to json
@@ -125,16 +123,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         });
                     });
                 }
-
-                // Delete schedule on the minion if we created it
-                jobReturnEvent.getData().getSchedule().ifPresent(scheduleName -> {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Deleting schedule '" + scheduleName +
-                                "' from minion: " + jobReturnEvent.getMinionId());
-                    }
-                    SaltService.INSTANCE.deleteSchedule(scheduleName,
-                            new MinionList(jobReturnEvent.getMinionId()));
-                });
             }
             else {
                 LOG.warn("Action referenced from Salt job was not found: " + id);
@@ -149,7 +137,15 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             MinionServerFactory
                     .findByMinionId(jobReturnEvent.getMinionId())
                     .ifPresent(minionServer -> {
-                ActionManager.schedulePackageRefresh(minionServer.getOrg(), minionServer);
+                try {
+                    ActionManager.schedulePackageRefresh(minionServer.getOrg(),
+                        minionServer);
+                }
+                catch (TaskomaticApiException e) {
+                    LOG.error("Could not schedule package refresh for minion: " +
+                        minionServer.getMinionId());
+                    throw new RuntimeException(e);
+                }
             });
         }
 

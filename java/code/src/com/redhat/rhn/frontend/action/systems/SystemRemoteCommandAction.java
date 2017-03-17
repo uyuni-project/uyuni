@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -47,6 +48,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * Action for the single system remote command scheduling.
@@ -54,6 +56,9 @@ import com.redhat.rhn.manager.system.SystemManager;
  * @author Bo Maryniuk <bo@suse.de>
  */
 public class SystemRemoteCommandAction extends RhnAction {
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(SystemRemoteCommandAction.class);
+
     /**
      * Class to retention form data.
      */
@@ -234,10 +239,12 @@ public class SystemRemoteCommandAction extends RhnAction {
      * @param user
      * @param server
      * @return Script action details.
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     private Set<Action> scheduleScript(DynaActionForm form,
                                 User user,
-                                Server server) {
+                                Server server) throws TaskomaticApiException {
         Date scheduleDate = getStrutsDelegate().readDatePicker(
                 form, "date", DatePicker.YEAR_RANGE_POSITIVE);
         ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
@@ -285,8 +292,7 @@ public class SystemRemoteCommandAction extends RhnAction {
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm actionForm,
                                  HttpServletRequest request,
-                                 HttpServletResponse response)
-            throws Exception {
+                                 HttpServletResponse response) {
         // Prepare
         DynaActionForm form = (DynaActionForm) actionForm;
         RequestContext context = new RequestContext(request);
@@ -306,21 +312,28 @@ public class SystemRemoteCommandAction extends RhnAction {
         // Process submit
         if (form.get(RhnAction.SUBMITTED) != null) {
             if (this.validate(form, errorMessages)) {
-                Set<Action> actions = this.scheduleScript(form, user, server);
-                ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
+                try {
+                    Set<Action> actions = this.scheduleScript(form, user, server);
+                    ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
 
-                if (actionChain == null) {
-                    Action action = actions.iterator().next();
-                    infoMessages.add(ActionMessages.GLOBAL_MESSAGE,
-                        new ActionMessage("ssm.overview.provisioning" +
-                            ".remotecommand.succeed", server.getId().toString(),
-                            action.getId().toString(), LocalizationService
-                                .getInstance().formatDate(action.getEarliestAction())));
+                    if (actionChain == null) {
+                        Action action = actions.iterator().next();
+                        infoMessages.add(ActionMessages.GLOBAL_MESSAGE,
+                            new ActionMessage("ssm.overview.provisioning" +
+                                ".remotecommand.succeed", server.getId().toString(),
+                                action.getId().toString(), LocalizationService
+                                    .getInstance().formatDate(action.getEarliestAction())));
+                    }
+                    else {
+                        infoMessages.add(ActionMessages.GLOBAL_MESSAGE,
+                            new ActionMessage("message.addedtoactionchain",
+                                actionChain.getId(), actionChain.getLabel()));
+                    }
                 }
-                else {
-                    infoMessages.add(ActionMessages.GLOBAL_MESSAGE,
-                        new ActionMessage("message.addedtoactionchain",
-                            actionChain.getId(), actionChain.getLabel()));
+                catch (TaskomaticApiException e) {
+                    log.error("Could not schedule remote command:");
+                    log.error(e);
+                    getStrutsDelegate().addError(errorMessages, "taskscheduler.down");
                 }
             }
             else {

@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
 
@@ -44,8 +45,15 @@ public class SsmSystemRebootAction extends AbstractDatabaseAction {
         ActionChain actionChain = ActionChainFactory.getActionChain(user, event
             .getActionChainId());
 
-        ActionChainManager.scheduleRebootActions(user, event.getServerIds(),
-            event.getEarliest(), actionChain);
+        try {
+            ActionChainManager.scheduleRebootActions(user, event.getServerIds(),
+                event.getEarliest(), actionChain);
+        }
+        catch (TaskomaticApiException e) {
+            log.error("Could not schedule reboot:");
+            log.error(e);
+            throw new RuntimeException(e);
+        }
         SsmOperationManager.completeOperation(user,
             SsmOperationManager.createOperation(user, "ssm.misc.reboot.operationname",
                 RhnSetDecl.SSM_SYSTEMS_REBOOT.getLabel()));

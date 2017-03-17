@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -23,8 +22,9 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA256Checksum;
 
@@ -47,6 +47,7 @@ public class ImageInfoFactory extends HibernateFactory {
 
     private static ImageInfoFactory instance = new ImageInfoFactory();
     private static Logger log = Logger.getLogger(ImageInfoFactory.class);
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
      * Default constructor.
@@ -54,6 +55,14 @@ public class ImageInfoFactory extends HibernateFactory {
      */
     private ImageInfoFactory() {
         super();
+    }
+
+    /**
+     * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
+     * @param taskomaticApiIn the {@link TaskomaticApi}
+     */
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        taskomaticApi = taskomaticApiIn;
     }
 
     /**
@@ -75,9 +84,11 @@ public class ImageInfoFactory extends HibernateFactory {
      * @param earliest earliest build
      * @param user the current user
      * @return the action ID
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static Long scheduleBuild(long buildHostId, String tag, ImageProfile profile,
-            Date earliest, User user) {
+            Date earliest, User user) throws TaskomaticApiException {
         MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
 
         if (!server.hasContainerBuildHostEntitlement()) {
@@ -92,7 +103,7 @@ public class ImageInfoFactory extends HibernateFactory {
         tag = tag.isEmpty() ? "latest" : tag;
         ImageBuildAction action = ActionManager.scheduleImageBuild(user,
                 Collections.singletonList(server.getId()), tag, profile, earliest);
-        MessageQueue.publish(new ActionScheduledEventMessage(action, false));
+        taskomaticApi.scheduleActionExecution(action);
 
         // Create image info entry
         lookupByName(profile.getLabel(), tag, profile.getTargetStore().getId())

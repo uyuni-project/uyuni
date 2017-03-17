@@ -35,6 +35,7 @@ import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchConfigFilePathException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchConfigRevisionException;
+import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigRevisionSerializer;
 import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -52,7 +53,6 @@ import java.util.Set;
 
 /**
  * ConfigHandler
- * @version $Rev$
  * @xmlrpc.namespace configchannel
  * @xmlrpc.doc Provides methods to access and modify many aspects of
  * configuration channels.
@@ -692,11 +692,16 @@ public class ConfigChannelHandler extends BaseHandler {
              sids.add(sid.longValue());
          }
 
-         Action action = ActionManager.createConfigDiffAction(loggedInUser, revisions,
-                 sids);
-         ActionFactory.save(action);
+        try {
+            Action action =
+                    ActionManager.createConfigDiffAction(loggedInUser, revisions, sids);
+            ActionFactory.save(action);
 
-         return action.getId().intValue();
+            return action.getId().intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -779,6 +784,9 @@ public class ConfigChannelHandler extends BaseHandler {
         catch (MissingCapabilityException e) {
             throw new com.redhat.rhn.frontend.xmlrpc.MissingCapabilityException(
                 e.getCapability(), e.getServer());
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
         }
         return 1;
 

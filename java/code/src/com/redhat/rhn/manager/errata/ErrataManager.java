@@ -66,9 +66,9 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
-
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -94,11 +94,11 @@ import redstone.xmlrpc.XmlRpcFault;
  * ErrataManager is the singleton class used to provide business operations
  * on Errata, where those operations interact with other top tier business
  * objects.  Operations that require changes to the Errata.
- * @version $Rev$
  */
 public class ErrataManager extends BaseManager {
 
     private static Logger log = Logger.getLogger(ErrataManager.class);
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     public static final String DATE_FORMAT_PARSE_STRING = "yyyy-MM-dd";
     public static final long MAX_ADVISORY_RELEASE = 9999;
 
@@ -1634,9 +1634,12 @@ public class ErrataManager extends BaseManager {
      * @param errataIds List of errata IDs to apply (as Integers)
      * @param earliestOccurrence Earliest occurrence of the errata update
      * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static List<Long> applyErrataHelper(User loggedInUser, List<Long> systemIds,
-            List<Integer> errataIds, Date earliestOccurrence) {
+            List<Integer> errataIds, Date earliestOccurrence)
+        throws TaskomaticApiException {
 
         if (systemIds.isEmpty()) {
             throw new InvalidParameterException("No systems specified.");
@@ -1657,9 +1660,11 @@ public class ErrataManager extends BaseManager {
      * @param earliest schedule time
      * @param serverIds server ids
      * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static List<Long> applyErrata(User user, List errataIds, Date earliest,
-        List<Long> serverIds) {
+        List<Long> serverIds) throws TaskomaticApiException {
         return applyErrata(user, errataIds, earliest, null, serverIds);
     }
 
@@ -1674,10 +1679,13 @@ public class ErrataManager extends BaseManager {
      * @param actionChain the action chain to add the action to or null
      * @param serverIds server ids
      * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     public static List<Long> applyErrata(User user, List errataIds, Date earliest,
-                                         ActionChain actionChain, List<Long> serverIds) {
-        return  applyErrata(user, errataIds, earliest, actionChain, serverIds, true);
+            ActionChain actionChain, List<Long> serverIds)
+        throws TaskomaticApiException {
+        return applyErrata(user, errataIds, earliest, actionChain, serverIds, true);
     }
 
     /**
@@ -1696,9 +1704,12 @@ public class ErrataManager extends BaseManager {
      *        If false, InvalidErrataException is thrown if an errata does not apply
      *        to a system.
      * @return list of action ids
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
      */
     private static List<Long> applyErrata(User user, List errataIds, Date earliest,
-        ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant) {
+            ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant)
+        throws TaskomaticApiException {
 
         List<Errata> updateStackErrata = new ArrayList<Errata>();
         List<Errata> otherErrata = new ArrayList<Errata>();
@@ -1786,7 +1797,7 @@ public class ErrataManager extends BaseManager {
         List<Long> actionIds = new ArrayList<Long>();
         for (ErrataAction errataAction : errataActions) {
             Action action = ActionManager.storeAction(errataAction);
-            MessageQueue.publish(new ActionScheduledEventMessage(action));
+            TASKOMATIC_API.scheduleActionExecution(action);
             actionIds.add(action.getId());
         }
         return actionIds;

@@ -29,9 +29,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchActionException;
+import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -230,10 +232,15 @@ public class ActionChainHandler extends BaseHandler {
         Server server = this.acUtil.getServerById(serverId, loggedInUser);
         this.acUtil.ensureNotSalt(server);
 
-        return ActionChainManager.scheduleRebootAction(
-                loggedInUser, server,
-                new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
-        ).getId().intValue();
+        try {
+            return ActionChainManager.scheduleRebootAction(
+                    loggedInUser, server,
+                    new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
+            ).getId().intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -295,12 +302,16 @@ public class ActionChainHandler extends BaseHandler {
         Server server = this.acUtil.getServerById(serverId, loggedInUser);
         this.acUtil.ensureNotSalt(server);
 
-        return ActionChainManager.schedulePackageRemoval(loggedInUser,
-                server,
-                this.acUtil.resolvePackages(packages, loggedInUser),
-                new Date(),
-                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
-                        .getId().intValue();
+        try {
+            return ActionChainManager
+                    .schedulePackageRemoval(loggedInUser, server,
+                            this.acUtil.resolvePackages(packages, loggedInUser), new Date(),
+                            this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
+                    .getId().intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -330,11 +341,16 @@ public class ActionChainHandler extends BaseHandler {
         Server server = this.acUtil.getServerById(serverId, loggedInUser);
         this.acUtil.ensureNotSalt(server);
 
-        return ActionChainManager.schedulePackageInstall(loggedInUser,
-                server,
-                this.acUtil.resolvePackages(packages, loggedInUser), new Date(),
-                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
-        ).getId().intValue();
+        try {
+            return ActionChainManager
+                    .schedulePackageInstall(loggedInUser, server,
+                            this.acUtil.resolvePackages(packages, loggedInUser), new Date(),
+                            this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
+                    .getId().intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -365,10 +381,16 @@ public class ActionChainHandler extends BaseHandler {
         Server server = this.acUtil.getServerById(serverId, loggedInUser);
         this.acUtil.ensureNotSalt(server);
 
-        return ActionChainManager.schedulePackageVerify(
-                loggedInUser, server, this.acUtil.resolvePackages(packages, loggedInUser),
-                new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
-        ).getId().intValue();
+        try {
+            return ActionChainManager
+                    .schedulePackageVerify(loggedInUser, server,
+                            this.acUtil.resolvePackages(packages, loggedInUser), new Date(),
+                            this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
+                    .getId().intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -399,11 +421,16 @@ public class ActionChainHandler extends BaseHandler {
         Server server = this.acUtil.getServerById(serverId, loggedInUser);
         this.acUtil.ensureNotSalt(server);
 
-        return ActionChainManager.schedulePackageUpgrade(
-                loggedInUser, server, this.acUtil.resolvePackages(packages, loggedInUser),
-                new Date(),
-                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
+        try {
+            return ActionChainManager
+                    .schedulePackageUpgrade(loggedInUser, server,
+                            this.acUtil.resolvePackages(packages, loggedInUser), new Date(),
+                            this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
                     .getId().intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -444,10 +471,15 @@ public class ActionChainHandler extends BaseHandler {
         ScriptActionDetails script = ActionManager.createScript(
                 uid, gid, (long) timeout, new String(
                         DatatypeConverter.parseBase64Binary(scriptBody)));
-        return ActionChainManager.scheduleScriptRuns(
-                loggedInUser, systems, null, script, new Date(),
-                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
-        ).iterator().next().getId().intValue();
+        try {
+            return ActionChainManager
+                    .scheduleScriptRuns(loggedInUser, systems, null, script, new Date(),
+                            this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
+                    .iterator().next().getId().intValue();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -522,15 +554,15 @@ public class ActionChainHandler extends BaseHandler {
                             (Integer) specifier.get("revision")).getId()
         ).collect(Collectors.toList());
 
-        ActionChainManager.createConfigActions(
-                loggedInUser,
-                revisionIds,
-                server,
-                ActionFactory.TYPE_CONFIGFILES_DEPLOY,
-                new Date(),
-                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel));
-
-        return BaseHandler.VALID;
+        try {
+            ActionChainManager.createConfigActions(loggedInUser, revisionIds, server,
+                    ActionFactory.TYPE_CONFIGFILES_DEPLOY, new Date(),
+                    this.acUtil.getActionChainByLabel(loggedInUser, chainLabel));
+            return BaseHandler.VALID;
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**

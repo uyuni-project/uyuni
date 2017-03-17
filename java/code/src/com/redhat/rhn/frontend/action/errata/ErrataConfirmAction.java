@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -31,9 +30,11 @@ import com.redhat.rhn.frontend.struts.RhnListDispatchAction;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.reactor.messaging.ActionScheduledEventMessage;
-
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -48,9 +49,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * ErrataConfirmAction
- * @version $Rev$
  */
 public class ErrataConfirmAction extends RhnListDispatchAction {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(ErrataConfirmAction.class);
+
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /**
      * {@inheritDoc}
@@ -99,63 +104,75 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
         DataResult systems = ErrataManager.relevantSystemsInSet(user,
                 SetLabels.AFFECTED_SYSTEMS_LIST, currentErrata.getId(), null);
 
-        if (!systems.isEmpty()) {
-             ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
-             ActionMessages msg = new ActionMessages();
-             Object[] args = null;
-             String messageKey = null;
-
-             if (actionChain == null) {
-                 Action update = ActionManager.createErrataAction(user, currentErrata);
-                 for (int i = 0; i < systems.size(); i++) {
-                     ActionManager.addServerToAction(
-                         new Long(((SystemOverview) systems.get(i)).getId().longValue()),
-                         update);
-                 }
-
-                 update.setEarliestAction(getStrutsDelegate().readDatePicker(form, "date",
-                     DatePicker.YEAR_RANGE_POSITIVE));
-                 ActionManager.storeAction(update);
-                 MessageQueue.publish(new ActionScheduledEventMessage(update));
-
-                 messageKey = "errataconfirm.schedule";
-                 if (systems.size() != 1) {
-                     messageKey += ".plural";
-                 }
-                 args =  new Object[4];
-                 args[0] = currentErrata.getAdvisoryName();
-                 args[1] = new Long(systems.size());
-                 args[2] = currentErrata.getId().toString();
-                 args[3] = update.getId();
-             }
-             else {
-                 int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
-                 for (int i = 0; i < systems.size(); i++) {
-                     Action update = ActionManager.createErrataAction(user, currentErrata);
-                     ActionManager.storeAction(update);
-                     ActionChainFactory.queueActionChainEntry(update, actionChain,
-                         ((SystemOverview) systems.get(i)).getId(), sortOrder);
-                 }
-
-                 messageKey = "message.addedtoactionchain";
-                 args =  new Object[2];
-                 args[0] = actionChain.getId();
-                 args[1] = actionChain.getLabel();
-             }
-
-             msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(messageKey, args));
-             strutsDelegate.saveMessages(request, msg);
-             return mapping.findForward("confirmed");
+        if (systems.isEmpty()) {
+            // Something went wrong! Notify user:
+            return createErrorMessage(mapping, formIn, request, strutsDelegate,
+                    "errataconfirm.nosystems");
         }
 
-        // Something went wrong! Notify user:
+        ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
         ActionMessages msg = new ActionMessages();
-        msg.add(ActionMessages.GLOBAL_MESSAGE,
-                new ActionMessage("errataconfirm.nosystems"));
+        Object[] args = null;
+        String messageKey = null;
+
+        if (actionChain == null) {
+            Action update = ActionManager.createErrataAction(user, currentErrata);
+            for (int i = 0; i < systems.size(); i++) {
+                ActionManager.addServerToAction(
+                        new Long(((SystemOverview) systems.get(i)).getId().longValue()),
+                        update);
+            }
+
+            update.setEarliestAction(getStrutsDelegate().readDatePicker(form, "date",
+                    DatePicker.YEAR_RANGE_POSITIVE));
+            ActionManager.storeAction(update);
+            try {
+                TASKOMATIC_API.scheduleActionExecution(update);
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule errata application:");
+                log.error(e);
+                return createErrorMessage(mapping, formIn, request, strutsDelegate,
+                        "taskscheduler.down");
+            }
+
+            messageKey = "errataconfirm.schedule";
+            if (systems.size() != 1) {
+                messageKey += ".plural";
+            }
+            args = new Object[4];
+            args[0] = currentErrata.getAdvisoryName();
+            args[1] = new Long(systems.size());
+            args[2] = currentErrata.getId().toString();
+            args[3] = update.getId();
+        }
+        else {
+            int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
+            for (int i = 0; i < systems.size(); i++) {
+                Action update = ActionManager.createErrataAction(user, currentErrata);
+                ActionManager.storeAction(update);
+                ActionChainFactory.queueActionChainEntry(update, actionChain,
+                        ((SystemOverview) systems.get(i)).getId(), sortOrder);
+            }
+
+            messageKey = "message.addedtoactionchain";
+            args = new Object[2];
+            args[0] = actionChain.getId();
+            args[1] = actionChain.getLabel();
+        }
+
+        msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(messageKey, args));
         strutsDelegate.saveMessages(request, msg);
-        Map params = makeParamMap(formIn, request);
-        return strutsDelegate.forwardParams(
-                mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
+        return mapping.findForward("confirmed");
+
     }
 
+    private ActionForward createErrorMessage(ActionMapping mapping, ActionForm formIn,
+            HttpServletRequest request, StrutsDelegate strutsDelegate, String message) {
+        ActionErrors errors = new ActionErrors();
+        strutsDelegate.addError(errors, message);
+        strutsDelegate.saveMessages(request, errors);
+        return strutsDelegate.forwardParams(mapping.findForward(RhnHelper.DEFAULT_FORWARD),
+                makeParamMap(formIn, request));
+    }
 }

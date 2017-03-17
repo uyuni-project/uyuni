@@ -25,7 +25,10 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -39,9 +42,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * InProgressSystemsAction
- * @version $Rev$
  */
 public class InProgressSystemsAction extends RhnSetAction {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(InProgressSystemsAction.class);
 
     /**
      * Removes unscheduleaction set from server actions.
@@ -80,27 +85,35 @@ public class InProgressSystemsAction extends RhnSetAction {
         }
 
 
-        ActionFactory.removeActionForSystemSet(aid, "unscheduleaction", user);
-
-        /**
-         * If we've unscheduled the action for more than one system, send the pluralized
-         * version of the message.
-         */
-        if (numSystems == 1) {
-            msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                     new ActionMessage("message.unscheduled.system",
-                             action.getFormatter().getName(),
-                             LocalizationService.getInstance()
-                                                .formatNumber(new Integer(numSystems))));
+        try {
+            ActionFactory.removeActionForSystemSet(aid, "unscheduleaction", user);
+            /**
+             * If we've unscheduled the action for more than one system, send the pluralized
+             * version of the message.
+             */
+            if (numSystems == 1) {
+                msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("message.unscheduled.system",
+                                action.getFormatter().getName(),
+                                LocalizationService.getInstance()
+                                        .formatNumber(new Integer(numSystems))));
+            }
+            else {
+                msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("message.unscheduled.systems",
+                                action.getFormatter().getName(),
+                                LocalizationService.getInstance()
+                                        .formatNumber(new Integer(numSystems))));
+            }
+            strutsDelegate.saveMessages(request, msgs);
         }
-        else {
-            msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                     new ActionMessage("message.unscheduled.systems",
-                             action.getFormatter().getName(),
-                             LocalizationService.getInstance()
-                                                .formatNumber(new Integer(numSystems))));
+        catch (TaskomaticApiException e) {
+            log.error("Could not unschedule action:");
+            log.error(e);
+            ActionErrors errors = new ActionErrors();
+            strutsDelegate.addError(errors, "taskscheduler.down");
+            strutsDelegate.saveMessages(request, errors);
         }
-        strutsDelegate.saveMessages(request, msgs);
 
         //clear set
         RhnSetDecl.ACTIONS_UNSCHEDULE.clear(user);

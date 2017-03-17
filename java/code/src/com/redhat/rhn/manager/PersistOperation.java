@@ -21,8 +21,6 @@ import com.redhat.rhn.domain.user.User;
  * PersistOperation - interface defining a way to store objects to a
  * persistence layer.  The main method is "store()" that defines the Operation
  * for storing an Object to the db.
- *
- * @version $Rev$
  */
 public interface PersistOperation {
 
@@ -39,8 +37,7 @@ public interface PersistOperation {
      * Layer.
      * @return ValidatorError if there was an error trying
      * to store the object.
+     * @throws Throwable in case of errors
      */
     ValidatorError store();
-
-
 }
