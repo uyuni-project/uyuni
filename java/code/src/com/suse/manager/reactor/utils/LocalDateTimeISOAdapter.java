@@ -14,6 +14,8 @@
  */
 package com.suse.manager.reactor.utils;
 
+import com.redhat.rhn.frontend.context.Context;
+
 import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -22,6 +24,9 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeParseException;
 
 /**
  * Parses a ISO 8601 DateTime String into a LocalDateTime
@@ -44,6 +49,13 @@ public class LocalDateTimeISOAdapter extends TypeAdapter<LocalDateTime> {
             throw new JsonParseException("null is not a valid value for LocalDateTime");
         }
         String dateStr = jsonReader.nextString();
-        return LocalDateTime.parse(dateStr);
+        try {
+            ZonedDateTime p = ZonedDateTime.parse(dateStr);
+            ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+            return LocalDateTime.ofInstant(p.toInstant(), zoneId);
+        }
+        catch (DateTimeParseException e) {
+            return LocalDateTime.parse(dateStr);
+        }
     }
 }
