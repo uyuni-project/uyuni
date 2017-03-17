@@ -3,8 +3,10 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 
 <div class="wrapper">
-  <div>
-    <bean:message key="footer.jsp.copyright"/> | 
+  <div class="footer-copyright">
+    <bean:message key="footer.jsp.copyright" />
+  </div>
+  <div class="footer-release">
     <bean:message key="footer.jsp.release" arg0="/rhn/help/dispatcher/release_notes" arg1="${rhn:getConfig('web.version')}" />
   </div>
   <%@ include file="/WEB-INF/pages/common/fragments/bugzilla.jspf" %>

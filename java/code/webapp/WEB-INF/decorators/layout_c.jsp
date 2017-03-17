@@ -20,6 +20,9 @@
       <aside id="spacewalk-aside" class="navbar-collapse collapse">
         <div id="nav"></div>
         <jsp:include page="/WEB-INF/includes/leftnav.jsp" />
+        <footer>
+          <jsp:include page="/WEB-INF/includes/footer.jsp" />
+        </footer>
       </aside>
       <section id="spacewalk-content">
         <noscript>
@@ -44,8 +47,5 @@
       </section>
       <script src='/javascript/manager/menu.bundle.js'></script>
     </div>
-    <footer>
-      <jsp:include page="/WEB-INF/includes/footer.jsp" />
-    </footer>
   </body>
 </html:html>
