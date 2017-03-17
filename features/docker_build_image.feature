@@ -25,7 +25,7 @@ Feature:  Build Container images with SUSE Manager
   And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
   And I apply highstate on Sles minion
   Then I wait until "docker" service is up and running on "sle-minion"
-  # FIXME: add certicates..  SUMAFORM
+
   Scenario: Create an Image Store without credentials
   Given I am authorized as "admin" with password "admin"
   And I follow "Images" in the left menu
@@ -42,6 +42,7 @@ Feature:  Build Container images with SUSE Manager
   And I follow "Create"
   And I enter "opensuse" as "label"
   And I select "galaxy-registry" from "imageStore"
+  And I select "1-MINION-TEST" from "activationKey"
   And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile" as "path"
   And I click on "create-btn"
 
@@ -50,13 +51,12 @@ Feature:  Build Container images with SUSE Manager
   And I follow "Images" in the left menu
   And I follow "Build" in the left menu
   And I enter "opensuse" as "profileId"
-  # FIXME/WIP: this need implmentation
   And I enter sle-minion hostname in Build Host
   And I click on "submit-btn"
 
-
   Scenario: Verify that the docker image was sucessefully created
   Given I am authorized as "admin" with password "admin"
+  And I follow "Images" in the left menu
 
   Scenario: Create an Image Store with authentication
   Given I am authorized as "admin" with password "admin"
