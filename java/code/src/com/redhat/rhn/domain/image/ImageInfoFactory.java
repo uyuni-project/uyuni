@@ -117,7 +117,9 @@ public class ImageInfoFactory extends HibernateFactory {
         info.setAction(action);
         info.setProfile(profile);
         info.setBuildServer(server);
-        info.setChannels(new HashSet<>(profile.getToken().getChannels()));
+        if (profile.getToken() != null) {
+            info.setChannels(new HashSet<>(profile.getToken().getChannels()));
+        }
 
         // Image arch should be the same as the build host
         info.setImageArch(server.getServerArch());
