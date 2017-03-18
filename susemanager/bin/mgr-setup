@@ -255,6 +255,7 @@ ssl-set-org-unit = $CERT_OU
 ssl-set-city = $CERT_CITY
 ssl-set-state = $CERT_STATE
 ssl-set-country = $CERT_COUNTRY
+ssl-set-cnames = $CERT_CNAMES
 ssl-password = $CERT_PASS
 ssl-set-email = $CERT_EMAIL
 ssl-config-sslvhost = Y
@@ -529,6 +530,7 @@ do_migration() {
     setup_hostname
 
     # those values will be overwritten by the copied certificate
+    CERT_CNAMES=""
     CERT_O="dummy"
     CERT_OU="dummy"
     CERT_CITY="dummy"
@@ -585,6 +587,7 @@ do_setup() {
         echo -n "MANAGER_USER=";        read MANAGER_USER
         echo -n "MANAGER_PASS=";        read MANAGER_PASS
         echo -n "MANAGER_ADMIN_EMAIL="; read MANAGER_ADMIN_EMAIL
+        echo -n "CERT_CNAMES="        ; read CERT_CNAMES
         echo -n "CERT_O="             ; read CERT_O
         echo -n "CERT_OU="            ; read CERT_OU
         echo -n "CERT_CITY="          ; read CERT_CITY
