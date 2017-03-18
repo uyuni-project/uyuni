@@ -387,7 +387,7 @@ class RepoSync(object):
                         plugin.clear_cache()
 
                     if data['id'] is not None:
-                        keys = rhnSQL.fetchone_dict("""
+                        keys = rhnSQL.fetchall_dict("""
                         select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
                         from rhncontentsource cs inner join
                              rhncontentsourcessl csssl on cs.id = csssl.content_source_id inner join
