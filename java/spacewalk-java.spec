@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.30.2
+Version: 2.7.37
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -1037,6 +1037,35 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Mar 16 2017 Gennadii Altukhov <galt@redhat.com> 2.7.37-1
+- 1408167 - add link to proxy system details page
+
+* Wed Mar 15 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.36-1
+- new cglib on Fedora 25 has different path
+
+* Wed Mar 15 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.35-1
+- jmock-junit3 and jmock-legacy has been split into different packages
+
+* Wed Mar 15 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.34-1
+- ProxyHandler: dead code removed
+- struts-taglib is part of struts on Fedora / EPEL7
+- hibernate on Fedora uses ehcache
+
+* Mon Mar 13 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.33-1
+- we need quartz v1 for build
+- use standard objectweb-asm and cglib on all platforms
+- use standard javamail on Fedora
+- merged Requires/BuildRequires into a single ifdef (cleanup)
+- jaf is a part of standard openjdk for a long time
+
+* Fri Mar 10 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.32-1
+- use standard apache-commons-fileupload on Fedora
+- use standard apache-commons-el on Fedora
+- use standard tomcat-taglibs-standard on Fedora
+
+* Fri Mar 10 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.31-1
+- Migrate to jMock2
+
 * Fri Mar 03 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.30-1
 - Updated links to github in spec files
 - Migrating Fedorahosted to GitHub

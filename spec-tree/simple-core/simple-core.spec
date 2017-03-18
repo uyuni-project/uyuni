@@ -1,6 +1,6 @@
 Name:		simple-core		
 Version:	3.1.3
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	Embeddable Java HTTP engine capable of handling large loads
 Group:	 	Development/Libraries	
 License:	GNU
@@ -10,8 +10,9 @@ BuildRoot:	%{_tmppath}/%{origname}-%{version}-%{release}-buildroot
 BuildArch: noarch
 
 BuildRequires:  ant
-%if 0%{?fedora} >= 20 || 0%{?rhel} >= 7
+%if 0%{?fedora} || 0%{?rhel} >= 7
 BuildRequires: javapackages-tools
+Requires:      kxml
 %endif
 %if 0%{?fedora} >= 23
 BuildRequires: java-devel
@@ -42,7 +43,9 @@ install -d -m 755 $RPM_BUILD_ROOT%{_javadir}
 
 # jars and supporting kxml lib
 install -m 644 jar/%{name}-%{version}.jar $RPM_BUILD_ROOT%{_javadir}/%{name}-%{version}.jar
+%if 0%{?rhel} && 0%{?rhel} < 7
 install -m 644 lib/kxml.jar $RPM_BUILD_ROOT%{_javadir}/kxml.jar
+%endif
 
 (cd $RPM_BUILD_ROOT%{_javadir} && for jar in *-%{version}*; do ln -sf ${jar} `echo $jar| sed  "s|-%{version}||g"`; done)
 
@@ -57,12 +60,17 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(0644,root,root,0755)
 %{_javadir}/%{name}-%{version}.jar
 %{_javadir}/%{name}.jar
+%if 0%{?rhel} && 0%{?rhel} < 7
 %{_javadir}/kxml.jar
+%endif
 
 %doc
 %{_javadocdir}/*
 
 %changelog
+* Wed Mar 15 2017 Michael Mraka <michael.mraka@redhat.com> 3.1.3-8
+- don't bundle kxml on Fedora and RHEL7
+
 * Mon Nov 30 2015 Tomas Lestach <tlestach@redhat.com> 3.1.3-7
 - java-devel is required in simple-core fc23 buildroot
 

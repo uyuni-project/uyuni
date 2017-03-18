@@ -42,7 +42,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.50.1
+Version: 2.7.56
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -374,7 +374,6 @@ Requires: %{name}-server = %{version}-%{release}
 Requires: spacewalk-usix
 Requires: subscription-manager
 Requires: %{m2crypto}
-Requires: cdn-sync-mappings
 Requires: python-argparse
 
 %description cdn
@@ -521,6 +520,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/rhnTranslate.py*
 %{pythonrhnroot}/common/RPC_Base.py*
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
+# Workaround for strict-whitespace-enforcement in httpd
+%attr(644,root,%{apache_group}) %config %{apacheconfd}/aa-spacewalk-server.conf
 # config files
 %attr(755,root,%{apache_group}) %dir %{rhnconfigdefaults}
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn.conf
@@ -631,8 +632,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %dir %{_var}/cache/rhn/satsync
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server.conf
-# Workaround for strict-whitespace-enforcement in httpd
-%attr(644,root,%{apache_group}) %config %{apacheconfd}/aa-spacewalk-server.conf
 
 # main httpd config
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/zz-spacewalk-server.conf
@@ -898,6 +897,63 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Thu Mar 16 2017 Jan Dobes 2.7.56-1
+- 1430236 - fixing 'WARNING:  there is already a transaction in progress' in
+  postgresql logs
+
+* Wed Mar 15 2017 Jan Dobes 2.7.55-1
+- 1428749 - fixing redundant tag
+- 1428749 - adding note about threads
+
+* Tue Mar 14 2017 Jan Dobes 2.7.54-1
+- 1427238 - update man page
+- 1427238 - cleanup orphaned repositories not attached to any channel
+- 1427238 - there should not be custom repositories assigned, delete them if
+  they are
+- 1427238 - handle sync after first repo was added, last repo was removed
+- 1427238 - splitting into two functions and mark as synced after repos are
+  assigned
+- 1427238 - ContentSourceImport can't unlink last associated repository, do it
+  differently
+- 1427238 - move to repository file
+- 1427238 - support counting packages in custom channels
+- 1427238 - removing unreachable code, channels without content sources are
+  filtered out earlier
+- 1427238 - put common code into separate method
+- 1427238 - work without channel mappings
+- break mappings dependency on spacewalk
+- 1427238 - list all provided repositories separately, not associated with
+  channels because it's in channel list output already anyway
+- 1427238 - list custom CDN channels and sorting repositories
+- 1427238 - load org_id of synced channels
+- 1427238 - rename --cdn-certificates to shorter --cdn-certs
+- 1427238 - change --list-repositories option to be used only together with
+  --list-channels and --cdn-certificates
+- 1427238 - shuffle verbosity levels a bit and fix messages
+- 1427238 - adding --add-repo and --delete-repo parameter to sync specific
+  repos to custom channel
+- 1427238 - make sure content is in null org, not in custom org
+- 1427238 - check if it's really leaf, fixing error when incomplete path is
+  searched
+- 1427238 - support linking ContentSource to existing channels during their
+  import
+- 1427238 - update function creating ContentSource to work with specified repos
+- 1427238 - split checking function
+- 1427238 - list channels syncing from given repository
+- 1427238 - filter channels with lost entitlement and include custom repos with
+  null content source assigned
+
+* Mon Mar 13 2017 Grant Gainey 2.7.53-1
+- 1427625 - Move aa-spacewalk-server.conf to backend from server
+- remove old code used for testing
+
+* Tue Mar 07 2017 Grant Gainey 2.7.52-1
+- 1427625 - Fix garbage-char in file (??)
+- 1419867 - fixing 'NoneType object is not iterable' error
+
+* Mon Mar 06 2017 Jan Dobes 2.7.51-1
+- 1427851 - fixing spaces
+
 * Fri Mar 03 2017 Jan Dobes 2.7.50-1
 - 1419867 - provide option for forcibly syncing all errata, similarly as in
   satsync

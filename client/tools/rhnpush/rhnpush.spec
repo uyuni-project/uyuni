@@ -10,7 +10,7 @@ Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           https://github.com/spacewalkproject/spacewalk
-Version:       5.5.102.1
+Version:       5.5.103
 Release:       1%{?dist}
 Source0:       https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
@@ -107,6 +107,13 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING
 
 %changelog
+* Wed Mar 15 2017 Ondrej Gajdusek <ogajduse@redhat.com> 5.5.103-1
+- Pylint fixes in rhnpush
+- pylint fix consider-iterating-dictionary for rhnpush.rhnpush_config
+- Use HTTPS in all Github links
+- Updated links to github in spec files
+- Migrating Fedorahosted to GitHub
+
 * Wed Feb 15 2017 Tomas Kasparek <tkasparek@redhat.com> 5.5.102-1
 - require spacewalk-usix indead of spacewalk-backend-usix
 
