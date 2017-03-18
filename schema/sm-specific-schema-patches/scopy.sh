@@ -107,8 +107,8 @@ for d in ${dirs[*]}; do
 	    continue
 	fi
         source=`find_source $i $basepath`
-    	#echo ">cp $source $dest"
-    	cp -v $source $dest
+    	echo ">cp $source $dest"
+    	#cp -v $source $dest
         #if grep "oracle equivalent source" $source; then
         #    echo "-- oracle equivalent source sha1 6c3a7d18a2df3aaabff00dedafa5fe70caeaa219" > $dest
         #fi
