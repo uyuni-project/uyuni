@@ -231,6 +231,7 @@ if [ -f $MANAGER_COMPLETE ]; then
         echo "Performing forced re-installation!"
         /usr/sbin/spacewalk-service stop
         rm -f /etc/rhn/rhn.conf
+        touch /etc/rhn/rhn.conf
         if [ $LOCAL_DB != "0" ]; then
             echo "Delete existing database..."
             su - postgres -c "dropdb $MANAGER_DB_NAME" 2> /dev/null
