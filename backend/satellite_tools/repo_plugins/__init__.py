@@ -348,16 +348,16 @@ class ContentPackage:
         if self.checksum != self.a_pkg.checksum:
             raise rhnFault(50, "checksums did not match %s vs %s" % (self.checksum, self.a_pkg.checksum), explain=0)
 
-    def upload_package(self, channel, metadata_only=False):
+    def upload_package(self, org_id, metadata_only=False):
         if not metadata_only:
             rel_package_path = rhnPackageUpload.relative_path_from_header(
-                self.a_pkg.header, channel['org_id'], self.a_pkg.checksum_type, self.a_pkg.checksum)
+                self.a_pkg.header, org_id, self.a_pkg.checksum_type, self.a_pkg.checksum)
         else:
             rel_package_path = None
         _unused = rhnPackageUpload.push_package(self.a_pkg,
                                                 force=False,
                                                 relative_path=rel_package_path,
-                                                org_id=channel['org_id'])
+                                                org_id=org_id)
         return rel_package_path
 
     def set_checksum(self, checksum_type_in=None, checksum_in=None):

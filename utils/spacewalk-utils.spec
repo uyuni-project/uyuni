@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.7.6.1
+Version:	2.7.8
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -49,6 +49,9 @@ Requires:     perl = %{perl_version}
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
 Requires:       python, rpm-python
+%if 0%{?rhel} == 6
+Requires:       python-argparse
+%endif
 Requires:       rhnlib >= 2.5.20
 Requires:       rpm
 %if ! 0%{?suse_version}
@@ -121,6 +124,15 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Wed Mar 15 2017 Eric Herget <eherget@redhat.com> 2.7.8-1
+- 1432629 - add taskomaticd process info in optional header to taskotop
+- remove system currency generation script
+
+* Mon Mar 13 2017 Eric Herget <eherget@redhat.com> 2.7.7-1
+- 1430901 - taskotop enhancements
+- Updated links to github in spec files
+- Migrating Fedorahosted to GitHub
+
 * Wed Feb 15 2017 Gennadii Altukhov <galt@redhat.com> 2.7.6-1
 - 1414855 - add exception processing in taskotop
 

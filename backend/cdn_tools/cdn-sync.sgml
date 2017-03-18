@@ -27,7 +27,7 @@ Incrementally synchronize an Red Hat Satellite's RPM repository with Red Hat's C
         <arg>-l</arg> <arg>--list-channels</arg>
     </cmdsynopsis>
     <cmdsynopsis>
-        <arg>-r</arg> <arg>--list-repos</arg>
+        <arg>-r</arg> <arg>--show-repos</arg>
     </cmdsynopsis>
     <cmdsynopsis>
         <arg>-c<replaceable> CHANNEL</replaceable></arg>
@@ -42,6 +42,14 @@ Incrementally synchronize an Red Hat Satellite's RPM repository with Red Hat's C
     </cmdsynopsis>
     <cmdsynopsis>
         <arg>-p</arg> <arg>--print-configuration</arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+        <arg>-a<replaceable> REPO</replaceable></arg>
+        <arg>--add-repo=<replaceable>REPO</replaceable></arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+        <arg>-d<replaceable> REPO</replaceable></arg>
+        <arg>--delete-repo=<replaceable>REPO</replaceable></arg>
     </cmdsynopsis>
     <cmdsynopsis>
         <arg>--no-rpms</arg>
@@ -83,7 +91,7 @@ Incrementally synchronize an Red Hat Satellite's RPM repository with Red Hat's C
         <arg>-v</arg> <arg>--verbose</arg>
     </cmdsynopsis>
     <cmdsynopsis>
-        <arg>--cdn-certificates</arg>
+        <arg>--cdn-certs</arg>
     </cmdsynopsis>
 </Synopsis>
 </RefSynopsisDiv>
@@ -146,9 +154,10 @@ Incrementally synchronize an Red Hat Satellite's RPM repository with Red Hat's C
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>-r, --list-repos</term>
+        <term>-r, --show-repos</term>
         <listitem>
-            <para>List all repositories assigned on channels for debug purpose only.</para>
+            <para>Show all repositories assigned to channels for debug purposes. Use together with
+                  --list-channels or --cdn-certs.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -176,6 +185,25 @@ Incrementally synchronize an Red Hat Satellite's RPM repository with Red Hat's C
         <term>-p, --print-configuration</term>
         <listitem>
             <para>print the current configuration and exit.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>-a, --add-repo<replaceable> REPO</replaceable></term>
+        <listitem>
+            <para>Attach specified CDN repository to custom channel. Single custom channel has to be specified using
+            --channel parameter. This parameter can be specified multiple times to attach multiple repositories.
+            After repositories are attached, sync of channel is processed. On next run, channel can be synced directly
+            using --channel parameter. Only CDN repositories not attached to channels provided by cdn-sync mappings
+            can be attached to custom channels.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>-d, --delete-repo<replaceable> REPO</replaceable></term>
+        <listitem>
+            <para>Delete specified CDN repository from custom channel. Single custom channel has to be specified using
+            --channel parameter. This parameter can be specified multiple times to delete multiple repositories.
+            After repositories are deleted, sync of channel is processed. On next run, channel can be synced directly
+            using --channel parameter.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -247,7 +275,7 @@ Incrementally synchronize an Red Hat Satellite's RPM repository with Red Hat's C
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>--cdn-certificates</term>
+        <term>--cdn-certs</term>
         <listitem>
             <para>Print details about currently used SSL certificates for accessing CDN.</para>
         </listitem>
@@ -255,14 +283,34 @@ Incrementally synchronize an Red Hat Satellite's RPM repository with Red Hat's C
 </variablelist>
 </RefSect1>
 
+<RefSect1><Title>Configuration files</Title>
+<variablelist>
+    <varlistentry>
+        <term>/etc/rhn/rhn.conf</term>
+        <listitem>
+            <variablelist>
+                <varlistentry>
+                    <term>server.satellite.reposync_download_threads = 5</term>
+                    <listitem>
+                        <para>Set maximum number of threads to be used for simultaneous downloads.</para>
+                    </listitem>
+                </varlistentry>
+            </variablelist>
+        </listitem>
+    </varlistentry>
+</variablelist>
+</RefSect1>
 
 <RefSect1><Title>Examples</Title>
 <simplelist>
         <member><command>cdn-sync --count-packages</command></member>
-        <member><command>cdn-sync --list-repos</command></member>
         <member><command>cdn-sync --list-channels</command></member>
+        <member><command>cdn-sync --list-channels --show-repos</command></member>
         <member><command>cdn-sync --channel rhel-i386-server-6</command></member>
+        <member><command>cdn-sync # syncs all previously synced channels</command></member>
         <member><command>cdn-sync -c rhel-i386-server-6 -c rhel-i386-server-5</command></member>
+        <member><command>cdn-sync -c my-custom-channel --add-repo /content/dist/rhel/server/6/6Server/x86_64/sat-tools/6.2/os</command></member>
+        <member><command>cdn-sync -c my-custom-channel # syncs custom channel with all previously added CDN repositories</command></member>
 </simplelist>
 </RefSect1>
 

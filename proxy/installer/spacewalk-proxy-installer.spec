@@ -8,7 +8,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 2.7.1.2
+Version: 2.7.2
 Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -122,6 +122,12 @@ spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Wed Mar 15 2017 Ondrej Gajdusek <ogajduse@redhat.com> 2.7.2-1
+- Fixing wrong-import-position (C0413) for proxy_installer
+- 1188508 - fix typos
+- Updated links to github in spec files
+- Migrating Fedorahosted to GitHub
+
 * Mon Jan 09 2017 Gennadii Altukhov <galt@redhat.com> 2.7.1-1
 - 1410395 - add options for rhn-user and rhn-password
 - Bumping package versions for 2.7.

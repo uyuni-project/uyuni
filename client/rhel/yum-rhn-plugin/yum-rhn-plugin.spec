@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.7.3.1
+Version: 2.7.4
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,9 @@ fi
 
 
 %changelog
+* Mon Mar 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.4-1
+- 1391867 - use retry_on_cache only if available
+
 * Fri Mar 03 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.3-1
 - 1398406 - update repo options from rhnplugin.conf even in cacheonly mode
 - 1391867 - pass retry_no_cache option to urlgrabber

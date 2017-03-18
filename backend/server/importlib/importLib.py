@@ -262,6 +262,7 @@ class ContentSourceSsl(Information):
         'ssl_client_key_id': IntType,
     }
 
+
 class ContentSource(Information):
     attributeTypes = {
         'label': StringType,
@@ -269,6 +270,7 @@ class ContentSource(Information):
         'type_id': IntType,
         'org_id': IntType,
         'ssl-sets': [ContentSourceSsl],
+        'channels': [StringType],
     }
 
 

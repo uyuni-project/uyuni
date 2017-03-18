@@ -1,7 +1,7 @@
 Summary: An xmlrpc library
 Name: redstone-xmlrpc
 Version: 1.1_20071120 
-Release: 16%{?dist}
+Release: 17%{?dist}
 License: LGPL
 Group: Development/Library
 URL: http://xmlrpc.sourceforge.net
@@ -10,16 +10,13 @@ Patch0: build-classpath.patch
 Patch1: fault_serialization.patch
 Patch2: escaping_string_serialization.path
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-%if 0%{?fedora} >= 20 || 0%{?rhel} >=7
+%if 0%{?fedora} || 0%{?rhel} >=7
 BuildRequires: javapackages-tools
+BuildRequires: jboss-servlet-2.5-api
+Requires: jboss-servlet-2.5-api
+%define third_party_jars jboss-servlet-2.5-api
 %else
 BuildRequires: jpackage-utils >= 0:1.5
-%endif
-%if 0%{?rhel} <= 5
-BuildRequires: servletapi5
-Requires: servletapi5
-%define third_party_jars servletapi5
-%else
 BuildRequires: tomcat6-servlet-2.5-api
 Requires: tomcat6-servlet-2.5-api
 %define third_party_jars tomcat6-servlet-2.5-api
@@ -60,6 +57,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_javadir}
 
 %changelog
+* Mon Mar 13 2017 Michael Mraka <michael.mraka@redhat.com> 1.1_20071120-17
+- use standard jboss-servlet-2.5-api on Fedora
+
 * Tue Mar 01 2016 Gennadii Altukhov <galt@redhat.com> 1.1_20071120-16
 - 1313425 Adding patch for redstone XMLRPC to escape '>'
 
