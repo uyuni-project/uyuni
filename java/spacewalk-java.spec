@@ -642,6 +642,11 @@ echo "wrapper.java.classpath.28=/usr/share/java/log4j-1.jar" >> conf/default/rhn
 %else
 echo "wrapper.java.classpath.28=/usr/share/java/log4j.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %endif
+%if 0%{?fedora} >= 25
+echo "wrapper.java.classpath.50=/usr/share/java/cglib/cglib.jar" >> conf/default/rhn_taskomatic_daemon.conf
+%else
+echo "wrapper.java.classpath.50=/usr/share/java/cglib.jar" >> conf/default/rhn_taskomatic_daemon.conf
+%endif
 %if 0%{?fedora}
 echo "wrapper.java.classpath.49=/usr/share/java/hibernate3/hibernate-core-3.jar
 wrapper.java.classpath.61=/usr/share/java/hibernate-jpa-2.0-api.jar
@@ -651,32 +656,29 @@ wrapper.java.classpath.64=/usr/share/java/hibernate*/hibernate-commons-annotatio
 wrapper.java.classpath.65=/usr/share/java/slf4j/api.jar
 wrapper.java.classpath.66=/usr/share/java/jboss-logging.jar
 wrapper.java.classpath.67=/usr/share/java/javassist.jar
-wrapper.java.classpath.68=/usr/share/java/ehcache-core.jar" >> conf/default/rhn_taskomatic_daemon.conf
-%else
-%if 0%{suse_version}
-echo "hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider" >> conf/default/rhn_hibernate.conf
-echo "hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
-echo "hibernate.cache.provider_configuration_file_resource_path=../ehcache.xml" >> conf/default/rhn_hibernate.conf
-echo "hibernate.id.new_generator_mappings = false" >> conf/default/rhn_hibernate.conf
-echo "wrapper.java.classpath.49=/usr/share/java/hibernate-core-5.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.66=/usr/share/java/ehcache-core.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.67=/usr/share/java/httpcore.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.68=/usr/share/java/httpclient.jar" >> conf/default/rhn_taskomatic_daemon.conf
-
-echo "wrapper.java.classpath.69=/usr/share/java/hibernate-c3p0-5.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.70=/usr/share/java/hibernate-commons-annotations.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.71=/usr/share/java/hibernate-ehcache-5.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.72=/usr/share/java/hibernate-jpa-2.1-api.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.73=/usr/share/java/classmate.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.74=/usr/share/java/javassist.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.75=/usr/share/java/jboss-logging.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.76=/usr/share/java/statistics.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.77=/usr/share/java/jose4j.jar" >> conf/default/rhn_taskomatic_daemon.conf
+wrapper.java.classpath.68=/usr/share/java/ehcache-core.jar
+wrapper.java.classpath.69=/usr/share/java/tomcat-taglibs-standard/taglibs-build-tools.jar
+wrapper.java.classpath.70=/usr/share/java/tomcat-taglibs-standard/taglibs-standard-compat.jar
+wrapper.java.classpath.71=/usr/share/java/tomcat-taglibs-standard/taglibs-standard-impl.jar
+wrapper.java.classpath.72=/usr/share/java/tomcat-taglibs-standard/taglibs-standard-jstlel.jar
+wrapper.java.classpath.73=/usr/share/java/tomcat-taglibs-standard/taglibs-standard-spec.jar
+" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
-echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar
+wrapper.java.classpath.17=/usr/share/java/taglibs-standard.jar
+wrapper.java.classpath.32=/usr/share/java/taglibs-core.jar
+" >> conf/default/rhn_taskomatic_daemon.conf
 %endif
+
+#######################################
+# this overwrite all the setting above!
+#######################################
+%if 0%{suse_version}
+cp conf/default/rhn_hibernate.conf.SUSE conf/default/rhn_hibernate.conf
+cp conf/default/rhn_taskomatic_daemon.conf.SUSE conf/default/rhn_taskomatic_daemon.conf
 %endif
+
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
