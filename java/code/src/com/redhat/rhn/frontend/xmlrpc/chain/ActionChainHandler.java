@@ -376,6 +376,52 @@ public class ActionChainHandler extends BaseHandler {
     }
 
     /**
+     * Add a remote command with label as a script.
+     *
+     * @param loggedInUser The current user
+     * @param serverId System ID
+     * @param chainLabel Label of the action chain.
+     * @param scriptLabel Description/label for script
+     * @param uid User ID on the remote system.
+     * @param scriptBody Base64 encoded script.
+     * @param gid Group ID on the remote system.
+     * @param timeout Timeout
+     * @return True or false in XML-RPC representation (1 or 0 respectively)
+     *
+     * @xmlrpc.doc Add an action to run a script to an Action Chain.
+     * NOTE: The script body must be Base64 encoded!
+     *
+     * @xmlrpc.param #param_desc("string", "sessionKey",
+     * "Session token, issued at login")
+     * @xmlrpc.param #param_desc("int", "serverId", "System ID")
+     * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
+     * @xmlrpc.param #param_desc("string", "uid", "User ID on the particular system")
+     * @xmlrpc.param #param_desc("string", "gid", "Group ID on the particular system")
+     * @xmlrpc.param #param_desc("int", "timeout", "Timeout")
+     * @xmlrpc.param #param_desc("string", "scriptBodyBase64", "Base64 encoded script body")
+     * @xmlrpc.returntype int actionId - The id of the action or throw an
+     * exception
+     */
+    public Integer addScriptRun(User loggedInUser, Integer serverId, String chainLabel,
+            String scriptLabel, String uid, String gid,
+            Integer timeout, String scriptBody) {
+
+        Server server = this.acUtil.getServerById(serverId, loggedInUser);
+        this.acUtil.ensureNotSalt(server);
+
+        List<Long> systems = new ArrayList<Long>();
+        systems.add((long) serverId);
+
+        ScriptActionDetails script = ActionManager.createScript(
+                uid, gid, (long) timeout, new String(
+                        DatatypeConverter.parseBase64Binary(scriptBody)));
+        return ActionChainManager.scheduleScriptRuns(
+                loggedInUser, systems, scriptLabel, script, new Date(),
+                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
+        ).iterator().next().getId().intValue();
+    }
+
+    /**
      * Add a remote command as a script.
      *
      * @param loggedInUser The current user
@@ -404,19 +450,8 @@ public class ActionChainHandler extends BaseHandler {
     public Integer addScriptRun(User loggedInUser, Integer serverId, String chainLabel,
             String uid, String gid, Integer timeout, String scriptBody) {
 
-        Server server = this.acUtil.getServerById(serverId, loggedInUser);
-        this.acUtil.ensureNotSalt(server);
-
-        List<Long> systems = new ArrayList<Long>();
-        systems.add((long) serverId);
-
-        ScriptActionDetails script = ActionManager.createScript(
-                uid, gid, (long) timeout, new String(
-                        DatatypeConverter.parseBase64Binary(scriptBody)));
-        return ActionChainManager.scheduleScriptRuns(
-                loggedInUser, systems, null, script, new Date(),
-                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
-        ).iterator().next().getId().intValue();
+        return addScriptRun(
+                loggedInUser, serverId, chainLabel, null, uid, gid, timeout, scriptBody);
     }
 
     /**
