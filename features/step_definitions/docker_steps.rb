@@ -9,8 +9,6 @@ require 'date'
 cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
 sysrpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
 
-cont_op.login('admin', 'admin')
-
 And(/^I select sle-minion hostname in Build Host$/) do
   select($minion_fullhostname, :from => 'host')
 end
@@ -23,6 +21,7 @@ And(/^I navigate to images build webpage$/) do
   visit("https://#{$server_fullhostname}/rhn/manager/cm/build")
 end
 And(/^I schedule the build of image "([^"]*)" via xmlrpc-call$/) do |image|
+  cont_op.login('admin', 'admin')
   # retrieve minion id, needed for scheduleImageBuild call
   sysrpc.login('admin', 'admin')
   systems = sysrpc.listSystems
