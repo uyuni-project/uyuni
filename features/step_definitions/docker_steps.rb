@@ -2,7 +2,6 @@
 # Licensed under the terms of the MIT license.
 
 require "xmlrpc/client"
-require "xmlrpc/DateTime"
 require 'time'
 require 'date'
 
@@ -24,6 +23,7 @@ And(/^I navigate to images build webpage$/) do
   visit("https://#{$server_fullhostname}/rhn/manager/cm/build")
 end
 And(/^I schedule the build of image "([^"]*)" via xmlrpc-call$/) do |image|
+  # retrieve minion id, needed for scheduleImageBuild call
   sysrpc.login('admin', 'admin')
   systems = sysrpc.listSystems
   refute_nil(systems)
