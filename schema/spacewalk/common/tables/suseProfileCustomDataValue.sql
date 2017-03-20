@@ -19,10 +19,12 @@ CREATE TABLE suseProfileCustomDataValue
                           CONSTRAINT suse_pcdv_id_pk PRIMARY KEY,
     profile_id        NUMBER NOT NULL
                           CONSTRAINT suse_pcdv_prid_fk
-                              REFERENCES suseImageProfile (profile_id),
+                              REFERENCES suseImageProfile (profile_id)
+                              ON DELETE CASCADE,
     key_id            NUMBER NOT NULL
                           CONSTRAINT suse_pcdv_kid_fk
-                              REFERENCES rhnCustomDataKey (id),
+                              REFERENCES rhnCustomDataKey (id)
+                              ON DELETE CASCADE,
     value             VARCHAR2(4000),
     created_by        NUMBER
                           CONSTRAINT suse_pcdv_cb_fk
