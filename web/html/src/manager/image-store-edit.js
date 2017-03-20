@@ -131,7 +131,7 @@ class CreateImageStore extends React.Component {
                 return [
                     <Input.Check name={t("useCredentials")} label={t("Use credentials")} divClass="col-md-6 col-md-offset-3"/>,
                     <Input.Text name="username" label={t("Username")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>,
-                    <Input.Password name="password" label={t("Password")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials}/>
+                    <Input.Password name="password" label={t("Password")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>
                 ];
             default:
                 return <div>If you see this please report a bug.</div>;
