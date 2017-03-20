@@ -9,6 +9,7 @@ class XMLRPCImageTest < XMLRPCBaseTest
   def scheduleImageBuild(profile_label, version_build, build_hostid, date)
     @connection.call("image.scheduleImageBuild", @sid, profile_label, version_build, build_hostid, date)
   end
+
   # list installed packges on the given image
   def listPackages(imageid)
     @connection.call("image.listPackages", @sid, imageid)
