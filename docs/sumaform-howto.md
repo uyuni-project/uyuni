@@ -10,28 +10,25 @@ ___
 #### Run the normal testsuite (master)
 
 1) Get sumaform ( https://github.com/moio/sumaform) and follow the installation doc.
-1b) Use this main.tf for the machines: ```https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example```
-2) Once you get the machines up and running, log in on the control-node:
+2) Use this main.tf for the machines: ```https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example```
+3) Once you get the machines up and running, log in on the control-node:
 
 ```ssh -t root@$YOURPREFIXcontrol-node.tf.local```
 
-3) Run the tests with the command ```run-testsuite ``` 
+4) Run the tests with the command ```run-testsuite ``` 
 
-4) The results are stored also in html format ```spacewalk-testsuite-base/output.html ``` 
+5) The results are stored also in html format ```spacewalk-testsuite-base/output.html ``` 
 
-
-___
 ### Run the testsuite with custom spacewalk-branch server
 
-1)  Build the infrastructure needed  ```https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example```
-2)  Deploy your custom  server to  the sumaform created server( see spacewalk wiki)
+1) Build the infrastructure needed  ```https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example```
+2) Deploy your custom  server to  the sumaform created server( see spacewalk wiki)
 3) Now, just log-in on the control-node and run the testsuite:
      ```console
      ssh -t root@control-node.tf.local
      run-testsuite
      ```
 
-___
 ### Run the testsuite with custom testsuite branch
 
 1)  Build the infrastructure needed  ```https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example```
@@ -42,9 +39,8 @@ ___
      git clone YOUR_SPACEWALK_TESTSUITE_CUSTUM REPO
      run-testsuite
      ```
-    
-___
-### Analyze log:
+
+### Analyze log
  
  ``` scp root@control-node.tf.local:spacewalk-testsuite-base/output.html . ```
  
