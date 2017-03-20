@@ -2,7 +2,10 @@
 # Licensed under the terms of the MIT license.
 
 require "xmlrpc/client"
+require "xmlrpc/DateTime"
 require 'time'
+require 'date'
+
 # container_operations
 cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
 sysrpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
@@ -32,7 +35,8 @@ And(/^I schedule the build of image "([^"]*)" via xmlrpc-call$/) do |image|
   refute_nil(minion_id, "Minion #{hostname} is not yet registered?")
   # empty by default
   version_build = ''
-  date_build = Time.now.utc.iso8601
+  now = DateTime.now
+  date_build = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
   build_hostid = minion_id
   cont_op.scheduleImageBuild(image, version_build, build_hostid, date_build)
 end

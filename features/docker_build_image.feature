@@ -60,6 +60,7 @@ Feature:  Build Container images with SUSE Manager
   Given I am authorized as "admin" with password "admin"
   # At moment phantomjs has problemes with datapickler so we use xmlrpc-api
   And I schedule the build of image "suse_key" via xmlrpc-call  
+  And I schedule the build of image "suse_simply" via xmlrpc-call  
 
   Scenario: Verify that the docker image was sucessefully created
   Given I am authorized as "admin" with password "admin"
