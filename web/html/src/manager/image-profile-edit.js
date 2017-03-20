@@ -36,8 +36,8 @@ class CreateImageProfile extends React.Component {
             customData: {}
         };
 
-        ["handleTokenChange", "handleImageTypeChange", "onUpdate", "onCreate",
-            "onFormChange", "onValidate", "clearFields"]
+        ["handleTokenChange", "handleImageTypeChange", "isLabelUnique", "onUpdate",
+            "onCreate", "onFormChange", "onValidate", "clearFields"]
                 .forEach(method => this[method] = this[method].bind(this));
 
         this.getImageStores(typeMap[this.state.model.imageType].storeType);
@@ -122,6 +122,10 @@ class CreateImageProfile extends React.Component {
     }
 
     isLabelUnique(label) {
+        if(this.state.initLabel && this.state.initLabel === label) {
+            return true;
+        }
+
         return Network.get(
             "/rhn/manager/api/cm/imageprofiles/find/" + label,
         ).promise.then(res => !res.success).catch(() => false);

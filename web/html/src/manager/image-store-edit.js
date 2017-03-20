@@ -31,8 +31,9 @@ class CreateImageStore extends React.Component {
             messages: []
         };
 
-        ["setValues", "onUpdate", "onCreate", "onFormChange", "onValidate", "clearFields"]
-            .forEach(method => this[method] = this[method].bind(this));
+        ["setValues", "isLabelUnique", "onUpdate", "onCreate", "onFormChange", "onValidate",
+            "clearFields"]
+                .forEach(method => this[method] = this[method].bind(this));
 
         if(this.isEdit()) {
             this.setValues(storeId);
@@ -58,6 +59,10 @@ class CreateImageStore extends React.Component {
     }
 
     isLabelUnique(label) {
+        if(this.state.initLabel && this.state.initLabel === label) {
+            return true;
+        }
+
         return Network.get(
             "/rhn/manager/api/cm/imagestores/find/" + label,
         ).promise.then(res => !res.success).catch(() => false);
