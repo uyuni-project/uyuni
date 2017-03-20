@@ -4,7 +4,7 @@
 
 master = Manager-Devel Head
 
-manger30 = Manager 30
+manager30 = Manager 30
 
 ___
 #### Run the normal testsuite (master)
