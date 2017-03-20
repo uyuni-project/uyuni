@@ -97,9 +97,9 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.doc Schedule an Image Build
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "profileLabel")
-     * @xmlrpc.param #param_descr("string", "version", "version to build or empty")
-     * @xmlrpc.param #param_descr("int", "buildHostId", "system id of the build host")
-     * @xmlrpc.param #param_descr("dateTime.iso8601", "earliestOccurrence",
+     * @xmlrpc.param #param_desc("string", "version", "version to build or empty")
+     * @xmlrpc.param #param_desc("int", "buildHostId", "system id of the build host")
+     * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the build can run.")
      * @xmlrpc.returntype int - ID of the build action created.
      */
