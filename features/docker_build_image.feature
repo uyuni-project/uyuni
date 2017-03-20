@@ -58,10 +58,9 @@ Feature:  Build Container images with SUSE Manager
 
   Scenario: Build a docker Image
   Given I am authorized as "admin" with password "admin"
-  And I navigate to images build webpage
-  And I enter "suse_key" as "profileId"
-  And I select sle-minion hostname in Build Host
-  And I click on "submit-btn"
+  # At moment phantomjs has problemes with datapickler so we use xmlrpc-api
+  And I build the image via xmlrpc-call  
+
 
   Scenario: Verify that the docker image was sucessefully created
   Given I am authorized as "admin" with password "admin"
