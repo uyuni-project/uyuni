@@ -5,7 +5,6 @@ Feature:  Build Container images with SUSE Manager. Basic image
           Images are not with zypper and doesn't contains the name
           of the server. So the inspect functionality is not tested here.
 
-  # Configure the minion to be build containers          
   Scenario: Assign to the sles-minion the property container build host 
   Given I am on the Systems overview page of this "sle-minion"
   And I follow "Details" in the content area
@@ -28,7 +27,6 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
   And I apply highstate on Sles minion
   Then I wait until "docker" service is up and running on "sle-minion"
-
   # FIXME: We need a test for image store with credentials
   Scenario: Create an Image Store without credentials
   Given I am authorized as "admin" with password "admin"
@@ -39,8 +37,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I enter "registry.mgr.suse.de" as "uri"
   And I click on "create-btn"
 
-  # simple ==> without activation-key
-  Scenario: Create a simple Image Profile 
+  Scenario: Create a simple Image profile without act-key
   Given I am authorized as "admin" with password "admin"
   And I follow "Images" in the left menu
   And I follow "Profiles" in the left menu
@@ -50,7 +47,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile" as "path"
   And I click on "create-btn"
 
-  Scenario: Create an Image Profile with activation-key
+  Scenario: Create an Image profile with activation-key
   Given I am authorized as "admin" with password "admin"
   And I follow "Images" in the left menu
   And I follow "Profiles" in the left menu
@@ -72,6 +69,18 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I schedule the build of image "suse_key" with tag "Latest_key-activation1" via xmlrpc-call 
   And I schedule the build of image "suse_simply" with tag "Latest_simply" via xmlrpc-call 
 
-  Scenario: Verify that the docker image was sucessefully created
+  Scenario: Verify the status of images.
+  Given I am authorized as "admin" with password "admin"
+
+  Scenario: Verify on the web-ui that the docker image was sucessefully created
   Given I am authorized as "admin" with password "admin"
   And I navigate to images webpage
+
+  Scenario: Verify on the minion-host that the docker image was sucessefully created
+  Given I am authorized as "admin" with password "admin"
+  
+  Scenario: Verify the property of activation-key image
+  Given I am authorized as "admin" with password "admin"
+  # Negative tests
+  Scenario: Disable docker-daemon and try to build image.
+  Given I am authorized as "admin" with password "admin"
