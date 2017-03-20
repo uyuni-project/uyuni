@@ -29,7 +29,8 @@ const NodeLink = (props) =>
     }
     {
       !props.isLeaf ?
-      <Link url={props.url} title={props.label} label={<i className="fa fa-share"></i>}
+      <Link url={props.url} title={props.completeUrlLabel}
+        label={<i className="fa fa-link"></i>}
         cssClass="direct-link" target={props.target} />
       : null
     }
@@ -80,6 +81,10 @@ const Element = React.createClass({
     return element.submenu ? this.getUrl(element.submenu[0]) : element.primaryUrl;
   },
 
+  getCompleteUrlLabel: function(element) {
+    return element.submenu ? (element.label + ' > ' + this.getCompleteUrlLabel(element.submenu[0])) : element.label;
+  },
+
   render: function() {
     const element = this.props.element;
     return (
@@ -92,6 +97,7 @@ const Element = React.createClass({
         >
           <NodeLink isLeaf={this.isLeaf(element)} url={this.getUrl(element)}
               label={element.label} target={element.target}
+              completeUrlLabel={this.getCompleteUrlLabel(element)}
               handleClick={this.isLeaf(element) ? null : this.toggleView}
               isOpen={this.state.open} isSearchActive={this.props.searchString}
               icon={element.icon}
