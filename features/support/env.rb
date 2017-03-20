@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2017 Suse-linux
 # Licensed under the terms of the MIT license.
 
 #
@@ -14,13 +14,10 @@ require 'capybara'
 require 'capybara/cucumber'
 require File.join(File.dirname(__FILE__), 'cobbler_test')
 require File.join(File.dirname(__FILE__), 'zypp_lock_helper')
-require 'owasp_zap'
-include OwaspZap
 require 'simplecov'
+require 'capybara/poltergeist'
 SimpleCov.start
-browser = (ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil) || :firefox
-host = ENV['TESTHOST'] || 'andromeda.suse.de'
-proxy = ENV['ZAP_PROXY'].to_s || nil
+host = ENV['TESTHOST']
 
 require 'minitest/unit'
 World(MiniTest::Assertions)
@@ -75,50 +72,23 @@ end
 host = "https://#{host}"
 
 $myhostname = host
-
 ENV['LANG'] = "en_US.UTF-8"
 ENV['IGNORECERT'] = "1"
 
 Capybara.default_wait_time = 10
-
-# Setup browsers
-case browser
-when :phantomjs
-  require 'capybara/poltergeist'
-  Capybara.register_driver :poltergeist do |app|
-    Capybara::Poltergeist::Driver.new(app,
-                                      :phantomjs_options => ['--debug=no',
-                                                             '--ignore-ssl-errors=yes',
-                                                             '--ssl-protocol=TLSv1',
-                                                             '--web-security=false'],
-                                      :js_errors => false,
-                                      :timeout => 250,
-                                      :debug => false)
-  end
-  Capybara.default_driver = :poltergeist
-  Capybara.javascript_driver = :poltergeist
-  Capybara.app_host = host
-when :firefox
-  require 'selenium-webdriver'
-  Capybara.register_driver :selenium do |app|
-    profile = Selenium::WebDriver::Firefox::Profile.new
-    if proxy
-      profile["network.proxy.type"] = 1
-      profile["network.proxy.http"] = proxy
-      profile["network.proxy.http_port"] = 8080
-      profile["network.proxy.ssl"] = proxy
-      profile["network.proxy.ssl_port"] = 8080
-    end
-    driver = Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
-    driver.browser.manage.window.resize_to(1280, 1024)
-    driver
-  end
-  Capybara.default_driver = :selenium
-  Capybara.app_host = host
-else
-  raise "Unsupported browser '#{browser}'"
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app,
+                                    :phantomjs_options => ['--debug=no',
+                                                           '--ignore-ssl-errors=yes',
+                                                           '--ssl-protocol=TLSv1',
+                                                           '--web-security=false'],
+                                    :js_errors => false,
+                                    :timeout => 250,
+                                    :debug => false)
 end
-
+Capybara.default_driver = :poltergeist
+Capybara.javascript_driver = :poltergeist
+Capybara.app_host = host
 # don't run own server on a random port
 Capybara.run_server = false
 
@@ -128,24 +98,4 @@ After do |scenario|
     encoded_img = page.driver.render_base64(:png, :full => true)
     embed("data:image/png;base64,#{encoded_img}", 'image/png')
   end
-end
-
-# make sure proxy is started if we will use ut
-Before do
-  sec_proxy = ENV['ZAP_PROXY']
-  if sec_proxy && ['localhost', '127.0.0.1'].include?(sec_proxy)
-    $zap = Zap.new(:target => "https://#{ENV['TESTHOST']}", :zap => "/usr/share/owasp-zap/zap.sh")
-    unless $zap.running?
-      $zap.start(:daemon => true)
-      until $zap.running?
-        STDERR.puts 'waiting for security proxy...'
-        sleep 1
-      end
-    end
-  end
-end
-
-# kill owasp zap before exiting
-at_exit do
-  $zap.shutdown if $zap
 end
