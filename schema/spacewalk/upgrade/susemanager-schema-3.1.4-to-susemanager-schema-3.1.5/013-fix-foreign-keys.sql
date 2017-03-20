@@ -10,3 +10,5 @@ ALTER TABLE suseProfileCustomDataValue ADD CONSTRAINT  suse_pcdv_prid_fk FOREIGN
 ALTER TABLE suseProfileCustomDataValue DROP CONSTRAINT suse_pcdv_kid_fk;
 ALTER TABLE suseProfileCustomDataValue ADD CONSTRAINT  suse_pcdv_kid_fk FOREIGN KEY (key_id) REFERENCES rhnCustomDataKey (id) ON DELETE CASCADE;
 
+ALTER TABLE suseImageInfo DROP CONSTRAINT rhn_imginfo_said_fk;
+ALTER TABLE suseImageInfo ADD CONSTRAINT suse_imginfo_said_fk FOREIGN KEY (image_arch_id) REFERENCES rhnServerArch (id);
