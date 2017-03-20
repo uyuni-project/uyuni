@@ -19,10 +19,12 @@ CREATE TABLE suseImageCustomDataValue
                           CONSTRAINT suse_icdv_id_pk PRIMARY KEY,
     image_info_id     NUMBER NOT NULL
                           CONSTRAINT suse_icdv_prid_fk
-                              REFERENCES suseImageInfo (id),
+                              REFERENCES suseImageInfo (id)
+                              ON DELETE CASCADE,
     key_id            NUMBER NOT NULL
                           CONSTRAINT suse_icdv_kid_fk
-                              REFERENCES rhnCustomDataKey (id),
+                              REFERENCES rhnCustomDataKey (id)
+                              ON DELETE CASCADE,
     value             VARCHAR2(4000),
     created_by        NUMBER
                           CONSTRAINT suse_icdv_cb_fk
