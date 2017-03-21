@@ -26,26 +26,26 @@ public class ImageBuildActionDetails extends ActionChild {
 
     private long id;
     private long actionId;
-    private String tag;
+    private String version;
     private long imageProfileId;
     private Set<ImageBuildActionResult> results = new HashSet<>();
 
     /**
-     * Gets tag.
+     * Gets version.
      *
-     * @return the tag
+     * @return the version
      */
-    public String getTag() {
-        return tag;
+    public String getVersion() {
+        return version;
     }
 
     /**
-     * Sets tag.
+     * Sets version.
      *
-     * @param tagIn the tag
+     * @param versionIn the version
      */
-    public void setTag(String tagIn) {
-        this.tag = tagIn;
+    public void setVersion(String versionIn) {
+        this.version = versionIn;
     }
 
     /**

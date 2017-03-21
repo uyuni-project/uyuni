@@ -2184,13 +2184,13 @@ public class ActionManager extends BaseManager {
      *
      * @param scheduler the scheduler
      * @param sids      the sids
-     * @param tag       the tag
+     * @param version   the version
      * @param profile   the profile
      * @param earliest  the earliest
      * @return the image build action
      */
     public static ImageBuildAction scheduleImageBuild(User scheduler, List<Long> sids,
-            String tag, ImageProfile profile, Date earliest) {
+            String version, ImageProfile profile, Date earliest) {
         ImageBuildAction action = (ImageBuildAction) ActionFactory
                 .createAction(ActionFactory.TYPE_IMAGE_BUILD, earliest);
         action.setName("Image Build " + profile.getLabel());
@@ -2199,7 +2199,7 @@ public class ActionManager extends BaseManager {
         action.setSchedulerUser(scheduler);
 
         ImageBuildActionDetails actionDetails = new ImageBuildActionDetails();
-        actionDetails.setTag(tag);
+        actionDetails.setVersion(version);
         actionDetails.setImageProfileId(profile.getProfileId());
         action.setDetails(actionDetails);
         ActionFactory.save(action);
@@ -2212,25 +2212,25 @@ public class ActionManager extends BaseManager {
      *
      * @param scheduler the scheduler
      * @param sids      the sids
-     * @param tag       the image tag
+     * @param version   the image version
      * @param name      the image name
      * @param store     the image store
      * @param earliest  the earliest
      * @return the image inspect action
      */
     public static ImageInspectAction scheduleImageInspect(User scheduler, List<Long> sids,
-                                                          String tag, String name,
+                                                          String version, String name,
                                                           ImageStore store, Date earliest) {
         ImageInspectAction action = (ImageInspectAction) ActionFactory
                 .createAction(ActionFactory.TYPE_IMAGE_INSPECT, earliest);
-        action.setName("Image Inspect " + store.getUri() + "/" + name + ":" + tag);
+        action.setName("Image Inspect " + store.getUri() + "/" + name + ":" + version);
         action.setOrg(scheduler != null ?
                 scheduler.getOrg() : OrgFactory.getSatelliteOrg());
         action.setSchedulerUser(scheduler);
 
         ImageInspectActionDetails actionDetails = new ImageInspectActionDetails();
         actionDetails.setName(name);
-        actionDetails.setTag(tag);
+        actionDetails.setVersion(version);
         actionDetails.setImageStoreId(store.getId());
         action.setDetails(actionDetails);
         ActionFactory.save(action);
