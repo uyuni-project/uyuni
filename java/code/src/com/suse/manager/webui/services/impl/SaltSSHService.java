@@ -61,6 +61,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -92,7 +93,7 @@ public class SaltSSHService {
         this.saltClient = saltClientIn;
         // use a small fixed pool so we don't overwhelm the salt-api
         // with salt-ssh executions
-        asyncSaltSSHExecutor = Executors.newFixedThreadPool(3);
+        this.asyncSaltSSHExecutor = Executors.newFixedThreadPool(3);
     }
 
     /**
@@ -119,6 +120,12 @@ public class SaltSSHService {
      */
     public <R> Map<String, Result<R>> callSyncSSH(LocalCall<R> call, MinionList target)
             throws SaltException {
+        SaltRoster roster = prepareSaltRoster(target);
+        return unwrapSSHReturn(
+                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser())));
+    }
+
+    private SaltRoster prepareSaltRoster(MinionList target) {
         SaltRoster roster = new SaltRoster();
         // these values are mostly fixed, which should change when we allow configuring
         // per-minionserver
@@ -161,11 +168,10 @@ public class SaltSSHService {
                 }
             }
         );
-        return unwrapSSHReturn(
-                callSyncSSHInternal(call, target, roster, false, isSudoUser(getSSHUser())));
+        return roster;
     }
 
-     /**
+    /**
      * Executes salt-ssh calls in another thread and returns {@link CompletionStage}s.
      * @param call the salt call
      * @param target the minion list target
@@ -175,44 +181,50 @@ public class SaltSSHService {
      */
     public <R> Map<String, CompletionStage<Result<R>>> callAsyncSSH(
             LocalCall<R> call, MinionList target, CompletableFuture<GenericError> cancel) {
-        Map<String, CompletionStage<Result<R>>> futures = new HashedMap();
-        target.getTarget().forEach(minionId -> {
-            futures.put(minionId, new CompletableFuture<>());
-        });
-        CompletableFuture.supplyAsync(() -> {
-            try {
-                return callSyncSSH(call, target);
-            }
-            catch (SaltException e) {
-                LOG.error("Error calling async salt-ssh minions", e);
-                throw new RuntimeException(e);
-            }
-        }, asyncSaltSSHExecutor)
-                .whenComplete((executionResult, err) -> {
-                    executionResult.forEach((minionId, minionResult) -> {
-                        CompletableFuture<Result<R>> f = futures.get(minionId)
-                                .toCompletableFuture();
-                        if (err == null) {
-                            f.complete(minionResult);
-                        }
-                        else {
-                            f.completeExceptionally(err);
-                        }
-                    });
+        SaltRoster roster = prepareSaltRoster(target);
+        Map<String, CompletableFuture<Result<R>>> futures = new HashedMap();
+        target.getTarget().forEach(minionId ->
+                futures.put(minionId, new CompletableFuture<>())
+        );
+        CompletableFuture<Map<String, Result<R>>> asyncCallFuture =
+                CompletableFuture.supplyAsync(() -> {
+                    try {
+                        return unwrapSSHReturn(
+                                callSyncSSHInternal(call, target, roster,
+                                        false, isSudoUser(getSSHUser())));
+                    }
+                    catch (SaltException e) {
+                        LOG.error("Error calling async salt-ssh minions", e);
+                        throw new RuntimeException(e);
+                    }
+                }, asyncSaltSSHExecutor);
 
-        });
+        asyncCallFuture.whenComplete((executionResult, err) ->
+                futures.forEach((minionId, future) -> {
+                    if (err == null) {
+                        future.complete(executionResult.get(minionId));
+                    }
+                    else {
+                        future.completeExceptionally(err);
+                    }
+                })
+        );
         cancel.whenComplete((v, e) -> {
             if (v != null) {
-                Result<R> error = Result.error(v);
-                futures.values().forEach(f ->
-                        f.toCompletableFuture().complete(error));
+                Map<String, Result<R>> error = target.getTarget().stream()
+                        .collect(Collectors.toMap(
+                                Function.identity(),
+                                minionId -> Result.error(v)));
+                asyncCallFuture.complete(error);
             }
             else if (e != null) {
-                futures.values().forEach(f ->
-                        f.toCompletableFuture().completeExceptionally(e));
+                asyncCallFuture.completeExceptionally(e);
             }
         });
-        return futures;
+        return futures.entrySet().stream().collect(Collectors.toMap(
+                Map.Entry::getKey,
+                e -> (CompletionStage<Result<R>>) e.getValue()
+        ));
     }
 
     /**
