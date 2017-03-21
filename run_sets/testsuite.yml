@@ -76,6 +76,7 @@
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
 - features/salt_formulas.feature
+- features/salt_openscap_audit.feature
 - features/salt_reboot_test.feature
 
 # salt regression
