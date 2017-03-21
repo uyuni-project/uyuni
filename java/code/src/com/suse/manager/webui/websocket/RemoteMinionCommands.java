@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.websocket;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.session.WebSession;
@@ -108,14 +109,15 @@ public class RemoteMinionCommands {
     public void onMessage(Session session, String messageBody) {
         ExecuteMinionActionDto msg = Json.GSON.fromJson(
                 messageBody, ExecuteMinionActionDto.class);
-        WebSession webSession = WebSessionFactory.lookupById(sessionId);
-
-        if (invalidWebSession(session, webSession)) {
-            return;
-        }
-
-        int timeOut = 600; // 10 minutes
         try {
+            WebSession webSession = WebSessionFactory.lookupById(sessionId);
+
+            if (invalidWebSession(session, webSession)) {
+                return;
+            }
+
+            int timeOut = 600; // 10 minutes
+
             if (msg.isPreview()) {
                 List<String> allVisibleMinions = MinionServerFactory
                         .lookupVisibleToUser(webSession.getUser())
@@ -296,6 +298,9 @@ public class RemoteMinionCommands {
             LOG.error("Error executing Salt async remote command", e);
             sendMessage(session, new ActionErrorEventDto(null,
                     "GENERIC_ERR", e.getMessage()));
+        }
+        finally {
+            HibernateFactory.closeSession();
         }
 
     }
