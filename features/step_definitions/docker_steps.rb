@@ -16,7 +16,7 @@ def retrieve_minion_id
   minion_id = systems
               .select { |s| s['name'] == $minion_fullhostname }
               .map { |s| s['id'] }.first
-  refute_nil(minion_id, "Minion #{hostname} is not yet registered?")
+  refute_nil(minion_id, "Minion #{$minion_fullhostname} is not yet registered?")
 end
 
 And(/^I select sle-minion hostname in Build Host$/) do
@@ -25,6 +25,14 @@ end
 
 And(/^I navigate to images webpage$/) do
   visit("https://#{$server_fullhostname}/rhn/manager/cm/images")
+end
+
+And(/^I navigate to images build webpage$/) do
+  visit("https://#{$server_fullhostname}/rhn/manager/cm/build")
+end
+
+And(/^I verify that all container images were built correctly in the gui$/) do
+  raise "an image was not built correctly" unless find(:xpath, "//*[contains(@title, 'Built')]")
 end
 
 And(/^I navigate to images build webpage$/) do
