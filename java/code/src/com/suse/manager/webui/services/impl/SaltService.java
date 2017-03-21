@@ -635,8 +635,8 @@ public class SaltService {
         Map<String, Result<T>> results = new HashMap<>();
 
         // Only check for minion presence if LocalCall has no timeouts attributes.
-        if (!call.getPayload().keySet().containsAll(new ArrayList<String>(
-                Arrays.asList("timeout", "gather_job_timeout")))) {
+        if (!call.getPayload().keySet().containsAll(
+                Arrays.asList("timeout", "gather_job_timeout"))) {
             // To avoid blocking if any targeted minion is down, we first check which
             // minions are actually up and running, and then exclude unreachable minions
             // from the current synchronous call.
@@ -648,8 +648,8 @@ public class SaltService {
 
             List<String> sshActiveMinions = new ArrayList<String>();
             if (!sshMinionIds.isEmpty()) {
-                Map<String, Result<Boolean>> sshResults = new HashMap<>();
-                sshResults = presencePingSSH(new MinionList(sshMinionIds));
+                Map<String, Result<Boolean>> sshResults = presencePingSSH(
+                        new MinionList(sshMinionIds));
                 sshResults.entrySet().removeIf(s -> s.getValue().toXor()
                         .fold(error -> true, result -> false));
                 sshActiveMinions.addAll(sshResults.keySet());
@@ -657,8 +657,7 @@ public class SaltService {
 
             if (!regularActiveMinions.containsAll(regularMinionIds) ||
                     !sshActiveMinions.containsAll(sshMinionIds)) {
-                HashSet<String> unreachableMinions =
-                        new HashSet<String>(uniqueMinionIds);
+                HashSet<String> unreachableMinions = new HashSet<>(uniqueMinionIds);
                 unreachableMinions.removeAll(regularActiveMinions);
                 unreachableMinions.removeAll(sshActiveMinions);
                 LOG.warn("Some of the targetted minions cannot be reached: " +
