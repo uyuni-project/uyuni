@@ -25,7 +25,7 @@ CREATE TABLE rhnActionImageBuild
                          CONSTRAINT rhn_act_image_build_ip_fk
                              REFERENCES suseImageProfile (profile_id)
                              ON DELETE CASCADE,
-    tag              VARCHAR2(128),
+    version          VARCHAR2(128),
     created          timestamp with local time zone
                          DEFAULT (current_timestamp) NOT NULL,
     modified         timestamp with local time zone

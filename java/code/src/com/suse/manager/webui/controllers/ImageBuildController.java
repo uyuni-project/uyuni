@@ -90,8 +90,8 @@ public class ImageBuildController {
                 Long.parseLong(req.queryParams("profile")) : null);
         model.put("hostId", StringUtils.isNotBlank(req.queryParams("host")) ?
                 Long.parseLong(req.queryParams("host")) : null);
-        model.put("tag", StringUtils.isNotBlank(req.queryParams("tag")) ?
-                req.queryParams("tag") : null);
+        model.put("version", StringUtils.isNotBlank(req.queryParams("version")) ?
+                req.queryParams("version") : null);
 
         return new ModelAndView(model, "content_management/build.jade");
     }
@@ -158,7 +158,7 @@ public class ImageBuildController {
      */
     public static class BuildRequest {
         private long buildHostId;
-        private String tag;
+        private String version;
         private LocalDateTime earliest;
 
         /**
@@ -169,14 +169,14 @@ public class ImageBuildController {
         }
 
         /**
-         * @return the tag
+         * @return the version
          */
-        public String getTag() {
-            if (tag == null || tag.isEmpty()) {
+        public String getVersion() {
+            if (version == null || version.isEmpty()) {
                 return "latest";
             }
             else {
-                return tag;
+                return version;
             }
         }
 
@@ -212,7 +212,7 @@ public class ImageBuildController {
         return maybeProfile.flatMap(ImageProfile::asDockerfileProfile).map(profile -> {
             try {
                 ImageInfoFactory.scheduleBuild(buildRequest.buildHostId,
-                        buildRequest.getTag(), profile, scheduleDate, user);
+                        buildRequest.getVersion(), profile, scheduleDate, user);
                 // TODO: Add action ID as a message parameter
                 return GSON.toJson(new JsonResult(true, "build_scheduled"));
             }
@@ -252,8 +252,6 @@ public class ImageBuildController {
      */
     public static Object get(Request req, Response res, User user) {
         Long id = Long.parseLong(req.params("id"));
-
-        String tab = req.queryParams("data");
 
         Optional<ImageOverview> imageInfo =
                 ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());

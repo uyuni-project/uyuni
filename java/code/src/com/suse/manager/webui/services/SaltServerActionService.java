@@ -142,7 +142,8 @@ public enum SaltServerActionService {
             ImageInspectActionDetails details = iia.getDetails();
             ImageStore store = ImageStoreFactory.lookupById(
                     details.getImageStoreId()).get();
-            return imageInspectAction(minions, details.getTag(), details.getName(), store);
+            return imageInspectAction(minions, details.getVersion(), details.getName(),
+                    store);
         }
         else if (ActionFactory.TYPE_IMAGE_BUILD.equals(actionType)) {
             ImageBuildAction imageBuildAction = (ImageBuildAction) actionIn;
@@ -151,7 +152,7 @@ public enum SaltServerActionService {
                     .flatMap(ImageProfile::asDockerfileProfile).map(
                     ip -> imageBuildAction(
                             minions,
-                            Optional.ofNullable(details.getTag()),
+                            Optional.ofNullable(details.getVersion()),
                             ip,
                             imageBuildAction.getSchedulerUser())
             ).orElseGet(Collections::emptyMap);
@@ -404,10 +405,10 @@ public enum SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionServer>> imageInspectAction(
-            List<MinionServer> minions, String tag,
+            List<MinionServer> minions, String version,
             String name, ImageStore store) {
         Map<String, Object> pillar = new HashMap<>();
-        pillar.put("imagename", store.getUri() + "/" + name + ":" + tag);
+        pillar.put("imagename", store.getUri() + "/" + name + ":" + version);
         Map<LocalCall<?>, List<MinionServer>> result = new HashMap<>();
         LocalCall<Map<String, State.ApplyResult>> apply = State.apply(
                 Collections.singletonList("images.profileupdate"),
@@ -419,7 +420,7 @@ public enum SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionServer>> imageBuildAction(
-            List<MinionServer> minions, Optional<String> tag,
+            List<MinionServer> minions, Optional<String> version,
             DockerfileProfile profile, User user) {
         List<ImageStore> imageStores = new LinkedList<>();
         imageStores.add(profile.getTargetStore());
@@ -465,7 +466,7 @@ public enum SaltServerActionService {
                     Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
                     pillar.put("docker-registries", dockerRegistries);
                     String name = profile.getTargetStore().getUri() + "/" +
-                            profile.getLabel() + ":" + tag.orElse("");
+                            profile.getLabel() + ":" + version.orElse("");
                     pillar.put("imagename", name);
                     pillar.put("builddir", profile.getPath());
 

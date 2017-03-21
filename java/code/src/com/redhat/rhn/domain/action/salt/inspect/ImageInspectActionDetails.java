@@ -27,22 +27,22 @@ public class ImageInspectActionDetails extends ActionChild {
     private long id;
     private long actionId;
     private String name;
-    private String tag;
+    private String version;
     private long imageStoreId;
     private Set<ImageInspectActionResult> results = new HashSet<>();
 
     /**
-     * @return the tag
+     * @return the version
      */
-    public String getTag() {
-        return tag;
+    public String getVersion() {
+        return version;
     }
 
     /**
-     * @param tagIn the tag
+     * @param versionIn the version
      */
-    public void setTag(String tagIn) {
-        this.tag = tagIn;
+    public void setVersion(String versionIn) {
+        this.version = versionIn;
     }
 
     /**

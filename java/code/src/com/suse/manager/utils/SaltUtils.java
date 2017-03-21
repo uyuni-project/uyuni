@@ -433,7 +433,7 @@ public class SaltUtils {
                             .stream()
                             .map(ServerAction::getServerId)
                             .collect(Collectors.toList()),
-                    details.getTag(),
+                    details.getVersion(),
                     ImageProfileFactory.lookupById(details.getImageProfileId()).get()
                             .getLabel(),
                     ImageProfileFactory.lookupById(details.getImageProfileId()).get()
@@ -468,7 +468,7 @@ public class SaltUtils {
             serverAction.setResultMsg("Success");
         }
         ImageInfoFactory
-                .lookupByName(details.getName(), details.getTag(),
+                .lookupByName(details.getName(), details.getVersion(),
                         details.getImageStoreId())
                 .ifPresent(imageInfo -> serverAction.getServer().asMinionServer()
                         .ifPresent(minionServer -> handleImagePackageProfileUpdate(
