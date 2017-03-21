@@ -275,7 +275,7 @@ public class SaltSSHService {
     public <R> Map<String, CompletionStage<Result<R>>> callAsyncSSH(
             LocalCall<R> call, MinionList target, CompletableFuture<GenericError> cancel) {
         SaltRoster roster = prepareSaltRoster(target);
-        Map<String, CompletionStage<Result<R>>> futures = new HashedMap();
+        Map<String, CompletableFuture<Result<R>>> futures = new HashedMap();
         target.getTarget().forEach(minionId ->
             futures.put(minionId, new CompletableFuture<>())
         );
@@ -295,12 +295,10 @@ public class SaltSSHService {
         asyncCallFuture.whenComplete((executionResult, err) ->
             futures.forEach((minionId, future) -> {
                 if (err == null) {
-                    future.toCompletableFuture()
-                            .complete(executionResult.get(minionId));
+                    future.complete(executionResult.get(minionId));
                 }
                 else {
-                    future.toCompletableFuture()
-                            .completeExceptionally(err);
+                    future.completeExceptionally(err);
                 }
             })
         );
@@ -316,7 +314,10 @@ public class SaltSSHService {
                 asyncCallFuture.completeExceptionally(e);
             }
         });
-        return futures;
+        return futures.entrySet().stream().collect(Collectors.toMap(
+                Map.Entry::getKey,
+                e -> (CompletionStage<Result<R>>) e.getValue()
+        ));
     }
 
     /**
