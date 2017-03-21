@@ -68,19 +68,11 @@ Feature:  Build Container images with SUSE Manager. Basic image
   Given I am authorized as "admin" with password "admin"
   And I schedule the build of image "suse_key" with tag "Latest_key-activation1" via xmlrpc-call 
   And I schedule the build of image "suse_simply" with tag "Latest_simply" via xmlrpc-call 
-
+  And I wait for "50" seconds
   Scenario: Verify the status of images.
   Given I am authorized as "admin" with password "admin"
+  And I navigate to images build webpage
+  Then I verify that all container images were built correctly in the gui
 
-  Scenario: Verify on the web-ui that the docker image was sucessefully created
-  Given I am authorized as "admin" with password "admin"
-  And I navigate to images webpage
-
-  Scenario: Verify on the minion-host that the docker image was sucessefully created
-  Given I am authorized as "admin" with password "admin"
-  
   Scenario: Verify the property of activation-key image
-  Given I am authorized as "admin" with password "admin"
-  # Negative tests
-  Scenario: Disable docker-daemon and try to build image.
   Given I am authorized as "admin" with password "admin"
