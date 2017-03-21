@@ -68,7 +68,10 @@ Feature:  Build Container images with SUSE Manager. Basic image
   Given I am authorized as "admin" with password "admin"
   And I schedule the build of image "suse_key" with tag "Latest_key-activation1" via xmlrpc-call 
   And I schedule the build of image "suse_simply" with tag "Latest_simply" via xmlrpc-call 
+  # FIXME: Can we verify via xmplrpc the status of images? build or not?
+  # then we can remove the sleep.
   And I wait for "50" seconds
+
   Scenario: Verify the status of images.
   Given I am authorized as "admin" with password "admin"
   And I navigate to images build webpage
