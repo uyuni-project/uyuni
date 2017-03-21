@@ -16,7 +16,6 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.common.messaging.MessageQueue;
-
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -27,8 +26,6 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
-import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
-import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
@@ -38,6 +35,9 @@ import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.reactor.messaging.RunnableEventMessage;
+import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
+import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.reactor.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
@@ -237,25 +237,29 @@ public class SaltReactor implements EventListener {
     private Runnable onBeaconEvent(BeaconEvent beaconEvent) {
         return () -> {
             if (beaconEvent.getBeacon().equals("pkgset") &&
-                beaconEvent.getAdditional().equals("changed")) {
-
-                MinionServerFactory
-                    .findByMinionId(beaconEvent.getMinionId())
-                    .ifPresent(minionServer -> {
-                        try {
-                            ActionManager.schedulePackageRefresh(minionServer.getOrg(),
-                                    minionServer);
-                        }
-                        catch (TaskomaticApiException e) {
-                            LOG.error("Could not schedule package refresh for minion: " +
-                                minionServer.getMinionId());
-                            LOG.error(e);
-                        }
-                    });
+                    beaconEvent.getAdditional().equals("changed")) {
+                MessageQueue.publish(
+                        new RunnableEventMessage("ZypperEvent.PackageSetChanged", () -> {
+                            MinionServerFactory.findByMinionId(beaconEvent.getMinionId())
+                                    .ifPresent(minionServer -> {
+                                        try {
+                                            ActionManager.schedulePackageRefresh(
+                                                    minionServer.getOrg(), minionServer);
+                                        }
+                                        catch (TaskomaticApiException e) {
+                                            LOG.error(
+                                                    "Could not schedule package refresh " +
+                                                    "for minion: " +
+                                                            minionServer.getMinionId());
+                                            LOG.error(e);
+                                        }
+                                    });
+                        }));
             }
             else if (beaconEvent.getBeacon().equals("virtpoller")) {
                 TypeToken<Map<String, JsonElement>> tt =
-                        new TypeToken<Map<String, JsonElement>>() { };
+                        new TypeToken<Map<String, JsonElement>>() {
+                        };
                 Map<String, JsonElement> data = beaconEvent.getData(tt);
                 MessageQueue.publish(new VirtpollerBeaconEventMessage(
                         beaconEvent.getMinionId(),
