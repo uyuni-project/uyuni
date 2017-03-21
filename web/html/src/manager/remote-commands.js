@@ -51,7 +51,7 @@ class MinionResultView extends React.Component {
                        <div className="badge">
                            {t("timed out")}
                        </div>
-                       <i className="fa fa-right fa-warning fa-1-5x"></i>
+                       <i className="fa fa-right fa-warning text-warning fa-1-5x"></i>
                     </div>
                   );
               } else if(resultType == "matched") {
@@ -62,7 +62,7 @@ class MinionResultView extends React.Component {
                        <div className="badge">
                           {this.state.open ? t("- hide error -") : t("- show error -")}
                        </div>
-                       <i className="fa fa-right fa-warning fa-1-5x"></i>
+                       <i className="fa fa-right fa-warning text-danger fa-1-5x"></i>
                     </div>
                   );
               } else if(resultType == "result") {
