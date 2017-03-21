@@ -348,7 +348,13 @@ public class RemoteMinionCommands {
      */
     @OnError
     public void onError(Session session, Throwable err) {
-        LOG.error("Websocket endpoint error", err);
+        if (err.getMessage().startsWith("Unexpected error [32]")) {
+            // [32] "Broken pipe" is caught when the client side breaks the connection.
+            LOG.debug("Client broke the connection.", err);
+        }
+        else {
+            LOG.error("Websocket endpoint error", err);
+        }
     }
 
 }
