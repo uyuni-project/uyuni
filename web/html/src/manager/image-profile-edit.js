@@ -126,9 +126,8 @@ class CreateImageProfile extends React.Component {
             return true;
         }
 
-        return Network.get(
-            "/rhn/manager/api/cm/imageprofiles/find/" + label,
-        ).promise.then(res => !res.success).catch(() => false);
+        return Network.get("/rhn/manager/api/cm/imageprofiles/find/" + label)
+            .promise.then(res => !res.success).catch(() => false);
     }
 
     onUpdate(model) {
