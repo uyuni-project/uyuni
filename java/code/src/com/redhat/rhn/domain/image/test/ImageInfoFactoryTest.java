@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.image.test;
 
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.image.DockerfileProfile;
@@ -38,8 +39,15 @@ import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.Collections;
 import java.util.Date;
@@ -49,7 +57,25 @@ import java.util.Set;
 
 public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
+    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+    }};
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+
+    }
+
     public final void testScheduleBuild() throws Exception {
+        TaskomaticApi taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
+        ImageInfoFactory.setTaskomaticApi(taskomaticMock);
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
 
         // Create test store
