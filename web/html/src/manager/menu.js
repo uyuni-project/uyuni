@@ -4,7 +4,9 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 
 const Link = (props) =>
-  <a href={props.url} className={props.cssClass} target={props.target} title={props.title}>
+  <a href={props.url} className={props.cssClass} target={props.target}
+    title={props.title} onClick={props.handleClick}>
+    {props.preIcon ? <i className={'fa ' + props.preIcon}></i> : null}
     {
       props.icon ?
       <i className={'fa ' + props.icon}></i>
@@ -20,12 +22,12 @@ const NodeLink = (props) =>
     {
       props.isLeaf ?
       <Link url={props.url} target={props.target} label={props.label} />
-      : <div className="node-text" onClick={props.handleClick}>
-          { !props.isSearchActive ?
-          <i className={'submenuIcon ' + (props.isOpen ? "fa fa-angle-down" : "fa fa-angle-right")}></i>
-          : null }
-          {props.icon ? <i className={'fa ' + props.icon}></i> : null}{props.label}
-        </div>
+      : <Link url="#" target={props.target} cssClass="node-text" handleClick={props.handleClick}
+          label={props.label} icon={props.icon}
+          preIcon={ !props.isSearchActive ?
+            'submenuIcon ' + (props.isOpen ? "fa fa-angle-down" : "fa fa-angle-right")
+            : null
+          }/>
     }
     {
       !props.isLeaf ?
