@@ -110,15 +110,38 @@ body.login-page {
   }
   header {
     font-size: 13px;
+    border-bottom: 0px;
+    .navbar-brand {
+      text-decoration: none;
+    }
   }
   .alert {
     font-size: 14px
   }
   footer {
+    border-top-width: 0px;
     background-color: transparent;
+    position: relative;
+    padding-bottom: 0;
+    padding-left: 0;
     .gray-text;
+    div {
+      text-align: center!important;
+    }
+    .wrap {
+      > div {
+        display: inline-block;
+        width: auto;
+      }
+      > div:first-of-type:after {
+        content: '|';
+      }
+    }
     a {
       color: inherit;
+    }
+    .bottom-line {
+      display: block;
     }
   }
 }
