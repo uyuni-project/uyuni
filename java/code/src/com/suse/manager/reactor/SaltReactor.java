@@ -36,6 +36,7 @@ import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageA
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.messaging.RunnableEventMessage;
+import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.reactor.utils.MailHelper;
@@ -102,6 +103,8 @@ public class SaltReactor implements EventListener {
                 JobReturnEventMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
                 RefreshGeneratedSaltFilesEventMessage.class);
+        MessageQueue.registerAction(new RunnableEventMessageAction(),
+                RunnableEventMessage.class);
         MessageQueue.registerAction(new VirtpollerBeaconEventMessageAction(),
                 VirtpollerBeaconEventMessage.class);
 
