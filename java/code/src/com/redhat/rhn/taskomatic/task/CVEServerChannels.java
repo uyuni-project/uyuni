@@ -40,7 +40,7 @@ public class CVEServerChannels extends RhnJavaJob {
 
         // Measure time and calculate the total duration
         Date start = new Date();
-        CVEAuditManager.populateCVEServerChannels();
+        CVEAuditManager.populateCVEChannels();
 
         if (log.isDebugEnabled()) {
             long duration = new Date().getTime() - start.getTime();
