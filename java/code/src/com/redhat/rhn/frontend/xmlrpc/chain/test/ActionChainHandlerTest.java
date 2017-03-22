@@ -19,6 +19,7 @@
 package com.redhat.rhn.frontend.xmlrpc.chain.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -70,6 +71,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
     private ActionChainHandler ach;
     private static final String CHAIN_LABEL = "Quick Brown Fox";
+    private static final String SCRIPT_LABEL = "Script Label";
     private static final String SCRIPT_SAMPLE = "#!/bin/bash\nexit 0;";
     private Server server;
     private Package pkg;
@@ -568,6 +570,19 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, actionChain.getEntries().size());
         assertEquals(ActionFactory.TYPE_SCRIPT_RUN, actionChain.getEntries()
                 .iterator().next().getAction().getActionType());
+    }
+
+    public void testAcLabeledRemoteCommand() {
+        assertEquals(true,
+                this.ach.addScriptRun(this.admin,
+                                      this.server.getId().intValue(),
+                                      CHAIN_LABEL, SCRIPT_LABEL,
+                                      "root", "root", 300,
+                                      ActionChainHandlerTest.SCRIPT_SAMPLE) > 0);
+        assertEquals(1, actionChain.getEntries().size());
+        Action action = actionChain.getEntries().iterator().next().getAction();
+        assertEquals(ActionFactory.TYPE_SCRIPT_RUN, action.getActionType());
+        assertEquals(SCRIPT_LABEL, action.getName());
     }
 
     /**
