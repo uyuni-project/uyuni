@@ -17,6 +17,7 @@ def retrieve_minion_id
               .select { |s| s['name'] == $minion_fullhostname }
               .map { |s| s['id'] }.first
   refute_nil(minion_id, "Minion #{$minion_fullhostname} is not yet registered?")
+  minion_id
 end
 
 And(/^I select sle-minion hostname in Build Host$/) do
