@@ -32,6 +32,7 @@ $(document).on("ready", function(){
 // On window load
 $(window).load(function () {
   columnHeight();
+  adjustDistanceForFixedHeader();
 });
 
 // On window resize
@@ -39,10 +40,28 @@ $(window).resize(function () {
   alignContentDimensions();
 });
 
+// On window scroll
+$(window).scroll(function () {
+  if ((document.documentElement.scrollTop || document.body.scrollTop) < 100) {
+    $('#scroll-top').hide();
+  }
+  else {
+    $('#scroll-top').show();
+  }
+});
+
 // A container function for what should be fired
 // to set HTML tag dimensions
 function alignContentDimensions() {
   columnHeight();
+  adjustDistanceForFixedHeader();
+}
+
+// Header is fixed, the main content column needs
+// padding-top equals the header height to be fully visible
+function adjustDistanceForFixedHeader() {
+  // subtract 1px in case the outerHeight comes to us already upper rounded
+  $('.spacewalk-main-column-layout').css('padding-top', $('header').outerHeight()-1);
 }
 
 // Make columns 100% in height
@@ -52,7 +71,7 @@ function columnHeight() {
   aside.css('min-height', 0);
   section.css('min-height', 0);
   const headerHeight = $('header').outerHeight();
-  const footerHeight = $('footer').outerHeight();
+  const footerHeight = $('.login-page footer').outerHeight();
   const docHeight = $(document).height();
   // Column heights should equal the document height minus the header height and footer height
   aside.css('min-height', docHeight - headerHeight - footerHeight);

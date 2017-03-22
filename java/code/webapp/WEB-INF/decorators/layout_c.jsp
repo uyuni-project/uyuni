@@ -20,10 +20,11 @@
       <aside id="spacewalk-aside" class="navbar-collapse collapse">
         <div id="nav"></div>
         <jsp:include page="/WEB-INF/includes/leftnav.jsp" />
-        <jsp:include page="/WEB-INF/includes/legends.jsp" />
+        <footer>
+          <jsp:include page="/WEB-INF/includes/footer.jsp" />
+        </footer>
       </aside>
       <section id="spacewalk-content">
-        <div id="breadcrumb"></div>
         <noscript>
             <div class="alert alert-danger">
                 <bean:message key="common.jsp.noscript"/>
@@ -46,8 +47,5 @@
       </section>
       <script src='/javascript/manager/menu.bundle.js'></script>
     </div>
-    <footer>
-      <jsp:include page="/WEB-INF/includes/footer.jsp" />
-    </footer>
   </body>
 </html:html>

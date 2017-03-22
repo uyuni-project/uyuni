@@ -11,10 +11,7 @@
 </a>
 
 <div class="navbar-header">
-  <a class="navbar-brand" href="/" title="<bean:message key="layout.jsp.productname"/> homepage">
-    <img src="/img/susemanager/logo-header.png" id="rhLogo" />
-    <span>SUSE<i class="fa fa-registered" aria-hidden="true"></i>Manager</span>
-  </a>
+  <div id="breadcrumb"></div>
   <c:if test="${! empty custom_header}">
     <div class="custom-text">
       <c:out value="${custom_header}" escapeXml="false"/>
@@ -56,12 +53,21 @@
     </li>
   </ul>
   <ul class="nav navbar-nav navbar-primary">
+    <c:if test="${requestScope.legends != null}">
+      <li class="legend">
+        <a href="#" class="toggle-box" data-toggle="collapse" data-target="#legend-box">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        </a>
+        <div id="legend-box" class="box-wrapper collapse">
+          <jsp:include page="/WEB-INF/includes/legends.jsp" />
+        </div>
+      </li>
+    </c:if>
     <li class="search">
       <a href="#" class="toggle-box" data-toggle="collapse" data-target="form#search-form">
         <i class="fa fa-search" aria-hidden="true"></i>
       </a>
       <form id="search-form" name="form1" class="box-wrapper form-inline collapse" role="form" action="/rhn/Search.do">
-        <div class="triangle-top"></div>
         <rhn:csrf />
         <rhn:submitted />
         <div class="form-group">
