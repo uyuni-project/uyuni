@@ -61,13 +61,13 @@ Feature:  Build Container images with SUSE Manager. Basic image
   Scenario: Build the images with and without activation key
   Given I am authorized as "admin" with password "admin"
   # At moment phantomjs has problemes with datapickler so we use xmlrpc-api
-  And I schedule the build of image "suse_key" via xmlrpc-call  
-  And I schedule the build of image "suse_simply" via xmlrpc-call  
+  And I schedule the build of image "suse_key" via xmlrpc-call
+  And I schedule the build of image "suse_simply" via xmlrpc-call
 
-  Scenario: Build same images with different tags
+  Scenario: Build same images with different versions
   Given I am authorized as "admin" with password "admin"
-  And I schedule the build of image "suse_key" with tag "Latest_key-activation1" via xmlrpc-call 
-  And I schedule the build of image "suse_simply" with tag "Latest_simply" via xmlrpc-call 
+  And I schedule the build of image "suse_key" with version "Latest_key-activation1" via xmlrpc-call 
+  And I schedule the build of image "suse_simply" with version "Latest_simply" via xmlrpc-call 
   # FIXME: Can we verify via xmplrpc the status of images? build or not?
   # then we can remove the sleep.
   And I wait for "50" seconds

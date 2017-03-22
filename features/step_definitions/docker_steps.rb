@@ -50,10 +50,10 @@ And(/^I schedule the build of image "([^"]*)" via xmlrpc-call$/) do |image|
   cont_op.scheduleImageBuild(image, version_build, build_hostid, date_build)
 end
 
-And(/^I schedule the build of image "([^"]*)" with tag "([^"]*)" via xmlrpc-call$/) do |image, tag|
+And(/^I schedule the build of image "([^"]*)" with version "([^"]*)" via xmlrpc-call$/) do |image, version|
   cont_op.login('admin', 'admin')
   # empty by default
-  version_build = tag
+  version_build = version
   build_hostid = retrieve_minion_id
   now = DateTime.now
   date_build = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
