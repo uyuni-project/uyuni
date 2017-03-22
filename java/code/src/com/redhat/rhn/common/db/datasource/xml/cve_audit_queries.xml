@@ -6,10 +6,17 @@
   </query>
 </write-mode>
 
-<write-mode name="insert_relevant_channel">
+<write-mode name="insert_relevant_server_channel">
   <query params="sid, cid, rank">
     INSERT INTO suseCVEServerChannel (server_id, channel_id, channel_rank)
     VALUES (:sid, :cid, :rank)
+  </query>
+</write-mode>
+
+<write-mode name="insert_relevant_image_channel">
+  <query params="iid, cid, rank">
+    INSERT INTO suseCVEImageChannel (image_info_id, channel_id, channel_rank)
+    VALUES (:iid, :cid, :rank)
   </query>
 </write-mode>
 
