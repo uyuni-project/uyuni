@@ -36,10 +36,6 @@ And(/^I verify that all container images were built correctly in the gui$/) do
   raise "an image was not built correctly" unless find(:xpath, "//*[contains(@title, 'Built')]")
 end
 
-And(/^I navigate to images build webpage$/) do
-  visit("https://#{$server_fullhostname}/rhn/manager/cm/build")
-end
-
 And(/^I schedule the build of image "([^"]*)" via xmlrpc-call$/) do |image|
   cont_op.login('admin', 'admin')
   # empty by default
