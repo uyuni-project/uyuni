@@ -239,8 +239,14 @@ end
 
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node = get_target(host)
+  node.run(cmd)
+end
+
+When(/^I run "([^"]*)" on "([^"]*)" without error control$/) do |cmd, host|
+  node = get_target(host)
   _out, $fail_code = node.run(cmd, false)
 end
+
 Then(/^the command should fail$/) do
    raise "Previous command must fail, but has NOT failed!" if $fail_code.zero?
 end
