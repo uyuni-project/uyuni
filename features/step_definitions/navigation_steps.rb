@@ -128,7 +128,7 @@ end
 When(/^I click Systems, under Systems node$/) do
   find(:xpath, "//div[@id=\"nav\"]/nav/ul/li[contains(@class, 'active')
        and contains(@class, 'open')
-       and contains(@class,'node')]/ul/li/a/span[contains(.,'Systems')]").click
+       and contains(@class,'node')]/ul/li/div/a/span[contains(.,'Systems')]").click
 end
 
 Given(/^I am not authorized$/) do
