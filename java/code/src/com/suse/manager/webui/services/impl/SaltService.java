@@ -841,16 +841,17 @@ public class SaltService {
      * @return a Map from minion ids which responded to the ping to Boolean.TRUE
      * @throws SaltException if we get a failure from Salt
      */
-    public Map<String, Result<Boolean>> presencePing(MinionList targetIn) throws SaltException {
+    public Map<String, Result<Boolean>> presencePing(MinionList targetIn)
+            throws SaltException {
         return new LocalCall<>("test.ping",
-                Optional.empty(), Optional.empty(), new TypeToken<Boolean>(){},
+                Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { },
                 Optional.of(PRESENCE_TIMEOUT), Optional.of(PRESENCE_GATHER_JOB_TIMEOUT))
             .callSync(SALT_CLIENT, targetIn, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
     }
 
     /**
      * Pings a target set of SSH minions using a short timeout to check presence
-     * @param targetIn the target
+     * @param targetInSSH the SSH target
      * @return a Map from minion ids which responded to the ping to Boolean.TRUE
      * @throws SaltException if we get a failure from Salt
      */
@@ -858,7 +859,7 @@ public class SaltService {
             throws SaltException {
         return saltSSHService.callSyncSSH(
             new LocalCall<>("test.ping",
-                Optional.empty(), Optional.empty(), new TypeToken<Boolean>(){}),
+                Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { }),
             targetInSSH
         );
     }
