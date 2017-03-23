@@ -37,6 +37,13 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "arch")
  *   #prop("string", "checksum")
  *   #prop("string", "profileLabel")
+ *   #prop_desc("string", "buildStatus", "One of:")
+ *            #options()
+ *              #item("queued")
+ *              #item("picked up")
+ *              #item("completed")
+ *              #item("failed")
+ *            #options_end()
  *   #prop("int", "buildServerId")
  *   #prop("int", "securityErrata")
  *   #prop("int", "bugErrata")
@@ -70,6 +77,7 @@ public class ImageOverviewSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("enhancementErrata", image.getEnhancementErrata());
         helper.add("outdatedPackages", image.getOutdatedPackages());
         helper.add("installedPackages", image.getInstalledPackages());
+        helper.add("buildStatus", image.getAction().getStatus().getName().toLowerCase());
         helper.writeTo(writer);
     }
 
