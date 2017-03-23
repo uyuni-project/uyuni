@@ -33,13 +33,11 @@ And(/^I navigate to images build webpage$/) do
 end
 
 And(/^I verify that all container images were built correctly in the gui$/) do
-  for c in 0..20
-      raise "error detected while building images" if has_xpath?("//*[contains(@title, 'Failed')]")
-      if has_xpath?("//*[contains(@title, 'Built')]", :count => 4)
-          break
-      end
-      sleep 15
-      step %(I navigate to images webpage)
+  20.times do
+    raise "error detected while building images" if has_xpath?("//*[contains(@title, 'Failed')]")
+    break if has_xpath?("//*[contains(@title, 'Built')]", :count => 4)
+    sleep 15
+    step %(I navigate to images webpage)
   end
   raise "an image was not built correctly" unless has_xpath?("//*[contains(@title, 'Built')]", :count => 4)
 end
@@ -62,4 +60,24 @@ And(/^I schedule the build of image "([^"]*)" with version "([^"]*)" via xmlrpc-
   now = DateTime.now
   date_build = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
   cont_op.scheduleImageBuild(image, version_build, build_hostid, date_build)
+end
+
+And(/^I delete the image "([^"]*)" with version "([^"]*)" via xmlrpc-call$/) do |image_name_todel, version|
+  cont_op.login('admin', 'admin')
+  images_list = cont_op.listImages
+  refute_nil(images_list, "ERROR: no images at all were retrieved.")
+  images_list.each do |element|
+    if element['name'] == image_name_todel.strip && element['version'] == version.strip
+      $image_id = element['id']
+    end
+  end
+  cont_op.deleteImage($image_id)
+end
+
+And(/^The image "([^"]*)" with version "([^"]*)" doesn't exist via xmlrpc-call$/) do |image_non_exist, version|
+  cont_op.login('admin', 'admin')
+  images_list = cont_op.listImages
+  images_list.each do |element|
+    raise "#{image_non_exist} should not exist anymore" if element['name'] == image_non_exist && element['version'] == version.strip
+  end
 end
