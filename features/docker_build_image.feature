@@ -74,7 +74,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
 
   Scenario: Verify the status of images.
   Given I am authorized as "admin" with password "admin"
-  And I navigate to images build webpage
+  And I navigate to images webpage
   Then I verify that all container images were built correctly in the gui
 
   Scenario: Verify the property of activation-key image
