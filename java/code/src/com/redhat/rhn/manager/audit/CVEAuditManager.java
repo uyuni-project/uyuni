@@ -14,17 +14,11 @@
  */
 package com.redhat.rhn.manager.audit;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -545,6 +539,116 @@ public class CVEAuditManager {
         return null;
     }
 
+    public static class Wrapper {
+
+        private final long id;
+        private final String name;
+        private final Optional<Long> errataId;
+        private final String errataAdvisory;
+        private final long packageId;
+        private final String packageName;
+        private final boolean packageInstalled;
+        private final Optional<Long> channelId;
+        private final String channelName;
+        private final String channelLabel;
+        private final boolean channelAssigned;
+        private final int channelRank;
+
+        public Wrapper(long id, String name,
+                       Optional<Long> errataId, String errataAdvisory,
+                       long packageId, String packageName, boolean packageInstalled,
+                       Optional<Long> channelId, String channelName, String channelLabel,
+                       boolean channelAssigned, int channelRank) {
+            this.id = id;
+            this.name = name;
+            this.errataId = errataId;
+            this.errataAdvisory = errataAdvisory;
+            this.packageId = packageId;
+            this.packageName = packageName;
+            this.packageInstalled = packageInstalled;
+            this.channelId = channelId;
+            this.channelName = channelName;
+            this.channelLabel = channelLabel;
+            this.channelAssigned = channelAssigned;
+            this.channelRank = channelRank;
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Optional<Long> getErrataId() {
+            return errataId;
+        }
+
+        public String getErrataAdvisory() {
+            return errataAdvisory;
+        }
+
+        public long getPackageId() {
+            return packageId;
+        }
+
+        public String getPackageName() {
+            return packageName;
+        }
+
+        public boolean isPackageInstalled() {
+            return packageInstalled;
+        }
+
+        public boolean isChannelAssigned() {
+            return channelAssigned;
+        }
+
+        public Optional<Long> getChannelId() {
+            return channelId;
+        }
+
+        public String getChannelName() {
+            return channelName;
+        }
+
+        public String getChannelLabel() {
+            return channelLabel;
+        }
+
+        public int getChannelRank() {
+            return channelRank;
+        }
+    }
+
+    public static Stream<Wrapper> listSystemsByPatchStatus(User user, String cveIdentifier) {
+        SelectMode m = ModeFactory.getMode("cve_audit_queries",
+                "list_systems_by_patch_status");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("cve_identifier", cveIdentifier);
+        params.put("user_id", user.getId());
+        DataResult<Map<String, Object>> results = m.execute(params);
+
+        return StreamSupport.stream(results.spliterator(), false)
+                .map(row -> new Wrapper(
+                    (long) row.get("system_id"),
+                    (String) row.get("system_name"),
+                    Optional.ofNullable(row.get("errata_id")).map(s -> (long)s),
+                    (String) row.get("errata_advisory"),
+                    (long) row.get("package_id"),
+                    (String) row.get("package_name"),
+                    getBooleanValue(row, "package_installed"),
+                    Optional.ofNullable(row.get("channel_id")).map(s -> (long)s),
+                    (String) row.get("channel_name"),
+                    (String) row.get("channel_label"),
+                    getBooleanValue(row, "channel_assigned"),
+                    (int) row.get("channel_rank")
+                ));
+
+    }
+
     /**
      * List visible systems with their patch status regarding a given CVE identifier.
      *
@@ -556,24 +660,19 @@ public class CVEAuditManager {
      */
     @SuppressWarnings("unchecked")
     public static List<CVEAuditSystem> listSystemsByPatchStatus(User user,
-            String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+       String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
 
         if (isCVEIdentifierUnknown(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
         }
 
-        SelectMode m = ModeFactory.getMode("cve_audit_queries",
-            "list_systems_by_patch_status");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("cve_identifier", cveIdentifier);
-        params.put("user_id", user.getId());
-        DataResult<Map<String, Object>> results = m.execute(params);
-        List<CVEAuditSystem> ret = new LinkedList<CVEAuditSystem>();
+        List<Wrapper> results = listSystemsByPatchStatus(user, cveIdentifier).collect(Collectors.toList());
+        List<CVEAuditSystem> ret = new LinkedList<>();
 
         // Hold the system and errata we are currently looking at
         CVEAuditSystem currentSystem = null;
-        Long currentErrata = null;
+        Optional<Long> currentErrata = Optional.empty();
         // Holds the list of patched packages for the CVE we are looking at
         Map<String, Boolean> patchedPackageNames = new HashMap<>();
         // Holds wether the channel for a certain package name is assigned
@@ -585,17 +684,17 @@ public class CVEAuditManager {
         boolean usesLivePatchingDefault = false;
         boolean usesLivePatchingXen = false;
 
-        for (Map<String, Object> result : results) {
+        for (Wrapper result : results) {
             // Get the server id first
-            Long systemID = (Long) result.get("system_id");
-            String packageName = (String) result.get("package_name");
+            final long systemID = result.getId();
+            final String packageName = result.getPackageName();
             if (packageName != null && packageName.startsWith("kgraft-patch")) {
                 usesLivePatchingDefault |= packageName.endsWith("-default");
                 usesLivePatchingXen |= packageName.endsWith("-xen");
             }
 
             // Is this a new system?
-            if (currentSystem == null || !systemID.equals(currentSystem.getSystemID())) {
+            if (currentSystem == null || systemID != currentSystem.getSystemID()) {
                 // Finish up work on the last one
                 if (currentSystem != null) {
                     if (usesLivePatchingDefault &&
@@ -633,43 +732,43 @@ public class CVEAuditManager {
 
                 // Start working on the new system
                 currentSystem = new CVEAuditSystem(systemID);
-                currentSystem.setSystemName((String) result.get("system_name"));
+                currentSystem.setSystemName(result.getName());
 
                 // Ignore old products as long as there is a patch available elsewhere
                 ignoreOldProducts = true;
 
                 // First assignment
-                patchedPackageNames.put((String) result.get("package_name"),
-                        getBooleanValue(result, "package_installed"));
-                if (!getBooleanValue(result, "package_installed")) {
-                    channelAssignedPackageNames.put((String) result.get("package_name"),
-                            getBooleanValue(result, "channel_assigned"));
+                patchedPackageNames.put(result.getPackageName(),
+                        result.isPackageInstalled());
+                if (!result.isPackageInstalled()) {
+                    channelAssignedPackageNames.put(result.getPackageName(),
+                            result.isChannelAssigned());
                 }
 
                 // Get errata and channel ID
-                currentErrata = (Long) result.get("errata_id");
-                Long channelID = (Long) result.get("channel_id");
+                currentErrata = result.getErrataId();
+                final Optional<Long> channelID = result.getChannelId();
 
                 // Add these to the current system
-                hasErrata = currentErrata != null;
+                hasErrata = currentErrata.isPresent();
                 if (hasErrata) {
                     // We have an errata
                     ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(
-                            currentErrata, (String) result.get("errata_advisory"));
+                            currentErrata.get(), result.getErrataAdvisory());
                     currentSystem.addErrata(errata);
                 }
-                if (channelID != null) {
+                if (channelID.isPresent()) {
                     ChannelIdNameLabelTriple channel =
-                            new ChannelIdNameLabelTriple(channelID,
-                                    (String) result.get("channel_name"),
-                                    (String) result.get("channel_label"));
+                            new ChannelIdNameLabelTriple(channelID.get(),
+                                    result.getChannelName(),
+                                    result.getChannelLabel());
                     currentSystem.addChannel(channel);
                 }
             }
             else {
                 // Consider old products only if there is no patch in current or future
                 // products, channel rank >= 100000 indicates older products
-                Long channelRank = (Long) result.get("channel_rank");
+                final long channelRank = result.getChannelRank();
                 if (channelRank >= 100000 && currentSystem.getErratas().isEmpty()) {
                     ignoreOldProducts = false;
                 }
@@ -678,7 +777,7 @@ public class CVEAuditManager {
                 }
 
                 // NOT a new system, check if we are still looking at the same errata
-                Long errataID = (Long) result.get("errata_id");
+                final Optional<Long> errataID = result.getErrataId();
                 if (errataID.equals(currentErrata)) {
                     // At the end the entry should be true if the package name
                     // is patched once false otherwise (but should still appear
@@ -688,17 +787,17 @@ public class CVEAuditManager {
                         patched = patchedPackageNames.get(packageName);
                     }
                     patchedPackageNames.put(packageName, patched ||
-                            getBooleanValue(result, "package_installed"));
+                            result.isPackageInstalled());
 
                     // similar, if for each package name, at least one has an assigned
                     // channel, we are fine
-                    if (!getBooleanValue(result, "package_installed")) {
+                    if (!result.isPackageInstalled()) {
                         Boolean assigned = false;
                         if (channelAssignedPackageNames.containsKey(packageName)) {
                             assigned = channelAssignedPackageNames.get(packageName);
                         }
                         channelAssignedPackageNames.put(packageName, assigned ||
-                                getBooleanValue(result, "channel_assigned"));
+                                result.isChannelAssigned());
                     }
                 }
                 else {
@@ -711,30 +810,30 @@ public class CVEAuditManager {
                         patched = patchedPackageNames.get(packageName);
                     }
                     patchedPackageNames.put(packageName, patched ||
-                            getBooleanValue(result, "package_installed"));
+                            result.isPackageInstalled());
 
                     // similar, if for each package name, at least one has an assigned
                     // channel, we are fine
-                    if (!getBooleanValue(result, "package_installed")) {
+                    if (!result.isPackageInstalled()) {
                         Boolean assigned = false;
                         if (channelAssignedPackageNames.containsKey(packageName)) {
                             assigned = channelAssignedPackageNames.get(packageName);
                         }
                         channelAssignedPackageNames.put(packageName, assigned ||
-                                getBooleanValue(result, "channel_assigned"));
+                                result.isChannelAssigned());
                     }
                 }
 
                 // Add errata and channel ID
-                if (errataID != null) {
+                if (errataID.isPresent()) {
                     ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(
-                            errataID, (String) result.get("errata_advisory"));
+                            errataID.get(), result.getErrataAdvisory());
                     currentSystem.addErrata(errata);
                 }
                 ChannelIdNameLabelTriple channel =
-                        new ChannelIdNameLabelTriple((Long) result.get("channel_id"),
-                                (String) result.get("channel_name"),
-                                (String) result.get("channel_label"));
+                        new ChannelIdNameLabelTriple(result.getChannelId().get(),
+                                result.getChannelName(),
+                                result.getChannelLabel());
                 currentSystem.addChannel(channel);
             }
         }
