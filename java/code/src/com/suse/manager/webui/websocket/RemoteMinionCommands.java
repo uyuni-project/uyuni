@@ -15,6 +15,7 @@
 package com.suse.manager.webui.websocket;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.session.WebSession;
@@ -30,8 +31,11 @@ import com.suse.manager.webui.websocket.json.ActionErrorEventDto;
 import com.suse.manager.webui.websocket.json.AbstractSaltEventDto;
 import com.suse.manager.webui.websocket.json.SSHMinionMatchResultDto;
 import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.salt.netapi.errors.JsonParsingError;
+import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Json;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.websocket.OnOpen;
@@ -259,39 +263,32 @@ public class RemoteMinionCommands {
                         .collect(Collectors.toList());
                 sendMessage(session, new AsyncJobStartEventDto("run", allMinions, false));
 
-                res.forEach((minionId, future) -> {
-                    future.whenComplete((cmdResult, err) -> {
-                        if (cmdResult != null) {
-                            if (cmdResult.result().isPresent()) {
-                                sendMessage(session, new MinionCommandResultEventDto(
-                                        minionId, cmdResult.result().get()));
-                            }
-                            else {
-                                sendMessage(session,
-                                        new ActionErrorEventDto(minionId,
-                                            "ERR_CMD_NO_RESULTS",
-                                            "Command executed succesfully" +
-                                                    " but no result was returned"));
-                            }
+                res.forEach((minionId, future) -> future.whenComplete((cmdResult, err) -> {
+                    if (cmdResult != null) {
+                        sendMessage(session,
+                                cmdResult.fold(
+                                        error -> new ActionErrorEventDto(minionId,
+                                                "ERR_CMD_SALT_ERROR",
+                                                parseSaltError(error)),
+                                        result -> new MinionCommandResultEventDto(minionId,
+                                                result)));
+                    }
+                    if (err != null) {
+                        if (err instanceof TimeoutException) {
+                            sendMessage(session,
+                                    new ActionTimedOutEventDto(minionId, "run"));
+                            LOG.debug("Timed out waiting for response from minion " +
+                                    minionId);
                         }
-                        if (err != null) {
-                            if (err instanceof TimeoutException) {
-                                sendMessage(session,
-                                        new ActionTimedOutEventDto(minionId, "run"));
-                                LOG.debug("Timed out waiting for response from minion " +
-                                        minionId);
-                            }
-                            else {
-                                LOG.error("Error waiting for minion " + minionId, err);
-                                sendMessage(session,
-                                        new ActionErrorEventDto(minionId,
-                                                "ERR_WAIT_CMD",
-                                                "Error waiting to execute command: " +
-                                                        err.getMessage()));
-                            }
+                        else {
+                            LOG.error("Error waiting for minion " + minionId, err);
+                            sendMessage(session,
+                                    new ActionErrorEventDto(minionId, "ERR_WAIT_CMD",
+                                            "Error waiting to execute command: " +
+                                                    err.getMessage()));
                         }
-                    });
-                });
+                    }
+                }));
             }
         }
         catch (Exception e) {
@@ -341,6 +338,28 @@ public class RemoteMinionCommands {
         }
     }
 
+    private String parseSaltError(SaltError error) {
+        if (error instanceof JsonParsingError) {
+            JsonObject jsonErr = (JsonObject) ((JsonParsingError) error).getJson();
+            StringBuilder out = new StringBuilder("Error: ");
+            if (StringUtils.isNotEmpty(jsonErr.get("retcode").getAsString())) {
+                out.append("[");
+                out.append(jsonErr.get("retcode").getAsInt());
+                out.append("] ");
+            }
+            if (StringUtils.isNotEmpty(jsonErr.get("stdout").getAsString())) {
+                out.append(jsonErr.get("stdout").getAsString());
+            }
+            if (StringUtils.isNotEmpty(jsonErr.get("stderr").getAsString())) {
+                out.append(jsonErr.get("stderr").getAsString());
+            }
+            return out.toString();
+        }
+        else {
+            return error.toString();
+        }
+    }
+
     /**
      * Callback executed an error occurs.
      * @param session the websocket session
@@ -348,7 +367,13 @@ public class RemoteMinionCommands {
      */
     @OnError
     public void onError(Session session, Throwable err) {
-        LOG.error("Websocket endpoint error", err);
+        if (err.getMessage().startsWith("Unexpected error [32]")) {
+            // [32] "Broken pipe" is caught when the client side breaks the connection.
+            LOG.debug("Client broke the connection.", err);
+        }
+        else {
+            LOG.error("Websocket endpoint error", err);
+        }
     }
 
 }
