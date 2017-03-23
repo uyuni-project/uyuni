@@ -299,3 +299,26 @@ When(/^I click on "([^"]+)" for "([^"]+)"$/) do |arg1, arg2|
     end
   end
 end
+
+When(/^I disable IPv6 forwarding on all interfaces of the SLE minion$/) do
+  $minion.run("sysctl net.ipv6.conf.all.forwarding=0")
+end
+
+When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
+  $minion.run("sysctl net.ipv6.conf.all.forwarding=1")
+end
+
+When(/^I wait for the openSCAP audit to finish$/) do
+  begin
+    Timeout.timeout(30) do
+      loop do
+        _output, code = $minion.run('ps aux | grep "oscap\ xccdf"', false)
+        unless code.zero?
+          break
+        end
+      end
+    end
+  rescue Timeout::Error
+    raise "process did not stop after several tries"
+  end
+end
