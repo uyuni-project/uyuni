@@ -51,7 +51,7 @@ class MinionResultView extends React.Component {
                        <div className="badge">
                            {t("timed out")}
                        </div>
-                       <i className="fa fa-right fa-warning fa-1-5x"></i>
+                       <i className="fa fa-right fa-warning text-warning fa-1-5x"></i>
                     </div>
                   );
               } else if(resultType == "matched") {
@@ -62,7 +62,7 @@ class MinionResultView extends React.Component {
                        <div className="badge">
                           {this.state.open ? t("- hide error -") : t("- show error -")}
                        </div>
-                       <i className="fa fa-right fa-warning fa-1-5x"></i>
+                       <i className="fa fa-right fa-warning text-danger fa-1-5x"></i>
                     </div>
                   );
               } else if(resultType == "result") {
@@ -158,14 +158,20 @@ class RemoteCommand extends React.Component {
                      title={t("Stop waiting for all the minions to respond")}/>;
     } else if (this.state.ran.state() == "resolved" && this.state.previewed.state() != "resolved") {
         button = <Button id="preview" className="btn-default"
-                     text={t("Preview targets")} handler={this.onPreview}
-                     icon="fa-eye"
+                     text={t("Find targets")} handler={this.onPreview}
+                     icon="fa-search"
                      title={t("Check which minions match the target expression")}/>;
     } else if (this.state.previewed.state() == "resolved") {
-        button = <Button id="run" className="btn-default"
-                     text={t("Run command")} handler={this.onRun}
-                     icon="fa-play"
-                     title={t("Run the command on the target minions")}/>;
+        button = [
+                <Button id="preview" className="btn-default"
+                    handler={this.onPreview}
+                    icon="fa-search"
+                    title={t("Check which minions match the target expression")}/>,
+                <Button id="run" className="btn-default"
+                    text={t("Run command")} handler={this.onRun}
+                    icon="fa-play"
+                    title={t("Run the command on the target minions")}/>
+        ];
     }
 
     return (
