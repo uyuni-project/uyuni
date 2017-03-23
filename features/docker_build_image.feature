@@ -91,9 +91,9 @@ Feature:  Build Container images with SUSE Manager. Basic image
   Given I am authorized as "admin" with password "admin"
   And I schedule the build of image "suse_key" with version "Latest_key-activation1" via xmlrpc-call 
   And I schedule the build of image "suse_simply" with version "Latest_simply" via xmlrpc-call 
-  # FIXME: we can verify this with a timeout an checkinf if the image exist.
+  # FIXME-PICKEDUPbythisPR: we can verify this with a timeout an checkinf if the image exist.
   # then we can remove the sleep.
-  And I wait for "30" seconds
+  And I wait until all images were built correctly via xmlrpc-call
 
   Scenario: Delete image via xmlrpc calls
   Given I am authorized as "admin" with password "admin"
