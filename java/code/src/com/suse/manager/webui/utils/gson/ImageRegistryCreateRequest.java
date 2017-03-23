@@ -19,39 +19,11 @@ package com.suse.manager.webui.utils.gson;
  */
 public class ImageRegistryCreateRequest {
 
-    /**
-     * Nested class for credentials.
-     */
-    public static class CredentialsJson {
-
-        private String username;
-        private String password;
-
-        /**
-         * @return the username
-         */
-        public String getUsername() {
-            return username;
-        }
-
-        /**
-         * @return the password
-         */
-        public String getPassword() {
-            return password;
-        }
-    }
-
     private String label;
     private String uri;
-    private CredentialsJson credentials;
-
-    /**
-     * @return the credentials
-     */
-    public CredentialsJson getCredentials() {
-        return credentials;
-    }
+    private String username;
+    private String password;
+    private boolean useCredentials;
 
     /**
      * @return the label
@@ -65,5 +37,26 @@ public class ImageRegistryCreateRequest {
      */
     public String getUri() {
         return uri;
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @return the boolean
+     */
+    public boolean isUseCredentials() {
+        return useCredentials;
     }
 }

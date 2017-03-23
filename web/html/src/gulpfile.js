@@ -41,6 +41,7 @@ gulp.task('bundle-manager', function(done) {
                 .on('error', function (err) {
                     console.log(err.toString());
                     this.emit("end");
+                    process.exit(1);
                 })
                 .pipe(source(entry)) // this is a surrogate file name //'org-state-catalog-app.js'
                 .pipe(rename({

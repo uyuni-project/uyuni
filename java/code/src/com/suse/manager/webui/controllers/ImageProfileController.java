@@ -173,6 +173,25 @@ public class ImageProfileController {
     }
 
     /**
+     * Processes a GET request to get a single image profile object by label
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getSingleByLabel(Request req, Response res, User user) {
+        String profileLabel = req.params("label");
+
+        Optional<ImageProfile> profile =
+                ImageProfileFactory.lookupByLabelAndOrg(profileLabel, user.getOrg());
+
+        return profile.map(
+                p -> json(res, new JsonResult(true, ImageProfileJson.fromImageProfile(p))))
+                .orElseGet(() -> json(res, new JsonResult(false, "not_found")));
+    }
+
+    /**
      * Processes a GET request to get a list of all image profile objects
      *
      * @param req the request object
@@ -208,7 +227,7 @@ public class ImageProfileController {
 
                 //Throw NoSuchElementException if not found
                 ImageStore store = ImageStoreFactory
-                        .lookupBylabelAndOrg(reqData.getStoreLabel(), user.getOrg()).get();
+                        .lookupBylabelAndOrg(reqData.getImageStore(), user.getOrg()).get();
 
                 dp.setLabel(reqData.getLabel());
                 dp.setPath(reqData.getPath());
@@ -242,7 +261,7 @@ public class ImageProfileController {
         if (ImageProfile.TYPE_DOCKERFILE.equals(reqData.getImageType())) {
             //Throw NoSuchElementException if not found
             ImageStore store = ImageStoreFactory
-                    .lookupBylabelAndOrg(reqData.getStoreLabel(), user.getOrg()).get();
+                    .lookupBylabelAndOrg(reqData.getImageStore(), user.getOrg()).get();
 
             DockerfileProfile dockerfileProfile = new DockerfileProfile();
 

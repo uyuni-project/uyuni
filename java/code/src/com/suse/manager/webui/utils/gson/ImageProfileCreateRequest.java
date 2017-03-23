@@ -25,7 +25,7 @@ public class ImageProfileCreateRequest {
     private String label;
     private String path;
     private String imageType;
-    private String storeLabel;
+    private String imageStore;
     private String activationKey;
     private Map<String, String> customData;
 
@@ -53,8 +53,8 @@ public class ImageProfileCreateRequest {
     /**
      * @return the store label
      */
-    public String getStoreLabel() {
-        return storeLabel;
+    public String getImageStore() {
+        return imageStore;
     }
 
     /**

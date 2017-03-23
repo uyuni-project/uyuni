@@ -6,6 +6,8 @@ const Panel = require("../components/panel").Panel;
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
+const Input = require("../components/input");
+const Validation = require("../components/validation");
 
 const typeMap = {
     "dockerfile": { name: "Dockerfile", storeType: "registry" }
@@ -19,26 +21,26 @@ class CreateImageProfile extends React.Component {
 
     constructor(props) {
         super(props);
+        this.defaultModel = {
+            imageType: "dockerfile",
+            customData: {}
+        };
 
         this.state = {
             imageTypes: [
                 "dockerfile"
             ],
-            messages: [],
+            model: Object.assign({}, this.defaultModel),
             imageStores: [],
-            imageType: "dockerfile",
-            imageStore: "",
-            path: "",
-            label: "",
-            activationKey: "",
+            messages: [],
             customData: {}
         };
 
-        ["getChannels", "handleTokenChange", "handleChange", "handleImageTypeChange",
-            "clearFields", "getImageStores"]
+        ["handleTokenChange", "handleImageTypeChange", "isLabelUnique", "onUpdate",
+            "onCreate", "onFormChange", "onValidate", "clearFields"]
                 .forEach(method => this[method] = this[method].bind(this));
 
-        this.getImageStores(typeMap[this.state.imageType].storeType);
+        this.getImageStores(typeMap[this.state.model.imageType].storeType);
         if(this.isEdit()) {
             this.setValues(profileId);
         }
@@ -53,13 +55,15 @@ class CreateImageProfile extends React.Component {
             if(res.success) {
                 var data = res.data;
                 this.setState({
-                    label: data.label,
-                    activationKey: data.activationKey ? data.activationKey.key : undefined,
-                    path: data.path,
-                    imageType: data.imageType,
-                    imageStore: data.store,
-                    initLabel: data.label,
-                    customData: data.customData
+                    model: {
+                        label: data.label,
+                        activationKey: data.activationKey ? data.activationKey.key : undefined,
+                        path: data.path,
+                        imageType: data.imageType,
+                        imageStore: data.store
+                    },
+                    customData: data.customData,
+                    initLabel: data.label
                 });
                 this.getChannels(data.activationKey.key);
             } else {
@@ -78,7 +82,7 @@ class CreateImageProfile extends React.Component {
 
         Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).promise.then(res => {
             // Prevent out-of-order async results
-            if(res.activationKey != this.state.activationKey)
+            if(res.activationKey != this.state.model.activationKey)
                 return false;
 
             this.setState({
@@ -88,23 +92,11 @@ class CreateImageProfile extends React.Component {
     }
 
     handleTokenChange(event) {
-        this.handleChange(event);
         this.getChannels(event.target.value);
     }
 
-    handleChange(event) {
-        const target = event.target;
-
-        this.setState({
-            [target.name]: target.value
-        });
-    }
-
     handleImageTypeChange(event) {
-        this.handleChange(event);
-        const val = event.target.value;
-
-        this.getImageStores(typeMap[val].storeType);
+        this.getImageStores(typeMap[event.target.value].storeType);
     }
 
     addCustomData(label) {
@@ -129,25 +121,25 @@ class CreateImageProfile extends React.Component {
         }
     }
 
-    onUpdate(event) {
-        event.preventDefault();
+    isLabelUnique(label) {
+        if(this.state.initLabel && this.state.initLabel === label) {
+            return true;
+        }
 
+        return Network.get("/rhn/manager/api/cm/imageprofiles/find/" + label)
+            .promise.then(res => !res.success).catch(() => false);
+    }
+
+    onUpdate(model) {
         if(!this.isEdit()) {
             return false;
         }
 
-        const payload = {
-            label: this.state.label,
-            path: this.state.path,
-            imageType: this.state.imageType,
-            storeLabel: this.state.imageStore,
-            activationKey: this.state.activationKey,
-            customData: this.state.customData
-        };
+        Object.assign(model, {customData: this.state.customData});
 
         return Network.post(
             "/rhn/manager/api/cm/imageprofiles/" + profileId,
-            JSON.stringify(payload),
+            JSON.stringify(model),
             "application/json"
         ).promise.then(data => {
             if(data.success) {
@@ -162,24 +154,16 @@ class CreateImageProfile extends React.Component {
         });
     }
 
-    onCreate(event) {
-        event.preventDefault();
-
+    onCreate(model) {
         if(this.isEdit()) {
             return false;
         }
 
-        const payload = {
-            label: this.state.label,
-            path: this.state.path,
-            imageType: this.state.imageType,
-            storeLabel: this.state.imageStore,
-            activationKey: this.state.activationKey,
-            customData: this.state.customData
-        };
+        Object.assign(model, {customData: this.state.customData});
+
         return Network.post(
             "/rhn/manager/api/cm/imageprofiles",
-            JSON.stringify(payload),
+            JSON.stringify(model),
             "application/json"
         ).promise.then(data => {
             if(data.success) {
@@ -191,16 +175,24 @@ class CreateImageProfile extends React.Component {
                     })}/>
                 });
             }
+        });
+    }
+
+    onFormChange(model) {
+        this.setState({
+            model: model
+        });
+    }
+
+    onValidate(isValid) {
+        this.setState({
+            isInvalid: !isValid
         });
     }
 
     clearFields() {
       this.setState({
-          label: "",
-          path: "",
-          imageStore: "",
-          activationKey: "",
-          customData: {}
+            model: Object.assign({}, this.defaultModel)
       });
     }
 
@@ -213,94 +205,56 @@ class CreateImageProfile extends React.Component {
             });
     }
 
-    renderField(name, label, value, hidden = false, required = true, placeholder = "") {
-        return <div className="form-group">
-            <label className="col-md-3 control-label">
-                {label}
-                { required ? <span className="required-form-field"> *</span> : undefined }
-                :
-            </label>
-            <div className="col-md-6">
-                <input name={name} placeholder={placeholder} className="form-control" type={hidden ? "password" : "text"} value={value} onChange={this.handleChange}/>
-            </div>
-        </div>;
-    }
-
     renderTypeInputs(type, state) {
         switch (type) {
             case "dockerfile":
                 return [
-                    this.renderStoreSelect(),
-                    this.renderField("path", t("Path"), this.state.path, false, true, "giturl#branch:dockerfile_location")
+                    <Input.Select name="imageStore" label={t("Target Image Store")} required
+                            labelClass="col-md-3" divClass="col-md-6" invalidHint={
+                                <span>Target Image Store is required.&nbsp;<a href="/rhn/manager/cm/imagestores/create">Create a new one</a>.</span>
+                            }
+                    >
+                      <option value="" disabled key="0">{t("Select an image store")}</option>
+                      {
+                        this.state.imageStores.map(k =>
+                          <option key={k.id} value={k.label}>{ k.label }</option>
+                        )
+                      }
+                    </Input.Select>,
+                    <Input.Text name="path" label={t("Path")} required hint={<span>Format: <em>giturl#branch:dockerfile_location</em></span>} labelClass="col-md-3" divClass="col-md-6"/>
                 ];
             default:
-                return <div>if you see this please report a bug</div>;
+                return <div>If you see this please report a bug.</div>;
         }
     }
 
-    renderImageTypeSelect() {
-        return <div className="form-group">
-            <label className="col-md-3 control-label">Image Type<span className="required-form-field"> *</span>:</label>
-            <div className="col-md-6">
-               <select value={this.state.imageType} onChange={this.handleImageTypeChange} className="form-control" name="imageType" disabled={this.isEdit() ? "disabled" : undefined }>
-                 {
-                     this.state.imageTypes.map(k =>
-                        <option key={k} value={k}>{ typeMap[k].name }</option>
-                     )
-                 }
-               </select>
-            </div>
-        </div>;
-    }
-
     renderTokenSelect() {
-        return <div className="form-group">
-            <label className="col-md-3 control-label">Activation Key:</label>
-            <div className="col-md-6">
-               <select value={this.state.activationKey} onChange={this.handleTokenChange} className="form-control" name="activationKey">
-                 <option key="0" value="">None</option>
-                 {
+        const hint = this.state.channels && (
+            this.state.channels.base ?
+                <ul className="list-unstyled">
+                    <li>{this.state.channels.base.name}</li>
+                    <ul>
+                        {
+                            this.state.channels.children.map(c => <li>{c.name}</li>)
+                        }
+                    </ul>
+                </ul>
+            :
+                <span><em>{t("There are no channels assigned to this key.")}</em></span>
+        );
+
+        return (
+            <Input.Select name="activationKey" label={t("Activation Key")}
+                    onChange={this.handleTokenChange} labelClass="col-md-3" divClass="col-md-6"
+                    hint={hint}>
+                <option key="0" value="">None</option>
+                {
                      activationKeys.map(k =>
                         <option key={k} value={k}>{k}</option>
                      )
-                 }
-               </select>
-               { this.state.channels &&
-                    ( this.state.channels.base ?
-                        <div className="help-block">
-                            <ul className="list-unstyled">
-                                <li>{this.state.channels.base.name}</li>
-                                <ul>
-                                    {
-                                        this.state.channels.children.map(c => <li>{c.name}</li>)
-                                    }
-                                </ul>
-                            </ul>
-                        </div>
-                    :
-                        <div className="help-block">
-                            <span><em>{t("There are no channels assigned to this key.")}</em></span>
-                        </div>
-                    )
-               }
-            </div>
-        </div>;
-    }
-
-    renderStoreSelect() {
-        return <div className="form-group">
-            <label className="col-md-3 control-label">Target Image Store<span className="required-form-field"> *</span>:</label>
-            <div className="col-md-6">
-               <select value={this.state.imageStore} onChange={this.handleChange} className="form-control" name="imageStore">
-                 <option key="0" disabled="disabled">{t("Select an image store")}</option>
-                 {
-                     this.state.imageStores.map(k =>
-                        <option key={k.id} value={k.label}>{ k.label }</option>
-                     )
-                 }
-               </select>
-            </div>
-        </div>;
+                }
+            </Input.Select>
+        );
     }
 
     renderCustomDataFields() {
@@ -308,10 +262,8 @@ class CreateImageProfile extends React.Component {
             const key = customDataKeys.find(k => k.label === d[0]);
 
             return key && (
-                <div className="form-group">
-                    <label className="col-md-3 control-label">
-                        {key.label}:
-                    </label>
+                <Input.FormGroup>
+                    <Input.Label className="col-md-3" name={key.label}/>
                     <div className="col-md-6">
                         <div className="input-group">
                             <input name={key.label} className="form-control input-sm" type="text" value={this.state.customData[key.label]}
@@ -331,11 +283,11 @@ class CreateImageProfile extends React.Component {
                             </span>
                         </div>
                     </div>
-                </div>);
+                </Input.FormGroup>);
         });
 
-        const select = <div className="form-group">
-                <label className="col-md-3 control-label">Custom Info Values:</label>
+        const select = <Input.FormGroup>
+                <Input.Label className="col-md-3" name={t("Custom Info Values")}/>
                 <div className="col-md-6">
                     <select value="0" onChange={(e) => this.addCustomData(e.target.value)} className="form-control">
                         <option key="0" disabled="disabled">{t("Create additional custom info values")}</option>
@@ -346,7 +298,7 @@ class CreateImageProfile extends React.Component {
                         }
                     </select>
                 </div>
-            </div>;
+            </Input.FormGroup>;
 
         return [select, fields];
     }
@@ -356,9 +308,9 @@ class CreateImageProfile extends React.Component {
             <Button id="clear-btn" className="btn-default pull-right" icon="fa-eraser" text={t("Clear fields")} handler={this.clearFields}/>
         ];
         if(this.isEdit()) {
-            buttons.unshift(<SubmitButton id="update-btn" className="btn-success" icon="fa-edit" text={t("Update")}/>);
+            buttons.unshift(<SubmitButton id="update-btn" className="btn-success" icon="fa-edit" text={t("Update")} disabled={this.state.isInvalid}/>);
         } else {
-            buttons.unshift(<SubmitButton id="create-btn" className="btn-success" icon="fa-plus" text={t("Create")}/>);
+            buttons.unshift(<SubmitButton id="create-btn" className="btn-success" icon="fa-plus" text={t("Create")} disabled={this.state.isInvalid}/>);
         }
 
         return buttons;
@@ -368,21 +320,25 @@ class CreateImageProfile extends React.Component {
         return (
         <Panel title={this.isEdit() ? t("Edit Image Profile: '" + this.state.initLabel + "'") : t("Create Image Profile")} icon="fa fa-pencil">
             {this.state.messages}
-            <form className="image-profile-form" onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}>
-                <div className="form-horizontal">
-                    { this.renderField("label", t("Label"), this.state.label) }
-                    { this.renderImageTypeSelect() }
-                    { this.renderTypeInputs(this.state.imageType) }
-                    { this.renderTokenSelect() }
-                    <hr/>
-                    { this.renderCustomDataFields() }
-                    <div className="form-group">
-                        <div className="col-md-offset-3 col-md-6">
-                            { this.renderButtons() }
-                        </div>
+            <Input.Form model={this.state.model} className="image-profile-form"
+                    onChange={this.onFormChange}
+                    onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
+                    onValidate={this.onValidate}>
+                <Input.Text name="label" label={t("Label")} required validators={[this.isLabelUnique, Validation.isLowercase()]} invalidHint={t("Label is required and must be a unique lowercase string.")} labelClass="col-md-3" divClass="col-md-6"/>
+                <Input.Select name="imageType" label={t("Image Type")} required labelClass="col-md-3" divClass="col-md-6" onChange={this.handleImageTypeChange} disabled={this.isEdit()}>
+                { this.state.imageTypes.map(k =>
+                    <option key={k} value={k}>{ typeMap[k].name }</option>) }
+                </Input.Select>
+                { this.renderTypeInputs(this.state.model.imageType) }
+                { this.renderTokenSelect() }
+                <hr/>
+                { this.renderCustomDataFields() }
+                <div className="form-group">
+                    <div className="col-md-offset-3 col-md-6">
+                        { this.renderButtons() }
                     </div>
                 </div>
-            </form>
+            </Input.Form>
         </Panel>
         )
     }

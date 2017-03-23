@@ -23,7 +23,7 @@ CREATE TABLE suseImageInfo
                      CONSTRAINT suse_imginfo_chsum_fk
                        REFERENCES rhnChecksum (id),
     image_arch_id  NUMBER NOT NULL
-                       CONSTRAINT rhn_imginfo_said_fk
+                       CONSTRAINT suse_imginfo_said_fk
                            REFERENCES rhnServerArch (id),
     org_id         NUMBER NOT NULL
                      CONSTRAINT suse_imginfo_oid_fk

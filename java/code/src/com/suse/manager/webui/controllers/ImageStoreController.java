@@ -140,15 +140,53 @@ public class ImageStoreController {
             json.addProperty("id", s.getId());
             json.addProperty("label", s.getLabel());
             json.addProperty("uri", s.getUri());
-            json.addProperty("store_type", s.getStoreType().getLabel());
+            json.addProperty("storeType", s.getStoreType().getLabel());
 
             if (s.getCreds() != null && s.getCreds().getType().getLabel().equals(
                     Credentials.TYPE_REGISTRY)) {
                 Credentials dc = s.getCreds();
-                JsonObject creds = new JsonObject();
-                creds.addProperty("username", dc.getUsername());
-                creds.addProperty("password", dc.getPassword());
-                json.add("credentials", creds);
+                json.addProperty("username", dc.getUsername());
+                json.addProperty("password", dc.getPassword());
+                json.addProperty("useCredentials", true);
+            }
+            else {
+                json.addProperty("useCredentials", false);
+            }
+
+            return json(res, new JsonResult(true, json));
+        }).orElseGet(() -> json(res, new JsonResult(false, "not_found")));
+    }
+
+    /**
+     * Processes a GET request to get a single image store object by label
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getSingleByLabel(Request req, Response res, User user) {
+        String storeLabel = req.params("label");
+
+        Optional<ImageStore> store = ImageStoreFactory.lookupBylabelAndOrg(storeLabel,
+                user.getOrg());
+
+        return store.map(s -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("id", s.getId());
+            json.addProperty("label", s.getLabel());
+            json.addProperty("uri", s.getUri());
+            json.addProperty("storeType", s.getStoreType().getLabel());
+
+            if (s.getCreds() != null && s.getCreds().getType().getLabel().equals(
+                    Credentials.TYPE_REGISTRY)) {
+                Credentials dc = s.getCreds();
+                json.addProperty("username", dc.getUsername());
+                json.addProperty("password", dc.getPassword());
+                json.addProperty("useCredentials", true);
+            }
+            else {
+                json.addProperty("useCredentials", false);
             }
 
             return json(res, new JsonResult(true, json));
@@ -193,7 +231,7 @@ public class ImageStoreController {
      * @return the result JSON object
      */
     public static Object update(Request req, Response res, User user) {
-        ImageRegistryCreateRequest createRequest =
+        ImageRegistryCreateRequest updateRequest =
                 GSON.fromJson(req.body(), ImageRegistryCreateRequest.class);
 
         Long storeId = Long.parseLong(req.params("id"));
@@ -201,10 +239,10 @@ public class ImageStoreController {
                 ImageStoreFactory.lookupByIdAndOrg(storeId, user.getOrg());
 
         JsonResult result = store.map(s -> {
-            s.setLabel(createRequest.getLabel());
-            s.setUri(createRequest.getUri());
+            s.setLabel(updateRequest.getLabel());
+            s.setUri(updateRequest.getUri());
             s.setOrg(user.getOrg());
-            setStoreCredentials(s, createRequest.getCredentials());
+            setStoreCredentials(s, updateRequest);
 
             ImageStoreFactory.save(s);
 
@@ -229,7 +267,7 @@ public class ImageStoreController {
         ImageStore imageStore = new ImageStore();
         imageStore.setLabel(createRequest.getLabel());
         imageStore.setUri(createRequest.getUri());
-        setStoreCredentials(imageStore, createRequest.getCredentials());
+        setStoreCredentials(imageStore, createRequest);
 
         imageStore.setStoreType(ImageStoreFactory.lookupStoreTypeByLabel(
                 ImageStore.TYPE_REGISTRY).get());
@@ -258,12 +296,12 @@ public class ImageStoreController {
     }
 
     private static void setStoreCredentials(ImageStore store,
-            ImageRegistryCreateRequest.CredentialsJson credentials) {
-        if (credentials != null) {
+            ImageRegistryCreateRequest request) {
+        if (request.isUseCredentials()) {
             Credentials dc = store.getCreds() != null ?
                     store.getCreds() : CredentialsFactory.createRegistryCredentials();
-            dc.setUsername(credentials.getUsername());
-            dc.setPassword(credentials.getPassword());
+            dc.setUsername(request.getUsername());
+            dc.setPassword(request.getPassword());
             dc.setModified(new Date());
 
             store.setCreds(dc);
