@@ -97,4 +97,18 @@ public class VisualizationController {
         response.type("application/json");
         return json(response, VisualizationManager.proxyHierarchy(user));
     }
+
+    /**
+     * Returns JSON data for all systems with their managed groups view
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON result of the API call
+     */
+    public static String systemsWithManagedGroups(Request request, Response response,
+            User user) {
+        response.type("application/json");
+        return json(response, VisualizationManager.systemsWithManagedGroups(user));
+    }
 }

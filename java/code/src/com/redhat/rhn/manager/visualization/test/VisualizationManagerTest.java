@@ -17,7 +17,9 @@ package com.redhat.rhn.manager.visualization.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
@@ -25,6 +27,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.test.GuestBuilder;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.visualization.VisualizationManager;
 import com.redhat.rhn.manager.visualization.json.System;
@@ -167,6 +170,32 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
 
         System root = extractSingleSystemById(hierarchy.stream(), "root");
         assertNull(root.getParentId());
+    }
+
+    /**
+     * Test for retrieval of systems and groups
+     * @throws Exception if anything goes wrong
+     */
+    public void testSystemsWithGroups() throws Exception {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerFactoryTest.createTestServer(user, false);
+
+        ServerGroupManager manager = ServerGroupManager.getInstance();
+        ManagedServerGroup sg1 = manager.create(user, "FooFooFOO", "Foo Description");
+        manager.addServers(sg1, Collections.singleton(server), user);
+
+        List<Object> systemsWithGroups = VisualizationManager.systemsWithManagedGroups(user);
+
+        System serverProfile = extractSingleSystemByRawId(systemsWithGroups.stream(), server.getId().toString());
+        assertEquals(server.getName(), serverProfile.getName());
+        assertEquals(1, serverProfile.getManagedGroups().size());
+        assertEquals(
+                server.getManagedGroups().iterator().next().getName(),
+                serverProfile.getManagedGroups().iterator().next());
+
+        System root = extractSingleSystemById(systemsWithGroups.stream(), "root");
+        assertNull(root.getParentId());
+        assertEquals(root.getId(), serverProfile.getParentId());
     }
 
     private System extractSingleSystemByRawId(Stream<?> stream, String id) {
