@@ -16,6 +16,6 @@ class XMLRPCImageTest < XMLRPCBaseTest
   end
 
   def listImages
-    @connection.call("image.listImages", @sid, imageid)
+    @connection.call("image.listImages", @sid)
   end
 end
