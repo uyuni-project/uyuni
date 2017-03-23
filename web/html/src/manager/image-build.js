@@ -9,6 +9,7 @@ const {SubmitButton, LinkButton} = require("../components/buttons");
 const DateTimePicker = require("../components/datetimepicker").DateTimePicker;
 const Functions = require("../utils/functions");
 const Formats = Functions.Formats;
+const Input = require("../components/input");
 
 const typeMap = {
     "dockerfile": "Dockerfile"
@@ -25,25 +26,18 @@ class BuildImage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tag: tag || "",
-            host: "",
-            profileId: "",
-            profile: {
-                label: "",
-                imageType: "",
-                activationKey: "",
-                store: "",
-                path: ""
+            model: {
+                version: version || "",
+                earliest: Functions.Utils.dateWithTimezone(localTime)
             },
+            profile: {},
             profiles: [],
             hosts: [],
-            messages: [],
-            earliest: Functions.Utils.dateWithTimezone(localTime)
+            messages: []
         };
 
-        ["getProfiles", "getProfileDetails", "getBuildHosts", "handleChange",
-            "handleProfileChange", "handleDateTimeChange", "changeProfile", "onBuild"]
-                .forEach(method => this[method] = this[method].bind(this));
+        ["handleProfileChange", "onFormChange", "onValidate", "onBuild"]
+            .forEach(method => this[method] = this[method].bind(this));
 
         this.getProfiles();
         this.getBuildHosts();
@@ -70,7 +64,7 @@ class BuildImage extends React.Component {
                 var data = res.data;
 
                 // Prevent out-of-order async results
-                if(data.profileId != this.state.profileId)
+                if(data.profileId != this.state.model.profileId)
                     return false;
 
                 this.setState({
@@ -96,16 +90,10 @@ class BuildImage extends React.Component {
             });
 
             if(hostId) {
-                this.setState({host: hostId});
+                const model = this.state.model;
+                model.buildHostId = hostId;
+                this.setState({model: model});
             }
-        });
-    }
-
-    handleChange(event) {
-        const target = event.target;
-
-        this.setState({
-            [target.name]: target.value
         });
     }
 
@@ -113,12 +101,10 @@ class BuildImage extends React.Component {
         this.changeProfile(event.target.value);
     }
 
-    handleDateTimeChange(date) {
-        this.setState({"earliest": date});
-    }
-
     changeProfile(id) {
-        this.setState({ profileId: id });
+        const model = this.state.model;
+        model.profileId = id;
+        this.setState({model: model});
 
         if(id) {
             this.getProfileDetails(id);
@@ -127,15 +113,21 @@ class BuildImage extends React.Component {
         }
     }
 
-    onBuild(event) {
-        event.preventDefault();
-        const payload = {
-            tag: this.state.tag,
-            buildHostId: this.state.host,
-            earliest: Formats.LocalDateTime(this.state.earliest)
-        };
-        Network.post("/rhn/manager/api/cm/build/" + this.state.profileId,
-            JSON.stringify(payload),
+    onFormChange(model) {
+        this.setState({
+            model: model
+        });
+    }
+
+    onValidate(isValid) {
+        this.setState({
+            isInvalid: !isValid
+        });
+    }
+
+    onBuild(model) {
+        Network.post("/rhn/manager/api/cm/build/" + this.state.model.profileId,
+            JSON.stringify(model),
             "application/json"
         ).promise.then(data => {
             if (data.success) {
@@ -153,51 +145,6 @@ class BuildImage extends React.Component {
                 });
             }
         });
-    }
-
-    renderField(name, label, value, placeholder, hidden = false, required = true) {
-        return <div className="form-group">
-            <label className="col-md-3 control-label">
-                {label}
-                { required ? <span className="required-form-field"> *</span> : undefined }
-                :
-            </label>
-            <div className="col-md-9">
-                <input name={name} placeholder={placeholder} className="form-control" type={hidden ? "password" : "text"} value={value} onChange={this.handleChange}/>
-            </div>
-        </div>;
-    }
-
-    renderBuildHostSelect() {
-        return <div className="form-group">
-            <label className="col-md-3 control-label">Build Host<span className="required-form-field"> *</span>:</label>
-            <div className="col-md-9">
-               <select value={this.state.host} onChange={this.handleChange} className="form-control" name="host">
-                 <option key="0" disabled="disabled" value="">Select a build host</option>
-                 {
-                     this.state.hosts.map(h =>
-                        <option key={h.id} value={h.id}>{ h.name }</option>
-                     )
-                 }
-               </select>
-            </div>
-        </div>;
-    }
-
-    renderProfileSelect() {
-        return <div className="form-group">
-            <label className="col-md-3 control-label">Build Profile<span className="required-form-field"> *</span>:</label>
-            <div className="col-md-9">
-               <select value={this.state.profileId} onChange={this.handleProfileChange} className="form-control" name="profileId">
-                 <option key="0" disabled="disabled" value="">Select a build profile</option>
-                 {
-                     this.state.profiles.map(k =>
-                        <option key={k.profileId} value={k.profileId}>{ k.label }</option>
-                     )
-                 }
-               </select>
-            </div>
-        </div>;
     }
 
     renderProfileSummary() {
@@ -258,42 +205,47 @@ class BuildImage extends React.Component {
             </div>;
     }
 
-    renderButtons() {
-        var buttons = [];
-        buttons.push(<SubmitButton id="submit-btn" className="btn-success" icon="fa-cogs" text={t("Build")}/>);
-
-        return buttons;
-    }
-
-    renderDateTimePicker() {
-        return (<div className="form-group">
-            <label className="col-md-3 control-label">
-                Schedule no sooner than<span className="required-form-field"> *</span>:
-            </label>
-            <div className="col-md-9">
-                <DateTimePicker onChange={this.handleDateTimeChange} value={this.state.earliest} timezone={timezone} />
-            </div>
-        </div>);
-    }
-
     render() {
         return (
         <Panel title={t("Build Image")} icon="fa fa-cogs">
             {this.state.messages}
-            <form className="image-build-form" onSubmit={ this.onBuild }>
-                <div className="col-md-7 form-horizontal">
-                    { this.renderField("tag", t("Tag"), this.state.tag, "latest", false, false) }
-                    { this.renderProfileSelect() }
-                    { this.renderBuildHostSelect() }
-                    { this.renderDateTimePicker() }
-                    <div className="form-group">
-                        <div className="col-md-offset-3 col-md-9">
-                            { this.renderButtons() }
-                        </div>
+            <Input.Form model={this.state.model} className="image-build-form"
+                    onChange={this.onFormChange} onSubmit={this.onBuild}
+                    onValidate={this.onValidate} divClass="col-md-7">
+
+                <Input.Text name="tag" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest"/>
+
+                <Input.Select name="profileId" required label={t("Build Profile")}
+                        onChange={this.handleProfileChange} labelClass="col-md-3"
+                        divClass="col-md-9" invalidHint={<span>Build Profile is required.&nbsp;<a href="/rhn/manager/cm/imageprofiles/create">Create a new one</a>.</span>}>
+                    <option key="0" disabled="disabled" value="">Select a build profile</option>
+                    {
+                        this.state.profiles.map(k =>
+                            <option key={k.profileId} value={k.profileId}>{ k.label }</option>
+                        )
+                    }
+                </Input.Select>
+
+                <Input.Select name="buildHostId" required label={t("Build Host")} labelClass="col-md-3" divClass="col-md-9">
+                    <option key="0" disabled="disabled" value="">Select a build host</option>
+                    {
+                        this.state.hosts.map(h =>
+                            <option key={h.id} value={h.id}>{ h.name }</option>
+                        )
+                    }
+                </Input.Select>
+
+                <Input.DateTime label={t("Schedule no sooner than")} name="earliest" required labelClass="col-md-3" divClass="col-md-9" timezone={timezone} />
+
+                <Input.FormGroup>
+                    <div className="col-md-offset-3 col-md-9">
+                        <SubmitButton id="submit-btn" className="btn-success" icon="fa-cogs"
+                                text={t("Build")} disabled={this.state.isInvalid}/>
                     </div>
-                </div>
-                { this.renderProfileSummary() }
-            </form>
+                </Input.FormGroup>
+
+            </Input.Form>
+            { this.renderProfileSummary() }
         </Panel>
         )
     }

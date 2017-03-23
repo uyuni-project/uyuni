@@ -6,6 +6,7 @@ const Panel = require("../components/panel").Panel;
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
+const Input = require("../components/input");
 
 const typeMap = {
     "registry": "Registry"
@@ -17,21 +18,22 @@ class CreateImageStore extends React.Component {
 
     constructor(props) {
         super(props);
+        this.defaultModel = {
+            storeType: "registry",
+            useCredentials: false
+        };
+
         this.state = {
             storeTypes: [
                 "registry"
             ],
-            storeType: "registry",
-            username: "",
-            password: "",
-            init_label: "",
-            use_credentials: false,
+            model: Object.assign({}, this.defaultModel),
             messages: []
         };
 
-        ["setValues", "handleChange", "handleCheckbox", "onUpdate", "onCreate", "clearFields",
-         "renderField", "renderTypeInputs", "renderButtons"]
-            .forEach(method => this[method] = this[method].bind(this));
+        ["setValues", "isLabelUnique", "onUpdate", "onCreate", "onFormChange", "onValidate",
+            "clearFields"]
+                .forEach(method => this[method] = this[method].bind(this));
 
         if(this.isEdit()) {
             this.setValues(storeId);
@@ -47,63 +49,32 @@ class CreateImageStore extends React.Component {
             if(res.success) {
                 var data = res.data;
                 this.setState({
-                    storeType: data.store_type,
-                    uri: data.uri,
-                    label: data.label,
-                    init_label: data.label,
-                    use_credentials: data.credentials ? true : false
+                    model: data,
+                    initLabel: data.label
                 });
-
-                if(data.credentials) {
-                    this.setState({
-                        username: data.credentials.username,
-                        password: data.credentials.password,
-                    });
-                }
             } else {
                 window.location = "/rhn/manager/cm/imagestores/create";
             }
         });
     }
 
-    handleChange(event) {
-        const target = event.target;
+    isLabelUnique(label) {
+        if(this.state.initLabel && this.state.initLabel === label) {
+            return true;
+        }
 
-        this.setState({
-            [target.name]: target.value
-        });
+        return Network.get("/rhn/manager/api/cm/imagestores/find/" + label)
+            .promise.then(res => !res.success).catch(() => false);
     }
 
-    handleCheckbox(event) {
-        const target = event.target;
-
-        this.setState({
-            [target.name]: target.checked
-        });
-    }
-
-    onUpdate(event) {
-        event.preventDefault();
-
+    onUpdate(model) {
         if(!this.isEdit()) {
             return false;
         }
 
-        const payload = {
-            label: this.state.label,
-            uri: this.state.uri
-        };
-
-        if(this.state.use_credentials) {
-            payload.credentials = {
-                username: this.state.username,
-                password: this.state.password
-            }
-        }
-
         return Network.post(
             "/rhn/manager/api/cm/imagestores/" + storeId,
-            JSON.stringify(payload),
+            JSON.stringify(model),
             "application/json"
         ).promise.then(data => {
             if(data.success) {
@@ -118,28 +89,14 @@ class CreateImageStore extends React.Component {
         });
     }
 
-    onCreate(event) {
-        event.preventDefault();
-
+    onCreate(model) {
         if(this.isEdit()) {
             return false;
         }
 
-        const payload = {
-            label: this.state.label,
-            uri: this.state.uri
-        };
-
-        if(this.state.use_credentials) {
-            payload.credentials = {
-                username: this.state.username,
-                password: this.state.password
-            }
-        }
-
         return Network.post(
             "/rhn/manager/api/cm/imagestores",
-            JSON.stringify(payload),
+            JSON.stringify(model),
             "application/json"
         ).promise.then(data => {
             if(data.success) {
@@ -151,51 +108,38 @@ class CreateImageStore extends React.Component {
                     })}/>
                 });
             }
+        });
+    }
+
+    onFormChange(model) {
+        this.setState({
+            model: model
+        });
+    }
+
+    onValidate(isValid) {
+        this.setState({
+            isInvalid: !isValid
         });
     }
 
     clearFields() {
       this.setState({
-          label: "",
-          uri: "",
-          username: "",
-          password: ""
+            model: Object.assign({}, this.defaultModel)
       });
     }
 
-    renderTypeInputs(type, state) {
+    renderTypeInputs(type) {
         switch (type) {
             case "registry":
                 return [
-                    <div className="form-group">
-                        <div className="col-md-6 col-md-offset-3">
-                            <div className="checkbox">
-                                <label>
-                                    <input name="use_credentials" type="checkbox" checked={this.state.use_credentials} onChange={this.handleCheckbox}/>
-                                    <span>Use credentials</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>,
-                    this.renderField("username", t("Username"), this.state.username, false, true, this.state.use_credentials),
-                    this.renderField("password", t("Password"), this.state.password, true, true, this.state.use_credentials)
+                    <Input.Check name={t("useCredentials")} label={t("Use credentials")} divClass="col-md-6 col-md-offset-3"/>,
+                    <Input.Text name="username" label={t("Username")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>,
+                    <Input.Password name="password" label={t("Password")} labelClass="col-md-3" divClass="col-md-6" disabled={!this.state.model.useCredentials} required/>
                 ];
             default:
-                return <div>if you see this please report a bug</div>;
+                return <div>If you see this please report a bug.</div>;
         }
-    }
-
-    renderField(name, label, value, hidden = false, required = true, enabled = true) {
-        return <div className="form-group">
-            <label className="col-md-3 control-label">
-                {label}
-                { required ? <span className="required-form-field"> *</span> : undefined }
-                :
-            </label>
-            <div className="col-md-6">
-                <input name={name} className="form-control" type={hidden ? "password" : "text"} value={value} onChange={this.handleChange} disabled={!enabled}/>
-            </div>
-        </div>;
     }
 
     renderButtons() {
@@ -204,9 +148,9 @@ class CreateImageStore extends React.Component {
         ];
 
         if(this.isEdit()) {
-            buttons.unshift(<SubmitButton id="update-btn" className="btn-success" icon="fa-edit" text={t("Update")}/>);
+            buttons.unshift(<SubmitButton id="update-btn" className="btn-success" icon="fa-edit" text={t("Update")} disabled={this.state.isInvalid}/>);
         } else {
-            buttons.unshift(<SubmitButton id="create-btn" className="btn-success" icon="fa-plus" text={t("Create")}/>);
+            buttons.unshift(<SubmitButton id="create-btn" className="btn-success" icon="fa-plus" text={t("Create")} disabled={this.state.isInvalid}/>);
         }
 
         return buttons;
@@ -214,35 +158,30 @@ class CreateImageStore extends React.Component {
 
     render() {
         return (
-        <Panel title={this.isEdit() ? t("Edit Image Store: '" + this.state.init_label + "'") : t("Create Image Store")} icon="fa fa-pencil">
-            {this.state.use_credentials}
+        <Panel title={this.isEdit() ? t("Edit Image Store: '" + this.state.initLabel + "'") : t("Create Image Store")} icon="fa fa-pencil">
             {this.state.messages}
-            <form className="image-store-form" onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}>
-                <div className="form-horizontal">
-                    <div className="form-group">
-                        <label className="col-md-3 control-label">Store Type:</label>
-                        <div className="col-md-6">
-                           <select value={this.state.storeType} onChange={this.handleChange} className="form-control" name="imageStoreType" disabled={this.isEdit() ? "disabled" : undefined}>
-                             {
-                                 this.state.storeTypes.map(k =>
-                                    <option key={k} value={k}>{ typeMap[k] }</option>
-                                 )
-                             }
-                           </select>
-                        </div>
-                    </div>
-                    { this.renderField("label", t("Label"), this.state.label) }
-                    { this.renderField("uri", t("URI"), this.state.uri) }
-                    { this.renderTypeInputs(this.state.storeType) }
-                    <div className="form-group">
-                        <div className="col-md-offset-3 col-md-6">
-                            { this.renderButtons() }
-                        </div>
+            <Input.Form model={this.state.model} className="image-store-form"
+                    onChange={this.onFormChange}
+                    onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
+                    onValidate={this.onValidate}>
+               <Input.Select labelClass="col-md-3" divClass="col-md-6" label={t("Store Type")} name="storeType" required disabled={this.isEdit()}>
+                 {
+                     this.state.storeTypes.map(k =>
+                        <option key={k} value={k}>{ typeMap[k] }</option>
+                     )
+                 }
+               </Input.Select>
+                <Input.Text name="label" label={t("Label")} required validators={this.isLabelUnique} invalidHint={t("Label is required and must be unique.")} labelClass="col-md-3" divClass="col-md-6"/>
+                <Input.Text name="uri" label={t("URI")} required labelClass="col-md-3" divClass="col-md-6"/>
+                { this.renderTypeInputs(this.state.model.storeType) }
+                <div className="form-group">
+                    <div className="col-md-offset-3 col-md-6">
+                        { this.renderButtons() }
                     </div>
                 </div>
-            </form>
+            </Input.Form>
         </Panel>
-        )
+        );
     }
 }
 

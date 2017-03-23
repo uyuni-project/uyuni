@@ -79,7 +79,7 @@ public class ImageInfoFactory extends HibernateFactory {
     /**
      * Schedule an Image Build
      * @param buildHostId The ID of the build host
-     * @param tag the tag/version of the resulting image
+     * @param version the tag/version of the resulting image
      * @param profile the profile
      * @param earliest earliest build
      * @param user the current user
@@ -87,7 +87,7 @@ public class ImageInfoFactory extends HibernateFactory {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static Long scheduleBuild(long buildHostId, String tag, ImageProfile profile,
+    public static Long scheduleBuild(long buildHostId, String version, ImageProfile profile,
             Date earliest, User user) throws TaskomaticApiException {
         MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
 
@@ -100,24 +100,26 @@ public class ImageInfoFactory extends HibernateFactory {
         // imageBuildEvent.getTag());
 
         // Schedule the build
-        tag = tag.isEmpty() ? "latest" : tag;
+        version = version.isEmpty() ? "latest" : version;
         ImageBuildAction action = ActionManager.scheduleImageBuild(user,
-                Collections.singletonList(server.getId()), tag, profile, earliest);
+                Collections.singletonList(server.getId()), version, profile, earliest);
         taskomaticApi.scheduleActionExecution(action);
 
         // Create image info entry
-        lookupByName(profile.getLabel(), tag, profile.getTargetStore().getId())
+        lookupByName(profile.getLabel(), version, profile.getTargetStore().getId())
                 .ifPresent(ImageInfoFactory::delete);
 
         ImageInfo info = new ImageInfo();
         info.setName(profile.getLabel());
-        info.setVersion(tag);
+        info.setVersion(version);
         info.setStore(profile.getTargetStore());
         info.setOrg(server.getOrg());
         info.setAction(action);
         info.setProfile(profile);
         info.setBuildServer(server);
-        info.setChannels(new HashSet<>(profile.getToken().getChannels()));
+        if (profile.getToken() != null) {
+            info.setChannels(new HashSet<>(profile.getToken().getChannels()));
+        }
 
         // Image arch should be the same as the build host
         info.setImageArch(server.getServerArch());
@@ -227,7 +229,7 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup an image info by name, tag and image store.
+     * Lookup an image info by name, version and image store.
      *
      * @param name             the name
      * @param version          the version/tag

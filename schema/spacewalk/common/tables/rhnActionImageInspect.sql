@@ -25,7 +25,7 @@ CREATE TABLE rhnActionImageInspect
                          CONSTRAINT rhn_act_image_inspect_is_fk
                              REFERENCES suseImageStore (id)
                              ON DELETE CASCADE,
-    tag              VARCHAR2(128),
+    version          VARCHAR2(128),
     name             VARCHAR2(128),
     created          timestamp with local time zone
                          DEFAULT (current_timestamp) NOT NULL,
