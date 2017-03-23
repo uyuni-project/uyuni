@@ -93,10 +93,9 @@
 - features/centos_salt_reboot_test.feature
 - features/salt_regression_multiminion.feature 
 - features/centos_salt_ssh.feature 
-#### * Docker releated features tests.  ###
 
+#### * Docker releated features tests.  ###
 - features/docker_build_image.feature
-- features/docker_remove_image.feature 
 
 # end-tests
 - features/spacewalk_debug.feature
