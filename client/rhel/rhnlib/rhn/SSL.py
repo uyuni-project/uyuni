@@ -56,7 +56,7 @@ class SSLSocket:
         for f in trusted_certs:
             self.add_trusted_cert(f)
         # SSL method to use
-        self._ssl_method = SSL.TLSv1_METHOD
+        self._ssl_method = SSL.SSLv23_METHOD
         # Flags to pass to the SSL layer
         self._ssl_verify_flags = SSL.VERIFY_PEER
 
@@ -89,6 +89,9 @@ class SSLSocket:
         self._check_closed()
         # Get a context
         self._ctx = SSL.Context(self._ssl_method)
+        # disable SSL and allow only TLSv1+
+        self._ctx.set_options(SSL.OP_NO_SSLv2)
+        self._ctx.set_options(SSL.OP_NO_SSLv3)
         if self._trusted_certs:
             # We have been supplied with trusted CA certs
             for f in self._trusted_certs:
