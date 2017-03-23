@@ -47,6 +47,16 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile" as "path"
   And I click on "create-btn"
 
+  Scenario: Create a simple Real Image profile without act-key
+  Given I am authorized as "admin" with password "admin"
+  And I follow "Images" in the left menu
+  And I follow "Profiles" in the left menu
+  And I follow "Create"
+  And I enter "suse_real_simply" as "label"
+  And I select "galaxy-registry" from "imageStore"
+  And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile/serverhost" as "path"
+  And I click on "create-btn"
+
   Scenario: Create an Image profile with activation-key
   Given I am authorized as "admin" with password "admin"
   And I follow "Images" in the left menu
@@ -58,12 +68,24 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile" as "path"
   And I click on "create-btn"
 
+  Scenario: Create a simple Real Image profile with act-key
+  Given I am authorized as "admin" with password "admin"
+  And I follow "Images" in the left menu
+  And I follow "Profiles" in the left menu
+  And I follow "Create"
+  And I enter "suse_real_key" as "label"
+  And I select "galaxy-registry" from "imageStore"
+  And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile/serverhost" as "path"
+  And I click on "create-btn"
+
   Scenario: Build the images with and without activation key
   Given I am authorized as "admin" with password "admin"
   # At moment phantomjs has problemes with datapickler so we use xmlrpc-api
   And I schedule the build of image "suse_key" via xmlrpc-call
   And I schedule the build of image "suse_simply" via xmlrpc-call
-
+  And I schedule the build of image "suse_real_key" via xmlrpc-call
+  And I schedule the build of image "suse_real_simply" via xmlrpc-call
+  # FIXME: add test build image via gui.
   Scenario: Build same images with different versions
   Given I am authorized as "admin" with password "admin"
   And I schedule the build of image "suse_key" with version "Latest_key-activation1" via xmlrpc-call 
@@ -80,7 +102,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And The image "suse_simply" with version "Latest_simply" doesn't exist via xmlrpc-call
   And I schedule the build of image "suse_simply" with version "Latest_simply" via xmlrpc-call
   And I schedule the build of image "suse_key" with version "Latest_key-activation1" via xmlrpc-call 
-  And I wait for "30" seconds
+  And I wait for "60" seconds
 
   Scenario: Verify the status of images.
   Given I am authorized as "admin" with password "admin"
