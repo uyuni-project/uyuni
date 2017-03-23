@@ -152,7 +152,7 @@ Then(/^the pxe-default-profile should be disabled$/) do
 end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
-  output = sshcmd("cobbler system report --name #{$client_hostname}:1", ignore_err: true)[:stdout]
+  output = sshcmd("cobbler system report --name #{$client_fullhostname}:1", ignore_err: true)[:stdout]
   unless output.include?(arg1)
     raise "Not found: #{output}"
   end

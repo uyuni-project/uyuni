@@ -18,16 +18,14 @@ Then(/^I download the SSL certificate$/) do
 end
 
 Then(/^I should see the "([^"]*)" as link$/) do |target|
-  # $client_hostname here is correct, don't use the full for trad. client
-  step %(I should see a "#{$client_hostname}" link) if target == "sle-client"
+  step %(I should see a "#{$client_fullhostname}" link) if target == "sle-client"
   step %(I should see a "#{$minion_fullhostname}" link) if target == "sle-minion"
   step %(I should see a "#{$ssh_minion_fullhostname}" link) if target == "ssh-minion"
   step %(I should see a "#{$ceos_minion_fullhostname}" link) if target == "ceos-minion"
 end
 
 Then(/^I should not see the "([^"]*)" as text$/) do |target|
-  # $client_hostname here is correct, don't use the full for trad. client
-  step %(I should not see a "#{$client_hostname}" text) if target == "sle-client"
+  step %(I should not see a "#{$client_fullhostname}" text) if target == "sle-client"
   step %(I should not see a "#{$minion_fullhostname}" text) if target == "sle-minion"
   step %(I should not see a "#{$ssh_minion_fullhostname}" text) if target == "ssh-minion"
   step %(I should not see a "#{$ceos_minion_fullhostname}" text) if target == "ceos-minion"
