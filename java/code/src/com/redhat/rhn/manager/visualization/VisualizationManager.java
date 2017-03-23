@@ -138,6 +138,34 @@ public class VisualizationManager {
     }
 
     /**
+     * Data for systems with managed groups view
+     * @param user the user
+     * @return Data for systems with managed groups
+     */
+    public static List<Object> systemsWithManagedGroups(User user) {
+        Map<String, Set<String>> installedProducts = fetchInstalledProducts(user);
+        Map<String, Set<String>> groups = fetchSystemManagedGroups(user);
+
+        System root = new System();
+        root.setId("root");
+        root.setName("SUSE Manager");
+
+        Stream<System> systems = ((Stream<System>) HibernateFactory.getSession()
+                .getNamedQuery("Server.listSystems")
+                .setParameter("org", user.getOrg())
+                .list()
+                .stream())
+                .map(s -> s.setParentId(root.getId()))
+                .map(s -> s.setManagedGroups(groups.get(s.getRawId())))
+                .map(s -> s.setInstalledProducts(installedProducts.get(s.getRawId())));
+
+        return concatStreams(
+                Stream.of(root),
+                systems
+        ).collect(Collectors.toList());
+    }
+
+    /**
      * Map of system id as string -> set of installed product names
      * @param user user
      * @return map of system id as string -> set of installed product names
@@ -145,6 +173,22 @@ public class VisualizationManager {
     private static Map<String, Set<String>> fetchInstalledProducts(User user) {
         return ((List<Object[]>) HibernateFactory.getSession()
                 .getNamedQuery("Server.serverInstalledProductNames")
+                .setParameter("org", user.getOrg())
+                .list())
+                .stream()
+                .collect(Collectors.toMap(
+                        v -> v[0].toString(),
+                        v -> set((String) v[1]),
+                        (u, v) -> {
+                            u.addAll(v);
+                            return u;
+                        }
+                ));
+    }
+
+    private static Map<String, Set<String>> fetchSystemManagedGroups(User user) {
+        return ((List<Object[]>) HibernateFactory.getSession()
+                .createNamedQuery("Server.systemIdManagedGroupName")
                 .setParameter("org", user.getOrg())
                 .list())
                 .stream()

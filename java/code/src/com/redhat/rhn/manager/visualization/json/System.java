@@ -39,6 +39,8 @@ public class System {
     private Long checkin;
     private String type = "system";
     private Set<String> installedProducts = new HashSet<>();
+    @SerializedName("managed_groups")
+    private Set<String> managedGroups = new HashSet<>();
 
     /**
      * Standard constructor
@@ -284,6 +286,26 @@ public class System {
      */
     public System setInstalledProducts(Set<String> installedProductsIn) {
         installedProducts = installedProductsIn;
+        return this;
+    }
+
+    /**
+     * Gets the managedGroups.
+     *
+     * @return managedGroups
+     */
+    public Set<String> getManagedGroups() {
+        return managedGroups;
+    }
+
+    /**
+     * Sets the managedGroups.
+     *
+     * @param groupsIn - the managedGroups
+     * @return this
+     */
+    public System setManagedGroups(Set<String> groupsIn) {
+        managedGroups = groupsIn;
         return this;
     }
 }
