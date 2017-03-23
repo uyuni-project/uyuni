@@ -521,43 +521,47 @@ public class SaltUtils {
 
     private static void handleImagePackageProfileUpdate(ImageInfo imageInfo,
                                                    ImagesProfileUpdateSlsResult result) {
-        ImageInspectSlsResult iret = result.getDockerngInspect().getChanges().getRet();
-        imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
+        if (result.getDockerngInspect().isResult()) {
+            ImageInspectSlsResult iret = result.getDockerngInspect().getChanges().getRet();
+            imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
+        }
 
         PkgProfileUpdateSlsResult ret = result.getDockerngSlsBuild().getChanges().getRet();
+        if (result.getDockerngSlsBuild().isResult()) {
 
-        Optional.of(ret.getInfoInstalled().getChanges().getRet())
-                .map(saltPkgs -> saltPkgs.entrySet().stream()
-                        .map(entry -> createImagePackageFromSalt(entry.getKey(),
-                                entry.getValue(), imageInfo))
-                        .collect(Collectors.toSet())
-                );
-        Optional.ofNullable(ret.getListProducts())
-        .map(products -> products.getChanges().getRet())
-        .map(SaltUtils::getInstalledProducts)
-        .ifPresent(imageInfo::setInstalledProducts);
+            Optional.of(ret.getInfoInstalled().getChanges().getRet())
+            .map(saltPkgs -> saltPkgs.entrySet().stream()
+                    .map(entry -> createImagePackageFromSalt(entry.getKey(),
+                            entry.getValue(), imageInfo))
+                    .collect(Collectors.toSet())
+                    );
+            Optional.ofNullable(ret.getListProducts())
+            .map(products -> products.getChanges().getRet())
+            .map(SaltUtils::getInstalledProducts)
+            .ifPresent(imageInfo::setInstalledProducts);
 
-        Optional<String> rhelReleaseFile =
-                Optional.ofNullable(ret.getRhelReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(res -> res.getStdout() != null)
-                .map(CmdExecCodeAllResult::getStdout);
-        Optional<String> centosReleaseFile =
-                Optional.ofNullable(ret.getCentosReleaseFile())
-                .map(StateApplyResult::getChanges)
-                .filter(res -> res.getStdout() != null)
-                .map(CmdExecCodeAllResult::getStdout);
-        Optional<String> resReleasePkg =
-                Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
-                .map(StateApplyResult::getChanges)
-                .filter(res -> res.getStdout() != null)
-                .map(CmdExecCodeAllResult::getStdout);
-        if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
-                resReleasePkg.isPresent()) {
-            Set<InstalledProduct> products = getInstalledProductsForRhel(
-                    imageInfo, resReleasePkg,
-                    rhelReleaseFile, centosReleaseFile);
-            imageInfo.setInstalledProducts(products);
+            Optional<String> rhelReleaseFile =
+                    Optional.ofNullable(ret.getRhelReleaseFile())
+                    .map(StateApplyResult::getChanges)
+                    .filter(res -> res.getStdout() != null)
+                    .map(CmdExecCodeAllResult::getStdout);
+            Optional<String> centosReleaseFile =
+                    Optional.ofNullable(ret.getCentosReleaseFile())
+                    .map(StateApplyResult::getChanges)
+                    .filter(res -> res.getStdout() != null)
+                    .map(CmdExecCodeAllResult::getStdout);
+            Optional<String> resReleasePkg =
+                    Optional.ofNullable(ret.getWhatProvidesResReleasePkg())
+                    .map(StateApplyResult::getChanges)
+                    .filter(res -> res.getStdout() != null)
+                    .map(CmdExecCodeAllResult::getStdout);
+            if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
+                    resReleasePkg.isPresent()) {
+                Set<InstalledProduct> products = getInstalledProductsForRhel(
+                        imageInfo, resReleasePkg,
+                        rhelReleaseFile, centosReleaseFile);
+                imageInfo.setInstalledProducts(products);
+            }
         }
 
         ImageInfoFactory.save(imageInfo);
