@@ -60,11 +60,11 @@ Then(/^this client should appear in spacewalk$/) do
 end
 
 Then(/^I should see this client as link$/) do
-  step %(I should see a "#{$client_hostname}" link)
+  step %(I should see a "#{$client_fullhostname}" link)
 end
 
 When(/^I follow this client link$/) do
-  step %(I follow "#{$client_hostname}")
+  step %(I follow "#{$client_fullhostname}")
 end
 
 Then(/^config-actions are enabled$/) do
