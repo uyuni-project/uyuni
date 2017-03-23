@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
+import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListRhnSetHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -59,6 +60,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable {
     private static Logger log = Logger.getLogger(ErrataConfirmSetupAction.class);
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
@@ -77,12 +79,6 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable {
         helper.setWillClearSet(false);
         helper.execute();
 
-        if (helper.isDispatched()) {
-            if (!set.isEmpty()) {
-                return confirmErrata(mapping, formIn, request, response);
-            }
-            RhnHelper.handleEmptySelection(request);
-        }
         //Setup the datepicker widget
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request,
                 (DynaActionForm)formIn, "date", DatePicker.YEAR_RANGE_POSITIVE);
@@ -92,7 +88,15 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable {
 
         request.setAttribute("date", picker);
         request.setAttribute("system", server);
+        request.setAttribute(ListTagHelper.PARENT_URL,
+                request.getRequestURI() + "?sid=" + sid);
 
+        if (helper.isDispatched()) {
+            if (!set.isEmpty()) {
+                return confirmErrata(mapping, formIn, request, response);
+            }
+            RhnHelper.handleEmptySelection(request);
+        }
         return getStrutsDelegate().forwardParams(mapping.findForward(
                 RhnHelper.DEFAULT_FORWARD), request.getParameterMap());
     }
@@ -188,6 +192,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable {
      * @param request HttpServletRequest containing request vars
      * @return Returns Map of parameters
      */
+    @Override
     protected Map makeParamMap(HttpServletRequest request) {
         RequestContext requestContext = new RequestContext(request);
 
@@ -204,6 +209,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable {
      *
      * {@inheritDoc}
      */
+    @Override
     public List getResult(RequestContext context) {
         Long sid = context.getParamAsLong("sid");
         return SystemManager.errataInSet(context.getCurrentUser(),
