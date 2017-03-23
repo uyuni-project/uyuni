@@ -449,9 +449,11 @@ public enum SaltServerActionService {
                                     ConfigDefaults.TEMP_TOKEN_LIFETIME
                             )
                     );
-                    tokenBuilder.onlyChannels(profile.getToken().getChannels()
-                            .stream().map(Channel::getLabel)
-                            .collect(Collectors.toSet()));
+                    if (profile.getToken() != null) {
+                        tokenBuilder.onlyChannels(profile.getToken().getChannels()
+                                .stream().map(Channel::getLabel)
+                                .collect(Collectors.toSet()));
+                    }
                     String t = "";
                     try {
                         t = tokenBuilder.getToken();
@@ -471,20 +473,23 @@ public enum SaltServerActionService {
                     pillar.put("builddir", profile.getPath());
 
                     String host = SaltStateGeneratorService.getChannelHost(minion);
-                    String repocontent = profile.getToken().getChannels().stream().map(s ->
-                    {
-                        return "[susemanager:" + s.getLabel() + "]\n\n" +
-                                "name=" + s.getName() + "\n\n" +
-                                "enabled=1\n\n" +
-                                "autorefresh=1\n\n" +
-                                "baseurl=https://" + host + ":443/rhn/manager/download/" +
-                                s.getLabel() + "?" + token + "\n\n" +
-                                "type=rpm-md\n\n" +
-                                "gpgcheck=1\n\n" +
-                                "repo_gpgcheck=0\n\n" +
-                                "pkg_gpgcheck=1\n\n";
-                    }).collect(Collectors.joining("\n\n"));
-
+                    String repocontent = "";
+                    if (profile.getToken() != null) {
+                        repocontent = profile.getToken().getChannels().stream().map(s ->
+                        {
+                            return "[susemanager:" + s.getLabel() + "]\n\n" +
+                                    "name=" + s.getName() + "\n\n" +
+                                    "enabled=1\n\n" +
+                                    "autorefresh=1\n\n" +
+                                    "baseurl=https://" + host +
+                                    ":443/rhn/manager/download/" + s.getLabel() + "?" +
+                                    token + "\n\n" +
+                                    "type=rpm-md\n\n" +
+                                    "gpgcheck=1\n\n" +
+                                    "repo_gpgcheck=0\n\n" +
+                                    "pkg_gpgcheck=1\n\n";
+                        }).collect(Collectors.joining("\n\n"));
+                    }
                     pillar.put("repo", repocontent);
                     pillar.put("cert", certificate);
 
