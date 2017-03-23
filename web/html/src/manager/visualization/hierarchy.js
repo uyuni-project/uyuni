@@ -7,6 +7,16 @@ const Panel = require("../../components/panel").Panel;
 const HierarchyView = require("./hierarchy-view.js");
 const Filters = require("./filters.js");
 const Criteria = require("./criteria.js");
+const Preprocessing = require("./preprocessing.js");
+
+// turns the input data into tree, backups children
+function treeify(root, dimensions) {
+  const tree = d3.tree().size(dimensions);
+  tree(root);
+  root.each(d => {
+      d._allChildren = d.children;  // backup children
+  })
+}
 
 function initHierarchy() {
   $(document).ready(function() {
@@ -51,13 +61,6 @@ function initHierarchy() {
       .get(endpoint, "application/json")
       .promise
       .then(d => {
-        var root = d3.stratify()(d);
-        var tree = d3.tree().size([mainDivWidth, mainDivHeight]);
-        tree(root);
-        root.each(d => {
-          d._allChildren = d.children;  // backup children
-        });
-
         // Prepare DOM
         var svg = d3.select('#svg-wrapper')
           .append('svg')
@@ -92,7 +95,14 @@ function initHierarchy() {
           }
         }
 
-        var t = HierarchyView.hierarchyView(root, container)
+        let dataProcessor = Preprocessing.stratify(d);
+        // hack: use grouping processor based on the endpoint
+        if (endpoint.includes('systems-with-managed-groups')) {
+          dataProcessor = Preprocessing.grouping(d);
+        }
+        const root = dataProcessor();
+        treeify(root, [mainDivWidth, mainDivHeight]);
+        const t = HierarchyView.hierarchyView(root, container)
           .simulation(mySimulation)
           .deriveClass(myDeriveClass);
         t();
@@ -133,8 +143,7 @@ function initHierarchy() {
           .attr('placeholder', 'e.g., client.nue.sles')
           .on('input', function() {
             myFilters.put('name', d => d.data.name.toLowerCase().includes(this.value.toLowerCase()));
-            nodeVisible(root, myFilters.predicate());
-            t();
+            refreshTree(dataProcessor, myFilters, myCriteria, t);
           });
 
         const baseProdFilterDiv = d3.select('#filter-wrapper')
@@ -148,8 +157,7 @@ function initHierarchy() {
           .attr('placeholder', 'e.g., SLE12')
           .on('input', function() {
             myFilters.put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(this.value.toLowerCase()));
-            nodeVisible(root, myFilters.predicate());
-            t();
+            refreshTree(dataProcessor, myFilters, myCriteria, t);
           });
 
         const installedProductsFilterDiv = d3.select('#filter-wrapper')
@@ -163,9 +171,33 @@ function initHierarchy() {
           .attr('placeholder', 'e.g., SLES')
           .on('input', function() {
             myFilters.put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(this.value.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
-            nodeVisible(root, myFilters.predicate());
-            t();
+            refreshTree(dataProcessor, myFilters, myCriteria, t);
           });
+
+        function refreshTree(processor, filters, criteria, tree) {
+          const newRoot = processor();
+          treeify(newRoot, [mainDivWidth, mainDivHeight]);
+          tree.root(newRoot);
+          nodeVisible(newRoot, filters.predicate());
+          tree.deriveClass(criteria.deriveClass)
+          tree();
+        }
+
+        if (dataProcessor.groupingConfiguration) { // we have a processor responding to groupingConfiguration
+          const groupingDiv = d3.select('#filter-wrapper')
+            .append('div').attr('class', 'filter');
+          groupingDiv
+            .append('label')
+            .text('Group by group');
+          groupingDiv
+            .append('input')
+            .attr('type', 'text')
+            .attr('placeholder', 'e.g., DEV,QA')
+            .on('input', function() {
+              dataProcessor.groupingConfiguration(JSON.parse(this.value || ''));
+              refreshTree(dataProcessor, myFilters, myCriteria, t);
+            });
+        }
 
         function updateTree() {
           const date = $( '#criteria-datepicker' ).datepicker( "getDate" );
@@ -178,8 +210,7 @@ function initHierarchy() {
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
           };
-          t.deriveClass(myCriteria.deriveClass)
-          t();
+          refreshTree(dataProcessor, myFilters, myCriteria, t);
         }
 
         function resetTree() {
