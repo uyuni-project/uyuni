@@ -33,7 +33,15 @@ And(/^I navigate to images build webpage$/) do
 end
 
 And(/^I verify that all container images were built correctly in the gui$/) do
-  raise "an image was not built correctly" unless find(:xpath, "//*[contains(@title, 'Built')]")
+  for c in 0..20
+      raise "error detected while building images" if has_xpath?("//*[contains(@title, 'Failed')]")
+      if has_xpath?("//*[contains(@title, 'Built')]", :count => 4)
+          break
+      end
+      sleep 15
+      step %(I navigate to images webpage)
+  end
+  raise "an image was not built correctly" unless has_xpath?("//*[contains(@title, 'Built')]", :count => 4)
 end
 
 And(/^I schedule the build of image "([^"]*)" via xmlrpc-call$/) do |image|
