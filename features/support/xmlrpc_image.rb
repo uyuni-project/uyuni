@@ -20,7 +20,7 @@ class XMLRPCImageTest < XMLRPCBaseTest
   end
 
   # store methods
-  def createStore(label, uri, type, params = {})
+  def createStore(label, uri, type, params={})
     @connection.call("image.store.create", @sid, label, uri, type, params)
   end
 
@@ -35,8 +35,12 @@ class XMLRPCImageTest < XMLRPCBaseTest
   def listImageStores
     @connection.call("image.store.listImageStores", @sid)
   end
-  
+
   def getDetailsStore(label)
     @connection.call("image.store.getDetails", @sid, label)
+  end
+
+  def setDetails(label, details)
+    @connection.call("image.store.setDetails", @sid, label, details)
   end
 end
