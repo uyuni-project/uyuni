@@ -32,14 +32,14 @@ And(/^I navigate to images build webpage$/) do
   visit("https://#{$server_fullhostname}/rhn/manager/cm/build")
 end
 
-And(/^I verify that all container images were built correctly in the gui$/) do
+And(/^I verify that all "([^"]*)" container images were built correctly in the gui$/) do |count|
   20.times do
     raise "error detected while building images" if has_xpath?("//*[contains(@title, 'Failed')]")
-    break if has_xpath?("//*[contains(@title, 'Built')]", :count => 5)
-    sleep 15
+    break if has_xpath?("//*[contains(@title, 'Built')]", :count => count)
+    sleep 20
     step %(I navigate to images webpage)
   end
-  raise "an image was not built correctly" unless has_xpath?("//*[contains(@title, 'Built')]", :count => 5)
+  raise "an image was not built correctly" unless has_xpath?("//*[contains(@title, 'Built')]", :count => count)
 end
 
 And(/^I schedule the build of image "([^"]*)" via xmlrpc-call$/) do |image|
