@@ -104,8 +104,10 @@ public class SaltService {
     private final AuthModule AUTH_MODULE = AuthModule.AUTO;
 
     // Salt presence properties
-    private final Integer PRESENCE_TIMEOUT = 4;
-    private final Integer PRESENCE_GATHER_JOB_TIMEOUT = 1;
+    private final Integer SALT_PRESENCE_TIMEOUT =
+            ConfigDefaults.get().getSaltPresencePingTimeout();
+    private final Integer SALT_PRESENCE_GATHER_JOB_TIMEOUT =
+            ConfigDefaults.get().getSaltPresencePingGatherJobTimeout();
 
     // Shared salt client instance
     private final SaltClient SALT_CLIENT = new SaltClient(SALT_MASTER_URI);
@@ -766,7 +768,8 @@ public class SaltService {
             throws SaltException {
         return new LocalCall<>("test.ping",
                 Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { },
-                Optional.of(PRESENCE_TIMEOUT), Optional.of(PRESENCE_GATHER_JOB_TIMEOUT))
+                Optional.of(SALT_PRESENCE_TIMEOUT),
+                Optional.of(SALT_PRESENCE_GATHER_JOB_TIMEOUT))
             .callSync(SALT_CLIENT, targetIn, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
     }
 
