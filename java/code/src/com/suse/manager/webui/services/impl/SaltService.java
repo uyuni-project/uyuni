@@ -657,12 +657,14 @@ public class SaltService {
                 sshActiveMinions.addAll(sshResults.keySet());
             }
 
-            if (!regularActiveMinions.containsAll(regularMinionIds) ||
-                    !sshActiveMinions.containsAll(sshMinionIds)) {
-                HashSet<String> unreachableMinions = new HashSet<>(uniqueMinionIds);
-                unreachableMinions.removeAll(regularActiveMinions);
-                unreachableMinions.removeAll(sshActiveMinions);
-                LOG.warn("Some of the targetted minions cannot be reached: " +
+            List<String> unreachableMinions = uniqueMinionIds.stream()
+                .filter(id -> !regularActiveMinions.contains(id))
+                .filter(id -> !sshActiveMinions.contains(id))
+                .sorted()
+                .collect(Collectors.toList());
+
+            if (!unreachableMinions.isEmpty()) {
+                LOG.warn("Some of the targeted minions cannot be reached: " +
                         unreachableMinions.toString() +
                         ". Excluding them from the synchronious call.");
                 sshMinionIds.retainAll(sshActiveMinions);
