@@ -85,9 +85,11 @@ end
 # images stores tests
 And(/^I run image.store tests via xmlrpc$/) do
   cont_op.login('admin', 'admin')
-  cont.op.createStore('fake_store', 'https://github.com/SUSE/spacewalk-testsuite-base', 'registry')
-  cont.op.deleteStore('fake_store')
-#  assert_raise NameError do
+  cont_op.createStore('fake_store', 'https://github.com/SUSE/spacewalk-testsuite-base', 'registry')
+  cont_op.deleteStore('fake_store')
+  cont_op.listImageStoreTypes
+  cont_op.listImageStores
+#  assertö_raise NameError do
 #  puts x  #Raises NameError, so assertion succeeds
 #  end
 end
