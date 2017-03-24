@@ -134,17 +134,22 @@ $.closeDetailBox = function() {
   $('.detailBox').hide().html('');
   unselectAllNodes();
 }
+$.addSystemFromSSM = function(id) {
+  return update_server_set('ids', 'system_list', true, [id]);
+}
 
 function updateDetailBox(d) {
   var data = d.data;
   var systemDetailLink = '';
   var systemSpecificInfo = '';
+  var systemToSSM = '';
   if (data.type && data.type == 'system' && data.rawId != 'root') {
     var idSlices = (data.rawId).split('-');
     var systemId = idSlices[idSlices.length - 1];
     systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
       systemId + '" target="_blank">System details page</a></div>';
 
+    systemToSSM = '<button onClick="$.addSystemFromSSM(' + data.rawId + ')">Add system to SSM</button>';
     systemSpecificInfo =
       '<div>Base entitlement : <strong>' + data.base_entitlement + '</strong></div>' +
       '<div>Base channel: <strong>' + data.base_channel + '</strong></div>' +
@@ -156,6 +161,7 @@ function updateDetailBox(d) {
     '<a href="#" class="close-popup" onClick="$.closeDetailBox()">X</a>' +
     '<div>System name : <strong>' + data.name + '</strong></div>' +
     systemDetailLink +
+    systemToSSM +
     '<div>Type : <strong>' + data.type + '</strong></div>' +
     systemSpecificInfo +
     '</div>'
