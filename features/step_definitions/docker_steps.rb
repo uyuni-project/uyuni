@@ -36,7 +36,7 @@ And(/^I verify that all "([^"]*)" container images were built correctly in the g
   20.times do
     raise "error detected while building images" if has_xpath?("//*[contains(@title, 'Failed')]")
     break if has_xpath?("//*[contains(@title, 'Built')]", :count => count)
-    sleep 15
+    sleep 20
     step %(I navigate to images webpage)
   end
   raise "an image was not built correctly" unless has_xpath?("//*[contains(@title, 'Built')]", :count => count)
