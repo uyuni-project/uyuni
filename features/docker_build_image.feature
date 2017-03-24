@@ -85,15 +85,13 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I schedule the build of image "suse_key" via xmlrpc-call
   And I schedule the build of image "suse_simply" via xmlrpc-call
   And I schedule the build of image "suse_real_key" via xmlrpc-call
-
   # FIXME: add test build image via gui.
   Scenario: Build same images with different versions
   Given I am authorized as "admin" with password "admin"
   And I schedule the build of image "suse_key" with version "Latest_key-activation1" via xmlrpc-call 
   And I schedule the build of image "suse_simply" with version "Latest_simply" via xmlrpc-call 
-  # FIXME: we can verify this with a timeout an checkinf if the image exist.
   # then we can remove the sleep.
-  And I wait for "30" seconds
+  And I verify that all "5" container images were built correctly in the gui
 
   Scenario: Delete image via xmlrpc calls
   Given I am authorized as "admin" with password "admin"
@@ -108,7 +106,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
   Scenario: Verify the status of images.
   Given I am authorized as "admin" with password "admin"
   And I navigate to images webpage
-  Then I verify that all container images were built correctly in the gui
+  Then I verify that all "5" container images were built correctly in the gui
 
   Scenario: Verify the property of activation-key image
   Given I am authorized as "admin" with password "admin"
