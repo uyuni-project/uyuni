@@ -85,7 +85,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I schedule the build of image "suse_key" via xmlrpc-call
   And I schedule the build of image "suse_simply" via xmlrpc-call
   And I schedule the build of image "suse_real_key" via xmlrpc-call
-  And I schedule the build of image "suse_real_simply" via xmlrpc-call
+
   # FIXME: add test build image via gui.
   Scenario: Build same images with different versions
   Given I am authorized as "admin" with password "admin"
