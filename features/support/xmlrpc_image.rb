@@ -18,4 +18,29 @@ class XMLRPCImageTest < XMLRPCBaseTest
   def listImages
     @connection.call("image.listImages", @sid)
   end
+
+  # store methods
+  def createStore(label, uri, type, params={})
+    @connection.call("image.store.create", @sid, label, uri, type, params)
+  end
+
+  def deleteStore(label)
+    @connection.call("image.store.delete", @sid, label)
+  end
+
+  def listImageStoreTypes
+    @connection.call("image.store.listImageStoreTypes", @sid)
+  end
+
+  def listImageStores
+    @connection.call("image.store.listImageStores", @sid)
+  end
+
+  def getDetailsStore(label)
+    @connection.call("image.store.getDetails", @sid, label)
+  end
+
+  def setDetails(label, details)
+    @connection.call("image.store.setDetails", @sid, label, details)
+  end
 end
