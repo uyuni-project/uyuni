@@ -96,7 +96,7 @@
 
 #### * Docker releated features tests.  ###
 - features/docker_build_image.feature
-
+- features/docker_xmlrpc.feature
 # end-tests
 - features/spacewalk_debug.feature
 

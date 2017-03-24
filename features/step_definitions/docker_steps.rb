@@ -81,3 +81,8 @@ And(/^The image "([^"]*)" with version "([^"]*)" doesn't exist via xmlrpc-call$/
     raise "#{image_non_exist} should not exist anymore" if element['name'] == image_non_exist && element['version'] == version.strip
   end
 end
+
+# images stores tests
+And(/^I run image.store tests via xmlrpc$/) do
+  cont_op.login('admin', 'admin')
+end
