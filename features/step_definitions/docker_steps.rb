@@ -4,7 +4,7 @@
 require "xmlrpc/client"
 require 'time'
 require 'date'
-
+require 'securerandom'
 # container_operations
 cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
 # retrieve minion id, needed for scheduleImageBuild call
@@ -86,7 +86,7 @@ end
 And(/^I run image.store tests via xmlrpc$/) do
   cont_op.login('admin', 'admin')
   # Test create and delete calls
-  # create and delete a store, even with invalid uri. 
+  # create and delete a store, even with invalid uri.
   cont_op.createStore('fake_store', 'https://github.com/SUSE/spacewalk-testsuite-base', 'registry')
   cont_op.deleteStore('fake_store')
   # test list images and list image types call
@@ -99,14 +99,34 @@ And(/^I run image.store tests via xmlrpc$/) do
   assert_equal(registry_list[0]['label'], 'galaxy-registry', 'label is galaxy!')
   assert_equal(registry_list[0]['uri'], 'registry.mgr.suse.de', 'uri should be registry.mgr.suse.de')
   # test setDetails call
+  # delete if test fail in the middle. delete image doesn't raise an error if image doesn't exists
   cont_op.createStore('Norimberga', 'https://github.com/SUSE/spacewalk-testsuite-base', 'registry')
+  details_store = {}
   details_store['uri'] = 'Germania'
   details_store['username'] = ''
   details_store['password'] = ''
   cont_op.setDetails('Norimberga', details_store)
   # test getDetails call
   details = cont_op.getDetailsStore('Norimberga')
-  assert_equal(details['uri'], 'Germania' 'uri should be Germania')
-  assert_equal(details['username'], '' 'username should be empty')
+  assert_equal(details['uri'], 'Germania', 'uri should be Germania')
+  assert_equal(details['username'], '', 'username should be empty')
   cont_op.deleteStore('Norimberga')
+end
+
+And(/^I create "([^"]*)" random image stores$/) do |count|
+  cont_op.login('admin', 'admin')
+  $labels = []
+  count.to_i.times do
+    label = SecureRandom.urlsafe_base64(10)
+    $labels.push(label)
+    uri = SecureRandom.urlsafe_base64(13)
+    cont_op.createStore(label, uri, 'registry')
+  end
+end
+
+And(/^I delete the random image stores$/) do
+  cont_op.login('admin', 'admin')
+  $labels.each do |label|
+    cont_op.deleteStore(label)
+  end
 end
