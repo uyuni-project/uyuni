@@ -16,7 +16,7 @@ package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
-import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -26,7 +26,10 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA1Checksum;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA256Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA384Checksum;
+import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult.SHA512Checksum;
 
 import org.apache.log4j.Logger;
 
@@ -270,14 +273,20 @@ public class ImageInfoFactory extends HibernateFactory {
      */
     public static com.redhat.rhn.domain.common.Checksum convertChecksum(
             Checksum dockerChecksum) {
-        com.redhat.rhn.domain.common.Checksum chk =
-                new com.redhat.rhn.domain.common.Checksum();
-        if (dockerChecksum instanceof SHA256Checksum) {
-            chk.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
+        String checksumType = "sha256";
+        if (dockerChecksum instanceof SHA1Checksum) {
+            checksumType = "sha1";
         }
-        chk.setChecksum(dockerChecksum.getChecksum());
-        instance.saveObject(chk);
-        return chk;
+        else  if (dockerChecksum instanceof SHA256Checksum) {
+            checksumType = "sha256";
+        }
+        else if (dockerChecksum instanceof SHA384Checksum) {
+            checksumType = "sha384";
+        }
+        else if (dockerChecksum instanceof SHA512Checksum) {
+            checksumType = "sha512";
+        }
+        return ChecksumFactory.safeCreate(dockerChecksum.getChecksum(), checksumType);
     }
 
     /**
@@ -288,8 +297,14 @@ public class ImageInfoFactory extends HibernateFactory {
     public static Checksum convertChecksum(
             com.redhat.rhn.domain.common.Checksum checksum) {
         switch (checksum.getChecksumType().getLabel()) {
+        case "sha1":
+            return new SHA1Checksum(checksum.getChecksum());
         case "sha256":
             return new SHA256Checksum(checksum.getChecksum());
+        case "sha384":
+            return new SHA384Checksum(checksum.getChecksum());
+        case "sha512":
+            return new SHA512Checksum(checksum.getChecksum());
         default:
             throw new IllegalArgumentException("Checksumtype not supported");
         }

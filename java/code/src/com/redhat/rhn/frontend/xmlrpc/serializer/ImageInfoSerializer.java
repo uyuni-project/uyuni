@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("string", "name")
  *   #prop("string", "version")
  *   #prop("string", "arch")
+ *   #prop("string", "storeLabel")
  *   #prop("string", "checksum")
  * #struct_end()
  */
@@ -43,10 +45,12 @@ public class ImageInfoSerializer extends RhnXmlRpcCustomSerializer {
         SerializerHelper helper = new SerializerHelper(serializer);
         ImageInfo image = (ImageInfo) value;
         Checksum chk = image.getChecksum();
+        ImageStore store = image.getStore();
         helper.add("id", image.getId());
         helper.add("name", image.getName());
         helper.add("version", image.getVersion());
         helper.add("arch", image.getImageArch().getLabel());
+        helper.add("storeLabel", store != null ? store.getLabel() : "");
         helper.add("checksum", chk != null ? chk.getChecksum() : "");
         helper.writeTo(writer);
     }
