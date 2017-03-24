@@ -28,7 +28,7 @@ class XMLRPCImageTest < XMLRPCBaseTest
     @connection.call("image.store.delete", @sid, label)
   end
 
-  def listImageStoresTypes
+  def listImageStoreTypes
     @connection.call("image.store.listImageStoreTypes", @sid)
   end
 
