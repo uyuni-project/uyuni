@@ -75,6 +75,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I follow "Create"
   And I enter "suse_real_key" as "label"
   And I select "galaxy-registry" from "imageStore"
+  And I select "1-MINION-TEST" from "activationKey"
   And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile/serverhost" as "path"
   And I click on "create-btn"
 
