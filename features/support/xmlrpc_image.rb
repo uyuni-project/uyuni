@@ -36,4 +36,7 @@ class XMLRPCImageTest < XMLRPCBaseTest
     @connection.call("image.store.listImageStores", @sid)
   end
   
+  def getDetailsStore(label)
+    @connection.call("image.store.getDetails", @sid, label)
+  end
 end

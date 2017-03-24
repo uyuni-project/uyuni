@@ -85,13 +85,28 @@ end
 # images stores tests
 And(/^I run image.store tests via xmlrpc$/) do
   cont_op.login('admin', 'admin')
+  # Test create and delete calls
+  # create and delete a store, even with invalid uri. 
   cont_op.createStore('fake_store', 'https://github.com/SUSE/spacewalk-testsuite-base', 'registry')
   cont_op.deleteStore('fake_store')
+  # test list images and list image types call
   store_typ = cont_op.listImageStoreTypes
   assert_equal(store_typ.length, 1, 'we have only type support for Registry! New method added?! please update the tests')
   assert_equal(store_typ[0]['label'], 'registry', 'imagestore label type should be registry!')
-  puts cont_op.listImageStores
-#  assertö_raise NameError do
-#  puts x  #Raises NameError, so assertion succeeds
-#  end
+  registry_list = cont_op.listImageStores
+  # print just for debug
+  puts registry_list
+  assert_equal(registry_list[0]['label'], 'galaxy-registry', 'label is galaxy!')
+  assert_equal(registry_list[0]['uri'], 'registry.mgr.suse.de', 'uri should be registry.mgr.suse.de')
+  # test setDetails call
+  cont_op.createStore('Norimberga', 'https://github.com/SUSE/spacewalk-testsuite-base', 'registry')
+  details_store['uri'] = 'Germania'
+  details_store['username'] = ''
+  details_store['password'] = ''
+  cont_op.setDetails('Norimberga', details_store)
+  # test getDetails call
+  details = cont_op.getDetailsStore('Norimberga')
+  assert_equal(details['uri'], 'Germania' 'uri should be Germania')
+  assert_equal(details['username'], '' 'username should be empty')
+  cont_op.deleteStore('Norimberga')
 end
