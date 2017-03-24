@@ -11,8 +11,9 @@
 // node parameters) and for customizing force simulation are settable using
 // deriveClass and simulation functions.
 //
-function hierarchyView(root, container) {
+function hierarchyView(rootIn, container) {
   // default params
+  var root = rootIn;
   var deriveClass = (d) => '';
   var simulation = null;
 
@@ -97,6 +98,10 @@ function hierarchyView(root, container) {
       );
       simulation.alpha(1).restart();
     }
+  }
+
+  my.root = function(r) {
+    return arguments.length ? (root = r, my) : root;
   }
 
   my.simulation = function(s) {
