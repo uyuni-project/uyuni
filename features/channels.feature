@@ -34,12 +34,12 @@ Feature: Explore the Channels page
     And I follow "Popular Channels" in the left menu
     Then I should see a "Popular Channels" text
 
-  Scenario: Check Packages in SLES11-SP3-Updates x86_64 Channel
+  Scenario: Check Packages in Test-Channel-x86_64
     Given I am authorized as "admin" with password "admin"
     When I follow "Channels"
     And I follow "Software Channels"
     And I follow "All Channels"
-    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     Then I should see package "andromeda-dummy-2.0-1.1.noarch"
     And I should see package "hoag-dummy-1.1-2.1.i586"
@@ -53,11 +53,11 @@ Feature: Explore the Channels page
     When I follow "Channels"
     And I follow "Software Channels"
     And I follow "All Channels"
-    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
     Then I should see a "This is the andromeda dummy package used for testing SUSE Manager" text
-    And I should see a "SLES11-SP3-Updates x86_64 Channel" link
+    And I should see a "Test-Channel-x86_64" link
     And I should see a "openSUSE Build Service" text
     And I should see a "SHA256sum:" text
     And I should see a "3bb3a56e6654f14300ab815c3f6e2af848874c829541b4e1b342262bb2f72d30" text
@@ -68,7 +68,7 @@ Feature: Explore the Channels page
     When I follow "Channels"
     And I follow "Software Channels"
     And I follow "All Channels"
-    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
     And I follow "Dependencies"
@@ -81,7 +81,7 @@ Feature: Explore the Channels page
     When I follow "Channels"
     And I follow "Software Channels"
     And I follow "All Channels"
-    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
     And I follow "Change Log"
@@ -93,7 +93,7 @@ Feature: Explore the Channels page
     When I follow "Channels"
     And I follow "Software Channels"
     And I follow "All Channels"
-    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
     And I follow "File List"

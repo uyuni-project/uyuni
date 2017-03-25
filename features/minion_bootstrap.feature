@@ -57,7 +57,7 @@ Feature: register a salt-minion via bootstrap
     When I enter "Minion testing" as "description"
     And I enter "MINION-TEST" as "key"
     And I enter "20" as "usageLimit"
-    And I select "SLES11-SP3-Updates x86_64 Channel" from "selectedChannel"
+    And I select "Test-Channel-x86_64" from "selectedChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "orion-dummy perseus-dummy" as "packages"
@@ -102,7 +102,7 @@ Feature: register a salt-minion via bootstrap
 
   Scenario: verify minion bootstrapped with activation key: base channel test
      Given I am on the Systems page
-     Then I should see a "SLES11-SP3-Updates x86_64 Channel" text
+     Then I should see a "Test-Channel-x86_64" text
 
   Scenario: bootstrap should fail: minion_id already existing
      Given I am authorized

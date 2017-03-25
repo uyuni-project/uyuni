@@ -13,7 +13,7 @@ Feature: Test weak dependencies
     And I follow "All Channels"
 
   Scenario: Check Package metadata displayed in WebUI (Supplements)
-    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "virgo-dummy-2.0-1.1.noarch"
     And I follow "Dependencies"
@@ -23,7 +23,7 @@ Feature: Test weak dependencies
     And I should see a "packageand(a-blackhole:dummy)" text
 
   Scenario: Check Package metadata displayed in WebUI (Recommends)
-    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "milkyway-dummy-2.0-1.1.x86_64"
     And I follow "Dependencies"
@@ -33,7 +33,7 @@ Feature: Test weak dependencies
     And I should see a "filesystem" text
 
   Scenario: Check Package metadata displayed in WebUI (Suggests)
-    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "milkyway-dummy-2.0-1.1.x86_64"
     And I follow "Dependencies"
@@ -43,7 +43,7 @@ Feature: Test weak dependencies
     And I should see a "apache2" text
 
   Scenario: Check Package metadata displayed in WebUI (Enhances) bnc 846436
-    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "orion-dummy-1.1-1.1.x86_64"
     And I follow "Dependencies"

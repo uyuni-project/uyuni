@@ -35,7 +35,7 @@ Feature: Create an activation key
     Given I am on the Systems page
     And I follow "Activation Keys" in the left menu
     And I follow "SUSE Test Key i586"
-    When I select "SLES11-SP3-Updates i586 Channel" from "selectedChannel"
+    When I select "Test-Channel-i586" from "selectedChannel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been modified." text
 
@@ -47,7 +47,7 @@ Feature: Create an activation key
     And I enter "SUSE-DEV-x86_64" as "key"
     And I check "virtualization_host"
     And I enter "20" as "usageLimit"
-    And I select "SLES11-SP3-Updates x86_64 Channel" from "selectedChannel"
+    And I select "Test-Channel-x86_64" from "selectedChannel"
     And I click on "Create Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been created" text
     And I should see a "Details" link
@@ -64,7 +64,7 @@ Feature: Create an activation key
     When I enter "SUSE Test PKG Key x86_64" as "description"
     And I enter "SUSE-PKG-x86_64" as "key"
     And I enter "20" as "usageLimit"
-    And I select "SLES11-SP3-Updates x86_64 Channel" from "selectedChannel"
+    And I select "Test-Channel-x86_64" from "selectedChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "man" as "packages"
@@ -84,7 +84,7 @@ Feature: Create an activation key
     When I enter "SUSE Test PKG Key i586" as "description"
     And I enter "SUSE-PKG-i586" as "key"
     And I enter "20" as "usageLimit"
-    And I select "SLES11-SP3-Updates i586 Channel" from "selectedChannel"
+    And I select "Test-Channel-i586" from "selectedChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "man" as "packages"

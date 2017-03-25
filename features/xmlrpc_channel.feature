@@ -43,4 +43,4 @@ Feature: Test XML-RPC "channel" namespace und sub-namespaces.
 
   Scenario: check yumrepo_last_sync of a synced channel
     Given I am logged in via XML-RPC/channel as user "admin" and password "admin"
-    Then channel "sles11-sp3-updates-i586-channel" should have attribute "yumrepo_last_sync" from type "XMLRPC::DateTime"
+    Then channel "test-channel-i586" should have attribute "yumrepo_last_sync" from type "XMLRPC::DateTime"

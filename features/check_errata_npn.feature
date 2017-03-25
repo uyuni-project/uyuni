@@ -18,8 +18,8 @@ Feature: Check errata
     And I follow "andromeda-dummy-6789"
     Then I should see a "andromeda-dummy-6789 - Bug Fix Advisory" text
     And I should see a "Test update for andromeda-dummy" text
-    And I should see a "SLES11-SP3-Updates x86_64 Channel" link
-    And I should see a "SLES11-SP3-Updates i586 Channel" link
+    And I should see a "Test-Channel-x86_64" link
+    And I should see a "Test-Channel-i586" link
     And I should see a "reboot_suggested" text
 
   Scenario: check sles-release-6789 errata packages
@@ -27,8 +27,8 @@ Feature: Check errata
     When I follow "All" in the left menu
     And I follow "andromeda-dummy-6789"
     And I follow "Packages"
-    Then I should see a "SLES11-SP3-Updates x86_64 Channel" link
-    And I should see a "SLES11-SP3-Updates i586 Channel" link
+    Then I should see a "Test-Channel-x86_64" link
+    And I should see a "Test-Channel-i586" link
     And I should see a "sha256:3bb3a56e6654f14300ab815c3f6e2af848874c829541b4e1b342262bb2f72d30" text
     And I should see a "andromeda-dummy-2.0-1.1-noarch" link
 

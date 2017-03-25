@@ -36,7 +36,7 @@ Feature: Migrate a traditional client into a salt minion
 
   Scenario: Check that channels are still the same after migration
      Given I am on the Systems overview page of this "sle-migrated-minion"
-     Then I should see a "SLES11-SP3-Updates x86_64 Channel" text
+     Then I should see a "Test-Channel-x86_64" text
 
   Scenario: Check that events history is still the same after migration
      Given I am on the Systems overview page of this "sle-migrated-minion"
