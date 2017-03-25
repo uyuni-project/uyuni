@@ -150,12 +150,13 @@ class Repository(RPC_Base):
         raise rhnNotFound()
 
     @staticmethod
-    def media_1():
+    def media_1(filePath):
         """SUSE File
 
         We do not support it so just return 404. But do not fail with
         traceback.
         """
+        log_debug(3, filePath)
         raise rhnNotFound()
 
     def getPackageSource(self, pkgFilename):
