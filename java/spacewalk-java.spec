@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.37
+Version: 2.7.40
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -636,39 +636,8 @@ install -d $RPM_BUILD_ROOT/srv/susemanager/tmp
 
 %if 0%{?fedora}
 echo "hibernate.cache.region.factory_class=net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
-%endif
-%if 0%{?fedora} && 0%{?fedora} >= 21
-echo "wrapper.java.classpath.28=/usr/share/java/log4j-1.jar" >> conf/default/rhn_taskomatic_daemon.conf
-%else
-echo "wrapper.java.classpath.28=/usr/share/java/log4j.jar" >> conf/default/rhn_taskomatic_daemon.conf
-%endif
-%if 0%{?fedora} >= 25
-echo "wrapper.java.classpath.50=/usr/share/java/cglib/cglib.jar" >> conf/default/rhn_taskomatic_daemon.conf
-%else
-echo "wrapper.java.classpath.50=/usr/share/java/cglib.jar" >> conf/default/rhn_taskomatic_daemon.conf
-%endif
-%if 0%{?fedora}
-echo "wrapper.java.classpath.49=/usr/share/java/hibernate3/hibernate-core-3.jar
-wrapper.java.classpath.61=/usr/share/java/hibernate-jpa-2.0-api.jar
-wrapper.java.classpath.62=/usr/share/java/hibernate3/hibernate-ehcache-3.jar
-wrapper.java.classpath.63=/usr/share/java/hibernate3/hibernate-c3p0-3.jar
-wrapper.java.classpath.64=/usr/share/java/hibernate*/hibernate-commons-annotations.jar
-wrapper.java.classpath.65=/usr/share/java/slf4j/api.jar
-wrapper.java.classpath.66=/usr/share/java/jboss-logging.jar
-wrapper.java.classpath.67=/usr/share/java/javassist.jar
-wrapper.java.classpath.68=/usr/share/java/ehcache-core.jar
-wrapper.java.classpath.69=/usr/share/java/tomcat-taglibs-standard/taglibs-build-tools.jar
-wrapper.java.classpath.70=/usr/share/java/tomcat-taglibs-standard/taglibs-standard-compat.jar
-wrapper.java.classpath.71=/usr/share/java/tomcat-taglibs-standard/taglibs-standard-impl.jar
-wrapper.java.classpath.72=/usr/share/java/tomcat-taglibs-standard/taglibs-standard-jstlel.jar
-wrapper.java.classpath.73=/usr/share/java/tomcat-taglibs-standard/taglibs-standard-spec.jar
-" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
-echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar
-wrapper.java.classpath.17=/usr/share/java/taglibs-standard.jar
-wrapper.java.classpath.32=/usr/share/java/taglibs-core.jar
-" >> conf/default/rhn_taskomatic_daemon.conf
 %endif
 
 #######################################
