@@ -140,7 +140,7 @@ class ContentSource(object):
         else:
             self.org = "NULL"
 
-        self.proxy_addr = None
+        self.proxy_url = None
         self.proxy_user = None
         self.proxy_pass = None
 
@@ -161,7 +161,7 @@ class ContentSource(object):
 
             if section_name:
                 if yb_cfg.has_option(section_name, option='proxy'):
-                    self.proxy_addr = yb_cfg.get(section_name, option='proxy')
+                    self.proxy_url = "http://%s" % yb_cfg.get(section_name, option='proxy')
 
                 if yb_cfg.has_option(section_name, 'proxy_username'):
                     self.proxy_user = yb_cfg.get(section_name, 'proxy_username')
