@@ -12,20 +12,20 @@ Feature: Adding repository to a channel
   And I follow "Home" in the left menu
   And I follow "Channels"
 
-  Scenario: Adding SLES11-SP3-Updates-x86_64 repository
+  Scenario: Adding Test-Repository-x86_64 repository
     When I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Create Repository"
-    When I enter "SLES11-SP3-Updates-x86_64" as "label"
+    When I enter "Test-Repository-x86_64" as "label"
     And I enter "http://localhost/pub/TestRepo/" as "url"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
     And I should see "metadataSigned" as checked
 
-  Scenario: Disable Metadata check for SLES11-SP3-Updates-x86_64 repository
+  Scenario: Disable Metadata check for Test-Repository-x86_64 repository
     When I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
-    And I follow "SLES11-SP3-Updates-x86_64"
+    And I follow "Test-Repository-x86_64"
     When I uncheck "metadataSigned"
     And I click on "Update Repository"
     Then I should see a "Repository updated successfully" text
@@ -34,27 +34,27 @@ Feature: Adding repository to a channel
   Scenario: Add repository to the x86_64 channel
     When I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
-    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    And I follow "Test-Channel-x86_64"
     And I follow "Repositories" in the content area
-    When I select the "SLES11-SP3-Updates-x86_64" repo
+    When I select the "Test-Repository-x86_64" repo
     And I click on "Update Repositories"
-    Then I should see a "SLES11-SP3-Updates x86_64 Channel repository information was successfully updated" text
+    Then I should see a "Test-Channel-x86_64 repository information was successfully updated" text
 
   Scenario: Sync the repository in the x86_64 channel
     When I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Overview" in the left menu
-    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    And I follow "Test-Channel-x86_64"
     And I follow "Repositories" in the content area
     And I follow "Sync"
     When I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for SLES11-SP3-Updates x86_64 Channel." text
+    Then I should see a "Repository sync scheduled for Test-Channel-x86_64." text
 
-  Scenario: Adding SLES11-SP3-Updates-i586 repository
+  Scenario: Adding Test-Repository-i586 repository
     When I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Create Repository"
-    When I enter "SLES11-SP3-Updates-i586" as "label"
+    When I enter "Test-Repository-i586" as "label"
     And I enter "file:///srv/www/htdocs/pub/TestRepo/" as "url"
     And I uncheck "metadataSigned"
     And I click on "Create Repository"
@@ -63,17 +63,17 @@ Feature: Adding repository to a channel
   Scenario: Add repository to the i586 channel
     When I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
-    And I follow "SLES11-SP3-Updates i586 Channel"
+    And I follow "Test-Channel-i586"
     And I follow "Repositories" in the content area
-    When I select the "SLES11-SP3-Updates-i586" repo
+    When I select the "Test-Repository-i586" repo
     And I click on "Update Repositories"
-    Then I should see a "SLES11-SP3-Updates i586 Channel repository information was successfully updated" text
+    Then I should see a "Test-Channel-i586 repository information was successfully updated" text
 
   Scenario: Sync the repository in the i586 channel
     When I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
-    And I follow "SLES11-SP3-Updates i586 Channel"
+    And I follow "Test-Channel-i586"
     And I follow "Repositories" in the content area
     And I follow "Sync"
     When I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for SLES11-SP3-Updates i586 Channel." text
+    Then I should see a "Repository sync scheduled for Test-Channel-i586." text

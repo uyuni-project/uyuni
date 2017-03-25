@@ -22,13 +22,13 @@ Then(/^I should get status "([^\"]+)" for this client$/) do |status|
   step "I should get status \"#{status}\" for system \"#{client_system_id_to_i}\""
 end
 
-Then(/^I should get the sles11-sp3-updates channel$/) do
+Then(/^I should get the test-channel$/) do
   arch = `uname -m`
   arch.chomp!
   if arch != "x86_64"
-    channel = "sles11-sp3-updates-i586-channel"
+    channel = "test-channel-i586"
   else
-    channel = "sles11-sp3-updates-x86_64-channel"
+    channel = "test-channel-x86_64"
   end
   $stderr.puts "result: #{@result}"
   assert(@result["channel_labels"].include?(channel))

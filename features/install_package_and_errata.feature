@@ -5,7 +5,7 @@ Feature: Install a package to the client
 
   Scenario: Install a package to the client
     Given I am on the Systems overview page of this "sle-client"
-    And metadata generation finished for "sles11-sp3-updates-x86_64-channel"
+    And metadata generation finished for "test-channel-x86_64"
     And I follow "Software" in the content area
     And I follow "Install"
     When I check "hoag-dummy-1.1-2.1" in the list
