@@ -140,9 +140,35 @@ class ContentSource(object):
         else:
             self.org = "NULL"
 
-        # read the proxy configuration in /etc/rhn/rhn.conf
+        self.proxy_addr = None
+        self.proxy_user = None
+        self.proxy_pass = None
+
+        # read the proxy configuration
+        # /etc/rhn/rhn.conf has more priority than yum.conf
         initCFG('server.satellite')
-        self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
+
+        if CFG.http_proxy:
+            self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
+        else:
+            yb_cfg = self.yumbase.conf.cfg
+            section_name = None
+
+            if yb_cfg.has_section(self.name):
+                section_name = self.name
+            elif yb_cfg.has_section('main'):
+                section_name = 'main'
+
+            if section_name:
+                if yb_cfg.has_option(section_name, option='proxy'):
+                    self.proxy_addr = yb_cfg.get(section_name, option='proxy')
+
+                if yb_cfg.has_option(section_name, 'proxy_username'):
+                    self.proxy_user = yb_cfg.get(section_name, 'proxy_username')
+
+                if yb_cfg.has_option(section_name, 'proxy_password'):
+                    self.proxy_pass = yb_cfg.get(section_name, 'proxy_password')
+
         self._authenticate(url)
         # Check for settings in yum configuration files (for custom repos/channels only)
         if org:
@@ -188,6 +214,12 @@ class ContentSource(object):
 
     def _authenticate(self, url):
         pass
+
+    @staticmethod
+    def interrupt_callback(*args, **kwargs):  # pylint: disable=W0613
+        # Just re-raise
+        e = sys.exc_info()[1]
+        raise e
 
     def setup_repo(self, repo, no_mirrors):
         """Fetch repository metadata"""
