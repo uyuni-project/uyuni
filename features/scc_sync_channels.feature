@@ -36,17 +36,17 @@ Feature: mgr-sync channel listing and enablement
     And I wont get "ppc64"
     And I wont get "s390x"
 
-  Scenario: enable sles11-sp3-pool-x86_64
-    When I execute mgr-sync "add channel sles11-sp3-pool-x86_64"
+  Scenario: enable sles12-sp2-pool-x86_64
+    When I execute mgr-sync "add channel sles12-sp2-pool-x86_64"
     And I execute mgr-sync "list channels"
-    Then I want to get "[I] SLES11-SP3-Pool for x86_64 SUSE Linux Enterprise Server 11 SP3 x86_64 [sles11-sp3-pool-x86_64]"
-    And I want to get "    [ ] SLES11-SP3-Updates for x86_64 SUSE Linux Enterprise Server 11 SP3 x86_64 [sles11-sp3-updates-x86_64]"
+    Then I want to get "[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]"
+    And I want to get "    [ ] SLES12-SP2-Updates for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-updates-x86_64]"
 
-  Scenario: enable sles11-sp3-updates-x86_64
-    When I execute mgr-sync "add channel sles11-sp3-updates-x86_64"
+  Scenario: enable sles12-sp2-updates-x86_64
+    When I execute mgr-sync "add channel sles12-sp2-updates-x86_64"
     And I execute mgr-sync "list channels"
-    Then I want to get "[I] SLES11-SP3-Pool for x86_64 SUSE Linux Enterprise Server 11 SP3 x86_64 [sles11-sp3-pool-x86_64]"
-    And I want to get "    [I] SLES11-SP3-Updates for x86_64 SUSE Linux Enterprise Server 11 SP3 x86_64 [sles11-sp3-updates-x86_64]"
+    Then I want to get "[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]"
+    And I want to get "    [I] SLES12-SP2-Updates for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-updates-x86_64]"
 
   Scenario: let mgr-sync time out
     When I remove the mgr-sync cache file
