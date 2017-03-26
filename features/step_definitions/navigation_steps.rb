@@ -155,6 +155,14 @@ Given(/^I am on the Admin page$/) do
     )
 end
 
+When(/^I am on the Organizations page$/) do
+  steps %(
+    When I am authorized as "admin" with password "admin"
+    And I follow "Admin"
+    And I follow "Organizations"
+    )
+end
+
 # Credential Page steps
 Given(/^I am on the Credentials page$/) do
   steps %(
@@ -308,6 +316,7 @@ When(/^I search for "([^"]*)"$/) do |arg1|
     click_button "Search"
   end
 end
+
 When(/^I am on System Set Manager Overview$/) do
   visit("https://#{$server_fullhostname}/rhn/ssm/index.do")
 end

@@ -37,6 +37,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager for a salt minion
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
     And I wait for the openSCAP audit to finish
+    And I disable IPv6 forwarding on all interfaces of the SLE minion
 
   Scenario: Compare audit results
     Given I am on the Systems overview page of this "sle-minion"
@@ -47,9 +48,16 @@ Feature: Use the openSCAP audit feature in SUSE Manager for a salt minion
     Then I should see a "XCCDF Rule Results" text
     And I should see a "rule-sysctl-ipv6-all-forward" text
 
-  Scenario: Delete audit results and cleanup
-    Given I disable IPv6 forwarding on all interfaces of the SLE minion
-    And I am on the Systems overview page of this "sle-minion"
+  Scenario: Remove audit scans retention period
+    Given I am on the Organizations page
+    And I follow "SUSE Test" in the content area
+    And I follow "Configuration" in the content area
+    When I enter "0" as "scap_retention_period"
+    And I click on "Update Organization"
+    Then I should see a "Organization SUSE Test was successfully updated." text
+
+  Scenario: Delete audit results
+    Given I am on the Systems overview page of this "sle-minion"
     And I follow "Audit" in the content area
     And I follow "List Scans" in the content area
     When I click on "Select All"
@@ -57,3 +65,10 @@ Feature: Use the openSCAP audit feature in SUSE Manager for a salt minion
     And I click on "Confirm"
     Then I should see a "2 SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 
+  Scenario: Restore audit scans retention period
+    Given I am on the Organizations page
+    And I follow "SUSE Test" in the content area
+    And I follow "Configuration" in the content area
+    When I enter "90" as "scap_retention_period"
+    And I click on "Update Organization"
+    Then I should see a "Organization SUSE Test was successfully updated." text
