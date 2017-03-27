@@ -5,6 +5,18 @@ require "xmlrpc/client"
 require 'time'
 require 'date'
 require 'securerandom'
+
+module Image_profile
+  def image_profiles_xmlrpc
+     #cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
+     cont_op.login('admin', 'admin')
+  end
+end
+
+World(Image_profile)
+
+
+
 # container_operations
 cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
 # retrieve minion id, needed for scheduleImageBuild call
@@ -130,3 +142,6 @@ And(/^I delete the random image stores$/) do
     cont_op.deleteStore(label)
   end
 end
+
+# Profiles tests
+And(/^I run image.profiles tests via xmlrpc$/) :image_profiles_basic
