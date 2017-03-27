@@ -138,12 +138,16 @@ $.addSystemFromSSM = function(ids) {
   return update_server_set('ids', 'system_list', true, ids);
 }
 
+function isSystemType(d) {
+  return d.data.type && d.data.type == 'system' && d.data.rawId != '' && d.data.id != 'root';
+}
+
 function updateDetailBox(d) {
   var data = d.data;
   var systemDetailLink = '';
   var systemSpecificInfo = '';
   var systemToSSM = '';
-  if (data.type && data.type == 'system' && data.rawId != 'root') {
+  if (isSystemType(d)) {
     var idSlices = (data.rawId).split('-');
     var systemId = idSlices[idSlices.length - 1];
     systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
