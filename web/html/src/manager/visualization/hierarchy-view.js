@@ -134,8 +134,8 @@ $.closeDetailBox = function() {
   $('.detailBox').hide().html('');
   unselectAllNodes();
 }
-$.addSystemFromSSM = function(id) {
-  return update_server_set('ids', 'system_list', true, [id]);
+$.addSystemFromSSM = function(ids) {
+  return update_server_set('ids', 'system_list', true, ids);
 }
 
 function updateDetailBox(d) {
@@ -149,7 +149,7 @@ function updateDetailBox(d) {
     systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
       systemId + '" target="_blank">System details page</a></div>';
 
-    systemToSSM = '<button onClick="$.addSystemFromSSM(' + data.rawId + ')">Add system to SSM</button>';
+    systemToSSM = '<button onClick="$.addSystemFromSSM([' + data.rawId + '])">Add system to SSM</button>';
     systemSpecificInfo =
       '<div>Base entitlement : <strong>' + data.base_entitlement + '</strong></div>' +
       '<div>Base channel: <strong>' + data.base_channel + '</strong></div>' +
