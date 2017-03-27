@@ -20,8 +20,7 @@ module ImageProfile
     cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
     cont_op.createCustomKey('arancio', 'test containers')
     values = {}
-    values['arancio'] = 'arancio'
-    values['value'] = 'Arancio'
+    values['arancio'] = 'arancia xmlrpc tests'
     cont_op.setProfileCustomValues('fakeone', values)
   end
 end

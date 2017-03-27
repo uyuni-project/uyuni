@@ -44,7 +44,7 @@ class XMLRPCImageTest < XMLRPCBaseTest
     @connection.call("image.store.setDetails", @sid, label, details)
   end
 
-  # profile methods FIXME: implements test of this
+  # profile methods 
   def createProfile(label, type, storeLabel, path, actkey)
     @connection.call("image.profile.create", @sid, label, type, storeLabel, path, actkey)
   end
@@ -53,11 +53,11 @@ class XMLRPCImageTest < XMLRPCBaseTest
     @connection.call("image.profile.delete", @sid, label)
   end
 
-  def setProfileCustomValues(label, values=[])
+  def setProfileCustomValues(label, values)
     @connection.call("image.profile.setCustomValues", @sid, label, values)
   end
 
-  def deleteProfileCustomValues(label, values=[])
+  def deleteProfileCustomValues(label, values)
     @connection.call("image.profile.deleteCustomValues", @sid, label, values)
   end
 
