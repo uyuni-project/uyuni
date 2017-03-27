@@ -13,4 +13,12 @@ Feature:  Container Image namespace tests
   And I follow "Images" in the left menu
   And I follow "Stores" in the left menu
   Then I should see a "Registry" text
-  #  And I delete the random image stores
+
+  Scenario: Test image.profiles Namespace
+  Given I am authorized as "admin" with password "admin"
+  Then I run image.profiles tests via xmlrpc
+
+  Scenario: Cleanup image namespaces tests
+  Given I am authorized as "admin" with password "admin"
+  Then I delete the random image stores
+

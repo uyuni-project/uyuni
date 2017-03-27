@@ -5,6 +5,39 @@ require "xmlrpc/client"
 require 'time'
 require 'date'
 require 'securerandom'
+
+# this module test image_profile
+module ImageProfile
+  def image_profiles_xmlrpc
+    cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
+    cont_op.login('admin', 'admin')
+    # create delete profile test
+    cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
+    cont_op.deleteProfile('fakeone')
+    cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '1-MINION-TEST')
+    cont_op.deleteProfile('fakeone')
+    # set get delete Custom Values
+    cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
+    cont_op.createCustomKey('arancio', 'test containers')
+    values = {}
+    values['arancio'] = 'arancia xmlrpc tests'
+    cont_op.setProfileCustomValues('fakeone', values)
+    pro_det = cont_op.getProfileCustomValues('fakeone')
+    puts pro_det
+    # assert_equal(pro_det['arancio'], 'arancia xmlrpc tests', 'setting custom profile value failed')
+    pro_type = cont_op.listImageProfileTypes
+    assert_equal(pro_type.length, 1, 'support at moment only one type of Profile!')
+    assert_equal(pro_type[0], 'dockerfile', 'type is not dockerfile?')
+    key = ['arancio']
+    cont_op.deleteProfileCustomValues('fakeone', key)
+    cont_op.deleteProfile('fakeone')
+    # FIXME: add list and get details tests
+    # FIXME: add creation of xxx number profiles
+  end
+end
+
+World(ImageProfile)
+
 # container_operations
 cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
 # retrieve minion id, needed for scheduleImageBuild call
@@ -130,3 +163,6 @@ And(/^I delete the random image stores$/) do
     cont_op.deleteStore(label)
   end
 end
+
+# Profiles tests using module
+And(/^I run image.profiles tests via xmlrpc$/, :image_profiles_xmlrpc)
