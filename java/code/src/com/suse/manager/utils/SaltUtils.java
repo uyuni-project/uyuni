@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
@@ -461,19 +462,14 @@ public class SaltUtils {
         Action action = serverAction.getParentAction();
         ImageInspectAction ia = (ImageInspectAction) action;
         ImageInspectActionDetails details = ia.getDetails();
-        if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
-            serverAction.setResultMsg("Failure");
-        }
-        else {
-            serverAction.setResultMsg("Success");
-        }
         ImageInfoFactory
                 .lookupByName(details.getName(), details.getVersion(),
                         details.getImageStoreId())
                 .ifPresent(imageInfo -> serverAction.getServer().asMinionServer()
                         .ifPresent(minionServer -> handleImagePackageProfileUpdate(
                                 imageInfo, Json.GSON.fromJson(jsonResult,
-                                        ImagesProfileUpdateSlsResult.class))));
+                                        ImagesProfileUpdateSlsResult.class),
+                                serverAction)));
     }
 
     /**
@@ -520,14 +516,22 @@ public class SaltUtils {
     }
 
     private static void handleImagePackageProfileUpdate(ImageInfo imageInfo,
-                                                   ImagesProfileUpdateSlsResult result) {
+            ImagesProfileUpdateSlsResult result, ServerAction serverAction) {
+        ActionStatus as = ActionFactory.STATUS_COMPLETED;
+        serverAction.setResultMsg("Success");
+
         if (result.getDockerngInspect().isResult()) {
             ImageInspectSlsResult iret = result.getDockerngInspect().getChanges().getRet();
             imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
         }
+        else {
+            serverAction.setResultMsg(result.getDockerngInspect().getComment());
+            as = ActionFactory.STATUS_FAILED;
+        }
 
-        PkgProfileUpdateSlsResult ret = result.getDockerngSlsBuild().getChanges().getRet();
         if (result.getDockerngSlsBuild().isResult()) {
+            PkgProfileUpdateSlsResult ret =
+                    result.getDockerngSlsBuild().getChanges().getRet();
 
             Optional.of(ret.getInfoInstalled().getChanges().getRet())
             .map(saltPkgs -> saltPkgs.entrySet().stream()
@@ -563,7 +567,12 @@ public class SaltUtils {
                 imageInfo.setInstalledProducts(products);
             }
         }
+        else {
+            // do not fail the action when no packages are returned
+            serverAction.setResultMsg(result.getDockerngSlsBuild().getComment());
+        }
 
+        serverAction.setStatus(as);
         ImageInfoFactory.save(imageInfo);
         ErrataManager.insertErrataCacheTask(imageInfo);
     }
