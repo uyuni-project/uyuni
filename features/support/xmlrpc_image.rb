@@ -43,4 +43,37 @@ class XMLRPCImageTest < XMLRPCBaseTest
   def setDetails(label, details)
     @connection.call("image.store.setDetails", @sid, label, details)
   end
+
+  # profile methods
+  def createProfile(label, type, storeLabel, path, actkey)
+    @connection.call("image.profile.create", @sid, label, type, storeLabel, path, actkey)
+  end
+
+  def deleteProfile(label)
+    @connection.call("image.profile.delete", @sid, label)
+  end
+
+  def setProfileCustomValues(label, values)
+    @connection.call("image.profile.setCustomValues", @sid, label, values)
+  end
+
+  def deleteProfileCustomValues(label, values)
+    @connection.call("image.profile.deleteCustomValues", @sid, label, values)
+  end
+
+  def getProfileCustomValues(label)
+    @connection.call("image.profile.getCustomValues", @sid, label)
+  end
+
+  def createCustomKey(value, desc)
+    @connection.call("system.custominfo.createKey", @sid, value, desc)
+  end
+
+  def listImageProfileTypes
+    @connection.call("image.profile.listImageProfileTypes", @sid)
+  end
+
+  def listImageProfiles
+    @connection.call("image.profile.listImageProfiles", @sid)
+  end
 end
