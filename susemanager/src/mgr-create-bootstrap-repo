@@ -171,7 +171,7 @@ def create_repo(label, additional=[]):
         for m in messages:
             print m
         if label.startswith('RES') and not options.usecustomchannels:
-            print "If the installation media was imported into a custom channel, try to run again with --with-custom-channel option"
+            print "If the installation media was imported into a custom channel, try to run again with --with-custom-channels option"
         sys.exit(1)
 
 usage = "usage: %prog [options] [additional_pkg1 additional_pkg2 ...]"
