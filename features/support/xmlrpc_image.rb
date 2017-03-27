@@ -53,6 +53,10 @@ class XMLRPCImageTest < XMLRPCBaseTest
     @connection.call("image.profile.delete", @sid, label)
   end
 
+  def setProfileCustomValues(label, values=[])
+    @connection.call("image.profile.setCustomValues", @sid, label, values)
+  end
+
   def deleteProfileCustomValues(label, values=[])
     @connection.call("image.profile.deleteCustomValues", @sid, label, values)
   end
