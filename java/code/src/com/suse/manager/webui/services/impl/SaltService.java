@@ -785,7 +785,9 @@ public class SaltService {
             throws SaltException {
         return saltSSHService.callSyncSSH(
             new LocalCall<>("test.ping",
-                Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { }),
+                Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { },
+                Optional.of(SALT_PRESENCE_TIMEOUT),
+                Optional.of(SALT_PRESENCE_GATHER_JOB_TIMEOUT)),
             targetInSSH
         );
     }
