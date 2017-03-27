@@ -76,4 +76,12 @@ class XMLRPCImageTest < XMLRPCBaseTest
   def listImageProfiles
     @connection.call("image.profile.listImageProfiles", @sid)
   end
+
+  def getDetails(label)
+    @connection.call("image.profile.getDetails", @sid, label)
+  end
+
+  def setDetails(label, values)
+    @connection.call("image.profile.setDetails", @sid, label, values)
+  end
 end

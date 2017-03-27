@@ -24,15 +24,31 @@ module ImageProfile
     cont_op.setProfileCustomValues('fakeone', values)
     pro_det = cont_op.getProfileCustomValues('fakeone')
     puts pro_det
+    # FIXME: atm this is a bug. we cannot set new values.
     # assert_equal(pro_det['arancio'], 'arancia xmlrpc tests', 'setting custom profile value failed')
     pro_type = cont_op.listImageProfileTypes
     assert_equal(pro_type.length, 1, 'support at moment only one type of Profile!')
     assert_equal(pro_type[0], 'dockerfile', 'type is not dockerfile?')
     key = ['arancio']
     cont_op.deleteProfileCustomValues('fakeone', key)
+    puts cont_op.listImageProfiles
+    # test listImageProfiles method
+    ima_profiles = cont_op.listImageProfiles
+    imagelabel = ima_profiles.select { |image| image['label'] = 'fakeone'}
+    assert_equal(imagelabel[0]['label'], 'fakeone', "label of container should be fakeone!")
+    # test set value and get value call
+    details = {}
+    details['storeLabel'] = 'galaxy-devel'
+    details['path'] = 'TestForFun'
+    details['activationKey'] = ''
+    cont_op.setDetails('fakeone', details)
+    cont_detail = cont_op.getDetails('fakeone')
+    assert_equal(cont_detail['label'], 'fakeone', 'label test fail!')
+    assert_equal(cont_detail['imageType'], 'dockerfile', 'imagetype test fail!')
     cont_op.deleteProfile('fakeone')
-    # FIXME: add list and get details tests
-    # FIXME: add creation of xxx number profiles
+  end
+  def create_random_profile(num)
+      puts "implement me"
   end
 end
 
