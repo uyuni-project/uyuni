@@ -64,4 +64,8 @@ class XMLRPCImageTest < XMLRPCBaseTest
   def getProfileCustomValues(label)
     @connection.call("image.profile.getCustomValues", @sid, label)
   end
+
+  def createCustomKey(value, desc)
+    @connection.call("system.custominfo.createKey", @sid, value, desc)
+  end
 end

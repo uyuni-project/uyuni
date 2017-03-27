@@ -14,7 +14,7 @@ Feature:  Container Image namespace tests
   And I follow "Stores" in the left menu
   Then I should see a "Registry" text
 
-  Scenario: Test image.store Namespace
+  Scenario: Test image.profiles Namespace
   Given I am authorized as "admin" with password "admin"
   Then I run image.profiles tests via xmlrpc
 

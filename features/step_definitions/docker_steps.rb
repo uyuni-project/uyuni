@@ -6,21 +6,27 @@ require 'time'
 require 'date'
 require 'securerandom'
 
-module Image_profile
+# this module test image_profile
+module ImageProfile
   def image_profiles_xmlrpc
-     cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
-     cont_op.login('admin', 'admin') 
-     # create delete profile test 
-     cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
-     cont_op.deleteProfile('fakeone')
-     cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', 'MINION-TEST')
-     cont_op.deleteProfile('fakeonekey')
+    cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
+    cont_op.login('admin', 'admin')
+    # create delete profile test
+    cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
+    cont_op.deleteProfile('fakeone')
+    cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '1-MINION-TEST')
+    cont_op.deleteProfile('fakeone')
+    # set get delete Custom Values
+    cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
+    cont_op.createCustomKey('arancio', 'test containers')
+    values = {}
+    values['arancio'] = 'arancio'
+    values['value'] = 'Arancio'
+    cont_op.setProfileCustomValues('fakeone', values)
   end
 end
 
-World(Image_profile)
-
-
+World(ImageProfile)
 
 # container_operations
 cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
@@ -149,4 +155,4 @@ And(/^I delete the random image stores$/) do
 end
 
 # Profiles tests using module
-And(/^I run image.profiles tests via xmlrpc$/,  :image_profiles_xmlrpc)
+And(/^I run image.profiles tests via xmlrpc$/, :image_profiles_xmlrpc)
