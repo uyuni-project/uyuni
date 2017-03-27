@@ -178,5 +178,6 @@ function countChildren(node) {
 }
 
 module.exports = {
-    hierarchyView: hierarchyView
+    hierarchyView: hierarchyView,
+    isSystemType: isSystemType
 }

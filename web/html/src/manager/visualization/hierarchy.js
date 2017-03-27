@@ -262,6 +262,33 @@ function initHierarchy() {
           adjustSvgDimensions();
         });
 
+        function addVisibleTreeToSSM() {
+          var ids = gatherVisibleChildren(root.children);
+          $.addSystemFromSSM(ids);
+        }
+
+        function gatherVisibleChildren(children, collection) {
+          if (collection == null) {
+            collection = new Array();
+          }
+          children.map(child => {
+            if (HierarchyView.isSystemType(child) && !collection.includes(child.data.rawId) ) {
+              collection.push(child.data.rawId);
+            }
+            if (child.children) {
+              gatherVisibleChildren(child.children, collection);
+            }
+          });
+          return collection;
+        }
+
+        const addAllToSSMButton = d3.select('#filter-wrapper')
+          .append('div');
+        addAllToSSMButton
+          .append('button')
+          .on('click', addVisibleTreeToSSM)
+          .text('Add tree to SSM');
+
       }, (xhr) => {
           d3.select('#svg-wrapper')
             .text(t('There was an error fetching data from the server.'));
