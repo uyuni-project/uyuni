@@ -71,7 +71,7 @@ class Scap(rhnHandler):
             os.makedirs(absolute_dir)
             mode = stat.S_IRWXU | stat.S_IRWXG | stat.S_IROTH | stat.S_IXOTH
             subdirs = r_dir.split('/')
-            susemanager_gid = grp.getgrnam('susemanager').gr_gid
+            www_gid = grp.getgrnam('www').gr_gid
             for idx in range(1, len(subdirs)):
                 subdir = os.path.join(CFG.MOUNT_POINT, *subdirs[0: idx])
                 if os.path.isdir(subdir):
@@ -81,8 +81,8 @@ class Scap(rhnHandler):
                     except OSError:
                         pass
                     try:
-                        log_debug(1, "chgrp susemnager ", subdir)
-                        os.chown(subdir, -1, susemanager_gid)
+                        log_debug(1, "chgrp www ", subdir)
+                        os.chown(subdir, -1, www_gid)
                     except OSError:
                         pass
         log_debug(1, self.server_id, "Creating file: %s" % absolute_file)
