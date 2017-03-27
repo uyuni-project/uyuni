@@ -80,7 +80,7 @@ public class CVEAuditSystemSerializer extends RhnXmlRpcCustomSerializer {
         }
 
         SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("system_id", system.getSystemID());
+        helper.add("system_id", system.getId());
         helper.add("patch_status", system.getPatchStatus().toString());
         helper.add("channel_labels", channelLabels);
         helper.add("errata_advisories", errataAdvisories);

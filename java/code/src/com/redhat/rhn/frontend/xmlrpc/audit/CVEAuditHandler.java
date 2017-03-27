@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.audit;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -25,7 +24,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
 import com.redhat.rhn.frontend.xmlrpc.UnknownCVEIdentifierFaultException;
 import com.redhat.rhn.manager.audit.CVEAuditManager;
-import com.redhat.rhn.manager.audit.CVEAuditSystem;
+import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 
@@ -54,7 +53,7 @@ public class CVEAuditHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "cveIdentifier")
      * @xmlrpc.returntype #array() $CVEAuditSystemSerializer #array_end()
      */
-    public List<CVEAuditSystem> listSystemsByPatchStatus(User loggedInUser,
+    public List<CVEAuditServer> listSystemsByPatchStatus(User loggedInUser,
             String cveIdentifier) {
         return listSystemsByPatchStatus(loggedInUser, cveIdentifier, null);
     }
@@ -88,7 +87,7 @@ public class CVEAuditHandler extends BaseHandler {
      *  #options_end()
      * @xmlrpc.returntype #array() $CVEAuditSystemSerializer #array_end()
      */
-    public List<CVEAuditSystem> listSystemsByPatchStatus(User loggedInUser,
+    public List<CVEAuditServer> listSystemsByPatchStatus(User loggedInUser,
             String cveIdentifier, List<String> patchStatusLabels) throws FaultException {
 
         // Convert list of strings to patch status objects
@@ -108,15 +107,10 @@ public class CVEAuditHandler extends BaseHandler {
         }
 
         try {
-            List<CVEAuditSystem> result = CVEAuditManager.listSystemsByPatchStatus(
+            List<CVEAuditServer> result = CVEAuditManager.listSystemsByPatchStatus(
                     loggedInUser, cveIdentifier, patchStatuses);
 
-            Collections.sort(result, new Comparator<CVEAuditSystem>() {
-                @Override
-                public int compare(CVEAuditSystem s1, CVEAuditSystem s2) {
-                    return s1.getPatchStatusRank() - s2.getPatchStatusRank();
-                }
-            });
+            result.sort(Comparator.comparingInt(s -> s.getPatchStatus().getRank()));
 
             return result;
         }
