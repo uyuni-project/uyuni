@@ -13,7 +13,8 @@ module Image_profile
      # create delete profile test 
      cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
      cont_op.deleteProfile('fakeone')
-     cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', 'GINO')
+     cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', 'MINION-TEST')
+     cont_op.deleteProfile('fakeonekey')
   end
 end
 
