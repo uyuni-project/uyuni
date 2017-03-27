@@ -22,6 +22,17 @@ module ImageProfile
     values = {}
     values['arancio'] = 'arancia xmlrpc tests'
     cont_op.setProfileCustomValues('fakeone', values)
+    pro_det = cont_op.getProfileCustomValues('fakeone')
+    puts pro_det
+    # assert_equal(pro_det['arancio'], 'arancia xmlrpc tests', 'setting custom profile value failed')
+    pro_type = cont_op.listImageProfileTypes
+    assert_equal(pro_type.length, 1, 'support at moment only one type of Profile!')
+    assert_equal(pro_type[0], 'dockerfile', 'type is not dockerfile?')
+    key = ['arancio']
+    cont_op.deleteProfileCustomValues('fakeone', key)
+    cont_op.deleteProfile('fakeone')
+    # FIXME: add list and get details tests
+    # FIXME: add creation of xxx number profiles
   end
 end
 
