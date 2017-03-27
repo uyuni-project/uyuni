@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.xmlrpc.image.profile.test;
 
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -33,6 +32,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 import com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -513,8 +513,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
     }
 
     public static ActivationKey createActivationKey(User user) throws Exception {
-        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
-        Channel childChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
         Set<Channel> channels = new HashSet<>();
         channels.add(baseChannel);
         channels.add(childChannel);

@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.image.test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
@@ -41,6 +40,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
@@ -88,8 +88,8 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageStoreFactory.save(store);
 
         // Create test token for profile
-        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
-        Channel childChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
         Set<Channel> channels = new HashSet<>();
         channels.add(baseChannel);
         channels.add(childChannel);
