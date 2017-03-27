@@ -14,7 +14,14 @@
  */
 package com.redhat.rhn.manager.audit;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -54,15 +61,15 @@ public class CVEAuditManager {
     // Internal methods caches
     /** The SUSE product channel cache. */
     private static Map<Long, List<Channel>> suseProductChannelCache =
-            new HashMap<Long, List<Channel>>();
+            new HashMap<>();
 
     /** The target product cache. */
     private static Map<Long, List<SUSEProductDto>> targetProductCache =
-            new HashMap<Long, List<SUSEProductDto>>();
+            new HashMap<>();
 
     /** The source product cache. */
     private static Map<Long, List<SUSEProductDto>> sourceProductCache =
-            new HashMap<Long, List<SUSEProductDto>>();
+            new HashMap<>();
 
     private static final String KERNEL_DEFAULT_NAME = "kernel-default";
 
@@ -89,7 +96,7 @@ public class CVEAuditManager {
      * @param rankedChannels the ranked channels
      */
     public static void insertRelevantImageChannels(Map<ImageInfo,
-            Set<RankedChannel>> rankedChannels) {
+            List<RankedChannel>> rankedChannels) {
         WriteMode m = ModeFactory.getWriteMode("cve_audit_queries",
                 "insert_relevant_image_channel");
 
@@ -114,7 +121,7 @@ public class CVEAuditManager {
      * @param rankedChannels the ranked channels
      */
     public static void insertRelevantServerChannels(Map<Server,
-            Set<RankedChannel>> rankedChannels) {
+            List<RankedChannel>> rankedChannels) {
         WriteMode m = ModeFactory.getWriteMode("cve_audit_queries",
                 "insert_relevant_server_channel");
 
@@ -144,7 +151,7 @@ public class CVEAuditManager {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "find_relevant_products");
         List<Map<String, Long>> results = m.execute(channelIDs);
-        List<Long> channelProductIDs = new LinkedList<Long>();
+        List<Long> channelProductIDs = new LinkedList<>();
         for (Map<String, Long> result : results) {
             channelProductIDs.add(result.get("channel_product_id"));
         }
@@ -167,7 +174,7 @@ public class CVEAuditManager {
             Long parentChannelID) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "find_product_channels");
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("parent", parentChannelID);
         return m.execute(params, channelProductIDs);
     }
@@ -191,7 +198,7 @@ public class CVEAuditManager {
         }
 
         // Convert a SUSE product ID into channel product IDs
-        result = new ArrayList<Channel>();
+        result = new ArrayList<>();
         List<Long> relevantChannelProductIDs = convertProductId(suseProductID);
 
         // Find relevant channels
@@ -235,10 +242,10 @@ public class CVEAuditManager {
     public static List<Long> convertProductId(long suseProductId) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "convert_suse_product_to_channel_products");
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Long> params = new HashMap<>();
         params.put("suseProductId", suseProductId);
         DataResult<Map<String, Long>> results = m.execute(params);
-        List<Long> ret = new ArrayList<Long>();
+        List<Long> ret = new ArrayList<>();
         for (Map<String, Long> result : results) {
             ret.add(result.get("channel_product_id"));
         }
@@ -259,7 +266,7 @@ public class CVEAuditManager {
             return result;
         }
 
-        result = new LinkedList<SUSEProductDto>();
+        result = new LinkedList<>();
         List<SUSEProductDto> targets = DistUpgradeManager
                 .findTargetProducts(suseProductID);
         while (targets.size() > 0) {
@@ -291,7 +298,7 @@ public class CVEAuditManager {
             return result;
         }
 
-        result = new LinkedList<SUSEProductDto>();
+        result = new LinkedList<>();
         List<SUSEProductDto> sources = DistUpgradeManager
                 .findSourceProducts(suseProductID);
         while (sources.size() > 0) {
@@ -320,8 +327,8 @@ public class CVEAuditManager {
      * @param auditTarget the target
      * @return set of channels
      */
-    public static Set<RankedChannel> populateCVEChannels(AuditTarget auditTarget) {
-        Set<RankedChannel> relevantChannels = new HashSet<>();
+    public static List<RankedChannel> populateCVEChannels(AuditTarget auditTarget) {
+        List<RankedChannel> relevantChannels = new ArrayList<>();
         List<Long> vendorChannelIDs = new LinkedList<>();
         Long parentChannelID = null;
 
@@ -379,11 +386,22 @@ public class CVEAuditManager {
         }
 
         // Find all channels relevant for past and future migrations
-        Set<RankedChannel> migrationChannels = addRelevantMigrationProductChannels(
+        List<RankedChannel> migrationChannels = addRelevantMigrationProductChannels(
                 auditTarget, maxRank);
         relevantChannels.addAll(migrationChannels);
 
-        return relevantChannels;
+
+        return relevantChannels.stream()
+                .collect(
+                    Collectors.groupingBy(
+                        RankedChannel::getChannelId,
+                        // take only the lowest rank for each channel
+                        Collectors.reducing((a, b) -> a.getRank() <= b.getRank() ? a : b)
+                    )
+                ).entrySet()
+                 .stream()
+                 // its safe to call get here since groupingBy will not produce empty lists
+                 .map(s -> s.getValue().get()).collect(Collectors.toList());
     }
 
     /**
@@ -404,15 +422,15 @@ public class CVEAuditManager {
             log.debug("Number of servers found: " + servers.size());
         }
 
-        Map<Server, Set<RankedChannel>> relevantServerChannels = servers.stream()
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        server -> populateCVEChannels(new ServerAuditTarget(server))
-                        ));
+        Map<Server, List<RankedChannel>> relevantServerChannels = servers.stream()
+            .collect(Collectors.toMap(
+                Function.identity(),
+                server -> populateCVEChannels(new ServerAuditTarget(server))
+            ));
 
         insertRelevantServerChannels(relevantServerChannels);
 
-        Map<ImageInfo, Set<RankedChannel>> relevantImageChannels =
+        Map<ImageInfo, List<RankedChannel>> relevantImageChannels =
                 ImageInfoFactory.list().stream().collect(Collectors.toMap(
                     Function.identity(),
                     imageInfo -> populateCVEChannels(new ImageAuditTarget(imageInfo))
@@ -430,19 +448,19 @@ public class CVEAuditManager {
      * @param maxRank starting rank for new channels found
      * @return set of channels
      */
-    public static Set<RankedChannel> addRelevantMigrationProductChannels(
+    public static List<RankedChannel> addRelevantMigrationProductChannels(
             AuditTarget auditTarget, int maxRank) {
 
-        final HashSet<RankedChannel> result = new HashSet<>();
+        final List<RankedChannel> result = new ArrayList<>();
 
         SUSEProductSet suseProductSet = auditTarget.getInstalledProductSet().orElse(null);
         if (suseProductSet == null) {
-            return Collections.emptySet();
+            return Collections.emptyList();
         }
 
         SUSEProduct baseProduct = suseProductSet.getBaseProduct();
         if (baseProduct == null) {
-            return Collections.emptySet();
+            return Collections.emptyList();
         }
 
         Long baseProductID = baseProduct.getId();
@@ -480,7 +498,6 @@ public class CVEAuditManager {
                     }
                 }
             }
-            return result;
         }
 
         // Increase the rank for indication of older products (previous SPs)
@@ -539,90 +556,187 @@ public class CVEAuditManager {
         return null;
     }
 
-    public static class Wrapper {
+    /**
+     * TODO: only packageInstalled and channelAssigned can be null on an affected entry
+     * TODO: this should be refactored at some point
+     */
+    private static class Wrapper {
 
         private final long id;
         private final String name;
         private final Optional<Long> errataId;
         private final String errataAdvisory;
-        private final long packageId;
-        private final String packageName;
+        private final Optional<Long> packageId;
+        private final Optional<String> packageName;
         private final boolean packageInstalled;
         private final Optional<Long> channelId;
         private final String channelName;
         private final String channelLabel;
         private final boolean channelAssigned;
-        private final int channelRank;
+        private final Optional<Long> channelRank;
 
-        public Wrapper(long id, String name,
-                       Optional<Long> errataId, String errataAdvisory,
-                       long packageId, String packageName, boolean packageInstalled,
-                       Optional<Long> channelId, String channelName, String channelLabel,
-                       boolean channelAssigned, int channelRank) {
-            this.id = id;
-            this.name = name;
-            this.errataId = errataId;
-            this.errataAdvisory = errataAdvisory;
-            this.packageId = packageId;
-            this.packageName = packageName;
-            this.packageInstalled = packageInstalled;
-            this.channelId = channelId;
-            this.channelName = channelName;
-            this.channelLabel = channelLabel;
-            this.channelAssigned = channelAssigned;
-            this.channelRank = channelRank;
+        /**
+         * constructor
+         * @param idIn id
+         * @param nameIn name
+         * @param errataIdIn errataID
+         * @param errataAdvisoryIn errataAdvisory
+         * @param packageIdIn packageId
+         * @param packageNameIn packageName
+         * @param packageInstalledIn packageInstalled
+         * @param channelIdIn channelId
+         * @param channelNameIn channelName
+         * @param channelLabelIn channelLabel
+         * @param channelAssignedIn channelAssigned
+         * @param channelRankIn channelRank
+         */
+        Wrapper(long idIn, String nameIn,
+                Optional<Long> errataIdIn, String errataAdvisoryIn,
+                Optional<Long> packageIdIn, Optional<String> packageNameIn,
+                boolean packageInstalledIn, Optional<Long> channelIdIn,
+                String channelNameIn, String channelLabelIn,
+                boolean channelAssignedIn, Optional<Long> channelRankIn) {
+            this.id = idIn;
+            this.name = nameIn;
+            this.errataId = errataIdIn;
+            this.errataAdvisory = errataAdvisoryIn;
+            this.packageId = packageIdIn;
+            this.packageName = packageNameIn;
+            this.packageInstalled = packageInstalledIn;
+            this.channelId = channelIdIn;
+            this.channelName = channelNameIn;
+            this.channelLabel = channelLabelIn;
+            this.channelAssigned = channelAssignedIn;
+            this.channelRank = channelRankIn;
         }
 
+        /**
+         *  Id
+         * @return the Id
+         */
         public long getId() {
             return id;
         }
 
+        /**
+         * Name
+         * @return the name
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * ErrataId
+         * @return the errateId
+         */
         public Optional<Long> getErrataId() {
             return errataId;
         }
 
+        /**
+         * ErrataAdvisory
+         * @return the errataAdvisory
+         */
         public String getErrataAdvisory() {
             return errataAdvisory;
         }
 
-        public long getPackageId() {
+        /**
+         * PackageId
+         * @return the packageId
+         */
+        public Optional<Long> getPackageId() {
             return packageId;
         }
 
-        public String getPackageName() {
+        /**
+         * PackageName
+         * @return the packageName
+         */
+        public Optional<String> getPackageName() {
             return packageName;
         }
 
+        /**
+         * PackageInstalled
+         * @return the packageInstalled
+         */
         public boolean isPackageInstalled() {
             return packageInstalled;
         }
 
+        /**
+         * ChannelAssigned
+         * @return the channelAssigned
+         */
         public boolean isChannelAssigned() {
             return channelAssigned;
         }
 
+        /**
+         * ChannelId
+         * @return the channelId
+         */
         public Optional<Long> getChannelId() {
             return channelId;
         }
 
+        /**
+         * ChannelName
+         * @return the channelName
+         */
         public String getChannelName() {
             return channelName;
         }
 
+        /**
+         * ChannelLabel
+         * @return the channelLabel
+         */
         public String getChannelLabel() {
             return channelLabel;
         }
 
-        public int getChannelRank() {
+        /**
+         * ChannelRank
+         * @return the channelRank
+         */
+        public Optional<Long> getChannelRank() {
             return channelRank;
         }
     }
 
-    public static Stream<Wrapper> listSystemsByPatchStatus(User user, String cveIdentifier) {
+    private static Stream<Wrapper> listImagesByPatchStatus(User user,
+        String cveIdentifier) {
+        SelectMode m = ModeFactory.getMode("cve_audit_queries",
+                "list_images_by_patch_status");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("cve_identifier", cveIdentifier);
+        params.put("user_id", user.getId());
+        DataResult<Map<String, Object>> results = m.execute(params);
+
+        return StreamSupport.stream(results.spliterator(), false)
+                .map(row -> new Wrapper(
+                        (long) row.get("image_info_id"),
+                        (String) row.get("image_name"),
+                        Optional.ofNullable((Long)row.get("errata_id")),
+                        (String) row.get("errata_advisory"),
+                        Optional.ofNullable((Long)row.get("package_id")),
+                        Optional.ofNullable((String)row.get("package_name")),
+                        getBooleanValue(row, "package_installed"),
+                        Optional.ofNullable((Long)row.get("channel_id")),
+                        (String) row.get("channel_name"),
+                        (String) row.get("channel_label"),
+                        getBooleanValue(row, "channel_assigned"),
+                        Optional.ofNullable((Long)row.get("channel_rank"))
+                ));
+
+    }
+
+    private static Stream<Wrapper> listSystemsByPatchStatus(User user,
+        String cveIdentifier) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries",
                 "list_systems_by_patch_status");
 
@@ -635,19 +749,20 @@ public class CVEAuditManager {
                 .map(row -> new Wrapper(
                     (long) row.get("system_id"),
                     (String) row.get("system_name"),
-                    Optional.ofNullable(row.get("errata_id")).map(s -> (long)s),
+                    Optional.ofNullable((Long)row.get("errata_id")),
                     (String) row.get("errata_advisory"),
-                    (long) row.get("package_id"),
-                    (String) row.get("package_name"),
+                    Optional.ofNullable((Long)row.get("package_id")),
+                    Optional.ofNullable((String)row.get("package_name")),
                     getBooleanValue(row, "package_installed"),
-                    Optional.ofNullable(row.get("channel_id")).map(s -> (long)s),
+                    Optional.ofNullable((Long)row.get("channel_id")),
                     (String) row.get("channel_name"),
                     (String) row.get("channel_label"),
                     getBooleanValue(row, "channel_assigned"),
-                    (int) row.get("channel_rank")
+                    Optional.ofNullable((Long)row.get("channel_rank"))
                 ));
 
     }
+
 
     /**
      * List visible systems with their patch status regarding a given CVE identifier.
@@ -659,19 +774,76 @@ public class CVEAuditManager {
      * @throws UnknownCVEIdentifierException if the CVE number is not known
      */
     @SuppressWarnings("unchecked")
-    public static List<CVEAuditSystem> listSystemsByPatchStatus(User user,
-       String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+    public static List<CVEAuditServer> listSystemsByPatchStatus(User user,
+        String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
             throws UnknownCVEIdentifierException {
-
         if (isCVEIdentifierUnknown(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
         }
 
-        List<Wrapper> results = listSystemsByPatchStatus(user, cveIdentifier).collect(Collectors.toList());
-        List<CVEAuditSystem> ret = new LinkedList<>();
+        List<Wrapper> results = listSystemsByPatchStatus(user, cveIdentifier)
+                .collect(Collectors.toList());
+
+        return listSystemsByPatchStatus(results, patchStatuses)
+                .stream()
+                .map(system -> new CVEAuditServer(
+                        system.getId(),
+                        system.getSystemName(),
+                        system.getPatchStatus(),
+                        system.getChannels(),
+                        system.getErratas()
+                )).collect(Collectors.toList());
+    }
+
+    /**
+     * List visible images with their patch status regarding a given CVE identifier.
+     *
+     * @param user the calling user
+     * @param cveIdentifier the CVE identifier to lookup
+     * @param patchStatuses the patch statuses
+     * @return list of images records with patch status
+     * @throws UnknownCVEIdentifierException if the CVE number is not known
+     */
+    @SuppressWarnings("unchecked")
+    public static List<CVEAuditImage> listImagesByPatchStatus(User user,
+            String cveIdentifier, EnumSet<PatchStatus> patchStatuses)
+            throws UnknownCVEIdentifierException {
+        if (isCVEIdentifierUnknown(cveIdentifier)) {
+            throw new UnknownCVEIdentifierException();
+        }
+
+        List<Wrapper> results = listImagesByPatchStatus(user, cveIdentifier)
+                .collect(Collectors.toList());
+
+        return listSystemsByPatchStatus(results, patchStatuses)
+                .stream()
+                .map(system -> new CVEAuditImage(
+                        system.getId(),
+                        system.getSystemName(),
+                        system.getPatchStatus(),
+                        system.getChannels(),
+                        system.getErratas()
+                )).collect(Collectors.toList());
+    }
+
+
+    /**
+     * List visible systems with their patch status regarding a given CVE identifier.
+     *
+     * @param results raw patchstatus query
+     * @param patchStatuses the patch statuses
+     * @return list of system records with patch status
+     * @throws UnknownCVEIdentifierException if the CVE number is not known
+     */
+    @SuppressWarnings("unchecked")
+    public static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(
+       List<Wrapper> results, EnumSet<PatchStatus> patchStatuses)
+            throws UnknownCVEIdentifierException {
+
+        List<CVEAuditSystemBuilder> ret = new LinkedList<>();
 
         // Hold the system and errata we are currently looking at
-        CVEAuditSystem currentSystem = null;
+        CVEAuditSystemBuilder currentSystem = null;
         Optional<Long> currentErrata = Optional.empty();
         // Holds the list of patched packages for the CVE we are looking at
         Map<String, Boolean> patchedPackageNames = new HashMap<>();
@@ -687,14 +859,14 @@ public class CVEAuditManager {
         for (Wrapper result : results) {
             // Get the server id first
             final long systemID = result.getId();
-            final String packageName = result.getPackageName();
+            final String packageName = result.getPackageName().orElse(null);
             if (packageName != null && packageName.startsWith("kgraft-patch")) {
                 usesLivePatchingDefault |= packageName.endsWith("-default");
                 usesLivePatchingXen |= packageName.endsWith("-xen");
             }
 
             // Is this a new system?
-            if (currentSystem == null || systemID != currentSystem.getSystemID()) {
+            if (currentSystem == null || systemID != currentSystem.getId()) {
                 // Finish up work on the last one
                 if (currentSystem != null) {
                     if (usesLivePatchingDefault &&
@@ -717,8 +889,10 @@ public class CVEAuditManager {
                         oneChannelForPackageAssigned &= isAssigned;
                     }
 
-                    setPatchStatus(currentSystem, allPackagesForAllErrataInstalled,
-                            oneChannelForPackageAssigned, hasErrata);
+                    currentSystem.setPatchStatus(
+                        getPatchStatus(allPackagesForAllErrataInstalled,
+                                oneChannelForPackageAssigned, hasErrata)
+                    );
 
                     // clear up the package list for the next system
                     patchedPackageNames.clear();
@@ -731,17 +905,17 @@ public class CVEAuditManager {
                 }
 
                 // Start working on the new system
-                currentSystem = new CVEAuditSystem(systemID);
+                currentSystem = new CVEAuditSystemBuilder(systemID);
                 currentSystem.setSystemName(result.getName());
 
                 // Ignore old products as long as there is a patch available elsewhere
                 ignoreOldProducts = true;
 
                 // First assignment
-                patchedPackageNames.put(result.getPackageName(),
+                patchedPackageNames.put(packageName,
                         result.isPackageInstalled());
                 if (!result.isPackageInstalled()) {
-                    channelAssignedPackageNames.put(result.getPackageName(),
+                    channelAssignedPackageNames.put(packageName,
                             result.isChannelAssigned());
                 }
 
@@ -768,7 +942,7 @@ public class CVEAuditManager {
             else {
                 // Consider old products only if there is no patch in current or future
                 // products, channel rank >= 100000 indicates older products
-                final long channelRank = result.getChannelRank();
+                final Long channelRank = result.getChannelRank().orElse(null);
                 if (channelRank >= 100000 && currentSystem.getErratas().isEmpty()) {
                     ignoreOldProducts = false;
                 }
@@ -860,8 +1034,10 @@ public class CVEAuditManager {
                 oneChannelForPackageAssigned &= isAssigned;
             }
 
-            setPatchStatus(currentSystem, allPackagesForAllErrataInstalled,
-                    oneChannelForPackageAssigned, hasErrata);
+            currentSystem.setPatchStatus(
+                    getPatchStatus(allPackagesForAllErrataInstalled,
+                            oneChannelForPackageAssigned, hasErrata)
+            );
 
             // Check if the patch status is contained in the filter
             if (patchStatuses.contains(currentSystem.getPatchStatus())) {
@@ -880,7 +1056,7 @@ public class CVEAuditManager {
      * @return true if the integer value was 1, false otherwise
      */
     public static boolean getBooleanValue(Map<String, Object> result, String key) {
-        return result.get(key) == null ? false : ((Number) result.get(key)).intValue() == 1;
+        return result.get(key) != null && ((Number) result.get(key)).intValue() == 1;
     }
 
     /**
@@ -892,7 +1068,7 @@ public class CVEAuditManager {
     @SuppressWarnings("unchecked")
     public static boolean isCVEIdentifierUnknown(String cveIdentifier) {
         SelectMode m = ModeFactory.getMode("cve_audit_queries", "count_cve_identifiers");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("cve_identifier", cveIdentifier);
         DataResult<Map<String, Object>> results = m.execute(params);
         Long count = (Long) results.get(0).get("count");
@@ -900,35 +1076,43 @@ public class CVEAuditManager {
     }
 
     /**
-     * Set the patch status of a system record.
+     * Gets the patch status for a set of flags
      *
-     * @param system the system
      * @param allPackagesForAllErrataInstalled true if system has all relevant
      * packages installed
      * @param allChannelsForOneErrataAssigned the true if system has all
      * channels for at least one relevant errata assigned
      * @param hasErrata true if query row has an errata ID
+     * @return the patch status
      */
-    public static void setPatchStatus(CVEAuditSystem system,
+    public static PatchStatus getPatchStatus(
             boolean allPackagesForAllErrataInstalled,
             boolean allChannelsForOneErrataAssigned, boolean hasErrata) {
         if (hasErrata) {
             if (allPackagesForAllErrataInstalled) {
-                system.setPatchStatus(PatchStatus.PATCHED);
+                return PatchStatus.PATCHED;
             }
             else if (allChannelsForOneErrataAssigned) {
-                system.setPatchStatus(PatchStatus.AFFECTED_PATCH_APPLICABLE);
+                return PatchStatus.AFFECTED_PATCH_APPLICABLE;
             }
             else {
-                system.setPatchStatus(PatchStatus.AFFECTED_PATCH_INAPPLICABLE);
+                return PatchStatus.AFFECTED_PATCH_INAPPLICABLE;
             }
         }
         else {
-            system.setPatchStatus(PatchStatus.NOT_AFFECTED);
+            return PatchStatus.NOT_AFFECTED;
         }
     }
 
-    private static boolean addRelevantChannels(Set<RankedChannel> relevantChannels,
+    /**
+     * Add a list of channels to the set of channels relevant for a given server.
+     *
+     * @param relevantChannels the relevant channels
+     * @param channels the channels
+     * @param ranking the ranking
+     * @return true as soon as at least one channel record has been added
+     */
+    private static boolean addRelevantChannels(List<RankedChannel> relevantChannels,
         List<Channel> channels, int ranking) {
         boolean added = false;
         for (Channel c : channels) {
@@ -941,35 +1125,14 @@ public class CVEAuditManager {
     }
 
     /**
-     * Add a list of channels to the set of channels relevant for a given server.
-     *
-     * @param relevantChannels the relevant channels
-     * @param channels the channels
-     * @param ranking the ranking
-     * @return true as soon as at least one channel record has been added
-     */
-    private static boolean addRelevantChannels(Set<ServerChannelIdPair> relevantChannels,
-            long sid, List<Channel> channels, int ranking) {
-        boolean added = false;
-        for (Channel c : channels) {
-            boolean result = relevantChannels.add(new ServerChannelIdPair(
-                    sid, c.getId(), ranking));
-            if (result) {
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    /**
      * Log out the set of results for debugging purposes.
      *
      * @param results the results
      */
-    private static void debugLog(List<CVEAuditSystem> results) {
+    private static void debugLog(List<CVEAuditSystemBuilder> results) {
         if (log.isDebugEnabled()) {
             log.debug("Returning " + results.size() + " results");
-            for (CVEAuditSystem s : results) {
+            for (CVEAuditSystemBuilder s : results) {
                 String errata = "";
                 for (ErrataIdAdvisoryPair e : s.getErratas()) {
                     errata += " " + e.getId();
@@ -978,7 +1141,7 @@ public class CVEAuditManager {
                 for (ChannelIdNameLabelTriple c : s.getChannels()) {
                     channels += " " + c.getId();
                 }
-                log.debug(s.getSystemID() + ": " + s.getPatchStatus() +
+                log.debug(s.getId() + ": " + s.getPatchStatus() +
                         " (patches: " + errata + ")" +
                         " (channels: " + channels + ")");
             }

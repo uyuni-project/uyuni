@@ -26,6 +26,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.redhat.rhn.manager.audit.CVEAuditManager;
+import com.redhat.rhn.manager.audit.CVEAuditServer;
+import com.redhat.rhn.manager.audit.PatchStatus;
+import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -42,10 +46,6 @@ import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListRhnSetHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
-import com.redhat.rhn.manager.audit.CVEAuditManager;
-import com.redhat.rhn.manager.audit.CVEAuditSystem;
-import com.redhat.rhn.manager.audit.PatchStatus;
-import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 /**
@@ -78,7 +78,7 @@ public class CVEAuditAction extends RhnAction {
     /** Runs backend CVE Audit queries when requested by ListTag. */
     private class CVEAuditResultListable implements Listable {
         @Override
-        public List<CVEAuditSystem> getResult(RequestContext context) {
+        public List<CVEAuditServer> getResult(RequestContext context) {
             log.debug("ResultLister called with context " + context.toString());
             HttpServletRequest request = context.getRequest();
             String cveIdentifierYear = request.getParameter(CVE_IDENTIFIER_YEAR_PARAMETER);
@@ -185,8 +185,8 @@ public class CVEAuditAction extends RhnAction {
      * @param cveIdentifier the CVE name string (CVE-YYYY-1234)
      * @throws UnknownCVEIdentifierException if the CVE number is not known to SUSE Manager
      */
-    private List<CVEAuditSystem> runAudit(HttpServletRequest request,
-            String cveIdentifier) throws UnknownCVEIdentifierException {
+    private List<CVEAuditServer> runAudit(HttpServletRequest request,
+        String cveIdentifier) throws UnknownCVEIdentifierException {
         log.debug("runAudit called with parameter: " + cveIdentifier);
 
         User user = new RequestContext(request).getCurrentUser();
@@ -199,7 +199,7 @@ public class CVEAuditAction extends RhnAction {
             }
         }
 
-        List<CVEAuditSystem> results = CVEAuditManager.listSystemsByPatchStatus(user,
+        List<CVEAuditServer> results = CVEAuditManager.listSystemsByPatchStatus(user,
                 cveIdentifier, patchStatuses);
 
         log.debug("runAudit finished with " + results.size() + " results");

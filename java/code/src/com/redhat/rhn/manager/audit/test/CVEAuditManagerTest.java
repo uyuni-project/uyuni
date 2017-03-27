@@ -104,21 +104,21 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Channel channel3 = createTestChannel(user);
 
         // Insert some records
-        Map<Server, Set<RankedChannel>> expected = new HashMap<>();
+        Map<Server, List<RankedChannel>> expected = new HashMap<>();
         RankedChannel pair1 = new RankedChannel(channel1.getId(), 0);
         RankedChannel pair2 = new RankedChannel(channel2.getId(), 1);
         RankedChannel pair3 = new RankedChannel(channel3.getId(), 2);
-        expected.put(server1, new HashSet<>(Arrays.asList(pair1, pair2)));
-        expected.put(server2, Collections.singleton(pair3));
+        expected.put(server1, Arrays.asList(pair1, pair2));
+        expected.put(server2, Collections.singletonList(pair3));
 
         CVEAuditManager.insertRelevantServerChannels(expected);
 
         // Read and check if table content is as expected
         List<ServerChannelIdPair> pairsActual = getAllRelevantChannels();
         assertEquals(3, pairsActual.size());
-        assertContains(pairsActual, pair1);
-        assertContains(pairsActual, pair2);
-        assertContains(pairsActual, pair3);
+        assertContains(pairsActual, new ServerChannelIdPair(server1.getId(), pair1.getChannelId(), pair1.getRank()));
+        assertContains(pairsActual, new ServerChannelIdPair(server1.getId(), pair2.getChannelId(), pair2.getRank()));
+        assertContains(pairsActual, new ServerChannelIdPair(server2.getId(), pair3.getChannelId(), pair3.getRank()));
 
         // Clean up
         CVEAuditManager.deleteRelevantChannels();
@@ -323,26 +323,13 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
     /**
      * Test if the patch status is set correctly for given parameters:
-     * {@link CVEAuditManager#setPatchStatus(CVEAuditSystem, boolean,
-     * boolean, boolean)}
      */
     public void testSetPatchStatus() {
-        CVEAuditSystem system = new CVEAuditSystem(0L);
-
-        CVEAuditManager.setPatchStatus(system, true, true, true);
-        assertEquals(PatchStatus.PATCHED, system.getPatchStatus());
-
-        CVEAuditManager.setPatchStatus(system, true, false, true);
-        assertEquals(PatchStatus.PATCHED, system.getPatchStatus());
-
-        CVEAuditManager.setPatchStatus(system, false, true, true);
-        assertEquals(PatchStatus.AFFECTED_PATCH_APPLICABLE, system.getPatchStatus());
-
-        CVEAuditManager.setPatchStatus(system, false, false, true);
-        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE, system.getPatchStatus());
-
-        CVEAuditManager.setPatchStatus(system, false, false, false);
-        assertEquals(PatchStatus.NOT_AFFECTED, system.getPatchStatus());
+        assertEquals(PatchStatus.PATCHED, CVEAuditManager.getPatchStatus(true, true, true));
+        assertEquals(PatchStatus.PATCHED, CVEAuditManager.getPatchStatus(true, false, true));
+        assertEquals(PatchStatus.AFFECTED_PATCH_APPLICABLE, CVEAuditManager.getPatchStatus(false, true, true));
+        assertEquals(PatchStatus.AFFECTED_PATCH_INAPPLICABLE, CVEAuditManager.getPatchStatus(false, false, true));
+        assertEquals(PatchStatus.NOT_AFFECTED, CVEAuditManager.getPatchStatus(false, false, false));
     }
 
     /**
@@ -492,7 +479,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.NOT_AFFECTED, results);
 
@@ -534,7 +521,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
 
@@ -576,7 +563,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
 
@@ -631,7 +618,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_INAPPLICABLE, results);
 
@@ -678,7 +665,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Test that server is not affected (eg. we do not have an applicable
         // patch for that vulnerability)
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.NOT_AFFECTED, results);
     }
@@ -717,7 +704,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // Find the relevant channels and ask for the above CVE
         CVEAuditManager.populateCVEChannels();
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName,
                         EnumSet.allOf(PatchStatus.class));
 
@@ -798,7 +785,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
     }
@@ -834,7 +821,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
     }
@@ -868,7 +855,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // No filtering
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
     }
@@ -941,7 +928,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
 
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server1, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
         assertSystemPatchStatus(server2, PatchStatus.PATCHED, results);
@@ -1012,7 +999,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
 
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
     }
@@ -1083,7 +1070,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // number from an older product's LTSS channel
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
     }
@@ -1131,7 +1118,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server1, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
         assertSystemPatchStatus(server2, PatchStatus.PATCHED, results);
@@ -1203,7 +1190,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
     }
@@ -1274,7 +1261,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
     }
@@ -1345,7 +1332,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_INAPPLICABLE, results);
     }
@@ -1427,7 +1414,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         CVEAuditManager.populateCVEChannels();
         EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
-        List<CVEAuditSystem> results =
+        List<CVEAuditServer> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveNameKernelExclusive, filter);
         assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
 
@@ -1447,10 +1434,10 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * @param results
      * @return result record for the given server
      */
-    private CVEAuditSystem findSystemRecord(Server server, List<CVEAuditSystem> results) {
+    private CVEAuditSystem findSystemRecord(Server server, List<CVEAuditServer> results) {
         CVEAuditSystem ret = null;
         for (CVEAuditSystem result : results) {
-            if (result.getSystemID() == server.getId()) {
+            if (result.getId() == server.getId()) {
                 ret = result;
                 break;
             }
@@ -1466,11 +1453,11 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * @param actualResults the actual results
      */
     private void assertSystemPatchStatus(Server expectedServer,
-            PatchStatus expectedPatchStatus, List<CVEAuditSystem> actualResults) {
+            PatchStatus expectedPatchStatus, List<CVEAuditServer> actualResults) {
         assertTrue(actualResults.size() >= 1);
         boolean found = false;
-        for (CVEAuditSystem result : actualResults) {
-            if (result.getSystemID() == expectedServer.getId()) {
+        for (CVEAuditServer result : actualResults) {
+            if (result.getId() == expectedServer.getId()) {
                 assertFalse(found);
                 assertEquals(expectedPatchStatus, result.getPatchStatus());
                 found = true;
@@ -1486,9 +1473,9 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      * @param expectedPatchStatus the expected patch status
      */
     private void assertSystemNotFound(Server expectedServer,
-            List<CVEAuditSystem> actualResults) {
+            List<CVEAuditServer> actualResults) {
         for (CVEAuditSystem result : actualResults) {
-            assertTrue(result.getSystemID() != expectedServer.getId());
+            assertTrue(result.getId() != expectedServer.getId());
         }
     }
 

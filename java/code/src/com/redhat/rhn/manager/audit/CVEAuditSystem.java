@@ -15,133 +15,50 @@
 package com.redhat.rhn.manager.audit;
 
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.redhat.rhn.frontend.dto.BaseDto;
-
 /**
- * Class representing a record with data about a single system containing that system's
- * patch status regarding a certain given CVE identifier as well as sets of relevant
- * channels and erratas.
- *
- * @version $Rev$
+ * base interface for audit results
  */
-public class CVEAuditSystem extends BaseDto {
-
-    private long systemID;
-    private String systemName;
-    private PatchStatus patchStatus;
-
-    // LinkedHashSet is used to preserve insertion order when iterating
-    private Set<ChannelIdNameLabelTriple> channels =
-            new LinkedHashSet<ChannelIdNameLabelTriple>();
-    private Set<ErrataIdAdvisoryPair> erratas = new LinkedHashSet<ErrataIdAdvisoryPair>();
+public interface CVEAuditSystem {
 
     /**
-     * Constructor expecting a system ID.
-     *
-     * @param systemIDIn the system ID
+     * Return the ID.
+     * @return the ID
      */
-    public CVEAuditSystem(long systemIDIn) {
-        setSystemID(systemIDIn);
-    }
+    long getId();
 
     /**
-     * Return the system ID.
-     * @return the systemID
+     * Return the name.
+     * @return the name
      */
-    public long getSystemID() {
-        return systemID;
-    }
-
-    /**
-     * Set the system ID.
-     * @param systemIDIn the systemID to set
-     */
-    public void setSystemID(long systemIDIn) {
-        this.systemID = systemIDIn;
-    }
-
-    /**
-     * Return the system name.
-     * @return the systemName
-     */
-    public String getSystemName() {
-        return systemName;
-    }
-
-    /**
-     * Set the system name.
-     * @param systemNameIn the systemName to set
-     */
-    public void setSystemName(String systemNameIn) {
-        this.systemName = systemNameIn;
-    }
+    String getName();
 
     /**
      * Return the patch status.
      * @return the patchStatus
      */
-    public PatchStatus getPatchStatus() {
-        return patchStatus;
-    }
-
-    /**
-     * Returns a number that can be used to sort by patch status.
-     * @return the patch status ranks
-     */
-    public int getPatchStatusRank() {
-        return patchStatus.ordinal();
-    }
-
-    /**
-     * Set the patch status.
-     * @param patchStatusIn the patchStatus to set
-     */
-    public void setPatchStatus(PatchStatus patchStatusIn) {
-        this.patchStatus = patchStatusIn;
-    }
+    PatchStatus getPatchStatus();
 
     /**
      * Return the set of channels.
      * @return the channels
      */
-    public Set<ChannelIdNameLabelTriple> getChannels() {
-        return channels;
-    }
-
-    /**
-     * Add a single channel.
-     * @param channelIn a channel
-     */
-    public void addChannel(ChannelIdNameLabelTriple channelIn) {
-        this.channels.add(channelIn);
-    }
+    Set<ChannelIdNameLabelTriple> getChannels();
 
     /**
      * Return the set of erratas.
      * @return the erratas
      */
-    public Set<ErrataIdAdvisoryPair> getErratas() {
-        return erratas;
-    }
-
-    /**
-     * Add a single errata.
-     * @param errataIn an errata
-     */
-    public void addErrata(ErrataIdAdvisoryPair errataIn) {
-        this.erratas.add(errataIn);
-    }
+    Set<ErrataIdAdvisoryPair> getErratas();
 
     /**
      * Return the closest channel as {@link String} for CSV file download.
      * @return closest channel name
      */
-    public String getChannelName() {
+    default String getChannelName() {
         String ret = "";
-        Iterator<ChannelIdNameLabelTriple> it = channels.iterator();
+        Iterator<ChannelIdNameLabelTriple> it = getChannels().iterator();
         if (it.hasNext()) {
             ChannelIdNameLabelTriple c = it.next();
             ret = c.getName();
@@ -153,19 +70,13 @@ public class CVEAuditSystem extends BaseDto {
      * Return the closest patch as {@link String} for CSV file download.
      * @return closest patch advisory
      */
-    public String getPatchAdvisory() {
+    default String getPatchAdvisory() {
         String ret = "";
-        Iterator<ErrataIdAdvisoryPair> it = erratas.iterator();
+        Iterator<ErrataIdAdvisoryPair> it = getErratas().iterator();
         if (it.hasNext()) {
             ErrataIdAdvisoryPair e = it.next();
             ret = e.getAdvisory();
         }
         return ret;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Long getId() {
-        return systemID;
     }
 }
