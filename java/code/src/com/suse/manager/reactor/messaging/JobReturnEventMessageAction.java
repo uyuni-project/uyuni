@@ -117,13 +117,18 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                 LOG.debug("Updating action for server: " +
                                         minionServer.getId());
                             }
-                            SaltUtils.INSTANCE.updateServerAction(sa,
-                                    jobReturnEvent.getData().getRetcode(),
-                                    jobReturnEvent.getData().isSuccess(),
-                                    jobReturnEvent.getJobId(),
-                                    jobResult.get(),
-                                    jobReturnEvent.getData().getFun());
-                            ActionFactory.save(sa);
+                            ZonedDateTime earliestAction = action.get().getEarliestAction()
+                                    .toInstant().atZone(ZoneId.systemDefault());
+                            if (!(action.get().getActionType()
+                                    .equals(ActionFactory.TYPE_PACKAGES_UPDATE) &&
+                                    earliestAction.isAfter(now()))) {
+                                SaltUtils.INSTANCE.updateServerAction(sa,
+                                        jobReturnEvent.getData().getRetcode(),
+                                        jobReturnEvent.getData().isSuccess(),
+                                        jobReturnEvent.getJobId(), jobResult.get(),
+                                        jobReturnEvent.getData().getFun());
+                                ActionFactory.save(sa);
+                            }
                         });
                     });
                 }
