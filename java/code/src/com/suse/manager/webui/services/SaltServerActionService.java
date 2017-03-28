@@ -186,10 +186,10 @@ public enum SaltServerActionService {
      *
      * @param actionIn the action to execute
      * @param forcePackageListRefresh add metadata to force a package list refresh
-     * @param preDownload whether the action is a predownload of packages action
+     * @param preDownloadJob whether the action is a predownload of packages action
      */
     public void execute(Action actionIn, boolean forcePackageListRefresh,
-            boolean preDownload) {
+            boolean preDownloadJob) {
         List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
                 .map(serverActions -> serverActions.stream()
                         .flatMap(action ->
@@ -210,7 +210,7 @@ public enum SaltServerActionService {
 
             Map<Boolean, List<MinionServer>> results =
                     execute(actionIn, call, targetMinions, forcePackageListRefresh,
-                            preDownload);
+                            preDownloadJob);
 
             results.get(false).forEach(minionServer -> {
                 serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
@@ -578,12 +578,12 @@ public enum SaltServerActionService {
      * @param call the call
      * @param minions minions to target
      * @param forcePackageListRefresh add metadata to force a package list refresh
-     * @param preDownload whether the action is a predownload of packages action
+     * @param preDownloadJob whether the action is a predownload of packages action
      * @return a map containing all minions partitioned by success
      */
     private Map<Boolean, List<MinionServer>> execute(Action actionIn, LocalCall<?> call,
             List<MinionServer> minions, boolean forcePackageListRefresh,
-            boolean preDownload) {
+            boolean preDownloadJob) {
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
         metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
@@ -602,7 +602,7 @@ public enum SaltServerActionService {
         try {
             Map<Boolean, List<MinionServer>> result = new HashMap<>();
 
-            if (preDownload) {
+            if (preDownloadJob) {
                 Map<String, String> pkgs =
                         ((PackageUpdateAction) actionIn).getDetails().stream()
                                 .collect(Collectors.toMap(d -> d.getPackageName().getName(),
@@ -621,18 +621,20 @@ public enum SaltServerActionService {
                     .collect(Collectors.partitioningBy(
                             minion -> results.contains(minion.getMinionId())));
 
-            if (!preDownload) {
-                result.get(true).forEach(minionServer -> {
-                    serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("Asynchronous call on minion: " +
-                                    minionServer.getMinionId());
-                        }
+
+            result.get(true).forEach(minionServer -> {
+                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Asynchronous call on minion: " +
+                                minionServer.getMinionId());
+                    }
+                    if (!preDownloadJob) {
                         serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
                         ActionFactory.save(serverAction);
-                    });
+                    }
                 });
-            }
+            });
+
             return result;
         }
         catch (SaltException ex) {

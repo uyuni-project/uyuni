@@ -504,7 +504,7 @@ public class TaskomaticApi {
             Map<String, String> params = new HashMap<String, String>();
             params.put("action_id", Long.toString(action.getId()));
             params.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
-            params.put("download_job", Boolean.toString(Boolean.TRUE));
+            params.put("predownload_job", Boolean.toString(Boolean.TRUE));
 
             LOG.info("Detected install/update action: scheduling pre-download job at " +
                     prefetchTime);
@@ -517,6 +517,7 @@ public class TaskomaticApi {
         Map<String, String> params = new HashMap<String, String>();
         params.put("action_id", Long.toString(action.getId()));
         params.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
+        params.put("predownload_job", Boolean.toString(Boolean.FALSE));
         invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
                 MINION_ACTION_JOB_PREFIX + action.getId(), params,
                 action.getEarliestAction());
