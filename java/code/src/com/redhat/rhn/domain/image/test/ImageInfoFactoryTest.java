@@ -16,16 +16,12 @@
 package com.redhat.rhn.domain.image.test;
 
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImagePackage;
 import com.redhat.rhn.domain.image.ImageProfile;
-import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
@@ -33,17 +29,12 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
-import com.redhat.rhn.domain.token.Token;
-import com.redhat.rhn.domain.token.TokenFactory;
-import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
@@ -57,6 +48,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
 
 public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
@@ -81,34 +77,10 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
 
-        // Create test store
-        ImageStore store = new ImageStore();
-        store.setLabel("myregistry");
-        store.setUri("registry.domain.top");
-        store.setStoreType(
-                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
-        store.setOrg(user.getOrg());
-        ImageStoreFactory.save(store);
-
-        // Create test token for profile
-        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
-        Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
-        Set<Channel> channels = new HashSet<>();
-        channels.add(baseChannel);
-        channels.add(childChannel);
-        Token token = ActivationKeyFactory.createNewKey(user, "test-key").getToken();
-        token.setChannels(channels);
-        TokenFactory.save(token);
-
-        // Create test profile
-        DockerfileProfile profile = new DockerfileProfile();
-        profile.setLabel("suma-3.1-base");
-        profile.setOrg(user.getOrg());
-        profile.setPath(
-                "http://git.domain.top/dockerimages.git#mybranch:profiles/suma-3.1-base");
-        profile.setToken(token);
-        profile.setTargetStore(store);
-        ImageProfileFactory.save(profile);
+        ImageStore store = createImageStore("myregistry", user);
+        ActivationKey key = createActivationKey(user);
+        ImageProfile profile =
+                createImageProfile("suma-3.1-base", store, key, user);
 
         try {
             // Should not be processed because the server is not a build host yet.
@@ -139,8 +111,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(store, info.getStore());
         assertEquals(user.getOrg(), info.getOrg());
         assertEquals(2, info.getChannels().size());
-        assertTrue(info.getChannels().contains(baseChannel));
-        assertTrue(info.getChannels().contains(childChannel));
+        assertTrue(info.getChannels().equals(key.getChannels()));
         assertTrue(info.getCustomDataValues().isEmpty());
 
         // Add inspection data after build
@@ -164,9 +135,9 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(info);
 
         // Update values
-        CustomDataKey key = CustomDataKeyTest.createTestCustomDataKey(user);
-        ProfileCustomDataValue val = ImageProfileFactoryTest
-                .createTestProfileCustomDataValue("Test value", user, key, profile);
+        CustomDataKey cdk = CustomDataKeyTest.createTestCustomDataKey(user);
+        ProfileCustomDataValue val =
+                createProfileCustomDataValue("Test value", cdk, profile, user);
         Set<ProfileCustomDataValue> cdvSet = new HashSet<>();
         cdvSet.add(val);
         profile.setCustomDataValues(cdvSet);
@@ -189,10 +160,9 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(user.getOrg(), info.getOrg());
         assertEquals(1, info.getCustomDataValues().size());
         assertEquals(2, info.getChannels().size());
-        assertTrue(info.getChannels().contains(baseChannel));
-        assertTrue(info.getChannels().contains(childChannel));
+        assertTrue(info.getChannels().equals(key.getChannels()));
         ImageInfoCustomDataValue cdv = info.getCustomDataValues().iterator().next();
-        assertEquals(key, cdv.getKey());
+        assertEquals(cdk, cdv.getKey());
         assertEquals("Test value", cdv.getValue());
         assertTrue(info.getPackages().isEmpty());
         assertTrue(info.getInstalledProducts().isEmpty());
@@ -216,101 +186,5 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         // Assertions
         assertEquals(0, info.getChannels().size());
-    }
-
-    /**
-     * Create an {@link ImagePackage} (reification of the installation of a
-     * package onto an image).
-     * @param packageIn the package to install
-     * @param image the image
-     * @return the newly created installed package
-     * @throws Exception if anything goes wrong
-     */
-    public static ImagePackage createTestImagePackage(Package packageIn,
-            ImageInfo image) throws Exception {
-        ImagePackage result = new ImagePackage();
-        result.setEvr(packageIn.getPackageEvr());
-        result.setArch(packageIn.getPackageArch());
-        result.setName(packageIn.getPackageName());
-        result.setImageInfo(image);
-        TestUtils.saveAndReload(result);
-
-        return result;
-    }
-
-    /**
-     * Create a test image store
-     * @param owner the owner
-     * @return an ImageStore
-     */
-    public static ImageStore createTestImageStore(User owner) {
-        return createTestImageStore(owner, "imagestore-" + TestUtils.randomString());
-    }
-
-    /**
-     * Create a test image store
-     * @param owner the owner
-     * @param label the label of the store
-     * @return an ImageStore
-     */
-    public static ImageStore createTestImageStore(User owner, String label) {
-        ImageStore iStore = new ImageStore();
-        iStore.setLabel(label);
-        iStore.setUri(TestUtils.randomString() + ".domain.top");
-        iStore.setStoreType(
-                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
-        iStore.setOrg(owner.getOrg());
-        ImageStoreFactory.save(iStore);
-        TestUtils.saveAndReload(iStore);
-        return iStore;
-    }
-
-    /**
-     * create a test DockerfileProfile
-     * @param owner the owner
-     * @param label the label
-     * @param iStore the imagestore
-     * @return an ImageProfile
-     */
-    public static ImageProfile createTestDockerfileProfile(User owner, String label,
-            ImageStore iStore) {
-        ImageProfile iProfile = new DockerfileProfile();
-        iProfile.setLabel(label);
-        iProfile.setOrg(owner.getOrg());
-        iProfile.setTargetStore(iStore);
-        ImageProfileFactory.save(iProfile);
-        TestUtils.saveAndReload(iProfile);
-        return iProfile;
-    }
-
-    /**
-     * create a test Image
-     * @param owner the owner
-     * @param channels the channels used for building the image
-     * @return an ImageInfo object
-     */
-    public static ImageInfo createTestImage(User owner, Set<Channel> channels) {
-        return createTestImage(owner, "image-" + TestUtils.randomString(), "latest", channels);
-    }
-
-    /**
-     * create a test Image
-     * @param owner the owner
-     * @param name the name of the image
-     * @param version the version of the image
-     * @param channels the channels used for building the image
-     * @return an ImageInfo object
-     */
-    public static ImageInfo createTestImage(User owner, String name, String version,
-            Set<Channel> channels) {
-        ImageInfo image = new ImageInfo();
-        image.setName(name);
-        image.setVersion(version);
-        image.setImageArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        image.setOrg(owner.getOrg());
-        image.setChannels(channels);
-        ImageInfoFactory.save(image);
-        TestUtils.saveAndReload(image);
-        return image;
     }
 }

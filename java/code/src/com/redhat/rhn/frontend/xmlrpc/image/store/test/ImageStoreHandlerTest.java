@@ -41,7 +41,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
                 ImageStore.TYPE_REGISTRY, null);
         assertEquals(1, ret);
 
-        List<ImageStore> stores = handler.listImageStores(admin);
+        handler.listImageStores(admin);
         ImageStore store = handler.getDetails(admin, "registry.mgr");
         assertEquals("registry.mgr", store.getLabel());
         assertEquals("registry.domain.top", store.getUri());
@@ -57,6 +57,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
         // Try with no label
         try {
             handler.getDetails(admin, "");
+            fail("Should throw InvalidParameterException.");
         }
         catch (InvalidParameterException e) {
             assertEquals("Label cannot be empty.", e.getMessage());
@@ -79,6 +80,7 @@ public class ImageStoreHandlerTest extends BaseHandlerTestCase {
 
         try {
             handler.getDetails(admin, "registry.mgr");
+            fail("Should throw NoSuchImageStoreException.");
         }
         catch (NoSuchImageStoreException e) {
             assertContains(e.getMessage(), "registry.mgr");
