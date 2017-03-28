@@ -96,6 +96,7 @@ public enum SaltServerActionService {
     private static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
     private static final String PARAM_PKGS = "param_pkgs";
+    private static final String PARAM_PATCHES = "patches";
 
     /**
      * For a given action and list of minion servers return the salt call(s) that need to be
@@ -603,13 +604,22 @@ public enum SaltServerActionService {
             Map<Boolean, List<MinionServer>> result = new HashMap<>();
 
             if (preDownloadJob) {
-                Map<String, String> pkgs =
+                Map<String, String> args =
                         ((PackageUpdateAction) actionIn).getDetails().stream()
                                 .collect(Collectors.toMap(d -> d.getPackageName().getName(),
                                 d -> d.getEvr().toString()));
-                call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
-                        Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs)),
-                        Optional.of(true));
+                if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
+                    call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
+                            Optional.of(Collections.singletonMap(PARAM_PKGS, args)),
+                            Optional.of(true));
+                }
+                else if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
+                    call = State
+                            .apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
+                                    Optional.of(Collections.singletonMap(PARAM_PATCHES,
+                                            Collections.singleton(args))),
+                                    Optional.of(true));
+                }
                 LOG.info("Executing pre-download of packages action");
             }
 
