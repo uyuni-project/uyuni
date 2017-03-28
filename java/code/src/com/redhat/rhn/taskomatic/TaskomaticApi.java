@@ -16,7 +16,9 @@ package com.redhat.rhn.taskomatic;
 
 import static java.time.ZonedDateTime.now;
 import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.time.temporal.ChronoUnit.HOURS;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -494,13 +496,22 @@ public class TaskomaticApi {
 
         ZonedDateTime earliestAction =
                 action.getEarliestAction().toInstant().atZone(ZoneId.systemDefault());
+        ZonedDateTime prefetchTime;
 
         if (earliestAction.isAfter(now()) &&
-                ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType())) {
-
-            long interval = MINUTES.between(now(), earliestAction);
-            long prefetchAdvance = (long) Math.floor(interval * Math.random());
-            ZonedDateTime prefetchTime = earliestAction.minus(prefetchAdvance, MINUTES);
+                (ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType()) ||
+                        ActionFactory.TYPE_ERRATA.equals(action.getActionType()))) {
+            if (earliestAction
+                    .minus(Config.get().getInt(ConfigDefaults.STAGING_START), HOURS)
+                    .isBefore(now())) {
+                long interval = MINUTES.between(now(), earliestAction);
+                long prefetchAdvance = (long) Math.floor(interval * Math.random());
+                prefetchTime = earliestAction.minus(prefetchAdvance, MINUTES);
+            }
+            else {
+                prefetchTime = earliestAction
+                        .minus(Config.get().getInt(ConfigDefaults.STAGING_START), HOURS);
+            }
             Map<String, String> params = new HashMap<String, String>();
             params.put("action_id", Long.toString(action.getId()));
             params.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
