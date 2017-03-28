@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImagePackage;
+import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
@@ -32,10 +33,12 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -213,5 +216,101 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         // Assertions
         assertEquals(0, info.getChannels().size());
+    }
+
+    /**
+     * Create an {@link ImagePackage} (reification of the installation of a
+     * package onto an image).
+     * @param packageIn the package to install
+     * @param image the image
+     * @return the newly created installed package
+     * @throws Exception if anything goes wrong
+     */
+    public static ImagePackage createTestImagePackage(Package packageIn,
+            ImageInfo image) throws Exception {
+        ImagePackage result = new ImagePackage();
+        result.setEvr(packageIn.getPackageEvr());
+        result.setArch(packageIn.getPackageArch());
+        result.setName(packageIn.getPackageName());
+        result.setImageInfo(image);
+        TestUtils.saveAndReload(result);
+
+        return result;
+    }
+
+    /**
+     * Create a test image store
+     * @param owner the owner
+     * @return an ImageStore
+     */
+    public static ImageStore createTestImageStore(User owner) {
+        return createTestImageStore(owner, "imagestore-" + TestUtils.randomString());
+    }
+
+    /**
+     * Create a test image store
+     * @param owner the owner
+     * @param label the label of the store
+     * @return an ImageStore
+     */
+    public static ImageStore createTestImageStore(User owner, String label) {
+        ImageStore iStore = new ImageStore();
+        iStore.setLabel(label);
+        iStore.setUri(TestUtils.randomString() + ".domain.top");
+        iStore.setStoreType(
+                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
+        iStore.setOrg(owner.getOrg());
+        ImageStoreFactory.save(iStore);
+        TestUtils.saveAndReload(iStore);
+        return iStore;
+    }
+
+    /**
+     * create a test DockerfileProfile
+     * @param owner the owner
+     * @param label the label
+     * @param iStore the imagestore
+     * @return an ImageProfile
+     */
+    public static ImageProfile createTestDockerfileProfile(User owner, String label,
+            ImageStore iStore) {
+        ImageProfile iProfile = new DockerfileProfile();
+        iProfile.setLabel(label);
+        iProfile.setOrg(owner.getOrg());
+        iProfile.setTargetStore(iStore);
+        ImageProfileFactory.save(iProfile);
+        TestUtils.saveAndReload(iProfile);
+        return iProfile;
+    }
+
+    /**
+     * create a test Image
+     * @param owner the owner
+     * @param channels the channels used for building the image
+     * @return an ImageInfo object
+     */
+    public static ImageInfo createTestImage(User owner, Set<Channel> channels) {
+        return createTestImage(owner, "image-" + TestUtils.randomString(), "latest", channels);
+    }
+
+    /**
+     * create a test Image
+     * @param owner the owner
+     * @param name the name of the image
+     * @param version the version of the image
+     * @param channels the channels used for building the image
+     * @return an ImageInfo object
+     */
+    public static ImageInfo createTestImage(User owner, String name, String version,
+            Set<Channel> channels) {
+        ImageInfo image = new ImageInfo();
+        image.setName(name);
+        image.setVersion(version);
+        image.setImageArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        image.setOrg(owner.getOrg());
+        image.setChannels(channels);
+        ImageInfoFactory.save(image);
+        TestUtils.saveAndReload(image);
+        return image;
     }
 }
