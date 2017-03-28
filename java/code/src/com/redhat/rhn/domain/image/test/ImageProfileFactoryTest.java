@@ -1,43 +1,28 @@
 package com.redhat.rhn.domain.image.test;
 
-import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
-import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
+
 public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
 
     public void testLookupById() throws Exception {
-        ImageStore store = new ImageStore();
-        store.setLabel("mystore");
-        store.setUri("my.store.uri");
-        store.setStoreType(
-                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
-        store.setOrg(user.getOrg());
-        ImageStoreFactory.save(store);
-
-        DockerfileProfile profile = new DockerfileProfile();
-        profile.setLabel("myprofile");
-        profile.setOrg(user.getOrg());
-        profile.setPath("my/test/path");
-        profile.setTargetStore(store);
-        ImageProfileFactory.save(profile);
-
-        assertNotNull(profile.getProfileId());
+        ImageProfile profile =
+                createImageProfile("myprofile", createImageStore("mystore", user), user);
 
         Optional<ImageProfile> lookup =
                 ImageProfileFactory.lookupById(profile.getProfileId());
@@ -49,22 +34,8 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testLookupByIdAndOrg() throws Exception {
-        ImageStore store = new ImageStore();
-        store.setLabel("mystore");
-        store.setUri("my.store.uri");
-        store.setStoreType(
-                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
-        store.setOrg(user.getOrg());
-        ImageStoreFactory.save(store);
-
-        DockerfileProfile profile = new DockerfileProfile();
-        profile.setLabel("myprofile");
-        profile.setOrg(user.getOrg());
-        profile.setPath("my/test/path");
-        profile.setTargetStore(store);
-        ImageProfileFactory.save(profile);
-
-        assertNotNull(profile.getProfileId());
+        ImageProfile profile =
+                createImageProfile("myprofile", createImageStore("mystore", user), user);
 
         Optional<ImageProfile> lookup =
                 ImageProfileFactory.lookupByIdAndOrg(profile.getProfileId(), user.getOrg());
@@ -83,49 +54,20 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testLookupByLabel() throws Exception {
-        ImageStore iStore = new ImageStore();
-        iStore.setLabel("myregistry");
-        iStore.setUri("registry.domain.top");
-        iStore.setStoreType(
-                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
-        iStore.setOrg(user.getOrg());
-        ImageStoreFactory.save(iStore);
+        ImageProfile profile =
+                createImageProfile("myprofile", createImageStore("mystore", user), user);
 
-        DockerfileProfile profile = new DockerfileProfile();
-        profile.setLabel("suma-3.1-base");
-        profile.setOrg(user.getOrg());
-        profile.setPath("http://git.domain.top/dockerimages.git#mybranch:profiles/suma-3.1-base");
-        profile.setToken(null);
-        profile.setTargetStore(iStore);
-        ImageProfileFactory.save(profile);
-
-        ImageProfile prf = ImageProfileFactory.lookupByLabel("suma-3.1-base").get();
+        ImageProfile prf = ImageProfileFactory.lookupByLabel("myprofile").get();
         assertEquals(profile, prf);
 
-        if (ImageProfileFactory.lookupByLabel("non-exixtent-label").isPresent()) {
-            fail("Should throw NoResultException");
-        }
+        assertFalse(ImageProfileFactory.lookupByLabel("non-exixtent-label").isPresent());
     }
 
     public void testLookupByLabelAndOrg() throws Exception {
-        ImageStore iStore = new ImageStore();
-        iStore.setLabel("myregistry");
-        iStore.setUri("registry.domain.top");
-        iStore.setStoreType(
-                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
-        iStore.setOrg(user.getOrg());
-        ImageStoreFactory.save(iStore);
+        ImageProfile profile =
+                createImageProfile("myprofile", createImageStore("mystore", user), user);
 
-        DockerfileProfile profile = new DockerfileProfile();
-        profile.setLabel("suma-3.1-base");
-        profile.setOrg(user.getOrg());
-        profile.setPath("http://git.domain.top/dockerimages.git#mybranch:profiles/suma-3.1-base");
-        profile.setToken(null);
-        profile.setTargetStore(iStore);
-        ImageProfileFactory.save(profile);
-        profile = TestUtils.saveAndReload(profile);
-
-        ImageProfile prf = ImageProfileFactory.lookupByLabelAndOrg("suma-3.1-base",
+        ImageProfile prf = ImageProfileFactory.lookupByLabelAndOrg("myprofile",
                 user.getOrg()).get();
         assertEquals(profile, prf);
 
@@ -133,63 +75,27 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         org.setName("foreign org");
         org = OrgFactory.save(org);
 
-        if (ImageProfileFactory.lookupByLabelAndOrg("suma-3.1-base", org).isPresent()) {
-            fail("Should throw NoResultException");
-        }
+        assertFalse(ImageProfileFactory
+                .lookupByLabelAndOrg("non-existent-label", user.getOrg()).isPresent());
+        assertFalse(ImageProfileFactory.lookupByLabelAndOrg("myprofile", org).isPresent());
     }
 
     public void testListImageProfiles() throws Exception {
-        ImageStore iStore = new ImageStore();
-        iStore.setLabel("myregistry");
-        iStore.setUri("registry.domain.top");
-        iStore.setStoreType(
-                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
-        iStore.setOrg(user.getOrg());
-        ImageStoreFactory.save(iStore);
-
-        DockerfileProfile profile = new DockerfileProfile();
-        profile.setLabel("suma-3.1-base");
-        profile.setOrg(user.getOrg());
-        profile.setPath("http://git.domain.top/dockerimages.git#mybranch:profiles/suma-3.1-base");
-        profile.setToken(null);
-        profile.setTargetStore(iStore);
-        ImageProfileFactory.save(profile);
-        profile = TestUtils.saveAndReload(profile);
+        ImageProfile profile =
+                createImageProfile("myprofile", createImageStore("mystore", user), user);
 
         List<ImageProfile> list = ImageProfileFactory.listImageProfiles(user.getOrg());
-        assertNotEmpty(list);
-
-        for (ImageProfile p : list) {
-            if (p.getLabel().equals("suma-3.1-base")) {
-                assertEquals(profile, p);
-            }
-            else {
-                assertTrue("profile not found", false);
-            }
-        }
+        assertEquals(1, list.size());
+        assertEquals(profile, list.get(0));
     }
 
     public void testProfileCustomData() throws Exception {
-        ImageStore iStore = new ImageStore();
-        iStore.setLabel("myregistry");
-        iStore.setUri("registry.domain.top");
-        iStore.setStoreType(
-                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
-        iStore.setOrg(user.getOrg());
-        ImageStoreFactory.save(iStore);
-
-        DockerfileProfile profile = new DockerfileProfile();
-        profile.setLabel("suma-3.1-base");
-        profile.setOrg(user.getOrg());
-        profile.setPath("http://git.domain.top/dockerimages.git#mybranch:profiles/suma-3.1-base");
-        profile.setToken(null);
-        profile.setTargetStore(iStore);
-        ImageProfileFactory.save(profile);
-        profile = TestUtils.saveAndReload(profile);
+        ImageProfile profile =
+                createImageProfile("myprofile", createImageStore("mystore", user), user);
 
         CustomDataKey key = CustomDataKeyTest.createTestCustomDataKey(user);
         ProfileCustomDataValue val =
-                createTestProfileCustomDataValue("Test value", user, key, profile);
+                createProfileCustomDataValue("Test value", key, profile, user);
 
         Set<ProfileCustomDataValue> values = profile.getCustomDataValues();
         assertNotNull(values);
@@ -198,7 +104,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         }
         CustomDataKey key2 = CustomDataKeyTest.createTestCustomDataKey(user);
         ProfileCustomDataValue val2 =
-                createTestProfileCustomDataValue("Test value", user, key2, profile);
+                createProfileCustomDataValue("Test value", key2, profile, user);
 
         profile = TestUtils.saveAndReload(profile);
         Set<ProfileCustomDataValue> values2 = profile.getCustomDataValues();
@@ -212,18 +118,5 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
             }
         }
         assertEquals(2, values2.size());
-    }
-
-    public static ProfileCustomDataValue createTestProfileCustomDataValue(String value,
-            User user, CustomDataKey key, ImageProfile profile) {
-        ProfileCustomDataValue val = new ProfileCustomDataValue();
-        val.setCreator(user);
-        val.setKey(key);
-        val.setProfile(profile);
-        val.setValue(value);
-
-        TestUtils.saveAndFlush(val);
-
-        return val;
     }
 }

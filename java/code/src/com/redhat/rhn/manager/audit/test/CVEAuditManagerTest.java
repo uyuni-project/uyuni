@@ -54,6 +54,8 @@ import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
         createTestSUSEUpgradePath;
 import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
         installSUSEProductOnServer;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
+import static com.redhat.rhn.testing.ImageTestUtils.createImagePackage;
 
 import java.util.*;
 
@@ -65,7 +67,6 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.image.ImageInfo;
-import com.redhat.rhn.domain.image.test.ImageInfoFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
@@ -1449,7 +1450,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Set<Channel> channels = new HashSet<Channel>();
         channels.add(channel);
         createTestPackage(user, errata, channel, "noarch");
-        ImageInfo image = ImageInfoFactoryTest.createTestImage(user, channels);
+        ImageInfo image = createImageInfo(channels, user);
         CVEAuditManager.populateCVEChannels();
 
         // No filtering
@@ -1491,8 +1492,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Package unpatched = createTestPackage(user, channel, "noarch");
         createLaterTestPackage(user, errata, channel, unpatched);
 
-        ImageInfo image = ImageInfoFactoryTest.createTestImage(user, channels);
-        ImageInfoFactoryTest.createTestImagePackage(unpatched, image);
+        ImageInfo image = createImageInfo(channels, user);
+        createImagePackage(unpatched, image);
 
         CVEAuditManager.populateCVEChannels();
 
@@ -1548,8 +1549,8 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Set<Channel> channels = new HashSet<Channel>();
         channels.add(baseChannel);
 
-        ImageInfo image = ImageInfoFactoryTest.createTestImage(user, channels);
-        ImageInfoFactoryTest.createTestImagePackage(unpatched, image);
+        ImageInfo image = createImageInfo(channels, user);
+        createImagePackage(unpatched, image);
 
         CVEAuditManager.populateCVEChannels();
 
