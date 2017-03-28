@@ -20,8 +20,8 @@ Feature:  Build Container images with SUSE Manager. Basic image
   Given I am on the Systems overview page of this "sle-minion"
   Then I should see a "[Container Build Host]" text
   And I run "zypper mr -e Devel_Galaxy_Manager_Head_SLE-Manager-Tools-12-x86_64" on "sle-minion"
-  And I run "zypper mr -e SUSE_Updates_SLE-Module-Containers_12_x86_64" on "sle-minion"
-  And I run "zypper mr -e SUSE_Pool_SLE-Module-Containers_12_x86_64" on "sle-minion"
+  And I run "zypper mr -e SLE-Module-Containers-SLE-12-x86_64-Pool" on "sle-minion"
+  And I run "zypper mr -e SLE-Module-Containers-SLE-12-x86_64-Update" on "sle-minion"
   And I run "zypper mr -e SLE-12-SP2-x86_64-Pool" on "sle-minion"
   And I run "zypper mr -e SLE-12-SP2-x86_64-Update" on "sle-minion"
   And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
