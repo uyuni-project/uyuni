@@ -43,7 +43,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * ImageStore
+ * ImageProfile
  */
 @Entity
 @Table(name = "suseImageProfile")
