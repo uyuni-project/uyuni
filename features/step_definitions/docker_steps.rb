@@ -8,7 +8,7 @@ require 'securerandom'
 
 # this module test image_profile
 module ImageProfile
-  def image_profiles_xmlrpc
+  def create_delete
     cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
     cont_op.login('admin', 'admin')
     # create delete profile test
@@ -16,7 +16,11 @@ module ImageProfile
     cont_op.deleteProfile('fakeone')
     cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '1-MINION-TEST')
     cont_op.deleteProfile('fakeone')
-    # set get delete Custom Values
+  end
+
+  def custom_values
+    cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
+    cont_op.login('admin', 'admin')
     cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
     cont_op.createCustomKey('arancio', 'test containers')
     values = {}
@@ -31,24 +35,35 @@ module ImageProfile
     assert_equal(pro_type[0], 'dockerfile', 'type is not dockerfile?')
     key = ['arancio']
     cont_op.deleteProfileCustomValues('fakeone', key)
+  end
+
+  def image_profiles_xmlrpc
+    cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
+    cont_op.login('admin', 'admin')
+    # create delete tests
+    create_delete
+    # set get delete Custom Values
+    custom_values
     puts cont_op.listImageProfiles
     # test listImageProfiles method
     ima_profiles = cont_op.listImageProfiles
-    imagelabel = ima_profiles.select { |image| image['label'] = 'fakeone'}
+    imagelabel = ima_profiles.select { |image| image['label'] = 'fakeone' }
     assert_equal(imagelabel[0]['label'], 'fakeone', "label of container should be fakeone!")
     # test set value and get value call
     details = {}
     details['storeLabel'] = 'galaxy-devel'
     details['path'] = 'TestForFun'
     details['activationKey'] = ''
-    cont_op.setDetails('fakeone', details)
+    cont_op.setProfileDetails('fakeone', details)
     cont_detail = cont_op.getDetails('fakeone')
     assert_equal(cont_detail['label'], 'fakeone', 'label test fail!')
     assert_equal(cont_detail['imageType'], 'dockerfile', 'imagetype test fail!')
     cont_op.deleteProfile('fakeone')
   end
+
+  # FIXME: implement random cration of profiles
   def create_random_profile(num)
-      puts "implement me"
+    puts num
   end
 end
 
