@@ -53,7 +53,7 @@ function hierarchyView(rootIn, container) {
       .attr('class', d => 'node ' + deriveClass(d));
 
     enterUpdate
-      .selectAll('text')
+      .select('text')
       .text(d => (d.data.type && d.data.type != 'system' ? d.data.name : '') + countChildren(d));
 
     var link = container.selectAll('line.link').data(links, d => d.target.id);
