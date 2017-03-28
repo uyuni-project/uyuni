@@ -121,6 +121,7 @@ popd
 getent group susemanager >/dev/null || %{_sbindir}/groupadd -r susemanager
 
 %post
+POST_ARG=$1
 %{fillup_and_insserv susemanager}
 if [ -f /etc/sysconfig/atftpd ]; then
   . /etc/sysconfig/atftpd
@@ -138,10 +139,19 @@ chown root.root /etc/sysconfig
 getent passwd salt >/dev/null && usermod -a -G susemanager salt
 getent passwd tomcat >/dev/null && usermod -a -G susemanager tomcat
 getent passwd wwwrun >/dev/null && usermod -a -G susemanager wwwrun
-if [ -d /var/spacewalk/systems ]; then
-  chgrp -R susemanager /var/spacewalk/systems > /dev/null
-  find /var/spacewalk/systems -type d -exec chmod 775 {} \; > /dev/null
+if [ $POST_ARG -eq 2 ] ; then
+    # when upgrading make sure /var/spacewalk/systems has the correct perms and owner
+    MOUNT_POINT=$(grep -oP "^mount_point =\s*\K([^ ]+)" /etc/rhn/rhn.conf || echo "/var/spacewalk")
+    SYSTEMS_DIR="$MOUNT_POINT/systems"
+    if [[ -d "$MOUNT_POINT" && ! -d "$SYSTEMS_DIR" ]]; then
+        mkdir $SYSTEMS_DIR
+    fi
+    if [ -d "$SYSTEMS_DIR" ]; then
+        chmod 775 "$SYSTEMS_DIR"
+        chown wwwrun:www "$SYSTEMS_DIR"
+    fi
 fi
+# else new install and the systems dir should be created by spacewalk-setup
 
 %postun
 %{insserv_cleanup}
