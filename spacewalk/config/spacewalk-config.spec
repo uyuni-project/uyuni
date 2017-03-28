@@ -159,11 +159,13 @@ fi
 if [ -e %{apacheconfdir}/ssl.crt/spacewalk.crt ]; then
   ln -s spacewalk.crt %{apacheconfdir}/ssl.crt/server.crt
 fi
-if ! grep -E '^[ \t]*SSLCertificateFile[ \t]+/etc/pki/tls/certs/spacewalk.crt' %{apacheconfdir}/vhosts.d/vhost-ssl.conf >/dev/null; then
-  sed -i 's|^[ \t]*SSLCertificateFile.*|SSLCertificateFile /etc/pki/tls/certs/spacewalk.crt|' %{apacheconfdir}/vhosts.d/vhost-ssl.conf
-fi
-if ! grep -E '^[ \t]*SSLCertificateKeyFile[ \t]+/etc/pki/tls/private/spacewalk.key' %{apacheconfdir}/vhosts.d/vhost-ssl.conf >/dev/null; then
-  sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/pki/tls/private/spacewalk.key|' %{apacheconfdir}/vhosts.d/vhost-ssl.conf
+if [ -e %{apacheconfdir}/vhosts.d/vhost-ssl.conf ]; then
+  if ! grep -E '^[ \t]*SSLCertificateFile[ \t]+/etc/pki/tls/certs/spacewalk.crt' %{apacheconfdir}/vhosts.d/vhost-ssl.conf >/dev/null; then
+    sed -i 's|^[ \t]*SSLCertificateFile.*|SSLCertificateFile /etc/pki/tls/certs/spacewalk.crt|' %{apacheconfdir}/vhosts.d/vhost-ssl.conf
+  fi
+  if ! grep -E '^[ \t]*SSLCertificateKeyFile[ \t]+/etc/pki/tls/private/spacewalk.key' %{apacheconfdir}/vhosts.d/vhost-ssl.conf >/dev/null; then
+    sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/pki/tls/private/spacewalk.key|' %{apacheconfdir}/vhosts.d/vhost-ssl.conf
+  fi
 fi
 
 %changelog
