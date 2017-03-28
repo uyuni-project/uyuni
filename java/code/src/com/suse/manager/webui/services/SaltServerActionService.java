@@ -282,6 +282,15 @@ public enum SaltServerActionService {
         ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    /**
+     * This function will apply return a map with list of minions group by
+     * the salt netapi localcall that executes what needs to be executed (`pkg.downloaded`)
+     * to pre-download packages to be installed later on minions.
+     *
+     * @param minions list of minions
+     * @param action original action containing the packages to be installed
+     * @return minions grouped by local call
+     */
     public static Map<LocalCall<?>, List<MinionServer>> packagesDownloadAction(
             List<MinionServer> minions, PackageUpdateAction action) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
