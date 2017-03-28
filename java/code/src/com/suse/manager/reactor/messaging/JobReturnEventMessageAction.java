@@ -119,8 +119,10 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                             }
                             ZonedDateTime earliestAction = action.get().getEarliestAction()
                                     .toInstant().atZone(ZoneId.systemDefault());
-                            if (!(action.get().getActionType()
-                                    .equals(ActionFactory.TYPE_PACKAGES_UPDATE) &&
+                            if (!((action.get().getActionType()
+                                    .equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
+                                    action.get().getActionType()
+                                            .equals(ActionFactory.TYPE_ERRATA)) &&
                                     earliestAction.isAfter(now()))) {
                                 SaltUtils.INSTANCE.updateServerAction(sa,
                                         jobReturnEvent.getData().getRetcode(),
