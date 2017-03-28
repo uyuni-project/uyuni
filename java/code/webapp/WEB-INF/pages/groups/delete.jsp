@@ -7,31 +7,35 @@
 <html>
 <body>
     <c:set var="delgrp" value="True"/>
-<%@ include file="/WEB-INF/pages/common/fragments/groups/header.jspf" %>
+    <%@ include file="/WEB-INF/pages/common/fragments/groups/header.jspf" %>
 
     <h2>
-    <bean:message key="systemgroup.delete.title"/>
+        <bean:message key="systemgroup.delete.title"/>
     </h2>
 
     <div class="page-summary">
-    <p><bean:message key="systemgroup.delete.subtitle"
-                  arg0="${fn:escapeXml(systemgroup.name)}"
-                  arg1="<strong>"
-                  arg2="</strong>"/></p>
-    <bean:message key="systemgroup.delete.summary"
-                  arg0="<strong>"
-                  arg1="</strong>"/>
+        <p><bean:message key="systemgroup.delete.subtitle"
+                      arg0="${fn:escapeXml(systemgroup.name)}"
+                      arg1="<strong>"
+                      arg2="</strong>"/></p>
+        <bean:message key="systemgroup.delete.summary"
+                      arg0="<strong>"
+                      arg1="</strong>"/>
     </div>
-
-        <html:form method="post"
-                   action="/groups/Delete.do"
-                   styleClass="form-horizontal">
-            <rhn:csrf />
-            <rhn:submitted/>
-            <html:hidden property="sgid" value="${param.sgid}" />
-            <html:submit property="delete_button" styleClass="btn">
-                 <bean:message key="systemgroup.delete.confirm"/>
-            </html:submit>
-        </html:form>
-    </body>
+    <hr/>
+    <html:form method="post"
+               action="/groups/Delete.do"
+               styleClass="form-horizontal">
+        <rhn:csrf />
+        <rhn:submitted/>
+        <html:hidden property="sgid" value="${param.sgid}" />
+        <div class="form-group">
+            <div class="col-md-12">
+                <html:submit property="delete_button" styleClass="btn btn-danger">
+                    <bean:message key="systemgroup.delete.confirm"/>
+                </html:submit>
+            </div>
+        </div>
+    </html:form>
+</body>
 </html>
