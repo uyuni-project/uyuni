@@ -237,8 +237,21 @@ And(/^I follow the sle minion$/) do
  step %(I follow "#{$minion_fullhostname}")
 end
 
-And(/^I create picked-up test file on sle minion$/) do
-  $minion.run("touch /tmp/PICKED-UP.test")
+When(/^I enter as remote command a script to watch a picked-up test file$/) do
+  steps %(
+    When I enter as remote command this script in
+      """
+      #!/bin/bash
+      while [ ! -f /tmp/PICKED-UP-#{$$}.test ]
+      do
+        sleep 1
+      done
+      rm /tmp/PICKED-UP-#{$$}.test
+      """)
+end
+
+When(/^I create picked-up test file on sle minion$/) do
+  $minion.run("touch /tmp/PICKED-UP-#{$$}.test")
 end
 
 Then(/^I should see "(.*?)" hostname$/) do |minion|
