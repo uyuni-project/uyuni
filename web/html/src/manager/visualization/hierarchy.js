@@ -214,9 +214,10 @@ const Hierarchy = React.createClass({
       <Panel title={t(title)}>
         <div className="svg-aside">
           <div id="filter-wrapper"></div>
+        </div>
+        <div id="svg-wrapper">
           <div className="detailBox"></div>
         </div>
-        <div id="svg-wrapper"></div>
       </Panel>
     );
   }
