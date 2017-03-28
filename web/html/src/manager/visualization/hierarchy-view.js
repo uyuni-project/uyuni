@@ -110,16 +110,24 @@ function hierarchyView(root, container) {
   return my;
 }
 
-function updateSelectedNode(node) {
-  // unselect all
+function unselectAllNodes() {
   d3.selectAll('g.node.selected')
     .each(function(d) {
       var classList = d3.select(this).attr('class');
       d3.select(this).attr('class', classList.replace('selected', ''));
     });
+}
+
+function updateSelectedNode(node) {
+  unselectAllNodes();
   // select the clicked node
   var classList = d3.select(node).attr('class');
   d3.select(node).attr('class', classList + ' selected');
+}
+
+$.closeDetailBox = function() {
+  $('.detailBox').hide().html('');
+  unselectAllNodes();
 }
 
 function updateDetailBox(d) {
@@ -139,10 +147,12 @@ function updateDetailBox(d) {
       '<div>Installed products : <strong>' + data.installedProducts + '</strong></div>';
   }
   $('.detailBox').html(
+    '<a href="#" class="close-popup" onClick="$.closeDetailBox()">X</a>' +
     '<div>System name : <strong>' + data.name + '</strong></div>' +
     systemDetailLink +
     '<div>Type : <strong>' + data.type + '</strong></div>' +
-    systemSpecificInfo);
+    systemSpecificInfo).show();
+
 }
 
 function countChildren(node) {

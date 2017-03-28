@@ -40,14 +40,25 @@
     border-right: 1px solid #ddd;
     background-color: rgba(231, 236, 241, 0.7);
     font-size: 0.9em;
-    div {
-      padding: 5px 10px;
+    width: 230px;
+    div.content-wrapper {
+      padding: 10px 20px 10px 10px;
+      div {
+        padding: 4px 0;
+      }
     }
-    div:first-child {
-      padding-top: 20px;
+    a.close-popup, button.close-popup:hover {
+      border: none;
+      background: none;
+      color: @spacewalk-gray;
+      position: absolute;
+      right: 4px;
+      top: 0px;
+      padding: 5px;
     }
-    div:last-child {
-      padding-bottom: 20px
+    a.close-popup:hover {
+      color: @spacewalk-gray-dark;
+      text-decoration: none;
     }
   }
 }
