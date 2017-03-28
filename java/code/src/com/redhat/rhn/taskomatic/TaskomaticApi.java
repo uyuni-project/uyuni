@@ -14,11 +14,15 @@
  */
 package com.redhat.rhn.taskomatic;
 
+import static java.time.ZonedDateTime.now;
+import static java.time.temporal.ChronoUnit.MINUTES;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -31,6 +35,8 @@ import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,6 +57,8 @@ public class TaskomaticApi {
 
     public static final String MINION_ACTION_BUNCH_LABEL = "minion-action-executor-bunch";
     public static final String MINION_ACTION_JOB_PREFIX = "minion-action-executor-";
+    public static final String MINION_ACTION_JOB_DOWNLOAD_PREFIX =
+            MINION_ACTION_JOB_PREFIX + "download-";
     private static final Logger LOG = Logger.getLogger(TaskomaticApi.class);
 
 
@@ -482,6 +490,28 @@ public class TaskomaticApi {
             .isPresent();
         if (!minionsInvolved) {
             return;
+        }
+
+        ZonedDateTime earliestAction =
+                action.getEarliestAction().toInstant().atZone(ZoneId.systemDefault());
+
+        if (earliestAction.isAfter(now()) &&
+                ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType())) {
+
+            long interval = MINUTES.between(now(), earliestAction);
+            long prefetchAdvance = (long) Math.floor(interval * Math.random());
+            ZonedDateTime prefetchTime = earliestAction.minus(prefetchAdvance, MINUTES);
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("action_id", Long.toString(action.getId()));
+            params.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
+            params.put("download_job", Boolean.toString(Boolean.TRUE));
+
+            LOG.info("Detected install/update action: scheduling pre-download job at " +
+                    prefetchTime);
+
+            invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
+                    MINION_ACTION_JOB_DOWNLOAD_PREFIX + action.getId(), params,
+                    Date.from(prefetchTime.toInstant()));
         }
 
         Map<String, String> params = new HashMap<String, String>();

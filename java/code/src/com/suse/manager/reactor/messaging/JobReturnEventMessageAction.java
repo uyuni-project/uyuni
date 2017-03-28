@@ -35,7 +35,11 @@ import com.suse.salt.netapi.event.JobReturnEvent;
 
 import org.apache.log4j.Logger;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
+
+import static java.time.ZonedDateTime.now;
 
 /**
  * Handler class for {@link JobReturnEventMessage}.
@@ -96,7 +100,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 // FIXME: This is a hack and should not be considered the final solution
                 if (action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
                         function.equals("test.ping")) {
-                    SaltServerActionService.INSTANCE.execute(action.get(), false);
+                    SaltServerActionService.INSTANCE.execute(action.get(), false, false);
                 }
                 else {
                     Optional<MinionServer> minionServerOpt = MinionServerFactory
