@@ -248,11 +248,13 @@ function initHierarchy() {
         checkinTimeCriteria
           .append('button')
           .attr('type', 'button')
+          .attr('class', 'btn btn-default')
           .on('click', updateTree)
           .text('Apply');
         checkinTimeCriteria
           .append('button')
           .attr('type', 'button')
+          .attr('class', 'btn btn-default')
           .on('click', resetTree)
           .text('Reset');
 
@@ -286,6 +288,7 @@ function initHierarchy() {
           .append('div');
         addAllToSSMButton
           .append('button')
+          .attr('class', 'btn btn-default')
           .on('click', addVisibleTreeToSSM)
           .text('Add tree to SSM');
 
