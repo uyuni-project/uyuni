@@ -85,6 +85,20 @@ ln -sf  %{apacheconfdir}/conf/ssl.crt/server.crt $RPM_BUILD_ROOT/etc/pki/tls/cer
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+if [ -e %{apacheconfdir}/ssl.key/spacewalk.key ]; then
+  ln -s spacewalk.key %{apacheconfdir}/ssl.key/server.key
+fi
+if [ -e %{apacheconfdir}/ssl.crt/spacewalk.crt ]; then
+  ln -s spacewalk.crt %{apacheconfdir}/ssl.crt/server.crt
+fi
+if ! grep -E '^[ \t]*SSLCertificateFile[ \t]+/etc/pki/tls/certs/spacewalk.crt' %{apacheconfdir}/vhosts.d/vhost-ssl.conf >/dev/null; then
+  sed -i 's|^[ \t]*SSLCertificateFile.*|SSLCertificateFile /etc/pki/tls/certs/spacewalk.crt|' %{apacheconfdir}/vhosts.d/vhost-ssl.conf
+fi
+if ! grep -E '^[ \t]*SSLCertificateKeyFile[ \t]+/etc/pki/tls/private/spacewalk.key' %{apacheconfdir}/vhosts.d/vhost-ssl.conf >/dev/null; then
+  sed -i 's|^[ \t]*SSLCertificateKeyFile.*|SSLCertificateKeyFile /etc/pki/tls/private/spacewalk.key|' %{apacheconfdir}/vhosts.d/vhost-ssl.conf
+fi
+
 %files
 %defattr(-,root,root,-)
 %attr(400,root,root) %config(noreplace) %{_sysconfdir}/rhn/spacewalk-repo-sync/uln.conf
