@@ -50,8 +50,8 @@ public class MinionActionExecutor extends RhnJavaJob {
                 .getJobDataMap().getLongValueFromString("action_id");
         boolean forcePackageListRefresh = context.getJobDetail()
                 .getJobDataMap().getBooleanValue("force_pkg_list_refresh");
-        boolean preDownload =
-                context.getJobDetail().getJobDataMap().getBooleanValue("download_job");
+        boolean preDownloadJob =
+                context.getJobDetail().getJobDataMap().getBooleanValue("predownload_job");
 
         Action action = ActionFactory.lookupById(actionId);
         if (action == null) {
@@ -86,7 +86,7 @@ public class MinionActionExecutor extends RhnJavaJob {
 
         log.info("Executing action: " + actionId);
         SaltServerActionService.INSTANCE.execute(action, forcePackageListRefresh,
-                preDownload);
+                preDownloadJob);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
