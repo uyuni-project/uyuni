@@ -231,6 +231,9 @@ public class ConfigDefaults {
     public static final String SALT_SSH_CONNECT_TIMEOUT =
             "salt_ssh_connect_timeout";
 
+    public static final String STAGING_START =
+            "staging_start";
+
     private ConfigDefaults() {
     }
 
@@ -799,5 +802,12 @@ public class ConfigDefaults {
      */
     public int getSaltPresencePingGatherJobTimeout() {
         return Config.get().getInt(SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT, 1);
+    }
+
+    /**
+     * @return minion staging start (in hours before the action execution)
+     */
+    public long getStagingStart() {
+        return Config.get().getInt(STAGING_START, 12);
     }
 }
