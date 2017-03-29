@@ -51,7 +51,7 @@ module ImageProfile
     assert_equal(imagelabel[0]['label'], 'fakeone', "label of container should be fakeone!")
     # test set value and get value call
     details = {}
-    details['storeLabel'] = 'galaxy-devel'
+    details['storeLabel'] = 'galaxy-registry'
     details['path'] = 'TestForFun'
     details['activationKey'] = ''
     cont_op.setProfileDetails('fakeone', details)
