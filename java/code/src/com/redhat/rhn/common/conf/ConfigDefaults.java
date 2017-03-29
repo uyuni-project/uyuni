@@ -231,8 +231,11 @@ public class ConfigDefaults {
     public static final String SALT_SSH_CONNECT_TIMEOUT =
             "salt_ssh_connect_timeout";
 
-    public static final String STAGING_START =
+    public static final String STAGING_WINDOW_START =
             "staging_start";
+
+    public static final String STAGING_WINDOW_DURATION =
+            "stating_window_duration";
 
     private ConfigDefaults() {
     }
@@ -805,9 +808,17 @@ public class ConfigDefaults {
     }
 
     /**
-     * @return minion staging start (in hours before the action execution)
+     * @return minion staging window start (in hours before the action execution)
      */
-    public long getStagingStart() {
-        return Config.get().getInt(STAGING_START, 12);
+    public long getStagingWindowStart() {
+        return Config.get().getInt(STAGING_WINDOW_START, 12);
+    }
+
+    /**
+     * @return minion staging window duration (in hours after the minion staging
+     * window start)
+     */
+    public long getStagingWindowDuration() {
+        return Config.get().getInt(STAGING_WINDOW_DURATION, 8);
     }
 }
