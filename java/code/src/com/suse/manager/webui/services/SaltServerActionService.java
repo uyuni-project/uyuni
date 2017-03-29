@@ -69,6 +69,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -94,6 +95,7 @@ public enum SaltServerActionService {
     private static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
     private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
     private static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
+    private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
     private static final String PARAM_PKGS = "param_pkgs";
     private static final String PARAM_PATCHES = "patches";
@@ -604,23 +606,27 @@ public enum SaltServerActionService {
             Map<Boolean, List<MinionServer>> result = new HashMap<>();
 
             if (preDownloadJob) {
-                Map<String, String> args =
-                        ((PackageUpdateAction) actionIn).getDetails().stream()
-                                .collect(Collectors.toMap(d -> d.getPackageName().getName(),
-                                d -> d.getEvr().toString()));
                 if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
+                    Map<String, String> args =
+                            ((PackageUpdateAction) actionIn).getDetails().stream()
+                                    .collect(Collectors.toMap(
+                                            d -> d.getPackageName().getName(),
+                                            d -> d.getEvr().toString()));
                     call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
                             Optional.of(Collections.singletonMap(PARAM_PKGS, args)),
                             Optional.of(true));
+                    LOG.info("Executing pre-download of packages action");
                 }
-                else if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
+                if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
+                    List<String> args = ((ErrataAction) actionIn).getErrata().stream()
+                            .map(e -> e.getAdvisoryName()).collect(Collectors.toList());
                     call = State
-                            .apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
+                            .apply(Arrays.asList(PACKAGES_PATCHDOWNLOAD),
                                     Optional.of(Collections.singletonMap(PARAM_PATCHES,
-                                            Collections.singleton(args))),
+                                            Collections.singletonList(args))),
                                     Optional.of(true));
                 }
-                LOG.info("Executing pre-download of packages action");
+                LOG.info("Executing pre-download of patches action");
             }
 
             List<String> results = SaltService.INSTANCE

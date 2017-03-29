@@ -502,11 +502,9 @@ public class TaskomaticApi {
                 (ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType()) ||
                         ActionFactory.TYPE_ERRATA.equals(action.getActionType()))) {
             if (earliestAction
-                    .minus(Config.get().getInt(ConfigDefaults.STAGING_START), HOURS)
+                    .minus(ConfigDefaults.get().getStagingStart(), HOURS)
                     .isBefore(now())) {
-                long interval = MINUTES.between(now(), earliestAction);
-                long prefetchAdvance = (long) Math.floor(interval * Math.random());
-                prefetchTime = earliestAction.minus(prefetchAdvance, MINUTES);
+                prefetchTime = earliestAction.minus(5, MINUTES);
             }
             else {
                 prefetchTime = earliestAction
