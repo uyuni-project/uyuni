@@ -129,8 +129,7 @@ public class SaltSSHService {
         SaltRoster roster = new SaltRoster();
 
         // Using custom LocalCall timeout if included in the payload
-        Optional<Integer> sshTimeout =
-            (Optional.ofNullable(call.getPayload().get("timeout")) != Optional.empty()) ?
+        Optional<Integer> sshTimeout = call.getPayload().containsKey("timeout") ?
                     Optional.ofNullable((Integer) call.getPayload().get("timeout")) :
                     getSshPushTimeout();
 

@@ -67,7 +67,6 @@ import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -572,43 +571,42 @@ public class SaltService {
         List<String> sshMinionIds = minionPartitions.get(true);
         List<String> regularMinionIds = minionPartitions.get(false);
 
-        Map<String, Result<T>> results = new HashMap<>();
-
-        // Only check for minion presence if LocalCall has no timeouts attributes.
+        // Filter out minion ids of minions that do not appear active.
+        // Only checking minion presence when LocalCall has no timeouts attribute
         if (!call.getPayload().keySet().containsAll(
                 Arrays.asList("timeout", "gather_job_timeout"))) {
             // To avoid blocking if any targeted minion is down, we first check which
             // minions are actually up and running, and then exclude unreachable minions
             // from the current synchronous call.
-            List<String> regularActiveMinions = new ArrayList<String>();
-            if (!regularMinionIds.isEmpty()) {
-                regularActiveMinions.addAll(presencePing(new MinionList(regularMinionIds))
-                        .keySet());
-            }
+            Set<String> regularActiveMinions = regularMinionIds.isEmpty() ?
+                    Collections.emptySet() :
+                    presencePing(new MinionList(regularMinionIds)).keySet();
 
-            List<String> sshActiveMinions = new ArrayList<String>();
-            if (!sshMinionIds.isEmpty()) {
-                Map<String, Result<Boolean>> sshResults = presencePingSSH(
-                        new MinionList(sshMinionIds));
-                sshResults.entrySet().removeIf(s -> s.getValue().toXor()
-                        .fold(error -> true, result -> false));
-                sshActiveMinions.addAll(sshResults.keySet());
-            }
+            Set<String> sshActiveMinions = sshMinionIds.isEmpty() ?
+                    Collections.emptySet() :
+                    presencePingSSH(new MinionList(sshMinionIds)).entrySet()
+                        .stream()
+                        .filter(
+                            s -> s.getValue().toXor().fold(error -> false, result -> true))
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toSet());
 
-            List<String> unreachableMinions = uniqueMinionIds.stream()
+            Set<String> unreachableMinions = uniqueMinionIds.stream()
                 .filter(id -> !regularActiveMinions.contains(id))
                 .filter(id -> !sshActiveMinions.contains(id))
                 .sorted()
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
             if (!unreachableMinions.isEmpty()) {
                 LOG.warn("Some of the targeted minions cannot be reached: " +
                         unreachableMinions.toString() +
-                        ". Excluding them from the synchronious call.");
+                        ". Excluding them from the synchronous call.");
                 sshMinionIds.retainAll(sshActiveMinions);
                 regularMinionIds.retainAll(regularActiveMinions);
             }
         }
+
+        Map<String, Result<T>> results = new HashMap<>();
 
         if (!sshMinionIds.isEmpty()) {
             results.putAll(saltSSHService.callSyncSSH(
