@@ -209,13 +209,16 @@ const Hierarchy = React.createClass({
     initHierarchy();
   },
 
+  showFilters: function() {
+    $('#filter-wrapper').toggle();
+  },
+
   render: function() {
     return (
       <Panel title={t(title)}>
-        <div className="svg-aside">
-          <div id="filter-wrapper"></div>
-        </div>
+        <button id="toggle-svg-filter" className="btn btn-default" onClick={this.showFilters}>{t('Toggle filters')}</button>
         <div id="svg-wrapper">
+          <div id="filter-wrapper"></div>
           <div className="detailBox"></div>
         </div>
       </Panel>
