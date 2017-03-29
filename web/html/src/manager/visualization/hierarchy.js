@@ -19,7 +19,32 @@ function initHierarchy() {
     var mainDivWidth = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
     var mainDivHeight = d3.select('.spacewalk-main-column-layout').node().getBoundingClientRect().height - 2 -
         d3.select('#breadcrumb').node().getBoundingClientRect().height -
-        d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height;
+        d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height - 200;
+
+    function adjustSvgDimensions(svgObject, simulation) {
+      var mainWidth = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
+      var mainHeight = d3.select('.spacewalk-main-column-layout').node().getBoundingClientRect().height - 2 -
+        d3.select('#breadcrumb').node().getBoundingClientRect().height -
+        d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height - 200;
+
+      if (svgObject) {
+        svgObject
+          .attr('width', mainWidth)
+          .attr('height', mainHeight);
+      }
+      else {
+        // try to find the object via d3
+        d3.select('#svg-wrapper svg')
+          .attr('width', mainWidth)
+          .attr('height', mainHeight);
+      }
+
+      if (simulation) {
+        simulation
+         .force("x", d3.forceX(mainWidth / 2))
+         .force("y", d3.forceY(mainHeight / 2));
+     }
+    }
 
     // Get data & put everything together in the graph!
     Network
@@ -197,6 +222,13 @@ function initHierarchy() {
           .attr('type', 'button')
           .on('click', resetTree)
           .text('Reset');
+
+        adjustSvgDimensions(svg, mySimulation);
+
+        $(window).resize(function () {
+          adjustSvgDimensions();
+        });
+
       }, (xhr) => {
           d3.select('#svg-wrapper')
             .text(t('There was an error fetching data from the server.'));
