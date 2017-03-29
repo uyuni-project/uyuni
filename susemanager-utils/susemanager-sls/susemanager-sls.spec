@@ -69,9 +69,10 @@ cp src/modules/udevdb.py %{buildroot}/usr/share/susemanager/salt/_modules
 ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
    /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 || exit 0
 # Pre-create top.sls to suppress empty/absent top.sls warning/error (bsc#1017754)
-TOP="/srv/salt/top.sls"
+USERLAND="/srv/salt"
+TOP="$USERLAND/top.sls"
 if [ -d "$USERLAND" ]; then
-    if [[ ! -f "$TOP" ]]; then
+    if [ ! -f "$TOP" ]; then
 	cat <<EOF >> $TOP
 # This only calls no-op statement from
 # /usr/share/susemanager/salt/util/noop.sls state
