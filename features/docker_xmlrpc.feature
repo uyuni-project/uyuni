@@ -22,3 +22,6 @@ Feature:  Container Image namespace tests
   Given I am authorized as "admin" with password "admin"
   Then I delete the random image stores
 
+  Scenario: Create and build multiples random images
+  Given I am authorized as "admin" with password "admin"
+  Then I create "30" random "suse_real_key" containers

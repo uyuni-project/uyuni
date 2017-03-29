@@ -197,3 +197,15 @@ end
 
 # Profiles tests using module
 And(/^I run image.profiles tests via xmlrpc$/, :image_profiles_xmlrpc)
+
+Then(/I create "([^"]*)" random "([^"]*)" containers$/) do |count, image_input|
+  cont_op.login('admin', 'admin')
+  image = image_input
+  build_hostid = retrieve_minion_id
+  count.to_i.times do
+    version_build = SecureRandom.urlsafe_base64(10)
+    now = DateTime.now
+    date_build = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
+    cont_op.scheduleImageBuild(image, version_build, build_hostid, date_build)
+  end
+end
