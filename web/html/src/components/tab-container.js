@@ -28,7 +28,9 @@ const TabContainer = React.createClass({
     return hashArr[0];
   },
 
-  onActiveTabChange: function(hash) {
+  onActiveTabChange: function(hash, event) {
+    event.preventDefault();
+
     this.setState({activeTabHash: hash});
     if (this.props.onTabHashChange) {
       this.props.onTabHashChange(hash);
@@ -38,7 +40,7 @@ const TabContainer = React.createClass({
   render: function() {
     const labels = this.props.hashes.map((hash, i) => {
       const label = this.props.labels[i];
-      return <TabLabel onClick={() => this.onActiveTabChange(hash)} text={label} active={this.state.activeTabHash == hash} hash={hash} key={hash} />;
+      return <TabLabel onClick={(event) => this.onActiveTabChange(hash, event)} text={label} active={this.state.activeTabHash == hash} hash={hash} key={hash} />;
     });
 
     const tab = this.props.tabs[this.props.hashes.indexOf(this.state.activeTabHash)];
