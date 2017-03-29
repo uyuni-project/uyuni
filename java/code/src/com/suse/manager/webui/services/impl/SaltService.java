@@ -57,6 +57,15 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -794,12 +803,58 @@ public class SaltService {
         String actionPath = ScapFileManager
                 .getActionPath(minion.getOrg().getId(),
                         minion.getId(), actionId);
+        Path mountPoint = Paths.get(com.redhat.rhn.common.conf.Config.get()
+                .getString(ConfigDefaults.MOUNT_POINT));
+        try {
+            // create dirs
+            Path actionDir = Files.createDirectories(mountPoint.resolve(actionPath));
+
+            UserPrincipalLookupService lookupService = FileSystems.getDefault()
+                    .getUserPrincipalLookupService();
+            GroupPrincipal susemanagerGroup = lookupService
+                    .lookupPrincipalByGroupName("susemanager");
+            GroupPrincipal wwwGroup = lookupService
+                    .lookupPrincipalByGroupName("www");
+            // systems/<orgId>/<serverId>/actions/<actionId>
+            changeGroupAndPerms(actionDir, susemanagerGroup);
+            // systems/<orgId>/<serverId>/actions
+            actionDir = actionDir.getParent();
+            while (!actionDir.equals(mountPoint)) {
+                changeGroupAndPerms(actionDir, wwwGroup);
+                actionDir = actionDir.getParent();
+            }
+
+        }
+        catch (IOException e) {
+            LOG.error("Error creating dir " + mountPoint.resolve(actionPath), e);
+        }
+
         return callSync(MgrUtilRunner.moveMinionUploadedFiles(
                 minion.getMinionId(),
                 uploadDir,
                 com.redhat.rhn.common.conf.Config.get()
                         .getString(ConfigDefaults.MOUNT_POINT),
                 actionPath));
+    }
+
+    private void changeGroupAndPerms(Path dir, GroupPrincipal group) {
+        PosixFileAttributeView posixAttrs = Files
+                .getFileAttributeView(dir,
+                        PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+        try {
+            posixAttrs.setPermissions(PosixFilePermissions.fromString("rwxrwxr-x"));
+        }
+        catch (IOException e) {
+            LOG.warn(String.format("Could not set 'rwxrwxr-x' permissions on %s: %s",
+                    dir, e.getMessage()));
+        }
+        try {
+            posixAttrs.setGroup(group);
+        }
+        catch (IOException e) {
+            LOG.warn(String.format("Could not set group on %s to %s: %s",
+                    dir, group, e.getMessage()));
+        }
     }
 
     /**
