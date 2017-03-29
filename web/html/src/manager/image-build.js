@@ -198,7 +198,7 @@ class BuildImage extends React.Component {
                             </table>
                         </div>
                         { pselected &&
-                            <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imageprofiles/edit/" + this.state.profileId} className="btn-xs btn-default pull-right" text="Edit"/>
+                            <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imageprofiles/edit/" + this.state.model.profileId} className="btn-xs btn-default pull-right" text="Edit"/>
                         }
                     </div>
                 </div>

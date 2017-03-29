@@ -143,7 +143,7 @@ class Form extends React.Component {
         });
 
         if(this.props.onChange) {
-            this.props.onChange(this.state.model, this.state.isValid, event);
+            this.props.onChange(this.state.model, this.state.isValid);
         }
     }
 
