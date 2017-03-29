@@ -147,11 +147,14 @@ function updateDetailBox(d) {
       '<div>Installed products : <strong>' + data.installedProducts + '</strong></div>';
   }
   $('.detailBox').html(
+    '<div class="content-wrapper">' +
     '<a href="#" class="close-popup" onClick="$.closeDetailBox()">X</a>' +
     '<div>System name : <strong>' + data.name + '</strong></div>' +
     systemDetailLink +
     '<div>Type : <strong>' + data.type + '</strong></div>' +
-    systemSpecificInfo).show();
+    systemSpecificInfo +
+    '</div>'
+  ).show();
 
 }
 
