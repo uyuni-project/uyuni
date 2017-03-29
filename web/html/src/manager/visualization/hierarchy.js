@@ -188,15 +188,18 @@ function initHierarchy() {
             .append('div').attr('class', 'filter');
           groupingDiv
             .append('label')
-            .text('Group by group');
-          groupingDiv
-            .append('input')
-            .attr('type', 'text')
-            .attr('placeholder', 'e.g., DEV,QA')
-            .on('input', function() {
-              dataProcessor.groupingConfiguration(JSON.parse(this.value || ''));
-              refreshTree(dataProcessor, myFilters, myCriteria, t);
-            });
+            .text('Split into groups');
+
+          let grps = d
+            .map(e => e.managed_groups || [])
+            .reduce((a,b) => a.concat(b));
+          let mySel = groupSelector(grps, groupingDiv);
+          mySel.onChange(function(data) {
+            dataProcessor.groupingConfiguration(data);
+            refreshTree(dataProcessor, myFilters, myCriteria, t);
+          });
+          mySel();
+
         }
 
         function updateTree() {
@@ -265,6 +268,95 @@ function initHierarchy() {
             .text(t('There was an error fetching data from the server.'));
       });
   });
+}
+
+// Simple JS component for selecting groups
+//
+// Adds an 'Add a grouping level' button, clicking on it appends a new
+// multiselect box in the UI. In each of these select boxes, the user can
+// specify multiple groups. Selected options are internally stored in the
+// 'data' array in the format:
+//  [['grp1', 'grp2'], // selected groups on the 1st level
+//   ['grp1', 'grp2']  // selected groups on the 2nd level
+//  ]
+//
+// After a selection is changed, 'onChange' will be called with the new data as
+// a parameter.
+//
+// In addition, each selectbox is accompanied by a 'Remove this level' button
+// that deletes it from the UI, adjusts the data and fires the onChange
+// callback.
+//
+// input
+//  - groups: array of possible group names (['grp1', 'grp2'])
+//  - element: where to hook the UI
+// methods
+//  - onChange: function that is called after a selection is changed or a
+//  select box on one level is collapsed
+function groupSelector(groups, element) {
+  const data = [];
+  let onChange = function(data) { console.log('data changed: ' + data); };
+  groups = Array.from(new Set(groups));
+
+  function appendAdder() {
+    element
+      .append('a')
+      .text('Add a grouping level')
+      .on('click', d => {
+        data.push([]);
+        update();
+      });
+  }
+
+  function update() {
+    const updateSection = element
+      .selectAll('.grpCriterion')
+      .data(data, (d, i) => i);
+
+    updateSection.exit().remove();
+
+    const divEnter = updateSection.enter()
+      .append('div')
+      .attr('class', 'grpCriterion');
+
+    const selectEnter = divEnter
+      .append('select')
+      .attr('multiple', 'multiple')
+      .on('change', function(d, i) {
+        const selectedOpts = Array.apply(null, this.options)
+          .filter(o => o.selected == true)
+          .map(o => [o.value]);
+        data[i] = selectedOpts;
+        onChange(data);
+      });
+
+    selectEnter
+      .selectAll('option')
+      .data(groups)
+      .enter()
+      .append('option')
+      .attr('value', d => d)
+      .text(d => d);
+
+    divEnter
+      .append('a')
+      .text('Remove this level')
+      .on('click', function(d, i) {
+        data.splice(i, 1);
+        onChange(data);
+        update();
+      });
+  }
+
+  function my() {
+    appendAdder();
+  }
+
+  my.onChange = function(callback) {
+    return arguments.length ? (onChange = callback, my) : onChange;
+  }
+
+  return my;
 }
 
 const Hierarchy = React.createClass({
