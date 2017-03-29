@@ -279,8 +279,10 @@ public class Router implements SparkApplication {
                 withOrgAdmin(VisualizationController::showProxyHierarchy), jade);
         get("/manager/api/visualization/proxy-hierarchy/data",
                 withOrgAdmin(VisualizationController::proxyHierarchyData));
+        get("/manager/visualization/systems-with-managed-groups",
+                withOrgAdmin(VisualizationController::systemsWithManagedGroups), jade);
         get("/manager/api/visualization/systems-with-managed-groups/data",
-                withOrgAdmin(VisualizationController::systemsWithManagedGroups));
+                withOrgAdmin(VisualizationController::systemsWithManagedGroupsData));
 
         get("/manager/download/saltssh/pubkey", SaltSSHController::getPubKey);
     }

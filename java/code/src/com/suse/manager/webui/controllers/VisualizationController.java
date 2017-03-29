@@ -99,6 +99,25 @@ public class VisualizationController {
     }
 
     /**
+     * Display the Systems Grouping visualization page
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView systemsWithManagedGroups(Request request, Response response,
+            User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
+        data.put("title", "Systems Grouping");
+        data.put("endpoint", "/rhn/manager/api/visualization/" +
+                "systems-with-managed-groups/data");
+        request.attribute("legends", "visualization");
+        return new ModelAndView(data, "visualization/hierarchy.jade");
+    }
+
+    /**
      * Returns JSON data for all systems with their managed groups view
      *
      * @param request the request
@@ -106,7 +125,7 @@ public class VisualizationController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String systemsWithManagedGroups(Request request, Response response,
+    public static String systemsWithManagedGroupsData(Request request, Response response,
             User user) {
         response.type("application/json");
         return json(response, VisualizationManager.systemsWithManagedGroups(user));
