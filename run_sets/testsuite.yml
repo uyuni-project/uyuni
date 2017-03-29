@@ -91,7 +91,6 @@
 - features/minion_centos_bootstrap.feature
 - features/centos_salt_remote_cmds.feature
 - features/centos_salt_reboot_test.feature
-- features/salt_regression_multiminion.feature 
 - features/centos_salt_ssh.feature 
 
 #### * Docker releated features tests.  ###
