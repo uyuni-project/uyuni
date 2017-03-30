@@ -26,6 +26,7 @@ import static spark.Spark.head;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.FormulaCatalogController;
 import com.suse.manager.webui.controllers.FormulaController;
@@ -56,6 +57,15 @@ public class Router implements SparkApplication {
     @Override
     public void init() {
         JadeTemplateEngine jade = setup();
+
+        //CVEAudit
+
+        get("/manager/audit/cve",
+                withCsrfToken(withUser(CVEAuditController::cveAuditView)), jade);
+
+        post("/manager/api/audit/cve", withUser(CVEAuditController::cveAudit));
+        get("/manager/api/audit/cve.csv", withUser(CVEAuditController::cveAuditCSV));
+
         // Content Management
         get("/manager/cm/imagestores",
                 withCsrfToken(withUser(ImageStoreController::listView)), jade);
@@ -99,11 +109,17 @@ public class Router implements SparkApplication {
         get("/manager/cm/build", withCsrfToken(withUser(ImageBuildController::buildView)),
                 jade);
 
+        get("/manager/cm/rebuild/:id",
+                withCsrfToken(withUser(ImageBuildController::rebuild)), jade);
+
         get("/manager/api/cm/build/hosts", withUser(ImageBuildController::getBuildHosts));
         post("/manager/api/cm/build/:id", withUser(ImageBuildController::build));
 
         get("/manager/cm/images", withCsrfToken(withUser(ImageBuildController::listView)),
                 jade);
+
+
+        get("/manager/cm/images/:id/ak", withUser(ImageBuildController::activationKey));
 
         get("/manager/api/cm/images", withUser(ImageBuildController::list));
         get("/manager/api/cm/images/:id", withUser(ImageBuildController::get));

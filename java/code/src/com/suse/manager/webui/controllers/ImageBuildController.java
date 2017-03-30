@@ -23,6 +23,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -73,6 +74,28 @@ public class ImageBuildController {
     private static Logger log = Logger.getLogger(ImageBuildController.class);
 
     private ImageBuildController() { }
+
+    /**
+     * rebuild image
+     * @param req the request
+     * @param res the response
+     * @param user the user
+     * @return ModelAndView for build page
+     */
+    public static ModelAndView rebuild(Request req, Response res, User user) {
+        Map<String, Object> model = new HashMap<>();
+
+        ImageInfo imageInfo = ImageInfoFactory.lookupByIdAndOrg(
+                Long.parseLong(req.params("id")), user.getOrg()).get();
+
+        // Parse optional query string parameters
+        model.put("profileId", imageInfo.getProfile().getProfileId());
+        model.put("hostId", imageInfo.getAction().getServerActions().stream().findFirst()
+                .orElse(null));
+        model.put("version", imageInfo.getVersion());
+
+        return new ModelAndView(model, "content_management/build.jade");
+    }
 
     /**
      * Returns a view to display build page
@@ -135,6 +158,21 @@ public class ImageBuildController {
         model.put("pageSize", user.getPageSize());
         model.put("isAdmin", user.hasRole(ADMIN_ROLE));
         return new ModelAndView(model, "content_management/view.jade");
+    }
+
+    /**
+     * redirect to activation key page
+     * @param req the request
+     * @param res the response
+     * @param user the user
+     * @return return Object
+     */
+    public static Object activationKey(Request req, Response res, User user) {
+        long id = Long.parseLong(req.params("id"));
+        ImageInfo imageInfo = ImageInfoFactory.lookupByIdAndOrg(id, user.getOrg()).get();
+        res.redirect("/rhn/activationkeys/Edit.do?tid=" + imageInfo.getProfile()
+            .getToken().getId());
+        return "";
     }
 
     /**
