@@ -502,13 +502,13 @@ public class TaskomaticApi {
                 (ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType()) ||
                         ActionFactory.TYPE_ERRATA.equals(action.getActionType()))) {
             if (earliestAction
-                    .minus(ConfigDefaults.get().getStagingStart(), HOURS)
+                    .minus(ConfigDefaults.get().getStagingWindowStart(), HOURS)
                     .isBefore(now())) {
                 prefetchTime = earliestAction.minus(5, MINUTES);
             }
             else {
                 prefetchTime = earliestAction
-                        .minus(Config.get().getInt(ConfigDefaults.STAGING_START), HOURS);
+                        .minus(Config.get().getInt(ConfigDefaults.STAGING_WINDOW_START), HOURS);
             }
             Map<String, String> params = new HashMap<String, String>();
             params.put("action_id", Long.toString(action.getId()));
