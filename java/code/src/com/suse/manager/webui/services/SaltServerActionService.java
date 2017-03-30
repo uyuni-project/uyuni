@@ -188,11 +188,15 @@ public enum SaltServerActionService {
      * Execute a given {@link Action} via salt.
      *
      * @param actionIn the action to execute
-     * @param forcePackageListRefresh add metadata to force a package list refresh
-     * @param preDownloadJob whether the action is a predownload of packages action
+     * @param forcePackageListRefresh add metadata to force a package list
+     * refresh
+     * @param preDownloadJob whether the action is a predownload of packages
+     * action
+     * @param preDownloadJobMinionId if action is a predownload action it will
+     * contain involev minionId(s)
      */
     public void execute(Action actionIn, boolean forcePackageListRefresh,
-            boolean preDownloadJob) {
+            boolean preDownloadJob, String preDownloadJobMinionId) {
         List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
                 .map(serverActions -> serverActions.stream()
                         .flatMap(action ->
@@ -209,7 +213,14 @@ public enum SaltServerActionService {
         for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
                 callsForAction(actionIn, minions).entrySet()) {
             final LocalCall<?> call = entry.getKey();
-            final List<MinionServer> targetMinions = entry.getValue();
+            final List<MinionServer> targetMinions;
+
+//            if (preDownloadJob) {
+//                targetMinions = null; // TODO
+//            }
+//            else {
+                targetMinions = entry.getValue();
+            //}
 
             Map<Boolean, List<MinionServer>> results =
                     execute(actionIn, call, targetMinions, forcePackageListRefresh,
@@ -606,6 +617,8 @@ public enum SaltServerActionService {
             Map<Boolean, List<MinionServer>> result = new HashMap<>();
 
             if (preDownloadJob) {
+
+                // substitute minion id
                 if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
                     Map<String, String> args =
                             ((PackageUpdateAction) actionIn).getDetails().stream()
@@ -615,7 +628,7 @@ public enum SaltServerActionService {
                     call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
                             Optional.of(Collections.singletonMap(PARAM_PKGS, args)),
                             Optional.of(true));
-                    LOG.info("Executing pre-download of packages action");
+                    LOG.info("Executing pre-download of packages");
                 }
                 if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
                     Set<Long> errataIds = ((ErrataAction) actionIn).getErrata().stream()
@@ -638,7 +651,7 @@ public enum SaltServerActionService {
                                             errataArgs)),
                                     Optional.of(true));
                 }
-                LOG.info("Executing pre-download of patches action");
+                LOG.info("Executing pre-download of patches");
             }
 
             List<String> results = SaltService.INSTANCE

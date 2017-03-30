@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
@@ -496,31 +497,46 @@ public class TaskomaticApi {
 
         ZonedDateTime earliestAction =
                 action.getEarliestAction().toInstant().atZone(ZoneId.systemDefault());
-        ZonedDateTime prefetchTime;
+        ZonedDateTime stagingWindowStartTime = earliestAction
+                .minus(Config.get().getInt(ConfigDefaults.STAGING_WINDOW_START), HOURS);
+        ZonedDateTime stagingWindowEndTime = stagingWindowStartTime
+                .plus(Config.get().getInt(ConfigDefaults.STAGING_WINDOW_START), HOURS);
+
+        ZonedDateTime prefetchTime = stagingWindowStartTime;
 
         if (earliestAction.isAfter(now()) &&
+                stagingWindowStartTime.isBefore(earliestAction) &&
+                stagingWindowEndTime.isBefore(earliestAction) &&
                 (ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType()) ||
                         ActionFactory.TYPE_ERRATA.equals(action.getActionType()))) {
-            if (earliestAction
-                    .minus(ConfigDefaults.get().getStagingWindowStart(), HOURS)
-                    .isBefore(now())) {
-                prefetchTime = earliestAction.minus(5, MINUTES);
-            }
-            else {
-                prefetchTime = earliestAction
-                        .minus(Config.get().getInt(ConfigDefaults.STAGING_WINDOW_START), HOURS);
-            }
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("action_id", Long.toString(action.getId()));
-            params.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
-            params.put("predownload_job", Boolean.toString(Boolean.TRUE));
+            prefetchTime = earliestAction
+                    .minus(Config.get().getInt(ConfigDefaults.STAGING_WINDOW_START), HOURS);
 
-            LOG.info("Detected install/update action: scheduling pre-download job at " +
-                    prefetchTime);
+//            List<MinionServer> minions =
+//                    HibernateFactory.getSession().getNamedQuery("Action.findMinionIds")
+//                            .setParameter("id", action.getId()).getResultList();
+//
+//            long eventsPerMinute =
+//                    (MINUTES.between(stagingWindowEndTime, stagingWindowStartTime) /
+//                            minions.size());
+//            for (MinionServer minion : minions) {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("action_id", Long.toString(action.getId()));
+                params.put("force_pkg_list_refresh",
+                        Boolean.toString(forcePackageListRefresh));
+                params.put("predownload_job", Boolean.toString(Boolean.TRUE));
+//                params.put("predownload_job_minion_id", minion.getMinionId());
 
-            invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
-                    MINION_ACTION_JOB_DOWNLOAD_PREFIX + action.getId(), params,
-                    Date.from(prefetchTime.toInstant()));
+                LOG.info("Detected install/update action: scheduling pre-download job at " +
+                        prefetchTime //+ " for minion id: " + minion.getMinionId()
+                        );
+
+                invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
+                        MINION_ACTION_JOB_DOWNLOAD_PREFIX + action.getId(), params,
+                        Date.from(prefetchTime.toInstant()));
+
+//               prefetchTime = prefetchTime.plus(eventsPerMinute, MINUTES);
+//            }
         }
 
         Map<String, String> params = new HashMap<String, String>();
