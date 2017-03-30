@@ -55,35 +55,6 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I expand the results for "ssh-minion"
     Then I should see a "package salt-minion is not installed" text
 
-   Scenario: Run a remote command from the systems overview page (sles-ssh-managed)
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow remote ssh-minion hostname
-    When I follow "Remote Command" in the content area
-    And I enter as remote command this script in
-      """
-      #!/bin/bash
-      sleep 10
-      """
-    And I click on "Schedule"
-    Then I should see a "Remote Command has been scheduled successfully" text
-    And I wait for "60" seconds
-    And I check status "Completed" with spacecmd on "ssh-minion"
-    Then I run "zypper lr --show-enabled-only -u | grep :443/rhn" on "ssh-minion"
-
-   Scenario: Install a package to normal ssh-minion
-    Given I am on the Systems overview page of this "ssh-minion" 
-    And I follow "Software" in the content area
-    And I follow "Install"
-    When I check "hoag-dummy-1.1-2.1" in the list
-    And I click on "Install Selected Packages"
-    And I click on "Confirm"
-    Then I should see a "1 package install has been scheduled for" text
-    And I wait for "100" seconds
-    And "hoag-dummy-1.1-2.1" is installed on "ssh-minion"
-
    Scenario: Delete sle-ssh-minion system profile
     Given I am on the Systems overview page of this "ssh-minion" 
     When I follow "Delete System"
