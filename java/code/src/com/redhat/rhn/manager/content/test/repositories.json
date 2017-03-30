@@ -12298,5 +12298,115 @@
     "installer_updates": false,
     "name": "SUSE-Manager-Proxy-3.1-Source-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Proxy/3.1/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-12-SP2-SAP-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2415,
+    "installer_updates": false,
+    "name": "SLE-12-SP2-SAP-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SAP/12-SP2/ppc64le/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-12-SP2-SAP-Debuginfo-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2416,
+    "installer_updates": false,
+    "name": "SLE-12-SP2-SAP-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SAP/12-SP2/ppc64le/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE12-SP2-SAP-Installer-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2417,
+    "installer_updates": true,
+    "name": "SLE12-SP2-SAP-Installer-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SAP-INSTALLER/12-SP2/ppc64le/update/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE12-SP2-SAP-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2418,
+    "installer_updates": false,
+    "name": "SLE12-SP2-SAP-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP2/ppc64le/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE12-SP2-SAP-Debuginfo-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2419,
+    "installer_updates": false,
+    "name": "SLE12-SP2-SAP-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP2/ppc64le/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE12-SP2-SAP-Source-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2420,
+    "installer_updates": false,
+    "name": "SLE12-SP2-SAP-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP2/ppc64le/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-HPC12-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2421,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC12-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HPC/12/aarch64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-HPC12-Debuginfo-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2422,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC12-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HPC/12/aarch64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC12-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2423,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC12-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/12/aarch64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC12-Debuginfo-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2424,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC12-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/12/aarch64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC12-Source-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2425,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC12-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/12/aarch64/product_source/?my-fake-token"
   }
 ]
