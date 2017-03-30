@@ -96,8 +96,7 @@ function initHierarchy() {
         }
 
         let dataProcessor = Preprocessing.stratify(d);
-        // hack: use grouping processor based on the endpoint
-        if (endpoint.includes('systems-with-managed-groups')) {
+        if (preprocessor == 'grouping') {
           dataProcessor = Preprocessing.grouping(d);
         }
         const root = dataProcessor();
