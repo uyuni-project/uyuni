@@ -95,9 +95,11 @@
 
 #### * Docker releated features tests.  ###
 - features/docker_build_image.feature
-- features/docker_xmlrpc.feature
 # end-tests
 - features/spacewalk_debug.feature
+
+### Scalability tests
+- features/docker_xmlrpc.feature
 
 ## smdba and change password feature always put them at the end of the testsuite.
 - features/change_password.feature
