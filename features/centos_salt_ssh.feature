@@ -46,15 +46,3 @@ Feature: CENTOS7 feature.
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
 
-  Scenario: Run a remote command on ssh-minion centos
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Salt"
-    And I follow "Remote Commands"
-    And I should see a "Remote Commands" text
-    Then I enter command "rpm -q gingery-minion"
-    And I click on preview
-    And I click on run
-    Then I wait for "15" seconds
-    And I expand the results for "ceos-minion"
-    Then I should see a "package gingery-minion is not installed" text
-
