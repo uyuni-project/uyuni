@@ -20,6 +20,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.Org;
@@ -450,7 +451,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     }
 
                     Opt.stream(suseProduct).flatMap(sp ->
-                            lookupBaseAndRequiredChannels(osName, osVersion, osArch, sp)
+                            lookupBaseAndRequiredChannels(osName, osVersion,
+                                    server.getServerArch().getCompatibleChannelArch(), sp)
                     ).forEach(reqChan -> {
                         LOG.info("Adding required channel: " + reqChan.getName());
                         server.addChannel(reqChan);
@@ -488,8 +490,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                             rhelReleaseContent, centosReleaseContent);
             rhelProduct
                 .ifPresent(rhel -> {
-                        String arch = server.getServerArch()
-                                .getLabel().replace("-redhat-linux", "");
+                        ChannelArch arch =
+                                server.getServerArch().getCompatibleChannelArch();
                         Opt.stream(rhel.getSuseProduct()).flatMap(sp ->
                                 lookupBaseAndRequiredChannels(
                                         rhel.getName(), rhel.getVersion(),
@@ -502,7 +504,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                             LOG.info("Not setting default channels for minion: " +
                                     minionId + " os: " + rhel.getName() +
                                     " " + rhel.getVersion() +
-                                    " " + arch);
+                                    " " + arch.getName());
                         }
                     }
                 );
@@ -510,15 +512,14 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     }
 
     private Stream<Channel> lookupBaseAndRequiredChannels(String osName,
-            String osVersion, String osArch, SUSEProduct sp) {
+            String osVersion, ChannelArch arch, SUSEProduct sp) {
         Optional<EssentialChannelDto> productBaseChannelDto =
-                ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(),
-                        ChannelFactory.lookupArchByName(osArch)));
+                ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(), arch));
 
         return productBaseChannelDto.map(base ->
             ofNullable(ChannelFactory.lookupById(base.getId())).map(c -> {
                 LOG.info("Base channel " + c.getName() + " found for OS: " + osName +
-                        ", version: " + osVersion + ", arch: " + osArch);
+                        ", version: " + osVersion + ", arch: " + arch.getName());
                 SUSEProductSet installedProducts = new SUSEProductSet();
                 installedProducts.setBaseProduct(sp);
                 Stream<Channel> requiredChannels = DistUpgradeManager
