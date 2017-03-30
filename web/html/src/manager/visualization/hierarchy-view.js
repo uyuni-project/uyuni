@@ -11,8 +11,9 @@
 // node parameters) and for customizing force simulation are settable using
 // deriveClass and simulation functions.
 //
-function hierarchyView(root, container) {
+function hierarchyView(rootIn, container) {
   // default params
+  var root = rootIn;
   var deriveClass = (d) => '';
   var simulation = null;
 
@@ -43,13 +44,17 @@ function hierarchyView(root, container) {
     gEnter
       .append("text")
       .attr("dx", "1em")
-      .attr("dy", ".15em")
-      .text(d => d.data.type && d.data.type != 'system' ? d.data.name : '');
+      .attr("dy", ".15em");
 
     // common for enter + update sections
-    node
-      .merge(gEnter)
+    const enterUpdate = node.merge(gEnter);
+
+    enterUpdate
       .attr('class', d => 'node ' + deriveClass(d));
+
+    enterUpdate
+      .select('text')
+      .text(d => (d.data.type && d.data.type != 'system' ? d.data.name : '') + countChildren(d));
 
     var link = container.selectAll('line.link').data(links, d => d.target.id);
 
@@ -95,6 +100,10 @@ function hierarchyView(root, container) {
     }
   }
 
+  my.root = function(r) {
+    return arguments.length ? (root = r, my) : root;
+  }
+
   my.simulation = function(s) {
     return arguments.length ? (simulation = s, my) : simulation;
   }
@@ -106,41 +115,69 @@ function hierarchyView(root, container) {
   return my;
 }
 
-function updateSelectedNode(node) {
-  // unselect all
+function unselectAllNodes() {
   d3.selectAll('g.node.selected')
     .each(function(d) {
       var classList = d3.select(this).attr('class');
       d3.select(this).attr('class', classList.replace('selected', ''));
     });
+}
+
+function updateSelectedNode(node) {
+  unselectAllNodes();
   // select the clicked node
   var classList = d3.select(node).attr('class');
   d3.select(node).attr('class', classList + ' selected');
+}
+
+$.closeDetailBox = function() {
+  $('.detailBox').hide().html('');
+  unselectAllNodes();
+}
+$.addSystemFromSSM = function(ids) {
+  return update_server_set('ids', 'system_list', true, ids);
+}
+
+function isSystemType(d) {
+  return d.data.type && d.data.type == 'system' && d.data.rawId != '' && d.data.id != 'root';
 }
 
 function updateDetailBox(d) {
   var data = d.data;
   var systemDetailLink = '';
   var systemSpecificInfo = '';
-  if (data.type && data.type == 'system' && data.id != 'root') {
-    var idSlices = (data.id).split('-');
+  var systemToSSM = '';
+  if (isSystemType(d)) {
+    var idSlices = (data.rawId).split('-');
     var systemId = idSlices[idSlices.length - 1];
     systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
       systemId + '" target="_blank">System details page</a></div>';
 
+    systemToSSM = '<button class="btn btn-default" onClick="$.addSystemFromSSM([' + data.rawId + '])">Add system to SSM</button>';
     systemSpecificInfo =
       '<div>Base entitlement : <strong>' + data.base_entitlement + '</strong></div>' +
       '<div>Base channel: <strong>' + data.base_channel + '</strong></div>' +
-      '<div>Checkin time : <strong>' + new Date(data.checkin) + '</strong></div>';
+      '<div>Checkin time : <strong><time title="' + moment(data.checkin).format('LLLL') + '">' + moment(data.checkin).fromNow() + '</time></strong></div>' +
+      '<div>Installed products : <strong>' + data.installedProducts + '</strong></div>';
   }
   $('.detailBox').html(
+    '<div class="content-wrapper">' +
+    '<a href="#" class="close-popup" onClick="$.closeDetailBox()">X</a>' +
     '<div>System name : <strong>' + data.name + '</strong></div>' +
     systemDetailLink +
+    systemToSSM +
     '<div>Type : <strong>' + data.type + '</strong></div>' +
-    systemSpecificInfo).show()
-    .css('top', (window.mouseY || 0) - $('.detailBox').height()).css('left', (window.mouseX || 0) + 20);
+    systemSpecificInfo +
+    '</div>'
+  ).show();
+
+}
+
+function countChildren(node) {
+  return node._allChildren ? ' [' + node.children.length + '/' + node._allChildren.length + ']' : '';
 }
 
 module.exports = {
-    hierarchyView: hierarchyView
+    hierarchyView: hierarchyView,
+    isSystemType: isSystemType
 }

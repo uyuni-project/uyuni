@@ -18,13 +18,16 @@ package com.redhat.rhn.manager.visualization.json;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * POJO representing system to be displayed in visualization.
  */
 public class System {
 
-    private String id;
+    private String id = "";
+    private String rawId = "";
     private String parentId;
     private String name;
     @SerializedName("contact_method")
@@ -35,6 +38,9 @@ public class System {
     private String baseEntitlement;
     private Long checkin;
     private String type = "system";
+    private Set<String> installedProducts = new HashSet<>();
+    @SerializedName("managed_groups")
+    private Set<String> managedGroups = new HashSet<>();
 
     /**
      * Standard constructor
@@ -44,7 +50,7 @@ public class System {
 
     /**
      * Standard constructor
-     * @param idIn idIn
+     * @param rawIdIn the real system id
      * @param parentIdIn idIn of parent
      * @param nameIn nameIn
      * @param contactMethodIn contact method
@@ -52,13 +58,15 @@ public class System {
      * @param baseEntitlementIn base entitlement
      * @param checkinIn check-in
      */
-    public System(Long idIn, Long parentIdIn, String nameIn, String contactMethodIn,
+    public System(Long rawIdIn, Long parentIdIn, String nameIn, String contactMethodIn,
             String baseChannelIn, String baseEntitlementIn, Date checkinIn) {
-        if (idIn != null) {
-            this.id = idIn.toString();
+        if (rawIdIn != null) {
+            this.rawId = rawIdIn.toString();
+            this.id += this.rawId;
         }
         if (parentIdIn != null) {
             this.parentId = parentIdIn.toString();
+            this.id += this.parentId;
         }
         this.name = nameIn;
         this.contactMethod = contactMethodIn;
@@ -71,17 +79,18 @@ public class System {
 
     /**
      * Standard constructor
-     * @param idIn idIn
+     * @param rawIdIn the real system id
      * @param nameIn nameIn
      * @param contactMethodIn contact method
      * @param baseChannelIn base channel
      * @param baseEntitlementIn base entitlement
      * @param checkinIn check-in
      */
-    public System(Long idIn, String nameIn, String contactMethodIn, String baseChannelIn,
+    public System(Long rawIdIn, String nameIn, String contactMethodIn, String baseChannelIn,
             String baseEntitlementIn, Date checkinIn) {
-        if (idIn != null) {
-            this.id = idIn.toString();
+        if (rawIdIn != null) {
+            this.rawId = rawIdIn.toString();
+            this.id += this.rawId;
         }
         this.name = nameIn;
         this.contactMethod = contactMethodIn;
@@ -117,6 +126,26 @@ public class System {
      */
     public System setId(String idIn) {
         id = idIn;
+        return this;
+    }
+
+    /**
+     * Gets the rawId.
+     *
+     * @return rawId
+     */
+    public String getRawId() {
+        return rawId;
+    }
+
+    /**
+     * Sets the rawId.
+     *
+     * @param rawIdIn - the rawId
+     * @return this
+     */
+    public System setRawId(String rawIdIn) {
+        rawId = rawIdIn;
         return this;
     }
 
@@ -237,6 +266,46 @@ public class System {
      */
     public System setContactMethod(String contactMethodIn) {
         contactMethod = contactMethodIn;
+        return this;
+    }
+
+    /**
+     * Gets the installedProducts.
+     *
+     * @return installedProducts
+     */
+    public Set<String> getInstalledProducts() {
+        return installedProducts;
+    }
+
+    /**
+     * Sets the installedProducts.
+     *
+     * @param installedProductsIn - the installedProducts
+     * @return this
+     */
+    public System setInstalledProducts(Set<String> installedProductsIn) {
+        installedProducts = installedProductsIn;
+        return this;
+    }
+
+    /**
+     * Gets the managedGroups.
+     *
+     * @return managedGroups
+     */
+    public Set<String> getManagedGroups() {
+        return managedGroups;
+    }
+
+    /**
+     * Sets the managedGroups.
+     *
+     * @param groupsIn - the managedGroups
+     * @return this
+     */
+    public System setManagedGroups(Set<String> groupsIn) {
+        managedGroups = groupsIn;
         return this;
     }
 }

@@ -1,15 +1,21 @@
-.wrapper-box {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.svg-aside {
-  .wrapper-box;
-  border-radius: 3px 0 0 3px;
-  width: 19%;
-  padding: 10px;
-  /* filters */
+#svg-wrapper {
+  position: relative;
+  border: 1px solid #ddd;
+  box-shadow: 0px 0px 2px 1px #e0e0e0;
+  background-color: #f7f7f7;
+  border-radius: 3px;
   #filter-wrapper {
+    display: none;
+    position: absolute;
+    z-index: 500;
+    left: 0;
+    width: 260px;
+    background-color: rgba(231, 236, 241, 0.9);
+    font-size: 0.9em;
+    border-radius: 0 0 3px 0;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding: 10px;
     div.filter {
       padding: 16px 0px;
       margin-right: 4px;
@@ -21,33 +27,42 @@
         .input-sm;
       }
     }
+    select {
+      width: 100%;
+    }
   }
   .detailBox {
-    border-top: 1px solid #ccc;
-    // padding: 20px 10px 10px 10px;
-    background-color: #e7ecf1;
-    div {
-      padding: 5px 10px;
+    position: absolute;
+    display: none;
+    top: 0;
+    right: 0;
+    border-radius: 0 0 0 3px;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    background-color: rgba(231, 236, 241, 0.9);
+    font-size: 0.9em;
+    width: 230px;
+    div.content-wrapper {
+      padding: 10px 20px 10px 10px;
+      div {
+        padding: 4px 0;
+      }
     }
-    div:first-child {
-      padding-top: 20px;
+    a.close-popup, button.close-popup:hover {
+      border: none;
+      background: none;
+      color: @spacewalk-gray;
+      position: absolute;
+      right: 4px;
+      top: 0px;
+      padding: 5px;
     }
-    div:last-child {
-      padding-bottom: 20px
+    a.close-popup:hover {
+      color: @spacewalk-gray-dark;
+      text-decoration: none;
     }
   }
 }
-
-#svg-wrapper {
-  .wrapper-box;
-  border: 1px solid #ddd;
-  box-shadow: 0px 0px 4px 3px #eee;
-  background-color: #f7f7f7;
-  width: 80%;
-  border-radius: 3px;
-}
-
-
 
 /* svg elements */
 svg {

@@ -238,6 +238,9 @@ public class MenuTree {
                                 .withVisibility(adminRoles.get("org")))
                         .addChild(new MenuItem("Proxy Hierarchy")
                                 .withPrimaryUrl("/rhn/manager/visualization/proxy-hierarchy")
+                                .withVisibility(adminRoles.get("org")))
+                        .addChild(new MenuItem("Systems Grouping")
+                                .withPrimaryUrl("/rhn/manager/visualization/systems-with-managed-groups")
                                 .withVisibility(adminRoles.get("org")))));
 
             // Configuration
