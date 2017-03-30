@@ -213,7 +213,7 @@ class BuildImage extends React.Component {
                     onChange={this.onFormChange} onSubmit={this.onBuild}
                     onValidate={this.onValidate} divClass="col-md-7">
 
-                <Input.Text name="tag" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest"/>
+                <Input.Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest"/>
 
                 <Input.Select name="profileId" required label={t("Build Profile")}
                         onChange={this.handleProfileChange} labelClass="col-md-3"

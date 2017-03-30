@@ -206,7 +206,7 @@ class ImageViewOverview extends React.Component {
         const params = {
             host: data.buildServer ? data.buildServer.id : undefined,
             profile: data.profile ? data.profile.id : undefined,
-            tag: data.version ? encodeURIComponent(data.version) : undefined
+            version: data.version ? encodeURIComponent(data.version) : undefined
         }
 
         const loc = "/rhn/manager/cm/build?" + (
