@@ -1,10 +1,12 @@
 {% if pillar.get('param_pkgs', {}).items() %}
 pkg_downloaded:
-  pkg.downloaded:
+  module.run:
+    - name: pkg.install
     - pkgs:
 {%- for pkg, version in pillar.get('param_pkgs', {}).items() %}
       - {{ pkg }}-{{ version }}
 {%- endfor %}
+    - downloadonly: true
     - require:
       - module: applychannels
 {% endif %}
