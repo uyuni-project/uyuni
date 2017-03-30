@@ -43,15 +43,4 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
 
-  Scenario: Run a remote command on ssh-minion sles
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Salt"
-    And I follow "Remote Commands"
-    And I should see a "Remote Commands" text
-    Then I enter command "rpm -q salt-minion"
-    And I click on preview
-    And I click on run
-    Then I wait for "30" seconds
-    And I expand the results for "ssh-minion"
-    Then I should see a "package salt-minion is not installed" text
 
