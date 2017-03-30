@@ -82,11 +82,14 @@ public class CVEAuditManager {
     }
 
     /**
-     * Empty the suseCVEServerChannel table.
+     * Empty the suseCVEServerChannel and suseCVEImageChannel table.
      */
     public static void deleteRelevantChannels() {
         WriteMode m = ModeFactory.getWriteMode("cve_audit_queries",
-                "delete_relevant_channels");
+                "delete_relevant_server_channels");
+        m.executeUpdate(new HashMap<String, Long>());
+        m = ModeFactory.getWriteMode("cve_audit_queries",
+                "delete_relevant_image_channels");
         m.executeUpdate(new HashMap<String, Long>());
     }
 

@@ -1,8 +1,14 @@
 <datasource_modes>
 
-<write-mode name="delete_relevant_channels">
+<write-mode name="delete_relevant_server_channels">
   <query>
     DELETE FROM suseCVEServerChannel
+  </query>
+</write-mode>
+
+<write-mode name="delete_relevant_image_channels">
+  <query>
+    DELETE FROM suseCVEImageChannel
   </query>
 </write-mode>
 
