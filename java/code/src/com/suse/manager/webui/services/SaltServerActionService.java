@@ -618,12 +618,24 @@ public enum SaltServerActionService {
                     LOG.info("Executing pre-download of packages action");
                 }
                 if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
-                    List<String> args = ((ErrataAction) actionIn).getErrata().stream()
-                            .map(e -> e.getAdvisoryName()).collect(Collectors.toList());
+                    Set<Long> errataIds = ((ErrataAction) actionIn).getErrata().stream()
+                            .map(e -> e.getId()).collect(Collectors.toSet());
+                    Map<Long, Map<Long, Set<String>>> errataNames =
+                            ServerFactory
+                                    .listErrataNamesForServers(
+                                            minions.stream().map(MinionServer::getId)
+                                                    .collect(Collectors.toSet()),
+                                            errataIds);
+                    List<String> errataArgs = new ArrayList<>();
+                    for (Long minionId: errataNames.keySet()) {
+                        for (Long errId: errataNames.get(minionId).keySet()) {
+                            errataArgs.addAll(errataNames.get(minionId).get(errId));
+                        }
+                    }
                     call = State
                             .apply(Arrays.asList(PACKAGES_PATCHDOWNLOAD),
                                     Optional.of(Collections.singletonMap(PARAM_PATCHES,
-                                            Collections.singletonList(args))),
+                                            errataArgs)),
                                     Optional.of(true));
                 }
                 LOG.info("Executing pre-download of patches action");
