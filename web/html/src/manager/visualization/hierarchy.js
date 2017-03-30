@@ -275,8 +275,7 @@ function initHierarchy() {
         }
 
         const addAllToSSMButton = d3.select('#filter-wrapper')
-          .append('div');
-        addAllToSSMButton
+          .append('div')
           .append('button')
           .attr('class', 'btn btn-default')
           .on('click', addVisibleTreeToSSM)
