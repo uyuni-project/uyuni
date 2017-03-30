@@ -113,6 +113,7 @@ public class VisualizationController {
         data.put("title", "Systems Grouping");
         data.put("endpoint", "/rhn/manager/api/visualization/" +
                 "systems-with-managed-groups/data");
+        data.put("preprocessor", "grouping");
         request.attribute("legends", "visualization");
         return new ModelAndView(data, "visualization/hierarchy.jade");
     }
