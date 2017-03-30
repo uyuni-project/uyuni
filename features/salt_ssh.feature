@@ -51,7 +51,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     Then I enter command "rpm -q salt-minion"
     And I click on preview
     And I click on run
-    Then I wait for "15" seconds
+    Then I wait for "30" seconds
     And I expand the results for "ssh-minion"
     Then I should see a "package salt-minion is not installed" text
 
