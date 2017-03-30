@@ -127,6 +127,12 @@ public class SaltSSHService {
 
     private SaltRoster prepareSaltRoster(MinionList target) {
         SaltRoster roster = new SaltRoster();
+
+        // Using custom LocalCall timeout if included in the payload
+        Optional<Integer> sshTimeout = call.getPayload().containsKey("timeout") ?
+                    Optional.ofNullable((Integer) call.getPayload().get("timeout")) :
+                    getSshPushTimeout();
+
         // these values are mostly fixed, which should change when we allow configuring
         // per-minionserver
         target.getTarget().stream()
@@ -141,7 +147,7 @@ public class SaltSSHService {
                                         minion.getProxyPath().orElse(null),
                                         minion.getContactMethod(),
                                         mid),
-                                getSshPushTimeout()
+                                sshTimeout
                         );
                     });
                 }
@@ -160,7 +166,7 @@ public class SaltSSHService {
                                         minion.getContactMethod().getLabel(),
                                         minion.getMinionId()
                                 ),
-                                getSshPushTimeout());
+                                sshTimeout);
                     });
                     if (!minionOpt.isPresent()) {
                         LOG.error("Minion id='" + mid + "' not found in the database");

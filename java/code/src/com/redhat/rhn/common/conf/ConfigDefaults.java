@@ -220,6 +220,14 @@ public class ConfigDefaults {
     public static final String TOKEN_LIFETIME =
             "server.susemanager.token_lifetime";
 
+    /**
+     * Salt Minions presence ping timeouts in seconds
+     */
+    public static final String SALT_PRESENCE_PING_TIMEOUT =
+            "salt_presence_ping_timeout";
+    public static final String SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT =
+            "salt_presence_ping_gather_job_timeout";
+
     public static final String SALT_SSH_CONNECT_TIMEOUT =
             "salt_ssh_connect_timeout";
 
@@ -777,4 +785,19 @@ public class ConfigDefaults {
         return Config.get().getInt(SALT_SSH_CONNECT_TIMEOUT, 180);
     }
 
+    /**
+     * Returns salt presence ping job timeout
+     * @return salt presence ping job timeout
+     */
+    public int getSaltPresencePingTimeout() {
+        return Config.get().getInt(SALT_PRESENCE_PING_TIMEOUT, 4);
+    }
+
+    /**
+     * Returns salt presence ping job gather_job_timeout
+     * @return salt presence ping job gather_job_timeout
+     */
+    public int getSaltPresencePingGatherJobTimeout() {
+        return Config.get().getInt(SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT, 1);
+    }
 }
