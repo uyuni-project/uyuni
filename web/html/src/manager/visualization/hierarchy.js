@@ -266,8 +266,7 @@ function initHierarchy() {
 
         function addVisibleTreeToSSM() {
           const ids = new Set();
-          console.log('a');
-          root.each(e => {
+          t.root().each(e => {
               if (HierarchyView.isSystemType(e)) {
                 ids.add(e.data.rawId);
               }
