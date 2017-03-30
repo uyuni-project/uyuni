@@ -137,7 +137,7 @@ class ImageView extends React.Component {
         <Panel title={this.state.selected ? this.state.selected.name : t("Images")} icon={this.state.selected ? "fa-hdd-o" : "fa-list"} button={ panelButtons }>
           {this.state.messages}
           { this.state.selected ?
-              <ImageViewDetails data={this.state.selected} onCancel={this.handleBackAction}/>
+              <ImageViewDetails data={this.state.selected} onTabChange={() => this.updateView(getHashId(), getHashTab())} onCancel={this.handleBackAction}/>
           :
               <ImageViewList data={this.state.images} onSelect={this.handleDetailsAction} onDelete={this.deleteImage}/>
           }
@@ -314,6 +314,9 @@ class ImageViewDetails extends React.Component {
 
     onTabChange(hash) {
         history.pushState(null, null, hash);
+        if(this.props.onTabChange) {
+            this.props.onTabChange(hash);
+        }
     }
 
     render() {
