@@ -220,7 +220,7 @@ public class MenuTree {
 
             // Audit
             nodes.add(new MenuItem("Audit").withIcon("fa-search").withDir("/rhn/audit")
-                .addChild(new MenuItem("cveaudit.nav.title").withPrimaryUrl("/rhn/audit/CVEAudit.do"))
+                .addChild(new MenuItem("cveaudit.nav.title").withPrimaryUrl("/rhn/manager/audit/cve"))
                 .addChild(new MenuItem("subscriptionmatching.nav.title").withPrimaryUrl("/rhn/manager/subscription-matching")
                     .withVisibility(adminRoles.get("satellite")))
                 .addChild(new MenuItem("OpenSCAP").addChild(new MenuItem("All Scans").withPrimaryUrl("/rhn/audit/ListXccdf.do"))

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.audit;
 
+import com.redhat.rhn.frontend.struts.SelectableAdapter;
+
 import java.util.Set;
 
 /**
@@ -23,7 +25,7 @@ import java.util.Set;
  *
  * @version $Rev$
  */
-public class CVEAuditServer implements CVEAuditSystem {
+public class CVEAuditServer extends SelectableAdapter implements CVEAuditSystem {
 
     private long id;
     private String name;
@@ -49,6 +51,19 @@ public class CVEAuditServer implements CVEAuditSystem {
         this.patchStatus = statusIn;
         this.channels = channelsIn;
         this.erratas = erratasIn;
+    }
+
+    /**
+     * return the rank
+     * @return the rank
+     */
+    public long getPatchStatusRank() {
+       return patchStatus.getRank();
+    }
+
+    @Override
+    public String getSelectionKey() {
+        return String.valueOf(getId());
     }
 
     /**
