@@ -254,6 +254,27 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     sp.position = (select max(position) from ServerPath sp2 where sp2.id.server = sp.id.server)]]>
     </query>
 
+    <query name="Server.listSystems">
+        <![CDATA[ select
+                new com.redhat.rhn.manager.visualization.json.System(s.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
+                from Server s
+                    left join s.channels c
+                    left join s.groups g
+                where c.parentChannel is NULL and
+                    g.groupType.isBaseChar = 'Y' and
+                    s.org = :org]]>
+    </query>
+
+    <query name="Server.systemIdManagedGroupName">
+        <![CDATA[ select
+                s.id, g.name
+                from Server s
+                    left join s.groups g
+                where s.org = :org and
+                    g.org = :org and
+                    (g.groupType is null)]]>
+    </query>
+
     <query name="Server.listProxySystems">
         <![CDATA[ select
                 new com.redhat.rhn.manager.visualization.json.System(s.id, s.name, s.contactMethod.label, c.name, g.groupType.label, s.serverInfo.checkin)
@@ -277,6 +298,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     g.groupType.isBaseChar = 'Y' and
                     s.org = :org and
                     exists (select 1 from VirtualInstance vi where vi.hostSystem = s)
+    ]]>
+    </query>
+
+    <query name="Server.serverInstalledProductNames">
+        <![CDATA[ select
+                s.id, ip.name
+                from Server s
+                    left join s.installedProducts ip
+                where
+                    s.org = :org
     ]]>
     </query>
 
