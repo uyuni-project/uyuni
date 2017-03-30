@@ -31,7 +31,7 @@ def reboot(test=None, cache_only=None):
 
     pid = os.fork()
     data = {'version': '0'}
-    reboot_message = 'Reboot of system "' + os.uname()[1] + '" initiated by Spacewalk reboot action.'
+    reboot_message = 'Reboot of system "' + os.uname()[1] + '" initiated by SUSE Manager reboot action.'
     if not pid:
         try:
             if test:
