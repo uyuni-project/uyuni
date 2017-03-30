@@ -764,14 +764,17 @@ public class SaltUtils {
                         name, version, release, arch));
             }
 
-            return Stream.of(
-                    SUSEProductFactory.findInstalledProduct(name, version, release,
+            return Stream.of(SUSEProductFactory
+                    .findInstalledProduct(name, version, release,
                             PackageFactory.lookupPackageArchByLabel(arch), isbase)
-                    .orElse(
-                            // Use installed product information from the client
-                            new InstalledProduct(name, version,
-                                    PackageFactory.lookupPackageArchByLabel(arch),
-                                    release, isbase)));
+                    .orElseGet(() -> {
+                        // Use installed product information from the client
+                        InstalledProduct p = new InstalledProduct(name, version,
+                                PackageFactory.lookupPackageArchByLabel(arch), release,
+                                isbase);
+                        ServerFactory.save(p);
+                        return p;
+                    }));
         }).collect(Collectors.toSet());
     }
 
