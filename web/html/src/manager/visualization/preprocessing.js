@@ -151,7 +151,7 @@ function groupingPreprocessor(data, groupingConfigurationIn) {
   function my() {
     const root = data.filter(d => d.parentId == null)[0];
 
-    const groupElems = makeGroups(root, groupingConfiguration);
+    const groupElems = makeGroups(root, groupingConfiguration.filter(criterion => criterion.length > 0));
     const allElems = [root] // root
       .concat(groupElems) // inner nodes (represantation of groups)
       .concat(groupData(data, groupElems.filter(e => e.isLeafGroup))); // systems partitioned by groups
