@@ -301,6 +301,7 @@ function groupSelector(groups, element) {
   function appendAdder() {
     element
       .append('a')
+      .attr('href', '#')
       .text('Add a grouping level')
       .on('click', d => {
         data.push([]);
@@ -340,6 +341,7 @@ function groupSelector(groups, element) {
 
     divEnter
       .append('a')
+      .attr('href', '#')
       .text('Remove this level')
       .on('click', function(d, i) {
         data.splice(i, 1);
