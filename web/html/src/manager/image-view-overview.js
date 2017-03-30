@@ -175,20 +175,32 @@ class ImageViewOverview extends React.Component {
 
         const counts = <span>
             { row.patches.security > 0 &&
-                [<strong> Security patches: </strong>,row.patches.security]
+                <span>
+                    <strong>Security patches: </strong>{row.patches.security}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
             }
             { row.patches.bug > 0 &&
-                [<strong> Bug patches: </strong>,row.patches.bug]
+                <span>
+                    <strong>Bug patches: </strong>{row.patches.bug}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
             }
-            { row.patches.security > 0 &&
-                [<strong> Enhancement patches: </strong>,row.patches.enhancement]
+            { row.patches.enhancement > 0 &&
+                <span>
+                    <strong>Enhancement patches: </strong>{row.patches.enhancement}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
             }
             { row.packages > 0 &&
-                [<strong> Package updates: </strong>,row.packages]
+                <span>
+                    <strong>Package updates: </strong>{row.packages}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
             }
         </span>;
 
-        return <span>{status} {counts}</span>;
+        return <span>{status}&nbsp;&nbsp;&nbsp;&nbsp;{counts}</span>;
     }
 
     hasUpdates() {
