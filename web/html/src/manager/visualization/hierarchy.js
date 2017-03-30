@@ -265,23 +265,14 @@ function initHierarchy() {
         });
 
         function addVisibleTreeToSSM() {
-          var ids = gatherVisibleChildren(root.children);
-          $.addSystemFromSSM(ids);
-        }
-
-        function gatherVisibleChildren(children, collection) {
-          if (collection == null) {
-            collection = new Array();
-          }
-          children.map(child => {
-            if (HierarchyView.isSystemType(child) && !collection.includes(child.data.rawId) ) {
-              collection.push(child.data.rawId);
-            }
-            if (child.children) {
-              gatherVisibleChildren(child.children, collection);
-            }
-          });
-          return collection;
+          const ids = new Set();
+          console.log('a');
+          root.each(e => {
+              if (HierarchyView.isSystemType(e)) {
+                ids.add(e.data.rawId);
+              }
+            });
+          $.addSystemFromSSM(Array.from(ids));
         }
 
         const addAllToSSMButton = d3.select('#filter-wrapper')
