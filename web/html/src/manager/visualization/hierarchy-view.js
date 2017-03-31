@@ -41,20 +41,28 @@ function hierarchyView(rootIn, container) {
       .append('circle')
       .attr('r', 5); // default
 
-    gEnter
-      .append("text")
-      .attr("dx", "1em")
-      .attr("dy", ".15em");
-
     // common for enter + update sections
-    const enterUpdate = node.merge(gEnter);
-
-    enterUpdate
+    node.merge(gEnter)
       .attr('class', d => 'node ' + deriveClass(d));
 
-    enterUpdate
-      .select('text')
+    // let's update the text nodes separately as we want them to render on the top in the SVG
+    let textUpdate = container.selectAll('text')
+      .data(nodes.filter(d => d.children != null), function(d) { return d.id; });
+
+    let textEnter = textUpdate
+      .enter();
+    textEnter
+      .append('text')
+      .attr('dx', '1em')
+      .attr('dy', '.15em');
+
+    textUpdate.merge(textEnter)
+      .selectAll('text')
       .text(d => (d.data.type && d.data.type != 'system' ? d.data.name : '') + countChildren(d));
+
+    textUpdate
+      .exit()
+      .remove();
 
     var link = container.selectAll('line.link').data(links, d => d.target.id);
 
@@ -88,6 +96,11 @@ function hierarchyView(rootIn, container) {
         });
         node
           .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')')
+
+        container.selectAll('text')
+          .data(nodes, function(d) { return d.id; })
+          .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
         link
           .attr("class", "link")
           .attr("x1", s => s.source.x)
