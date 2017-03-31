@@ -600,7 +600,10 @@ public enum SaltServerActionService {
             boolean isStagingJob) {
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
-        metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
+
+        if (!isStagingJob) {
+            metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
+        }
         if (forcePackageListRefresh) {
             metadata.put(ScheduleMetadata.SUMA_FORCE_PGK_LIST_REFRESH, true);
         }
