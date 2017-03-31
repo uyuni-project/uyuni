@@ -86,7 +86,6 @@ public class Config {
     private final TreeSet<File> fileList = new TreeSet<File>(new Comparator<File>() {
 
         /** {inheritDoc} */
-        @Override
         public int compare(File f1, File f2) {
             // Need to make sure we read the child namespace before the base
             // namespace.  To do that, we sort the list in reverse order based
