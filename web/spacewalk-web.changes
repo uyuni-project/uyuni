@@ -1,4 +1,31 @@
 -------------------------------------------------------------------
+Fri Mar 31 12:24:22 CEST 2017 - mc@suse.de
+
+- version 2.7.1.5-1
+- set version to Beta 2
+- Visualization: add-to-ssm button
+- Multilevel hierarchy for Visualization
+- Fix patches and packages lists JS issue on Firefox (bsc#1031504)
+- Fix version input in the image build page
+- Fix JS issues on image build page
+- Add date time input for scheduling the image build
+- Add 'Rebuild' button to image details page
+- Add custom values to image info and image profile
+- Redirect to images list after scheduling a build
+- Update remote commands preview/run button (bsc#1028862)
+- Make password field required in image store form
+- Refactoring the menu
+- UI menu: direct link as icon, normal label to collapse/explode submenu
+- BugFix: evaluate also node label in menu search (bsc#1025939)
+- Handle TaskomaticApiExceptions: Spark controllers and Javascript
+- Remote Commands: allow Web Socket to be opened on non-standard port
+- Fix broken help link for taskstatus (bsc#1017422)
+- show proxy path in bootstrap UI
+- clear proxy selection when clicking clear fields button
+- check if proxy hostname is FQDN in UI
+- java backend for salt ssh-push through proxy
+
+-------------------------------------------------------------------
 Wed Mar 08 19:03:33 CET 2017 - mc@suse.de
 
 - version 2.7.1.4-1
