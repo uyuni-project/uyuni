@@ -32,7 +32,7 @@ end
 
 # docker depends on salt and initserver
 desc "Run docker features tests"
-task :docker => [:initserver, :salt] do
+task :docker => %i(initserver salt) do
   puts "docker"
   `touch docker.html`
   # Rake::Task['cucumber:docker'].invoke
@@ -46,7 +46,7 @@ task :tradclient => [:initserver] do
 end
 
 # here is the MAIN function
-multitask :mallococomero => [:initserver, :tradclient, :docker, :salt] do
+multitask :mallococomero => %i(initserver tradclient docker salt) do
   puts "Completed parallel execution"
   `mv *.html results`
 end
