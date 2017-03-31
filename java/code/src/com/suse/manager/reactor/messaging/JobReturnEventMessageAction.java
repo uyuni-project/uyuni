@@ -35,11 +35,7 @@ import com.suse.salt.netapi.event.JobReturnEvent;
 
 import org.apache.log4j.Logger;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Optional;
-
-import static java.time.ZonedDateTime.now;
 
 /**
  * Handler class for {@link JobReturnEventMessage}.
@@ -118,20 +114,13 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                 LOG.debug("Updating action for server: " +
                                         minionServer.getId());
                             }
-                            ZonedDateTime earliestAction = action.get().getEarliestAction()
-                                    .toInstant().atZone(ZoneId.systemDefault());
-                            if (!((action.get().getActionType()
-                                    .equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
-                                    action.get().getActionType()
-                                            .equals(ActionFactory.TYPE_ERRATA)) &&
-                                    earliestAction.isAfter(now()))) {
-                                SaltUtils.INSTANCE.updateServerAction(sa,
-                                        jobReturnEvent.getData().getRetcode(),
-                                        jobReturnEvent.getData().isSuccess(),
-                                        jobReturnEvent.getJobId(), jobResult.get(),
-                                        jobReturnEvent.getData().getFun());
-                                ActionFactory.save(sa);
-                            }
+                            SaltUtils.INSTANCE.updateServerAction(sa,
+                                    jobReturnEvent.getData().getRetcode(),
+                                    jobReturnEvent.getData().isSuccess(),
+                                    jobReturnEvent.getJobId(),
+                                    jobResult.get(),
+                                    jobReturnEvent.getData().getFun());
+                            ActionFactory.save(sa);
                         });
                     });
                 }
