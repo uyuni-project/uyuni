@@ -21,6 +21,7 @@ import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.quartz.JobExecutionContext;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -52,8 +53,11 @@ public class MinionActionExecutor extends RhnJavaJob {
                 .getJobDataMap().getBooleanValue("force_pkg_list_refresh");
         boolean isStagingJob =
                 context.getJobDetail().getJobDataMap().getBooleanValue("staging_job");
-        String stagingJobMinionId = context.getJobDetail().getJobDataMap()
-                .getString("staging_job_minion_id");
+        Long stagingJobMinionServerId = null;
+        if (isStagingJob) {
+            stagingJobMinionServerId = context.getJobDetail().getJobDataMap()
+                    .getLong("staging_job_minion_server_id");
+        }
 
         Action action = ActionFactory.lookupById(actionId);
         if (action == null) {
@@ -88,7 +92,7 @@ public class MinionActionExecutor extends RhnJavaJob {
 
         log.info("Executing action: " + actionId);
         SaltServerActionService.INSTANCE.execute(action, forcePackageListRefresh,
-                isStagingJob, stagingJobMinionId);
+                isStagingJob, stagingJobMinionServerId);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;

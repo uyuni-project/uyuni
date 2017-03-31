@@ -16,8 +16,9 @@ package com.redhat.rhn.taskomatic;
 
 import static java.time.ZonedDateTime.now;
 import static java.time.temporal.ChronoUnit.HOURS;
+import static java.time.temporal.ChronoUnit.SECONDS;
+import static java.time.temporal.ChronoUnit.MINUTES;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -35,6 +36,7 @@ import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
 import org.apache.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -45,6 +47,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
@@ -493,48 +496,53 @@ public class TaskomaticApi {
             return;
         }
 
-        ZonedDateTime earliestAction =
-                action.getEarliestAction().toInstant().atZone(ZoneId.systemDefault());
-        ZonedDateTime stagingWindowStartTime = earliestAction
-                .minus(Config.get().getInt(ConfigDefaults.SALT_CONTENT_STAGING_ADVANCE), HOURS);
-        ZonedDateTime stagingWindowEndTime = stagingWindowStartTime
-                .plus(Config.get().getInt(ConfigDefaults.SALT_CONTENT_STAGING_ADVANCE), HOURS);
+        if (ConfigDefaults.get().isSaltContentStagingEnabled()) {
+            ZonedDateTime earliestAction =
+                    action.getEarliestAction().toInstant().atZone(ZoneId.systemDefault());
+            final long saltContentStagingAdvance =
+                    ConfigDefaults.get().getSaltContentStagingAdvance();
+            final long saltContentStagingWindow =
+                    ConfigDefaults.get().getSaltContentStagingWindow();
 
-        ZonedDateTime prefetchTime = stagingWindowStartTime;
+            ZonedDateTime stagingWindowStartTime =
+                    earliestAction.minus(saltContentStagingAdvance, HOURS);
+            ZonedDateTime stagingWindowEndTime =
+                    stagingWindowStartTime.plus(saltContentStagingWindow, HOURS);
 
-        if (earliestAction.isAfter(now()) &&
-                stagingWindowStartTime.isBefore(earliestAction) &&
-                stagingWindowEndTime.isBefore(earliestAction) &&
-                (ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType()) ||
-                        ActionFactory.TYPE_ERRATA.equals(action.getActionType()))) {
-            prefetchTime = earliestAction
-                    .minus(Config.get().getInt(ConfigDefaults.SALT_CONTENT_STAGING_ADVANCE), HOURS);
+            if (earliestAction.isAfter(now()) &&
+                    stagingWindowStartTime.isBefore(earliestAction) &&
+                    stagingWindowEndTime.isBefore(earliestAction) &&
+                    (ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType()) ||
+                            ActionFactory.TYPE_ERRATA.equals(action.getActionType()))) {
 
-//            List<MinionServer> minions =
-//                    HibernateFactory.getSession().getNamedQuery("Action.findMinionIds")
-//                            .setParameter("id", action.getId()).getResultList();
-//
-//            long eventsPerMinute =
-//                    (MINUTES.between(stagingWindowEndTime, stagingWindowStartTime) /
-//                            minions.size());
-//            for (MinionServer minion : minions) {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("action_id", Long.toString(action.getId()));
-                params.put("force_pkg_list_refresh",
-                        Boolean.toString(forcePackageListRefresh));
-                params.put("staging_job", "true");
-                //params.put("staging_job_minion_id", minion.getMinionId());
+                List<Long> minionsId = (List<Long>) HibernateFactory.getSession()
+                        .getNamedQuery("Action.findMinionIds")
+                        .setParameter("id", action.getId()).getResultList().stream()
+                        .map(i -> ((BigDecimal) i).longValue())
+                        .collect(Collectors.toList());
 
-                LOG.info("Detected install/update action: scheduling pre-download job at " +
-                        prefetchTime //+ " for minion id: " + minion.getMinionId()
-                        );
+                for (Long minionId : minionsId) {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("action_id", Long.toString(action.getId()));
+                    params.put("force_pkg_list_refresh",
+                            Boolean.toString(forcePackageListRefresh));
+                    params.put("staging_job", "true");
+                    params.put("staging_job_minion_server_id", minionId.toString());
 
-                invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
-                        MINION_ACTION_JOB_DOWNLOAD_PREFIX + action.getId(), params,
-                        Date.from(prefetchTime.toInstant()));
+                    ZonedDateTime stagingTime = stagingWindowStartTime.plus(
+                            (long) Math
+                                    .ceil(saltContentStagingWindow * Math.random() * 3600),
+                            SECONDS);
 
-//               prefetchTime = prefetchTime.plus(eventsPerMinute, MINUTES);
-//            }
+                    LOG.info("Detected install/update action: scheduling staging job at " +
+                            stagingTime + " for minion server id: " + minionId);
+
+                    invoke("tasko.scheduleSingleSatBunchRun",
+                            MINION_ACTION_BUNCH_LABEL, MINION_ACTION_JOB_DOWNLOAD_PREFIX +
+                                    action.getId() + "-" + minionId,
+                            params, Date.from(stagingTime.toInstant()));
+                }
+            }
         }
 
         Map<String, String> params = new HashMap<String, String>();
