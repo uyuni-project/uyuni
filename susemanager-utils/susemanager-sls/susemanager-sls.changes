@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Fri Mar 31 09:48:52 CEST 2017 - mc@suse.de
+
+- version 3.1.4-1
+- Fix mainframesysinfo module to use /proc/sysinfo on SLES11
+  (bsc#1025758)
+- take care that container and images are removed after inspect
+- add name to Bootstrap repo
+- Pre-create empty top.sls with no-op (bsc#1017754)
+- create a random container name
+- Fix pkgset beacon (bsc#1029350)
+- set minion own key owner to bootstrap ssh_push_sudo_user
+- runner to generate ssh key and execute cmd via proxies
+- change ssh bootstrap state to generate and auth keys for
+  salt-ssh push with tunnel
+
+-------------------------------------------------------------------
 Tue Mar 07 14:55:32 CET 2017 - mc@suse.de
 
 - version 3.1.3-1
