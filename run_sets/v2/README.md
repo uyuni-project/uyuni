@@ -1,5 +1,9 @@
 # Version 2 of testsuite
 
+# Parallel run
+
+
+# Graphs for deps.
 
 ### Graphs with graphviz.
 
