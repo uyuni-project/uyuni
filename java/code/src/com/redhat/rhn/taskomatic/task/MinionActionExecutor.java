@@ -21,7 +21,6 @@ import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.quartz.JobExecutionContext;
 
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
