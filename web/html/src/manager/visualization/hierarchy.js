@@ -81,7 +81,7 @@ function initHierarchy() {
         // Prepare simulation
         var mySimulation = d3.forceSimulation()
           .force("charge", d3.forceManyBody().strength(d => -distanceFromDepth(d.depth) * 1.5))
-          .force("link", d3.forceLink().distance(d =>distanceFromDepth(d.source.depth)))
+          .force("link", d3.forceLink())
           .force("x", d3.forceX(mainDivWidth / 2))
           .force("y", d3.forceY(mainDivHeight / 2));
 
@@ -109,9 +109,9 @@ function initHierarchy() {
         // Returns a value bound to the depth level of the node
         function distanceFromDepth(depth) {
           switch (depth) {
-            case 0: return 200;
-            case 1: return 80;
-            default: return 30;
+            case 0: return 300;
+            case 1: return 180;
+            default: return 90;
           }
         }
 
