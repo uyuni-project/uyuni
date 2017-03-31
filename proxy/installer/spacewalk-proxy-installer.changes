@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Fri Mar 31 09:34:27 CEST 2017 - mc@suse.de
+
+- version 2.7.2.1-1
+- do not start firewall on proxy during configuration if not already
+  active (bsc#1031338)
+- salt minions get repodata via a different URL; reflect by
+  additional squid rule (bsc#1027873)
+- extract utility to config ssh-push keys on a proxy
+- only warn if parent ssh-push pub key could not be retrieved
+- generate and auth ssh push keys for user mgrsshtunnel
+- Authorize parent salt-ssh key on proxy
+- Generate proxy ssh-push key and authorize the previous proxy in
+  the chain
+- extract ssh push key directory to variable
+- Generate own ssh-push key for proxy and authorize parent
+
+-------------------------------------------------------------------
 Tue Mar 07 14:37:36 CET 2017 - mc@suse.de
 
 - version 2.7.1.2-1
