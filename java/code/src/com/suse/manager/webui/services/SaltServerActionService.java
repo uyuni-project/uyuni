@@ -98,7 +98,7 @@ public enum SaltServerActionService {
     private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
     private static final String PARAM_PKGS = "param_pkgs";
-    private static final String PARAM_PATCHES = "patches";
+    private static final String PARAM_PATCHES = "param_patches";
 
     /**
      * For a given action and list of minion servers return the salt call(s) that need to be
