@@ -621,6 +621,6 @@ And(/^I wait until salt\-key "(.*?)" is deleted$/) do |key|
       end
     end
   rescue Timeout::Error
-    raise "FATAL: salt-key #{key} on #{host} was not deleted"
+    raise "FATAL: salt-key #{key} was not deleted"
   end
 end
