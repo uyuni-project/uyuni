@@ -524,8 +524,8 @@ public class TaskomaticApi {
                 params.put("action_id", Long.toString(action.getId()));
                 params.put("force_pkg_list_refresh",
                         Boolean.toString(forcePackageListRefresh));
-                params.put("predownload_job", "true");
-//                params.put("predownload_job_minion_id", minion.getMinionId());
+                params.put("staging_job", "true");
+                //params.put("staging_job_minion_id", minion.getMinionId());
 
                 LOG.info("Detected install/update action: scheduling pre-download job at " +
                         prefetchTime //+ " for minion id: " + minion.getMinionId()

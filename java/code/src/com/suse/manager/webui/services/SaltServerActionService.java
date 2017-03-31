@@ -190,13 +190,13 @@ public enum SaltServerActionService {
      * @param actionIn the action to execute
      * @param forcePackageListRefresh add metadata to force a package list
      * refresh
-     * @param preDownloadJob whether the action is a predownload of packages
+     * @param isStagingJob whether the action is a staging of packages
      * action
-     * @param preDownloadJobMinionId if action is a predownload action it will
+     * @param stagingJobMinionId if action is a staging action it will
      * contain involev minionId(s)
      */
     public void execute(Action actionIn, boolean forcePackageListRefresh,
-            boolean preDownloadJob, String preDownloadJobMinionId) {
+            boolean isStagingJob, String stagingJobMinionId) {
         List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
                 .map(serverActions -> serverActions.stream()
                         .flatMap(action ->
@@ -215,7 +215,7 @@ public enum SaltServerActionService {
             final LocalCall<?> call = entry.getKey();
             final List<MinionServer> targetMinions;
 
-//            if (preDownloadJob) {
+//            if (isStagingJob) {
 //                targetMinions = null; // TODO
 //            }
 //            else {
@@ -224,7 +224,7 @@ public enum SaltServerActionService {
 
             Map<Boolean, List<MinionServer>> results =
                     execute(actionIn, call, targetMinions, forcePackageListRefresh,
-                            preDownloadJob);
+                            isStagingJob);
 
             results.get(false).forEach(minionServer -> {
                 serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
@@ -592,12 +592,12 @@ public enum SaltServerActionService {
      * @param call the call
      * @param minions minions to target
      * @param forcePackageListRefresh add metadata to force a package list refresh
-     * @param preDownloadJob whether the action is a predownload of packages action
+     * @param isStagingJob whether the action is a staging packages action
      * @return a map containing all minions partitioned by success
      */
     private Map<Boolean, List<MinionServer>> execute(Action actionIn, LocalCall<?> call,
             List<MinionServer> minions, boolean forcePackageListRefresh,
-            boolean preDownloadJob) {
+            boolean isStagingJob) {
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
         metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
@@ -616,7 +616,7 @@ public enum SaltServerActionService {
         try {
             Map<Boolean, List<MinionServer>> result = new HashMap<>();
 
-            if (preDownloadJob) {
+            if (isStagingJob) {
 
                 // substitute minion id
                 if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
@@ -669,7 +669,7 @@ public enum SaltServerActionService {
                         LOG.debug("Asynchronous call on minion: " +
                                 minionServer.getMinionId());
                     }
-                    if (!preDownloadJob) {
+                    if (!isStagingJob) {
                         serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
                         ActionFactory.save(serverAction);
                     }
