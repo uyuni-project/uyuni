@@ -148,10 +148,8 @@ function updateDetailBox(d) {
   var systemSpecificInfo = '';
   var systemToSSM = '';
   if (isSystemType(d)) {
-    var idSlices = (data.rawId).split('-');
-    var systemId = idSlices[idSlices.length - 1];
     systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
-      systemId + '" target="_blank">System details page</a></div>';
+      data.rawId + '" target="_blank">System details page</a></div>';
 
     systemToSSM = '<button class="btn btn-default" onClick="$.addSystemFromSSM([' + data.rawId + '])">Add system to SSM</button>';
     systemSpecificInfo =
