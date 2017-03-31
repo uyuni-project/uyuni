@@ -79,7 +79,7 @@ Feature: Check the Salt package state UI
     Then I follow "States" in the content area
     And I follow "Highstate" in the content area
     And I wait for "6" seconds
-    And I should see "pkg_removed" in the textarea
+    And I should see "pkg_removed" loaded in the textarea
 
   Scenario: Test Salt presence ping mechanism on unreachable minion
     Given I am on the Systems overview page of this "sle-minion"
@@ -88,4 +88,4 @@ Feature: Check the Salt package state UI
     And I follow "Highstate" in the content area
     And I wait for "6" seconds
     And I run "rcsalt-minion restart" on "sle-minion"
-    And I should see "No reply from minion" in the textarea
+    And I should see "No reply from minion" loaded in the textarea
