@@ -15,7 +15,6 @@
 package com.redhat.rhn.taskomatic;
 
 import static java.time.ZonedDateTime.now;
-import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.time.temporal.ChronoUnit.HOURS;
 
 import com.redhat.rhn.common.conf.Config;
@@ -30,7 +29,6 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
