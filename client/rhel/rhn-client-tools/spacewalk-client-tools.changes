@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Mar 31 09:47:52 CEST 2017 - mc@suse.de
+
+- version 2.7.6.1-1
+- fix reboot message to use correct product name (bsc#1031667)
+- fix UnicodeDecodeError when running rhnreg_ks with a different
+  locale than en_US
+
+-------------------------------------------------------------------
 Tue Mar 07 14:43:45 CET 2017 - mc@suse.de
 
 - version 2.7.4.2-1
