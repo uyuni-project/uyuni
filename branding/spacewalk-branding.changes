@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Fri Mar 31 09:50:30 CEST 2017 - mc@suse.de
+
+- version 2.7.2.3-1
+- Add new menu item and routing for Visualization > System Grouping
+- Do not color table sorted column
+- Refactoring the submenu icon of the menu
+- Fix header login page
+- Move the footer at the end of the aside column
+- Move the legendbox to the header bar as a popup
+- UI menu: direct link on menu element, plus/minus icon toggles
+  submenu instead
+
+-------------------------------------------------------------------
 Tue Mar 07 15:02:32 CET 2017 - mc@suse.de
 
 - version 2.7.2.2-1
