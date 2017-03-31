@@ -1,4 +1,61 @@
 -------------------------------------------------------------------
+Fri Mar 31 12:35:55 CEST 2017 - mc@suse.de
+
+- version 2.7.40.1-1
+- Fix arch for default channels lookup (bsc#1025275)
+- Add new menu item and routing for Visualization > System Grouping
+- Backend: expose installed product name to the ui
+- Bugfix: use unique id for possible Host and Guest system duplicate
+- Avoid blocking synchronous calls if some minions are unreachable
+- Fix mainframesysinfo module to use /proc/sysinfo on SLES11 (bsc#1025758)
+- Add Hibernate cascade option from ImageProfile to ProfileCustomDataValue
+- apply SessionFilter also for error pages (bsc#1028062)
+- Fix confirmation button color for system group delete page (bsc#1025236)
+- create scap files dir beforehand (bsc#1029755)
+- check if inspect image return a result (bsc#1030683)
+- add storeLabel to ImageInfoSerializer
+- add buildStatus to ImageOverviewSerializer
+- make country, state/province and city searchable for system location
+  (bsc#1020659)
+- Show errors returned from cmd.run
+- Change log level to DEBUG for 'Broken pipe' error in remote commands page
+  (bsc#1029668)
+- fix NPE when building image profiles without activation keys
+- fix removing images and profiles with custom values
+- Migrate content management forms to use ReactJS Input components
+- Fix LocalDateTimeISOAdapter to parse date string with timezone
+- Fix NPE when building with no activation key in the profile
+- Fix ace-editor source path
+- Fix: restore pkgset beacon functionality (bsc#1030434)
+- Move the footer at the end of the aside column
+- Move the legendbox to the header bar as a popup
+- UI menu: direct link on menu element, plus/minus icon toggles submenu instead
+- Fix: handle Hibernate transactions correctly (bsc#1030026)
+- Feat: execute actions within 10 minutes in the past
+- Handle TaskomaticApiExceptions
+- Turn TaskomaticApiException to a checked exception
+- Schedule minion Actions in Quartz
+- make salt aware of rescheduled actions (bsc#1027852)
+- add number of installed packages to ImageOverview
+- parse result of docker inspect
+- Add date time input for scheduling the image build
+- Add 'Rebuild' button to image details page
+- Implement XMLRPC API for Image Stores, Image Profiles and Images
+- Add custom data values to image profile and images
+- Don't allow scheduling scap scan if openscap pkg missing from minion
+- add link to proxy system details page
+- Show entitlements sorted in the system details overview page (bsc#1029260)
+- Fix broken help link for taskstatus (bsc#1017422)
+- Fix merge channels patches (bsc#1025000)
+- show proxy path in bootstrap UI
+- catch and display all bootstrap errs
+- check if proxy hostname is FQDN in UI
+- add proxy_pub_key to ssh bootstrap pillar
+- cleanup and method to get proxy pub key by calling runner
+- methods for gen ssh key and get pub key from proxy
+- java backend for salt ssh-push through proxy
+
+-------------------------------------------------------------------
 Wed Mar 08 19:04:20 CET 2017 - mc@suse.de
 
 - version 2.7.30.2-1
