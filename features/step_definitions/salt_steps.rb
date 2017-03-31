@@ -606,15 +606,15 @@ When(/^I click system$/) do
   find('button#system').click
 end
 
-And(/^I wait until salt-key "(.*?)" is deleted on "(.*?)"$/) do |key, host|
-  node = get_target(host)
+And(/^I wait until salt\-key "(.*?)" is deleted$/) do |key|
   begin
     Timeout.timeout(300) do
-      loop do 
+      loop do
         cmd = "salt-key -L | grep '#{key}' "
-        output, code = node.run(cmd, false)
+        _output, code = $server.run(cmd, false)
         if code.nonzero?
           puts 'key has been deleted'
+          puts $server.run("salt-key -L", false)
           break
         end
         sleep 5
