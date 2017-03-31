@@ -238,7 +238,7 @@ public class ConfigDefaults {
             "salt_content_staging_enabled";
 
     /**
-     * Duration in hours of the time window for Salt minions to pre-download
+     * Duration in hours of the time window for Salt minions to stage
      * packages in advance of scheduled installations or upgrades
      */
     public static final String SALT_CONTENT_STAGING_WINDOW =
@@ -833,7 +833,7 @@ public class ConfigDefaults {
 
     /**
      * Returns the duration, in hours, of the time window for Salt minions to
-     * pre-download packages in advance of scheduled installations or upgrades.
+     * stage packages in advance of scheduled installations or upgrades.
      *
      * A value of 0 disables content staging for minions.
      *

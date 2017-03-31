@@ -631,7 +631,7 @@ public enum SaltServerActionService {
                     call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
                             Optional.of(Collections.singletonMap(PARAM_PKGS, args)),
                             Optional.of(true));
-                    LOG.info("Executing pre-download of packages");
+                    LOG.info("Executing staging of packages");
                 }
                 if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
                     Set<Long> errataIds = ((ErrataAction) actionIn).getErrata().stream()
@@ -654,7 +654,7 @@ public enum SaltServerActionService {
                                             errataArgs)),
                                     Optional.of(true));
                 }
-                LOG.info("Executing pre-download of patches");
+                LOG.info("Executing staging of patches");
             }
 
             List<String> results = SaltService.INSTANCE
