@@ -524,8 +524,6 @@ public class TaskomaticApi {
                 for (Long minionId : minionsId) {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("action_id", Long.toString(action.getId()));
-                    params.put("force_pkg_list_refresh",
-                            Boolean.toString(forcePackageListRefresh));
                     params.put("staging_job", "true");
                     params.put("staging_job_minion_server_id", minionId.toString());
 

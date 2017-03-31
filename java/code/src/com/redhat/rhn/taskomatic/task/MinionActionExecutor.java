@@ -46,17 +46,20 @@ public class MinionActionExecutor extends RhnJavaJob {
 
         // Measure time to calculate the total duration
         long start = System.currentTimeMillis();
-
+        boolean forcePackageListRefresh = false;
         long actionId = context.getJobDetail()
                 .getJobDataMap().getLongValueFromString("action_id");
-        boolean forcePackageListRefresh = context.getJobDetail()
-                .getJobDataMap().getBooleanValue("force_pkg_list_refresh");
+
         boolean isStagingJob =
                 context.getJobDetail().getJobDataMap().getBooleanValue("staging_job");
         Long stagingJobMinionServerId = null;
         if (isStagingJob) {
             stagingJobMinionServerId = context.getJobDetail().getJobDataMap()
                     .getLong("staging_job_minion_server_id");
+        }
+        else {
+            forcePackageListRefresh = context.getJobDetail().getJobDataMap()
+                    .getBooleanValue("force_pkg_list_refresh");
         }
 
         Action action = ActionFactory.lookupById(actionId);
