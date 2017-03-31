@@ -1,4 +1,39 @@
 -------------------------------------------------------------------
+Fri Mar 31 10:01:31 CEST 2017 - mc@suse.de
+
+- version 2.7.63.1-1
+- create scap files dir beforehand (bsc#1029755)
+- do not fail with traceback when media.1 does not exist
+- adapt new proxy setting
+- python3 compatibility changes
+- filter channels to removed by patern with '*' - e.g. 'fedora19*'
+  interrupt downloading
+- if package was not downloaded and message-less Exception catched,
+  don't print empty line and don't print to stream on default verbose setting
+- show list of non-available channels at the beginning of syncing
+- ignore channels which are not exist or not available
+- show error message if we cannot download repomd.xml during counting
+  packages
+- fix http proxy configuration for yum_src
+- fix package downloading for Kickstart addons. Add parsing repodata
+  for addons repository and download all packages according to its location.
+- fix reading repo certificates (bsc#1029022)
+- fixing 'WARNING:  there is already a transaction in progress' in
+  postgresql logs
+- cleanup orphaned repositories not attached to any channel
+- ContentSourceImport can't unlink last associated repository, do it
+  differently
+- break mappings dependency on spacewalk
+- list custom CDN channels and sorting repositories
+- make sure content is in null org, not in custom org
+- filter channels with lost entitlement and include custom repos with
+  null content source assigned
+- Move aa-spacewalk-server.conf to backend from server
+- do not package common/__init__ to prevent file conflicts with spacewalk-usix
+- incomplete_package_import: do import rhnPackageFile as it breaks some package
+  installations
+
+-------------------------------------------------------------------
 Tue Mar 07 15:04:25 CET 2017 - mc@suse.de
 
 - version 2.7.50.1-1
