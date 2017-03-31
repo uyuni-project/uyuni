@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Mar 31 09:31:47 CEST 2017 - mc@suse.de
+
+- version 2.7.0.3-1
+- rename mgr-ssh-proxy-force-cmd -> mgr-proxy-ssh-force-cmd
+- add option to configure only sshd
+- restrictive ssh options for user mgrsshtunnel
+- package mgr-proxy-ssh-push-init
+- extract utility to configure ssh-push keys on a proxy
+
+-------------------------------------------------------------------
 Tue Mar 07 14:35:51 CET 2017 - mc@suse.de
 
 - version 2.7.0.2-1
