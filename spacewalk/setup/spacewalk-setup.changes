@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Mar 31 09:37:30 CEST 2017 - mc@suse.de
+
+- version 2.7.3.1-1
+- create /var/spacewalk/systems in spacewalk-setup and ensure perms
+  on upgrade
+- support cnames in mgr-setup and spacewalk-setup (bsc#1029899)
+
+-------------------------------------------------------------------
 Tue Mar 07 14:40:13 CET 2017 - mc@suse.de
 
 - version 2.7.2.1-1
