@@ -231,11 +231,20 @@ public class ConfigDefaults {
     public static final String SALT_SSH_CONNECT_TIMEOUT =
             "salt_ssh_connect_timeout";
 
-    public static final String STAGING_WINDOW_START =
-            "staging_start";
+    /**
+     * Duration in hours of the time window for Salt minions to pre-download
+     * packages in advance of scheduled installations or upgrades
+     */
+    public static final String SALT_CONTENT_STAGING_WINDOW =
+            "salt_content_staging_window";
 
-    public static final String STAGING_WINDOW_DURATION =
-            "stating_window_duration";
+    /**
+     * Advance time, in hours, for the content staging window to open with
+     * respect to the scheduled installation/upgrade time
+     */
+    public static final String SALT_CONTENT_STAGING_ADVANCE =
+            "salt_content_staging_advance";
+
 
     private ConfigDefaults() {
     }
@@ -808,17 +817,23 @@ public class ConfigDefaults {
     }
 
     /**
-     * @return minion staging window start (in hours before the action execution)
+     * Returns the duration, in hours, of the time window for Salt minions to
+     * pre-download packages in advance of scheduled installations or upgrades.
+     *
+     * A value of 0 disables content staging for minions.
+     *
+     * @return the duration
      */
-    public long getStagingWindowStart() {
-        return Config.get().getInt(STAGING_WINDOW_START, 12);
+    public long getSaltContentStagingWindow() {
+        return Config.get().getInt(SALT_CONTENT_STAGING_WINDOW, 8);
     }
 
     /**
-     * @return minion staging window duration (in hours after the minion staging
-     * window start)
+     * Returns the advance time, in hours, for the content staging window to
+     * open with respect to the scheduled installation/upgrade time.
+     * @return the advance time
      */
-    public long getStagingWindowDuration() {
-        return Config.get().getInt(STAGING_WINDOW_DURATION, 8);
+    public long getSaltContentStagingAdvance() {
+        return Config.get().getInt(SALT_CONTENT_STAGING_ADVANCE, 12);
     }
 }

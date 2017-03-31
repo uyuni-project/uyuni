@@ -498,9 +498,9 @@ public class TaskomaticApi {
         ZonedDateTime earliestAction =
                 action.getEarliestAction().toInstant().atZone(ZoneId.systemDefault());
         ZonedDateTime stagingWindowStartTime = earliestAction
-                .minus(Config.get().getInt(ConfigDefaults.STAGING_WINDOW_START), HOURS);
+                .minus(Config.get().getInt(ConfigDefaults.SALT_CONTENT_STAGING_ADVANCE), HOURS);
         ZonedDateTime stagingWindowEndTime = stagingWindowStartTime
-                .plus(Config.get().getInt(ConfigDefaults.STAGING_WINDOW_START), HOURS);
+                .plus(Config.get().getInt(ConfigDefaults.SALT_CONTENT_STAGING_ADVANCE), HOURS);
 
         ZonedDateTime prefetchTime = stagingWindowStartTime;
 
@@ -510,7 +510,7 @@ public class TaskomaticApi {
                 (ActionFactory.TYPE_PACKAGES_UPDATE.equals(action.getActionType()) ||
                         ActionFactory.TYPE_ERRATA.equals(action.getActionType()))) {
             prefetchTime = earliestAction
-                    .minus(Config.get().getInt(ConfigDefaults.STAGING_WINDOW_START), HOURS);
+                    .minus(Config.get().getInt(ConfigDefaults.SALT_CONTENT_STAGING_ADVANCE), HOURS);
 
 //            List<MinionServer> minions =
 //                    HibernateFactory.getSession().getNamedQuery("Action.findMinionIds")
