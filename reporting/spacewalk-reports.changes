@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Mar 31 09:54:38 CEST 2017 - mc@suse.de
+
+- version 2.7.5.1-1
+- Add issue date to errata-list-all report
+- date is a keyword on oracle
+
+-------------------------------------------------------------------
 Tue Mar 07 15:16:04 CET 2017 - mc@suse.de
 
 - version 2.7.4.1-1
