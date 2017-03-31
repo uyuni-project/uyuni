@@ -12,6 +12,8 @@ Feature: CENTOS7 ssh feature.
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
+    # HACK: remove then wait and improve last step
+    And I wait for "130" seconds
     And I wait until salt-key "mincentos" is deleted
 
   Scenario: Bootstrap a system (centos salt-ssh managed)
