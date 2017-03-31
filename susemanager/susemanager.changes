@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Fri Mar 31 09:45:17 CEST 2017 - mc@suse.de
+
+- version 3.1.4-1
+- create /var/spacewalk/systems in spacewalk-setup and ensure perms
+  on upgrade
+- fix typo in comment noting option with-custom-channels
+  (bsc#1031092)
+- support cnames in mgr-setup and spacewalk-setup (bsc#1029899)
+- fix MANAGER_FORCE_INSTALL
+- fix help text
+- default to using internal postgresql database. If admin wants
+  external db, he needs to modify the answer file and run
+  setup manually.
+- print info messages not on STDERR
+
+-------------------------------------------------------------------
 Tue Mar 07 14:54:08 CET 2017 - mc@suse.de
 
 - version 3.1.3-1
