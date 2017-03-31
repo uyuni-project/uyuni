@@ -1,5 +1,7 @@
 # Copyright 2015-2017 SUSE LLC
 require 'timeout'
+require 'open-uri'
+require 'tempfile'
 
 Given(/^the Salt Minion is configured$/) do
   # cleanup the key in case the image was reused
@@ -441,4 +443,165 @@ end
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)"$/) do |key, value|
   output, _code = $server.run("salt '#{$minion_ip}' pillar.get '#{key}'")
   fail unless output.split("\n")[1].strip == value
+end
+
+Given(/^I try download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
+  url = "#{Capybara.app_host}/rhn/manager/download/#{channel}/getPackage/#{rpm}"
+  if @token
+    url = "#{url}?#{@token}"
+  end
+  puts url
+  Tempfile.open(rpm) do |tmpfile|
+    @download_path = tmpfile.path
+    begin
+      open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
+        tmpfile.write(urlfile.read)
+      end
+    rescue OpenURI::HTTPError => e
+      @download_error = e
+    end
+  end
+end
+
+Then(/^the download should get a (\d+) response$/) do |code|
+  assert_equal(code.to_i, @download_error.io.status[0].to_i)
+end
+
+Then(/^the download should get no error$/) do
+  assert_nil(@download_error)
+end
+
+# Verify content
+Then(/^I should see this client in the Pending section$/) do
+  fail unless find('#pending-list').find("b", :text => $minion_hostname).visible?
+end
+
+Then(/^I should see this client in the Rejected section$/) do
+  fail unless find('#rejected-list').find("b", :text => $minion_hostname).visible?
+end
+
+Then(/^I should not see this client as a Minion anywhere$/) do
+  step %(I should not see a "#{$minion_hostname}" text)
+end
+
+# Perform actions
+When(/^I reject this client from the Pending section$/) do
+  find("button[title='reject']").click
+end
+
+When(/^I delete this client from the Rejected section$/) do
+  find("button[title='delete']").click
+end
+
+When(/^I see my fingerprint$/) do
+  output, _code = $minion.run("salt-call --local key.finger")
+  fing = output.split("\n")[1].strip!
+
+  fail unless page.has_content?(fing)
+end
+
+When(/^I accept this client's minion key$/) do
+  find("button[title='accept']").click
+end
+
+When(/^I go to the minion onboarding page$/) do
+  steps %(
+    And I follow "Salt"
+    And I follow "Onboarding"
+    )
+end
+
+When(/^I should see this hostname as text$/) do
+  within('#spacewalk-content') do
+    fail unless page.has_content?($minion_hostname)
+  end
+end
+
+When(/^I refresh page until see this hostname as text$/) do
+  within('#spacewalk-content') do
+    steps %(
+     And I try to reload page until contains "#{$minion_hostname}" text
+      )
+  end
+end
+
+When(/^I should see a "(.*)" text in the content area$/) do |txt|
+  within('#spacewalk-content') do
+    fail unless page.has_content?(txt)
+  end
+end
+
+# Copyright (c) 2016 SUSE LLC
+# Licensed under the terms of the MIT license.
+
+require 'timeout'
+
+When(/^I list packages with "(.*?)"$/) do |str|
+  find('input#package-search').set(str)
+  find('button#search').click
+end
+
+When(/^I change the state of "([^"]*)" to "([^"]*)" and "([^"]*)"$/) do |pkg, state, instd_state|
+  # Options for state are Installed, Unmanaged and Removed
+  # Options for instd_state are Any or Latest
+  # Default if you pick Installed is Latest
+  find("##{pkg}-pkg-state").select(state)
+  if !instd_state.to_s.empty? && state == 'Installed'
+    find("##{pkg}-version-constraint").select(instd_state)
+  end
+end
+
+Then(/^"([^"]*)" is not installed$/) do |package|
+  uninstalled = false
+  output = ""
+  begin
+    Timeout.timeout(120) do
+      loop do
+        output, code = $minion.run("rpm -q #{package}", false)
+        if code.nonzero?
+          uninstalled = true
+          break
+        end
+        sleep 1
+      end
+    end
+  end
+  raise "exec rpm removal failed (Code #{$?}): #{$!}: #{output}" unless uninstalled
+end
+
+Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|
+  node = get_target(host)
+  installed = false
+  output = ""
+  begin
+    Timeout.timeout(120) do
+      loop do
+        output, code = node.run("rpm -q #{package}", false)
+        if code.zero?
+          installed = true
+          break
+        end
+        sleep 1
+      end
+    end
+  rescue Timeout::Error
+    raise "exec rpm installation failed: timeout"
+  end
+  raise "exec rpm installation failed (Code #{$?}): #{$!}: #{output}" unless installed
+end
+
+When(/^I click undo for "(.*?)"$/) do |pkg|
+  find("button##{pkg}-undo").click
+end
+
+When(/^I click apply$/) do
+  find('button#apply').click
+end
+
+When(/^I click save$/) do
+  find('button#save').click
+end
+
+When(/^I click system$/) do
+  find('button#system').click
 end
