@@ -1,13 +1,9 @@
 # Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: CENTOS7 feature.
+Feature: CENTOS7 ssh feature.
+   0) delete minion
    1) Bootstrap a new salt host via salt-ssh
-   verify functionality: script, remote cmds, packages install, channel subscription.
-  2) delete the ssh-minion
-  3) bootstap a ssh-minion tunneled by ssh-reverse. 
-     verify functionality: script, remote cmds, packages install, channel subscription.
-     verify tunnel proprety: repo 1233 port, and installation of pkg only via server.
 
   Scenario: Deletes centos minion
     Given no Salt packages are installed on remote "centos"
@@ -16,8 +12,7 @@ Feature: CENTOS7 feature.
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
-    # Hack this just wait to make the server deleting, and don't get problem beeing to fast for boostrap
-    And I wait for "60" seconds
+    And I wait until salt-key "mincentos" is deleted
 
   Scenario: Bootstrap a system (centos salt-ssh managed)
     Given I am authorized

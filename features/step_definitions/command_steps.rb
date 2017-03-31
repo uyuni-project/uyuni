@@ -322,3 +322,15 @@ When(/^I wait for the openSCAP audit to finish$/) do
     raise "process did not stop after several tries"
   end
 end
+
+$space = "spacecmd -u admin -p admin "
+And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
+  host = $ssh_minion_fullhostname if target == "ssh-minion"
+  host = $ceos_minion_fullhostname if target == "ceos-minion"
+  cmd = "#{$space} system_listevents #{host} | head -n5"
+  $server.run("#{$space} clear_caches")
+  out, _code = $server.run(cmd)
+  unless out.include? status
+    raise "#{out} should contain #{status}"
+  end
+end
