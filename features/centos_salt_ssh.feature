@@ -1,13 +1,9 @@
 # Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: CENTOS7 feature.
+Feature: CENTOS7 ssh feature.
+   0) delete minion
    1) Bootstrap a new salt host via salt-ssh
-   verify functionality: script, remote cmds, packages install, channel subscription.
-  2) delete the ssh-minion
-  3) bootstap a ssh-minion tunneled by ssh-reverse. 
-     verify functionality: script, remote cmds, packages install, channel subscription.
-     verify tunnel proprety: repo 1233 port, and installation of pkg only via server.
 
   Scenario: Deletes centos minion
     Given no Salt packages are installed on remote "centos"
