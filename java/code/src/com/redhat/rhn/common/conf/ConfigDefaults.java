@@ -232,6 +232,12 @@ public class ConfigDefaults {
             "salt_ssh_connect_timeout";
 
     /**
+     * Enables or disables content staging for Salt minions globally
+     */
+    public static final String SALT_CONTENT_STAGING_ENABLED =
+            "salt_content_staging_enabled";
+
+    /**
      * Duration in hours of the time window for Salt minions to pre-download
      * packages in advance of scheduled installations or upgrades
      */
@@ -817,6 +823,15 @@ public class ConfigDefaults {
     }
 
     /**
+     * Returns true if content staging is globally enabled.
+     *
+     * @return true or false
+     */
+    public boolean isSaltContentStagingEnabled() {
+        return Config.get().getBoolean(SALT_CONTENT_STAGING_ENABLED);
+    }
+
+    /**
      * Returns the duration, in hours, of the time window for Salt minions to
      * pre-download packages in advance of scheduled installations or upgrades.
      *
@@ -834,6 +849,6 @@ public class ConfigDefaults {
      * @return the advance time
      */
     public long getSaltContentStagingAdvance() {
-        return Config.get().getInt(SALT_CONTENT_STAGING_ADVANCE, 12);
+        return Config.get().getInt(SALT_CONTENT_STAGING_ADVANCE, 8);
     }
 }
