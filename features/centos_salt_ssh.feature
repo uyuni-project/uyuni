@@ -17,7 +17,7 @@ Feature: CENTOS7 feature.
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
     # Hack this just wait to make the server deleting, and don't get problem beeing to fast for boostrap
-    And I wait for "60" seconds
+    And I wait until salt-key for "ceos-minion" is deleted
 
   Scenario: Bootstrap a system (centos salt-ssh managed)
     Given I am authorized
