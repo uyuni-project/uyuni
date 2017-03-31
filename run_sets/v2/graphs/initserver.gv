@@ -1,0 +1,12 @@
+digraph G {
+ node [fontname=Verdana,fontsize=12]
+ node [style=filled]
+ node [fillcolor="#EEEEEE"]
+ node [color="#EEEEEE"]
+ edge [color="#31CEF0"]
+
+ init_user_create -> setup_proxy -> mainpage -> channels_add
+ init_user_create -> login 
+ smdba
+ running
+}
