@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -192,11 +193,11 @@ public enum SaltServerActionService {
      * refresh
      * @param isStagingJob whether the action is a staging of packages
      * action
-     * @param stagingJobMinionId if action is a staging action it will
-     * contain involev minionId(s)
+     * @param stagingJobMinionServerId if action is a staging action it will
+     * contain involved minionId(s)
      */
     public void execute(Action actionIn, boolean forcePackageListRefresh,
-            boolean isStagingJob, String stagingJobMinionId) {
+            boolean isStagingJob, Long stagingJobMinionServerId) {
         List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
                 .map(serverActions -> serverActions.stream()
                         .flatMap(action ->
@@ -215,12 +216,14 @@ public enum SaltServerActionService {
             final LocalCall<?> call = entry.getKey();
             final List<MinionServer> targetMinions;
 
-//            if (isStagingJob) {
-//                targetMinions = null; // TODO
-//            }
-//            else {
+            if (isStagingJob) {
+                targetMinions = new ArrayList<>();
+                MinionServerFactory.lookupById(stagingJobMinionServerId)
+                        .ifPresent(server -> targetMinions.add(server));
+            }
+            else {
                 targetMinions = entry.getValue();
-            //}
+            }
 
             Map<Boolean, List<MinionServer>> results =
                     execute(actionIn, call, targetMinions, forcePackageListRefresh,
@@ -620,8 +623,6 @@ public enum SaltServerActionService {
             Map<Boolean, List<MinionServer>> result = new HashMap<>();
 
             if (isStagingJob) {
-
-                // substitute minion id
                 if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
                     Map<String, String> args =
                             ((PackageUpdateAction) actionIn).getDetails().stream()
