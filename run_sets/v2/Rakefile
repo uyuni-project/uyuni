@@ -4,7 +4,6 @@ require 'cucumber/rake/task'
 
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 
-
 Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
   namespace :cucumber do
     outputfile = "#{entry}.html"
@@ -20,18 +19,18 @@ desc "Initialize SUSE Manager Server"
 task :initserver do
   puts "initserver"
   `touch initserver.html`
-   Rake::Task['cucumber:initserver'].invoke
+  # Rake::Task['cucumber:initserver'].invoke
 end
 
 # salt features car run lik tradclient after initserver
 desc "Run salt feature tests"
 task :salt => [:initserver] do
-   puts "salt"
+  puts "salt"
   `touch salt.html`
   # Rake::Task['cucumber:salt'].invoke
 end
 
-# docker depends on salt and initserver 
+# docker depends on salt and initserver
 desc "Run docker features tests"
 task :docker => [:initserver, :salt] do
   puts "docker"
@@ -48,8 +47,8 @@ end
 
 # here is the MAIN function
 multitask :mallococomero => [:initserver, :tradclient, :docker, :salt] do
-        puts "Completed parallel execution"
-	`mv *.html results`
+  puts "Completed parallel execution"
+  `mv *.html results`
 end
 
 task :default => [:mallococomero]
