@@ -72,7 +72,7 @@
 - features/salt_software_states.feature
 - features/salt_pkgset_beacon.feature
 - features/salt_remote_cmds.feature
-# - features/salt_action_pickedup.feature NEED FIX. Unstable test
+# - features/salt_action_pickedup.feature Test does not work because actions are not sorted in chronological order
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
 - features/salt_formulas.feature
