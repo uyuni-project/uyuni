@@ -29,15 +29,15 @@ Feature: CVE Audit
     And I follow "CVE Audit" in the left menu
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
-    And I click on "Audit systems"
+    And I click on "Audit Servers"
     Then I should see this client as link
     And I should see a "Affected, at least one patch available in an assigned channel" text
-    And I should see a "Install a new patch in this system" link
-    And I should see a "Only candidate is: milkyway-dummy-2345" text
+    And I should see a "Install a new patch on this system" link
+    And I should see a "milkyway-dummy-2345" text
     And I should see a "Download CSV" link
     And I should see an alphabar link to this system
-    And I should see a "Patch status" link
-    And I should see a "System" link
+    And I should see a "Status" link
+    And I should see a "Name" link
     And I should see a "extra CVE data update" link
     Then I follow "Install a new patch in this system"
     And I should see a "Relevant Patches" text
@@ -47,7 +47,7 @@ Feature: CVE Audit
     And I follow "CVE Audit" in the left menu
     And I select "2012" from "cveIdentifierYear"
     And I enter "2806" as "cveIdentifierId"
-    And I click on "Audit systems"
+    And I click on "Audit Servers"
     Then I should see a "The specified CVE number was not found" text
 
   Scenario: selecting a system for the System Set Manager
@@ -55,7 +55,7 @@ Feature: CVE Audit
     And I follow "CVE Audit" in the left menu
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
-    And I click on "Audit systems"
+    And I click on "Audit Servers"
     And I should see a "Affected, at least one patch available in an assigned channel" text
     When I check "Affected, at least one patch available in an assigned channel" in the list
     Then I should see a "system selected" text
