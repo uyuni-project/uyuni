@@ -71,6 +71,14 @@ When(/^I stop salt-minion$/) do
   $minion.run("systemctl stop salt-minion", false)
 end
 
+When(/^I stop salt-minion on centos$/) do
+  $ceos_minion.run("systemctl stop salt-minion", false)
+end
+
+When(/^I start salt-minion on centos$/) do
+  $ceos_minion.run("systemctl restart salt-minion", false)
+end
+
 When(/^I start salt-minion$/) do
   $minion.run("systemctl restart salt-minion", false)
 end
