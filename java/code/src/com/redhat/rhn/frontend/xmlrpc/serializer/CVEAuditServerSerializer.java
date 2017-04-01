@@ -24,12 +24,12 @@ import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-import com.redhat.rhn.manager.audit.CVEAuditSystem;
+import com.redhat.rhn.manager.audit.CVEAuditServer;
 import com.redhat.rhn.manager.audit.ChannelIdNameLabelTriple;
 import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
 
 /**
- * CVEAuditSystemSerializer
+ * CVEAuditServerSerializer
  *
  * @xmlrpc.doc
  *
@@ -52,13 +52,13 @@ import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
  *
  * @version $Rev$
  */
-public class CVEAuditSystemSerializer extends RhnXmlRpcCustomSerializer {
+public class CVEAuditServerSerializer extends RhnXmlRpcCustomSerializer {
 
     /**
      * {@inheritDoc}
      */
-    public Class<CVEAuditSystem> getSupportedClass() {
-        return CVEAuditSystem.class;
+    public Class<CVEAuditServer> getSupportedClass() {
+        return CVEAuditServer.class;
     }
 
     /**
@@ -67,7 +67,7 @@ public class CVEAuditSystemSerializer extends RhnXmlRpcCustomSerializer {
     public void doSerialize(Object value, Writer output,
             XmlRpcSerializer serializer) throws XmlRpcException, IOException {
 
-        CVEAuditSystem system = (CVEAuditSystem) value;
+        CVEAuditServer system = (CVEAuditServer) value;
         Collection<ChannelIdNameLabelTriple> channels = system.getChannels();
         List<String> channelLabels = new ArrayList<String>(channels.size());
         for (ChannelIdNameLabelTriple channel : channels) {
@@ -80,7 +80,7 @@ public class CVEAuditSystemSerializer extends RhnXmlRpcCustomSerializer {
         }
 
         SerializerHelper helper = new SerializerHelper(serializer);
-        helper.add("system_id", system.getSystemID());
+        helper.add("system_id", system.getId());
         helper.add("patch_status", system.getPatchStatus().toString());
         helper.add("channel_labels", channelLabels);
         helper.add("errata_advisories", errataAdvisories);

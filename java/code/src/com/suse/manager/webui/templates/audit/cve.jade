@@ -1,0 +1,9 @@
+include ../common.jade
+
+#cveaudit
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+
++userPreferences
+script(src='/javascript/manager/cveaudit.bundle.js', type='text/javascript')

@@ -138,10 +138,11 @@ public abstract class RhnBaseTestCase extends TestCase {
 
     /**
      * Assert that <code>coll</code> contains <code>elem</code>
+     * @param <A> element type
      * @param coll a collection
      * @param elem the element that should be in the collection
      */
-    public static void assertContains(Collection coll, Object elem) {
+    public static <A> void assertContains(Collection<A> coll, A elem) {
         Asserts.assertContains(coll, elem);
     }
 

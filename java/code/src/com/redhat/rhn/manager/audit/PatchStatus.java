@@ -22,21 +22,25 @@ package com.redhat.rhn.manager.audit;
 public enum PatchStatus {
 
     // Values sorted by seriousness
-    AFFECTED_PATCH_INAPPLICABLE("Affected, patch available in unassigned channel"),
-    AFFECTED_PATCH_APPLICABLE("Affected, patch available in assigned channel"),
-    NOT_AFFECTED("Not affected"),
-    PATCHED("Patched");
+    AFFECTED_PATCH_INAPPLICABLE("Affected, patch available in unassigned channel", 0),
+    AFFECTED_PATCH_APPLICABLE("Affected, patch available in assigned channel", 1),
+    NOT_AFFECTED("Not affected", 2),
+    PATCHED("Patched", 3);
 
-    // Status description
+    /**
+     * The lower the more severe
+     */
+    private int rank;
     private String description;
 
     /**
      * Private constructor.
-     * @param label
+     * @param rankIn
      * @param descriptionIn
      */
-    PatchStatus(String descriptionIn) {
+    PatchStatus(String descriptionIn, int rankIn) {
         this.description = descriptionIn;
+        this.rank = rankIn;
     }
 
     /**
@@ -45,5 +49,13 @@ public enum PatchStatus {
      */
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Get the rank
+     * @return the rank
+     */
+    public int getRank() {
+        return rank;
     }
 }
