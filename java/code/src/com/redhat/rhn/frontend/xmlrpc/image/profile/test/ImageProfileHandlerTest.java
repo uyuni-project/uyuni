@@ -14,19 +14,14 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.image.profile.test;
 
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
@@ -36,14 +31,13 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.apache.commons.lang.RandomStringUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
+import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 
 public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
@@ -499,44 +493,5 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         ProfileCustomDataValue val = profile.getCustomDataValues().iterator().next();
         assertEquals(orgKey2.getLabel(), val.getKey().getLabel());
         assertEquals("myvalue2", val.getValue());
-    }
-
-    public static ImageStore createImageStore(String label, User user) {
-        ImageStore store = new ImageStore();
-        store.setLabel(label);
-        store.setUri("registry.domain.top");
-        store.setStoreType(
-                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
-        store.setOrg(user.getOrg());
-        ImageStoreFactory.save(store);
-        return store;
-    }
-
-    public static ActivationKey createActivationKey(User user) throws Exception {
-        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
-        Channel childChannel = ChannelFactoryTest.createTestChannel(user);
-        Set<Channel> channels = new HashSet<>();
-        channels.add(baseChannel);
-        channels.add(childChannel);
-        ActivationKey key = ActivationKeyFactory.createNewKey(user, "mykey");
-        key.setChannels(channels);
-        ActivationKeyFactory.save(key);
-
-        return key;
-    }
-
-    public static ImageProfile createImageProfile(User user, ImageStore store,
-            ActivationKey key) throws Exception {
-        String profileName = "profile-" + RandomStringUtils.randomAscii(20);
-
-        DockerfileProfile dockerfileProfile = new DockerfileProfile();
-
-        dockerfileProfile.setLabel(profileName);
-        dockerfileProfile.setPath("/path/to/dockerfile");
-        dockerfileProfile.setTargetStore(store);
-        dockerfileProfile.setOrg(user.getOrg());
-        dockerfileProfile.setToken(key.getToken());
-        ImageProfileFactory.save(dockerfileProfile);
-        return dockerfileProfile;
     }
 }

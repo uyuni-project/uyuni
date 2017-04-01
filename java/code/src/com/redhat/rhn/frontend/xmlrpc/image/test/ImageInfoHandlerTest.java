@@ -22,10 +22,8 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.image.ImageInfo;
-import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
-import com.redhat.rhn.domain.image.ImagePackage;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.org.CustomDataKey;
@@ -33,15 +31,12 @@ import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler;
-import com.redhat.rhn.frontend.xmlrpc.image.profile.test.ImageProfileHandlerTest;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -50,7 +45,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit3.JUnit3Mockery;
@@ -62,6 +56,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageInfoCustomDataValue;
+import static com.redhat.rhn.testing.ImageTestUtils.createImagePackage;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 
 public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
@@ -88,9 +88,9 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
-        ImageStore store = ImageProfileHandlerTest.createImageStore("registry.reg", admin);
-        ActivationKey ak = ImageProfileHandlerTest.createActivationKey(admin);
-        ImageProfile prof = ImageProfileHandlerTest.createImageProfile(admin, store, ak);
+        ImageStore store = createImageStore("registry.reg", admin);
+        ActivationKey ak = createActivationKey(admin);
+        ImageProfile prof = createImageProfile("myprofile", store, ak, admin);
 
         DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         int preScheduleSize = dr.size();
@@ -105,17 +105,17 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     }
 
     public final void testListImages() throws Exception {
-        ImageStore store = ImageProfileHandlerTest.createImageStore("registry.reg", admin);
-        createImageInfo(admin, "1.0.0", store);
-        createImageInfo(admin, "2.0.0", store);
+        ImageStore store = createImageStore("registry.reg", admin);
+        createImageInfo("myimage", "1.0.0", store, admin);
+        createImageInfo("myimage", "2.0.0", store, admin);
 
         List<ImageInfo> listInfo = handler.listImages(admin);
         assertEquals(2, listInfo.size());
     }
 
     public final void testGetImageDetails() throws Exception {
-        ImageStore store = ImageProfileHandlerTest.createImageStore("registry.reg", admin);
-        ImageInfo inf1 = createImageInfo(admin, "1.0.0", store);
+        ImageStore store = createImageStore("registry.reg", admin);
+        ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
 
         ImageOverview imageOverview = handler.getDetails(admin, inf1.getId().intValue());
         assertEquals(inf1.getVersion(), imageOverview.getVersion());
@@ -126,14 +126,14 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         Set<Channel> errataChannels = new HashSet<>();
         errataChannels.add(channel1);
 
-        ImageStore store = ImageProfileHandlerTest.createImageStore("registry.reg", admin);
+        ImageStore store = createImageStore("registry.reg", admin);
 
         Errata e = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
         e.setChannels(errataChannels);
         TestUtils.flushAndEvict(e);
 
-        ImageInfo inf1 = createImageInfo(admin, "1.0.0", store);
+        ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
         TestUtils.flushAndEvict(inf1);
 
         UserFactory.save(admin);
@@ -150,30 +150,11 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     }
 
     public final void testGetPackages() throws Exception {
-        ImageStore store = ImageProfileHandlerTest.createImageStore("registry.reg", admin);
-        ImageInfo inf1 = createImageInfo(admin, "1.0.0", store);
-        TestUtils.flushAndEvict(inf1);
+        ImageStore store = createImageStore("registry.reg", admin);
+        ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
 
-        Package p1 = PackageTest.createTestPackage(admin.getOrg());
-        TestUtils.flushAndEvict(p1);
-        ImagePackage ip1 = new ImagePackage();
-        ip1.setName(p1.getPackageName());
-        ip1.setEvr(p1.getPackageEvr());
-        ip1.setArch(p1.getPackageArch());
-        ip1.setImageInfo(inf1);
-        ImageInfoFactory.save(ip1);
-
-        Package p2 = PackageTest.createTestPackage(admin.getOrg());
-        TestUtils.flushAndEvict(p2);
-        ImagePackage ip2 = new ImagePackage();
-        ip2.setName(p2.getPackageName());
-        ip2.setEvr(p2.getPackageEvr());
-        ip2.setArch(p2.getPackageArch());
-        ip2.setImageInfo(inf1);
-        ImageInfoFactory.save(ip2);
-
-        UserFactory.save(admin);
-        TestUtils.flushAndEvict(admin);
+        createImagePackage(PackageTest.createTestPackage(admin.getOrg()), inf1);
+        createImagePackage(PackageTest.createTestPackage(admin.getOrg()), inf1);
 
         List<Map<String, Object>> result = handler.listPackages(admin,
                 inf1.getId().intValue());
@@ -181,8 +162,8 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     }
 
     public final void testGetCustomValues() throws Exception {
-        ImageStore store = ImageProfileHandlerTest.createImageStore("registry.reg", admin);
-        ImageInfo inf1 = createImageInfo(admin, "1.0.0", store);
+        ImageStore store = createImageStore("registry.reg", admin);
+        ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
 
         // Create custom data keys for the organization
         CustomDataKey orgKey1 = CustomDataKeyTest.createTestCustomDataKey(admin);
@@ -190,39 +171,13 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addCustomDataKey(orgKey1);
         admin.getOrg().addCustomDataKey(orgKey2);
 
-        Set<ImageInfoCustomDataValue> cdSet = new HashSet<>();
-        ImageInfoCustomDataValue cd1 = new ImageInfoCustomDataValue();
-        cd1.setImageInfo(inf1);
-        cd1.setKey(orgKey1);
-        cd1.setValue("newvalue1");
-        TestUtils.saveAndFlush(cd1);
-        cdSet.add(cd1);
-
-        ImageInfoCustomDataValue cd2 = new ImageInfoCustomDataValue();
-        cd2.setImageInfo(inf1);
-        cd2.setKey(orgKey2);
-        cd2.setValue("newvalue2");
-        TestUtils.saveAndFlush(cd2);
-        cdSet.add(cd2);
-
-        inf1.setCustomDataValues(cdSet);
-        TestUtils.saveAndFlush(inf1);
+        createImageInfoCustomDataValue("newvalue1", orgKey1, inf1, admin);
+        createImageInfoCustomDataValue("newvalue2", orgKey2, inf1, admin);
 
         Map<String, String> result = handler.getCustomValues(admin,
                 inf1.getId().intValue());
         assertEquals(2, result.size());
         assertEquals("newvalue2", result.get(orgKey2.getLabel()));
         assertEquals("newvalue1", result.get(orgKey1.getLabel()));
-    }
-
-    public static ImageInfo createImageInfo(User user, String version, ImageStore store) {
-        ImageInfo inf = new ImageInfo();
-        inf.setName("image-" + RandomStringUtils.randomAscii(10));
-        inf.setVersion(version);
-        inf.setChecksum(null);
-        inf.setImageArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        inf.setOrg(user.getOrg());
-        inf.setStore(store);
-        return TestUtils.saveAndReload(inf);
     }
 }

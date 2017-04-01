@@ -489,6 +489,14 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * Insert or Update InstalledProduct
+     * @param productIn product to store in database
+     */
+    public static void save(InstalledProduct productIn) {
+        singleton.saveObject(productIn);
+    }
+
+    /**
      * Save a custom data key
      * @param keyIn the key to save
      */

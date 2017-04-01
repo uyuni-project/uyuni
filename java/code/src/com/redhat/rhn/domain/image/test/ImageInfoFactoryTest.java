@@ -16,16 +16,12 @@
 package com.redhat.rhn.domain.image.test;
 
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImagePackage;
-import com.redhat.rhn.domain.image.ImageProfileFactory;
+import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
-import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
@@ -34,9 +30,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
-import com.redhat.rhn.domain.token.Token;
-import com.redhat.rhn.domain.token.TokenFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -54,6 +48,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
+import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
 
 public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
@@ -78,34 +77,10 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
 
-        // Create test store
-        ImageStore store = new ImageStore();
-        store.setLabel("myregistry");
-        store.setUri("registry.domain.top");
-        store.setStoreType(
-                ImageStoreFactory.lookupStoreTypeByLabel(ImageStore.TYPE_REGISTRY).get());
-        store.setOrg(user.getOrg());
-        ImageStoreFactory.save(store);
-
-        // Create test token for profile
-        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
-        Channel childChannel = ChannelFactoryTest.createTestChannel(user);
-        Set<Channel> channels = new HashSet<>();
-        channels.add(baseChannel);
-        channels.add(childChannel);
-        Token token = ActivationKeyFactory.createNewKey(user, "test-key").getToken();
-        token.setChannels(channels);
-        TokenFactory.save(token);
-
-        // Create test profile
-        DockerfileProfile profile = new DockerfileProfile();
-        profile.setLabel("suma-3.1-base");
-        profile.setOrg(user.getOrg());
-        profile.setPath(
-                "http://git.domain.top/dockerimages.git#mybranch:profiles/suma-3.1-base");
-        profile.setToken(token);
-        profile.setTargetStore(store);
-        ImageProfileFactory.save(profile);
+        ImageStore store = createImageStore("myregistry", user);
+        ActivationKey key = createActivationKey(user);
+        ImageProfile profile =
+                createImageProfile("suma-3.1-base", store, key, user);
 
         try {
             // Should not be processed because the server is not a build host yet.
@@ -136,8 +111,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(store, info.getStore());
         assertEquals(user.getOrg(), info.getOrg());
         assertEquals(2, info.getChannels().size());
-        assertTrue(info.getChannels().contains(baseChannel));
-        assertTrue(info.getChannels().contains(childChannel));
+        assertTrue(info.getChannels().equals(key.getChannels()));
         assertTrue(info.getCustomDataValues().isEmpty());
 
         // Add inspection data after build
@@ -161,9 +135,9 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(info);
 
         // Update values
-        CustomDataKey key = CustomDataKeyTest.createTestCustomDataKey(user);
-        ProfileCustomDataValue val = ImageProfileFactoryTest
-                .createTestProfileCustomDataValue("Test value", user, key, profile);
+        CustomDataKey cdk = CustomDataKeyTest.createTestCustomDataKey(user);
+        ProfileCustomDataValue val =
+                createProfileCustomDataValue("Test value", cdk, profile, user);
         Set<ProfileCustomDataValue> cdvSet = new HashSet<>();
         cdvSet.add(val);
         profile.setCustomDataValues(cdvSet);
@@ -186,10 +160,9 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(user.getOrg(), info.getOrg());
         assertEquals(1, info.getCustomDataValues().size());
         assertEquals(2, info.getChannels().size());
-        assertTrue(info.getChannels().contains(baseChannel));
-        assertTrue(info.getChannels().contains(childChannel));
+        assertTrue(info.getChannels().equals(key.getChannels()));
         ImageInfoCustomDataValue cdv = info.getCustomDataValues().iterator().next();
-        assertEquals(key, cdv.getKey());
+        assertEquals(cdk, cdv.getKey());
         assertEquals("Test value", cdv.getValue());
         assertTrue(info.getPackages().isEmpty());
         assertTrue(info.getInstalledProducts().isEmpty());

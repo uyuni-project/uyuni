@@ -1,15 +1,28 @@
 <datasource_modes>
 
-<write-mode name="delete_relevant_channels">
+<write-mode name="delete_relevant_server_channels">
   <query>
     DELETE FROM suseCVEServerChannel
   </query>
 </write-mode>
 
-<write-mode name="insert_relevant_channel">
+<write-mode name="delete_relevant_image_channels">
+  <query>
+    DELETE FROM suseCVEImageChannel
+  </query>
+</write-mode>
+
+<write-mode name="insert_relevant_server_channel">
   <query params="sid, cid, rank">
     INSERT INTO suseCVEServerChannel (server_id, channel_id, channel_rank)
     VALUES (:sid, :cid, :rank)
+  </query>
+</write-mode>
+
+<write-mode name="insert_relevant_image_channel">
+  <query params="iid, cid, rank">
+    INSERT INTO suseCVEImageChannel (image_info_id, channel_id, channel_rank)
+    VALUES (:iid, :cid, :rank)
   </query>
 </write-mode>
 
@@ -149,6 +162,102 @@
           )
     ) X
     ORDER BY X.system_id, X.channel_rank, X.errata_id NULLS LAST
+  </query>
+</mode>
+
+<mode name="list_images_by_patch_status">
+  <query params="cve_identifier, user_id">
+    WITH affected_and_patched AS (
+      SELECT suseImageInfoPackage.image_info_id as image_info_id,
+        suseImageInfo.name || ':' || suseImageInfo.version as image_name,
+        rhnChannelErrata.errata_id,
+        rhnErrata.advisory as errata_advisory,
+        rhnErrataPackage.package_id,
+        rhnPackageName.name as package_name,
+        (SELECT DISTINCT 1
+            FROM suseImageInfoPackage iip, rhnPackageEVR sevr, rhnPackageUpgradeArchCompat puac
+            WHERE suseImageInfoPackage.image_info_id = iip.image_info_id
+              AND suseImageInfoPackage.name_id = iip.name_id
+              AND iip.evr_id = sevr.id
+              AND rhnPackageEVR.evr &lt;= sevr.evr
+              AND suseImageInfoPackage.package_arch_id = puac.package_arch_id
+              AND puac.package_upgrade_arch_id = iip.package_arch_id
+        ) AS package_installed,
+        rhnChannelErrata.channel_id,
+        rhnChannel.name as channel_name,
+        rhnChannel.label as channel_label,
+        (SELECT DISTINCT 1
+            FROM rhnChannelPackage cp, suseImageInfoChannel ciic
+            WHERE cp.channel_id = ciic.channel_id
+              AND rhnChannelPackage.package_id = cp.package_id
+              AND suseImageInfoPackage.image_info_id = ciic.image_info_id
+              AND cp.channel_id = rhnChannelPackage.channel_id
+        ) AS channel_assigned,
+        suseCVEImageChannel.channel_rank
+        FROM rhnChannelErrata,
+          rhnErrata,
+          rhnErrataPackage,
+          rhnChannelPackage,
+          rhnPackageEVR,
+          rhnPackage,
+          rhnPackageName,
+          suseImageInfo,
+          suseImageInfoPackage,
+          rhnPackageUpgradeArchCompat,
+          rhnCVE,
+          rhnErrataCVE,
+          rhnChannel,
+          suseCVEImageChannel,
+          web_contact
+        WHERE rhnChannelErrata.errata_id = rhnErrataPackage.errata_id
+          AND rhnErrata.id = rhnErrataPackage.errata_id
+          AND rhnChannelErrata.channel_id = rhnChannelPackage.channel_id
+          AND rhnErrataPackage.package_id = rhnChannelPackage.package_id
+          AND rhnChannelErrata.channel_id = suseCVEImageChannel.channel_id
+          AND rhnChannelPackage.package_id = rhnPackage.id
+          AND rhnPackage.name_id = suseImageInfoPackage.name_id
+          AND suseCVEImageChannel.image_info_id = suseImageInfoPackage.image_info_id
+          AND suseImageInfo.id = suseImageInfoPackage.image_info_id
+          AND rhnPackage.evr_id = rhnPackageEVR.id
+          AND rhnPackage.name_id = rhnPackageName.id
+          AND suseImageInfoPackage.package_arch_id = rhnPackageUpgradeArchCompat.package_arch_id
+          AND rhnPackageUpgradeArchCompat.package_upgrade_arch_id = rhnPackage.package_arch_id
+          AND rhnChannelErrata.errata_id = rhnErrataCVE.errata_id
+          AND rhnErrataCVE.cve_id = rhnCVE.id
+          AND rhnChannelPackage.channel_id = rhnChannel.id
+          AND rhnCVE.name = :cve_identifier
+          AND web_contact.org_id = suseImageInfo.org_id
+          AND web_contact.id = :user_id
+    ),
+    not_affected AS (
+      SELECT suseImageInfo.id as image_info_id,
+        suseImageInfo.name || ':' || suseImageInfo.version as image_name,
+        CAST(NULL AS INTEGER) AS errata_id,
+        CAST(NULL AS CHAR) AS errata_advisory,
+        CAST(NULL AS INTEGER) AS package_id,
+        CAST(NULL AS CHAR) AS package_name,
+        CAST(NULL AS INTEGER) AS package_installed,
+        CAST(NULL AS INTEGER) AS channel_id,
+        CAST(NULL AS CHAR) AS channel_name,
+        CAST(NULL AS CHAR) AS channel_label,
+        CAST(NULL AS INTEGER) AS channel_assigned,
+        CAST(NULL AS INTEGER) AS channel_rank
+        FROM suseImageInfo
+          JOIN web_contact ON suseImageInfo.org_id = web_contact.org_id
+        WHERE web_contact.id = :user_id
+          AND suseImageInfo.id NOT IN (
+            SELECT image_info_id FROM affected_and_patched
+        )
+    )
+    SELECT * FROM (
+        SELECT *
+          FROM affected_and_patched
+          UNION ALL (
+            SELECT *
+              FROM not_affected
+          )
+    ) X
+    ORDER BY X.image_info_id, X.channel_rank, X.errata_id NULLS LAST
   </query>
 </mode>
 

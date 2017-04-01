@@ -120,13 +120,13 @@
 
       <rl:list name="list" dataset="dataset"
         emptykey="cveaudit.jsp.noresults" width="100%"
-        alphabarcolumn="systemName"
+        alphabarcolumn="name"
       >
 
         <rl:decorator name="PageSizeDecorator" />
         <rl:decorator name="SelectableDecorator"/>
 
-        <rl:selectablecolumn value="${current.systemID}"
+        <rl:selectablecolumn value="${current.id}"
           selected="${current.selected}"
           styleclass="first-column" />
 
@@ -166,10 +166,10 @@
         </rl:column>
 
         <rl:column bound="false" headerkey="cveaudit.jsp.system"
-          attr="systemName" sortattr="systemName">
+          attr="name" sortattr="name">
           <a
-            href="/rhn/systems/details/Overview.do?sid=${current.systemID}">
-            ${current.systemName} </a>
+            href="/rhn/systems/details/Overview.do?sid=${current.id}">
+            ${current.name} </a>
         </rl:column>
 
         <rl:column bound="false" headerkey="cveaudit.jsp.nextaction">
@@ -177,7 +177,7 @@
             <c:when
               test="${current.patchStatus == 'AFFECTED_PATCH_INAPPLICABLE'}">
               <a
-                href="/rhn/systems/details/SystemChannels.do?sid=${current.systemID}">
+                href="/rhn/systems/details/SystemChannels.do?sid=${current.id}">
                 <bean:message key="cveaudit.jsp.nextaction.affectedpatchinapplicable" />
               </a>
               <br/>
@@ -197,7 +197,7 @@
             <c:when
               test="${current.patchStatus == 'AFFECTED_PATCH_APPLICABLE'}">
               <a
-                href="/rhn/systems/details/ErrataList.do?sid=${current.systemID}">
+                href="/rhn/systems/details/ErrataList.do?sid=${current.id}">
                 <bean:message key="cveaudit.jsp.nextaction.affectedpatchapplicable" />
               </a>
               <br/>
@@ -229,7 +229,7 @@
       </rl:list>
 
       <rl:csv dataset="dataset" name="list"
-        exportColumns="patchStatus,systemName,patchAdvisory,channelName" />
+        exportColumns="patchStatus,name,patchAdvisory,channelName" />
     </rl:listset>
   </c:if>
 
