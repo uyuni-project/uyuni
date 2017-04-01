@@ -41,6 +41,8 @@ Requires:       susemanager-branding
 Requires:       yast2-users
 Requires:       SuSEfirewall2
 Requires:       postfix
+# mgr-setup want to call mksubvolume
+Requires:       snapper
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %global pythonsmroot %{python_sitelib}/spacewalk
 
