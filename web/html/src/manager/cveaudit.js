@@ -138,7 +138,7 @@ class CVEAudit extends React.Component {
                <span className="input-group-addon">
                     CVE
                </span>
-               <select value={this.state.cveYear} onChange={this.onCVEYearChange} className="form-control">
+               <select id="cveIdentifierYear" value={this.state.cveYear} onChange={this.onCVEYearChange} className="form-control">
                {
                  YEARS.map( year =>
                     <option value={year}>{year}</option>
@@ -148,7 +148,7 @@ class CVEAudit extends React.Component {
                <span className="input-group-addon">
                     -
                </span>
-               <input className="form-control" value={this.state.cveNumber} onChange={this.onCVEChange} />
+               <input id="cveIdentifierId" className="form-control" value={this.state.cveNumber} onChange={this.onCVEChange} />
           </div>
           <div>{
             ALL.map(status => {
