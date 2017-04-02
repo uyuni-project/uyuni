@@ -32,7 +32,6 @@
 - features/channels.feature
 - features/weak_deps.feature
 - features/metadata_check.feature
-- features/check_support_data.feature
 - features/check_registration.feature
 - features/sp_migration.feature
 - features/erratapage.feature

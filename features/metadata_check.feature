@@ -18,3 +18,7 @@ Feature: Test SUSE Manager generated metadata
     Given I am authorized as "admin" with password "admin"
     When I refresh the metadata
     Then I should have 'summary.*</summary' in the metadata
+
+  Scenario: Check local metdata for susedata.xml
+    When I refresh the metadata
+    Then "susedata.xml.gz" should exists in the metadata
