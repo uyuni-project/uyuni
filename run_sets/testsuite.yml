@@ -78,9 +78,7 @@
 - features/salt_regression_topsls.feature
 - features/salt_ssh.feature 
 ## Centos client related feat. ###
-- features/minion_centos_bootstrap.feature
-- features/centos_salt_remote_cmds.feature
-- features/centos_salt_reboot_test.feature
+- features/centos_salt.feature
 - features/centos_salt_ssh.feature 
 #### * Docker releated features tests.  ###
 - features/docker_build_image.feature
