@@ -75,27 +75,19 @@
 - features/salt_formulas.feature
 - features/salt_openscap_audit.feature
 - features/salt_reboot_test.feature
-
-# salt regression
 - features/salt_regression_topsls.feature
-
 - features/salt_ssh.feature 
-- features/salt_ssh_reboot_test.feature
-
 ## Centos client related feat. ###
-## ** salt ***
-
 - features/minion_centos_bootstrap.feature
 - features/centos_salt_remote_cmds.feature
 - features/centos_salt_reboot_test.feature
 - features/centos_salt_ssh.feature 
-
 #### * Docker releated features tests.  ###
 - features/docker_build_image.feature
-# end-tests
+# Debug suse-manger server
 - features/spacewalk_debug.feature
 
-### Scalability tests
+### Scalability tests (after debug always)
 - features/docker_xmlrpc.feature
 
 ## smdba and change password feature always put them at the end of the testsuite.
