@@ -70,7 +70,7 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
     private class CustomWriter extends MockJspWriter {
         private StringBuffer printed = new StringBuffer();
 
-        public CustomWriter() {
+        CustomWriter() {
             super();
         }
 
@@ -87,7 +87,7 @@ public class SystemTimeMessageTagTest extends RhnBaseTestCase {
 
         private CustomWriter writer;
 
-        public CustomPageContext() {
+        CustomPageContext() {
             writer = new CustomWriter();
         }
 

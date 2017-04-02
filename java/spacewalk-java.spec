@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.40.1
+Version: 2.7.44
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -125,20 +125,7 @@ Requires: xalan-j2 >= 0:2.6.0
 Requires: xerces-j2
 %if 0%{?fedora}
 Requires: classpathx-jaf
-Requires: hibernate3 >= 3.6.10
-Requires: hibernate3-c3p0 >= 3.6.10
-Requires: hibernate3-ehcache >= 3.6.10
-Requires: javassist
-BuildRequires: ehcache-core
-BuildRequires: hibernate3 >= 0:3.6.10
-BuildRequires: hibernate3-c3p0 >= 3.6.10
-BuildRequires: hibernate3-ehcache >= 3.6.10
-BuildRequires: javassist
-%else
-%if 0%{?rhel}
-Requires: hibernate3 = 0:3.2.4
-BuildRequires: hibernate3 = 0:3.2.4
-%endif
+
 %endif
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -169,26 +156,38 @@ BuildRequires: struts-taglib >= 0:1.3.0
 BuildRequires: tomcat6
 BuildRequires: tomcat6-lib
 %endif
-%endif
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:      apache-commons-cli
 Requires:      apache-commons-codec
 Requires:      apache-commons-discovery
+Requires:      apache-commons-el
 Requires:      apache-commons-io
 Requires:      apache-commons-lang
 Requires:      apache-commons-logging
+Requires:      hibernate3 >= 3.6.10
+Requires:      hibernate3-c3p0 >= 3.6.10
+Requires:      hibernate3-ehcache >= 3.6.10
 Requires:      javapackages-tools
+Requires:      javassist
+Requires:      tomcat-taglibs-standard
 BuildRequires: apache-commons-cli
 BuildRequires: apache-commons-codec
 BuildRequires: apache-commons-collections
 BuildRequires: apache-commons-discovery
+BuildRequires: apache-commons-el
 BuildRequires: apache-commons-io
 BuildRequires: apache-commons-logging
 BuildRequires: apache-commons-validator
 # spelling checker is only for Fedoras (no aspell in RHEL6)
 BuildRequires: aspell aspell-en libxslt
+BuildRequires: ehcache-core
+BuildRequires: hibernate3 >= 0:3.6.10
+BuildRequires: hibernate3-c3p0 >= 3.6.10
+BuildRequires: hibernate3-ehcache >= 3.6.10
+BuildRequires: javassist
 BuildRequires: javapackages-tools
 BuildRequires: mvn(ant-contrib:ant-contrib)
+BuildRequires: tomcat-taglibs-standard
 %else
 Requires:      jakarta-commons-cli
 Requires:      jakarta-commons-codec
@@ -412,12 +411,6 @@ Requires: spacewalk-java-lib
 Requires: tanukiwrapper
 Requires: xalan-j2 >= 0:2.6.0
 Requires: xerces-j2
-%if 0%{?fedora}
-Requires: hibernate3 >= 3.6.10
-Requires: hibernate3-c3p0 >= 3.6.10
-Requires: hibernate3-ehcache >= 3.6.10
-Requires: javassist
-%else
 %if 0%{?suse_version}
 Requires: hibernate5
 Requires: hibernate-commons-annotations
@@ -430,13 +423,17 @@ Requires: statistics
 %else
 Requires: hibernate3 >= 3.2.4
 %endif
-%endif
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: apache-commons-cli
 Requires: apache-commons-codec
 Requires: apache-commons-dbcp
 Requires: apache-commons-lang
 Requires: apache-commons-logging
+Requires: hibernate3 >= 3.6.10
+Requires: hibernate3-c3p0 >= 3.6.10
+Requires: hibernate3-ehcache >= 3.6.10
+Requires: javassist
+Requires: tomcat-taglibs-standard
 %else
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
@@ -563,21 +560,15 @@ export NO_BRP_STALE_LINK_ERROR=yes
 rm -rf $RPM_BUILD_ROOT
 
 # on Fedora 19 some jars are named differently
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 mkdir -p $RPM_BUILD_ROOT%{_javadir}
 [[ -f %{_javadir}/mchange-commons-java.jar ]] && ln -s -f %{_javadir}/mchange-commons-java.jar $RPM_BUILD_ROOT%{_javadir}/mchange-commons.jar
 [[ -f %{_javadir}/mchange-commons/mchange-commons-java.jar ]] && ln -s -f %{_javadir}/mchange-commons/mchange-commons-java.jar $RPM_BUILD_ROOT%{_javadir}/mchange-commons.jar
 ln -s -f %{_javadir}/jboss-logging/jboss-logging.jar $RPM_BUILD_ROOT%{_javadir}/jboss-logging.jar
-# create missing symlinks on fedora21
-%if 0%{?fedora} >= 21
- ln -s -f %{_javadir}/hibernate-jpa-2.0-api/hibernate-jpa-2.0-api.jar $RPM_BUILD_ROOT%{_javadir}/hibernate-jpa-2.0-api.jar
- ln -s -f %{_javadir}/c3p0/c3p0.jar $RPM_BUILD_ROOT%{_javadir}/c3p0.jar
- ln -s -f %{_javadir}/concurrent/concurrent.jar $RPM_BUILD_ROOT%{_javadir}/concurrent.jar
-%endif
+ln -s -f %{_javadir}/hibernate-jpa-2.0-api/hibernate-jpa-2.0-api.jar $RPM_BUILD_ROOT%{_javadir}/hibernate-jpa-2.0-api.jar
+ln -s -f %{_javadir}/c3p0/c3p0.jar $RPM_BUILD_ROOT%{_javadir}/c3p0.jar
+ln -s -f %{_javadir}/concurrent/concurrent.jar $RPM_BUILD_ROOT%{_javadir}/concurrent.jar
 
-%endif
-
-%if 0%{?fedora} || 0%{?rhel} >= 7
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 
@@ -616,6 +607,8 @@ install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/unit-tests
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/lib
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/classes
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
+install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search
+install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdir}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirup}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirwiz}
@@ -713,8 +706,13 @@ else
 fi
 %endif
 
+# special links for rhn-search
+RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
+ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ojdbc14.jar
+ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
+
 # 732350 - On Fedora 15, mchange's log stuff is no longer in c3p0.
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 ln -s -f %{_javadir}/mchange-commons.jar $RPM_BUILD_ROOT%{jardir}/mchange-commons.jar
 %endif
 
@@ -843,7 +841,7 @@ fi
 %{jardir}/concurrent*.jar
 %{jardir}/dom4j.jar
 %{jardir}/dwr.jar
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %{jardir}/ehcache-core.jar
 %{jardir}/*_hibernate-commons-annotations.jar
 %{jardir}/hibernate-jpa-2.0-api*.jar
@@ -851,15 +849,13 @@ fi
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar
 %{jardir}/mchange-commons.jar
-%{_javadir}/mchange-commons.jar
-%{_javadir}/jboss-logging.jar
-%{jardir}/*jboss-logging.jar
-
-%if 0%{?fedora} >= 21
 %{_javadir}/c3p0.jar
 %{_javadir}/concurrent.jar
 %{_javadir}/hibernate-jpa-2.0-api.jar
-%endif
+%{_javadir}/jboss-logging.jar
+%{_javadir}/mchange-commons.jar
+%{jardir}/*jboss-logging.jar
+
 
 %endif
 %if 0%{?suse_version}
@@ -999,15 +995,33 @@ fi
 
 %if 0%{?with_oracle}
 %files oracle
-%defattr(644, tomcat, tomcat)
-%{jardir}/ojdbc14.jar
+%defattr(644,root,root,775)
+%attr(644, tomcat, tomcat) %{jardir}/ojdbc14.jar
+%{_prefix}/share/rhn/search/lib/ojdbc14.jar
 %endif
 
 %files postgresql
-%defattr(644, tomcat, tomcat)
-%{jardir}/postgresql-jdbc.jar
+%defattr(644,root,root,775)
+%attr(644, tomcat, tomcat) %{jardir}/postgresql-jdbc.jar
+%{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Thu Mar 30 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.44-1
+- simplify rhn-search jar list
+
+* Wed Mar 29 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.43-1
+- fix perrmissions on /usr/share/spacewalk/taskomatic/*.jar
+
+* Tue Mar 28 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.42-1
+- run checkstyle on Fedora again
+- fixed new checkstyle errors
+- newer checkstyle requires commons-lang3
+- use same requires on Fedora and RHEL7
+
+* Mon Mar 27 2017 Gennadii Altukhov <galt@redhat.com> 2.7.41-1
+- 1421115 - set number of bytes instead of length of java string for 'Content-
+  Length' HTTP-header
+
 * Thu Mar 16 2017 Gennadii Altukhov <galt@redhat.com> 2.7.37-1
 - 1408167 - add link to proxy system details page
 

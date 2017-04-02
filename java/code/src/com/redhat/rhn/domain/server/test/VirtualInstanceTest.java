@@ -30,7 +30,7 @@ import com.redhat.rhn.testing.TestUtils;
 public class VirtualInstanceTest extends RhnBaseTestCase {
 
     private class GuestStub extends VirtualInstance {
-        public GuestStub(Long id) {
+        GuestStub(Long id) {
             super(id);
         }
     }
