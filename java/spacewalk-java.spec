@@ -156,6 +156,7 @@ BuildRequires: struts-taglib >= 0:1.3.0
 BuildRequires: tomcat6
 BuildRequires: tomcat6-lib
 %endif
+%endif
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:      apache-commons-cli
 Requires:      apache-commons-codec
@@ -995,14 +996,18 @@ fi
 
 %if 0%{?with_oracle}
 %files oracle
-%defattr(644,root,root,775)
+%defattr(644,root,root,755)
+%dir %{_prefix}/share/rhn/search
+%dir %{_prefix}/share/rhn/search/lib
 %attr(644, tomcat, tomcat) %{jardir}/ojdbc14.jar
 %{_prefix}/share/rhn/search/lib/ojdbc14.jar
 %endif
 
 %files postgresql
-%defattr(644,root,root,775)
-%attr(644, tomcat, tomcat) %{jardir}/postgresql-jdbc.jar
+%defattr(644,root,root,755)
+%dir %{_prefix}/share/rhn/search
+%dir %{_prefix}/share/rhn/search/lib
+%%attr(644, tomcat, tomcat) %{jardir}/postgresql-jdbc.jar
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
