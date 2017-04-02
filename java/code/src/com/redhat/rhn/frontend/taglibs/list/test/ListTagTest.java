@@ -38,7 +38,6 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import static org.hamcrest.Matchers.containsString;
 import static org.jmock.Expectations.returnValue;
 
-
 public class ListTagTest extends MockObjectTestCase {
     private ListSetTag lst;
     private ListTag lt;

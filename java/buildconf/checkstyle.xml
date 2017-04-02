@@ -238,4 +238,6 @@ MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, RCURLY, S
         <property name="message" value="Line has trailing spaces."/>
     </module>
 
+    <module name="SuppressionCommentFilter" />
+
 </module>
