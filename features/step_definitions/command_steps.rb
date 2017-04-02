@@ -48,11 +48,11 @@ Then(/^I wait until "([^"]*)" service is up and running on "([^"]*)"$/) do |serv
       out, code = node.run(cmd, false, 200)
       if code.zero?
         puts "#{service} service is up and running \n #{out}"
-        sleep(3)
         break
       end
     end
   end
+  sleep(3)
 end
 
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
