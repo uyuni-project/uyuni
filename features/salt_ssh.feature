@@ -43,4 +43,10 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
 
-
+   Scenario: Reboot a salt minion (ssh-managed) (sle)
+    Given I am on the Systems overview page of this "ssh-minion"
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    And I click on "Reboot system"
+    Then I wait and check that "ssh-minion" has rebooted
