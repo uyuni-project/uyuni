@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Apr 03 14:47:46 CEST 2017 - mc@suse.de
+
+- version 3.1.5-1
+- patch application pre-download
+- pre-download packages scheduled for install
+
+-------------------------------------------------------------------
 Fri Mar 31 09:48:52 CEST 2017 - mc@suse.de
 
 - version 3.1.4-1
