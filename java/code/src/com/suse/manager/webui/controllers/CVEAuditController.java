@@ -31,7 +31,6 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -133,22 +132,23 @@ public class CVEAuditController {
         }
     }
 
-    private static List<CVEAuditSystem> handleRequest(CVEAuditRequest request, User user) throws UnknownCVEIdentifierException {
-            switch (request.getTarget()) {
-                case SERVER:
-                    List<CVEAuditServer> cveAuditServers = CVEAuditManager
-                    .listSystemsByPatchStatus(user, request.cveIdentifier,
-                            request.statuses);
-                    return cveAuditServers.stream().map(x -> (CVEAuditSystem)x)
-                            .collect(Collectors.toList());
-                case IMAGE:
-                    List<CVEAuditImage> cveAuditImages = CVEAuditManager
-                    .listImagesByPatchStatus(user, request.cveIdentifier,
-                            request.statuses);
-                    return cveAuditImages.stream().map(x -> (CVEAuditSystem)x)
-                            .collect(Collectors.toList());
-                default: throw new RuntimeException("unreachable");
-            }
+    private static List<CVEAuditSystem> handleRequest(CVEAuditRequest request, User user)
+            throws UnknownCVEIdentifierException {
+        switch (request.getTarget()) {
+        case SERVER:
+            List<CVEAuditServer> cveAuditServers = CVEAuditManager
+            .listSystemsByPatchStatus(user, request.cveIdentifier,
+                    request.statuses);
+            return cveAuditServers.stream().map(x -> (CVEAuditSystem)x)
+                    .collect(Collectors.toList());
+        case IMAGE:
+            List<CVEAuditImage> cveAuditImages = CVEAuditManager
+            .listImagesByPatchStatus(user, request.cveIdentifier,
+                    request.statuses);
+            return cveAuditImages.stream().map(x -> (CVEAuditSystem)x)
+                    .collect(Collectors.toList());
+        default: throw new RuntimeException("unreachable");
+        }
     }
 
     /**
@@ -169,7 +169,8 @@ public class CVEAuditController {
         List<CVEAuditSystem> cveAuditSystems = null;
         try {
             cveAuditSystems = handleRequest(cveAuditRequest, user);
-        } catch (UnknownCVEIdentifierException e) {
+        }
+        catch (UnknownCVEIdentifierException e) {
             return e.getMessage();
         }
         String result = cveAuditSystems.stream().map(
