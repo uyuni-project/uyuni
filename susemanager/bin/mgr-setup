@@ -198,6 +198,9 @@ if [ $FSTYPE == "btrfs" ]; then
         mv $DIR ${DIR}.sav
         mksubvolume $DIR
         touch ${DIR}.sav/foobar.dummy
+        if [ ! -d $DIR ]; then
+            mkdir $DIR
+        fi
         mv ${DIR}.sav/* $DIR
         rmdir ${DIR}.sav
         rm -f $DIR/foobar.dummy
