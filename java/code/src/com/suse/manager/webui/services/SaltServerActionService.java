@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -69,6 +70,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -92,9 +94,12 @@ public enum SaltServerActionService {
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
     private static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
+    private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
     private static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
+    private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
     private static final String PARAM_PKGS = "param_pkgs";
+    private static final String PARAM_PATCHES = "param_patches";
 
     /**
      * For a given action and list of minion servers return the salt call(s) that need to be
@@ -184,9 +189,15 @@ public enum SaltServerActionService {
      * Execute a given {@link Action} via salt.
      *
      * @param actionIn the action to execute
-     * @param forcePackageListRefresh add metadata to force a package list refresh
+     * @param forcePackageListRefresh add metadata to force a package list
+     * refresh
+     * @param isStagingJob whether the action is a staging of packages
+     * action
+     * @param stagingJobMinionServerId if action is a staging action it will
+     * contain involved minionId(s)
      */
-    public void execute(Action actionIn, boolean forcePackageListRefresh) {
+    public void execute(Action actionIn, boolean forcePackageListRefresh,
+            boolean isStagingJob, Long stagingJobMinionServerId) {
         List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
                 .map(serverActions -> serverActions.stream()
                         .flatMap(action ->
@@ -203,10 +214,20 @@ public enum SaltServerActionService {
         for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
                 callsForAction(actionIn, minions).entrySet()) {
             final LocalCall<?> call = entry.getKey();
-            final List<MinionServer> targetMinions = entry.getValue();
+            final List<MinionServer> targetMinions;
+
+            if (isStagingJob) {
+                targetMinions = new ArrayList<>();
+                MinionServerFactory.lookupById(stagingJobMinionServerId)
+                        .ifPresent(server -> targetMinions.add(server));
+            }
+            else {
+                targetMinions = entry.getValue();
+            }
 
             Map<Boolean, List<MinionServer>> results =
-                    execute(actionIn, call, targetMinions, forcePackageListRefresh);
+                    execute(actionIn, call, targetMinions, forcePackageListRefresh,
+                            isStagingJob);
 
             results.get(false).forEach(minionServer -> {
                 serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
@@ -574,13 +595,18 @@ public enum SaltServerActionService {
      * @param call the call
      * @param minions minions to target
      * @param forcePackageListRefresh add metadata to force a package list refresh
+     * @param isStagingJob whether the action is a staging packages action
      * @return a map containing all minions partitioned by success
      */
     private Map<Boolean, List<MinionServer>> execute(Action actionIn, LocalCall<?> call,
-            List<MinionServer> minions, boolean forcePackageListRefresh) {
+            List<MinionServer> minions, boolean forcePackageListRefresh,
+            boolean isStagingJob) {
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
-        metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
+
+        if (!isStagingJob) {
+            metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
+        }
         if (forcePackageListRefresh) {
             metadata.put(ScheduleMetadata.SUMA_FORCE_PGK_LIST_REFRESH, true);
         }
@@ -596,6 +622,42 @@ public enum SaltServerActionService {
         try {
             Map<Boolean, List<MinionServer>> result = new HashMap<>();
 
+            if (isStagingJob) {
+                if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
+                    Map<String, String> args =
+                            ((PackageUpdateAction) actionIn).getDetails().stream()
+                                    .collect(Collectors.toMap(
+                                            d -> d.getPackageName().getName(),
+                                            d -> d.getEvr().toString()));
+                    call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
+                            Optional.of(Collections.singletonMap(PARAM_PKGS, args)),
+                            Optional.of(true));
+                    LOG.info("Executing staging of packages");
+                }
+                if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
+                    Set<Long> errataIds = ((ErrataAction) actionIn).getErrata().stream()
+                            .map(e -> e.getId()).collect(Collectors.toSet());
+                    Map<Long, Map<Long, Set<String>>> errataNames =
+                            ServerFactory
+                                    .listErrataNamesForServers(
+                                            minions.stream().map(MinionServer::getId)
+                                                    .collect(Collectors.toSet()),
+                                            errataIds);
+                    List<String> errataArgs = new ArrayList<>();
+                    for (Long minionId: errataNames.keySet()) {
+                        for (Long errId: errataNames.get(minionId).keySet()) {
+                            errataArgs.addAll(errataNames.get(minionId).get(errId));
+                        }
+                    }
+                    call = State
+                            .apply(Arrays.asList(PACKAGES_PATCHDOWNLOAD),
+                                    Optional.of(Collections.singletonMap(PARAM_PATCHES,
+                                            errataArgs)),
+                                    Optional.of(true));
+                }
+                LOG.info("Executing staging of patches");
+            }
+
             List<String> results = SaltService.INSTANCE
                     .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
                     .getMinions();
@@ -604,16 +666,20 @@ public enum SaltServerActionService {
                     .collect(Collectors.partitioningBy(
                             minion -> results.contains(minion.getMinionId())));
 
+
             result.get(true).forEach(minionServer -> {
                 serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Asynchronous call on minion: " +
                                 minionServer.getMinionId());
                     }
-                    serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
-                    ActionFactory.save(serverAction);
+                    if (!isStagingJob) {
+                        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+                        ActionFactory.save(serverAction);
+                    }
                 });
             });
+
             return result;
         }
         catch (SaltException ex) {
