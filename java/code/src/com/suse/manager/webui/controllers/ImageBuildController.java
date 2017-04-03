@@ -23,6 +23,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
@@ -91,7 +92,7 @@ public class ImageBuildController {
         // Parse optional query string parameters
         model.put("profileId", imageInfo.getProfile().getProfileId());
         model.put("hostId", imageInfo.getAction().getServerActions().stream().findFirst()
-                .orElse(null));
+                .map(ServerAction::getServerId).orElse(null));
         model.put("version", imageInfo.getVersion());
 
         return new ModelAndView(model, "content_management/build.jade");

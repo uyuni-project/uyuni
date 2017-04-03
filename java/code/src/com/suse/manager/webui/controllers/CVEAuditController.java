@@ -25,12 +25,12 @@ import com.redhat.rhn.manager.audit.CVEAuditSystem;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 
+import com.suse.manager.webui.utils.gson.JsonResult;
 import org.apache.log4j.Logger;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -116,42 +116,38 @@ public class CVEAuditController {
                     List<CVEAuditServer> cveAuditServers = CVEAuditManager
                     .listSystemsByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
-                    return json(res, cveAuditServers);
+                    return json(res, new JsonResult<>(true, cveAuditServers));
                 case IMAGE:
                     List<CVEAuditImage> cveAuditImages = CVEAuditManager
                     .listImagesByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
-                    return json(res, cveAuditImages);
+                    return json(res, new JsonResult<>(true, cveAuditImages));
                     default: throw new RuntimeException("unreachable");
             }
         }
         catch (UnknownCVEIdentifierException e) {
-            return json(res, Collections.emptyList());
+            return json(res, new JsonResult(false, "The specified CVE number was not" +
+                    " found. This can happen for very old or yet-unknown numbers, please" +
+                    " also check it for possible typing errors."));
         }
     }
 
-    private static List<CVEAuditSystem> handleRequest(CVEAuditRequest request, User user) {
-        try {
-
-            switch (request.getTarget()) {
-                case SERVER:
-                    List<CVEAuditServer> cveAuditServers = CVEAuditManager
-                    .listSystemsByPatchStatus(user, request.cveIdentifier,
-                            request.statuses);
-                    return cveAuditServers.stream().map(x -> (CVEAuditSystem)x)
-                            .collect(Collectors.toList());
-                case IMAGE:
-                    List<CVEAuditImage> cveAuditImages = CVEAuditManager
-                    .listImagesByPatchStatus(user, request.cveIdentifier,
-                            request.statuses);
-                    return cveAuditImages.stream().map(x -> (CVEAuditSystem)x)
-                            .collect(Collectors.toList());
-                default: throw new RuntimeException("unreachable");
-            }
-
-        }
-        catch (UnknownCVEIdentifierException e) {
-            return Collections.emptyList();
+    private static List<CVEAuditSystem> handleRequest(CVEAuditRequest request, User user)
+            throws UnknownCVEIdentifierException {
+        switch (request.getTarget()) {
+        case SERVER:
+            List<CVEAuditServer> cveAuditServers = CVEAuditManager
+            .listSystemsByPatchStatus(user, request.cveIdentifier,
+                    request.statuses);
+            return cveAuditServers.stream().map(x -> (CVEAuditSystem)x)
+                    .collect(Collectors.toList());
+        case IMAGE:
+            List<CVEAuditImage> cveAuditImages = CVEAuditManager
+            .listImagesByPatchStatus(user, request.cveIdentifier,
+                    request.statuses);
+            return cveAuditImages.stream().map(x -> (CVEAuditSystem)x)
+                    .collect(Collectors.toList());
+        default: throw new RuntimeException("unreachable");
         }
     }
 
@@ -170,7 +166,13 @@ public class CVEAuditController {
                 .map(PatchStatus::valueOf).collect(Collectors.toList()));
         CVEAuditRequest cveAuditRequest = new CVEAuditRequest(cveIdentifier, statuses,
                 target);
-        List<CVEAuditSystem> cveAuditSystems = handleRequest(cveAuditRequest, user);
+        List<CVEAuditSystem> cveAuditSystems = null;
+        try {
+            cveAuditSystems = handleRequest(cveAuditRequest, user);
+        }
+        catch (UnknownCVEIdentifierException e) {
+            return e.getMessage();
+        }
         String result = cveAuditSystems.stream().map(
                 system -> "" + system.getPatchStatus() + "," + system.getName() + "," +
                         system.getPatchAdvisory() + "," + system.getChannelName()
