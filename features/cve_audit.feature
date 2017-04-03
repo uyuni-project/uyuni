@@ -38,7 +38,7 @@ Feature: CVE Audit
     And I should see a "Status" link
     And I should see a "Name" link
     And I should see a "extra CVE data update" link
-    Then I follow "Install a new patch in this system"
+    Then I follow "Install a new patch on this system"
     And I should see a "Relevant Patches" text
 
   Scenario: searching for an unknown CVE number
