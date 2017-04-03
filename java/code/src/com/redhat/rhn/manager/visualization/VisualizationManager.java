@@ -20,7 +20,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.visualization.json.System;
 import com.redhat.rhn.manager.visualization.json.VirtualHostManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -145,6 +147,7 @@ public class VisualizationManager {
     public static List<Object> systemsWithManagedGroups(User user) {
         Map<String, Set<String>> installedProducts = fetchInstalledProducts(user);
         Map<String, Set<String>> groups = fetchSystemManagedGroups(user);
+        Map<String, Map<String, Integer>> patchCounts = fetchPatchCounts(user);
 
         System root = new System();
         root.setId("root");
@@ -157,7 +160,9 @@ public class VisualizationManager {
                 .stream())
                 .map(s -> s.setParentId(root.getId()))
                 .map(s -> s.setManagedGroups(groups.get(s.getRawId())))
-                .map(s -> s.setInstalledProducts(installedProducts.get(s.getRawId())));
+                .map(s -> s.setInstalledProducts(installedProducts.get(s.getRawId())))
+                .map(s ->
+                        s.setPatchCounts(patchCountsToList(patchCounts.get(s.getRawId()))));
 
         return concatStreams(
                 Stream.of(root),
@@ -200,6 +205,57 @@ public class VisualizationManager {
                             return u;
                         }
                 ));
+    }
+
+    /**
+     * Fetch the patch counts for user-accessible servers from the database as a nested map
+     * in this form:
+     *
+     * system id as string -> advisory type -> count of patches
+     *
+     * @param user the user
+     * @return the patch counts
+     */
+    private static Map<String, Map<String, Integer>> fetchPatchCounts(User user) {
+        return ((List<Object[]>) HibernateFactory.getSession()
+                .getNamedQuery("Server.listPatchCountsForAllServers")
+                .setParameter("orgId", user.getOrg().getId())
+                .list())
+                .stream()
+                .collect(Collectors.toMap(
+                        v -> v[0].toString(),
+                        v -> map(v[1].toString(), ((Integer) v[2])),
+                        (u, v) -> {
+                            u.putAll(v);
+                            return u;
+                        }
+                ));
+    }
+
+    /**
+     * Converts the patch info from the map form to the list in this form:
+     * [X, Y, Z], where
+     * X - number of bug fix advisories
+     * Y - number of product enhancement advisories
+     * Z - number of security advisories
+     *
+     * @param patchCounts the map containing the patch info
+     * @return the list containing the patch info
+     */
+    private static List<Integer> patchCountsToList(Map<String, Integer> patchCounts) {
+        List<Integer> result = new ArrayList<>();
+        if (patchCounts != null) {
+            result.add(patchCounts.getOrDefault("Bug Fix Advisory", 0));
+            result.add(patchCounts.getOrDefault("Product Enhancement Advisory", 0));
+            result.add(patchCounts.getOrDefault("Security Advisory", 0));
+        }
+        return result;
+   }
+
+    private static <K, V> Map<K, V> map(K k, V v) {
+        HashMap<K, V> result = new HashMap<>();
+        result.put(k, v);
+        return result;
     }
 
     private static <T> Set<T> set(T elem) {

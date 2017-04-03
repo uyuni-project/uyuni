@@ -156,6 +156,15 @@ function isSystemType(d) {
 }
 
 function updateDetailBox(d) {
+  function patchStatus(patchInfoArray) {
+    if (patchInfoArray == undefined) {
+      return 'unknown';
+    }
+    return patchInfoArray[0] + ' bug fix advisories, ' +
+      patchInfoArray[1] + ' product enhancement advisories, ' +
+      patchInfoArray[2] + ' security advisories.';
+  }
+
   var data = d.data;
   var systemDetailLink = '';
   var systemSpecificInfo = '';
@@ -169,7 +178,8 @@ function updateDetailBox(d) {
       '<div>Base entitlement : <strong>' + data.base_entitlement + '</strong></div>' +
       '<div>Base channel: <strong>' + data.base_channel + '</strong></div>' +
       '<div>Checkin time : <strong><time title="' + moment(data.checkin).format('LLLL') + '">' + moment(data.checkin).fromNow() + '</time></strong></div>' +
-      '<div>Installed products : <strong>' + data.installedProducts + '</strong></div>';
+      '<div>Installed products : <strong>' + data.installedProducts + '</strong></div>' +
+      '<div>Patch status : <strong>' + patchStatus(data.patch_info) + '</strong></div>';
   }
   $('.detailBox').html(
     '<div class="content-wrapper">' +

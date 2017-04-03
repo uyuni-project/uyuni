@@ -17,8 +17,10 @@ package com.redhat.rhn.manager.visualization.json;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,6 +43,8 @@ public class System {
     private Set<String> installedProducts = new HashSet<>();
     @SerializedName("managed_groups")
     private Set<String> managedGroups = new HashSet<>();
+    @SerializedName("patch_counts")
+    private List<Integer> patchCounts = new ArrayList<>();
 
     /**
      * Standard constructor
@@ -306,6 +310,26 @@ public class System {
      */
     public System setManagedGroups(Set<String> groupsIn) {
         managedGroups = groupsIn;
+        return this;
+    }
+
+    /**
+     * Gets the patchCounts.
+     *
+     * @return patchCounts
+     */
+    public List<Integer> getPatchCounts() {
+        return patchCounts;
+    }
+
+    /**
+     * Sets the patchCounts.
+     *
+     * @param patchCountsIn - the patchCounts
+     * @return this
+     */
+    public System setPatchCounts(List<Integer> patchCountsIn) {
+        patchCounts = patchCountsIn;
         return this;
     }
 }
