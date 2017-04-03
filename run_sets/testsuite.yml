@@ -67,7 +67,6 @@
 - features/xmlrpc_VHM.feature
 - features/check_VHM.feature
 - features/setup_wizard.feature
-###- features/mgr_create_bootstrap_repo.feature
 - features/security.feature
 
 #### Salt related features   ###
@@ -79,7 +78,6 @@
 - features/salt_software_states.feature
 - features/salt_pkgset_beacon.feature
 - features/salt_remote_cmds.feature
-# - features/salt_action_pickedup.feature NEED FIX. Unstable test
 # this feature need another vm/client - features/salt_ssh.feature
 - features/salt_install_package.feature
 - features/salt_states_catalog.feature
@@ -91,13 +89,10 @@
 ### Salt-ssh managed feature ##
 - features/salt_ssh.feature
 
-## Centos client related feat. ###
-## ** salt ***
+## Centos salt
 
 - features/minion_centos_bootstrap.feature
 - features/centos_salt_remote_cmds.feature
-# this feature need minions with service.
-- features/salt_regression_multiminion.feature
 - features/centos_salt_ssh.feature
 # end-tests
 - features/spacewalk-errors.feature
