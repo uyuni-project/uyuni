@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Apr 03 14:51:38 CEST 2017 - mc@suse.de
+
+- version 2.7.65.1-1
+- update man page
+- adding Candlepin API to call manifest refresh
+- call Candlepin API to download manifests and implement missing
+  pieces of code
+- adding handler for calling Candlepin API requests with export
+  manifest support
+
+-------------------------------------------------------------------
 Fri Mar 31 10:01:31 CEST 2017 - mc@suse.de
 
 - version 2.7.63.1-1
