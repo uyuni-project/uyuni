@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Mon Apr 03 14:57:25 CEST 2017 - mc@suse.de
+
+- version 2.7.44.1-1
+- add error handing and fix rebuild button
+- Feat: divide & distribute salt actions randomly
+- add a configuration parameter to set the time staging begins
+- init. support for split-schedule in pre-download window
+- add staging window duration
+- patch application pre-download
+- pre-download packages scheduled for install
+- api call to actionchain (bsc#1011964)
+- new cve audit ui for server/images
+- Fix adding of new InstalledProduct entries on image inspect
+- delete also image channels before generating them new
+- CVE Audit for images - xmlrpc interface
+- implement CVEAudit for images
+- simplify rhn-search jar list
+- set number of bytes instead of length of java string for 'Content-
+  Length' HTTP-header
+
+-------------------------------------------------------------------
 Fri Mar 31 12:35:55 CEST 2017 - mc@suse.de
 
 - version 2.7.40.1-1
