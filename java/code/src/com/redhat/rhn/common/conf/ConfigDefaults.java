@@ -231,6 +231,27 @@ public class ConfigDefaults {
     public static final String SALT_SSH_CONNECT_TIMEOUT =
             "salt_ssh_connect_timeout";
 
+    /**
+     * Enables or disables content staging for Salt minions globally
+     */
+    public static final String SALT_CONTENT_STAGING_ENABLED =
+            "salt_content_staging_enabled";
+
+    /**
+     * Duration in hours of the time window for Salt minions to stage
+     * packages in advance of scheduled installations or upgrades
+     */
+    public static final String SALT_CONTENT_STAGING_WINDOW =
+            "salt_content_staging_window";
+
+    /**
+     * Advance time, in hours, for the content staging window to open with
+     * respect to the scheduled installation/upgrade time
+     */
+    public static final String SALT_CONTENT_STAGING_ADVANCE =
+            "salt_content_staging_advance";
+
+
     private ConfigDefaults() {
     }
 
@@ -799,5 +820,35 @@ public class ConfigDefaults {
      */
     public int getSaltPresencePingGatherJobTimeout() {
         return Config.get().getInt(SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT, 1);
+    }
+
+    /**
+     * Returns true if content staging is globally enabled.
+     *
+     * @return true or false
+     */
+    public boolean isSaltContentStagingEnabled() {
+        return Config.get().getBoolean(SALT_CONTENT_STAGING_ENABLED);
+    }
+
+    /**
+     * Returns the duration, in hours, of the time window for Salt minions to
+     * stage packages in advance of scheduled installations or upgrades.
+     *
+     * A value of 0 disables content staging for minions.
+     *
+     * @return the duration
+     */
+    public long getSaltContentStagingWindow() {
+        return Config.get().getInt(SALT_CONTENT_STAGING_WINDOW, 8);
+    }
+
+    /**
+     * Returns the advance time, in hours, for the content staging window to
+     * open with respect to the scheduled installation/upgrade time.
+     * @return the advance time
+     */
+    public long getSaltContentStagingAdvance() {
+        return Config.get().getInt(SALT_CONTENT_STAGING_ADVANCE, 8);
     }
 }
