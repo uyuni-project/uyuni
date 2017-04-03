@@ -8,6 +8,7 @@ const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 const {Table, Column, SearchField, Highlight} = require("../components/table");
+const Messages = require("../components/messages").Messages;
 
 const AFFECTED_PATCH_INAPPLICABLE = "AFFECTED_PATCH_INAPPLICABLE";
 const AFFECTED_PATCH_APPLICABLE = "AFFECTED_PATCH_APPLICABLE";
@@ -67,7 +68,8 @@ class CVEAudit extends React.Component {
       cveYear: CURRENT_YEAR,
       statuses: ALL,
       resultType: TARGET_SERVER,
-      results: []
+      results: [],
+      messages: []
     };
   }
 
@@ -121,19 +123,29 @@ class CVEAudit extends React.Component {
         "CVE-" + this.state.cveYear + "-" + this.state.cveNumber,
         target,
         this.state.statuses
-    ).then(value => {
-        this.setState({
-            results: value,
-            resultType: target
-        });
+    ).then(data => {
+        if (data.success) {
+            this.setState({
+                results: data.data,
+                resultType: target,
+                messages: []
+            });
+        } else {
+            this.setState({
+                results: [],
+                messages: data.messages
+            });
+        }
     });
   }
 
   render() {
     return (
       <span>
-
         <Panel title="CVE Audit" icon="fa-search" >
+          <Messages items={this.state.messages.map(msg => {
+              return {severity: "warning", text: msg};
+          })}/>
           <div className="input-group">
                <span className="input-group-addon">
                     CVE
@@ -254,7 +266,7 @@ class CVEAudit extends React.Component {
                                     </a>
                                 </div>
                                 <div>{"Channel: " + row.channels[0].name}</div>
-                                <div>{"Errata: " + row.erratas[0].advisory}</div>
+                                <div>{"Patch: " + row.erratas[0].advisory}</div>
                             </div>
                         );
                       } else {
@@ -264,7 +276,7 @@ class CVEAudit extends React.Component {
                       if (row.patchStatus == NOT_AFFECTED || row.patchStatus == PATCHED) {
                         return "No action required";
                       } else if (row.patchStatus == AFFECTED_PATCH_APPLICABLE) {
-                        return <LinkButton icon="fa-cogs" href={"/manager/cm/rebuild/" + row.id} className="btn-xs btn-default pull-right" text="Rebuild"/>;
+                        return <LinkButton icon="fa-cogs" href={"/rhn/manager/cm/rebuild/" + row.id} className="btn-xs btn-default pull-right" text="Rebuild"/>;
                       }  else if (row.patchStatus == AFFECTED_PATCH_INAPPLICABLE) {
                         return (
                             <div>
