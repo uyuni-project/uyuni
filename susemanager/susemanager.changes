@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Apr 03 14:44:26 CEST 2017 - mc@suse.de
+
+- version 3.1.5-1
+- create directory manually if mksubvolume fails, to support btrfs
+  based systems with missing mksubvoume utility (bsc#1031885)
+- require snapper for mksubvolume command (bsc#1031881)
+
+-------------------------------------------------------------------
 Fri Mar 31 09:45:17 CEST 2017 - mc@suse.de
 
 - version 3.1.4-1
