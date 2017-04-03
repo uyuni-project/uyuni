@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Apr 03 14:48:31 CEST 2017 - mc@suse.de
+
+- version 2.7.1.6-1
+- add error handing and fix rebuild button
+- new cve audit ui for server/images
+- Fix word spacing in 'Image Status' section of 'Image Overview' page
+
+-------------------------------------------------------------------
 Fri Mar 31 12:24:22 CEST 2017 - mc@suse.de
 
 - version 2.7.1.5-1
