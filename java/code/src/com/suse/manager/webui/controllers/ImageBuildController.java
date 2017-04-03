@@ -89,12 +89,10 @@ public class ImageBuildController {
         ImageInfo imageInfo = ImageInfoFactory.lookupByIdAndOrg(
                 Long.parseLong(req.params("id")), user.getOrg()).get();
 
-        // Parse optional query string parameters
-        model.put("profileId", imageInfo.getProfile().getProfileId());
-        model.put("hostId", imageInfo.getAction().getServerActions().stream().findFirst()
-                .map(ServerAction::getServerId).orElse(null));
-        model.put("version", imageInfo.getVersion());
-
+        String hostId = imageInfo.getAction().getServerActions().stream().findFirst()
+                .map(ServerAction::getServerId).map(id -> "&host=" + id).orElse("");
+        res.redirect("/rhn/manager/cm/build?version=" + imageInfo.getVersion() +
+                hostId + "&profile=" + imageInfo.getProfile().getProfileId());
         return new ModelAndView(model, "content_management/build.jade");
     }
 
