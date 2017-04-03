@@ -35,7 +35,6 @@ Feature: CVE Audit
     And I should see a "Install a new patch on this system" link
     And I should see a "milkyway-dummy-2345" text
     And I should see a "Download CSV" link
-    And I should see an alphabar link to this system
     And I should see a "Status" link
     And I should see a "Name" link
     And I should see a "extra CVE data update" link
