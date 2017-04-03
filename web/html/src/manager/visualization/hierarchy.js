@@ -145,6 +145,38 @@ function initHierarchy() {
             refreshTree(dataProcessor, myFilters, myCriteria, t);
           });
 
+        const patchCountsFilter = d3.select('#filter-wrapper')
+          .append('div').attr('class', 'filter');
+
+        patchCountsFilter
+          .append('label')
+          .text('Filter by patches:');
+
+        function appendPatchFilter(placeholder, filterName, filterFn, caption) {
+          const securityAdvisoriesDiv = placeholder
+            .append('div');
+
+          securityAdvisoriesDiv
+            .append('input')
+            .attr('type', 'checkbox')
+            .on('change', function() {
+              if (this.checked) {
+                myFilters.put(filterName, filterFn);
+              } else {
+                myFilters.remove(filterName);
+              }
+              refreshTree(dataProcessor, myFilters, myCriteria, t);
+            });
+
+          securityAdvisoriesDiv
+          .append('label')
+          .text('has ' + caption);
+        }
+
+        appendPatchFilter(patchCountsFilter, 'bug_advisories', d => (d.data.patch_counts || [])[0] > 0, 'bug fix advisories');
+        appendPatchFilter(patchCountsFilter, 'enhancement_advisories', d => (d.data.patch_counts || [])[1] > 0, 'product enhancement advisories');
+        appendPatchFilter(patchCountsFilter, 'security_advisories', d => (d.data.patch_counts || [])[2] > 0, 'security advisories');
+
         const baseProdFilterDiv = d3.select('#filter-wrapper')
           .append('div').attr('class', 'filter');
         baseProdFilterDiv
