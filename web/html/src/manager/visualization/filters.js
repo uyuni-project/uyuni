@@ -7,6 +7,10 @@ function filters(initFilters) {
     filters[filterName] = filter;
   }
 
+  my.remove = function(filterName) {
+    delete filters[filterName];
+  }
+
   // construct a predicate function from filters
   // (i.e. return a  function that connects all predicates with logical AND)
   my.predicate = function() {
