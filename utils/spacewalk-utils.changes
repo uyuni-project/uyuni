@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Apr 03 14:45:30 CEST 2017 - mc@suse.de
+
+- version 2.7.10.1-1
+- add UTF-8 encoding before output on stdout
+- Update taskotop man page
+- Add command line argument to optionally specify the number of times
+  taskotop should iterate before exiting.
+- Modify output columns to include task run end time and optional
+  task run start time.  Drop the status column because its redundant.
+- Add new 'each task' display mode
+
+-------------------------------------------------------------------
 Fri Mar 31 09:39:51 CEST 2017 - mc@suse.de
 
 - version 2.7.8.1-1
