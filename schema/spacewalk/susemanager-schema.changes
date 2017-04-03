@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Mon Apr 03 15:02:02 CEST 2017 - mc@suse.de
+
+- version 3.1.5-1
+- DB: create suseCVEImageChannel table for CVE Audit on Images
+- drop obsolete logging trigger if they still exist (bsc#1031266)
+- rename image tag to image version
+- fix constraint name in suseImageInfo
+- fix removing images and profiles with custom values
+- Add SQL scripts for scheduling in Quartz
+- add number of installed packages to ImageOverview
+- link ImageInfo checksum to Checksum table
+- add registry credentials type during schema upgrade
+- Some of monitoring data are not removed from DB
+- connect 3.0 to 3.1 schema upgrade
+
+-------------------------------------------------------------------
 Tue Mar 07 14:50:03 CET 2017 - mc@suse.de
 
 - version 3.1.4-1
