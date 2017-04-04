@@ -173,9 +173,9 @@ function initHierarchy() {
           .text('has ' + caption);
         }
 
-        appendPatchFilter(patchCountsFilter, 'bug_advisories', d => (d.data.patch_counts || [])[0] > 0, 'bug fix advisories');
-        appendPatchFilter(patchCountsFilter, 'enhancement_advisories', d => (d.data.patch_counts || [])[1] > 0, 'product enhancement advisories');
-        appendPatchFilter(patchCountsFilter, 'security_advisories', d => (d.data.patch_counts || [])[2] > 0, 'security advisories');
+        appendPatchFilter(patchCountsFilter, 'bug_advisories', d => HierarchyView.isSystemType(d) && (d.data.patch_counts || [])[0] > 0, 'bug fix advisories');
+        appendPatchFilter(patchCountsFilter, 'enhancement_advisories', d => HierarchyView.isSystemType(d) && (d.data.patch_counts || [])[1] > 0, 'product enhancement advisories');
+        appendPatchFilter(patchCountsFilter, 'security_advisories', d => HierarchyView.isSystemType(d) && (d.data.patch_counts || [])[2] > 0, 'security advisories');
 
         const baseProdFilterDiv = d3.select('#filter-wrapper')
           .append('div').attr('class', 'filter');
