@@ -45,6 +45,7 @@ import javax.websocket.OnError;
 import javax.websocket.Session;
 import javax.websocket.EndpointConfig;
 import javax.websocket.server.ServerEndpoint;
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -367,9 +368,12 @@ public class RemoteMinionCommands {
      */
     @OnError
     public void onError(Session session, Throwable err) {
-        if (err.getMessage().startsWith("Unexpected error [32]")) {
+        if (err instanceof EOFException) {
+            LOG.debug("The client aborted the connection.", err);
+        }
+        else if (err.getMessage().startsWith("Unexpected error [32]")) {
             // [32] "Broken pipe" is caught when the client side breaks the connection.
-            LOG.debug("Client broke the connection.", err);
+            LOG.debug("The client broke the connection.", err);
         }
         else {
             LOG.error("Websocket endpoint error", err);
