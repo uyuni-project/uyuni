@@ -42,8 +42,10 @@ function hierarchyView(container, rootIn) {
       .on('click', onNodeClick);
 
     gEnter
-      .append('circle')
-      .attr('r', 5); // default
+      .append('svg:foreignObject')
+      .attr('width', d => isSystemType(d) || isUnknownType(d) ? 15 : 25)
+      .attr('height', d => isSystemType(d) || isUnknownType(d)  ? 15 : 25)
+      .html(d => appendIconType(d));
 
     // common for enter + update sections
     node.merge(gEnter)
@@ -132,6 +134,30 @@ function hierarchyView(container, rootIn) {
   }
 
   return my;
+}
+
+// todo move
+const knownTypes = ['root', 'vhm', 'system'];
+function isUnknownType(d) {
+  return !d.data.type || knownTypes.indexOf(d.data.type) == -1;
+}
+
+function appendIconType(node) {
+  var iconClass = '';
+  var iconContent = '';
+  if (Utils.isSystemType(node)) {
+    iconClass = 'fa-desktop';
+  }
+  else if (node.data.type == 'vhm') {
+    iconClass = 'fa-1-5x spacewalk-icon-virtual-host-manager';
+  }
+  else if (node.data.id == 'root') {
+    iconClass = 'fa-2x spacewalk-icon-suma';
+  }
+  else {
+    iconClass = 'fa-question-circle';
+  }
+  return '<i class="fa ' + iconClass + '">' + iconContent + '</i>'
 }
 
 module.exports = {

@@ -93,10 +93,20 @@ svg {
     r: 5;
   }
 
-  .node.selected circle {
-    fill: #333;
-    stroke-width: 3px;
-    stroke: #ffaa00;
+  .node.selected i {
+    color: #ffaa00;
+  }
+
+  .node i.fa-1-5x {
+    font-size: 1.5em;
+  }
+
+  .node i.fa-2x {
+    font-size: 2em;
+  }
+
+  .spacewalk-icon-suma:before {
+    content: "\e625";
   }
 
   .node text {
@@ -105,7 +115,7 @@ svg {
   }
 
   .link {
-    stroke: #9ECBE2;
+    stroke: #bbb;
     stroke-width: 0.5px;
   }
 
