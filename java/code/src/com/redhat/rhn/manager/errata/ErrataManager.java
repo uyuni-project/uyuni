@@ -61,6 +61,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidErrataException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.action.MinionActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -1798,6 +1799,7 @@ public class ErrataManager extends BaseManager {
         for (ErrataAction errataAction : errataActions) {
             Action action = ActionManager.storeAction(errataAction);
             TASKOMATIC_API.scheduleActionExecution(action);
+            MinionActionManager.scheduleStagingJobsForMinions(action, user);
             actionIds.add(action.getId());
         }
         return actionIds;
