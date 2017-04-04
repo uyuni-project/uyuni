@@ -213,32 +213,48 @@ public enum SaltServerActionService {
         // now prepare each call
         for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
                 callsForAction(actionIn, minions).entrySet()) {
-            final LocalCall<?> call = entry.getKey();
+            LocalCall<?> call = entry.getKey();
             final List<MinionServer> targetMinions;
+            Map<Boolean, List<MinionServer>> results;
 
             if (isStagingJob) {
                 targetMinions = new ArrayList<>();
                 stagingJobMinionServerId
                         .ifPresent(serverId -> MinionServerFactory.lookupById(serverId)
                                 .ifPresent(server -> targetMinions.add(server)));
+                call = prepareStagingTargets(actionIn, targetMinions);
             }
             else {
                 targetMinions = entry.getValue();
             }
 
-            Map<Boolean, List<MinionServer>> results =
-                    execute(actionIn, call, targetMinions, forcePackageListRefresh,
-                            isStagingJob);
+            results = execute(actionIn, call, targetMinions, forcePackageListRefresh,
+                    isStagingJob);
+
+            results.get(true).forEach(minionServer -> {
+                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Asynchronous call on minion: " +
+                                minionServer.getMinionId());
+                    }
+                    if (!isStagingJob) {
+                        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
+                        ActionFactory.save(serverAction);
+                    }
+                });
+            });
 
             results.get(false).forEach(minionServer -> {
                 serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
                     LOG.warn("Failed to schedule action for minion: " +
                             minionServer.getMinionId());
-                    serverAction.setCompletionTime(new Date());
-                    serverAction.setResultCode(-1L);
-                    serverAction.setResultMsg("Failed to schedule action.");
-                    serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                    ActionFactory.save(serverAction);
+                    if (!isStagingJob) {
+                        serverAction.setCompletionTime(new Date());
+                        serverAction.setResultCode(-1L);
+                        serverAction.setResultMsg("Failed to schedule action.");
+                        serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                        ActionFactory.save(serverAction);
+                    }
                 });
             });
         }
@@ -592,29 +608,71 @@ public enum SaltServerActionService {
     }
 
     /**
+     * Prepare to execute staging job via Salt
+     * @param actionIn the action
+     * @param minions minions to target
+     * @return a call with the impacted minions
+     */
+    private LocalCall<?> prepareStagingTargets(Action actionIn,
+            List<MinionServer> minions) {
+        LocalCall<?> call = null;
+        if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
+            Map<String, String> args =
+                    ((PackageUpdateAction) actionIn).getDetails().stream()
+                            .collect(Collectors.toMap(d -> d.getPackageName().getName(),
+                                    d -> d.getEvr().toString()));
+            call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
+                    Optional.of(Collections.singletonMap(PARAM_PKGS, args)),
+                    Optional.of(true));
+            LOG.info("Executing staging of packages");
+        }
+        if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
+            Set<Long> errataIds = ((ErrataAction) actionIn).getErrata().stream()
+                    .map(e -> e.getId()).collect(Collectors.toSet());
+            Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory
+                    .listErrataNamesForServers(minions.stream().map(MinionServer::getId)
+                            .collect(Collectors.toSet()), errataIds);
+            List<String> errataArgs = new ArrayList<>();
+            for (Long minionId : errataNames.keySet()) {
+                for (Long errId : errataNames.get(minionId).keySet()) {
+                    errataArgs.addAll(errataNames.get(minionId).get(errId));
+                }
+            }
+            call = State.apply(Arrays.asList(PACKAGES_PATCHDOWNLOAD),
+                    Optional.of(Collections.singletonMap(PARAM_PATCHES, errataArgs)),
+                    Optional.of(true));
+            LOG.info("Executing staging of patches");
+        }
+        return call;
+    }
+
+
+    /**
      * @param actionIn the action
      * @param call the call
      * @param minions minions to target
-     * @param forcePackageListRefresh add metadata to force a package list refresh
-     * @param isStagingJob whether the action is a staging packages action
+     * @param forcePackageListRefresh add metadata to force a package list
+     * refresh
+     * @param isStagingJob if the job is a staging job
      * @return a map containing all minions partitioned by success
      */
     private Map<Boolean, List<MinionServer>> execute(Action actionIn, LocalCall<?> call,
             List<MinionServer> minions, boolean forcePackageListRefresh,
             boolean isStagingJob) {
+
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
 
         if (!isStagingJob) {
             metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
         }
+
         if (forcePackageListRefresh) {
             metadata.put(ScheduleMetadata.SUMA_FORCE_PGK_LIST_REFRESH, true);
         }
 
         List<String> minionIds = minions.stream().map(MinionServer::getMinionId)
                 .collect(Collectors.toList());
-
         if (LOG.isDebugEnabled()) {
             LOG.debug("Executing action for: " +
                     minionIds.stream().collect(Collectors.joining(", ")));
@@ -623,63 +681,12 @@ public enum SaltServerActionService {
         try {
             Map<Boolean, List<MinionServer>> result = new HashMap<>();
 
-            if (isStagingJob) {
-                if (actionIn.getActionType().equals(ActionFactory.TYPE_PACKAGES_UPDATE)) {
-                    Map<String, String> args =
-                            ((PackageUpdateAction) actionIn).getDetails().stream()
-                                    .collect(Collectors.toMap(
-                                            d -> d.getPackageName().getName(),
-                                            d -> d.getEvr().toString()));
-                    call = State.apply(Arrays.asList(PACKAGES_PKGDOWNLOAD),
-                            Optional.of(Collections.singletonMap(PARAM_PKGS, args)),
-                            Optional.of(true));
-                    LOG.info("Executing staging of packages");
-                }
-                if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
-                    Set<Long> errataIds = ((ErrataAction) actionIn).getErrata().stream()
-                            .map(e -> e.getId()).collect(Collectors.toSet());
-                    Map<Long, Map<Long, Set<String>>> errataNames =
-                            ServerFactory
-                                    .listErrataNamesForServers(
-                                            minions.stream().map(MinionServer::getId)
-                                                    .collect(Collectors.toSet()),
-                                            errataIds);
-                    List<String> errataArgs = new ArrayList<>();
-                    for (Long minionId: errataNames.keySet()) {
-                        for (Long errId: errataNames.get(minionId).keySet()) {
-                            errataArgs.addAll(errataNames.get(minionId).get(errId));
-                        }
-                    }
-                    call = State
-                            .apply(Arrays.asList(PACKAGES_PATCHDOWNLOAD),
-                                    Optional.of(Collections.singletonMap(PARAM_PATCHES,
-                                            errataArgs)),
-                                    Optional.of(true));
-                }
-                LOG.info("Executing staging of patches");
-            }
-
             List<String> results = SaltService.INSTANCE
                     .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
                     .getMinions();
 
-            result = minions.stream()
-                    .collect(Collectors.partitioningBy(
-                            minion -> results.contains(minion.getMinionId())));
-
-
-            result.get(true).forEach(minionServer -> {
-                serverActionFor(actionIn, minionServer).ifPresent(serverAction -> {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Asynchronous call on minion: " +
-                                minionServer.getMinionId());
-                    }
-                    if (!isStagingJob) {
-                        serverAction.setStatus(ActionFactory.STATUS_PICKED_UP);
-                        ActionFactory.save(serverAction);
-                    }
-                });
-            });
+            result = minions.stream().collect(Collectors
+                    .partitioningBy(minion -> results.contains(minion.getMinionId())));
 
             return result;
         }
