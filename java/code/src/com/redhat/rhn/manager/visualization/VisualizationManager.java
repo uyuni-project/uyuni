@@ -44,6 +44,7 @@ public class VisualizationManager {
      */
     public static List<Object> virtualizationHierarchy(User user) {
         Map<String, Set<String>> installedProducts = fetchInstalledProducts(user);
+        Map<String, Map<String, Integer>> patchCounts = fetchPatchCounts(user);
 
         System root = new System();
         root.setId("root");
@@ -71,6 +72,8 @@ public class VisualizationManager {
                 .list()
                 .stream())
                 .map(p -> p.setInstalledProducts(installedProducts.get(p.getRawId())))
+                .map(s ->
+                        s.setPatchCounts(patchCountsToList(patchCounts.get(s.getRawId()))))
                 .map(p -> p.setParentId(serverVhmMapping.getOrDefault(
                         p.getId(),
                         unknownVirtualHostManager.getId()
@@ -81,6 +84,8 @@ public class VisualizationManager {
                 .setParameter("org", user.getOrg())
                 .list()
                 .stream())
+                .map(s ->
+                        s.setPatchCounts(patchCountsToList(patchCounts.get(s.getRawId()))))
                 .map(p -> p.setInstalledProducts(installedProducts.get(p.getRawId())));
 
         return concatStreams(
@@ -112,6 +117,7 @@ public class VisualizationManager {
      */
     public static List<Object> proxyHierarchy(User user) {
         Map<String, Set<String>> installedProducts = fetchInstalledProducts(user);
+        Map<String, Map<String, Integer>> patchCounts = fetchPatchCounts(user);
 
         System root = new System();
         root.setId("root");
@@ -130,7 +136,9 @@ public class VisualizationManager {
                 .setParameter("org", user.getOrg())
                 .list()
                 .stream())
-                .map(s -> s.setInstalledProducts(installedProducts.get(s.getRawId())));
+                .map(s -> s.setInstalledProducts(installedProducts.get(s.getRawId())))
+                .map(s ->
+                        s.setPatchCounts(patchCountsToList(patchCounts.get(s.getRawId()))));
 
         return concatStreams(
                 Stream.of(root),
