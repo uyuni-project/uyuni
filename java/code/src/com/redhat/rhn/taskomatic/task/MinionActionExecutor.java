@@ -24,6 +24,7 @@ import org.quartz.JobExecutionContext;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 /**
  * Execute SUSE Manager actions via Salt.
@@ -94,7 +95,7 @@ public class MinionActionExecutor extends RhnJavaJob {
 
         log.info("Executing action: " + actionId);
         SaltServerActionService.INSTANCE.execute(action, forcePackageListRefresh,
-                isStagingJob, stagingJobMinionServerId);
+                isStagingJob, Optional.ofNullable(stagingJobMinionServerId));
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;

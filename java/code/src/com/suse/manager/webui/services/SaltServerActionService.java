@@ -197,7 +197,7 @@ public enum SaltServerActionService {
      * contain involved minionId(s)
      */
     public void execute(Action actionIn, boolean forcePackageListRefresh,
-            boolean isStagingJob, Long stagingJobMinionServerId) {
+            boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
         List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
                 .map(serverActions -> serverActions.stream()
                         .flatMap(action ->
@@ -218,8 +218,9 @@ public enum SaltServerActionService {
 
             if (isStagingJob) {
                 targetMinions = new ArrayList<>();
-                MinionServerFactory.lookupById(stagingJobMinionServerId)
-                        .ifPresent(server -> targetMinions.add(server));
+                stagingJobMinionServerId
+                        .ifPresent(serverId -> MinionServerFactory.lookupById(serverId)
+                                .ifPresent(server -> targetMinions.add(server)));
             }
             else {
                 targetMinions = entry.getValue();

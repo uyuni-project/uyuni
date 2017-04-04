@@ -97,7 +97,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 if (action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
                         function.equals("test.ping")) {
                     SaltServerActionService.INSTANCE.execute(action.get(), false, false,
-                            null);
+                            Optional.empty());
                 }
                 else {
                     Optional<MinionServer> minionServerOpt = MinionServerFactory
