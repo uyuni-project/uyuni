@@ -74,7 +74,7 @@ class ImageViewPatches extends React.Component {
                     comparator={Utils.sortByText}
                     header={t("Advisory")}
                     cell={(row, criteria) =>
-                        <a href={"https://f42.suse.de/rhn/errata/details/Details.do?eid=" + row.id}
+                        <a href={"/rhn/errata/details/Details.do?eid=" + row.id}
                            title={t("Details")}>{row.name}</a>}
                 />
                 <Column
