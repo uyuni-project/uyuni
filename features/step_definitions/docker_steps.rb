@@ -209,3 +209,30 @@ Then(/I create "([^"]*)" random "([^"]*)" containers$/) do |count, image_input|
     cont_op.scheduleImageBuild(image, version_build, build_hostid, date_build)
   end
 end
+
+And(/^I check that sles-minion exists otherwise bootstrap it$/) do
+  ck_minion =  "salt #{$minion_fullhostname} test.ping"
+  _out, code = $server.run(ck_minion, false)
+  if code.nonzero?
+     # bootstrap minion
+     steps %(
+     Given I am authorized
+     When I follow "Salt"
+     Then I should see a "Bootstrapping" text
+     And I follow "Bootstrapping"
+     Then I should see a "Bootstrap Minions" text
+     And  I enter the hostname of "sle-minion" as hostname
+     And I enter "22" as "port"
+     And I enter "root" as "user"
+     And I enter "linux" as "password"
+     And I click on "Bootstrap"
+     And I wait for "150" seconds
+     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
+    )
+  end
+  # if minion exists, check that exist also in the gui (it could be a minion that is buggy in the guy)
+  steps %(
+   Given I am authorized
+   Then I am on the Systems overview page of this "sle-minion"
+  )
+end
