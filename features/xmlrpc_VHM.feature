@@ -55,7 +55,6 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
     When I click Systems, under Systems node
     And I follow "Virtual Systems" in the left menu
     Then I should see a "vCenter" text
-     And I should see a "NSX-l3gateway" text
 
   Scenario: Check delete
     Given I am logged in via XML-RPC/virtualhostmanager as user "admin" and password "admin"
