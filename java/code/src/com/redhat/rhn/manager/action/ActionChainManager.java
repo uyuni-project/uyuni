@@ -532,6 +532,7 @@ public class ActionChainManager {
             result.add(action);
 
             TASKOMATIC_API.scheduleActionExecution(action);
+            MinionActionManager.scheduleStagingJobsForMinions(action, user);
         }
         else {
             Integer nextSortOrder = sortOrder;
@@ -543,9 +544,9 @@ public class ActionChainManager {
                 ActionChainFactory.queueActionChainEntry(action, actionChain, serverId,
                     nextSortOrder);
                 result.add(action);
+                MinionActionManager.scheduleStagingJobsForMinions(action, user);
             }
         }
-
         return result;
     }
 

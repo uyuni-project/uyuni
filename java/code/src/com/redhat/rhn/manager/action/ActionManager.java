@@ -1889,6 +1889,8 @@ public class ActionManager extends BaseManager {
 
         addPackageActionDetails(action, pkgs);
         taskomaticApi.scheduleActionExecution(action);
+        MinionActionManager.scheduleStagingJobsForMinions(action, scheduler);
+
         return action;
     }
 
