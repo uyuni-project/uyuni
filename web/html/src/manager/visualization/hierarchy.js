@@ -260,6 +260,9 @@ function initHierarchy() {
           const dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
             time.getHours(), time.getMinutes(), time.getSeconds());
           myCriteria.get()['user-criteria'] = d => {
+            if (d.data.checkin == undefined) {
+              return '';
+            }
             var firstPartition = d.data.checkin < dateTime.getTime();
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
@@ -313,7 +316,10 @@ function initHierarchy() {
 
         function applyPatchesCriteria() {
           myCriteria.get()['user-criteria'] = d => {
-            var firstPartition = (d.data.patch_counts || []).filter(pc => pc > 0).length > 0;
+            if (d.data.patch_counts == undefined) {
+              return '';
+            }
+            var firstPartition = d.data.patch_counts.filter(pc => pc > 0).length > 0;
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
           };
