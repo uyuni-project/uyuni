@@ -259,7 +259,7 @@ function initHierarchy() {
 
           const dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
             time.getHours(), time.getMinutes(), time.getSeconds());
-          myCriteria.get()['checkin-criteria'] = d => {
+          myCriteria.get()['user-criteria'] = d => {
             var firstPartition = d.data.checkin < dateTime.getTime();
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
@@ -268,7 +268,7 @@ function initHierarchy() {
         }
 
         function resetTree() {
-          myCriteria.get()['checkin-criteria'] = d => { return ''};
+          myCriteria.get()['user-criteria'] = d => { return ''};
           t();
         }
 
@@ -312,7 +312,7 @@ function initHierarchy() {
            .text('Partition systems based on whether there are patches for them:');
 
         function applyPatchesCriteria() {
-          myCriteria.get()['checkin-criteria'] = d => {
+          myCriteria.get()['user-criteria'] = d => {
             var firstPartition = (d.data.patch_counts || []).filter(pc => pc > 0).length > 0;
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
