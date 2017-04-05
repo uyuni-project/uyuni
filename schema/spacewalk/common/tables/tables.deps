@@ -229,7 +229,7 @@ susePackageEula                :: rhnPackage suseEula
 susePackageProductFile         :: suseProductFile rhnPackage
 susePackageState               :: rhnPackageName rhnPackageEVR rhnPackageArch suseStateRevision \
                                   susePackageStateType suseVersionConstraintType
-suseProducts                   :: rhnPackageArch
+suseProducts                   :: rhnPackageArch rhnChannelFamily
 suseProductChannel             :: suseProducts rhnChannel
 suseProductExtension           :: suseProducts
 suseSCCOrderItem               :: suseCredentials
