@@ -160,9 +160,10 @@ function updateDetailBox(d) {
     if (patchCountsArray == undefined) {
       return 'unknown';
     }
-    return patchCountsArray[0] + ' bug fix advisories, ' +
-      patchCountsArray[1] + ' product enhancement advisories, ' +
-      patchCountsArray[2] + ' security advisories.';
+    const unknownCountMsg = 'unknown count of';
+    return (patchCountsArray[0] || unknownCountMsg) + ' bug fix advisories, ' +
+      (patchCountsArray[1] || unknownCountMsg) + ' product enhancement advisories, ' +
+      (patchCountsArray[2] || unknownCountMsg) + ' security advisories.';
   }
 
   var data = d.data;
