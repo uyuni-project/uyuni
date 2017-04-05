@@ -115,13 +115,23 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                 LOG.debug("Updating action for server: " +
                                         minionServer.getId());
                             }
-                            SaltUtils.INSTANCE.updateServerAction(sa,
-                                    jobReturnEvent.getData().getRetcode(),
-                                    jobReturnEvent.getData().isSuccess(),
-                                    jobReturnEvent.getJobId(),
-                                    jobResult.get(),
-                                    jobReturnEvent.getData().getFun());
-                            ActionFactory.save(sa);
+                            try {
+                                SaltUtils.INSTANCE.updateServerAction(sa,
+                                        jobReturnEvent.getData().getRetcode(),
+                                        jobReturnEvent.getData().isSuccess(),
+                                        jobReturnEvent.getJobId(), jobResult.get(),
+                                        jobReturnEvent.getData().getFun());
+                            }
+                            catch (Exception e) {
+                                sa.setStatus(ActionFactory.STATUS_FAILED);
+                                sa.setResultMsg("An unexpected error has occured. " +
+                                        "Please check the server logs.");
+                                // We don't actually want to catch any exceptions here
+                                throw e;
+                            }
+                            finally {
+                                ActionFactory.save(sa);
+                            }
                         });
                     });
                 }
