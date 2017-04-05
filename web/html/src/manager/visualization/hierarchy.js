@@ -303,12 +303,37 @@ function initHierarchy() {
           .attr('class', 'btn btn-default')
           .on('click', updateTree)
           .text('Apply');
-        checkinTimeCriteria
+
+        const hasPatchesCriteria = d3.select('#filter-wrapper')
+          .append('div').attr('class', 'filter');
+
+        hasPatchesCriteria
+           .append('label')
+           .text('Partition systems based on whether there are patches for them:');
+
+        function applyPatchesCriteria() {
+          myCriteria.get()['checkin-criteria'] = d => {
+            var firstPartition = (d.data.patch_counts || []).filter(pc => pc > 0).length > 0;
+            d.data.partition = firstPartition;
+            return firstPartition  ? 'stroke-red' : 'stroke-green';
+          };
+          refreshTree(dataProcessor, myFilters, myCriteria, t);
+        }
+
+        hasPatchesCriteria
+          .append('button')
+          .attr('type', 'button')
+          .attr('class', 'btn btn-default')
+          .on('click', applyPatchesCriteria)
+          .text('Apply');
+
+        d3.select('#filter-wrapper')
+          .append('div').attr('class', 'filter')
           .append('button')
           .attr('type', 'button')
           .attr('class', 'btn btn-default')
           .on('click', resetTree)
-          .text('Reset');
+          .text('Reset partitioning');
 
         adjustSvgDimensions(svg, mySimulation);
 
