@@ -156,30 +156,46 @@ function initHierarchy() {
           .append('label')
           .text('Filter by patches:');
 
-        function appendPatchFilter(placeholder, filterName, filterFn, caption) {
+        function appendCheckbox(placeholder, caption, callback) {
           const securityAdvisoriesDiv = placeholder
             .append('div');
 
           securityAdvisoriesDiv
             .append('input')
             .attr('type', 'checkbox')
-            .on('change', function() {
-              if (this.checked) {
-                myFilters.put(filterName, filterFn);
-              } else {
-                myFilters.remove(filterName);
-              }
-              refreshTree(dataProcessor, myFilters, myCriteria, t);
-            });
+            .on('change', function() { callback(this.checked); });
 
           securityAdvisoriesDiv
           .append('label')
-          .text('has ' + caption);
+          .text(caption);
         }
 
-        appendPatchFilter(patchCountsFilter, 'bug_advisories', d => HierarchyView.isSystemType(d) && (d.data.patch_counts || [])[0] > 0, 'bug fix advisories');
-        appendPatchFilter(patchCountsFilter, 'enhancement_advisories', d => HierarchyView.isSystemType(d) && (d.data.patch_counts || [])[1] > 0, 'product enhancement advisories');
-        appendPatchFilter(patchCountsFilter, 'security_advisories', d => HierarchyView.isSystemType(d) && (d.data.patch_counts || [])[2] > 0, 'security advisories');
+        // state of the patch status checkboxes:
+        // [bug fix adv. checked, prod. enhancements checked, security adv. checked]
+        const patchCountFilterConfig = [false, false, false];
+        // create a callback function that
+        //  - updates patchCountFilterConfig at given index,
+        //  - updates the filters based on patchCountFilterConfig
+        //  - refreshes the tree
+        function patchCountFilterCallback(idx) {
+          return function(checked) {
+            patchCountFilterConfig[idx] = checked;
+            if (!patchCountFilterConfig.includes(true)) {
+              myFilters.remove('patch_count_filter');
+            } else {
+              myFilters.put('patch_count_filter', d => {
+                return HierarchyView.isSystemType(d) &&
+                  patchCountFilterConfig // based on the checkboxes state, take into account the patch count
+                    .map((value, index) => value && (d.data.patch_counts || [])[index] > 0)
+                    .reduce((a, b) => a || b, false);
+              });
+            }
+            refreshTree(dataProcessor, myFilters, myCriteria, t);
+          }
+        }
+        appendCheckbox(patchCountsFilter, 'has bug fix advisories', patchCountFilterCallback(0));
+        appendCheckbox(patchCountsFilter, 'OR has product enhancement advisories', patchCountFilterCallback(1));
+        appendCheckbox(patchCountsFilter, 'OR has security advisories', patchCountFilterCallback(2));
 
         const baseProdFilterDiv = d3.select('#filter-wrapper')
           .append('div').attr('class', 'filter');
