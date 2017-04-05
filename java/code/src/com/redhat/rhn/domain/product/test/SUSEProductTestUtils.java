@@ -179,12 +179,25 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * SLE-HA12 SP1 x86_64
      */
     public static void createVendorSUSEProducts() {
+        ChannelFamily cfsles = new ChannelFamily();
+        cfsles.setLabel("7261");
+        cfsles.setName("SUSE Linux Enterprise Server");
+        cfsles.setProductUrl("some url");
+        TestUtils.saveAndFlush(cfsles);
+
+        ChannelFamily cfha = new ChannelFamily();
+        cfha.setLabel("SLE-HAE-X86");
+        cfha.setName("SUSE Linux Enterprise High Availability Extension (x86)");
+        cfha.setProductUrl("some url");
+        TestUtils.saveAndFlush(cfha);
+
         SUSEProduct product = new SUSEProduct();
         product.setName("sles");
         product.setVersion("12.1");
         product.setFriendlyName("SUSE Linux Enterprise Server 12 SP1");
         product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         product.setProductId(1322);
+        product.setChannelFamily(cfsles);
         TestUtils.saveAndFlush(product);
 
         product = new SUSEProduct();
@@ -193,6 +206,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setFriendlyName("SUSE Linux Enterprise High Availability Extension 12 SP1");
         product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         product.setProductId(1324);
+        product.setChannelFamily(cfha);
         TestUtils.saveAndFlush(product);
     }
 
