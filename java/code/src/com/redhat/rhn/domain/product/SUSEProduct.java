@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.product;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -50,6 +51,9 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     /** The product id. */
     private long productId;
 
+    /** The channel family */
+    private ChannelFamily channelFamily;
+
     /** True if the product is 'free' */
     private boolean free;
 
@@ -65,6 +69,7 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     /** available products from which upgrade to this is possible */
     private Set<SUSEProduct> downgrades;
 
+    /** product channels */
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
     /**
@@ -177,6 +182,20 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      */
     public void setProductId(long productIdIn) {
         productId = productIdIn;
+    }
+
+    /**
+     * @return the channelFamily
+     */
+    public ChannelFamily getChannelFamily() {
+        return channelFamily;
+    }
+
+    /**
+     * @param channelFamilyIn the channelFamily to set
+     */
+    public void setChannelFamily(ChannelFamily channelFamilyIn) {
+        this.channelFamily = channelFamilyIn;
     }
 
     /**
