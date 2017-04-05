@@ -482,7 +482,6 @@ public class SaltUtils {
     private static boolean actionFailed(String function, JsonElement rawResult,
             boolean success, long retcode) {
         // For state.apply based actions verify the result of each state
-        boolean stateApplySuccess = true;
         if (function.equals("state.apply")) {
             return Opt.fold(
                 SaltUtils.jsonEventToStateApplyResults(rawResult),
@@ -490,7 +489,7 @@ public class SaltUtils {
                 results -> results.values().stream().filter(
                     result -> !result.isResult()).findAny().isPresent());
         }
-        return !(success && retcode == 0 && stateApplySuccess);
+        return !(success && retcode == 0);
     }
 
     /**
