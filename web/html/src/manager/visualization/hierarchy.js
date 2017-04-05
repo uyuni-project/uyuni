@@ -88,15 +88,19 @@ function initHierarchy() {
         // Returns the CSS class for the given node
         // simple algorithm based on depth
         var myDeriveClass = function(node) {
-          switch (node.depth) {
-              case 0: return 'depth0';
-              case 1: return 'depth1';
-              default: return 'default';
+          if (node.id == 'root') {
+            return 'root';
           }
+
+          if (view == 'proxy-hierarchy' && node.depth == 1 || ['group', 'vhm'].includes(node.data.type)) {
+              return 'inner-node';
+          }
+
+          return 'system';
         }
 
         let dataProcessor = Preprocessing.stratify(d);
-        if (preprocessor == 'grouping') {
+        if (view == 'grouping') {
           dataProcessor = Preprocessing.grouping(d);
         }
         const root = dataProcessor();

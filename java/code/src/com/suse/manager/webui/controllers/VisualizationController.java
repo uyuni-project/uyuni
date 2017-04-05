@@ -50,6 +50,7 @@ public class VisualizationController {
         data.put("title", "Virtualization Hierarchy");
         data.put("endpoint",
                 "/rhn/manager/api/visualization/virtualization-hierarchy/data");
+        data.put("view", "virtualization-hierarchy");
         request.attribute("legends", "visualization");
         return new ModelAndView(data, "visualization/hierarchy.jade");
     }
@@ -81,6 +82,7 @@ public class VisualizationController {
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("title", "Proxy Hierarchy");
         data.put("endpoint", "/rhn/manager/api/visualization/proxy-hierarchy/data");
+        data.put("view", "proxy-hierarchy");
         request.attribute("legends", "visualization");
         return new ModelAndView(data, "visualization/hierarchy.jade");
     }
@@ -113,7 +115,7 @@ public class VisualizationController {
         data.put("title", "Systems Grouping");
         data.put("endpoint", "/rhn/manager/api/visualization/" +
                 "systems-with-managed-groups/data");
-        data.put("preprocessor", "grouping");
+        data.put("view", "grouping");
         request.attribute("legends", "visualization");
         return new ModelAndView(data, "visualization/hierarchy.jade");
     }
