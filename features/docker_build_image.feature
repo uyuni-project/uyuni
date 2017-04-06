@@ -5,6 +5,23 @@ Feature:  Build Container images with SUSE Manager. Basic image
           Images are not with zypper and doesn't contains the name
           of the server. So the inspect functionality is not tested here.
 
+  Scenario: Check prerequisites of content manag feature
+  Then I check that sles-minion exists otherwise bootstrap it
+
+  Scenario: Create Activation-key docker
+  Given I am on the Systems page
+  And I follow "Activation Keys" in the left menu
+  And I follow "Create Key"
+  When I enter "Minion testing" as "description"
+  And I enter "DOCKER-TEST" as "key"
+  And I enter "20" as "usageLimit"
+  And I select "Test-Channel-x86_64" from "selectedChannel"
+  And I click on "Create Activation Key"
+  And I follow "Packages"
+  And I enter "orion-dummy perseus-dummy" as "packages"
+  And I click on "Update Key"
+  Then I should see a "Activation key Minion testing has been modified" text
+
   Scenario: Assign to the sles-minion the property container build host 
   Given I am on the Systems overview page of this "sle-minion"
   And I follow "Details" in the content area
@@ -64,7 +81,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I follow "Create"
   And I enter "suse_key" as "label"
   And I select "galaxy-registry" from "imageStore"
-  And I select "1-MINION-TEST" from "activationKey"
+  And I select "1-DOCKER-TEST" from "activationKey"
   And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile" as "path"
   And I click on "create-btn"
 
@@ -75,7 +92,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I follow "Create"
   And I enter "suse_real_key" as "label"
   And I select "galaxy-registry" from "imageStore"
-  And I select "1-MINION-TEST" from "activationKey"
+  And I select "1-DOCKER-TEST" from "activationKey"
   And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile/serverhost" as "path"
   And I click on "create-btn"
 

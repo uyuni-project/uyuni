@@ -1,4 +1,4 @@
---- # List of features for a full test run
+--- # initialize suse-manager server
 - features/init_user_create.feature
 - features/setup_proxy.feature
 - features/mainpage.feature
@@ -13,13 +13,13 @@
 - features/credentials.feature
 - features/csv_separator.feature
 - features/create_config_channel.feature
+# traditional client
 - features/register_client.feature
 - features/test_config_channel.feature
 - features/action_chain.feature
 - features/xmlrpc_actionchain.feature
 - features/custom_system_info.feature
 - features/create_group.feature
-- features/add_sys_of_group_to_SSM.feature
 - features/configuration.feature
 - features/check_errata_npn.feature
 - features/cve_audit.feature

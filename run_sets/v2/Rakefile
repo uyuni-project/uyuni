@@ -8,7 +8,7 @@ Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
   namespace :cucumber do
     outputfile = "#{entry}.html"
     Cucumber::Rake::Task.new(File.basename(entry, '.yml').to_sym) do |t|
-      cucumber_opts = %W(--format pretty --format html -o #{outputfile} -f rerun --out failed_#{entry}.txt)
+      cucumber_opts = %W[--format pretty --format html -o #{outputfile} -f rerun --out failed_#{entry}.txt]
       features = YAML.safe_load(File.read(entry))
       t.cucumber_opts = cucumber_opts + features
     end
@@ -32,7 +32,7 @@ end
 
 # docker depends on salt and initserver
 desc "Run docker features tests"
-task :docker => %i(initserver salt) do
+task :docker => %i[initserver salt] do
   puts "docker"
   `touch docker.html`
   # Rake::Task['cucumber:docker'].invoke
@@ -46,7 +46,7 @@ task :tradclient => [:initserver] do
 end
 
 # here is the MAIN function
-multitask :mallococomero => %i(initserver tradclient docker salt) do
+multitask :mallococomero => %i[initserver tradclient docker salt] do
   puts "Completed parallel execution"
   `mv *.html results`
 end

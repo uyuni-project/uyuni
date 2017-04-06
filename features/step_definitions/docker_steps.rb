@@ -14,7 +14,7 @@ module ImageProfile
     # create delete profile test
     cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
     cont_op.deleteProfile('fakeone')
-    cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '1-MINION-TEST')
+    cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '1-DOCKER-TEST')
     cont_op.deleteProfile('fakeone')
   end
 
@@ -28,8 +28,7 @@ module ImageProfile
     cont_op.setProfileCustomValues('fakeone', values)
     pro_det = cont_op.getProfileCustomValues('fakeone')
     puts pro_det
-    # FIXME: atm this is a bug. we cannot set new values.
-    # assert_equal(pro_det['arancio'], 'arancia xmlrpc tests', 'setting custom profile value failed')
+    assert_equal(pro_det['arancio'], 'arancia xmlrpc tests', 'setting custom profile value failed')
     pro_type = cont_op.listImageProfileTypes
     assert_equal(pro_type.length, 1, 'support at moment only one type of Profile!')
     assert_equal(pro_type[0], 'dockerfile', 'type is not dockerfile?')
@@ -207,5 +206,27 @@ Then(/I create "([^"]*)" random "([^"]*)" containers$/) do |count, image_input|
     now = DateTime.now
     date_build = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
     cont_op.scheduleImageBuild(image, version_build, build_hostid, date_build)
+  end
+end
+
+And(/^I check that sles-minion exists otherwise bootstrap it$/) do
+  ck_minion =  "salt #{$minion_fullhostname} test.ping"
+  _out, code = $server.run(ck_minion, false)
+  if code.nonzero?
+    # bootstrap minion
+    steps %(
+      Given I am authorized
+      When I follow "Salt"
+      Then I should see a "Bootstrapping" text
+      And I follow "Bootstrapping"
+      Then I should see a "Bootstrap Minions" text
+      And  I enter the hostname of "sle-minion" as hostname
+      And I enter "22" as "port"
+      And I enter "root" as "user"
+      And I enter "linux" as "password"
+      And I click on "Bootstrap"
+      And I wait for "150" seconds
+      Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
+    )
   end
 end
