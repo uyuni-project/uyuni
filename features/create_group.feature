@@ -44,3 +44,10 @@ Feature: Create a group
     And I follow this "sle-client" link
     When I follow "Groups" in the content area
     Then I should see a "newgroup" text 
+
+  Scenario: add newgroup to SSM
+    Given I am on the groups page
+    And I click on "Use in SSM" for "newgroup"
+    And I should see a "system selected" text
+    And I should see a "Selected Systems List" text
+    Then I should see this client as link
