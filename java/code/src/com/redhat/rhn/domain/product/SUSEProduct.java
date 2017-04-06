@@ -54,6 +54,9 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     /** The channel family */
     private ChannelFamily channelFamily;
 
+    /** True if the product is a base product */
+    private boolean base;
+
     /** True if the product is 'free' */
     private boolean free;
 
@@ -196,6 +199,20 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      */
     public void setChannelFamily(ChannelFamily channelFamilyIn) {
         this.channelFamily = channelFamilyIn;
+    }
+
+    /**
+     * @return the base
+     */
+    public boolean isBase() {
+        return base;
+    }
+
+    /**
+     * @param baseIn the base to set
+     */
+    public void setBase(boolean baseIn) {
+        this.base = baseIn;
     }
 
     /**
