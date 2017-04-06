@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.visualization;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.visualization.json.System;
 import com.redhat.rhn.manager.visualization.json.VirtualHostManager;
@@ -253,9 +254,9 @@ public class VisualizationManager {
     private static List<Integer> patchCountsToList(Map<String, Integer> patchCounts) {
         List<Integer> result = new ArrayList<>();
         if (patchCounts != null) {
-            result.add(patchCounts.getOrDefault("Bug Fix Advisory", 0));
-            result.add(patchCounts.getOrDefault("Product Enhancement Advisory", 0));
-            result.add(patchCounts.getOrDefault("Security Advisory", 0));
+            result.add(patchCounts.getOrDefault(ErrataFactory.ERRATA_TYPE_BUG, 0));
+            result.add(patchCounts.getOrDefault(ErrataFactory.ERRATA_TYPE_ENHANCEMENT, 0));
+            result.add(patchCounts.getOrDefault(ErrataFactory.ERRATA_TYPE_SECURITY, 0));
         }
         return result;
    }
