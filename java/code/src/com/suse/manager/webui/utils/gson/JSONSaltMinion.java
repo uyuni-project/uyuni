@@ -19,10 +19,11 @@ import com.suse.salt.netapi.calls.wheel.Key;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.stream.Stream.concat;
 
 /**
  * JSON representation of a Salt Minion.
@@ -54,9 +55,9 @@ public class JSONSaltMinion {
     }
 
     private static Stream<JSONSaltMinion> fromFingerprints(Map<String, String> fingerprints,
-            Map<String, Long> serverIds, String state) {
-
+            Map<String, Long> serverIds, String state, Predicate<String> isVisible) {
         return fingerprints.entrySet().stream()
+                .filter(s -> isVisible.test(s.getKey()))
                 .map(m -> new JSONSaltMinion(m.getKey(), m.getValue(), state,
                         serverIds.get(m.getKey())));
     }
@@ -65,27 +66,20 @@ public class JSONSaltMinion {
      * Creates a list of {@link JSONSaltMinion} objects from a {@link Key.Fingerprints}
      * instance.
      *
-     * @param fingerprints result of a {@code salt.wheel.key.finger} call
+     * @param fp result of a {@code salt.wheel.key.finger} call
+     * @param isVisible predicate to check if minion is visible
      * @param sids map of sids with minion ids as keys, used to associate mininons to
      *             corresponding server records
      * @return a list of Salt minions
      */
-    public static List<JSONSaltMinion> fromFingerprints(Key.Fingerprints fingerprints,
-            Map<String, Long> sids) {
-
-        Stream<JSONSaltMinion> minionList = fromFingerprints(fingerprints.getMinions(),
-                sids, STATE_ACCEPTED);
-
-        minionList = concat(minionList, fromFingerprints(fingerprints.getDeniedMinions(),
-                sids, STATE_DENIED));
-
-        minionList = concat(minionList, fromFingerprints(fingerprints.getRejectedMinions(),
-                sids, STATE_REJECTED));
-
-        minionList = concat(minionList, fromFingerprints(
-                fingerprints.getUnacceptedMinions(), sids, STATE_PENDING));
-
-        return minionList.collect(Collectors.toList());
+    public static List<JSONSaltMinion> fromFingerprints(Key.Fingerprints fp,
+        Map<String, Long> sids, Predicate<String> isVisible) {
+        return Stream.of(
+                fromFingerprints(fp.getMinions(), sids, STATE_ACCEPTED, isVisible),
+                fromFingerprints(fp.getDeniedMinions(), sids, STATE_DENIED, isVisible),
+                fromFingerprints(fp.getRejectedMinions(), sids, STATE_REJECTED, isVisible),
+                fromFingerprints(fp.getUnacceptedMinions(), sids, STATE_PENDING, isVisible)
+        ).flatMap(Function.identity()).collect(Collectors.toList());
     }
 
     /**
