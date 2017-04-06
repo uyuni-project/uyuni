@@ -586,7 +586,7 @@ class RepoSync(object):
                                   (select sequence_nextval('rhn_channelcomps_id_seq'),
                                           :cid,
                                           :relpath
-                                     from dual91cf1508a829dbbc07b23753d3e7e8d46a275ae4
+                                     from dual
                                     where not exists (select 1 from rhnChannelComps
                                                        where channel_id = :cid))""")
             hi.execute(cid=self.channel['id'], relpath=relativepath)
