@@ -27,6 +27,7 @@ suseProducts
                         CONSTRAINT suse_products_cfid_fk
                         REFERENCES rhnChannelFamily (id)
                         ON DELETE SET NULL,
+    base          CHAR(1) DEFAULT ('N') NOT NULL,
     free          CHAR(1) DEFAULT ('N') NOT NULL,
     created   timestamp with local time zone
                   DEFAULT (current_timestamp) NOT NULL,
