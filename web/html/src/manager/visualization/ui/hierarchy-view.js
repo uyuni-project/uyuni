@@ -43,6 +43,8 @@ function hierarchyView(container, rootIn) {
 
     gEnter
       .append('svg:foreignObject')
+      .attr('x', d => setXoffsetByType(d))
+      .attr('y', d => setYoffsetByType(d))
       .html(d => appendIconType(d));
 
     // common for enter + update sections
@@ -156,6 +158,34 @@ function appendIconType(node) {
     iconClass = 'fa-question-circle';
   }
   return '<i class="fa ' + iconClass + '">' + iconContent + '</i>'
+}
+
+function setXoffsetByType(node) {
+  let offset;
+  if (node.data.id == 'root') {
+    offset = '-2em';
+  }
+  else if (node.data.type == 'vhm') {
+    offset = '-1.5em';
+  }
+  else {
+    offset = '-.5em';
+  }
+  return offset;
+}
+
+function setYoffsetByType(node) {
+  let offset;
+  if (node.data.id == 'root') {
+    offset = '-2em';
+  }
+  else if (node.data.type == 'vhm') {
+    offset = '-1.5em';
+  }
+  else {
+    offset = '-.5em';
+  }
+  return offset;
 }
 
 module.exports = {
