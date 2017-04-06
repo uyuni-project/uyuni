@@ -3,28 +3,12 @@
 
 Feature: register a salt-minion via bootstrap
 
-  Scenario: bootstrap a sles minion
-     Given I am authorized
-     When I follow "Salt"
-     Then I should see a "Bootstrapping" text
-     And I follow "Bootstrapping"
-     Then I should see a "Bootstrap Minions" text
-     # sle-minion = sles, rh_minion = redhat
-     And  I enter the hostname of "sle-minion" as hostname
-     And I enter "22" as "port"
-     And I enter "root" as "user"
-     And I enter "linux" as "password"
-     And I click on "Bootstrap"
-     And I wait for "180" seconds
-     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
-  # testing command line
   Scenario: check new bootstrapped minion in System Overview page
      Given I am authorized
      When I follow "Salt"
      Then I should see a "accepted" text
-     # sle-minion = sles, rh_minion = redhat
      And the salt-master can reach "sle-minion"
-  # testing GUI
+     
   Scenario: Run a remote command
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
