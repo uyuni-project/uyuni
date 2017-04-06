@@ -933,6 +933,7 @@ public class ContentSyncManager {
                 }
                 product.setArch(pArch);
             }
+            product.setBase(p.isBaseProduct());
             product.setChannelFamily(cf);
             SUSEProductFactory.save(product);
             processed.add(product);
