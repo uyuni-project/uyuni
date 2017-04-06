@@ -93,7 +93,6 @@
 
 - features/minion_centos_bootstrap.feature
 - features/centos_salt_remote_cmds.feature
-- features/centos_salt_ssh.feature
 # end-tests
 - features/spacewalk-errors.feature
 - features/spacewalk-debug.feature
