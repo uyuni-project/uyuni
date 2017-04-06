@@ -45,24 +45,19 @@ function hierarchyView(rootIn, container) {
     node.merge(gEnter)
       .attr('class', d => 'node ' + deriveClass(d));
 
-    // let's update the text nodes separately as we want them to render on the top in the SVG
-    let textUpdate = container.selectAll('text')
-      .data(nodes.filter(d => d.children != null), function(d) { return d.id; });
-
-    let textEnter = textUpdate
-      .enter();
-    textEnter
-      .append('text')
-      .attr('dx', '1em')
-      .attr('dy', '.15em');
-
-    textUpdate.merge(textEnter)
-      .selectAll('text')
-      .text(d => (d.data.type && d.data.type != 'system' ? d.data.name : '') + countChildren(d));
-
-    textUpdate
-      .exit()
+    // text captions are handled separately so that they'll render on the top of other elements in SVG
+    // remove all text captions to re-render them on the top
+    container.selectAll('text.caption')
       .remove();
+    // we only care about the 'enter' section as we have removed all captions above
+    container.selectAll('text.caption')
+      .data(nodes.filter(d => d.children != null), function(d) { return d.id; })
+      .enter()
+      .append('text')
+      .attr('class', 'caption')
+      .attr('dx', '1em')
+      .attr('dy', '.15em')
+      .text(d => (d.data.type && d.data.type != 'system' ? d.data.name : '') + countChildren(d));
 
     var link = container.selectAll('line.link').data(links, d => d.target.id);
 
@@ -97,7 +92,7 @@ function hierarchyView(rootIn, container) {
         node
           .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')')
 
-        container.selectAll('text')
+        container.selectAll('text.caption')
           .data(nodes, function(d) { return d.id; })
           .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
 
