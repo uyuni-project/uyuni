@@ -177,6 +177,12 @@ function updateDetailBox(d) {
       '<div>Installed products : <strong>' + data.installedProducts + '</strong></div>' +
       '<div>Patch status : <strong>' + patchStatus(data.patch_counts) + '</strong></div>';
   }
+  let groupSpecificInfo = '';
+  if (data.type == 'group' && data.groups != undefined) {
+    groupSpecificInfo = '<div>Groups: <b>' + data.groups
+      .map((g, idx) => idx == 0 ? g : ' and ' + g)
+      .reduce((a,b) => a + b, '') + '</b></div>';
+  }
   $('.detailBox').html(
     '<div class="content-wrapper">' +
     '<a href="#" class="close-popup" onClick="$.closeDetailBox()">X</a>' +
@@ -185,6 +191,7 @@ function updateDetailBox(d) {
     systemToSSM +
     '<div>Type : <strong>' + data.type + '</strong></div>' +
     systemSpecificInfo +
+    groupSpecificInfo +
     '</div>'
   ).show();
 
