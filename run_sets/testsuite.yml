@@ -70,13 +70,14 @@
 - features/security.feature
 
 #### Salt related features   ###
-- features/minion_bootstrap.feature
+
 - features/salt.feature
 - features/salt_minions_page.feature
-- features/salt_minion_details.feature
 - features/salt_download_endpoint.feature
 - features/salt_software_states.feature
 - features/salt_pkgset_beacon.feature
+- features/salt_minion_details.feature
+- features/minion_bootstrap.feature
 - features/salt_remote_cmds.feature
 # this feature need another vm/client - features/salt_ssh.feature
 - features/salt_install_package.feature
