@@ -6,7 +6,6 @@ Feature:  Build Container images with SUSE Manager. Basic image
           of the server. So the inspect functionality is not tested here.
 
   Scenario: Check if sles minion exist or not
-  Given I am authorized as "admin" with password "admin"
   Then I check that sles-minion exists otherwise bootstrap it
 
   Scenario: Assign to the sles-minion the property container build host 
