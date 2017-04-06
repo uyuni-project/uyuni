@@ -129,7 +129,8 @@ public class MatcherJsonIO {
                         p.getProductId(),
                         p.getFriendlyName(),
                         p.getChannelFamily() != null ? p.getChannelFamily().getLabel() : "",
-                        "T".equals(p.getFree())))
+                        p.isBase(),
+                        p.getFree()))
                 .collect(toList());
     }
 
