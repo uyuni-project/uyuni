@@ -86,8 +86,13 @@ public class MinionActionManager {
                 ZonedDateTime stagingWindowEndTime =
                         stagingWindowStartTime.plus(saltContentStagingWindow, HOURS);
 
+                if (now().isAfter(stagingWindowStartTime)) {
+                    stagingWindowStartTime = now();
+                }
+
                 if (stagingWindowStartTime.isBefore(earliestAction) &&
-                        stagingWindowEndTime.isBefore(earliestAction) &&
+                        (stagingWindowEndTime.isBefore(earliestAction) ||
+                                stagingWindowEndTime.isEqual(earliestAction)) &&
                         (ActionFactory.TYPE_PACKAGES_UPDATE
                                 .equals(action.getActionType()) ||
                                 ActionFactory.TYPE_ERRATA.equals(action.getActionType()))) {
