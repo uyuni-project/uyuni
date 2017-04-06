@@ -14,7 +14,7 @@ module ImageProfile
     # create delete profile test
     cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
     cont_op.deleteProfile('fakeone')
-    cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '1-MINION-TEST')
+    cont_op.createProfile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '1-DOCKER-TEST')
     cont_op.deleteProfile('fakeone')
   end
 
@@ -28,8 +28,7 @@ module ImageProfile
     cont_op.setProfileCustomValues('fakeone', values)
     pro_det = cont_op.getProfileCustomValues('fakeone')
     puts pro_det
-    # FIXME: atm this is a bug. we cannot set new values.
-    # assert_equal(pro_det['arancio'], 'arancia xmlrpc tests', 'setting custom profile value failed')
+    assert_equal(pro_det['arancio'], 'arancia xmlrpc tests', 'setting custom profile value failed')
     pro_type = cont_op.listImageProfileTypes
     assert_equal(pro_type.length, 1, 'support at moment only one type of Profile!')
     assert_equal(pro_type[0], 'dockerfile', 'type is not dockerfile?')
