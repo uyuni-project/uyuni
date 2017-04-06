@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class JSONSaltMinionTest extends MockObjectTestCase {
@@ -55,15 +56,23 @@ public class JSONSaltMinionTest extends MockObjectTestCase {
             oneOf(fingerprints).getRejectedMinions(); will(returnValue(new HashMap<>()));
         }});
 
-        Map<String, Long> sids = new HashMap<>();
-        sids.put("m1", 1L);
-        sids.put("m2", 2L);
-        sids.put("m4", 4L);
+        Map<String, Long> visibleToUser = new HashMap<>();
+        visibleToUser.put("m1", 1L); //registered and visible
+        visibleToUser.put("m2", 2L); //registered and visible
 
-        List<JSONSaltMinion> minions = JSONSaltMinion.fromFingerprints(fingerprints, sids);
+        Map<String, Long> registered = new HashMap<>();
+        registered.put("m1", 1L);
+        registered.put("m2", 2L);
+        registered.put("m4", 4L); // registered not visible
+
+        Predicate<String> isVisible = (minionId) -> {
+            return visibleToUser.containsKey(minionId) || !registered.containsKey(minionId);
+        };
+
+        List<JSONSaltMinion> minions = JSONSaltMinion.fromFingerprints(fingerprints, visibleToUser, isVisible);
 
         assertNotNull(minions);
-        assertEquals(4, minions.size());
+        assertEquals(3, minions.size());
 
         Map<String, JSONSaltMinion> minionMap = minions.stream()
                 .collect(Collectors.toMap(JSONSaltMinion::getId, Function.identity()));
@@ -83,9 +92,6 @@ public class JSONSaltMinionTest extends MockObjectTestCase {
         assertNull(minion.getSid());
         assertEquals("pending", minion.getState());
 
-        minion = minionMap.get("m4");
-        assertEquals("fingerprint4", minion.getFingerprint());
-        assertEquals(4L, (long)minion.getSid());
-        assertEquals("denied", minion.getState());
+        assertNull(minionMap.get("m4"));
     }
 }

@@ -21,8 +21,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 import com.suse.manager.webui.utils.gson.JSONSaltMinion;
@@ -33,8 +33,11 @@ import spark.Response;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
@@ -65,12 +68,32 @@ public class MinionsAPI {
      */
     public static String listKeys(Request request, Response response, User user) {
         Key.Fingerprints fingerprints = SALT_SERVICE.getFingerprints();
-        Map<String, Long> minionServers = MinionServerFactory.lookupVisibleToUser(user)
-                .collect(Collectors.toMap(MinionServer::getMinionId, MinionServer::getId));
 
         Map<String, Object> data = new TreeMap<>();
         data.put("isOrgAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
-        data.put("minions", JSONSaltMinion.fromFingerprints(fingerprints, minionServers));
+
+        Set<String> minionIds = Stream.of(
+                fingerprints.getMinions(),
+                fingerprints.getDeniedMinions(),
+                fingerprints.getRejectedMinions(),
+                fingerprints.getUnacceptedMinions()
+        ).flatMap(s -> s.keySet()
+         .stream())
+         .collect(Collectors.toSet());
+
+        Map<String, Long> serverIdMapping = MinionServerFactory
+                .lookupByMinionIds(minionIds)
+                .stream().collect(Collectors.toMap(
+                        MinionServer::getMinionId, MinionServer::getId));
+
+        Map<String, Long> visibleToUser = MinionServerFactory.lookupVisibleToUser(user)
+                .collect(Collectors.toMap(MinionServer::getMinionId, MinionServer::getId));
+
+        Predicate<String> isVisible = (minionId) ->
+            visibleToUser.containsKey(minionId) || !serverIdMapping.containsKey(minionId);
+
+        data.put("minions", JSONSaltMinion.fromFingerprints(
+                fingerprints, visibleToUser, isVisible));
         return json(response, data);
     }
 
@@ -96,8 +119,35 @@ public class MinionsAPI {
      */
     public static String delete(Request request, Response response, User user) {
         String target = request.params("target");
-        SALT_SERVICE.deleteKey(target);
-        return json(response, true);
+
+        //Note: since salt only allows globs we have to do our own strict matching
+        Key.Names keys = SALT_SERVICE.getKeys();
+        boolean exists = Stream.concat(
+                Stream.concat(
+                        keys.getDeniedMinions().stream(),
+                        keys.getMinions().stream()),
+                Stream.concat(
+                        keys.getUnacceptedMinions().stream(),
+                        keys.getRejectedMinions().stream())
+        ).anyMatch(target::equals);
+
+        if (exists) {
+            return MinionServerFactory.findByMinionId(target).map(minionServer -> {
+                if (minionServer.getOrg().equals(user.getOrg())) {
+                    SALT_SERVICE.deleteKey(target);
+                    return json(response, true);
+                }
+                else {
+                    return json(response, false);
+                }
+            }).orElseGet(() -> {
+                SALT_SERVICE.deleteKey(target);
+                return json(response, true);
+            });
+        }
+        else {
+            return json(response, false);
+        }
     }
 
     /**
