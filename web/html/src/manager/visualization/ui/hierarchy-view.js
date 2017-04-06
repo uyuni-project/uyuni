@@ -43,8 +43,6 @@ function hierarchyView(container, rootIn) {
 
     gEnter
       .append('svg:foreignObject')
-      .attr('width', d => isSystemType(d) || isUnknownType(d) ? 15 : 25)
-      .attr('height', d => isSystemType(d) || isUnknownType(d)  ? 15 : 25)
       .html(d => appendIconType(d));
 
     // common for enter + update sections
@@ -149,10 +147,10 @@ function appendIconType(node) {
     iconClass = 'fa-desktop';
   }
   else if (node.data.type == 'vhm') {
-    iconClass = 'fa-1-5x spacewalk-icon-virtual-host-manager';
+    iconClass = 'spacewalk-icon-virtual-host-manager';
   }
   else if (node.data.id == 'root') {
-    iconClass = 'fa-2x spacewalk-icon-suma';
+    iconClass = 'spacewalk-icon-suma';
   }
   else {
     iconClass = 'fa-question-circle';

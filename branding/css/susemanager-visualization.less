@@ -78,38 +78,79 @@ svg {
   }
 
   // default
-  .node circle {
-    r: 5;
-    fill: #bbb;
-    stroke: #333;
-    stroke-width: 0.5px;
+  .node {
+    foreignObject {
+      width: 1em;
+      height: 1em;
+      color: #ccc;
+      i {
+        font-size: 1em;
+      }
+    }
   }
 
-  .node.root circle {
-    fill: #00c081;
-    r: 20;
+  .node.root {
+    foreignObject {
+      width: 4em;
+      height: 4em;
+      color: #00c081;
+      i {
+        font-size: 4em;
+      }
+    }
+  }
+  .node.root.selected {
+    foreignObject {
+      width: 5em;
+      height: 5em;
+      i {
+        font-size: 5em;
+      }
+    }
   }
 
-  .node.inner-node circle {
-    fill: #004981;
-    r: 8;
+  .node.inner-node {
+    foreignObject {
+      width: 3em;
+      height: 3em;
+      color: #004981;
+      i {
+        font-size: 3em;
+      }
+    }
+  }
+  .node.inner-node.selected {
+    foreignObject {
+      width: 3.8em;
+      height: 3.8em;
+      i {
+        font-size: 3.8em;
+      }
+    }
   }
 
-  .node.system circle {
-    fill: #C6DBEF;
-    r: 5;
+  .node.system {
+    foreignObject {
+      color: #6e626e;
+    }
+  }
+  .node.system.selected {
+    foreignObject {
+      width: 2em;
+      height: 2em;
+      i {
+        font-size: 2em;
+        color: #333;
+      }
+    }
   }
 
-  .node.selected i {
-    color: #ffaa00;
-  }
-
-  .node i.fa-1-5x {
-    font-size: 1.5em;
-  }
-
-  .node i.fa-2x {
-    font-size: 2em;
+  .node.selected {
+    foreignObject {
+      i {
+        font-weight: bold;
+      }
+    }
   }
 
   .spacewalk-icon-suma:before {
@@ -122,18 +163,16 @@ svg {
   }
 
   .link {
-    stroke: #bbb;
+    stroke: #cde;
     stroke-width: 0.5px;
   }
 
-  .stroke-red circle {
-    stroke: red;
-    stroke-width: 1.5px;
+  .stroke-red foreignObject i {
+    color: red;
   }
 
-  .stroke-green circle {
-    stroke: green;
-    stroke-width: 1.5px;
+  .stroke-green foreignObject i {
+    color: green;
   }
 }
 
