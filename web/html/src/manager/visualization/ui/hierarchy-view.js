@@ -152,12 +152,12 @@ function appendIconType(node) {
     iconClass = 'spacewalk-icon-virtual-host-manager';
   }
   else if (node.data.id == 'root') {
-    iconClass = 'spacewalk-icon-suma';
+    iconClass = 'spacewalk-icon-configure-suse-manager';
   }
   else {
     iconClass = 'fa-question-circle';
   }
-  return '<i class="fa ' + iconClass + '">' + iconContent + '</i>'
+  return '<i class="fa ' + iconClass + '"></i>';
 }
 
 function setXoffsetByType(node) {
@@ -186,6 +186,20 @@ function setYoffsetByType(node) {
     offset = '-.5em';
   }
   return offset;
+}
+
+function setIconSizeByType(node) {
+  let size;
+  if (node.data.id == 'root') {
+    size = '4em';
+  }
+  else if (node.data.type == 'vhm') {
+    size = '3em';
+  }
+  else {
+    size = '1em';
+  }
+  return size;
 }
 
 module.exports = {
