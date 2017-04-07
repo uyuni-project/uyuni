@@ -99,10 +99,6 @@ function customTree(preprocessor, container, deriveClass) {
     tree.root(newRoot); // todo ???
     nodeVisible(newRoot, filters.predicate());
     tree.deriveClass(criteria.deriveClass)
-    instance.refreshTree();
-  }
-
-  instance.refreshTree = function() {
     tree();
   }
 
@@ -164,7 +160,7 @@ function initHierarchy() {
           dataProcessor = Preprocessing.grouping(d);
         }
         const t = customTree(dataProcessor, container, myDeriveClass);
-        t.refreshTree(); // todo
+        t.refresh(); // todo
 
         t.criteria().get()['default'] = myDeriveClass;
 
