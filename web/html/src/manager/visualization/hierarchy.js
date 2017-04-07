@@ -18,6 +18,16 @@ function treeify(root, dimensions) {
   })
 }
 
+function nodeVisible(node, pred) { // todo move to tree!
+  // dfs
+  if (!node.children) {
+    return pred(node);
+  }
+
+  const visibleChildren = node._allChildren.filter(c => nodeVisible(c, pred));
+  node.children = visibleChildren;
+  return visibleChildren.length > 0 || pred(node);
+}
 
 // Returns a value bound to the depth level of the node
 // todo move?
@@ -83,6 +93,15 @@ function customTree(preprocessor, container, deriveClass) {
 
   instance.deriveClass = tree.deriveClass;
 
+  instance.refresh = function() {
+    const newRoot = preprocessor();
+    treeify(newRoot, dimensions);
+    tree.root(newRoot); // todo ???
+    nodeVisible(newRoot, filters.predicate());
+    tree.deriveClass(criteria.deriveClass)
+    instance.refreshTree();
+  }
+
   instance.refreshTree = function() {
     tree();
   }
@@ -145,18 +164,7 @@ function initHierarchy() {
           dataProcessor = Preprocessing.grouping(d);
         }
         const t = customTree(dataProcessor, container, myDeriveClass);
-        t.refreshTree();
-
-        function nodeVisible(node, pred) {
-          // dfs
-          if (!node.children) {
-            return pred(node);
-          }
-
-          const visibleChildren = node._allChildren.filter(c => nodeVisible(c, pred));
-          node.children = visibleChildren;
-          return visibleChildren.length > 0 || pred(node);
-        }
+        t.refreshTree(); // todo
 
         t.criteria().get()['default'] = myDeriveClass;
 
@@ -171,7 +179,7 @@ function initHierarchy() {
           .attr('placeholder', 'e.g., client.nue.sles')
           .on('input', function() {
             t.filters().put('name', d => d.data.name.toLowerCase().includes(this.value.toLowerCase()));
-            refreshTree(t);
+            t.refresh();
           });
 
         const patchCountsFilter = d3.select('#filter-wrapper')
@@ -215,7 +223,7 @@ function initHierarchy() {
                     .reduce((a, b) => a || b, false);
               });
             }
-            refreshTree(t);
+            t.refresh();
           }
         }
         appendCheckbox(patchCountsFilter, 'has bug fix advisories', patchCountFilterCallback(0));
@@ -233,7 +241,7 @@ function initHierarchy() {
           .attr('placeholder', 'e.g., SLE12')
           .on('input', function() {
             t.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(this.value.toLowerCase()));
-            refreshTree(t);
+            t.refresh();
           });
 
         const installedProductsFilterDiv = d3.select('#filter-wrapper')
@@ -247,17 +255,8 @@ function initHierarchy() {
           .attr('placeholder', 'e.g., SLES')
           .on('input', function() {
             t.filters().put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(this.value.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
-            refreshTree(t);
+            t.refresh();
           });
-
-        function refreshTree(tree) {
-          const newRoot = tree.preprocessor()();
-          treeify(newRoot, dimensions);
-          tree.root(newRoot);
-          nodeVisible(newRoot, tree.filters().predicate());
-          tree.deriveClass(tree.criteria().deriveClass)
-          tree.refreshTree();
-        }
 
         if (t.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
           const groupingDiv = d3.select('#filter-wrapper')
@@ -272,7 +271,7 @@ function initHierarchy() {
           let mySel = groupSelector(grps, groupingDiv);
           mySel.onChange(function(data) {
             t.preprocessor().groupingConfiguration(data);
-            refreshTree(t);
+            t.refresh();
           });
           mySel();
 
@@ -292,12 +291,12 @@ function initHierarchy() {
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
           };
-          refreshTree(t);
+          t.refresh();
         }
 
         function resetTree() {
           t.criteria().get()['user-criteria'] = d => { return ''};
-          refreshTree(t);
+          t.refresh();
         }
 
         const checkinTimeCriteria = d3.select('#filter-wrapper')
@@ -348,7 +347,7 @@ function initHierarchy() {
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
           };
-          refreshTree(t);
+          t.refresh();
         }
 
         hasPatchesCriteria
