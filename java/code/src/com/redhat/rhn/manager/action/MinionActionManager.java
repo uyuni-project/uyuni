@@ -90,6 +90,15 @@ public class MinionActionManager {
                     stagingWindowStartTime = now();
                 }
 
+                if (stagingWindowEndTime.isAfter(earliestAction)) {
+                    log.warn("Ignoring salt_content_staging_window parameter: " +
+                            "expected staging window end time is after action execution!");
+                    log.warn("Expected staging window end time: " + stagingWindowEndTime);
+                    log.warn("Adjusting  window end time to earliest action execution: " +
+                            earliestAction);
+                    stagingWindowEndTime = earliestAction;
+                }
+
                 if (stagingWindowStartTime.isBefore(earliestAction) &&
                         (stagingWindowEndTime.isBefore(earliestAction) ||
                                 stagingWindowEndTime.isEqual(earliestAction)) &&
