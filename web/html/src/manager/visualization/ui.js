@@ -25,29 +25,29 @@ function addCheckinTimeCriteriaSelect(anchorId, callback) {
 
   checkinTimeCriteria
     .append('input')
-    .attr('id', 'criteria-datepicker')
+    .attr('class', 'criteria-datepicker')
     .attr('type', 'text');
 
   checkinTimeCriteria
     .append('input')
-    .attr('id', 'criteria-timepicker')
+    .attr('class', 'criteria-timepicker')
     .attr('type', 'text');
 
-  $('#criteria-datepicker').datepicker({
+  $(anchorId + ' .criteria-datepicker').datepicker({
     autoclose: true,
     format: 'yyyy-mm-dd'
   });
-  $('#criteria-datepicker').datepicker('setDate', new Date());
-  $('#criteria-timepicker').timepicker({timeFormat: 'H:i:s'});
-  $('#criteria-timepicker').timepicker('setTime', new Date());
+  $(anchorId + ' .criteria-datepicker').datepicker('setDate', new Date());
+  $(anchorId + ' .criteria-timepicker').timepicker({timeFormat: 'H:i:s'});
+  $(anchorId + ' .criteria-timepicker').timepicker('setTime', new Date());
 
   checkinTimeCriteria
     .append('button')
     .attr('type', 'button')
     .attr('class', 'btn btn-default')
     .on('click', function() {
-      const date = $( '#criteria-datepicker' ).datepicker( "getDate" );
-      const time = $( '#criteria-timepicker' ).timepicker( "getTime" );
+      const date = $(anchorId + ' .criteria-datepicker' ).datepicker( "getDate" );
+      const time = $(anchorId + ' .criteria-timepicker' ).timepicker( "getTime" );
       const datetime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
         time.getHours(), time.getMinutes(), time.getSeconds());
       callback(datetime);
