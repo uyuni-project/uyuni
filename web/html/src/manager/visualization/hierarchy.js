@@ -46,17 +46,12 @@ function computeSvgDimensions() {
 // purpose: give data, filters, everything, re-render the tree
 function customTree(root, container, deriveClass) {
 
-  // todo extract to util function
-  var mainDivWidth = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
-  var mainDivHeight = d3.select('.spacewalk-main-column-layout').node().getBoundingClientRect().height - 2 -
-    d3.select('#breadcrumb').node().getBoundingClientRect().height -
-    d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height - 200;
-
+  const dimensions = computeSvgDimensions();
   let simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody().strength(d => -distanceFromDepth(d.depth) * 1.5))
     .force("link", d3.forceLink())
-    .force("x", d3.forceX(mainDivWidth / 2))
-    .force("y", d3.forceY(mainDivHeight / 2));
+    .force("x", d3.forceX(dimensions[0] / 2))
+    .force("y", d3.forceY(dimensions[1] / 2));
 
   const tree = HierarchyView.hierarchyView(root, container)
     .simulation(simulation)
