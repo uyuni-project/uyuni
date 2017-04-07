@@ -36,12 +36,13 @@ function displayHierarchy(data) {
 
 // util function for adding the UI to the dom and setting its callbacks
 function initUI(tree) {
-  // init the UI
+  // System name filter
   UI.addFilter('#filter-wrapper', 'Filter by system name', 'e.g., client.nue.sles', (input) => {
     tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
   });
 
+  // Patch count filter
   const patchCountsFilter = d3.select('#filter-wrapper')
     .append('div').attr('class', 'filter');
 
@@ -76,16 +77,21 @@ function initUI(tree) {
   UI.addCheckbox(patchCountsFilter, 'OR has product enhancement advisories', patchCountFilterCallback(1));
   UI.addCheckbox(patchCountsFilter, 'OR has security advisories', patchCountFilterCallback(2));
 
+  // Base channel filter
   UI.addFilter('#filter-wrapper', 'Filter by system base channel', 'e.g., SLE12', (input) => {
     tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
   });
 
+  // Installed products filter
   UI.addFilter('#filter-wrapper', 'Filter by system installed products', 'e.g., SLES', (input) => {
-    tree.filters().put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(input.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
+    tree.filters().put('installedProducts', d => (d.data.installedProducts || [])
+      .map(ip => ip.toLowerCase().includes(input.toLowerCase()))
+      .reduce((v1,v2) => v1 || v2, false));
     tree.refresh();
   });
 
+  // Grouping UI (based on the preprocessor type)
   if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
     UI.addGroupSelector('#filter-wrapper',
         tree.data().map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
@@ -95,6 +101,7 @@ function initUI(tree) {
         });
   }
 
+  // Partitioning by checkin time
   function partitionByCheckin(datetime) {
     tree.criteria().get()['user-criteria'] = d => {
       if (d.data.checkin == undefined) {
@@ -109,6 +116,7 @@ function initUI(tree) {
 
   UI.addCheckinTimeCriteriaSelect('#filter-wrapper', partitionByCheckin);
 
+  // Partitioning by patch existence
   const hasPatchesCriteria = d3.select('#filter-wrapper')
     .append('div').attr('class', 'filter');
 
@@ -135,6 +143,7 @@ function initUI(tree) {
     tree.refresh();
   });
 
+  // Add systems to SSM button
   function addVisibleTreeToSSM() {
     const ids = new Set();
     tree.view().root().each(e => {
