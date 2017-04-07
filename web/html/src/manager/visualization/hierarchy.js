@@ -9,150 +9,148 @@ const Preprocessing = require("./preprocessing.js");
 const UI = require("./ui.js");
 const Utils = require("./utils.js");
 
-function initHierarchy() {
+function displayHierarchy(data) {
   // disable the #spacewalk-content observer:
   // drawing svg triggers it for every small changes,
   // and it is not the desired behaviour/what the observer stands for
   // note: leaving it connected slow down the svg usability
   spacewalkContentObserver.disconnect();
 
-  // Get data & put everything together in the graph!
-  Network
-    .get(endpoint, "application/json")
-    .promise
-    .then(d => {
-      const container = Utils.prepareDom();
-      const tree = HierarchyView.customTree(d, container);
-      if (view == 'grouping') { // hack - derive preprocessor from global variable
-        tree.preprocessor(Preprocessing.grouping());
+  const container = Utils.prepareDom();
+  const tree = HierarchyView.customTree(data, container);
+  if (view == 'grouping') { // hack - derive preprocessor from global variable
+    tree.preprocessor(Preprocessing.grouping());
+  }
+  tree.refresh();
+
+  UI.addFilter('#filter-wrapper', 'Filter by system name', 'e.g., client.nue.sles', (input) => {
+    tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
+    tree.refresh();
+  });
+
+  const patchCountsFilter = d3.select('#filter-wrapper')
+    .append('div').attr('class', 'filter');
+
+  patchCountsFilter
+    .append('label')
+    .text('Filter by patches:');
+
+  // state of the patch status checkboxes:
+  // [bug fix adv. checked, prod. enhancements checked, security adv. checked]
+  const patchCountFilterConfig = [false, false, false];
+  // create a callback function that
+  //  - updates patchCountFilterConfig at given index,
+  //  - updates the filters based on patchCountFilterConfig
+  //  - refreshes the tree
+  function patchCountFilterCallback(idx) {
+    return function(checked) {
+      patchCountFilterConfig[idx] = checked;
+      if (!patchCountFilterConfig.includes(true)) {
+        tree.filters().remove('patch_count_filter');
+      } else {
+        tree.filters().put('patch_count_filter', d => {
+          return HierarchyView.isSystemType(d) &&
+          patchCountFilterConfig // based on the checkboxes state, take into account the patch count
+          .map((value, index) => value && (d.data.patch_counts || [])[index] > 0)
+          .reduce((a, b) => a || b, false);
+        });
       }
       tree.refresh();
+    }
+  }
+  UI.addCheckbox(patchCountsFilter, 'has bug fix advisories', patchCountFilterCallback(0));
+  UI.addCheckbox(patchCountsFilter, 'OR has product enhancement advisories', patchCountFilterCallback(1));
+  UI.addCheckbox(patchCountsFilter, 'OR has security advisories', patchCountFilterCallback(2));
 
-      UI.addFilter('#filter-wrapper', 'Filter by system name', 'e.g., client.nue.sles', (input) => {
-        tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
-        tree.refresh();
-      });
+  UI.addFilter('#filter-wrapper', 'Filter by system base channel', 'e.g., SLE12', (input) => {
+    tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(input.toLowerCase()));
+    tree.refresh();
+  });
 
-      const patchCountsFilter = d3.select('#filter-wrapper')
-      .append('div').attr('class', 'filter');
+  UI.addFilter('#filter-wrapper', 'Filter by system installed products', 'e.g., SLES', (input) => {
+    tree.filters().put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(input.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
+    tree.refresh();
+  });
 
-    patchCountsFilter
-      .append('label')
-      .text('Filter by patches:');
+  if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
+    UI.addGroupSelector('#filter-wrapper',
+        data.map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
+        (data) => {
+          tree.preprocessor().groupingConfiguration(data);
+          tree.refresh();
+        });
+  }
 
-    // state of the patch status checkboxes:
-    // [bug fix adv. checked, prod. enhancements checked, security adv. checked]
-    const patchCountFilterConfig = [false, false, false];
-    // create a callback function that
-    //  - updates patchCountFilterConfig at given index,
-    //  - updates the filters based on patchCountFilterConfig
-    //  - refreshes the tree
-    function patchCountFilterCallback(idx) {
-      return function(checked) {
-        patchCountFilterConfig[idx] = checked;
-        if (!patchCountFilterConfig.includes(true)) {
-          tree.filters().remove('patch_count_filter');
-        } else {
-          tree.filters().put('patch_count_filter', d => {
-            return HierarchyView.isSystemType(d) &&
-            patchCountFilterConfig // based on the checkboxes state, take into account the patch count
-            .map((value, index) => value && (d.data.patch_counts || [])[index] > 0)
-            .reduce((a, b) => a || b, false);
-          });
-        }
-        tree.refresh();
+  function partitionByCheckin(datetime) {
+    tree.criteria().get()['user-criteria'] = d => {
+      if (d.data.checkin == undefined) {
+        return '';
       }
-    }
-    UI.addCheckbox(patchCountsFilter, 'has bug fix advisories', patchCountFilterCallback(0));
-    UI.addCheckbox(patchCountsFilter, 'OR has product enhancement advisories', patchCountFilterCallback(1));
-    UI.addCheckbox(patchCountsFilter, 'OR has security advisories', patchCountFilterCallback(2));
+      var firstPartition = d.data.checkin < datetime.getTime();
+      d.data.partition = firstPartition;
+      return firstPartition  ? 'stroke-red' : 'stroke-green';
+    };
+    tree.refresh();
+  }
 
-    UI.addFilter('#filter-wrapper', 'Filter by system base channel', 'e.g., SLE12', (input) => {
-      tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(input.toLowerCase()));
-      tree.refresh();
+  UI.addCheckinTimeCriteriaSelect('#filter-wrapper', partitionByCheckin);
+
+  const hasPatchesCriteria = d3.select('#filter-wrapper')
+    .append('div').attr('class', 'filter');
+
+  hasPatchesCriteria
+    .append('label')
+    .text('Partition systems based on whether there are patches for them:');
+
+  function applyPatchesCriteria() {
+    tree.criteria().get()['user-criteria'] = d => {
+      if (d.data.patch_counts == undefined) {
+        return '';
+      }
+      var firstPartition = d.data.patch_counts.filter(pc => pc > 0).length > 0;
+      d.data.partition = firstPartition;
+      return firstPartition  ? 'stroke-red' : 'stroke-green';
+    };
+    tree.refresh();
+  }
+
+  UI.addButton(hasPatchesCriteria, 'Apply', applyPatchesCriteria);
+
+  UI.addButton(d3.select('#filter-wrapper'), 'Reset partitioning', () => {
+    tree.criteria().get()['user-criteria'] = d => { return ''};
+    tree.refresh();
+  });
+
+  function addVisibleTreeToSSM() {
+    const ids = new Set();
+    tree.view().root().each(e => {
+      if (HierarchyView.isSystemType(e)) {
+        ids.add(e.data.rawId);
+      }
     });
+    $.addSystemFromSSM(Array.from(ids));
+  }
+  UI.addButton(d3.select('#filter-wrapper'), 'Add tree to SSM', addVisibleTreeToSSM);
 
-    UI.addFilter('#filter-wrapper', 'Filter by system installed products', 'e.g., SLES', (input) => {
-      tree.filters().put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(input.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
-      tree.refresh();
-    });
-
-    if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
-      UI.addGroupSelector('#filter-wrapper',
-          d.map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
-          (data) => {
-            tree.preprocessor().groupingConfiguration(data);
-            tree.refresh();
-          });
-    }
-
-    function partitionByCheckin(datetime) {
-      tree.criteria().get()['user-criteria'] = d => {
-        if (d.data.checkin == undefined) {
-          return '';
-        }
-        var firstPartition = d.data.checkin < datetime.getTime();
-        d.data.partition = firstPartition;
-        return firstPartition  ? 'stroke-red' : 'stroke-green';
-      };
-      tree.refresh();
-    }
-
-    UI.addCheckinTimeCriteriaSelect('#filter-wrapper', partitionByCheckin);
-
-    const hasPatchesCriteria = d3.select('#filter-wrapper')
-      .append('div').attr('class', 'filter');
-
-    hasPatchesCriteria
-      .append('label')
-      .text('Partition systems based on whether there are patches for them:');
-
-    function applyPatchesCriteria() {
-      tree.criteria().get()['user-criteria'] = d => {
-        if (d.data.patch_counts == undefined) {
-          return '';
-        }
-        var firstPartition = d.data.patch_counts.filter(pc => pc > 0).length > 0;
-        d.data.partition = firstPartition;
-        return firstPartition  ? 'stroke-red' : 'stroke-green';
-      };
-      tree.refresh();
-    }
-
-    UI.addButton(hasPatchesCriteria, 'Apply', applyPatchesCriteria);
-
-    UI.addButton(d3.select('#filter-wrapper'), 'Reset partitioning', () => {
-      tree.criteria().get()['user-criteria'] = d => { return ''};
-      tree.refresh();
-    });
-
-    function addVisibleTreeToSSM() {
-      const ids = new Set();
-      tree.view().root().each(e => {
-        if (HierarchyView.isSystemType(e)) {
-          ids.add(e.data.rawId);
-        }
-      });
-      $.addSystemFromSSM(Array.from(ids));
-    }
-    UI.addButton(d3.select('#filter-wrapper'), 'Add tree to SSM', addVisibleTreeToSSM);
-
-    $(window).resize(function () {
-      const dimensions = Utils.computeSvgDimensions();
-      // try to find the object via d3
-      d3.select('#svg-wrapper svg')
-      .attr('width', dimensions[0])
-      .attr('height', dimensions[1]);
-    });
-    }, (xhr) => {
-      d3.select('#svg-wrapper')
-        .text(t('There was an error fetching data from the server.'));
-    });
+  $(window).resize(function () {
+    const dimensions = Utils.computeSvgDimensions();
+    // try to find the object via d3
+    d3.select('#svg-wrapper svg')
+    .attr('width', dimensions[0])
+    .attr('height', dimensions[1]);
+  });
 }
 
 const Hierarchy = React.createClass({
   componentDidMount: function() {
-    initHierarchy();
+    // Get data & put everything together in the graph!
+    Network
+      .get(endpoint, "application/json")
+      .promise
+      .then(
+        (data) => displayHierarchy(data),
+        (xhr) =>  d3.select('#svg-wrapper').text(t('There was an error fetching data from the server.'))
+      );
   },
 
   showFilters: function() {
