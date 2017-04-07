@@ -29,6 +29,25 @@ function distanceFromDepth(depth) {
   }
 }
 
+function adjustSvgDimensions(svgObject) {
+  const mainWidth = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
+  const mainHeight = d3.select('.spacewalk-main-column-layout').node().getBoundingClientRect().height - 2 -
+    d3.select('#breadcrumb').node().getBoundingClientRect().height -
+    d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height - 200;
+
+  if (svgObject) {
+    svgObject
+      .attr('width', mainWidth)
+      .attr('height', mainHeight);
+  }
+  else {
+    // try to find the object via d3
+    d3.select('#svg-wrapper svg')
+      .attr('width', mainWidth)
+      .attr('height', mainHeight);
+  }
+}
+
 // Render hierarchy view
 // - root
 // - container
@@ -83,31 +102,6 @@ function initHierarchy() {
     var mainDivHeight = d3.select('.spacewalk-main-column-layout').node().getBoundingClientRect().height - 2 -
         d3.select('#breadcrumb').node().getBoundingClientRect().height -
         d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height - 200;
-
-    function adjustSvgDimensions(svgObject, simulation) {
-      var mainWidth = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
-      var mainHeight = d3.select('.spacewalk-main-column-layout').node().getBoundingClientRect().height - 2 -
-        d3.select('#breadcrumb').node().getBoundingClientRect().height -
-        d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height - 200;
-
-      if (svgObject) {
-        svgObject
-          .attr('width', mainWidth)
-          .attr('height', mainHeight);
-      }
-      else {
-        // try to find the object via d3
-        d3.select('#svg-wrapper svg')
-          .attr('width', mainWidth)
-          .attr('height', mainHeight);
-      }
-
-      if (simulation) {
-        simulation
-         .force("x", d3.forceX(mainWidth / 2))
-         .force("y", d3.forceY(mainHeight / 2));
-     }
-    }
 
     // Get data & put everything together in the graph!
     Network
@@ -376,7 +370,7 @@ function initHierarchy() {
           .on('click', resetTree)
           .text('Reset partitioning');
 
-        adjustSvgDimensions(svg, t.simulation());
+        adjustSvgDimensions(svg);
 
         $(window).resize(function () {
           adjustSvgDimensions();
