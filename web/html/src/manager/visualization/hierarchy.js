@@ -73,6 +73,19 @@ function customTree(data, container) {
   let filters = Filters.filters();
   let criteria = Criteria.criteria();
 
+  function myDeriveClass(node) {
+    if (node.id == 'root') {
+      return 'root';
+    }
+
+    if (view == 'proxy-hierarchy' && node.depth == 1 || ['group', 'vhm'].includes(node.data.type)) {
+      return 'inner-node';
+    }
+
+    return 'system';
+  }
+  criteria.get()['default'] = myDeriveClass;
+
   let simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody().strength(d => -distanceFromDepth(d.depth) * 1.5))
     .force("link", d3.forceLink())
@@ -148,25 +161,10 @@ function initHierarchy() {
           container.attr("transform", event.transform);
         }
 
-        // Returns the CSS class for the given node
-        // simple algorithm based on depth
-        var myDeriveClass = function(node) {
-          if (node.id == 'root') {
-            return 'root';
-          }
-
-          if (view == 'proxy-hierarchy' && node.depth == 1 || ['group', 'vhm'].includes(node.data.type)) {
-              return 'inner-node';
-          }
-
-          return 'system';
-        }
-
         const t = customTree(d, container);
         if (view == 'grouping') { // hack - derive preprocessor from global variable
           t.preprocessor(Preprocessing.grouping);
         }
-        t.criteria().get()['default'] = myDeriveClass;
         t.refresh();
 
         const nameFilterDiv = d3.select('#filter-wrapper')
