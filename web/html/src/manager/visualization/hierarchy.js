@@ -53,8 +53,9 @@ function computeSvgDimensions() {
 // - container
 // - custom simulation
 // purpose: give data, filters, everything, re-render the tree
-function customTree(preprocessor, container) {
+function customTree(data, container) {
 
+  let preprocessor = Preprocessing.stratify;
   const dimensions = computeSvgDimensions();
 
   let filters = Filters.filters();
@@ -88,7 +89,7 @@ function customTree(preprocessor, container) {
   instance.root = tree.root;
 
   instance.refresh = function() {
-    const newRoot = preprocessor();
+    const newRoot = preprocessor(data)();
     treeify(newRoot, dimensions);
     tree.root(newRoot);
     nodeVisible(newRoot, filters.predicate());
@@ -149,11 +150,10 @@ function initHierarchy() {
           return 'system';
         }
 
-        let dataProcessor = Preprocessing.stratify(d);
-        if (view == 'grouping') {
-          dataProcessor = Preprocessing.grouping(d);
+        const t = customTree(d, container);
+        if (view == 'grouping') { // hack - derive preprocessor from global variable
+          t.preprocessor(Preprocessing.grouping);
         }
-        const t = customTree(dataProcessor, container);
         t.criteria().get()['default'] = myDeriveClass;
         t.refresh();
 
