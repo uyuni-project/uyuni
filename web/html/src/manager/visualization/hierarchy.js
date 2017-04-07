@@ -79,21 +79,12 @@ function initHierarchy() {
         });
 
         if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
-          const groupingDiv = d3.select('#filter-wrapper')
-            .append('div').attr('class', 'filter');
-          groupingDiv
-            .append('label')
-            .text('Split into groups');
-
-          let grps = d
-            .map(e => e.managed_groups || [])
-            .reduce((a,b) => a.concat(b));
-          let mySel = UI.groupSelector(grps, groupingDiv);
-          mySel.onChange(function(data) {
-            tree.preprocessor().groupingConfiguration(data);
-            tree.refresh();
-          });
-          mySel();
+          UI.addGroupSelector('#filter-wrapper',
+              d.map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
+              (data) => {
+                tree.preprocessor().groupingConfiguration(data);
+                tree.refresh();
+              });
         }
 
         function partitionByCheckin(datetime) {

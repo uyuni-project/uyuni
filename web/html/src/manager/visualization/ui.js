@@ -160,10 +160,22 @@ function groupSelector(groups, element) {
   return my;
 }
 
+function addGroupSelector(anchorId, groups, callback) {
+  const groupingDiv = d3.select(anchorId)
+    .append('div').attr('class', 'filter');
+  groupingDiv
+    .append('label')
+    .text('Split into groups');
+
+  let mySel = groupSelector(groups, groupingDiv);
+  mySel.onChange(callback);
+  mySel();
+}
+
 module.exports = {
   addFilter: addFilter,
   addCheckinTimeCriteriaSelect: addCheckinTimeCriteriaSelect,
-  groupSelector: groupSelector,
   addCheckbox: addCheckbox, // todo rename!
+  addGroupSelector: addGroupSelector
 }
 
