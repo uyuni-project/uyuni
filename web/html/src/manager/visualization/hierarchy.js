@@ -18,7 +18,36 @@ function treeify(root, dimensions) {
   })
 }
 
-function customTree(root, container, simulation, deriveClass) {
+
+// Returns a value bound to the depth level of the node
+// todo move?
+function distanceFromDepth(depth) {
+  switch (depth) {
+    case 0: return 300;
+    case 1: return 180;
+    default: return 90;
+  }
+}
+
+// Render hierarchy view
+// - root
+// - container
+// - deriveClass
+// - custom simulation
+// purpose: give data, filters, everything, re-render the tree
+function customTree(root, container, deriveClass) {
+
+  // todo extract to util function
+  var mainDivWidth = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
+  var mainDivHeight = d3.select('.spacewalk-main-column-layout').node().getBoundingClientRect().height - 2 -
+    d3.select('#breadcrumb').node().getBoundingClientRect().height -
+    d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height - 200;
+
+  let simulation = d3.forceSimulation()
+    .force("charge", d3.forceManyBody().strength(d => -distanceFromDepth(d.depth) * 1.5))
+    .force("link", d3.forceLink())
+    .force("x", d3.forceX(mainDivWidth / 2))
+    .force("y", d3.forceY(mainDivHeight / 2));
 
   const tree = HierarchyView.hierarchyView(root, container)
     .simulation(simulation)
@@ -33,6 +62,10 @@ function customTree(root, container, simulation, deriveClass) {
 
   instance.refreshTree = function() {
     tree();
+  }
+
+  instance.simulation = function(sim) {
+    return arguments.length ? (simulation = sim, instance) : simulation;
   }
 
   return instance;
@@ -98,13 +131,6 @@ function initHierarchy() {
           container.attr("transform", event.transform);
         }
 
-        // Prepare simulation
-        var mySimulation = d3.forceSimulation()
-          .force("charge", d3.forceManyBody().strength(d => -distanceFromDepth(d.depth) * 1.5))
-          .force("link", d3.forceLink())
-          .force("x", d3.forceX(mainDivWidth / 2))
-          .force("y", d3.forceY(mainDivHeight / 2));
-
         // Returns the CSS class for the given node
         // simple algorithm based on depth
         var myDeriveClass = function(node) {
@@ -125,17 +151,8 @@ function initHierarchy() {
         }
         const root = dataProcessor();
         treeify(root, [mainDivWidth, mainDivHeight]);
-        const t = customTree(root, container, mySimulation, myDeriveClass);
+        const t = customTree(root, container, myDeriveClass);
         t.refreshTree();
-
-        // Returns a value bound to the depth level of the node
-        function distanceFromDepth(depth) {
-          switch (depth) {
-            case 0: return 300;
-            case 1: return 180;
-            default: return 90;
-          }
-        }
 
         function nodeVisible(node, pred) {
           // dfs
@@ -359,7 +376,7 @@ function initHierarchy() {
           .on('click', resetTree)
           .text('Reset partitioning');
 
-        adjustSvgDimensions(svg, mySimulation);
+        adjustSvgDimensions(svg, t.simulation());
 
         $(window).resize(function () {
           adjustSvgDimensions();
