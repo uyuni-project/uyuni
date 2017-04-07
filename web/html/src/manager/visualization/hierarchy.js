@@ -64,7 +64,7 @@ function initUI(tree) {
         tree.filters().remove('patch_count_filter');
       } else {
         tree.filters().put('patch_count_filter', d => {
-          return HierarchyView.isSystemType(d) &&
+          return Utils.isSystemType(d) &&
           patchCountFilterConfig // based on the checkboxes state, take into account the patch count
           .map((value, index) => value && (d.data.patch_counts || [])[index] > 0)
           .reduce((a, b) => a || b, false);
@@ -147,7 +147,7 @@ function initUI(tree) {
   function addVisibleTreeToSSM() {
     const ids = new Set();
     tree.view().root().each(e => {
-      if (HierarchyView.isSystemType(e)) {
+      if (Utils.isSystemType(e)) {
         ids.add(e.data.rawId);
       }
     });

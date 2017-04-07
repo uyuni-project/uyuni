@@ -246,10 +246,6 @@ $.addSystemFromSSM = function(ids) {
   return update_server_set('ids', 'system_list', true, ids);
 }
 
-function isSystemType(d) {
-  return d.data.type && d.data.type == 'system' && d.data.rawId != '' && d.data.id != 'root';
-}
-
 function updateDetailBox(d) {
   function patchStatus(patchCountsArray) {
     if (patchCountsArray == undefined) {
@@ -265,7 +261,7 @@ function updateDetailBox(d) {
   var systemDetailLink = '';
   var systemSpecificInfo = '';
   var systemToSSM = '';
-  if (isSystemType(d)) {
+  if (Utils.isSystemType(d)) {
     systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
       data.rawId + '" target="_blank">System details page</a></div>';
 
@@ -332,7 +328,6 @@ function distanceFromDepth(depth) {
 
 module.exports = {
     hierarchyView: hierarchyView,
-    customTree: customTree,
-    isSystemType: isSystemType
+    customTree: customTree
 }
 

@@ -32,8 +32,14 @@ function prepareDom() {
   return container;
 }
 
+function isSystemType(d) {
+  return d.data.type && d.data.type == 'system' && d.data.rawId != '' && d.data.id != 'root';
+}
+
 module.exports = {
     computeSvgDimensions: computeSvgDimensions,
-    prepareDom: prepareDom
+    prepareDom: prepareDom,
+    isSystemType: isSystemType
+
 }
 
