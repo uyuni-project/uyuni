@@ -297,7 +297,7 @@ function initHierarchy() {
 
         function resetTree() {
           t.criteria().get()['user-criteria'] = d => { return ''};
-          t.refreshTree();
+          refreshTree(t);
         }
 
         const checkinTimeCriteria = d3.select('#filter-wrapper')
