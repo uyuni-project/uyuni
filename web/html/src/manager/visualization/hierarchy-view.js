@@ -4,16 +4,17 @@
 // force based layout.
 //
 // - compulsory parameters:
-//  - root - root of the hierarchy to display
 //  - container - DOM node where the animation will be placed
+// - optional parameters
+//  - rootIn - root of the hierarchy to display (settable via root method)
 //
 // Functions for deriving node classes (e.g. for dynamic css styles based on
 // node parameters) and for customizing force simulation are settable using
 // deriveClass and simulation functions.
 //
-function hierarchyView(rootIn, container) {
+function hierarchyView(container, rootIn) {
   // default params
-  var root = rootIn;
+  var root = rootIn || {}; // todo something else
   var deriveClass = (d) => '';
   var simulation = null;
 
