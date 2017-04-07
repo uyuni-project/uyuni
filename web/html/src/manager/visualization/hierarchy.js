@@ -83,20 +83,18 @@ function initHierarchy() {
     // note: leaving it connected slow down the svg usability
     spacewalkContentObserver.disconnect();
 
-    const dimensions = computeSvgDimensions();
-    var mainDivWidth = dimensions[0];
-    var mainDivHeight = dimensions[1];
-
     // Get data & put everything together in the graph!
     Network
       .get(endpoint, "application/json")
       .promise
       .then(d => {
+        const dimensions = computeSvgDimensions();
+
         // Prepare DOM
         var svg = d3.select('#svg-wrapper')
           .append('svg')
-          .attr('width', mainDivWidth)
-          .attr('height', mainDivHeight);
+          .attr('width', dimensions[0])
+          .attr('height', dimensions[1]);
         var container = svg.append("g");
 
         // Zoom handling
@@ -128,7 +126,7 @@ function initHierarchy() {
           dataProcessor = Preprocessing.grouping(d);
         }
         const root = dataProcessor();
-        treeify(root, [mainDivWidth, mainDivHeight]);
+        treeify(root, dimensions);
         const t = customTree(root, container, myDeriveClass);
         t.refreshTree();
 
@@ -240,7 +238,7 @@ function initHierarchy() {
 
         function refreshTree(processor, filters, criteria, tree) {
           const newRoot = processor();
-          treeify(newRoot, [mainDivWidth, mainDivHeight]);
+          treeify(newRoot, dimensions);
           tree.root(newRoot);
           nodeVisible(newRoot, filters.predicate());
           tree.deriveClass(criteria.deriveClass)
@@ -353,10 +351,6 @@ function initHierarchy() {
           .attr('class', 'btn btn-default')
           .on('click', resetTree)
           .text('Reset partitioning');
-
-        svg
-          .attr('width', dimensions[0])
-          .attr('height', dimensions[1]);
 
         $(window).resize(function () {
           const dimensions = computeSvgDimensions();
