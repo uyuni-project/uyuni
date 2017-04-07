@@ -46,19 +46,23 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.hibernate.criterion.Restrictions;
+import org.jmock.Expectations;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -81,7 +85,13 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
  * ErrataManagerTest
  * @version $Rev$
  */
-public class ErrataManagerTest extends BaseTestCaseWithUser {
+public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
     public static Bug createNewPublishedBug(Long id, String summary) {
         return ErrataManager.createNewPublishedBug(id, summary,
@@ -379,7 +389,7 @@ public class ErrataManagerTest extends BaseTestCaseWithUser {
         User user = UserTestUtils.findNewUser();
 
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        e = (Errata) TestUtils.saveAndReload(e);
+        e = TestUtils.saveAndReload(e);
         RhnSet set = RhnSetDecl.ERRATA_TO_REMOVE.get(user);
         set.add(e.getId());
         RhnSetManager.store(set);
@@ -470,6 +480,13 @@ public class ErrataManagerTest extends BaseTestCaseWithUser {
         List<Long> serverIds = new ArrayList<Long>();
         serverIds.add(server1.getId());
         serverIds.add(server2.getId());
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
 
         ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
 
