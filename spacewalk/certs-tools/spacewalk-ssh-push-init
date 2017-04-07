@@ -54,6 +54,9 @@ elif [ "${USE_TUNNEL}" = "Y" ] && [ -z "${BOOTSTRAP_ORIG}" ]; then
 # Check bootstrap script existence
 elif [ -n "${BOOTSTRAP_ORIG}" ] && [ ! -f "${BOOTSTRAP_ORIG}" ]; then
   usage "ERROR: Bootstrap script not found: ${BOOTSTRAP_ORIG}"
+# Bootstrap script needs to be of traditional type
+elif grep -q "systemctl start salt-minion" "${BOOTSTRAP_ORIG}"; then
+  usage "ERROR: This command cannot be used to register salt-ssh managed clients (salt based bootstrap script detected)"
 fi
 
 # Get the server's fully qualified hostname
