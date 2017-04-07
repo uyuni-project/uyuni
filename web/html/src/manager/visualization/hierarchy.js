@@ -48,11 +48,23 @@ function computeSvgDimensions() {
   return [width, height];
 }
 
-// Render hierarchy view
-// - root
-// - container
-// - custom simulation
-// purpose: give data, filters, everything, re-render the tree
+// Render hierarchy view - take data, transform with preprocessor, filters and
+// criteria, render it in the container.
+//
+// Compulsory parameters:
+//  - data - data from the server to be rendered
+//  - container - where the tree will be rendered in the DOM
+//
+// Other parameters (settable via methods):
+//  - preprocessors
+//  - filters
+//  - criteria
+//  - simulation - d3 force simulation
+//
+// Methods
+//  - refresh - transforms the data according to current preprocessor, filters
+//  and criteria settings and refresh the DOM
+//
 function customTree(data, container) {
 
   let preprocessor = Preprocessing.stratify;
