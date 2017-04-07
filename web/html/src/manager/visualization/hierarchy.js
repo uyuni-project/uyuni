@@ -62,7 +62,6 @@ function customTree(root, container, deriveClass) {
   }
 
   instance.filters = function(f) {
-    console.log(filters);
     return arguments.length ? (filters = f, instance) : filters;
   }
 
@@ -161,7 +160,7 @@ function initHierarchy() {
           .attr('placeholder', 'e.g., client.nue.sles')
           .on('input', function() {
             t.filters().put('name', d => d.data.name.toLowerCase().includes(this.value.toLowerCase()));
-            refreshTree(dataProcessor, t.filters(), myCriteria, t);
+            refreshTree(dataProcessor, myCriteria, t);
           });
 
         const patchCountsFilter = d3.select('#filter-wrapper')
@@ -205,7 +204,7 @@ function initHierarchy() {
                     .reduce((a, b) => a || b, false);
               });
             }
-            refreshTree(dataProcessor, t.filters(), myCriteria, t);
+            refreshTree(dataProcessor, myCriteria, t);
           }
         }
         appendCheckbox(patchCountsFilter, 'has bug fix advisories', patchCountFilterCallback(0));
@@ -223,7 +222,7 @@ function initHierarchy() {
           .attr('placeholder', 'e.g., SLE12')
           .on('input', function() {
             t.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(this.value.toLowerCase()));
-            refreshTree(dataProcessor, t.filters(), myCriteria, t);
+            refreshTree(dataProcessor, myCriteria, t);
           });
 
         const installedProductsFilterDiv = d3.select('#filter-wrapper')
@@ -237,14 +236,14 @@ function initHierarchy() {
           .attr('placeholder', 'e.g., SLES')
           .on('input', function() {
             t.filters().put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(this.value.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
-            refreshTree(dataProcessor, t.filters(), myCriteria, t);
+            refreshTree(dataProcessor, myCriteria, t);
           });
 
-        function refreshTree(processor, filters, criteria, tree) {
+        function refreshTree(processor, criteria, tree) {
           const newRoot = processor();
           treeify(newRoot, dimensions);
           tree.root(newRoot);
-          nodeVisible(newRoot, filters.predicate());
+          nodeVisible(newRoot, tree.filters().predicate());
           tree.deriveClass(criteria.deriveClass)
           tree.refreshTree();
         }
@@ -262,7 +261,7 @@ function initHierarchy() {
           let mySel = groupSelector(grps, groupingDiv);
           mySel.onChange(function(data) {
             dataProcessor.groupingConfiguration(data);
-            refreshTree(dataProcessor, t.filters(), myCriteria, t);
+            refreshTree(dataProcessor, myCriteria, t);
           });
           mySel();
 
@@ -282,7 +281,7 @@ function initHierarchy() {
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
           };
-          refreshTree(dataProcessor, t.filters(), myCriteria, t);
+          refreshTree(dataProcessor, myCriteria, t);
         }
 
         function resetTree() {
@@ -338,7 +337,7 @@ function initHierarchy() {
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
           };
-          refreshTree(dataProcessor, t.filters(), myCriteria, t);
+          refreshTree(dataProcessor, myCriteria, t);
         }
 
         hasPatchesCriteria
