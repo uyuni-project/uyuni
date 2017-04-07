@@ -24,4 +24,4 @@ Feature:  Container Image namespace tests
 
   Scenario: Create and build multiples random images
   Given I am authorized as "admin" with password "admin"
-  Then I create "200" random "suse_real_key" containers
+  Then I create "300" random "suse_real_key" containers
