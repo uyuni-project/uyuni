@@ -55,6 +55,10 @@ function customTree(data, container) {
   function instance() {
   }
 
+  instance.data = function(d) {
+    return arguments.length ? (data = d, instance) : data;
+  }
+
   instance.preprocessor = function(p) {
     return arguments.length ? (preprocessor = p, instance) : preprocessor;
   }
