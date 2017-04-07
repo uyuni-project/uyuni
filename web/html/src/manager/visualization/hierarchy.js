@@ -67,7 +67,7 @@ function computeSvgDimensions() {
 //
 function customTree(data, container) {
 
-  let preprocessor = Preprocessing.stratify;
+  let preprocessor = Preprocessing.stratify();
   const dimensions = computeSvgDimensions();
 
   let filters = Filters.filters();
@@ -114,7 +114,8 @@ function customTree(data, container) {
   instance.root = view.root;
 
   instance.refresh = function() {
-    const newRoot = preprocessor(data)();
+    preprocessor.data(data);
+    const newRoot = preprocessor();
     treeify(newRoot, dimensions);
     view.root(newRoot);
     nodeVisible(newRoot, filters.predicate());
@@ -163,7 +164,7 @@ function initHierarchy() {
 
         const t = customTree(d, container);
         if (view == 'grouping') { // hack - derive preprocessor from global variable
-          t.preprocessor(Preprocessing.grouping);
+          t.preprocessor(Preprocessing.grouping());
         }
         t.refresh();
 
@@ -273,7 +274,6 @@ function initHierarchy() {
             t.refresh();
           });
           mySel();
-
         }
 
         function updateTree() {

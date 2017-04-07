@@ -10,8 +10,15 @@ parentId property) into a structure that can be further processed by d3 tree com
 // input: array of objects containing id and parentId attributes,
 // ids are unique and single object (root) has parentId == null
 function stratifyPreprocessor(data) {
+
+  data = data || [{id: 'root', name: 'Root', parentId: null}];
+
   function my() {
     return d3.stratify()(data);
+  }
+
+  my.data = function(d) {
+    return arguments.length ? (data = d, my) : data;
   }
 
   return my;
@@ -56,9 +63,10 @@ function stratifyPreprocessor(data) {
 //   groups devel,   groups devel,
 //   sles and nbg]   rhel and prg]
 //
-function groupingPreprocessor(data, groupingConfigurationIn) {
+function groupingPreprocessor(data, groupingConfiguration) {
 
-  let groupingConfiguration = groupingConfigurationIn || [];
+  data = data || [{id: 'root', name: 'Root', parentId: null}];
+  groupingConfiguration = groupingConfiguration || [];
 
   // Recursively turn the multi-level group configuration into group elements so
   // that they can be consumed and displayed by d3 hierarchy (i.e. list of
@@ -156,6 +164,10 @@ function groupingPreprocessor(data, groupingConfigurationIn) {
       .concat(groupElems) // inner nodes (represantation of groups)
       .concat(groupData(data, groupElems.filter(e => e.isLeafGroup))); // systems partitioned by groups
     return d3.stratify()(allElems);
+  }
+
+  my.data = function(d) {
+    return arguments.length ? (data = d, my) : data;
   }
 
   my.groupingConfiguration = function(gs) {
