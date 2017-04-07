@@ -41,20 +41,6 @@ function initHierarchy() {
           .append('label')
           .text('Filter by patches:');
 
-        function appendCheckbox(placeholder, caption, callback) {
-          const securityAdvisoriesDiv = placeholder
-            .append('div');
-
-          securityAdvisoriesDiv
-            .append('input')
-            .attr('type', 'checkbox')
-            .on('change', function() { callback(this.checked); });
-
-          securityAdvisoriesDiv
-          .append('label')
-          .text(caption);
-        }
-
         // state of the patch status checkboxes:
         // [bug fix adv. checked, prod. enhancements checked, security adv. checked]
         const patchCountFilterConfig = [false, false, false];
@@ -78,9 +64,9 @@ function initHierarchy() {
             tree.refresh();
           }
         }
-        appendCheckbox(patchCountsFilter, 'has bug fix advisories', patchCountFilterCallback(0));
-        appendCheckbox(patchCountsFilter, 'OR has product enhancement advisories', patchCountFilterCallback(1));
-        appendCheckbox(patchCountsFilter, 'OR has security advisories', patchCountFilterCallback(2));
+        UI.addCheckbox(patchCountsFilter, 'has bug fix advisories', patchCountFilterCallback(0));
+        UI.addCheckbox(patchCountsFilter, 'OR has product enhancement advisories', patchCountFilterCallback(1));
+        UI.addCheckbox(patchCountsFilter, 'OR has security advisories', patchCountFilterCallback(2));
 
         UI.addFilter('#filter-wrapper', 'Filter by system base channel', 'e.g., SLE12', (input) => {
           tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(input.toLowerCase()));
