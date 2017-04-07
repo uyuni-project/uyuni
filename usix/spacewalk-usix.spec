@@ -54,13 +54,13 @@ Library for writing code that runs on Python 2 and 3
 %install
 rm -rf $RPM_BUILD_ROOT
 install -m 0755 -d $RPM_BUILD_ROOT%{pythonrhnroot}/common
-# do not install conflicting file with spacewalk-backend-libs
-#install -m 0644 __init__.py $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py
+install -m 0644 __init__.py $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py
 install -m 0644 common/__init__.py $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py
 install -m 0644 common/usix.py* $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py
 
 %if 0%{?fedora} && 0%{?fedora} >= 23
 install -d $RPM_BUILD_ROOT%{python3rhnroot}/common
+cp $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py $RPM_BUILD_ROOT%{python3rhnroot}
 cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py $RPM_BUILD_ROOT%{python3rhnroot}/common
 cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{python3rhnroot}/common
 %endif
