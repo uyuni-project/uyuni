@@ -82,7 +82,7 @@ svg {
     foreignObject {
       width: 1em;
       height: 1em;
-      color: #ccc;
+      color: #ddd;
       i {
         font-size: 1em;
       }
@@ -93,7 +93,7 @@ svg {
     foreignObject {
       width: 4em;
       height: 4em;
-      color: #00c081;
+      color: #46a083;
       i {
         font-size: 4em;
       }
@@ -101,10 +101,8 @@ svg {
   }
   .node.root.selected {
     foreignObject {
-      width: 5em;
-      height: 5em;
       i {
-        font-size: 5em;
+        color: #00c081;
       }
     }
   }
@@ -113,7 +111,7 @@ svg {
     foreignObject {
       width: 3em;
       height: 3em;
-      color: #004981;
+      color: #48667d;
       i {
         font-size: 3em;
       }
@@ -121,25 +119,20 @@ svg {
   }
   .node.inner-node.selected {
     foreignObject {
-      width: 3.8em;
-      height: 3.8em;
       i {
-        font-size: 3.8em;
+        color: #004981;
       }
     }
   }
 
   .node.system {
     foreignObject {
-      color: #6e626e;
+      color: #7392cc;
     }
   }
   .node.system.selected {
     foreignObject {
-      width: 2em;
-      height: 2em;
       i {
-        font-size: 2em;
         color: #333;
       }
     }
@@ -159,16 +152,30 @@ svg {
   }
 
   .link {
-    stroke: #cde;
+    stroke: #d4d2a0;
     stroke-width: 0.5px;
   }
 
-  .stroke-red foreignObject i {
-    color: red;
+  .stroke-red foreignObject {
+    i {
+      color: #b57a77;
+    }
+  }
+  .stroke-red.selected foreignObject {
+    i {
+      color: #900000!important;
+    }
   }
 
-  .stroke-green foreignObject i {
-    color: green;
+  .stroke-green foreignObject {
+    i {
+      color: #7ab577;
+    }
+  }
+  .stroke-green.selected foreignObject {
+    i {
+      color: #009000!important;
+    }
   }
 }
 

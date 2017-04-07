@@ -45,6 +45,8 @@ function hierarchyView(container, rootIn) {
       .append('svg:foreignObject')
       .attr('x', d => setXoffsetByType(d))
       .attr('y', d => setYoffsetByType(d))
+      .attr('width', d => setIconSizeByType(d))
+      .attr('height', d => setIconSizeByType(d))
       .html(d => appendIconType(d));
 
     // common for enter + update sections
