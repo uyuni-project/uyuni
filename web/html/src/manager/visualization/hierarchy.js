@@ -92,7 +92,7 @@ function customTree(data, container) {
     .force("x", d3.forceX(dimensions[0] / 2))
     .force("y", d3.forceY(dimensions[1] / 2));
 
-  const tree = HierarchyView
+  const view = HierarchyView
     .hierarchyView(container)
     .simulation(simulation);
 
@@ -111,15 +111,15 @@ function customTree(data, container) {
     return arguments.length ? (criteria = c, instance) : criteria;
   }
 
-  instance.root = tree.root;
+  instance.root = view.root;
 
   instance.refresh = function() {
     const newRoot = preprocessor(data)();
     treeify(newRoot, dimensions);
-    tree.root(newRoot);
+    view.root(newRoot);
     nodeVisible(newRoot, filters.predicate());
-    tree.deriveClass(criteria.deriveClass)
-    tree();
+    view.deriveClass(criteria.deriveClass)
+    view.refresh();
   }
 
   instance.simulation = function(sim) {

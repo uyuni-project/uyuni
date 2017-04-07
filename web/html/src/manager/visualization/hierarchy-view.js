@@ -19,6 +19,9 @@ function hierarchyView(container, rootIn) {
   var simulation = null;
 
   function my() {
+  }
+
+  my.refresh = function() {
     var nodes = root.descendants();
     var links = root.links();
 
