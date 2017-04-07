@@ -88,7 +88,7 @@ function initUI(tree) {
 
   if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
     UI.addGroupSelector('#filter-wrapper',
-        data.map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
+        tree.data().map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
         (data) => {
           tree.preprocessor().groupingConfiguration(data);
           tree.refresh();
