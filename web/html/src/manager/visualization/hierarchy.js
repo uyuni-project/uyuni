@@ -29,23 +29,13 @@ function distanceFromDepth(depth) {
   }
 }
 
-function adjustSvgDimensions(svgObject) {
-  const mainWidth = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
-  const mainHeight = d3.select('.spacewalk-main-column-layout').node().getBoundingClientRect().height - 2 -
+function computeSvgDimensions() {
+  const width = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
+  const height = d3.select('.spacewalk-main-column-layout').node().getBoundingClientRect().height - 2 -
     d3.select('#breadcrumb').node().getBoundingClientRect().height -
     d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height - 200;
 
-  if (svgObject) {
-    svgObject
-      .attr('width', mainWidth)
-      .attr('height', mainHeight);
-  }
-  else {
-    // try to find the object via d3
-    d3.select('#svg-wrapper svg')
-      .attr('width', mainWidth)
-      .attr('height', mainHeight);
-  }
+  return [width, height];
 }
 
 // Render hierarchy view
@@ -370,10 +360,17 @@ function initHierarchy() {
           .on('click', resetTree)
           .text('Reset partitioning');
 
-        adjustSvgDimensions(svg);
+        let dimensions = computeSvgDimensions();
+        svg
+          .attr('width', dimensions[0])
+          .attr('height', dimensions[1]);
 
         $(window).resize(function () {
-          adjustSvgDimensions();
+          let dimensions = computeSvgDimensions();
+          // try to find the object via d3
+          d3.select('#svg-wrapper svg')
+            .attr('width', dimensions[0])
+            .attr('height', dimensions[1]);
         });
 
         function addVisibleTreeToSSM() {
