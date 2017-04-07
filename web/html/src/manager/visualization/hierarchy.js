@@ -18,6 +18,26 @@ function treeify(root, dimensions) {
   })
 }
 
+function customTree(root, container, simulation, deriveClass) {
+
+  const tree = HierarchyView.hierarchyView(root, container)
+    .simulation(simulation)
+    .deriveClass(deriveClass);
+
+  function instance() {
+  }
+
+  instance.root = tree.root;
+
+  instance.deriveClass = tree.deriveClass;
+
+  instance.refreshTree = function() {
+    tree();
+  }
+
+  return instance;
+}
+
 function initHierarchy() {
   $(document).ready(function() {
     // disable the #spacewalk-content observer:
@@ -105,10 +125,8 @@ function initHierarchy() {
         }
         const root = dataProcessor();
         treeify(root, [mainDivWidth, mainDivHeight]);
-        const t = HierarchyView.hierarchyView(root, container)
-          .simulation(mySimulation)
-          .deriveClass(myDeriveClass);
-        t();
+        const t = customTree(root, container, mySimulation, myDeriveClass);
+        t.refreshTree();
 
         // Returns a value bound to the depth level of the node
         function distanceFromDepth(depth) {
@@ -231,7 +249,7 @@ function initHierarchy() {
           tree.root(newRoot);
           nodeVisible(newRoot, filters.predicate());
           tree.deriveClass(criteria.deriveClass)
-          tree();
+          tree.refreshTree();
         }
 
         if (dataProcessor.groupingConfiguration) { // we have a processor responding to groupingConfiguration
@@ -272,7 +290,7 @@ function initHierarchy() {
 
         function resetTree() {
           myCriteria.get()['user-criteria'] = d => { return ''};
-          t();
+          t.refreshTree();
         }
 
         const checkinTimeCriteria = d3.select('#filter-wrapper')
