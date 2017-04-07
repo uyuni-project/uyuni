@@ -46,6 +46,7 @@ function computeSvgDimensions() {
 // purpose: give data, filters, everything, re-render the tree
 function customTree(root, container, deriveClass) {
 
+  let filters = Filters.filters();
   const dimensions = computeSvgDimensions();
   let simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody().strength(d => -distanceFromDepth(d.depth) * 1.5))
@@ -58,6 +59,11 @@ function customTree(root, container, deriveClass) {
     .deriveClass(deriveClass);
 
   function instance() {
+  }
+
+  instance.filters = function(f) {
+    console.log(filters);
+    return arguments.length ? (filters = f, instance) : filters;
   }
 
   instance.root = tree.root;
@@ -141,8 +147,6 @@ function initHierarchy() {
           return visibleChildren.length > 0 || pred(node);
         }
 
-        // Prepare filters
-        const myFilters = Filters.filters();
         const myCriteria = Criteria.criteria();
         myCriteria.get()['default'] = myDeriveClass;
 
@@ -156,8 +160,8 @@ function initHierarchy() {
           .attr('type', 'text')
           .attr('placeholder', 'e.g., client.nue.sles')
           .on('input', function() {
-            myFilters.put('name', d => d.data.name.toLowerCase().includes(this.value.toLowerCase()));
-            refreshTree(dataProcessor, myFilters, myCriteria, t);
+            t.filters().put('name', d => d.data.name.toLowerCase().includes(this.value.toLowerCase()));
+            refreshTree(dataProcessor, t.filters(), myCriteria, t);
           });
 
         const patchCountsFilter = d3.select('#filter-wrapper')
@@ -192,16 +196,16 @@ function initHierarchy() {
           return function(checked) {
             patchCountFilterConfig[idx] = checked;
             if (!patchCountFilterConfig.includes(true)) {
-              myFilters.remove('patch_count_filter');
+              t.filters().remove('patch_count_filter');
             } else {
-              myFilters.put('patch_count_filter', d => {
+              t.filters().put('patch_count_filter', d => {
                 return HierarchyView.isSystemType(d) &&
                   patchCountFilterConfig // based on the checkboxes state, take into account the patch count
                     .map((value, index) => value && (d.data.patch_counts || [])[index] > 0)
                     .reduce((a, b) => a || b, false);
               });
             }
-            refreshTree(dataProcessor, myFilters, myCriteria, t);
+            refreshTree(dataProcessor, t.filters(), myCriteria, t);
           }
         }
         appendCheckbox(patchCountsFilter, 'has bug fix advisories', patchCountFilterCallback(0));
@@ -218,8 +222,8 @@ function initHierarchy() {
           .attr('type', 'text')
           .attr('placeholder', 'e.g., SLE12')
           .on('input', function() {
-            myFilters.put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(this.value.toLowerCase()));
-            refreshTree(dataProcessor, myFilters, myCriteria, t);
+            t.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(this.value.toLowerCase()));
+            refreshTree(dataProcessor, t.filters(), myCriteria, t);
           });
 
         const installedProductsFilterDiv = d3.select('#filter-wrapper')
@@ -232,8 +236,8 @@ function initHierarchy() {
           .attr('type', 'text')
           .attr('placeholder', 'e.g., SLES')
           .on('input', function() {
-            myFilters.put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(this.value.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
-            refreshTree(dataProcessor, myFilters, myCriteria, t);
+            t.filters().put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(this.value.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
+            refreshTree(dataProcessor, t.filters(), myCriteria, t);
           });
 
         function refreshTree(processor, filters, criteria, tree) {
@@ -258,7 +262,7 @@ function initHierarchy() {
           let mySel = groupSelector(grps, groupingDiv);
           mySel.onChange(function(data) {
             dataProcessor.groupingConfiguration(data);
-            refreshTree(dataProcessor, myFilters, myCriteria, t);
+            refreshTree(dataProcessor, t.filters(), myCriteria, t);
           });
           mySel();
 
@@ -278,7 +282,7 @@ function initHierarchy() {
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
           };
-          refreshTree(dataProcessor, myFilters, myCriteria, t);
+          refreshTree(dataProcessor, t.filters(), myCriteria, t);
         }
 
         function resetTree() {
@@ -334,7 +338,7 @@ function initHierarchy() {
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
           };
-          refreshTree(dataProcessor, myFilters, myCriteria, t);
+          refreshTree(dataProcessor, t.filters(), myCriteria, t);
         }
 
         hasPatchesCriteria
