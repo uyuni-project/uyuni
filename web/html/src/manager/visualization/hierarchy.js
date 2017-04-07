@@ -164,11 +164,11 @@ function initHierarchy() {
           container.attr("transform", event.transform);
         }
 
-        const t = customTree(d, container);
+        const tree = customTree(d, container);
         if (view == 'grouping') { // hack - derive preprocessor from global variable
-          t.preprocessor(Preprocessing.grouping());
+          tree.preprocessor(Preprocessing.grouping());
         }
-        t.refresh();
+        tree.refresh();
 
         const nameFilterDiv = d3.select('#filter-wrapper')
           .append('div').attr('class', 'filter');
@@ -180,8 +180,8 @@ function initHierarchy() {
           .attr('type', 'text')
           .attr('placeholder', 'e.g., client.nue.sles')
           .on('input', function() {
-            t.filters().put('name', d => d.data.name.toLowerCase().includes(this.value.toLowerCase()));
-            t.refresh();
+            tree.filters().put('name', d => d.data.name.toLowerCase().includes(this.value.toLowerCase()));
+            tree.refresh();
           });
 
         const patchCountsFilter = d3.select('#filter-wrapper')
@@ -216,16 +216,16 @@ function initHierarchy() {
           return function(checked) {
             patchCountFilterConfig[idx] = checked;
             if (!patchCountFilterConfig.includes(true)) {
-              t.filters().remove('patch_count_filter');
+              tree.filters().remove('patch_count_filter');
             } else {
-              t.filters().put('patch_count_filter', d => {
+              tree.filters().put('patch_count_filter', d => {
                 return HierarchyView.isSystemType(d) &&
                   patchCountFilterConfig // based on the checkboxes state, take into account the patch count
                     .map((value, index) => value && (d.data.patch_counts || [])[index] > 0)
                     .reduce((a, b) => a || b, false);
               });
             }
-            t.refresh();
+            tree.refresh();
           }
         }
         appendCheckbox(patchCountsFilter, 'has bug fix advisories', patchCountFilterCallback(0));
@@ -242,8 +242,8 @@ function initHierarchy() {
           .attr('type', 'text')
           .attr('placeholder', 'e.g., SLE12')
           .on('input', function() {
-            t.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(this.value.toLowerCase()));
-            t.refresh();
+            tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(this.value.toLowerCase()));
+            tree.refresh();
           });
 
         const installedProductsFilterDiv = d3.select('#filter-wrapper')
@@ -256,11 +256,11 @@ function initHierarchy() {
           .attr('type', 'text')
           .attr('placeholder', 'e.g., SLES')
           .on('input', function() {
-            t.filters().put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(this.value.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
-            t.refresh();
+            tree.filters().put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(this.value.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
+            tree.refresh();
           });
 
-        if (t.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
+        if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
           const groupingDiv = d3.select('#filter-wrapper')
             .append('div').attr('class', 'filter');
           groupingDiv
@@ -272,8 +272,8 @@ function initHierarchy() {
             .reduce((a,b) => a.concat(b));
           let mySel = groupSelector(grps, groupingDiv);
           mySel.onChange(function(data) {
-            t.preprocessor().groupingConfiguration(data);
-            t.refresh();
+            tree.preprocessor().groupingConfiguration(data);
+            tree.refresh();
           });
           mySel();
         }
@@ -284,7 +284,7 @@ function initHierarchy() {
 
           const dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
             time.getHours(), time.getMinutes(), time.getSeconds());
-          t.criteria().get()['user-criteria'] = d => {
+          tree.criteria().get()['user-criteria'] = d => {
             if (d.data.checkin == undefined) {
               return '';
             }
@@ -292,12 +292,12 @@ function initHierarchy() {
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
           };
-          t.refresh();
+          tree.refresh();
         }
 
         function resetTree() {
-          t.criteria().get()['user-criteria'] = d => { return ''};
-          t.refresh();
+          tree.criteria().get()['user-criteria'] = d => { return ''};
+          tree.refresh();
         }
 
         const checkinTimeCriteria = d3.select('#filter-wrapper')
@@ -340,7 +340,7 @@ function initHierarchy() {
            .text('Partition systems based on whether there are patches for them:');
 
         function applyPatchesCriteria() {
-          t.criteria().get()['user-criteria'] = d => {
+          tree.criteria().get()['user-criteria'] = d => {
             if (d.data.patch_counts == undefined) {
               return '';
             }
@@ -348,7 +348,7 @@ function initHierarchy() {
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
           };
-          t.refresh();
+          tree.refresh();
         }
 
         hasPatchesCriteria
@@ -376,7 +376,7 @@ function initHierarchy() {
 
         function addVisibleTreeToSSM() {
           const ids = new Set();
-          t.view().root().each(e => {
+          tree.view().root().each(e => {
               if (HierarchyView.isSystemType(e)) {
                 ids.add(e.data.rawId);
               }
