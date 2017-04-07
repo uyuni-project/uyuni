@@ -51,15 +51,11 @@ function computeSvgDimensions() {
 // Render hierarchy view
 // - root
 // - container
-// - deriveClass
 // - custom simulation
 // purpose: give data, filters, everything, re-render the tree
-function customTree(preprocessor, container, deriveClass) {
+function customTree(preprocessor, container) {
 
   const dimensions = computeSvgDimensions();
-
-  const root = preprocessor();
-  treeify(root, dimensions);
 
   let filters = Filters.filters();
   let criteria = Criteria.criteria();
@@ -70,9 +66,9 @@ function customTree(preprocessor, container, deriveClass) {
     .force("x", d3.forceX(dimensions[0] / 2))
     .force("y", d3.forceY(dimensions[1] / 2));
 
-  const tree = HierarchyView.hierarchyView(root, container)
-    .simulation(simulation)
-    .deriveClass(deriveClass);
+  const tree = HierarchyView
+    .hierarchyView(container)
+    .simulation(simulation);
 
   function instance() {
   }
@@ -91,12 +87,10 @@ function customTree(preprocessor, container, deriveClass) {
 
   instance.root = tree.root;
 
-  instance.deriveClass = tree.deriveClass;
-
   instance.refresh = function() {
     const newRoot = preprocessor();
     treeify(newRoot, dimensions);
-    tree.root(newRoot); // todo ???
+    tree.root(newRoot);
     nodeVisible(newRoot, filters.predicate());
     tree.deriveClass(criteria.deriveClass)
     tree();
@@ -159,10 +153,9 @@ function initHierarchy() {
         if (view == 'grouping') {
           dataProcessor = Preprocessing.grouping(d);
         }
-        const t = customTree(dataProcessor, container, myDeriveClass);
-        t.refresh(); // todo
-
+        const t = customTree(dataProcessor, container);
         t.criteria().get()['default'] = myDeriveClass;
+        t.refresh();
 
         const nameFilterDiv = d3.select('#filter-wrapper')
           .append('div').attr('class', 'filter');
