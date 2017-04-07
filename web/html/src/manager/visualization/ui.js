@@ -55,6 +55,19 @@ function addCheckinTimeCriteriaSelect(anchorId, callback) {
     .text('Apply');
 }
 
+function addCheckbox(placeholder, caption, callback) {
+  const parentDiv = placeholder
+    .append('div');
+
+  parentDiv
+    .append('input')
+    .attr('type', 'checkbox')
+    .on('change', function() { callback(this.checked); });
+
+  parentDiv
+    .append('label')
+    .text(caption);
+}
 
 // Simple JS component for selecting groups
 //
@@ -150,6 +163,7 @@ function groupSelector(groups, element) {
 module.exports = {
   addFilter: addFilter,
   addCheckinTimeCriteriaSelect: addCheckinTimeCriteriaSelect,
-  groupSelector: groupSelector
+  groupSelector: groupSelector,
+  addCheckbox: addCheckbox, // todo rename!
 }
 
