@@ -110,59 +110,19 @@ function initHierarchy() {
           mySel();
         }
 
-        function updateTree() {
-          const date = $( '#criteria-datepicker' ).datepicker( "getDate" );
-          const time = $( '#criteria-timepicker' ).timepicker( "getTime" );
-
-          const dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
-            time.getHours(), time.getMinutes(), time.getSeconds());
+        function partitionByCheckin(datetime) {
           tree.criteria().get()['user-criteria'] = d => {
             if (d.data.checkin == undefined) {
               return '';
             }
-            var firstPartition = d.data.checkin < dateTime.getTime();
+            var firstPartition = d.data.checkin < datetime.getTime();
             d.data.partition = firstPartition;
             return firstPartition  ? 'stroke-red' : 'stroke-green';
           };
           tree.refresh();
         }
 
-        function resetTree() {
-          tree.criteria().get()['user-criteria'] = d => { return ''};
-          tree.refresh();
-        }
-
-        const checkinTimeCriteria = d3.select('#filter-wrapper')
-          .append('div').attr('class', 'filter');
-
-        checkinTimeCriteria
-           .append('label')
-           .text('Partition systems by given check-in time:');
-
-        checkinTimeCriteria
-          .append('input')
-          .attr('id', 'criteria-datepicker')
-          .attr('type', 'text');
-
-        checkinTimeCriteria
-          .append('input')
-          .attr('id', 'criteria-timepicker')
-          .attr('type', 'text');
-
-        $('#criteria-datepicker').datepicker({
-          autoclose: true,
-          format: 'yyyy-mm-dd'
-        });
-        $('#criteria-datepicker').datepicker('setDate', new Date());
-        $('#criteria-timepicker').timepicker({timeFormat: 'H:i:s'});
-        $('#criteria-timepicker').timepicker('setTime', new Date());
-
-        checkinTimeCriteria
-          .append('button')
-          .attr('type', 'button')
-          .attr('class', 'btn btn-default')
-          .on('click', updateTree)
-          .text('Apply');
+        UI.addCheckinTimeCriteriaSelect('#filter-wrapper', partitionByCheckin);
 
         const hasPatchesCriteria = d3.select('#filter-wrapper')
           .append('div').attr('class', 'filter');
@@ -195,7 +155,10 @@ function initHierarchy() {
           .append('button')
           .attr('type', 'button')
           .attr('class', 'btn btn-default')
-          .on('click', resetTree)
+          .on('click', () => {
+            tree.criteria().get()['user-criteria'] = d => { return ''};
+            tree.refresh();
+          })
           .text('Reset partitioning');
 
         $(window).resize(function () {
