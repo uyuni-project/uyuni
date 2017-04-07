@@ -111,7 +111,9 @@ function customTree(data, container) {
     return arguments.length ? (criteria = c, instance) : criteria;
   }
 
-  instance.root = view.root;
+  instance.view = function() {
+    return view;
+  }
 
   instance.refresh = function() {
     preprocessor.data(data);
@@ -374,7 +376,7 @@ function initHierarchy() {
 
         function addVisibleTreeToSSM() {
           const ids = new Set();
-          t.root().each(e => {
+          t.view().root().each(e => {
               if (HierarchyView.isSystemType(e)) {
                 ids.add(e.data.rawId);
               }
