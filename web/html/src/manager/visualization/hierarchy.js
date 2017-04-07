@@ -127,14 +127,6 @@ function initHierarchy() {
             tree.refresh();
           });
 
-        $(window).resize(function () {
-          const dimensions = Utils.computeSvgDimensions();
-          // try to find the object via d3
-          d3.select('#svg-wrapper svg')
-            .attr('width', dimensions[0])
-            .attr('height', dimensions[1]);
-        });
-
         function addVisibleTreeToSSM() {
           const ids = new Set();
           tree.view().root().each(e => {
@@ -145,6 +137,14 @@ function initHierarchy() {
           $.addSystemFromSSM(Array.from(ids));
         }
         UI.addButton(d3.select('#filter-wrapper'), 'Add tree to SSM', addVisibleTreeToSSM);
+
+        $(window).resize(function () {
+          const dimensions = Utils.computeSvgDimensions();
+          // try to find the object via d3
+          d3.select('#svg-wrapper svg')
+            .attr('width', dimensions[0])
+            .attr('height', dimensions[1]);
+        });
       }, (xhr) => {
           d3.select('#svg-wrapper')
             .text(t('There was an error fetching data from the server.'));
