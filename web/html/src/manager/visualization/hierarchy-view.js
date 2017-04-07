@@ -1,5 +1,93 @@
 "use strict";
 
+const Filters = require("./filters.js");
+const Criteria = require("./criteria.js");
+const Preprocessing = require("./preprocessing.js");
+const Utils = require("./utils.js");
+
+// Render hierarchy view - take data, transform with preprocessor, filters and
+// criteria, render it in the container.
+//
+// Compulsory parameters:
+//  - data - data from the server to be rendered
+//  - container - where the tree will be rendered in the DOM
+//
+// Other parameters (settable via methods):
+//  - preprocessors
+//  - filters
+//  - criteria
+//  - simulation - d3 force simulation
+//
+// Methods
+//  - refresh - transforms the data according to current preprocessor, filters
+//  and criteria settings and refresh the DOM
+//
+function customTree(data, container) {
+
+  let preprocessor = Preprocessing.stratify();
+  const dimensions = Utils.computeSvgDimensions();
+
+  let filters = Filters.filters();
+  let criteria = Criteria.criteria();
+
+  function myDeriveClass(node) {
+    if (node.id == 'root') {
+      return 'root';
+    }
+
+    if (view == 'proxy-hierarchy' && node.depth == 1 || ['group', 'vhm'].includes(node.data.type)) {
+      return 'inner-node';
+    }
+
+    return 'system';
+  }
+  criteria.get()['default'] = myDeriveClass;
+
+  let simulation = d3.forceSimulation()
+    .force("charge", d3.forceManyBody().strength(d => -distanceFromDepth(d.depth) * 1.5))
+    .force("link", d3.forceLink())
+    .force("x", d3.forceX(dimensions[0] / 2))
+    .force("y", d3.forceY(dimensions[1] / 2));
+
+  const view = hierarchyView(container)
+    .simulation(simulation);
+
+  function instance() {
+  }
+
+  instance.preprocessor = function(p) {
+    return arguments.length ? (preprocessor = p, instance) : preprocessor;
+  }
+
+  instance.filters = function(f) {
+    return arguments.length ? (filters = f, instance) : filters;
+  }
+
+  instance.criteria = function(c) {
+    return arguments.length ? (criteria = c, instance) : criteria;
+  }
+
+  instance.view = function() {
+    return view;
+  }
+
+  instance.refresh = function() {
+    preprocessor.data(data);
+    const newRoot = preprocessor();
+    treeify(newRoot, dimensions);
+    view.root(newRoot);
+    nodeVisible(newRoot, filters.predicate());
+    view.deriveClass(criteria.deriveClass)
+    view.refresh();
+  }
+
+  instance.simulation = function(sim) {
+    return arguments.length ? (simulation = sim, instance) : simulation;
+  }
+
+  return instance;
+}
+
 // Display given hierarchy (given by it's root node) in given container using
 // force based layout.
 //
@@ -127,6 +215,10 @@ function hierarchyView(container, rootIn) {
   return my;
 }
 
+//
+// UTILS FUNCTIONS
+//
+
 function unselectAllNodes() {
   d3.selectAll('g.node.selected')
     .each(function(d) {
@@ -205,7 +297,38 @@ function countChildren(node) {
   return node._allChildren ? ' [' + node.children.length + '/' + node._allChildren.length + ']' : '';
 }
 
+// turns the input data into tree, backups children
+function treeify(root, dimensions) {
+  const tree = d3.tree().size(dimensions);
+  tree(root);
+  root.each(d => {
+      d._allChildren = d.children;  // backup children
+  })
+}
+
+function nodeVisible(node, pred) { // todo move to tree!
+  // dfs
+  if (!node.children) {
+    return pred(node);
+  }
+
+  const visibleChildren = node._allChildren.filter(c => nodeVisible(c, pred));
+  node.children = visibleChildren;
+  return visibleChildren.length > 0 || pred(node);
+}
+
+// Returns a value bound to the depth level of the node
+function distanceFromDepth(depth) {
+  switch (depth) {
+    case 0: return 300;
+    case 1: return 180;
+    default: return 90;
+  }
+}
+
 module.exports = {
     hierarchyView: hierarchyView,
+    customTree: customTree,
     isSystemType: isSystemType
 }
+
