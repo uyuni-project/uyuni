@@ -23,6 +23,20 @@ function displayHierarchy(data) {
   }
   tree.refresh();
 
+  initUI(tree);
+
+  $(window).resize(function () {
+    const dimensions = Utils.computeSvgDimensions();
+    // try to find the object via d3
+    d3.select('#svg-wrapper svg')
+    .attr('width', dimensions[0])
+    .attr('height', dimensions[1]);
+  });
+}
+
+// util function for adding the UI to the dom and setting its callbacks
+function initUI(tree) {
+  // init the UI
   UI.addFilter('#filter-wrapper', 'Filter by system name', 'e.g., client.nue.sles', (input) => {
     tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
@@ -131,14 +145,6 @@ function displayHierarchy(data) {
     $.addSystemFromSSM(Array.from(ids));
   }
   UI.addButton(d3.select('#filter-wrapper'), 'Add tree to SSM', addVisibleTreeToSSM);
-
-  $(window).resize(function () {
-    const dimensions = Utils.computeSvgDimensions();
-    // try to find the object via d3
-    d3.select('#svg-wrapper svg')
-    .attr('width', dimensions[0])
-    .attr('height', dimensions[1]);
-  });
 }
 
 const Hierarchy = React.createClass({
