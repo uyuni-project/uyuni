@@ -83,10 +83,9 @@ function initHierarchy() {
     // note: leaving it connected slow down the svg usability
     spacewalkContentObserver.disconnect();
 
-    var mainDivWidth = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
-    var mainDivHeight = d3.select('.spacewalk-main-column-layout').node().getBoundingClientRect().height - 2 -
-        d3.select('#breadcrumb').node().getBoundingClientRect().height -
-        d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height - 200;
+    const dimensions = computeSvgDimensions();
+    var mainDivWidth = dimensions[0];
+    var mainDivHeight = dimensions[1];
 
     // Get data & put everything together in the graph!
     Network
@@ -355,13 +354,12 @@ function initHierarchy() {
           .on('click', resetTree)
           .text('Reset partitioning');
 
-        let dimensions = computeSvgDimensions();
         svg
           .attr('width', dimensions[0])
           .attr('height', dimensions[1]);
 
         $(window).resize(function () {
-          let dimensions = computeSvgDimensions();
+          const dimensions = computeSvgDimensions();
           // try to find the object via d3
           d3.select('#svg-wrapper svg')
             .attr('width', dimensions[0])
