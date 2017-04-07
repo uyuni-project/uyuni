@@ -8,6 +8,7 @@ const HierarchyView = require("./hierarchy-view.js");
 const Filters = require("./filters.js");
 const Criteria = require("./criteria.js");
 const Preprocessing = require("./preprocessing.js");
+const Utils = require("./utils.js");
 
 // turns the input data into tree, backups children
 function treeify(root, dimensions) {
@@ -39,15 +40,6 @@ function distanceFromDepth(depth) {
   }
 }
 
-function computeSvgDimensions() {
-  const width = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
-  const height = d3.select('.spacewalk-main-column-layout').node().getBoundingClientRect().height - 2 -
-    d3.select('#breadcrumb').node().getBoundingClientRect().height -
-    d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height - 200;
-
-  return [width, height];
-}
-
 // Render hierarchy view - take data, transform with preprocessor, filters and
 // criteria, render it in the container.
 //
@@ -68,7 +60,7 @@ function computeSvgDimensions() {
 function customTree(data, container) {
 
   let preprocessor = Preprocessing.stratify();
-  const dimensions = computeSvgDimensions();
+  const dimensions = Utils.computeSvgDimensions();
 
   let filters = Filters.filters();
   let criteria = Criteria.criteria();
@@ -145,7 +137,7 @@ function initHierarchy() {
       .get(endpoint, "application/json")
       .promise
       .then(d => {
-        const dimensions = computeSvgDimensions();
+        const dimensions = Utils.computeSvgDimensions();
 
         // Prepare DOM
         var svg = d3.select('#svg-wrapper')
@@ -367,7 +359,7 @@ function initHierarchy() {
           .text('Reset partitioning');
 
         $(window).resize(function () {
-          const dimensions = computeSvgDimensions();
+          const dimensions = Utils.computeSvgDimensions();
           // try to find the object via d3
           d3.select('#svg-wrapper svg')
             .attr('width', dimensions[0])
