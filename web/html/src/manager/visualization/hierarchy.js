@@ -6,6 +6,7 @@ const ReactDOM = require("react-dom");
 const Panel = require("../../components/panel").Panel;
 const HierarchyView = require("./hierarchy-view.js");
 const Preprocessing = require("./preprocessing.js");
+const UI = require("./ui.js");
 const Utils = require("./utils.js");
 
 function initHierarchy() {
@@ -28,19 +29,10 @@ function initHierarchy() {
         }
         tree.refresh();
 
-        const nameFilterDiv = d3.select('#filter-wrapper')
-          .append('div').attr('class', 'filter');
-        nameFilterDiv
-          .append('label')
-          .text('Filter by system name');
-        nameFilterDiv
-          .append('input')
-          .attr('type', 'text')
-          .attr('placeholder', 'e.g., client.nue.sles')
-          .on('input', function() {
-            tree.filters().put('name', d => d.data.name.toLowerCase().includes(this.value.toLowerCase()));
-            tree.refresh();
-          });
+        UI.addFilter('#filter-wrapper', 'Filter by system name', 'e.g., client.nue.sles', (input) => {
+          tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
+          tree.refresh();
+        });
 
         const patchCountsFilter = d3.select('#filter-wrapper')
           .append('div').attr('class', 'filter');
@@ -90,33 +82,15 @@ function initHierarchy() {
         appendCheckbox(patchCountsFilter, 'OR has product enhancement advisories', patchCountFilterCallback(1));
         appendCheckbox(patchCountsFilter, 'OR has security advisories', patchCountFilterCallback(2));
 
-        const baseProdFilterDiv = d3.select('#filter-wrapper')
-          .append('div').attr('class', 'filter');
-        baseProdFilterDiv
-           .append('label')
-           .text('Filter by system base channel');
-        baseProdFilterDiv
-          .append('input')
-          .attr('type', 'text')
-          .attr('placeholder', 'e.g., SLE12')
-          .on('input', function() {
-            tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(this.value.toLowerCase()));
-            tree.refresh();
-          });
+        UI.addFilter('#filter-wrapper', 'Filter by system base channel', 'e.g., SLE12', (input) => {
+          tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(input.toLowerCase()));
+          tree.refresh();
+        });
 
-        const installedProductsFilterDiv = d3.select('#filter-wrapper')
-          .append('div').attr('class', 'filter');
-        installedProductsFilterDiv
-          .append('label')
-          .text('Filter by system installed products');
-        installedProductsFilterDiv
-          .append('input')
-          .attr('type', 'text')
-          .attr('placeholder', 'e.g., SLES')
-          .on('input', function() {
-            tree.filters().put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(this.value.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
-            tree.refresh();
-          });
+        UI.addFilter('#filter-wrapper', 'Filter by system installed products', 'e.g., SLES', (input) => {
+          tree.filters().put('installedProducts', d =>  (d.data.installedProducts || []).map(ip => ip.toLowerCase().includes(input.toLowerCase())).reduce((v1,v2) => v1 || v2, false));
+          tree.refresh();
+        });
 
         if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
           const groupingDiv = d3.select('#filter-wrapper')
