@@ -21,26 +21,8 @@ function initHierarchy() {
       .get(endpoint, "application/json")
       .promise
       .then(d => {
-        const dimensions = Utils.computeSvgDimensions();
-
-        // Prepare DOM
-        var svg = d3.select('#svg-wrapper')
-          .append('svg')
-          .attr('width', dimensions[0])
-          .attr('height', dimensions[1]);
-        var container = svg.append("g");
-
-        // Zoom handling
-        svg.call(d3.zoom()
-          .scaleExtent([1 / 8, 16])
-          .on("zoom", zoomed))
-          .on("dblclick.zoom", null);
-        function zoomed(d) {
-          var event = d3.event;
-          container.attr("transform", event.transform);
-        }
-
-        const tree = customTree(d, container);
+        const container = Utils.prepareDom();
+        const tree = HierarchyView.customTree(d, container);
         if (view == 'grouping') { // hack - derive preprocessor from global variable
           tree.preprocessor(Preprocessing.grouping());
         }
