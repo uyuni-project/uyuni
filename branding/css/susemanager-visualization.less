@@ -88,12 +88,20 @@ svg {
       }
     }
   }
+  .node.selected {
+    foreignObject {
+      i {
+        font-weight: bold;
+        color: #333;
+      }
+    }
+  }
 
   .node.root {
     foreignObject {
       width: 4em;
       height: 4em;
-      color: #46a083;
+      color: #008d5f;
       i {
         font-size: 4em;
       }
@@ -102,7 +110,7 @@ svg {
   .node.root.selected {
     foreignObject {
       i {
-        color: #00c081;
+        font-weight: normal;
       }
     }
   }
@@ -111,16 +119,9 @@ svg {
     foreignObject {
       width: 3em;
       height: 3em;
-      color: #48667d;
+      color: #9467bd;
       i {
         font-size: 3em;
-      }
-    }
-  }
-  .node.inner-node.selected {
-    foreignObject {
-      i {
-        color: #004981;
       }
     }
   }
@@ -130,21 +131,6 @@ svg {
       color: #7392cc;
     }
   }
-  .node.system.selected {
-    foreignObject {
-      i {
-        color: #333;
-      }
-    }
-  }
-
-  .node.selected {
-    foreignObject {
-      i {
-        font-weight: bold;
-      }
-    }
-  }
 
   .node text {
     font-size:14px;
@@ -152,7 +138,7 @@ svg {
   }
 
   .link {
-    stroke: #d4d2a0;
+    stroke: #d0d7e2;
     stroke-width: 0.5px;
   }
 
