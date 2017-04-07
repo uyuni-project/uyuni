@@ -120,23 +120,12 @@ function initHierarchy() {
           tree.refresh();
         }
 
-        hasPatchesCriteria
-          .append('button')
-          .attr('type', 'button')
-          .attr('class', 'btn btn-default')
-          .on('click', applyPatchesCriteria)
-          .text('Apply');
+        UI.addButton(hasPatchesCriteria, 'Apply', applyPatchesCriteria);
 
-        d3.select('#filter-wrapper')
-          .append('div').attr('class', 'filter')
-          .append('button')
-          .attr('type', 'button')
-          .attr('class', 'btn btn-default')
-          .on('click', () => {
+        UI.addButton(d3.select('#filter-wrapper'), 'Reset partitioning', () => {
             tree.criteria().get()['user-criteria'] = d => { return ''};
             tree.refresh();
-          })
-          .text('Reset partitioning');
+          });
 
         $(window).resize(function () {
           const dimensions = Utils.computeSvgDimensions();
@@ -155,14 +144,7 @@ function initHierarchy() {
             });
           $.addSystemFromSSM(Array.from(ids));
         }
-
-        const addAllToSSMButton = d3.select('#filter-wrapper')
-          .append('div')
-          .append('button')
-          .attr('class', 'btn btn-default')
-          .on('click', addVisibleTreeToSSM)
-          .text('Add tree to SSM');
-
+        UI.addButton(d3.select('#filter-wrapper'), 'Add tree to SSM', addVisibleTreeToSSM);
       }, (xhr) => {
           d3.select('#svg-wrapper')
             .text(t('There was an error fetching data from the server.'));

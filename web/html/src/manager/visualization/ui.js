@@ -41,18 +41,13 @@ function addCheckinTimeCriteriaSelect(anchorId, callback) {
   $(anchorId + ' .criteria-timepicker').timepicker({timeFormat: 'H:i:s'});
   $(anchorId + ' .criteria-timepicker').timepicker('setTime', new Date());
 
-  checkinTimeCriteria
-    .append('button')
-    .attr('type', 'button')
-    .attr('class', 'btn btn-default')
-    .on('click', function() {
+  addButton(checkinTimeCriteria, 'Apply', () => {
       const date = $(anchorId + ' .criteria-datepicker' ).datepicker( "getDate" );
       const time = $(anchorId + ' .criteria-timepicker' ).timepicker( "getTime" );
       const datetime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
         time.getHours(), time.getMinutes(), time.getSeconds());
       callback(datetime);
-    })
-    .text('Apply');
+    });
 }
 
 function addCheckbox(placeholder, caption, callback) {
@@ -172,10 +167,21 @@ function addGroupSelector(anchorId, groups, callback) {
   mySel();
 }
 
+function addButton(anchorSelection, caption, callback) {
+  anchorSelection
+    .append('div').attr('class', 'filter')
+    .append('button')
+    .attr('type', 'button')
+    .attr('class', 'btn btn-default')
+    .on('click', callback)
+  .text(caption);
+}
+
 module.exports = {
   addFilter: addFilter,
   addCheckinTimeCriteriaSelect: addCheckinTimeCriteriaSelect,
   addCheckbox: addCheckbox, // todo rename!
-  addGroupSelector: addGroupSelector
+  addGroupSelector: addGroupSelector,
+  addButton: addButton
 }
 
