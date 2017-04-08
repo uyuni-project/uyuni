@@ -75,7 +75,7 @@ class RhnSQLDatabaseTests(unittest.TestCase):
 
         query = "aaa bbb ccc"
         cursor = rhnSQL.prepare(query)
-        self.assertRaises(rhnSQL.SQLStatementPrepareError,
+        self.assertRaises(rhnSQL.SQLError,
                           cursor.execute)
 
         rhnSQL.rollback("test_statement_prepare_error")
