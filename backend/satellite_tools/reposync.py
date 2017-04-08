@@ -449,6 +449,9 @@ class RepoSync(object):
                     self.import_products(plugin)
                     self.import_susedata(plugin)
 
+                except rhnSQL.SQLError, e:
+                    log(0, "SQLError: %s" % e)
+                    raise
                 except ChannelTimeoutException, e:
                     log(0, e)
                     self.sendErrorMail(str(e))
