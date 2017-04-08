@@ -57,9 +57,6 @@ install -m 0755 -d $RPM_BUILD_ROOT%{pythonrhnroot}/common
 install -m 0644 __init__.py $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py
 install -m 0644 common/__init__.py $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py
 install -m 0644 common/usix.py* $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py
-%if 0%{?suse_version} && 0%{?suse_version} < 1200
-rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py*
-%endif
 
 %if 0%{?fedora} && 0%{?fedora} >= 23
 install -d $RPM_BUILD_ROOT%{python3rhnroot}/common
@@ -81,11 +78,10 @@ rm -r -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__pycache__
 %defattr(-,root,root)
 %dir %{pythonrhnroot}
 %dir %{pythonrhnroot}/common
+%{pythonrhnroot}/__init__.py
 %{pythonrhnroot}/common/__init__.py
 %{pythonrhnroot}/common/usix.py*
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1200
-# prevent file conflict with spacewalk-backend-libs
-%exclude %{pythonrhnroot}/__init__.py
 %exclude %{pythonrhnroot}/__init__.pyc
 %exclude %{pythonrhnroot}/__init__.pyo
 %exclude %{pythonrhnroot}/common/__init__.pyc
@@ -97,9 +93,9 @@ rm -r -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__pycache__
 %files -n python3-%{name}
 %dir %{python3rhnroot}
 %dir %{python3rhnroot}/common
+%{python3rhnroot}/__init__.py
 %{python3rhnroot}/common/__init__.py
 %{python3rhnroot}/common/usix.py*
-%exclude %{python3rhnroot}/__init__.py
 %exclude %{python3rhnroot}/__init__.pyc
 %exclude %{python3rhnroot}/__init__.pyo
 %exclude %{python3rhnroot}/common/__init__.pyc
