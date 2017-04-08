@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.7.2.1
+Version: 2.7.3
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -18,11 +18,18 @@ BuildArch: noarch
 ExcludeArch: aarch64
 
 #Requires: apache-ibatis-sqlmap
+Requires: apache-commons-cli
+Requires: apache-commons-codec
+Requires: apache-commons-lang
+Requires: apache-commons-logging
 Requires: c3p0 >= 0.9.1
 Requires: cglib
 Requires(pre): doc-indexes
 Requires: jakarta-commons-httpclient
+Requires: jakarta-oro
+Requires: javapackages-tools
 #Requires: lucene
+Requires: objectweb-asm
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires: mchange-commons
 %endif
@@ -34,46 +41,25 @@ Requires: tanukiwrapper
 Requires: simple-core
 Obsoletes: rhn-search < 5.3.0
 BuildRequires: ant
+BuildRequires: apache-commons-cli
+BuildRequires: apache-commons-codec
+BuildRequires: apache-commons-lang
+BuildRequires: apache-commons-logging
 #BuildRequires: apache-ibatis-sqlmap
 BuildRequires: c3p0 >= 0.9.1
 BuildRequires: cglib
 BuildRequires: jakarta-commons-httpclient
+BuildRequires: jakarta-oro
 BuildRequires: java-devel >= 1.6.0
+BuildRequires: javapackages-tools
 #BuildRequires: lucene
+BuildRequires: objectweb-asm
 BuildRequires: quartz < 2.0
 BuildRequires: redstone-xmlrpc
 #BuildRequires: picocontainer
 BuildRequires: tanukiwrapper
 BuildRequires: simple-core
-%if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1315
-Requires: apache-commons-cli
-Requires: apache-commons-codec
-Requires: apache-commons-lang
-Requires: apache-commons-logging
-Requires: jakarta-oro
-Requires: javapackages-tools
-Requires: objectweb-asm
-BuildRequires: apache-commons-cli
-BuildRequires: apache-commons-codec
-BuildRequires: apache-commons-lang
-BuildRequires: apache-commons-logging
-BuildRequires: jakarta-oro
-BuildRequires: javapackages-tools
-BuildRequires: objectweb-asm
-%else
-Requires: asm
-Requires: jakarta-commons-cli
-Requires: jakarta-commons-codec
-Requires: jakarta-commons-lang >= 0:2.1
-Requires: jakarta-commons-logging
-Requires: jpackage-utils >= 0:1.5
-Requires: oro
-BuildRequires: jakarta-commons-cli
-BuildRequires: jakarta-commons-codec
-BuildRequires: jakarta-commons-lang >= 0:2.1
-BuildRequires: jakarta-commons-logging
-BuildRequires: oro
-%endif
+
 %if 0%{?fedora} && 0%{?fedora} >= 21
 Requires: log4j12
 BuildRequires: log4j12
@@ -249,6 +235,10 @@ fi
 %endif
 
 %changelog
+* Wed Apr 05 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.3-1
+- updated RHEL6 Requires after jpackage removal
+- use simple logging
+
 * Thu Mar 30 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.2-1
 - simplified Requires/Buildrequires ifdefs
 - added missing requires

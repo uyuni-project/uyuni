@@ -32,6 +32,7 @@ class Manifest(object):
     CERTIFICATE_PATH = "export/extensions"
     PRODUCTS_PATH = "export/products"
     CONSUMER_INFO = "export/consumer.json"
+    META_INFO = "export/meta.json"
     UPSTREAM_CONSUMER_PATH = "export/upstream_consumer"
 
     def __init__(self, zip_path):
@@ -41,7 +42,10 @@ class Manifest(object):
         self.satellite_version = None
         self.consumer_credentials = None
         self.uuid = None
+        self.name = None
         self.ownerid = None
+        self.api_url = None
+        self.created = None
         # Signature and signed data
         self.signature = None
         self.data = None
@@ -65,6 +69,7 @@ class Manifest(object):
                     self._load_entitlements(inner_zip)
                     self._extract_certificate(inner_zip)
                     self._extract_consumer_info(inner_zip)
+                    self._extract_meta_info(inner_zip)
                     self._extract_consumer_credentials(inner_zip)
                 finally:
                     if inner_zip is not None:
@@ -166,7 +171,9 @@ class Manifest(object):
                 try:
                     data = json.load(consumer_info)
                     self.uuid = data['uuid']
+                    self.name = data['name']
                     self.ownerid = data['owner']['key']
+                    self.api_url = data['urlApi']
                 except KeyError:
                     print("ERROR: Cannot access required field in file '%s'" % self.CONSUMER_INFO)
                     raise
@@ -174,6 +181,27 @@ class Manifest(object):
                 consumer_info.close()
         else:
             raise MissingConsumerInfoError()
+
+    def _extract_meta_info(self, zip_file):
+        files = zip_file.namelist()
+        found = False
+        for f in files:
+            if f == self.META_INFO:
+                found = True
+                break
+        if found:
+            meta_info = zip_file.open(self.META_INFO)
+            try:
+                try:
+                    data = json.load(meta_info)
+                    self.created = data['created']
+                except KeyError:
+                    print("ERROR: Cannot access required field in file '%s'" % self.META_INFO)
+                    raise
+            finally:
+                meta_info.close()
+        else:
+            raise MissingMetaInfoError()
 
     def _extract_consumer_credentials(self, zip_file):
         files = zip_file.namelist()
@@ -209,11 +237,20 @@ class Manifest(object):
     def get_consumer_credentials(self):
         return self.consumer_credentials
 
+    def get_name(self):
+        return self.name
+
     def get_uuid(self):
         return self.uuid
 
     def get_ownerid(self):
         return self.ownerid
+
+    def get_api_url(self):
+        return self.api_url
+
+    def get_created(self):
+        return self.created
 
     def check_signature(self):
         if self.signature and self.data:
@@ -222,10 +259,11 @@ class Manifest(object):
             for cert_name in certs:
                 cert_file = None
                 try:
-                    cert_file = open(constants.CANDLEPIN_CA_CERT_DIR + '/' + cert_name, 'r')
-                    cert = X509.load_cert_string(cert_file.read())
-                except (IOError, X509.X509Error):
-                    continue
+                    try:
+                        cert_file = open(constants.CANDLEPIN_CA_CERT_DIR + '/' + cert_name, 'r')
+                        cert = X509.load_cert_string(cert_file.read())
+                    except (IOError, X509.X509Error):
+                        continue
                 finally:
                     if cert_file is not None:
                         cert_file.close()
@@ -327,4 +365,8 @@ class ManifestValidationError(Exception):
 
 
 class MissingConsumerInfoError(Exception):
+    pass
+
+
+class MissingMetaInfoError(Exception):
     pass

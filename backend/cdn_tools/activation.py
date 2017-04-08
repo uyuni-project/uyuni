@@ -43,13 +43,14 @@ class Activation(object):
         f = None
         # Channel families metadata
         try:
-            f = open(constants.CHANNEL_FAMILY_MAPPING_PATH, 'r')
-            self.families = json.load(f)
-            f.close()
-        except IOError:
-            e = sys.exc_info()[1]
-            print "Ignoring channel mappings: %s" % e
-            self.families = {}
+            try:
+                f = open(constants.CHANNEL_FAMILY_MAPPING_PATH, 'r')
+                self.families = json.load(f)
+                f.close()
+            except IOError:
+                e = sys.exc_info()[1]
+                print "Ignoring channel mappings: %s" % e
+                self.families = {}
         finally:
             if f is not None:
                 f.close()
@@ -199,6 +200,16 @@ class Activation(object):
         Activation._remove_certificates()
         print("Removing manifest repositories...")
         Activation._remove_repositories()
+
+    @staticmethod
+    def manifest_info(manifest_path):
+        manifest = Manifest(manifest_path)
+        print("Name: %s" % manifest.get_name())
+        print("UUID: %s" % manifest.get_uuid())
+        print("Owner ID: %s" % manifest.get_ownerid())
+        print("Satellite version: %s" % manifest.get_satellite_version())
+        print("Created: %s" % manifest.get_created())
+        print("API URL: %s" % manifest.get_api_url())
 
     @staticmethod
     def download_manifest(old_manifest_path, http_proxy=None, http_proxy_username=None,

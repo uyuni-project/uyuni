@@ -1,11 +1,10 @@
 %if 0%{?fedora} || 0%{?rhel} >= 7
-Requires: apache-commons-io
 %define jpackage_run_jars antlr apache-commons-beanutils apache-commons-collections apache-commons-logging regexp
 %else
 %define jpackage_run_jars antlr jakarta-commons-beanutils jakarta-commons-collections jakarta-commons-logging regexp
 %endif
 
-%define jpackage_build_jars checkstyle junit ant
+%define jpackage_build_jars checkstyle junit
 %define jpackage_jars %jpackage_run_jars %jpackage_build_jars
 
 Summary: A JNI Wrapper for the Unix pam(8) subsystem and a JAAS bridge
@@ -21,20 +20,25 @@ Patch3: jpam-0.4-no_checkstyle.patch
 Patch4: jpam-0.4-no-password-prompt.patch
 Patch5: jpam-0.4-arm.patch
 Version: 0.4
-Release: 28%{?dist}
+Release: 32%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 Requires: %jpackage_run_jars
 BuildRequires: %jpackage_jars
-BuildRequires: gcc make
-BuildRequires: pam-devel
-%if 0%{?fedora} >= 20 || 0%{?rhel} >= 7
-BuildRequires: javapackages-tools
-Requires:      javapackages-tools
-%else
-BuildRequires: ant-nodeps
-%endif
+BuildRequires: apache-commons-beanutils >= 1.9
+BuildRequires: gcc
 BuildRequires: java-devel >= 1.6.0
+BuildRequires: make
+BuildRequires: pam-devel
+%if 0%{?fedora} || 0%{?rhel} >= 7
+Requires:      apache-commons-io
+Requires:      javapackages-tools
+BuildRequires: ant
+BuildRequires: javapackages-tools
+%else
+BuildRequires: ant < 1.9
+BuildRequires: ant-nodeps < 1.9
+%endif
 
 # ia64 doesnt have a new enough java.
 ExcludeArch:  ia64
@@ -60,7 +64,7 @@ Javadoc for %{name}.
 %patch5 -p1
 
 rm -Rfv tools/*.jar
-build-jar-repository -p tools/ %jpackage_jars
+build-jar-repository -p tools/ ant %jpackage_jars
 
 %build
 export JAVA_HOME=%{java_home}
@@ -109,6 +113,20 @@ fi
 %{_javadocdir}/%{name}-%{version}
 
 %changelog
+* Thu Apr 06 2017 Michael Mraka <michael.mraka@redhat.com> 0.4-32
+- new checkstyle requirement
+
+* Wed Apr 05 2017 Michael Mraka <michael.mraka@redhat.com> 0.4-31
+- require older ant on RHEL6
+- Revert jakarta-* -> apache-* changes
+
+* Tue Apr 04 2017 Michael Mraka <michael.mraka@redhat.com> 0.4-30
+- expand removed jar list define
+
+* Tue Apr 04 2017 Michael Mraka <michael.mraka@redhat.com> 0.4-29
+- updated RHEL6 Requires after jpackage removal
+- consolidate ifs and defines into one place
+
 * Sun Feb 21 2016 Jan Dobes <jdobes@redhat.com> 0.4-28
 - adding arm Makefile
 

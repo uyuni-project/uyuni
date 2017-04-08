@@ -23,9 +23,7 @@ CREATE TABLE rhnSet
     label          VARCHAR2(32) NOT NULL,
     element        NUMBER NOT NULL,
     element_two    NUMBER,
-    element_three  NUMBER,
-    CONSTRAINT rhn_set_user_label_elem_unq UNIQUE (user_id, label, element, element_two, element_three)
-        USING INDEX TABLESPACE [[8m_tbs]]
+    element_three  NUMBER
 )
 ENABLE ROW MOVEMENT
 NOLOGGING

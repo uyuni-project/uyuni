@@ -42,7 +42,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.65.1
+Version: 2.7.73
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -897,6 +897,49 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Fri Apr 07 2017 Jan Dobes 2.7.73-1
+- 1397762 - adding examples section
+- 1397762 - add option to display info about currently used manifest
+- 1397762 - use candlepin API server from manifest
+- 1397762 - rename --cdn-deactivate to just --deactivate
+- 1397762 - rotate manifest on deactivation
+- 1397762 - parse meta json file
+- 1397762 - get name and API URL from manifest
+- 1397762 - be more descriptive
+- 1397762 - provide option for immediate activation and rename parameters
+- 1439949 - Set a maximum limit to include the PostgreSQL logs into the
+  spacewalk-debug tarball.
+- Enhances performance by copying just the pertinent files under /var/rhn/log.
+  A lot of the times, external files are mistakenly saved there by sysadmins
+  such as database dumps, etc.
+
+* Thu Apr 06 2017 Gennadii Altukhov <galt@redhat.com> 2.7.72-1
+- 1434786 - add indentation for missing channels in an error message
+
+* Wed Apr 05 2017 Jan Dobes 2.7.71-1
+- 1418025 - fixing behavior to work with --force-kickstarts parameter
+
+* Wed Apr 05 2017 Jan Dobes 2.7.70-1
+- 1438807 - fixing long line
+- 1434769 - removing old return codes from comment
+
+* Tue Apr 04 2017 Jan Dobes 2.7.69-1
+- 1397762 - fixing long lines
+
+* Tue Apr 04 2017 Jan Dobes 2.7.68-1
+- 1438854 - adding example for deleting custom repo
+
+* Tue Apr 04 2017 Jan Dobes 2.7.67-1
+- 1438807 - display channel sync error causes on default verbosity and improve
+  them
+- 1438807 - label may not be in db_channel if channel doesn't exist
+- 1434471 - raise Database exception up to stack and stop syncing.
+- 1434471 - raise unified exception from database drivers if it's not possible
+  to execute SQL statement
+
+* Mon Apr 03 2017 Jan Dobes 2.7.66-1
+- 1397762 - fix build on RHEL 5
+
 * Fri Mar 31 2017 Jan Dobes 2.7.65-1
 - 1397762 - update man page
 - 1397762 - use at least some verbosity levels in cdn_tools modules

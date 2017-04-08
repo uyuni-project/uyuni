@@ -173,6 +173,9 @@ def writeRhsmManifest(options, manifest):
     fo = open(DEFAULT_RHSM_MANIFEST_LOCATION, 'w+b')
     fo.write(manifest)
     fo.close()
+    # Delete from temporary location
+    if options.manifest_refresh:
+        os.unlink(options.manifest)
     options.manifest = DEFAULT_RHSM_MANIFEST_LOCATION
 
 
@@ -232,9 +235,10 @@ def enableSatelliteRepo(rhn_cert):
                "Standard-error: %s\n\n"
                % (msg_, ret, out.read(), err.read()))
         sys.stderr.write(msg)
-        raise EnableSatelliteRepositoryException("Enabling of Satellite repository failed. Is there Satellite "
-                                                 "subscription attached to this system? Is the version of "
-                                                 "RHEL and Satellite certificate correct?")
+        raise EnableSatelliteRepositoryException("Enabling of Satellite repository failed. Make sure Satellite "
+                                                 "subscription is attached to this system, both versions of RHEL and "
+                                                 "Satellite are supported or run activation with --disconnected "
+                                                 "option.")
 
 
 class EnableSatelliteRepositoryException(Exception):
@@ -280,10 +284,14 @@ def processCommandline():
         Option('--dump-version', action='store', help="requested version of XML dump"),
         Option('--manifest',     action='store',      help='the RHSM manifest path/filename to activate for CDN'),
         Option('--rhn-cert', action='store', help='this option is deprecated, use --manifest instead'),
-        Option('--cdn-deactivate', action='store_true', help='deactivate CDN-activated Satellite'),
+        Option('--deactivate', action='store_true', help='deactivate CDN-activated Satellite'),
         Option('--disconnected', action='store_true', help="activate locally, not subscribe to remote repository"),
-        Option('--download-manifest', action='store_true', help="download new manifest from RHSM"),
-        Option('--refresh-manifest', action='store_true', help="regenerate certificates in RHSM for your consumer")
+        Option('--manifest-info', action='store_true', help="show information about currently activated manifest"),
+        Option('--manifest-download', action='store_true',
+               help="download new manifest from RHSM to temporary location"),
+        Option('--manifest-refresh', action='store_true', help="download new manifest from RHSM and activate it"),
+        Option('--manifest-reconcile-request', action='store_true',
+               help="request regeneration of entitlement certificates")
     ]
 
     parser = OptionParser(option_list=options)
@@ -297,11 +305,14 @@ def processCommandline():
     initCFG('server.satellite')
 
     # No need to check further if deactivating
-    if options.cdn_deactivate:
+    if options.deactivate:
         return options
 
     if options.sanity_only:
         options.disconnected = 1
+
+    if options.manifest_refresh:
+        options.manifest_download = 1
 
     if CFG.DISCONNECTED and not options.disconnected:
         sys.stderr.write("""ERROR: Satellite server has been setup to run in disconnected mode.
@@ -335,20 +346,7 @@ def main():
         15   cannot load mapping files
         16   manifest download failed
         17   manifest refresh failed
-        20   remote activation failure (general, and really unknown why)
         30   local activation failure
-        40   channel population failure
-
-        0   1021 satellite_already_activated exception - MAPS TO 0
-
-        (CODE - 1000 + 60)
-        80   1020 no_management_slots exception
-        82   1022 no_access_to_sat_channel exception
-        83   1023 insufficient_channel_entitlements exception
-        84   1024 invalid_sat_certificate exception
-        85   1025 satellite_not_activated exception - this shouldn't happen!
-        86   1026 satellite_no_base_channel exception
-        87   2(?) no_sat_chan_for_version exception
 
         90   not registered to rhsm
         91   enabling sat repo failed
@@ -369,8 +367,12 @@ def main():
         sys.exit(1)
 
     # CDN Deactivation
-    if options.cdn_deactivate:
+    if options.deactivate:
         cdn_activation.Activation.deactivate()
+        # Rotate the manifest to not have any currently used
+        if os.path.exists(DEFAULT_RHSM_MANIFEST_LOCATION):
+            fileutils.rotateFile(DEFAULT_RHSM_MANIFEST_LOCATION, depth=5)
+            os.unlink(DEFAULT_RHSM_MANIFEST_LOCATION)
         return 0
 
     if options.rhn_cert:
@@ -381,9 +383,13 @@ def main():
 
     if not options.manifest:
         if os.path.exists(DEFAULT_RHSM_MANIFEST_LOCATION):
-            # Call refreshment API on Candlepin server
-            if options.refresh_manifest:
-                print("Refreshing manifest...")
+            options.manifest = DEFAULT_RHSM_MANIFEST_LOCATION
+            if options.manifest_info:
+                cdn_activation.Activation.manifest_info(DEFAULT_RHSM_MANIFEST_LOCATION)
+                return 0
+            # Call regeneration API on Candlepin server
+            if options.manifest_reconcile_request:
+                print("Requesting manifest regeneration...")
                 ok = cdn_activation.Activation.refresh_manifest(
                     DEFAULT_RHSM_MANIFEST_LOCATION,
                     http_proxy=options.http_proxy,
@@ -391,12 +397,12 @@ def main():
                     http_proxy_password=options.http_proxy_password,
                     verbosity=options.verbose)
                 if not ok:
-                    writeError("Refreshing manifest failed!")
+                    writeError("Manifest regeneration failed!")
                     return 17
-                print("Manifest refresh requested.")
+                print("Manifest regeneration requested.")
                 return 0
             # Get new refreshed manifest from Candlepin server
-            if options.download_manifest:
+            if options.manifest_download:
                 print("Downloading manifest...")
                 path = cdn_activation.Activation.download_manifest(
                     DEFAULT_RHSM_MANIFEST_LOCATION,
@@ -405,14 +411,16 @@ def main():
                     http_proxy_password=options.http_proxy_password,
                     verbosity=options.verbose)
                 if not path:
-                    writeError("Download of manifest failed!")
+                    writeError("Manifest download failed!")
                     return 16
-                options.manifest = path
-                print("New manifest downloaded to: '%s'" % path)
-                return 0
-            options.manifest = DEFAULT_RHSM_MANIFEST_LOCATION
+                if options.manifest_refresh:
+                    options.manifest = path
+                else:
+                    print("New manifest saved to: '%s'" % path)
+                    return 0
         else:
-            writeError("Manifest was not provided. Run the activation tool with option --manifest=MANIFEST.")
+            writeError("No currently activated manifest was found. "
+                       "Run the activation tool with option --manifest=MANIFEST.")
             return 1
     # Handle RHSM manifest
     try:
@@ -446,7 +454,8 @@ def main():
     if not options.disconnected:
         rhsm_uuid = getRHSMUuid()
         if not rhsm_uuid:
-            writeError("Server not registered to RHSM? No identity found.")
+            writeError("System not registered to RHSM? No identity found. Please register system to RHSM"
+                       " or run activation with --disconnected option.")
             return 90
         try:
             enableSatelliteRepo(cdn_activate.manifest.get_satellite_certificate())
