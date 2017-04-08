@@ -643,7 +643,6 @@ echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> con
 #######################################
 %if 0%{suse_version}
 cp conf/default/rhn_hibernate.conf.SUSE conf/default/rhn_hibernate.conf
-cp conf/default/rhn_taskomatic_daemon.conf.SUSE conf/default/rhn_taskomatic_daemon.conf
 %endif
 
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
