@@ -441,6 +441,9 @@ Requires: jakarta-commons-codec
 Requires: jakarta-commons-dbcp
 Requires: jakarta-commons-lang >= 0:2.1
 Requires: jakarta-commons-logging
+Requires: jakarta-commons-pool
+BuildRequires: jakarta-commons-dbcp
+BuildRequires: jakarta-commons-pool
 %endif
 Conflicts: quartz >= 2.0
 Obsoletes: taskomatic < 5.3.0
@@ -610,6 +613,7 @@ install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/classes
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib
+install -d -m 755 $RPM_BUILD_ROOT%{_prefix}/share/spacewalk/taskomatic
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdir}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirup}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirwiz}
@@ -628,7 +632,7 @@ install -d $RPM_BUILD_ROOT/srv/susemanager/pillar_data
 install -d $RPM_BUILD_ROOT/srv/susemanager/formula_data
 install -d $RPM_BUILD_ROOT/srv/susemanager/tmp
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 echo "hibernate.cache.region.factory_class=net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
 %else
 echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
@@ -648,11 +652,9 @@ install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/
 install -m 644 conf/rhn_java.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 644 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 644 conf/logrotate/gatherer $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/gatherer
-# LOGROTATE >= 3.8 requires extra permission config
-%if 0%{?fedora} || 0%{?rhel} > 6
-sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
-%endif
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1310
+# LOGROTATE >= 3.8 requires extra permission config
+sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_sbindir}
 install -m 644 scripts/taskomatic.service $RPM_BUILD_ROOT%{_unitdir}
 %else
@@ -693,19 +695,12 @@ install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacew
 touch $RPM_BUILD_ROOT%{_var}/spacewalk/systemlogs/audit-review.log
 %endif
 
-# Fedoras have cglib version that is not compatible with asm and need objectweb-asm
-# Unfortunately both libraries must be installed for dependencies so we override
-# the asm symlink with objectweb-asm here
-%if 0%{?fedora}
-ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{jardir}/asm_asm.jar
-ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
-%else
-if [ -e %{_javadir}/objectweb-asm/asm-all.jar ]; then
-  ln -s -f %{_javadir}/objectweb-asm/asm-all.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
-else
-  ln -s -f %{_javadir}/asm/asm.jar  $RPM_BUILD_ROOT%{_datadir}/rhn/lib/spacewalk-asm.jar
-fi
-%endif
+# special links for taskomatic
+TASKOMATIC_BUILD_DIR=%{_prefix}/share/spacewalk/taskomatic
+ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/ojdbc14.jar
+ln -s -f %{_javadir}/quartz-oracle.jar $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/quartz-oracle.jar
+rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*nop.jar
+rm -f $RPM_BUILD_ROOT$TASKOMATIC_BUILD_DIR/slf4j*simple.jar
 
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
@@ -795,8 +790,7 @@ fi
 %dir %{_localstatedir}/lib/spacewalk
 %endif
 %defattr(644,tomcat,tomcat,775)
-%dir /srv/susemanager/salt/salt_ssh
-%attr(775, salt, salt) /srv/susemanager/salt/salt_ssh
+%attr(775, salt, salt) %dir /srv/susemanager/salt/salt_ssh
 %attr(775, root, tomcat) %dir %{appdir}
 %dir /srv/susemanager
 %dir /srv/susemanager/salt
@@ -865,7 +859,6 @@ fi
 # SUSE extra runtime dependencies: spark, jade4j, salt API client + dependencies
 %{jardir}/commons-jexl.jar
 %{jardir}/commons-lang3.jar
-%{jardir}/concurrentlinkedhashmap-lru.jar
 %{jardir}/httpclient.jar
 %{jardir}/httpcore.jar
 %{jardir}/jade4j.jar
@@ -970,7 +963,7 @@ fi
 %attr(755, root, root) %{_initrddir}/taskomatic
 %endif
 %{_bindir}/taskomaticd
-%{_datadir}/rhn/lib/spacewalk-asm.jar
+%{_datarootdir}/spacewalk/taskomatic
 %{_sbindir}/rctaskomatic
 
 %files config
@@ -999,7 +992,9 @@ fi
 %defattr(644,root,root,755)
 %dir %{_prefix}/share/rhn/search
 %dir %{_prefix}/share/rhn/search/lib
-%attr(644, tomcat, tomcat) %{jardir}/ojdbc14.jar
+%{jardir}/ojdbc14.jar
+%{_prefix}/share/spacewalk/taskomatic/ojdbc14.jar
+%{_prefix}/share/spacewalk/taskomatic/quartz-oracle.jar
 %{_prefix}/share/rhn/search/lib/ojdbc14.jar
 %endif
 
@@ -1007,7 +1002,7 @@ fi
 %defattr(644,root,root,755)
 %dir %{_prefix}/share/rhn/search
 %dir %{_prefix}/share/rhn/search/lib
-%%attr(644, tomcat, tomcat) %{jardir}/postgresql-jdbc.jar
+%{jardir}/postgresql-jdbc.jar
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
