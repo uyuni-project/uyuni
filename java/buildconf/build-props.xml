@@ -17,6 +17,7 @@
   <property name="report.dir" location="${build.dir}/reports" />
   <property name="javadoc.deploydir" location="/usr/share/javadoc/rhn-java" />
   <property name="build.instrument.dir" location="${build.dir}/instrumented" />
+  <property name="taskomatic.link.dir" location="/usr/share/spacewalk/taskomatic" />
 
   <property name="eclipse.lib.dirs" location="${lib.dir}" />
 
@@ -50,19 +51,8 @@
   <property name="git.home" location="${basedir}/../"/>
 
   <!-- =================== jar dependencies ======================= -->
-  <!--
-
-  <condition property="asm" value="asm/asm" else="objectweb-asm/asm">
-    <available file="/usr/share/java/asm/asm.jar" />
-  </condition>
-
-  -->
   <condition property="commons-lang" value="commons-lang commons-lang3" else="commons-lang">
     <available file="/usr/share/java/commons-lang3.jar" />
-  </condition>
-
-  <condition property="asm" value="objectweb-asm/asm" else="asm/asm">
-    <available file="/usr/share/java/objectweb-asm/asm.jar" />
   </condition>
 
   <available file="/usr/share/java/hibernate/hibernate-commons-annotations.jar" type="file"
@@ -133,7 +123,7 @@
        concurrent xalan-j2" />
 
   <property name="run.jar.dependencies"
-      value="antlr ${asm} cglib c3p0 commons-discovery dom4j jaf jta
+      value="antlr objectweb-asm/asm cglib c3p0 commons-discovery dom4j jaf jta
              ojdbc14 sitemesh taglibs-standard xalan-j2 xerces-j2
              xml-commons-apis ${common.jar.dependencies}" />
 
@@ -155,7 +145,7 @@
       ${install.common.jar.dependencies} tanukiwrapper" />
 
   <property name="install.run.jar.dependencies"
-      value="antlr ${asm} cglib c3p0 commons-discovery dom4j dwr jaf jta
+      value="antlr objectweb-asm/asm cglib c3p0 commons-discovery dom4j dwr jaf jta
              sitemesh taglibs-standard xalan-j2 xerces-j2
              xml-commons-apis ${install.common.jar.dependencies}" />
 
@@ -171,7 +161,7 @@
              concurrent simple-core snakeyaml simple-xml susestudio-java-client" />
 
   <property name="dist.jar.dependencies"
-      value="antlr ${asm} bcel c3p0 cglib
+      value="antlr objectweb-asm/asm bcel c3p0 cglib
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging
@@ -182,6 +172,9 @@
              taglibs-standard tanukiwrapper postgresql-jdbc snakeyaml simple-xml susestudio-java-client
              ${suse-common-jars} ${suse-runtime-jars}
 	     xalan-j2 xerces-j2 xml-commons-apis simple-core ${ehcache}" />
+
+  <property name="taskomatic.jar.dependencies"
+      value="${dist.jar.dependencies} commons-dbcp commons-pool jsch" />
 
   <path id="bootjars">
     <fileset dir="${boot.lib.dir}" includes="*.jar" />
