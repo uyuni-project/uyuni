@@ -110,7 +110,7 @@ mkdir -p $DIR/conf/rhn/sysconfig
 mkdir -p $DIR/httpd-logs
 mkdir -p $DIR/tomcat-logs
 mkdir -p $DIR/cobbler-logs
-mkdir -p $DIR/rhn-logs
+mkdir -p $DIR/rhn-logs/rhn
 mkdir -p $DIR/config-defaults
 mkdir -p $DIR/kickstarts
 mkdir -p $DIR/database/trc
@@ -165,7 +165,27 @@ if [ -d /var/log/httpd ]; then
 elif [ -d /var/log/apache2 ]; then
     cp -fapRd /var/log/apache2 $DIR/httpd-logs
 fi
-cp -fapRd /var/log/rhn* $DIR/rhn-logs
+
+# copy rhn logs
+if [ -d /var/log/rhn ]; then
+    cp -fapd  /var/log/rhn/{*log*,*.gz} $DIR/rhn-logs/rhn
+
+    # check for oracle dir
+    if [ -d /var/log/rhn/oracle ]; then
+        cp -fapRd /var/log/rhn/oracle $DIR/rhn-logs/rhn
+    fi
+
+    # check for reposync dir
+    if [ -d /var/log/rhn/reposync ]; then
+        cp -fapRd /var/log/rhn/reposync $DIR/rhn-logs/rhn
+    fi
+
+    # check for search dir
+    if [ -d /var/log/rhn/search ]; then
+        cp -fapRd /var/log/rhn/search $DIR/rhn-logs/rhn
+    fi
+fi
+
 DB_INSTALL_LOG=/var/log/rhn/rhn-database-installation.log
 if [ -f "$DB_INSTALL_LOG" ] ; then
     mkdir -p $DIR/tmp
@@ -302,6 +322,7 @@ if [ -f /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/alert_susemana
 fi
 
 PGSQL_ROOT=""
+MAX_PGSQL_LOGS_SIZE="6291456" #6 GB
 rpm -q postgresql92-postgresql > /dev/null
 if [ $? == 0 ]; then
 	PGSQL_ROOT="/opt/rh/postgresql92/root"
@@ -316,8 +337,21 @@ if [ -f /var/lib/pgsql/initlog ] ; then
        echo "    * copying initlog"
        cp -fa /var/lib/pgsql/initlog $DIR/database
 fi
+ls $PGSQL_ROOT/var/lib/pgsql/data/*.conf 2>/dev/null | xargs -I file cp -fa file $DIR/database
 
-ls $PGSQL_ROOT/var/lib/pgsql/data/*.conf $PGSQL_ROOT/var/lib/pgsql/data/pg_log/* 2>/dev/null | xargs -I file cp -fa file $DIR/database
+# compress postgres logs
+if [ -d $PGSQL_ROOT/var/lib/pgsql/data/pg_log ]; then
+
+    PGSQL_LOGS_SIZE=$(du -s $PGSQL_ROOT/var/lib/pgsql/data/pg_log | cut -d'/' -f1)
+    if [ $PGSQL_LOGS_SIZE -gt $MAX_PGSQL_LOGS_SIZE ]; then
+        echo "    * $PGSQL_ROOT/var/lib/pgsql/data/pg_log exceeded the maximum size allowed. Please copy it separately."
+        echo "PostgreSQL logs exceeded the maximum size of $MAX_PGSQL_LOGS_SIZE bytes" >> $DIR/database/warning
+    else
+        for pg_log in $(ls $PGSQL_ROOT/var/lib/pgsql/data/pg_log/* 2>/dev/null); do
+            cat $pg_log | gzip > $DIR/database/$(basename $pg_log).gz
+        done
+    fi
+fi
 
 if [ -d /var/log/spacewalk/schema-upgrade ] ; then
 	echo "    * copying schema upgrade logs"

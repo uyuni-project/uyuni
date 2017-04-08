@@ -15,7 +15,7 @@ License: GPLv2
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.10.102.2
+Version: 5.10.103
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -157,6 +157,11 @@ fi
 %ghost %attr(600,root,root) %{_localstatedir}/log/rhncfg-actions
 
 %changelog
+* Fri Apr 07 2017 Michael Mraka <michael.mraka@redhat.com> 5.10.103-1
+- fix missing import in rhncfg
+- Updated links to github in spec files
+- Migrating Fedorahosted to GitHub
+
 * Wed Feb 22 2017 Eric Herget <eherget@redhat.com> 5.10.102-1
 - 1361269 - Symlink target overwritten when the symlink is replaced by a file
   managed by rhncfg-client

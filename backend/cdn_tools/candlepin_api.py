@@ -29,7 +29,11 @@ class CandlepinApi(object):
     def __init__(self, current_manifest=None, username=None, password=None,
                  http_proxy=None, http_proxy_username=None, http_proxy_password=None, verbosity=0):
         self.verbosity = verbosity
-        self.base_url = CFG.CANDLEPIN_SERVER_API
+        self.base_url = current_manifest.get_api_url()
+        if CFG.CANDLEPIN_SERVER_API:
+            print("Overriding Candlepin server to: '%s'" % CFG.CANDLEPIN_SERVER_API)
+            self.base_url = CFG.CANDLEPIN_SERVER_API
+
         if self.base_url.startswith('https'):
             self.protocol = 'https'
         elif self.base_url.startswith('http'):
@@ -114,15 +118,18 @@ class CandlepinApi(object):
         else:
             cert = self._write_cert()
             try:
-                if method == "get":
-                    response = requests.get(url, params=params, proxies=self._get_proxies(), verify=verify, cert=cert)
-                elif method == "put":
-                    response = requests.put(url, params=params, proxies=self._get_proxies(), verify=verify, cert=cert)
-                else:
-                    raise ValueError("Unsupported method: '%s'" % method)
-            except requests.RequestException:
-                e = sys.exc_info()[1]
-                print("ERROR: %s" % str(e))
+                try:
+                    if method == "get":
+                        response = requests.get(url, params=params, proxies=self._get_proxies(),
+                                                verify=verify, cert=cert)
+                    elif method == "put":
+                        response = requests.put(url, params=params, proxies=self._get_proxies(),
+                                                verify=verify, cert=cert)
+                    else:
+                        raise ValueError("Unsupported method: '%s'" % method)
+                except requests.RequestException:
+                    e = sys.exc_info()[1]
+                    print("ERROR: %s" % str(e))
             finally:
                 self._delete_cert(cert)
         return response

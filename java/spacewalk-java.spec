@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.44.1
+Version: 2.7.46
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -1011,6 +1011,13 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Thu Apr 06 2017 Jiri Dostal <jdostal@redhat.com> 2.7.46-1
+- 1380311 - API client.channel.software.createRepo() in 5.8.0 allows "yum" repo
+  type only, 5.7.0 used "YUM"
+
+* Tue Apr 04 2017 Gennadii Altukhov <galt@redhat.com> 2.7.45-1
+- 1436746 - reverted commit 64d3df3b783c96548d53f31601c0e8322c23d8bc
+
 * Thu Mar 30 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.44-1
 - simplify rhn-search jar list
 
