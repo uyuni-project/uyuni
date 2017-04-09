@@ -141,6 +141,7 @@ BuildRequires: apache2
 %else
 Requires: mod_ssl
 %endif
+Requires: curl
 Requires: mod_wsgi
 Requires: %{name}-broker >= %{version}
 Requires: spacewalk-backend >= 1.7.24
@@ -231,6 +232,9 @@ install -d -m 755 %{buildroot}/%{_unitdir}/
 %__install -D -m 444 salt-broker/salt-broker.service %{buildroot}/%{_unitdir}/salt-broker.service
 
 ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcsalt-broker
+
+install -m 0755 mgr-proxy-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-proxy-ssh-push-init
+install -m 0755 mgr-proxy-ssh-force-cmd $RPM_BUILD_ROOT/%{_sbindir}/mgr-proxy-ssh-force-cmd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -429,6 +433,8 @@ fi
 %if 0%{?suse_version}
 %dir %{rhnroot}
 %dir %{rhnroot}/wsgi
+%{_sbindir}/mgr-proxy-ssh-push-init
+%{_sbindir}/mgr-proxy-ssh-force-cmd
 %attr(755,root,%{apache_group}) %dir %{rhnroot}/config-defaults
 %endif
 
