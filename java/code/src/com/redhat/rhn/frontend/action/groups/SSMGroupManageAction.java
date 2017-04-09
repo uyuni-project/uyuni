@@ -62,7 +62,7 @@ public class SSMGroupManageAction extends RhnAction {
         List<SystemGroupOverview> groups = SystemManager.groupList(user, null);
 
         // If submitted, save the user's choices for the confirm page
-        if (isSubmitted(daForm)) {
+        if (request.getParameter(RequestContext.DISPATCH) != null) {
             processList(user, request);
             return mapping.findForward("confirm");
         }
