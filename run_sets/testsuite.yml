@@ -22,7 +22,6 @@
 - features/configuration.feature
 - features/check_errata_npn.feature
 - features/cve_audit.feature
-- features/xmlrpc_cve_audit.feature
 - features/delete_system_from_conf.feature
 - features/spacewalk_channel.feature
 - features/mgr_bootstrap.feature
