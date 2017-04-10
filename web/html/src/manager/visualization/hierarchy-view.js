@@ -30,17 +30,6 @@ function customTree(data, container) {
   let filters = Filters.filters();
   let partitioning = Partitioning.partitioning();
 
-  function myDeriveClass(node) {
-    if (node.id == 'root') {
-      return 'root';
-    }
-
-    if (view == 'proxy-hierarchy' && node.depth == 1 || ['group', 'vhm'].includes(node.data.type)) {
-      return 'inner-node';
-    }
-
-    return 'system';
-  }
   partitioning.get()['default'] = myDeriveClass;
 
   let simulation = d3.forceSimulation()
@@ -222,6 +211,18 @@ function hierarchyView(container, rootIn) {
 //
 // UTILS FUNCTIONS
 //
+
+function myDeriveClass(node) {
+  if (node.id == 'root') {
+    return 'root';
+  }
+
+  if (view == 'proxy-hierarchy' && node.depth == 1 || ['group', 'vhm'].includes(node.data.type)) {
+    return 'inner-node';
+  }
+
+  return 'system';
+}
 
 function unselectAllNodes() {
   d3.selectAll('g.node.selected')
