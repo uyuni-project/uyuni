@@ -5,7 +5,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const Panel = require('../../components/panel').Panel;
 const HierarchyView = require('./hierarchy-view.js');
-const Preprocessing = require('./preprocessing.js');
+const Preprocessing = require('./data-processing/preprocessing.js');
 const UI = require('./ui.js');
 const Utils = require('./utils.js');
 
