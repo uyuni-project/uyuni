@@ -41,7 +41,9 @@ function dataTree(data, container) {
     .force('y', d3.forceY(dimensions[1] / 2));
 
   const view = HierarchyView.hierarchyView(container)
-    .simulation(simulation);
+    .simulation(simulation)
+    .onNodeClick(onNodeClick)
+    .captionFunction(deriveNodeName);
 
   function instance() {
   }
@@ -88,6 +90,91 @@ function dataTree(data, container) {
 //
 // UTILS FUNCTIONS
 //
+
+function onNodeClick(d) {
+  updateSelectedNode(this);
+  updateDetailBox(d);
+}
+
+function updateSelectedNode(node) {
+  unselectAllNodes();
+  // select the clicked node
+  const select = d3.select(node);
+  const classList = select.attr('class');
+  select.attr('class', classList + ' selected');
+}
+
+function unselectAllNodes() {
+  d3.selectAll('g.node.selected')
+    .each(function(d) {
+      const classList = d3.select(this).attr('class');
+      d3.select(this).attr('class', classList.replace('selected', ''));
+    });
+}
+
+function updateDetailBox(d) {
+  function patchStatus(patchCountsArray) {
+    if (patchCountsArray == undefined) {
+      return 'unknown';
+    }
+    const unknownCountMsg = 'unknown count of';
+    return (patchCountsArray[0] || unknownCountMsg) + ' bug fix advisories, ' +
+      (patchCountsArray[1] || unknownCountMsg) + ' product enhancement advisories, ' +
+      (patchCountsArray[2] || unknownCountMsg) + ' security advisories.';
+  }
+
+  const data = d.data;
+  let systemDetailLink = '';
+  let systemSpecificInfo = '';
+  let systemToSSM = '';
+  if (Utils.isSystemType(d)) {
+    systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
+      data.rawId + '" target="_blank">System details page</a></div>';
+
+    systemToSSM = '<button class="btn btn-default" onClick="$.addSystemFromSSM([' + data.rawId + '])">Add system to SSM</button>';
+    systemSpecificInfo =
+      '<div>Base entitlement : <strong>' + data.base_entitlement + '</strong></div>' +
+      '<div>Base channel: <strong>' + data.base_channel + '</strong></div>' +
+      '<div>Checkin time : <strong><time title="' + moment(data.checkin).format('LLLL') + '">' + moment(data.checkin).fromNow() + '</time></strong></div>' +
+      '<div>Installed products : <strong>' + data.installedProducts + '</strong></div>' +
+      '<div>Patch status : <strong>' + patchStatus(data.patch_counts) + '</strong></div>';
+  }
+  let groupSpecificInfo = '';
+  if (data.type == 'group' && data.groups != undefined) {
+    groupSpecificInfo = '<div>Groups: <b>' + data.groups
+      .map((g, idx) => idx == 0 ? g : ' and ' + g)
+      .reduce((a,b) => a + b, '') + '</b></div>';
+  }
+  $('.detailBox').html(
+      '<div class="content-wrapper">' +
+      '<a href="#" class="close-popup" onClick="$.closeDetailBox()">X</a>' +
+      '<div>System name : <strong>' + data.name + '</strong></div>' +
+      systemDetailLink +
+      systemToSSM +
+      '<div>Type : <strong>' + data.type + '</strong></div>' +
+      systemSpecificInfo +
+      groupSpecificInfo +
+      '</div>'
+      ).show();
+
+}
+
+$.closeDetailBox = function() {
+  $('.detailBox').hide().html('');
+  unselectAllNodes();
+}
+
+$.addSystemFromSSM = function(ids) {
+  return update_server_set('ids', 'system_list', true, ids);
+}
+
+function deriveNodeName(d) {
+  return (d.data.type && d.data.type != 'system' ? d.data.name : '') + countChildren(d);
+}
+
+function countChildren(node) {
+  return node._allChildren ? ' [' + node.children.length + '/' + node._allChildren.length + ']' : '';
+}
 
 function myDeriveClass(node) {
   if (node.id == 'root') {

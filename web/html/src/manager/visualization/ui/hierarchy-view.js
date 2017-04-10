@@ -19,6 +19,8 @@ function hierarchyView(container, rootIn) {
   let root = rootIn || {}; // todo something else
   let deriveClass = (d) => '';
   let simulation = null;
+  let onNodeClick = () => {};
+  let captionFunction = d => d.data.name;
 
   function my() {
   }
@@ -37,11 +39,7 @@ function hierarchyView(container, rootIn) {
     const gEnter = node
       .enter()
       .append('g')
-      .on('click', function(d) {
-        updateSelectedNode(this);
-        // update the detail box with the clicked node data
-        updateDetailBox(d);
-      })
+      .on('click', onNodeClick);
 
     gEnter
       .append('circle')
@@ -63,7 +61,7 @@ function hierarchyView(container, rootIn) {
       .attr('class', 'caption')
       .attr('dx', '1em')
       .attr('dy', '.15em')
-      .text(d => (d.data.type && d.data.type != 'system' ? d.data.name : '') + countChildren(d));
+      .text(captionFunction);
 
     const link = container.selectAll('line.link').data(links, d => d.target.id);
 
@@ -125,85 +123,15 @@ function hierarchyView(container, rootIn) {
     return arguments.length ? (deriveClass = f, my) : deriveClass;
   }
 
+  my.onNodeClick = function(c) {
+    return arguments.length ? (onNodeClick = c, my) : onNodeClick;
+  }
+
+  my.captionFunction = function(f) {
+    return arguments.length ? (captionFunction = f, my) : captionFunction;
+  }
+
   return my;
-}
-
-//
-// UTILS FUNCTIONS
-//
-
-function unselectAllNodes() {
-  d3.selectAll('g.node.selected')
-    .each(function(d) {
-      const classList = d3.select(this).attr('class');
-      d3.select(this).attr('class', classList.replace('selected', ''));
-    });
-}
-
-function updateSelectedNode(node) {
-  unselectAllNodes();
-  // select the clicked node
-  const classList = d3.select(node).attr('class');
-  d3.select(node).attr('class', classList + ' selected');
-}
-
-$.closeDetailBox = function() {
-  $('.detailBox').hide().html('');
-  unselectAllNodes();
-}
-$.addSystemFromSSM = function(ids) {
-  return update_server_set('ids', 'system_list', true, ids);
-}
-
-function updateDetailBox(d) {
-  function patchStatus(patchCountsArray) {
-    if (patchCountsArray == undefined) {
-      return 'unknown';
-    }
-    const unknownCountMsg = 'unknown count of';
-    return (patchCountsArray[0] || unknownCountMsg) + ' bug fix advisories, ' +
-      (patchCountsArray[1] || unknownCountMsg) + ' product enhancement advisories, ' +
-      (patchCountsArray[2] || unknownCountMsg) + ' security advisories.';
-  }
-
-  const data = d.data;
-  let systemDetailLink = '';
-  let systemSpecificInfo = '';
-  let systemToSSM = '';
-  if (Utils.isSystemType(d)) {
-    systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
-      data.rawId + '" target="_blank">System details page</a></div>';
-
-    systemToSSM = '<button class="btn btn-default" onClick="$.addSystemFromSSM([' + data.rawId + '])">Add system to SSM</button>';
-    systemSpecificInfo =
-      '<div>Base entitlement : <strong>' + data.base_entitlement + '</strong></div>' +
-      '<div>Base channel: <strong>' + data.base_channel + '</strong></div>' +
-      '<div>Checkin time : <strong><time title="' + moment(data.checkin).format('LLLL') + '">' + moment(data.checkin).fromNow() + '</time></strong></div>' +
-      '<div>Installed products : <strong>' + data.installedProducts + '</strong></div>' +
-      '<div>Patch status : <strong>' + patchStatus(data.patch_counts) + '</strong></div>';
-  }
-  let groupSpecificInfo = '';
-  if (data.type == 'group' && data.groups != undefined) {
-    groupSpecificInfo = '<div>Groups: <b>' + data.groups
-      .map((g, idx) => idx == 0 ? g : ' and ' + g)
-      .reduce((a,b) => a + b, '') + '</b></div>';
-  }
-  $('.detailBox').html(
-    '<div class="content-wrapper">' +
-    '<a href="#" class="close-popup" onClick="$.closeDetailBox()">X</a>' +
-    '<div>System name : <strong>' + data.name + '</strong></div>' +
-    systemDetailLink +
-    systemToSSM +
-    '<div>Type : <strong>' + data.type + '</strong></div>' +
-    systemSpecificInfo +
-    groupSpecificInfo +
-    '</div>'
-  ).show();
-
-}
-
-function countChildren(node) {
-  return node._allChildren ? ' [' + node.children.length + '/' + node._allChildren.length + ']' : '';
 }
 
 module.exports = {
