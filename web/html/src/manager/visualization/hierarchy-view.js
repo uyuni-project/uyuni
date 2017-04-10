@@ -33,7 +33,7 @@ function customTree(data, container) {
   partitioning.get()['default'] = myDeriveClass;
 
   let simulation = d3.forceSimulation()
-    .force("charge", d3.forceManyBody().strength(d => -distanceFromDepth(d.depth) * 1.5))
+    .force("charge", d3.forceManyBody().strength(d => strengthFromDepth(d.depth)))
     .force("link", d3.forceLink())
     .force("x", d3.forceX(dimensions[0] / 2))
     .force("y", d3.forceY(dimensions[1] / 2));
@@ -318,12 +318,12 @@ function nodeVisible(node, pred) { // todo move to tree!
   return visibleChildren.length > 0 || pred(node);
 }
 
-// Returns a value bound to the depth level of the node
-function distanceFromDepth(depth) {
+// Simulation strength based on the node depth
+function strengthFromDepth(depth) {
   switch (depth) {
-    case 0: return 300;
-    case 1: return 180;
-    default: return 90;
+    case 0: return -450;
+    case 1: return -270;
+    default: return -135;
   }
 }
 
