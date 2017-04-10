@@ -659,20 +659,19 @@ public enum SaltServerActionService {
     private Map<Boolean, List<MinionServer>> execute(Action actionIn, LocalCall<?> call,
             List<MinionServer> minions, boolean forcePackageListRefresh,
             boolean isStagingJob) {
-
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
 
         if (!isStagingJob) {
             metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionIn.getId());
         }
-
         if (forcePackageListRefresh) {
             metadata.put(ScheduleMetadata.SUMA_FORCE_PGK_LIST_REFRESH, true);
         }
 
         List<String> minionIds = minions.stream().map(MinionServer::getMinionId)
                 .collect(Collectors.toList());
+
         if (LOG.isDebugEnabled()) {
             LOG.debug("Executing action for: " +
                     minionIds.stream().collect(Collectors.joining(", ")));

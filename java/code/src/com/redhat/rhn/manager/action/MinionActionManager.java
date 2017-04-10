@@ -29,9 +29,9 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
 
-import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,8 +70,11 @@ public class MinionActionManager {
      * @throws TaskomaticApiException in case of failure of the scheduled staging job
      * @return A list containing the schedule time(s) for staging job(s)
      */
-    public static void scheduleStagingJobsForMinions(Action action, User user)
+    public static List<ZonedDateTime> scheduleStagingJobsForMinions(Action action,
+            User user)
         throws TaskomaticApiException {
+
+        List<ZonedDateTime> ret = new ArrayList<>();
 
         if (user.getOrg().getOrgConfig().isStagingContentEnabled()) {
 
@@ -137,10 +140,12 @@ public class MinionActionManager {
                                     minionServerId + " at " + stagingTime);
                             taskomaticApi.scheduleStagingJob(action.getId(), minionServerId,
                                     Date.from(stagingTime.toInstant()));
+                            ret.add(stagingTime);
                         }
                     }
                 }
             }
         }
+        return ret;
     }
 }
