@@ -81,6 +81,8 @@
 - features/centos_salt_ssh.feature 
 #### * Docker releated features tests.  ###
 - features/docker_build_image.feature
+- features/docker_cve_audit.feature
+
 # Debug suse-manger server
 - features/spacewalk_debug.feature
 
