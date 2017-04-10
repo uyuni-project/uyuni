@@ -11,10 +11,9 @@
 - features/users.feature
 - features/credentials.feature
 - features/csv_separator.feature
-- features/create_config_channel.feature
 # traditional client
 - features/register_client.feature
-- features/test_config_channel.feature
+- features/config_channel.feature
 - features/action_chain.feature
 - features/custom_system_info.feature
 - features/create_group.feature
