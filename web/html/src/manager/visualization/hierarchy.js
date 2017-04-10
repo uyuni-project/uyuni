@@ -93,7 +93,7 @@ function initUI(tree) {
 
   // Grouping UI (based on the preprocessor type)
   if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
-    UI.addGroupSelector('#filter-wrapper',
+    UI.addGroupSelector(d3.select('#filter-wrapper'),
         tree.data().map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
         (data) => {
           tree.preprocessor().groupingConfiguration(data);
