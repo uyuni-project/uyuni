@@ -10,7 +10,6 @@
 - features/create_activationkey.feature
 - features/users.feature
 - features/credentials.feature
-- features/csv_separator.feature
 # traditional client
 - features/register_client.feature
 - features/config_channel.feature
