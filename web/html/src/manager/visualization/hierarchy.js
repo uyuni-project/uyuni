@@ -121,7 +121,8 @@ function initUI(tree) {
     .append('div').attr('class', 'filter');
 
   hasPatchesPartitioning
-    .append('label')
+    .append('div')
+    .attr('class', 'filter-title')
     .text('Partition systems based on whether there are patches for them:');
 
   function applyPatchesPartitioning() {

@@ -18,20 +18,36 @@
     height: 100%;
     overflow-y: auto;
     width: 260px;
-    background-color: rgba(231, 236, 241, 0.9);
+    background-color: rgba(240, 240, 240, 0.9);
     font-size: 0.9em;
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
     padding: 10px;
     div.filter {
-      padding: 16px 0px;
+      padding: 12px 0px;
       margin-right: 4px;
+      border-bottom: 1px solid #ddd;
+      > div.filter-title {
+        font-weight: bold;
+        padding: 4px 2px;
+      }
       label {
-        display: block;
+        font-weight: normal;
+        display: inline;
       }
       input[type=text] {
         .form-control;
         .input-sm;
+      }
+      .input-group {
+        input {
+            width: 50%;
+            display: inline-block;
+        }
+      }
+      input[type=checkbox] {
+        margin-right: 5px;
+        vertical-align: sub;
       }
     }
     select {

@@ -13,7 +13,8 @@ function addFilter(targetSelection, caption, placeholder, onInputCallback) {
   const filterDiv = targetSelection
     .append('div').attr('class', 'filter');
   filterDiv
-    .append('label')
+    .append('div')
+    .attr('class', 'filter-title')
     .text(caption);
   filterDiv
     .append('input')
@@ -34,18 +35,23 @@ function addCheckinTimePartitioningSelect(anchorId, callback) {
     .append('div').attr('class', 'filter');
 
   checkinTimePartitioning
-    .append('label')
+    .append('div')
+    .attr('class', 'filter-title')
     .text('Partition systems by given check-in time:');
 
-  checkinTimePartitioning
-    .append('input')
-    .attr('class', 'partitioning-datepicker')
-    .attr('type', 'text');
+  const inputGroup = checkinTimePartitioning
+    .append('div')
+    .attr('class', 'input-group');
 
-  checkinTimePartitioning
+  inputGroup
     .append('input')
-    .attr('class', 'partitioning-timepicker')
-    .attr('type', 'text');
+    .attr('type', 'text')
+    .attr('class', 'partitioning-datepicker input-group-addon');
+
+  inputGroup
+    .append('input')
+    .attr('type', 'text')
+    .attr('class', 'partitioning-timepicker input-group-addon');
 
   $(anchorId + ' .partitioning-datepicker').datepicker({
     autoclose: true,
@@ -190,7 +196,8 @@ function addGroupSelector(targetSelection, groups, callback) {
   const groupingDiv = targetSelection
     .append('div').attr('class', 'filter');
   groupingDiv
-    .append('label')
+    .append('div')
+    .attr('class', 'filter-title')
     .text('Split into groups');
 
   let mySel = groupSelector(groups, groupingDiv);
