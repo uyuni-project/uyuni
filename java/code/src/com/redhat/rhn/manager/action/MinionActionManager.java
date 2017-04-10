@@ -95,7 +95,11 @@ public class MinionActionManager {
                 ZonedDateTime stagingWindowEndTime =
                         stagingWindowStartTime.plus(saltContentStagingWindow, HOURS);
 
-                if (now().isAfter(stagingWindowStartTime)) {
+                if (now().isAfter(stagingWindowStartTime) &&
+                        stagingWindowEndTime.isAfter(now())) {
+                    log.debug(
+                            "Scheduled staging window began before now: " +
+                                    "adjusting start to now (" + now() + ")");
                     stagingWindowStartTime = now();
                 }
 
@@ -108,7 +112,8 @@ public class MinionActionManager {
                     stagingWindowEndTime = earliestAction;
                 }
 
-                if (stagingWindowStartTime.isBefore(earliestAction) &&
+                if (!stagingWindowEndTime.isBefore(now()) &&
+                        stagingWindowStartTime.isBefore(earliestAction) &&
                         (stagingWindowEndTime.isBefore(earliestAction) ||
                                 stagingWindowEndTime.isEqual(earliestAction)) &&
                         (ActionFactory.TYPE_PACKAGES_UPDATE
