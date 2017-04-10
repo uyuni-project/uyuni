@@ -496,14 +496,14 @@ select {ra.*}
                                                               sa.serverId = :server ]]>
     </query>
 
-    <sql-query name="Action.findMinionIds">
+    <query name="Action.findMinionIds">
     <![CDATA[
-      SELECT mi.server_id
-        FROM rhnServerAction sa
-          JOIN suseMinionInfo mi ON sa.server_id = mi.server_id
-        WHERE sa.action_id = :id
+    SELECT sa.server.id
+        FROM ServerAction sa
+        JOIN sa.server s
+        WHERE sa.server.class = com.redhat.rhn.domain.server.MinionServer AND action_id = :id
     ]]>
-    </sql-query>
+    </query>
 
    <sql-query name="Action.findServerIds">
         <![CDATA[
