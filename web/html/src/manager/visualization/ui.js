@@ -2,7 +2,7 @@
 
 // D3 UI "components" used for visualization
 
-// Add a filter
+// Add a filter to given selection
 // params:
 // - targetSelection - selection where to append the element to
 // - caption - text label
@@ -22,6 +22,13 @@ function addFilter(targetSelection, caption, placeholder, onInputCallback) {
     .on('input', function() { onInputCallback(this.value) });
 };
 
+// Add a checkin-time criteria selector (date- and timepicker + 'Apply'
+// button)
+//
+// params:
+// - anchorId - id of element in DOM where the UI will be added
+// - callback - callback receiving picked time and date after user clicks
+// the 'Apply' button
 function addCheckinTimeCriteriaSelect(anchorId, callback) {
   const checkinTimeCriteria = d3.select(anchorId)
     .append('div').attr('class', 'filter');
@@ -57,8 +64,15 @@ function addCheckinTimeCriteriaSelect(anchorId, callback) {
     });
 }
 
-function addCheckbox(placeholder, caption, callback) {
-  const parentDiv = placeholder
+// Add a checkbox to given selection
+//
+// params:
+// - targetSelection - selection where to append the element to
+// - caption - text label
+// - callback - callback receiving the new value of checkbox when checkbox
+// changes
+function addCheckbox(targetSelection, caption, callback) {
+  const parentDiv = targetSelection
     .append('div');
 
   parentDiv
@@ -92,8 +106,8 @@ function addCheckbox(placeholder, caption, callback) {
 //  - groups: array of possible group names (['grp1', 'grp2'])
 //  - element: where to hook the UI
 // methods
-//  - onChange: function that is called after a selection is changed or a
-//  select box on one level is collapsed
+//  - onChange: setter/getter for a function that is called after a selection
+//  is changed or a select box on one level is collapsed
 function groupSelector(groups, element) {
   const data = [];
   let onChange = function(data) { console.log('data changed: ' + data); };
@@ -162,8 +176,16 @@ function groupSelector(groups, element) {
   return my;
 }
 
-function addGroupSelector(anchorId, groups, callback) {
-  const groupingDiv = d3.select(anchorId)
+// Add a group selector (see comment for groupSelector)
+//
+// params:
+// - targetSelection - selection where to append the element to
+// - groups - all possible groups to appear in the select boxes
+// - callback - function called after the state of UI changes (either user
+// select a group from the selectbox or they remove the select box for a
+// grouping level)
+function addGroupSelector(targetSelection, groups, callback) {
+  const groupingDiv = targetSelection
     .append('div').attr('class', 'filter');
   groupingDiv
     .append('label')
@@ -174,8 +196,14 @@ function addGroupSelector(anchorId, groups, callback) {
   mySel();
 }
 
-function addButton(anchorSelection, caption, callback) {
-  anchorSelection
+// Add a button with a caption
+//
+// params:
+// - targetSelection - selection where to append the element to
+// - caption
+// - callback - called after the button is clicked
+function addButton(targetSelection, caption, callback) {
+  targetSelection
     .append('div').attr('class', 'filter')
     .append('button')
     .attr('type', 'button')
