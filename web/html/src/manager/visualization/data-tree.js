@@ -129,9 +129,12 @@ function updateDetailBox(d) {
   let systemToSSM = '';
   if (Utils.isSystemType(d)) {
     systemDetailLink = '<tr><td colspan="2"><a href="/rhn/systems/details/Overview.do?sid=' +
-      data.rawId + '" target="_blank">System details page</a></td></tr>';
+      data.rawId + '" target="_blank"><i class="fa fa-link"></i>System details page</a></td></tr>';
 
-    systemToSSM = '<tr><td colspan="2"><button class="addToSSM" onClick="$.addSystemFromSSM([' + data.rawId + '])">Add to SSM</button></td></tr>';
+    systemToSSM = '<tr><td>Add/remove system from SSM</td>' +
+      '<td><div class="input-group"><button class="input-group-addon addToSSM" onClick="$.addSystemFromSSM([' + data.rawId + '])"><i class="fa fa-plus"></i></button>' +
+      '<button" class="input-group-addon removeFromSSM" onClick="$.removeSystemFromSSM([' + data.rawId + '])"><i class="fa fa-minus"></i></button></div></td></tr>';
+
     systemSpecificInfo =
       '<tr><td>Base entitlement</td><td><strong>' + data.base_entitlement + '</strong></td></tr>' +
       '<tr><td>Base channel</td><td><strong>' + data.base_channel + '</strong></td></tr>' +
@@ -166,6 +169,10 @@ $.closeDetailBox = function() {
 
 $.addSystemFromSSM = function(ids) {
   return update_server_set('ids', 'system_list', true, ids);
+}
+
+$.removeSystemFromSSM = function(ids) {
+  return update_server_set('ids', 'system_list', false, ids);
 }
 
 function deriveNodeName(d) {

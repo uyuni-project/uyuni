@@ -87,10 +87,18 @@
       color: @spacewalk-gray-dark;
       text-decoration: none;
     }
-    button.addToSSM {
+    .addToSSM, .removeFromSSM {
       .btn;
       .btn-default;
       padding: 2px 6px;
+      width: 25px;
+    }
+    .addToSSM {
+      border-radius: 3px 0 0 3px;
+      margin-right: -1px;
+    }
+    .removeFromSSM {
+      border-radius: 0 3px 3px 0;
     }
   }
 }
