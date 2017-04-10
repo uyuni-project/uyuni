@@ -17,7 +17,6 @@
 - features/register_client.feature
 - features/test_config_channel.feature
 - features/action_chain.feature
-- features/xmlrpc_actionchain.feature
 - features/custom_system_info.feature
 - features/create_group.feature
 - features/configuration.feature
