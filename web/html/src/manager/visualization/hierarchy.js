@@ -4,7 +4,7 @@ const Network = require('../../utils/network');
 const React = require('react');
 const ReactDOM = require('react-dom');
 const Panel = require('../../components/panel').Panel;
-const HierarchyView = require('./hierarchy-view.js');
+const DataTree = require('./data-tree.js');
 const Preprocessing = require('./data-processing/preprocessing.js');
 const UI = require('./ui/components.js');
 const Utils = require('./utils.js');
@@ -17,7 +17,7 @@ function displayHierarchy(data) {
   spacewalkContentObserver.disconnect();
 
   const container = Utils.prepareDom();
-  const tree = HierarchyView.dataTree(data, container);
+  const tree = DataTree.dataTree(data, container);
   if (view == 'grouping') { // hack - derive preprocessor from global variable
     tree.preprocessor(Preprocessing.grouping());
   }
