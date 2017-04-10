@@ -6,22 +6,25 @@ parentId property) into a structure that can be further processed by d3 tree com
 */
 
 
-// Simple preprocessor that uses d3.stratify to prepare the data
+// Simple preprocessor
+//
+// uses d3.stratify to prepare the data
+//
 // input: array of objects containing id and parentId attributes,
 // ids are unique and single object (root) has parentId == null
 function stratifyPreprocessor(data) {
 
   data = data || [{id: 'root', name: 'Root', parentId: null}];
 
-  function my() {
+  function instance() {
     return d3.stratify()(data);
   }
 
-  my.data = function(d) {
-    return arguments.length ? (data = d, my) : data;
+  instance.data = function(d) {
+    return arguments.length ? (data = d, instance) : data;
   }
 
-  return my;
+  return instance;
 }
 
 // Grouping preprocessor
@@ -32,12 +35,12 @@ function stratifyPreprocessor(data) {
 // - data:
 //  - must contain a single element with parentId==null (root)
 //  - non-root elements intended for grouping must contain 'managed_groups'
-//  attribute (so only grouping by managed_groups is possible at the moment,
+//  attribute (grouping by managed_groups is only possible at the moment,
 //  extension to work with any attribute of the element is easy).
-// - groupingConfiguration: nested array
+// - groupingConfiguration: nested array, for example
 //    [[['devel'],['qa']], // 1st level of grouping
 //     [['sles'],['nbg'],['rhel', 'prg']]]  // 2nd level of grouping
-//  Such array translates to: divide systems given by the 'data' acording to
+//  Such array will lead to division of systems given in the 'data' according to
 //  their groups into a tree with depth 4, where:
 //   - the root node (depth=0) represents SUSE Manager
 //   - the non-leaf nodes represent the grouping, e.g.:
@@ -67,6 +70,27 @@ function groupingPreprocessor(data, groupingConfiguration) {
 
   data = data || [{id: 'root', name: 'Root', parentId: null}];
   groupingConfiguration = groupingConfiguration || [];
+
+  // function representing instance,
+  // calling it causes refresh of output data
+  function instance() {
+    const root = data.filter(d => d.parentId == null)[0];
+    const groupElems = makeGroups(root, groupingConfiguration.filter(criterion => criterion.length > 0));
+    const allElems = [root] // root
+      .concat(groupElems) // inner nodes (represantation of groups)
+      .concat(groupData(data, groupElems.filter(e => e.isLeafGroup))); // systems partitioned by groups
+    return d3.stratify()(allElems);
+  }
+
+  // getter/setter for data
+  instance.data = function(d) {
+    return arguments.length ? (data = d, instance) : data;
+  }
+
+  // getter/setter for groupingConfiguration
+  instance.groupingConfiguration = function(gs) {
+    return arguments.length ? (groupingConfiguration = gs, instance) : groupingConfiguration;
+  }
 
   // Recursively turn the multi-level group configuration into group elements so
   // that they can be consumed and displayed by d3 hierarchy (i.e. list of
@@ -156,25 +180,7 @@ function groupingPreprocessor(data, groupingConfiguration) {
       .reduce((v1,v2) => v1.concat(v2), []);
   }
 
-  function my() {
-    const root = data.filter(d => d.parentId == null)[0];
-
-    const groupElems = makeGroups(root, groupingConfiguration.filter(criterion => criterion.length > 0));
-    const allElems = [root] // root
-      .concat(groupElems) // inner nodes (represantation of groups)
-      .concat(groupData(data, groupElems.filter(e => e.isLeafGroup))); // systems partitioned by groups
-    return d3.stratify()(allElems);
-  }
-
-  my.data = function(d) {
-    return arguments.length ? (data = d, my) : data;
-  }
-
-  my.groupingConfiguration = function(gs) {
-    return arguments.length ? (groupingConfiguration = gs, my) : groupingConfiguration;
-  }
-
-  return my;
+  return instance;
 }
 
 module.exports = {
