@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // D3 UI "components" used for visualization
 
@@ -56,8 +56,8 @@ function addCheckinTimePartitioningSelect(anchorId, callback) {
   $(anchorId + ' .partitioning-timepicker').timepicker('setTime', new Date());
 
   addButton(checkinTimePartitioning, 'Apply', () => {
-      const date = $(anchorId + ' .partitioning-datepicker' ).datepicker( "getDate" );
-      const time = $(anchorId + ' .partitioning-timepicker' ).timepicker( "getTime" );
+      const date = $(anchorId + ' .partitioning-datepicker' ).datepicker( 'getDate' );
+      const time = $(anchorId + ' .partitioning-timepicker' ).timepicker( 'getTime' );
       const datetime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
         time.getHours(), time.getMinutes(), time.getSeconds());
       callback(datetime);

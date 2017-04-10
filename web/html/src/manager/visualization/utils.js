@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const Utils = require("./utils.js");
+const Utils = require('./utils.js');
 
 function computeSvgDimensions() {
   const width = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
@@ -17,15 +17,15 @@ function prepareDom() {
     .append('svg')
     .attr('width', dimensions[0])
     .attr('height', dimensions[1]);
-  const container = svg.append("g");
+  const container = svg.append('g');
 
   // Zoom handling
   svg.call(d3.zoom()
       .scaleExtent([1 / 8, 16])
-      .on("zoom", zoomed))
-    .on("dblclick.zoom", null);
+      .on('zoom', zoomed))
+    .on('dblclick.zoom', null);
   function zoomed(d) {
-    container.attr("transform", d3.event.transform);
+    container.attr('transform', d3.event.transform);
   }
 
   return container;

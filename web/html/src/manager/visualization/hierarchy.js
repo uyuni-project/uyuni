@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-const Network = require("../../utils/network");
-const React = require("react");
-const ReactDOM = require("react-dom");
-const Panel = require("../../components/panel").Panel;
-const HierarchyView = require("./hierarchy-view.js");
-const Preprocessing = require("./preprocessing.js");
-const UI = require("./ui.js");
-const Utils = require("./utils.js");
+const Network = require('../../utils/network');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const Panel = require('../../components/panel').Panel;
+const HierarchyView = require('./hierarchy-view.js');
+const Preprocessing = require('./preprocessing.js');
+const UI = require('./ui.js');
+const Utils = require('./utils.js');
 
 function displayHierarchy(data) {
   // disable the #spacewalk-content observer:
@@ -160,7 +160,7 @@ const Hierarchy = React.createClass({
   componentDidMount: function() {
     // Get data & put everything together in the graph!
     Network
-      .get(endpoint, "application/json")
+      .get(endpoint, 'application/json')
       .promise
       .then(
         (data) => displayHierarchy(data),
@@ -175,10 +175,10 @@ const Hierarchy = React.createClass({
   render: function() {
     return (
       <Panel title={t(title)}>
-        <button id="toggle-svg-filter" className="btn btn-default" onClick={this.showFilters}>{t('Toggle filters')}</button>
-        <div id="svg-wrapper">
-          <div id="filter-wrapper"></div>
-          <div className="detailBox"></div>
+        <button id='toggle-svg-filter' className='btn btn-default' onClick={this.showFilters}>{t('Toggle filters')}</button>
+        <div id='svg-wrapper'>
+          <div id='filter-wrapper'></div>
+          <div className='detailBox'></div>
         </div>
       </Panel>
     );

@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-const Filters = require("./filters.js");
-const Partitioning = require("./partitioning.js");
-const Preprocessing = require("./preprocessing.js");
-const Utils = require("./utils.js");
+const Filters = require('./filters.js');
+const Partitioning = require('./partitioning.js');
+const Preprocessing = require('./preprocessing.js');
+const Utils = require('./utils.js');
 
 // Render hierarchy view - take data, transform with preprocessor, filters and
 // partitioning, render it in the container.
@@ -34,10 +34,10 @@ function dataTree(data, container) {
   partitioning.get()['default'] = myDeriveClass;
 
   let simulation = d3.forceSimulation()
-    .force("charge", d3.forceManyBody().strength(d => strengthFromDepth(d.depth)))
-    .force("link", d3.forceLink())
-    .force("x", d3.forceX(dimensions[0] / 2))
-    .force("y", d3.forceY(dimensions[1] / 2));
+    .force('charge', d3.forceManyBody().strength(d => strengthFromDepth(d.depth)))
+    .force('link', d3.forceLink())
+    .force('x', d3.forceX(dimensions[0] / 2))
+    .force('y', d3.forceY(dimensions[1] / 2));
 
   const view = hierarchyView(container)
     .simulation(simulation);
@@ -155,8 +155,8 @@ function hierarchyView(container, rootIn) {
 
     link
       .enter()
-      .insert("line", "g")
-      .attr("class", "link");
+      .insert('line', 'g')
+      .attr('class', 'link');
 
     // feed simulation with data
     if (simulation != null) {
@@ -184,11 +184,11 @@ function hierarchyView(container, rootIn) {
           .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
 
         link
-          .attr("class", "link")
-          .attr("x1", s => s.source.x)
-          .attr("y1", s => s.source.y)
-          .attr("x2", s => s.target.x)
-          .attr("y2", s => s.target.y);
+          .attr('class', 'link')
+          .attr('x1', s => s.source.x)
+          .attr('y1', s => s.source.y)
+          .attr('x2', s => s.target.x)
+          .attr('y2', s => s.target.y);
       }
       );
       simulation.alpha(1).restart();
