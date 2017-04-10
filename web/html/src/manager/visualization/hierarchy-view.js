@@ -1,8 +1,8 @@
 'use strict';
 
-const Filters = require('./filters.js');
-const Partitioning = require('./partitioning.js');
-const Preprocessing = require('./preprocessing.js');
+const Filters = require('./data-processing/filters.js');
+const Partitioning = require('./data-processing/partitioning.js');
+const Preprocessing = require('./data-processing/preprocessing.js');
 const Utils = require('./utils.js');
 
 // Render hierarchy view - take data, transform with preprocessor, filters and
