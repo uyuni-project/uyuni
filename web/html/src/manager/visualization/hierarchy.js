@@ -17,7 +17,7 @@ function displayHierarchy(data) {
   spacewalkContentObserver.disconnect();
 
   const container = Utils.prepareDom();
-  const tree = HierarchyView.customTree(data, container);
+  const tree = HierarchyView.dataTree(data, container);
   if (view == 'grouping') { // hack - derive preprocessor from global variable
     tree.preprocessor(Preprocessing.grouping());
   }

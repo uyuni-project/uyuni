@@ -13,16 +13,17 @@ const Utils = require("./utils.js");
 //  - container - where the tree will be rendered in the DOM
 //
 // Other parameters (settable via methods):
-//  - preprocessors
-//  - filters
-//  - partitioning
+//  - preprocessors - preparing the data so that it can be rendered by d3
+//  - filters - showing/hiding of nodes based on customized conditions
+//  - partitioning - displaying nodes in partitions with different CSS classes
+//  based on custom conditions
 //  - simulation - d3 force simulation
 //
 // Methods
 //  - refresh - transforms the data according to current preprocessor, filters
 //  and partitioning settings and refresh the DOM
 //
-function customTree(data, container) {
+function dataTree(data, container) {
 
   let preprocessor = Preprocessing.stratify();
   const dimensions = Utils.computeSvgDimensions();
@@ -64,6 +65,8 @@ function customTree(data, container) {
     return view;
   }
 
+  // Recomputes the data transformation (preprocessor, filters, partitioning),
+  // turns the data to tree and refreshes the hierarchy view.
   instance.refresh = function() {
     preprocessor.data(data);
     const newRoot = preprocessor();
@@ -328,7 +331,6 @@ function strengthFromDepth(depth) {
 }
 
 module.exports = {
-    hierarchyView: hierarchyView,
-    customTree: customTree
+    dataTree: dataTree
 }
 
