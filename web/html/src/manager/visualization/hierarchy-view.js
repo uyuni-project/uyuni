@@ -1,12 +1,12 @@
 "use strict";
 
 const Filters = require("./filters.js");
-const Criteria = require("./criteria.js");
+const Partitioning = require("./partitioning.js");
 const Preprocessing = require("./preprocessing.js");
 const Utils = require("./utils.js");
 
 // Render hierarchy view - take data, transform with preprocessor, filters and
-// criteria, render it in the container.
+// partitioning, render it in the container.
 //
 // Compulsory parameters:
 //  - data - data from the server to be rendered
@@ -15,12 +15,12 @@ const Utils = require("./utils.js");
 // Other parameters (settable via methods):
 //  - preprocessors
 //  - filters
-//  - criteria
+//  - partitioning
 //  - simulation - d3 force simulation
 //
 // Methods
 //  - refresh - transforms the data according to current preprocessor, filters
-//  and criteria settings and refresh the DOM
+//  and partitioning settings and refresh the DOM
 //
 function customTree(data, container) {
 
@@ -28,7 +28,7 @@ function customTree(data, container) {
   const dimensions = Utils.computeSvgDimensions();
 
   let filters = Filters.filters();
-  let criteria = Criteria.criteria();
+  let partitioning = Partitioning.partitioning();
 
   function myDeriveClass(node) {
     if (node.id == 'root') {
@@ -41,7 +41,7 @@ function customTree(data, container) {
 
     return 'system';
   }
-  criteria.get()['default'] = myDeriveClass;
+  partitioning.get()['default'] = myDeriveClass;
 
   let simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody().strength(d => -distanceFromDepth(d.depth) * 1.5))
@@ -67,8 +67,8 @@ function customTree(data, container) {
     return arguments.length ? (filters = f, instance) : filters;
   }
 
-  instance.criteria = function(c) {
-    return arguments.length ? (criteria = c, instance) : criteria;
+  instance.partitioning = function(p) {
+    return arguments.length ? (partitioning = p, instance) : partitioning;
   }
 
   instance.view = function() {
@@ -81,7 +81,7 @@ function customTree(data, container) {
     treeify(newRoot, dimensions);
     view.root(newRoot);
     nodeVisible(newRoot, filters.predicate());
-    view.deriveClass(criteria.deriveClass)
+    view.deriveClass(partitioning.computePartitionName)
     view.refresh();
   }
 

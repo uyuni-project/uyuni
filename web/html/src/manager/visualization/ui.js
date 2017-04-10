@@ -22,42 +22,42 @@ function addFilter(targetSelection, caption, placeholder, onInputCallback) {
     .on('input', function() { onInputCallback(this.value) });
 };
 
-// Add a checkin-time criteria selector (date- and timepicker + 'Apply'
+// Add a checkin-time partitioning selector (date- and timepicker + 'Apply'
 // button)
 //
 // params:
 // - anchorId - id of element in DOM where the UI will be added
 // - callback - callback receiving picked time and date after user clicks
 // the 'Apply' button
-function addCheckinTimeCriteriaSelect(anchorId, callback) {
-  const checkinTimeCriteria = d3.select(anchorId)
+function addCheckinTimePartitioningSelect(anchorId, callback) {
+  const checkinTimePartitioning = d3.select(anchorId)
     .append('div').attr('class', 'filter');
 
-  checkinTimeCriteria
+  checkinTimePartitioning
     .append('label')
     .text('Partition systems by given check-in time:');
 
-  checkinTimeCriteria
+  checkinTimePartitioning
     .append('input')
-    .attr('class', 'criteria-datepicker')
+    .attr('class', 'partitioning-datepicker')
     .attr('type', 'text');
 
-  checkinTimeCriteria
+  checkinTimePartitioning
     .append('input')
-    .attr('class', 'criteria-timepicker')
+    .attr('class', 'partitioning-timepicker')
     .attr('type', 'text');
 
-  $(anchorId + ' .criteria-datepicker').datepicker({
+  $(anchorId + ' .partitioning-datepicker').datepicker({
     autoclose: true,
     format: 'yyyy-mm-dd'
   });
-  $(anchorId + ' .criteria-datepicker').datepicker('setDate', new Date());
-  $(anchorId + ' .criteria-timepicker').timepicker({timeFormat: 'H:i:s'});
-  $(anchorId + ' .criteria-timepicker').timepicker('setTime', new Date());
+  $(anchorId + ' .partitioning-datepicker').datepicker('setDate', new Date());
+  $(anchorId + ' .partitioning-timepicker').timepicker({timeFormat: 'H:i:s'});
+  $(anchorId + ' .partitioning-timepicker').timepicker('setTime', new Date());
 
-  addButton(checkinTimeCriteria, 'Apply', () => {
-      const date = $(anchorId + ' .criteria-datepicker' ).datepicker( "getDate" );
-      const time = $(anchorId + ' .criteria-timepicker' ).timepicker( "getTime" );
+  addButton(checkinTimePartitioning, 'Apply', () => {
+      const date = $(anchorId + ' .partitioning-datepicker' ).datepicker( "getDate" );
+      const time = $(anchorId + ' .partitioning-timepicker' ).timepicker( "getTime" );
       const datetime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
         time.getHours(), time.getMinutes(), time.getSeconds());
       callback(datetime);
@@ -214,7 +214,7 @@ function addButton(targetSelection, caption, callback) {
 
 module.exports = {
   addFilter: addFilter,
-  addCheckinTimeCriteriaSelect: addCheckinTimeCriteriaSelect,
+  addCheckinTimePartitioningSelect: addCheckinTimePartitioningSelect,
   addCheckbox: addCheckbox,
   addGroupSelector: addGroupSelector,
   addButton: addButton
