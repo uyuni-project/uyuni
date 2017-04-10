@@ -6,7 +6,7 @@ const ReactDOM = require('react-dom');
 const Panel = require('../../components/panel').Panel;
 const HierarchyView = require('./hierarchy-view.js');
 const Preprocessing = require('./data-processing/preprocessing.js');
-const UI = require('./ui.js');
+const UI = require('./ui/components.js');
 const Utils = require('./utils.js');
 
 function displayHierarchy(data) {
