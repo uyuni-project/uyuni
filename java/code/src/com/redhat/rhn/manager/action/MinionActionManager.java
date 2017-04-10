@@ -78,7 +78,7 @@ public class MinionActionManager {
             List<Long> minionServerIds = (List<Long>) HibernateFactory.getSession()
                     .getNamedQuery("Action.findMinionIds")
                     .setParameter("id", action.getId()).getResultList().stream()
-                    .map(i -> ((BigDecimal) i).longValue()).collect(Collectors.toList());
+                    .collect(Collectors.toList());
 
             ZonedDateTime earliestAction =
                     action.getEarliestAction().toInstant().atZone(ZoneId.systemDefault());
