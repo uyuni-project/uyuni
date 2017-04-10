@@ -683,7 +683,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(pa, pa1);
     }
 
-    public void testScheduleSriptRun() throws Exception {
+    public void testScheduleScriptRun() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);

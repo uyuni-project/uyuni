@@ -428,7 +428,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata2);
         Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        TestUtils.saveAndFlush(errata3);
 
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
