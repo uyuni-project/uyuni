@@ -1,12 +1,15 @@
+from subprocess import Popen, PIPE
 import logging
-import shutil
-import os
 import stat
 import grp
+import shlex
+import os
+import shutil
 
 log = logging.getLogger(__name__)
 
 GROUP_OWNER = 'susemanager'
+
 
 def ssh_keygen(path):
     '''
