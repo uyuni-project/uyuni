@@ -24,3 +24,16 @@ Feature: Salt is configured and running
   Scenario: The minion appears in the master's incoming queue
     When I list unaccepted keys at Salt Master
     Then the list of the keys should contain this client's hostname
+
+   Scenario: There are no top.sls file in certain folders
+   When  I run "ls /srv/susemanager/salt/top.sls" on "server" without error control
+   Then the command should fail
+   When  I run "ls /srv/susemanager/salt/top.sls" on "server" without error control
+   Then the command should fail
+   When  I run "ls /srv/susemanager/pillar/top.sls" on "server" without error control
+   Then the command should fail
+   When  I run "ls /usr/share/susemanager/salt/top.sls" on "server" without error control
+   Then the command should fail
+   When  I run "ls /usr/share/susemanager/pillar/top.sls" on "server" without error control
+   Then the command should fail
+
