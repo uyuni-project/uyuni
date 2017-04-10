@@ -5,7 +5,6 @@ gem "cucumber", "~> 1.3.0"
 gem 'jwt'
 gem 'lavanda'
 gem 'net-ssh'
-gem 'owasp_zap'
 gem 'poltergeist', :require => false
 gem "rubyzip"
 gem "selenium-webdriver"
