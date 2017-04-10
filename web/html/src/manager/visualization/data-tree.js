@@ -117,10 +117,10 @@ function updateDetailBox(d) {
     if (patchCountsArray == undefined) {
       return 'unknown';
     }
-    const unknownCountMsg = 'unknown count of';
-    return (patchCountsArray[0] || unknownCountMsg) + ' bug fix advisories, ' +
-      (patchCountsArray[1] || unknownCountMsg) + ' product enhancement advisories, ' +
-      (patchCountsArray[2] || unknownCountMsg) + ' security advisories.';
+    const unknownCountMsg = '<span title="unknown count of">?</span>';
+    return (patchCountsArray[0] > 0 ? '<div>○ ' + patchCountsArray[0] + ' bug fix advisories</div>' : '') +
+      (patchCountsArray[1] > 0 ? '<div>○ ' + patchCountsArray[1] + ' product enhancement advisories</div>' : '') +
+      (patchCountsArray[2] > 0 ? '<div>○ ' + patchCountsArray[2] + ' security advisories</div>' : '');
   }
 
   const data = d.data;
@@ -128,16 +128,16 @@ function updateDetailBox(d) {
   let systemSpecificInfo = '';
   let systemToSSM = '';
   if (Utils.isSystemType(d)) {
-    systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
-      data.rawId + '" target="_blank">System details page</a></div>';
+    systemDetailLink = '<tr><td colspan="2"><a href="/rhn/systems/details/Overview.do?sid=' +
+      data.rawId + '" target="_blank">System details page</a></td></tr>';
 
-    systemToSSM = '<button class="btn btn-default" onClick="$.addSystemFromSSM([' + data.rawId + '])">Add system to SSM</button>';
+    systemToSSM = '<tr><td colspan="2"><button class="addToSSM" onClick="$.addSystemFromSSM([' + data.rawId + '])">Add to SSM</button></td></tr>';
     systemSpecificInfo =
-      '<div>Base entitlement : <strong>' + data.base_entitlement + '</strong></div>' +
-      '<div>Base channel: <strong>' + data.base_channel + '</strong></div>' +
-      '<div>Checkin time : <strong><time title="' + moment(data.checkin).format('LLLL') + '">' + moment(data.checkin).fromNow() + '</time></strong></div>' +
-      '<div>Installed products : <strong>' + data.installedProducts + '</strong></div>' +
-      '<div>Patch status : <strong>' + patchStatus(data.patch_counts) + '</strong></div>';
+      '<tr><td>Base entitlement</td><td><strong>' + data.base_entitlement + '</strong></td></tr>' +
+      '<tr><td>Base channel</td><td><strong>' + data.base_channel + '</strong></td></tr>' +
+      '<tr><td>Checkin time</td><td><strong><time title="' + moment(data.checkin).format('LLLL') + '">' + moment(data.checkin).fromNow() + '</time></strong></td></tr>' +
+      '<tr><td>Installed products</td><td><strong>' + data.installedProducts + '</strong></td></tr>' +
+      '<tr><td>Patch status</td><td><strong>' + patchStatus(data.patch_counts) + '</strong></td></tr>';
   }
   let groupSpecificInfo = '';
   if (data.type == 'group' && data.groups != undefined) {
@@ -148,13 +148,13 @@ function updateDetailBox(d) {
   $('.detailBox').html(
       '<div class="content-wrapper">' +
       '<a href="#" class="close-popup" onClick="$.closeDetailBox()">X</a>' +
-      '<div>System name : <strong>' + data.name + '</strong></div>' +
+      '<table><tr><th colspan="2">' + data.name + '</th></tr>' +
       systemDetailLink +
       systemToSSM +
-      '<div>Type : <strong>' + data.type + '</strong></div>' +
+      '<tr><td>Type</td><td><strong>' + data.type + '</strong></td></tr>' +
       systemSpecificInfo +
       groupSpecificInfo +
-      '</div>'
+      '</table></div>'
       ).show();
 
 }

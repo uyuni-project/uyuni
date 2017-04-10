@@ -46,13 +46,32 @@
     border-radius: 0 0 0 3px;
     border-bottom: 1px solid #ddd;
     border-left: 1px solid #ddd;
-    background-color: rgba(231, 236, 241, 0.9);
+    background-color: rgba(240, 240, 240, 0.9);
     font-size: 0.9em;
-    width: 230px;
+    min-width: 180px;
+    max-width: 300px;
     div.content-wrapper {
-      padding: 10px 20px 10px 10px;
-      div {
-        padding: 4px 0;
+      padding: 10px;
+      table {
+        width: 100%;
+        border-radius: 3px;
+        tr {
+          th {
+            text-align: center;
+            padding: 2px 12px 7px 12px;
+          }
+          td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            vertical-align: top;
+          }
+          td:first-child {
+            background-color: #f5f5f5;
+          }
+          td:last-child {
+            background-color: #fafafa;
+          }
+        }
       }
     }
     a.close-popup, button.close-popup:hover {
@@ -67,6 +86,11 @@
     a.close-popup:hover {
       color: @spacewalk-gray-dark;
       text-decoration: none;
+    }
+    button.addToSSM {
+      .btn;
+      .btn-default;
+      padding: 2px 6px;
     }
   }
 }
