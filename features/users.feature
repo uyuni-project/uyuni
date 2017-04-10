@@ -147,3 +147,27 @@ Feature: Tests user feature in suse-manager
     When I click on "Delete User"
     Then I should see a "Active Users" text
     And I should not see a "user1" link
+
+  Scenario: Verify availability of the CSV separator preference
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Your Preferences"
+    Then I should see a "CSV Files" text
+    And I should see a "Configure a separator character to be used in downloadable CSV files:" text
+    And I should see a "Comma" text
+    And I should see a "Semicolon" text
+
+  Scenario: Configure the CSV separator char to semicolon
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Your Preferences"
+    And I choose ";"
+    And I click on "Save Preferences"
+    Then I should see a "Preferences modified" text
+    And radio button "radio-semicolon" is checked
+
+  Scenario: Configure the CSV separator char to comma
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Your Preferences"
+    And I choose ","
+    And I click on "Save Preferences"
+    Then I should see a "Preferences modified" text
+    And radio button "radio-comma" is checked
