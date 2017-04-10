@@ -25,8 +25,7 @@ function prepareDom() {
       .on("zoom", zoomed))
     .on("dblclick.zoom", null);
   function zoomed(d) {
-    var event = d3.event;
-    container.attr("transform", event.transform);
+    container.attr("transform", d3.event.transform);
   }
 
   return container;

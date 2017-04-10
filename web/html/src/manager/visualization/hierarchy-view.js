@@ -98,25 +98,25 @@ function dataTree(data, container) {
 //
 function hierarchyView(container, rootIn) {
   // default params
-  var root = rootIn || {}; // todo something else
-  var deriveClass = (d) => '';
-  var simulation = null;
+  let root = rootIn || {}; // todo something else
+  let deriveClass = (d) => '';
+  let simulation = null;
 
   function my() {
   }
 
   my.refresh = function() {
-    var nodes = root.descendants();
-    var links = root.links();
+    const nodes = root.descendants();
+    const links = root.links();
 
-    var node = container.selectAll('g.node')
+    const node = container.selectAll('g.node')
       .data(nodes, function(d) { return d.id; });
 
     node
       .exit()
       .remove();
 
-    var gEnter = node
+    const gEnter = node
       .enter()
       .append('g')
       .on('click', function(d) {
@@ -147,13 +147,13 @@ function hierarchyView(container, rootIn) {
       .attr('dy', '.15em')
       .text(d => (d.data.type && d.data.type != 'system' ? d.data.name : '') + countChildren(d));
 
-    var link = container.selectAll('line.link').data(links, d => d.target.id);
+    const link = container.selectAll('line.link').data(links, d => d.target.id);
 
     link
       .exit()
       .remove();
 
-    link = link
+    link
       .enter()
       .insert("line", "g")
       .attr("class", "link");
@@ -161,16 +161,15 @@ function hierarchyView(container, rootIn) {
     // feed simulation with data
     if (simulation != null) {
       // refresh the update section
-      node = container.selectAll('g')
+      const node = container.selectAll('g')
         .data(nodes, function(d) { return d.id; })
-      link = container.selectAll('line.link')
+      const link = container.selectAll('line.link')
         .data(links, d => d.target.id);
 
       simulation.nodes(nodes);
       simulation.force('link').links(links);
       simulation.on('tick', () => {
-        node
-        .each(d => {
+        node.each(d => {
           if (d.data.partition) {
             d.x += simulation.alpha() * 6;
           } else {
@@ -230,7 +229,7 @@ function myDeriveClass(node) {
 function unselectAllNodes() {
   d3.selectAll('g.node.selected')
     .each(function(d) {
-      var classList = d3.select(this).attr('class');
+      const classList = d3.select(this).attr('class');
       d3.select(this).attr('class', classList.replace('selected', ''));
     });
 }
@@ -238,7 +237,7 @@ function unselectAllNodes() {
 function updateSelectedNode(node) {
   unselectAllNodes();
   // select the clicked node
-  var classList = d3.select(node).attr('class');
+  const classList = d3.select(node).attr('class');
   d3.select(node).attr('class', classList + ' selected');
 }
 
@@ -261,10 +260,10 @@ function updateDetailBox(d) {
       (patchCountsArray[2] || unknownCountMsg) + ' security advisories.';
   }
 
-  var data = d.data;
-  var systemDetailLink = '';
-  var systemSpecificInfo = '';
-  var systemToSSM = '';
+  const data = d.data;
+  let systemDetailLink = '';
+  let systemSpecificInfo = '';
+  let systemToSSM = '';
   if (Utils.isSystemType(d)) {
     systemDetailLink = '<div><a href="/rhn/systems/details/Overview.do?sid=' +
       data.rawId + '" target="_blank">System details page</a></div>';
