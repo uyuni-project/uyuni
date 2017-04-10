@@ -78,10 +78,12 @@ function addCheckbox(targetSelection, caption, callback) {
   parentDiv
     .append('input')
     .attr('type', 'checkbox')
+    .attr('id', caption.trim())
     .on('change', function() { callback(this.checked); });
 
   parentDiv
     .append('label')
+    .attr('id', caption.trim())
     .text(caption);
 }
 
