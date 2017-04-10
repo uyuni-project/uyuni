@@ -37,7 +37,7 @@ function displayHierarchy(data) {
 // util function for adding the UI to the dom and setting its callbacks
 function initUI(tree) {
   // System name filter
-  UI.addFilter('#filter-wrapper', 'Filter by system name', 'e.g., client.nue.sles', (input) => {
+  UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system name', 'e.g., client.nue.sles', (input) => {
     tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
   });
@@ -78,13 +78,13 @@ function initUI(tree) {
   UI.addCheckbox(patchCountsFilter, 'OR has security advisories', patchCountFilterCallback(2));
 
   // Base channel filter
-  UI.addFilter('#filter-wrapper', 'Filter by system base channel', 'e.g., SLE12', (input) => {
+  UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system base channel', 'e.g., SLE12', (input) => {
     tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
   });
 
   // Installed products filter
-  UI.addFilter('#filter-wrapper', 'Filter by system installed products', 'e.g., SLES', (input) => {
+  UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system installed products', 'e.g., SLES', (input) => {
     tree.filters().put('installedProducts', d => (d.data.installedProducts || [])
       .map(ip => ip.toLowerCase().includes(input.toLowerCase()))
       .reduce((v1,v2) => v1 || v2, false));
