@@ -2,8 +2,15 @@
 
 // D3 UI "components" used for visualization
 
-function addFilter(anchorId, caption, placeholder, onInputCallback) {
-  const filterDiv = d3.select(anchorId)
+// Add a filter
+// params:
+// - targetSelection - selection where to append the element to
+// - caption - text label
+// - placeholder - placeholder ("the example input text")a
+// - onInputCallback - callback receiving the new value of input when input
+// changes
+function addFilter(targetSelection, caption, placeholder, onInputCallback) {
+  const filterDiv = targetSelection
     .append('div').attr('class', 'filter');
   filterDiv
     .append('label')
@@ -180,7 +187,7 @@ function addButton(anchorSelection, caption, callback) {
 module.exports = {
   addFilter: addFilter,
   addCheckinTimeCriteriaSelect: addCheckinTimeCriteriaSelect,
-  addCheckbox: addCheckbox, // todo rename!
+  addCheckbox: addCheckbox,
   addGroupSelector: addGroupSelector,
   addButton: addButton
 }
