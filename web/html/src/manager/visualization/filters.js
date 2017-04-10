@@ -1,3 +1,5 @@
+'use strict';
+
 // Stores filters
 function filters(initFilters) {
   const filters = initFilters || {};
