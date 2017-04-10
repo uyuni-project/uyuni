@@ -71,7 +71,6 @@
 - features/salt_formulas.feature
 - features/salt_openscap_audit.feature
 - features/salt_reboot_test.feature
-- features/salt_regression_topsls.feature
 - features/salt_ssh.feature 
 ## Centos client related feat. ###
 - features/centos_salt.feature
