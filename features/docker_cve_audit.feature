@@ -7,7 +7,7 @@ Feature: CVE Audit for content management
   Background:
     Given I am authorized as "admin" with password "admin"
 
-  Scenario: schedule channel data refresh
+  Scenario: schedule channel data refresh for content-management
     When I follow "Admin"
     And I follow "Task Schedules"
     And I follow "cve-server-channels-default"
@@ -16,7 +16,7 @@ Feature: CVE Audit for content management
     Then I should see a "bunch was scheduled" text
     And I wait for "5" seconds
 
-  Scenario: searching for a known CVE number
+  Scenario: Audit Images: searching for a known CVE number
     When I follow "Audit" in the left menu
     And I follow "CVE Audit" in the left menu
     And I select "1999" from "cveIdentifierYear"
@@ -24,11 +24,10 @@ Feature: CVE Audit for content management
     And I click on "Audit Images"
     Then I should see a "No action required" text
 
-  Scenario: searching for an unknown CVE number
+  Scenario: Audit Images: searching for an unknown CVE number
     When I follow "Audit" in the left menu
     And I follow "CVE Audit" in the left menu
     And I select "2012" from "cveIdentifierYear"
     And I enter "2806" as "cveIdentifierId"
     And I click on "Audit Images"
     Then I should see a "The specified CVE number was not found" text
-

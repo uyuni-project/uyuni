@@ -1,6 +1,0 @@
-#### * Docker releated features tests.  ###
-- features/docker_build_image.feature
-- features/docker_xmlrpc.feature
-
-# debug just is something get wrong like scheduled actions.
-- features/spacewalk_debug.feature
