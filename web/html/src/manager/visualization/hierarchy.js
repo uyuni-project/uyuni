@@ -107,7 +107,7 @@ function initUI(tree) {
       if (d.data.checkin == undefined) {
         return '';
       }
-      var firstPartition = d.data.checkin < datetime.getTime();
+      const firstPartition = d.data.checkin < datetime.getTime();
       d.data.partition = firstPartition;
       return firstPartition  ? 'stroke-red' : 'stroke-green';
     };
@@ -129,7 +129,7 @@ function initUI(tree) {
       if (d.data.patch_counts == undefined) {
         return '';
       }
-      var firstPartition = d.data.patch_counts.filter(pc => pc > 0).length > 0;
+      const firstPartition = d.data.patch_counts.filter(pc => pc > 0).length > 0;
       d.data.partition = firstPartition;
       return firstPartition  ? 'stroke-red' : 'stroke-green';
     };
