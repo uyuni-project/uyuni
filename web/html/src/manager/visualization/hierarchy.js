@@ -103,7 +103,7 @@ function initUI(tree) {
 
   // Partitioning by checkin time
   function partitionByCheckin(datetime) {
-    tree.criteria().get()['user-criteria'] = d => {
+    tree.partitioning().get()['user-partitioning'] = d => {
       if (d.data.checkin == undefined) {
         return '';
       }
@@ -114,18 +114,18 @@ function initUI(tree) {
     tree.refresh();
   }
 
-  UI.addCheckinTimeCriteriaSelect('#filter-wrapper', partitionByCheckin);
+  UI.addCheckinTimePartitioningSelect('#filter-wrapper', partitionByCheckin);
 
   // Partitioning by patch existence
-  const hasPatchesCriteria = d3.select('#filter-wrapper')
+  const hasPatchesPartitioning = d3.select('#filter-wrapper')
     .append('div').attr('class', 'filter');
 
-  hasPatchesCriteria
+  hasPatchesPartitioning
     .append('label')
     .text('Partition systems based on whether there are patches for them:');
 
-  function applyPatchesCriteria() {
-    tree.criteria().get()['user-criteria'] = d => {
+  function applyPatchesPartitioning() {
+    tree.partitioning().get()['user-partitioning'] = d => {
       if (d.data.patch_counts == undefined) {
         return '';
       }
@@ -136,10 +136,10 @@ function initUI(tree) {
     tree.refresh();
   }
 
-  UI.addButton(hasPatchesCriteria, 'Apply', applyPatchesCriteria);
+  UI.addButton(hasPatchesPartitioning, 'Apply', applyPatchesPartitioning);
 
   UI.addButton(d3.select('#filter-wrapper'), 'Reset partitioning', () => {
-    tree.criteria().get()['user-criteria'] = d => { return ''};
+    tree.partitioning().get()['user-partitioning'] = d => { return ''};
     tree.refresh();
   });
 
