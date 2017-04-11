@@ -16,7 +16,7 @@ const Utils = require('../utils.js');
 //
 function hierarchyView(container, rootIn) {
   // default params
-  let root = rootIn || {}; // todo something else
+  let root = rootIn;
   let deriveClass = (d) => '';
   let simulation = null;
   let onNodeClick = () => {};
