@@ -110,7 +110,7 @@ public enum ViewHelper {
         Context ctx = Context.getCurrentContext();
         Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
         TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
-        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ", locale);
+        DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
         isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return isoFormat.format(date);
     }

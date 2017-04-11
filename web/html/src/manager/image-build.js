@@ -6,7 +6,6 @@ const Panel = require("../components/panel").Panel;
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, LinkButton} = require("../components/buttons");
-const DateTimePicker = require("../components/datetimepicker").DateTimePicker;
 const Functions = require("../utils/functions");
 const Formats = Functions.Formats;
 const Input = require("../components/input");
