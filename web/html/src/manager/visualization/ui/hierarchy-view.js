@@ -140,8 +140,7 @@ function hierarchyView(container, rootIn) {
 
 // todo move
 function appendIconType(node) {
-  var iconClass = '';
-  var iconContent = '';
+  let iconClass = '';
   if (Utils.isSystemType(node)) {
     iconClass = 'fa-desktop';
   }
