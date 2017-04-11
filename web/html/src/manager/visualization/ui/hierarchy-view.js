@@ -139,11 +139,6 @@ function hierarchyView(container, rootIn) {
 }
 
 // todo move
-const knownTypes = ['root', 'vhm', 'system'];
-function isUnknownType(d) {
-  return !d.data.type || knownTypes.indexOf(d.data.type) == -1;
-}
-
 function appendIconType(node) {
   var iconClass = '';
   var iconContent = '';
