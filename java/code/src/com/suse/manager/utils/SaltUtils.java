@@ -693,12 +693,13 @@ public class SaltUtils {
     public static String packageToKey(InstalledPackage p) {
         StringBuilder sb = new StringBuilder();
 
-        // name, evr and arch should never be null
+        // name and EVR are never null due to DB constraints
+        // see schema/spacewalk/common/tables/rhnServerPackage.sql
         sb.append(p.getName().getName());
         sb.append("-");
         sb.append(p.getEvr().toString());
         sb.append(".");
-        sb.append(p.getArch().getName());
+        sb.append(Optional.ofNullable(p.getArch()).map(a -> a.getName()).orElse("unknown"));
 
         return sb.toString();
     }
