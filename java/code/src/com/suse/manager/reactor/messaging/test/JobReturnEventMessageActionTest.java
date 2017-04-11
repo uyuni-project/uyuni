@@ -141,6 +141,83 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
     }
 
+    /**
+     * Test the processing of packages.profileupdate job return event on an existing
+     * minion which already has installed packages.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testPackagesProfileUpdateMultiple() throws Exception {
+        // set up minion, action and response: 3 packages installed
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("minionsles12-suma3pg.vagrant.local");
+        Action action = ActionFactoryTest.createAction(
+                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
+        JobReturnEventMessage message = new JobReturnEventMessage(JobReturnEvent
+                .parse(getJobReturnEvent("packages.profileupdate.json", action.getId()))
+                .get());
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        // Verify names and versions
+        for (InstalledPackage pkg : minion.getPackages()) {
+            if (pkg.getName().getName().equals("aaa_base")) {
+                assertEquals("13.2+git20140911.61c1681", pkg.getEvr().getVersion());
+                assertEquals("12.1", pkg.getEvr().getRelease());
+                assertEquals("x86_64", pkg.getArch().getName());
+            }
+            else if (pkg.getName().getName().equals("bash")) {
+                assertEquals("4.2", pkg.getEvr().getVersion());
+                assertEquals("75.2", pkg.getEvr().getRelease());
+                assertEquals("x86_64", pkg.getArch().getName());
+            }
+            else if (pkg.getName().getName().equals("timezone-java")) {
+                assertEquals("2016c", pkg.getEvr().getVersion());
+                assertEquals("0.37.1", pkg.getEvr().getRelease());
+                assertEquals("noarch", pkg.getArch().getName());
+            }
+
+            // All packages have epoch null
+            assertNull(pkg.getEvr().getEpoch());
+        }
+        assertEquals(3, minion.getPackages().size());
+
+
+        // set up different response: aaa_base is identical, bash was updated to
+        // version 500, timezone-java is gone and java is new
+        message = new JobReturnEventMessage(JobReturnEvent.parse(
+                getJobReturnEvent("packages.profileupdate.updated.json", action.getId()))
+                .get());
+        messageAction.doExecute(message);
+
+        // Verify names and versions
+        for (InstalledPackage pkg : minion.getPackages()) {
+            if (pkg.getName().getName().equals("aaa_base")) {
+                assertEquals("13.2+git20140911.61c1681", pkg.getEvr().getVersion());
+                assertEquals("12.1", pkg.getEvr().getRelease());
+                assertEquals("x86_64", pkg.getArch().getName());
+            }
+            else if (pkg.getName().getName().equals("bash")) {
+                assertEquals("500", pkg.getEvr().getVersion());
+                assertEquals("75.2", pkg.getEvr().getRelease());
+                assertEquals("x86_64", pkg.getArch().getName());
+            }
+            else if (pkg.getName().getName().equals("java")) {
+                assertEquals("1.6", pkg.getEvr().getVersion());
+                assertEquals("0", pkg.getEvr().getRelease());
+                assertEquals("x86_64", pkg.getArch().getName());
+            }
+            else {
+                fail();
+            }
+
+            // All packages have epoch null
+            assertNull(pkg.getEvr().getEpoch());
+        }
+        assertEquals(3, minion.getPackages().size());
+    }
+
     public void testPackagesProfileUpdateLivePatching() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
