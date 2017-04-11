@@ -197,7 +197,7 @@ function treeify(root, dimensions) {
   })
 }
 
-function nodeVisible(node, pred) { // todo move to tree!
+function nodeVisible(node, pred) {
   // dfs
   if (!node.children) {
     return pred(node);
