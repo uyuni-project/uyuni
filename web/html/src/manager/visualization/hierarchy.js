@@ -163,7 +163,7 @@ const Hierarchy = React.createClass({
       .get(endpoint, 'application/json')
       .promise
       .then(
-        (data) => displayHierarchy(data),
+        (data) => $(document).ready(() => displayHierarchy(data)),
         (xhr) =>  d3.select('#svg-wrapper').text(t('There was an error fetching data from the server.'))
       );
   },
