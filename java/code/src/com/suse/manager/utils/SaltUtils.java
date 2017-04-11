@@ -90,6 +90,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -97,6 +98,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -586,15 +588,7 @@ public class SaltUtils {
             PkgProfileUpdateSlsResult result) {
         Instant start = Instant.now();
 
-        Optional.of(result.getInfoInstalled().getChanges().getRet())
-            .map(saltPkgs -> saltPkgs.entrySet().stream().map(
-                entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
-            ).collect(Collectors.toSet())
-        ).ifPresent(newPackages -> {
-            Set<InstalledPackage> oldPackages = server.getPackages();
-            oldPackages.addAll(newPackages);
-            oldPackages.retainAll(newPackages);
-        });
+        updatePackages(server, result);
 
         Optional.ofNullable(result.getListProducts())
                 .map(products -> products.getChanges().getRet())
@@ -652,10 +646,97 @@ public class SaltUtils {
     }
 
     /**
-     * Update the hardware profile for a minion in the database from incoming event data.
+     * Updates a minion's packages with the result coming from Salt
+     *
+     * @param server a Server object corresponding to a minion
+     * @param result the result from the package profile update state
+     */
+    private static void updatePackages(MinionServer server,
+            PkgProfileUpdateSlsResult result) {
+        Set<InstalledPackage> packages = server.getPackages();
+
+        Map<String, InstalledPackage> oldPackageMap = packages.stream()
+            .collect(Collectors.toMap(
+                    SaltUtils::packageToKey,
+                    Function.identity()
+             ));
+
+        Map<String, Pkg.Info> ret = result.getInfoInstalled().getChanges().getRet();
+        Map<String, Map.Entry<String, Pkg.Info>> newPackageMap = ret.entrySet().stream()
+            .collect(Collectors.toMap(
+                    SaltUtils::packageToKey,
+                    Function.identity()
+             ));
+
+        Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
+            e -> newPackageMap.containsKey(e.getKey())
+        ).map(
+            e -> e.getValue()
+        ).collect(Collectors.toList());
+        packages.retainAll(unchanged);
+
+        Collection<InstalledPackage> added = newPackageMap.entrySet().stream().filter(
+           e -> !oldPackageMap.containsKey(e.getKey())
+        ).map(
+           e -> createPackageFromSalt(e.getValue(), server)
+        ).collect(Collectors.toList());
+        packages.addAll(added);
+    }
+
+    /**
+     * Returns a key string that uniquely identifies an installed package (as a
+     * Hibernated object)
+     *
+     * @param p the package
+     * @return the key
+     */
+    public static String packageToKey(InstalledPackage p) {
+        StringBuilder sb = new StringBuilder();
+
+        // name, evr and arch should never be null
+        sb.append(p.getName().getName());
+        sb.append("-");
+        sb.append(p.getEvr().toString());
+        sb.append(".");
+        sb.append(p.getArch().getName());
+
+        return sb.toString();
+    }
+
+    /**
+     * Returns a key string that uniquely identifies an installed package (as
+     * returned by Salt)
+     *
+     * @param entry the package
+     * @return the key
+     */
+    public static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
+        Pkg.Info info = entry.getValue();
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(entry.getKey());
+        sb.append("-");
+        sb.append(
+            new PackageEvr(
+                info.getEpoch().orElse(null),
+                info.getVersion().get(),
+                info.getRelease().orElse("0")
+            ).toString()
+        );
+        sb.append(".");
+        sb.append(info.getArchitecture().get());
+
+        return sb.toString();
+    }
+
+    /**
+     * Update the hardware profile for a minion in the database from incoming
+     * event data.
      *
      * @param server the minion server
      * @param result the result of the call as parsed from event data
+     * @param serverAction the server action
      */
     private static void handleHardwareProfileUpdate(MinionServer server,
             HwProfileUpdateSlsResult result, ServerAction serverAction) {
@@ -699,13 +780,15 @@ public class SaltUtils {
     /**
      * Create a {@link InstalledPackage} object from package name and info and return it.
      *
-     * @param name name of the package
-     * @param info package info from salt
+     * @param entry name/package info from salt
      * @param server server this package will be added to
      * @return the InstalledPackage object
      */
-    private static InstalledPackage createPackageFromSalt(
-            String name, Pkg.Info info, Server server) {
+    private static InstalledPackage createPackageFromSalt(Map.Entry<String, Pkg.Info> entry,
+            Server server) {
+        String name = entry.getKey();
+        Pkg.Info info = entry.getValue();
+
         String epoch = info.getEpoch().orElse(null);
         String release = info.getRelease().orElse("0");
         String version = info.getVersion().get();
