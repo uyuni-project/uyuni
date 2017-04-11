@@ -638,6 +638,7 @@ sub ask {
         }
 
         chomp ${$params{answer}};
+        ${$params{answer}} =~ s/^\s+|\s+$//g;
 
         ${$params{answer}} ||= $params{default} || '';
     }
