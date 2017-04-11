@@ -31,7 +31,6 @@ import EDU.oswego.cs.dl.util.concurrent.PooledExecutor;
 public class TaskQueue {
 
     private QueueDriver queueDriver;
-    private Channel workers = new LinkedQueue();
     private PooledExecutor executor = null;
     private int executingWorkers = 0;
     private int queueSize = 0;
@@ -107,7 +106,8 @@ public class TaskQueue {
      * case there is no new candidates and workers are all done.
      */
     public void run() {
-        setupQueue();
+        shutdownExecutor();
+        Channel workers = new LinkedQueue();
         List candidates = queueDriver.getCandidates();
         queueSize += candidates.size();
         if (queueSize > 0) {
@@ -131,6 +131,7 @@ public class TaskQueue {
                 return;
             }
         }
+        setupQueue(workers);
         if (isTaskQueueDone()) {
             // everything done
             queueDriver.getLogger().debug("Finishing run " + queueRun.getId());
@@ -165,11 +166,14 @@ public class TaskQueue {
         }
     }
 
-    private void setupQueue() {
+    private void shutdownExecutor() {
         if (executor != null) {
             executor.shutdownAfterProcessingCurrentlyQueuedTasks();
             executor = null;
         }
+    }
+
+    private void setupQueue(Channel workers) {
         int maxPoolSize = queueDriver.getMaxWorkers();
         executor = new PooledExecutor(workers);
         executor.waitWhenBlocked();
