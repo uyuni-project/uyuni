@@ -165,7 +165,7 @@ def getDefaultOptions():
             'overrides': DEFAULT_OVERRIDES,
             'script': DEFAULT_SCRIPT,
             'hostname': socket.getfqdn(),
-            'salt': 0,
+            'salt': 1,
             'ssl-cert': '', # will trigger a search
             'gpg-key': "",
             'http-proxy': "",
@@ -304,7 +304,7 @@ Note: for rhn-bootstrap to work, certain files are expected to be
             'overrides': options.overrides or DEFAULT_OVERRIDES,
             'script': options.script or DEFAULT_SCRIPT,
             'hostname': options.hostname,
-            'salt': options.salt,
+            'salt': int(not bool(options.traditional)),
             'ssl-cert': options.ssl_cert,
             'gpg-key': options.gpg_key,
             'http-proxy': options.http_proxy,
@@ -396,9 +396,10 @@ ERROR: the value of --overrides and --script cannot be the same!
         # the version of python; passing any of those values through int()
         # will return an int
         val = int(operator.truth(getattr(options, opt)))
-        setattr(options, opt, val)
         if opt == 'traditional':
             setattr(options, 'salt', int(not bool(val)))
+        else:
+            setattr(options, opt, val)
 
     return options
 
