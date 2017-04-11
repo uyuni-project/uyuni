@@ -80,16 +80,17 @@ function addCheckinTimePartitioningSelect(anchorId, callback) {
 function addCheckbox(targetSelection, caption, callback) {
   const parentDiv = targetSelection
     .append('div');
+  const id = 'visualization-checkbox-' + caption.trim();
 
   parentDiv
     .append('input')
     .attr('type', 'checkbox')
-    .attr('id', caption.trim())
+    .attr('id', id)
     .on('change', function() { callback(this.checked); });
 
   parentDiv
     .append('label')
-    .attr('id', caption.trim())
+    .attr('for', id)
     .text(caption);
 }
 
