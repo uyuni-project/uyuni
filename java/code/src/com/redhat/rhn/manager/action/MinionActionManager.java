@@ -93,9 +93,9 @@ public class MinionActionManager {
                         ConfigDefaults.get().getSaltContentStagingWindow();
 
                 ZonedDateTime stagingWindowStartTime = earliestAction
-                        .minus((long) saltContentStagingAdvance * 3600, SECONDS);
+                        .minus((long) (saltContentStagingAdvance * 3600), SECONDS);
                 ZonedDateTime stagingWindowEndTime = stagingWindowStartTime
-                        .plus((long) saltContentStagingWindow * 3600, SECONDS);
+                        .plus((long) (saltContentStagingWindow * 3600), SECONDS);
 
                 if (now().isAfter(stagingWindowStartTime) &&
                         stagingWindowEndTime.isAfter(now())) {
