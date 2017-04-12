@@ -12,7 +12,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
   Given I am on the Systems page
   And I follow "Activation Keys" in the left menu
   And I follow "Create Key"
-  When I enter "Minion testing" as "description"
+  When I enter "Docker testing" as "description"
   And I enter "DOCKER-TEST" as "key"
   And I enter "20" as "usageLimit"
   And I select "Test-Channel-x86_64" from "selectedChannel"
@@ -102,7 +102,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I schedule the build of image "suse_key" via xmlrpc-call
   And I schedule the build of image "suse_simply" via xmlrpc-call
   And I schedule the build of image "suse_real_key" via xmlrpc-call
-  # FIXME: add test build image via gui.
+
   Scenario: Build same images with different versions
   Given I am authorized as "admin" with password "admin"
   And I schedule the build of image "suse_key" with version "Latest_key-activation1" via xmlrpc-call 
@@ -125,5 +125,13 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I navigate to images webpage
   Then I verify that all "5" container images were built correctly in the gui
 
-  Scenario: Verify the property of activation-key image
+  Scenario: Build some images via gui
   Given I am authorized as "admin" with password "admin"
+  And I navigate to images build webpage
+  When I enter "GUI_BUILDED_IMAGE" as "version"
+  And I select "suse_real_key" from "profileId"
+  And I select sle-minion hostname in Build Host
+  And I click on "submit-btn"
+  And I wait for "5" seconds
+  Then I should see a "GUI_BUILDED_IMAGE" text 
+  And I should see a "a few seconds ago" text
