@@ -645,3 +645,13 @@ And(/^I wait until salt\-key "(.*?)" is deleted$/) do |key|
     raise "FATAL: salt-key #{key} was not deleted"
   end
 end
+
+Then(/^I wait until the package "(.*?)" has been cached on the minion$/) do |arg1|
+  Timeout.timeout(DEFAULT_TIMEOUT) do
+    loop do
+      _out, code = $minion.run("ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{arg1}.x86_64.rpm", false)
+      break if code.zero?
+      sleep 3
+    end
+  end
+end

@@ -358,3 +358,13 @@ Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
   end
   fail unless found
 end
+
+Given(/^I am in the organization configuration page$/) do
+  steps %(
+    When I am authorized as "admin" with password "admin"
+    And I follow "Admin"
+    And I follow "Organizations"
+    And I follow first "SUSE Test"
+    And I follow first "Configuration"
+  )
+end
