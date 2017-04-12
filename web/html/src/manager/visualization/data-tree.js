@@ -148,6 +148,16 @@ function updateDetailBox(d) {
     .attr('colspan', 2)
     .text(data.name);
 
+  const typeRow = table
+    .append('tr');
+  typeRow
+    .append('td')
+    .text('Type');
+  typeRow
+    .append('td')
+    .append('strong')
+    .text(data.type);
+
   if (Utils.isSystemType(d)) {
     const cell = table
       .append('tr')
@@ -177,31 +187,6 @@ function updateDetailBox(d) {
       .classed('input-group-addon removeFromSSM', true)
       .on('click', () => $.removeSystemFromSSM([data.rawId]))
       .html('<i class="fa fa-minus"></i>');
-
-    const typeRow = table
-      .append('tr');
-    typeRow
-      .append('td')
-      .text('Type');
-    typeRow
-      .append('td')
-      .append('strong')
-      .text(data.type);
-
-    // valueFn = function invoked on the value cell selection - we use it to
-    // fill in various content
-    function appendSimpleRow(key, valueFn) {
-      let systemSpecificInfoRow = table
-        .append('tr');
-      systemSpecificInfoRow
-        .append('td')
-        .text(key);
-
-      // invoke value function on the new cell
-      valueFn(systemSpecificInfoRow
-        .append('td')
-        .append('strong'));
-    }
 
     appendSimpleRow('Base entitlement', cell => cell.text(data.base_entitlement));
     appendSimpleRow('Base channel', cell => cell.text(data.base_channel));
@@ -234,7 +219,13 @@ function updateDetailBox(d) {
           .append('div')
           .text('○ ' + patchCountsArray[1] + '  security advisories');
       }
+    }
   }
+
+  if (data.type == 'group' && data.groups != undefined) {
+    appendSimpleRow('Groups', cell => cell.text(data.groups
+          .map((g, idx) => idx == 0 ? g : ' and ' + g)
+          .reduce((a,b) => a + b, '')));
   }
 
 //  contentWrapper
@@ -248,6 +239,23 @@ function updateDetailBox(d) {
 //      groupSpecificInfo +
 //      '</table>'
 //      );
+
+
+  // valueFn = function invoked on the value cell selection - we use it to
+  // fill in various content
+  function appendSimpleRow(key, valueFn) {
+    const row = table
+      .append('tr');
+    row
+      .append('td')
+      .text(key);
+
+    // invoke value function on the new cell
+    valueFn(row
+        .append('td')
+        .append('strong'));
+  }
+
 }
 
 function closeDetailBox() {
