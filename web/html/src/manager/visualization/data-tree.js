@@ -153,8 +153,10 @@ function updateDetailBox(d) {
 
   const detailBox = d3.select('.detailBox');
   detailBox.selectAll('*').remove();
-  detailBox.html(
-      '<div class="content-wrapper">' +
+  detailBox
+    .append('div')
+    .classed('content-wrapper', true)
+    .html(
       '<a href="#" class="close-popup" onClick="$.closeDetailBox()">X</a>' +
       '<table><tr><th colspan="2">' + data.name + '</th></tr>' +
       systemDetailLink +
@@ -162,7 +164,7 @@ function updateDetailBox(d) {
       '<tr><td>Type</td><td><strong>' + data.type + '</strong></td></tr>' +
       systemSpecificInfo +
       groupSpecificInfo +
-      '</table></div>'
+      '</table>'
       );
 }
 
