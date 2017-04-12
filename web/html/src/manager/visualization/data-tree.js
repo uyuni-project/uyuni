@@ -129,9 +129,6 @@ function updateDetailBox(d) {
   let systemSpecificInfo = '';
   let systemToSSM = '';
   if (Utils.isSystemType(d)) {
-    systemToSSM = '<tr><td>Add/remove system from SSM</td>' +
-      '<td><div class="input-group"><button class="input-group-addon addToSSM" onClick="$.addSystemFromSSM([' + data.rawId + '])"><i class="fa fa-plus"></i></button>' +
-      '<button" class="input-group-addon removeFromSSM" onClick="$.removeSystemFromSSM([' + data.rawId + '])"><i class="fa fa-minus"></i></button></div></td></tr>';
 
     systemSpecificInfo =
       '<tr><td>Base entitlement</td><td><strong>' + data.base_entitlement + '</strong></td></tr>' +
@@ -178,6 +175,26 @@ function updateDetailBox(d) {
       .attr('href', '/rhn/systems/details/Overview.do?sid=' + data.rawId)
       .attr('target', '_blank' + data.rawId)
       .html('<i class="fa fa-link"></i>System details page');
+
+    const row = table
+      .append('tr');
+    row
+      .append('td')
+      .text('Add/remove system from SSM');
+    const ssmDiv = row
+      .append('td')
+      .append('div')
+      .classed('input-group', true);
+    ssmDiv
+      .append('button')
+      .classed('input-group-addon addToSSM', true)
+      .on('click', () => $.addSystemFromSSM([data.rawId]))
+      .html('<i class="fa fa-plus"></i>');
+    ssmDiv
+      .append('button')
+      .classed('input-group-addon removeFromSSM', true)
+      .on('click', () => $.removeSystemFromSSM([data.rawId]))
+      .html('<i class="fa fa-minus"></i>');
   }
 
 //  contentWrapper
