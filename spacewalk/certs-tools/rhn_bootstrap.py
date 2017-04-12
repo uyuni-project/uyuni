@@ -30,7 +30,7 @@ import shutil
 import urlparse
 import operator
 
-from optparse import Option, OptionParser
+from optparse import Option, OptionParser, SUPPRESS_HELP
 
 ## local imports
 from spacewalk.common import rhn_rpm
@@ -212,6 +212,7 @@ def getOptionsTable():
                action='store',
                type='string', default=defopts['hostname'],
                help='hostname (FQDN) to which clients connect (currently: %s)' % defopts['hostname']),
+        Option('--salt', action='store_true', default=1, help=SUPPRESS_HELP),  # Hide deprecated option. This will be removed in 3.2
         Option('--traditional',
                action='store_true',
                default=int(not bool(defopts['salt'])),
