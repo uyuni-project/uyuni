@@ -25,4 +25,3 @@ function partitioning(initPartitioning) {
 module.exports = {
   partitioning: partitioning
 }
-

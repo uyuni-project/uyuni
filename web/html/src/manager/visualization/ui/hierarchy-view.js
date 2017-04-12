@@ -163,4 +163,3 @@ function getIconDimensionByType(node) {
 module.exports = {
     hierarchyView: hierarchyView
 }
-

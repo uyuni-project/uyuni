@@ -229,4 +229,3 @@ module.exports = {
   addGroupSelector: addGroupSelector,
   addButton: addButton
 }
-

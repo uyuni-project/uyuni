@@ -187,4 +187,3 @@ module.exports = {
     grouping: groupingPreprocessor,
     stratify: stratifyPreprocessor
 }
-
