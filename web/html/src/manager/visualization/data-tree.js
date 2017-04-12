@@ -154,7 +154,7 @@ function updateDetailBox(d) {
       .attr('colspan', 2)
       .append('a')
       .attr('href', '/rhn/systems/details/Overview.do?sid=' + data.rawId)
-      .attr('target', '_blank' + data.rawId)
+      .attr('target', '_blank')
       .html('<i class="fa fa-link"></i>System details page');
 
     const row = table
@@ -206,7 +206,7 @@ function updateDetailBox(d) {
       if (patchCountsArray[2] > 0) {
         cell
           .append('div')
-          .text('○ ' + patchCountsArray[1] + '  security advisories');
+          .text('○ ' + patchCountsArray[2] + '  security advisories');
       }
     }
   }
