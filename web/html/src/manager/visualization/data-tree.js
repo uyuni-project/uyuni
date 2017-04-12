@@ -149,7 +149,11 @@ function updateDetailBox(d) {
       .map((g, idx) => idx == 0 ? g : ' and ' + g)
       .reduce((a,b) => a + b, '') + '</b></div>';
   }
-  $('.detailBox').html(
+
+
+  const detailBox = d3.select('.detailBox');
+  detailBox.selectAll('*').remove();
+  detailBox.html(
       '<div class="content-wrapper">' +
       '<a href="#" class="close-popup" onClick="$.closeDetailBox()">X</a>' +
       '<table><tr><th colspan="2">' + data.name + '</th></tr>' +
@@ -159,12 +163,12 @@ function updateDetailBox(d) {
       systemSpecificInfo +
       groupSpecificInfo +
       '</table></div>'
-      ).show();
-
+      );
 }
 
 $.closeDetailBox = function() {
-  $('.detailBox').hide().html('');
+  const detailBox = d3.select('.detailBox');
+  detailBox.selectAll('*').remove();
   unselectAllNodes();
 }
 
