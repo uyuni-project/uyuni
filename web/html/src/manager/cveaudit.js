@@ -62,14 +62,16 @@ class CVEAudit extends React.Component {
 
   constructor(props) {
     super();
-    ["onCVEChange", "searchData", "audit", "onCVEYearChange", "onTargetChange"].forEach(method => this[method] = this[method].bind(this));
+    ["onCVEChange", "searchData", "handleSelectItems", "audit", "onCVEYearChange",
+        "onTargetChange"].forEach(method => this[method] = this[method].bind(this));
     this.state = {
       cveNumber: "",
       cveYear: CURRENT_YEAR,
       statuses: ALL,
       resultType: TARGET_SERVER,
       results: [],
-      messages: []
+      messages: [],
+      selectedItems: []
     };
   }
 
@@ -79,6 +81,18 @@ class CVEAudit extends React.Component {
         datum.fingerprint.toLocaleLowerCase().includes(criteria.toLocaleLowerCase());
     }
     return true;
+  }
+
+  handleSelectItems(items) {
+    const removed = this.state.selectedItems.filter(i => !items.includes(i));
+    const isAdd = removed.length === 0;
+    const list = isAdd ? items : removed;
+
+    this.setState({selectedItems: items}, () => {
+        DWRItemSelector.select("system_list", list, isAdd, (res) => {
+            dwr.util.setValue("header_selcount", eval(res).header, {escapeHtml: false});
+        });
+    });
   }
 
   onTargetChange(e) {
@@ -127,12 +141,14 @@ class CVEAudit extends React.Component {
         if (data.success) {
             this.setState({
                 results: data.data,
+                selectedItems: data.data.filter(i => i.selected).map(i => i.id),
                 resultType: target,
                 messages: []
             });
         } else {
             this.setState({
                 results: [],
+                selectedItems: [],
                 messages: data.messages
             });
         }
@@ -200,6 +216,9 @@ class CVEAudit extends React.Component {
               identifier={ (row) => row.id }
               initialSortColumnKey="id"
               initialItemsPerPage={userPrefPageSize}
+              selectable={this.state.resultType === TARGET_SERVER && this.state.results.length > 0}
+              onSelect={this.handleSelectItems}
+              selectedItems={this.state.selectedItems}
               searchField={
                   <SearchField filter={this.searchData} criteria={""} />
               }>

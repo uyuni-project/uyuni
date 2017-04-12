@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.audit.CVEAuditSystem;
 import com.redhat.rhn.manager.audit.PatchStatus;
 import com.redhat.rhn.manager.audit.UnknownCVEIdentifierException;
 
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import org.apache.log4j.Logger;
 import spark.ModelAndView;
@@ -35,6 +36,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -113,9 +115,13 @@ public class CVEAuditController {
 
             switch (cveAuditRequest.getTarget()) {
                 case SERVER:
+                    Set<Long> systemSet = RhnSetDecl.SYSTEMS.get(user).getElementValues();
                     List<CVEAuditServer> cveAuditServers = CVEAuditManager
                     .listSystemsByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
+                    cveAuditServers.forEach(serv -> {
+                            serv.setSelected(systemSet.contains(serv.getId()));
+                    });
                     return json(res, new JsonResult<>(true, cveAuditServers));
                 case IMAGE:
                     List<CVEAuditImage> cveAuditImages = CVEAuditManager
