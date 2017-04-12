@@ -672,7 +672,14 @@ def main():
         o set defaults otherwise
     """
 
-    #print "Commandline: %s" % repr(sys.argv)
+    if '--salt' in sys.argv:
+        print >> sys.stderr, '-' * 65
+        print >> sys.stderr, 'DEPRECATION WARNING:\n' \
+        '\tThe option "--salt" is default and has been deprecated.\n' \
+        '\tThis option should not be specified anymore.' \
+        '\tIt will be not recognized in the next release!'
+        print >> sys.stderr, '-' * 65
+
     options = processCommandline()
     copyFiles(options)
     generateBootstrapScript(options)
