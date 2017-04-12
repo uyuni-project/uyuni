@@ -421,6 +421,10 @@ DATA = {
                           'PDID' : 1414, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
                         },
+    'SLES4SAP-12-SP2-ppc64le' : {
+                          'PDID' : 1521, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+                        },
 
 }
 
