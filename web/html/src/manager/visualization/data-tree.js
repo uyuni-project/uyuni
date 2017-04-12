@@ -114,29 +114,11 @@ function unselectAllNodes() {
 }
 
 function updateDetailBox(d) {
-  function patchStatus(patchCountsArray) {
-    if (patchCountsArray == undefined) {
-      return 'unknown';
-    }
-    const unknownCountMsg = '<span title="unknown count of">?</span>';
-    return (patchCountsArray[0] > 0 ? '<div>○ ' + patchCountsArray[0] + ' bug fix advisories</div>' : '') +
-      (patchCountsArray[1] > 0 ? '<div>○ ' + patchCountsArray[1] + ' product enhancement advisories</div>' : '') +
-      (patchCountsArray[2] > 0 ? '<div>○ ' + patchCountsArray[2] + ' security advisories</div>' : '');
-  }
 
   const data = d.data;
   let systemDetailLink = '';
   let systemSpecificInfo = '';
   let systemToSSM = '';
-  if (Utils.isSystemType(d)) {
-
-    systemSpecificInfo =
-      '<tr><td>Base entitlement</td><td><strong>' + data.base_entitlement + '</strong></td></tr>' +
-      '<tr><td>Base channel</td><td><strong>' + data.base_channel + '</strong></td></tr>' +
-      '<tr><td>Checkin time</td><td><strong><time title="' + moment(data.checkin).format('LLLL') + '">' + moment(data.checkin).fromNow() + '</time></strong></td></tr>' +
-      '<tr><td>Installed products</td><td><strong>' + data.installedProducts + '</strong></td></tr>' +
-      '<tr><td>Patch status</td><td><strong>' + patchStatus(data.patch_counts) + '</strong></td></tr>';
-  }
   let groupSpecificInfo = '';
   if (data.type == 'group' && data.groups != undefined) {
     groupSpecificInfo = '<div>Groups: <b>' + data.groups
@@ -195,6 +177,54 @@ function updateDetailBox(d) {
       .classed('input-group-addon removeFromSSM', true)
       .on('click', () => $.removeSystemFromSSM([data.rawId]))
       .html('<i class="fa fa-minus"></i>');
+
+    // valueFn = function invoked on the value cell selection - we use it to
+    // fill in various content
+    function appendSimpleRow(key, valueFn) {
+      let systemSpecificInfoRow = table
+        .append('tr');
+      systemSpecificInfoRow
+        .append('td')
+        .text(key);
+
+      // invoke value function on the new cell
+      valueFn(systemSpecificInfoRow
+        .append('td')
+        .append('strong'));
+    }
+
+    appendSimpleRow('Base entitlement', cell => cell.text(data.base_entitlement));
+    appendSimpleRow('Base channel', cell => cell.text(data.base_channel));
+    appendSimpleRow('Checkin time', cell => cell
+        .append('time')
+        .attr('title', moment(data.checkin).format('LLLL'))
+        .text(moment(data.checkin).fromNow()));
+    appendSimpleRow('Installed products', cell =>cell.text(data.installedProducts));
+    appendSimpleRow('Patch status', cell => appendPatchStatus(cell, data.patch_counts));
+
+    //data.patchCounts
+    function appendPatchStatus(cell, patchCountsArray) {
+      if (patchCountsArray == undefined) {
+        return cell.text('unknown');
+      }
+      if (patchCountsArray[0] > 0) {
+        cell
+          .append('div')
+          .text('○ ' + patchCountsArray[0] + '  bug fix advisories');
+      }
+
+      if (patchCountsArray[1] > 0) {
+        cell
+          .append('div')
+          .text('○ ' + patchCountsArray[1] + '  product enhancement advisories');
+      }
+
+      if (patchCountsArray[2] > 0) {
+        cell
+          .append('div')
+          .text('○ ' + patchCountsArray[1] + '  security advisories');
+      }
+  }
   }
 
 //  contentWrapper
