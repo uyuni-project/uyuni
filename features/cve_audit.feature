@@ -50,22 +50,6 @@ Feature: CVE Audit
     And I click on "Audit Servers"
     Then I should see a "The specified CVE number was not found" text
 
-#
-# disable until the new page support adding systems to SSM
-#
-#  Scenario: selecting a system for the System Set Manager
-    #When I follow "Audit" in the left menu
-    #And I follow "CVE Audit" in the left menu
-    #And I select "1999" from "cveIdentifierYear"
-    #And I enter "9999" as "cveIdentifierId"
-    #And I click on "Audit Servers"
-    #And I should see a "Affected, at least one patch available in an assigned channel" text
-    #When I check "Affected, at least one patch available in an assigned channel" in the list
-    #Then I should see a "system selected" text
-    #When I am on the System Manager System Overview page
-    #Then I should see this client as link
-    #And I follow "Clear"
-
   Scenario: before applying patches (xmlrpc test)
     Given I am authorized as "admin" with password "admin"
     When I follow "Admin"
