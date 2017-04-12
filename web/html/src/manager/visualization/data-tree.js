@@ -43,7 +43,8 @@ function dataTree(data, container) {
   const view = HierarchyView.hierarchyView(container)
     .simulation(simulation)
     .onNodeClick(onNodeClick)
-    .captionFunction(deriveNodeName);
+    .captionFunction(deriveNodeName)
+    .deriveIconClass(myDeriveIconClass);
 
   function instance() {
   }
@@ -193,6 +194,23 @@ function myDeriveClass(node) {
   }
 
   return 'system';
+}
+
+function myDeriveIconClass(node) {
+  let iconClass = '';
+  if (Utils.isSystemType(node)) {
+    iconClass = 'fa-desktop';
+  }
+  else if (node.data.type == 'vhm') {
+    iconClass = 'spacewalk-icon-virtual-host-manager';
+  }
+  else if (node.data.id == 'root') {
+    iconClass = 'spacewalk-icon-configure-suse-manager';
+  }
+  else {
+    iconClass = 'fa-question-circle';
+  }
+  return iconClass;
 }
 
 // turns the input data into tree, backups children
