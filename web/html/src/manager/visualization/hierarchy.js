@@ -152,7 +152,7 @@ function initUI(tree) {
         ids.add(e.data.rawId);
       }
     });
-    $.addSystemFromSSM(Array.from(ids));
+    $.addSystemToSSM(Array.from(ids));
   }
   UI.addButton(d3.select('#filter-wrapper'), 'Add tree to SSM', addVisibleTreeToSSM);
 }
