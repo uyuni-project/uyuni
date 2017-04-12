@@ -28,4 +28,3 @@ function filters(initFilters) {
 module.exports = {
     filters: filters
 }
-

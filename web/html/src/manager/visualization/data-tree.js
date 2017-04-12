@@ -319,4 +319,3 @@ function strengthFromDepth(depth) {
 module.exports = {
     dataTree: dataTree
 }
-
