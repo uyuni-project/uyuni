@@ -174,7 +174,7 @@ function updateDetailBox(d) {
     ssmDiv
       .append('button')
       .classed('input-group-addon removeFromSSM', true)
-      .on('click', () => $.removeSystemFromSSM([data.rawId]))
+      .on('click', () => removeSystemFromSSM([data.rawId]))
       .html('<i class="fa fa-minus"></i>');
 
     appendSimpleRow('Base entitlement', cell => cell.text(data.base_entitlement));
@@ -244,7 +244,7 @@ $.addSystemFromSSM = function(ids) {
   return update_server_set('ids', 'system_list', true, ids);
 }
 
-$.removeSystemFromSSM = function(ids) {
+function removeSystemFromSSM(ids) {
   return update_server_set('ids', 'system_list', false, ids);
 }
 
