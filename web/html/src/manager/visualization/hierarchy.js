@@ -48,7 +48,7 @@ function initUI(tree) {
 
   patchCountsFilter
     .append('label')
-    .text('Filter by patches:');
+    .text('Show systems with:');
 
   // state of the patch status checkboxes:
   // [bug fix adv. checked, prod. enhancements checked, security adv. checked]
@@ -73,9 +73,9 @@ function initUI(tree) {
       tree.refresh();
     }
   }
-  UI.addCheckbox(patchCountsFilter, 'has bug fix advisories', patchCountFilterCallback(0));
-  UI.addCheckbox(patchCountsFilter, 'OR has product enhancement advisories', patchCountFilterCallback(1));
-  UI.addCheckbox(patchCountsFilter, 'OR has security advisories', patchCountFilterCallback(2));
+  UI.addCheckbox(patchCountsFilter, 'security advisories', patchCountFilterCallback(2));
+  UI.addCheckbox(patchCountsFilter, 'bug fix advisories', patchCountFilterCallback(0));
+  UI.addCheckbox(patchCountsFilter, 'product enhancement advisories', patchCountFilterCallback(1));
 
   // Base channel filter
   UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system base channel', 'e.g., SLE12', (input) => {
