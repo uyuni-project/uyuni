@@ -146,18 +146,6 @@ def help_get_serverversion(self):
 def do_get_serverversion(self, args):
     print self.client.api.systemVersion()
 
-####################
-
-
-def help_get_certificateexpiration(self):
-    print 'get_certificateexpiration: Print the expiration date of the'
-    print "                           server's entitlement certificate"
-    print 'usage: get_certificateexpiration'
-
-
-def do_get_certificateexpiration(self, args):
-    date = self.client.satellite.getCertificateExpirationDate(self.session)
-    print date
 
 ####################
 
