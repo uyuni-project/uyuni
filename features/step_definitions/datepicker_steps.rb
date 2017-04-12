@@ -18,6 +18,12 @@ def days_find(picker_days, day)
   picker_days.find(:xpath, day_xpath).click
 end
 
+def get_future_time(minutes_to_add)
+  now = Time.new
+  future_time = now + 60 * minutes_to_add.to_i
+  future_time.strftime("%l:%M %P").to_s.strip
+end
+
 Given(/^I pick "([^"]*)" as date$/) do |arg1|
   value = Date.parse(arg1)
   date_input = find('input[data-provide="date-picker"]')
@@ -81,6 +87,12 @@ Given(/^I pick "([^"]*)" as time$/) do |arg1|
   timepicker = first('ul.ui-timepicker-list')
   time = timepicker.find(:xpath, "//*[normalize-space(text())='#{arg1}']")
   time.click
+end
+
+When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
+  action_time = get_future_time(arg1)
+  page.execute_script("$('#date_timepicker_widget_input')
+    .timepicker('setTime', '#{action_time}');")
 end
 
 Then(/^the time field is set to "([^"]*)"$/) do |arg1|
