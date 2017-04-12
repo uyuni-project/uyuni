@@ -207,6 +207,11 @@ function updateDetailBox(d) {
       if (patchCountsArray == undefined) {
         return cell.text('unknown');
       }
+      if (patchCountsArray[2] > 0) {
+        cell
+          .append('div')
+          .text('○ ' + patchCountsArray[2] + '  security advisories');
+      }
       if (patchCountsArray[0] > 0) {
         cell
           .append('div')
@@ -217,12 +222,6 @@ function updateDetailBox(d) {
         cell
           .append('div')
           .text('○ ' + patchCountsArray[1] + '  product enhancement advisories');
-      }
-
-      if (patchCountsArray[2] > 0) {
-        cell
-          .append('div')
-          .text('○ ' + patchCountsArray[2] + '  security advisories');
       }
     }
   }
