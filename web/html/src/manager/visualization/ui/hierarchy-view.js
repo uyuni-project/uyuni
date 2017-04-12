@@ -151,7 +151,7 @@ function getIconDimensionByType(node) {
   if (node.data.id == 'root') {
     size = '4';
   }
-  else if (node.data.type == 'vhm') {
+  else if (['vhm', 'group'].includes(node.data.type)) {
     size = '3';
   }
   else {

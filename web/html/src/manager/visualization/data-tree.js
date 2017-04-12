@@ -275,8 +275,10 @@ function myDeriveClass(node) {
   if (node.id == 'root') {
     return 'root';
   }
-
-  if (view == 'proxy-hierarchy' && node.depth == 1 || ['group', 'vhm'].includes(node.data.type)) {
+  if (node.data.type == 'vhm') {
+    return 'vhm';
+  }
+  if (view == 'proxy-hierarchy' && node.depth == 1 || node.data.type == 'group') {
     return 'inner-node';
   }
 
@@ -286,13 +288,16 @@ function myDeriveClass(node) {
 function myDeriveIconClass(node) {
   let iconClass = '';
   if (Utils.isSystemType(node)) {
-    iconClass = 'fa-desktop';
+    iconClass = 'spacewalk-icon-desktop-filled';
   }
   else if (node.data.type == 'vhm') {
     iconClass = 'spacewalk-icon-virtual-host-manager';
   }
   else if (node.data.id == 'root') {
-    iconClass = 'spacewalk-icon-configure-suse-manager';
+    iconClass = 'spacewalk-icon-suse-manager';
+  }
+  else if (node.data.type == 'group') {
+    iconClass = 'spacewalk-icon-system-groups';
   }
   else {
     iconClass = 'fa-question-circle';

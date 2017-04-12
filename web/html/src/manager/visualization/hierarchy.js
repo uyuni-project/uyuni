@@ -109,7 +109,7 @@ function initUI(tree) {
       }
       const firstPartition = d.data.checkin < datetime.getTime();
       d.data.partition = firstPartition;
-      return firstPartition  ? 'stroke-red' : 'stroke-green';
+      return firstPartition  ? 'stroke-red non-checking-in' : 'stroke-green checking-in';
     };
     tree.refresh();
   }
@@ -132,7 +132,7 @@ function initUI(tree) {
       }
       const firstPartition = d.data.patch_counts.filter(pc => pc > 0).length > 0;
       d.data.partition = firstPartition;
-      return firstPartition  ? 'stroke-red' : 'stroke-green';
+      return firstPartition  ? 'stroke-red unpatched' : 'stroke-green patched';
     };
     tree.refresh();
   }
