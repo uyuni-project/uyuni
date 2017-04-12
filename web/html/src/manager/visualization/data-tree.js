@@ -114,18 +114,7 @@ function unselectAllNodes() {
 }
 
 function updateDetailBox(d) {
-
   const data = d.data;
-  let systemDetailLink = '';
-  let systemSpecificInfo = '';
-  let systemToSSM = '';
-  let groupSpecificInfo = '';
-  if (data.type == 'group' && data.groups != undefined) {
-    groupSpecificInfo = '<div>Groups: <b>' + data.groups
-      .map((g, idx) => idx == 0 ? g : ' and ' + g)
-      .reduce((a,b) => a + b, '') + '</b></div>';
-  }
-
 
   const detailBox = d3.select('.detailBox');
   detailBox.selectAll('*').remove();
@@ -227,19 +216,6 @@ function updateDetailBox(d) {
           .map((g, idx) => idx == 0 ? g : ' and ' + g)
           .reduce((a,b) => a + b, '')));
   }
-
-//  contentWrapper
-//    .html(
-//      '<a href="#" class="close-popup" onClick="">X</a>' +
-//      '<table><tr><th colspan="2">' + data.name + '</th></tr>' +
-//      systemDetailLink +
-//      systemToSSM +
-//      '<tr><td>Type</td><td><strong>' + data.type + '</strong></td></tr>' +
-//      systemSpecificInfo +
-//      groupSpecificInfo +
-//      '</table>'
-//      );
-
 
   // valueFn = function invoked on the value cell selection - we use it to
   // fill in various content
