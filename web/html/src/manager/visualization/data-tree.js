@@ -129,9 +129,6 @@ function updateDetailBox(d) {
   let systemSpecificInfo = '';
   let systemToSSM = '';
   if (Utils.isSystemType(d)) {
-    systemDetailLink = '<tr><td colspan="2"><a href="/rhn/systems/details/Overview.do?sid=' +
-      data.rawId + '" target="_blank"><i class="fa fa-link"></i>System details page</a></td></tr>';
-
     systemToSSM = '<tr><td>Add/remove system from SSM</td>' +
       '<td><div class="input-group"><button class="input-group-addon addToSSM" onClick="$.addSystemFromSSM([' + data.rawId + '])"><i class="fa fa-plus"></i></button>' +
       '<button" class="input-group-addon removeFromSSM" onClick="$.removeSystemFromSSM([' + data.rawId + '])"><i class="fa fa-minus"></i></button></div></td></tr>';
@@ -153,22 +150,50 @@ function updateDetailBox(d) {
 
   const detailBox = d3.select('.detailBox');
   detailBox.selectAll('*').remove();
-  detailBox
+  const contentWrapper = detailBox
     .append('div')
-    .classed('content-wrapper', true)
-    .html(
-      '<a href="#" class="close-popup" onClick="$.closeDetailBox()">X</a>' +
-      '<table><tr><th colspan="2">' + data.name + '</th></tr>' +
-      systemDetailLink +
-      systemToSSM +
-      '<tr><td>Type</td><td><strong>' + data.type + '</strong></td></tr>' +
-      systemSpecificInfo +
-      groupSpecificInfo +
-      '</table>'
-      );
+    .classed('content-wrapper', true);
+  contentWrapper
+    .append('a')
+    .attr('href', '#')
+    .on('click', () => closeDetailBox())
+    .classed('close-popup', true)
+    .text('X');
+
+  const table = contentWrapper
+    .append('table');
+
+  table
+    .append('tr')
+    .append('th')
+    .attr('colspan', 2)
+    .text(data.name);
+
+  if (Utils.isSystemType(d)) {
+    const cell = table
+      .append('tr')
+      .append('td')
+      .attr('colspan', 2)
+      .append('a')
+      .attr('href', '/rhn/systems/details/Overview.do?sid=' + data.rawId)
+      .attr('target', '_blank' + data.rawId)
+      .html('<i class="fa fa-link"></i>System details page');
+  }
+
+//  contentWrapper
+//    .html(
+//      '<a href="#" class="close-popup" onClick="">X</a>' +
+//      '<table><tr><th colspan="2">' + data.name + '</th></tr>' +
+//      systemDetailLink +
+//      systemToSSM +
+//      '<tr><td>Type</td><td><strong>' + data.type + '</strong></td></tr>' +
+//      systemSpecificInfo +
+//      groupSpecificInfo +
+//      '</table>'
+//      );
 }
 
-$.closeDetailBox = function() {
+function closeDetailBox() {
   const detailBox = d3.select('.detailBox');
   detailBox.selectAll('*').remove();
   unselectAllNodes();
