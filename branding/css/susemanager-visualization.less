@@ -162,6 +162,17 @@ svg {
     }
   }
 
+  .node.vhm {
+    foreignObject {
+      width: 3em;
+      height: 3em;
+      color: #7963a5;
+      i {
+        font-size: 3em;
+      }
+    }
+  }
+
   .node.inner-node {
     foreignObject {
       width: 3em;
@@ -175,7 +186,7 @@ svg {
 
   .node.system {
     foreignObject {
-      color: #7392cc;
+      color: #7992B6;
     }
   }
 
@@ -208,6 +219,16 @@ svg {
   .stroke-green.selected foreignObject {
     i {
       color: #009000!important;
+    }
+  }
+  .unpatched foreignObject {
+    i:before {
+      content: '\e902'!important;
+    }
+  }
+  .non-checking-in foreignObject {
+    i:before {
+      content: '\e903'!important;
     }
   }
 }
