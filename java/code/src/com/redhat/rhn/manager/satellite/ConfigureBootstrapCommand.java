@@ -81,8 +81,8 @@ public class ConfigureBootstrapCommand extends BaseConfigureCommand
             args.add("--hostname=" + this.hostname);
         }
 
-        if (BooleanUtils.toBooleanDefaultIfNull(this.saltEnabled, false)) {
-            args.add("--salt");
+        if (!BooleanUtils.toBooleanDefaultIfNull(this.saltEnabled, false)) {
+            args.add("--traditional");
         }
         if (!StringUtils.isEmpty(this.sslPath)) {
             args.add("--ssl-cert=" + this.sslPath);
