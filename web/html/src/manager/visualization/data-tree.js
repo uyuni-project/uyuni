@@ -147,7 +147,7 @@ function updateDetailBox(d) {
         .filter(Utils.isSystemType)
         .map(system => system.data.rawId);
       const uniqueIds = new Set(idsArray);
-      $.addSystemToSSM(Array.from(uniqueIds));
+      addSystemToSSM(Array.from(uniqueIds));
     })
     .text('Add children systems to SSM');
 
@@ -185,7 +185,7 @@ function updateDetailBox(d) {
     ssmDiv
       .append('button')
       .classed('input-group-addon addToSSM', true)
-      .on('click', () => $.addSystemToSSM([data.rawId]))
+      .on('click', () => addSystemToSSM([data.rawId]))
       .html('<i class="fa fa-plus"></i>');
     ssmDiv
       .append('button')
@@ -256,7 +256,7 @@ function closeDetailBox() {
   unselectAllNodes();
 }
 
-$.addSystemToSSM = function(ids) {
+function addSystemToSSM(ids) {
   return update_server_set('ids', 'system_list', true, ids);
 }
 
