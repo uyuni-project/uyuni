@@ -332,11 +332,11 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         packageIds.add(new Integer(pkg2.getId().intValue()));
 
         user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "48");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
+        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "0.5");
+        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "1");
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        ZonedDateTime scheduledActionTime = now.plusHours(24);
+        ZonedDateTime scheduledActionTime = now.plusHours(1);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
