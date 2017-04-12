@@ -15,7 +15,6 @@
 package com.redhat.rhn.manager.action;
 
 import static java.time.ZonedDateTime.now;
-import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -88,15 +87,15 @@ public class MinionActionManager {
 
             if (earliestAction.isAfter(now()) && !minionServerIds.isEmpty()) {
 
-                final long saltContentStagingAdvance =
+                final float saltContentStagingAdvance =
                         ConfigDefaults.get().getSaltContentStagingAdvance();
-                final long saltContentStagingWindow =
+                final float saltContentStagingWindow =
                         ConfigDefaults.get().getSaltContentStagingWindow();
 
-                ZonedDateTime stagingWindowStartTime =
-                        earliestAction.minus(saltContentStagingAdvance, HOURS);
-                ZonedDateTime stagingWindowEndTime =
-                        stagingWindowStartTime.plus(saltContentStagingWindow, HOURS);
+                ZonedDateTime stagingWindowStartTime = earliestAction
+                        .minus((long) saltContentStagingAdvance * 3600, SECONDS);
+                ZonedDateTime stagingWindowEndTime = stagingWindowStartTime
+                        .plus((long) saltContentStagingWindow * 3600, SECONDS);
 
                 if (now().isAfter(stagingWindowStartTime) &&
                         stagingWindowEndTime.isAfter(now())) {

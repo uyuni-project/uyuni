@@ -825,8 +825,8 @@ public class ConfigDefaults {
      *
      * @return the duration
      */
-    public long getSaltContentStagingWindow() {
-        return Config.get().getInt(SALT_CONTENT_STAGING_WINDOW, 8);
+    public float getSaltContentStagingWindow() {
+        return Config.get().getFloat(SALT_CONTENT_STAGING_WINDOW, 8);
     }
 
     /**
@@ -834,7 +834,7 @@ public class ConfigDefaults {
      * open with respect to the scheduled installation/upgrade time.
      * @return the advance time
      */
-    public long getSaltContentStagingAdvance() {
-        return Config.get().getInt(SALT_CONTENT_STAGING_ADVANCE, 8);
+    public float getSaltContentStagingAdvance() {
+        return Config.get().getFloat(SALT_CONTENT_STAGING_ADVANCE, 8);
     }
 }
