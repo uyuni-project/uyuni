@@ -169,7 +169,7 @@ function updateDetailBox(d) {
     ssmDiv
       .append('button')
       .classed('input-group-addon addToSSM', true)
-      .on('click', () => $.addSystemFromSSM([data.rawId]))
+      .on('click', () => $.addSystemToSSM([data.rawId]))
       .html('<i class="fa fa-plus"></i>');
     ssmDiv
       .append('button')
@@ -240,7 +240,7 @@ function closeDetailBox() {
   unselectAllNodes();
 }
 
-$.addSystemFromSSM = function(ids) {
+$.addSystemToSSM = function(ids) {
   return update_server_set('ids', 'system_list', true, ids);
 }
 
