@@ -178,6 +178,16 @@ function updateDetailBox(d) {
       .on('click', () => $.removeSystemFromSSM([data.rawId]))
       .html('<i class="fa fa-minus"></i>');
 
+    const typeRow = table
+      .append('tr');
+    typeRow
+      .append('td')
+      .text('Type');
+    typeRow
+      .append('td')
+      .append('strong')
+      .text(data.type);
+
     // valueFn = function invoked on the value cell selection - we use it to
     // fill in various content
     function appendSimpleRow(key, valueFn) {
