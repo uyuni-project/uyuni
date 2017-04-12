@@ -143,18 +143,6 @@ function initUI(tree) {
     tree.partitioning().get()['user-partitioning'] = d => { return ''};
     tree.refresh();
   });
-
-  // Add systems to SSM button
-  function addVisibleTreeToSSM() {
-    const ids = new Set();
-    tree.view().root().each(e => {
-      if (Utils.isSystemType(e)) {
-        ids.add(e.data.rawId);
-      }
-    });
-    $.addSystemToSSM(Array.from(ids));
-  }
-  UI.addButton(d3.select('#filter-wrapper'), 'Add tree to SSM', addVisibleTreeToSSM);
 }
 
 const Hierarchy = React.createClass({
