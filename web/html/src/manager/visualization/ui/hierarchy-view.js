@@ -44,10 +44,12 @@ function hierarchyView(container, rootIn) {
 
     gEnter
       .append('svg:foreignObject')
-      .attr('x', d => setXoffsetByType(d))
-      .attr('y', d => setYoffsetByType(d))
-      .attr('width', d => setIconSizeByType(d))
-      .attr('height', d => setIconSizeByType(d))
+      // The icon starts to be drawn at top-left and it's developed to bottom-right.
+      // Set the offset as half negative of its dimension to center.
+      .attr('x', d => -(getIconDimensionByType(d)/2) + 'em')
+      .attr('y', d => -(getIconDimensionByType(d)/2) + 'em')
+      .attr('width', d => getIconDimensionByType(d) + 'em')
+      .attr('height', d => getIconDimensionByType(d) + 'em')
       .html(d => '<i class="fa ' + deriveIconClass(d) + '"></i>'); // we must construct html manually
                                                                    // otherwise the fa icon is not visible
 
@@ -144,45 +146,16 @@ function hierarchyView(container, rootIn) {
   return my;
 }
 
-// todo move
-function setXoffsetByType(node) {
-  let offset;
-  if (node.data.id == 'root') {
-    offset = '-2em';
-  }
-  else if (node.data.type == 'vhm') {
-    offset = '-1.5em';
-  }
-  else {
-    offset = '-.5em';
-  }
-  return offset;
-}
-
-function setYoffsetByType(node) {
-  let offset;
-  if (node.data.id == 'root') {
-    offset = '-2em';
-  }
-  else if (node.data.type == 'vhm') {
-    offset = '-1.5em';
-  }
-  else {
-    offset = '-.5em';
-  }
-  return offset;
-}
-
-function setIconSizeByType(node) {
+function getIconDimensionByType(node) {
   let size;
   if (node.data.id == 'root') {
-    size = '4em';
+    size = '4';
   }
   else if (node.data.type == 'vhm') {
-    size = '3em';
+    size = '3';
   }
   else {
-    size = '1em';
+    size = '1';
   }
   return size;
 }
