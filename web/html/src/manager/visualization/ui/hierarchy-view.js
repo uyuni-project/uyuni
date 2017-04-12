@@ -18,6 +18,7 @@ function hierarchyView(container, rootIn) {
   // default params
   let root = rootIn;
   let deriveClass = (d) => '';
+  let deriveIconClass = (d) => 'fa-question-circle';
   let simulation = null;
   let onNodeClick = () => {};
   let captionFunction = d => d.data.name;
@@ -47,7 +48,8 @@ function hierarchyView(container, rootIn) {
       .attr('y', d => setYoffsetByType(d))
       .attr('width', d => setIconSizeByType(d))
       .attr('height', d => setIconSizeByType(d))
-      .html(d => appendIconType(d));
+      .html(d => '<i class="fa ' + deriveIconClass(d) + '"></i>'); // we must construct html manually
+                                                                   // otherwise the fa icon is not visible
 
     // common for enter + update sections
     node.merge(gEnter)
@@ -127,6 +129,10 @@ function hierarchyView(container, rootIn) {
     return arguments.length ? (deriveClass = f, my) : deriveClass;
   }
 
+  my.deriveIconClass = function(f) {
+    return arguments.length ? (deriveIconClass = f, my) : deriveIconClass;
+  }
+
   my.onNodeClick = function(c) {
     return arguments.length ? (onNodeClick = c, my) : onNodeClick;
   }
@@ -139,23 +145,6 @@ function hierarchyView(container, rootIn) {
 }
 
 // todo move
-function appendIconType(node) {
-  let iconClass = '';
-  if (Utils.isSystemType(node)) {
-    iconClass = 'fa-desktop';
-  }
-  else if (node.data.type == 'vhm') {
-    iconClass = 'spacewalk-icon-virtual-host-manager';
-  }
-  else if (node.data.id == 'root') {
-    iconClass = 'spacewalk-icon-configure-suse-manager';
-  }
-  else {
-    iconClass = 'fa-question-circle';
-  }
-  return '<i class="fa ' + iconClass + '"></i>';
-}
-
 function setXoffsetByType(node) {
   let offset;
   if (node.data.id == 'root') {
