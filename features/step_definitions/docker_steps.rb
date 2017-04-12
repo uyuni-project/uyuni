@@ -84,7 +84,7 @@ def retrieve_minion_id
 end
 
 And(/^I select sle-minion hostname in Build Host$/) do
-  select($minion_fullhostname, :from => 'host')
+  select($minion_fullhostname, :from => 'buildHostId')
 end
 
 And(/^I navigate to images webpage$/) do
