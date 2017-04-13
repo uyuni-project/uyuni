@@ -144,7 +144,7 @@ function updateDetailBox(d) {
     .append('button')
     .on('click', () => {
       const idsArray = d.leaves()
-        .filter(Utils.isSystemType)
+        .filter(Utils.isCompliantToSSM)
         .map(system => system.data.rawId);
       const uniqueIds = new Set(idsArray);
       addSystemToSSM(Array.from(uniqueIds));
@@ -172,27 +172,29 @@ function updateDetailBox(d) {
     .append('strong')
     .text(data.type);
 
-  if (Utils.isSystemType(d)) {
+  if (Utils.isCompliantToSSM(d)) {
     const row = table
-      .append('tr');
+    .append('tr');
     row
-      .append('td')
-      .text('Add/remove system from SSM');
+    .append('td')
+    .text('Add/remove system from SSM');
     const ssmDiv = row
-      .append('td')
-      .append('div')
-      .classed('input-group', true);
+    .append('td')
+    .append('div')
+    .classed('input-group', true);
     ssmDiv
-      .append('button')
-      .classed('input-group-addon addToSSM', true)
-      .on('click', () => addSystemToSSM([data.rawId]))
-      .html('<i class="fa fa-plus"></i>');
+    .append('button')
+    .classed('input-group-addon addToSSM', true)
+    .on('click', () => addSystemToSSM([data.rawId]))
+    .html('<i class="fa fa-plus"></i>');
     ssmDiv
-      .append('button')
-      .classed('input-group-addon removeFromSSM', true)
-      .on('click', () => removeSystemFromSSM([data.rawId]))
-      .html('<i class="fa fa-minus"></i>');
+    .append('button')
+    .classed('input-group-addon removeFromSSM', true)
+    .on('click', () => removeSystemFromSSM([data.rawId]))
+    .html('<i class="fa fa-minus"></i>');
+  }
 
+  if (Utils.isSystemType(d)) {
     appendSimpleRow('Base entitlement', cell => cell.text(data.base_entitlement));
     appendSimpleRow('Base channel', cell => cell.text(data.base_channel));
     appendSimpleRow('Checkin time', cell => cell

@@ -35,9 +35,13 @@ function isSystemType(d) {
   return d.data.type && d.data.type == 'system' && d.data.rawId != '' && d.data.id != 'root';
 }
 
+function isCompliantToSSM(d) {
+  return isSystemType(d) && ['enterprise_entitled', 'salt_entitled', 'bootstrap_entitled'].includes(d.data.base_entitlement);
+}
+
 module.exports = {
     computeSvgDimensions: computeSvgDimensions,
     prepareDom: prepareDom,
-    isSystemType: isSystemType
-
+    isSystemType: isSystemType,
+    isCompliantToSSM: isCompliantToSSM
 }
