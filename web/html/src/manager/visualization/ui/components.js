@@ -227,7 +227,7 @@ function addGroupSelector(targetSelection, groups, callback) {
 // - callback - called after the button is clicked
 function addButton(targetSelection, caption, callback) {
   targetSelection
-    .append('div').attr('class', 'filter')
+    .append('div').attr('class', 'button-wrapper')
     .append('button')
     .attr('type', 'button')
     .attr('class', 'btn btn-default')
