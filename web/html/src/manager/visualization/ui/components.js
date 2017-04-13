@@ -118,6 +118,7 @@ function addCheckbox(targetSelection, caption, callback) {
 //  - onChange: setter/getter for a function that is called after a selection
 //  is changed or a select box on one level is collapsed
 function groupSelector(groups, element) {
+  const noGrpOptionLabel = '<<NO GROUP>>';
   const data = [];
   let onChange = function(data) { console.log('data changed: ' + data); };
   groups = Array.from(new Set(groups));
@@ -150,7 +151,14 @@ function groupSelector(groups, element) {
       .on('change', function(d, i) {
         const selectedOpts = Array.apply(null, this.options)
           .filter(o => o.selected == true)
-          .map(o => [o.value]);
+          .map(o => {
+            const val = o.value;
+            if (o.value == noGrpOptionLabel) {
+              return [];
+            }
+            return o.value;
+          });
+
         data[i] = selectedOpts;
         onChange(data);
       });
@@ -162,6 +170,11 @@ function groupSelector(groups, element) {
       .append('option')
       .attr('value', d => d)
       .text(d => d);
+
+    selectEnter
+      .append('option')
+      .attr('value', noGrpOptionLabel)
+      .text(noGrpOptionLabel);
 
     divEnter
       .append('a')
