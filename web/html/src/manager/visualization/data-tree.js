@@ -137,23 +137,6 @@ function updateDetailBox(d) {
     .attr('colspan', 2)
     .text(data.name);
 
-  if (d.children) {
-    table
-      .append('tr')
-      .append('td')
-      .attr('colspan', 2)
-      .append('button')
-      .classed('detail-box-button', true)
-      .on('click', () => {
-        const idsArray = d.leaves()
-          .filter(Utils.isCompliantToSSM)
-          .map(system => system.data.rawId);
-        const uniqueIds = new Set(idsArray);
-        addSystemToSSM(Array.from(uniqueIds));
-      })
-      .text('Add children systems to SSM');
-  }
-
   if (Utils.isSystemType(d)) {
     const cell = table
     .append('tr')
@@ -181,18 +164,16 @@ function updateDetailBox(d) {
     row
     .append('td')
     .text('Add/remove system from SSM');
-    const ssmDiv = row
-    .append('td')
-    .append('div')
-    .classed('input-group', true);
-    ssmDiv
+    const ssmCell = row
+    .append('td');
+    ssmCell
     .append('button')
-    .classed('input-group-addon detail-box-button addToSSM', true)
+    .classed('detail-box-button addToSSM', true)
     .on('click', () => addSystemToSSM([data.rawId]))
     .html('<i class="fa fa-plus"></i>');
-    ssmDiv
+    ssmCell
     .append('button')
-    .classed('input-group-addon detail-box-button removeFromSSM', true)
+    .classed('detail-box-button removeFromSSM', true)
     .on('click', () => removeSystemFromSSM([data.rawId]))
     .html('<i class="fa fa-minus"></i>');
   }
@@ -252,6 +233,22 @@ function updateDetailBox(d) {
         .append('strong'));
   }
 
+  if (d.children) {
+    table
+      .append('tr')
+      .append('td')
+      .attr('colspan', 2)
+      .append('button')
+      .classed('detail-box-button', true)
+      .on('click', () => {
+        const idsArray = d.leaves()
+          .filter(Utils.isCompliantToSSM)
+          .map(system => system.data.rawId);
+        const uniqueIds = new Set(idsArray);
+        addSystemToSSM(Array.from(uniqueIds));
+      })
+      .text('Add children systems to SSM');
+  }
 }
 
 function closeDetailBox() {
