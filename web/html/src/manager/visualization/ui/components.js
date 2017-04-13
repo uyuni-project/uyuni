@@ -58,7 +58,7 @@ function addCheckinTimePartitioningSelect(anchorId, callback) {
     format: 'yyyy-mm-dd'
   });
   $(anchorId + ' .partitioning-datepicker').datepicker('setDate', new Date());
-  $(anchorId + ' .partitioning-timepicker').timepicker({timeFormat: 'H:i:s'});
+  $(anchorId + ' .partitioning-timepicker').timepicker({timeFormat: 'H:i:s', maxTime: '23:30:00'});
   $(anchorId + ' .partitioning-timepicker').timepicker('setTime', new Date());
 
   addButton(checkinTimePartitioning, 'Apply', () => {
