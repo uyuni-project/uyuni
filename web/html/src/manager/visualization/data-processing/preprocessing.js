@@ -134,7 +134,7 @@ function groupingPreprocessor(data, groupingConfiguration) {
         const groups = (par.groups || []).concat(g);
         const elem = {id: newId,
           parentId: par.id,
-          name: groups[groups.length - 1],
+          name: groups[groups.length - 1] || "no group",
           type: 'group',
           groups: groups,
           isLeafGroup: rstCfg.length == 0
