@@ -169,11 +169,11 @@ public class SaltService {
             return Opt.fold(Optional.ofNullable(stringRMap.get(minionId)), () -> {
                 LOG.warn("Got no result for " + call.getPayload().get("fun") +
                         " on minion " + minionId + " (minion did not respond in time)");
-                return Optional.empty();
+                return Optional.<R>empty();
             }, r ->
                 r.fold(error -> {
                     LOG.warn(error.toString());
-                    return Optional.empty();
+                    return Optional.<R>empty();
                 }, Optional::of)
             );
         }
