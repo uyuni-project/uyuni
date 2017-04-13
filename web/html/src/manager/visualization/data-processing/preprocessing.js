@@ -75,10 +75,12 @@ function groupingPreprocessor(data, groupingConfiguration) {
   // calling it causes refresh of output data
   function instance() {
     const root = data.filter(d => d.parentId == null)[0];
+    const leaves = data.filter(d => d.parentId != null);
+
     const groupElems = makeGroups(root, groupingConfiguration.filter(criterion => criterion.length > 0));
     const allElems = [root] // root
       .concat(groupElems) // inner nodes (represantation of groups)
-      .concat(groupData(data, groupElems.filter(e => e.isLeafGroup))); // systems partitioned by groups
+      .concat(groupData(leaves, groupElems.filter(e => e.isLeafGroup), root)); // systems partitioned by groups
     return d3.stratify()(allElems);
   }
 
@@ -151,7 +153,9 @@ function groupingPreprocessor(data, groupingConfiguration) {
   //  of groups the system belongs to)
   //  - groupCriterion: list of elements (as produced by makeGroups) with 'id'
   //  and 'groups' attributes
-  function groupData(data, groupCriterion) {
+  //  - root: the "fallback parent" for the data in case groupCriterion is
+  //  empty
+  function groupData(data, groupCriterion, root) {
     // Helper function: does the superset contain all elements from sub?
     let containsAll = function(superset, sub) {
       return sub
@@ -161,7 +165,7 @@ function groupingPreprocessor(data, groupingConfiguration) {
 
     // corner case - no groups -> attach all elements to the root
     if ((groupCriterion || []).length == 0) {
-      groupCriterion = [data.filter(d => d.parentId == null)[0]];
+      groupCriterion = [root];
     }
 
     return groupCriterion
