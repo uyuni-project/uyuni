@@ -143,6 +143,7 @@ function updateDetailBox(d) {
       .append('td')
       .attr('colspan', 2)
       .append('button')
+      .classed('detail-box-button', true)
       .on('click', () => {
         const idsArray = d.leaves()
           .filter(Utils.isCompliantToSSM)
@@ -186,12 +187,12 @@ function updateDetailBox(d) {
     .classed('input-group', true);
     ssmDiv
     .append('button')
-    .classed('input-group-addon addToSSM', true)
+    .classed('input-group-addon detail-box-button addToSSM', true)
     .on('click', () => addSystemToSSM([data.rawId]))
     .html('<i class="fa fa-plus"></i>');
     ssmDiv
     .append('button')
-    .classed('input-group-addon removeFromSSM', true)
+    .classed('input-group-addon detail-box-button removeFromSSM', true)
     .on('click', () => removeSystemFromSSM([data.rawId]))
     .html('<i class="fa fa-minus"></i>');
   }
