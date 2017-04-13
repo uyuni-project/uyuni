@@ -137,19 +137,21 @@ function updateDetailBox(d) {
     .attr('colspan', 2)
     .text(data.name);
 
-  table
-    .append('tr')
-    .append('td')
-    .attr('colspan', 2)
-    .append('button')
-    .on('click', () => {
-      const idsArray = d.leaves()
-        .filter(Utils.isCompliantToSSM)
-        .map(system => system.data.rawId);
-      const uniqueIds = new Set(idsArray);
-      addSystemToSSM(Array.from(uniqueIds));
-    })
-    .text('Add children systems to SSM');
+  if (d.children) {
+    table
+      .append('tr')
+      .append('td')
+      .attr('colspan', 2)
+      .append('button')
+      .on('click', () => {
+        const idsArray = d.leaves()
+          .filter(Utils.isCompliantToSSM)
+          .map(system => system.data.rawId);
+        const uniqueIds = new Set(idsArray);
+        addSystemToSSM(Array.from(uniqueIds));
+      })
+      .text('Add children systems to SSM');
+  }
 
   if (Utils.isSystemType(d)) {
     const cell = table
