@@ -85,9 +85,13 @@ function initUI(tree) {
 
   // Installed products filter
   UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system installed products', 'e.g., SLES', (input) => {
-    tree.filters().put('installedProducts', d => (d.data.installedProducts || [])
-      .map(ip => ip.toLowerCase().includes(input.toLowerCase()))
-      .reduce((v1,v2) => v1 || v2, false));
+    if (input == undefined || input == '') {
+      tree.filters().remove('installedProducts');
+    } else {
+      tree.filters().put('installedProducts', d => (d.data.installedProducts || [])
+        .map(ip => ip.toLowerCase().includes(input.toLowerCase()))
+        .reduce((v1,v2) => v1 || v2, false));
+    }
     tree.refresh();
   });
 
