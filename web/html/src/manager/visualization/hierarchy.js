@@ -25,7 +25,7 @@ function displayHierarchy(data) {
 
   initUI(tree);
 
-  $(window).resize(function () {
+  d3.select(window).on('resize', function () {
     const dimensions = Utils.computeSvgDimensions();
     // try to find the object via d3
     d3.select('#svg-wrapper svg')
