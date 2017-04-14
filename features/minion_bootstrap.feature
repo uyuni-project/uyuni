@@ -89,13 +89,13 @@ Feature: register a salt-minion via bootstrap
      # the "man" package is part of the channel, and the minion doesn't have this installed
      And "orion-dummy" is installed on "minion"
      And "perseus-dummy" is installed on "minion"
-     And I remove pkg "orion-dummy" on minion
-     And I remove pkg "perseus-dummy" on minion
+     And I remove pkg "orion-dummy" on this "sle-minion"
+     And I remove pkg "perseus-dummy" on this "sle-minion"
 
    Scenario: Check spacecmd system ID of second bootstrapped minion(after deletion of first)
     Given I am on the Systems overview page of this "sle-minion"
     Then I run spacecmd listevents for sle-minion
- 
+
   Scenario: verify minion bootstrapped with activation key: activation key test
      Given I am on the Systems overview page of this "sle-minion"
      Then I should see a "Activation Key: 	1-MINION-TEST" text

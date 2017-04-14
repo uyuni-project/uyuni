@@ -19,14 +19,37 @@ Feature: Install a package on the minion with staging enabled
 
    Scenario: Install package in the future and check for staging
     Given I am on the Systems overview page of this "sle-minion"
+    And I remove pkg "orion-dummy" on this "sle-minion"
+    And I wait for "10" seconds
     And I follow "Software" in the content area
     And I follow "Packages" in the content area
     And I follow "Install" in the content area
     When I check "orion-dummy-1.1-1.1" in the list
     And I click on "Install Selected Packages"
-    And I pick 3 minutes from now as schedule time
+    And I pick 2 minutes from now as schedule time
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    Then I wait until the package "orion-dummy-1.1-1.1" has been cached on the minion
+    Then I wait until the package "orion-dummy-1.1-1.1.x86_64" has been cached on this "sle-minion"
     And I wait for "orion-dummy-1.1-1.1" to be installed on this "sle-minion"
-    Then I remove pkg "orion-dummy-1.1-1.1" on minion
+#    Then I remove pkg "orion-dummy-1.1-1.1" on this "sle-minion"
+
+   Scenario: Install patch in the future and check for staging
+    Given I am on the Systems overview page of this "sle-minion"
+    And I remove pkg "virgo-dummy" on this "sle-minion"
+    And I enable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
+    And I install pkg "virgo-dummy-1.0-1.1" on this "sle-minion"
+    And I wait for "10" seconds
+    And I follow "Software" in the content area
+    And I click on "Update Package List"
+    And I wait for "10" seconds
+    And I follow "Patches" in the content area
+    When I check "virgo-dummy-3456" in the list
+    And I click on "Apply Patches"
+    And I pick 2 minutes from now as schedule time
+    And I click on "Confirm"
+    Then I should see a "1 patch update has been scheduled for" text
+    Then I wait until the package "virgo-dummy-2.0-1.1.noarch" has been cached on this "sle-minion"
+    And I wait for "virgo-dummy-2.0-1.1" to be installed on this "sle-minion"
+    Then I remove pkg "virgo-dummy-2.0-1.1" on this "sle-minion"
+    Then I install pkg "virgo-dummy-1.0-1.1" on this "sle-minion"
+    Then I disable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"

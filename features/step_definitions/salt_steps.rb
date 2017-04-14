@@ -646,10 +646,11 @@ And(/^I wait until salt\-key "(.*?)" is deleted$/) do |key|
   end
 end
 
-Then(/^I wait until the package "(.*?)" has been cached on the minion$/) do |arg1|
+Then(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
+  node = get_target(host)
   Timeout.timeout(DEFAULT_TIMEOUT) do
     loop do
-      _out, code = $minion.run("ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{arg1}.x86_64.rpm", false)
+      _out, code = node.run("ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{pkg_name}.rpm", false)
       break if code.zero?
       sleep 3
     end
