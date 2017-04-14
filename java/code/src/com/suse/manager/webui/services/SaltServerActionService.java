@@ -645,8 +645,6 @@ public enum SaltServerActionService {
         }
         return call;
     }
-
-
     /**
      * @param actionIn the action
      * @param call the call

@@ -473,8 +473,6 @@ public class TaskomaticApi {
      */
     public void scheduleActionExecution(Action action, boolean forcePackageListRefresh)
         throws TaskomaticApiException {
-
-        HibernateFactory.getSession().flush();
         boolean minionsInvolved = HibernateFactory.getSession()
             .getNamedQuery("Action.findMinionIds")
             .setParameter("id", action.getId())
@@ -498,7 +496,7 @@ public class TaskomaticApi {
      * Schedule a staging job for Salt minions.
      *
      * @param actionId ID of the action to be executed
-     * @param minionId ID of the minions involved
+     * @param minionId ID of the minion involved
      * @param stagingDateTime scheduling time of staging
      * @throws TaskomaticApiException if there was an error
      */

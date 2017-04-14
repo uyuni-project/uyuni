@@ -540,7 +540,9 @@ public class ActionChainManager {
             result.add(action);
 
             taskomaticApi.scheduleActionExecution(action);
-            MinionActionManager.scheduleStagingJobsForMinions(action, user);
+            if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
+                MinionActionManager.scheduleStagingJobsForMinions(action, user);
+            }
         }
         else {
             Integer nextSortOrder = sortOrder;
@@ -552,7 +554,9 @@ public class ActionChainManager {
                 ActionChainFactory.queueActionChainEntry(action, actionChain, serverId,
                     nextSortOrder);
                 result.add(action);
-                MinionActionManager.scheduleStagingJobsForMinions(action, user);
+                if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
+                    MinionActionManager.scheduleStagingJobsForMinions(action, user);
+                }
             }
         }
         return result;
