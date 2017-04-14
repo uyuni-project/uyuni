@@ -154,6 +154,9 @@ function getIconDimensionByType(node) {
   else if (view == 'proxy-hierarchy' && node.depth == 1 || ['vhm', 'group'].includes(node.data.type)) {
     size = '3';
   }
+  else if (Utils.isSystemType(node)) {
+    size = '1.2';
+  }
   else {
     size = '1';
   }
