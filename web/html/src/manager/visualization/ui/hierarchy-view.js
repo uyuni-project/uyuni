@@ -67,7 +67,7 @@ function hierarchyView(container, rootIn) {
       .enter()
       .append('text')
       .attr('class', 'caption')
-      .attr('dx', '1em')
+      .attr('dx', d => getIconDimensionByType(d)/2 + 'em' )
       .attr('dy', '.15em')
       .text(captionFunction);
 
