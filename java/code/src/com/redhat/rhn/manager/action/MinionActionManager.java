@@ -38,7 +38,6 @@ import java.util.stream.Collectors;
 
 /**
  * Utility class for Actions related to minions.
- *
  */
 public class MinionActionManager {
 
@@ -47,8 +46,6 @@ public class MinionActionManager {
 
     private MinionActionManager() {
     }
-
-
     /**
      * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
      * @param taskomaticApiIn the {@link TaskomaticApi}
@@ -59,10 +56,13 @@ public class MinionActionManager {
 
     /**
      * Schedule staging jobs for minions, if:
-     * - org has enabled staging_content_enabled
+     * - org has enabled staging content
      * - action is either:
      *   - package install/update
      *   - patch install
+     *
+     * Staging job will be scheduled per-minion and at a random point in the time in
+     * the proper range.
      *
      * @param action related action already scheduled
      * @param user user that started the action
@@ -99,7 +99,7 @@ public class MinionActionManager {
 
                 if (now().isAfter(stagingWindowStartTime) &&
                         stagingWindowEndTime.isAfter(now())) {
-                    log.debug(
+                    log.warn(
                             "Scheduled staging window began before now: " +
                                     "adjusting start to now (" + now() + ")");
                     stagingWindowStartTime = now();
@@ -114,13 +114,13 @@ public class MinionActionManager {
                     stagingWindowEndTime = earliestAction;
                 }
 
-                if (!stagingWindowEndTime.isBefore(now()) &&
-                        stagingWindowStartTime.isBefore(earliestAction) &&
+                boolean stagingWindowIsAlreadyEnded = stagingWindowEndTime.isBefore(now());
+                boolean stagingWindowStartIsBeforeAction =
+                        stagingWindowStartTime.isBefore(earliestAction);
+
+                if (!stagingWindowIsAlreadyEnded && stagingWindowStartIsBeforeAction &&
                         (stagingWindowEndTime.isBefore(earliestAction) ||
-                                stagingWindowEndTime.isEqual(earliestAction)) &&
-                        (ActionFactory.TYPE_PACKAGES_UPDATE
-                                .equals(action.getActionType()) ||
-                                ActionFactory.TYPE_ERRATA.equals(action.getActionType()))) {
+                                stagingWindowEndTime.isEqual(earliestAction))) {
                     for (Long minionServerId : minionServerIds) {
                         ZonedDateTime stagingTime =
                                 stagingWindowStartTime.plus(

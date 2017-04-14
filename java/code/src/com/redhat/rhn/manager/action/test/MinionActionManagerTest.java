@@ -58,7 +58,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/** JUnit test case for the MinionActionManager
+/**
+ * JUnit test case for the MinionActionManager
  *  class.
  */
 public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
@@ -771,56 +772,6 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
-        ActionManager.scheduleForExecution(action,
-                new HashSet<Long>(Arrays.asList(minion1.getId(), minion2.getId())));
-        ActionFactory.save(action);
-
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        MinionActionManager.setTaskomaticApi(taskomaticMock);
-
-        context().checking(new Expectations() { {
-            never(taskomaticMock).scheduleStagingJob(with(action.getId()),
-                    with(minion1.getId()),
-                    with(any(Date.class)));
-            never(taskomaticMock).scheduleStagingJob(with(action.getId()),
-                    with(minion2.getId()),
-                    with(any(Date.class)));
-        } });
-
-        List<ZonedDateTime> scheduleTimes =
-                MinionActionManager.scheduleStagingJobsForMinions(action, user);
-        assertEquals(0,
-                scheduleTimes.stream()
-                    .filter(scheduleTime -> scheduleTime.isAfter(now))
-                    .filter(scheduleTime -> scheduleTime.isBefore(executionTime))
-                    .collect(Collectors.toList()).size());
-    }
-
-    /**
-     * Test that no staging jobs are scheduled when action
-     * is not a package install/update or patch install/update
-     *
-     * @throws Exception when Taskomatic service is down
-     */
-    public void testNoStagingJobsWhenActionUnrelated() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-
-        UserFactory.save(user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion1.setOrg(user.getOrg());
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
-        minion2.setOrg(user.getOrg());
-
-        user.getOrg().getOrgConfig().setStagingContentEnabled(true);
-        Config.get().setString(SALT_CONTENT_STAGING_WINDOW, "1");
-        Config.get().setString(SALT_CONTENT_STAGING_ADVANCE, "48");
-
-        final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        final ZonedDateTime executionTime = now.plusHours(24);
-
-        Action action =
-                ActionManager.createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST,
-                        "test action", Date.from(now.toInstant()));
         ActionManager.scheduleForExecution(action,
                 new HashSet<Long>(Arrays.asList(minion1.getId(), minion2.getId())));
         ActionFactory.save(action);
