@@ -20,7 +20,7 @@ Then(/^I install pkg "(.*?)" on this "(.*?)"$/) do |pkg, host|
   node.run("zypper in -y #{pkg}")
 end
 
-Then(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
+And(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
   Timeout.timeout(DEFAULT_TIMEOUT) do
     loop do
