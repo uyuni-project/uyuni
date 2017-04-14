@@ -46,6 +46,7 @@ public class MinionActionManager {
 
     private MinionActionManager() {
     }
+
     /**
      * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
      * @param taskomaticApiIn the {@link TaskomaticApi}
