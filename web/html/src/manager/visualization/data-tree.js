@@ -35,7 +35,7 @@ function dataTree(data, container) {
   partitioning.get()['default'] = myDeriveClass;
 
   let simulation = d3.forceSimulation()
-    .force('charge', d3.forceManyBody().strength(d => strengthFromDepth(d.depth)))
+    .force('charge', d3.forceManyBody().strength(d => strengthByType(d)))
     .force('link', d3.forceLink())
     .force('x', d3.forceX(dimensions[0] / 2))
     .force('y', d3.forceY(dimensions[1] / 2));
@@ -327,13 +327,22 @@ function nodeVisible(node, pred) {
   return visibleChildren.length > 0 || pred(node);
 }
 
-// Simulation strength based on the node depth
-function strengthFromDepth(depth) {
-  switch (depth) {
-    case 0: return -450;
-    case 1: return -270;
-    default: return -135;
+// Simulation strength based on the node type
+function strengthByType(node) {
+  let force;
+  if (node.data.id == 'root') {
+    force = -1800;
   }
+  else if (view == 'proxy-hierarchy' && node.depth == 1 || ['vhm', 'group'].includes(node.data.type)) {
+    force = -900;
+  }
+  else if (Utils.isSystemType(node)) {
+    force = -300;
+  }
+  else {
+    force = -500;
+  }
+  return force;
 }
 
 module.exports = {
