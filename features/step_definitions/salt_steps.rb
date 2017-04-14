@@ -652,7 +652,7 @@ Then(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
     loop do
       _out, code = node.run("ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{pkg_name}.rpm", false)
       break if code.zero?
-      sleep 3
+      sleep 1
     end
   end
 end
