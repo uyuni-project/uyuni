@@ -35,8 +35,24 @@ Given(/^the salt-master can reach "([^"]*)"$/) do |minion|
   end
 end
 
-And(/^I remove pkg "([^"]*)" on minion$/) do |pkg|
-  $minion.run("zypper -n rm #{pkg}")
+And(/^I remove pkg "([^"]*)" on this "(.*?)"$/) do |pkg, host|
+  node = get_target(host)
+  node.run("zypper -n rm #{pkg}")
+end
+
+Given(/^I enable repository "(.*?)" on this "(.*?)"$/) do |repo, host|
+  node = get_target(host)
+  node.run("zypper mr --enable #{repo}")
+end
+
+Then(/^I disable repository "(.*?)" on this "(.*?)"$/) do |repo, host|
+  node = get_target(host)
+  node.run("zypper mr --disable #{repo}")
+end
+
+Then(/^I install pkg "(.*?)" on this "(.*?)"$/) do |pkg, host|
+  node = get_target(host)
+  node.run("zypper in -y #{pkg}")
 end
 
 Then(/^I run spacecmd listevents for sle-minion$/) do
