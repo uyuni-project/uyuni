@@ -196,18 +196,21 @@ function updateDetailBox(d) {
       if (patchCountsArray[2] > 0) {
         cell
           .append('div')
-          .text('○ ' + patchCountsArray[2] + '  security advisories');
+          .classed('security-patches', true)
+          .html('<i class="fa fa-shield"></i>' + patchCountsArray[2] + '  security advisories');
       }
       if (patchCountsArray[0] > 0) {
         cell
           .append('div')
-          .text('○ ' + patchCountsArray[0] + '  bug fix advisories');
+          .classed('bug-patches', true)
+          .html('<i class="fa fa-bug"></i>' + patchCountsArray[0] + '  bug fix advisories');
       }
 
       if (patchCountsArray[1] > 0) {
         cell
           .append('div')
-          .text('○ ' + patchCountsArray[1] + '  product enhancement advisories');
+          .classed('minor-patches', true)
+          .html('<i class="fa spacewalk-icon-enhancement"></i>' + patchCountsArray[1] + '  product enhancement advisories');
       }
     }
   }

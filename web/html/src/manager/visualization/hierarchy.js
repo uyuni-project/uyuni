@@ -73,9 +73,9 @@ function initUI(tree) {
       tree.refresh();
     }
   }
-  UI.addCheckbox(patchCountsFilter, 'security advisories', patchCountFilterCallback(2));
-  UI.addCheckbox(patchCountsFilter, 'bug fix advisories', patchCountFilterCallback(0));
-  UI.addCheckbox(patchCountsFilter, 'product enhancement advisories', patchCountFilterCallback(1));
+  UI.addCheckbox(patchCountsFilter, 'security advisories', 'fa-shield', 'security-patches', patchCountFilterCallback(2));
+  UI.addCheckbox(patchCountsFilter, 'bug fix advisories', 'fa-bug', 'bug-patches', patchCountFilterCallback(0));
+  UI.addCheckbox(patchCountsFilter, 'product enhancement advisories', 'spacewalk-icon-enhancement', 'minor-patches', patchCountFilterCallback(1));
 
   // Base channel filter
   UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system base channel', 'e.g., SLE12', (input) => {

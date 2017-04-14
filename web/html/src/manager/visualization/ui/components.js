@@ -77,7 +77,7 @@ function addCheckinTimePartitioningSelect(anchorId, callback) {
 // - caption - text label
 // - callback - callback receiving the new value of checkbox when checkbox
 // changes
-function addCheckbox(targetSelection, caption, callback) {
+function addCheckbox(targetSelection, caption, icon, classedLabel, callback) {
   const parentDiv = targetSelection
     .append('div');
   const id = 'visualization-checkbox-' + caption.trim();
@@ -91,7 +91,8 @@ function addCheckbox(targetSelection, caption, callback) {
   parentDiv
     .append('label')
     .attr('for', id)
-    .text(caption);
+    .classed(classedLabel, true)
+    .html((icon ?'<i class="fa ' + icon + '"></i>' : '') + caption);
 }
 
 // Simple JS component for selecting groups
