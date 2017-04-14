@@ -1,3 +1,21 @@
+.inline-icon {
+  i {
+    width: 1em;
+    height: 1em;
+    text-align: center;
+  }
+}
+
+.security-patches {
+  color: #dd0000;
+}
+.bug-patches {
+  color: #dd7700;
+}
+.minor-patches {
+  color: #008000;
+}
+
 #svg-wrapper {
   position: relative;
   border-radius: 3px;
@@ -37,6 +55,7 @@
       label {
         font-weight: normal;
         display: inline;
+        .inline-icon;
       }
       input[type=text] {
         .form-control;
@@ -82,6 +101,7 @@
             border: 1px solid #ddd;
             padding: 5px;
             vertical-align: top;
+            .inline-icon;
           }
           td:first-child {
             background-color: #f5f5f5;
