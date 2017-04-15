@@ -277,6 +277,36 @@ public class Config {
     }
 
     /**
+     * get the config entry for string s
+     *
+     * @param s string to get the value of
+     * @return the value
+     */
+    public Float getFloat(String s) {
+        String val = getString(s);
+        if (val == null) {
+            return null;
+        }
+        return new Float(val);
+    }
+
+    /**
+     * get the config entry for string s, if no value is found
+     * return the defaultValue specified.
+     *
+     * @param s string to get the value of
+     * @param defaultValue Default value if entry is not found.
+     * @return the value
+     */
+    public float getFloat(String s, float defaultValue) {
+        Float val = getFloat(s);
+        if (val == null) {
+            return defaultValue;
+        }
+        return val.floatValue();
+    }
+
+    /**
      * Parses a comma-delimited list of values as a java.util.List
      * @param name config entry name
      * @return instance of java.util.List populated with config values

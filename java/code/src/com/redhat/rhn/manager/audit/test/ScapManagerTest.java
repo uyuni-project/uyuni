@@ -1,6 +1,7 @@
 package com.redhat.rhn.manager.audit.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -8,8 +9,12 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
+import org.jmock.Expectations;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -23,11 +28,25 @@ import java.util.stream.Collectors;
 /**
  * Test for {@link ScapManager}
  */
-public class ScapManagerTest extends BaseTestCaseWithUser {
+public class ScapManagerTest extends JMockBaseTestCaseWithUser {
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
     public void testXccdfEvalTransform() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         ScapAction action = ActionManager.scheduleXccdfEval(user,
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
 
@@ -41,7 +60,7 @@ public class ScapManagerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        result = (XccdfTestResult)HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
+        result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
         assertNotNull(result);
 
         assertEquals("Default", result.getProfile().getIdentifier());
@@ -51,6 +70,14 @@ public class ScapManagerTest extends BaseTestCaseWithUser {
     public void testXccdfEvalResume() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         ScapAction action = ActionManager.scheduleXccdfEval(user,
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
         String resume = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -123,7 +150,7 @@ public class ScapManagerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        result = (XccdfTestResult)HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
+        result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
         assertNotNull(result);
 
         assertEquals("Default", result.getProfile().getIdentifier());
@@ -217,6 +244,14 @@ public class ScapManagerTest extends BaseTestCaseWithUser {
     public void testXccdfEvalError() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         ScapAction action = ActionManager.scheduleXccdfEval(user,
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
 

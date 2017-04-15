@@ -50,12 +50,20 @@ import java.util.Set;
  * @author Silvio Moioli <smoioli@suse.de>
  */
 public class ActionChainManager {
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
      * Utility class constructor.
      */
     private ActionChainManager() {
+    }
+
+    /**
+     * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
+     * @param taskomaticApiIn the {@link TaskomaticApi}
+     */
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        taskomaticApi = taskomaticApiIn;
     }
 
     /**
@@ -531,7 +539,10 @@ public class ActionChainManager {
             ActionManager.scheduleForExecution(action, serverIds);
             result.add(action);
 
-            TASKOMATIC_API.scheduleActionExecution(action);
+            taskomaticApi.scheduleActionExecution(action);
+            if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
+                MinionActionManager.scheduleStagingJobsForMinions(action, user);
+            }
         }
         else {
             Integer nextSortOrder = sortOrder;
@@ -543,9 +554,11 @@ public class ActionChainManager {
                 ActionChainFactory.queueActionChainEntry(action, actionChain, serverId,
                     nextSortOrder);
                 result.add(action);
+                if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
+                    MinionActionManager.scheduleStagingJobsForMinions(action, user);
+                }
             }
         }
-
         return result;
     }
 
