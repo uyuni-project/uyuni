@@ -29,6 +29,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListDispatchAction;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.action.MinionActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -128,6 +129,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
             ActionManager.storeAction(update);
             try {
                 TASKOMATIC_API.scheduleActionExecution(update);
+                MinionActionManager.scheduleStagingJobsForMinions(update, user);
             }
             catch (TaskomaticApiException e) {
                 log.error("Could not schedule errata application:");

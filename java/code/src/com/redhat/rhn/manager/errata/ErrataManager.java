@@ -61,6 +61,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidErrataException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.action.MinionActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -98,11 +99,19 @@ import redstone.xmlrpc.XmlRpcFault;
 public class ErrataManager extends BaseManager {
 
     private static Logger log = Logger.getLogger(ErrataManager.class);
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
     public static final String DATE_FORMAT_PARSE_STRING = "yyyy-MM-dd";
     public static final long MAX_ADVISORY_RELEASE = 9999;
 
     private ErrataManager() {
+    }
+
+    /**
+     * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
+     * @param taskomaticApiIn the {@link TaskomaticApi}
+     */
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        taskomaticApi = taskomaticApiIn;
     }
 
     /**
@@ -1797,7 +1806,9 @@ public class ErrataManager extends BaseManager {
         List<Long> actionIds = new ArrayList<Long>();
         for (ErrataAction errataAction : errataActions) {
             Action action = ActionManager.storeAction(errataAction);
-            TASKOMATIC_API.scheduleActionExecution(action);
+
+            taskomaticApi.scheduleActionExecution(action);
+            MinionActionManager.scheduleStagingJobsForMinions(action, user);
             actionIds.add(action.getId());
         }
         return actionIds;

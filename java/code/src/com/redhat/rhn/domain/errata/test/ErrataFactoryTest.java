@@ -186,7 +186,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
     public void testLastModified() throws Exception {
         Errata published = createTestPublishedErrata(user.getOrg().getId());
-        published = (Errata) reload(published);
+        published = reload(published);
         assertNotNull(published.getLastModified());
     }
 
@@ -401,9 +401,9 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
             e.getPackages().add(p);
             ChannelFactory.save(chan);
 
-            chan = (Channel) TestUtils.saveAndReload(chan);
-            e = (Errata) TestUtils.saveAndReload(e);
-            p = (Package) TestUtils.saveAndReload(p);
+            chan = TestUtils.saveAndReload(chan);
+            e = TestUtils.saveAndReload(e);
+            p = TestUtils.saveAndReload(p);
 
 
             List<Long> list = ErrataFactory.listErrataChannelPackages(chan.getId(),
