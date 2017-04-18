@@ -48,7 +48,7 @@ from spacewalk.server import taskomatic
 from spacewalk.satellite_tools.repo_plugins import ThreadedDownloader, ProgressBarLogger, TextLogger
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 
-from syncLib import log, log2, log2disk, dumpEMAIL_LOG
+from syncLib import log, log2, log2disk, dumpEMAIL_LOG, log2background
 
 translation = gettext.translation('spacewalk-backend-server', fallback=True)
 _ = translation.ugettext
@@ -846,7 +846,7 @@ class RepoSync(object):
         downloader.set_log_obj(logger)
         downloader.run()
 
-        log2disk(0, "Importing packages started.")
+        log2background(0, "Importing packages started.")
         progress_bar = ProgressBarLogger("Importing packages:    ", to_download_count)
         for (index, what) in enumerate(to_process):
             pack, to_download, to_link = what
@@ -889,7 +889,7 @@ class RepoSync(object):
                 if is_non_local_repo and localpath and os.path.exists(localpath):
                     os.remove(localpath)
             pack.clear_header()
-        log2disk(0, "Importing packages finished.")
+        log2background(0, "Importing packages finished.")
 
         if self.strict:
             # Need to make sure all packages from all repositories are associated with channel
@@ -1243,7 +1243,7 @@ class RepoSync(object):
                 downloader.add(params)
             downloader.set_log_obj(progress_bar)
             downloader.run()
-            log2disk(0, "Download finished.")
+            log2background(0, "Download finished.")
             for item in to_download:
                 st = os.stat(os.path.join(CFG.MOUNT_POINT, ks_path, item))
                 # update entity about current file in a database
