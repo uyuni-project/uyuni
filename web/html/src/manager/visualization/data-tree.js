@@ -160,22 +160,22 @@ function updateDetailBox(d) {
 
   if (Utils.isCompliantToSSM(d)) {
     const row = table
-    .append('tr');
+      .append('tr');
     row
-    .append('td')
-    .text('Add/remove system from SSM');
+      .append('td')
+      .text('Add/remove system from SSM');
     const ssmCell = row
-    .append('td');
+      .append('td');
     ssmCell
-    .append('button')
-    .classed('detail-box-button addToSSM', true)
-    .on('click', () => addSystemToSSM([data.rawId]))
-    .html('<i class="fa fa-plus"></i>');
+      .append('button')
+      .classed('detail-box-button addToSSM', true)
+      .on('click', () => addSystemToSSM([data.rawId]))
+      .html('<i class="fa fa-plus"></i>');
     ssmCell
-    .append('button')
-    .classed('detail-box-button removeFromSSM', true)
-    .on('click', () => removeSystemFromSSM([data.rawId]))
-    .html('<i class="fa fa-minus"></i>');
+      .append('button')
+      .classed('detail-box-button removeFromSSM', true)
+      .on('click', () => removeSystemFromSSM([data.rawId]))
+      .html('<i class="fa fa-minus"></i>');
   }
 
   if (Utils.isSystemType(d)) {
