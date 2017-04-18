@@ -1,12 +1,10 @@
 {% if pillar.get('param_patches', []) %}
 pkg_downloaded-patches:
-  module.run:
-    - name: pkg.install
-    - patches:
+  pkg.patch_downloaded:
+    - advisory_ids:
 {%- for patch in pillar.get('param_patches', []) %}
       - {{ patch }}
 {%- endfor %}
-    - downloadonly: true
     - require:
       - module: applychannels
 {% endif %}
