@@ -16,6 +16,11 @@
 package com.redhat.rhn.manager.visualization.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
@@ -27,12 +32,15 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.test.GuestBuilder;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
+import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.visualization.VisualizationManager;
 import com.redhat.rhn.manager.visualization.json.System;
 import com.redhat.rhn.manager.visualization.json.VirtualHostManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ChannelTestUtils;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -187,6 +195,47 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         List<Object> systemsWithGroups = VisualizationManager.systemsWithManagedGroups(user);
 
         System serverProfile = extractSingleSystemByRawId(systemsWithGroups.stream(), server.getId().toString());
+        assertEquals(server.getName(), serverProfile.getName());
+        assertEquals(1, serverProfile.getManagedGroups().size());
+        assertEquals(
+                server.getManagedGroups().iterator().next().getName(),
+                serverProfile.getManagedGroups().iterator().next());
+
+        System root = extractSingleSystemById(systemsWithGroups.stream(), "root");
+        assertNull(root.getParentId());
+        assertEquals(root.getId(), serverProfile.getParentId());
+    }
+
+    /**
+     * Test for retrieval of systems and groups
+     * @throws Exception if anything goes wrong
+     */
+    public void testPatchCountSystemsWithGroups() throws Exception {
+        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
+        e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_ENHANCEMENT);
+        Channel c = ChannelTestUtils.createTestChannel(user);
+        Package p = PackageManagerTest.addPackageToChannel("some-errata-package", c);
+
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerFactoryTest.createTestServer(user, false);
+
+        // it is enough if we update the errata query cache with the server - errata - package
+        // information as we rely on errata cache in our query
+        ErrataCacheManager.insertNeededErrataCache(server.getId(), e.getId(), p.getId());
+
+        ServerGroupManager manager = ServerGroupManager.getInstance();
+        ManagedServerGroup sg1 = manager.create(user, "FooFooFOO", "Foo Description");
+        manager.addServers(sg1, Collections.singleton(server), user);
+
+
+        List<Object> systemsWithGroups = VisualizationManager.systemsWithManagedGroups(user);
+
+        System serverProfile = extractSingleSystemByRawId(systemsWithGroups.stream(), server.getId().toString());
+
+        assertEquals(Integer.valueOf(0), serverProfile.getPatchCounts().get(0));
+        assertEquals(Integer.valueOf(1), serverProfile.getPatchCounts().get(1));
+        assertEquals(Integer.valueOf(0), serverProfile.getPatchCounts().get(2));
+
         assertEquals(server.getName(), serverProfile.getName());
         assertEquals(1, serverProfile.getManagedGroups().size());
         assertEquals(

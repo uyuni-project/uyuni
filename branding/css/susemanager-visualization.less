@@ -1,30 +1,75 @@
+.inline-icon {
+  i {
+    width: 1em;
+    height: 1em;
+    text-align: center;
+  }
+}
+
+.security-patches {
+  color: #dd0000;
+}
+.bug-patches {
+  color: #dd7700;
+}
+.minor-patches {
+  color: #008000;
+}
+
 #svg-wrapper {
   position: relative;
-  border: 1px solid #ddd;
-  box-shadow: 0px 0px 2px 1px #e0e0e0;
-  background-color: #f7f7f7;
   border-radius: 3px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 2px 1px #ddd;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#feffff+0,edf4f7+100 */
+  background: #feffff; /* Old browsers */
+  background: -moz-radial-gradient(center, ellipse cover, #feffff 0%, #edf4f7 100%); /* FF3.6-15 */
+  background: -webkit-radial-gradient(center, ellipse cover, #feffff 0%,#edf4f7 100%); /* Chrome10-25,Safari5.1-6 */
+  background: radial-gradient(ellipse at center, #feffff 0%,#edf4f7 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#edf4f7',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
   #filter-wrapper {
     display: none;
     position: absolute;
     z-index: 500;
     left: 0;
+    height: 100%;
+    overflow-y: auto;
     width: 260px;
-    background-color: rgba(231, 236, 241, 0.9);
+    background-color: rgba(240, 240, 240, 0.95);
     font-size: 0.9em;
-    border-radius: 0 0 3px 0;
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
     padding: 10px;
+    div.button-wrapper {
+      margin: 10px 0;
+    }
     div.filter {
-      padding: 16px 0px;
+      padding: 12px 0px;
       margin-right: 4px;
+      border-bottom: 1px solid #ddd;
+      > div.filter-title {
+        font-weight: bold;
+        padding: 4px 2px;
+      }
       label {
-        display: block;
+        font-weight: normal;
+        display: inline;
+        .inline-icon;
       }
       input[type=text] {
         .form-control;
         .input-sm;
+      }
+      .input-group {
+        input {
+            width: 50%;
+            display: inline-block;
+        }
+      }
+      input[type=checkbox] {
+        margin-right: 5px;
+        vertical-align: sub;
       }
     }
     select {
@@ -33,19 +78,38 @@
   }
   .detailBox {
     position: absolute;
-    display: none;
     top: 0;
     right: 0;
     border-radius: 0 0 0 3px;
     border-bottom: 1px solid #ddd;
     border-left: 1px solid #ddd;
-    background-color: rgba(231, 236, 241, 0.9);
+    background-color: rgba(240, 240, 240, 0.95);
     font-size: 0.9em;
-    width: 230px;
+    min-width: 180px;
+    max-width: 300px;
     div.content-wrapper {
-      padding: 10px 20px 10px 10px;
-      div {
-        padding: 4px 0;
+      padding: 10px;
+      table {
+        width: 100%;
+        border-radius: 3px;
+        tr {
+          th {
+            text-align: center;
+            padding: 2px 12px 7px 12px;
+          }
+          td {
+            border: 1px solid #ddd;
+            padding: 5px;
+            vertical-align: top;
+            .inline-icon;
+          }
+          td:first-child {
+            background-color: #f5f5f5;
+          }
+          td:last-child {
+            background-color: #fafafa;
+          }
+        }
       }
     }
     a.close-popup, button.close-popup:hover {
@@ -61,6 +125,20 @@
       color: @spacewalk-gray-dark;
       text-decoration: none;
     }
+    .detail-box-button {
+      .btn;
+      .btn-default;
+      padding: 2px 6px;
+    }
+    .addToSSM {
+      border-radius: 3px 0 0 3px;
+      margin-right: -1px;
+      width: 25px;
+    }
+    .removeFromSSM {
+      border-radius: 0 3px 3px 0;
+      width: 25px;
+    }
   }
 }
 
@@ -71,32 +149,73 @@ svg {
   }
 
   // default
-  .node circle {
-    r: 5;
-    fill: #bbb;
-    stroke: #333;
-    stroke-width: 0.5px;
+  .node {
+    foreignObject {
+      width: 1em;
+      height: 1em;
+      color: #ddd;
+      i {
+        font-size: 1em;
+      }
+    }
+  }
+  .node.selected {
+    foreignObject {
+      i {
+        color: #ffbb00;
+      }
+    }
   }
 
-  .node.depth0 circle {
-    fill: #00c081;
-    r: 20;
+  .node.root {
+    foreignObject {
+      width: 4em;
+      height: 4em;
+      color: #008d5f;
+      i {
+        font-size: 4em;
+      }
+    }
+  }
+  .node.root.selected {
+    foreignObject {
+      i {
+        font-weight: normal;
+      }
+    }
   }
 
-  .node.depth1 circle {
-    fill: #004981;
-    r: 8;
+  .node.vhm {
+    foreignObject {
+      width: 3em;
+      height: 3em;
+      color: #83a;
+      i {
+        font-size: 3em;
+      }
+    }
   }
 
-  .node.default circle {
-    fill: #C6DBEF;
-    r: 5;
+  .node.inner-node {
+    foreignObject {
+      width: 3em;
+      height: 3em;
+      color: #c7b;
+      i {
+        font-size: 3em;
+      }
+    }
   }
 
-  .node.selected circle {
-    fill: #333;
-    stroke-width: 3px;
-    stroke: #ffaa00;
+  .node.system {
+    foreignObject {
+      width: 1.2em;
+      height: 1.2em;
+      color: #426a9a;
+      i {
+        font-size: 1.2em;
+      }
+    }
   }
 
   .node text {
@@ -105,18 +224,40 @@ svg {
   }
 
   .link {
-    stroke: #9ECBE2;
+    stroke: #bba;
     stroke-width: 0.5px;
   }
 
-  .stroke-red circle {
-    stroke: red;
-    stroke-width: 1.5px;
+  .stroke-red foreignObject {
+    i {
+      color: #b57a77;
+    }
+  }
+  .stroke-red.selected foreignObject {
+    i {
+      color: #900000!important;
+    }
   }
 
-  .stroke-green circle {
-    stroke: green;
-    stroke-width: 1.5px;
+  .stroke-green foreignObject {
+    i {
+      color: #7ab577;
+    }
+  }
+  .stroke-green.selected foreignObject {
+    i {
+      color: #009000!important;
+    }
+  }
+  .unpatched foreignObject {
+    i:before {
+      content: '\e902'!important;
+    }
+  }
+  .non-checking-in foreignObject {
+    i:before {
+      content: '\e903'!important;
+    }
   }
 }
 

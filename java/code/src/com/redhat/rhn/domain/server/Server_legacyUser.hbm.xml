@@ -400,6 +400,25 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                 ]]>
     </sql-query>
 
+    <!--Lists all patch counts per server, grouped by advisory type-->
+    <sql-query name="Server.listPatchCountsForAllServers">
+        <return-scalar column="serverId" type="long"/>
+        <return-scalar column="advisoryType" type="string"/>
+        <return-scalar column="patchCount" type="integer"/>
+        <![CDATA[select s.id as serverId, e.advisory_type as advisoryType, count(e.id) as patchCount
+                 FROM
+                      rhnServerNeededErrataCache cache,
+                      rhnServer s,
+                      rhnErrata e
+                 WHERE
+                       s.org_id = :orgId AND
+                       cache.server_id = s.id AND
+                       cache.errata_id = e.id
+                 GROUP BY
+                       s.id, e.advisory_type
+        ]]>
+    </sql-query>
+
     <sql-query name="Server.listNewestPkgsForServerErrata">
         <return-scalar column="serverId" type="long"/>
         <return-scalar column="packageName" type="string"/>
