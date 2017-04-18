@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.systems.virtualization;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -171,7 +172,8 @@ public class ProvisionVirtualizationWizardAction extends ScheduleKickstartWizard
         String scheduleAsap = form.getString("scheduleAsap");
         Date scheduleTime = null;
         if (scheduleAsap != null && scheduleAsap.equals("false")) {
-            scheduleTime = (Date) form.get("scheduleDate");
+            scheduleTime = getStrutsDelegate().readDatePicker(form, "date",
+                    DatePicker.YEAR_RANGE_POSITIVE);
         }
         else {
             scheduleTime = new Date();
