@@ -75,9 +75,11 @@ function addCheckinTimePartitioningSelect(anchorId, callback) {
 // params:
 // - targetSelection - selection where to append the element to
 // - caption - text label
+// - icon - the fontawesome icon that is prepended to the caption
+// - classes - classes of the caption (css styling)
 // - callback - callback receiving the new value of checkbox when checkbox
 // changes
-function addCheckbox(targetSelection, caption, icon, classedLabel, callback) {
+function addCheckbox(targetSelection, caption, icon, classes, callback) {
   const parentDiv = targetSelection
     .append('div');
   const id = 'visualization-checkbox-' + caption.trim();
@@ -91,7 +93,7 @@ function addCheckbox(targetSelection, caption, icon, classedLabel, callback) {
   parentDiv
     .append('label')
     .attr('for', id)
-    .classed(classedLabel, true)
+    .classed(classes, true)
     .html((icon ?'<i class="fa ' + icon + '"></i>' : '') + caption);
 }
 
