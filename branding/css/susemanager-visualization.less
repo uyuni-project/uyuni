@@ -262,9 +262,18 @@ svg {
 }
 
 .sideleg svg {
-  width: 15px;
-  height: 10px;
-  circle {
-    transform: translateX(50%) translateY(50%);
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: middle;
+  .node {
+    cursor: default;
+  }
+  foreignObject {
+    width: 1.1em!important;
+    height: 1.1em!important;
+    i {
+      font-size: 1.1em!important;
+      color: #f0f0f0!important;
+    }
   }
 }
