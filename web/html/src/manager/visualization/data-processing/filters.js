@@ -1,3 +1,5 @@
+'use strict';
+
 // Stores filters
 function filters(initFilters) {
   const filters = initFilters || {};
@@ -5,6 +7,10 @@ function filters(initFilters) {
 
   my.put = function(filterName, filter) {
     filters[filterName] = filter;
+  }
+
+  my.remove = function(filterName) {
+    delete filters[filterName];
   }
 
   // construct a predicate function from filters
@@ -22,4 +28,3 @@ function filters(initFilters) {
 module.exports = {
     filters: filters
 }
-

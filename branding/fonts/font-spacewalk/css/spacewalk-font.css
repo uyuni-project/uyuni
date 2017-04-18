@@ -191,3 +191,15 @@
 .spacewalk-icon-salt-add:before {
   content: "\e63c";
 }
+.spacewalk-icon-desktop-filled:before {
+  content: "\e904";
+}
+.spacewalk-icon-suse-manager:before {
+  content: "\e901";
+}
+.spacewalk-icon-desktop-filled-unpatched:before {
+  content: "\e902";
+}
+.spacewalk-icon-desktop-filled-non-checking-in:before {
+  content: "\e903";
+}
