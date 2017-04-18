@@ -22,6 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -142,9 +143,15 @@ public class MinionServerFactory extends HibernateFactory {
      * @return list of minions
      */
     public static List<MinionServer> lookupByMinionIds(Set<String> minionIds) {
-        return ServerFactory.getSession().createCriteria(MinionServer.class)
-                .add(Restrictions.in("minionId", minionIds))
-                .list();
+        //NOTE: this is needed since empty sets produce invalid sql statemensts
+        if (minionIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        else {
+            return ServerFactory.getSession().createCriteria(MinionServer.class)
+                    .add(Restrictions.in("minionId", minionIds))
+                    .list();
+        }
     }
 
     /**
