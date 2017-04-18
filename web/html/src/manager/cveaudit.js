@@ -189,8 +189,12 @@ class CVEAudit extends React.Component {
                 );
             })
           }</div>
-          <AsyncButton id="bootstrap-btn" defaultType="btn-success" icon="search" name={t("Audit Servers")} action={() => this.audit(TARGET_SERVER)}/>
-          <AsyncButton id="bootstrap-btn" defaultType="btn-success" icon="search" name={t("Audit Images")} action={() => this.audit(TARGET_IMAGE)}/>
+          <p>
+            <div className="btn-group">
+              <AsyncButton id="bootstrap-btn" defaultType="btn-default" icon="desktop" name={t("Audit Servers")} action={() => this.audit(TARGET_SERVER)}/>
+              <AsyncButton id="bootstrap-btn" defaultType="btn-default" icon="hdd-o" name={t("Audit Images")} action={() => this.audit(TARGET_IMAGE)}/>
+            </div>
+          </p>
           <Table
               data={this.state.results}
               identifier={ (row) => row.id }
