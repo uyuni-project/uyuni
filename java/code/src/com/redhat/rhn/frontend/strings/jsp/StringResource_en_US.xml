@@ -1389,13 +1389,37 @@
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.notcheckin">
-        <source>Not check-in system</source>
+        <source>System not checking in</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="visualization-legend.jsp.checkin">
-        <source>Check-in system</source>
+      <trans-unit id="visualization-legend.jsp.notpatched">
+        <source>Not patched system</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="visualization-legend.jsp.root">
+        <source>SUSE Manager</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="visualization-legend.jsp.vhm">
+        <source>Virtual Host Manager</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="visualization-legend.jsp.group">
+        <source>Group</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="visualization-legend.jsp.system">
+        <source>System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
