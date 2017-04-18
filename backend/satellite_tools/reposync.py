@@ -27,6 +27,9 @@ from dateutil.parser import parse as parse_date
 from xml.dom import minidom
 import gzip
 from dateutil.tz import tzutc
+import gettext
+
+from rhn.connections import idn_puny_to_unicode
 
 from yum import Errors
 from yum.i18n import to_unicode
@@ -45,8 +48,10 @@ from spacewalk.server import taskomatic
 from spacewalk.satellite_tools.repo_plugins import ThreadedDownloader, ProgressBarLogger, TextLogger
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
 
-from syncLib import log, log2, log2disk
+from syncLib import log, log2, log2disk, dumpEMAIL_LOG
 
+translation = gettext.translation('spacewalk-backend-server', fallback=True)
+_ = translation.ugettext
 hostname = socket.gethostname()
 if '.' not in hostname:
     hostname = socket.getfqdn()
@@ -77,6 +82,23 @@ class ChannelTimeoutException(ChannelException):
     """Channel timeout error e.g. a remote repository is not responding"""
     pass
 
+def send_mail(sync_type="Repo"):
+    """ Send email summary """
+    body = dumpEMAIL_LOG()
+    if body:
+        print(_("+++ sending log as an email +++"))
+        host_label = idn_puny_to_unicode(os.uname()[1])
+        headers = {
+            'Subject': _("%s sync. report from %s") % (sync_type, host_label),
+        }
+        sndr = "root@%s" % host_label
+        if CFG.default_mail_from:
+            sndr = CFG.default_mail_from
+        rhnMail.send(headers, body, sender=sndr)
+    else:
+        print(_("+++ email requested, but there is nothing to send +++"))
+
+
 class KSDirParser:
     file_blacklist = ["release-notes/"]
 
@@ -101,6 +123,7 @@ class KSDirParser:
 
     def get_content(self):
         return self.dir_content
+
 
 class TreeInfoError(Exception):
     pass
