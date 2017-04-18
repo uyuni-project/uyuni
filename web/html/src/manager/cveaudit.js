@@ -17,20 +17,20 @@ const PATCHED = "PATCHED";
 const ALL = [AFFECTED_PATCH_INAPPLICABLE, AFFECTED_PATCH_APPLICABLE, NOT_AFFECTED, PATCHED];
 const PATCH_STATUS_LABEL = {
     AFFECTED_PATCH_INAPPLICABLE: {
-        label: "Affected, patches available in channels which are not assigned",
-        img: "/img/patch-status-affected-patch-inapplicable.png"
+        className: "fa-exclamation-circle text-danger",
+        label: "Affected, patches available in channels which are not assigned"
     },
     AFFECTED_PATCH_APPLICABLE: {
-        label: "Affected, at least one patch available in an assigned channel",
-        img: "/img/patch-status-affected-patch-applicable.png"
+        className: "fa-exclamation-triangle text-warning",
+        label: "Affected, at least one patch available in an assigned channel"
     },
     NOT_AFFECTED: {
-        label: "Not affected",
-        img: "/img/patch-status-not-affected.png"
+        className: "fa-circle text-success",
+        label: "Not affected"
     },
     PATCHED: {
-        label: "Patched",
-        img: "/img/patch-status-patched.png"
+        className: "fa-check-circle text-success",
+        label: "Patched"
     }
 };
 const TARGET_IMAGE = "IMAGE";
@@ -182,7 +182,7 @@ class CVEAudit extends React.Component {
                                     }
                                 }}
                             />
-                            <img src={PATCH_STATUS_LABEL[status].img} title={PATCH_STATUS_LABEL[status].label} />
+                            <i className={"fa fa-big " + PATCH_STATUS_LABEL[status].className} title={PATCH_STATUS_LABEL[status].label} />
                             <span>{" " + PATCH_STATUS_LABEL[status].label}</span>
                         </label>
                     </div>
@@ -206,7 +206,7 @@ class CVEAudit extends React.Component {
               header={t('Status')}
               cell={ (row, criteria) =>
                 <div>
-                    <img src={PATCH_STATUS_LABEL[row.patchStatus].img} title={PATCH_STATUS_LABEL[row.patchStatus].label} />
+                    <i className={"fa fa-big " + PATCH_STATUS_LABEL[row.patchStatus].className} title={PATCH_STATUS_LABEL[row.patchStatus].label} />
                 </div>
               }
             />
