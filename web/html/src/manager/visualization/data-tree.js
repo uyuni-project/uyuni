@@ -250,7 +250,7 @@ function updateDetailBox(d) {
         const uniqueIds = new Set(idsArray);
         addSystemToSSM(Array.from(uniqueIds));
       })
-      .text('Add children systems to SSM');
+      .text('Add children to SSM');
   }
 }
 
