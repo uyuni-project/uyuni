@@ -518,7 +518,7 @@
            fork="yes"
            memoryMaximumSize="256m"
            classpathref="alljars"
- 	   	   excludes="**/*Test*.java"
+ 	   	   excludes="**/test/*,**/testing/*,**/*Test*.java"
       >
       <src>
         <path location="${build.dir}/src" />
