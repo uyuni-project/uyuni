@@ -335,11 +335,8 @@ public enum SaltServerActionService {
         // Convert errata names to LocalCall objects of type State.apply
         return collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> State.apply(
-                        Collections.singletonList(PACKAGES_PATCHINSTALL),
-                        Optional.of(Collections.singletonMap(PARAM_PKGS, entry.getKey()
-                                .stream().collect(Collectors.toMap(
-                                        patch -> "patch:" + patch,
-                                        patch -> "")))),
+                        Arrays.asList(PACKAGES_PATCHINSTALL),
+                        Optional.of(Collections.singletonMap(PARAM_PATCHES, entry.getKey())),
                         Optional.of(true)
                 ),
                 Map.Entry::getValue));
