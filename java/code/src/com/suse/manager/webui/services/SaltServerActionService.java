@@ -43,7 +43,6 @@ import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -280,7 +279,8 @@ public enum SaltServerActionService {
         return collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> State.apply(
                         Arrays.asList(PACKAGES_PATCHINSTALL),
-                        Optional.of(Collections.singletonMap(PARAM_PATCHES, entry.getKey())),
+                        Optional.of(Collections.singletonMap(PARAM_PATCHES,
+                                entry.getKey())),
                         Optional.of(true)
                 ),
                 Map.Entry::getValue));
@@ -336,7 +336,8 @@ public enum SaltServerActionService {
         return collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> State.apply(
                         Arrays.asList(PACKAGES_PATCHINSTALL),
-                        Optional.of(Collections.singletonMap(PARAM_PATCHES, entry.getKey())),
+                        Optional.of(Collections.singletonMap(PARAM_PATCHES,
+                                entry.getKey())),
                         Optional.of(true)
                 ),
                 Map.Entry::getValue));
