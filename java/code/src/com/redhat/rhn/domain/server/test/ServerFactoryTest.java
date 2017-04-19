@@ -1023,13 +1023,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             assertEquals(Collections.singletonList("packages.patchinstall"), kwarg.get("mods"));
             MinionServer minionServer = result.getValue().get(0);
             Map<String, Object> pillar = (Map<String, Object>)kwarg.get("pillar");
-            Map<String, String> param_pkgs = (Map<String, String>)pillar.get("param_pkgs");
-            assertEquals(1, param_pkgs.size());
-            if (minionServer == zypperSystem) {
-                assertEquals("", param_pkgs.get("patch:SUSE-" + updateTag + "-2016-1234"));
-            } else {
-                assertEquals(p1v2.getPackageEvr().toString(), param_pkgs.get(p1v2.getPackageName().getName()));
-            }
+            HashSet<String> param_patches = pillar.get("param_patches");
+            assertEquals(1, param_patches.size());
+            assertEquals(true, param_patches.contains("SUSE-" + updateTag + "-2016-1234"));
         });
     }
 
