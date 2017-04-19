@@ -46,10 +46,12 @@ public class SaltRoster {
      * @param remotePortForwarding SSH tunneling options
      * @param sshOption Additional SSH option to pass to salt-ssh
      * @param timeout SSH connect timeout
+     * @param minionOpts Minion configuration parameters
      */
     public void addHost(String host, String user, Optional<String> passwd,
             Optional<Integer> port, Optional<String> remotePortForwarding,
-            Optional<String> sshOption, Optional<Integer> timeout) {
+            Optional<String> sshOption, Optional<Integer> timeout,
+            Optional<Map<String, Object>> minionOpts) {
         Map<String, Object> hostData = new LinkedHashMap<>();
         hostData.put("host", host);
         hostData.put("user", user);
@@ -60,6 +62,7 @@ public class SaltRoster {
         sshOption.ifPresent(option -> hostData.put("ssh_options",
                 Arrays.asList(option)));
         timeout.ifPresent(value -> hostData.put("timeout", value));
+        minionOpts.ifPresent(options -> hostData.put("minion_opts", options));
         data.put(host, hostData);
     }
 
