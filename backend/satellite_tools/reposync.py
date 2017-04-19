@@ -738,7 +738,6 @@ class RepoSync(object):
             # One or more package references could not be found in the Database.
             # To not provide incomplete patches we skip this update
             if not e['packages']:
-                package['org_id'] = self.org_id
                 # FIXME: print only with higher debug option
                 log(2, "Advisory %s has empty package list." % e['advisory_name'])
 
