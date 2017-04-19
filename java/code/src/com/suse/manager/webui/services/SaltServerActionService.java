@@ -348,7 +348,8 @@ public enum SaltServerActionService {
         return collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> State.apply(
                         Arrays.asList(PACKAGES_PATCHINSTALL),
-                        Optional.of(Collections.singletonMap(PARAM_PATCHES, entry.getKey())),
+                        Optional.of(Collections.singletonMap(PARAM_PATCHES,
+                                entry.getKey())),
                         Optional.of(true)
                 ),
                 Map.Entry::getValue));
@@ -404,7 +405,8 @@ public enum SaltServerActionService {
         return collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> State.apply(
                         Arrays.asList(PACKAGES_PATCHINSTALL),
-                        Optional.of(Collections.singletonMap(PARAM_PATCHES, entry.getKey())),
+                        Optional.of(Collections.singletonMap(PARAM_PATCHES,
+                                entry.getKey())),
                         Optional.of(true)
                 ),
                 Map.Entry::getValue));
