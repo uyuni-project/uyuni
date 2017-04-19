@@ -53,6 +53,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -146,7 +147,8 @@ public class SaltSSHService {
                                         minion.getProxyPath().orElse(null),
                                         minion.getContactMethod(),
                                         mid),
-                                sshTimeout
+                                sshTimeout,
+                                minionOpts(mid, minion.getContactMethod())
                         );
                     });
                 }
@@ -165,7 +167,9 @@ public class SaltSSHService {
                                         minion.getContactMethod().getLabel(),
                                         minion.getMinionId()
                                 ),
-                                sshTimeout);
+                                sshTimeout,
+                                minionOpts(mid, minion.getContactMethod().getLabel())
+                        );
                     });
                     if (!minionOpt.isPresent()) {
                         LOG.error("Minion id='" + mid + "' not found in the database");
@@ -365,7 +369,8 @@ public class SaltSSHService {
                                         minion.getProxyPath().orElse(null),
                                         minion.getContactMethod(),
                                         mid),
-                                getSshPushTimeout())
+                                getSshPushTimeout(),
+                                minionOpts(mid, minion.getContactMethod()))
                 );
 
         // Add systems from the database, possible duplicates in roster will be overwritten
@@ -389,7 +394,8 @@ public class SaltSSHService {
                     sshProxyCommandOption(proxyPath,
                             minion.getContactMethod().getLabel(),
                             minion.getMinionId()),
-                    getSshPushTimeout());
+                    getSshPushTimeout(),
+                    minionOpts(minion.getMinionId(), minion.getContactMethod().getLabel()));
         });
         return !minions.isEmpty();
     }
@@ -438,7 +444,8 @@ public class SaltSSHService {
                 sshProxyCommandOption(bootstrapProxyPath,
                         ContactMethodUtil.SSH_PUSH,
                         parameters.getHost()),
-                getSshPushTimeout());
+                getSshPushTimeout(),
+                minionOpts(parameters.getHost(), ContactMethodUtil.SSH_PUSH));
 
         Map<String, Result<SSHResult<Map<String, State.ApplyResult>>>> result =
                 callSyncSSHInternal(call,
@@ -447,6 +454,16 @@ public class SaltSSHService {
                         parameters.isIgnoreHostKeys(),
                         isSudoUser(parameters.getUser()));
         return result.get(parameters.getHost());
+    }
+
+    private Optional<Map<String, Object>> minionOpts(String minionId,
+                                                    String sshContactMethod) {
+        if (ContactMethodUtil.SSH_PUSH_TUNNEL.equals(sshContactMethod)) {
+            Map<String, Object> options = new LinkedHashMap<>();
+            options.put("master", minionId);
+            return Optional.of(options);
+        }
+        return Optional.empty();
     }
 
     private Optional<String> remotePortForwarding(List<String> proxyPath,
