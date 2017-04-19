@@ -807,9 +807,9 @@ echo "* starting salt daemon and enabling it during boot"
 
 if [ -f /usr/lib/systemd/system/salt-minion.service ] ; then
     systemctl enable salt-minion
-    systemctl start salt-minion
+    systemctl restart salt-minion
 else
-    /etc/init.d/salt-minion start
+    /etc/init.d/salt-minion restart
     /sbin/chkconfig --add salt-minion
 fi
 echo "-bootstrap complete-"
