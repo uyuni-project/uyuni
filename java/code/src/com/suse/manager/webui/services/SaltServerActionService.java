@@ -263,27 +263,27 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> nonZypperErrataAction(
             List<MinionServer> minions,
             Set<Long> errataIds) {
-        Set<Long> minionIds = minions.stream()
-                .map(Server::getId).collect(Collectors.toSet());
-        Map<Long, Map<String, String>> longMapMap =
-                ServerFactory.listNewestPkgsForServerErrata(minionIds, errataIds);
-
-        // group minions by packages that need to be updated
-        Map<Map<String, String>, List<MinionServer>> collect1 = minions.stream().collect(
-                Collectors.groupingBy(a -> longMapMap.get(a.getId()))
-        );
-
-        return collect1.entrySet().stream().collect(Collectors.toMap(
-            m -> State.apply(
-                Collections.singletonList(PACKAGES_PATCHINSTALL),
-                Optional.of(Collections.singletonMap(PARAM_PKGS, m.getKey().entrySet()
-                    .stream().collect(Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue)))),
-                Optional.of(true)
-            ),
-            Map.Entry::getValue
+        Set<Long> serverIds = minions.stream()
+                .map(MinionServer::getId)
+                .collect(Collectors.toSet());
+        Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory
+                .listErrataNamesForServers(serverIds, errataIds);
+        // Group targeted minions by errata names
+        Map<Set<String>, List<MinionServer>> collect = minions.stream()
+                .collect(Collectors.groupingBy(minion -> errataNames.get(minion.getId())
+                        .entrySet().stream()
+                        .map(Map.Entry::getValue)
+                        .flatMap(Set::stream)
+                        .collect(Collectors.toSet())
         ));
+        // Convert errata names to LocalCall objects of type State.apply
+        return collect.entrySet().stream()
+                .collect(Collectors.toMap(entry -> State.apply(
+                        Arrays.asList(PACKAGES_PATCHINSTALL),
+                        Optional.of(Collections.singletonMap(PARAM_PATCHES, entry.getKey())),
+                        Optional.of(true)
+                ),
+                Map.Entry::getValue));
     }
 
     /**
