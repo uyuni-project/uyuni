@@ -30,7 +30,7 @@ import shutil
 import urlparse
 import operator
 
-from optparse import Option, OptionParser
+from optparse import Option, OptionParser, SUPPRESS_HELP
 
 ## local imports
 from spacewalk.common import rhn_rpm
@@ -165,7 +165,7 @@ def getDefaultOptions():
             'overrides': DEFAULT_OVERRIDES,
             'script': DEFAULT_SCRIPT,
             'hostname': socket.getfqdn(),
-            'salt': 0,
+            'salt': 1,
             'ssl-cert': '', # will trigger a search
             'gpg-key': "",
             'http-proxy': "",
@@ -212,10 +212,11 @@ def getOptionsTable():
                action='store',
                type='string', default=defopts['hostname'],
                help='hostname (FQDN) to which clients connect (currently: %s)' % defopts['hostname']),
-        Option('--salt',
+        Option('--salt', action='store_true', default=1, help=SUPPRESS_HELP),  # Hide deprecated option. This will be removed in 3.2
+        Option('--traditional',
                action='store_true',
-               default=defopts['salt'],
-               help='boolean; enables salt bootstrap and registration in place of traditional (currently: %s)' % getSetString(defopts['salt'])),
+               default=int(not bool(defopts['salt'])),
+               help='boolean; enables traditional client bootstrap and registration in place of Salt minion (currently: %s)' % getSetString(int(not bool(defopts['salt'])))),
         Option('--ssl-cert',
                action='store',
                type='string', default=defopts['ssl-cert'],
@@ -304,7 +305,7 @@ Note: for rhn-bootstrap to work, certain files are expected to be
             'overrides': options.overrides or DEFAULT_OVERRIDES,
             'script': options.script or DEFAULT_SCRIPT,
             'hostname': options.hostname,
-            'salt': options.salt,
+            'salt': int(not bool(options.traditional)),
             'ssl-cert': options.ssl_cert,
             'gpg-key': options.gpg_key,
             'http-proxy': options.http_proxy,
@@ -391,12 +392,15 @@ ERROR: the value of --overrides and --script cannot be the same!
 
     # forcing numeric values
     for opt in ['allow_config_actions', 'allow_remote_commands', 'no_ssl',
-        'no_gpg', 'no_up2date', 'salt', 'up2date', 'verbose']:
+        'no_gpg', 'no_up2date', 'traditional', 'up2date', 'verbose']:
         # operator.truth should return (0, 1) or (False, True) depending on
         # the version of python; passing any of those values through int()
         # will return an int
         val = int(operator.truth(getattr(options, opt)))
-        setattr(options, opt, val)
+        if opt == 'traditional':
+            setattr(options, 'salt', int(not bool(val)))
+        else:
+            setattr(options, opt, val)
 
     return options
 
@@ -668,7 +672,14 @@ def main():
         o set defaults otherwise
     """
 
-    #print "Commandline: %s" % repr(sys.argv)
+    if '--salt' in sys.argv:
+        print >> sys.stderr, '-' * 65
+        print >> sys.stderr, 'DEPRECATION WARNING:\n' \
+        '\tThe option "--salt" is default and has been deprecated.\n' \
+        '\tThis option should not be specified anymore.' \
+        '\tIt will be not recognized in the next release!'
+        print >> sys.stderr, '-' * 65
+
     options = processCommandline()
     copyFiles(options)
     generateBootstrapScript(options)
