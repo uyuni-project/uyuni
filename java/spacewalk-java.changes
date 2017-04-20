@@ -1,4 +1,89 @@
 -------------------------------------------------------------------
+Thu Apr 20 16:04:02 CEST 2017 - kwalter@suse.com
+
+- version 2.5.59.14-1
+- Fix missing IPs in Overview tab (bsc#1031453)
+- fix scheduling VM deployment in future (bsc#1034289)
+- handle empty set to not produce invalid sql (bsc#1033497)
+  update
+- fix SSM group pagination (bsc#1012784)
+- create PooledExecutor with pre-filled queue (bsc#1030716)
+- make sure minion keys can only be seen/managed by appropriate
+  user(bsc#1025908)
+- Set action status to 'failed' on uncaught exceptions (bsc#1013606)
+- Add missing library to taskomatic classpath (bsc#1024066)
+- Set log level to DEBUG for EOFException when the Websocket connection is
+  aborted by the client (bsc#1031826)
+- (bsc#1011964) api call to actionchain
+- Fix arch for default channels lookup (bsc#1025275)
+- Change required salt-netapi-client to >= 0.11
+- Using stream() during collection processing
+- Making salt presence timeouts configurable via rhn.conf
+- Avoid blocking synchronous calls if some minions are unreachable
+- Excludes unreachable minions from synchronous call to prevent blocking.
+- Fix LocalDateTimeISOAdapter to parse date string with timezone (bsc#1024966)
+- create scap files dir beforehand (bsc#1029755)
+- make country, state/province and city searchable for system location
+  (bsc#1020659)
+- (bsc#1017418) change incorrect help link
+- Don't allow scheduling scap scan if openscap pkg missing from minion
+- make salt aware of rescheduled actions (bsc#1027852)
+- close hibernate session on async salt-ssh call
+- use a small fixed pool so we don't overwhelm the salt-api with salt-ssh
+  executions
+- fix remote cmd ui js err and timed out msg
+- remote cmd UI changes for salt-ssh minions
+- add support for salt ssh minions to remote cmd UI
+- apply SessionFilter also for error pages (bsc#1028062)
+- Bugfix: use correct logging class
+- (bsc#1017422) Fix broken help link for taskstatus
+- Test errata not removed from origin
+- Fix merge channels patches (bsc#1025000)
+- change XccdfIdent.identifier mapping length to 100
+- add xccdf result xslt
+- Fix mainframesysinfo module to use /proc/sysinfo on SLES11 (bsc#1025758)
+- use consistent spelling in UI (bsc#1028306)
+- (bsc#1017772) rewording distchannelmap text
+- javascript datepicker needs the timezone create a correct date object
+  (bsc#1024966)
+- don't show audit tab for ssh-push minions
+- set scap store dir mod to 775 and group owner to susemanager
+- better err handling and more tests
+- store uploaded scap files
+- openscap action scheduling and handling
+- grant scap capability to minion on registration
+- enable audit tab for salt minions
+- scap inital xccdfEval and hibernate mappings
+- unit tests: add proxy 3.0 on SP2 to tests
+- show proxy path in bootstrap UI
+- AuthFilter tests: update expectations to reflect cookie update at end of
+  request
+- AuthFilter: update cookie expiry date at end of HTTP request (bsc#1025775)
+- MinionActionCleanup: only call list_jobs once per action id (bsc#1025291)
+- MinionActionCleanupTest: expect that list_jobs is only called once
+- Feat: allow salt-enabled bootstrap.sh via UI
+- catch and display all bootstrap errs
+- sync grains and beacons only for regular minions
+- add new channel tokens to minion.accessTokens
+- fix getting server path for a first level proxy
+- fix bootstrap err when proxy not selected
+- check if proxy hostname is FQDN not name in UI
+- utility for runner to generate ssh key and execute cmd via proxies
+- add proxy_pub_key to ssh bootstrap pillar
+- add ssh timeout to temporary roster
+- salt_ssh_connect_timeout config param
+- Authorize parent salt-ssh key on proxy
+- java backend for salt ssh-push through proxy
+- Avoid deadlock with spacewalk-repo-sync (bsc#1022530)
+- fix NPE when no SUSE Product was found for an installed product
+- keep organization after migrating a system to salt (bsc#1026301)
+- Fix: glob only for noarch rpm(s)
+- Feat: dinamically detect deployed CA cert
+- Fix: restore original default (certificate)
+- Refactor: rename variable (cert provided by RPM)
+- Fix: uniform bootstrap.sh (bsc#1000762)
+
+-------------------------------------------------------------------
 Tue Feb 14 17:28:24 CET 2017 - jrenner@suse.com
 
 - version 2.5.59.13-1
