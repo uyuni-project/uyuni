@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Thu Apr 20 16:34:51 CEST 2017 - kwalter@suse.com
+
+- version 2.5.7.15-1
+- Remote Commands: allow Web Socket to be opened on non-standard port
+- improve remot cmd ui err handling
+- show message when waiting for ssh minions times out
+- fix remote cmd ui js err and timed out msg
+- remote cmd UI changes for salt-ssh minions
+- (bsc#1017422) Fix broken help link for taskstatus
+- Add js utility function to create Date objects in different timezones
+- show proxy path in bootstrap UI
+- clear proxy selection when clicking clear fields button
+- check if proxy hostname is FQDN not name in UI
+- Show warn in bootstrap UI if proxy hostname is not a FQDN
+
+-------------------------------------------------------------------
 Mon Feb 13 15:06:50 CET 2017 - jrenner@suse.com
 
 - version 2.5.7.14-1
