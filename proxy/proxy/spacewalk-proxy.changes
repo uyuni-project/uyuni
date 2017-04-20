@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Apr 20 16:42:07 CEST 2017 - kwalter@suse.com
+
+- version 2.5.1.7-1
+- add curl dependency and move mgr-proxy-ssh* to spacewalk-proxy package
+- Lower the use-file-instead-of-memory treshold (bsc#1030342)
+
+-------------------------------------------------------------------
 Mon Feb 13 13:00:31 CET 2017 - jrenner@suse.com
 
 - version 2.5.1.6-1
