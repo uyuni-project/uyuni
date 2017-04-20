@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Apr 20 16:37:40 CEST 2017 - kwalter@suse.com
+
+- version 2.5.3.12-1
+- create /var/spacewalk/systems in spacewalk-setup and ensure perms on upgrade
+- add xccdf result xslt
+- Authorize parent salt-ssh key on proxy
+
+-------------------------------------------------------------------
 Fri Dec 16 12:12:07 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.3.11-1
