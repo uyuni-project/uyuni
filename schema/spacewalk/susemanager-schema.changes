@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Apr 20 16:22:19 CEST 2017 - kwalter@suse.com
+
+- version 3.0.19-1
+- don't fail if capability already exists
+- show update message only when updating the schema package (bsc#1024456)
+- Fix audit log disabling in Oracle
+- grant minions scap capability
+- Clean up stale logging data and triggers (bsc#1009545)
+- fix deduplicate to work with more than two duplicates
+
+-------------------------------------------------------------------
 Mon Feb 13 11:47:24 CET 2017 - jrenner@suse.com
 
 - version 3.0.18-1
