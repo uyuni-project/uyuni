@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Thu Apr 20 16:44:24 CEST 2017 - kwalter@suse.com
+
+- version 2.5.24.9-1
+- do not fail with traceback when media.1 does not exist (bsc#1032256)
+- create scap files dir beforehand (bsc#1029755)
+- Fix error if SPACEWALK_DEBUG_NO_REPORTS env variable is not present
+- Don't skip 'rhnErrataPackage' cleanup during an errata update (bsc#1023233)
+- Add support for running spacewalk-debug without creating reports.
+  (bsc#1024714)
+- set scap store dir mod to 775 and group owner to susemanager
+- incomplete_package_import: do import rhnPackageFile as it breaks some package
+  installations
+- added traceback printing to the exception block
+- change postgresql starting commands
+
+-------------------------------------------------------------------
 Mon Feb 13 12:59:00 CET 2017 - jrenner@suse.com
 
 - version 2.5.24.8-1
