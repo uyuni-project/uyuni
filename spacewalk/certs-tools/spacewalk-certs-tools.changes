@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Apr 20 16:46:05 CEST 2017 - kwalter@suse.com
+
+- version 2.5.1.8-1
+- Always restart the minion regardless of its current state (bsc#1034956)
+- correctly honor disabling of SSL in bootstrap script (bsc#1033383)
+- add curl dependency and move mgr-proxy-ssh* to spacewalk-proxy package
+- Exit for non-traditional bootstrap scripts (bsc#1020904)
+- rename mgr-ssh-proxy-force-cmd -> mgr-proxy-ssh-force-cmd
+- add mgr-proxy-ssh-force-cmd, mgr-proxy-ssh-push-init to rpm
+- add option to configure only sshd
+- restrictive ssh options for user mgrsshtunnel
+- package mgr-proxy-ssh-push-init
+
+-------------------------------------------------------------------
 Fri Dec 16 12:07:43 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.1.7-1
