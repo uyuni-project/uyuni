@@ -17,6 +17,13 @@
         <rl:listset name="erratConfirmListSet">
             <rhn:csrf />
             <rhn:submitted />
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <html:submit styleClass="btn btn-success" property="dispatch">
+                        <bean:message key="errataconfirm.jsp.confirm" />
+                    </html:submit>
+                </div>
+            </div>
             <rl:list width="100%" styleclass="list" emptykey="erratalist.jsp.noerrata">
                 <rl:decorator name="PageSizeDecorator" />
                 <rl:decorator name="ElaborationDecorator" />
@@ -47,13 +54,6 @@
             </rl:list>
             <div class="form-horizontal">
                 <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-                <div class="form-group">
-                    <div class="col-md-offset-3 col-md-6">
-                        <html:submit styleClass="btn btn-success" property="dispatch">
-                            <bean:message key="errataconfirm.jsp.confirm" />
-                        </html:submit>
-                    </div>
-                </div>
             </div>
             <html:hidden property="sid" value="${param.sid}" />
             <rhn:hidden name="use_date" value="true" />

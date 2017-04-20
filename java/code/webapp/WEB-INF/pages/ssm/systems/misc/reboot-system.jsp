@@ -18,15 +18,16 @@
         <p><bean:message key="ssm.misc.reboot.summary" /></p>
 
         <rl:listset name="systemsListSet" legend="system">
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <html:submit styleClass="btn btn-default" property="dispatch">
+                        <bean:message key="ssm.misc.reboot.operationname" />
+                    </html:submit>
+                </div>
+            </div>
             <c:set var="noCsv" value="1" />
             <c:set var="noAddToSsm" value="1" />
             <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
-            <hr />
-            <div class="text-right">
-                <html:submit styleClass="btn btn-default" property="dispatch">
-                    <bean:message key="ssm.misc.reboot.operationname" />
-                </html:submit>
-            </div>
         </rl:listset>
     </body>
 </html>

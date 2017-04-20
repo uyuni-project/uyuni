@@ -1,5 +1,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <html>
+
+
+<div class="spacewalk-section-toolbar">
+    <rhn:submit valueKey="preferences.jsp.submitvalue"/>
+</div>
+
 <div class="panel panel-default">
   <div class="panel-heading">
     <h4><bean:message key="preferences.jsp.header"/></h4>
@@ -59,7 +65,3 @@
 </div>
 
     <html:hidden property="uid" />
-
-<div class="text-left">
-<rhn:submit valueKey="preferences.jsp.submitvalue"/>
-</div>

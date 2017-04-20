@@ -27,6 +27,14 @@
         <rl:listset name="systemAffectedListSet">
         <rhn:csrf />
 
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <html:submit styleClass="btn btn-default" property="dispatch">
+                        <bean:message key="affectedsystems.jsp.apply"/>
+                    </html:submit>
+                </div>
+            </div>
+
                 <rl:list
                         dataset="pageList"
                         name="systemAffectedList"
@@ -80,13 +88,6 @@
                         ${current.entitlementLevel}
                         </rl:column>
                 </rl:list>
-
-                <div class="text-right">
-                <hr />
-                <html:submit styleClass="btn btn-default" property="dispatch">
-                        <bean:message key="affectedsystems.jsp.apply"/>
-                </html:submit>
-                </div>
 
                 <rl:csv dataset="pageList"
                         name="systemAffectedCSVExport"

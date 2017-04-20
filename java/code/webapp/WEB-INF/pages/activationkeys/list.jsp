@@ -106,6 +106,15 @@
 </p>
 <rl:listset name="activationKeysSet">
     <rhn:csrf />
+    <c:if test = "${not empty requestScope.pageList}">
+        <rhn:submitted/>
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <input type="submit" name ="dispatch" class="btn btn-default"
+                        value="${rhn:localize('kickstart.activationkeys.jsp.submit')}"/>
+            </div>
+        </div>
+    </c:if>
         <!-- Start of Files list -->
         <rl:list dataset="pageList"
                  name="activationKeys"
@@ -157,15 +166,6 @@
         </rl:list>
 <hr/>
 <div class="small-text">*<strong><bean:message key="Tip"/>:</strong> <bean:message key="activation-keys.jsp.is-default-key-tip"/></div>
-<c:if test = "${not empty requestScope.pageList}">
-<div class="text-right">
-   <rhn:submitted/>
-    <input type="submit"
-                name ="dispatch"
-    class="btn btn-default"
-        value="${rhn:localize('kickstart.activationkeys.jsp.submit')}"/>
-</div>
-</c:if>
 </rl:listset>
 </body>
 </html>
