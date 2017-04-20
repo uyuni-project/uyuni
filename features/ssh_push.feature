@@ -27,8 +27,8 @@ Feature: Register a system to be managed via SSH push
     And I click on "Create Activation Key"
     Then I should see a "Activation key SSH push via tunnel key has been created." text
 
-  Scenario: Create bootstrap script for SSH push via tunnel
-    When I execute mgr-bootstrap "--activation-keys=1-ssh-push-tunnel --script=bootstrap-ssh-push-tunnel.sh --no-up2date"
+  Scenario: Create bootstrap script for traditional SSH push via tunnel
+    When I execute mgr-bootstrap "--activation-keys=1-ssh-push-tunnel --script=bootstrap-ssh-push-tunnel.sh --no-up2date --traditional"
     Then I want to get "* bootstrap script (written):"
     And I want to get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'"
 
