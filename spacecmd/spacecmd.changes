@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Apr 20 16:50:24 CEST 2017 - kwalter@suse.com
+
+- version 2.5.5.5-1
+- (bsc#1027426) improve output on error for listrepo
+- Fix: reword spacecmd removal msg (bsc#1024406)
+
+-------------------------------------------------------------------
 Mon Feb 13 12:00:48 CET 2017 - jrenner@suse.com
 
 - version 2.5.5.4-1
