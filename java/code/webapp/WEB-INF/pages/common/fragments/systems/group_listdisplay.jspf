@@ -6,6 +6,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
 
+<div class="spacewalk-section-toolbar">
+    <input class="btn btn-default" type="submit" name="union" value="${rhn:localize('grouplist.jsp.union')}" />
+    <input class="btn btn-default" type="submit" name="intersection" value="${rhn:localize('grouplist.jsp.intersection')}" />
+</div>
+
+<rhn:submitted/>
 
 <rl:list dataset="pageList"
                 name="groupList"
@@ -94,8 +100,3 @@
 <rl:csv dataset="pageList"
                 name="groupList"
                 exportColumns="id, name, groupAdmins, serverCount" />
-<div class="pull-left">
-        <input class="btn btn-default" type="submit" name="union" value="${rhn:localize('grouplist.jsp.union')}" />
-        <input class="btn btn-default" type="submit" name="intersection" value="${rhn:localize('grouplist.jsp.intersection')}" />
-</div>
-        <rhn:submitted/>

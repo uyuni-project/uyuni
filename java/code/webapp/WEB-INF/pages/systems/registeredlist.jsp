@@ -17,24 +17,26 @@
 
 <rl:listset name="registeredSystems" legend="system">
   <rhn:csrf />
-  <bean:message key="registeredlist.jsp.view"/>
-  <select name="threshold" class="view-systems-registered form-control">
-                <c:forEach var="option" items="${options}">
-                        <c:choose>
-                                <c:when test="${recentlyRegisteredSystemsForm.map.threshold eq option.value}">
-                                        <option value="${option.value}" selected = "selected">${option.label}</option>
-                                </c:when>
-                                <c:otherwise>
-                                        <option value="${option.value}">${option.label}</option>
-                                </c:otherwise>
-                        </c:choose>
-                </c:forEach>
-  </select>
 
-  <html:submit styleClass="btn btn-default">
-    <bean:message key="cloneerrata.jsp.view"/>
-  </html:submit>
-  <hr>
+<div class="spacewalk-section-toolbar">
+    <bean:message key="registeredlist.jsp.view"/>
+    <select name="threshold" class="view-systems-registered form-control">
+        <c:forEach var="option" items="${options}">
+            <c:choose>
+                <c:when test="${recentlyRegisteredSystemsForm.map.threshold eq option.value}">
+                    <option value="${option.value}" selected = "selected">${option.label}</option>
+                </c:when>
+                <c:otherwise>
+                    <option value="${option.value}">${option.label}</option>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+    </select>
+    <html:submit styleClass="btn btn-default">
+        <bean:message key="cloneerrata.jsp.view"/>
+    </html:submit>
+</div>
+
 <rhn:submitted/>
         <rl:list
                 dataset="pageList"

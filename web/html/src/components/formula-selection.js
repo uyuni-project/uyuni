@@ -247,6 +247,18 @@ class FormulaSelection extends React.Component {
         return (
             <div>
                 {errors}{messages}
+                <div className="spacewalk-section-toolbar">
+                    <div className="form-group">
+                        <span className="btn-group">
+                            <AsyncButton id="save-btn" icon="floppy-o" action={this.saveRequest} name={t("Save")} />
+                            <AsyncButton id="apply-btn" defaultType="btn-success" action={this.applyRequest} name={t("Apply Highstate")} />
+                        </span>
+                        <span className="btn-group pull-right">
+                            <Button id="clear-btn" icon="fa-eraser" text="Remove all" className="btn btn-default" handler={this.removeAllFormulas} />
+                            <Button id="reset-btn" icon="fa-undo" text="Reset Changes" className="btn btn-default" handler={this.resetChanges} />
+                        </span>
+                    </div>
+                </div>
                 <div className="panel panel-default">
                     <div className="panel-heading">
                         <h4>Formulas</h4>
@@ -261,18 +273,6 @@ class FormulaSelection extends React.Component {
                                     <div id="chooseFormulas" className="list-group">
                                       {this.generateList()}
                                     </div>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <div className="col-lg-offset-3 col-lg-6">
-                                    <span className="btn-group">
-                                        <AsyncButton id="save-btn" icon="floppy-o" action={this.saveRequest} name={t("Save")} />
-                                        <AsyncButton id="apply-btn" defaultType="btn-success" action={this.applyRequest} name={t("Apply Highstate")} />
-                                    </span>
-                                    <span className="btn-group pull-right">
-                                        <Button id="clear-btn" icon="fa-eraser" text="Remove all" className="btn btn-default" handler={this.removeAllFormulas} />
-                                        <Button id="reset-btn" icon="fa-undo" text="Reset Changes" className="btn btn-default" handler={this.resetChanges} />
-                                    </span>
                                 </div>
                             </div>
                         </form>

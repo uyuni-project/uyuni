@@ -13,6 +13,14 @@
 <%@ include file="/WEB-INF/pages/common/fragments/activationkeys/common-header.jspf" %>
 
 
+<div class="spacewalk-section-toolbar">
+    <div class="action-button-wrapper">
+        <rhn:submitted/>
+        <input type="submit" name="dispatch" class="btn btn-default"
+                value='<bean:message key="${param.action_key}"/>'/>
+    </div>
+</div>
+
 <div class="page-summary">
         <h2><rhn:icon type="header-system-groups" title="system.common.groupAlt" />
         <bean:message key="${param.title_key}"/>
@@ -54,15 +62,6 @@
                 </rl:column>
         </rl:list>
 
-</div>
-<div class="text-right">
-   <rhn:submitted/>
-   <hr/>
-
-   <input type="submit"
-          name="dispatch"
-          value='<bean:message key="${param.action_key}"/>'
-          class="btn btn-default"/>
 </div>
 
 </c:when>

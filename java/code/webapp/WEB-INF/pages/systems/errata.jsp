@@ -30,6 +30,16 @@
 <rhn:csrf />
 <rhn:submitted />
 
+        <c:if test="${requestScope.showApplyErrata == 'true'}">
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <html:submit styleClass="btn btn-success" property="dispatch">
+                        <bean:message key="errata.jsp.apply"/>
+                    </html:submit>
+                </div>
+            </div>
+        </c:if>
+
         <br/>
         <select name="type">
                 <c:forEach items="${combo}" var="item">
@@ -131,16 +141,6 @@
                   </rl:column>
 
         </rl:list>
-
-        <c:if test="${requestScope.showApplyErrata == 'true'}">
-                <div class="text-right">
-                <hr />
-                <html:submit styleClass="btn btn-success" property="dispatch">
-                        <bean:message key="errata.jsp.apply"/>
-                </html:submit>
-                </div>
-        </c:if>
-
 
         <c:if test="${requestScope.showApplyErrata == 'true'}">
                 <rl:csv

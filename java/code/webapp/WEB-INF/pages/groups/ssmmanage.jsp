@@ -29,6 +29,15 @@
         <rl:listset name="groups">
             <rhn:csrf />
             <html:hidden property="submitted" value="true"/>
+
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <html:submit styleClass="btn btn-default" property="dispatch">
+                        <bean:message key="ssm.groups.manage.button"/>
+                    </html:submit>
+                </div>
+            </div>
+
             <rl:list dataset="pageList" emptykey="systems.groups.jsp.noGroups.nonadmin">
                 <rl:column headerkey="systems.groups.jsp.title">
                     <p><a href="/rhn/groups/GroupDetail.do?sgid=${current.id}"><c:out value="${current.name}" /></a></p>
@@ -46,7 +55,6 @@
                     <input type="radio" name="${current.id}" value="nochange" align="center" checked/>
                 </rl:column>
             </rl:list>
-            <div class="text-right"><html:submit styleClass="btn btn-default" property="dispatch"><bean:message key="ssm.groups.manage.button"/></html:submit></div>
         </rl:listset>
     </body>
 </html>

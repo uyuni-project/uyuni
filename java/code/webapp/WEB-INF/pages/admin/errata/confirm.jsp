@@ -20,6 +20,13 @@
                    action="errata/details/ErrataConfirmSubmit.do">
             <rhn:csrf />
             <rhn:list pageList="${requestScope.pageList}" noDataText="nosystems.message">
+                <div class="spacewalk-section-toolbar">
+                    <div class="action-button-wrapper">
+                          <html:submit styleClass="btn btn-success" property="dispatch">
+                            <bean:message key="confirm.jsp.confirm" />
+                        </html:submit>
+                    </div>
+                </div>
                 <rhn:listdisplay>
                     <rhn:column header="actions.jsp.system">
                         ${current.name}
@@ -36,13 +43,6 @@
                     </div>
                 </div>
                 <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-                <div class="form-group">
-                    <div class="col-md-offset-3 col-md-6">
-                          <html:submit styleClass="btn btn-default" property="dispatch">
-                            <bean:message key="confirm.jsp.confirm" />
-                        </html:submit>
-                    </div>
-                </div>
                 <html:hidden property="eid" value="${param.eid}" />
                 <rhn:hidden name="use_date" value="true" />
             </rhn:list>
