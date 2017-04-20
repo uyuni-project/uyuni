@@ -409,7 +409,7 @@ class RepoSync(object):
                     [channel_label], [], "server.app.yumreposync")
                 rhnSQL.commit()
                 log2(0, 0, "Channel has no URL associated", stream=sys.stderr)
-                if not self.channel['org_id']:
+                if not self.org_id:
                     # RES base vendor channels do not have a URL. This is not an error
                     sys.exit(0)
                 sys.exit(1)
@@ -1423,7 +1423,7 @@ class RepoSync(object):
             e['issue_date']  = self._to_db_date(notice.get('timestamp'))
             e['update_date'] = e['issue_date']
             e['notes']       = ''
-            e['org_id']      = self.channel['org_id']
+            e['org_id']      = self.org_id
             e['refers_to']   = ''
             e['channels']    = [{'label': self.channel_label}]
             e['packages']    = []
@@ -1649,9 +1649,9 @@ class RepoSync(object):
                 'cap_version'   : product['version'] + "-" + product['release'],
                 'channel_id'    : int(self.channel['id'])
             }
-            if self.channel['org_id']:
+            if self.org_id:
                 org_statement = "and p.org_id = :channel_org"
-                params['channel_org'] = self.channel['org_id']
+                params['channel_org'] = self.org_id
             else:
                 org_statement = "and p.org_id is NULL"
 
@@ -1810,9 +1810,9 @@ class RepoSync(object):
         else:
             epochStatement = "pevr.epoch = :epoch"
             param_dict['epoch'] = pkgepoch
-        if self.channel['org_id']:
+        if self.org_id:
+            param_dict['org_id'] = self.org_id
             orgidStatement = " = :org_id"
-            param_dict['org_id'] = self.channel['org_id']
         else:
             orgidStatement = " is NULL"
 
@@ -1845,7 +1845,7 @@ class RepoSync(object):
             if k not in ['epoch', 'channel_label', 'channel_id']:
                 package[k] = param_dict[k]
         package['epoch'] = cs['epoch']
-        package['org_id'] = self.channel['org_id']
+        package['org_id'] = self.org_id
 
         package['checksums'] = {cs['checksum_type'] : cs['checksum']}
         package['checksum_type'] = cs['checksum_type']
