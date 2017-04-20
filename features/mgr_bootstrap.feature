@@ -7,8 +7,8 @@ Feature: mgr-bootstrap generation and registration
   I want to be able to create a bootstrap script
   And register this client with it.
 
-  Scenario: Create the bootstrap script
-    When I execute mgr-bootstrap "--script=bootstrap-test.sh --no-up2date --allow-config-actions --allow-remote-commands"
+  Scenario: Create the bootstrap script - traditional
+    When I execute mgr-bootstrap "--script=bootstrap-test.sh --no-up2date --allow-config-actions --allow-remote-commands --traditional"
     Then I want to get "* bootstrap script (written):"
      And I want to get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-test.sh'"
 
