@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 20 16:51:23 CEST 2017 - kwalter@suse.com
+
+- version 2.5.13.8-1
+- fix reboot message to use correct product name (bsc#1031667)
+
+-------------------------------------------------------------------
 Mon Feb 13 12:57:34 CET 2017 - jrenner@suse.com
 
 - version 2.5.13.7-1
