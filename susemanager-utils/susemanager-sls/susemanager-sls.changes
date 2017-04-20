@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Thu Apr 20 16:18:43 CEST 2017 - kwalter@suse.com
+
+- version 0.1.20-1
+- add certificate state for CAASP
+- add certificate state for SLES for SAP (bsc#1031659)
+- Pre-create empty top.sls with no-op (bsc#1017754)
+- add xccdf result xslt
+- Fix mainframesysinfo module to use /proc/sysinfo on SLES11 (bsc#1025758)
+- set scap store dir mod to 775 and group owner to susemanager
+- store uploaded scap files
+- set minion own key owner to bootstrap ssh_push_sudo_user
+- runner to generate ssh key and execute cmd via proxies
+- change ssh bootstrap state to generate and auth keys for salt-ssh push w
+  tunnel
+- Authorize parent salt-ssh key on proxy
+
+-------------------------------------------------------------------
 Mon Feb 13 11:58:42 CET 2017 - jrenner@suse.com
 
 - version 0.1.19-1
