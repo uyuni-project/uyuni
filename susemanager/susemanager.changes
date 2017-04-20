@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Thu Apr 20 16:23:54 CEST 2017 - kwalter@suse.com
+
+- version 3.0.21-1
+- add bootstrap repo data for SLES for SAP 12 SP2 ppc64le
+- add python-setuptools to bootstrap repo (bsc#1033731)
+- create directory manually if mksubvolume fails, so we now support btrfs based
+  systems with missing mksubvoume utility (bsc#1031885)
+- create /var/spacewalk/systems in spacewalk-setup and ensure perms on upgrade
+- fix typo in comment noting option with-custom-channels bsc#1031092)
+- pre require tomcat and salt
+- fix %%pre and %%post scripts in susemanager.spec
+- append salt,tomcat,wwwrung to susemanager group
+- susemanager group and change owner and permissions for
+  /var/susemanager/systems
+
+-------------------------------------------------------------------
 Mon Feb 13 11:55:12 CET 2017 - jrenner@suse.com
 
 - version 3.0.20-1
