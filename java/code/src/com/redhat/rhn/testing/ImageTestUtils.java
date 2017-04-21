@@ -30,9 +30,12 @@ import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -130,6 +133,17 @@ public class ImageTestUtils {
         image.setChannels(channels);
         TestUtils.saveAndFlush(image);
         return image;
+    }
+
+    /**
+     * Create an image info.
+     * @param name the name of the image
+     * @param version the version of the image
+     * @param user the user
+     * @return the image info
+     */
+    public static ImageInfo createImageInfo(String name, String version, User user) {
+        return createImageInfo(name, version, (Set<Channel>)null, user);
     }
 
     /**
@@ -315,5 +329,18 @@ public class ImageTestUtils {
         TestUtils.saveAndFlush(result);
 
         return result;
+    }
+
+    /**
+     * Create a {@link MinionServer} with Container Build Host entitlement.
+     *
+     * @param user the user
+     * @return the minion server
+     * @throws Exception the exception
+     */
+    public static MinionServer createBuildHost(User user) throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+        return server;
     }
 }

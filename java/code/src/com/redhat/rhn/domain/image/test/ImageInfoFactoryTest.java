@@ -16,9 +16,11 @@
 package com.redhat.rhn.domain.image.test;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImagePackage;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
@@ -31,12 +33,17 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit3.JUnit3Mockery;
@@ -65,6 +72,188 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         super.setUp();
         CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
 
+    }
+
+    public final void testConvertChecksum() {
+        //SHA1
+        String sha1Str = DigestUtils.sha1Hex("mychecksum");
+        ImageInspectSlsResult.Checksum chksum =
+                new ImageInspectSlsResult.SHA1Checksum(sha1Str);
+        assertEquals(chksum.getChecksum(), sha1Str);
+
+        Checksum converted = ImageInfoFactory.convertChecksum(chksum);
+        assertNotNull(converted.getId());
+        assertNotNull(converted.getChecksumType());
+        assertNotNull(converted.getChecksumType().getId());
+        assertEquals(converted.getChecksum(), sha1Str);
+        assertEquals(converted.getChecksumType().getLabel(), "sha1");
+
+        chksum = ImageInfoFactory.convertChecksum(converted);
+        assertTrue(chksum instanceof ImageInspectSlsResult.SHA1Checksum);
+        assertEquals(chksum.getChecksum(), sha1Str);
+
+        //SHA256
+        String sha256Str = DigestUtils.sha256Hex("mychecksum");
+        chksum = new ImageInspectSlsResult.SHA256Checksum(sha256Str);
+        assertEquals(chksum.getChecksum(), sha256Str);
+
+        converted = ImageInfoFactory.convertChecksum(chksum);
+        assertNotNull(converted.getId());
+        assertNotNull(converted.getChecksumType());
+        assertNotNull(converted.getChecksumType().getId());
+        assertEquals(converted.getChecksum(), sha256Str);
+        assertEquals(converted.getChecksumType().getLabel(), "sha256");
+
+        chksum = ImageInfoFactory.convertChecksum(converted);
+        assertTrue(chksum instanceof ImageInspectSlsResult.SHA256Checksum);
+        assertEquals(chksum.getChecksum(), sha256Str);
+
+        //SHA384
+        String sha384Str = DigestUtils.sha384Hex("mychecksum");
+        chksum = new ImageInspectSlsResult.SHA384Checksum(sha384Str);
+        assertEquals(chksum.getChecksum(), sha384Str);
+
+        converted = ImageInfoFactory.convertChecksum(chksum);
+        assertNotNull(converted.getId());
+        assertNotNull(converted.getChecksumType());
+        assertNotNull(converted.getChecksumType().getId());
+        assertEquals(converted.getChecksum(), sha384Str);
+        assertEquals(converted.getChecksumType().getLabel(), "sha384");
+
+        chksum = ImageInfoFactory.convertChecksum(converted);
+        assertTrue(chksum instanceof ImageInspectSlsResult.SHA384Checksum);
+        assertEquals(chksum.getChecksum(), sha384Str);
+
+        //SHA512
+        String sha512Str = DigestUtils.sha256Hex("mychecksum");
+        chksum = new ImageInspectSlsResult.SHA512Checksum(sha256Str);
+        assertEquals(chksum.getChecksum(), sha512Str);
+
+        converted = ImageInfoFactory.convertChecksum(chksum);
+        assertNotNull(converted.getId());
+        assertNotNull(converted.getChecksumType());
+        assertNotNull(converted.getChecksumType().getId());
+        assertEquals(converted.getChecksum(), sha512Str);
+        assertEquals(converted.getChecksumType().getLabel(), "sha512");
+
+        chksum = ImageInfoFactory.convertChecksum(converted);
+        assertTrue(chksum instanceof ImageInspectSlsResult.SHA512Checksum);
+        assertEquals(chksum.getChecksum(), sha512Str);
+    }
+
+    public final void testList() throws Exception {
+        ImageInfo img1 = ImageTestUtils.createImageInfo("myimage1", "1.0.0", user);
+        ImageInfo img2 = ImageTestUtils.createImageInfo("myimage1", "2.0.0", user);
+        ImageInfo img3 = ImageTestUtils.createImageInfo("myimage2", "1.0.0", user);
+
+        List<ImageInfo> result = ImageInfoFactory.list();
+
+        assertEquals(3, result.size());
+        ImageInfo img = result.stream().filter(i -> i.equals(img1)).findFirst().get();
+        assertEquals(img, img1);
+
+        img = result.stream().filter(i -> i.equals(img2)).findFirst().get();
+        assertEquals(img, img2);
+
+        img = result.stream().filter(i -> i.equals(img3)).findFirst().get();
+        assertEquals(img, img3);
+    }
+
+    public final void testListImageInfos() {
+        User foreignUser = UserTestUtils.createUser("foreign-user",
+                UserTestUtils.createOrg("foreign-org"));
+
+        ImageInfo img1 = ImageTestUtils.createImageInfo("myimage1", "1.0.0", user);
+        ImageInfo img2 = ImageTestUtils.createImageInfo("myimage2", "1.0.0", user);
+        ImageTestUtils.createImageInfo("myimage1", "1.0.0", foreignUser);
+
+        List<ImageInfo> result = ImageInfoFactory.listImageInfos(user.getOrg());
+
+        assertEquals(2, result.size());
+        ImageInfo img = result.stream().filter(i -> i.equals(img1)).findFirst().get();
+        assertEquals(img1, img);
+
+        img = result.stream().filter(i -> i.equals(img2)).findFirst().get();
+        assertEquals(img2, img);
+    }
+
+    public final void testListImageOverviews() {
+        User foreignUser = UserTestUtils.createUser("foreign-user",
+                UserTestUtils.createOrg("foreign-org"));
+
+        ImageInfo img1 = ImageTestUtils.createImageInfo("myimage1", "1.0.0", user);
+        ImageInfo img2 = ImageTestUtils.createImageInfo("myimage2", "1.0.0", user);
+        ImageTestUtils.createImageInfo("myimage1", "1.0.0", foreignUser);
+
+        List<ImageOverview> result = ImageInfoFactory.listImageOverviews(user.getOrg());
+
+        assertEquals(2, result.size());
+        ImageOverview overview = result.stream().filter(i -> img1.getId().equals(i.getId()))
+                .findFirst().get();
+        assertEquals("myimage1", overview.getName());
+        assertEquals("1.0.0", overview.getVersion());
+        assertEquals(user.getOrg(), overview.getOrg());
+
+        overview = result.stream().filter(i -> img2.getId().equals(i.getId()))
+                .findFirst().get();
+        assertEquals("myimage2", overview.getName());
+        assertEquals("1.0.0", overview.getVersion());
+        assertEquals(user.getOrg(), overview.getOrg());
+    }
+
+    public final void testLookupById() {
+        ImageInfo image = ImageTestUtils.createImageInfo("myimage", "1.0.0", user);
+
+        ImageInfo result = ImageInfoFactory.lookupById(image.getId()).get();
+        assertEquals(image, result);
+    }
+
+    public final void testLookupByIdAndOrg() {
+        User foreignUser = UserTestUtils.createUser("foreign-user",
+                UserTestUtils.createOrg("foreign-org"));
+
+        ImageInfo image = ImageTestUtils.createImageInfo("myimage", "1.0.0", user);
+
+        ImageInfo result =
+                ImageInfoFactory.lookupByIdAndOrg(image.getId(), user.getOrg()).get();
+        assertEquals(image, result);
+
+        assertFalse(ImageInfoFactory.lookupByIdAndOrg(image.getId(), foreignUser.getOrg())
+                .isPresent());
+    }
+
+    public final void testLookupOverviewByIdAndOrg() {
+        User foreignUser = UserTestUtils.createUser("foreign-user",
+                UserTestUtils.createOrg("foreign-org"));
+
+        ImageInfo image = ImageTestUtils.createImageInfo("myimage", "1.0.0", user);
+
+        ImageOverview result = ImageInfoFactory
+                .lookupOverviewByIdAndOrg(image.getId(), user.getOrg()).get();
+        assertEquals("myimage", result.getName());
+        assertEquals("1.0.0", result.getVersion());
+        assertEquals(user.getOrg(), result.getOrg());
+
+        assertFalse(ImageInfoFactory
+                .lookupOverviewByIdAndOrg(image.getId(), foreignUser.getOrg()).isPresent());
+    }
+
+    public final void testLookupByName() {
+        ImageStore store = ImageTestUtils.createImageStore("mystore", user);
+        ImageStore anotherStore = ImageTestUtils.createImageStore("myotherstore", user);
+        ImageInfo image = ImageTestUtils.createImageInfo("myimage", "1.0.0", store, user);
+
+        ImageInfo result =
+                ImageInfoFactory.lookupByName("myimage", "1.0.0", store.getId()).get();
+
+        assertEquals(image, result);
+
+        assertFalse(ImageInfoFactory
+                .lookupByName("non-existent-name", "1.0.0", store.getId()).isPresent());
+        assertFalse(ImageInfoFactory
+                .lookupByName("myimage", "2.0.0", store.getId()).isPresent());
+        assertFalse(ImageInfoFactory
+                .lookupByName("myimage", "1.0.0", anotherStore.getId()).isPresent());
     }
 
     public final void testScheduleBuild() throws Exception {
