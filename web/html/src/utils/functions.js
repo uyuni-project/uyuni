@@ -27,7 +27,7 @@ const cancelable = (promise, onCancel) => {
 }
 
 function dateWithTimezone(dateString) {
-    const offsetNum = parseInt(dateString.substring(dateString.length - 5));
+    const offsetNum = parseInt(dateString.substring(dateString.length - 6).replace(':', ''));
     const serverOffset = Math.trunc(offsetNum / 100) * 60 + offsetNum % 100;
     const orig = new Date(dateString);
     const clientOffset = -orig.getTimezoneOffset();
