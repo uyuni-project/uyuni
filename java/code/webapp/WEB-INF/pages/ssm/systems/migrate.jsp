@@ -16,6 +16,7 @@
 <c:set var="showLastCheckin" value="true"/>
 <c:set var="noPackages" value="true"/>
 <c:set var="noErrata" value="true"/>
+<c:set var="noAddToSsm" value="true" />
 
   <c:choose>
   <c:when test="${trustedOrgs == 0}">
