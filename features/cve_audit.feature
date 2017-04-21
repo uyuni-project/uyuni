@@ -51,6 +51,7 @@ Feature: CVE Audit
     Then I should see a "The specified CVE number was not found" text
 
   Scenario: selecting a system for the System Set Manager
+    Given I am authorized as "admin" with password "admin"
     When I follow "Audit" in the left menu
     And I follow "CVE Audit" in the left menu
     And I select "1999" from "cveIdentifierYear"
