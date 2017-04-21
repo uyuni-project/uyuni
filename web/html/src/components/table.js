@@ -49,7 +49,17 @@ const SearchPanel = (props) =>
       React.Children.map(props.children,
         (child) => React.cloneElement(child, { criteria: props.criteria, onSearch: props.onSearch }))
     }
-    <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}</span>
+    <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
+    { props.selectable && props.selectedCount > 0 &&
+        <span>
+            {t("({0} selected)", props.selectedCount)}&nbsp;
+            <a href="#" onClick={props.onClear}>{t("Clear")}</a>
+            &nbsp;/&nbsp;
+        </span>
+    }
+    { props.selectable &&
+        <a href="#" onClick={props.onSelectAll}>{t("Select All")}</a>
+    }
   </div>
 ;
 
@@ -93,16 +103,6 @@ const Header = (props) => {
   return <th style={ thStyle } className={ thClass }>{props.children}</th>;
 }
 
-const Button = React.createClass({
-  trigger: function() {
-    this.props.handler(this.props.data);
-  },
-
-  render: function() {
-     return <button onClick={this.trigger}>{this.props.label}</button>
-  }
-});
-
 const Highlight = (props) => {
   let text = props.text;
   let high = props.highlight;
@@ -137,7 +137,10 @@ const Table = React.createClass({
     initialSortDirection: React.PropTypes.number, // 1 for ascending, -1 for descending
     cssClassFunction: React.PropTypes.func, // a function that return a css class for each row
     searchField: React.PropTypes.node, // the React Object that contains the filter search field
-    initialItemsPerPage: React.PropTypes.number // the initial number of how many row-per-page to show
+    initialItemsPerPage: React.PropTypes.number, // the initial number of how many row-per-page to show
+    selectable: React.PropTypes.bool, // enables item selection
+    onSelect: React.PropTypes.func, // the handler to call when the table selection is updated. if this function is not provided, the select boxes won't be rendered
+    selectedItems: React.PropTypes.array // the identifiers for selected items
   },
 
   getInitialState: function() {
@@ -146,12 +149,18 @@ const Table = React.createClass({
       itemsPerPage: this.props.initialItemsPerPage || 15,
       criteria: null,
       sortColumnKey: this.props.initialSortColumnKey || null,
-      sortDirection: this.props.initialSortDirection || 1
+      sortDirection: this.props.initialSortDirection || 1,
+      selectedItems: this.props.selectedItems || [],
+      selectable: this.props.selectable
     };
   },
 
   componentWillReceiveProps: function(nextProps) {
     this.onPageCountChange(nextProps.data, this.state.criteria, this.state.itemsPerPage);
+    this.setState({
+        selectedItems: nextProps.selectedItems || [],
+        selectable: Boolean(nextProps.selectable)
+    });
   },
 
   getLastPage: function(data, criteria, itemsPerPage) {
@@ -214,6 +223,12 @@ const Table = React.createClass({
     });
   },
 
+  setSelection: function(selection) {
+    if(this.props.onSelect) {
+      this.props.onSelect(selection);
+    }
+  },
+
   render: function() {
     const headers = React.Children.toArray(this.props.children)
         .filter((child) => child.type === Column)
@@ -246,18 +261,66 @@ const Table = React.createClass({
     const itemCount = filteredData.length;
     const fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
+    const currItems = filteredData.slice(firstItemIndex, firstItemIndex + itemsPerPage);
+    const currIds = currItems.map(item => this.props.identifier(item));
 
-    const rows = filteredData.slice(firstItemIndex, firstItemIndex + itemsPerPage)
-        .map((datum, index) => {
-          const cells = React.Children.toArray(this.props.children)
-              .filter((child) => child.type === Column)
-              .map((column) => React.cloneElement(column, {data: datum, criteria: this.state.criteria})
-          );
+    const handleSelectAll = (sel) => {
+        let arr = this.state.selectedItems;
+        if(sel) {
+            arr = arr.concat(currIds.filter(id => !arr.includes(id)));
+        } else {
+            arr = arr.filter(id => !currIds.includes(id));
+        }
+        this.setSelection(arr);
+    };
 
-          let rowClass = this.props.cssClassFunction ? this.props.cssClassFunction(datum, index) : "";
-          let evenOddClass = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
-          return <tr className={rowClass + " " + evenOddClass} key={this.props.identifier(datum)} >{cells}</tr>;
+    if(this.state.selectable) {
+        const allSelected = currIds.length > 0 && currIds.every(id => this.state.selectedItems.includes(id));
+        const checkbox = <Header><input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)}/></Header>;
+        headers.unshift(checkbox);
+    }
+
+    const handleSelect = (id, sel) => {
+        let arr = this.state.selectedItems;
+        if(sel) {
+            arr = arr.concat([id]);
+        } else {
+            arr = arr.filter(i => i !== id);
+        }
+        this.setSelection(arr);
+    };
+
+    const rows = currItems.map((datum, index) => {
+        const cells = React.Children.toArray(this.props.children)
+          .filter((child) => child.type === Column)
+          .map((column) => React.cloneElement(column, {data: datum, criteria: this.state.criteria})
+        );
+
+        if(this.state.selectable) {
+          const checkbox = <Column cell={
+            <input type="checkbox"
+                checked={this.state.selectedItems.includes(this.props.identifier(datum))}
+                onChange={(e) => handleSelect(this.props.identifier(datum), e.target.checked)}
+            />
+          }/>;
+          cells.unshift(checkbox);
+        }
+
+        let rowClass = this.props.cssClassFunction ? this.props.cssClassFunction(datum, index) : "";
+        let evenOddClass = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
+        return <tr className={rowClass + " " + evenOddClass} key={this.props.identifier(datum)} >{cells}</tr>;
     });
+
+    const handleSearchPanelClear = () => {
+        this.setSelection([]);
+    }
+
+    const handleSearchPanelSelectAll = () => {
+        const selected = this.state.selectedItems;
+        this.setSelection(selected.concat(
+            filteredData.map(d => this.props.identifier(d))
+                .filter(id => !selected.includes(id))));
+    }
 
     return (
       <div className="spacewalk-list">
@@ -270,6 +333,10 @@ const Table = React.createClass({
               itemCount={itemCount}
               criteria={this.state.criteria}
               onSearch={this.onSearch}
+              onClear={handleSearchPanelClear}
+              onSelectAll={handleSearchPanelSelectAll}
+              selectedCount={this.state.selectedItems.length}
+              selectable={this.state.selectable}
             >{this.props.searchField}
             </SearchPanel>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
