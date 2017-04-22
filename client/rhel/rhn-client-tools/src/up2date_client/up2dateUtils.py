@@ -67,27 +67,25 @@ else:
                     for h in ts.dbMatch('Providename', "product()"):
                         if bp in h['filenames']:
                             osVersionRelease = (sstr(h['name']), sstr(h['version']), sstr(h['release']))
-                            break
-                    # zypper requires a exclusive lock on the rpmdb. So we need
-                    # to close it here.
-                    ts.ts.closeDB()
-                    return osVersionRelease
+                            # zypper requires a exclusive lock on the rpmdb. So we need
+                            # to close it here.
+                            ts.ts.closeDB()
+                            return osVersionRelease
                 else:
                     # for older SUSE versions we need to search for distribution-release
                     # package which also has /etc/SuSE-release file
                     for h in ts.dbMatch('Providename', "distribution-release"):
                         osVersionRelease = (sstr(h['name']), sstr(h['version']), sstr(h['release']))
                         if '/etc/SuSE-release' in h['filenames']:
-                            break
-                    # zypper requires a exclusive lock on the rpmdb. So we need
-                    # to close it here.
-                    ts.ts.closeDB()
-                    return osVersionRelease
-                else:
-                    raise up2dateErrors.RpmError(
-                        "Could not determine what version of Red Hat Linux you "\
-                        "are running.\nIf you get this error, try running \n\n"\
-                        "\t\trpm --rebuilddb\n\n")
+                            # zypper requires a exclusive lock on the rpmdb. So we need
+                            # to close it here.
+                            ts.ts.closeDB()
+                            return osVersionRelease
+
+                raise up2dateErrors.RpmError(
+                    "Could not determine what version of Linux you "\
+                    "are running.\nIf you get this error, try running \n\n"\
+                    "\t\trpm --rebuilddb\n\n")
 
 def getVersion():
     '''
