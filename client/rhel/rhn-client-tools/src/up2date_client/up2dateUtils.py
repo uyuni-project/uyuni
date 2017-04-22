@@ -35,7 +35,7 @@ else:
     def _getOSVersionAndRelease():
         osVersionRelease = None
         ts = transaction.initReadOnlyTransaction()
-        for h in ts.dbMatch('Providename', "redhat-release"):
+        for h in ts.dbMatch('Providename', "oraclelinux-release"):
             SYSRELVER = 'system-release(releasever)'
             version = sstr(h['version'])
             release = sstr(h['release'])
@@ -46,37 +46,49 @@ else:
             osVersionRelease = (sstr(h['name']), version, release)
             return osVersionRelease
         else:
-            # new SUSE always has a baseproduct link which point to the
-            # product file of the first installed product (the OS)
-            # all rpms containing a product must provide "product()"
-            # search now for the package providing the base product
-            baseproduct = '/etc/products.d/baseproduct'
-            if os.path.exists(baseproduct):
-                bp = os.path.abspath(os.path.join(os.path.dirname(baseproduct), os.readlink(baseproduct)))
-                provlist = ts.dbMatch('Providename', "product()")
-                for h in provlist:
-                    if bp in h['filenames']:
-                        osVersionRelease = (sstr(h['name']), sstr(h['version']), sstr(h['release']))
-                        break
+            for h in ts.dbMatch('Providename', "redhat-release"):
+                SYSRELVER = 'system-release(releasever)'
+                version = sstr(h['version'])
+                release = sstr(h['release'])
+                if SYSRELVER in h['providename']:
+                    provides = dict(zip(h['providename'], h['provideversion']))
+                    release = '%s-%s' % (version, release)
+                    version = provides[SYSRELVER]
+                osVersionRelease = (sstr(h['name']), version, release)
+                return osVersionRelease
             else:
-                # for older SUSE versions we need to search for distribution-release
-                # package which also has /etc/SuSE-release file
-                provlist = None
-                provlist = ts.dbMatch('Providename', "distribution-release")
-                for h in provlist:
-                    osVersionRelease = (sstr(h['name']), sstr(h['version']), sstr(h['release']))
-                    if '/etc/SuSE-release' in h['filenames']:
-                        break
-            # zypper requires a exclusive lock on the rpmdb. So we need
-            # to close it here.
-            provlist = None
-            ts.ts.closeDB()
-            if osVersionRelease is None:
-                raise up2dateErrors.RpmError(
-                    "Could not determine what version of Red Hat Linux you "\
-                    "are running.\nIf you get this error, try running \n\n"\
-                    "\t\trpm --rebuilddb\n\n")
-            return osVersionRelease
+                # new SUSE always has a baseproduct link which point to the
+                # product file of the first installed product (the OS)
+                # all rpms containing a product must provide "product()"
+                # search now for the package providing the base product
+                baseproduct = '/etc/products.d/baseproduct'
+                if os.path.exists(baseproduct):
+                    bp = os.path.abspath(os.path.join(os.path.dirname(baseproduct), os.readlink(baseproduct)))
+                    provlist = ts.dbMatch('Providename', "product()")
+                    for h in provlist:
+                        if bp in h['filenames']:
+                            osVersionRelease = (sstr(h['name']), sstr(h['version']), sstr(h['release']))
+                            break
+                    # zypper requires a exclusive lock on the rpmdb. So we need
+                    # to close it here.
+                    ts.ts.closeDB()
+                    return osVersionRelease
+                else:
+                    # for older SUSE versions we need to search for distribution-release
+                    # package which also has /etc/SuSE-release file
+                    for h in ts.dbMatch('Providename', "distribution-release")
+                        osVersionRelease = (sstr(h['name']), sstr(h['version']), sstr(h['release']))
+                        if '/etc/SuSE-release' in h['filenames']:
+                            break
+                    # zypper requires a exclusive lock on the rpmdb. So we need
+                    # to close it here.
+                    ts.ts.closeDB()
+                    return osVersionRelease
+                else:
+                    raise up2dateErrors.RpmError(
+                        "Could not determine what version of Red Hat Linux you "\
+                        "are running.\nIf you get this error, try running \n\n"\
+                        "\t\trpm --rebuilddb\n\n")
 
 def getVersion():
     '''
