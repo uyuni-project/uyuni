@@ -297,7 +297,7 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
     fi
 
     if [ "$DO_MIGRATION" = "1" ]; then
-        /usr/bin/spacewalk-setup --disconnected --skip-db-population --skip-ssl-cert-generation --answer-file=/root/spacewalk-answers $PARAM_DB
+        /usr/bin/spacewalk-setup --disconnected --skip-db-population --skip-services-restart --skip-ssl-cert-generation --answer-file=/root/spacewalk-answers $PARAM_DB
         SWRET=$?
     else
         /usr/bin/spacewalk-setup --non-interactive --clear-db $PARAM_CC --answer-file=/root/spacewalk-answers $PARAM_DB
