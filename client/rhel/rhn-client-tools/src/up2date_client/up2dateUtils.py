@@ -64,8 +64,7 @@ else:
                 baseproduct = '/etc/products.d/baseproduct'
                 if os.path.exists(baseproduct):
                     bp = os.path.abspath(os.path.join(os.path.dirname(baseproduct), os.readlink(baseproduct)))
-                    provlist = ts.dbMatch('Providename', "product()")
-                    for h in provlist:
+                    for h in ts.dbMatch('Providename', "product()"):
                         if bp in h['filenames']:
                             osVersionRelease = (sstr(h['name']), sstr(h['version']), sstr(h['release']))
                             break
@@ -76,7 +75,7 @@ else:
                 else:
                     # for older SUSE versions we need to search for distribution-release
                     # package which also has /etc/SuSE-release file
-                    for h in ts.dbMatch('Providename', "distribution-release")
+                    for h in ts.dbMatch('Providename', "distribution-release"):
                         osVersionRelease = (sstr(h['name']), sstr(h['version']), sstr(h['release']))
                         if '/etc/SuSE-release' in h['filenames']:
                             break
