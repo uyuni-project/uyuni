@@ -285,6 +285,16 @@ When(/^I check "([^"]*)" in the list$/) do |arg1|
   end
 end
 
+When(/^I check checkbox with title "([^"]*)" in the list$/) do |arg1|
+  row = first(:xpath, "//tr[.//i[@title='#{arg1}']]")
+  if row.nil?
+    sleep 10
+    $stderr.puts "ERROR - try again"
+    row = first(:xpath, "//tr[.//i[@title='#{arg1}']]")
+  end
+  row.first(:xpath, ".//input[@type=\"checkbox\"]").set(true)
+end
+
 When(/^I uncheck "([^"]*)" in the list$/) do |arg1|
   within(:xpath, "//section") do
     # use div/div/div for cve audit which has two tables
