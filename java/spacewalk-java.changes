@@ -6,7 +6,7 @@ Thu Apr 20 16:04:02 CEST 2017 - kwalter@suse.com
 - fix scheduling VM deployment in future (bsc#1034289)
 - handle empty set to not produce invalid sql (bsc#1033497)
   update
-- fix SSM group pagination (bsc#1012784)
+- fix SSM group pagination (bsc#1012784, bsc#1033889)
 - create PooledExecutor with pre-filled queue (bsc#1030716)
 - make sure minion keys can only be seen/managed by appropriate
   user(bsc#1025908)
@@ -18,9 +18,9 @@ Thu Apr 20 16:04:02 CEST 2017 - kwalter@suse.com
 - Fix arch for default channels lookup (bsc#1025275)
 - Change required salt-netapi-client to >= 0.11
 - Using stream() during collection processing
-- Making salt presence timeouts configurable via rhn.conf
-- Avoid blocking synchronous calls if some minions are unreachable
-- Excludes unreachable minions from synchronous call to prevent blocking.
+- Making salt presence timeouts configurable via rhn.conf (bsc#1025761)
+- Avoid blocking synchronous calls if some minions are unreachable (bsc#1025761)
+- Excludes unreachable minions from synchronous call to prevent blocking.(bsc#1025761)
 - Fix LocalDateTimeISOAdapter to parse date string with timezone (bsc#1024966)
 - create scap files dir beforehand (bsc#1029755)
 - make country, state/province and city searchable for system location
@@ -75,7 +75,7 @@ Thu Apr 20 16:04:02 CEST 2017 - kwalter@suse.com
 - Authorize parent salt-ssh key on proxy
 - java backend for salt ssh-push through proxy
 - Avoid deadlock with spacewalk-repo-sync (bsc#1022530)
-- fix NPE when no SUSE Product was found for an installed product
+- fix NPE when no SUSE Product was found for an installed product (bsc#1029840)
 - keep organization after migrating a system to salt (bsc#1026301)
 - Fix: glob only for noarch rpm(s)
 - Feat: dinamically detect deployed CA cert
