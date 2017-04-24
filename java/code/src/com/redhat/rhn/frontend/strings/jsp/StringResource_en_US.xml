@@ -10638,7 +10638,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Leave blank for automatic key generation. Note that the prefix is an indication of the @@PRODUCT_NAME@@ organization the key is associated with.</source>
         </trans-unit>
         <trans-unit id="activation-key.jsp.allowed-values">
-          <source>Activation key can contains only numbers [0-9], letters [a-z A-Z], '-' and '_'</source>
+          <source>Activation key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source>
         </trans-unit>
         <trans-unit id="activation-key.jsp.edit-basechannel-tooltip">
           <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE provided channel that corresponds to their installed version of SUSE Linux. You may also choose particular SUSE provided channels or custom base channels here, but please note if a system using this key is not compatible with the selected channel, it will fall back to its SUSE default channel.</source>

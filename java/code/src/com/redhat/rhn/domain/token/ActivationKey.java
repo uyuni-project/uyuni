@@ -492,6 +492,6 @@ public class ActivationKey extends BaseDomainHelper {
      * @return boolean flag true if the activation key is valid,
      */
     public static boolean isValid(String value) {
-        return value.matches("[a-zA-Z0-9_-]+");
+        return value.matches("([a-zA-Z0-9-_.]+)");
     }
 }
