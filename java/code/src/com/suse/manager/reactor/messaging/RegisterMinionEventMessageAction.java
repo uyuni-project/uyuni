@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging;
 
+import static com.suse.manager.webui.controllers.utils.ContactMethodUtil.isSSHPushContactMethod;
 import static java.util.Optional.ofNullable;
 
 import com.redhat.rhn.common.messaging.EventMessage;
@@ -278,7 +279,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setLastBoot(System.currentTimeMillis() / 1000);
             server.setCreated(new Date());
             server.setModified(server.getCreated());
-            server.setContactMethod(getContactMethod(activationKey, isSaltSSH));
+            server.setContactMethod(getContactMethod(activationKey, isSaltSSH, minionId));
+
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
@@ -428,13 +430,22 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     }
 
     private ContactMethod getContactMethod(Optional<ActivationKey> activationKey,
-            boolean isSshPush) {
+            boolean isSshPush,
+            String minionId) {
         return Opt.fold(
                 activationKey,
                 () -> isSshPush ?
                         ServerFactory.findContactMethodByLabel("ssh-push") :
                         ServerFactory.findContactMethodByLabel("default"),
-                ak -> ak.getContactMethod()
+                ak -> {
+                    if (!isSshPush && isSSHPushContactMethod(ak.getContactMethod())) {
+                        LOG.info("Contact method changed from ssh-push to default for " +
+                                "minion id " + minionId + ". Please use webui " +
+                                "for salt-ssh minions.");
+                        return ServerFactory.findContactMethodByLabel("default");
+                    }
+                    return ak.getContactMethod();
+                }
         );
     }
 
