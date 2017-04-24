@@ -32,6 +32,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +50,7 @@ public class CVEAuditController {
 
     private static final Gson GSON = new GsonBuilder().create();
 
-    private static Logger log = Logger.getLogger(ImageBuildController.class);
+    private static Logger log = Logger.getLogger(CVEAuditController.class);
 
     private CVEAuditController() { }
 
@@ -172,12 +173,12 @@ public class CVEAuditController {
                 .map(PatchStatus::valueOf).collect(Collectors.toList()));
         CVEAuditRequest cveAuditRequest = new CVEAuditRequest(cveIdentifier, statuses,
                 target);
-        List<CVEAuditSystem> cveAuditSystems = null;
+        List<CVEAuditSystem> cveAuditSystems = Collections.emptyList();
         try {
             cveAuditSystems = handleRequest(cveAuditRequest, user);
         }
         catch (UnknownCVEIdentifierException e) {
-            return e.getMessage();
+            log.warn("Unknown CVE Identifier '" + cveIdentifier + "'");
         }
         String result = cveAuditSystems.stream().map(
                 system -> "" + system.getPatchStatus() + "," + system.getName() + "," +
