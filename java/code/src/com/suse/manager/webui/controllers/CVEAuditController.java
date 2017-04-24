@@ -168,17 +168,27 @@ public class CVEAuditController {
     public static Object cveAuditCSV(Request req, Response res, User user) {
         String cveIdentifier = req.queryParams("cveIdentifier");
         AuditTarget target = AuditTarget.valueOf(req.queryParams("target"));
-        EnumSet<PatchStatus> statuses = EnumSet.copyOf(Stream.of(
+        List<PatchStatus> psList = Stream.of(
                 req.queryParams("statuses").split(","))
-                .map(PatchStatus::valueOf).collect(Collectors.toList()));
-        CVEAuditRequest cveAuditRequest = new CVEAuditRequest(cveIdentifier, statuses,
-                target);
+                .flatMap(ps -> {
+                    try {
+                        return Stream.of(PatchStatus.valueOf(ps));
+                    }
+                    catch (IllegalArgumentException e) {
+                        return Stream.empty();
+                    }
+                }).collect(Collectors.toList());
         List<CVEAuditSystem> cveAuditSystems = Collections.emptyList();
-        try {
-            cveAuditSystems = handleRequest(cveAuditRequest, user);
-        }
-        catch (UnknownCVEIdentifierException e) {
-            log.warn("Unknown CVE Identifier '" + cveIdentifier + "'");
+        if (!psList.isEmpty()) {
+            EnumSet<PatchStatus> statuses = EnumSet.copyOf(psList);
+            CVEAuditRequest cveAuditRequest = new CVEAuditRequest(cveIdentifier, statuses,
+                    target);
+            try {
+                cveAuditSystems = handleRequest(cveAuditRequest, user);
+            }
+            catch (UnknownCVEIdentifierException e) {
+                log.warn("Unknown CVE Identifier '" + cveIdentifier + "'");
+            }
         }
         String result = cveAuditSystems.stream().map(
                 system -> "" + system.getPatchStatus() + "," + system.getName() + "," +
@@ -186,9 +196,8 @@ public class CVEAuditController {
         ).collect(Collectors.joining("\n",
                 "Patch Status,System Name,Patch Advisory,Channel Name\n", ""));
         res.header("Content-Disposition", "attachment; filename=\"" +
-                cveAuditRequest.cveIdentifier + ".csv\"");
+                cveIdentifier + ".csv\"");
         res.raw().setContentType("application/csv");
         return result;
     }
-
 }
