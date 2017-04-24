@@ -81,6 +81,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     private static final String MINION_ID = "suma3pg.vagrant.local";
     private static final String MACHINE_ID = "003f13081ddd408684503111e066f921";
+    private static final String SSH_PUSH_CONTACT_METHOD = "ssh-push";
+    private static final String DEFAULT_CONTACT_METHOD = "default";
 
     @FunctionalInterface
     private interface ExpectationsFunction {
@@ -92,7 +94,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @FunctionalInterface
     private interface ActivationKeySupplier {
 
-        String get() throws Exception;
+        String get(String contactMethod) throws Exception;
     }
 
     @FunctionalInterface
@@ -116,7 +118,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
             } };
 
-    private ActivationKeySupplier ACTIVATION_KEY_SUPPLIER = () -> {
+    private ActivationKeySupplier ACTIVATION_KEY_SUPPLIER = (contactMethod) -> {
         Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         key.setBaseChannel(baseChannel);
@@ -126,6 +128,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ).forEach(blacklisted ->
                 key.addPackage(PackageFactory.lookupOrCreatePackageByName(blacklisted), null)
         );
+        key.setContactMethod(ServerFactory.findContactMethodByLabel(contactMethod));
         key.addPackage(PackageFactory.lookupOrCreatePackageByName("vim"), null);
         ManagedServerGroup testGroup = ServerGroupFactory.create(
                 "TestGroup", "group for tests", user.getOrg());
@@ -177,7 +180,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
     };
 
-
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
@@ -194,17 +196,18 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         executeTest(
                 SLES_EXPECTATIONS,
                 ACTIVATION_KEY_SUPPLIER,
-                SLES_ASSERTIONS);
+                SLES_ASSERTIONS,
+                DEFAULT_CONTACT_METHOD);
     }
 
-    public void executeTest(ExpectationsFunction expectations, ActivationKeySupplier keySupplier, Assertions assertions) throws Exception {
+    public void executeTest(ExpectationsFunction expectations, ActivationKeySupplier keySupplier, Assertions assertions, String contactMethod) throws Exception {
 
         // cleanup
         SaltService saltServiceMock = mock(SaltService.class);
 
         MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
 
-        String key = keySupplier != null ? keySupplier.get() : null;
+        String key = keySupplier != null ? keySupplier.get(contactMethod) : null;
 
         // Register a minion via RegisterMinionAction and mocked SaltService
         if (expectations != null) {
@@ -241,7 +244,25 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             history.addAll(minion.getHistory());
             Collections.sort(history, (h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
             assertEquals(history.get(history.size()-1).getSummary(), "Server reactivated as Salt minion");
-        });
+        }, DEFAULT_CONTACT_METHOD);
+    }
+
+    public void testChangeContactMethodRegisterMinion() throws Exception {
+        ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        Server server = ServerTestUtils.createTestSystem(user);
+        server.setMachineId(MACHINE_ID);
+        ServerFactory.save(server);
+        SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (minion, machineId, key) -> {
+            SLES_ASSERTIONS.accept(minion, machineId, key);
+            assertEquals(server.getId(), minion.getId());
+            assertEquals(minion.getContactMethod().getLabel(), DEFAULT_CONTACT_METHOD);
+            List<ServerHistoryEvent> history = new ArrayList<>();
+            history.addAll(minion.getHistory());
+            Collections.sort(history, (h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
+            assertEquals(history.get(history.size()-1).getSummary(), "Server reactivated as Salt minion");
+        }, SSH_PUSH_CONTACT_METHOD);
     }
 
     public void testReRegisterTraditionalAsMinionInvalidActKey() throws Exception {
@@ -356,7 +377,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals("7Server", minion.getRelease());
 
                     assertNull(minion.getBaseChannel());
-                });
+                }, DEFAULT_CONTACT_METHOD);
     }
 
     public void testRegisterRHELMinionWithRESActivationKey() throws Exception {
@@ -386,7 +407,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             readFile("dummy_packages_redhatprodinfo_rhel.json")))));
 
                 }},
-                () -> {
+                (DEFAULT_CONTACT_METHOD) -> {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
                     key.setBaseChannel(resChannel);
                     key.setOrg(user.getOrg());
@@ -398,7 +419,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
                     assertNotNull(minion.getBaseChannel());
                     assertEquals("RES", minion.getBaseChannel().getProductName().getName());
-                });
+                }, DEFAULT_CONTACT_METHOD);
     }
 
     public void testRegisterRESMinionWithoutActivationKey() throws Exception {
@@ -434,7 +455,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     // base channel check
                     assertNotNull(minion.getBaseChannel());
                     assertEquals("RES", minion.getBaseChannel().getProductName().getName());
-                });
+                }, DEFAULT_CONTACT_METHOD);
     }
 
     private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,
