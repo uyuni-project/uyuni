@@ -183,10 +183,10 @@ public class CVEAuditController {
                 system -> "" + system.getPatchStatus() + "," + system.getName() + "," +
                         system.getPatchAdvisory() + "," + system.getChannelName()
         ).collect(Collectors.joining("\n",
-                "Patch Status,System Name,Patch Advisory,Channel Name", ""));
+                "Patch Status,System Name,Patch Advisory,Channel Name\n", ""));
         res.header("Content-Disposition", "attachment; filename=\"" +
                 cveAuditRequest.cveIdentifier + ".csv\"");
-        res.type("text/html;charset=UTF-8");
+        res.raw().setContentType("application/csv");
         return result;
     }
 
