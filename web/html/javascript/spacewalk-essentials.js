@@ -315,7 +315,7 @@ $(document).ready(function() {
 * Check if the field contains the allowed values only
 */
 $(document).on('keyup change', '.activationKey-check', function(e) {
-  if ($(this).val().match(/[^a-zA-Z0-9_-]/g)) {
+  if ($(this).val().match(/([^a-zA-Z0-9-_.])/g)) {
     $(this).parent().addClass('has-error');
   }
   else {
