@@ -65,7 +65,7 @@ public class SmtpMail implements Mail {
 
         Config c = Config.get();
         smtpHost = c.getString(ConfigDefaults.WEB_SMTP_SERVER, "localhost");
-        String from = c.getString(ConfigDefaults.WEB_DEFAULT_MAIL_FROM);
+        String from = c.getString(ConfigDefaults.WEB_DEFAULT_MAIL_FROM, "root@localhost");
 
         // Get system properties
         Properties props = System.getProperties();
