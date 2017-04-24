@@ -245,31 +245,39 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         }
     }
 
-    public void testActivationKeyValidationTrue() {
-        List<String> keys = new LinkedList<String>();
-        keys.add("1234567890");
-        keys.add("ABCdefGHI");
-        keys.add("a-1-b-2-C_D_E");
-        keys.add("-_");
-        keys.add("--11__22--aa__BB");
-        for (String key: keys) {
-            System.out.println("test-key:" + key +
+    // Allowed values: numbers, upper and lower case letters, '-', '_' and '.'
+    public void testActivationKeyValidation() {
+        List<String> validKeys = new LinkedList<>();
+        validKeys.add("1234567890");
+        validKeys.add("ABCdefGHI");
+        validKeys.add(".........");
+        validKeys.add("---------");
+        validKeys.add("_________");
+        validKeys.add("a-1-b-2-C_D_E");
+        validKeys.add("-_");
+        validKeys.add("--11__22--aa__BB..Cd34");
+        validKeys.add("a-1-b-2-C_D_E.fgh.ijk");
+        System.out.println("VALID KEYS:");
+        for (String key: validKeys) {
+            System.out.println("test-key: " + key +
                     "; validation: " + ActivationKey.isValid(key));
             assertTrue(ActivationKey.isValid(key));
         }
-    }
 
-    public void testActivationKeyValidationFalse() {
-        List<String> keys = new LinkedList<String>();
-        keys.add("123,456");
-        keys.add("abcde+fgh");
-        keys.add("q=w=e;r");
-        keys.add("1#2:a:b");
-        keys.add("1$2:a-b");
-        keys.add("1@2!a)*(b");
-        keys.add("<key>");
-        for (String key: keys) {
-            System.out.println("test-key:" + key +
+        List<String> invalidKeys = new LinkedList<>();
+        invalidKeys.add("123,456.7-8_9");
+        invalidKeys.add("@#!~!$%*(%&^");
+        invalidKeys.add("%%%");
+        invalidKeys.add("++++");
+        invalidKeys.add("abcde+fgh");
+        invalidKeys.add("q=w=e;r");
+        invalidKeys.add("1#2:a:b");
+        invalidKeys.add("1$2:a-b.c");
+        invalidKeys.add("1@2!a)*(b");
+        invalidKeys.add("<key>");
+        System.out.println("INVALID KEYS:");
+        for (String key: invalidKeys) {
+            System.out.println("test-key: " + key +
                     "; validation: " + ActivationKey.isValid(key));
             assertFalse(ActivationKey.isValid(key));
         }
