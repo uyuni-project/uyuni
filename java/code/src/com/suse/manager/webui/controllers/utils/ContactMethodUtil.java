@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.controllers.utils;
 
+import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 
 import java.util.Optional;
@@ -43,6 +44,15 @@ public class ContactMethodUtil {
                 .map(key -> key.getContactMethod())
                 .map(method -> method.getLabel())
                 .orElse(defaultContactMethod);
+    }
+
+    /**
+     * Returns true if contact method is ssh-push or ssh-push-default
+     * @param  cm contact method
+     * @return true if contact method is ssh-push or ssh-push-default
+     */
+    public static boolean isSSHPushContactMethod(ContactMethod cm) {
+        return cm.getLabel().equals(SSH_PUSH) || cm.getLabel().equals(SSH_PUSH_TUNNEL);
     }
 
     /**
