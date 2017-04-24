@@ -20,7 +20,7 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I follow "Packages"
   And I enter "orion-dummy perseus-dummy" as "packages"
   And I click on "Update Key"
-  Then I should see a "Activation key Minion testing has been modified" text
+  Then I should see a "Activation key Docker testing has been modified" text
 
   Scenario: Assign to the sles-minion the property container build host 
   Given I am on the Systems overview page of this "sle-minion"
