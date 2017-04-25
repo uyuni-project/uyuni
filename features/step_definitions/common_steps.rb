@@ -130,3 +130,11 @@ end
 Then(/^I wont see any of the valid child channels$/) do
   step %(I wont get "test-channel-#{arch}-child-channel")
 end
+
+Then(/^I create mock initrd if download fails$/) do
+   # sometimes the download via sumaform fails. we create a fake empty img.
+   # for current testing this is enough.
+   initrd = "/install/Fedora_12_i386/images/pxeboot/initrd.img"
+   _out, code = $server.run("test -f #{initrd}", false)
+   $server.run("touch #{initrd}") if code.nonzero?
+end
