@@ -134,4 +134,3 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I click on "submit-btn"
   And I wait for "5" seconds
   Then I should see a "GUI_BUILDED_IMAGE" text 
-  And I should see a "a few seconds ago" text
