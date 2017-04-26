@@ -5,8 +5,6 @@ require 'cucumber/rake/task'
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 
 outputfile = 'output.html'
-json_result = '--format json -o .output.json'
-junit_result = '--format junit -o junit_results'
 html_results = "--format pretty --format html -o #{outputfile}"
 
 Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
