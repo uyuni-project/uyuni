@@ -51,7 +51,8 @@ from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutE
 from urlgrabber.grabber import URLGrabError
 
 from spacewalk.common import fileutils, checksum
-from spacewalk.satellite_tools.repo_plugins import ContentPackage, get_proxies
+from spacewalk.satellite_tools.download import get_proxies
+from spacewalk.satellite_tools.repo_plugins import ContentPackage
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.common import rhnLog
