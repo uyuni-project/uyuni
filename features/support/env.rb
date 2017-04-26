@@ -107,7 +107,7 @@ Capybara.run_server = false
 After do |scenario|
   if scenario.failed?
     encoded_img = page.driver.render_base64(:png, :full => true)
-    embed_image("data:image/png;base64,#{encoded_img}", 'image/png')
+    embed("data:image/png;base64,#{encoded_img}", 'image/png')
   end
 end
 
