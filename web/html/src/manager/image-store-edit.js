@@ -7,6 +7,7 @@ const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
+const Utils = require("../utils/functions").Utils;
 
 const typeMap = {
     "registry": "Registry"
@@ -78,7 +79,7 @@ class CreateImageStore extends React.Component {
             "application/json"
         ).promise.then(data => {
             if(data.success) {
-                window.location = "/rhn/manager/cm/imagestores";
+                Utils.urlBounce("/rhn/manager/cm/imagestores");
             } else {
                 this.setState({
                     messages: <Messages items={data.messages.map(msg => {
@@ -100,7 +101,7 @@ class CreateImageStore extends React.Component {
             "application/json"
         ).promise.then(data => {
             if(data.success) {
-                window.location = "/rhn/manager/cm/imagestores";
+                Utils.urlBounce("/rhn/manager/cm/imagestores");
             } else {
                 this.setState({
                     messages: <Messages items={data.messages.map(msg => {
