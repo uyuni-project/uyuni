@@ -259,33 +259,6 @@ public enum SaltServerActionService {
         }
     }
 
-    private Map<LocalCall<?>, List<MinionServer>> nonZypperErrataAction(
-            List<MinionServer> minions,
-            Set<Long> errataIds) {
-        Set<Long> serverIds = minions.stream()
-                .map(MinionServer::getId)
-                .collect(Collectors.toSet());
-        Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory
-                .listErrataNamesForServers(serverIds, errataIds);
-        // Group targeted minions by errata names
-        Map<Set<String>, List<MinionServer>> collect = minions.stream()
-                .collect(Collectors.groupingBy(minion -> errataNames.get(minion.getId())
-                        .entrySet().stream()
-                        .map(Map.Entry::getValue)
-                        .flatMap(Set::stream)
-                        .collect(Collectors.toSet())
-        ));
-        // Convert errata names to LocalCall objects of type State.apply
-        return collect.entrySet().stream()
-                .collect(Collectors.toMap(entry -> State.apply(
-                        Arrays.asList(PACKAGES_PATCHINSTALL),
-                        Optional.of(Collections.singletonMap(PARAM_PATCHES,
-                                entry.getKey())),
-                        Optional.of(true)
-                ),
-                Map.Entry::getValue));
-    }
-
     /**
      * This function will return a map with list of minions grouped by the
      * salt netapi local call that executes what needs to be executed on
@@ -296,28 +269,6 @@ public enum SaltServerActionService {
      * @return minions grouped by local call
      */
     public Map<LocalCall<?>, List<MinionServer>> errataAction(List<MinionServer> minions,
-            Set<Long> errataIds) {
-        Map<Boolean, List<MinionServer>> zyppNonZypp = minions.stream().collect(
-                Collectors.partitioningBy(
-                        m -> PackageFactory.lookupByNameAndServer("zypper", m) != null
-                )
-        );
-
-        List<MinionServer> zypperMinions = zyppNonZypp.get(true);
-        List<MinionServer> nonZypperMinions = zyppNonZypp.get(false);
-
-        Map<LocalCall<?>, List<MinionServer>> patchInstalls =
-                zypperErrataAction(zypperMinions, errataIds);
-        Map<LocalCall<?>, List<MinionServer>> packageInstalls =
-                nonZypperErrataAction(nonZypperMinions, errataIds);
-        return Stream.concat(
-                patchInstalls.entrySet().stream(),
-                packageInstalls.entrySet().stream()
-        ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    private Map<LocalCall<?>, List<MinionServer>> zypperErrataAction(
-            List<MinionServer> minions,
             Set<Long> errataIds) {
         Set<Long> serverIds = minions.stream()
                 .map(MinionServer::getId)
