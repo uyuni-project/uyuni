@@ -8,6 +8,7 @@ const Network = require("../utils/network");
 const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
 const Validation = require("../components/validation");
+const Utils = require("../utils/functions").Utils;
 
 const typeMap = {
     "dockerfile": { name: "Dockerfile", storeType: "registry" }
@@ -70,6 +71,10 @@ class CreateImageProfile extends React.Component {
                 window.location = "/rhn/manager/cm/imageprofiles/create";
             }
         });
+    }
+
+    getBounceUrl() {
+        return encodeURIComponent("/rhn/manager/cm/imageprofiles/" + (this.isEdit() ? "edit/" + profileId : "create"));
     }
 
     getChannels(token) {
@@ -143,7 +148,7 @@ class CreateImageProfile extends React.Component {
             "application/json"
         ).promise.then(data => {
             if(data.success) {
-                window.location = "/rhn/manager/cm/imageprofiles";
+                Utils.urlBounce("/rhn/manager/cm/imageprofiles");
             } else {
                 this.setState({
                     messages: <Messages items={data.messages.map(msg => {
@@ -167,7 +172,7 @@ class CreateImageProfile extends React.Component {
             "application/json"
         ).promise.then(data => {
             if(data.success) {
-                window.location = "/rhn/manager/cm/imageprofiles";
+                Utils.urlBounce("/rhn/manager/cm/imageprofiles");
             } else {
                 this.setState({
                     messages: <Messages items={data.messages.map(msg => {
@@ -211,7 +216,7 @@ class CreateImageProfile extends React.Component {
                 return [
                     <Input.Select name="imageStore" label={t("Target Image Store")} required
                             labelClass="col-md-3" divClass="col-md-6" invalidHint={
-                                <span>Target Image Store is required.&nbsp;<a href="/rhn/manager/cm/imagestores/create">Create a new one</a>.</span>
+                                <span>Target Image Store is required.&nbsp;<a href={"/rhn/manager/cm/imagestores/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>
                             }
                     >
                       <option value="" disabled key="0">{t("Select an image store")}</option>
