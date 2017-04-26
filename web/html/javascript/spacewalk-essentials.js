@@ -71,23 +71,40 @@ function sstScrollBehavior() {
 // when the page scrolls down and the toolbar is going up and hidden,
 // the toolbar takes a fixed place right below the header bar
 function handleSst() {
-  const sst = $('.spacewalk-section-toolbar');
-  if (sst.length > 0) {
-    const adjustSpaceObject = $('<div>').height(sst.outerHeight());
-    var fixedTop = sst.offset().top;
+  var sst = $('.spacewalk-section-toolbar');
+  // if there is no 'spacewalk-section-toolbar', then create it
+  if (sst.length == 0) {
+    sst = $('<div class="spacewalk-section-toolbar">');
+    $('.spacewalk-list.list').before(sst);
+  }
+  var actionButtonWrapper = $('.action-button-wrapper');
+  if (actionButtonWrapper.length == 0) {
+    sst.append('<div class="action-button-wrapper">');
+  }
 
-    // override the empty function hooked on window.scroll event
-    sstScrollBehavior = function() {
-      var currentScroll = $(window).scrollTop();
-      if (currentScroll >= fixedTop) {
-        sst.after(adjustSpaceObject);
-        $(sst).addClass('fixed');
-      } else {
-        $(sst).removeClass('fixed');
-        adjustSpaceObject.remove();
-      }
-      sstStyle();
+  // move all buttons in the panel-footer of the list/table
+  // into the 'spacewalk-section-toolbar'
+  $('.panel-footer > .spacewalk-list-footer-addons > ' +
+    '.spacewalk-list-footer-addons-extra > .spacewalk-list-selection-btns > button').each(function() {
+    sst.children('.action-button-wrapper').prepend($(this));
+  });
+  // move the pagination into the 'spacewalk-section-toolbar'
+  sst.append($('.spacewalk-list-top-addons .spacewalk-list-pagination'));
+
+  const adjustSpaceObject = $('<div>').height(sst.outerHeight());
+  var fixedTop = sst.offset().top;
+
+  // override the empty function hooked on window.scroll event
+  sstScrollBehavior = function() {
+    var currentScroll = $(window).scrollTop();
+    if (currentScroll >= fixedTop) {
+      sst.after(adjustSpaceObject);
+      $(sst).addClass('fixed');
+    } else {
+      $(sst).removeClass('fixed');
+      adjustSpaceObject.remove();
     }
+    sstStyle();
   }
 }
 

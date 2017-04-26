@@ -1058,11 +1058,28 @@ time:hover {
 }
 
 .spacewalk-section-toolbar {
-  padding: .7em 0;
   overflow: auto;
   .action-button-wrapper {
     float: right;
     overflow: auto;
+  }
+  button, input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 2px;
+    width: auto;
+  }
+  .btn-group {
+    button, input {
+      margin-right: 0px;
+    }
+  }
+  .spacewalk-list-pagination {
+    display: inline-block;
+    margin: 1.2em 0;
+    .spacewalk-list-pagination-btns {
+      padding-left: .5em;
+    }
   }
 }
 .spacewalk-section-toolbar.fixed {
