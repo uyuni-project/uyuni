@@ -15,7 +15,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager for a salt minion
     And I enter "/usr/share/openscap/scap-yast2sec-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
-    And I wait for "5" seconds
+    And I wait for "30" seconds
     And I wait for the openSCAP audit to finish
 
   Scenario: Check results of the audit job on the minion
