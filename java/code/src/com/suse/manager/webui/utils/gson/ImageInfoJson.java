@@ -44,7 +44,8 @@ public class ImageInfoJson {
     private JsonObject profile;
     private JsonObject store;
     private JsonObject buildServer;
-    private JsonObject action;
+    private JsonObject buildAction;
+    private JsonObject inspectAction;
     private ChannelsJson channels;
     private InstalledProductsJson installedProducts;
     private Map<String, String> customData;
@@ -177,30 +178,29 @@ public class ImageInfoJson {
     /**
      * @return the build action
      */
-    public JsonObject getAction() {
-        return action;
+    public JsonObject getBuildAction() {
+        return buildAction;
     }
 
     /**
-     * @param actionIn the build action
+     * @param action the build action
      */
-    public void setAction(ServerAction actionIn) {
-        if (actionIn == null) {
-            this.action = null;
-            return;
-        }
+    public void setBuildAction(ServerAction action) {
+        this.buildAction = jsonFromServerAction(action);
+    }
 
-        ViewHelper vh = ViewHelper.getInstance();
+    /**
+     * @return the inspect action
+     */
+    public JsonObject getInspectAction() {
+        return inspectAction;
+    }
 
-        JsonObject json = new JsonObject();
-        json.addProperty("id", actionIn.getParentAction().getId());
-        json.addProperty("name", actionIn.getParentAction().getName());
-        json.addProperty("status", actionIn.getStatus().getId());
-        json.addProperty("pickup_time", actionIn.getPickupTime() != null ?
-                vh.renderDate(actionIn.getPickupTime()) : null);
-        json.addProperty("completion_time", actionIn.getCompletionTime() != null ?
-                vh.renderDate(actionIn.getCompletionTime()) : null);
-        this.action = json;
+    /**
+     * @param action the inspect action
+     */
+    public void setInspectAction(ServerAction action) {
+        this.inspectAction = jsonFromServerAction(action);
     }
 
     /**
@@ -313,7 +313,8 @@ public class ImageInfoJson {
         json.setProfile(imageOverview.getProfile());
         json.setStore(imageOverview.getStore());
         json.setBuildServer(imageOverview.getBuildServer());
-        json.setAction(imageOverview.getAction());
+        json.setBuildAction(imageOverview.getBuildAction());
+        json.setInspectAction(imageOverview.getInspectAction());
         json.setChannels(ChannelsJson.fromChannelSet(imageOverview.getChannels()));
         json.setPatches(imageOverview.getSecurityErrata(), imageOverview.getBugErrata(),
                 imageOverview.getEnhancementErrata());
@@ -336,4 +337,26 @@ public class ImageInfoJson {
 
         return json;
     }
+
+    /**
+     * @param actionIn the server action
+     */
+    private JsonObject jsonFromServerAction(ServerAction actionIn) {
+        if (actionIn == null) {
+            return null;
+        }
+
+        ViewHelper vh = ViewHelper.getInstance();
+
+        JsonObject json = new JsonObject();
+        json.addProperty("id", actionIn.getParentAction().getId());
+        json.addProperty("name", actionIn.getParentAction().getName());
+        json.addProperty("status", actionIn.getStatus().getId());
+        json.addProperty("pickup_time", actionIn.getPickupTime() != null ?
+                vh.renderDate(actionIn.getPickupTime()) : null);
+        json.addProperty("completion_time", actionIn.getCompletionTime() != null ?
+                vh.renderDate(actionIn.getCompletionTime()) : null);
+        return json;
+    }
+
 }

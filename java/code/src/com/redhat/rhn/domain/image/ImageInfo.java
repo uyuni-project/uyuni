@@ -16,7 +16,7 @@ package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
-import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.org.Org;
@@ -34,7 +34,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -59,8 +58,8 @@ public class ImageInfo extends BaseDomainHelper {
     private ImageProfile profile;
     private ImageStore store;
     private MinionServer buildServer;
-    private ImageBuildAction action;
-    private ServerAction serverAction;
+    private ImageBuildAction buildAction;
+    private ImageInspectAction inspectAction;
     private Set<ImageInfoCustomDataValue> customDataValues = new HashSet<>();
     private Set<Channel> channels = new HashSet<>();
     private Set<ImagePackage> packages = new HashSet<>();
@@ -154,30 +153,32 @@ public class ImageInfo extends BaseDomainHelper {
      * @return the build action
      */
     @OneToOne
-    @JoinColumn(name = "action_id")
-    public ImageBuildAction getAction() {
-        return action;
+    @JoinColumn(name = "build_action_id")
+    public ImageBuildAction getBuildAction() {
+        return buildAction;
     }
 
     /**
      * @param actionIn the build action
      */
-    public void setAction(ImageBuildAction actionIn) {
-        this.action = actionIn;
+    public void setBuildAction(ImageBuildAction actionIn) {
+        this.buildAction = actionIn;
     }
 
     /**
-     * @return the build serverAction
+     * @return the inspect action
      */
-    @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "action_id", referencedColumnName = "action_id",
-                    insertable = false, updatable = false),
-            @JoinColumn(name = "build_server_id", referencedColumnName = "server_id",
-                    insertable = false, updatable = false)
-    })
-    public ServerAction getServerAction() {
-        return serverAction;
+    @OneToOne
+    @JoinColumn(name = "inspect_action_id")
+    public ImageInspectAction getInspectAction() {
+        return inspectAction;
+    }
+
+    /**
+     * @param actionIn the inspect action
+     */
+    public void setInspectAction(ImageInspectAction actionIn) {
+        this.inspectAction = actionIn;
     }
 
     /**
@@ -272,13 +273,6 @@ public class ImageInfo extends BaseDomainHelper {
      */
     public void setBuildServer(MinionServer buildServerIn) {
         this.buildServer = buildServerIn;
-    }
-
-    /**
-     * @param actionIn build serverAction to set
-     */
-    public void setServerAction(ServerAction actionIn) {
-        this.serverAction = actionIn;
     }
 
     /**

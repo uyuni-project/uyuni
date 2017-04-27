@@ -18,7 +18,8 @@ const DateTime = require("../components/datetime").DateTime;
 
 const msgMap = {
   "not_found": t("Image cannot be found."),
-  "delete_success": t("Image profile has been deleted.")
+  "delete_success": t("Image info has been deleted."),
+  "inspect_scheduled": t("Image inspect has been rescheduled.")
 };
 
 const hashUrlRegex = /^#\/([^\/]*)\/(\d*)$/;
@@ -37,7 +38,7 @@ class ImageView extends React.Component {
 
   constructor(props) {
     super(props);
-    ["reloadData", "handleBackAction", "handleDetailsAction", "deleteImage"]
+    ["reloadData", "handleBackAction", "handleDetailsAction", "deleteImage", "inspectImage"]
         .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
@@ -127,6 +128,27 @@ class ImageView extends React.Component {
     }).promise;
   }
 
+  inspectImage(id, earliest) {
+    return Network.post("/rhn/manager/api/cm/images/inspect/" + id,
+            JSON.stringify({imageId: id, earliest: earliest}),
+            "application/json").promise.then(data => {
+        if (data.success) {
+            this.setState({
+                messages: <Messages items={data.messages.map(msg => {
+                    return {severity: "info", text: msgMap[msg]};
+                })}/>
+            });
+            this.reloadData();
+        } else {
+            this.setState({
+                messages: <Messages items={state.messages.map(msg => {
+                    return {severity: "error", text: msgMap[msg]};
+                })}/>
+            });
+        }
+    }).promise;
+  }
+
   render() {
     const panelButtons = <div className="pull-right btn-group">
       <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
@@ -137,7 +159,7 @@ class ImageView extends React.Component {
         <Panel title={this.state.selected ? this.state.selected.name : t("Images")} icon={this.state.selected ? "fa-hdd-o" : "fa-list"} button={ panelButtons }>
           {this.state.messages}
           { this.state.selected ?
-              <ImageViewDetails data={this.state.selected} onTabChange={() => this.updateView(getHashId(), getHashTab())} onCancel={this.handleBackAction}/>
+              <ImageViewDetails data={this.state.selected} onTabChange={() => this.updateView(getHashId(), getHashTab())} onCancel={this.handleBackAction} onInspect={this.inspectImage.bind(this)}/>
           :
               <ImageViewList data={this.state.images} onSelect={this.handleDetailsAction} onDelete={this.deleteImage}/>
           }
@@ -330,7 +352,7 @@ class ImageViewDetails extends React.Component {
                 initialActiveTabHash={window.location.hash}
                 onTabHashChange={this.onTabChange}
                 tabs={[
-                    <ImageViewOverview data={data}/>,
+                    <ImageViewOverview data={data} onInspect={this.props.onInspect}/>,
                     <ImageViewPatches data={data}/>,
                     <ImageViewPackages data={data}/>
                     ]}
