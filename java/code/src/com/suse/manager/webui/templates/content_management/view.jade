@@ -8,6 +8,8 @@ script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
     const imageId = "#{id}";
     const isAdmin = #{isAdmin};
+    const timezone = "#{h.renderTimezone()}";
+    const localTime = "#{h.renderLocalTime()}";
 
 +userPreferences
 script(src='/javascript/manager/image-view.bundle.js', type='text/javascript')

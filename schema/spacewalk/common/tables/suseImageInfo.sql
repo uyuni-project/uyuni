@@ -29,7 +29,8 @@ CREATE TABLE suseImageInfo
                      CONSTRAINT suse_imginfo_oid_fk
                        REFERENCES web_customer (id)
                        ON DELETE CASCADE,
-    action_id      NUMBER,
+    build_action_id     NUMBER,
+    inspect_action_id   NUMBER,
     profile_id     NUMBER
                      CONSTRAINT suse_imginfo_pid_fk
                        REFERENCES suseImageProfile (profile_id)
@@ -46,7 +47,9 @@ CREATE TABLE suseImageInfo
                      DEFAULT (current_timestamp) NOT NULL,
     modified       timestamp with local time zone
                      DEFAULT (current_timestamp) NOT NULL,
-    CONSTRAINT suse_imginfo_aid_fk FOREIGN KEY (action_id, build_server_id)
+    CONSTRAINT suse_imginfo_aid_fk FOREIGN KEY (build_action_id, build_server_id)
+        REFERENCES rhnServerAction (action_id, server_id) ON DELETE SET NULL,
+    CONSTRAINT suse_imginfo_aid_insp_fk FOREIGN KEY (inspect_action_id, build_server_id)
         REFERENCES rhnServerAction (action_id, server_id) ON DELETE SET NULL
 )
 ENABLE ROW MOVEMENT

@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.image.test;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
@@ -37,6 +38,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -57,6 +59,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
+import static com.redhat.rhn.testing.ImageTestUtils.createImageInfo;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
@@ -67,11 +70,12 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         setThreadingPolicy(new Synchroniser());
     }};
 
+    private static TaskomaticApi taskomaticApi;
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
-
     }
 
     public final void testConvertChecksum() {
@@ -142,9 +146,9 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     }
 
     public final void testList() throws Exception {
-        ImageInfo img1 = ImageTestUtils.createImageInfo("myimage1", "1.0.0", user);
-        ImageInfo img2 = ImageTestUtils.createImageInfo("myimage1", "2.0.0", user);
-        ImageInfo img3 = ImageTestUtils.createImageInfo("myimage2", "1.0.0", user);
+        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
+        ImageInfo img2 = createImageInfo("myimage1", "2.0.0", user);
+        ImageInfo img3 = createImageInfo("myimage2", "1.0.0", user);
 
         List<ImageInfo> result = ImageInfoFactory.list();
 
@@ -163,9 +167,9 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
 
-        ImageInfo img1 = ImageTestUtils.createImageInfo("myimage1", "1.0.0", user);
-        ImageInfo img2 = ImageTestUtils.createImageInfo("myimage2", "1.0.0", user);
-        ImageTestUtils.createImageInfo("myimage1", "1.0.0", foreignUser);
+        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
+        ImageInfo img2 = createImageInfo("myimage2", "1.0.0", user);
+        createImageInfo("myimage1", "1.0.0", foreignUser);
 
         List<ImageInfo> result = ImageInfoFactory.listImageInfos(user.getOrg());
 
@@ -181,9 +185,9 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
 
-        ImageInfo img1 = ImageTestUtils.createImageInfo("myimage1", "1.0.0", user);
-        ImageInfo img2 = ImageTestUtils.createImageInfo("myimage2", "1.0.0", user);
-        ImageTestUtils.createImageInfo("myimage1", "1.0.0", foreignUser);
+        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
+        ImageInfo img2 = createImageInfo("myimage2", "1.0.0", user);
+        createImageInfo("myimage1", "1.0.0", foreignUser);
 
         List<ImageOverview> result = ImageInfoFactory.listImageOverviews(user.getOrg());
 
@@ -202,7 +206,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     }
 
     public final void testLookupById() {
-        ImageInfo image = ImageTestUtils.createImageInfo("myimage", "1.0.0", user);
+        ImageInfo image = createImageInfo("myimage", "1.0.0", user);
 
         ImageInfo result = ImageInfoFactory.lookupById(image.getId()).get();
         assertEquals(image, result);
@@ -212,7 +216,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
 
-        ImageInfo image = ImageTestUtils.createImageInfo("myimage", "1.0.0", user);
+        ImageInfo image = createImageInfo("myimage", "1.0.0", user);
 
         ImageInfo result =
                 ImageInfoFactory.lookupByIdAndOrg(image.getId(), user.getOrg()).get();
@@ -226,7 +230,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         User foreignUser = UserTestUtils.createUser("foreign-user",
                 UserTestUtils.createOrg("foreign-org"));
 
-        ImageInfo image = ImageTestUtils.createImageInfo("myimage", "1.0.0", user);
+        ImageInfo image = createImageInfo("myimage", "1.0.0", user);
 
         ImageOverview result = ImageInfoFactory
                 .lookupOverviewByIdAndOrg(image.getId(), user.getOrg()).get();
@@ -241,7 +245,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     public final void testLookupByName() {
         ImageStore store = ImageTestUtils.createImageStore("mystore", user);
         ImageStore anotherStore = ImageTestUtils.createImageStore("myotherstore", user);
-        ImageInfo image = ImageTestUtils.createImageInfo("myimage", "1.0.0", store, user);
+        ImageInfo image = createImageInfo("myimage", "1.0.0", store, user);
 
         ImageInfo result =
                 ImageInfoFactory.lookupByName("myimage", "1.0.0", store.getId()).get();
@@ -257,13 +261,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     }
 
     public final void testScheduleBuild() throws Exception {
-        TaskomaticApi taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
-        ImageInfoFactory.setTaskomaticApi(taskomaticMock);
-
-        CONTEXT.checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
-        } });
-
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
 
         ImageStore store = createImageStore("myregistry", user);
@@ -375,5 +373,51 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         // Assertions
         assertEquals(0, info.getChannels().size());
+    }
+
+    public final void testScheduleInspect() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ImageStore store = createImageStore("myregistry", user);
+        ActivationKey key = createActivationKey(user);
+        ImageProfile profile =
+                createImageProfile("suma-3.1-base", store, key, user);
+        ImageInfo info = createImageInfo(profile, buildHost, "v1.0.0", user);
+        assertNotNull(info.getId());
+
+        try {
+            // Should not be processed because the server is not a build host yet.
+            ImageInfoFactory.scheduleInspect(info, new Date(), user);
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Server is not a build host.", e.getMessage());
+        }
+
+        assertNull(info.getInspectAction());
+
+        SystemManager.entitleServer(buildHost, EntitlementManager.CONTAINER_BUILD_HOST);
+
+        // Schedule
+        assertNotNull(ImageInfoFactory.scheduleInspect(info, new Date(), user));
+        assertNotNull(info.getInspectAction());
+        ImageInspectActionDetails details = info.getInspectAction().getDetails();
+
+        assertEquals((long) profile.getTargetStore().getId(), details.getImageStoreId());
+        assertEquals(info.getVersion(), details.getVersion());
+    }
+
+    private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
+        if (taskomaticApi == null) {
+            taskomaticApi = CONTEXT.mock(TaskomaticApi.class);
+            CONTEXT.checking(new Expectations() {
+                {
+                    allowing(taskomaticApi)
+                            .scheduleActionExecution(with(any(Action.class)));
+                }
+            });
+        }
+
+        return taskomaticApi;
     }
 }

@@ -217,7 +217,7 @@ class _InputBase extends React.Component {
         const hint = [this.props.hint, (invalidHint && this.props.hint && <br/>), invalidHint];
         return (
             <FormGroup isError={isError}>
-                <Label name={this.props.label} className={this.props.labelClass} required={this.props.required}/>
+                { this.props.label && <Label name={this.props.label} className={this.props.labelClass} required={this.props.required}/> }
                 <div className={this.props.divClass}>
                     <input className={"form-control" + (this.props.inputClass ? " " + this.props.inputClass : "")}
                             type={this.type} name={this.props.name} value={this.props.value}
@@ -303,7 +303,7 @@ class Select extends _InputBase {
         const hint = [this.props.hint, (invalidHint && this.props.hint && <br/>), invalidHint];
         return (
             <FormGroup isError={isError}>
-                <Label name={this.props.label} className={this.props.labelClass} required={this.props.required}/>
+                { this.props.label && <Label name={this.props.label} className={this.props.labelClass} required={this.props.required}/> }
                 <div className={this.props.divClass}>
                     <select className={"form-control" + (this.props.inputClass ? " " + this.props.inputClass : "")}
                             name={this.props.name} disabled={this.props.disabled} value={this.props.value}
@@ -343,7 +343,7 @@ class DateTime extends _InputBase {
         const hint = [this.props.hint, (invalidHint && this.props.hint && <br/>), invalidHint];
         return (
             <FormGroup isError={isError}>
-                <Label name={this.props.label} className={this.props.labelClass} required={this.props.required}/>
+                { this.props.label && <Label name={this.props.label} className={this.props.labelClass} required={this.props.required}/> }
                 <div className={this.props.divClass}>
                     <DateTimePicker onChange={this.setValue.bind(this)} value={this.props.value} timezone={this.props.timezone} />
                     { hint &&

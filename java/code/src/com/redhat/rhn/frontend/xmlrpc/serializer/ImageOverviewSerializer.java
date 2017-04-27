@@ -44,6 +44,13 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *              #item("completed")
  *              #item("failed")
  *            #options_end()
+ *   #prop_desc("string", "inspectStatus", "Available if the build is successful. One of:")
+ *            #options()
+ *              #item("queued")
+ *              #item("picked up")
+ *              #item("completed")
+ *              #item("failed")
+ *            #options_end()
  *   #prop("int", "buildServerId")
  *   #prop("int", "securityErrata")
  *   #prop("int", "bugErrata")
@@ -77,7 +84,12 @@ public class ImageOverviewSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("enhancementErrata", image.getEnhancementErrata());
         helper.add("outdatedPackages", image.getOutdatedPackages());
         helper.add("installedPackages", image.getInstalledPackages());
-        helper.add("buildStatus", image.getAction().getStatus().getName().toLowerCase());
+        helper.add("buildStatus",
+                image.getBuildAction().getStatus().getName().toLowerCase());
+        if (image.getInspectAction() != null) {
+            helper.add("inspectStatus",
+                    image.getInspectAction().getStatus().getName().toLowerCase());
+        }
         helper.writeTo(writer);
     }
 

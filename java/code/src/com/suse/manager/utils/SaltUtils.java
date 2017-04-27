@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImagePackage;
+import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -488,6 +489,8 @@ public class SaltUtils {
         ImageBuildActionDetails details = ba.getDetails();
 
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+            Optional<ImageProfile> profileOpt =
+                    ImageProfileFactory.lookupById(details.getImageProfileId());
             ImageInspectAction iAction = ActionManager.scheduleImageInspect(
                     action.getSchedulerUser(),
                     action.getServerActions()
@@ -495,10 +498,8 @@ public class SaltUtils {
                             .map(ServerAction::getServerId)
                             .collect(Collectors.toList()),
                     details.getVersion(),
-                    ImageProfileFactory.lookupById(details.getImageProfileId()).get()
-                            .getLabel(),
-                    ImageProfileFactory.lookupById(details.getImageProfileId()).get()
-                            .getTargetStore(),
+                    profileOpt.map(ImageProfile::getLabel).orElse(null),
+                    profileOpt.map(ImageProfile::getTargetStore).orElse(null),
                     Date.from(Instant.now())
             );
             try {
@@ -508,6 +509,11 @@ public class SaltUtils {
                 LOG.error("Could not schedule image inspection");
                 LOG.error(e);
             }
+
+            ImageInfoFactory.lookupByBuildAction(ba).ifPresent(info -> {
+                info.setInspectAction(iAction);
+                ImageInfoFactory.save(info);
+            });
         }
         // Pretty-print the whole return map (or whatever fits into 1024 characters)
         Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
