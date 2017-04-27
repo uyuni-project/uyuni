@@ -1070,8 +1070,7 @@ class RepoSync(object):
                 notice._md['update_id'] = notice['update_id'] + '-' + notice['version']
         return notice
 
-    @staticmethod
-    def get_errata(update_id):
+    def get_errata(self, update_id):
         """ Return an Errata dict
 
         search in the database for the given advisory and
@@ -1086,8 +1085,9 @@ class RepoSync(object):
                    TO_CHAR(e.update_date, 'YYYY-MM-DD HH24:MI:SS') as update_date
               from rhnerrata e
              where e.advisory = :name
+              and e.org_id = :org_id
         """)
-        h.execute(name=update_id)
+        h.execute(name=update_id, org_id=self.org_id)
         ret = h.fetchone_dict()
         if not ret:
             return None
