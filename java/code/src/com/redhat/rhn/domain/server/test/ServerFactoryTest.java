@@ -1014,9 +1014,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         List<MinionServer> minions = Arrays.asList(zypperSystem, nonZypperSystem);
         Map<LocalCall<?>, List<MinionServer>> localCallListMap = SaltServerActionService.INSTANCE.errataAction(minions, Collections.singleton(e1.getId()));
 
-        assertEquals(2, localCallListMap.size());
+        assertEquals(1, localCallListMap.size());
         localCallListMap.entrySet().forEach(result -> {
-            assertEquals(1, result.getValue().size());
+            assertEquals(2, result.getValue().size());
             final LocalCall<?> call = result.getKey();
             assertEquals("state.apply", call.getPayload().get("fun"));
             Map<String, Object> kwarg = (Map<String, Object>)call.getPayload().get("kwarg");
