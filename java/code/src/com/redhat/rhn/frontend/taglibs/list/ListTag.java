@@ -452,7 +452,7 @@ public class ListTag extends BodyTagSupport {
             ListTagUtil.write(pageContext, topAlphaBarContent.toString());
             ListTagUtil.write(pageContext, "</div>");
             ListTagUtil.write(pageContext,
-                    "<div class=\"spacewalk-list-pagination\">");
+                    "<div class=\"spacewalk-list-pagination move-to-fixed-toolbar\">");
             ListTagUtil.write(pageContext, topPaginationContent.toString());
             ListTagUtil.write(pageContext, "</div>");
             ListTagUtil.write(pageContext,
@@ -693,7 +693,8 @@ public class ListTag extends BodyTagSupport {
             ListTagUtil.write(pageContext, footLinksContent.toString());
             ListTagUtil.write(pageContext, "</div>");
             ListTagUtil.write(pageContext,
-                    "<div class=\"spacewalk-list-footer-addons-extra\">");
+                    "<div class=\"spacewalk-list-footer-addons-extra" +
+                    " move-children-to-fixed-toolbar\">");
             ListTagUtil.write(pageContext, footAddonsContent.toString());
             ListTagUtil.write(pageContext, "</div>");
             ListTagUtil.write(pageContext, "</div>");
