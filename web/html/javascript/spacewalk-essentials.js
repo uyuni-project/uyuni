@@ -77,19 +77,21 @@ function handleSst() {
     sst = $('<div class="spacewalk-section-toolbar">');
     $('.spacewalk-list.list').before(sst);
   }
-  var actionButtonWrapper = $('.action-button-wrapper');
-  if (actionButtonWrapper.length == 0) {
-    sst.append('<div class="action-button-wrapper">');
+  var selectorButtonWrapper = $('.selector-button-wrapper');
+  if (selectorButtonWrapper.length == 0) {
+    selectorButtonWrapper = $('<div class="selector-button-wrapper">');
+    sst.prepend(selectorButtonWrapper);
   }
 
-  // move all buttons in the panel-footer of the list/table
-  // into the 'spacewalk-section-toolbar'
-  $('.panel-footer > .spacewalk-list-footer-addons > ' +
-    '.spacewalk-list-footer-addons-extra > .spacewalk-list-selection-btns > button').each(function() {
-    sst.children('.action-button-wrapper').prepend($(this));
+  // move each named tag into the 'spacewalk-section-toolbar'
+  $('.move-to-fixed-toolbar').each(function() {
+    sst.append($(this));
   });
-  // move the pagination into the 'spacewalk-section-toolbar'
-  sst.append($('.spacewalk-list-top-addons .spacewalk-list-pagination'));
+  // move children of each named tag
+  // into the 'spacewalk-section-toolbar > action-button-wrapper'
+  $('.move-children-to-fixed-toolbar').each(function() {
+    selectorButtonWrapper.append($(this).children());
+  });
 
   const adjustSpaceObject = $('<div>').height(sst.outerHeight());
   var fixedTop = sst.offset().top;

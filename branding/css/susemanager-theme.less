@@ -1057,26 +1057,30 @@ time:hover {
   cursor: default;
 }
 
+.spacewalk-section-toolbar-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: auto;
+}
 .spacewalk-section-toolbar {
   overflow: auto;
   .action-button-wrapper {
     float: right;
     overflow: auto;
-  }
-  button, input {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 2px;
-    width: auto;
-  }
-  .btn-group {
     button, input {
-      margin-right: 0px;
+      .spacewalk-section-toolbar-button;
+    }
+  }
+  .selector-button-wrapper {
+    display: inline-block;
+    button, input {
+      .spacewalk-section-toolbar-button;
     }
   }
   .spacewalk-list-pagination {
     display: inline-block;
-    margin: 1.2em 0;
+    margin-top: 1.2em;
+    margin-left: 1em;
     .spacewalk-list-pagination-btns {
       padding-left: .5em;
     }
@@ -1097,5 +1101,8 @@ time:hover {
   padding-right: 1em;
   .form-group {
     margin-bottom: 0;
+  }
+  .spacewalk-list-pagination {
+    margin-bottom: 1.2em;
   }
 }
