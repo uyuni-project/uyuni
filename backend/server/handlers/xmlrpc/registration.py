@@ -14,7 +14,6 @@
 #
 
 # system modules
-import string
 import os
 import sys
 

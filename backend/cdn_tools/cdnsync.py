@@ -31,9 +31,10 @@ from spacewalk.server.importlib.importLib import Channel, ChannelFamily, \
     ProductName, DistChannelMap, ReleaseChannelMap
 from spacewalk.satellite_tools import reposync
 from spacewalk.satellite_tools import contentRemove
+from spacewalk.satellite_tools.download import ThreadedDownloader, ProgressBarLogger
 from spacewalk.satellite_tools.satCerts import get_certificate_info, verify_certificate_dates
 from spacewalk.satellite_tools.syncLib import log, log2disk, log2, initEMAIL_LOG, log2email, log2background
-from spacewalk.satellite_tools.repo_plugins import yum_src, ThreadedDownloader, ProgressBarLogger
+from spacewalk.satellite_tools.repo_plugins import yum_src
 
 from common import CustomChannelSyncError, CountingPackagesError, verify_mappings, human_readable_size
 from repository import CdnRepositoryManager, CdnRepositoryNotFoundError
@@ -151,7 +152,7 @@ class CdnSync(object):
 
         # Select available channel families from DB
         h = rhnSQL.prepare("""
-            select label
+            select distinct label
             from rhnChannelFamilyPermissions cfp inner join
                  rhnChannelFamily cf on cfp.channel_family_id = cf.id
             where cf.org_id is null
@@ -347,8 +348,9 @@ class CdnSync(object):
                  stream=sys.stderr)
             return repo_plugin
         if len(keys) >= 1:
-            repo_plugin.set_ssl_options(str(keys[0]['ca_cert'][1]), str(keys[0]['client_cert'][1]),
-                                        str(keys[0]['client_key'][1]))
+            (ca_cert_file, client_cert_file, client_key_file) = reposync.write_ssl_set_cache(
+                keys[0]['ca_cert'], keys[0]['client_cert'], keys[0]['client_key'])
+            repo_plugin.set_ssl_options(ca_cert_file, client_cert_file, client_key_file)
         else:
             log2(1, 1, "ERROR: No valid SSL certificates were found for repository '%s'."
                  % repo_source['relative_url'], stream=sys.stderr)
@@ -432,6 +434,8 @@ class CdnSync(object):
             if channel in self.synced_channels and self.synced_channels[channel]:
                 self.cdn_repository_manager.assign_repositories_to_channel(channel)
 
+        reposync.clear_ssl_cache()
+
         # Finally, sync channel content
         total_time = timedelta()
         for channel in channels:
@@ -447,6 +451,7 @@ class CdnSync(object):
             # Switch back to cdnsync log
             rhnLog.initLOG(self.log_path, self.log_level)
             log2disk(0, "Sync of channel completed.")
+
         log(0, "Total time: %s" % str(total_time).split('.')[0])
 
         return error_messages
@@ -486,6 +491,7 @@ class CdnSync(object):
 
     def count_packages(self, channels=None):
         start_time = datetime.now()
+        reposync.clear_ssl_cache()
         # Both entitled channels and custom channels with null-org repositories.
         channel_list = self._list_available_channels() + [c for c in self.synced_channels if self.synced_channels[c]]
 

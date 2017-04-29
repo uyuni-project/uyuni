@@ -18,11 +18,10 @@ from shutil import rmtree
 import time
 import requests
 from spacewalk.common import fileutils
-from spacewalk.satellite_tools.repo_plugins import ContentPackage
+from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.checksum import getFileChecksum
 
-CACHE_DIR = '/var/cache/rhn/reposync/'
 RETRIES = 10
 RETRY_DELAY = 1
 FORMAT_PRIORITY = ['.xz', '.gz', '']
@@ -219,14 +218,6 @@ class ContentSource(object):
     def set_ssl_options(self, ca_cert, client_cert, client_key):
         # TODO
         pass
-
-    def clear_ssl_cache(self):
-        repo = self.repo
-        ssldir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
-        try:
-            self._clean_cache(ssldir)
-        except (OSError, IOError):
-            pass
 
     @staticmethod
     def get_file(path, local_base=None):

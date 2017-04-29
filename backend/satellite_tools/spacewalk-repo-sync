@@ -40,7 +40,6 @@ try:
     from rhn import rhnLockfile
     from spacewalk.common import rhnLog
     from spacewalk.common.rhnConfig import CFG, initCFG
-    from spacewalk.common.rhnTB import fetchTraceback
     from spacewalk.satellite_tools import reposync
     from spacewalk.satellite_tools.syncLib import log, log2disk
 except KeyboardInterrupt:
@@ -55,12 +54,6 @@ def releaseLOCK():
     if LOCK:
         LOCK.release()
         LOCK = None
-
-
-def clear_interrupted_downloads():
-    pkgdir = os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, '1', 'stage')
-    if os.path.exists(pkgdir):
-        shutil.rmtree(pkgdir)
 
 
 def main():
@@ -157,14 +150,6 @@ def main():
             log(0, "%s | No repository set" % ch)
         return 0
 
-    # Automatically remove all the remains inside of /var/spacewalk/packages/1/stage
-    # Yum does not seem to handle download resumes properly. This can lead to
-    # errors like:
-    #
-    # > Repo Sync Errors: (50, u'checksums did not match 326a904c2fbd7a0e20033c87fc84ebba6b24d937 vs
-    # > afd8c60d7908b2b0e2d95ad0b333920aea9892eb', 'Invalid information uploaded to the server')
-    clear_interrupted_downloads()
-
     if not options.channel_label and not options.parent_label and not options.config:
         systemExit(1, "--channel, --parent-channel or --config must be specifed.")
 
@@ -232,6 +217,8 @@ def main():
         for key in  l_params:
             log(0, " %s: %s" % (key,str(getattr(options, key))))
         return 0
+
+    reposync.clear_ssl_cache()
 
     total_time = datetime.timedelta()
     ret_code = 0

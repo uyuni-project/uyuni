@@ -20,7 +20,6 @@ import logging
 import os.path
 from os import makedirs
 from shutil import rmtree
-import errno
 import re
 import gzip
 import xml.etree.ElementTree as etree
@@ -51,7 +50,8 @@ from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutE
 from urlgrabber.grabber import URLGrabError
 
 from spacewalk.common import fileutils, checksum
-from spacewalk.satellite_tools.repo_plugins import ContentPackage, get_proxies
+from spacewalk.satellite_tools.download import get_proxies
+from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.common import rhnLog
@@ -59,9 +59,9 @@ from spacewalk.common import rhnLog
 # namespace prefix to parse patches.xml file
 PATCHES = '{http://novell.com/package/metadata/suse/patches}'
 
-CACHE_DIR = '/var/cache/rhn/reposync/'
 GPG_DIR     = '/var/lib/spacewalk/gpgdir'
 YUMSRC_CONF = '/etc/rhn/spacewalk-repo-sync/yum.conf'
+
 
 class YumWarnings:
 
@@ -719,35 +719,9 @@ class ContentSource(object):
 
     def set_ssl_options(self, ca_cert, client_cert, client_key):
         repo = self.repo
-        ssldir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
-        try:
-            makedirs(ssldir, int('0750', 8))
-        except OSError:
-            exc = sys.exc_info()[1]
-            if exc.errno == errno.EEXIST and os.path.isdir(ssldir):
-                pass
-            else:
-                raise
-
-        repo.sslcacert = os.path.join(ssldir, 'ca.pem')
-        f = open(repo.sslcacert, "w")
-        f.write(str(ca_cert))
-        f.close()
-        if client_cert is not None:
-            repo.sslclientcert = os.path.join(ssldir, 'cert.pem')
-            f = open(repo.sslclientcert, "w")
-            f.write(str(client_cert))
-            f.close()
-        if client_key is not None:
-            repo.sslclientkey = os.path.join(ssldir, 'key.pem')
-            f = open(repo.sslclientkey, "w")
-            f.write(str(client_key))
-            f.close()
-
-    def clear_ssl_cache(self):
-        repo = self.repo
-        ssldir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
-        rmtree(ssldir, True)
+        repo.sslcacert = ca_cert
+        repo.sslclientcert = client_cert
+        repo.sslclientkey = client_key
 
     def get_file(self, path, local_base=None):
         try:
