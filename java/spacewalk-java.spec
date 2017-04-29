@@ -567,8 +567,6 @@ rm -rf $RPM_BUILD_ROOT
 # on Fedora 19 some jars are named differently
 %if 0%{?fedora} || 0%{?rhel} >= 7
 mkdir -p $RPM_BUILD_ROOT%{_javadir}
-[[ -f %{_javadir}/mchange-commons-java.jar ]] && ln -s -f %{_javadir}/mchange-commons-java.jar $RPM_BUILD_ROOT%{_javadir}/mchange-commons.jar
-[[ -f %{_javadir}/mchange-commons/mchange-commons-java.jar ]] && ln -s -f %{_javadir}/mchange-commons/mchange-commons-java.jar $RPM_BUILD_ROOT%{_javadir}/mchange-commons.jar
 ln -s -f %{_javadir}/jboss-logging/jboss-logging.jar $RPM_BUILD_ROOT%{_javadir}/jboss-logging.jar
 ln -s -f %{_javadir}/hibernate-jpa-2.0-api/hibernate-jpa-2.0-api.jar $RPM_BUILD_ROOT%{_javadir}/hibernate-jpa-2.0-api.jar
 ln -s -f %{_javadir}/c3p0/c3p0.jar $RPM_BUILD_ROOT%{_javadir}/c3p0.jar
@@ -707,11 +705,6 @@ RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
 ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ojdbc14.jar
 ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
 
-# 732350 - On Fedora 15, mchange's log stuff is no longer in c3p0.
-%if 0%{?fedora} || 0%{?rhel} >= 7
-ln -s -f %{_javadir}/mchange-commons.jar $RPM_BUILD_ROOT%{jardir}/mchange-commons.jar
-%endif
-
 # install docbook sources
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/xml
 install -m 644 build/reports/apidocs/docbook/susemanager_api_doc.xml $RPM_BUILD_ROOT%{_docdir}/%{name}/xml/susemanager_api_doc.xml
@@ -841,14 +834,13 @@ fi
 %{jardir}/*_hibernate-commons-annotations.jar
 %{jardir}/hibernate-jpa-2.0-api*.jar
 %{jardir}/javassist.jar
+%{jardir}/mchange-commons*.jar
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar
-%{jardir}/mchange-commons.jar
 %{_javadir}/c3p0.jar
 %{_javadir}/concurrent.jar
 %{_javadir}/hibernate-jpa-2.0-api.jar
 %{_javadir}/jboss-logging.jar
-%{_javadir}/mchange-commons.jar
 %{jardir}/*jboss-logging.jar
 
 
