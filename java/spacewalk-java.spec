@@ -566,12 +566,6 @@ rm -rf $RPM_BUILD_ROOT
 
 # on Fedora 19 some jars are named differently
 %if 0%{?fedora} || 0%{?rhel} >= 7
-mkdir -p $RPM_BUILD_ROOT%{_javadir}
-ln -s -f %{_javadir}/jboss-logging/jboss-logging.jar $RPM_BUILD_ROOT%{_javadir}/jboss-logging.jar
-ln -s -f %{_javadir}/hibernate-jpa-2.0-api/hibernate-jpa-2.0-api.jar $RPM_BUILD_ROOT%{_javadir}/hibernate-jpa-2.0-api.jar
-ln -s -f %{_javadir}/c3p0/c3p0.jar $RPM_BUILD_ROOT%{_javadir}/c3p0.jar
-ln -s -f %{_javadir}/concurrent/concurrent.jar $RPM_BUILD_ROOT%{_javadir}/concurrent.jar
-
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 
@@ -837,10 +831,6 @@ fi
 %{jardir}/mchange-commons*.jar
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar
-%{_javadir}/c3p0.jar
-%{_javadir}/concurrent.jar
-%{_javadir}/hibernate-jpa-2.0-api.jar
-%{_javadir}/jboss-logging.jar
 %{jardir}/*jboss-logging.jar
 
 
