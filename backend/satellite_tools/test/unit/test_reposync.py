@@ -899,7 +899,6 @@ class RunScriptTest(unittest.TestCase):
                     'RepoSync.return_value.sync.return_value': (timedelta(), 0)
                 }
             ),
-            clear_interrupted_downloads=Mock(),
             systemExit=Mock(side_effect=[SystemExit])
         )
         patcher = patch.multiple('repo_sync', **config)
