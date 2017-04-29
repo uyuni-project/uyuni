@@ -736,6 +736,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/common/rhn_rpm.py*
 %{pythonrhnroot}/common/stringutils.py*
 %{pythonrhnroot}/common/rhnLib.py*
+%{pythonrhnroot}/common/timezone_utils.py*
 #%{pythonrhnroot}/__init__.py*
 #%{pythonrhnroot}/common/__init__.py*
 
@@ -837,6 +838,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/updatePackages.py*
 %{pythonrhnroot}/satellite_tools/reposync.py*
 %{pythonrhnroot}/satellite_tools/constants.py*
+%{pythonrhnroot}/satellite_tools/download.py*
 %dir %{pythonrhnroot}/satellite_tools/disk_dumper
 %{pythonrhnroot}/satellite_tools/disk_dumper/__init__.py*
 %{pythonrhnroot}/satellite_tools/disk_dumper/iss.py*
