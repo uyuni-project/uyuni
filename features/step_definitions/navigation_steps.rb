@@ -56,6 +56,14 @@ When(/^I click on "([^"]*)"$/) do |arg1|
   end
 end
 #
+# Click on a button and confirm in alert box
+When(/^I click on "([^"]*)" and confirm$/) do |arg1|
+  accept_alert do
+    step %(I click on "#{arg1}")
+    sleep 1
+  end
+end
+#
 # Click on a link
 #
 When(/^I follow "([^"]*)"$/) do |text|

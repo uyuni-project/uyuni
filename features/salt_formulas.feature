@@ -34,7 +34,7 @@ Feature: Use salt formulas
      And I click on "Save Formula"
      Then I should see a "Formula saved!" text
 
-  Scenario: Apply the formula via the highstate
+  Scenario: Apply the parametrized formula via the highstate
      Given I am on the Systems overview page of this minion
      When I follow "Formulas" in the content area
      And I click on "Apply Highstate"
@@ -49,3 +49,21 @@ Feature: Use salt formulas
      Then the pillar data for "timezone:name" should be "Etc/GMT-5"
      And the pillar data for "keyboard_and_language:keyboard_layout" should be "French (Canada)"
      And the pillar data for "keyboard_and_language:language" should be "French"
+
+  Scenario: Reset the formula on the minion
+     Given I am on the Systems overview page of this minion
+     When I follow "Formulas" in the content area
+     And I follow "Locale" in the content area
+     And I click on "Clear values" and confirm
+     And I click on "Save Formula"
+     Then I should see a "Formula saved!" text
+
+  Scenario: Apply the reset formula via the highstate
+     Given I am on the Systems overview page of this minion
+     When I follow "Formulas" in the content area
+     And I click on "Apply Highstate"
+     Then I should see a "Applying the highstate has been scheduled." text
+     And I wait for "40" seconds
+     And the timezone on "sle-minion" should be "CET"
+     And the keymap on "sle-minion" should be "us.map.gz"
+     And the language on "sle-minion" should be "en_US.UTF-8"
