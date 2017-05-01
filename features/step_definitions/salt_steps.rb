@@ -430,7 +430,9 @@ Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
     fail "Invalid target"
   end
   output, _code = target.run("date +%Z")
-  fail unless output.strip == timezone
+  result = output.strip
+  result = "CET" if result == "CEST"
+  fail unless result == timezone
 end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
@@ -453,8 +455,8 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
   else
     fail "Invalid target"
   end
-  output, _code = target.run("grep 'LANG=' /etc/locale.conf")
-  fail unless output.strip == "LANG=#{language}"
+  output, _code = target.run("grep 'RC_LANG=' /etc/sysconfig/language")
+  fail unless output.strip == "RC_LANG=\"#{language}\""
 end
 
 When(/^I refresh the pillar data$/) do
