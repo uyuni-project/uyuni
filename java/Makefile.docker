@@ -5,18 +5,17 @@
 DOCKER_CONTAINER_BASE = suma-3.0
 DOCKER_REGISTRY       = registry.mgr.suse.de
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
+DOCKER_PORTS          = -p 5432:5432
 
 dockerpull ::
 	docker pull $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
 
 dockerrun_pg ::
-	rm -f buildconf/test/rhn.conf
-	cat buildconf/test/rhn.conf.postgresql-example | sed 's/^db_host =.*/db_host = 172.17.0.2/' > buildconf/test/rhn.conf
-	docker run $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
+	cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
+	docker run $(DOCKER_PORTS) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
 
 dockerrun_ora ::
-	rm -f buildconf/test/rhn.conf
-	cat buildconf/test/rhn.conf.oracle-example  | sed 's/^db_host =.*/db_host = 172.17.0.2/' > buildconf/test/rhn.conf
+	cp buildconf/test/rhn.conf.oracle-example buildconf/test/rhn.conf
 	echo "#################################################"
 	echo "### execute /root/docker-oracle-db4eclipse.sh ###"
 	echo "#################################################"
