@@ -8,6 +8,24 @@ Feature:  Build Container images with SUSE Manager. Basic image
   Scenario: Check prerequisites of content manag feature
   Then I check that sles-minion exists otherwise bootstrap it
 
+  Scenario: Create a  Docker user with image administrators rights
+  Given I am on the active Users page
+  When I follow "Create User"
+  And I enter "docker" as "login"
+  And I enter "docker" as "desiredpassword"
+  And I enter "docker" as "desiredpasswordConfirm"
+  And I select "Mr." from "prefix"
+  And I enter "TestDocky" as "firstNames"
+  And I enter "TestDocky" as "lastName"
+  And I enter "gino-ginae@susy.de" as "email"
+  And I click on "Create Login"
+  Then I should see a "Account docker created" text
+  And I should see a "docker" link
+  And I should see a "normal user" text
+  And I follow "docker"
+  And I check "role_image_admin"
+  And I click on "Update"
+
   Scenario: Create Activation-key docker
   Given I am on the Systems page
   And I follow "Activation Keys" in the left menu
@@ -51,6 +69,15 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I follow "Stores" in the left menu
   And I follow "Create"
   And I enter "galaxy-registry" as "label"
+  And I enter "registry.mgr.suse.de" as "uri"
+  And I click on "create-btn"
+
+  Scenario: Create an Image Store as docker_admin
+  Given I am authorized as "docker" with password "docker"
+  And I follow "Images" in the left menu
+  And I follow "Stores" in the left menu
+  And I follow "Create"
+  And I enter "docker_admin" as "label"
   And I enter "registry.mgr.suse.de" as "uri"
   And I click on "create-btn"
 
@@ -98,7 +125,6 @@ Feature:  Build Container images with SUSE Manager. Basic image
 
   Scenario: Build the images with and without activation key
   Given I am authorized as "admin" with password "admin"
-  # At moment phantomjs has problemes with datapickler so we use xmlrpc-api
   And I schedule the build of image "suse_key" via xmlrpc-call
   And I schedule the build of image "suse_simply" via xmlrpc-call
   And I schedule the build of image "suse_real_key" via xmlrpc-call
@@ -107,7 +133,6 @@ Feature:  Build Container images with SUSE Manager. Basic image
   Given I am authorized as "admin" with password "admin"
   And I schedule the build of image "suse_key" with version "Latest_key-activation1" via xmlrpc-call 
   And I schedule the build of image "suse_simply" with version "Latest_simply" via xmlrpc-call 
-  # then we can remove the sleep.
   And I verify that all "5" container images were built correctly in the gui
 
   Scenario: Delete image via xmlrpc calls
@@ -134,3 +159,24 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I click on "submit-btn"
   And I wait for "5" seconds
   Then I should see a "GUI_BUILDED_IMAGE" text 
+
+  Scenario: Create a profile  As docker admin
+   Given I am authorized as "docker" with password "docker"
+   And I follow "Images" in the left menu
+   And I follow "Profiles" in the left menu
+   And I follow "Create"
+   And I enter "suse_docker_admin" as "label"
+   And I select "galaxy-registry" from "imageStore"
+   And I select "1-DOCKER-TEST" from "activationKey"
+   And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile/serverhost" as "path"
+   And I click on "create-btn"
+ 
+ Scenario: Login as docker img_admin and Build image
+  Given I am authorized as "docker" with password "docker"
+  And I navigate to images build webpage
+  When I enter "GUI_DOCKERADMIN" as "version"
+  And I select "suse_real_key" from "profileId"
+  And I select sle-minion hostname in Build Host
+  And I click on "submit-btn"
+  And I wait for "5" seconds
+  Then I should see a "GUI_DOCKERADMIN" text
