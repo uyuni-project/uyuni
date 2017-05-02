@@ -9,22 +9,19 @@ Feature: register a salt-minion via bootstrap
      Then I should see a "Bootstrapping" text
      And I follow "Bootstrapping"
      Then I should see a "Bootstrap Minions" text
-     # sle-minion = sles, rh_minion = redhat
      And  I enter the hostname of "sle-minion" as hostname
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "100" seconds
-     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
-  # testing command line
+     Then I wait until i see "Successfully bootstrapped host! " text
+
   Scenario: check new bootstrapped minion in System Overview page
      Given I am authorized
      And I go to the minion onboarding page
      Then I should see a "accepted" text
-     # sle-minion = sles, rh_minion = redhat
      And the salt-master can reach "sle-minion"
-  # testing GUI
+
   Scenario: Run a remote command sles-minion (salt-service)
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
@@ -77,16 +74,13 @@ Feature: register a salt-minion via bootstrap
      And I enter "linux" as "password"
      And I select "1-MINION-TEST" from "activationKeys"
      And I click on "Bootstrap"
-     And I wait for "300" seconds
-     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
+     Then I wait until i see "Successfully bootstrapped host! " text
 
   Scenario: verify minion bootstrapped with activation key, packages
      Given I am authorized
      And I go to the minion onboarding page
      Then I should see a "accepted" text
-     # sle-minion = sles, rh_minion = redhat
      And the salt-master can reach "sle-minion"
-     # the "man" package is part of the channel, and the minion doesn't have this installed
      And "orion-dummy" is installed on "minion"
      And "perseus-dummy" is installed on "minion"
      And I remove pkg "orion-dummy" on this "sle-minion"
