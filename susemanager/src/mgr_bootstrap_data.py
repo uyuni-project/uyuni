@@ -190,6 +190,7 @@ RES6 = [
         "python-six",
         "python-babel",
         "dbus",
+        "yum-plugin-security",
        ]
 
 RES7 = [
