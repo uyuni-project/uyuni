@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,25 +15,22 @@
 package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.annotations.SerializedName;
-import com.suse.salt.netapi.results.OldNew;
 import com.suse.salt.netapi.results.StateApplyResult;
-
-import java.util.Map;
 
 /**
  * Object representation of the results of a call to state.apply distupgrade.
  */
-public class DistUpgradeSlsResult {
+public class DistUpgradeDryRunSlsResult {
 
    @SerializedName("module_|-spmigration_|-pkg.upgrade_|-run")
-   private StateApplyResult<RetOpt<Map<String, OldNew>>> spmigration;
+   private StateApplyResult<RetOpt<String>> spmigration;
 
    /**
     * constructor
     *
     * @param s spmigration state apply result
     */
-   public DistUpgradeSlsResult(StateApplyResult<RetOpt<Map<String, OldNew>>> s) {
+   public DistUpgradeDryRunSlsResult(StateApplyResult<RetOpt<String>> s) {
       this.spmigration = s;
    }
 
@@ -42,7 +39,7 @@ public class DistUpgradeSlsResult {
     *
     * @return spmigration state apply result
     */
-   public StateApplyResult<RetOpt<Map<String, OldNew>>> getSpmigration() {
+   public StateApplyResult<RetOpt<String>> getSpmigration() {
       return spmigration;
    }
 }
