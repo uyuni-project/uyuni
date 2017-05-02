@@ -1,0 +1,23 @@
+# Makefile
+#
+
+# Docker tests variables
+DOCKER_CONTAINER_BASE = suma-3.0
+DOCKER_REGISTRY       = registry.mgr.suse.de
+DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
+
+dockerpull ::
+	docker pull $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
+
+dockerrun_pg ::
+	rm -f buildconf/test/rhn.conf
+	cat buildconf/test/rhn.conf.postgresql-example | sed 's/^db_host =.*/db_host = 172.17.0.2/' > buildconf/test/rhn.conf
+	docker run $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
+
+dockerrun_ora ::
+	rm -f buildconf/test/rhn.conf
+	cat buildconf/test/rhn.conf.oracle-example  | sed 's/^db_host =.*/db_host = 172.17.0.2/' > buildconf/test/rhn.conf
+	echo "#################################################"
+	echo "### execute /root/docker-oracle-db4eclipse.sh ###"
+	echo "#################################################"
+	docker run --privileged -t -i $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-ora-4eclipse
