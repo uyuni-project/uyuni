@@ -22,17 +22,17 @@
 
         <rl:listset name="pendingList">
   <rhn:csrf />
+    <rhn:submitted/>
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <input type="submit" name="dispatch" class="btn btn-default"
+                        value='<bean:message key="actions.jsp.cancelactions"/>'/>
+            </div>
+        </div>
 
         <rl:list emptykey="pendingactions.jsp.nogroups" styleclass="list" defaultsortattr="earliestDate" defaultsortdir="asc">
                 <%@ include file="/WEB-INF/pages/common/fragments/scheduledactions/listdisplay-new.jspf" %>
         </rl:list>
-                <rhn:submitted/>
-                  <div class="pull-right">
-                    <input type="submit"
-               name="dispatch"
-               class="btn btn-default"
-               value='<bean:message key="actions.jsp.cancelactions"/>'/>
-      </div>
         </rl:listset>
 </body>
 </html>

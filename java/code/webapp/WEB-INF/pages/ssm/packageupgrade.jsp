@@ -18,6 +18,16 @@
 
 <rl:listset name="groupSet" legend="system-group">
     <rhn:csrf />
+    <rhn:submitted/>
+
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input class="btn btn-success"
+                    type="submit" name="dispatch"
+                    value='<bean:message key="ssm.package.upgrade.select.confirm"/>'/>
+        </div>
+    </div>
+
     <rl:list dataset="pageList"
              width="100%"
              styleclass="list"
@@ -72,16 +82,6 @@
         </rl:column>
 
     </rl:list>
-
-    <div class="text-right">
-        <rhn:submitted/>
-        <hr/>
-        <input class="btn btn-success"
-               type="submit"
-               name="dispatch"
-               value='<bean:message key="ssm.package.upgrade.select.confirm"/>'/>
-    </div>
-
 </rl:listset>
 
 </body>

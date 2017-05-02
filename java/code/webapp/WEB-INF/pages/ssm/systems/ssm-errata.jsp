@@ -27,6 +27,14 @@
             <rhn:csrf />
             <rhn:submitted />
 
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <html:submit styleClass="btn btn-default" property="dispatch">
+                        <bean:message key="errata.jsp.apply"/>
+                    </html:submit>
+                </div>
+            </div>
+
             <br/>
             <select name="type">
                 <c:forEach items="${combo}" var="item">
@@ -42,13 +50,6 @@
             <br/>
 <%@ include file="/WEB-INF/pages/ssm/systems/errata-list-fragment.jspf" %>
 
-            <div class="text-right">
-                <hr />
-                <html:submit styleClass="btn btn-default" property="dispatch">
-                    <bean:message key="errata.jsp.apply"/>
-                </html:submit>
-            </div>
-            <rhn:submitted/>
         </rl:listset>
     </body>
 </html>

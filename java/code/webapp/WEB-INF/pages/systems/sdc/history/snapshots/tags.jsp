@@ -18,6 +18,12 @@
 
 <rl:listset name="SnapshotSet">
   <rhn:csrf />
+  <div class="spacewalk-section-toolbar">
+    <div class="action-button-wrapper">
+      <input type="submit" name="dispatch" class="btn btn-default pull-right"
+        value='<bean:message key="system.history.snapshot.tagRemove"/>'/>
+    </div>
+  </div>
   <rl:list dataset="pageList" name="pageList"
            emptykey="system.history.snapshot.noTags"
            filter="com.redhat.rhn.frontend.taglibs.list.filters.SnapshotTagFilter">
@@ -37,8 +43,6 @@
     </rl:column>
   </rl:list>
   <rhn:hidden name="sid" value="${param.sid}" />
-  <input type="submit" name="dispatch" class="btn btn-default pull-right"
-    value='<bean:message key="system.history.snapshot.tagRemove"/>'/>
   <rhn:submitted />
 </rl:listset>
 

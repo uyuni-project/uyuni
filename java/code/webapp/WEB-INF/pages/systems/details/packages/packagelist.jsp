@@ -38,6 +38,16 @@
 <rl:listset name="packageListSet">
     <rhn:csrf />
     <rhn:submitted />
+
+    <c:if test="${not empty requestScope.all}">
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <rhn:require acl="system_feature(ftr_package_remove)">
+                    <input type="submit" class="btn btn-danger" name ="dispatch" value='<bean:message key="packagelist.jsp.removepackages"/>'/>
+                </rhn:require>
+            </div>
+        </div>
+    </c:if>
         <rl:list dataset="pageList"
          width="100%"
          name="packageList"
@@ -79,17 +89,6 @@
         </c:choose>
     </rl:column>
         </rl:list>
-
-<c:if test="${not empty requestScope.all}">
-    <rhn:submitted/>
-    <div class="text-right">
-                <hr />
-                <rhn:require acl="system_feature(ftr_package_remove)">
-                    <input type="submit" class="btn btn-danger" name ="dispatch" value='<bean:message key="packagelist.jsp.removepackages"/>'/>
-                </rhn:require>
-    </div>
-</c:if>
-
 </rl:listset>
 </body>
 </html>

@@ -19,6 +19,16 @@
 
 <rl:listset name="groupAdmins">
     <rhn:csrf />
+    <rhn:submitted/>
+
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <html:submit styleClass="btn btn-default" property="dispatch">
+                <bean:message key="message.Update" />
+            </html:submit>
+        </div>
+    </div>
+
     <rl:list>
 
         <rl:decorator name="SelectableDecorator"/>
@@ -61,15 +71,6 @@
          </rl:column>
 
     </rl:list>
-
-    <hr />
-    <div class="text-right">
-        <html:submit styleClass="btn btn-default" property="dispatch">
-            <bean:message key="message.Update" />
-        </html:submit>
-    </div>
-    <rhn:submitted/>
-
 </rl:listset>
 
 </body>

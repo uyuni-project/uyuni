@@ -26,6 +26,9 @@ $(document).on("ready", function(){
   // Wrapping the tables in a div which will make them responsive
   $(".table").wrap("<div class='table-responsive'>");
 
+  // Set up the behavior and the event function
+  // for the spacewalk section toolbar [sst]
+  handleSst();
 });
 
 /* Getting the screen size to create a fixed padding-bottom in the Section tag to make both columns the same size */
@@ -48,6 +51,8 @@ $(window).scroll(function () {
   else {
     $('#scroll-top').show();
   }
+
+  sstScrollBehavior();
 });
 
 // A container function for what should be fired
@@ -55,6 +60,86 @@ $(window).scroll(function () {
 function alignContentDimensions() {
   columnHeight();
   adjustDistanceForFixedHeader();
+  sstStyle();
+}
+
+// empty function by default hooked on window.scroll event
+function sstScrollBehavior() {
+  return;
+}
+
+// when the page scrolls down and the toolbar is going up and hidden,
+// the toolbar takes a fixed place right below the header bar
+function handleSst() {
+  var sst = $('.spacewalk-section-toolbar');
+
+  if ($('.move-to-fixed-toolbar').length > 0) {
+    // if there is no 'spacewalk-section-toolbar', then create it
+    if (sst.length == 0) {
+      sst = $('<div class="spacewalk-section-toolbar">');
+      $('.spacewalk-list.list').before(sst);
+    }
+
+    // move each named tag into the 'spacewalk-section-toolbar'
+    $('.move-to-fixed-toolbar').each(function() {
+      sst.append($(this));
+    });
+  }
+
+  // move children of each named tag
+  // into the 'spacewalk-section-toolbar > action-button-wrapper'
+  if ($('.move-children-to-fixed-toolbar').length > 0) {
+    // if there is no 'spacewalk-section-toolbar', then create it
+    if (sst.length == 0) {
+      sst = $('<div class="spacewalk-section-toolbar">');
+      $('.spacewalk-list.list').before(sst);
+    }
+    var selectorButtonWrapper = $('.selector-button-wrapper');
+    // if there is no 'action-button-wrapper', then create it
+    if (selectorButtonWrapper.length == 0) {
+      selectorButtonWrapper = $('<div class="selector-button-wrapper">');
+      sst.prepend(selectorButtonWrapper);
+    }
+    $('.move-children-to-fixed-toolbar').each(function() {
+      selectorButtonWrapper.append($(this).children());
+    });
+  }
+
+  // if so far no 'spacewalk-section-toolbar' exists, it's not needed at all
+  if (sst.length > 0) {
+    const adjustSpaceObject = $('<div>').height(sst.outerHeight());
+    var fixedTop = sst.offset().top;
+
+    // override the empty function hooked on window.scroll event
+    sstScrollBehavior = function() {
+      var currentScroll = $(window).scrollTop();
+      if (currentScroll >= fixedTop) {
+        sst.after(adjustSpaceObject);
+        $(sst).addClass('fixed');
+      } else {
+        $(sst).removeClass('fixed');
+        adjustSpaceObject.remove();
+      }
+      sstStyle();
+    }
+  }
+}
+
+function sstStyle() {
+  var sst = $('.spacewalk-section-toolbar');
+  if (sst.hasClass('fixed')) {
+    sst.css({
+      top: $('header').outerHeight() - 1,
+      left: $('section').offset().left,
+      'min-width': $('section').outerWidth()
+    });
+  }
+  else {
+    sst.css({
+      'min-width': 0
+    });
+  }
+  sst.width(sst.parent().width() - sst.css('padding-left') - sst.css('padding-right'));
 }
 
 // Header is fixed, the main content column needs

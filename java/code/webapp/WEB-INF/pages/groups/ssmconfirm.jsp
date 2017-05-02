@@ -13,6 +13,15 @@
         <rl:listset name="groups">
             <rhn:csrf />
             <html:hidden property="submitted" value="true"/>
+
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <html:submit styleClass="btn btn-default" property="dispatch">
+                        <bean:message key="confirm.displayname"/>
+                    </html:submit>
+                </div>
+            </div>
+
             <p><bean:message key="ssm.groups.confirm.added" arg0="${numServers}"/></p>
             <rl:list dataset="addList" emptykey="ssm.groups.confirm.added.empty">
                 <rl:column>
@@ -25,7 +34,6 @@
                     <c:out value="${current.name}" />
                 </rl:column>
             </rl:list>
-            <div class="text-right"><html:submit styleClass="btn btn-default" property="dispatch"><bean:message key="confirm.displayname"/></html:submit></div>
         </rl:listset>
     </body>
 </html>
