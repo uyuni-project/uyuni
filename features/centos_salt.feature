@@ -15,6 +15,7 @@ Feature: register a salt-minion via bootstrap
      And I enter "linux" as "password"
      And I click on "Bootstrap"
      And I wait until i see "Successfully bootstrapped host! " text
+     And I wait for "100" seconds
      
   Scenario: Reboot a salt minion (ssh-managed) (centos)
     Given I am on the Systems overview page of this "ceos-minion"
