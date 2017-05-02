@@ -72,6 +72,15 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I enter "registry.mgr.suse.de" as "uri"
   And I click on "create-btn"
 
+  Scenario: Create an Image Store as docker_admin
+  Given I am authorized as "docker" with password "docker"
+  And I follow "Images" in the left menu
+  And I follow "Stores" in the left menu
+  And I follow "Create"
+  And I enter "docker_admin" as "label"
+  And I enter "registry.mgr.suse.de" as "uri"
+  And I click on "create-btn"
+
   Scenario: Create a simple Image profile without act-key
   Given I am authorized as "admin" with password "admin"
   And I follow "Images" in the left menu
