@@ -15,6 +15,15 @@ Feature: register a salt-minion via bootstrap
      And I enter "linux" as "password"
      And I click on "Bootstrap"
      And I wait until i see "Successfully bootstrapped host! " text
+     
+  Scenario: Reboot a salt minion (ssh-managed) (centos)
+    Given I am on the Systems overview page of this "ceos-minion"
+    When I follow first "Schedule System Reboot"
+    Then I should see a "System Reboot Confirmation" text
+    And I should see a "Reboot system" button
+    And I click on "Reboot system"
+    Then I wait and check that "ceos-minion" has rebooted
+    And I wait until "salt-minion" service is up and running on "ceos-minion"
 
   Scenario: Run a remote command on centos
     Given I am authorized as "testing" with password "testing"
@@ -30,12 +39,3 @@ Feature: register a salt-minion via bootstrap
     And I expand the results for "ceos-minion"
     And I should see a "rhel fedora" text
     Then I should see a "REDHAT_SUPPORT_PRODUCT" text
-
-  Scenario: Reboot a salt minion (ssh-managed) (centos)
-    Given I am on the Systems overview page of this "ceos-minion"
-    When I follow first "Schedule System Reboot"
-    Then I should see a "System Reboot Confirmation" text
-    And I should see a "Reboot system" button
-    And I click on "Reboot system"
-    Then I wait and check that "ceos-minion" has rebooted
-    And I wait until "salt-minion" service is up and running on "ceos-minion"
