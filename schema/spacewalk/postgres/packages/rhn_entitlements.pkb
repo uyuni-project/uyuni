@@ -101,6 +101,7 @@ as $$
    begin
 
       previous_ent := rhn_entitlements.get_server_entitlement(server_id_in);
+      RAISE NOTICE 'can_entitle_server - % - % prev ents: %', server_id_in, type_label_in, previous_ent;
 
       select distinct is_base
       into is_base_in
@@ -115,16 +116,19 @@ as $$
               return 1;
             else
               -- rhn_exception.raise_exception ('invalid_base_entitlement');
+              RAISE NOTICE 'invalid_base_entitlement - no compatible server group';
               return 0;
             end if;
          else
             -- rhn_exception.raise_exception ('invalid_base_entitlement');
+            RAISE NOTICE 'invalid_base_entitlement - not a base entitlement';
             return 0;
          end if;
 
       -- there are previous ents, first make sure we're not trying to entitle a base ent
       elsif is_base_in = 'Y' then
          -- rhn_exception.raise_exception ('invalid_addon_entitlement');
+         RAISE NOTICE 'invalid_addon_entitlement - found another base';
          return 0;
 
       -- it must be an addon, so proceed with the entitlement
@@ -145,6 +149,7 @@ as $$
          -- never found a base ent, that would be strange
          if is_base_current  = 'N' then
             -- rhn_exception.raise_exception ('invalid_base_entitlement');
+            RAISE NOTICE 'invalid_base_entitlement - never found a base';
             return 0;
          end if;
 
@@ -157,12 +162,13 @@ as $$
                return 1;
             else
                -- rhn_exception.raise_exception ('invalid_addon_entitlement');
+               RAISE NOTICE 'invalid_addon_entitlement - no server group found';
                return 0;
             end if;
          end loop;
 
       end if;
-
+      RAISE NOTICE 'final error';
       return 0;
 
    end$$
