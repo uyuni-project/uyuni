@@ -124,7 +124,7 @@ function sstStyle() {
       'min-width': 0
     });
   }
-  sst.width(sst.parent().width());
+  sst.width(sst.parent().width() - sst.css('padding-left') - sst.css('padding-right'));
 }
 
 // Header is fixed, the main content column needs
