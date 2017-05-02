@@ -16,17 +16,22 @@
 <c:set var="showLastCheckin" value="true"/>
 <c:set var="noPackages" value="true"/>
 <c:set var="noErrata" value="true"/>
+<c:set var="noAddToSsm" value="true"/>
 
 <rl:listset name="systemListSet" legend="system">
     <rhn:csrf />
     <rhn:submitted />
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input class="btn btn-danger" type="submit" name="dispatch"
+                    value="${rhn:localize('ssm.delete.systems.confirmbutton')}"/>
+        </div>
+    </div>
+
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
-        <div class="text-right">
-      <hr />
-      <input class="btn btn-danger" type="submit" name="dispatch" value="${rhn:localize('ssm.delete.systems.confirmbutton')}"/>
+
     </div>
 </rl:listset>
-
 
 </body>
 </html>

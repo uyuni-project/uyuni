@@ -21,6 +21,16 @@
 <rl:listset name="eventSet" legend="system-history-type">
   <rhn:csrf />
   <rhn:hidden name="sid" value="${param.sid}" />
+
+  <div class="spacewalk-section-toolbar">
+    <div class="action-button-wrapper">
+      <rhn:hidden name="sid" value="${sid}" />
+      <input type="submit" name="dispatch" class="btn btn-danger"
+          value='<bean:message key="system.event.pending.cancel"/>'/>
+    </div>
+  </div>
+  <rhn:submitted />
+
   <rl:list dataset="pageList" name="eventList" emptykey="system.event.pending.noevent">
     <rl:decorator name="PageSizeDecorator" />
     <rl:column headerkey="system.event.history.type">
@@ -46,14 +56,6 @@
       ${current.scheduledFor}
     </rl:column>
   </rl:list>
-
-  <div align="right">
-    <hr/>
-    <rhn:hidden name="sid" value="${sid}" />
-    <input type="submit" name="dispatch" class="btn btn-danger"
-      value='<bean:message key="system.event.pending.cancel"/>'/>
-  </div>
-  <rhn:submitted />
 </rl:listset>
 
 </body>

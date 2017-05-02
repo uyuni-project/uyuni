@@ -64,6 +64,17 @@
 <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/duplicate_systems_tabs.xml"
                 renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
 <br/>
+
+<div class="spacewalk-section-toolbar">
+    <div class="action-button-wrapper">
+        <html:submit styleClass="btn btn-default" property="dispatch">
+           <bean:message key="Delete Selected"/>
+        </html:submit>
+    </div>
+</div>
+
+<rhn:submitted/>
+
 <rl:list
         emptykey="nosystems.message"
         parentiselement = "false"
@@ -106,15 +117,6 @@
         </rl:column>
 
 </rl:list>
-
-  <div class="text-right">
-    <html:submit styleClass="btn btn-default" property="dispatch">
-       <bean:message key="Delete Selected"/>
-    </html:submit>
-
-  </div>
-<rhn:submitted/>
-
 </rl:listset>
 
 </body>

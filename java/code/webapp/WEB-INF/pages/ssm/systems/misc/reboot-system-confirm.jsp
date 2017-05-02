@@ -13,16 +13,20 @@
   <c:set var="notSelectable" value="True"/>
   <c:set var="noCsv" value="1" />
   <c:set var="noAddToSsm" value="1" />
+
+  <rhn:submitted />
+  <div class="spacewalk-section-toolbar">
+    <div class="action-button-wrapper">
+      <html:submit styleClass="btn btn-success" property="dispatch">
+        <bean:message key="ssm.misc.reboot.confirm" />
+      </html:submit>
+    </div>
+  </div>
+
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
   <hr />
 
   <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-  <rhn:submitted />
-  <div class="text-right">
-    <html:submit styleClass="btn btn-success" property="dispatch">
-      <bean:message key="ssm.misc.reboot.confirm" />
-    </html:submit>
-  </div>
 
 </rl:listset>
 </body>

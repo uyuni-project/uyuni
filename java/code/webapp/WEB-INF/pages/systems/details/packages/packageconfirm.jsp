@@ -21,6 +21,15 @@
 <rl:listset name="packageListSet">
     <rhn:csrf />
     <rhn:submitted />
+    <c:if test="${not empty requestScope.pageList}">
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <input type="submit" name ="dispatch" class="btn btn-success"
+                       value='<bean:message key="installconfirm.jsp.confirm"/>'/>
+                <rhn:hidden name="sid" value="${param.sid}" />
+            </div>
+        </div>
+    </c:if>
         <rl:list dataset="pageList"
          width="100%"
          name="packageList"
@@ -44,13 +53,6 @@
 <c:if test="${not empty requestScope.pageList}">
     <div class="form-horizontal">
         <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-        <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-6">
-                <input type="submit" name ="dispatch" class="btn btn-success"
-                       value='<bean:message key="installconfirm.jsp.confirm"/>'/>
-                <rhn:hidden name="sid" value="${param.sid}" />
-            </div>
-        </div>
     </div>
 </c:if>
 </rl:listset>

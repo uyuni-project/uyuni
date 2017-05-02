@@ -452,7 +452,7 @@ public class ListTag extends BodyTagSupport {
             ListTagUtil.write(pageContext, topAlphaBarContent.toString());
             ListTagUtil.write(pageContext, "</div>");
             ListTagUtil.write(pageContext,
-                    "<div class=\"spacewalk-list-pagination\">");
+                    "<div class=\"spacewalk-list-pagination move-to-fixed-toolbar\">");
             ListTagUtil.write(pageContext, topPaginationContent.toString());
             ListTagUtil.write(pageContext, "</div>");
             ListTagUtil.write(pageContext,
@@ -693,7 +693,8 @@ public class ListTag extends BodyTagSupport {
             ListTagUtil.write(pageContext, footLinksContent.toString());
             ListTagUtil.write(pageContext, "</div>");
             ListTagUtil.write(pageContext,
-                    "<div class=\"spacewalk-list-footer-addons-extra\">");
+                    "<div class=\"spacewalk-list-footer-addons-extra" +
+                    " move-children-to-fixed-toolbar\">");
             ListTagUtil.write(pageContext, footAddonsContent.toString());
             ListTagUtil.write(pageContext, "</div>");
             ListTagUtil.write(pageContext, "</div>");
@@ -710,7 +711,6 @@ public class ListTag extends BodyTagSupport {
 
         ListTagUtil.write(pageContext,
                 "<div class=\"spacewalk-list-bottom-addons\">");
-        renderFooterPaginationControls();
         ListTagUtil.write(pageContext,
                 "<div class=\"spacewalk-list-bottom-addons-extra\">");
         if (!isEmpty()) {
@@ -1022,30 +1022,6 @@ public class ListTag extends BodyTagSupport {
             default:             return null;
         }
     }
-
-    private void renderFooterPaginationControls() throws JspException {
-
-        if (isEmpty() || hidePageNums) {
-            return;
-        }
-
-        ListTagUtil.write(pageContext,
-                "<div class=\"spacewalk-list-pagination\">");
-        if (!isEmpty() && !hidePageNums) {
-            ListTagUtil.write(pageContext, manip.getPaginationMessage());
-        }
-
-        if (!manip.isListEmpty()) {
-            for (ListDecorator dec : getDecorators()) {
-                dec.afterBottomPagination();
-            }
-        }
-
-        ListTagUtil.renderPaginationLinks(pageContext, PAGINATION_NAMES,
-                manip.getPaginationLinks());
-        ListTagUtil.write(pageContext, "</div>");
-    }
-
 
     private void renderTopPaginationControls() throws JspException {
         if (!isEmpty() && !hidePageNums) {

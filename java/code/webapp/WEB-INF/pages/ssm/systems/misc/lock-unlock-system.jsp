@@ -34,6 +34,12 @@
             </table>
             <rhn:csrf />
             <rhn:submitted />
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <input class="btn btn-default" type="submit" name="dispatch" value='<bean:message key="ssm.misc.lockunlock.dispatch.lock"/>'/>
+                    <input class="btn btn-default" type="submit" name="dispatch" value='<bean:message key="ssm.misc.lockunlock.dispatch.unlock"/>'/>
+                </div>
+            </div>
             <rl:list width="100%"
                      dataset="pageList"
                      name="systemList"
@@ -72,10 +78,6 @@
                     </c:choose>
                 </rl:column>
             </rl:list>
-            <div class="text-right">
-                <input class="btn btn-default" type="submit" name="dispatch" value='<bean:message key="ssm.misc.lockunlock.dispatch.lock"/>'/>
-                <input class="btn btn-default" type="submit" name="dispatch" value='<bean:message key="ssm.misc.lockunlock.dispatch.unlock"/>'/>
-            </div>
         </rl:listset>
     </body>
 </html>
