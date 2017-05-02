@@ -75,6 +75,7 @@ Feature: register a salt-minion via bootstrap
      And I select "1-MINION-TEST" from "activationKeys"
      And I click on "Bootstrap"
      Then I wait until i see "Successfully bootstrapped host! " text
+     And I wait for "100" seconds
 
   Scenario: verify minion bootstrapped with activation key, packages
      Given I am authorized
