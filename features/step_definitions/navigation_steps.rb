@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2017 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 #
@@ -8,10 +8,18 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
   fail unless (current_path == arg1)
 end
 
-#
-# Common "When" phrases
-#
-
+And(/^I wait until i see "([^"]*)" text$/) do |text|
+  begin
+    Timeout.timeout(150) do
+      loop do
+        break if page.has_content?(text)
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "Couldn't find the #{text} in webpage"
+  end
+end
 #
 # Check a checkbox of the given id
 #
