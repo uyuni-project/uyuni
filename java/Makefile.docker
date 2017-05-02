@@ -16,7 +16,4 @@ dockerrun_pg ::
 
 dockerrun_ora ::
 	cp buildconf/test/rhn.conf.oracle-example buildconf/test/rhn.conf
-	echo "#################################################"
-	echo "### execute /root/docker-oracle-db4eclipse.sh ###"
-	echo "#################################################"
-	docker run --privileged -t -i $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-ora-4eclipse
+	docker run --privileged -t -i $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-ora-4eclipse /root/docker-oracle-db4eclipse.sh
