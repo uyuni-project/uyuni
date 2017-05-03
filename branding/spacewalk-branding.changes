@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Wed May 03 16:45:03 CEST 2017 - michele.bologna@suse.com
+
+- version 2.7.2.4-1
+- Use specific classes for fixed toolbar content
+- Move selector-buttons and pagination into fixed toolbar
+- Remove deprecated CVE Audit page code and resources
+- Update CVE Audit status icons
+- Improve visualization legend
+- Use a clearer color to highlight the selected node
+- Improve filter box style
+- Add a remove-from-ssm button
+- (bsc#1028432) change kickstart text to autoinst
+
+-------------------------------------------------------------------
 Fri Mar 31 09:50:30 CEST 2017 - mc@suse.de
 
 - version 2.7.2.3-1
