@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 03 15:58:13 CEST 2017 - michele.bologna@suse.com
+
+- version 2.7.8.2-1
+- Adding softwarechannel_listmanageablechannels
+
+-------------------------------------------------------------------
 Mon Apr 03 14:55:20 CEST 2017 - mc@suse.de
 
 - version 2.7.8.1-1
