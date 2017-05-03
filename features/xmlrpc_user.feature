@@ -3,7 +3,6 @@
 
 Feature: Test XML-RPC "user" namespace.
 
-  @xmlrpc
   Scenario: Basic user operations
     Given I am logged in via XML-RPC/user as user "admin" and password "admin"
     When I call user.listUsers()
@@ -15,7 +14,6 @@ Feature: Test XML-RPC "user" namespace.
     Then when I call user.listUsers(), I should see a user "testluser"
     And I logout from XML-RPC/user namespace.
 
-  @xmlrpc
   Scenario: Role operations
     Given I am logged in via XML-RPC/user as user "admin" and password "admin"
     When I call user.addRole() on "testluser" with the role "org_admin"
@@ -24,7 +22,6 @@ Feature: Test XML-RPC "user" namespace.
     Then I shall not see "org_admin" when I call user.listRoles() with "testluser" uid
     And I logout from XML-RPC/user namespace.
 
-   @xmlrpc
   Scenario: Cleanup user tests
     Given I am logged in via XML-RPC/user as user "admin" and password "admin"
     When I delete user "testluser"

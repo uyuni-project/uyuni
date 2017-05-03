@@ -54,6 +54,7 @@
 - features/check_VHM.feature
 - features/setup_wizard.feature
 - features/security.feature
+- features/xmlrpc_user.feature 
 
 #### Salt related features   ###
 - features/minion_bootstrap.feature
@@ -74,12 +75,12 @@
 ## Centos client related feat. ###
 - features/centos_salt.feature
 - features/centos_salt_ssh.feature 
-#### * Docker releated features tests.  ###
+#### * Docker related features tests.  ###
 - features/docker_build_image.feature
 - features/docker_cve_audit.feature
 #  - features/docker_advanced_test.feature FIXME: ENABLE AFTER BETA3
 
-# Debug suse-manger server
+# Debug suse-manager server
 - features/spacewalk_debug.feature
 
 ### Scalability tests (after debug always)
