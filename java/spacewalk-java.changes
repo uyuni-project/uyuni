@@ -1,4 +1,28 @@
 -------------------------------------------------------------------
+Wed May 03 16:58:35 CEST 2017 - michele.bologna@suse.com
+
+- version 2.7.46.1-1
+- parse result of SP migration Dry Run correctly (bsc#1034837)
+- Apply 'action button fixed on scroll' behavior to pages (bsc#1012978)
+- prevent possible null pointer exception when installed products could not be
+  found (bsc#1034837)
+- Allow dot character '.' for activation key (bsc#1035633)
+- fix ISE when no status selection was made (bsc#1033213)
+- Download empty CSV report when CVE identifier could not be found
+  (bsc#1033212)
+- Add 'add to ssm' checkboxes to CVE audit list (bsc#1032016)
+- Fix missing IPs in Overview tab (bsc#1031453)
+- fix scheduling VM deployment in future (bsc#1034289)
+- handle empty set to not produce invalid sql (bsc#1033497)
+- fix SSM group pagination (bsc#1012784)
+- Fix ReactJS DateTime input for phantomjs (bsc#1030075)
+- make sure minion keys can only be seen/managed by appropriate
+  user(bsc#1025908)
+- Set action status to 'failed' on uncaught exceptions (bsc#1013606)
+- create PooledExecutor with pre-filled queue (bsc#1030716)
+  aborted by the client (bsc#1031826)
+
+-------------------------------------------------------------------
 Mon Apr 03 14:57:25 CEST 2017 - mc@suse.de
 
 - version 2.7.44.1-1
