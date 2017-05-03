@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed May 03 16:09:12 CEST 2017 - michele.bologna@suse.com
+
+- version 2.7.10.2-1
+- update CentOS7 addon repos
+- removed definitions of EOLed products
+- add new channels Fedora 25 and Spacewalk 2.6
+
+-------------------------------------------------------------------
 Mon Apr 03 14:45:30 CEST 2017 - mc@suse.de
 
 - version 2.7.10.1-1
