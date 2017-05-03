@@ -22,6 +22,7 @@ import java.util.Map;
 
 /**
  * Object representation of the results of a call to state.apply distupgrade.
+ * Returned with salt 2016.11
  */
 public class DistUpgradeSlsResult {
 

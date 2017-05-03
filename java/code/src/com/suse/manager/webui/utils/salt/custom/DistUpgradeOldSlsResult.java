@@ -15,23 +15,28 @@
 package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.annotations.SerializedName;
+import com.suse.salt.netapi.results.ModuleRun;
+import com.suse.salt.netapi.results.OldNew;
 import com.suse.salt.netapi.results.StateApplyResult;
+
+import java.util.Map;
 
 /**
  * Object representation of the results of a call to state.apply distupgrade.
- * Returned with salt 2016.11
+ * The old version was returned by salt 2015.7.12
  */
-public class DistUpgradeDryRunSlsResult {
+public class DistUpgradeOldSlsResult {
 
    @SerializedName("module_|-spmigration_|-pkg.upgrade_|-run")
-   private StateApplyResult<RetOpt<String>> spmigration;
+   private StateApplyResult<RetOpt<ModuleRun<Map<String, OldNew>>>> spmigration;
 
    /**
     * constructor
     *
     * @param s spmigration state apply result
     */
-   public DistUpgradeDryRunSlsResult(StateApplyResult<RetOpt<String>> s) {
+   public DistUpgradeOldSlsResult(
+           StateApplyResult<RetOpt<ModuleRun<Map<String, OldNew>>>> s) {
       this.spmigration = s;
    }
 
@@ -40,7 +45,7 @@ public class DistUpgradeDryRunSlsResult {
     *
     * @return spmigration state apply result
     */
-   public StateApplyResult<RetOpt<String>> getSpmigration() {
-      return spmigration;
+   public StateApplyResult<RetOpt<ModuleRun<Map<String, OldNew>>>> getSpmigration() {
+       return spmigration;
    }
 }
