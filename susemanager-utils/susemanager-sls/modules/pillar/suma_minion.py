@@ -109,7 +109,7 @@ def formula_pillars(minion_id, group_ids):
                 for formula in minion_formulas:
                    if formula in formulas:
                         continue
-                   formulas.append(formula)
+                   formulas.append(formula.encode('utf-8'))
                    ret.update(load_formula_pillar(minion_id, None, formula))
         except Exception as error:
             log.error('Error loading minion formulas: {message}'.format(message=str(error)))
