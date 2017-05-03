@@ -23,11 +23,9 @@
     </div>
   </div>
 
-  <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
-  <hr />
-
   <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
 
+  <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
 </rl:listset>
 </body>
 </html>

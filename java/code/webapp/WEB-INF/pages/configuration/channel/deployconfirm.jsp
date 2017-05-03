@@ -54,6 +54,21 @@
 
 
         <h2><bean:message key="deployconfirm.jsp.systems-header2" /></h2>
+
+        <c:if test="${not empty requestScope.selectedSystems && not empty requestScope.selectedFiles}">
+            <!--  DoIt Button -->
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <html:submit styleClass="btn btn-default" property="dispatch">
+                        <bean:message key="deployconfirm.jsp.confirmbutton" />
+                    </html:submit>
+                </div>
+            </div>
+            <!--  Date picker  -->
+            <p><bean:message key="deployconfirm.jsp.widgetsummary" /></p>
+            <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
+        </c:if>
+
         <!--  Systems-list -->
         <div>
         <rl:list dataset="selectedSystems" name="systemList"
@@ -67,18 +82,6 @@
                 </rl:column>
         </rl:list>
         </div>
-
-        <c:if test="${not empty requestScope.selectedSystems && not empty requestScope.selectedFiles}">
-        <!--  Date picker  -->
-        <p><bean:message key="deployconfirm.jsp.widgetsummary" /></p>
-    <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-        <!--  DoIt Button -->
-        <div class="text-right">
-                <html:submit styleClass="btn btn-default" property="dispatch">
-                        <bean:message key="deployconfirm.jsp.confirmbutton" />
-                </html:submit>
-        </div>
-        </c:if>
 </rl:listset>
 </body>
 </html>

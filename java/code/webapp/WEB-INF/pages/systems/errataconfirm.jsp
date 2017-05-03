@@ -24,6 +24,9 @@
                     </html:submit>
                 </div>
             </div>
+            <div class="form-horizontal">
+                <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
+            </div>
             <rl:list width="100%" styleclass="list" emptykey="erratalist.jsp.noerrata">
                 <rl:decorator name="PageSizeDecorator" />
                 <rl:decorator name="ElaborationDecorator" />
@@ -52,9 +55,6 @@
                 <rl:column headerkey="erratalist.jsp.synopsis">${current.advisorySynopsis}</rl:column>
                 <rl:column headerkey="erratalist.jsp.updated">${current.updateDate}</rl:column>
             </rl:list>
-            <div class="form-horizontal">
-                <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-            </div>
             <html:hidden property="sid" value="${param.sid}" />
             <rhn:hidden name="use_date" value="true" />
         </rl:listset>

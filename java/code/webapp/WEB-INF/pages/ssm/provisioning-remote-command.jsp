@@ -59,13 +59,15 @@
 </textarea>
                                 </div>
                             </div>
-                    <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
                     <html:hidden property="submitted" value="true"/>
-                    <div class="form-group">
-                        <div class="col-md-offset-3 col-md-6">
-                            <input type="submit" class="btn btn-success" name="schedule_remote_command" value="<bean:message key='ssm.operations.provisioning.remotecommand.form.submit'/>">
+                    <div class="spacewalk-section-toolbar">
+                        <div class="action-button-wrapper">
+                            <input type="submit" class="btn btn-success"
+                                name="schedule_remote_command"
+                                value="<bean:message key='ssm.operations.provisioning.remotecommand.form.submit'/>">
                         </div>
                     </div>
+                    <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
                 </html:form>
 
                 <div id="system-list">

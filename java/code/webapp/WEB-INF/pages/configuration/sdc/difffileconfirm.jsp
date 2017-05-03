@@ -29,6 +29,18 @@
     <rhn:csrf />
     <c:set var="button" value="sdcdiffconfirm.jsp.schedule" />
 
+    <c:if test="${not empty requestScope.pageList}">
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <html:submit styleClass="btn btn-primary" property="dispatch">
+                    <bean:message key="${button}" />
+                </html:submit>
+            </div>
+        </div>
+        <p><bean:message key="sdcconfigconfirm.jsp.widgetsummary" /></p>
+        <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
+    </c:if>
+
     <rhn:list pageList="${requestScope.pageList}"
             noDataText="sdcconfigfiles.jsp.noFiles">
 
@@ -36,17 +48,6 @@
         <%@ include file="/WEB-INF/pages/common/fragments/configuration/sdc/configfile_rows.jspf" %>
       </rhn:listdisplay>
     </rhn:list>
-
-    <c:if test="${not empty requestScope.pageList}">
-        <p><bean:message key="sdcconfigconfirm.jsp.widgetsummary" /></p>
-        <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-        <div class="text-right">
-            <hr />
-            <html:submit styleClass="btn btn-primary" property="dispatch">
-                <bean:message key="${button}" />
-            </html:submit>
-        </div>
-    </c:if>
 </html:form>
 
 </body>

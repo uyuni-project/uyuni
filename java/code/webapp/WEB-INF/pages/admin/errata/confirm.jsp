@@ -27,14 +27,6 @@
                         </html:submit>
                     </div>
                 </div>
-                <rhn:listdisplay>
-                    <rhn:column header="actions.jsp.system">
-                        ${current.name}
-                    </rhn:column>
-                    <rhn:column header="actions.jsp.basechannel">
-                        ${current.channelLabels}
-                    </rhn:column>
-                </rhn:listdisplay>
                 <div class="form-group">
                     <div class="col-md-offset-3 col-md-6">
                         <span class="help-block">
@@ -43,6 +35,14 @@
                     </div>
                 </div>
                 <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
+                <rhn:listdisplay>
+                    <rhn:column header="actions.jsp.system">
+                        ${current.name}
+                    </rhn:column>
+                    <rhn:column header="actions.jsp.basechannel">
+                        ${current.channelLabels}
+                    </rhn:column>
+                </rhn:listdisplay>
                 <html:hidden property="eid" value="${param.eid}" />
                 <rhn:hidden name="use_date" value="true" />
             </rhn:list>

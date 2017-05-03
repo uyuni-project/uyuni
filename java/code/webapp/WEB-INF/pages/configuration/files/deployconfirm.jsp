@@ -21,7 +21,20 @@
         action="/configuration/file/GlobalRevisionDeployConfirmSubmit.do?cfid=${cfid}&amp;crid=${crid}">
     <rhn:csrf />
         <html:hidden property="submitted" value="true" />
+
+    <c:if test="${not empty requestScope.pageList}">
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <html:submit styleClass="btn btn-default" property="dispatch">
+                    <bean:message key="deployconfirm.jsp.deploybutton" />
+                </html:submit>
+            </div>
+        </div>
         <div>
+            <bean:message key="deploy.jsp.widgetsummary" /></p>
+            <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
+        </div>
+    </c:if>
         <rhn:list pageList="${requestScope.pageList}"
                 noDataText="deployconfirm.jsp.noSystems">
                 <rhn:listdisplay filterBy="globaldeploy.jsp.systemName">
@@ -31,19 +44,6 @@
                 </rhn:column>
                 </rhn:listdisplay>
         </rhn:list>
-
-        <c:if test="${not empty requestScope.pageList}">
-        <div>
-        <bean:message key="deploy.jsp.widgetsummary" /></p>
-    <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-        </div>
-        <hr />
-        <div class="text-right">
-                <html:submit styleClass="btn btn-default" property="dispatch">
-                        <bean:message key="deployconfirm.jsp.deploybutton" />
-                </html:submit>
-        </div>
-        </c:if>
 </html:form>
 </body>
 </html>
