@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed May 03 16:10:55 CEST 2017 - michele.bologna@suse.com
+
+- version 3.1.6-1
+- use option skip-service-restart during migration
+- add bootstrap repo data for SLES for SAP 12 SP2 ppc64le
+- add python-setuptools to bootstrap repo (bsc#1033731)
+
+-------------------------------------------------------------------
 Mon Apr 03 14:44:26 CEST 2017 - mc@suse.de
 
 - version 3.1.5-1
