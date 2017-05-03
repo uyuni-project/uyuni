@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 03 16:33:41 CEST 2017 - michele.bologna@suse.com
+
+- version 2.7.4.1-1
+- Update spacewalk-remote-utils with RHEL 6.9 channel definitions
+
+-------------------------------------------------------------------
 Mon Mar 06 16:38:21 CET 2017 - mc@suse.de
 
 - version 2.7.3.2-1
