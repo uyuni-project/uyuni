@@ -54,8 +54,20 @@
                 <br/>
 
 <h2><rhn:icon type="header-kickstart" /><bean:message key="kickstart.schedule.heading4.jsp" /></h2>
-                <table class="details">
-                <%@ include file="/WEB-INF/pages/common/fragments/kickstart/schedule/network-options.jspf" %>
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input type="submit" name="dispatch" value="${rhn:localize('ssm.kickstart.schedule.create.records.button.jsp')}" />
+            <input class="btn btn-default" type="submit" name="dispatch" value="${rhn:localize('kickstart.schedule.button2.jsp')}"/>
+        </div>
+    </div>
+
+    <%@ include file="/WEB-INF/pages/common/fragments/kickstart/schedule/schedule-options.jspf" %>
+    <p>
+        <bean:message key="kickstarts.jsp.diskwarningssm" />
+    </p>
+
+    <table class="details">
+      <%@ include file="/WEB-INF/pages/common/fragments/kickstart/schedule/network-options.jspf" %>
       <tr>
         <th width="10%"><bean:message key="kickstartdetails.jsp.kernel_options" />:</th>
         <td>
@@ -109,16 +121,6 @@
 
       <%@ include file="/WEB-INF/pages/common/fragments/kickstart/schedule/profile-sync.jspf" %>
                 </table>
-
-                <%@ include file="/WEB-INF/pages/common/fragments/kickstart/schedule/schedule-options.jspf" %>
-          <p>
-            <bean:message key="kickstarts.jsp.diskwarningssm" />
-          </p>
-<div class="text-right">
-<hr />
-<input type="submit" name="dispatch" value="${rhn:localize('ssm.kickstart.schedule.create.records.button.jsp')}" />
-<input class="btn btn-default" type="submit" name="dispatch" value="${rhn:localize('kickstart.schedule.button2.jsp')}"/>
-</div>
 
 <rhn:submitted/>
 </rl:listset>

@@ -18,6 +18,14 @@
 <rl:listset name="systemSet" legend="system">
 <rhn:csrf />
 <rhn:submitted />
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input type="submit" class="btn btn-success" name="dispatch" value='<bean:message key="confirm.jsp.confirm"/>'/>
+        </div>
+    </div>
+
+    <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
+
         <rl:list
                 dataset="pageList"
                 name="systemList"
@@ -37,15 +45,6 @@
                         <%@ include file="/WEB-INF/pages/common/fragments/systems/system_list_fragment.jspf" %>
                 </rl:column>
          </rl:list>
-        <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-    <div class="form-horizontal">
-        <div class="form-group">
-            <div class="col-md-12">
-                <input type="submit" class="btn btn-success" name="dispatch" value='<bean:message key="confirm.jsp.confirm"/>'/>
-            </div>
-        </div>
-    </div>
-
 </rl:listset>
 
 </div>

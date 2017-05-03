@@ -21,6 +21,18 @@
     <rhn:csrf />
     <rhn:submitted />
 
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input type="submit" name="dispatch" class="btn btn-danger"
+                   value='<bean:message key="installconfirm.jsp.confirm"/>'/>
+        </div>
+    </div>
+    <div class="form-horizontal">
+        <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
+        <rhn:hidden name="packagesDecl" value="${requestScope.packagesDecl}" />
+        <rhn:hidden name="mode" value="${param.mode}" />
+    </div>
+
     <rl:list dataset="pageList"
              width="100%"
              name="groupList"
@@ -46,18 +58,6 @@
         </rl:column>
 
     </rl:list>
-
-    <div class="form-horizontal">
-        <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-        <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-6">
-                <input type="submit" name="dispatch" class="btn btn-danger"
-                       value='<bean:message key="installconfirm.jsp.confirm"/>'/>
-            </div>
-        </div>
-        <rhn:hidden name="packagesDecl" value="${requestScope.packagesDecl}" />
-        <rhn:hidden name="mode" value="${param.mode}" />
-    </div>
 </rl:listset>
 
 </body>

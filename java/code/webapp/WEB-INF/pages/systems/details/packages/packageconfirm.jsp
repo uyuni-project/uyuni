@@ -29,6 +29,9 @@
                 <rhn:hidden name="sid" value="${param.sid}" />
             </div>
         </div>
+        <div class="form-horizontal">
+            <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
+        </div>
     </c:if>
         <rl:list dataset="pageList"
          width="100%"
@@ -50,11 +53,6 @@
                 </c:choose>
             </rl:column>
         </rl:list>
-<c:if test="${not empty requestScope.pageList}">
-    <div class="form-horizontal">
-        <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-    </div>
-</c:if>
 </rl:listset>
 </body>
 </html>

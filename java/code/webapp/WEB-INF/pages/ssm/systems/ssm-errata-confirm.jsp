@@ -15,6 +15,7 @@
     <rhn:csrf />
     <rhn:submitted />
 
+<c:set var="notSelectable" value="True" />
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
             <html:submit styleClass="btn btn-success" property="dispatch">
@@ -22,11 +23,8 @@
             </html:submit>
         </div>
     </div>
-
-<c:set var="notSelectable" value="True" />
-<%@ include file="/WEB-INF/pages/ssm/systems/errata-list-fragment.jspf" %>
-
     <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
+    <%@ include file="/WEB-INF/pages/ssm/systems/errata-list-fragment.jspf" %>
   </rl:listset>
 </body>
 </html>

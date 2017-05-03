@@ -27,18 +27,21 @@
 
 <html:form method="post" action="/systems/ssm/config/DeployConfirmSubmit.do">
   <rhn:csrf />
-  <%@ include file="/WEB-INF/pages/common/fragments/configuration/ssm/configconfirmlist.jspf"%>
 
   <c:if test="${not empty requestScope.pageList}">
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <html:submit styleClass="btn btn-default" property="dispatch">
+              <bean:message key="deployconfirm.jsp.confirm" />
+            </html:submit>
+        </div>
+    </div>
     <p><bean:message key="deployconfirm.jsp.widgetsummary" /></p>
     <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-    <div class="text-right">
-      <hr />
-      <html:submit styleClass="btn btn-default" property="dispatch">
-        <bean:message key="deployconfirm.jsp.confirm" />
-      </html:submit>
-    </div>
   </c:if>
+
+  <%@ include file="/WEB-INF/pages/common/fragments/configuration/ssm/configconfirmlist.jspf"%>
+
 </html:form>
 
 </body>
