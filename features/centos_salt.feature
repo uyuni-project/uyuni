@@ -17,6 +17,21 @@ Feature: register a salt-minion via bootstrap
      And I wait until i see "Successfully bootstrapped host! " text
      And I wait for "100" seconds
      
+  Scenario: Run a remote command on centos
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Salt"
+    And I follow "Remote Commands"
+    And I should see a "Remote Commands" text
+    Then I enter command "cat /etc/os-release"
+    And I click on preview
+    And I wait for "30" seconds
+    And I click on run
+    Then I should see "ceos-minion" hostname
+    And I wait for "15" seconds
+    And I expand the results for "ceos-minion"
+    And I should see a "rhel fedora" text
+    Then I should see a "REDHAT_SUPPORT_PRODUCT" text
+    
   Scenario: Reboot a salt minion (ssh-managed) (centos)
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow first "Schedule System Reboot"
@@ -25,18 +40,3 @@ Feature: register a salt-minion via bootstrap
     And I click on "Reboot system"
     Then I wait and check that "ceos-minion" has rebooted
     And I wait until "salt-minion" service is up and running on "ceos-minion"
-
-  Scenario: Run a remote command on centos
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Salt"
-    And I follow "Remote Commands"
-    And I should see a "Remote Commands" text
-    Then I enter command "cat /etc/os-release"
-    And I click on preview
-    And I wait for "5" seconds
-    And I click on run
-    Then I should see "ceos-minion" hostname
-    And I wait for "15" seconds
-    And I expand the results for "ceos-minion"
-    And I should see a "rhel fedora" text
-    Then I should see a "REDHAT_SUPPORT_PRODUCT" text
