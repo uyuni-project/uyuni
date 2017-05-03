@@ -82,14 +82,14 @@ function ImageInfo(props) {
                     <tr>
                         <td>Profile:</td>
                         { data.profile ?
-                            <td>{data.profile.label}<LinkButton icon="fa-edit" href={"/rhn/manager/cm/imageprofiles/edit/" + data.profile.id} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit profile")}/></td>
+                            <td>{data.profile.label}{ isAdmin && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imageprofiles/edit/" + data.profile.id} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit profile")}/>}</td>
                             :<td>-</td>
                         }
                     </tr>
                     <tr>
                         <td>Store:</td>
                         { data.store ?
-                            <td>{data.store.label}<LinkButton icon="fa-edit" href={"/rhn/manager/cm/imagestores/edit/" + data.store.id} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit store")}/></td>
+                            <td>{data.store.label}{ isAdmin && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imagestores/edit/" + data.store.id} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit store")}/>}</td>
                             :<td>-</td>
                         }
                     </tr>

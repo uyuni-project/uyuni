@@ -160,21 +160,6 @@ public class ImageBuildController {
     }
 
     /**
-     * redirect to activation key page
-     * @param req the request
-     * @param res the response
-     * @param user the user
-     * @return return Object
-     */
-    public static Object activationKey(Request req, Response res, User user) {
-        long id = Long.parseLong(req.params("id"));
-        ImageInfo imageInfo = ImageInfoFactory.lookupByIdAndOrg(id, user.getOrg()).get();
-        res.redirect("/rhn/activationkeys/Edit.do?tid=" + imageInfo.getProfile()
-            .getToken().getId());
-        return "";
-    }
-
-    /**
      * Creates a list of JSON objects for a list of {@link SystemOverview}
      * instances, having only 'id' and 'name' properties
      *
