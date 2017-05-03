@@ -260,7 +260,8 @@ public class Router implements SparkApplication {
         post("/manager/api/cm/imagestores", withImageAdmin(ImageStoreController::create));
         post("/manager/api/cm/imagestores/:id",
                 withImageAdmin(ImageStoreController::update));
-        delete("/manager/api/cm/imagestores/:id", withUser(ImageStoreController::delete));
+        delete("/manager/api/cm/imagestores/:id",
+                withImageAdmin(ImageStoreController::delete));
 
         get("/manager/cm/imageprofiles",
                 withCsrfToken(withUser(ImageProfileController::listView)), jade);
@@ -275,7 +276,7 @@ public class Router implements SparkApplication {
         get("/manager/api/cm/imageprofiles/find/:label",
                 withUser(ImageProfileController::getSingleByLabel));
         get("/manager/api/cm/imageprofiles/channels/:token",
-                withImageAdmin(ImageProfileController::getChannels));
+                withUser(ImageProfileController::getChannels));
         post("/manager/api/cm/imageprofiles",
                 withImageAdmin(ImageProfileController::create));
         post("/manager/api/cm/imageprofiles/:id",
@@ -290,13 +291,10 @@ public class Router implements SparkApplication {
                 withCsrfToken(withUser(ImageBuildController::rebuild)), jade);
 
         get("/manager/api/cm/build/hosts", withUser(ImageBuildController::getBuildHosts));
-        post("/manager/api/cm/build/:id", withUser(ImageBuildController::build));
+        post("/manager/api/cm/build/:id", withImageAdmin(ImageBuildController::build));
 
         get("/manager/cm/images", withCsrfToken(withUser(ImageBuildController::listView)),
                 jade);
-
-
-        get("/manager/cm/images/:id/ak", withUser(ImageBuildController::activationKey));
 
         get("/manager/api/cm/images", withUser(ImageBuildController::list));
         get("/manager/api/cm/images/:id", withUser(ImageBuildController::get));

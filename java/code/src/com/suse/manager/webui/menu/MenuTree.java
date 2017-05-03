@@ -177,13 +177,13 @@ public class MenuTree {
             // Images
             nodes.add(new MenuItem("Images").withIcon("spacewalk-icon-manage-configuration-files")
                 .addChild(new MenuItem("Images").withPrimaryUrl("/rhn/manager/cm/images")
-                    .withDir("/rhn/manager/cm/images").withVisibility(adminRoles.get("org")))
+                    .withDir("/rhn/manager/cm/images"))
                 .addChild(new MenuItem("Build").withPrimaryUrl("/rhn/manager/cm/build")
                     .withDir("/rhn/manager/cm/build").withVisibility(adminRoles.get("image")))
                 .addChild(new MenuItem("Profiles").withPrimaryUrl("/rhn/manager/cm/imageprofiles")
-                    .withDir("/rhn/manager/cm/imageprofiles").withVisibility(adminRoles.get("org")))
+                    .withDir("/rhn/manager/cm/imageprofiles"))
                 .addChild(new MenuItem("Stores").withPrimaryUrl("/rhn/manager/cm/imagestores")
-                    .withDir("/rhn/manager/cm/imagestores").withVisibility(adminRoles.get("org"))));
+                    .withDir("/rhn/manager/cm/imagestores")));
 
             // Patches
             nodes.add(new MenuItem("Patches").withIcon("spacewalk-icon-patches")
