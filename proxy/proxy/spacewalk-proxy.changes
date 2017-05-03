@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 03 15:59:41 CEST 2017 - michele.bologna@suse.com
+
+- version 2.7.1.2-1
+- Lower the use-file-instead-of-memory treshold (bsc#1030342)
+
+-------------------------------------------------------------------
 Fri Mar 31 09:36:25 CEST 2017 - mc@suse.de
 
 - version 2.7.1.1-1
