@@ -94,6 +94,7 @@ Capybara.register_driver :poltergeist do |app|
                                                            '--web-security=false'],
                                     :js_errors => false,
                                     :timeout => 250,
+                                    :window_size => [1920, 1080],
                                     :debug => false)
 end
 Capybara.default_driver = :poltergeist
