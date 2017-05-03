@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed May 03 15:54:47 CEST 2017 - michele.bologna@suse.com
+
+- version 2.7.4.2-1
+- add new option skip-services-restart
+- adjust log path on tomcat 7+
+
+-------------------------------------------------------------------
 Mon Apr 03 14:50:04 CEST 2017 - mc@suse.de
 
 - version 2.7.4.1-1
