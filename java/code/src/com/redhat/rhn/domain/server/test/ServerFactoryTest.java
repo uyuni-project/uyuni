@@ -260,7 +260,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ManagedServerGroup sg1 = manager.create(user, "FooFooFOO", "Foo Description");
         manager.addServers(sg1, servers, user);
 
-        server = (Server)reload(server);
+        server = reload(server);
         assertTrue(server.getEntitledGroups().size() == 1);
         assertTrue(server.getManagedGroups().size() == 1);
 
@@ -304,7 +304,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertTrue(membersBefore.intValue() < membersAfter.intValue());
 
         ServerFactory.removeServerFromGroup(testServer.getId(), group.getId());
-        group = (ManagedServerGroup) reload(group);
+        group = reload(group);
 
         Long membersFinally = group.getCurrentMembers();
         assertEquals(membersBefore, membersFinally);
@@ -492,7 +492,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             EntitlementServerGroup mgmt = ServerGroupFactory.lookupEntitled(
                     EntitlementManager.MANAGEMENT, owner.getOrg());
             if (mgmt == null) {
-                newS = (Server)TestUtils.saveAndReload(newS);
+                newS = TestUtils.saveAndReload(newS);
                 mgmt = ServerGroupFactory.lookupEntitled(
                         EntitlementManager.MANAGEMENT,
                         owner.getOrg());
@@ -509,7 +509,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
                                                                         type);
 
         SystemManager.entitleServer(newS, sg.getGroupType().getAssociatedEntitlement());
-        return (Server) TestUtils.saveAndReload(newS);
+        return TestUtils.saveAndReload(newS);
     }
 
     /**
@@ -706,7 +706,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.save(srvr);
         ServerFactory.save(srvr1);
         flushAndEvict(srvr1);
-        srvr = (Server) reload(srvr);
+        srvr = reload(srvr);
         // Ok let's finally test what we came here for.
         List list = ServerFactory.compatibleWithServer(user, srvr);
         assertNotNull("List is null", list);
@@ -755,13 +755,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         manager.associateAdmins(group, admins, admin);
         assertTrue(manager.canAccess(regular, group));
         ServerGroupFactory.save(group);
-        group = (ManagedServerGroup) reload(group);
+        group = reload(group);
         UserFactory.save(admin);
-        admin = (User) reload(admin);
+        admin = reload(admin);
         UserFactory.save(regular);
-        regular = (User) reload(regular);
+        regular = reload(regular);
         UserFactory.save(nonGroupAdminUser);
-        nonGroupAdminUser = (User) reload(nonGroupAdminUser);
+        nonGroupAdminUser = reload(nonGroupAdminUser);
 
         List <User> users = ServerFactory.listAdministrators(serverToSearch);
         System.out.println(users);
@@ -855,7 +855,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ChannelFactory.save(baseChan);
         ChannelFactory.save(proxyChan);
-        product = (ChannelProduct) TestUtils.saveAndReload(product);
+        product = TestUtils.saveAndReload(product);
 
         SystemManager.activateProxy(server, "1.1");
         SystemManager.storeServer(server);
@@ -1014,22 +1014,18 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         List<MinionServer> minions = Arrays.asList(zypperSystem, nonZypperSystem);
         Map<LocalCall<?>, List<MinionServer>> localCallListMap = SaltServerActionService.INSTANCE.errataAction(minions, Collections.singleton(e1.getId()));
 
-        assertEquals(2, localCallListMap.size());
+        assertEquals(1, localCallListMap.size());
         localCallListMap.entrySet().forEach(result -> {
-            assertEquals(1, result.getValue().size());
+            assertEquals(2, result.getValue().size());
             final LocalCall<?> call = result.getKey();
             assertEquals("state.apply", call.getPayload().get("fun"));
             Map<String, Object> kwarg = (Map<String, Object>)call.getPayload().get("kwarg");
             assertEquals(Collections.singletonList("packages.patchinstall"), kwarg.get("mods"));
             MinionServer minionServer = result.getValue().get(0);
             Map<String, Object> pillar = (Map<String, Object>)kwarg.get("pillar");
-            Map<String, String> param_pkgs = (Map<String, String>)pillar.get("param_pkgs");
-            assertEquals(1, param_pkgs.size());
-            if (minionServer == zypperSystem) {
-                assertEquals("", param_pkgs.get("patch:SUSE-" + updateTag + "-2016-1234"));
-            } else {
-                assertEquals(p1v2.getPackageEvr().toString(), param_pkgs.get(p1v2.getPackageName().getName()));
-            }
+            HashSet<String> param_patches = (HashSet<String>) pillar.get("param_patches");
+            assertEquals(1, param_patches.size());
+            assertEquals(true, param_patches.contains("SUSE-" + updateTag + "-2016-1234"));
         });
     }
 

@@ -40,10 +40,8 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -260,32 +258,6 @@ public enum SaltServerActionService {
         }
     }
 
-    private Map<LocalCall<?>, List<MinionServer>> nonZypperErrataAction(
-            List<MinionServer> minions,
-            Set<Long> errataIds) {
-        Set<Long> minionIds = minions.stream()
-                .map(Server::getId).collect(Collectors.toSet());
-        Map<Long, Map<String, String>> longMapMap =
-                ServerFactory.listNewestPkgsForServerErrata(minionIds, errataIds);
-
-        // group minions by packages that need to be updated
-        Map<Map<String, String>, List<MinionServer>> collect1 = minions.stream().collect(
-                Collectors.groupingBy(a -> longMapMap.get(a.getId()))
-        );
-
-        return collect1.entrySet().stream().collect(Collectors.toMap(
-            m -> State.apply(
-                Collections.singletonList(PACKAGES_PATCHINSTALL),
-                Optional.of(Collections.singletonMap(PARAM_PKGS, m.getKey().entrySet()
-                    .stream().collect(Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue)))),
-                Optional.of(true)
-            ),
-            Map.Entry::getValue
-        ));
-    }
-
     /**
      * This function will return a map with list of minions grouped by the
      * salt netapi local call that executes what needs to be executed on
@@ -296,28 +268,6 @@ public enum SaltServerActionService {
      * @return minions grouped by local call
      */
     public Map<LocalCall<?>, List<MinionServer>> errataAction(List<MinionServer> minions,
-            Set<Long> errataIds) {
-        Map<Boolean, List<MinionServer>> zyppNonZypp = minions.stream().collect(
-                Collectors.partitioningBy(
-                        m -> PackageFactory.lookupByNameAndServer("zypper", m) != null
-                )
-        );
-
-        List<MinionServer> zypperMinions = zyppNonZypp.get(true);
-        List<MinionServer> nonZypperMinions = zyppNonZypp.get(false);
-
-        Map<LocalCall<?>, List<MinionServer>> patchInstalls =
-                zypperErrataAction(zypperMinions, errataIds);
-        Map<LocalCall<?>, List<MinionServer>> packageInstalls =
-                nonZypperErrataAction(nonZypperMinions, errataIds);
-        return Stream.concat(
-                patchInstalls.entrySet().stream(),
-                packageInstalls.entrySet().stream()
-        ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    private Map<LocalCall<?>, List<MinionServer>> zypperErrataAction(
-            List<MinionServer> minions,
             Set<Long> errataIds) {
         Set<Long> serverIds = minions.stream()
                 .map(MinionServer::getId)
@@ -335,11 +285,9 @@ public enum SaltServerActionService {
         // Convert errata names to LocalCall objects of type State.apply
         return collect.entrySet().stream()
                 .collect(Collectors.toMap(entry -> State.apply(
-                        Collections.singletonList(PACKAGES_PATCHINSTALL),
-                        Optional.of(Collections.singletonMap(PARAM_PKGS, entry.getKey()
-                                .stream().collect(Collectors.toMap(
-                                        patch -> "patch:" + patch,
-                                        patch -> "")))),
+                        Arrays.asList(PACKAGES_PATCHINSTALL),
+                        Optional.of(Collections.singletonMap(PARAM_PATCHES,
+                                entry.getKey())),
                         Optional.of(true)
                 ),
                 Map.Entry::getValue));

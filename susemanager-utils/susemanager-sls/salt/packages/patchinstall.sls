@@ -1,11 +1,10 @@
-{% if pillar.get('param_pkgs', {}).items() %}
+{% if pillar.get('param_patches', []) %}
 patchinstall:
-  module.run:
-    - name: pkg.install
+  pkg.patch_installed:
     - refresh: true
-    - pkgs:
-{%- for pkg, version in pillar.get('param_pkgs', {}).items() %}
-      - {{ pkg }}: {{ version }}
+    - advisory_ids:
+{%- for patch in pillar.get('param_patches', []) %}
+      - {{ patch }}
 {%- endfor %}
     - require:
       - module: applychannels

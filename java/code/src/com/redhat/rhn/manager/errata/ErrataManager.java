@@ -70,6 +70,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
+import com.suse.manager.webui.utils.MinionServerUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -1783,23 +1784,26 @@ public class ErrataManager extends BaseManager {
         // the handling differs depending on the used installer
         List<ErrataAction> errataActions = new ArrayList<ErrataAction>();
         for (Server s : updateStackForServers.keySet()) {
-            if (PackageFactory.lookupByNameAndServer("zypper", s) != null) {
-                errataActions.addAll(createErrataActionsForZypp(user,
+            if ((PackageFactory.lookupByNameAndServer("zypper", s) == null) &&
+                    (!MinionServerUtils.isMinionServer(s))) {
+                errataActions.addAll(createErrataActionsForTraditionalYumClient(user,
                         updateStackForServers.get(s), earliest, actionChain, s, true));
+
             }
             else {
-                errataActions.addAll(createErrataActionsForOther(user,
+                errataActions.addAll(createErrataActions(user,
                         updateStackForServers.get(s), earliest, actionChain, s, true));
             }
         }
 
         for (Server s : errataForServers.keySet()) {
-            if (PackageFactory.lookupByNameAndServer("zypper", s) != null) {
-                errataActions.addAll(createErrataActionsForZypp(user,
+            if ((PackageFactory.lookupByNameAndServer("zypper", s) == null) &&
+                    (!MinionServerUtils.isMinionServer(s))) {
+                errataActions.addAll(createErrataActionsForTraditionalYumClient(user,
                         errataForServers.get(s), earliest, actionChain, s, false));
             }
             else {
-                errataActions.addAll(createErrataActionsForOther(user,
+                errataActions.addAll(createErrataActions(user,
                         errataForServers.get(s), earliest, actionChain, s, false));
             }
         }
@@ -1825,7 +1829,7 @@ public class ErrataManager extends BaseManager {
      * @param updateStack set to true if this is an update stack update
      * @return list of errata actions
      */
-    private static List<ErrataAction> createErrataActionsForZypp(User user,
+    private static List<ErrataAction> createErrataActions(User user,
             List<Errata> errata, Date earliest, ActionChain actionChain, Server server,
             boolean updateStack) {
         List<ErrataAction> actions = new ArrayList<>();
@@ -1887,7 +1891,7 @@ public class ErrataManager extends BaseManager {
      * @param updateStack set to true if this is an update stack update
      * @return list of errata actions
      */
-    private static List<ErrataAction> createErrataActionsForOther(User user,
+    private static List<ErrataAction> createErrataActionsForTraditionalYumClient(User user,
             List<Errata> errata, Date earliest, ActionChain actionChain, Server server,
             boolean updateStack) {
         List<ErrataAction> actions = new ArrayList<>();
