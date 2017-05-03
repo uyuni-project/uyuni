@@ -439,7 +439,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         ServerFactory.findContactMethodByLabel("default"),
                 ak -> {
                     if (!isSshPush && isSSHPushContactMethod(ak.getContactMethod())) {
-                        LOG.info("Contact method changed from ssh-push to default for " +
+                        LOG.warn("Contact method changed from ssh-push to default for " +
                                 "minion id " + minionId + ". Please use webui " +
                                 "for salt-ssh minions.");
                         return ServerFactory.findContactMethodByLabel("default");
