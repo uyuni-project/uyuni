@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Wed May 03 16:46:43 CEST 2017 - michele.bologna@suse.com
+
+- version 2.7.1.7-1
+- Create spacewalk-section-toolbar only if needed
+- Move selector-buttons and pagination into fixed toolbar
+- Apply 'action button fixed on scroll' behavior to pages (bsc#1012978)
+- Allow dot character '.' for activation key (bsc#1035633)
+- Add 'add to ssm' checkboxes to CVE audit list (bsc#1032016)
+- Update CVE Audit buttons
+- Update CVE Audit status icons
+- Add system to SSM only if it can be added
+- Fix hardcoded link in image patches list (bsc#1032293)
+
+-------------------------------------------------------------------
 Mon Apr 03 14:48:31 CEST 2017 - mc@suse.de
 
 - version 2.7.1.6-1
