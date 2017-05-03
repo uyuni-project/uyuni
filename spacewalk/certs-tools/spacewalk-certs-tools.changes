@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed May 03 16:17:34 CEST 2017 - michele.bologna@suse.com
+
+- version 2.7.0.4-1
+- Always restart the minion regardless of its current state
+- Add bogus --salt option for backwards compatibility
+- Invert default behaviour of 'salt' option
+- correctly honor disabling of SSL in bootstrap script (bsc#1033383)
+- Exit for non-traditional bootstrap scripts (bsc#1020904)
+
+-------------------------------------------------------------------
 Fri Mar 31 09:31:47 CEST 2017 - mc@suse.de
 
 - version 2.7.0.3-1
