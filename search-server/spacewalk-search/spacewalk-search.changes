@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 03 16:42:51 CEST 2017 - michele.bologna@suse.com
+
+- version 2.7.3.1-1
+- updated RHEL6 Requires after jpackage removal
+
+-------------------------------------------------------------------
 Mon Apr 03 14:56:15 CEST 2017 - mc@suse.de
 
 - version 2.7.2.1-1
