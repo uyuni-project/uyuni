@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed May 03 16:56:32 CEST 2017 - michele.bologna@suse.com
+
+- version 2.7.73.1-1
+- Repository sync can causes ORA-01878 on insertion of timestamp that
+  doesn't exist in timezone - fix python 2.4 build
+- do not store SSL certificates per repository on disk cache
+- Prevent ORA-01878 on repository sync.
+- default_mail_from key exists but may be empty
+- (bsc#1024923) fixed a typo in SQL statement
+
+-------------------------------------------------------------------
 Mon Apr 03 14:51:38 CEST 2017 - mc@suse.de
 
 - version 2.7.65.1-1
