@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed May 03 16:08:05 CEST 2017 - michele.bologna@suse.com
+
+- version 3.1.6-1
+- Version 2.7.16-1
+- take care that capability name exists (bsc#1035724)
+- copy missing migrations from 3.0
+
+-------------------------------------------------------------------
 Mon Apr 03 15:02:02 CEST 2017 - mc@suse.de
 
 - version 3.1.5-1
