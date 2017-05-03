@@ -923,9 +923,48 @@ i.spacewalk-help-link {
     border-bottom: 4px solid transparent;
   }
 }
-.nav li a:focus {
-  color: inherit;
-  background-color: inherit;
+
+/* Override rules from bootstrap for nav-tabs*/
+.nav-tabs {
+  margin-bottom: .4em;
+  li {
+    min-width: 140px;
+    a, a:focus {
+      border: none;
+      padding: 6px 12px 1px;
+      display: inline-block;
+      color: @spacewalk-blue-light;
+      font-size: 1.1em;
+      border-width: 0 0 5px 0;
+      border-style: solid;
+      border-color: transparent;
+      margin-right: 10px;
+    }
+    a:hover {
+      background: inherit;
+      border-width: 0 0 3px 0;
+      border-color: @susemanager-green;
+      padding-bottom: 3px;
+    }
+  }
+  li.active {
+    a, a:hover, a:focus {
+      border-width: 0 0 5px 0;
+      border-color: @susemanager-green;
+      color: @spacewalk-gray;
+      background: inherit;
+      padding-bottom: 1px;
+    }
+  }
+  .nav-tabs-indent(1);
+  .nav-tabs-indent(2);
+  .nav-tabs-indent(3);
+
+  .nav-tabs-indent(@i) {
+    &:nth-child(@{i}) {
+        margin-left: (@i - 1) * 30px;
+    }
+  }
 }
 
 /* Override rules from spacewalk-theme.less that uses
