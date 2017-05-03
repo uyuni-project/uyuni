@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed May 03 15:55:46 CEST 2017 - michele.bologna@suse.com
+
+- version 3.1.6-1
+- Targeting patches instead of packages for non Zypper patch installation
+- add certificate state for CAASP
+- add certificate state for SLES for SAP (bsc#1031659)
+
+-------------------------------------------------------------------
 Mon Apr 03 14:47:46 CEST 2017 - mc@suse.de
 
 - version 3.1.5-1
