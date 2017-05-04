@@ -478,9 +478,14 @@ if [ 0$FORCE_OWN_CA -eq 0 ] && \
     [ ! -f /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY ] && \
     ! diff $CA_CHAIN /root/ssl-build/RHN-ORG-TRUSTED-SSL-KEY &>/dev/null; then
         cat <<CA_KEYS
+
 Please do copy your CA key and public certificate from $RHN_PARENT to
 /root/ssl-build directory. You may want to execute this command:
+
  scp 'root@$RHN_PARENT:/root/ssl-build/{RHN-ORG-PRIVATE-SSL-KEY,RHN-ORG-TRUSTED-SSL-CERT,rhn-ca-openssl.cnf}' $SSL_BUILD_DIR
+
+Please note that you need to re-run the proxy configure script after copying the certificate!
+
 CA_KEYS
         exit 1
 fi
