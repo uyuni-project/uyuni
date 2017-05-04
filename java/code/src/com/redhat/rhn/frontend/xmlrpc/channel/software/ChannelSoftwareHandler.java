@@ -2677,7 +2677,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param sslCliKey new Client key description
     * @return the updated repository
     *
-    * @xmlrpc.doc Updates repository source URL
+    * @xmlrpc.doc Updates repository SSL certificates
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("int", "id", "repository id")
     * @xmlrpc.param #param_desc("string", "sslCaCert", "SSL CA cert description")
@@ -2703,7 +2703,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @param sslCliKey new Client key description
     * @return the updated repository
     *
-    * @xmlrpc.doc Updates repository source URL
+    * @xmlrpc.doc Updates repository SSL certificates
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("string", "label", "repository label")
     * @xmlrpc.param #param_desc("string", "sslCaCert", "SSL CA cert description")
