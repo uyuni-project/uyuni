@@ -222,6 +222,27 @@ The maximum amount of memory (MB) that Taskomatic can use. If you find that Task
 1024
 
 .TP
+.B "java.message_queue_thread_pool_size" (integer)
+Size of the thread pool used for the message queue.
+.IP
+.B Default:
+5
+
+.TP
+.B "salt_presence_ping_timeout" (integer)
+SUSE Manager presence timeout for Salt minions (main timeout, in seconds).
+.IP
+.B Default:
+4
+
+.TP
+.B "salt_presence_ping_gather_job_timeout" (integer)
+SUSE Manager presence timeout for Salt minions (gather job timeout, in seconds).
+.IP
+.B Default:
+1
+
+.TP
 .B "incomplete_package_import" (boolean)
 When importing packages, skip non-essential data that can make the import faster (changelog data). Not recommended in production.
 .IP
