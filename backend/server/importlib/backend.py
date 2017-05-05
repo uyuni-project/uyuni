@@ -102,7 +102,7 @@ class Backend:
             capabilityHash[(name, version)] = row['id']
 
     def processChangeLog(self, changelogHash):
-        if CFG.has_key('incomplete_package_import') and CFG.incomplete_package_import:
+        if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:
             return
         sql = "select id from rhnPackageChangeLogData where name = :name and time = :time and text = :text"
         h = self.dbmodule.prepare(sql)
@@ -827,7 +827,7 @@ class Backend:
             'susePackageEula':         'package_id',
         }
 
-        if CFG.has_key('incomplete_package_import') and CFG.incomplete_package_import:
+        if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:
             del childTables['rhnPackageChangeLogRec']
 
         for package in packages:
