@@ -12,6 +12,9 @@
 </c:otherwise>
 </c:choose>
 
+<!-- Hide the "Crashes" column: https://bugzilla.suse.com/1033811 -->
+<c:set var="noCrashes" value="1" />
+
         <rl:list
                 dataset="pageList"
                 name="systemList"
