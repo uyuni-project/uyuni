@@ -212,7 +212,7 @@ class DownloadThread(Thread):
                 # but handle also other fatal exceptions
                 except (KeyboardInterrupt, Exception):  # pylint: disable=W0703
                     e = sys.exc_info()[1]
-                    self.parent.fail(e)
+                    self.parent.fail_download(e)
                     return False
             finally:
                 if fo:
@@ -284,10 +284,16 @@ class ThreadedDownloader:
             started_threads.append(thread)
 
         # wait to finish
-        while any(t.isAlive() for t in started_threads):
-            time.sleep(1)
+        try:
+            while any(t.isAlive() for t in started_threads):
+                time.sleep(1)
+        except KeyboardInterrupt:
+            e = sys.exc_info()[1]
+            self.fail_download(e)
+            while any(t.isAlive() for t in started_threads):
+                time.sleep(1)
 
-        # raise first detected exception from child threads if any
+        # raise first detected exception if any
         if self.exception:
             raise self.exception  # pylint: disable=E0702
 
@@ -297,7 +303,7 @@ class ThreadedDownloader:
         self.lock.release()
         return status
 
-    def fail(self, exception):
+    def fail_download(self, exception):
         self.lock.acquire()
         if not self.exception:
             self.exception = exception
