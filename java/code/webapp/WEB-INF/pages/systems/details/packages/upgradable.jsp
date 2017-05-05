@@ -25,6 +25,14 @@
 <rl:listset name="packageListSet">
     <rhn:csrf />
     <rhn:submitted />
+    <c:if test="${not empty requestScope.all}">
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <input type="submit" class="btn btn-success" name="dispatch"
+                        value='<bean:message key="upgradable.jsp.upgrade"/>'/>
+            </div>
+        </div>
+    </c:if>
         <rl:list dataset="pageList"
          width="100%"
          name="packageList"
@@ -73,13 +81,6 @@
     </rl:column>
 </rl:list>
 
-<c:if test="${not empty requestScope.all}">
-    <rhn:submitted/>
-    <div class="text-right">
-                <hr />
-                <input type="submit" class="btn btn-success" name ="dispatch" value='<bean:message key="upgradable.jsp.upgrade"/>'/>
-    </div>
-</c:if>
 </rl:listset>
 </body>
 </html>
