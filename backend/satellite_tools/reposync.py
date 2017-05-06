@@ -918,8 +918,8 @@ class RepoSync(object):
                 pack.load_checksum_from_header()
                 if not self.metadata_only:
                     rel_package_path = rhnPackageUpload.relative_path_from_header(pack.a_pkg.header, self.org_id,
-                    #if rel_package_path:
-                    #    self.checksum_cache[rel_package_path] = {pack.checksum_type: pack.checksum}
+                                                                                  pack.a_pkg.checksum_type,
+                                                                                  pack.a_pkg.checksum)
                 else:
                     rel_package_path = None
 
