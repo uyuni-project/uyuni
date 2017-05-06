@@ -1159,7 +1159,7 @@ class RepoSync(object):
                    TO_CHAR(e.update_date, 'YYYY-MM-DD HH24:MI:SS') as update_date
               from rhnerrata e
              where e.advisory = :name
-              and e.org_id = :org_id
+              and (e.org_id = :org_id or (e.org_id is null and :org_id is null))
         """)
         h.execute(name=update_id, org_id=self.org_id)
         ret = h.fetchone_dict()
