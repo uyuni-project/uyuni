@@ -25,7 +25,7 @@ from mock import Mock, patch, call
 
 import spacewalk.satellite_tools.reposync
 from spacewalk.satellite_tools.repo_plugins import ContentPackage
-from spacewalk.server.importlib.importLib import IncompletePackage
+from spacewalk.server.importlib import importLib
 
 from spacewalk.common import rhn_rpm
 
@@ -282,7 +282,7 @@ class RepoSyncTest(unittest.TestCase):
         notice = {'reboot_suggested': True,
                   'restart_suggested': False}
 
-        keyword = self.reposync.Keyword()
+        keyword = self.reposync.importLib.Keyword()
         keyword.populate({'keyword': 'reboot_suggested'})
         self.assertEqual(self.reposync.RepoSync._update_keywords(notice),
                          [keyword])
@@ -291,7 +291,7 @@ class RepoSyncTest(unittest.TestCase):
         notice = {'reboot_suggested': False,
                   'restart_suggested': True}
 
-        keyword = self.reposync.Keyword()
+        keyword = self.reposync.importLib.Keyword()
         keyword.populate({'keyword': 'restart_suggested'})
         self.assertEqual(self.reposync.RepoSync._update_keywords(notice),
                          [keyword])
@@ -300,9 +300,9 @@ class RepoSyncTest(unittest.TestCase):
         notice = {'reboot_suggested': True,
                   'restart_suggested': True}
 
-        keyword_restart = self.reposync.Keyword()
+        keyword_restart = self.reposync.importLib.Keyword()
         keyword_restart.populate({'keyword': 'restart_suggested'})
-        keyword_reboot = self.reposync.Keyword()
+        keyword_reboot = self.reposync.importLib.Keyword()
         keyword_reboot.populate({'keyword': 'reboot_suggested'})
         self.assertEqual(self.reposync.RepoSync._update_keywords(notice),
                          [keyword_reboot, keyword_restart])
@@ -351,7 +351,7 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, checksum)
         processed = rs._updates_process_packages(packages, 'a name', [])
         for p in processed:
-            self.assertTrue(isinstance(p, self.reposync.IncompletePackage))
+            self.assertTrue(isinstance(p, self.reposync.importLib.IncompletePackage))
 
     def test_updates_process_packages_returns_the_right_values(self):
         rs = self._create_mocked_reposync()
@@ -375,7 +375,7 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, checksum)
         processed = rs._updates_process_packages(packages, 'patchy', [])
 
-        p1 = self.reposync.IncompletePackage()
+        p1 = self.reposync.importLib.IncompletePackage()
         p1.populate({'package_size': None,
                      'name': 'n1',
                      'checksum_list': None,
@@ -391,7 +391,7 @@ class RepoSyncTest(unittest.TestCase):
                      'checksums': {'md5': '12345'},
                      'checksum': '12345',
                      'arch': 'arch1'})
-        p2 = self.reposync.IncompletePackage()
+        p2 = self.reposync.importLib.IncompletePackage()
         p2.populate({'package_size': None,
                      'name': 'n2',
                      'checksum_list': None,
@@ -529,22 +529,25 @@ class RepoSyncTest(unittest.TestCase):
                    'checksum_type': 'c_type1',
                    'org_id': 1,
                    'channels': [{'label': 'Label1', 'id': 'channel1'}]}
-        refpack = IncompletePackage().populate(package)
+        refpack = importLib.IncompletePackage().populate(package)
         ipack = rs.associate_package(pack)
         self.assertEqual(ipack, refpack)
 
     def test_get_errata_no_advisories_found(self):
+        rs = self._create_mocked_reposync()
         _mock_rhnsql(self.reposync, None)
-        self.assertEqual(self.reposync.RepoSync.get_errata('bogus'), None)
+        self.assertEqual(rs.get_errata('bogus'), None)
 
     def test_get_errata_advisories_but_no_channels(self):
+        rs = self._create_mocked_reposync()
         _mock_rhnsql(self.reposync, [{'id': 42}, []])
-        self.assertEqual(self.reposync.RepoSync.get_errata('bogus'),
+        self.assertEqual(rs.get_errata('bogus'),
                          {'channels': [], 'id': 42, 'packages': []})
 
     def test_get_errata_success(self):
+        rs = self._create_mocked_reposync()
         _mock_rhnsql(self.reposync, [{'id': 42}, ['channel1', 'channel2']])
-        self.assertEqual(self.reposync.RepoSync.get_errata('bogus'),
+        self.assertEqual(rs.get_errata('bogus'),
                          {'id': 42, 'channels': ['channel1', 'channel2'],
                           'packages': []})
 
