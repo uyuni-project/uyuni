@@ -6,10 +6,8 @@ pkg_downloaded:
       - {{ pkg }}-{{ version }}
 {%- endfor %}
     - require:
-      - module: applychannels
+        - file: mgrchannels*
 {% endif %}
 
-applychannels:
-    module.run:
-    -  name: state.apply
-    -  mods: channels
+include:
+  - channels
