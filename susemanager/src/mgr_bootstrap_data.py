@@ -206,6 +206,8 @@ RES7 = [
         "python-tornado",
         "python-zmq",
         "zeromq",
+        "python-backports-ssl_match_hostname",
+        "python-backports",
         "python-certifi",
         "python-simplejson",
         "PyYAML",
