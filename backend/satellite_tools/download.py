@@ -122,7 +122,7 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         if not opts:
             opts = {}
         PyCurlFileObject._set_opts(self, opts=opts)
-        self.curl_obj.setopt(pycurl.FORBID_REUSE, 0)
+        self.curl_obj.setopt(pycurl.FORBID_REUSE, 0) # pylint: disable=E1101
 
 
 class FailedDownloadError(Exception):
@@ -189,7 +189,7 @@ class DownloadThread(Thread):
                                  proxy=params['proxy'], username=params['proxy_username'],
                                  password=params['proxy_password'], proxies=params['proxies'])
         mirrors = len(params['urls'])
-        for retry in max(range(self.parent.retries), mirrors):
+        for retry in range(max(self.parent.retries, mirrors)):
             fo = None
             url = urlparse.urljoin(params['urls'][self.mirror], params['relative_path'], params['authtoken'])
             if params['authtoken']:
@@ -212,7 +212,7 @@ class DownloadThread(Thread):
                 # but handle also other fatal exceptions
                 except (KeyboardInterrupt, Exception):  # pylint: disable=W0703
                     e = sys.exc_info()[1]
-                    self.parent.fail(e)
+                    self.parent.fail_download(e)
                     return False
             finally:
                 if fo:
@@ -284,10 +284,16 @@ class ThreadedDownloader:
             started_threads.append(thread)
 
         # wait to finish
-        while any(t.isAlive() for t in started_threads):
-            time.sleep(1)
+        try:
+            while any(t.isAlive() for t in started_threads):
+                time.sleep(1)
+        except KeyboardInterrupt:
+            e = sys.exc_info()[1]
+            self.fail_download(e)
+            while any(t.isAlive() for t in started_threads):
+                time.sleep(1)
 
-        # raise first detected exception from child threads if any
+        # raise first detected exception if any
         if self.exception:
             raise self.exception  # pylint: disable=E0702
 
@@ -297,7 +303,7 @@ class ThreadedDownloader:
         self.lock.release()
         return status
 
-    def fail(self, exception):
+    def fail_download(self, exception):
         self.lock.acquire()
         if not self.exception:
             self.exception = exception
