@@ -1,5 +1,5 @@
 {%- if grains['os_family'] == 'RedHat' %}
-/usr/share/yum-plugins/susemanagerplugin.py:
+mgrchannels_susemanagerplugin:
   file.managed:
     - source:
       - salt://channels/yum-susemanager-plugin/susemanagerplugin.py
@@ -7,7 +7,7 @@
     - group: root
     - mode: 644
 
-/etc/yum/pluginconf.d/susemanagerplugin.conf:
+mgrchannels_susemanagerplugin_conf:
   file.managed:
     - source:
       - salt://channels/yum-susemanager-plugin/susemanagerplugin.conf
@@ -16,12 +16,13 @@
     - mode: 644
 {%- endif %}
 
-{%- if grains['os_family'] == 'Suse' %}
-/etc/zypp/repos.d/susemanager:channels.repo:
-{%- elif grains['os_family'] == 'RedHat' %}
-/etc/yum.repos.d/susemanager:channels.repo:
-{%- endif %}
+mgrchannels_repo:
   file.managed:
+{%- if grains['os_family'] == 'Suse' %}
+    - name: "/etc/zypp/repos.d/susemanager:channels.repo"
+{%- elif grains['os_family'] == 'RedHat' %}
+    - name: "/etc/yum.repos.d/susemanager:channels.repo"
+{%- endif %}
     - source:
       - salt://channels/channels.repo
     - template: jinja
@@ -30,12 +31,12 @@
     - mode: 644
 {%- if grains['os_family'] == 'RedHat' %}
     - require:
-       - file: /usr/share/yum-plugins/susemanagerplugin.py
-       - file: /etc/yum/pluginconf.d/susemanagerplugin.conf
+       - file: mgrchannels_susemanagerplugin
+       - file: mgrchannels_susemanagerplugin_conf
 {%- endif %}
 
 {%- if grains['os_family'] == 'RedHat' %}
-yum_clean_all:
+mgrchannels_yum_clean_all:
   cmd.run:
     - name: /usr/bin/yum clean all
     - user: root
