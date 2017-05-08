@@ -13,13 +13,6 @@
 <%@ include file="/WEB-INF/pages/common/fragments/activationkeys/common-header.jspf" %>
 
 
-<div class="spacewalk-section-toolbar">
-    <div class="action-button-wrapper">
-        <rhn:submitted/>
-        <input type="submit" name="dispatch" class="btn btn-default"
-                value='<bean:message key="${param.action_key}"/>'/>
-    </div>
-</div>
 
 <div class="page-summary">
         <h2><rhn:icon type="header-system-groups" title="system.common.groupAlt" />
@@ -34,6 +27,13 @@
 <rhn:csrf />
 <c:choose>
 <c:when test="${not empty pageList}">
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <rhn:submitted/>
+                <input type="submit" name="dispatch" class="btn btn-default"
+                        value='<bean:message key="${param.action_key}"/>'/>
+            </div>
+        </div>
         <rl:list dataset="pageList"
          width="100%"
          name="list"
