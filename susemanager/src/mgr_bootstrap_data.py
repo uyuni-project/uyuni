@@ -190,6 +190,9 @@ RES6 = [
         "python-six",
         "python-babel",
         "dbus",
+        "yum-rhn-plugin",
+        "yum",
+        "rhnlib",
        ]
 
 RES7 = [
@@ -216,6 +219,9 @@ RES7 = [
         "python-chardet",
         "python-six",
         "python-babel",
+        "yum-rhn-plugin",
+        "yum",
+        "rhnlib",
        ]
 
 DATA = {
