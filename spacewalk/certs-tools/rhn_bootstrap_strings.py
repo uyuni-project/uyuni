@@ -420,6 +420,7 @@ if [ "$INSTALLER" == zypper ]; then
 
   if [ -z "$Z_MISSING" ]; then
     echo "  no packages missing."
+    setup_bootstrap_repo
   else
     echo "* going to install missing packages..."
 
