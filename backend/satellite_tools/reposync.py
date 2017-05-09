@@ -923,6 +923,7 @@ class RepoSync(object):
                 else:
                     rel_package_path = None
 
+                if rel_package_path:
                     # Save uploaded package to cache with repository checksum type
 
                     # First write the package to the filesystem to final location
@@ -1068,7 +1069,9 @@ class RepoSync(object):
                 return True
             else:
                 return False
-        return True
+        elif os.path.exists(abspath):
+            return True
+        return False
 
     def associate_package(self, pack):
         package = {}
