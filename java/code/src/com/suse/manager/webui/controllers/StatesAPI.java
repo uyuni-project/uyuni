@@ -82,6 +82,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -523,7 +524,8 @@ public class StatesAPI {
     private static Date getScheduleDate(JSONServerApplyStates json) {
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
         return Date.from(
-            json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
+            json.getEarliest().map(t -> t.atZone(zoneId).toInstant())
+                .orElseGet(Instant::now)
         );
     }
 
