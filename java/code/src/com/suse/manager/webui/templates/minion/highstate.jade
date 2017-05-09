@@ -4,8 +4,7 @@ include ./minion-header.jade
 
 script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
-    const serverId = "#{server.id}";
-    const serverName = "#{server.name}";
+    const minions = [{id: #{server.id}, name: "#{server.name}"}];
     const timezone = "#{h.renderTimezone()}";
     const localTime = "#{h.renderLocalTime()}";
 script(src='/javascript/manager/highstate.bundle.js', type='text/javascript')

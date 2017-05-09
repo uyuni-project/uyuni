@@ -2155,6 +2155,19 @@ public class ActionManager extends BaseManager {
     }
 
     /**
+     * Schedule application of the highstate.
+     *
+     * @param scheduler the user who is scheduling
+     * @param sids list of server ids
+     * @param earliest action will not be executed before this date
+     * @return the action object
+     */
+    public static ApplyStatesAction scheduleApplyHighstate(User scheduler, List<Long> sids,
+            Date earliest) {
+        return scheduleApplyStates(scheduler, sids, new ArrayList<>(), earliest);
+    }
+
+    /**
      * Schedule state application given a list of state modules. Salt will apply the
      * highstate if an empty list of state modules is given.
      *

@@ -26,6 +26,7 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
-    public void testScheduleApplyHighstate() throws Exception {
+    public void testScheduleApplyStatesHighstate() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
@@ -83,6 +84,31 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
                 Arrays.asList(server.getId()),
                 new ArrayList<String>(),
                 earliestAction);
+
+        // Look it up and verify
+        ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory
+                .lookupByUserAndId(user, action.getId());
+        assertNotNull(savedAction);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, savedAction.getActionType());
+        assertEquals(earliestAction, savedAction.getEarliestAction());
+
+        // Verify the details
+        ApplyStatesActionDetails details = savedAction.getDetails();
+        assertNotNull(details);
+        assertNull(details.getStates());
+        assertEquals(0, details.getMods().size());
+    }
+
+    /**
+     * Schedule a state application with an empty list of modules.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testScheduleApplyHighstate() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user);
+        Date earliestAction = new Date();
+        ApplyStatesAction action = ActionManager.scheduleApplyHighstate(user,
+                Collections.singletonList(server.getId()), earliestAction);
 
         // Look it up and verify
         ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory
