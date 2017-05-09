@@ -84,6 +84,13 @@ salt-minion-package:
 include:
   - bootstrap.remove_traditional_stack
 
+mgr_update_basic_pkgs:
+  pkg.latest:
+    - pkgs:
+      - openssl
+{%- if grains['os_family'] == 'Suse' %}
+      - zypper
+{% endif %}
 
 # Manage minion key files in case they are provided in the pillar
 {% if pillar['minion_pub'] is defined and pillar['minion_pem'] is defined %}
