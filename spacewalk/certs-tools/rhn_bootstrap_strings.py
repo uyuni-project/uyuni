@@ -267,10 +267,10 @@ def getRegistrationStackSh(saltEnabled):
     PKG_NAME_YUM = saltEnabled and ['salt', 'salt-minion'] or []
 
     PKG_NAME_UPDATE = list(PKG_NAME)
-    PKG_NAME_UPDATE.extend(['zypper', 'rhnlib'])
+    PKG_NAME_UPDATE.extend(['zypper', 'rhnlib', 'openssl'])
 
     PKG_NAME_UPDATE_YUM = list(PKG_NAME_YUM)
-    PKG_NAME_UPDATE_YUM.extend(saltEnabled and ['yum', 'rhnlib'] or ['yum-rhn-plugin', 'yum', 'rhnlib'])
+    PKG_NAME_UPDATE_YUM.extend(saltEnabled and ['yum', 'rhnlib', 'openssl'] or ['yum-rhn-plugin', 'yum', 'rhnlib', 'openssl'])
 
     return """\
 echo
