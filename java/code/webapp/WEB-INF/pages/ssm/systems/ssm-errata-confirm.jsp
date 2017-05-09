@@ -15,16 +15,18 @@
     <rhn:csrf />
     <rhn:submitted />
 
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <html:submit styleClass="btn btn-success" property="dispatch">
+                <bean:message key="confirm.jsp.confirm" />
+            </html:submit>
+        </div>
+    </div>
+
 <c:set var="notSelectable" value="True" />
 <%@ include file="/WEB-INF/pages/ssm/systems/errata-list-fragment.jspf" %>
 
     <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-    <div class="text-right">
-        <hr />
-        <html:submit styleClass="btn btn-success" property="dispatch">
-            <bean:message key="confirm.jsp.confirm" />
-        </html:submit>
-    </div>
   </rl:listset>
 </body>
 </html>
