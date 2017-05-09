@@ -21039,6 +21039,9 @@ given channel.</source>
         <trans-unit id="iss.editslave.jsp.nolocalorgs">
           <source>No local organizations available</source>
         </trans-unit>
+        <trans-unit id="iss.error.slave.exists">
+          <source>Slave with domain name {0} already defined</source>
+        </trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -21126,6 +21129,10 @@ given channel.</source>
         <trans-unit id="iss.editmaster.jsp.nomasterorgs">
           <source>This master did not export any of its organizations to this slave</source>
         </trans-unit>
+        <trans-unit id="iss.error.master.exists">
+          <source>Master with domain name {0} already defined</source>
+        </trans-unit>
+        
       </group>
       <group>
         <context-group name="ctx">
