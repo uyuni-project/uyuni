@@ -22,19 +22,17 @@
     </p>
 
         <rl:listset name="failedList">
-        <rhn:csrf />
-                <rl:list emptykey="completedactions.jsp.nogroups" styleclass="list">
-
-                        <%@ include file="/WEB-INF/pages/common/fragments/scheduledactions/listdisplay-new.jspf" %>
-
-                </rl:list>
-                <rhn:submitted/>
-                 <div class="text-right">
-                     <input type="submit"
-               name="dispatch"
-               class="btn btn-default"
-               value='<bean:message key="actions.jsp.archiveactions"/>'/>
-         </div>
+            <rhn:csrf/>
+            <rhn:submitted/>
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                     <input type="submit" name="dispatch" class="btn btn-default"
+                            value='<bean:message key="actions.jsp.archiveactions"/>'/>
+                </div>
+            </div>
+            <rl:list emptykey="completedactions.jsp.nogroups" styleclass="list">
+                <%@ include file="/WEB-INF/pages/common/fragments/scheduledactions/listdisplay-new.jspf" %>
+            </rl:list>
         </rl:listset>
 
   </body>

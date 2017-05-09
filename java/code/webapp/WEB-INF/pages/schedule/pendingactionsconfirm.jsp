@@ -20,6 +20,14 @@
         <rl:listset name="pendingList">
 
     <rhn:csrf />
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+             <input type="submit"
+               name="dispatch"
+               class="btn btn-danger"
+               value='<bean:message key="actions.jsp.confirmcancelactions"/>'/>
+         </div>
+     </div>
                 <rl:list emptykey="pendingactions.jsp.nogroups" styleclass="list">
 
       <rl:decorator name="ElaborationDecorator"/>
@@ -85,12 +93,6 @@
 
                 </rl:list>
                 <rhn:submitted/>
-                 <div class="pull-right">
-                     <input type="submit"
-               name="dispatch"
-               class="btn btn-danger"
-               value='<bean:message key="actions.jsp.confirmcancelactions"/>'/>
-         </div>
         </rl:listset>
 
 </body>
