@@ -70,6 +70,7 @@ import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
 import com.suse.manager.webui.utils.gson.JSONCustomState;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
+import com.suse.manager.webui.utils.gson.JSONServerApplyHighstate;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
 import com.suse.manager.webui.utils.gson.JSONServerCustomStates;
 import com.suse.salt.netapi.calls.modules.State;
@@ -401,6 +402,45 @@ public class StatesAPI {
     }
 
     /**
+     * Schedule an {@link ApplyStatesAction} to apply a highstate for multiple minions
+     * and return its id.
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the user
+     * @return the id of the scheduled action
+     */
+    public static Object applyHighstate(Request req, Response res, User user) {
+        res.type("application/json");
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+                .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+                .create();
+
+        JSONServerApplyHighstate json = gson.fromJson(req.body(),
+                JSONServerApplyHighstate.class);
+
+        try {
+            List<Long> minionIds =
+                    MinionServerFactory.lookupByIds(json.getIds()).map(server -> {
+                        checkUserHasPermissionsOnServer(server, user);
+                        return server.getId();
+                    }).collect(Collectors.toList());
+
+            ApplyStatesAction action = ActionManager.scheduleApplyHighstate(user, minionIds,
+                    getScheduleDate(json));
+
+            TASKOMATIC_API.scheduleActionExecution(action);
+
+            return GSON.toJson(action.getId());
+        }
+        catch (Exception e) {
+            res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            return "{}";
+        }
+    }
+
+    /**
      * Schedule an {@link ApplyStatesAction} and return its id.
      * In the case of server groups the "custom.group_[id]" state
      * is applied instead of "custom_groups".
@@ -487,6 +527,12 @@ public class StatesAPI {
         );
     }
 
+    private static Date getScheduleDate(JSONServerApplyHighstate json) {
+        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        return Date.from(
+            json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
+        );
+    }
 
     private static <R> R handleTarget(StateTargetType targetType, long targetId,
                                       Function<Long, R> serverHandler,
@@ -504,7 +550,6 @@ public class StatesAPI {
                 throw new IllegalArgumentException("Invalid targetType value");
         }
     }
-
 
     /**
      * Get the current set of package states for a given server as {@link JSONPackageState}
