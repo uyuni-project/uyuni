@@ -345,6 +345,11 @@ public class DistUpgradeManager extends BaseManager {
      */
     private static List<SUSEProductSet> migrationTargets(SUSEProductSet installedProducts) {
 
+        final List<SUSEProductSet> result = new LinkedList<>();
+        if (installedProducts == null) {
+            return result;
+        }
+
         // installed_extensions = @installed_products - [base_product]
         List<SUSEProduct> installedExtensions = installedProducts.getAddonProducts();
 
@@ -378,7 +383,6 @@ public class DistUpgradeManager extends BaseManager {
         comb.addAll(extensionSuccessors);
 
 
-        final List<SUSEProductSet> result = new LinkedList<>();
         for (List<SUSEProduct> combination : Lists.combinations(comb)) {
             if (!combination.equals(currentCombination)) {
                 SUSEProduct base = combination.get(0);

@@ -53,14 +53,18 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
-import com.suse.salt.netapi.results.ModuleRun;
+import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
+import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
+import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.results.CmdExecCodeAllResult;
+import com.suse.salt.netapi.results.ModuleRun;
+import com.suse.salt.netapi.results.OldNew;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
@@ -287,36 +291,12 @@ public class SaltUtils {
                 MessageQueue.publish(
                         new ChannelsChangedEventMessage(serverAction.getServerId()));
 
-                DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
-                        jsonResult, DistUpgradeSlsResult.class);
-                 String message = distUpgradeSlsResult.getSpmigration()
-                         .getChanges().getRetOpt().map(ModuleRun::getComment)
-                         .orElse("") + " " + distUpgradeSlsResult
-                            .getSpmigration().getComment();
-                 serverAction.setResultMsg(message.length() > 1024 ?
+                String message = parseDryRunMessage(jsonResult);
+                serverAction.setResultMsg(message.length() > 1024 ?
                          message.substring(0, 1024) : message);
             }
             else {
-                DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
-                        jsonResult, DistUpgradeSlsResult.class);
-                String message = distUpgradeSlsResult.getSpmigration().getChanges()
-                        .getRetOpt().map(ret -> {
-                    if (ret.isResult()) {
-                        return ret.getChanges().entrySet().stream()
-                                .map(entry -> {
-                                    StringBuilder sb = new StringBuilder();
-                                    sb.append(entry.getKey());
-                                    sb.append(":");
-                                    sb.append(entry.getValue().getOldVersion());
-                                    sb.append("->");
-                                    sb.append(entry.getValue().getNewVersion());
-                                    return sb.toString();
-                                }).collect(Collectors.joining(","));
-                    }
-                    else {
-                        return ret.getComment();
-                    }
-                }).orElse("");
+                String message = parseMigrationMessage(jsonResult);
                 serverAction.setResultMsg(message.length() > 1024 ?
                         message.substring(0, 1024) : message);
             }
@@ -333,6 +313,84 @@ public class SaltUtils {
             serverAction.setResultMsg(json.length() > 1024 ?
                     json.substring(0, 1024) : json);
         }
+    }
+
+    private String parseMigrationMessage(JsonElement jsonResult) {
+        try {
+            DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
+                    jsonResult, DistUpgradeSlsResult.class);
+            StateApplyResult<RetOpt<Map<String, OldNew>>> spmig =
+                    distUpgradeSlsResult.getSpmigration();
+            String message = spmig.getComment();
+            if (spmig.isResult()) {
+                message = spmig.getChanges().getRetOpt().map(ret -> {
+                    return ret.entrySet().stream().map(entry -> {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(entry.getKey());
+                        sb.append(":");
+                        sb.append(entry.getValue().getOldVersion());
+                        sb.append("->");
+                        sb.append(entry.getValue().getNewVersion());
+                        return sb.toString();
+                    }).collect(Collectors.joining(","));
+                }).orElse(spmig.getComment());
+            }
+            return message;
+        }
+        catch (JsonSyntaxException e) {
+            try {
+                DistUpgradeOldSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
+                        jsonResult, DistUpgradeOldSlsResult.class);
+                String message = distUpgradeSlsResult.getSpmigration().getChanges()
+                        .getRetOpt().map(ret -> {
+                            if (ret.isResult()) {
+                                return ret.getChanges().entrySet().stream()
+                                        .map(entry -> {
+                                            StringBuilder sb = new StringBuilder();
+                                            sb.append(entry.getKey());
+                                            sb.append(":");
+                                            sb.append(entry.getValue().getOldVersion());
+                                            sb.append("->");
+                                            sb.append(entry.getValue().getNewVersion());
+                                            return sb.toString();
+                                        }).collect(Collectors.joining(","));
+                            }
+                            else {
+                                return ret.getComment();
+                            }
+                        }).orElse("");
+                return message;
+            }
+            catch (JsonSyntaxException ex) {
+                LOG.error("Unable to parse migration result", ex);
+            }
+        }
+        return "Unable to parse migration result";
+    }
+
+    private String parseDryRunMessage(JsonElement jsonResult) {
+        try {
+            DistUpgradeDryRunSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
+                    jsonResult, DistUpgradeDryRunSlsResult.class);
+            return distUpgradeSlsResult.getSpmigration()
+                    .getChanges().getRetOpt()
+                    .orElse("") + " " + distUpgradeSlsResult
+                    .getSpmigration().getComment();
+        }
+        catch (JsonSyntaxException e) {
+            try {
+                DistUpgradeOldSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
+                        jsonResult, DistUpgradeOldSlsResult.class);
+                return distUpgradeSlsResult.getSpmigration()
+                        .getChanges().getRetOpt().map(ModuleRun::getComment)
+                        .orElse("") + " " + distUpgradeSlsResult
+                        .getSpmigration().getComment();
+            }
+            catch (JsonSyntaxException ex) {
+                LOG.error("Unable to parse dry run result", ex);
+            }
+        }
+        return "Unable to parse dry run result";
     }
 
     private void handleScapXccdfEval(ServerAction serverAction,
