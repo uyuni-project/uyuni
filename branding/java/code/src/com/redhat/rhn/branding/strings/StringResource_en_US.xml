@@ -307,7 +307,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>All Types</source>
       </trans-unit>
 
-      <!-- == ERRATA == -->
+      <!-- System Groups -->
       <trans-unit id="systemgroup.erratalist.title">
         <source>Relevant Patches </source>
       </trans-unit>
@@ -317,6 +317,11 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="systemgroup.errata-systems-affected.summary">
         <source>Below is a list of the systems in the {0} group which are affected by this patch.</source>
       </trans-unit>
+      <trans-unit id="systemgroup.details.noupdates">
+        <source>No applicable patches</source>
+      </trans-unit>
+
+      <!-- == ERRATA == -->
       <trans-unit id="erratalist.jsp.noerrata">
         <source>No Patches</source>
       </trans-unit>
