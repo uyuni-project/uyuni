@@ -39,4 +39,12 @@ public class RunnableEventMessageAction extends AbstractDatabaseAction {
                   " as message but requires " + RunnableEventMessage.class.getName());
        }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canRunConcurrently() {
+        return true;
+    }
 }
