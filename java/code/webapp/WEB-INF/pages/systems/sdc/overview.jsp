@@ -178,26 +178,28 @@
               </c:choose>
             </td>
           </tr>
-          <tr>
-            <td><bean:message key="sdc.details.overview.lockstatus"/></td>
-            <td>
-              <c:choose>
-                <c:when test="${serverLock != null}">
-                    <rhn:icon type="system-locked" />
-                  <bean:message key="sdc.details.overview.locked"
-                          arg0="${serverLock.locker.login}"
-                          arg1="${serverLock.reason}" /><br/>
-                  <bean:message key="sdc.details.overview.unlock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=0"/>
-                </c:when>
-                <c:otherwise>
-                  <rhn:icon type="system-physical" />
-                  <bean:message key="sdc.details.overview.unlocked"/><br/>
-                  <bean:message key="sdc.details.overview.lock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=1"/>
-                </c:otherwise>
-              </c:choose>
-            </td>
-          </tr>
+          <rhn:require acl="system_has_management_entitlement()">
+            <tr>
+              <td><bean:message key="sdc.details.overview.lockstatus"/></td>
+              <td>
+                <c:choose>
+                  <c:when test="${serverLock != null}">
+                      <rhn:icon type="system-locked" />
+                    <bean:message key="sdc.details.overview.locked"
+                            arg0="${serverLock.locker.login}"
+                            arg1="${serverLock.reason}" /><br/>
+                    <bean:message key="sdc.details.overview.unlock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=0"/>
+                  </c:when>
+                  <c:otherwise>
+                    <rhn:icon type="system-physical" />
+                    <bean:message key="sdc.details.overview.unlocked"/><br/>
+                    <bean:message key="sdc.details.overview.lock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=1"/>
+                  </c:otherwise>
+                </c:choose>
+              </td>
+            </tr>
           </rhn:require>
+        </rhn:require>
         </table>
       </div>
 

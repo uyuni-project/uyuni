@@ -4146,7 +4146,6 @@ public class SystemHandler extends BaseHandler {
      *  @xmlrpc.returntype #return_int_success()
      */
     public Integer setLockStatus(User loggedInUser, Integer serverId, boolean lockStatus) {
-
         Server server = null;
         try {
             server = SystemManager.lookupByIdAndUser(new Long(serverId.longValue()),
@@ -4158,21 +4157,27 @@ public class SystemHandler extends BaseHandler {
 
         LocalizationService ls = LocalizationService.getInstance();
 
-        if (lockStatus) {
-            // lock the server, if it isn't already locked.
-            if (server.getLock() == null) {
-                SystemManager.lockServer(loggedInUser, server, ls.getMessage
-                        ("sdc.details.overview.lock.reason"));
-            }
+        if (server.hasEntitlement(EntitlementManager.SALT)) {
+            throw new MissingCapabilityException(
+                    "System locking/unlocking is not available for Salt entitled systems",
+                    server);
         }
         else {
-            // unlock the server, if it isn't already locked.
-            if (server.getLock() != null) {
-                SystemManager.unlockServer(loggedInUser, server);
+            if (lockStatus) {
+                // lock the server, if it isn't already locked.
+                if (server.getLock() == null) {
+                    SystemManager.lockServer(loggedInUser, server,
+                            ls.getMessage("sdc.details.overview.lock.reason"));
+                }
             }
+            else {
+                // unlock the server, if it isn't already locked.
+                if (server.getLock() != null) {
+                    SystemManager.unlockServer(loggedInUser, server);
+                }
+            }
+            return 1;
         }
-
-        return 1;
     }
 
     /**
