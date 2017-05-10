@@ -70,4 +70,12 @@ public class MinionStartEventMessageAction extends AbstractDatabaseAction {
         });
 
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canRunConcurrently() {
+        return true;
+    }
 }
