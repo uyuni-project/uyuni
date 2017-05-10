@@ -80,6 +80,19 @@
       </c:if>
     </td>
   </tr>
+  <rhn:require acl="any_system_with_salt_entitlement()">
+  <tr>
+    <th><bean:message key="systemgroup.details.states"/></th>
+    <td>
+      <c:if test="${minion_count > 0}">
+        <bean:message key="systemgroup.details.states.apply" arg0="${minion_count}" arg1="/rhn/manager/groups/details/highstate?sgid=${id}"/>
+      </c:if>
+      <c:if test="${minion_count == 0}">
+        <bean:message key="systemgroup.details.none"/>
+      </c:if>
+    </td>
+  </tr>
+  </rhn:require>
 </table>
 </div>
 </div>

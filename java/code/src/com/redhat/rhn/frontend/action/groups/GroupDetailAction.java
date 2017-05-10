@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
+import com.suse.manager.webui.utils.MinionServerUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -48,11 +49,13 @@ public class GroupDetailAction extends RhnAction {
         ManagedServerGroup sg = rctx.lookupAndBindServerGroup();
         HashMap errataCounts =
                 (HashMap) ServerGroupManager.getInstance().errataCounts(user, sg);
+        int minionCount = MinionServerUtils.filterSaltMinions(sg.getServers()).size();
 
         request.setAttribute("id", sg.getId());
         request.setAttribute("errata_counts", errataCounts);
         request.setAttribute("admin_count", sg.getAssociatedAdminsCount());
         request.setAttribute("system_count", sg.getCurrentMembers());
+        request.setAttribute("minion_count", minionCount);
         request.setAttribute("name", sg.getName());
         request.setAttribute("description", sg.getDescription());
 
