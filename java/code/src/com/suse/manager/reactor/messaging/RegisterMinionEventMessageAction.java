@@ -666,4 +666,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canRunConcurrently() {
+        return true;
+    }
 }
