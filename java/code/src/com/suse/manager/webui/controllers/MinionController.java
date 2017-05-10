@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 
+import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.services.impl.SaltService;
 
@@ -221,6 +222,24 @@ public class MinionController {
                 user.getOrg()).getName());
         data.put("minions", Json.GSON.toJson(minions));
         return new ModelAndView(data, "groups/highstate.jade");
+    }
+
+    /**
+     * Handler for the SSM highstate page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView ssmHighstate(Request request, Response response, User user) {
+        List<SimpleMinionJson> minions = MinionServerFactory
+                .lookupByIds(SsmManager.listServerIds(user))
+                .map(SimpleMinionJson::fromMinionServer).collect(Collectors.toList());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("minions", Json.GSON.toJson(minions));
+        return new ModelAndView(data, "ssm/highstate.jade");
     }
 
     /**
