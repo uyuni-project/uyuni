@@ -30,7 +30,7 @@ module Yast
               _(
                 "<p>SUSE Manager Setup is now complete.</p><br>\n" +
                   "<p>Visit <b>https://%1</b> to create the SUSE Manager administrator account.</p>\n" +
-                  "<p>For more information, refer to the SUSE Manager Installation and Troubleshooting guide or see <b>http://www.suse.com/documentation/suse_manager/</b>.</p>"
+                  "<p>For more information, refer to the SUSE Manager Installation and Troubleshooting guide or see <b>https://www.suse.com/documentation/suse-manager/</b>.</p>"
               ),
               Hostname.CurrentFQ
             )
