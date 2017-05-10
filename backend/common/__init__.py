@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2013 Red Hat, Inc.
+# Copyright (c) 2008--2016 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -18,9 +18,7 @@
 
 # try to figure out if we're running under Apache or not
 try:
-    from rhnApache import rhnApache
-    # pylint: disable=F0401
-    # pylint can't see _apache because it is inserted by apache/mod_python
+    from spacewalk.common.rhnApache import rhnApache
     import _apache
 except ImportError:
     # no _apache available, not running under apache/mod_python
