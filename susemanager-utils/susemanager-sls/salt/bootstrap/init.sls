@@ -90,6 +90,8 @@ mgr_update_basic_pkgs:
       - openssl
 {%- if grains['os_family'] == 'Suse' %}
       - zypper
+{%- elif grains['os_family'] == 'RedHat' %}
+      - yum
 {% endif %}
 
 # Manage minion key files in case they are provided in the pillar
