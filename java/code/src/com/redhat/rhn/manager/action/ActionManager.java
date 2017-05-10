@@ -2181,8 +2181,8 @@ public class ActionManager extends BaseManager {
             List<String> mods, Date earliest) {
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory
                 .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
-        String states = mods.isEmpty() ? "[highstate]" : mods.toString();
-        action.setName("Apply states " + states);
+        String states = mods.isEmpty() ? "highstate" : "states " + mods.toString();
+        action.setName("Apply " + states);
         action.setOrg(scheduler != null ?
                 scheduler.getOrg() : OrgFactory.getSatelliteOrg());
         action.setSchedulerUser(scheduler);
