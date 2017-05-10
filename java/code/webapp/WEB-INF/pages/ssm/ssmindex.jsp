@@ -65,6 +65,19 @@
                 </div>
             </li>
         </rhn:require>
+        <rhn:require acl="any_system_with_salt_entitlement()">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <rhn:icon type="system-state" title="ssm.overview.states" />
+                        <bean:message key="ssm.overview.states"/>
+                    </div>
+                    <div class="col-sm-10">
+                        <bean:message key="ssm.overview.states.apply"/>
+                    </div>
+                </div>
+            </li>
+        </rhn:require>
         <rhn:require acl="user_role(org_admin); all_systems_in_set_have_feature(ftr_system_grouping)">
             <li class="list-group-item">
                 <div class="row">
@@ -86,7 +99,7 @@
                         <bean:message key="ssm.overview.channels"/>
                     </div>
                     <div class="col-sm-10">
-                        <ul>
+                        <ul class="list-unstyled">
                             <li><bean:message key="ssm.overview.channels.memberships"/></li>
                             <rhn:require acl="user_role(config_admin);
                                     all_systems_in_set_have_feature(ftr_channel_config_subscription)">
@@ -109,7 +122,7 @@
                         <bean:message key="ssm.overview.provisioning"/>
                     </div>
                     <div class="col-sm-10">
-                        <ul>
+                        <ul class="list-unstyled">
                             <rhn:require acl="all_systems_in_set_have_feature(ftr_kickstart)">
                                 <li><bean:message key="ssm.overview.provisioning.kickstart"/></li>
                             </rhn:require>
@@ -135,7 +148,7 @@
                     <bean:message key="ssm.overview.misc"/>
                 </div>
                 <div class="col-sm-10">
-                    <ul>
+                    <ul class="list-unstyled">
                         <rhn:require acl="all_systems_in_set_have_feature(ftr_hardware_refresh)">
                             <li>
                                 <bean:message key="update"/> <bean:message key="ssm.overview.misc.updateprofiles"/>

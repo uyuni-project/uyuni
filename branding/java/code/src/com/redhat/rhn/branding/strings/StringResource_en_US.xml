@@ -548,6 +548,12 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="ssm.overview.errata">
         <source>Patches</source>
       </trans-unit>
+      <trans-unit id="ssm.overview.states">
+        <source>States</source>
+      </trans-unit>
+      <trans-unit id="ssm.overview.states.apply">
+        <source>&lt;a href="/rhn/manager/systems/ssm/highstate"&gt;Apply&lt;/a&gt; system states</source>
+      </trans-unit>
       <trans-unit id="channels.overview.erratas">
         <source>Patches</source>
       </trans-unit>

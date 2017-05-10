@@ -111,6 +111,8 @@ public class Router implements SparkApplication {
                 jade);
         get("/manager/groups/details/highstate",
                 withCsrfToken(withUser(MinionController::serverGroupHighstate)), jade);
+        get("/manager/systems/ssm/highstate",
+                withCsrfToken(withUser(MinionController::ssmHighstate)), jade);
 
         // States API
         post("/manager/api/states/apply", withUser(StatesAPI::apply));

@@ -104,6 +104,13 @@
         <rhn-tab-url>/rhn/systems/ssm/audit/ScheduleXccdfSubmit.do</rhn-tab-url>
     </rhn-tab>
 
+    <rhn-tab name="States" acl="any_system_with_salt_entitlement()">
+        <rhn-tab-url>/rhn/manager/systems/ssm/highstate</rhn-tab-url>
+        <rhn-tab name="Highstate">
+            <rhn-tab-url>/rhn/manager/systems/ssm/highstate</rhn-tab-url>
+        </rhn-tab>
+    </rhn-tab>
+
     <rhn-tab name="Misc" url="/rhn/systems/ssm/misc/Index.do">
         <rhn-require acl="all_systems_in_set_have_feature(ftr_hardware_refresh)">
             <rhn-tab name="ssm.misc.index.tabs.hardware" url="/rhn/systems/ssm/misc/HardwareRefresh.do" />

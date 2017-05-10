@@ -1,0 +1,17 @@
+.spacewalk-toolbar-h1
+  h1
+    i.fa.spacewalk-icon-system-groups
+    | #{' System Set Manager Overview '}
+    a(href="/rhn/help/reference/en-US/ref.webui.systems.ssm.jsp", target="_blank")
+      i.fa.fa-question-circle.spacewalk-help-link
+
+!{h.renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml")}
+#highstate
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+    const minions = !{minions};
+    const timezone = "#{h.renderTimezone()}";
+    const localTime = "#{h.renderLocalTime()}";
+
+script(src='/javascript/manager/highstate.bundle.js', type='text/javascript')
