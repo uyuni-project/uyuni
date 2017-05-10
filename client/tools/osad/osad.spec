@@ -32,7 +32,7 @@ Requires: python3-rhnlib
 Requires: python3-spacewalk-usix
 Requires: python3-jabberpy
 %else
-Requires: rhnlib >= 1.8-3
+Requires: rhnlib >= 2.5.74
 Requires: spacewalk-usix
 Requires: jabberpy
 %endif

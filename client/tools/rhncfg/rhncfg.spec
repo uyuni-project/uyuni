@@ -26,7 +26,7 @@ Requires: python
 Requires: python3-rhnlib
 Requires: python3-spacewalk-usix
 %else
-Requires: rhnlib
+Requires: rhnlib >= 2.5.78
 Requires: spacewalk-usix
 %endif
 %if 0%{?rhel} && 0%{?rhel} < 6
