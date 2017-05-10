@@ -7,24 +7,6 @@ const Network = require("../utils/network");
 const FormulaSelection = require("../components/formula-selection").FormulaSelection;
 const toTitle = require("../components/FormulaForm").toTitle;
 
-function applyRequest(component) {
-    return Network.post(
-        "/rhn/manager/api/states/apply",
-        JSON.stringify({
-            id: groupId,
-            type: "GROUP",
-            states: []
-        }),
-        "application/json"
-        )
-        .promise.then( data => {
-            console.log("apply action queued:" + data)
-            component.setState({
-                messages: [t("Applying the highstated has been scheduled for each minion server in this group")]
-            });
-        });
-}
-
 function saveRequest(component, selectedFormulas) {
     const formData = {};
     formData.type = "GROUP";
@@ -67,7 +49,6 @@ function addFormulaNavBar(formulaList) {
 ReactDOM.render(
   <FormulaSelection
     dataUrl={"/rhn/manager/api/formulas/list/GROUP/" + groupId}
-    applyRequest={applyRequest}
     saveRequest={saveRequest}
     addFormulaNavBar={addFormulaNavBar} />,
   document.getElementById('formulas')

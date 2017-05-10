@@ -13,7 +13,7 @@ class FormulaSelection extends React.Component {
     constructor(props) {
         super(props);
 
-        ["init", "applyRequest", "saveRequest", "resetChanges", "removeAllFormulas", "getGroupItemState",
+        ["init", "saveRequest", "resetChanges", "removeAllFormulas", "getGroupItemState",
         "getListIcon", "getListStyle", "generateList", "onGroupItemClick", "onListItemClick"]
         .forEach(method => this[method] = this[method].bind(this));
 
@@ -47,26 +47,6 @@ class FormulaSelection extends React.Component {
                 groups: groupDict
             });
         });
-    }
-
-    applyRequest() {
-        var unsavedChanges = false;
-        for (var name in this.state.formulas) {
-            if ((this.state.activeSelectedFormulas.indexOf(name) >= 0) != this.state.formulas[name].selected) {
-                unsavedChanges = true;
-                break;
-            }
-        }
-        if (unsavedChanges) {
-            const response = confirm(t("There are unsaved changes. Do you want to proceed ?"))
-            if (response == false) {
-                return null;
-            }
-        }
-        return this.props.applyRequest(this)
-            .then(data => {
-                window.scrollTo(0, 0);
-            });
     }
 
     saveRequest() {
@@ -248,14 +228,9 @@ class FormulaSelection extends React.Component {
             <div>
                 {errors}{messages}
                 <div className="spacewalk-section-toolbar">
-                    <div className="selector-button-wrapper">
-                        <span className="btn-group">
-                            <AsyncButton id="save-btn" icon="floppy-o" action={this.saveRequest} name={t("Save")} />
-                            <AsyncButton id="apply-btn" defaultType="btn-success" action={this.applyRequest} name={t("Apply Highstate")} />
-                        </span>
-                    </div>
                     <div className="action-button-wrapper">
                         <span className="btn-group pull-right">
+                            <AsyncButton id="save-btn" icon="floppy-o" action={this.saveRequest} name={t("Save")} />
                             <Button id="clear-btn" icon="fa-eraser" text="Remove all" className="btn btn-default" handler={this.removeAllFormulas} />
                             <Button id="reset-btn" icon="fa-undo" text="Reset Changes" className="btn btn-default" handler={this.resetChanges} />
                         </span>

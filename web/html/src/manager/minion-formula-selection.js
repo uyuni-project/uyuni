@@ -7,27 +7,6 @@ const Network = require("../utils/network");
 const FormulaSelection = require("../components/formula-selection").FormulaSelection;
 const toTitle = require("../components/FormulaForm").toTitle;
 
-function applyRequest(component) {
-    return Network.post(
-            "/rhn/manager/api/states/apply",
-            JSON.stringify({
-                id: serverId,
-                type: "SERVER",
-                states: []
-            }),
-            "application/json"
-        ).promise.then(data => {
-            component.setState({
-                messages: [
-                    <span> {t("Applying the highstate has been ")}
-                        <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
-                        {t(".")}
-                    </span>
-                ]
-            });
-        });
-}
-
 function saveRequest(component, selectedFormulas) {
     const formData = {};
     formData.type = "SERVER";
@@ -70,7 +49,6 @@ function addFormulaNavBar(formulaList) {
 ReactDOM.render(
   <FormulaSelection
     dataUrl={"/rhn/manager/api/formulas/list/SERVER/" + serverId}
-    applyRequest={applyRequest}
     saveRequest={saveRequest}
     addFormulaNavBar={addFormulaNavBar} />,
   document.getElementById('formulas')
