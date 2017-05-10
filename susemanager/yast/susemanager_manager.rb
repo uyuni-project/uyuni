@@ -102,7 +102,9 @@ module Yast
 
       # help text
       @help_text = _(
-        "<p>Fill in <b>Administrator E-mail Address</b>. It is used for notifications by SUSE Manager.</p>"
+        "<p>Fill in <b>Administrator E-mail Address</b>. It is used for notifications by SUSE Manager.</p>
+         <p>By checking SLP (Service Location Protocol) SUSE Manager will advertise its service in the
+           network so it can easily be found by client systems.</p>"
       )
 
       # dialog caption
