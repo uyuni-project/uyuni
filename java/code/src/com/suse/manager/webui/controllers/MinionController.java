@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -33,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.suse.manager.webui.utils.MinionServerUtils;
+import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.utils.Json;
 import spark.ModelAndView;
 import spark.Request;
@@ -190,6 +193,34 @@ public class MinionController {
         data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(new Long(orgId),
                 user.getOrg()).getName());
         return new ModelAndView(data, "groups/custom.jade");
+    }
+
+    /**
+     * Handler for the server group highstate page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView serverGroupHighstate(Request request, Response response,
+            User user) {
+        String grpId = request.queryParams("sgid");
+
+        ServerGroup group =
+                ServerGroupFactory.lookupByIdAndOrg(Long.parseLong(grpId), user.getOrg());
+
+        List<Server> groupServers = ServerGroupFactory.listServers(group);
+        List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(groupServers)
+                .stream().map(SimpleMinionJson::fromMinionServer)
+                .collect(Collectors.toList());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("groupId", grpId);
+        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(new Long(grpId),
+                user.getOrg()).getName());
+        data.put("minions", Json.GSON.toJson(minions));
+        return new ModelAndView(data, "groups/highstate.jade");
     }
 
     /**

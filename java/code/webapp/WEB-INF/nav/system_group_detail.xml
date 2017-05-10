@@ -15,8 +15,11 @@
 
   <rhn-tab name="Admins" url="/rhn/groups/AdminList.do" acl="user_role(system_group_admin)" />
 
-  <rhn-tab name="States" acl="user_role(system_group_admin)" >
-    <rhn-tab-url>/rhn/manager/groups/details/custom</rhn-tab-url>
+  <rhn-tab name="States" acl="any_system_with_salt_entitlement()" >
+    <rhn-tab-url>/rhn/manager/groups/details/highstate</rhn-tab-url>
+    <rhn-tab name="Highstate">
+      <rhn-tab-url>/rhn/manager/groups/details/highstate</rhn-tab-url>
+    </rhn-tab>
     <rhn-tab name="Custom">
       <rhn-tab-url>/rhn/manager/groups/details/custom</rhn-tab-url>
     </rhn-tab>

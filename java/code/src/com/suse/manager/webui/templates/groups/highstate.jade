@@ -1,0 +1,23 @@
+.spacewalk-toolbar-h1
+  .spacewalk-toolbar
+    a(href="/rhn/groups/Delete.do?sgid=#{groupId}")
+        i.fa.fa-trash-o(title='Delete Group')
+        | #{l.t("Delete Group")}
+    a(href="/rhn/systems/WorkWithGroup.do?sgid=#{groupId}")
+        i.fa.spacewalk-icon-system-groups(title='Work With Group')
+        | #{l.t("Work With Group")}
+
+  h1
+    i.fa.spacewalk-icon-system-groups
+    | #{" " + groupName + " "}
+
+!{h.renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml")}
+#highstate
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+    const minions = !{minions};
+    const timezone = "#{h.renderTimezone()}";
+    const localTime = "#{h.renderLocalTime()}";
+
+script(src='/javascript/manager/highstate.bundle.js', type='text/javascript')

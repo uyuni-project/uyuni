@@ -320,6 +320,12 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="systemgroup.details.noupdates">
         <source>No applicable patches</source>
       </trans-unit>
+      <trans-unit id="systemgroup.details.states">
+        <source>States:</source>
+      </trans-unit>
+      <trans-unit id="systemgroup.details.states.apply">
+        <source>&lt;a href="{1}"&gt;Apply system states&lt;/a&gt; for {0} system(s)</source>
+      </trans-unit>
 
       <!-- == ERRATA == -->
       <trans-unit id="erratalist.jsp.noerrata">
