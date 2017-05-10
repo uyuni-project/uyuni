@@ -140,10 +140,10 @@ DISABLE_YAST_AUTOMATIC_ONLINE_UPDATE=1
 # - Alternate location of the client tool repos providing the zypp-plugin-spacewalk
 # and packges required for registration. Unless they are already installed on the
 # client this repo is expected to provide them for SLE-10/SLE-11 based clients:
-#   ${{Z_CLIENT_REPOS_ROOT}}/sle/VERSION/PATCHLEVEL
+#   ${{CLIENT_REPOS_ROOT}}/sle/VERSION/PATCHLEVEL
 # If empty, the SUSE Manager repositories provided at https://${{HOSTNAME}}/pub/repositories
 # are used.
-Z_CLIENT_REPOS_ROOT=
+CLIENT_REPOS_ROOT=
 
 #
 # -----------------------------------------------------------------------------
@@ -266,10 +266,56 @@ def getRegistrationStackSh(saltEnabled):
                                                            'spacewalk-client-tools', 'zypp-plugin-spacewalk']
     PKG_NAME_YUM = saltEnabled and ['salt', 'salt-minion'] or []
 
+    PKG_NAME_UPDATE = list(PKG_NAME)
+    PKG_NAME_UPDATE.extend(['zypper', 'rhnlib', 'openssl'])
+
+    PKG_NAME_UPDATE_YUM = list(PKG_NAME_YUM)
+    PKG_NAME_UPDATE_YUM.extend(saltEnabled and ['yum', 'rhnlib', 'openssl'] or ['yum-rhn-plugin', 'yum', 'rhnlib', 'openssl'])
+
     return """\
 echo
 echo "CHECKING THE REGISTRATION STACK"
 echo "-------------------------------------------------"
+
+function test_repo_exists() {{
+  local repourl="$CLIENT_REPO_URL"
+
+  $FETCH $repourl/repodata/repomd.xml
+  if [ ! -f "repomd.xml" ] ; then
+    echo "Bootstrap repo '$repourl' does not exist."
+    repourl=""
+    CLIENT_REPO_URL=""
+  fi
+  rm -f repomd.xml
+}}
+
+function setup_bootstrap_repo() {{
+  local repopath="$CLIENT_REPO_FILE"
+  local reponame="$CLIENT_REPO_NAME"
+  local repourl="$CLIENT_REPO_URL"
+
+  test_repo_exists
+
+  if [ -n "$CLIENT_REPO_URL" ]; then
+    echo " adding client software repository at $repourl"
+    cat <<EOF >"$repopath"
+[$reponame]
+name=$reponame
+baseurl=$repourl
+enabled=1
+autorefresh=1
+keeppackages=0
+gpgcheck=0
+EOF
+  fi
+}}
+
+function remove_bootstrap_repo() {{
+  local repopath="$CLIENT_REPO_FILE"
+
+  rm -f $repopath
+}}
+
 if [ "$INSTALLER" == yum ]; then
     function getY_CLIENT_CODE_BASE() {{
         local BASE=""
@@ -295,34 +341,17 @@ if [ "$INSTALLER" == yum ]; then
     echo "* client codebase is ${{Y_CLIENT_CODE_BASE}}-${{Y_CLIENT_CODE_VERSION}}"
     getY_MISSING
 
+    CLIENT_REPOS_ROOT="${{CLIENT_REPOS_ROOT:-https://${{HOSTNAME}}/pub/repositories}}"
+    CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{Y_CLIENT_CODE_BASE}}/${{Y_CLIENT_CODE_VERSION}}/bootstrap"
+    CLIENT_REPO_NAME="susemanager:bootstrap"
+    CLIENT_REPO_FILE="/etc/yum.repos.d/$CLIENT_REPO_NAME.repo"
+
+    setup_bootstrap_repo
+
     if [ -z "$Y_MISSING" ]; then
         echo "  no packages missing."
     else
         echo "* going to install missing packages..."
-        Y_CLIENT_REPOS_ROOT="${{Y_CLIENT_REPOS_ROOT:-https://${{HOSTNAME}}/pub/repositories}}"
-        Y_CLIENT_REPO_URL="${{Y_CLIENT_REPOS_ROOT}}/${{Y_CLIENT_CODE_BASE}}/${{Y_CLIENT_CODE_VERSION}}/bootstrap"
-        Y_CLIENT_REPO_NAME="susemanager:bootstrap.repo"
-        Y_CLIENT_REPO_FILE="/etc/yum.repos.d/$Y_CLIENT_REPO_NAME.repo"
-
-        # test, if repo exists
-        $FETCH $Y_CLIENT_REPO_URL/repodata/repomd.xml
-        if [ ! -f "repomd.xml" ] ; then
-            echo "Bootstrap repo '$Y_CLIENT_REPO_URL' does not exist."
-            Y_CLIENT_REPO_URL=""
-        fi
-        rm -f repomd.xml
-
-        if [ -n "$Y_CLIENT_REPO_URL" ]; then
-            echo " adding client software repository at $Y_CLIENT_REPO_URL"
-            cat <<EOF >"$Y_CLIENT_REPO_FILE"
-[$Y_CLIENT_REPO_NAME]
-name=$Y_CLIENT_REPO_NAME
-baseurl=$Y_CLIENT_REPO_URL
-enabled=1
-autorefresh=1
-keeppackages=0
-EOF
-        fi
 
         yum -y install $Y_MISSING
 
@@ -332,10 +361,9 @@ EOF
             exit 1
         }}
         done
-
-        # remove client bootstrap repo
-        rm $Y_CLIENT_REPO_FILE
     fi
+    # try update main packages for registration from any repo which is available
+    yum -y upgrade {PKG_NAME_UPDATE_YUM} ||:
 fi
 if [ "$INSTALLER" == zypper ]; then
   function getZ_CLIENT_CODE_BASE() {{
@@ -382,26 +410,19 @@ if [ "$INSTALLER" == zypper ]; then
   echo "* client codebase is ${{Z_CLIENT_CODE_BASE}}-${{Z_CLIENT_CODE_VERSION}}-sp${{Z_CLIENT_CODE_PATCHLEVEL}}"
 
   getZ_MISSING
+
+  CLIENT_REPOS_ROOT="${{CLIENT_REPOS_ROOT:-${{HTTPS_PUB_DIRECTORY}}/repositories}}"
+  CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{Z_CLIENT_CODE_BASE}}/${{Z_CLIENT_CODE_VERSION}}/${{Z_CLIENT_CODE_PATCHLEVEL}}/bootstrap"
+  CLIENT_REPO_NAME="susemanager:bootstrap"
+  CLIENT_REPO_FILE="/etc/zypp/repos.d/$CLIENT_REPO_NAME.repo"
+
+  test_repo_exists
+
   if [ -z "$Z_MISSING" ]; then
     echo "  no packages missing."
+    setup_bootstrap_repo
   else
     echo "* going to install missing packages..."
-    Z_CLIENT_REPOS_ROOT="${{Z_CLIENT_REPOS_ROOT:-${{HTTPS_PUB_DIRECTORY}}/repositories}}"
-    Z_CLIENT_REPO_URL="${{Z_CLIENT_REPOS_ROOT}}/${{Z_CLIENT_CODE_BASE}}/${{Z_CLIENT_CODE_VERSION}}/${{Z_CLIENT_CODE_PATCHLEVEL}}/bootstrap"
-    test "${{Z_CLIENT_CODE_BASE}}/${{Z_CLIENT_CODE_VERSION}}/${{Z_CLIENT_CODE_PATCHLEVEL}}" = "sle/11/1" && {{
-      # use backward compatible URL for SLE11-SP1 repo
-      Z_CLIENT_REPO_URL="${{Z_CLIENT_REPOS_ROOT}}/susemanager-client-setup"
-    }}
-    Z_CLIENT_REPO_NAME="susemanager-client-setup"
-    Z_CLIENT_REPO_FILE="/etc/zypp/repos.d/$Z_CLIENT_REPO_NAME.repo"
-
-    # test, if repo exists
-    $FETCH $Z_CLIENT_REPO_URL/repodata/repomd.xml
-    if [ ! -f "repomd.xml" ] ; then
-        echo "Bootstrap repo '$Z_CLIENT_REPO_URL' does not exist."
-        Z_CLIENT_REPO_URL=""
-    fi
-    rm -f repomd.xml
 
     # code10 requires removal of the ZMD stack first
     if [ "$Z_CLIENT_CODE_BASE" == "sle" ]; then
@@ -432,11 +453,11 @@ if [ "$INSTALLER" == zypper ]; then
     if rpm -q zypper --qf '%{{VERSION}}' | grep -q '^0\(\..*\)\?$'; then
 
       # code10 zypper has no --gpg-auto-import-keys and no reliable return codes.
-      if [ -n "$Z_CLIENT_REPO_URL" ]; then
-        echo "  adding client software repository at $Z_CLIENT_REPO_URL"
-        zypper --non-interactive --no-gpg-checks sd $Z_CLIENT_REPO_NAME
-        zypper --non-interactive --no-gpg-checks sa $Z_CLIENT_REPO_URL $Z_CLIENT_REPO_NAME
-        zypper --non-interactive --no-gpg-checks refresh "$Z_CLIENT_REPO_NAME"
+      if [ -n "$CLIENT_REPO_URL" ]; then
+        echo "  adding client software repository at $CLIENT_REPO_URL"
+        zypper --non-interactive --no-gpg-checks sd $CLIENT_REPO_NAME
+        zypper --non-interactive --no-gpg-checks sa $CLIENT_REPO_URL $CLIENT_REPO_NAME
+        zypper --non-interactive --no-gpg-checks refresh "$CLIENT_REPO_NAME"
       fi
       zypper --non-interactive --no-gpg-checks in $Z_MISSING
       for P in $Z_MISSING; do
@@ -445,33 +466,12 @@ if [ "$INSTALLER" == zypper ]; then
 	  exit 1
 	}}
       done
-      if [ -n "$Z_CLIENT_REPO_URL" ]; then
-        # Now as code11 zypper is installed, create the .repo file
-        cat <<EOF >"$Z_CLIENT_REPO_FILE"
-[$Z_CLIENT_REPO_NAME]
-name=$Z_CLIENT_REPO_NAME
-baseurl=$Z_CLIENT_REPO_URL
-enabled=1
-autorefresh=1
-keeppackages=0
-gpgcheck=0
-EOF
-      fi
+      setup_bootstrap_repo
     else
 
-      if [ -n "$Z_CLIENT_REPO_URL" ]; then
-        echo "  adding client software repository at $Z_CLIENT_REPO_URL"
-        cat <<EOF >"$Z_CLIENT_REPO_FILE"
-[$Z_CLIENT_REPO_NAME]
-name=$Z_CLIENT_REPO_NAME
-baseurl=$Z_CLIENT_REPO_URL
-enabled=1
-autorefresh=1
-keeppackages=0
-gpgcheck=0
-EOF
-        zypper --non-interactive --gpg-auto-import-keys refresh "$Z_CLIENT_REPO_NAME"
-      fi
+      setup_bootstrap_repo
+
+      zypper --non-interactive --gpg-auto-import-keys refresh "$CLIENT_REPO_NAME"
       # install missing packages
       zypper --non-interactive in $Z_MISSING
       for P in $Z_MISSING; do
@@ -482,8 +482,6 @@ EOF
       done
 
     fi
-  # remove client bootstrap repo
-  zypper rr "$Z_CLIENT_REPO_NAME"
   fi
 
   # on code10 we need to convert metadata of installed products
@@ -498,9 +496,16 @@ EOF
       }}
     fi
   fi
+
+  # try update main packages for registration from any repo which is available
+  zypper --non-interactive up {PKG_NAME_UPDATE} ||:
 fi
 
-""".format(PKG_NAME=' '.join(PKG_NAME), PKG_NAME_YUM=' '.join(PKG_NAME_YUM))
+remove_bootstrap_repo
+
+""".format(PKG_NAME=' '.join(PKG_NAME), PKG_NAME_YUM=' '.join(PKG_NAME_YUM),
+           PKG_NAME_UPDATE=' '.join(PKG_NAME_UPDATE),
+           PKG_NAME_UPDATE_YUM=' '.join(PKG_NAME_UPDATE_YUM))
 
 def getConfigFilesSh():
     return """\
@@ -879,7 +884,7 @@ if [ $DISABLE_LOCAL_REPOS -eq 1 ] && [ $SALT_ENABLED -eq 0 ] ; then
 	zypper ms -e --medium-type plugin
 	zypper mr -d --all
 	zypper mr -e --medium-type plugin
-	zypper mr -e "$Z_CLIENT_REPO_NAME"
+	zypper mr -e "$CLIENT_REPO_NAME"
     elif [ "$INSTALLER" == yum ] ; then
         echo "* Disable all repos not provided by SUSE Manager Server.";
 	for F in /etc/yum.repos.d/*.repo; do

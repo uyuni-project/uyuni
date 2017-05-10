@@ -37,10 +37,12 @@ PKGLIST11 = [
                 "libcurl4",
                 "libnewt0_52",
                 "libnl",
+                "libopenssl0_9_8",
                 "libsqlite3-0",
                 "libxml2-python",
                 "libzypp",
                 "newt",
+                "openssl",
                 "python",
                 "python-dmidecode",
                 "python-ethtool",
@@ -89,9 +91,11 @@ PKGLIST12 = [
                 "libgudev-1_0-0",
                 "libnewt0_52",
                 "libnl1",
+                "libopenssl1_0_0",
                 "libsqlite3-0",
                 "libudev1",
                 "udev",
+                "openssl",
                 "python-libxml2",
                 "libzypp",
                 "newt",
@@ -178,6 +182,7 @@ RES6 = [
         "python-tornado",
         "python-zmq",
         "zeromq",
+        "openssl",
         "python-backports-ssl_match_hostname",
         "python-backports",
         "python-certifi",
@@ -190,6 +195,9 @@ RES6 = [
         "python-six",
         "python-babel",
         "dbus",
+        "yum-rhn-plugin",
+        "yum",
+        "rhnlib",
        ]
 
 RES7 = [
@@ -205,6 +213,8 @@ RES7 = [
         "python-tornado",
         "python-zmq",
         "zeromq",
+        "python-backports-ssl_match_hostname",
+        "python-backports",
         "python-certifi",
         "python-simplejson",
         "PyYAML",
@@ -214,6 +224,11 @@ RES7 = [
         "python-chardet",
         "python-six",
         "python-babel",
+        "yum-rhn-plugin",
+        "yum",
+        "rhnlib",
+        "openssl",
+        "openssl-libs",
        ]
 
 DATA = {
