@@ -72,7 +72,11 @@
 - features/salt_openscap_audit.feature
 - features/salt_reboot_test.feature
 - features/salt_ssh.feature 
+
 ## Centos client related feat. ###
+# Salt centos7 trad_client
+- features/centos_tradclient.feature 
+# Salt centos7 feature
 - features/centos_salt.feature
 - features/centos_salt_ssh.feature 
 #### * Docker related features tests.  ###
