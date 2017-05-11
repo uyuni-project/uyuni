@@ -6,7 +6,8 @@ USAGE: proxy-ssh-push-init [options]
 
 options:
   -k path to existing key
-  -s configure only sshd and exit
+  -s only configure sshd and exit
+  -a only authorize parent key and exit
   -h show this help message and exit
 HELP
     exit 1
@@ -78,10 +79,12 @@ authorize_parent_ssh_push_key() {
     if [ "$CURL_RESPONSE" != "200" ]; then
         echo "Could not retrieve ssh-push key. curl failed with HTTP response code ${CURL_RESPONSE}."
         echo "Check connectivity to the parent server or if it has a ssh-push key."
+        echo "After fixing the problem run: mgr-proxy-ssh-push-init -a"
+    else
+        # remove any previously authorized key
+        [ -f $AUTH_KEYS ] && sed -i '/susemanager-ssh-push/d' $AUTH_KEYS
+        cat $TMP_PUSH_KEY_FILE >> $AUTH_KEYS && echo "Added public ssh-push key from $RHN_PARENT to $AUTH_KEYS."
     fi
-    # remove any previously authorized key
-    [ -f $AUTH_KEYS ] && sed -i '/susemanager-ssh-push/d' $AUTH_KEYS
-    cat $TMP_PUSH_KEY_FILE >> $AUTH_KEYS && echo "Added public ssh-push key from $RHN_PARENT to $AUTH_KEYS."
     rm $TMP_PUSH_KEY_FILE
 }
 
@@ -109,7 +112,7 @@ EOF
 }
 
 USE_EXISTING_SSH_PUSH_KEY=0
-while getopts ":k:sh" opt; do
+while getopts ":k:s:ah" opt; do
   case $opt in
     k)
       USE_EXISTING_SSH_PUSH_KEY=1
@@ -121,6 +124,10 @@ while getopts ":k:sh" opt; do
       ;;
     s)
       configure_sshd
+      exit 0
+      ;;
+    a)
+      authorize_parent_ssh_push_key
       exit 0
       ;;
     \?)
