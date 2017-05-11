@@ -29,8 +29,10 @@
 	<family default_nodecount="0" label="SLE-HAE-GEO" name="GEO Clustering for SLE HA Extension"/>
 	<family default_nodecount="0" label="SLES-ARM64" name="SUSE Linux Enterprise Server (ARM64)"/>
 	<family default_nodecount="0" label="18962" name="Novell ZENworks Configuration Management"/>
+	<family default_nodecount="0" label="SLES12-SP1-LTSS-Z" name="SUSE Linux Enterprise Server LTSS 12 SP1 Z-Series"/>
 	<family default_nodecount="0" label="AiO" name="SUSE Linux Enterprise Server for SAP"/>
 	<family default_nodecount="0" label="SLES-PPC" name="SUSE Linux Enterprise Server (PPC)"/>
+	<family default_nodecount="0" label="SLES12-SP1-LTSS-X86" name="SUSE Linux Enterprise Server LTSS 12 SP1 x86_64"/>
 	<family default_nodecount="0" label="10040" name="SUSE Linux Enterprise Point of Service"/>
 	<family default_nodecount="0" label="AiO-PPC" name="SUSE Linux Enterprise Server for SAP Power"/>
 	<family default_nodecount="0" label="SLES12-GA-LTSS-X86" name="SUSE Linux Enterprise Server 12 LTSS (x86)"/>
