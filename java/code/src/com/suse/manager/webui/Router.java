@@ -67,67 +67,7 @@ public class Router implements SparkApplication {
         get("/manager/api/audit/cve.csv", withUser(CVEAuditController::cveAuditCSV));
 
         // Content Management
-        get("/manager/cm/imagestores",
-                withCsrfToken(withUser(ImageStoreController::listView)), jade);
-        get("/manager/cm/imagestores/create",
-                withCsrfToken(withImageAdmin(ImageStoreController::createView)), jade);
-        get("/manager/cm/imagestores/edit/:id",
-                withCsrfToken(withImageAdmin(ImageStoreController::updateView)), jade);
-
-        get("/manager/api/cm/imagestores", withUser(ImageStoreController::list));
-        get("/manager/api/cm/imagestores/type/:type",
-                withUser(ImageStoreController::listAllWithType));
-        get("/manager/api/cm/imagestores/:id", withUser(ImageStoreController::getSingle));
-        get("/manager/api/cm/imagestores/find/:label",
-                withUser(ImageStoreController::getSingleByLabel));
-        post("/manager/api/cm/imagestores", withImageAdmin(ImageStoreController::create));
-        post("/manager/api/cm/imagestores/:id",
-                withImageAdmin(ImageStoreController::update));
-        delete("/manager/api/cm/imagestores/:id", withUser(ImageStoreController::delete));
-
-        get("/manager/cm/imageprofiles",
-                withCsrfToken(withUser(ImageProfileController::listView)), jade);
-        get("/manager/cm/imageprofiles/create",
-                withCsrfToken(withImageAdmin(ImageProfileController::createView)), jade);
-        get("/manager/cm/imageprofiles/edit/:id",
-                withCsrfToken(withImageAdmin(ImageProfileController::updateView)), jade);
-
-        get("/manager/api/cm/imageprofiles", withUser(ImageProfileController::list));
-        get("/manager/api/cm/imageprofiles/:id",
-                withUser(ImageProfileController::getSingle));
-        get("/manager/api/cm/imageprofiles/find/:label",
-                withUser(ImageProfileController::getSingleByLabel));
-        get("/manager/api/cm/imageprofiles/channels/:token",
-                withImageAdmin(ImageProfileController::getChannels));
-        post("/manager/api/cm/imageprofiles",
-                withImageAdmin(ImageProfileController::create));
-        post("/manager/api/cm/imageprofiles/:id",
-                withImageAdmin(ImageProfileController::update));
-        delete("/manager/api/cm/imageprofiles/:id",
-                withImageAdmin(ImageProfileController::delete));
-
-        get("/manager/cm/build", withCsrfToken(withUser(ImageBuildController::buildView)),
-                jade);
-
-        get("/manager/cm/rebuild/:id",
-                withCsrfToken(withUser(ImageBuildController::rebuild)), jade);
-
-        get("/manager/api/cm/build/hosts", withUser(ImageBuildController::getBuildHosts));
-        post("/manager/api/cm/build/:id", withUser(ImageBuildController::build));
-
-        get("/manager/cm/images", withCsrfToken(withUser(ImageBuildController::listView)),
-                jade);
-
-
-        get("/manager/cm/images/:id/ak", withUser(ImageBuildController::activationKey));
-
-        get("/manager/api/cm/images", withUser(ImageBuildController::list));
-        get("/manager/api/cm/images/:id", withUser(ImageBuildController::get));
-        get("/manager/api/cm/images/patches/:id",
-                withUser(ImageBuildController::getPatches));
-        get("/manager/api/cm/images/packages/:id",
-                withUser(ImageBuildController::getPackages));
-        delete("/manager/api/cm/images/:id", withImageAdmin(ImageBuildController::delete));
+        initContentManagementRoutes(jade);
 
         // Minions
         get("/manager/minions",
@@ -301,5 +241,69 @@ public class Router implements SparkApplication {
                 withOrgAdmin(VisualizationController::systemsWithManagedGroupsData));
 
         get("/manager/download/saltssh/pubkey", SaltSSHController::getPubKey);
+    }
+
+    private void initContentManagementRoutes(JadeTemplateEngine jade) {
+        get("/manager/cm/imagestores",
+                withCsrfToken(withUser(ImageStoreController::listView)), jade);
+        get("/manager/cm/imagestores/create",
+                withCsrfToken(withImageAdmin(ImageStoreController::createView)), jade);
+        get("/manager/cm/imagestores/edit/:id",
+                withCsrfToken(withImageAdmin(ImageStoreController::updateView)), jade);
+
+        get("/manager/api/cm/imagestores", withUser(ImageStoreController::list));
+        get("/manager/api/cm/imagestores/type/:type",
+                withUser(ImageStoreController::listAllWithType));
+        get("/manager/api/cm/imagestores/:id", withUser(ImageStoreController::getSingle));
+        get("/manager/api/cm/imagestores/find/:label",
+                withUser(ImageStoreController::getSingleByLabel));
+        post("/manager/api/cm/imagestores", withImageAdmin(ImageStoreController::create));
+        post("/manager/api/cm/imagestores/:id",
+                withImageAdmin(ImageStoreController::update));
+        delete("/manager/api/cm/imagestores/:id", withUser(ImageStoreController::delete));
+
+        get("/manager/cm/imageprofiles",
+                withCsrfToken(withUser(ImageProfileController::listView)), jade);
+        get("/manager/cm/imageprofiles/create",
+                withCsrfToken(withImageAdmin(ImageProfileController::createView)), jade);
+        get("/manager/cm/imageprofiles/edit/:id",
+                withCsrfToken(withImageAdmin(ImageProfileController::updateView)), jade);
+
+        get("/manager/api/cm/imageprofiles", withUser(ImageProfileController::list));
+        get("/manager/api/cm/imageprofiles/:id",
+                withUser(ImageProfileController::getSingle));
+        get("/manager/api/cm/imageprofiles/find/:label",
+                withUser(ImageProfileController::getSingleByLabel));
+        get("/manager/api/cm/imageprofiles/channels/:token",
+                withImageAdmin(ImageProfileController::getChannels));
+        post("/manager/api/cm/imageprofiles",
+                withImageAdmin(ImageProfileController::create));
+        post("/manager/api/cm/imageprofiles/:id",
+                withImageAdmin(ImageProfileController::update));
+        delete("/manager/api/cm/imageprofiles/:id",
+                withImageAdmin(ImageProfileController::delete));
+
+        get("/manager/cm/build", withCsrfToken(withUser(ImageBuildController::buildView)),
+                jade);
+
+        get("/manager/cm/rebuild/:id",
+                withCsrfToken(withUser(ImageBuildController::rebuild)), jade);
+
+        get("/manager/api/cm/build/hosts", withUser(ImageBuildController::getBuildHosts));
+        post("/manager/api/cm/build/:id", withUser(ImageBuildController::build));
+
+        get("/manager/cm/images", withCsrfToken(withUser(ImageBuildController::listView)),
+                jade);
+
+
+        get("/manager/cm/images/:id/ak", withUser(ImageBuildController::activationKey));
+
+        get("/manager/api/cm/images", withUser(ImageBuildController::list));
+        get("/manager/api/cm/images/:id", withUser(ImageBuildController::get));
+        get("/manager/api/cm/images/patches/:id",
+                withUser(ImageBuildController::getPatches));
+        get("/manager/api/cm/images/packages/:id",
+                withUser(ImageBuildController::getPackages));
+        delete("/manager/api/cm/images/:id", withImageAdmin(ImageBuildController::delete));
     }
 }
