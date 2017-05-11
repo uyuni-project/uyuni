@@ -50,3 +50,17 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I should see a "Reboot system" button
     And I click on "Reboot system"
     Then I wait and check that "ssh-minion" has rebooted
+
+   Scenario: Install a package for ssh minion
+   Given I am authorized as "testing" with password "testing"
+    And I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
+    And I follow remote ssh-minion hostname
+    When I follow "Software" in the content area
+    And I follow "Install"
+    When I check "hoag-dummy-1.1-2.1" in the list
+    And I click on "Install Selected Packages"
+    And I click on "Confirm"  
+    Then I should see a "1 package install has been scheduled" text
+    And I wait for "hoag-dummy-1.1-2.1" to be installed on this "ssh-minion"
