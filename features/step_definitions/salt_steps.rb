@@ -455,8 +455,8 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
   else
     fail "Invalid target"
   end
-  output, _code = target.run("grep 'LANG=' /etc/locale.conf")
-  fail unless output.strip == "LANG=#{language}"
+  output, _code = target.run("grep 'RC_LANG=' /etc/sysconfig/language")
+  fail unless output.strip == "RC_LANG=\"#{language}\""
 end
 
 When(/^I refresh the pillar data$/) do
