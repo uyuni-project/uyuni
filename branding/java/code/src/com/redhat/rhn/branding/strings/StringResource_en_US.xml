@@ -2737,6 +2737,21 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="Formula Catalog">
           <source>Formula Catalog</source>
       </trans-unit>
+      <trans-unit id="system.audit.schedulexccdf.jsp.nosoonerthan">
+        <source>Earliest</source>
+      </trans-unit>
+      <trans-unit id="schedule.jsp.at">
+        <source>Earliest:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/ScheduleRemoteCommand.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="schedule-options.action-chain">
+        <source>Add to:</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">schedule-options.jspf</context>
+          </context-group>
+      </trans-unit>
 
       <!-- Images -->
       <trans-unit id="Images">
