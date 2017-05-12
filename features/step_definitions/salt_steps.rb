@@ -597,7 +597,7 @@ Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, ho
   installed = false
   output = ""
   begin
-    Timeout.timeout(120) do
+    Timeout.timeout(300) do
       loop do
         output, code = node.run("rpm -q #{package}", false)
         if code.zero?

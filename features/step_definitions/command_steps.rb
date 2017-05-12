@@ -309,6 +309,18 @@ When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
   $minion.run("sysctl net.ipv6.conf.all.forwarding=1")
 end
 
+And(/^I register the centos7 as tradclient$/) do
+  cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
+  wget = 'wget --no-check-certificate -O'
+  register = "rhnreg_ks --username=admin --password=admin --force \\" \
+              "--serverUrl=https://#{$server_ip}/XMLRPC \\" \
+              "--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT \\" \
+              "--activationkey=1-SUSE-PKG-x86_64"
+
+  $ceos_minion.run("#{wget} #{cert_path} http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT", true, 500)
+  $ceos_minion.run(register)
+end
+
 When(/^I wait for the openSCAP audit to finish$/) do
   begin
     Timeout.timeout(30) do
