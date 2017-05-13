@@ -57,8 +57,8 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(
             self.reposync,
             [
-                [{'id': 'id1', 'label': 'label1', 'source_url': 'http://url.one', 'metadata_signed': 'Y'}],
-                [{'id': 'id2', 'label': 'label2', 'source_url': 'http://url.two', 'metadata_signed': 'N'}],
+              [{'id': 'id1', 'repo_label': 'label1', 'source_url': 'http://url.one', 'metadata_signed': 'Y', 'repo_type': 'yum'}],
+              [{'id': 'id2', 'repo_label': 'label2', 'source_url': 'http://url.two', 'metadata_signed': 'N', 'repo_type': 'yum'}],
             ]
         )
 
@@ -84,9 +84,10 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._init_reposync('Label', RTYPE, url='http://example.com')
 
         self.assertEqual(rs.urls, [{'source_url': 'http://example.com',
-                                    'label': None,
+                                    'repo_label': None,
                                     'id': None,
-                                    'metadata_signed': 'N'
+                                    'metadata_signed': 'N',
+                                    'repo_type': 'yum'
                                   }])
 
     def test_init_with_custom_flags(self):
@@ -132,14 +133,9 @@ class RepoSyncTest(unittest.TestCase):
 
         self.assertRaises(SystemExit, self.reposync.RepoSync, 'Label', RTYPE)
 
-    def test_init_bad_repo_type(self):
-        self.reposync.rhnChannel.channel_info = Mock(return_value=
-                                                {'name': 'mocked Channel',
-                                                 'id': 1,
-                                                 'org_id': 1})
-        self.reposync.RepoSync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
-        self.assertRaises(SystemExit, self.reposync.RepoSync, 'Label',
-                          'bad-repo-type')
+    def test_bad_repo_type(self):
+        rs = self._init_reposync('Label', RTYPE)
+        self.assertRaises(SystemExit, rs.load_plugin, 'bad-repo-type')
         self.assertIn("Repository type bad-repo-type is not supported. "
                       "Could not import "
                       "spacewalk.satellite_tools."
@@ -150,7 +146,7 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._init_reposync()
 
         rs.urls = [
-            {"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "label": None}]
+          {"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
 
         _mock_rhnsql(self.reposync, {})
         rs = self._mock_sync(rs)
@@ -175,7 +171,7 @@ class RepoSyncTest(unittest.TestCase):
     def test_sync_success_regen(self):
         rs = self._init_reposync()
 
-        rs.urls = [{"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "label": None}]
+        rs.urls = [{"source_url": ["http://none.host/bogus-url"], "id": 42, "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
 
         _mock_rhnsql(self.reposync, {})
         rs = self._mock_sync(rs)
@@ -191,7 +187,7 @@ class RepoSyncTest(unittest.TestCase):
         rs = self._create_mocked_reposync()
 
         exception = self.reposync.ChannelTimeoutException("anony-error")
-        rs.repo_plugin = Mock(side_effect=exception)
+        rs.load_plugin = Mock(return_value=Mock(side_effect=exception))
         rs.sendErrorMail = Mock()
 
         etime, ret = rs.sync()
@@ -203,7 +199,7 @@ class RepoSyncTest(unittest.TestCase):
     def test_sync_raises_unexpected_error(self):
         rs = self._create_mocked_reposync()
 
-        rs.repo_plugin = Mock(side_effect=TypeError)
+        rs.load_plugin = Mock(return_value=Mock(side_effect=TypeError))
         rs.sendErrorMail = Mock()
         etime, ret = rs.sync()
         self.assertEqual(-1, ret)
@@ -647,7 +643,7 @@ class RepoSyncTest(unittest.TestCase):
     def _create_mocked_reposync(self):
         """Create a fully mocked RepoSync"""
         rs = self._init_reposync()
-        rs.urls = [{"source_url": ["http://none.host/bogus-url"], "metadata_signed": "N", "label": None}]
+        rs.urls = [{'id': None, "source_url": ["http://none.host/bogus-url"], "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
         rs = self._mock_sync(rs)
 
         return rs
@@ -695,7 +691,7 @@ class RepoSyncTest(unittest.TestCase):
 
         rs.mocked_plugin = Mock()
         rs.mocked_plugin.num_packages = 0
-        rs.repo_plugin = Mock(return_value=rs.mocked_plugin)
+        rs.load_plugin = Mock(return_value=Mock(return_value=rs.mocked_plugin))
 
         rs.update_date = Mock()
 
@@ -750,9 +746,10 @@ class SyncTest(unittest.TestCase):
         urls = ['http://some.url', 'http://some-other.url']
         data = {
             'metadata_signed': 'N',
-            'label': None,
+            'repo_label': None,
             'id': None,
-            'source_url': urls
+            'source_url': urls,
+            'repo_type': 'yum'
         }
         repo_sync = RepoSync(
             channel_label="channel-label",
@@ -809,15 +806,17 @@ class SyncTest(unittest.TestCase):
                 'return_value.fetchall_dict.return_value': [
                     {
                         'metadata_signed': 'N',
-                        'label': 'channel-label-1',
+                        'repo_label': 'channel-label-1',
                         'id': 508,
-                        'source_url': url1
+                        'source_url': url1,
+                        'repo_type': 'yum'
                     },
                     {
                         'metadata_signed': 'Y',
-                        'label': 'channel-label-2',
+                        'repo_label': 'channel-label-2',
                         'id': 509,
-                        'source_url': url2
+                        'source_url': url2,
+                        'repo_type': 'yum'
                     }
                 ]
             }
@@ -832,15 +831,17 @@ class SyncTest(unittest.TestCase):
                 [
                     {
                         'metadata_signed': 'N',
-                        'label': 'channel-label-1',
+                        'repo_label': 'channel-label-1',
                         'id': 508,
-                        'source_url': [url1]
+                        'source_url': [url1],
+                        'repo_type': 'yum'
                     },
                     {
                         'metadata_signed': 'Y',
-                        'label': 'channel-label-2',
+                        'repo_label': 'channel-label-2',
                         'id': 509,
-                        'source_url': [url2]
+                        'source_url': [url2],
+                        'repo_type': 'yum'
                     }
                 ]
             )
@@ -886,7 +887,8 @@ class RunScriptTest(unittest.TestCase):
                             dry_run=False,
                             config="example.conf",
                             channel_label=[],
-                            parent_label=None
+                            parent_label=None,
+                            batch_size=None
                         ),
                         []
                     ]
@@ -946,12 +948,12 @@ def test_channel_exceptions():
     repoSync.RepoSync._format_sources = Mock()
     repoSync.RepoSync.get_compatible_arches = Mock(return_value=['arch1', 'arch2'])
     rs = repoSync.RepoSync("Label", RTYPE)
-    rs.urls = [{"source_url": ["http://none.host/bogus-url"], "metadata_signed": "N", "label": None}]
+    rs.urls = [{'id': None, "source_url": ["http://none.host/bogus-url"], "metadata_signed": "N", "repo_label": None, 'repo_type': 'yum'}]
     rs.import_packages = Mock(return_value=0)
     rs.import_updates = Mock()
     rs.mocked_plugin = Mock()
     rs.log = Mock()
-    rs.repo_plugin = Mock(return_value=rs.mocked_plugin)
+    rs.load_plugin = Mock(return_value=rs.mocked_plugin)
     rs.update_date = Mock()
     rs.sendErrorMail = Mock()
     repoSync.os = backup_os
@@ -967,7 +969,7 @@ def check_channel_exceptions(rs, exc_class, exc_name):
     # since this isn't a subclass of unittest.TestCase we can't use
     # unittest's assertions
     from nose.tools import assert_raises, assert_equal
-    rs.repo_plugin = Mock(side_effect=exc_class("error msg"))
+    rs.load_plugin = Mock(return_value=Mock(side_effect=exc_class("error msg")))
 
     etime, ret = rs.sync()
     assert_equal(-1, ret)
