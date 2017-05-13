@@ -428,6 +428,7 @@ class RepoSync(object):
         if not self.urls:
             log2(0, 0, "Channel %s has no URL associated" % channel_label, stream=sys.stderr)
 
+        self.repo_plugin = None
         self.strict = strict
         self.all_packages = set()
         self.check_ssl_dates = check_ssl_dates
@@ -470,7 +471,7 @@ class RepoSync(object):
                 if url.startswith("uln://"):
                     repo_type = "uln"
 
-                repo_plugin = self.load_plugin(repo_type)
+                self.repo_plugin = self.load_plugin(repo_type)
 
                 # pylint: disable=W0703
                 try:
@@ -482,9 +483,9 @@ class RepoSync(object):
                         relative_url = '_'.join(url.split('://')[1].split('/')[1:])
                         repo_name = relative_url.replace("?", "_").replace("&", "_").replace("=", "_")
 
-                    plugin = repo_plugin(url, repo_name, insecure, self.interactive,
-                                         org=str(self.org_id or ''),
-                                         channel_label=self.channel_label)
+                    plugin = self.repo_plugin(url, repo_name, insecure, self.interactive,
+                                              org=str(self.org_id or ''),
+                                              channel_label=self.channel_label)
 
                     if update_repodata:
                         plugin.clear_cache()
@@ -1425,7 +1426,7 @@ class RepoSync(object):
                         id=item['id'],
                         source_url=[item['source_url']],
                         metadata_signed=item['metadata_signed'],
-                        label=item['repo_label'],
+                        repo_label=item['repo_label'],
                         repo_type=repo_type_label
                     )
                 )
