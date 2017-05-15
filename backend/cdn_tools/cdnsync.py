@@ -16,6 +16,7 @@ import json
 import errno
 import os
 import sys
+import fnmatch
 from datetime import datetime, timedelta
 
 import constants
@@ -47,7 +48,7 @@ class CdnSync(object):
 
     def __init__(self, no_packages=False, no_errata=False, no_rpms=False, no_kickstarts=False,
                  log_level=None, mount_point=None, consider_full=False, force_kickstarts=False,
-                 force_all_errata=False, email=False):
+                 force_all_errata=False, email=False, import_batch_size=None):
 
         if log_level is None:
             log_level = 0
@@ -160,6 +161,7 @@ class CdnSync(object):
         h.execute()
         families = h.fetchall_dict() or []
         self.entitled_families = [f['label'] for f in families]
+        self.import_batch_size = import_batch_size
 
     def _tree_available_channels(self):
         # collect all channel from available families
@@ -373,7 +375,7 @@ class CdnSync(object):
         log(0, "Sync of channel started.")
         log2disk(0, "Please check 'cdnsync/%s.log' for sync log of this channel." % channel, notimeYN=True)
         sync = reposync.RepoSync(channel,
-                                 "yum",
+                                 repo_type="yum",
                                  url=None,
                                  fail=False,
                                  filters=False,
@@ -391,6 +393,8 @@ class CdnSync(object):
                                  check_ssl_dates=True,
                                  force_null_org_content=True)
         sync.set_ks_tree_type('rhn-managed')
+        if self.import_batch_size:
+            sync.set_import_batch_size(self.import_batch_size)
         if kickstart_trees:
             # Assuming all trees have same install type
             sync.set_ks_install_type(kickstart_trees[0]['ks_install_type'])
@@ -400,16 +404,32 @@ class CdnSync(object):
     def sync(self, channels=None):
         # If no channels specified, sync already synced channels
         if not channels:
-            channels = list(self.synced_channels)
+            channels = set(self.synced_channels)
 
         # Check channel availability before doing anything
-        not_available = []
-        available = []
+        not_available = set()
+        available = set()
+        all_channel_list = None
         for channel in channels:
-            if not self._is_channel_available(channel):
-                not_available.append(channel)
+            # Try to expand wildcards in channel labels
+            if '*' in channel or '?' in channel or '[' in channel:
+                if all_channel_list is None:
+                    all_channel_list = self._list_available_channels() + [c for c in self.synced_channels
+                                                                          if self.synced_channels[c]]
+                expanded = fnmatch.filter(all_channel_list, channel)
+                log(2, "Expanding channel '%s' to: %s" % (channel, ", ".join(expanded)))
+                if expanded:
+                    for expanded_channel in expanded:
+                        if not self._is_channel_available(expanded_channel):
+                            not_available.add(expanded_channel)
+                        else:
+                            available.add(expanded_channel)
+                else:
+                    not_available.add(channel)
+            elif not self._is_channel_available(channel):
+                not_available.add(channel)
             else:
-                available.append(channel)
+                available.add(channel)
 
         channels = available
 
@@ -497,7 +517,10 @@ class CdnSync(object):
 
         # Only some channels specified by parameter
         if channels:
-            channel_list = [c for c in channel_list if c in channels]
+            new_channel_list = []
+            for channel in channels:
+                new_channel_list.extend(fnmatch.filter(channel_list, channel))
+            channel_list = list(set(new_channel_list))
 
         log(0, "Number of channels: %d" % len(channel_list))
 

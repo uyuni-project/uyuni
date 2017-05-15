@@ -93,6 +93,10 @@ Syncs the content from yum repos into SUSE Manager channels.
         </group>
         <sbr>
         <group>
+        <arg>--batch-size=<replaceable>BATCH_SIZE</replaceable></arg>
+        </group>
+        <sbr>
+        <group>
         <arg>--dry-run</arg>
         </group>
         <sbr>
@@ -170,7 +174,7 @@ Syncs the content from yum repos into SUSE Manager channels.
     <varlistentry>
         <term>-t<replaceable>TYPE</replaceable>, --type=<replaceable>TYPE</replaceable></term>
         <listitem>
-            <para>The type of repository to sync.  Currently only yum and uln are supported and yum is the default. The uln type is used to sync with the Oracle Unbreakable Linux Network. (Optional)</para>
+            <para>The type of repository to sync. Currently only yum, uln and deb are supported. The uln type is used to sync with the Oracle Unbreakable Linux Network. The deb type is used for Debian repositories. This option overrides type of repository stored in DB for given repository.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -227,6 +231,18 @@ Syncs the content from yum repos into SUSE Manager channels.
         <term>--force-all-errata</term>
         <listitem>
             <para>process metadata of all errata, not only missing.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>--batch-size=<replaceable>BATCH_SIZE</replaceable></term>
+        <listitem>
+            <para>maximum batch size for package import</para>
+            <para>This option should not be used except for debugging
+            purposes. The most useful case being --batch-size=1 where the
+            database import process each piece of meta-data one at a time,
+            isolating any issues.</para>
+            <para>WARNING: --batch-size=1 will dramatically slow down the
+            sync process.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
