@@ -15,7 +15,8 @@ Feature: register a traditional client centos7
 
   Scenario: Schedule some actions for centos7
      Given I am authorized as "admin" with password "admin"
-  # FIXME : add some test pkg, patch, script # FIXME: add openscap tests
+     And execute some tests for centos_trad_client
+  
   Scenario: Delete Trad-client
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Delete System"
