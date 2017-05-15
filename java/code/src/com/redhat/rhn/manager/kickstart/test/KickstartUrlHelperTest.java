@@ -112,7 +112,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
         String expected = "http://" +
             KickstartUrlHelper.COBBLER_SERVER_VARIABLE;
 
-        assertEquals(expected, helper.getCobblerMediaUrl());
+        assertEquals(expected, helper.getCobblerMediaUrlBase());
     }
 
     public void testGetKickstartMediaSessionUrl() throws Exception {
