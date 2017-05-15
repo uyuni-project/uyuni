@@ -44,6 +44,7 @@ public class MinionServerFactory extends HibernateFactory {
     public static List<MinionServer> lookupByOrg(Long orgId) {
         return (List<MinionServer>) HibernateFactory.getSession()
                 .createCriteria(MinionServer.class)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .add(Restrictions.eq("org.id", orgId))
                 .list();
     }
@@ -149,6 +150,7 @@ public class MinionServerFactory extends HibernateFactory {
         }
         else {
             return ServerFactory.getSession().createCriteria(MinionServer.class)
+                    .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                     .add(Restrictions.in("minionId", minionIds))
                     .list();
         }
