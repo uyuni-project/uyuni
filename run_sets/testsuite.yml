@@ -82,8 +82,7 @@
 #### * Docker related features tests.  ###
 - features/docker_build_image.feature
 - features/docker_cve_audit.feature
-#  - features/docker_advanced_test.feature FIXME: ENABLE AFTER BETA3
-
+- features/docker_advanced_test.feature 
 # Debug suse-manager server
 - features/spacewalk_debug.feature
 
