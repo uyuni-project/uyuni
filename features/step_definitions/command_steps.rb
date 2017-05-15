@@ -1,37 +1,6 @@
-# Copyright (c) 2014-16 SUSE
-# Licensed under the terms of the MIT license.
+# Copyright (c) 2014-16 SUSE # Licensed under the terms of the MIT license.
 
 require 'timeout'
-
-def checkShutdown(host, time_out)
-  cmd = "ping -c1 #{host}"
-  Timeout.timeout(time_out) do
-    loop do
-      out = `#{cmd}`
-      if $?.exitstatus.nonzero?
-        puts "machine: #{host} went down"
-        break
-      end
-    end
-  end
-rescue Timeout::Error
-    raise "Machine didn't reboot!"
-end
-
-def checkRestart(host, time_out)
-  cmd = "ping -c1 #{host}"
-  Timeout.timeout(time_out) do
-    loop do
-      out = `#{cmd}`
-      if $?.exitstatus.zero?
-        puts "machine: #{host} is again up"
-        break
-      end
-    end
-  end
-rescue Timeout::Error
-    raise "ERR: Machine didn't Went-up!"
-end
 
 Then(/^I apply highstate on Sles minion$/) do
   cmd = "salt '*minsles12sp2*' state.highstate"

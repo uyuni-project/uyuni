@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2017 SUSE-LINUX
 # Licensed under the terms of the MIT license.
 require 'nokogiri'
-
+require 'timeout'
 def client_is_zypp?
   _out, _local, _remote, _code = $client.test_and_store_results_together("test -x /usr/bin/zypper", "root", 600)
 end
@@ -32,4 +32,35 @@ end
 def client_system_id_to_i
   out, _local, _remote, _code = $client.test_and_store_results_together("grep \"ID\" /etc/sysconfig/rhn/systemid | tr -d -c 0-9", "root", 600)
   out.gsub(/\s+/, "")
+end
+## functions for reboot tests
+
+def checkShutdown(host, time_out)
+  cmd = "ping -c1 #{host}"
+  Timeout.timeout(time_out) do
+    loop do
+      _out = `#{cmd}`
+      if $?.exitstatus.nonzero?
+        puts "machine: #{host} went down"
+        break
+      end
+    end
+  end
+rescue Timeout::Error
+  raise "Machine didn't reboot!"
+end
+
+def checkRestart(host, time_out)
+  cmd = "ping -c1 #{host}"
+  Timeout.timeout(time_out) do
+    loop do
+      _out = `#{cmd}`
+      if $?.exitstatus.zero?
+        puts "machine: #{host} is again up"
+        break
+      end
+    end
+  end
+rescue Timeout::Error
+  raise "ERR: Machine didn't Went-up!"
 end
