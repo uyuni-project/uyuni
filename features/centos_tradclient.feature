@@ -9,7 +9,7 @@ Feature: register a traditional client centos7
      And  I run "sed s/enabled=0/enabled=1/g /etc/yum.repos.d/SLE-Manager-Tools-RES-7-x86_64.repo -i" on "ceos-minion" without error control
      And  I run "sed s/enabled=0/enabled=1/g /etc/yum.repos.d/CentOS-Base.repo -i" on "ceos-minion" without error control
      And  I run "yum repolist" on "ceos-minion"
-     And  I run "yum install -y rhn-client-tools rhn-check rhn-setup rhnsd hwdata m2crypto wget osad rhncfg-actions" on "ceos-minion"
+     And  I run "yum install -y --nogpgcheck rhn-client-tools rhn-check rhn-setup rhnsd hwdata m2crypto wget osad rhncfg-actions" on "ceos-minion"
      And  I register the centos7 as tradclient
      And  I run "rhn-actions-control --enable-all" on "ceos-minion"
 
