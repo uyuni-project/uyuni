@@ -64,6 +64,7 @@ if '.' not in hostname:
 default_log_location = '/var/log/rhn/'
 relative_comps_dir = 'rhn/comps'
 checksum_cache_filename = 'reposync/checksum_cache'
+default_import_batch_size = 10
 
 # namespace prefixes for parsing SUSE patches XML files
 YUM = "{http://linux.duke.edu/metadata/common}"
@@ -336,7 +337,7 @@ def get_single_ssl_set(keys, check_dates=False):
 
 class RepoSync(object):
 
-    def __init__(self, channel_label, repo_type, url=None, fail=False,
+    def __init__(self, channel_label, repo_type=None, url=None, fail=False,
                  filters=None, no_errata=False, sync_kickstart=False, latest=False,
                  metadata_only=False, strict=0, excluded_urls=None, no_packages=False,
                  log_dir="reposync", log_level=None, force_kickstart=False, force_all_errata=False,
@@ -393,10 +394,12 @@ class RepoSync(object):
             # TODO:need to look at user security across orgs
             h = rhnSQL.prepare(
                 """
-                select s.id, s.source_url, s.metadata_signed, s.label
+                select s.id, s.source_url, s.metadata_signed, s.label as repo_label, cst.label as repo_type_label
                 from rhnContentSource s,
-                     rhnChannelContentSource cs
+                     rhnChannelContentSource cs,
+                     rhnContentSourceType cst
                 where s.id = cs.source_id
+                  and cst.id = s.type_id
                   and cs.channel_id = :channel_id""")
             h.execute(channel_id=int(self.channel['id']))
             sources = h.fetchall_dict()
@@ -404,7 +407,7 @@ class RepoSync(object):
             if excluded_urls is None:
                 excluded_urls = []
             if sources:
-                self.urls = self._format_sources(sources, excluded_urls)
+                self.urls = self._format_sources(sources, excluded_urls, repo_type)
             else:
                 # generate empty metadata and quit
                 taskomatic.add_to_repodata_queue_for_channel_package_subscription(
@@ -416,20 +419,28 @@ class RepoSync(object):
                     sys.exit(0)
                 sys.exit(1)
         else:
-            self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N', 'label': None}]
+            if repo_type:
+                repo_type_label = repo_type
+            else:
+                repo_type_label = 'yum'
+            self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N', 'repo_label': None, 'repo_type': repo_type_label}]
 
         if not self.urls:
             log2(0, 0, "Channel %s has no URL associated" % channel_label, stream=sys.stderr)
 
-        self.repo_plugin = self.load_plugin(repo_type)
+        self.repo_plugin = None
         self.strict = strict
-        self.all_packages = []
+        self.all_packages = set()
         self.check_ssl_dates = check_ssl_dates
         # Init cache for computed checksums to not compute it on each reposync run again
         #self.checksum_cache = rhnCache.get(checksum_cache_filename)
         #if self.checksum_cache is None:
         #    self.checksum_cache = {}
         self.arches = self.get_compatible_arches(int(self.channel['id']))
+        self.import_batch_size = default_import_batch_size
+
+    def set_import_batch_size(self, batch_size):
+        self.import_batch_size = int(batch_size)
 
     def set_urls_prefix(self, prefix):
         """If there are relative urls in DB, set their real location in runtime"""
@@ -453,16 +464,19 @@ class RepoSync(object):
             if data['metadata_signed'] == 'N':
                 insecure = True
             plugin = None
+            repo_type = data['repo_type']
 
             for url in data['source_url']:
                 # If the repository uses a uln:// URL, switch to the ULN plugin, overriding the command-line
                 if url.startswith("uln://"):
-                    self.repo_plugin = self.load_plugin("uln")
+                    repo_type = "uln"
+
+                self.repo_plugin = self.load_plugin(repo_type)
 
                 # pylint: disable=W0703
                 try:
-                    if data['label']:
-                        repo_name = data['label']
+                    if data['repo_label']:
+                        repo_name = data['repo_label']
                     else:
                         # use modified relative_url as name of repo plugin, because
                         # it used as name of cache directory as well
@@ -511,9 +525,9 @@ class RepoSync(object):
                         self.import_updates(plugin, url)
 
                     # only for repos obtained from the DB
-                    if self.sync_kickstart and data['label']:
+                    if self.sync_kickstart and data['repo_label']:
                         try:
-                            self.import_kickstart(plugin, url, data['label'])
+                            self.import_kickstart(plugin, url, data['repo_label'])
                         except:
                             rhnSQL.rollback()
                             raise
@@ -555,6 +569,25 @@ class RepoSync(object):
                     log(0, "%s" % traceback.format_exc())
                     self.sendErrorMail(fetchTraceback())
                     sync_error = -1
+
+        # In strict mode unlink all packages from channel which are not synced from current repositories
+        if self.strict:
+            channel_packages = rhnSQL.fetchall_dict("""
+                select p.id, ct.label as checksum_type, c.checksum
+                from rhnChannelPackage cp,
+                     rhnPackage p,
+                     rhnChecksumType ct,
+                     rhnChecksum c
+                where cp.channel_id = :channel_id
+                  and cp.package_id = p.id
+                  and p.checksum_id = c.id
+                  and c.checksum_type_id = ct.id
+                """, channel_id=int(self.channel['id'])) or []
+            for package in channel_packages:
+                if (package['checksum_type'], package['checksum']) not in self.all_packages:
+                    self.disassociate_package(package['checksum_type'], package['checksum'])
+                    self.regen = True
+
 
         # Update cache with package checksums
         #rhnCache.set(checksum_cache_filename, self.checksum_cache)
@@ -789,7 +822,7 @@ class RepoSync(object):
             saveurl.password = "*******"
 
         packages = plug.list_packages(filters, self.latest)
-        self.all_packages.extend(packages)
+        to_disassociate = {}
         to_process = []
         num_passed = len(packages)
         log(0, "Repo URL: %s" % saveurl.getURL())
@@ -839,10 +872,12 @@ class RepoSync(object):
                     pack.set_checksum(db_pack['checksum_type'], db_pack['checksum'])
                     pack.epoch = db_pack['epoch']
 
+                    self.all_packages.add((pack.checksum_type, pack.checksum))
+
                 elif db_pack['channel_id'] == channel_id:
                     # different package with SAME NVREA
-                    self.disassociate_package(db_pack)
-            else:
+                    # disassociate from channel if it doesn't match package which will be downloaded
+                    to_disassociate[(db_pack['checksum_type'], db_pack['checksum'])] = True
                 # fix epoch
                 if pack.epoch == '0':
                     pack.epoch = ''
@@ -872,17 +907,10 @@ class RepoSync(object):
                 target_file = os.path.join(plug.repo.pkgdir, os.path.basename(pack.unique_id.relativepath))
                 pack.path = target_file
                 params = {}
-                if self.metadata_only:
-                    bytes_range = (0, pack.unique_id.hdrend)
-                    checksum_type = None
-                    checksum = None
-                else:
-                    bytes_range = None
-                    checksum_type = pack.checksum_type
-                    checksum = pack.checksum
+                checksum_type = pack.checksum_type
+                checksum = pack.checksum
                 plug.set_download_parameters(params, pack.unique_id.relativepath, target_file,
-                                             checksum_type=checksum_type, checksum_value=checksum,
-                                             bytes_range=bytes_range)
+                                             checksum_type=checksum_type, checksum_value=checksum)
                 downloader.add(params)
                 to_download_count += 1
         if num_to_process != 0:
@@ -903,10 +931,12 @@ class RepoSync(object):
         affected_channels = []
         upload_caller = "server.app.uploadPackage"
 
+        import_count = 0
         for (index, what) in enumerate(to_process):
             pack, to_download, to_link = what
             if not to_download:
                 continue
+            import_count += 1
             stage_path = pack.path
 
             # pylint: disable=W0703
@@ -916,6 +946,7 @@ class RepoSync(object):
                     raise Exception
 
                 pack.load_checksum_from_header()
+
                 if not self.metadata_only:
                     rel_package_path = rhnPackageUpload.relative_path_from_header(pack.a_pkg.header, self.org_id,
                                                                                   pack.a_pkg.checksum_type,
@@ -961,30 +992,34 @@ class RepoSync(object):
                 pack.epoch = pack.a_pkg.header['epoch']
                 pack.a_pkg = None
 
+                self.all_packages.add((pack.checksum_type, pack.checksum))
+
+                # Downloaded pkg checksum matches with pkg already in channel, no need to disassociate from channel
+                if (pack.checksum_type, pack.checksum) in to_disassociate:
+                    to_disassociate[(pack.checksum_type, pack.checksum)] = False
+                    # Set to_link to False, no need to link again
+                    to_process[index] = (pack, True, False)
+
                 # importing packages by batch or if the current packages is the last
-                if (index + 1) == len(to_process) or (index + 1) % 10 == 0:
-
-                    if len(mpm_bin_batch) > 0:
-                        importer = packageImport.PackageImport(mpm_bin_batch, backend, caller=upload_caller)
-                        importer.setUploadForce(0)
-                        importer.run()
-                        del importer.batch
-                        affected_channels.extend(importer.affected_channels)
-
-                    if len(mpm_src_batch) > 0:
-                        src_importer = packageImport.SourcePackageImport(mpm_src_batch, backend,
-                                                                         caller=upload_caller)
-                        src_importer.setUploadForce(0)
-                        src_importer.run()
-
-                    # commit the transactions
+                if len(mpm_bin_batch) > 0 and (import_count == to_download_count
+                                               or len(mpm_bin_batch) % self.import_batch_size == 0):
+                    importer = packageImport.PackageImport(mpm_bin_batch, backend, caller=upload_caller)
+                    importer.setUploadForce(1)
+                    importer.run()
                     rhnSQL.commit()
-
-                    del mpm_src_batch
+                    del importer.batch
+                    affected_channels.extend(importer.affected_channels)
                     del mpm_bin_batch
                     mpm_bin_batch = importLib.Collection()
-                    mpm_src_batch = importLib.Collection()
 
+                if len(mpm_src_batch) > 0 and (import_count == to_download_count
+                                               or len(mpm_src_batch) % self.import_batch_size == 0):
+                    src_importer = packageImport.SourcePackageImport(mpm_src_batch, backend, caller=upload_caller)
+                    src_importer.setUploadForce(1)
+                    src_importer.run()
+                    rhnSQL.commit()
+                    del mpm_src_batch
+                    mpm_src_batch = importLib.Collection()
 
                 progress_bar.log(True, None)
             except KeyboardInterrupt:
@@ -999,7 +1034,6 @@ class RepoSync(object):
                 if self.fail:
                     raise
                 to_process[index] = (pack, False, False)
-                self.all_packages.remove(pack)
                 progress_bar.log(False, None)
             finally:
                 if is_non_local_repo and stage_path and os.path.exists(stage_path):
@@ -1009,23 +1043,19 @@ class RepoSync(object):
             errataCache.schedule_errata_cache_update(affected_channels)
         log2background(0, "Importing packages finished.")
 
-        if self.strict:
-            # Need to make sure all packages from all repositories are associated with channel
-            import_batch = [self.associate_package(pack)
-                            for pack in self.all_packages]
-        else:
-            # Only packages from current repository are appended to channel
-            import_batch = [self.associate_package(pack)
-                            for (pack, to_download, to_link) in to_process
-                            if to_link]
+        # Disassociate packages
+        for (checksum_type, checksum) in to_disassociate:
+            if to_disassociate[(checksum_type, checksum)]:
+                self.disassociate_package(checksum_type, checksum)
         # Do not re-link if nothing was marked to link
         if any([to_link for (pack, to_download, to_link) in to_process]):
             log(0, "Linking packages to channel.")
+            # Packages to append to channel
+            import_batch = [self.associate_package(pack) for (pack, to_download, to_link) in to_process if to_link]
             backend = SQLBackend()
             caller = "server.app.yumreposync"
             importer = ChannelPackageSubscription(import_batch,
-                                                  backend, caller=caller, repogen=False,
-                                                  strict=self.strict)
+                                                  backend, caller=caller, repogen=False)
             importer.run()
             backend.commit()
             self.regen = True
@@ -1096,7 +1126,8 @@ class RepoSync(object):
 
         return importLib.IncompletePackage().populate(package)
 
-    def disassociate_package(self, pack):
+    def disassociate_package(self, checksum_type, checksum):
+        log(3, "Disassociating package with checksum: %s (%s)" % (checksum, checksum_type))
         h = rhnSQL.prepare("""
             delete from rhnChannelPackage cp
              where cp.channel_id = :channel_id
@@ -1109,7 +1140,7 @@ class RepoSync(object):
                                     )
         """)
         h.execute(channel_id=int(self.channel['id']),
-                  checksum_type=pack['checksum_type'], checksum=pack['checksum'])
+                  checksum_type=checksum_type, checksum=checksum)
 
     def load_channel(self):
         return rhnChannel.channel_info(self.channel_label)
@@ -1381,16 +1412,22 @@ class RepoSync(object):
 ### SUSE only code                                                         ###
 ##############################################################################
 
-    def _format_sources(self, sources, excluded_urls):
+    def _format_sources(self, sources, excluded_urls, repo_type):
         ret = []
         for item in sources:
             if item['source_url'] not in excluded_urls:
+                if repo_type:
+                    repo_type_label = repo_type
+                else:
+                    repo_type_label = item['repo_type_label']
+
                 ret.append(
                     dict(
                         id=item['id'],
                         source_url=[item['source_url']],
                         metadata_signed=item['metadata_signed'],
-                        label=item['label']
+                        repo_label=item['repo_label'],
+                        repo_type=repo_type_label
                     )
                 )
         return ret
