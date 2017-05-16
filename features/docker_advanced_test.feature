@@ -40,8 +40,5 @@ Feature:  Test advanced functionality of content management
 
  Scenario: I can't access build image page with norole user
   Given I am authorized as "norole" with password "norole"
-  And I navigate to images build webpage
+  And I navigate to "rhn/manager/cm/imageprofiles/edit/2" page
   And I should not see a "Internal Server Error" text
-  And I should not see a "Build Profile" text
-  And I should not see a "Build Host" text
-  And I should not see a "Build Image" text
