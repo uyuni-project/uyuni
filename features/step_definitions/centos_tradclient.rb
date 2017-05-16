@@ -62,16 +62,19 @@ And(/^execute some tests for centos_trad_client$/) do
   # --4) pkg install
   pkg_infos = @cli.call('packages.search.name', @sid, 'andromeda-dummy')
   pkg_id = pkg_infos[0]['id']
-  @cli.call('system.schedulePackageInstall', @sid, @centosid, pkg_id, date_schedule_now)
+  act_pkg_id = @cli.call('system.schedulePackageInstall', @sid, @centosid, pkg_id, date_schedule_now)
   $ceos_minion.run("rhn_check -vvv", true, 500, 'root')
+  waitActionComplete(act_pkg_id, complete_actions)
+  assert_empty(@cli.call('schedule.listFailedActions', @sid))
+  # remove pkg
+  act_pkg_id_rem = @cli.call('system.schedulePackageRemove', @sid, @centosid, pkg_id, date_schedule_now)
+  $ceos_minion.run("rhn_check -vvv", true, 500, 'root')
+  waitActionComplete(act_pkg_id_rem, complete_actions)
+  assert_empty(@cli.call('schedule.listFailedActions', @sid))
   # ------------------------------
   # TODO:
-  # --- schedule pkg install.
-  # schedule action-chain
   # install sync patch/errata ( this need special github repo where centos7 errata are)
   # openscap audit
-  # use activation-key for centos7
-  # configuration channels
   # Test that data in gui (ip, product, kernel etc) is correctly updated/visualised
   # check for logs errors
   # 9. Generating Satellite Reports
