@@ -59,6 +59,14 @@ And(/^execute some tests for centos_trad_client$/) do
   checkShutdown($ceos_minion_fullhostname, timeout)
   checkRestart($ceos_minion_fullhostname, timeout)
   assert_empty(@cli.call('schedule.listFailedActions', @sid))
+  @cli.call("auth.logout", @sid)
+end
+And(/^install remove pkg test trad-centos$/) do
+  host = $server_fullhostname
+  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @cli.call('auth.login', 'admin', 'admin')
+  date_schedule_now = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
+  #
   # --4) pkg install
   pkg_infos = @cli.call('packages.search.name', @sid, 'andromeda-dummy')
   pkg_id = pkg_infos[0]['id']
