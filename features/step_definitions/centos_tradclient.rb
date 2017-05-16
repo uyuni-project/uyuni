@@ -59,14 +59,15 @@ And(/^execute some tests for centos_trad_client$/) do
   checkShutdown($ceos_minion_fullhostname, timeout)
   checkRestart($ceos_minion_fullhostname, timeout)
   assert_empty(@cli.call('schedule.listFailedActions', @sid))
+  # --4) pkg install
+  pkg_infos = @cli.call('packages.search.name', @sid, 'andromeda-dummy')
+  puts pkg_infos[0]['id']
   # ------------------------------
   # TODO:
   # --- schedule pkg install.
   # schedule action-chain
   # install sync patch/errata ( this need special github repo where centos7 errata are)
   # openscap audit
-  # simulate crash report
-  # * https://access.redhat.com/documentation/en-US/Red_Hat_Satellite/5.7/html-single/Client_Configuration_Guide/index.html#Creating_Software_Failures_for_Testing
   # use activation-key for centos7
   # configuration channels
   # Test that data in gui (ip, product, kernel etc) is correctly updated/visualised
