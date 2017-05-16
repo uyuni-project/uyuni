@@ -18,9 +18,13 @@ def retrieve_server_id(server)
 end
 
 def waitActionComplete(actionid, list)
+  host = $server_fullhostname
+  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @cli.call('auth.login', 'admin', 'admin')
   time_out = 300
   Timeout.timeout(time_out) do
     loop do
+      list = @cli.call('schedule.listCompletedActions', @sid)
       list.each do |action|
         return true if action['id'] == actionid
         sleep(2)
@@ -46,12 +50,7 @@ And(/^execute some tests for centos_trad_client$/) do
   script = "#! /usr/bin/bash \n uptime && ls"
   id_script = @cli.call('system.scheduleScriptRun', @sid, @centosid, 'root', 'root', 500, script, date_schedule_now)
   $ceos_minion.run("rhn_check -vvv", true, 500, 'root')
-  complete_actions = @cli.call('schedule.listCompletedActions', @sid)
-  waitActionComplete(id_script, complete_actions)
-  # no failed no in progress
-  assert_empty(@cli.call('schedule.listFailedActions', @sid))
-  # --- schedule pkg install.
-  # -------------------------------
+  waitActionComplete(id_script)
   # --3)  schedule reboot
   @cli.call('system.scheduleReboot', @sid, @centosid, date_schedule_now)
   $ceos_minion.run("rhn_check -vvv", true, 500, 'root')
@@ -59,18 +58,26 @@ And(/^execute some tests for centos_trad_client$/) do
   checkShutdown($ceos_minion_fullhostname, timeout)
   checkRestart($ceos_minion_fullhostname, timeout)
   assert_empty(@cli.call('schedule.listFailedActions', @sid))
-  # ------------------------------
-  # TODO:
-  # --- schedule pkg install.
-  # schedule action-chain
-  # install sync patch/errata ( this need special github repo where centos7 errata are)
-  # openscap audit
-  # simulate crash report
-  # * https://access.redhat.com/documentation/en-US/Red_Hat_Satellite/5.7/html-single/Client_Configuration_Guide/index.html#Creating_Software_Failures_for_Testing
-  # use activation-key for centos7
-  # configuration channels
-  # Test that data in gui (ip, product, kernel etc) is correctly updated/visualised
-  # check for logs errors
-  # 9. Generating Satellite Reports
+  @cli.call("auth.logout", @sid)
+end
+
+And(/^install remove pkg test trad-centos$/) do
+  host = $server_fullhostname
+  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @cli.call('auth.login', 'admin', 'admin')
+  @centosid = retrieve_server_id($ceos_minion_fullhostname)
+  now = DateTime.now
+  date_schedule_now = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
+  # --4) pkg install
+  pkg_infos = @cli.call('packages.search.name', @sid, 'andromeda-dummy')
+  pkg_id = pkg_infos[0]['id']
+  act_pkg_id = @cli.call('system.schedulePackageInstall', @sid, @centosid, pkg_id, date_schedule_now)
+  $ceos_minion.run("rhn_check -vvv", true, 500, 'root')
+  waitActionComplete(act_pkg_id)
+  # remove pkg
+  act_pkg_id_rem = @cli.call('system.schedulePackageRemove', @sid, @centosid, pkg_id, date_schedule_now)
+  $ceos_minion.run("rhn_check -vvv", true, 500, 'root')
+  waitActionComplete(act_pkg_id_rem)
+  assert_empty(@cli.call('schedule.listFailedActions', @sid))
   @cli.call("auth.logout", @sid)
 end

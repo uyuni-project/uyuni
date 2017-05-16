@@ -284,7 +284,7 @@ And(/^I register the centos7 as tradclient$/) do
   register = "rhnreg_ks --username=admin --password=admin --force \\" \
               "--serverUrl=https://#{$server_ip}/XMLRPC \\" \
               "--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT \\" \
-              "--activationkey=1-SUSE-PKG-x86_64"
+              "--activationkey=1-MINION-TEST"
 
   $ceos_minion.run("#{wget} #{cert_path} http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT", true, 500)
   $ceos_minion.run(register)
