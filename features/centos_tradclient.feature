@@ -17,8 +17,22 @@ Feature: register a traditional client centos7
      Given I am authorized as "admin" with password "admin"
      And execute some tests for centos_trad_client
      And install remove pkg test trad-centos
- 
-  Scenario: Delete Trad-client
+
+  Scenario: migrate from trad-client to minion
+     Given I am authorized
+     When I follow "Salt"
+     Then I should see a "Bootstrapping" text
+     And I follow "Bootstrapping"
+     Then I should see a "Bootstrap Minions" text
+     And  I enter the hostname of "ceos-minion" as hostname
+     And I enter "22" as "port"
+     And I enter "root" as "user"
+     And I enter "linux" as "password"
+     And I click on "Bootstrap"
+     And I wait until i see "Successfully bootstrapped host! " text
+     And I wait for "100" seconds
+
+  Scenario: Delete Trad-client or migrated minion
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
