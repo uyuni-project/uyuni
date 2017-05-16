@@ -427,6 +427,7 @@ fi
 %dir /usr/share/rhn/wsgi
 %{_sbindir}/mgr-proxy-ssh-push-init
 %{_sbindir}/mgr-proxy-ssh-force-cmd
+%attr(755,root,root) %dir %{_var}/lib/spacewalk
 
 %files package-manager
 %defattr(-,root,root)
