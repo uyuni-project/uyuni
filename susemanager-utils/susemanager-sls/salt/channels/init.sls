@@ -1,6 +1,7 @@
 {%- if grains['os_family'] == 'RedHat' %}
 mgrchannels_susemanagerplugin:
   file.managed:
+    - name: /usr/share/yum-plugins/susemanagerplugin.py
     - source:
       - salt://channels/yum-susemanager-plugin/susemanagerplugin.py
     - user: root
@@ -9,6 +10,7 @@ mgrchannels_susemanagerplugin:
 
 mgrchannels_susemanagerplugin_conf:
   file.managed:
+    - name: /etc/yum/pluginconf.d/susemanagerplugin.conf
     - source:
       - salt://channels/yum-susemanager-plugin/susemanagerplugin.conf
     - user: root
