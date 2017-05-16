@@ -436,6 +436,7 @@ fi
 %{_sbindir}/mgr-proxy-ssh-push-init
 %{_sbindir}/mgr-proxy-ssh-force-cmd
 %attr(755,root,%{apache_group}) %dir %{rhnroot}/config-defaults
+%attr(755,root,root) %dir %{_var}/lib/spacewalk
 %endif
 
 %files package-manager
