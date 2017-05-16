@@ -138,3 +138,7 @@ Then(/^I create mock initrd if download fails$/) do
    _out, code = $server.run("test -f #{initrd}", false)
    $server.run("touch #{initrd}") if code.nonzero?
 end
+
+And(/^I navigate to "([^"]*)" page$/) do |page|
+  visit("https://#{$server_fullhostname}/#{page}")
+end

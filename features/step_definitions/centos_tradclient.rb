@@ -49,7 +49,6 @@ And(/^execute some tests for centos_trad_client$/) do
   complete_actions = @cli.call('schedule.listCompletedActions', @sid)
   waitActionComplete(id_script, complete_actions)
   # no failed no in progress
-  assert_empty(@cli.call('schedule.listInProgressActions', @sid))
   assert_empty(@cli.call('schedule.listFailedActions', @sid))
   # --- schedule pkg install.
   # -------------------------------
