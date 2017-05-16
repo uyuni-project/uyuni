@@ -17,7 +17,7 @@ def retrieve_server_id(server)
   server_id
 end
 
-def waitActionComplete(actionid, list)
+def waitActionComplete(actionid)
   host = $server_fullhostname
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
