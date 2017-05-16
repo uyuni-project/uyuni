@@ -61,7 +61,9 @@ And(/^execute some tests for centos_trad_client$/) do
   assert_empty(@cli.call('schedule.listFailedActions', @sid))
   # --4) pkg install
   pkg_infos = @cli.call('packages.search.name', @sid, 'andromeda-dummy')
-  puts pkg_infos[0]['id']
+  pkg_id = pkg_infos[0]['id']
+  @cli.call('system.schedulePackageInstall', @sid, @centosid, pkg_id, date_schedule_now)
+  $ceos_minion.run("rhn_check -vvv", true, 500, 'root')
   # ------------------------------
   # TODO:
   # --- schedule pkg install.
