@@ -166,7 +166,7 @@ public class MenuTree {
 
             // Salt
             nodes.add(new MenuItem("Salt").withIcon("spacewalk-icon-salt")
-                .addChild(new MenuItem("Onboarding").withPrimaryUrl("/rhn/manager/minions"))
+                .addChild(new MenuItem("Keys").withPrimaryUrl("/rhn/manager/minions"))
                 .addChild(new MenuItem("Bootstrapping").withPrimaryUrl("/rhn/manager/minions/bootstrap")
                     .withVisibility(adminRoles.get("org")))
                 .addChild(new MenuItem("Remote Commands").withPrimaryUrl("/rhn/manager/minions/cmd"))
