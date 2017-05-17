@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SERVICES="squid apache2 jabberd"
+SERVICES="squid apache2 jabberd salt-broker"
 
 test -s /etc/rc.status && . /etc/rc.status && rc_reset
 
