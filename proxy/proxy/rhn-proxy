@@ -2,11 +2,11 @@
 
 HTTPD="httpd"
 
-if [ -e /lib/systemd/system/apache2.service -o -e /etc/init.d/apache2 ]; then
+if [ -e /usr/lib/systemd/system/apache2.service -o -e /etc/init.d/apache2 ]; then
     HTTPD="apache2"
 fi
 
-SERVICES="squid $HTTPD jabberd"
+SERVICES="squid $HTTPD jabberd salt-broker"
 
 if [ -e /etc/init.d/functions ]; then
     . /etc/init.d/functions
