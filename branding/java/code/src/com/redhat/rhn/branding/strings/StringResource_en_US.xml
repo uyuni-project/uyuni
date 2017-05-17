@@ -2671,8 +2671,8 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="Salt">
           <source>Salt</source>
       </trans-unit>
-      <trans-unit id="Onboarding">
-        <source>Onboarding</source>
+      <trans-unit id="Keys">
+        <source>Keys</source>
       </trans-unit>
       <trans-unit id="Bootstrapping">
         <source>Bootstrapping</source>

@@ -69,7 +69,7 @@ function labelFor(state) {
   return <span className={"label label-" + mapping.label}>{ mapping.uiName }</span>
 }
 
-class Onboarding extends React.Component {
+class KeyManagement extends React.Component {
 
   constructor(props) {
     super();
@@ -112,7 +112,7 @@ class Onboarding extends React.Component {
     </div>;
     return (
       <span>
-        <Panel title="Onboarding" icon="fa-desktop" button={ panelButtons }>
+        <Panel title={t("Keys")} icon="fa-desktop" button={ panelButtons }>
           <Table
               data={this.state.keys}
               identifier={this.rowKey}
@@ -177,6 +177,6 @@ class Onboarding extends React.Component {
 }
 
 ReactDOM.render(
-  <Onboarding />,
-  document.getElementById('onboarding')
+  <KeyManagement />,
+  document.getElementById('key-management')
 );
