@@ -109,6 +109,8 @@ public class MenuTree {
                     .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/ssm/index.do"))
                     .addChild(new MenuItem("ssm.nav.status").withPrimaryUrl("/rhn/ssm/ViewAllLog.do")
                         .withAltUrl("/rhn/ssm/ViewLog.do").withAltUrl("/rhn/ssm/ViewCompletedLog.do")))
+                .addChild(new MenuItem("Bootstrapping").withPrimaryUrl("/rhn/manager/minions/bootstrap")
+                    .withVisibility(adminRoles.get("org")))
                 .addChild(new MenuItem("visualization.nav.title")
                         .withVisibility(adminRoles.get("org"))
                         .addChild(new MenuItem("Virtualization Hierarchy")
@@ -167,8 +169,6 @@ public class MenuTree {
             // Salt
             nodes.add(new MenuItem("Salt").withIcon("spacewalk-icon-salt")
                 .addChild(new MenuItem("Keys").withPrimaryUrl("/rhn/manager/minions"))
-                .addChild(new MenuItem("Bootstrapping").withPrimaryUrl("/rhn/manager/minions/bootstrap")
-                    .withVisibility(adminRoles.get("org")))
                 .addChild(new MenuItem("Remote Commands").withPrimaryUrl("/rhn/manager/minions/cmd"))
                 .addChild(new MenuItem("State Catalog").withPrimaryUrl("/rhn/manager/state-catalog")
                     .withVisibility(adminRoles.get("org")))
