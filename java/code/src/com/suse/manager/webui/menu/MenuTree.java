@@ -205,8 +205,8 @@ public class MenuTree {
                     .withDir("/rhn/errata/manage/clone").withVisibility(checkAcl(user, "user_role(channel_admin)"))));
 
             // Channels
-            nodes.add(new MenuItem("Channels").withIcon("spacewalk-icon-software-channels")
-                .addChild(new MenuItem("Software Channels").withDir("/rhn/channels")
+            nodes.add(new MenuItem("Software").withIcon("spacewalk-icon-software-channels")
+                .addChild(new MenuItem("Channels").withDir("/rhn/channels")
                     .addChild(new MenuItem("channel.nav.all").withPrimaryUrl("/rhn/software/channels/All.do"))
                     .addChild(new MenuItem("channel.nav.vendor").withPrimaryUrl("/rhn/software/channels/Vendor.do")
                         .withVisibility(checkAcl(user, "is_satellite()")))
