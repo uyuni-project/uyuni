@@ -16,7 +16,6 @@ Feature: register a traditional client centos7
   Scenario: Schedule some actions for centos7
      Given I am authorized as "admin" with password "admin"
      And execute some tests for centos_trad_client
-     And install remove pkg test trad-centos
 
   Scenario: migrate from trad-client to minion
      Given I am authorized
