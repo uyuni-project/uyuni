@@ -60,24 +60,3 @@ And(/^execute some tests for centos_trad_client$/) do
   assert_empty(@cli.call('schedule.listFailedActions', @sid))
   @cli.call("auth.logout", @sid)
 end
-
-And(/^install remove pkg test trad-centos$/) do
-  host = $server_fullhostname
-  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
-  @sid = @cli.call('auth.login', 'admin', 'admin')
-  @centosid = retrieve_server_id($ceos_minion_fullhostname)
-  now = DateTime.now
-  date_schedule_now = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
-  # --4) pkg install
-  pkg_infos = @cli.call('packages.search.name', @sid, 'andromeda-dummy')
-  pkg_id = pkg_infos[0]['id']
-  act_pkg_id = @cli.call('system.schedulePackageInstall', @sid, @centosid, pkg_id, date_schedule_now)
-  $ceos_minion.run("rhn_check -vvv", true, 500, 'root')
-  waitActionComplete(act_pkg_id)
-  # remove pkg
-  act_pkg_id_rem = @cli.call('system.schedulePackageRemove', @sid, @centosid, pkg_id, date_schedule_now)
-  $ceos_minion.run("rhn_check -vvv", true, 500, 'root')
-  waitActionComplete(act_pkg_id_rem)
-  assert_empty(@cli.call('schedule.listFailedActions', @sid))
-  @cli.call("auth.logout", @sid)
-end
