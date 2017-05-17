@@ -301,6 +301,11 @@ if grep "^ProxyPass /ks " $PROXY_CONF > /dev/null 2>&1 ; then
     grep -v "^ProxyPassReverse /download " > $TMPFILE
     mv $TMPFILE $PROXY_CONF
 fi
+
+SSHUSER=mgrsshtunnel
+if getent passwd $SSHUSER | grep ":/home/$SSHUSER:" > /dev/null ; then
+  usermod -m -d %{_var}/lib/spacewalk/$SSHUSER $SSHUSER
+fi
 %endif
 
 %post redirect
