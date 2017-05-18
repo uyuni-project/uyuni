@@ -21,12 +21,13 @@ HTMLPUB_DIR=/srv/www/htdocs/pub
 
 SSH_PUSH_KEY_FILE="id_susemanager_ssh_push"
 SSH_PUSH_USER="mgrsshtunnel"
-SSH_PUSH_KEY_DIR="/home/$SSH_PUSH_USER/.ssh"
+SSH_PUSH_USER_HOME="/var/lib/spacewalk/$SSH_PUSH_USER"
+SSH_PUSH_KEY_DIR="$SSH_PUSH_USER_HOME/.ssh"
 
 generate_or_import_ssh_push_key() {
     # create user if needed
     getent group $SSH_PUSH_USER >/dev/null || groupadd -r $SSH_PUSH_USER
-    getent passwd $SSH_PUSH_USER >/dev/null || useradd -r -g $SSH_PUSH_USER -m -c "susemanager ssh push tunnel" $SSH_PUSH_USER
+    getent passwd $SSH_PUSH_USER >/dev/null || useradd -r -g $SSH_PUSH_USER -m -d $SSH_PUSH_USER_HOME -c "susemanager ssh push tunnel" $SSH_PUSH_USER
 
     # create .ssh dir in home and set permissions
     mkdir -p $SSH_PUSH_KEY_DIR
