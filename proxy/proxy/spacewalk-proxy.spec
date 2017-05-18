@@ -228,6 +228,7 @@ ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcsalt-broker
 
 install -m 0755 mgr-proxy-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-proxy-ssh-push-init
 install -m 0755 mgr-proxy-ssh-force-cmd $RPM_BUILD_ROOT/%{_sbindir}/mgr-proxy-ssh-force-cmd
+install -d -m 0755 $RPM_BUILD_ROOT/%{_var}/lib/spacewalk
 
 %clean
 rm -rf $RPM_BUILD_ROOT
