@@ -74,7 +74,7 @@ public class SaltSSHService {
     public static final String SSH_KEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id";
     private static final String PROXY_SSH_PUSH_USER = "mgrsshtunnel";
     private static final String PROXY_SSH_PUSH_KEY =
-            "/home/" + PROXY_SSH_PUSH_USER + "/.ssh/id_susemanager_ssh_push";
+            "/var/lib/spacewalk/" + PROXY_SSH_PUSH_USER + "/.ssh/id_susemanager_ssh_push";
 
     private static final int SSL_PORT = 443;
 
