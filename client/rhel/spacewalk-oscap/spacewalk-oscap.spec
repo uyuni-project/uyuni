@@ -13,10 +13,10 @@ BuildArch:	noarch
 BuildRequires:	python-devel
 BuildRequires:	rhnlib
 BuildRequires:  libxslt
-%if 0%{?fedora} || 0%{?rhel} > 6
-Requires:	openscap-scanner
+%if 0%{?rhel} || 0%{?suse_version}
+Requires: openscap-utils
 %else
-Requires:	openscap-utils
+Requires:	openscap-scanner
 %endif
 Requires:	libxslt
 Requires:       rhnlib >= 0:2.5.78-1
