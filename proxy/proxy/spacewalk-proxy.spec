@@ -295,6 +295,11 @@ if grep "^ProxyPass /ks " $PROXY_CONF > /dev/null 2>&1 ; then
     grep -v "^ProxyPassReverse /download " > $TMPFILE
     mv $TMPFILE $PROXY_CONF
 fi
+
+SSHUSER=mgrsshtunnel
+if getent passwd $SSHUSER | grep ":/home/$SSHUSER:" > /dev/null ; then
+  usermod -m -d %{_var}/lib/spacewalk/$SSHUSER $SSHUSER
+fi
 %endif
 
 %post redirect
@@ -427,6 +432,7 @@ fi
 %dir /usr/share/rhn/wsgi
 %{_sbindir}/mgr-proxy-ssh-push-init
 %{_sbindir}/mgr-proxy-ssh-force-cmd
+%attr(755,root,root) %dir %{_var}/lib/spacewalk
 
 %files package-manager
 %defattr(-,root,root)
