@@ -6,7 +6,7 @@ SALT_PACKAGES = "salt salt-minion".freeze
 Given(/^no Salt packages are installed on remote "(.*)"$/) do |host|
   if host == "ssh-minion"
     $ssh_minion.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
-    $ssh_minion.run("rm -f /etc/salt", false)
+    $ssh_minion.run("rm -Rf /etc/salt", false)
   end
   if host == "centos"
     $ceos_minion.run("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", false)
