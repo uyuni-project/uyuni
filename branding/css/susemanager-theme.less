@@ -329,24 +329,29 @@ header, nav.navbar-pf {
     .nav-tool-box {
       text-align: center;
       padding: 0 10px;
+      position: relative;
       input, button {
         margin: auto;
         vertical-align: top;
-        width: 95%;
       }
       input {
         background-color: @spacewalk-blue;
         border-color: @spacewalk-blue-light;
         color: @spacewalk-gray-light;
       }
-      .collapse-menu {
-        .btn;
-        height: 20px;
-        min-width: 100px;
-        margin-bottom: 10px;
-        padding: 0 5px;
-        background-color: @spacewalk-gray-light;
-        color: @spacewalk-gray-dark;
+      .clear {
+        color: @spacewalk-aside-menu-search-clear;
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 1.4em;
+        cursor: pointer;
+        margin-right: 20px;
+        margin-top: 4px;
+        padding: 0;
+        &:hover {
+          color: @spacewalk-aside-menu-search-clear-hover;
+        }
       }
     }
     #scroll-top {
