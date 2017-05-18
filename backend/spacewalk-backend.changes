@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May  4 10:23:23 UTC 2017 - can.bulut.bayburt@suse.com
+
+-  Non admin or disabled user cannot make changes to a system anymore 
+   using spacewalk-channel (CVE-2017-7470) (bsc#1026633)
+
+-------------------------------------------------------------------
 Thu Apr 20 16:44:24 CEST 2017 - kwalter@suse.com
 
 - version 2.5.24.9-1
