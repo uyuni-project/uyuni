@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -117,7 +118,7 @@ public class ImageInfoFactory extends HibernateFactory {
         info.setVersion(version);
         info.setStore(profile.getTargetStore());
         info.setOrg(server.getOrg());
-        info.setAction(action);
+        info.setBuildAction(action);
         info.setProfile(profile);
         info.setBuildServer(server);
         if (profile.getToken() != null) {
@@ -136,6 +137,35 @@ public class ImageInfoFactory extends HibernateFactory {
         }
 
         save(info);
+        return action.getId();
+    }
+
+    /**
+     * Schedule inspect.
+     *
+     * @param image     the image
+     * @param earliest  the earliest schedule date
+     * @param user      the user
+     * @return          the inspect action ID
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static Long scheduleInspect(ImageInfo image, Date earliest, User user)
+            throws TaskomaticApiException {
+        MinionServer server = image.getBuildServer();
+
+        if (!server.hasContainerBuildHostEntitlement()) {
+            throw new IllegalArgumentException("Server is not a build host.");
+        }
+
+        ImageInspectAction action = ActionManager.scheduleImageInspect(user,
+                Collections.singletonList(server.getId()), image.getVersion(),
+                image.getName(), image.getStore(), earliest);
+        taskomaticApi.scheduleActionExecution(action);
+
+        image.setInspectAction(action);
+        ImageInfoFactory.save(image);
+
         return action.getId();
     }
 
@@ -178,6 +208,21 @@ public class ImageInfoFactory extends HibernateFactory {
 
         Root<ImageInfo> root = query.from(ImageInfo.class);
         query.where(builder.equal(root.get("id"), id));
+
+        return getSession().createQuery(query).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup an ImageInfo by image build action
+     * @param action the build action
+     * @return the optional image info
+     */
+    public static Optional<ImageInfo> lookupByBuildAction(ImageBuildAction action) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
+
+        Root<ImageInfo> root = query.from(ImageInfo.class);
+        query.where(builder.equal(root.get("buildAction"), action));
 
         return getSession().createQuery(query).uniqueResultOptional();
     }

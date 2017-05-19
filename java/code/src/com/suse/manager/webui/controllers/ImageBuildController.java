@@ -89,7 +89,7 @@ public class ImageBuildController {
         ImageInfo imageInfo = ImageInfoFactory.lookupByIdAndOrg(
                 Long.parseLong(req.params("id")), user.getOrg()).get();
 
-        String hostId = imageInfo.getAction().getServerActions().stream().findFirst()
+        String hostId = imageInfo.getBuildAction().getServerActions().stream().findFirst()
                 .map(ServerAction::getServerId).map(id -> "&host=" + id).orElse("");
         res.redirect("/rhn/manager/cm/build?version=" + imageInfo.getVersion() +
                 hostId + "&profile=" + imageInfo.getProfile().getProfileId());
@@ -176,12 +176,25 @@ public class ImageBuildController {
     }
 
     /**
+     * Generic Schedule request
+     */
+    public static class ScheduleRequest {
+        private LocalDateTime earliest;
+
+        /**
+         * @return the earliest
+         */
+        public LocalDateTime getEarliest() {
+            return earliest;
+        }
+    }
+
+    /**
      * Build request object
      */
-    public static class BuildRequest {
+    public static class BuildRequest extends ScheduleRequest {
         private long buildHostId;
         private String version;
-        private LocalDateTime earliest;
 
         /**
          * @return the build host id
@@ -201,12 +214,19 @@ public class ImageBuildController {
                 return version;
             }
         }
+    }
+
+    /**
+     * Inspect request object
+     */
+    public static class InspectRequest extends ScheduleRequest {
+        private long imageId;
 
         /**
-         * @return the earliest
+         * @return the image id
          */
-        public LocalDateTime getEarliest() {
-            return earliest;
+        public long getImageId() {
+            return imageId;
         }
     }
 
@@ -235,11 +255,44 @@ public class ImageBuildController {
             try {
                 ImageInfoFactory.scheduleBuild(buildRequest.buildHostId,
                         buildRequest.getVersion(), profile, scheduleDate, user);
-                // TODO: Add action ID as a message parameter
                 return GSON.toJson(new JsonResult(true, "build_scheduled"));
             }
             catch (TaskomaticApiException e) {
-                log.error("could not schedule image build:");
+                log.error("Could not schedule image build:");
+                log.error(e);
+                return GSON.toJson(new JsonResult(false, "taskomatic_error"));
+            }
+        }).orElseGet(
+                () -> GSON.toJson(new JsonResult(true, Collections.singletonList(
+                        "unknown_error")))
+        );
+    }
+
+    /**
+     * Schedules an (re)inspect for an image
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object inspect(Request req, Response res, User user) {
+        InspectRequest inspectRequest = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+                .create().fromJson(req.body(), InspectRequest.class);
+
+        Date scheduleDate = getScheduleDate(inspectRequest);
+
+        Long imageId = Long.parseLong(req.params("id"));
+
+        res.type("application/json");
+        return ImageInfoFactory.lookupByIdAndOrg(imageId, user.getOrg()).map(info -> {
+            try {
+                ImageInfoFactory.scheduleInspect(info, scheduleDate, user);
+                return GSON.toJson(new JsonResult(true, "inspect_scheduled"));
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule image inspect:");
                 log.error(e);
                 return GSON.toJson(new JsonResult(false, "taskomatic_error"));
             }
@@ -370,8 +423,9 @@ public class ImageBuildController {
             json.add("patches", patches);
         }
 
-        if (imageOverview.getAction() != null) {
-            json.addProperty("statusId", imageOverview.getAction().getStatus().getId());
+        if (imageOverview.getBuildAction() != null) {
+            json.addProperty("statusId",
+                    imageOverview.getBuildAction().getStatus().getId());
         }
         return json;
     }
@@ -420,7 +474,7 @@ public class ImageBuildController {
         return obj;
     }
 
-    private static Date getScheduleDate(BuildRequest json) {
+    private static Date getScheduleDate(ScheduleRequest json) {
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
         return Date.from(json.getEarliest().atZone(zoneId).toInstant());
     }

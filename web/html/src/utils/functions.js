@@ -76,6 +76,17 @@ function sortByDate(aRaw, bRaw, columnKey, sortDirection) {
     return result * sortDirection;
 }
 
+function getQueryStringValue(key) {
+  // See for a standard implementation:
+  // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+  return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" +
+        encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+}
+
+function urlBounce(defaultUrl, qstrParamKey) {
+    window.location = getQueryStringValue(qstrParamKey || "url_bounce") || defaultUrl;
+}
+
 module.exports = {
     Utils: {
         cancelable: cancelable,
@@ -83,7 +94,8 @@ module.exports = {
         sortByText: sortByText,
         dateWithTimezone: dateWithTimezone,
         sortByNumber: sortByNumber,
-        sortByDate: sortByDate
+        sortByDate: sortByDate,
+        urlBounce: urlBounce
     },
     Formats: {
         LocalDateTime: LocalDateTime

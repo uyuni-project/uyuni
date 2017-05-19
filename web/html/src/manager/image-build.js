@@ -112,6 +112,21 @@ class BuildImage extends React.Component {
         }
     }
 
+    getBounceUrl() {
+        const params = {};
+        if(this.state.model.profileId) {
+            params.profile = this.state.model.profileId;
+        }
+        if(this.state.model.buildHostId) {
+            params.host = this.state.model.buildHostId;
+        }
+        if(this.state.model.version) {
+            params.version = this.state.model.version;
+        }
+        const qstr = $.param(params);
+        return encodeURIComponent("/rhn/manager/cm/build" + (qstr ? "?" + qstr : ""));
+    }
+
     onFormChange(model) {
         this.setState({
             model: model
@@ -197,7 +212,7 @@ class BuildImage extends React.Component {
                             </table>
                         </div>
                         { pselected &&
-                            <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imageprofiles/edit/" + this.state.model.profileId} className="btn-xs btn-default pull-right" text="Edit"/>
+                            <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imageprofiles/edit/" + this.state.model.profileId + "?url_bounce=" + this.getBounceUrl()} className="btn-xs btn-default pull-right" text="Edit"/>
                         }
                     </div>
                 </div>
@@ -216,7 +231,7 @@ class BuildImage extends React.Component {
 
                 <Input.Select name="profileId" required label={t("Build Profile")}
                         onChange={this.handleProfileChange} labelClass="col-md-3"
-                        divClass="col-md-9" invalidHint={<span>Build Profile is required.&nbsp;<a href="/rhn/manager/cm/imageprofiles/create">Create a new one</a>.</span>}>
+                        divClass="col-md-9" invalidHint={<span>Build Profile is required.&nbsp;<a href={"/rhn/manager/cm/imageprofiles/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>}>
                     <option key="0" disabled="disabled" value="">Select a build profile</option>
                     {
                         this.state.profiles.map(k =>

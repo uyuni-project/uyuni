@@ -59,7 +59,8 @@ public class ImageOverview extends BaseDomainHelper {
     private ImageProfile profile;
     private ImageStore store;
     private MinionServer buildServer;
-    private ServerAction action;
+    private ServerAction buildAction;
+    private ServerAction inspectAction;
     private Set<ImageInfoCustomDataValue> customDataValues;
     private Set<Channel> channels;
     private Set<InstalledProduct> installedProducts;
@@ -148,13 +149,27 @@ public class ImageOverview extends BaseDomainHelper {
      */
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "action_id", referencedColumnName = "action_id",
+            @JoinColumn(name = "build_action_id", referencedColumnName = "action_id",
                     insertable = false, updatable = false),
             @JoinColumn(name = "build_server_id", referencedColumnName = "server_id",
                     insertable = false, updatable = false)
     })
-    public ServerAction getAction() {
-        return action;
+    public ServerAction getBuildAction() {
+        return buildAction;
+    }
+
+    /**
+     * @return the inspect action
+     */
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "inspect_action_id", referencedColumnName = "action_id",
+                    insertable = false, updatable = false),
+            @JoinColumn(name = "build_server_id", referencedColumnName = "server_id",
+                    insertable = false, updatable = false)
+    })
+    public ServerAction getInspectAction() {
+        return inspectAction;
     }
 
     /**
@@ -324,10 +339,17 @@ public class ImageOverview extends BaseDomainHelper {
     }
 
     /**
-     * @param actionIn the action
+     * @param actionIn the build action
      */
-    public void setAction(ServerAction actionIn) {
-        this.action = actionIn;
+    public void setBuildAction(ServerAction actionIn) {
+        this.buildAction = actionIn;
+    }
+
+    /**
+     * @param actionIn the inspect action
+     */
+    public void setInspectAction(ServerAction actionIn) {
+        this.inspectAction = actionIn;
     }
 
     /**

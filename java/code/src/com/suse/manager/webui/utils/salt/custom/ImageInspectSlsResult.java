@@ -162,8 +162,6 @@ public class ImageInspectSlsResult {
     private String dockerVersion;
     @SerializedName("Os")
     private String os;
-    @SerializedName("Parent")
-    private Checksum parent;
     @SerializedName("Size")
     private long size;
     @SerializedName("VirtualSize")
@@ -223,13 +221,6 @@ public class ImageInspectSlsResult {
      */
     public String getOs() {
         return os;
-    }
-
-    /**
-     * @return the parent
-     */
-    public Checksum getParent() {
-        return parent;
     }
 
     /**

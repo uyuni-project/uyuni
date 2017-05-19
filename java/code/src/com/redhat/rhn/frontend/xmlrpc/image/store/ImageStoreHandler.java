@@ -43,15 +43,18 @@ public class ImageStoreHandler extends BaseHandler {
      * @param label the label
      * @param uri the uri
      * @param storeType the store type
-     * @param parameters optional parameters
+     * @param parameters optional credentials
      * @return 1 on success
      *
      * @xmlrpc.doc Create a new Image Store
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.param #param("string", "uri")
-     * @xmlrpc.param #param("string", "store type")
-     * @xmlrpc.param #param_desc("parameters", "parameters", "optional parameters")
+     * @xmlrpc.param #param("string", "storeType")
+     * @xmlrpc.param #struct_desc("credentials", "optional")
+     *   #prop("string", "username")
+     *   #prop("string", "password")
+     * #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String label, String uri, String storeType,
