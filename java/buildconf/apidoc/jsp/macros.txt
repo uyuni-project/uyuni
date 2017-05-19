@@ -39,6 +39,13 @@
 #macro( struct_end )
 	</ul>
 #end
+#macro( struct_desc $type $desc)
+	     struct - $type $desc
+	<ul>
+#end
+#macro( struct_desc_end )
+	</ul>
+#end
 #macro( array)
 array:
   <ul>
