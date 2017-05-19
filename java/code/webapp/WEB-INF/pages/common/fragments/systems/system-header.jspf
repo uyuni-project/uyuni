@@ -6,7 +6,7 @@
 
 
 
-<rhn:require acl="system_has_management_entitlement() or system_has_bootstrap_entitlement()">
+<rhn:require acl="system_feature(ftr_system_grouping)">
     <c:choose>
         <c:when test="${!inSSM}">
             <c:set var="actionLink" value="/rhn/systems/details/AddToSSM.do?sid=${system.id}"/>
@@ -38,7 +38,7 @@
 
 <rhn:toolbar base="h1"
              icon="${systemIcon}" miscUrl="${actionLink}" miscIcon="${actionIcon}" miscText="${actionMessage}" miscAlt="${actionMessage}"
-             miscAcl="system_has_management_entitlement()"
+             miscAcl="system_feature(ftr_system_grouping)"
              helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#s3-sm-system-details"
              deletionUrl="/rhn/systems/details/DeleteConfirm.do?sid=${system.id}"
              deletionType="system">
