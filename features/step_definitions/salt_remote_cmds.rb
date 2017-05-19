@@ -7,7 +7,20 @@ When(/^I click on preview$/) do
 end
 
 When(/^I click on run$/) do
-  find('button#run').click
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        begin
+          find('button#run').click
+          break
+        rescue Capybara::ElementNotFound
+          sleep(5)
+        end
+      end
+    end
+  rescue Timeout::Error
+      fail "Run button not found"
+  end
 end
 
 When(/^I should see my hostname$/) do
