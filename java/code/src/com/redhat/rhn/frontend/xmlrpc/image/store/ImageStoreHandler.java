@@ -54,7 +54,7 @@ public class ImageStoreHandler extends BaseHandler {
      * @xmlrpc.param #struct_desc("credentials", "optional")
      *   #prop("string", "username")
      *   #prop("string", "password")
-     * #struct_end()
+     * #struct_desc_end()
      * @xmlrpc.returntype #return_int_success()
      */
     public int create(User loggedInUser, String label, String uri, String storeType,
