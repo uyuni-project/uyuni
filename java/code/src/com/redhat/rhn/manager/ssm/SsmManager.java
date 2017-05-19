@@ -46,6 +46,8 @@ import java.util.Set;
  */
 public class SsmManager {
 
+    public static final String SSM_SYSTEM_FEATURE = "ftr_system_grouping";
+
     /** Private constructor to enforce the stateless nature of this class. */
     private SsmManager() {
     }

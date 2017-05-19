@@ -15,15 +15,14 @@
 package com.redhat.rhn.frontend.action.systems.sdc;
 
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserServerPreferenceId;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.struts.action.ActionForm;
@@ -55,14 +54,12 @@ public class AddToSSMAction extends RhnAction {
         RequestContext rctx = new RequestContext(request);
         Long sid = rctx.getRequiredParam("sid");
         User user = rctx.getCurrentUser();
-        Server s  = SystemManager.lookupByIdAndUser(sid, user);
 
-        if (s.hasEntitlement(EntitlementManager.MANAGEMENT) ||
-            s.hasEntitlement(EntitlementManager.BOOTSTRAP)) {
+        if (SystemManager.serverHasFeature(sid, SsmManager.SSM_SYSTEM_FEATURE)) {
             RhnSet set = RhnSetDecl.SYSTEMS.get(user);
 
-            if (!set.getElementValues().contains(s.getId())) {
-                set.addElement(s.getId());
+            if (!set.getElementValues().contains(sid)) {
+                set.addElement(sid);
                 RhnSetManager.store(set);
 
                 ActionMessages msg = new ActionMessages();
