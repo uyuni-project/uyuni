@@ -3,6 +3,10 @@
 const React = require("react");
 const {LinkButton, Button} = require("../components/buttons");
 const DateTime = require("../components/datetime").DateTime;
+const ModalButton = require("../components/dialogs").ModalButton;
+const PopUp = require("../components/popup").PopUp;
+const Input = require("../components/input");
+const Functions = require("../utils/functions");
 
 function BootstrapPanel(props) {
     return (
@@ -18,19 +22,28 @@ function BootstrapPanel(props) {
 }
 
 function BuildStatus(props) {
+    return (<ActionStatus name="Build" data={props.data} action={props.data.buildAction}/>);
+}
+
+function InspectStatus(props) {
+    return (<ActionStatus name="Inspect" data={props.data} action={props.data.inspectAction}/>);
+}
+
+function ActionStatus(props) {
     const data = props.data;
+    const action = props.action;
 
     let status;
-    if(!data.action) {
+    if(!action) {
         status = [<i className="fa fa-question-circle fa-1-5x" title="Unknown"/>,"No information"]
-    } else if(data.action.status === 0) {
-        status = [<i className="fa fa-clock-o fa-1-5x" title="Queued"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + data.action.id}>{t("Build is queued")}</a>]
-    } else if(data.action.status === 1) {
-        status = [<i className="fa fa-exchange fa-1-5x text-info" title="Building"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + data.action.id}>{t("Build in progress")}</a>]
-    } else if(data.action.status === 2) {
-        status = [<i className="fa fa-check-circle-o fa-1-5x text-success" title="Built"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + data.action.id}>{t("Build is successful")}</a>]
-    } else if(data.action.status === 3) {
-        status = [<i className="fa fa-times-circle-o fa-1-5x text-danger" title="Failed"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + data.action.id}>{t("Build has failed")}</a>]
+    } else if(action.status === 0) {
+        status = [<i className="fa fa-clock-o fa-1-5x" title="Queued"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " is queued")}</a>]
+    } else if(action.status === 1) {
+        status = [<i className="fa fa-exchange fa-1-5x text-info" title="In progress"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " in progress")}</a>]
+    } else if(action.status === 2) {
+        status = [<i className="fa fa-check-circle-o fa-1-5x text-success" title="Successful"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " is successful")}</a>]
+    } else if(action.status === 3) {
+        status = [<i className="fa fa-times-circle-o fa-1-5x text-danger" title="Failed"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " has failed")}</a>]
     } else {
         status = [<i className="fa fa-question-circle fa-1-5x" title="Unknown"/>,"No information"]
     }
@@ -40,19 +53,19 @@ function BuildStatus(props) {
             <table className="table">
                 <tbody>
                     <tr>
-                        <td>Build Status:</td>
+                        <td width="20%">{t(props.name + " Status")}:</td>
                         <td>{status}</td>
                     </tr>
-                    { data.action && data.action.pickup_time &&
+                    { action && action.pickup_time &&
                         <tr>
-                            <td>Picked Up:</td>
-                            <td><DateTime time={data.action.pickup_time}/></td>
+                            <td>{t("Picked Up")}:</td>
+                            <td><DateTime time={action.pickup_time}/></td>
                         </tr>
                     }
-                    { data.action && data.action.completion_time &&
+                    { action && action.completion_time &&
                         <tr>
-                            <td>Completed:</td>
-                            <td><DateTime time={data.action.completion_time}/></td>
+                            <td>{t("Completed")}:</td>
+                            <td><DateTime time={action.completion_time}/></td>
                         </tr>
                     }
                 </tbody>
@@ -82,14 +95,14 @@ function ImageInfo(props) {
                     <tr>
                         <td>Profile:</td>
                         { data.profile ?
-                            <td>{data.profile.label}{ isAdmin && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imageprofiles/edit/" + data.profile.id} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit profile")}/>}</td>
+                            <td>{data.profile.label}{ isAdmin && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imageprofiles/edit/" + data.profile.id + "?url_bounce=" + encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit profile")}/>}</td>
                             :<td>-</td>
                         }
                     </tr>
                     <tr>
                         <td>Store:</td>
                         { data.store ?
-                            <td>{data.store.label}{ isAdmin && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imagestores/edit/" + data.store.id} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit store")}/>}</td>
+                            <td>{data.store.label}{ isAdmin && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imagestores/edit/" + data.store.id + "?url_bounce=" + encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit store")}/>}</td>
                             :<td>-</td>
                         }
                     </tr>
@@ -209,7 +222,11 @@ class ImageViewOverview extends React.Component {
     }
 
     hasBuilt() {
-        return this.props.data.action && this.props.data.action.status === 2;
+        return this.props.data.buildAction && this.props.data.buildAction.status === 2;
+    }
+
+    hasInspected() {
+        return this.props.data.inspectAction && this.props.data.inspectAction.status === 2;
     }
 
     getRescheduleLink() {
@@ -246,14 +263,37 @@ class ImageViewOverview extends React.Component {
                 </div>
                 <div className="col-md-6">
                     <BootstrapPanel title={t("Build Status")}>
-                        <BuildStatus data={data}/>
-                        <LinkButton
-                            text={t("Rebuild")}
-                            icon="fa-cogs"
-                            title={t("Reschedule the build")}
-                            className="btn-default pull-right btn-xs"
-                            href={this.getRescheduleLink()}
-                        />
+                        <div>
+                            <h3>Build</h3>
+                            <BuildStatus data={data}/>
+                        </div>
+
+                        { this.hasBuilt() &&
+                        <div>
+                            <h3>Inspect</h3>
+                            <InspectStatus data={data}/>
+                        </div>
+                        }
+                        { isAdmin &&
+                        <div className="btn-group pull-right">
+                            <LinkButton
+                                text={t("Rebuild")}
+                                icon="fa-cogs"
+                                title={t("Reschedule the build")}
+                                className="btn-default btn-xs"
+                                href={this.getRescheduleLink()}
+                            />
+                            { this.hasBuilt() &&
+                            <ModalButton
+                              className="btn-default btn-xs"
+                              text={t("Reinspect")}
+                              title={t("Reschedule the inspect")}
+                              icon="fa-search"
+                              target="inspect-modal"
+                            />
+                            }
+                        </div>
+                        }
                     </BootstrapPanel>
                 </div>
             </div>
@@ -266,7 +306,67 @@ class ImageViewOverview extends React.Component {
                     </div>
                 </div>
             }
+            <InspectDialog data={data} onInspect={this.props.onInspect}/>
             </div>
+        );
+    }
+}
+
+class InspectDialog extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            model: {
+                earliest: Functions.Utils.dateWithTimezone(localTime)
+            }
+        };
+    }
+
+    onChange(model) {
+        this.setState({
+            model: model
+        });
+    }
+
+    render() {
+        const buttons = <div>
+            <Button
+                className="btn-success"
+                text={t("Inspect")}
+                title={t("Schedule inspect")}
+                icon="fa-search"
+                handler={() => {
+                    if(this.props.onInspect) this.props.onInspect(this.props.data.id, this.state.model.earliest);
+                    $("#inspect-modal").modal('hide');
+                }}
+            />
+            <Button
+                className="btn-default"
+                text={t("Cancel")}
+                title={t("Cancel")}
+                icon="fa-close"
+                handler={() => {
+                    $("#inspect-modal").modal('hide');
+                }}
+            />
+        </div>;
+
+        const form =
+            <div className="row clearfix">
+                <p>Schedule an inspect for image: <strong>{this.props.data.name + ":" + this.props.data.version}</strong></p>
+                <Input.Form model={this.state.model} className="image-inspect-form"
+                        onChange={this.onChange.bind(this)} divClass="col-md-12">
+                    <Input.DateTime name="earliest" required timezone={timezone} />
+                </Input.Form>
+            </div>
+
+        return (
+            <PopUp
+                id="inspect-modal"
+                content={form}
+                title={t("Reinspect Image")}
+                footer={buttons}
+            />
         );
     }
 }

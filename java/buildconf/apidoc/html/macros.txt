@@ -36,6 +36,10 @@
 	     struct - $type
 	<ul>
 #end
+#macro( struct_desc $type $desc )	 
+	     struct - $type $desc
+	<ul>
+#end
 #macro( struct_end )
 	</ul>
 #end
