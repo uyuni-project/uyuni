@@ -121,7 +121,7 @@ FULLY_UPDATE_THIS_BOX={up2dateYN}
 # Set if you want to specify profilename for client systems.
 # NOTE: Make sure it's set correctly if any external command is used.
 #
-# ex. PROFILENAME="foo.example.com"  # For specific clinet system
+# ex. PROFILENAME="foo.example.com"  # For specific client system
 #     PROFILENAME=`hostname -s`      # Short hostname
 #     PROFILENAME=`hostname -f`      # FQDN
 PROFILENAME=""   # Empty by default to let it be set automatically.
@@ -768,7 +768,7 @@ if [ $REGISTER_THIS_BOX -eq 1 ] ; then
       exit 1
     fi
 else
-    echo "* explicitely not registering"
+    echo "* explicitly not registering"
 fi
 
 """.format(productName=productName)
