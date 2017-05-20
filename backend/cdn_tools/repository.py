@@ -363,11 +363,11 @@ class CdnRepositoryTree(object):
     def _browse_node(self, node, keys):
         """Recursive function going through tree."""
         # Return leaf
-        if not keys:
-            if not isinstance(node, dict):
-                return node
-            else:
-                raise CdnRepositoryNotFoundError()
+        is_leaf = not isinstance(node, dict)
+        if is_leaf and not keys:
+            return node
+        elif (is_leaf and keys) or (not is_leaf and not keys):
+            raise CdnRepositoryNotFoundError()
         step = keys[0]
         to_check = [x for x in node.keys() if x in self.VARIABLES or x == step]
         # Remove first step in path, create new list
@@ -388,13 +388,28 @@ class CdnRepositoryTree(object):
 
         raise CdnRepositoryNotFoundError()
 
+    @staticmethod
+    def normalize_url(url):
+        """Splits repository URL, removes redundant characters and returns list with directory names."""
+        path = []
+        for part in url.split('/'):
+            if part == '..':
+                if path:
+                    del path[-1]
+                else:
+                    # Can't go upper in directory structure, keep it in path
+                    path.append(part)
+            elif part and part != '.':
+                path.append(part)
+
+        return path
+
     def find_repository(self, url):
         """Finds matching repository in tree.
            url is relative CDN url - e.g. /content/dist/rhel/server/6/6Server/x86_64/os"""
-
-        path = [x for x in url.split('/') if x]
         node = self.root
         try:
+            path = self.normalize_url(url)
             found = self._browse_node(node, path)
         except CdnRepositoryNotFoundError:
             raise CdnRepositoryNotFoundError("ERROR: Repository '%s' was not found." % url)
