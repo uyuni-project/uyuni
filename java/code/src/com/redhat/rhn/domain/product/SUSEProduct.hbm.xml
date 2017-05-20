@@ -19,7 +19,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <property name="friendlyName" column="friendly_name" type="string" />
     <property name="release" column="release" type="string" />
     <property name="productId" column="product_id" type="long" />
+    <property name="base" column="base" type="yes_no" not-null="true" />
     <property name="free" column="free" type="yes_no" not-null="true" />
+    <many-to-one name="channelFamily"
+                 column="channel_family_id"
+                 class="com.redhat.rhn.domain.channel.ChannelFamily" />
 
     <set name="upgrades" inverse="true" table="SUSEUpgradePath">
       <key column="from_pdid"/>

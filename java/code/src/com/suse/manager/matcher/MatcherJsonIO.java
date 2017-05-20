@@ -125,8 +125,12 @@ public class MatcherJsonIO {
      */
     public List<JsonProduct> getJsonProducts() {
         return SUSEProductFactory.findAllSUSEProducts().stream()
-                .map(p -> new JsonProduct(p.getProductId(), p.getFriendlyName(),
-                        "T".equals(p.getFree())))
+                .map(p -> new JsonProduct(
+                        p.getProductId(),
+                        p.getFriendlyName(),
+                        p.getChannelFamily() != null ? p.getChannelFamily().getLabel() : "",
+                        p.isBase(),
+                        p.getFree()))
                 .collect(toList());
     }
 
