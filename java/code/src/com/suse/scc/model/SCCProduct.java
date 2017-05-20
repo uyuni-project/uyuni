@@ -47,6 +47,8 @@ public class SCCProduct {
     private List<SCCRepository> repositories;
     @SerializedName("predecessor_ids")
     private List<Integer> predecessorIds;
+    @SerializedName("product_type")
+    private String productType;
 
     /**
      * Default constructor.
@@ -75,6 +77,7 @@ public class SCCProduct {
         arch = archIn;
         friendlyName = friendlyNameIn;
         productClass = productClassIn;
+        productType = "extension";
     }
 
     /**
@@ -190,6 +193,20 @@ public class SCCProduct {
     }
 
     /**
+     * @return the productType
+     */
+    public String getProductType() {
+        return productType;
+    }
+
+    /**
+     * @return true if the product is a base product
+     */
+    public boolean isBaseProduct() {
+        return "base".equals(productType);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -282,5 +299,12 @@ public class SCCProduct {
      */
     public void setPredecessorIds(List<Integer> predecessorIdsIn) {
         this.predecessorIds = predecessorIdsIn;
+    }
+
+    /**
+     * @param productTypeIn the productType to set
+     */
+    public void setProductType(String productTypeIn) {
+        this.productType = productTypeIn;
     }
 }
