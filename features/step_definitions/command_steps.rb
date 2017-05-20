@@ -245,16 +245,16 @@ Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
   timeout = 400
   if target == "sle-client"
     checkShutdown($client_fullhostname, timeout)
-    checkRestart($client_fullhostname, timeout)
+    checkRestart($client_fullhostname, get_target(target), timeout)
   elsif target == "ceos-minion"
     checkShutdown($ceos_minion_fullhostname, timeout)
-    checkRestart($ceos_minion_fullhostname, timeout)
+    checkRestart($ceos_minion_fullhostname, get_target(target), timeout)
   elsif target == "ssh-minion"
     checkShutdown($ssh_minion_fullhostname, timeout)
-    checkRestart($ssh_minion_fullhostname, timeout)
+    checkRestart($ssh_minion_fullhostname, get_target(target), timeout)
   elsif target == "sle-minion"
     checkShutdown($minion_fullhostname, timeout)
-    checkRestart($minion_fullhostname, timeout)
+    checkRestart($minion_fullhostname, get_target(target), timeout)
   end
 end
 

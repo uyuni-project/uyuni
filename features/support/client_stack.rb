@@ -44,21 +44,31 @@ def checkShutdown(host, time_out)
         puts "machine: #{host} went down"
         break
       end
+      sleep 1
     end
   end
 rescue Timeout::Error
   raise "Machine didn't reboot!"
 end
 
-def checkRestart(host, time_out)
+def checkRestart(host, node, time_out)
   cmd = "ping -c1 #{host}"
   Timeout.timeout(time_out) do
     loop do
       _out = `#{cmd}`
       if $?.exitstatus.zero?
-        puts "machine: #{host} is again up"
+        puts "machine: #{host} network is up"
         break
       end
+      sleep 1
+    end
+    loop do
+      out, code = node.run("ls", false, 10)
+      if code.zero?
+        puts "machine: #{host} ssh is up"
+	break
+      end
+      sleep 1
     end
   end
 rescue Timeout::Error

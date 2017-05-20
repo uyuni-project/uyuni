@@ -56,7 +56,7 @@ And(/^execute some tests for centos_trad_client$/) do
   $ceos_minion.run("rhn_check -vvv", true, 500, 'root')
   timeout = 400
   checkShutdown($ceos_minion_fullhostname, timeout)
-  checkRestart($ceos_minion_fullhostname, timeout)
+  checkRestart($ceos_minion_fullhostname, $ceos_minion, timeout)
   assert_empty(@cli.call('schedule.listFailedActions', @sid))
   @cli.call("auth.logout", @sid)
 end
