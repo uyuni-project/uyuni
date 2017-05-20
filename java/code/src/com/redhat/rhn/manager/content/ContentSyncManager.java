@@ -894,8 +894,9 @@ public class ContentSyncManager {
         for (SCCProduct p : products) {
             // Create the channel family if it is not available
             String productClass = p.getProductClass();
+            ChannelFamily cf = null;
             if (!StringUtils.isBlank(productClass)) {
-                createOrUpdateChannelFamily(productClass, null);
+                cf = createOrUpdateChannelFamily(productClass, null);
             }
 
             // Update this product in the database if it is there
@@ -930,9 +931,10 @@ public class ContentSyncManager {
                             "'. This may be caused by a missing database migration");
                     continue;
                 }
-
                 product.setArch(pArch);
             }
+            product.setBase(p.isBaseProduct());
+            product.setChannelFamily(cf);
             SUSEProductFactory.save(product);
             processed.add(product);
         }

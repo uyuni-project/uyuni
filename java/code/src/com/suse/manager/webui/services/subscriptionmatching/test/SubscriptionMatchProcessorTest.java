@@ -184,7 +184,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testUnmatchedProductsSimpleScenario() {
-        input.getProducts().add(new JsonProduct(100L, "product 100", false));
+        input.getProducts().add(new JsonProduct(100L, "product 100", "", false, false));
         // one system with one product, which is unmatched
         input.setSystems(Collections.singletonList(
                 new JsonSystem(1L, "system 1", 1, true, false, Collections.emptySet(),
@@ -201,9 +201,9 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testUnmatchedProducts() {
-        input.getProducts().add(new JsonProduct(100L, "product 100", false));
-        input.getProducts().add(new JsonProduct(101L, "product 101", false));
-        input.getProducts().add(new JsonProduct(102L, "product 102", false));
+        input.getProducts().add(new JsonProduct(100L, "product 100", "", false, false));
+        input.getProducts().add(new JsonProduct(101L, "product 101", "", false, false));
+        input.getProducts().add(new JsonProduct(102L, "product 102", "", false, false));
 
         Set<Long> products = new HashSet<>();
         products.add(100L);
@@ -253,8 +253,8 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
     }
 
     public void testPartiallyMatchedSystems() {
-        input.getProducts().add(new JsonProduct(100L, "prod 1", false));
-        input.getProducts().add(new JsonProduct(101L, "prod 2", false));
+        input.getProducts().add(new JsonProduct(100L, "prod 1", "", false, false));
+        input.getProducts().add(new JsonProduct(101L, "prod 2", "", false, false));
         Set<Long> productsIn = new HashSet<>();
         productsIn.add(100L);
         productsIn.add(101L);
@@ -356,10 +356,11 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
      */
     public void testComplete() throws ParseException {
         List<JsonProduct> productsIn = new LinkedList<>();
-        productsIn.add(new JsonProduct(1000L, "product id 1000", false));
-        productsIn.add(new JsonProduct(1001L, "product id 1001", false));
-        productsIn.add(new JsonProduct(1003L, "product id 1003", false));
-        productsIn.add(new JsonProduct(1004L, "product id 1004, with expired subscription", false));
+        productsIn.add(new JsonProduct(1000L, "product id 1000", "", false, false));
+        productsIn.add(new JsonProduct(1001L, "product id 1001", "", false, false));
+        productsIn.add(new JsonProduct(1003L, "product id 1003", "", false, false));
+        productsIn.add(new JsonProduct(1004L, "product id 1004, with expired subscription",
+                "", false, false));
         input.setProducts(productsIn);
 
         List<JsonSubscription> subscriptions = new LinkedList<>();
