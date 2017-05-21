@@ -357,6 +357,7 @@ Feature: Explore the main landing page
     And I follow "fedora_kickstart_profile"
     And I enter "kernel_option=a_value" as "kernel_options"
     And I click on "Update"
+    And I wait for "5" seconds
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value"
 
   Scenario: adding a kernel option (requires fedora_kickstart_profile_upload)
