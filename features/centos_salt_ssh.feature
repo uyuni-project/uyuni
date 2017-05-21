@@ -25,8 +25,7 @@ Feature: CENTOS7 ssh feature.
     And I enter the hostname of "ceos-minion" as hostname
     And I enter "linux" as "password"
     And I click on "Bootstrap"
-    And I wait for "15" seconds
-    Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
+    Then I wait until i see "Successfully bootstrapped host! " text
     And I wait for "60" seconds
     And I follow "System Overview"
     Then I should see centos ssh-minion hostname as link
