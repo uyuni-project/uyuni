@@ -24,6 +24,7 @@ Feature: I want to verify the Setup Wizard
     Given I am on the Admin page
     And I refresh scc
     And I follow "SUSE Products" in the content area
+    And I wait until i see "RES 5" text
     And I should see a "Available Products Below" text
     And I should see a "Architecture" text
     And I should see a "Channels" text
@@ -38,6 +39,7 @@ Feature: I want to verify the Setup Wizard
   Scenario: I want to test the channels list in the products page
     Given I am on the Admin page
     And I follow "SUSE Products" in the content area
+    And I wait until i see "RES 5" text
     When I click the channel list of product "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2" for the "x86_64" architecture
     Then I should see a "Product Channels" text
     And I should see a "Mandatory Channels" text
