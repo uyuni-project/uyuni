@@ -18,7 +18,7 @@ Feature: Migrate a traditional client into a salt minion
      And I select "1-SUSE-PKG-x86_64" from "activationKeys"
      And I click on "Bootstrap"
      And I wait for "100" seconds
-     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
+     Then I wait until i see "Successfully bootstrapped host! " text
 
   Scenario: Verify the minion was bootstrapped with activation key
      Given I am on the Systems overview page of this "sle-migrated-minion"
