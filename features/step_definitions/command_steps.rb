@@ -3,7 +3,7 @@
 require 'timeout'
 
 Then(/^I apply highstate on Sles minion$/) do
-  cmd = "salt '*minsles12sp2*' state.highstate"
+  cmd = "salt '*min*sles12sp2*' state.highstate"
   out, code = $server.run(cmd)
   puts out
   raise "Apply highstate FAILED!"  if code.nonzero?
