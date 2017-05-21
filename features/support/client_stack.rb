@@ -63,7 +63,7 @@ def checkRestart(host, node, time_out)
       sleep 1
     end
     loop do
-      out, code = node.run("ls", false, 10)
+      _out, code = node.run("ls", false, 10)
       if code.zero?
         puts "machine: #{host} ssh is up"
 	break
