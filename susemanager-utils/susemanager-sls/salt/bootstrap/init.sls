@@ -80,6 +80,11 @@ salt-minion-package:
     - require:
       - pkg: salt-minion-package
 
+mgr_mine_config:
+  file.managed:
+    - name: /etc/salt/minion.d/susemanager-mine.conf
+    - contents: |
+        mine_return_job: True
 
 include:
   - bootstrap.remove_traditional_stack
@@ -121,6 +126,7 @@ salt-minion:
       - file: /etc/salt/pki/minion/minion.pem
       - file: /etc/salt/pki/minion/minion.pub
       - file: /etc/salt/minion.d/susemanager.conf
+      - file: mgr_mine_config
 {% else %}
 salt-minion:
   service.running:
@@ -131,4 +137,5 @@ salt-minion:
     - watch:
       - file: /etc/salt/minion_id
       - file: /etc/salt/minion.d/susemanager.conf
+      - file: mgr_mine_config
 {% endif %}
