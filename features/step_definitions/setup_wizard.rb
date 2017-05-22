@@ -30,8 +30,11 @@ When(/^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/) do |p
       # wait to finish scheduling
       Timeout.timeout(DEFAULT_TIMEOUT) do
         loop do
-          break unless find("button.product-add-btn").visible?
-          sleep 1
+          begin
+            break unless find("button.product-add-btn").visible?
+          rescue Capybara::ElementNotFound
+            break
+          end
         end
       end
     rescue Timeout::Error
