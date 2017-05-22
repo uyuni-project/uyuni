@@ -154,6 +154,9 @@ public class RemoteMinionCommands {
                         res.keySet().stream().collect(Collectors.toList()));
                 previewedMinions.retainAll(allVisibleMinions);
 
+                sendMessage(session, new AsyncJobStartEventDto("preview",
+                        previewedMinions, resSSH.isPresent()));
+
                 res.forEach((minionId, future) -> {
                     future.whenComplete((matchResult, err) -> {
                         if (!previewedMinions.contains(minionId)) {
@@ -222,8 +225,6 @@ public class RemoteMinionCommands {
                     });
                 });
 
-                sendMessage(session, new AsyncJobStartEventDto("preview",
-                        previewedMinions, resSSH.isPresent()));
             }
             else if (msg.isCancel()) {
                 if (this.failAfter != null) {
