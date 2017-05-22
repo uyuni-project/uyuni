@@ -25,6 +25,7 @@ Feature: register a salt-minion via bootstrap
      And I go to the minion onboarding page
      Then I should see a "accepted" text
      And the salt-master can reach "sle-minion"
+     And I wait for "15" seconds
 
   Scenario: Run a remote command sles-minion (salt-service)
     Given I am authorized as "testing" with password "testing"
