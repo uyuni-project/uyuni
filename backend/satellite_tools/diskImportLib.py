@@ -81,11 +81,11 @@ class diskImportLibContainer:
 
 class OrgContainer(xmlSource.OrgContainer):
     importer_class = orgImport.OrgImport
+    master_label = None
+    create_orgs = False
 
     def __init__(self):
         xmlSource.OrgContainer.__init__(self)
-        self.master_label = None
-        self.create_orgs = False
 
     def set_master_and_create_org_args(self, master, create_orgs):
         self.master_label = master
