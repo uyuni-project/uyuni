@@ -155,7 +155,7 @@ public enum SaltStateGeneratorService {
         Map<String, Object> beaconConfig = new HashMap<>();
         // this add the configuration for the beacon that tell us when the
         // minion packages are modified locally
-        if (minion.getOs().toLowerCase().equals("sles") ||
+        if (minion.getOsFamily().toLowerCase().equals("suse") ||
                 minion.getOsFamily().toLowerCase().equals("redhat")) {
             beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
         }
