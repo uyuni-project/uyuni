@@ -1887,7 +1887,7 @@ public class ActionManager extends BaseManager {
         Action action = scheduleAction(scheduler, type, name, earliestAction, serverIds);
         ActionFactory.save(action);
 
-        addPackageActionDetails(action, pkgs);
+        addPackageActionDetails(Arrays.asList(action), pkgs);
         taskomaticApi.scheduleActionExecution(action);
         if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
             MinionActionManager.scheduleStagingJobsForMinions(action, scheduler);
@@ -1897,43 +1897,45 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Adds package details to an Action
-     * @param action the action
+     * Adds package details to some Actions
+     * @param actions the actions
      * @param packages A list of maps containing keys 'name_id', 'evr_id' and
      *            optional 'arch_id' with Long values.
      */
-    public static void addPackageActionDetails(Action action, List packages) {
+    public static void addPackageActionDetails(Collection<Action> actions, List packages) {
         if (packages != null) {
-            // for each item in the set create a package action detail
-            // I'm using datasource to insert the records instead of
-            // hibernate. It seems terribly inefficient to lookup a
-            // packagename and packageevr object to insert the ids into the
-            // correct table if I already have the ids.
-            for (Iterator itr = packages.iterator(); itr.hasNext();) {
-                Map rse = (Map) itr.next();
-                Map<String, Object> params = new HashMap<String, Object>();
-                Long nameId = (Long) rse.get("name_id");
-                Long evrId = (Long) rse.get("evr_id");
-                Long archId = (Long) rse.get("arch_id");
-                if (nameId == null || evrId == null) {
-                    throw new IllegalArgumentException("name_id or " +
-                            "evr_id are not in the Map passed into " +
-                            "this method.  Please populate the Map " +
-                            "with the name_id and evr_id items");
-                }
-                params.put("action_id", action.getId());
-                params.put("name_id", nameId);
-                params.put("evr_id", evrId);
-                params.put("pkg_parameter", getPackageParameter(action));
+            actions.forEach(action -> {
+                // for each item in the set create a package action detail
+                // I'm using datasource to insert the records instead of
+                // hibernate. It seems terribly inefficient to lookup a
+                // packagename and packageevr object to insert the ids into the
+                // correct table if I already have the ids.
+                for (Iterator itr = packages.iterator(); itr.hasNext();) {
+                    Map rse = (Map) itr.next();
+                    Map<String, Object> params = new HashMap<String, Object>();
+                    Long nameId = (Long) rse.get("name_id");
+                    Long evrId = (Long) rse.get("evr_id");
+                    Long archId = (Long) rse.get("arch_id");
+                    if (nameId == null || evrId == null) {
+                        throw new IllegalArgumentException("name_id or " +
+                                "evr_id are not in the Map passed into " +
+                                "this method.  Please populate the Map " +
+                                "with the name_id and evr_id items");
+                    }
+                    params.put("action_id", action.getId());
+                    params.put("name_id", nameId);
+                    params.put("evr_id", evrId);
+                    params.put("pkg_parameter", getPackageParameter(action));
 
-                if (archId != null) {
-                    params.put("arch_id", archId);
-                }
+                    if (archId != null) {
+                        params.put("arch_id", archId);
+                    }
 
-                ModeFactory.getWriteMode("Action_queries",
-                    "schedule_action" + (archId == null ? "_no_arch" : "")).executeUpdate(
-                    params);
-            }
+                    ModeFactory.getWriteMode("Action_queries",
+                        "schedule_action" + (archId == null ? "_no_arch" : ""))
+                        .executeUpdate(params);
+                }
+            });
         }
     }
 
