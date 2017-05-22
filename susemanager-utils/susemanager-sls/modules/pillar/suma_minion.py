@@ -75,47 +75,52 @@ def ext_pillar(minion_id, *args):
 
     return ret
 
+
+def load_formulas_from_file(formula_filename):
+    formulas = {}
+    formula_file = os.path.join(FORMULAS_DATA_PATH, formula_filename)
+    if os.path.exists(formula_file):
+        try:
+            with open(formula_file) as f:
+                formulas = json.load(f)
+        except Exception as error:
+            log.error('Error loading formulas from file: {message}'.format(message=str(error)))
+    return formulas
+
+
+def process_formulas(formula_filename, minion_id, as_group=False):
+    pillar = {}
+    out_formulas = []
+    data = load_formulas_from_file(formula_filename)
+
+    for key, formulas in data.iteritems():
+        group = key if as_group else None
+        for formula in formulas:
+            out_formulas.append(formula.encode('utf-8'))
+            pillar.update(load_formula_pillar(minion_id, group, formula))
+
+    return pillar, out_formulas
+
+
 def formula_pillars(minion_id, group_ids):
     '''
     Find formula pillars for the minion, merge them and return the data.
     '''
     ret = {}
-    formulas_by_group = {}
-    formulas = []
 
     # Loading group formulas
-    group_formulas_filename = os.path.join(FORMULAS_DATA_PATH, "group_formulas.json")
-    if os.path.exists(group_formulas_filename):
-        try:
-            with open(group_formulas_filename) as f:
-                group_formulas = json.load(f)
-                for group in group_ids:
-                    formulas_by_group[group] = group_formulas.get(unicode(group), [])
-        except Exception as error:
-            log.error('Error loading group formulas: {message}'.format(message=str(error)))
-
-        for group in formulas_by_group:
-            for formula in formulas_by_group[group]:
-                formulas.append(formula)
-                ret.update(load_formula_pillar(minion_id, group, formula))
+    group_pillar, group_formulas = process_formulas(
+        "group_formulas.json", minion_id, as_group=True)
+    ret.update(group_pillar)
 
     # Loading minion formulas
-    minion_formulas_filename = os.path.join(FORMULAS_DATA_PATH, "minion_formulas.json")
-    if os.path.exists(minion_formulas_filename):
-        try:
-            with open(minion_formulas_filename) as f:
-                minion_formulas_data = json.load(f)
-                minion_formulas = minion_formulas_data.get(minion_id, [])
-                for formula in minion_formulas:
-                   if formula in formulas:
-                        continue
-                   formulas.append(formula.encode('utf-8'))
-                   ret.update(load_formula_pillar(minion_id, None, formula))
-        except Exception as error:
-            log.error('Error loading minion formulas: {message}'.format(message=str(error)))
+    minion_pillar, minion_formulas = process_formulas(
+        "minion_formulas.json", minion_id)
+    ret.update(minion_pillar)
 
-    ret["formulas"] = formulas
+    ret["formulas"] = group_formulas + minion_formulas
     return ret
+
 
 def load_formula_pillar(minion_id, group_id, formula_name):
     '''
