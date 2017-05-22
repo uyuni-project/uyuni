@@ -366,6 +366,7 @@ Feature: Explore the main landing page
     And I follow "fedora_kickstart_profile_upload"
     And I enter "kernel_option2=a_value2" as "kernel_options"
     And I click on "Update"
+    And I wait for "5" seconds
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2"
 
   Scenario: checking default snippets
