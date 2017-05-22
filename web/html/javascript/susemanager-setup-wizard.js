@@ -2,9 +2,3 @@
 function showSpinner(elementId) {
   $("#" + elementId).html("<i class='fa fa-spinner fa-spin'></i>");
 }
-
-// relevant for the whole wizard
-$(document).ready(function() {
-  $.tabResizer();
-});
-
