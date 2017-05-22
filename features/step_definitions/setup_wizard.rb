@@ -32,6 +32,7 @@ When(/^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/) do |p
         loop do
           begin
             break unless find("button.product-add-btn").visible?
+            sleep 2
           rescue Capybara::ElementNotFound
             break
           end
