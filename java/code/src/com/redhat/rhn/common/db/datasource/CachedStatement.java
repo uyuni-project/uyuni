@@ -234,28 +234,31 @@ public class CachedStatement implements Serializable {
      * @return a list of affected rows counts
      */
     List<Integer> executeUpdates(List<Map<String, Object>> parameterList) {
-        try {
-            List<Integer> result = new ArrayList<Integer>(parameterList.size());
+        return doWithStolenConnection(connection -> {
+            try {
+                List<Integer> result = new ArrayList<Integer>(parameterList.size());
 
-            sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
-            for (Map<String, Object> parameters : parameterList) {
-                result.add((Integer) execute(sqlStatement, qMap, parameters, null, null));
+                sqlStatement = NamedPreparedStatement.replaceBindParams(sqlStatement, qMap);
+                for (Map<String, Object> parameters : parameterList) {
+                    result.add((Integer) execute(connection, sqlStatement, qMap, parameters,
+                            null, null));
+                }
+                return result;
             }
-            return result;
-        }
-        catch (SQLException e) {
-            throw SqlExceptionTranslator.sqlException(e);
-        }
-        catch (HibernateException he) {
-            throw new
-                HibernateRuntimeException(
-                    "HibernateException executing CachedStatement", he);
+            catch (SQLException e) {
+                throw SqlExceptionTranslator.sqlException(e);
+            }
+            catch (HibernateException he) {
+                throw new
+                    HibernateRuntimeException(
+                        "HibernateException executing CachedStatement", he);
 
-        }
-        catch (RhnRuntimeException e) {
-            log.error("Error while processing cached statement sql: " + getQuery(), e);
-            throw e;
-        }
+            }
+            catch (RhnRuntimeException e) {
+                log.error("Error while processing cached statement sql: " + getQuery(), e);
+                throw e;
+            }
+        });
     }
 
 
@@ -443,26 +446,29 @@ public class CachedStatement implements Serializable {
      */
     private Object executeChecking(String sql, Map<String, List<Integer>> parameterMap,
             Map<String, ?> parameters, Mode mode, List<Object> dr) {
-        try {
-            return execute(sql, parameterMap, parameters, mode, dr);
-        }
-        catch (SQLException e) {
-            throw SqlExceptionTranslator.sqlException(e);
-        }
-        catch (HibernateException he) {
-            throw new HibernateRuntimeException(
-                    "HibernateException executing CachedStatement", he);
+        return doWithStolenConnection(connection -> {
+            try {
+                return execute(connection, sql, parameterMap, parameters, mode, dr);
+            }
+            catch (SQLException e) {
+                throw SqlExceptionTranslator.sqlException(e);
+            }
+            catch (HibernateException he) {
+                throw new HibernateRuntimeException(
+                        "HibernateException executing CachedStatement", he);
 
-        }
-        catch (RhnRuntimeException e) {
-            // we just add more information for better bug tracking
-            log.error("Error while processing cached statement sql: " + sql, e);
-            throw e;
-        }
+            }
+            catch (RhnRuntimeException e) {
+                // we just add more information for better bug tracking
+                log.error("Error while processing cached statement sql: " + sql, e);
+                throw e;
+            }
+        });
     }
 
     /**
      * Executes a prepared SQL statement with parameters.
+     * @param connection a JDBC Connection object
      * @param sql SQL string to be prepared and executed
      * @param parameterMap The Map returned setup by replaceBindParams
      * @param parameters The Map returned setup by replaceBindParams
@@ -473,32 +479,31 @@ public class CachedStatement implements Serializable {
      *         responsibility
      * @throws SQLException
      */
-    private Object execute(String sql, Map<String, List<Integer>> parameterMap,
-            Map<String, ?> parameters, Mode mode, List<Object> dr)
+    private Object execute(Connection connection, String sql,
+            Map<String, List<Integer>> parameterMap, Map<String, ?> parameters, Mode mode,
+            List<Object> dr)
         throws SQLException {
         if (log.isDebugEnabled()) {
             log.debug("execute() - Executing: " + sql);
             log.debug("execute() - With: " + parameters);
         }
 
-        return doWithStolenConnection(connection -> {
-            PreparedStatement ps = null;
-            try {
-                ps = prepareStatement(connection, sql, mode);
-                boolean returnType = NamedPreparedStatement.execute(ps, parameterMap,
-                        setupParamMap(parameters));
-                if (log.isDebugEnabled()) {
-                    log.debug("execute() - Return type: " + returnType);
-                }
-                if (returnType) {
-                    return processResultSet(ps.getResultSet(), (SelectMode) mode, dr);
-                }
-                return new Integer(ps.getUpdateCount());
+        PreparedStatement ps = null;
+        try {
+            ps = prepareStatement(connection, sql, mode);
+            boolean returnType = NamedPreparedStatement.execute(ps, parameterMap,
+                    setupParamMap(parameters));
+            if (log.isDebugEnabled()) {
+                log.debug("execute() - Return type: " + returnType);
             }
-            finally {
-                HibernateHelper.cleanupDB(ps);
+            if (returnType) {
+                return processResultSet(ps.getResultSet(), (SelectMode) mode, dr);
             }
-        });
+            return new Integer(ps.getUpdateCount());
+        }
+        finally {
+            HibernateHelper.cleanupDB(ps);
+        }
     }
 
     /**
