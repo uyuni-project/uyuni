@@ -105,6 +105,7 @@ public class MenuTree {
                 .addChild(new MenuItem("System Groups").withPrimaryUrl("/rhn/systems/SystemGroupList.do").withDir("/rhn/groups")
                     .withDir("/rhn/systems/groups").withDir("/rhn/manager/groups"))
                 .addChild(new MenuItem("System Set Manager").withDir("/rhn/systems/ssm").withDir("/rhn/ssm")
+                        .withDir("/rhn/channel/ssm").withDir("/rhn/manager/systems/ssm")
                     .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/ssm/index.do"))
                     .addChild(new MenuItem("ssm.nav.status").withPrimaryUrl("/rhn/ssm/ViewAllLog.do")
                         .withAltUrl("/rhn/ssm/ViewLog.do").withAltUrl("/rhn/ssm/ViewCompletedLog.do")))
