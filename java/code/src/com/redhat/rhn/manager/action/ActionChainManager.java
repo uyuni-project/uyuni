@@ -40,6 +40,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * An ActionManager companion to deal with Action Chains.
@@ -119,19 +120,38 @@ public class ActionChainManager {
     public static List<Action> schedulePackageUpgrades(User user,
             Map<Long, List<Map<String, Long>>> packageMaps, Date earliestAction,
             ActionChain actionChain) throws TaskomaticApiException {
-        List<Action> actions = new ArrayList<Action>();
 
-        Integer sortOrder = null;
+
         if (actionChain != null) {
-            sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
+            List<Action> actions = new ArrayList<>();
+            int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
+            for (Long sid : packageMaps.keySet()) {
+                Server server = SystemManager.lookupByIdAndUser(sid, user);
+                actions.add(schedulePackageActionByOs(user, server, packageMaps.get(sid),
+                        earliestAction, actionChain, sortOrder,
+                        ActionFactory.TYPE_PACKAGES_UPDATE));
+            }
+            return actions;
         }
-        for (Long sid : packageMaps.keySet()) {
-            Server server = SystemManager.lookupByIdAndUser(sid, user);
-            actions.add(schedulePackageActionByOs(user, server, packageMaps.get(sid),
-                    earliestAction, actionChain, sortOrder,
-                    ActionFactory.TYPE_PACKAGES_UPDATE));
+        else {
+            Map<List<Map<String, Long>>, List<Long>> collect = packageMaps.entrySet()
+                    .stream().collect(
+                    Collectors.groupingBy(
+                            Map.Entry::getValue,
+                            Collectors.mapping(Map.Entry::getKey, Collectors.toList())
+                    )
+            );
+            List<Action> actions = new ArrayList<>();
+            for (Map.Entry<List<Map<String, Long>>, List<Long>> entry :collect.entrySet()) {
+                List<Long> servers = entry.getValue();
+                List<Map<String, Long>> packages = entry.getKey();
+                actions.addAll(
+                        schedulePackageActionsByOs(user, servers, packages,
+                        earliestAction, null, ActionFactory.TYPE_PACKAGES_UPDATE)
+                );
+            }
+            return actions;
         }
-        return actions;
     }
 
     /**
