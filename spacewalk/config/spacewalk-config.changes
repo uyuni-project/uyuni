@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue May 23 07:59:03 CEST 2017 - mc@suse.de
+
+- version 2.7.1.4-1
+- Rename incomplete_package_import to package_import_skip_changelog
+- java.message_queue_thread_pool_size, salt_presence_ping_timeout,
+  salt_presence_ping_gather_job_timeout: document in man page
+- incomplete_package_import: document in man page
+
+-------------------------------------------------------------------
 Fri Mar 31 09:38:28 CEST 2017 - mc@suse.de
 
 - version 2.7.1.3-1
