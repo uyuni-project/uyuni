@@ -5,9 +5,7 @@ Feature: register a salt-minion via bootstrap
 
   Scenario: bootstrap a centos minion
      Given I am authorized
-     When I follow "Salt"
-     Then I should see a "Bootstrapping" text
-     And I follow "Bootstrapping"
+     And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
      And  I enter the hostname of "ceos-minion" as hostname
      And I enter "22" as "port"

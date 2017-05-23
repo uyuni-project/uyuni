@@ -14,9 +14,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     
   Scenario: Bootstrap a system (sles-salt-ssh managed)
     Given I am authorized
-    When I follow "Salt"
-    Then I should see a "Bootstrapping" text
-    And I follow "Bootstrapping"
+    And I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     And I check "manageWithSSH"
     And I enter remote ssh-minion hostname as "hostname"
