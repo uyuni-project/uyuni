@@ -55,8 +55,12 @@ When(/^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/) d
       # wait to finish scheduling
       Timeout.timeout(DEFAULT_TIMEOUT) do
         loop do
-          break unless find("button.product-add-btn").visible?
-          sleep 1
+          begin
+            break unless find("button.product-add-btn").visible?
+            sleep 2
+          rescue Capybara::ElementNotFound
+            break
+          end
         end
       end
     rescue Timeout::Error
