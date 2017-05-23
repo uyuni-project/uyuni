@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 23 07:59:56 CEST 2017 - mc@suse.de
+
+- version 2.7.8.3-1
+- Remove get_certificateexpiration support in spacecmd (bsc#1013876)
+
+-------------------------------------------------------------------
 Wed May 03 15:58:13 CEST 2017 - michele.bologna@suse.com
 
 - version 2.7.8.2-1
