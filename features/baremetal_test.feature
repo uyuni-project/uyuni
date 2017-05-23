@@ -25,11 +25,11 @@ Feature: Test Bare-metal discovery
     And I should see a "Edit These Properties" link
     And I should not see a "[Management]" text
 
-  Scenario: see the client in Bare metal specific system list
+  Scenario: see the client in Unprovisioned specific system list
     Given I am on the Systems page
     And I click Systems, under Systems node 
-    And I follow "Bare Metal Systems" in the left menu
-    Then I should see a "Bare Metal Systems" text
+    And I follow "Unprovisioned Systems" in the left menu
+    Then I should see a "Unprovisioned Systems" text
     And I should see a "Detected on" text
     And I should see a "Number of CPUs" text
     And I should see a "2" text
@@ -42,7 +42,7 @@ Feature: Test Bare-metal discovery
     And I should see a "MAC Address(es)" text
     And I check the MAC address value
 
-  Scenario: check tab links "Details" bare metal
+  Scenario: check tab links "Details" unprovisioned
     Given I am on the Systems page
     And I click Systems, under Systems node 
     When I follow this client link
