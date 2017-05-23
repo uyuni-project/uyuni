@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 23 11:57:44 CEST 2017 - mc@suse.de
+
+- version 2.5.7.16-1
+- Set SUSE Manager version to 3.0.6
+- Allow dot character '.' for activation key (bsc#1035633)
+
+-------------------------------------------------------------------
 Thu Apr 20 16:34:51 CEST 2017 - kwalter@suse.com
 
 - version 2.5.7.15-1
