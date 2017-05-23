@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 23 07:56:21 CEST 2017 - mc@suse.de
+
+- version 2.7.0.3-1
+- require openscap-utils on rhel for backward compatibility
+
+-------------------------------------------------------------------
 Mon Mar 06 16:43:12 CET 2017 - mc@suse.de
 
 - version 2.7.0.2-1
