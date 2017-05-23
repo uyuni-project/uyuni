@@ -6,7 +6,7 @@ Feature: Test Bare-metal discovery
   Scenario: Enable Bare-metal discovery
     Given I am authorized as "admin" with password "admin"
     And I follow "Admin"
-    And I follow "SUSE Manager Configuration" in the left menu
+    And I follow "Manager Configuration" in the left menu
     And I follow "General" in the left menu
     When I follow "Bare-metal systems" in the content area
     Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
@@ -101,7 +101,7 @@ Feature: Test Bare-metal discovery
   Scenario: Disable Bare-metal discovery
     Given I am authorized as "admin" with password "admin"
     And I follow "Admin"
-    And I follow "SUSE Manager Configuration" in the left menu
+    And I follow "Manager Configuration" in the left menu
     And I follow "General" in the left menu
     When I follow "Bare-metal systems" in the content area
     Then I should see a "Allows SUSE Manager to automatically add bare-metal systems capable of PXE booting to an organization." text
