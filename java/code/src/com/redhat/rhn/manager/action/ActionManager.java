@@ -1926,14 +1926,10 @@ public class ActionManager extends BaseManager {
                     params.put("name_id", nameId);
                     params.put("evr_id", evrId);
                     params.put("pkg_parameter", getPackageParameter(action));
+                    params.put("arch_id", archId);
 
-                    if (archId != null) {
-                        params.put("arch_id", archId);
-                    }
-
-                    ModeFactory.getWriteMode("Action_queries",
-                        "schedule_action" + (archId == null ? "_no_arch" : ""))
-                        .executeUpdate(params);
+                    ModeFactory.getWriteMode("Action_queries", "schedule_action")
+                            .executeUpdate(params);
                 }
             });
         }

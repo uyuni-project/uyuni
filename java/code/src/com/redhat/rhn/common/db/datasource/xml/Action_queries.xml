@@ -271,13 +271,6 @@ VALUES (sequence_nextval('rhn_act_p_id_seq'), :action_id, :pkg_parameter, :name_
   </query>
 </write-mode>
 
-<write-mode name="schedule_action_no_arch">
-  <query params="action_id, name_id, evr_id, pkg_parameter">
-INSERT INTO rhnActionPackage (id, action_id, parameter, name_id, evr_id)
-VALUES (sequence_nextval('rhn_act_p_id_seq'), :action_id, :pkg_parameter, :name_id, :evr_id)
-  </query>
-</write-mode>
-
 <!-- this is so WRONG -->
 <write-mode name="insert_package_delta_element">
   <query params="delta_id, operation, n, e, v, r, a">
