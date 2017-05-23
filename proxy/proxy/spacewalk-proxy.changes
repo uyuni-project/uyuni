@@ -6,7 +6,7 @@ Tue May 23 11:58:29 CEST 2017 - mc@suse.de
 - change mgrsshtunnel user home to /var/lib/spacewalk
 - fix starting/stopping services rhn-proxy (bsc#1038858)
 - don't append to parent key response to authorized_keys on http err
-  (bsc#724390)
+  (bsc#1035015)
 
 -------------------------------------------------------------------
 Thu Apr 20 16:42:07 CEST 2017 - kwalter@suse.com
