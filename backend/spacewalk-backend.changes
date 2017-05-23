@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Tue May 23 07:51:37 CEST 2017 - mc@suse.de
+
+- version 2.7.73.2-1
+- don't let disabled user log in
+- updating help and man page
+- satellite-sync (iss) - enhancements to channel selection
+- make batch size configurable
+- wildcard support for channel names
+- optimize linking packages to channel
+- disassociate packages later or keep them in channel if
+  they are same but missing package path
+- Rename incomplete_package_import to package_import_skip_changelog
+- spacewalk-backend should require the exact version of spacewalk-backend-libs
+  (bsc#1037635)
+- try to finish work in threads when KeyboardInterrupt occurs during
+  download
+- fix errata lookup for NULL org
+- optimize package importing during syncing a software channel
+- allow sync of the same erratum to more orgs
+
+-------------------------------------------------------------------
 Thu May  4 10:23:23 UTC 2017 - can.bulut.bayburt@suse.com
 
 -  Non admin or disabled user cannot make changes to a system anymore 
