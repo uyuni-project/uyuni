@@ -155,7 +155,6 @@ var Highstate = React.createClass({
                     <div className="action-button-wrapper">
                         <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} disabled={minions.length === 0} />
                     </div>
-<<<<<<< HEAD
                 </div>
                 <div className="spacewalk-scheduler">
                     <div className="form-horizontal">
