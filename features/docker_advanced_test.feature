@@ -37,8 +37,3 @@ Feature:  Test advanced functionality of content management
   Then I should see a "Account norole created" text
   And I should see a "norole" link
   And I should see a "normal user" text
-
- Scenario: I can't access build image page with norole user
-  Given I am authorized as "norole" with password "norole"
-  And I navigate to "rhn/manager/cm/imageprofiles/edit/2" page
-  And I should not see a "Internal Server Error" text
