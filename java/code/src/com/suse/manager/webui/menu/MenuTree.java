@@ -109,6 +109,8 @@ public class MenuTree {
                     .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/ssm/index.do"))
                     .addChild(new MenuItem("ssm.nav.status").withPrimaryUrl("/rhn/ssm/ViewAllLog.do")
                         .withAltUrl("/rhn/ssm/ViewLog.do").withAltUrl("/rhn/ssm/ViewCompletedLog.do")))
+                .addChild(new MenuItem("Bootstrapping").withPrimaryUrl("/rhn/manager/minions/bootstrap")
+                    .withVisibility(adminRoles.get("org")))
                 .addChild(new MenuItem("visualization.nav.title")
                         .withVisibility(adminRoles.get("org"))
                         .addChild(new MenuItem("Virtualization Hierarchy")
@@ -166,9 +168,7 @@ public class MenuTree {
 
             // Salt
             nodes.add(new MenuItem("Salt").withIcon("spacewalk-icon-salt")
-                .addChild(new MenuItem("Onboarding").withPrimaryUrl("/rhn/manager/minions"))
-                .addChild(new MenuItem("Bootstrapping").withPrimaryUrl("/rhn/manager/minions/bootstrap")
-                    .withVisibility(adminRoles.get("org")))
+                .addChild(new MenuItem("Keys").withPrimaryUrl("/rhn/manager/minions"))
                 .addChild(new MenuItem("Remote Commands").withPrimaryUrl("/rhn/manager/minions/cmd"))
                 .addChild(new MenuItem("State Catalog").withPrimaryUrl("/rhn/manager/state-catalog")
                     .withVisibility(adminRoles.get("org")))
@@ -205,8 +205,8 @@ public class MenuTree {
                     .withDir("/rhn/errata/manage/clone").withVisibility(checkAcl(user, "user_role(channel_admin)"))));
 
             // Channels
-            nodes.add(new MenuItem("Channels").withIcon("spacewalk-icon-software-channels")
-                .addChild(new MenuItem("Software Channels").withDir("/rhn/channels")
+            nodes.add(new MenuItem("Software").withIcon("spacewalk-icon-software-channels")
+                .addChild(new MenuItem("Channels").withDir("/rhn/channels")
                     .addChild(new MenuItem("channel.nav.all").withPrimaryUrl("/rhn/software/channels/All.do"))
                     .addChild(new MenuItem("channel.nav.vendor").withPrimaryUrl("/rhn/software/channels/Vendor.do")
                         .withVisibility(checkAcl(user, "is_satellite()")))
@@ -290,13 +290,11 @@ public class MenuTree {
                     .addChild(new MenuItem("users.nav.all").withPrimaryUrl("/rhn/users/UserList.do")
                         .withVisibility(adminRoles.get("org"))))
                 .addChild(new MenuItem("System Group Configuration")
-                    .withVisibility(adminRoles.get("org"))
-                    .addChild(new MenuItem("Configuration").withPrimaryUrl("/rhn/users/SystemGroupConfig.do")
-                        .withVisibility(adminRoles.get("org")))
-                    .addChild(new MenuItem("External Authentication").withPrimaryUrl("/rhn/users/ExtAuthSgMapping.do")
-                        .withAltUrl("/rhn/users/ExtAuthSgDetails.do")
-                        .withAltUrl("/rhn/users/ExtAuthSgDelete.do")
-                        .withVisibility(adminRoles.get("org"))))
+                    .withAltUrl("/rhn/users/SystemGroupConfig.do")
+                    .withAltUrl("/rhn/users/ExtAuthSgMapping.do")
+                    .withAltUrl("/rhn/users/ExtAuthSgDetails.do")
+                    .withAltUrl("/rhn/users/ExtAuthSgDelete.do")
+                    .withVisibility(adminRoles.get("org")))
                 );
 
             // Admin

@@ -7,7 +7,6 @@
 <html>
     <head>
         <script type="text/javascript" src="/rhn/dwr/interface/MirrorCredentialsRenderer.js"></script>
-        <script type="text/javascript" src="/javascript/responsive-tab.js"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard-mirror-credentials.js"></script>
     </head>

@@ -155,12 +155,13 @@ var Highstate = React.createClass({
                     <div className="action-button-wrapper">
                         <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} disabled={minions.length === 0} />
                     </div>
+<<<<<<< HEAD
                 </div>
                 <div className="spacewalk-scheduler">
                     <div className="form-horizontal">
                         <div className="form-group">
                             <label className="col-md-3 control-label">
-                                {t("Schedule no sooner than:")}
+                                {t("Earliest:")}
                             </label>
                             <div className="col-md-6">
                                 <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={timezone} />

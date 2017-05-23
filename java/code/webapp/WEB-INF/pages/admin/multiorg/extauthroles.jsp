@@ -15,8 +15,6 @@
         <bean:message key="org.allusers.title1" />
     </rhn:toolbar>
 
-    <rhn:dialogmenu mindepth="0" maxdepth="2" definition="/WEB-INF/nav/admin_user.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
-
 <div class="panel-heading">
     <h4><bean:message key="extgroup.jsp.header"/></h4>
 </div>

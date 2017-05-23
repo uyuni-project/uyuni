@@ -9,8 +9,6 @@
     <bean:message key="extgroup.jsp.delete.name" arg0="${group.label}"/>
   </rhn:toolbar>
 
-  <rhn:dialogmenu mindepth="0" maxdepth="2" definition="/WEB-INF/nav/admin_user.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
-
   <div class="page-summary">
     <p><bean:message key="extgroup.jsp.delete.summary"/></p>
   </div>

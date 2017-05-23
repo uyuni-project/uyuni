@@ -249,7 +249,7 @@ class BuildImage extends React.Component {
                     }
                 </Input.Select>
 
-                <Input.DateTime label={t("Schedule no sooner than")} name="earliest" required labelClass="col-md-3" divClass="col-md-9" timezone={timezone} />
+                <Input.DateTime label={t("Earliest")} name="earliest" required labelClass="col-md-3" divClass="col-md-9" timezone={timezone} />
 
                 <Input.FormGroup>
                     <div className="col-md-offset-3 col-md-9">
