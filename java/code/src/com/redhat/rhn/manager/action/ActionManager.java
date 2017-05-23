@@ -1899,39 +1899,29 @@ public class ActionManager extends BaseManager {
     /**
      * Adds package details to some Actions
      * @param actions the actions
-     * @param packages A list of maps containing keys 'name_id', 'evr_id' and
+     * @param packageMaps A list of maps containing keys 'name_id', 'evr_id' and
      *            optional 'arch_id' with Long values.
      */
-    public static void addPackageActionDetails(Collection<Action> actions, List packages) {
-        if (packages != null) {
-            actions.forEach(action -> {
-                // for each item in the set create a package action detail
-                // I'm using datasource to insert the records instead of
-                // hibernate. It seems terribly inefficient to lookup a
-                // packagename and packageevr object to insert the ids into the
-                // correct table if I already have the ids.
-                for (Iterator itr = packages.iterator(); itr.hasNext();) {
-                    Map rse = (Map) itr.next();
-                    Map<String, Object> params = new HashMap<String, Object>();
-                    Long nameId = (Long) rse.get("name_id");
-                    Long evrId = (Long) rse.get("evr_id");
-                    Long archId = (Long) rse.get("arch_id");
-                    if (nameId == null || evrId == null) {
-                        throw new IllegalArgumentException("name_id or " +
-                                "evr_id are not in the Map passed into " +
-                                "this method.  Please populate the Map " +
-                                "with the name_id and evr_id items");
-                    }
-                    params.put("action_id", action.getId());
-                    params.put("name_id", nameId);
-                    params.put("evr_id", evrId);
-                    params.put("pkg_parameter", getPackageParameter(action));
-                    params.put("arch_id", archId);
+    public static void addPackageActionDetails(Collection<Action> actions,
+            List<Map<String, Long>> packageMaps) {
+        if (packageMaps != null) {
+            List<Map<String, Object>> paramList =
+                actions.stream().flatMap(action -> {
+                    String packageParameter = getPackageParameter(action);
+                    return packageMaps.stream().map(packageMap -> {
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("action_id", action.getId());
+                        params.put("name_id", packageMap.get("name_id"));
+                        params.put("evr_id", packageMap.get("evr_id"));
+                        params.put("arch_id", packageMap.get("arch_id"));
+                        params.put("pkg_parameter", packageParameter);
+                        return params;
+                    });
+                })
+                .collect(Collectors.toList());
 
-                    ModeFactory.getWriteMode("Action_queries", "schedule_action")
-                            .executeUpdate(params);
-                }
-            });
+            ModeFactory.getWriteMode("Action_queries", "schedule_action")
+                .executeUpdates(paramList);
         }
     }
 
