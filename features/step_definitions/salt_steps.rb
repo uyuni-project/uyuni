@@ -546,6 +546,13 @@ When(/^I go to the minion onboarding page$/) do
     )
 end
 
+When(/^I go to the bootstrapping page$/) do
+  steps %(
+    And I follow "Systems"
+    And I follow "Bootstrapping"
+    )
+end
+
 When(/^I should see this hostname as text$/) do
   within('#spacewalk-content') do
     fail unless page.has_content?($minion_hostname)
