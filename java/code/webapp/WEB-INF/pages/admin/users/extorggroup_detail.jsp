@@ -27,10 +27,11 @@
             <p><bean:message key="extorggroups.jsp.summary"/></p>
             <p><bean:message key="extorggroup.jsp.summary"/></p>
         </div>
-        <div class="panel-heading">
-            <h4><bean:message key="extorggroup.jsp.header"/></h4>
-        </div>
-
+        <div class="panel panel-default">
+          <div class="panel-heading">
+              <h4><bean:message key="extorggroup.jsp.header"/></h4>
+          </div>
+          <div class="panel-body">
             <html:form method="post" action="/users/ExtAuthSgDetails.do?gid=${gid}" styleClass="form-horizontal">
                 <rhn:submitted/>
                 <rhn:csrf />
@@ -68,5 +69,7 @@
                     </div>
                 </div>
             </html:form>
+          </div>
+        </div>
     </body>
 </html:html>

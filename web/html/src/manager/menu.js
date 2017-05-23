@@ -159,9 +159,11 @@ const Nav = React.createClass({
     return (
       <nav className={this.state.search != null && this.state.search.length > 0 ? '' : 'collapsed'}>
         <div className="nav-tool-box">
-          <button className="collapse-menu" onClick={this.closeEmAll}><i className='fa fa-indent'></i>{t('Clear Menu')}</button>
           <input type="text" className="form-control" name="nav-search" id="nav-search" value={this.state.search}
             onChange={this.onSearch} placeholder="Search page" />
+          <span className="clear">
+            <i className="fa fa-times-circle-o no-margin" onClick={this.closeEmAll} title={t('Clear Menu')}></i>
+          </span>
         </div>
         <MenuLevel level={1} elements={JSONMenu} searchString={this.state.search} forceCollapse={this.state.forceCollapse} />
         <button id="scroll-top" onClick={this.scrollToTop}><i className='fa fa-angle-up'></i></button>

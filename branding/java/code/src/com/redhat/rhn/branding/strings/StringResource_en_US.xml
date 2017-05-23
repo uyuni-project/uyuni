@@ -220,7 +220,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Non Compliant</source>
       </trans-unit>
       <trans-unit id="channel.nav.vendor">
-        <source>@@VENDOR_NAME@@ Channels</source>
+        <source>@@VENDOR_NAME@@</source>
       </trans-unit>
       <trans-unit id="Kickstart Details">
         <source>Autoinstallation Details</source>
@@ -229,7 +229,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Autoinstallation File</source>
       </trans-unit>
       <trans-unit id="Bare Metal Kickstart">
-        <source>Bare Metal Autoinstallation</source>
+        <source>Unprovisioned Autoinstallation</source>
       </trans-unit>
 
       <!-- code/src/com/redhat/rhn/frontend/strings/jsp/StringResource_en_US.xml -->
@@ -845,16 +845,16 @@ Please note that some manual configuration of these scripts may still be require
         <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files.  Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_new" &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file.  The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.activeDescription">
-        <source>You cannot autoinstall a system registered to @@PRODUCT_NAME@@ using an inactive autoinstallation profile. However, the autoinstallation files for inactive autoinstallation profiles are still available for manual download and may be used for bare metal autoinstallations.</source>
+        <source>You cannot autoinstall a system registered to @@PRODUCT_NAME@@ using an inactive autoinstallation profile. However, the autoinstallation files for inactive autoinstallation profiles are still available for manual download and may be used for unprovisioned autoinstallations.</source>
       </trans-unit>
       <trans-unit id="kickstartscript.jsp.noscripts">
         <source>No scripts are associated with this autoinstallation profile</source>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal_summary">
-        <source>&lt;p&gt; In order to autoinstall "bare metal systems", you will need to provide them with a boot image that is compatible with the version of the operating system you are autoinstalling to via boot CD. &lt;/p&gt; &lt;p&gt; Once these systems have booted using the appropriate image, you will need to provide an autoinstallation file. You may use the following URL in your Boot CD or in your PXE configuration to provide these systems with the autoinstallation file associated with this autoinstallation profile:&lt;/p&gt;</source>
+        <source>&lt;p&gt; In order to autoinstall "unprovisioned systems", you will need to provide them with a boot image that is compatible with the version of the operating system you are autoinstalling to via boot CD. &lt;/p&gt; &lt;p&gt; Once these systems have booted using the appropriate image, you will need to provide an autoinstallation file. You may use the following URL in your Boot CD or in your PXE configuration to provide these systems with the autoinstallation file associated with this autoinstallation profile:&lt;/p&gt;</source>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal">
-        <source>Bare Metal Autoinstallation</source>
+        <source>Unprovisioned Autoinstallation</source>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.resource">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Resource:&lt;/strong&gt; The Reference Guide Kickstart section&lt;/span&gt;</source>
@@ -863,10 +863,10 @@ Please note that some manual configuration of these scripts may still be require
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the IP ranges associated with your organization's autoinstallation profiles is available &lt;/span&gt;</source>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal_summary2">
-        <source>Alternatively, you may associate each of your autoinstallation profiles with particular ip ranges. Then, you can provide bare metal systems with a single URL that will provide each system the autoinstallation file associated with its IP Address. Below you will find this URL:</source>
+        <source>Alternatively, you may associate each of your autoinstallation profiles with particular ip ranges. Then, you can provide unprovisioned systems with a single URL that will provide each system the autoinstallation file associated with its IP Address. Below you will find this URL:</source>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal2">
-        <source>IP Address-Based Bare Metal Autoinstallation URL</source>
+        <source>IP Address-Based Unprovisioned Autoinstallation URL</source>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.ranges">
         <source>Associated IP Ranges with Autoinstallation Profile</source>
@@ -902,7 +902,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>&lt;strong&gt;Note: The selection of incompatible activation keys can prevent a system from registering properly after it is kickstarted.&lt;/strong&gt;  You'll want to review the Reference Guide section on using multiple activation keys before making use of this feature.</source>
       </trans-unit>
       <trans-unit id="kickstartranges.jsp.toolbar">
-        <source>Bare Metal Autoinstallation By IP</source>
+        <source>Unprovisioned Autoinstallation By IP</source>
       </trans-unit>
       <trans-unit id="kickstart.script.summary">
         <source>You can edit the pre and post scripts for this kickstart below.  Kickstart pre-scripts are run immediately after a kickstart file has been parsed on a system.
@@ -2671,8 +2671,8 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="Salt">
           <source>Salt</source>
       </trans-unit>
-      <trans-unit id="Onboarding">
-        <source>Onboarding</source>
+      <trans-unit id="Keys">
+        <source>Keys</source>
       </trans-unit>
       <trans-unit id="Bootstrapping">
         <source>Bootstrapping</source>
@@ -2737,6 +2737,21 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="Formula Catalog">
           <source>Formula Catalog</source>
       </trans-unit>
+      <trans-unit id="system.audit.schedulexccdf.jsp.nosoonerthan">
+        <source>Earliest</source>
+      </trans-unit>
+      <trans-unit id="schedule.jsp.at">
+        <source>Earliest:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/ScheduleRemoteCommand.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="schedule-options.action-chain">
+        <source>Add to:</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">schedule-options.jspf</context>
+          </context-group>
+      </trans-unit>
 
       <!-- Images -->
       <trans-unit id="Images">
@@ -2750,6 +2765,36 @@ You may grant provisioning entitlements _here_.
       </trans-unit>
       <trans-unit id="Stores">
           <source>Stores</source>
+      </trans-unit>
+
+      <!-- Unprovisioned systems -->
+      <trans-unit id="systemlist.jsp.bootstrap">
+        <source>Unprovisioned System</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/Overview</context>
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/rhn/systems/OutOfDate</context>
+          <context context-type="sourcefile">/rhn/systems/Unentitled</context>
+          <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
+          <context context-type="sourcefile">/rhn/systems/Proxy</context>
+          <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bootstrapsystemlist.jsp.header">
+        <source>Unprovisioned Systems</source>
+      </trans-unit>
+      <trans-unit id="Bare Metal Systems">
+        <source>Unprovisioned Systems</source>
+      </trans-unit>
+      <trans-unit id="Bare Metal">
+        <source>Unprovisioned</source>
+      </trans-unit>
+
+      <trans-unit id="Spacewalk Configuration">
+        <source>Manager Configuration</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
       </trans-unit>
     </body>
   </file>

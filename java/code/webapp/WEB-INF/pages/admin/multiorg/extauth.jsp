@@ -17,8 +17,6 @@
         <bean:message key="org.allusers.title1" />
     </rhn:toolbar>
 
-    <rhn:dialogmenu mindepth="0" maxdepth="2" definition="/WEB-INF/nav/admin_user.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
-
   <p>
     <bean:message key="extauth.org.message"/>
   </p>

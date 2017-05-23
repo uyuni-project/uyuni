@@ -1,10 +1,10 @@
 include ../common.jade
 
-#onboarding
+#key-management
 
 script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
     const serverId = "#{serverId}";
 +userPreferences
-script(src='/javascript/manager/onboarding.bundle.js', type='text/javascript')
+script(src='/javascript/manager/key-management.bundle.js', type='text/javascript')
 
