@@ -1,4 +1,30 @@
 -------------------------------------------------------------------
+Tue May 23 12:01:07 CEST 2017 - mc@suse.de
+
+- version 2.5.59.15-1
+- Fix race condition for preview websocket messages in
+  remote commands page
+- Enable pkgset beacon for all Suse OS distributions (bsc#1032286)
+- add info about base products to json input for subscription-matcher
+- add product class info to the json input for the
+  subscription-matcher (bsc#1031716)
+- change mgrsshtunnel user home to /var/lib/spacewalk
+- Make schedule notification links consistent for actions for a
+  single system (bsc#1039286)
+- lookup functions should return every minion only one time
+- Store temporary roster in configured location (bsc#1019672)
+- Fix: avoid System.out for logging
+- Allow dot character '.' for activation key (bsc#1035633)
+- Use the util method when checking whether minion is ssh push-like
+- change contact method for bootstrap script and ssh-push (bsc#1020852)
+- SSM Task Log: make title coherent with menu item
+- Fix: hide lock for Salt servers (bsc#1032380)
+- parse old and new return structure of spmigration return event
+- parse result of SP migration Dry Run correctly (bsc#1034837)
+- prevent possible null pointer exception when installed products
+  could not be found (bsc#1034837)
+
+-------------------------------------------------------------------
 Thu Apr 20 16:04:02 CEST 2017 - kwalter@suse.com
 
 - version 2.5.59.14-1
