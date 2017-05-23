@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 23 07:55:23 CEST 2017 - mc@suse.de
+
+- version 5.10.103.2-1
+- Add password config option to rhncfg-manager.
+- require rhnlib version with i18n module (bsc#1038483)
+
+-------------------------------------------------------------------
 Wed May 03 16:43:52 CEST 2017 - michele.bologna@suse.com
 
 - version 5.10.103.1-1
