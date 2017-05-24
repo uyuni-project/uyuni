@@ -242,9 +242,7 @@ public class ActionChainManager {
         Set<Action> result = scheduleActions(user, type, name, earliestAction,
             actionChain, sortOrder, serverIds);
 
-        for (Action action : result) {
-            ActionManager.addPackageActionDetails(action, packages);
-        }
+        ActionManager.addPackageActionDetails(result, packages);
 
         return result;
     }
