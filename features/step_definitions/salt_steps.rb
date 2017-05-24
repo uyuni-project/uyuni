@@ -542,7 +542,14 @@ end
 When(/^I go to the minion onboarding page$/) do
   steps %(
     And I follow "Salt"
-    And I follow "Onboarding"
+    And I follow "Keys"
+    )
+end
+
+When(/^I go to the bootstrapping page$/) do
+  steps %(
+    And I follow "Systems"
+    And I follow "Bootstrapping"
     )
 end
 

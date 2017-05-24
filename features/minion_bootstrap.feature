@@ -9,9 +9,7 @@ Feature: register a salt-minion via bootstrap
 
   Scenario: bootstrap a sles minion
      Given I am authorized
-     And I go to the minion onboarding page
-     Then I should see a "Bootstrapping" text
-     And I follow "Bootstrapping"
+     And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
      And  I enter the hostname of "sle-minion" as hostname
      And I enter "22" as "port"
@@ -68,9 +66,7 @@ Feature: register a salt-minion via bootstrap
 
   Scenario: bootstrap a sles minion with an activation-key
      Given I am authorized
-     When I follow "Salt"
-     Then I should see a "Bootstrapping" text
-     And I follow "Bootstrapping"
+     And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
      # sle-minion = sles, rh_minion = redhat
      And  I enter the hostname of "sle-minion" as hostname
@@ -106,9 +102,7 @@ Feature: register a salt-minion via bootstrap
 
   Scenario: bootstrap should fail: minion_id already existing
      Given I am authorized
-     When I follow "Salt"
-     Then I should see a "Bootstrapping" text
-     And I follow "Bootstrapping"
+     And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
      And  I enter the hostname of "sle-minion" as hostname
      And I enter "22" as "port"
@@ -129,9 +123,7 @@ Feature: register a salt-minion via bootstrap
  # https://github.com/SUSE/spacewalk/pull/831
   Scenario: bootstrap a sles minion with wrong hostname
      Given I am authorized
-     When I follow "Salt"
-     Then I should see a "Bootstrapping" text
-     And I follow "Bootstrapping"
+     And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
      And  I enter "not-existing-name" as "hostname"
      And I enter "22" as "port"
@@ -144,9 +136,7 @@ Feature: register a salt-minion via bootstrap
 
   Scenario: bootstrap a sles minion with wrong ssh-credentials
      Given I am authorized
-     When I follow "Salt"
-     Then I should see a "Bootstrapping" text
-     And I follow "Bootstrapping"
+     And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
      And I enter the hostname of "sle-minion" as hostname
      And I enter "22" as "port"
@@ -159,9 +149,7 @@ Feature: register a salt-minion via bootstrap
 
   Scenario: running command as user salt is forbidden.
    Given I am authorized
-     When I follow "Salt"
-     Then I should see a "Bootstrapping" text
-     And I follow "Bootstrapping"
+     And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
      And  I enter "`dmesg`" as "hostname"
      And I enter "22" as "port"
@@ -173,9 +161,7 @@ Feature: register a salt-minion via bootstrap
 
   Scenario: bootstrap a sles minion with wrong ssh-port-number
      Given I am authorized
-     When I follow "Salt"
-     Then I should see a "Bootstrapping" text
-     And I follow "Bootstrapping"
+     And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
      And I enter the hostname of "sle-minion" as hostname
      And I enter "11" as "port"

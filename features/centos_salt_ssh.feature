@@ -17,9 +17,7 @@ Feature: CENTOS7 ssh feature.
 
   Scenario: Bootstrap a system (centos salt-ssh managed)
     Given I am authorized
-    When I follow "Salt"
-    Then I should see a "Bootstrapping" text
-    And I follow "Bootstrapping"
+    And I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     And I check "manageWithSSH"
     And I enter the hostname of "ceos-minion" as hostname
