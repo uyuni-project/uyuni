@@ -17,7 +17,6 @@ Feature: Use salt formulas
   Scenario: Enable the formula on the minion
      Given I am on the Systems overview page of this "sle-minion"
      When I follow "Formulas" in the content area
-     And I follow "Formulas" in the content area
      Then I should see a "Choose formulas:" text
      And I should see a "General System Configuration" text
      And I should see a "Locale" text
