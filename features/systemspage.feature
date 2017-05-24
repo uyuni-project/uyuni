@@ -191,7 +191,7 @@ Feature: Explore the main landing page
     When I am on Autoinstallation Overview page
     Then I should see a "Autoinstallation Overview" text
     And I should see a "Profiles" link in the left menu
-    And I should see a "Bare Metal" link in the left menu
+    And I should see a "Unprovisioned" link in the left menu
     And I should see a "GPG and SSL Keys" link in the left menu
     And I should see a "Distributions" link in the left menu
     And I should see a "File Preservation" link in the left menu
@@ -209,10 +209,10 @@ Feature: Explore the main landing page
     And I should see a "Create Kickstart Profile" link
     And I should see a "Upload Kickstart File" link
 
-  Scenario: Check sidebar link destination for Systems => Kickstart => Bare Metal
+  Scenario: Check sidebar link destination for Systems => Autoinstallation => Unprovisioned
     When I follow "Autoinstallation" in the left menu
-    And I follow "Bare Metal" in the left menu
-    Then I should see a "Bare Metal Kickstart By IP" text
+    And I follow "Unprovisioned" in the left menu
+    Then I should see a "Unprovisioned Autoinstallation By IP" text
     And I should see a "No Ip Ranges Found" text
 
   Scenario: Check sidebar link destination for Systems => Kickstart => GPG and SSL Keys
@@ -325,11 +325,11 @@ Feature: Explore the main landing page
     Then I should see a "Kickstart: fedora_kickstart_profile_upload" text
     And I should see a "Kickstart Details" text
 
-  Scenario: adding a bare metal range to a profile (requires fedora_kickstart_profile)
+  Scenario: adding a unprovisioned range to a profile (requires fedora_kickstart_profile)
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "fedora_kickstart_profile"
-    And I follow "Bare Metal Kickstart"
+    And I follow "Unprovisioned Autoinstallation"
     And I enter "10" as "octet1a"
     And I enter "10" as "octet1b"
     And I enter "0" as "octet1c"
