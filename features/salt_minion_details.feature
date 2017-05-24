@@ -27,5 +27,5 @@ Feature: Verify the minion registration
     And that this minion is registered in Spacewalk
     And I follow the sle minion
     And I follow "Software"
-    And I follow "Software Channels"
+    And I follow "Software Channels" in the content area
     Then this minion should have a Base channel set

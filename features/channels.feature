@@ -8,9 +8,9 @@ Feature: Explore the Channels page
 
   Scenario: Completeness of Channels page
     Given I am authorized as "admin" with password "admin"
-    When I follow "Channels"
-    And I follow "Software Channels"
-    And I follow "All Channels"
+    When I follow "Software" in the left menu
+    And I follow "Channels" in the left menu
+    And I follow "Channels > All" in the left menu
     Then I should see a "Full Software Channel List" text
     And I should see a "Software Channels" link in the left menu
     And I should see a "All Channels" link in the left menu
@@ -28,17 +28,17 @@ Feature: Explore the Channels page
 
   Scenario: Completeness of Channels page part 2
     Given I am authorized as "admin" with password "admin"
-    When I follow "Channels"
-    And I follow "Software Channels"
-    And I follow "All Channels"
+    When I follow "Software" in the left menu
+    And I follow "Channels" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Popular Channels" in the left menu
     Then I should see a "Popular Channels" text
 
   Scenario: Check Packages in Test-Channel-x86_64
     Given I am authorized as "admin" with password "admin"
-    When I follow "Channels"
-    And I follow "Software Channels"
-    And I follow "All Channels"
+    When I follow "Software" in the left menu
+    And I follow "Channels" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     Then I should see package "andromeda-dummy-2.0-1.1.noarch"
@@ -50,9 +50,9 @@ Feature: Explore the Channels page
 
   Scenario: Check Package metadata displayed in WebUI
     Given I am authorized as "admin" with password "admin"
-    When I follow "Channels"
-    And I follow "Software Channels"
-    And I follow "All Channels"
+    When I follow "Software" in the left menu
+    And I follow "Channels" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -65,9 +65,9 @@ Feature: Explore the Channels page
 
   Scenario: Check Package dependencies page
     Given I am authorized as "admin" with password "admin"
-    When I follow "Channels"
-    And I follow "Software Channels"
-    And I follow "All Channels"
+    When I follow "Software" in the left menu
+    And I follow "Channels" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -78,9 +78,9 @@ Feature: Explore the Channels page
 
   Scenario: Check Package Changelog page
     Given I am authorized as "admin" with password "admin"
-    When I follow "Channels"
-    And I follow "Software Channels"
-    And I follow "All Channels"
+    When I follow "Software" in the left menu
+    And I follow "Channels" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -90,9 +90,9 @@ Feature: Explore the Channels page
 
   Scenario: Check Package Filelist page
     Given I am authorized as "admin" with password "admin"
-    When I follow "Channels"
-    And I follow "Software Channels"
-    And I follow "All Channels"
+    When I follow "Software" in the left menu
+    And I follow "Channels" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"

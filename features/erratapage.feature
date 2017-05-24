@@ -82,13 +82,13 @@ Feature: Explore the Errata page
 
   Scenario: View bugfix errata
     Given I am on the errata page
-    And I follow "All" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Bugfix Errata"
     Then I should see a "Test Erratum" text
 
   Scenario: View erratum
     Given I am on the errata page
-    And I follow "All" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test Advisory"
     Then I should see a "Test Erratum" text
     And I should see a "test@test.org" text
@@ -103,9 +103,9 @@ Feature: Explore the Errata page
 
   Scenario: Check erratum in channel
     Given I am on the errata page
-    And I follow "Channels"
-    And I follow "Software Channels"
-    And I follow "All Channels"
+    And I follow "Software" in the left menu
+    And I follow "Channels" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test Base Channel"
     And I follow "Errata" in the content area
     Then I should see a "Test Erratum" text
