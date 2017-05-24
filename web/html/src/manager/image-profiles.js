@@ -18,18 +18,20 @@ const typeMap = {
 
 const msgMap = {
   "not_found": t("Image profile cannot be found."),
-  "delete_success": t("Image profile has been deleted.")
+  "delete_success": t("Image profile has been deleted."),
+  "delete_success_p": t("Image profiles have been deleted.")
 };
 
 class ImageProfiles extends React.Component {
 
   constructor(props) {
     super();
-    ["reloadData", "selectProfile", "deleteProfile"]
+    ["reloadData", "handleSelectItems", "selectProfile", "deleteProfiles"]
         .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
-      imageprofiles: []
+      imageprofiles: [],
+      selectedItems: []
     };
     this.reloadData();
   }
@@ -51,6 +53,12 @@ class ImageProfiles extends React.Component {
     this.clearMessages();
   }
 
+  handleSelectItems(items) {
+    this.setState({
+        selectedItems: items
+    });
+  }
+
   selectProfile(row) {
     this.setState({
         selected: row
@@ -63,15 +71,14 @@ class ImageProfiles extends React.Component {
     });
   }
 
-  deleteProfile(row) {
-    const id = row.profileId;
-    return Network.del("/rhn/manager/api/cm/imageprofiles/" + id).promise.then(data => {
+  deleteProfiles(idList) {
+    return Network.post("/rhn/manager/api/cm/imageprofiles/delete",
+            JSON.stringify(idList), "application/json").promise.then(data => {
         if (data.success) {
             this.setState({
-                messages: <Messages items={data.messages.map(msg => {
-                    return {severity: "success", text: msgMap[msg]};
-                })}/>,
-                imageprofiles: this.state.imageprofiles.filter(profile => profile.profileId !== id)
+                messages: <Messages items={[{severity: "success", text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]}]}/>,
+                imageprofiles: this.state.imageprofiles.filter(profile => !idList.includes(profile.profileId)),
+                selectedItems: this.state.selectedItems.filter(item => !idList.includes(item))
             });
         } else {
             this.setState({
@@ -89,6 +96,10 @@ class ImageProfiles extends React.Component {
 
   render() {
     const panelButtons = <div className="pull-right btn-group">
+      { isAdmin && this.state.selectedItems.length > 0 &&
+          <ModalButton id="delete-selected" icon="fa-trash" className="btn-default" text={t("Delete")}
+              title={t("Delete selected")} target="delete-selected-modal"/>
+      }
       <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
       { isAdmin &&
         <LinkButton id="create" icon="fa-plus" className="btn-default" title={t("Create")} text={t("Create")} href="/rhn/manager/cm/imageprofiles/create" />
@@ -106,7 +117,10 @@ class ImageProfiles extends React.Component {
               initialItemsPerPage={userPrefPageSize}
               searchField={
                   <SearchField filter={this.searchData} criteria={""} />
-              }>
+              }
+              selectable
+              selectedItems={this.state.selectedItems}
+              onSelect={this.handleSelectItems}>
             <Column
               columnKey="label"
               width="50%"
@@ -162,6 +176,15 @@ class ImageProfiles extends React.Component {
           item={this.state.selected}
           onConfirm={this.deleteProfile}
           onClosePopUp={() => this.selectProfile(undefined)}
+        />
+        <DeleteDialog id="delete-selected-modal"
+          title={t("Delete Selected Profile(s)")}
+          content={
+            <span>
+                {this.state.selectedItems.length == 1 ? t("Are you sure you want to delete the selected profile?") : t("Are you sure you want to delete selected profiles? ({0} profiles selected)", this.state.selectedItems.length)}
+            </span>
+          }
+          onConfirm={() => this.deleteProfiles(this.state.selectedItems)}
         />
       </span>
     );

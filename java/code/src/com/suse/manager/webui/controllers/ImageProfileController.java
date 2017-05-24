@@ -36,12 +36,12 @@ import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ImageProfileCreateRequest;
 import com.suse.manager.webui.utils.gson.ImageProfileJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
+import com.suse.utils.Json;
 import org.apache.commons.lang.StringUtils;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -57,7 +57,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
  */
 public class ImageProfileController {
 
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = Json.GSON;
     private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
 
     private ImageProfileController() { }
@@ -124,17 +124,16 @@ public class ImageProfileController {
      * @return the result JSON object
      */
     public static Object delete(Request req, Response res, User user) {
-        Long id = Long.parseLong(req.params("id"));
+        List<Long> ids = GSON.fromJson(req.body(), List.class);
 
-        JsonResult result =
-                ImageProfileFactory.lookupByIdAndOrg(id, user.getOrg()).map(profile -> {
-                    ImageProfileFactory.delete(profile);
-                    return new JsonResult(true,
-                            Collections.singletonList("delete_success"));
-                }).orElseGet(() -> new JsonResult(false,
-                        Collections.singletonList("not_found")));
+        List<ImageProfile> profiles =
+                ImageProfileFactory.lookupByIdsAndOrg(ids, user.getOrg());
+        if (profiles.size() < ids.size()) {
+            return json(res, new JsonResult<>(false, "not_found"));
+        }
 
-        return json(res, result);
+        profiles.forEach(ImageProfileFactory::delete);
+        return json(res, new JsonResult<>(true, profiles.size()));
     }
 
     /**

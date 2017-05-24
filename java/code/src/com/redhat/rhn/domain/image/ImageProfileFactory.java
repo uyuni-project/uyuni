@@ -87,6 +87,23 @@ public class ImageProfileFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup multiple image profiles by an id list and organization
+     * @param ids image profile id list
+     * @param org the organization
+     * @return Returns a list of image profiles with the given ids if it exists
+     * inside the organization
+     */
+    public static List<ImageProfile> lookupByIdsAndOrg(List<Long> ids, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageProfile> criteria = builder.createQuery(ImageProfile.class);
+        Root<ImageProfile> root = criteria.from(ImageProfile.class);
+        criteria.where(builder.and(
+                root.get("profileId").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
      * Lookup an ImageProfile by id and organization
      * @param id the id
      * @param org the organization
