@@ -6,7 +6,7 @@ Feature: System package list in the UI is updated if packages are manually insta
   Scenario: Manually removing a package in a minion
     Given this minion key is accepted
     And I am on the Systems overview page of this "sle-minion"
-    When I follow "Software"
+    When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "milkyway-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter"
@@ -17,7 +17,7 @@ Feature: System package list in the UI is updated if packages are manually insta
   Scenario: Manually installing a package in a minion
     Given this minion key is accepted
     And I am on the Systems overview page of this "sle-minion"
-    When I follow "Software"
+    When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "milkyway-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter"
