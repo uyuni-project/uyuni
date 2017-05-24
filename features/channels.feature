@@ -10,7 +10,7 @@ Feature: Explore the Channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
-    And I follow "All" in the left menu
+    And I follow "Channels > All" in the left menu
     Then I should see a "Full Software Channel List" text
     And I should see a "Software Channels" link in the left menu
     And I should see a "All Channels" link in the left menu
@@ -30,7 +30,7 @@ Feature: Explore the Channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
-    And I follow "All" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Popular Channels" in the left menu
     Then I should see a "Popular Channels" text
 
@@ -38,7 +38,7 @@ Feature: Explore the Channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
-    And I follow "All" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     Then I should see package "andromeda-dummy-2.0-1.1.noarch"
@@ -52,7 +52,7 @@ Feature: Explore the Channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
-    And I follow "All" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -67,7 +67,7 @@ Feature: Explore the Channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
-    And I follow "All" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -80,7 +80,7 @@ Feature: Explore the Channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
-    And I follow "All" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
@@ -92,7 +92,7 @@ Feature: Explore the Channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
-    And I follow "All" in the left menu
+    And I follow "Channels > All" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "andromeda-dummy-2.0-1.1.noarch"
