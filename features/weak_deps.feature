@@ -10,7 +10,7 @@ Feature: Test weak dependencies
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
-    And I follow "All" in the left menu
+    And I follow "Channels > All" in the left menu
 
   Scenario: Check Package metadata displayed in WebUI (Supplements)
     And I follow "Test-Channel-x86_64"

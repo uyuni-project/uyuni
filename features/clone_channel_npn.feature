@@ -66,7 +66,7 @@ Feature: Clone a Channel
 
   Scenario: check new errata exists
     Given I am on the errata page
-    When I follow "All" in the left menu
+    When I follow "Channels > All" in the left menu
     And I select "500" from "1154021400_PAGE_SIZE_LABEL"
     Then I should see a "CL-hoag-dummy-7890" link
     And I should see a "CL-virgo-dummy-3456" link
@@ -84,7 +84,7 @@ Feature: Clone a Channel
 
   Scenario: check CM-virgo-dummy-3456 errata
     Given I am on the errata page
-    When I follow "All" in the left menu
+    When I follow "Channels > All" in the left menu
     And I select "500" from "1154021400_PAGE_SIZE_LABEL"
     And I follow "CL-virgo-dummy-3456"
     Then I should see a "CL-virgo-dummy-3456 - Bug Fix Advisory" text
