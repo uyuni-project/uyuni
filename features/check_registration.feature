@@ -23,7 +23,7 @@ Feature: Check client registration
     And I should see a "Delete System" link
     And I should see a "Initial Registration Parameters:" text
     And I should see a "OS: sles-release" text
-    And I should see a "Release: 12.1" text
+    And I should see a "Release: 12.2" text
 
   Scenario: check tab links "Details"
     Given I am on the Systems page
