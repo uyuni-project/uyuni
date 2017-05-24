@@ -17,6 +17,7 @@ Feature: Check the Salt package state UI
   Scenario: Test package removal through the UI
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
+    And I follow "Packages"
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "milkyway-dummy" text
@@ -30,6 +31,7 @@ Feature: Check the Salt package state UI
    Scenario: Test package installation through the UI
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
+    And I follow "Packages"
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "milkyway-dummy" text
@@ -43,6 +45,7 @@ Feature: Check the Salt package state UI
    Scenario: Test package installation with any through the UI
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
+    And I follow "Packages"
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "virgo-dummy" text
@@ -56,6 +59,7 @@ Feature: Check the Salt package state UI
   Scenario: Test package upgrade through the UI
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
+    And I follow "Packages"
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "andromeda-dummy" text
@@ -69,6 +73,7 @@ Feature: Check the Salt package state UI
   Scenario: I verify the system status of the salt ui
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
+    And I follow "Packages"
     And I should see a "Package States" text
     And I should see a "milkyway-dummy" text
     And I should see a "andromeda-dummy" text
@@ -79,7 +84,7 @@ Feature: Check the Salt package state UI
     Then I follow "States" in the content area
     And I follow "Highstate" in the content area
     And I wait for "6" seconds
-    And I should see "pkg_removed" loaded in the textarea
+    And I should see a "pkg_removed" text in element "highstate"
 
   Scenario: Test Salt presence ping mechanism on unreachable minion
     Given I am on the Systems overview page of this "sle-minion"
@@ -88,4 +93,4 @@ Feature: Check the Salt package state UI
     And I follow "Highstate" in the content area
     And I wait for "6" seconds
     And I run "rcsalt-minion restart" on "sle-minion"
-    And I should see "No reply from minion" loaded in the textarea
+    And I should see a "No reply from minion" text in element "highstate"
