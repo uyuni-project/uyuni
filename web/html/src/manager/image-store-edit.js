@@ -74,7 +74,7 @@ class CreateImageStore extends React.Component {
         }
 
         return Network.post(
-            "/rhn/manager/api/cm/imagestores/" + storeId,
+            "/rhn/manager/api/cm/imagestores/update/" + storeId,
             JSON.stringify(model),
             "application/json"
         ).promise.then(data => {
@@ -96,7 +96,7 @@ class CreateImageStore extends React.Component {
         }
 
         return Network.post(
-            "/rhn/manager/api/cm/imagestores",
+            "/rhn/manager/api/cm/imagestores/create",
             JSON.stringify(model),
             "application/json"
         ).promise.then(data => {

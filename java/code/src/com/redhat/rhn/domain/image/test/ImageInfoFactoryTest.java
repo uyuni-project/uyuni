@@ -27,6 +27,8 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.org.CustomDataKey;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -52,6 +54,7 @@ import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -405,6 +408,39 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals((long) profile.getTargetStore().getId(), details.getImageStoreId());
         assertEquals(info.getVersion(), details.getVersion());
+    }
+
+    public void testLookupByIdsAndOrg() throws Exception {
+        ImageStore store = createImageStore("mystore", user);
+        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
+        ImageInfo img2 = createImageInfo("myimage1", "2.0.0", user);
+        ImageInfo img3 = createImageInfo("myimage2", "1.0.0", user);
+
+        List<Long> ids = new ArrayList<>();
+        ids.add(img1.getId());
+        ids.add(img2.getId());
+
+        List<ImageInfo> lookup =
+                ImageInfoFactory.lookupByIdsAndOrg(ids, user.getOrg());
+        assertEquals(2, lookup.size());
+        assertTrue(lookup.stream().filter(img1::equals).findFirst().isPresent());
+        assertTrue(lookup.stream().filter(img2::equals).findFirst().isPresent());
+        assertFalse(lookup.stream().filter(img3::equals).findFirst().isPresent());
+
+        Org org = OrgFactory.createOrg();
+        org.setName("foreign org");
+        org = OrgFactory.save(org);
+
+        lookup = ImageInfoFactory.lookupByIdsAndOrg(ids, org);
+        assertEquals(0, lookup.size());
+
+        ids.clear();
+        ids.add(img1.getId());
+        ids.add(100L);
+        assertFalse(ImageInfoFactory.lookupById(100L).isPresent());
+        lookup = ImageInfoFactory.lookupByIdsAndOrg(ids, user.getOrg());
+        assertEquals(1, lookup.size());
+        assertEquals(img1, lookup.get(0));
     }
 
     private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {

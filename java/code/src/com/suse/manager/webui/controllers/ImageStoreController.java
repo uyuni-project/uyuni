@@ -15,7 +15,6 @@
 package com.suse.manager.webui.controllers;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -27,11 +26,11 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.utils.gson.ImageRegistryCreateRequest;
 import com.suse.manager.webui.utils.gson.JsonResult;
+import com.suse.utils.Json;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +45,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
  */
 public class ImageStoreController {
 
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = Json.GSON;
     private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
 
     private ImageStoreController() { }
@@ -101,7 +100,7 @@ public class ImageStoreController {
     }
 
     /**
-     * Processes a DELETE request
+     * Processes a POST request to delete a list of image stores
      *
      * @param req the request object
      * @param res the response object
@@ -109,16 +108,15 @@ public class ImageStoreController {
      * @return the result JSON object
      */
     public static Object delete(Request req, Response res, User user) {
-        Long id = Long.parseLong(req.params("id"));
+        List<Long> ids = GSON.fromJson(req.body(), List.class);
 
-        Optional<ImageStore> maybeStore =
-                ImageStoreFactory.lookupByIdAndOrg(id, user.getOrg());
-        JsonResult jsonResult = maybeStore.map(imageStore -> {
-            ImageStoreFactory.delete(imageStore);
-            return new JsonResult(true, Collections.singletonList("delete_success"));
-        }).orElseGet(() -> new JsonResult(false, Collections.singletonList("not_found")));
+        List<ImageStore> stores = ImageStoreFactory.lookupByIdsAndOrg(ids, user.getOrg());
+        if (stores.size() < ids.size()) {
+            return json(res, new JsonResult<>(false, "not_found"));
+        }
 
-        return json(res, jsonResult);
+        stores.forEach(ImageStoreFactory::delete);
+        return json(res, new JsonResult<>(true, stores.size()));
     }
 
     /**
