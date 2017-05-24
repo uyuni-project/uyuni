@@ -17,7 +17,7 @@ Feature: Verify the minion registration
 
   Scenario: Check installed packages are visible
     Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Software"
+    When I follow "Software" in the content area
     And I follow "List / Remove"
     Then I should see a "aaa_base" text
     And I should see a "aaa_base-extras" text
@@ -26,6 +26,6 @@ Feature: Verify the minion registration
     Given I am authorized as "testing" with password "testing"
     And that this minion is registered in Spacewalk
     And I follow the sle minion
-    And I follow "Software"
+    And I follow "Software" in the left menu
     And I follow "Software Channels" in the content area
     Then this minion should have a Base channel set
