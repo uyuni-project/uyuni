@@ -103,9 +103,9 @@ Feature: Explore the Errata page
 
   Scenario: Check erratum in channel
     Given I am on the errata page
-    And I follow "Software"
-    And I follow "Channels"
-    And I follow "All"
+    And I follow "Software" in the left menu
+    And I follow "Channels" in the left menu
+    And I follow "All" in the left menu
     And I follow "Test Base Channel"
     And I follow "Errata" in the content area
     Then I should see a "Test Erratum" text
