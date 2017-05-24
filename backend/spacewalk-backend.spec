@@ -246,10 +246,9 @@ Group: Applications/Internet
 %if 0%{?suse_version}
 BuildRequires: python-devel
 %else
+Requires: python
 BuildRequires: python2-devel
 Conflicts: %{name} < 1.7.0
-Requires: python-hashlib
-BuildRequires: python-hashlib
 %endif
 Requires: spacewalk-usix
 
@@ -262,7 +261,6 @@ Libraries required by both Spacewalk server and Spacewalk client tools.
 Summary: Spacewalk client tools libraries for Fedora 23
 Group: Applications/Internet
 BuildRequires: python2-devel
-BuildRequires: python-hashlib
 BuildRequires: python3-devel
 Conflicts: %{name} < 1.7.0
 Requires: python3-libs
@@ -333,7 +331,7 @@ Requires: apache2-prefork
 Requires: pyliblzma
 %endif
 %if 0%{?fedora} || 0%{?rhel}
-Requires: python-hashlib
+Requires: python2-devel
 Requires: mod_ssl
 %endif
 Requires: %{name}-xml-export-libs
