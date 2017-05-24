@@ -11,7 +11,7 @@ Feature: Explore the Minions page
 
   Scenario: Completeness of the Minions page
     Given I go to the minion onboarding page
-    Then I should see a "Onboarding" text in the content area
+    Then I should see a "Keys" text in the content area
     And I should see a "Fingerprint" text
 
   Scenario: Minion is visible in the Pending section
