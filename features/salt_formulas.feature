@@ -16,7 +16,7 @@ Feature: Use salt formulas
 
   Scenario: Enable the formula on the minion
      Given I am on the Systems overview page of this "sle-minion"
-     When I follow "Formula Catalog" in the content area
+     When I follow "Formulas" in the content area
      And I follow "Formulas" in the content area
      Then I should see a "Choose formulas:" text
      And I should see a "General System Configuration" text
@@ -27,7 +27,7 @@ Feature: Use salt formulas
 
   Scenario: Parametrize the formula on the minion
      Given I am on the Systems overview page of this "sle-minion"
-     When I follow "Formula Catalog" in the content area
+     When I follow "Formulas" in the content area
      And I follow "Locale" in the content area
      And I select "Etc/GMT-5" in timezone name field
      And I select "French" in language field
@@ -37,7 +37,7 @@ Feature: Use salt formulas
 
   Scenario: Apply the parametrized formula via the highstate
      Given I am on the Systems overview page of this "sle-minion"
-     When I follow "Formula Catalog" in the content area
+     When I follow "Formulas" in the content area
      And I follow "Formulas" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
@@ -54,7 +54,7 @@ Feature: Use salt formulas
 
   Scenario: Reset the formula on the minion
      Given I am on the Systems overview page of this "sle-minion"
-     When I follow "Formula Catalog" in the content area
+     When I follow "Formulas" in the content area
      And I follow "Locale" in the content area
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
@@ -62,7 +62,7 @@ Feature: Use salt formulas
 
   Scenario: Apply the reset formula via the highstate
      Given I am on the Systems overview page of this "sle-minion"
-     When I follow "Formula Catalog" in the content area
+     When I follow "Formulas" in the content area
      And I follow "Formulas" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
