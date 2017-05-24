@@ -21,6 +21,7 @@ remove_traditional_stack:
       - spacewalk-client-tools
 {%- if grains['os_family'] == 'Suse' %}
       - zypp-plugin-spacewalk
+      - suseRegisterInfo
 {%- elif grains['os_family'] == 'RedHat' %}
       - yum-rhn-plugin
       - rhnsd
@@ -32,6 +33,13 @@ remove_traditional_stack:
       - osa-common
       - spacewalksd
       - rhncfg
-      - suseRegisterInfo
       - rhnlib
       - rhnmd
+
+# Remove suseRegisterInfo in a separate yum transaction to avoid being called by
+# the yum plugin.
+{%- if grains['os_family'] == 'RedHat' %}
+remove_suse_register_info_rh:
+  pkg.removed:
+    - name: suseRegisterInfo
+{%- endif %}
