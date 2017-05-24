@@ -6,11 +6,10 @@
 
 <c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
 
-<a href="#" class="navbar-toggle" data-toggle="collapse" data-target="#spacewalk-aside">
-  <i class="fa fa-bars" aria-hidden="true"></i>
-</a>
-
 <div class="navbar-header">
+  <a href="#" class="navbar-toggle" data-toggle="collapse" data-target="#spacewalk-aside">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+  </a>
   <div id="breadcrumb"></div>
   <c:if test="${! empty custom_header}">
     <div class="custom-text">

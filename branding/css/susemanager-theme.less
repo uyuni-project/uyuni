@@ -158,6 +158,7 @@ section {
 }
 
 #breadcrumb {
+  margin-left: 40px;
   color: @spacewalk-gray;
   display: inline-block;
   span {
@@ -175,14 +176,26 @@ section {
   float: right;
 }
 
+.navbar-collapse.in {
+  display: block !important;
+}
+.navbar-collapse.collapse {
+  display: none !important;
+}
+.navbar-collapse.collapse + section {
+  width: 100%;
+}
+
 header, nav.navbar-pf {
   .navbar-toggle {
-    float: none;
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    margin: 0;
     border: 1px solid @spacewalk-gray-dark;
-    margin: 0 15px 0 5px;
-    vertical-align: middle;
-    padding: 4px 8px;
-    display: none;
+    padding: 2px 8px;
+    border-radius: 2px;
     i {
       margin: 0;
     }
