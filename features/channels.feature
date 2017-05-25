@@ -13,26 +13,26 @@ Feature: Explore the Channels page
     And I follow "Channels > All" in the left menu
     Then I should see a "Full Software Channel List" text
     And I should see a "Software Channels" link in the left menu
-    And I should see a "All Channels" link in the left menu
-    And I should see a "Popular Channels" link in the left menu
+    And I should see a "All" link in the left menu
+    And I should see a "Popular" link in the left menu
     And I should see a "My Channels" link in the left menu
-    And I should see a "Shared Channels" link in the left menu
-    And I should see a "Retired Channels" link in the left menu
+    And I should see a "Shared" link in the left menu
+    And I should see a "Retired" link in the left menu
     And I should see a "Package Search" link in the left menu
     And I should see a "Manage Software Channels" link in the left menu
-    And I should see a "All Channels" link in the content area
-    And I should see a "Popular Channels" link in the content area
+    And I should see a "All" link in the content area
+    And I should see a "Popular" link in the content area
     And I should see a "My Channels" link in the content area
-    And I should see a "Shared Channels" link in the content area
-    And I should see a "Retired Channels" link in the content area
+    And I should see a "Shared" link in the content area
+    And I should see a "Retired" link in the content area
 
   Scenario: Completeness of Channels page part 2
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Channels > All" in the left menu
-    And I follow "Popular Channels" in the left menu
-    Then I should see a "Popular Channels" text
+    And I follow "Popular" in the left menu
+    Then I should see a "Popular" text
 
   Scenario: Check Packages in Test-Channel-x86_64
     Given I am authorized as "admin" with password "admin"
