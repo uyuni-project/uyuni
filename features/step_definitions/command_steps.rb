@@ -94,6 +94,7 @@ end
 
 Then(/^I execute spacewalk-debug on the server$/) do
    out, _local, _remote, _code = $server.test_and_store_results_together("spacewalk-debug", "root", 600)
+   step %(I copy "/tmp/spacewalk-debug.tar.bz2")
 end
 
 When(/^I copy "([^"]*)"$/) do |arg1|
