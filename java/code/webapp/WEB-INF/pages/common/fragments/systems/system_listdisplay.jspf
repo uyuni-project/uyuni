@@ -26,7 +26,8 @@
         <rl:decorator name="ElaborationDecorator"/>
         <rl:decorator name="SystemIconDecorator"/>
         <rl:decorator name="PageSizeDecorator"/>
-        <c:if test = "${empty noAddToSsm}">
+
+        <c:if test = "${empty noAddToSsm && not empty notSelectable}">
           <rl:decorator name="AddToSsmDecorator" />
         </c:if>
 
