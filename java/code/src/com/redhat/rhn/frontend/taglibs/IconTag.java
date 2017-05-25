@@ -137,6 +137,7 @@ public class IconTag extends TagSupport {
         icons.put("nav-up", "fa fa-caret-up");
         icons.put("repo-sync", "fa fa-refresh");
         icons.put("repo-schedule-sync", "fa fa-calendar");
+        icons.put("scap-nochange", "fa fa-dot-circle-o fa-1-5x text-info");
         icons.put("setup-wizard-creds-edit", "fa fa-pencil");
         icons.put("setup-wizard-creds-failed", "fa fa-times-circle-o text-danger");
         icons.put("setup-wizard-creds-make-primary", "fa fa-star-o text-starred");
@@ -160,9 +161,6 @@ public class IconTag extends TagSupport {
         icons.put("system-virt-guest", "fa fa-1-5x spacewalk-icon-virtual-guest");
         icons.put("system-virt-host", "fa fa-1-5x spacewalk-icon-virtual-host");
         icons.put("system-warn", "fa fa-exclamation-triangle fa-1-5x text-warning");
-        icons.put("repo-sync", "fa fa-refresh");
-        icons.put("repo-schedule-sync", "fa fa-calendar");
-        icons.put("scap-nochange", "fa fa-dot-circle-o fa-1-5x text-info");
     }
 
     /**
