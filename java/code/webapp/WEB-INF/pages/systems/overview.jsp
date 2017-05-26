@@ -12,6 +12,7 @@
 <rhn:toolbar base="h1" icon="header-system" imgAlt="overview.jsp.alt"
  creationUrl="/rhn/manager/minions/bootstrap"
  creationType="systems"
+ creationAcl="user_role(org_admin)"
  helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#ref.webui.systems.overview">
   <bean:message key="overview.jsp.header"/>
 </rhn:toolbar>
