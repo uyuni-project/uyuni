@@ -36,8 +36,7 @@ Feature: Use salt formulas
 
   Scenario: Apply the parametrized formula via the highstate
      Given I am on the Systems overview page of this "sle-minion"
-     When I follow "Formulas" in the content area
-     And I follow "Formulas" in the content area
+     And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
      And I wait for "40" seconds
@@ -61,8 +60,7 @@ Feature: Use salt formulas
 
   Scenario: Apply the reset formula via the highstate
      Given I am on the Systems overview page of this "sle-minion"
-     When I follow "Formulas" in the content area
-     And I follow "Formulas" in the content area
+     And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
      And I wait for "40" seconds
