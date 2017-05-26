@@ -20,7 +20,8 @@ const msgMap = {
   "not_found": t("Image cannot be found."),
   "delete_success": t("Image has been deleted."),
   "delete_success_p": t("Images have been deleted."),
-  "inspect_scheduled": t("Image inspect has been rescheduled.")
+  "inspect_scheduled": t("Image inspect has been scheduled."),
+  "build_scheduled": t("Image build has been scheduled.")
 };
 
 const hashUrlRegex = /^#\/([^\/]*)\/(\d*)$/;
@@ -39,7 +40,8 @@ class ImageView extends React.Component {
 
   constructor(props) {
     super(props);
-    ["reloadData", "handleBackAction", "handleDetailsAction", "deleteImages", "inspectImage"]
+    ["reloadData", "handleBackAction", "handleDetailsAction", "deleteImages",
+        "inspectImage", "buildImage"]
             .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
@@ -150,6 +152,28 @@ class ImageView extends React.Component {
     }).promise;
   }
 
+  buildImage(profile, version, host, earliest) {
+    return Network.post("/rhn/manager/api/cm/build/" + profile,
+            JSON.stringify({version: version, buildHostId: host, earliest: earliest}),
+            "application/json").promise.then(data => {
+        if (data.success) {
+            this.setState({
+                messages: <Messages items={data.messages.map(msg => {
+                    return {severity: "info", text: msgMap[msg]};
+                })}/>
+            });
+            //The image id is changed so this page is not available anymore.
+            this.handleBackAction();
+        } else {
+            this.setState({
+                messages: <Messages items={state.messages.map(msg => {
+                    return {severity: "error", text: msgMap[msg]};
+                })}/>
+            });
+        }
+    }).promise;
+  }
+
   render() {
     const panelButtons = <div className="pull-right btn-group">
       { isAdmin && this.state.selectedCount > 0 &&
@@ -164,9 +188,11 @@ class ImageView extends React.Component {
         <Panel title={this.state.selected ? this.state.selected.name : t("Images")} icon={this.state.selected ? "fa-hdd-o" : "fa-list"} button={ panelButtons }>
           {this.state.messages}
           { this.state.selected ?
-              <ImageViewDetails data={this.state.selected} onTabChange={() => this.updateView(getHashId(), getHashTab())} onCancel={this.handleBackAction} onInspect={this.inspectImage.bind(this)}/>
+              <ImageViewDetails data={this.state.selected} onTabChange={() => this.updateView(getHashId(), getHashTab())}
+                  onCancel={this.handleBackAction} onInspect={this.inspectImage} onBuild={this.buildImage}/>
           :
-              <ImageViewList data={this.state.images} onSelectCount={(c) => this.setState({selectedCount: c})} onSelect={this.handleDetailsAction} onDelete={this.deleteImages}/>
+              <ImageViewList data={this.state.images} onSelectCount={(c) => this.setState({selectedCount: c})}
+                  onSelect={this.handleDetailsAction} onDelete={this.deleteImages}/>
           }
         </Panel>
 
@@ -381,7 +407,7 @@ class ImageViewDetails extends React.Component {
                 initialActiveTabHash={window.location.hash}
                 onTabHashChange={this.onTabChange}
                 tabs={[
-                    <ImageViewOverview data={data} onInspect={this.props.onInspect}/>,
+                    <ImageViewOverview data={data} onBuild={this.props.onBuild} onInspect={this.props.onInspect}/>,
                     <ImageViewPatches data={data}/>,
                     <ImageViewPackages data={data}/>
                     ]}
