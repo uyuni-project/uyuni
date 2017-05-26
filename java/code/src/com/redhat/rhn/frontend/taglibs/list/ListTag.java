@@ -407,17 +407,9 @@ public class ListTag extends BodyTagSupport {
         ListTagUtil.setCurrentCommand(pageContext, getUniqueName(),
             ListCommand.TBL_ADDONS);
 
-        StringWriter topAlphaBarContent = new StringWriter();
         StringWriter topPaginationContent = new StringWriter();
         StringWriter topAddonsContent = new StringWriter();
         StringWriter topExtraContent = new StringWriter();
-
-        pageContext.pushBody(topAlphaBarContent);
-        if (!manip.isListEmpty() && !StringUtils.isBlank(alphaBarColumn)) {
-            AlphaBarHelper.getInstance().writeAlphaBar(pageContext,
-                    manip.getAlphaBarIndex(), getUniqueName());
-        }
-        pageContext.popBody();
 
         pageContext.pushBody(topPaginationContent);
         if (!isEmpty()) {
@@ -440,17 +432,12 @@ public class ListTag extends BodyTagSupport {
         pageContext.popBody();
 
         int topContentLength = topAddonsContent.getBuffer().length() +
-                topAlphaBarContent.getBuffer().length() +
                 topPaginationContent.getBuffer().length() +
                 topExtraContent.getBuffer().length();
 
         if (topContentLength > 0) {
             ListTagUtil.write(pageContext,
                     "<div class=\"spacewalk-list-top-addons\">");
-            ListTagUtil.write(pageContext,
-                    "<div class=\"spacewalk-list-alphabar\">");
-            ListTagUtil.write(pageContext, topAlphaBarContent.toString());
-            ListTagUtil.write(pageContext, "</div>");
             ListTagUtil.write(pageContext,
                     "<div class=\"spacewalk-list-pagination move-to-fixed-toolbar\">");
             ListTagUtil.write(pageContext, topPaginationContent.toString());
@@ -470,9 +457,17 @@ public class ListTag extends BodyTagSupport {
         // know if there will be content or not, but we want to avoid
         // writing the head tag at all if there is none, so we push a
         // buffer into the stack, and empty it later.
+        StringWriter headAlphaBarContent = new StringWriter();
         StringWriter headAddons = new StringWriter();
         StringWriter headFilterContent = new StringWriter();
         StringWriter headExtraContent = new StringWriter();
+
+        pageContext.pushBody(headAlphaBarContent);
+        if (!manip.isListEmpty() && !StringUtils.isBlank(alphaBarColumn)) {
+            AlphaBarHelper.getInstance().writeAlphaBar(pageContext,
+                    manip.getAlphaBarIndex(), getUniqueName());
+        }
+        pageContext.popBody();
 
         pageContext.pushBody(headAddons);
         if (!isEmpty()) {
@@ -498,6 +493,7 @@ public class ListTag extends BodyTagSupport {
         pageContext.popBody();
 
         int headContentLength = headFilterContent.getBuffer().length() +
+                headAlphaBarContent.getBuffer().length() +
                 headAddons.getBuffer().length() +
                 headExtraContent.getBuffer().length();
         if (!StringUtils.isBlank(title)) {
@@ -518,6 +514,11 @@ public class ListTag extends BodyTagSupport {
 
             ListTagUtil.write(pageContext,
                     "<div class=\"spacewalk-list-head-addons\">");
+
+            ListTagUtil.write(pageContext,
+                    "<div class=\"spacewalk-list-alphabar\">");
+            ListTagUtil.write(pageContext, headAlphaBarContent.toString());
+            ListTagUtil.write(pageContext, "</div>");
 
             ListTagUtil.write(pageContext,
                     "<div class=\"spacewalk-list-filter\">");
