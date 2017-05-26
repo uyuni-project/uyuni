@@ -159,7 +159,7 @@ function columnHeight() {
   const footerHeight = $('.login-page footer').outerHeight();
   const docHeight = $(document).height();
   // Column heights should equal the document height minus the header height and footer height
-  aside.css('min-height', docHeight - headerHeight - footerHeight);
+  aside.css('min-height', docHeight - headerHeight - footerHeight + 1);
   // responsive rule: the aside block is layered on top of section,
   // and when it is shown, its height increase the docHeight
   const asideHeight = aside.is(':hidden') ? 0 : aside.outerHeight();
