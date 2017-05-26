@@ -82,12 +82,14 @@ Feature: Explore the Errata page
 
   Scenario: View bugfix errata
     Given I am on the errata page
+    And I follow "Channels > All" in the left menu
     And I follow "Bugfix Patches" in the content area
     Then I should see a "Test Erratum" text
 
   Scenario: View erratum
     Given I am on the errata page
     And I follow "Channels > All" in the left menu
+    And I follow "Bugfix Patches" in the content area
     And I follow "Test Advisory"
     Then I should see a "Test Erratum" text
     And I should see a "test@test.org" text
