@@ -82,6 +82,7 @@ $myhostname = host
 
 ENV['LANG'] = "en_US.UTF-8"
 ENV['IGNORECERT'] = "1"
+$stdout.sync = true
 
 Capybara.default_wait_time = 10
 
