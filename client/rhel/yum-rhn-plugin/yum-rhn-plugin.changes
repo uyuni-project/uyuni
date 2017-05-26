@@ -19,6 +19,7 @@ Tue Mar 07 15:59:32 CET 2017 - mc@suse.de
 - pass retry_no_cache option to urlgrabber
 - use yum's lock to prevent concurent yum & rhn_check actions
 - request failed: error reading the headers (CVE-2016-8743)
+  (bsc#1030919, bsc#1030827)
 
 -------------------------------------------------------------------
 Wed Jan 11 16:50:07 CET 2017 - michele.bologna@suse.com
