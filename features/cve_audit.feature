@@ -85,7 +85,7 @@ Feature: CVE Audit
 
   Scenario: after applying patches (xmlrpc test)
     Given I am on the Systems overview page of this "sle-client"
-    And I follow "Software"
+    And I follow "Software" in the content area
     And I follow "Patches" in the content area
     And I check "milkyway-dummy-2345" in the list
     And I click on "Apply Patches"
