@@ -38,7 +38,7 @@
 - features/nagios.feature
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
-- features/powermanagement.feature
+# - features/powermanagement.feature
 - features/CVE_ID_new_syntax.feature
 - features/datepicker.feature
 # - features/migrate_client_to_minion.feature
