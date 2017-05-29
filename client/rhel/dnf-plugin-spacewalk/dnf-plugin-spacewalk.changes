@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May 29 15:36:02 CEST 2017 - mc@suse.de
+
+- version 2.7.4.2-1
+- actually fix duplicated channel even for dnf 1.X
+- fixed plugin initialization in dnf 2.X
+
+-------------------------------------------------------------------
 Mon Mar 06 16:32:03 CET 2017 - mc@suse.de
 
 - version 2.7.4.1-1
