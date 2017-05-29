@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon May 29 16:08:58 CEST 2017 - mc@suse.de
+
+- version 2.7.73.4-1
+- move to different file to not conflict with web.default_mail_from
+  in Java code
+- don't trim channel content if there is major sync error in any
+  repository
+- disable pylint on Fedora 26 because it's python3
+- rhn-charsets is meant to be run only under root user
+- hashlib is included in python since RHEL6
+- Unable to run cdn-sync if older channels do not exist anymore
+
+-------------------------------------------------------------------
 Tue May 23 08:55:07 CEST 2017 - mc@suse.de
 
 - version 2.7.73.3-1
