@@ -97,7 +97,7 @@ function hierarchyView(container, rootIn) {
     // feed simulation with data
     if (simulation != null) {
       // refresh the update section
-      const node = container.selectAll('g')
+      const node = container.selectAll('g.node')
         .data(nodes, function(d) { return d.id; })
       const link = container.selectAll('line.link')
         .data(links, d => d.target.id);
