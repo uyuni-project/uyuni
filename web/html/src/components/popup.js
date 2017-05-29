@@ -5,7 +5,7 @@ const React = require("react");
 const PopUp = React.createClass({
     propTypes: {
       id: React.PropTypes.string.isRequired, // the id of the html div tag
-      onClosePopUp: React.PropTypes.func.isRequired, // a callback function with no parameters
+      onClosePopUp: React.PropTypes.func, // a callback function with no parameters
       className: React.PropTypes.string, // the css className for the 'modal-dialog' div
       title: React.PropTypes.string,
       content: React.PropTypes.node, // the body of the popup

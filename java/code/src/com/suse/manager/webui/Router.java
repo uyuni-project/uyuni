@@ -262,10 +262,11 @@ public class Router implements SparkApplication {
         get("/manager/api/cm/imagestores/:id", withUser(ImageStoreController::getSingle));
         get("/manager/api/cm/imagestores/find/:label",
                 withUser(ImageStoreController::getSingleByLabel));
-        post("/manager/api/cm/imagestores", withImageAdmin(ImageStoreController::create));
-        post("/manager/api/cm/imagestores/:id",
+        post("/manager/api/cm/imagestores/create",
+                withImageAdmin(ImageStoreController::create));
+        post("/manager/api/cm/imagestores/update/:id",
                 withImageAdmin(ImageStoreController::update));
-        delete("/manager/api/cm/imagestores/:id",
+        post("/manager/api/cm/imagestores/delete",
                 withImageAdmin(ImageStoreController::delete));
 
         get("/manager/cm/imageprofiles",
@@ -282,11 +283,11 @@ public class Router implements SparkApplication {
                 withUser(ImageProfileController::getSingleByLabel));
         get("/manager/api/cm/imageprofiles/channels/:token",
                 withUser(ImageProfileController::getChannels));
-        post("/manager/api/cm/imageprofiles",
+        post("/manager/api/cm/imageprofiles/create",
                 withImageAdmin(ImageProfileController::create));
-        post("/manager/api/cm/imageprofiles/:id",
+        post("/manager/api/cm/imageprofiles/update/:id",
                 withImageAdmin(ImageProfileController::update));
-        delete("/manager/api/cm/imageprofiles/:id",
+        post("/manager/api/cm/imageprofiles/delete",
                 withImageAdmin(ImageProfileController::delete));
 
         get("/manager/cm/build", withCsrfToken(withUser(ImageBuildController::buildView)),
@@ -309,6 +310,6 @@ public class Router implements SparkApplication {
                 withUser(ImageBuildController::getPackages));
         post("/manager/api/cm/images/inspect/:id",
                 withImageAdmin(ImageBuildController::inspect));
-        delete("/manager/api/cm/images/:id", withImageAdmin(ImageBuildController::delete));
+        post("/manager/api/cm/images/delete", withImageAdmin(ImageBuildController::delete));
     }
 }

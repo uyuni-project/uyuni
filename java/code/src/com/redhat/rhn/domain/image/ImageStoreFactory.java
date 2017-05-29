@@ -180,6 +180,23 @@ public class ImageStoreFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup multiple ImageStores by an id list and organization
+     * @param ids ImageStore Id list
+     * @param org the organization
+     * @return Returns a list of ImageStores with the given ids if they exist
+     * inside the organization
+     */
+    public static List<ImageStore> lookupByIdsAndOrg(List<Long> ids, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageStore> criteria = builder.createQuery(ImageStore.class);
+        Root<ImageStore> root = criteria.from(ImageStore.class);
+        criteria.where(builder.and(
+                root.get("id").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
      * List all ImageStores of the given organization
      * @param org the organization
      * @return Returns a list of ImageStores

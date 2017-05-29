@@ -14,18 +14,20 @@ const ModalButton = require("../components/dialogs").ModalButton;
 
 const msgMap = {
   "not_found": t("Image store cannot be found."),
-  "delete_success": t("Image store has been deleted.")
+  "delete_success": t("Image store has been deleted."),
+  "delete_success_p": t("Image stores have been deleted.")
 };
 
 class ImageStores extends React.Component {
 
   constructor(props) {
     super();
-    ["reloadData", "selectStore", "deleteStore"]
+    ["reloadData", "handleSelectItems", "selectStore", "deleteStores"]
         .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
-      imagestores: []
+      imagestores: [],
+      selectedItems: []
     };
     this.reloadData();
   }
@@ -53,21 +55,26 @@ class ImageStores extends React.Component {
     });
   }
 
+  handleSelectItems(items) {
+    this.setState({
+        selectedItems: items
+    });
+  }
+
   selectStore(row) {
     this.setState({
         selected: row
     });
   }
 
-  deleteStore(row) {
-    const id = row.id;
-    return Network.del("/rhn/manager/api/cm/imagestores/" + id).promise.then(data => {
+  deleteStores(idList) {
+    return Network.post("/rhn/manager/api/cm/imagestores/delete",
+            JSON.stringify(idList), "application/json").promise.then(data => {
         if (data.success) {
             this.setState({
-                messages: <Messages items={data.messages.map(msg => {
-                    return {severity: "success", text: msgMap[msg]};
-                })}/>,
-                imagestores: this.state.imagestores.filter(store => store.id !== id)
+                messages: <Messages items={[{severity: "success", text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]}]}/>,
+                imagestores: this.state.imagestores.filter(store => !idList.includes(store.id)),
+                selectedItems: this.state.selectedItems.filter(item => !idList.includes(item))
             });
         } else {
             this.setState({
@@ -85,6 +92,10 @@ class ImageStores extends React.Component {
 
   render() {
     const panelButtons = <div className="pull-right btn-group">
+      { isAdmin && this.state.selectedItems.length > 0 &&
+          <ModalButton id="delete-selected" icon="fa-trash" className="btn-default" text={t("Delete")}
+              title={t("Delete selected")} target="delete-selected-modal"/>
+      }
       <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
       { isAdmin &&
           <LinkButton id="create" icon="fa-plus" className="btn-default" title={t("Create")} text={t("Create")} href="/rhn/manager/cm/imagestores/create" />
@@ -102,7 +113,10 @@ class ImageStores extends React.Component {
               initialItemsPerPage={userPrefPageSize}
               searchField={
                   <SearchField filter={this.searchData} criteria={""} />
-              }>
+              }
+              selectable
+              selectedItems={this.state.selectedItems}
+              onSelect={this.handleSelectItems}>
             <Column
               columnKey="label"
               width="50%"
@@ -145,13 +159,21 @@ class ImageStores extends React.Component {
             }
           </Table>
         </Panel>
-
         <DeleteDialog id="delete-modal"
           title={t("Delete Store")}
           content={<span>{t("Are you sure you want to delete store")} <strong>{this.state.selected ? this.state.selected.label : ''}</strong>?</span>}
           item={this.state.selected}
-          onConfirm={this.deleteStore}
+          onConfirm={(item) => this.deleteStores([item.id])}
           onClosePopUp={() => this.selectStore(undefined)}
+        />
+        <DeleteDialog id="delete-selected-modal"
+          title={t("Delete Selected Store(s)")}
+          content={
+            <span>
+                {this.state.selectedItems.length == 1 ? t("Are you sure you want to delete the selected store?") : t("Are you sure you want to delete selected stores? ({0} stores selected)", this.state.selectedItems.length)}
+            </span>
+          }
+          onConfirm={() => this.deleteStores(this.state.selectedItems)}
         />
       </span>
     );
