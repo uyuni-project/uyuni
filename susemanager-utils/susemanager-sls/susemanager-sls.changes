@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Mon May 29 15:53:51 CEST 2017 - mc@suse.de
+
+- version 3.1.7-1
+- fix yum plugin when installing patches on RHEL6 (bsc#1039294)
+- Remove suseRegisterInfo in a separate yum transaction so that
+  it's not called by yum plugin (bsc#1038732)
+- Refactoring formulas in suma_minion external pillar (bsc#1033825)
+- configure mime also during bootstrapping
+- add missing file name attr to yum plugin state
+- Encode formula to str (bsc#1033825)
+- update yum on RedHat like systems
+- update basic packages when bootstrapping with salt
+- use include instead of state.apply channels to fix salt-ssh issue
+  (bsc#1036268)
+
+-------------------------------------------------------------------
 Wed May 03 15:55:46 CEST 2017 - michele.bologna@suse.com
 
 - version 3.1.6-1
