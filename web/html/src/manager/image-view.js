@@ -18,8 +18,10 @@ const DateTime = require("../components/datetime").DateTime;
 
 const msgMap = {
   "not_found": t("Image cannot be found."),
-  "delete_success": t("Image info has been deleted."),
-  "inspect_scheduled": t("Image inspect has been rescheduled.")
+  "delete_success": t("Image has been deleted."),
+  "delete_success_p": t("Images have been deleted."),
+  "inspect_scheduled": t("Image inspect has been scheduled."),
+  "build_scheduled": t("Image build has been scheduled.")
 };
 
 const hashUrlRegex = /^#\/([^\/]*)\/(\d*)$/;
@@ -38,11 +40,13 @@ class ImageView extends React.Component {
 
   constructor(props) {
     super(props);
-    ["reloadData", "handleBackAction", "handleDetailsAction", "deleteImage", "inspectImage"]
-        .forEach(method => this[method] = this[method].bind(this));
+    ["reloadData", "handleBackAction", "handleDetailsAction", "deleteImages",
+        "inspectImage", "buildImage"]
+            .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
-      images: []
+      images: [],
+      selectedItems: []
     };
 
     this.updateView(getHashId(), getHashTab());
@@ -108,15 +112,14 @@ class ImageView extends React.Component {
     return Network.get(url).promise;
   }
 
-  deleteImage(row) {
-    const id = row.id;
-    return Network.del("/rhn/manager/api/cm/images/" + id).promise.then(data => {
+  deleteImages(idList) {
+    return Network.post("/rhn/manager/api/cm/images/delete",
+            JSON.stringify(idList), "application/json").promise.then(data => {
         if (data.success) {
             this.setState({
-                messages: <Messages items={data.messages.map(msg => {
-                    return {severity: "success", text: msgMap[msg]};
-                })}/>,
-                images: this.state.images.filter(img => img.id !== id)
+                messages: <Messages items={[{severity: "success", text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]}]}/>,
+                images: this.state.images.filter(img => !idList.includes(img.id)),
+                selectedItems: this.state.selectedItems.filter(item => !idList.includes(item))
             });
         } else {
             this.setState({
@@ -149,8 +152,34 @@ class ImageView extends React.Component {
     }).promise;
   }
 
+  buildImage(profile, version, host, earliest) {
+    return Network.post("/rhn/manager/api/cm/build/" + profile,
+            JSON.stringify({version: version, buildHostId: host, earliest: earliest}),
+            "application/json").promise.then(data => {
+        if (data.success) {
+            this.setState({
+                messages: <Messages items={data.messages.map(msg => {
+                    return {severity: "info", text: msgMap[msg]};
+                })}/>
+            });
+            //The image id is changed so this page is not available anymore.
+            this.handleBackAction();
+        } else {
+            this.setState({
+                messages: <Messages items={state.messages.map(msg => {
+                    return {severity: "error", text: msgMap[msg]};
+                })}/>
+            });
+        }
+    }).promise;
+  }
+
   render() {
     const panelButtons = <div className="pull-right btn-group">
+      { isAdmin && this.state.selectedCount > 0 &&
+          <ModalButton id="delete-selected" icon="fa-trash" className="btn-default" text={t("Delete")}
+              title={t("Delete selected")} target="delete-selected-modal"/>
+      }
       <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
     </div>;
 
@@ -159,9 +188,11 @@ class ImageView extends React.Component {
         <Panel title={this.state.selected ? this.state.selected.name : t("Images")} icon={this.state.selected ? "fa-hdd-o" : "fa-list"} button={ panelButtons }>
           {this.state.messages}
           { this.state.selected ?
-              <ImageViewDetails data={this.state.selected} onTabChange={() => this.updateView(getHashId(), getHashTab())} onCancel={this.handleBackAction} onInspect={this.inspectImage.bind(this)}/>
+              <ImageViewDetails data={this.state.selected} onTabChange={() => this.updateView(getHashId(), getHashTab())}
+                  onCancel={this.handleBackAction} onInspect={this.inspectImage} onBuild={this.buildImage}/>
           :
-              <ImageViewList data={this.state.images} onSelect={this.handleDetailsAction} onDelete={this.deleteImage}/>
+              <ImageViewList data={this.state.images} onSelectCount={(c) => this.setState({selectedCount: c})}
+                  onSelect={this.handleDetailsAction} onDelete={this.deleteImages}/>
           }
         </Panel>
 
@@ -174,8 +205,11 @@ class ImageViewList extends React.Component {
     constructor(props) {
         super(props);
 
-        ["selectImage"].forEach(method => this[method] = this[method].bind(this));
-        this.state = {};
+        ["selectImage", "handleSelectItems"].forEach(method => this[method] = this[method].bind(this));
+        this.state = {
+          selectedItems: []
+        };
+        this.props.onSelectCount(0);
     }
 
     searchData(row, criteria) {
@@ -195,6 +229,13 @@ class ImageViewList extends React.Component {
         this.setState({
             selected: row
         });
+    }
+
+    handleSelectItems(items) {
+        this.setState({
+            selectedItems: items
+        });
+        this.props.onSelectCount(items.length);
     }
 
     renderUpdatesIcon(row) {
@@ -238,11 +279,14 @@ class ImageViewList extends React.Component {
               data={this.props.data}
               identifier={img => img.id}
               initialSortColumnKey="modified"
-              initialSortDirection="-1"
+              initialSortDirection={-1}
               initialItemsPerPage={userPrefPageSize}
               searchField={
                   <SearchField filter={this.searchData} criteria={""} />
-              }>
+              }
+              selectable
+              selectedItems={this.state.selectedItems}
+              onSelect={this.handleSelectItems}>
             <Column
               columnKey="name"
               comparator={Utils.sortByText}
@@ -287,6 +331,8 @@ class ImageViewList extends React.Component {
             />
             <Column
               width="10%"
+              columnClass="text-right"
+              headerClass="text-right"
               header={t('Actions')}
               cell={ (row, criteria) => {
                 return (<div className="btn-group">
@@ -314,8 +360,17 @@ class ImageViewList extends React.Component {
             title={t("Delete Image")}
             content={<span>{t("Are you sure you want to delete image")} <strong>{this.state.selected ? (this.state.selected.name + " (" + this.state.selected.version + ")") : ''}</strong>?</span>}
             item={this.state.selected}
-            onConfirm={this.props.onDelete}
+            onConfirm={(item) => this.props.onDelete([item.id])}
             onClosePopUp={() => this.selectImage(undefined)}
+          />
+          <DeleteDialog id="delete-selected-modal"
+            title={t("Delete Selected Image(s)")}
+            content={
+              <span>
+                  {this.state.selectedItems.length == 1 ? t("Are you sure you want to delete the selected image?") : t("Are you sure you want to delete selected images? ({0} images selected)", this.state.selectedItems.length)}
+              </span>
+            }
+            onConfirm={() => this.props.onDelete(this.state.selectedItems)}
           />
         </div>
         );
@@ -352,7 +407,7 @@ class ImageViewDetails extends React.Component {
                 initialActiveTabHash={window.location.hash}
                 onTabHashChange={this.onTabChange}
                 tabs={[
-                    <ImageViewOverview data={data} onInspect={this.props.onInspect}/>,
+                    <ImageViewOverview data={data} onBuild={this.props.onBuild} onInspect={this.props.onInspect}/>,
                     <ImageViewPatches data={data}/>,
                     <ImageViewPackages data={data}/>
                     ]}

@@ -70,14 +70,14 @@ function DeleteDialog(props) {
             content={props.content}
             title={props.title}
             footer={buttons}
-            onClosePopUp={() => props.onClosePopUp(props.item)}
+            onClosePopUp={() => props.onClosePopUp && props.onClosePopUp(props.item)}
         />
     );
 }
 
 DeleteDialog.propTypes = {
     id: React.PropTypes.string.isRequired,
-    onClosePopUp: React.PropTypes.func.isRequired,
+    onClosePopUp: React.PropTypes.func,
     className: React.PropTypes.string,
     title: React.PropTypes.string,
     content: React.PropTypes.node,

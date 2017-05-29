@@ -246,6 +246,23 @@ public class ImageInfoFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup multiple images by an id list and organization
+     * @param ids image info id list
+     * @param org the organization
+     * @return Returns a list of images with the given ids if they exist
+     * inside the organization
+     */
+    public static List<ImageInfo> lookupByIdsAndOrg(List<Long> ids, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageInfo> criteria = builder.createQuery(ImageInfo.class);
+        Root<ImageInfo> root = criteria.from(ImageInfo.class);
+        criteria.where(builder.and(
+                root.get("id").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
      * Lookup an image overview by id and organization
      * @param id the id
      * @param org the organization

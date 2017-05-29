@@ -7,6 +7,7 @@ const ModalButton = require("../components/dialogs").ModalButton;
 const PopUp = require("../components/popup").PopUp;
 const Input = require("../components/input");
 const Functions = require("../utils/functions");
+const Network = require("../utils/network");
 
 function BootstrapPanel(props) {
     return (
@@ -229,23 +230,6 @@ class ImageViewOverview extends React.Component {
         return this.props.data.inspectAction && this.props.data.inspectAction.status === 2;
     }
 
-    getRescheduleLink() {
-        const data = this.props.data;
-
-        const params = {
-            host: data.buildServer ? data.buildServer.id : undefined,
-            profile: data.profile ? data.profile.id : undefined,
-            version: data.version ? encodeURIComponent(data.version) : undefined
-        }
-
-        const loc = "/rhn/manager/cm/build?" + (
-            Object.keys(params).filter(k => params[k] !== undefined)
-                    .map(key => key + '=' + params[key]).join('&')
-        );
-
-        return loc;
-    }
-
     render() {
         const data = this.props.data;
         return (
@@ -276,12 +260,12 @@ class ImageViewOverview extends React.Component {
                         }
                         { isAdmin &&
                         <div className="btn-group pull-right">
-                            <LinkButton
-                                text={t("Rebuild")}
-                                icon="fa-cogs"
-                                title={t("Reschedule the build")}
-                                className="btn-default btn-xs"
-                                href={this.getRescheduleLink()}
+                            <ModalButton
+                              className="btn-default btn-xs"
+                              text={t("Rebuild")}
+                              title={t("Reschedule the build")}
+                              icon="fa-cogs"
+                              target="build-modal"
                             />
                             { this.hasBuilt() &&
                             <ModalButton
@@ -306,8 +290,68 @@ class ImageViewOverview extends React.Component {
                     </div>
                 </div>
             }
+            <BuildDialog data={data} onBuild={this.props.onBuild}/>
             <InspectDialog data={data} onInspect={this.props.onInspect}/>
             </div>
+        );
+    }
+}
+
+class BuildDialog extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            model: {
+                earliest: Functions.Utils.dateWithTimezone(localTime)
+            }
+        };
+    }
+
+    onChange(model) {
+        this.setState({
+            model: model
+        });
+    }
+
+    render() {
+        const buttons = <div>
+            <Button
+                className="btn-success"
+                text={t("Build")}
+                title={t("Schedule build")}
+                icon="fa-cogs"
+                handler={() => {
+                    if(this.props.onBuild) this.props.onBuild(this.props.data.profile.id, this.props.data.version, this.props.data.buildServer.id, this.state.model.earliest);
+                    $("#build-modal").modal('hide');
+                }}
+            />
+            <Button
+                className="btn-default"
+                text={t("Cancel")}
+                title={t("Cancel")}
+                icon="fa-close"
+                handler={() => {
+                    $("#build-modal").modal('hide');
+                }}
+            />
+        </div>;
+
+        const form =
+            <div className="row clearfix">
+                <p>Schedule a rebuild for image: <strong>{this.props.data.name + ":" + this.props.data.version}</strong> on <strong>{this.props.data.buildServer.name}</strong></p>
+                <Input.Form model={this.state.model} className="image-build-form"
+                        onChange={this.onChange.bind(this)} divClass="col-md-12">
+                    <Input.DateTime name="earliest" required timezone={timezone} />
+                </Input.Form>
+            </div>
+
+        return (
+            <PopUp
+                id="build-modal"
+                content={form}
+                title={t("Rebuild Image")}
+                footer={buttons}
+            />
         );
     }
 }
@@ -353,7 +397,7 @@ class InspectDialog extends React.Component {
 
         const form =
             <div className="row clearfix">
-                <p>Schedule an inspect for image: <strong>{this.props.data.name + ":" + this.props.data.version}</strong></p>
+                <p>Schedule an inspect for image: <strong>{this.props.data.name + ":" + this.props.data.version}</strong> on <strong>{this.props.data.buildServer.name}</strong></p>
                 <Input.Form model={this.state.model} className="image-inspect-form"
                         onChange={this.onChange.bind(this)} divClass="col-md-12">
                     <Input.DateTime name="earliest" required timezone={timezone} />

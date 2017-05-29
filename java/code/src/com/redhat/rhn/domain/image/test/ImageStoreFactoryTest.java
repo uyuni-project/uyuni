@@ -8,6 +8,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,6 +99,38 @@ public class ImageStoreFactoryTest extends BaseTestCaseWithUser {
 
         lookup = ImageStoreFactory.lookupByIdAndOrg(store.getId(), org);
         assertFalse(lookup.isPresent());
+    }
+
+    public void testLookupByIdsAndOrg() throws Exception {
+        ImageStore store1 = createImageStore("mystore1", user);
+        ImageStore store2 = createImageStore("mystore2", user);
+        ImageStore store3 = createImageStore("mystore3", user);
+
+        List<Long> ids = new ArrayList<>();
+        ids.add(store1.getId());
+        ids.add(store2.getId());
+
+        List<ImageStore> lookup =
+                ImageStoreFactory.lookupByIdsAndOrg(ids, user.getOrg());
+        assertEquals(2, lookup.size());
+        assertTrue(lookup.stream().filter(store1::equals).findFirst().isPresent());
+        assertTrue(lookup.stream().filter(store2::equals).findFirst().isPresent());
+        assertFalse(lookup.stream().filter(store3::equals).findFirst().isPresent());
+
+        Org org = OrgFactory.createOrg();
+        org.setName("foreign org");
+        org = OrgFactory.save(org);
+
+        lookup = ImageStoreFactory.lookupByIdsAndOrg(ids, org);
+        assertEquals(0, lookup.size());
+
+        ids.clear();
+        ids.add(store1.getId());
+        ids.add(100L);
+        assertFalse(ImageStoreFactory.lookupById(100L).isPresent());
+        lookup = ImageStoreFactory.lookupByIdsAndOrg(ids, user.getOrg());
+        assertEquals(1, lookup.size());
+        assertEquals(store1, lookup.get(0));
     }
 
     public void testLookupImageStore() throws Exception {

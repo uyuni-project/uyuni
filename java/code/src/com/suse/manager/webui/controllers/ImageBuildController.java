@@ -385,17 +385,15 @@ public class ImageBuildController {
      * @return the result JSON object
      */
     public static Object delete(Request req, Response res, User user) {
-        Long id = Long.parseLong(req.params("id"));
+        List<Long> ids = GSON.fromJson(req.body(), List.class);
 
-        JsonResult result =
-                ImageInfoFactory.lookupByIdAndOrg(id, user.getOrg()).map(info -> {
-                    ImageInfoFactory.delete(info);
-                    return new JsonResult(true,
-                            Collections.singletonList("delete_success"));
-                }).orElseGet(() -> new JsonResult(false,
-                        Collections.singletonList("not_found")));
+        List<ImageInfo> images = ImageInfoFactory.lookupByIdsAndOrg(ids, user.getOrg());
+        if (images.size() < ids.size()) {
+            return json(res, new JsonResult<>(false, "not_found"));
+        }
 
-        return json(res, result);
+        images.forEach(ImageInfoFactory::delete);
+        return json(res, new JsonResult<>(true, images.size()));
     }
 
     private static JsonObject getImageInfoSummary(ImageOverview imageOverview) {
