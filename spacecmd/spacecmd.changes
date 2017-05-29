@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon May 29 15:38:31 CEST 2017 - mc@suse.de
+
+- version 2.7.8.4-1
+- Remove debug logging from softwarechannel_sync function
+
+-------------------------------------------------------------------
 Tue May 23 07:59:56 CEST 2017 - mc@suse.de
 
 - version 2.7.8.3-1
