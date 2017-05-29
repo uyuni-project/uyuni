@@ -9,7 +9,7 @@ def config_hook(conduit):
     config.RepoConf.susemanager_token = config.Option()
 
 
-def prereposetup_hook(conduit):
+def init_hook(conduit):
     for repo in conduit.getRepos().listEnabled():
         susemanager_token = getattr(repo, 'susemanager_token', None)
         if susemanager_token:
