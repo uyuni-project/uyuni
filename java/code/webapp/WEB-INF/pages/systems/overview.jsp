@@ -10,7 +10,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-system" imgAlt="overview.jsp.alt"
- creationUrl="/rhn/manager/minions/bootstrap"
+ creationUrl="/rhn/manager/systems/bootstrap"
  creationType="systems"
  creationAcl="user_role(org_admin)"
  helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#ref.webui.systems.overview">
