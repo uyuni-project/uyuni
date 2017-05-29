@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May 29 15:40:35 CEST 2017 - mc@suse.de
+
+- version 5.5.104.2-1
+- fixed pylint warnings disabled python3 pylint on Fedora 26+ for now
+- removed outdated solaris2mpm script
+
+-------------------------------------------------------------------
 Fri Mar 31 09:59:14 CEST 2017 - mc@suse.de
 
 - version 5.5.104.1-1
