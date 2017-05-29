@@ -1,4 +1,31 @@
 -------------------------------------------------------------------
+Mon May 29 17:06:57 CEST 2017 - mc@suse.de
+
+- version 2.7.1.8-1
+- Fix: only select elemens with the node class in simulation
+- Slow down the visualization simulation
+- Cache the computed positions of nodes and use them to set their initial
+  position
+- Fix bottom alignment of aside and footer
+- Handle rebuild in a popup dialog
+- Add select boxes and 'Delete' button to image, store, profile list pages
+- Fix highstate.js
+- Remove responsive-tab.js script from the 'Setup Wizard' page
+- Move 'Clear Menu' button next to the search input
+- Rename 'Onboarding' to 'Keys'
+- Rename 'Schedule no sooner than' to 'Earliest' and 'Add to Action Chain' to
+  'Add to'
+- Remove 'Apply Highstate' button from Formulas pages
+- Add support for multiple servers in the highstate preview page
+- Redesign Highstate preview page
+- Add inspect status and reinspect button to image overview page
+- Bounce back from the shortcut links in content management pages
+- Add getQueryStringValue and urlBounce utility functions for JS
+- Ensure proper authentication for content management (bsc#1036320)
+- Fix toolbar elements for formula selection page
+- change version to 3.1.0
+
+-------------------------------------------------------------------
 Wed May 03 16:46:43 CEST 2017 - michele.bologna@suse.com
 
 - version 2.7.1.7-1
