@@ -128,7 +128,7 @@ function hierarchyView(container, rootIn) {
           .attr('y2', s => s.target.y);
       }
       );
-      simulation.alpha(1).restart();
+      simulation.alpha(0.1).restart();
     }
   }
 
