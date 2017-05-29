@@ -23,12 +23,24 @@ function hierarchyView(container, rootIn) {
   let onNodeClick = () => {};
   let captionFunction = d => d.data.name;
 
+  // cache of x,y coordinates per object id
+  // this improves the positioning of the nodes that were hidden and then shown again
+  const positionCache = {};
+
   function my() {
   }
 
   my.refresh = function() {
     const nodes = root.descendants();
     const links = root.links();
+
+    nodes.forEach(n => {
+      const cachedPos = positionCache[n.id];
+      if (cachedPos) {
+        n.x = cachedPos[0];
+        n.y = cachedPos[1];
+      }
+    });
 
     const node = container.selectAll('g.node')
       .data(nodes, function(d) { return d.id; });
@@ -99,6 +111,7 @@ function hierarchyView(container, rootIn) {
           } else {
             d.x -= simulation.alpha() * 6;
           }
+          positionCache[d.id] = [d.x, d.y]; // update the position cache
         });
         node
           .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')')
