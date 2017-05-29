@@ -1,4 +1,48 @@
 -------------------------------------------------------------------
+Mon May 29 17:06:01 CEST 2017 - mc@suse.de
+
+- version 2.7.46.2-1
+- Alphabar becomes a dropdown list
+- Move the alphabar into the panel-heading table
+- Do not use AddToSSM button if systems are selectable via checkbox
+- Use a better icon for IIS
+- Allow toggle left menu visibility for any screen-width
+- Add select boxes and 'Delete' button to image, store, profile list pages
+- show bootstrap minion link only if user has org_admin role
+- show permission denied instead of internal server err (bsc#1036335)
+- channel admin should be able to set org user restrictions for null-org channels
+- user permission checked
+- Teach ListPackagesAction and list.jsp about packageChannels
+- CachedStatement: reuse the Connection object for batch updates
+- batch ssm package upgrades if not action chain (bsc#1039030)
+- Allow processing of zypper beacon events in parallel
+- Allow processing of minion start events in parallel
+- Allow multiple registrations in parallel
+- use fallback now time as is without user preferences (bsc#1034465)
+- Fix HTML in External Authentication page
+- reorganize menu
+- Bring back 'Add to SSM' link to System overview page for Salt systems
+- Add Highstate page to SSM and system groups
+- Add support for multiple servers in the highstate preview page
+- Fix race condition for preview websocket messages in remote commands page
+- Enable pkgset beacon for all Suse OS distributions (bsc#1032286)
+- add info about base products to json input for subscription-matcher
+- add product class info to the json input for the subscription-matcher (bsc#1031716)
+- Add inspect status and reinspect button to image overview page
+- change mgrsshtunnel user home to /var/lib/spacewalk
+- Make schedule notification links consistent for actions for a single system (bsc#1039286)
+- Teach Postgres to correctly-unique-ify rhnConfigInfo rows
+- lookup functions should return every minion only one time
+- change contact method for bootstrap script and ssh-push (bsc#1020852)
+- Fix 'Join selected groups' button in Activation Key dialog (bsc#1037912)
+- Ensure proper authentication for content management (bsc#1036320)
+- Hide the "Crashes" column (bsc#1033811)
+- Fix: hide lock for Salt servers (bsc#1032380)
+- Fix action buttons to top for Pending actions delete confirm page, in SSM patch confirm page,
+  Packages list pages and Actions list pages
+- parse old and new return structure of spmigration return event
+
+-------------------------------------------------------------------
 Wed May 03 16:58:35 CEST 2017 - michele.bologna@suse.com
 
 - version 2.7.46.1-1
