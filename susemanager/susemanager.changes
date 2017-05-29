@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon May 29 15:41:25 CEST 2017 - mc@suse.de
+
+- version 3.1.7-1
+- fix documentation URL in setup (bsc#1038468)
+- add openssl to bootstrap repos (bsc#1037828)
+- add some basic packages to RES bootstrap repo (bsc#1037355)
+- add python-backports-ssl_match_hostname to RES7 bootstrap repo (bsc#1038027)
+- add help text for SLP option (bsc#1038417)
+
+-------------------------------------------------------------------
 Wed May 03 16:10:55 CEST 2017 - michele.bologna@suse.com
 
 - version 3.1.6-1
