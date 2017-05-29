@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon May 29 15:07:28 CEST 2017 - mc@suse.de
+
+- version 2.7.0.5-1
+- fix minor typos in bootstrap.sh
+- update openssl on bootstrap (bsc#1037828)
+- setup bootstrap repo also when no packages are missing
+- update important packages before registration (bsc#1037355)
+
+-------------------------------------------------------------------
 Wed May 03 16:17:34 CEST 2017 - michele.bologna@suse.com
 
 - version 2.7.0.4-1
