@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Mon May 29 16:06:25 CEST 2017 - mc@suse.de
+
+- version 3.1.7-1
+- support schema upgrade from 3.0.20 to 3.1
+- add base column to suseProducts
+- add channel_family_id column to suseProducts (bsc#1031716)
+- Add inspect status and reinspect button to image overview page
+- Teach Postgres to correctly-unique-ify rhnConfigInfo rows
+- recreate possible missing data (bsc#1032798)
+- add logging to can_entitle_server function to write out the reason of a
+  failure (bsc#1032798)
+- fix index behaviour on NULL org
+- drop filters while deleting repository
+- postgresql 8.4 doesn't support WITH and DELETE combination
+- remove links between errata and files from different orgs
+- allow sync of the same erratum to more orgs
+
+-------------------------------------------------------------------
 Wed May 03 16:08:05 CEST 2017 - michele.bologna@suse.com
 
 - version 3.1.6-1
