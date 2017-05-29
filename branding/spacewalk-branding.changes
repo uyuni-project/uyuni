@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Mon May 29 16:10:19 CEST 2017 - mc@suse.de
+
+- version 2.7.2.5-1
+- Alphabar becomes a dropdown list
+- Move the alphabar into the panel-heading table
+- Fix bottom alignment of aside and footer
+- Reduce gaps between nav-tab items to fit in a 1024px wide screen
+- Move 'Clear Menu' button next to the search input
+- Rename 'Onboarding' to 'Keys'
+- Rename 'Bare Metal' to 'Unprovisioned'
+- Rename 'Schedule no sooner than' to 'Earliest' and 'Add to Action Chain' to
+  'Add to'
+- Add Highstate page to SSM
+- Add Highstate page to system groups
+- Move to top schedule-options box
+- Allow toggle left menu visibility for any screen-width
+
+-------------------------------------------------------------------
 Wed May 03 16:45:03 CEST 2017 - michele.bologna@suse.com
 
 - version 2.7.2.4-1
