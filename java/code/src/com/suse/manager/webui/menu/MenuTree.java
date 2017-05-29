@@ -290,7 +290,7 @@ public class MenuTree {
                     .addChild(new MenuItem("users.nav.all").withPrimaryUrl("/rhn/users/UserList.do")
                         .withVisibility(adminRoles.get("org"))))
                 .addChild(new MenuItem("System Group Configuration")
-                    .withAltUrl("/rhn/users/SystemGroupConfig.do")
+                    .withPrimaryUrl("/rhn/users/SystemGroupConfig.do")
                     .withAltUrl("/rhn/users/ExtAuthSgMapping.do")
                     .withAltUrl("/rhn/users/ExtAuthSgDetails.do")
                     .withAltUrl("/rhn/users/ExtAuthSgDelete.do")
