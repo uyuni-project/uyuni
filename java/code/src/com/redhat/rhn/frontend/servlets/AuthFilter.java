@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.servlets;
 
 import com.redhat.rhn.common.security.CSRFTokenException;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 
@@ -96,7 +97,17 @@ public class AuthFilter implements Filter {
                     }
                 }
             }
-            chain.doFilter(request, response);
+            try {
+                chain.doFilter(request, response);
+            }
+            catch (PermissionException e) {
+                HttpServletResponse httpResponse = (HttpServletResponse) response;
+                httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                //forward to permissions error page
+                request.setAttribute("error", e);
+                request.getRequestDispatcher("/WEB-INF/pages/common/errors/permission.jsp")
+                        .forward(request, response);
+            }
             authenticationService.refresh((HttpServletRequest) request,
                     (HttpServletResponse) response);
         }
