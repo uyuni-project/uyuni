@@ -67,45 +67,6 @@ public class MinionController {
     }
 
     /**
-     * Handler for accept minion url.
-     *
-     * @param request the request object
-     * @param response the response object
-     * @return dummy string to satisfy spark
-     */
-    public static Object accept(Request request, Response response) {
-        SALT_SERVICE.acceptKey(request.params("id"));
-        response.redirect("/rhn/manager/minions");
-        return "";
-    }
-
-    /**
-     * Handler for delete minion url.
-     *
-     * @param request the request object
-     * @param response the response object
-     * @return dummy string to satisfy spark
-     */
-    public static Object destroy(Request request, Response response) {
-        SALT_SERVICE.deleteKey(request.params("id"));
-        response.redirect("/rhn/manager/minions");
-        return "";
-    }
-
-    /**
-     * Handler for reject minion url.
-     *
-     * @param request the request object
-     * @param response the response object
-     * @return dummy string to satisfy spark
-     */
-    public static Object reject(Request request, Response response) {
-        SALT_SERVICE.rejectKey(request.params("id"));
-        response.redirect("/rhn/manager/minions");
-        return "";
-    }
-
-    /**
      * Handler for the realtime remote commands page.
      *
      * @param request the request object

@@ -20,7 +20,7 @@
           <rhn:require acl="user_role(org_admin)">
             <li class="list-group-item">
               <rhn:icon type="nav-bullet" /> <a
-                href="/rhn/manager/minions">
+                href="/rhn/manager/systems/keys">
                    <bean:message key="yourrhn.jsp.tasks.minions" arg0="${requestScope.amountOfMinions}"/>
               </a>
             </li>

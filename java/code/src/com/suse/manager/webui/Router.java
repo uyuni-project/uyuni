@@ -70,25 +70,25 @@ public class Router implements SparkApplication {
         initContentManagementRoutes(jade);
 
         // Minions
-        get("/manager/minions",
+        get("/manager/systems/keys",
                 withCsrfToken(withUser(MinionController::list)),
                 jade);
-        get("/manager/minions/bootstrap",
+        get("/manager/systems/bootstrap",
                 withCsrfToken(withOrgAdmin(MinionController::bootstrap)),
                 jade);
-        get("/manager/minions/cmd",
+        get("/manager/systems/cmd",
                 withCsrfToken(MinionController::cmd),
                 jade);
-        get("/manager/minions/:id",
+        get("/manager/systems/:id",
                 MinionController::show);
 
         // Minions API
-        post("/manager/api/minions/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
-        post("/manager/api/minions/bootstrapSSH", withOrgAdmin(MinionsAPI::bootstrapSSH));
-        get("/manager/api/minions/keys", withUser(MinionsAPI::listKeys));
-        post("/manager/api/minions/keys/:target/accept", withOrgAdmin(MinionsAPI::accept));
-        post("/manager/api/minions/keys/:target/reject", withOrgAdmin(MinionsAPI::reject));
-        post("/manager/api/minions/keys/:target/delete", withOrgAdmin(MinionsAPI::delete));
+        post("/manager/api/systems/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
+        post("/manager/api/systems/bootstrap-ssh", withOrgAdmin(MinionsAPI::bootstrapSSH));
+        get("/manager/api/systems/keys", withUser(MinionsAPI::listKeys));
+        post("/manager/api/systems/keys/:target/accept", withOrgAdmin(MinionsAPI::accept));
+        post("/manager/api/systems/keys/:target/reject", withOrgAdmin(MinionsAPI::reject));
+        post("/manager/api/systems/keys/:target/delete", withOrgAdmin(MinionsAPI::delete));
 
         // States
         get("/manager/systems/details/packages",

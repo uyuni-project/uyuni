@@ -11,19 +11,19 @@ const Utils = Functions.Utils;
 const {Table, Column, SearchField, Highlight} = require("../components/table");
 
 function listKeys() {
-  return Network.get("/rhn/manager/api/minions/keys").promise;
+  return Network.get("/rhn/manager/api/systems/keys").promise;
 }
 
 function acceptKey(key) {
-  return Network.post("/rhn/manager/api/minions/keys/" + key + "/accept").promise;
+  return Network.post("/rhn/manager/api/systems/keys/" + key + "/accept").promise;
 }
 
 function deleteKey(key) {
-  return Network.post("/rhn/manager/api/minions/keys/" + key + "/delete").promise;
+  return Network.post("/rhn/manager/api/systems/keys/" + key + "/delete").promise;
 }
 
 function rejectKey(key) {
-  return Network.post("/rhn/manager/api/minions/keys/" + key + "/reject").promise;
+  return Network.post("/rhn/manager/api/systems/keys/" + key + "/reject").promise;
 }
 
 function actionsFor(id, state, update, enabled) {
@@ -129,7 +129,7 @@ class KeyManagement extends React.Component {
               cell={ (row, criteria) => {
                 if(typeof row.sid !== 'undefined') {
                   return (
-                    <a href={ "/rhn/manager/minions/" + row.id }>
+                    <a href={ "/rhn/manager/systems/" + row.id }>
                       <Highlight enabled={this.isFiltered(criteria)}
                         text={row.id} highlight={criteria} />
                     </a>
