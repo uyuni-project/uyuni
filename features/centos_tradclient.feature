@@ -17,6 +17,10 @@ Feature: register a traditional client centos7
      Given I am authorized as "admin" with password "admin"
      And execute some tests for centos_trad_client
 
+  Scenario: run openscap audit for centos7 trad-client.
+     Given I am authorized as "admin" with password "admin"
+     And execute test for openscap tradclient
+
   Scenario: Delete Trad-client or migrated minion
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Delete System"
