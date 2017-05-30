@@ -55,7 +55,6 @@ import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
@@ -66,8 +65,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -494,55 +491,45 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> distUpgradeAction(
             DistUpgradeAction action,
             List<MinionServer> minions) {
-        ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime earliestAction = action.getEarliestAction().toInstant()
-                .atZone(ZoneId.systemDefault());
+        Map<Boolean, List<Channel>> collect = action.getDetails().getChannelTasks()
+                .stream().collect(Collectors.partitioningBy(
+                        ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
+                        Collectors.mapping(DistUpgradeChannelTask::getChannel,
+                                Collectors.toList())
+                        ));
+
+        List<Channel> subbed = collect.get(true);
+        List<Channel> unsubbed = collect.get(false);
+
+        action.getServerActions()
+        .stream()
+        .flatMap(s -> Opt.stream(s.getServer().asMinionServer()))
+        .forEach(minion -> {
+            Set<Channel> currentChannels = minion.getChannels();
+            currentChannels.removeAll(unsubbed);
+            currentChannels.addAll(subbed);
+            ServerFactory.save(minion);
+            SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+        });
+
+        Map<String, Object> pillar = new HashMap<>();
+        Map<String, Object> susemanager = new HashMap<>();
+        pillar.put("susemanager", susemanager);
+        Map<String, Object> distupgrade = new HashMap<>();
+        susemanager.put("distupgrade", distupgrade);
+        distupgrade.put("dryrun", action.getDetails().isDryRun());
+        distupgrade.put("channels", subbed.stream()
+                .map(c -> "susemanager:" + c.getLabel())
+                .collect(Collectors.toList()));
+
+        LocalCall<Map<String, State.ApplyResult>> distUpgrade = State.apply(
+                Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
+                Optional.of(pillar),
+                Optional.of(true)
+                );
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        if (earliestAction.isAfter(now)) {
-            // The function we call itself is irrelevant since its just the
-            // JobReturnEvent that with the action_id we are looking for.
-            // Test.ping was only chosen because its simple and fast
-            ret.put(Test.ping(), minions);
-        }
-        else {
-            Map<Boolean, List<Channel>> collect = action.getDetails().getChannelTasks()
-                    .stream().collect(Collectors.partitioningBy(
-                            ct -> ct.getTask() == DistUpgradeChannelTask.SUBSCRIBE,
-                            Collectors.mapping(DistUpgradeChannelTask::getChannel,
-                                    Collectors.toList())
-                    ));
+        ret.put(distUpgrade, minions);
 
-            List<Channel> subbed = collect.get(true);
-            List<Channel> unsubbed = collect.get(false);
-
-            action.getServerActions()
-                    .stream()
-                    .flatMap(s -> Opt.stream(s.getServer().asMinionServer()))
-                    .forEach(minion -> {
-                        Set<Channel> currentChannels = minion.getChannels();
-                        currentChannels.removeAll(unsubbed);
-                        currentChannels.addAll(subbed);
-                        ServerFactory.save(minion);
-                        SaltStateGeneratorService.INSTANCE.generatePillar(minion);
-                    });
-
-            Map<String, Object> pillar = new HashMap<>();
-            Map<String, Object> susemanager = new HashMap<>();
-            pillar.put("susemanager", susemanager);
-            Map<String, Object> distupgrade = new HashMap<>();
-            susemanager.put("distupgrade", distupgrade);
-            distupgrade.put("dryrun", action.getDetails().isDryRun());
-            distupgrade.put("channels", subbed.stream()
-                    .map(c -> "susemanager:" + c.getLabel())
-                    .collect(Collectors.toList()));
-
-            LocalCall<Map<String, State.ApplyResult>> distUpgrade = State.apply(
-                    Collections.singletonList(ApplyStatesEventMessage.DISTUPGRADE),
-                    Optional.of(pillar),
-                    Optional.of(true)
-            );
-            ret.put(distUpgrade, minions);
-        }
         return ret;
     }
 
