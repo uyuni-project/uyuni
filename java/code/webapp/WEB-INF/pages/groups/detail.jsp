@@ -80,7 +80,7 @@
       </c:if>
     </td>
   </tr>
-  <rhn:require acl="any_system_with_salt_entitlement()">
+  <rhn:require acl="user_role(system_group_admin)">
   <tr>
     <th><bean:message key="systemgroup.details.states"/></th>
     <td>
