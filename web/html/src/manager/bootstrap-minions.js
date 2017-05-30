@@ -144,7 +144,7 @@ class BootstrapMinions extends React.Component {
         var messages = undefined;
         if (this.state.success) {
             messages = <Messages items={[{severity: "success", text:
-                <p>{t('Successfully bootstrapped host! Your system should appear in ')}<a href="/rhn/systems/Overview.do">{t('System Overview')}</a>{t(' shortly')}.</p>
+                <p>{t('Successfully bootstrapped host! Your system should appear in')} <a href="/rhn/systems/SystemList.do">{t('systems')}</a> {t('shortly')}.</p>
             }]}/>;
         } else if (this.state.messages.length > 0) {
             messages = <Messages items={this.state.messages.map(function(msg) {
