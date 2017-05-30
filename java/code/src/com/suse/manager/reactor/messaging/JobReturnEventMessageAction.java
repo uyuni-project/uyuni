@@ -29,7 +29,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.event.JobReturnEvent;
 
@@ -92,48 +91,39 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     LOG.debug("Matched salt job with action (id=" + id + ")");
                 }
 
-
-                // FIXME: This is a hack and should not be considered the final solution
-                if (action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
-                        function.equals("test.ping")) {
-                    SaltServerActionService.INSTANCE.execute(action.get(), false, false,
-                            Optional.empty());
-                }
-                else {
-                    Optional<MinionServer> minionServerOpt = MinionServerFactory
-                            .findByMinionId(jobReturnEvent.getMinionId());
-                    minionServerOpt.ifPresent(minionServer -> {
-                        Optional<ServerAction> serverAction = action.get()
+                Optional<MinionServer> minionServerOpt = MinionServerFactory
+                        .findByMinionId(jobReturnEvent.getMinionId());
+                minionServerOpt.ifPresent(minionServer -> {
+                    Optional<ServerAction> serverAction = action.get()
                             .getServerActions()
                             .stream()
                             .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
 
 
-                        serverAction.ifPresent(sa -> {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("Updating action for server: " +
-                                        minionServer.getId());
-                            }
-                            try {
-                                SaltUtils.INSTANCE.updateServerAction(sa,
-                                        jobReturnEvent.getData().getRetcode(),
-                                        jobReturnEvent.getData().isSuccess(),
-                                        jobReturnEvent.getJobId(), jobResult.get(),
-                                        jobReturnEvent.getData().getFun());
-                            }
-                            catch (Exception e) {
-                                sa.setStatus(ActionFactory.STATUS_FAILED);
-                                sa.setResultMsg("An unexpected error has occured. " +
-                                        "Please check the server logs.");
-                                // We don't actually want to catch any exceptions here
-                                throw e;
-                            }
-                            finally {
-                                ActionFactory.save(sa);
-                            }
-                        });
+                    serverAction.ifPresent(sa -> {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Updating action for server: " +
+                                    minionServer.getId());
+                        }
+                        try {
+                            SaltUtils.INSTANCE.updateServerAction(sa,
+                                    jobReturnEvent.getData().getRetcode(),
+                                    jobReturnEvent.getData().isSuccess(),
+                                    jobReturnEvent.getJobId(), jobResult.get(),
+                                    jobReturnEvent.getData().getFun());
+                        }
+                        catch (Exception e) {
+                            sa.setStatus(ActionFactory.STATUS_FAILED);
+                            sa.setResultMsg("An unexpected error has occured. " +
+                                    "Please check the server logs.");
+                            // We don't actually want to catch any exceptions here
+                            throw e;
+                        }
+                        finally {
+                            ActionFactory.save(sa);
+                        }
                     });
-                }
+                });
             }
             else {
                 LOG.warn("Action referenced from Salt job was not found: " + id);
