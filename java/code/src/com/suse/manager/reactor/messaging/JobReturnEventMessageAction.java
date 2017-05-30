@@ -21,6 +21,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
@@ -98,7 +99,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 // FIXME: This is a hack and should not be considered the final solution
                 if (action.get().getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
                         function.equals("test.ping")) {
-                    SaltServerActionService.INSTANCE.execute(action.get(), false);
+                    DistUpgradeAction act = (DistUpgradeAction)action.get();
+                    boolean pkgRefresh = !act.getDetails().isDryRun();
+                    SaltServerActionService.INSTANCE.execute(act, pkgRefresh);
                 }
                 else {
                     Optional<MinionServer> minionServerOpt = MinionServerFactory
