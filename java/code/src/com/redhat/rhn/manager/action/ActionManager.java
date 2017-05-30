@@ -2138,7 +2138,7 @@ public class ActionManager extends BaseManager {
         // Add the details and save
         action.setDetails(details);
         ActionFactory.save(action);
-        taskomaticApi.scheduleActionExecution(action);
+        taskomaticApi.scheduleActionExecution(action, !details.isDryRun());
         return action;
     }
 
