@@ -880,17 +880,21 @@ public class SystemSearchHelper {
             }
             Double score1 = (Double)sMap1.get("score");
             Double score2 = (Double)sMap2.get("score");
-            if (Math.abs(score1 - score2) < .001) {
-                // Lucene might give slight score differences to entries which are
-                // practically identical except for maybe registration time, etc.
-                // therefore putting a fudgefactor so we can treat systems in this
-                // range as having the same score.
+            // Lucene might give slight score differences to entries which are
+            // practically identical except for maybe registration time, etc.
+            // therefore rounding using a fudgefactor we can treat systems in this
+            // range as having the same score.
+            score1 = (double)Math.round(score1 * 1000) / 1000;
+            score2 = (double)Math.round(score2 * 1000) / 1000;
+            // We want highest score on the top
+            int c = score2.compareTo(score1);
+            if (c == 0) {
+                // sort by name if they're equal
                 if ((sys1.getName() != null) && (sys2.getName() != null)) {
                     return sys1.getName().compareTo(sys2.getName());
                 }
             }
-            // We want highest score on the top
-            return score2.compareTo(score1);
+            return c;
      }
     }
     /**
@@ -940,11 +944,14 @@ public class SystemSearchHelper {
              when the same hostname has been registered many times and shows up in
              search, we sort by sysid with the highest systemid at the top.
              */
-            if (Math.abs(score1 - score2) < .001) {
-                // Lucene might give slight score differences to entries which are
-                // practically identical except for maybe registration time, etc.
-                // therefore putting a fudgefactor so we can treat systems in this
-                // range as having the same score.
+            // Lucene might give slight score differences to entries which are
+            // practically identical except for maybe registration time, etc.
+            // therefore putting a fudgefactor so we can treat systems in this
+            // range as having the same score.
+            score1 = (double)Math.round(score1 * 1000) / 1000;
+            score2 = (double)Math.round(score2 * 1000) / 1000;
+            int c = score2.compareTo(score1);
+            if (c == 0) {
                 if ((sys1.getName() != null) && (sys2.getName() != null)) {
                     if (sys1.getName().compareTo(sys2.getName()) == 0) {
                         // We want highest id to be on top
@@ -952,8 +959,7 @@ public class SystemSearchHelper {
                     }
                 }
             }
-            // We want highest score on the top
-            return score2.compareTo(score1);
+            return c;
      }
    }
     /**
