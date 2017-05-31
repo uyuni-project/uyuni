@@ -22,11 +22,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Bootstrap"
     And I wait for "15" seconds
     Then I wait until i see "Successfully bootstrapped host! " text
-    And I wait for "10" seconds
-    And I follow "System Overview"
-    Then I should see remote ssh-minion hostname as link
-    And I follow remote ssh-minion hostname
-    Then I should see a "Push via SSH" text
+    And I wait for "40" seconds
 
    Scenario: Subscribe ssh-minion to a base-channel for testing
     Given I am authorized as "testing" with password "testing"
