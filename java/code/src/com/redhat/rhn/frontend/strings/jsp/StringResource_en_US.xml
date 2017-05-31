@@ -18720,6 +18720,12 @@ As a Channel Administrator, you may change the base channels your systems are su
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
         </trans-unit>
+        <trans-unit id="basesub.jsp.dataHasChanged">
+          <source>A previous queued action has modified base channels assignments for some systems in SSM. Please, consider to set assignments again based on refreshed data.</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
+          </context-group>
+        </trans-unit>
         <trans-unit id="basesub.jsp.unableToLookupSystemDefaultChannel">
           <source>Unable to lookup system default base channel.</source>
           <context-group name="ctx">
