@@ -115,7 +115,8 @@ public class SaltUtils {
 
     /* List of Salt modules that could possibly change installed packages */
     private static final List<String> PACKAGE_CHANGING_MODULES = Arrays.asList(
-            "pkg.install", "pkg.remove", "pkg_installed", "pkg_latest", "pkg_removed");
+            "pkg.install", "pkg.remove", "pkg_installed", "pkg_latest", "pkg_removed",
+            "pkg.patch_installed", "patchinstall");
 
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
@@ -146,6 +147,7 @@ public class SaltUtils {
             case "pkg.upgrade": return true;
             case "pkg.install": return true;
             case "pkg.remove": return true;
+            case "pkg.patch_installed": return true;
             case "state.apply":
                 Predicate<StateApplyResult<Map<String, Object>>> filterCondition = result ->
                     PACKAGE_CHANGING_MODULES.contains(
