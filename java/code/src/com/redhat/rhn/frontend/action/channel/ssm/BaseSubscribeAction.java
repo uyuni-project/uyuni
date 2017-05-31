@@ -124,6 +124,20 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                 new HashMap());
     }
 
+    private ActionForward handleDataHasChanged(ActionMapping mapping,
+            HttpServletRequest request) {
+        log.debug("Base channels have changed due previous action");
+
+        StrutsDelegate strutsDelegate = getStrutsDelegate();
+        ActionMessages msgs = new ActionMessages();
+        msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage("basesub.jsp.dataHasChanged"));
+        strutsDelegate.saveMessages(request, msgs);
+
+        return strutsDelegate.forwardParams(mapping.findForward("success"),
+                new HashMap());
+    }
+
     /**
      * Confirm the base channel changes.
      *
@@ -151,6 +165,18 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         // channels set to "No Change":
         if (changedChannels.entrySet().size() == 0) {
             return handleNoChanges(mapping, request);
+        }
+
+        // As base channel assignments are made asynchnously and UI redirects to base
+        // channels page after changing assignments, it might happen that the user
+        // is using a non refreshed UI page which contains the old base assignments.
+        // That would produce an ISE error due those old base channels are not assigned
+        // to any system on the SSM. (bsc#1040420)
+        for (Long oldBaseChannelId : changedChannels.keySet()) {
+            List<Long> servers = serversInSSMWithBase(user, oldBaseChannelId);
+            if (servers.isEmpty()) {
+                return handleDataHasChanged(mapping, request);
+            }
         }
 
         for (Long oldBaseChannelId : changedChannels.keySet()) {
