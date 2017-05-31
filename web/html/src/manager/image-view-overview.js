@@ -258,7 +258,7 @@ class ImageViewOverview extends React.Component {
                             <InspectStatus data={data}/>
                         </div>
                         }
-                        { isAdmin &&
+                        { isAdmin && data.buildServer &&
                         <div className="btn-group pull-right">
                             <ModalButton
                               className="btn-default btn-xs"
@@ -290,8 +290,10 @@ class ImageViewOverview extends React.Component {
                     </div>
                 </div>
             }
-            <BuildDialog data={data} onBuild={this.props.onBuild}/>
-            <InspectDialog data={data} onInspect={this.props.onInspect}/>
+            { data.buildServer &&
+                [<BuildDialog data={data} onBuild={this.props.onBuild}/>,
+                <InspectDialog data={data} onInspect={this.props.onInspect}/>]
+            }
             </div>
         );
     }
