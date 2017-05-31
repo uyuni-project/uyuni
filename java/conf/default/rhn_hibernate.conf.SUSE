@@ -35,6 +35,5 @@ hibernate.bytecode.use_reflection_optimizer=false
 hibernate.jdbc.batch_size=0
 hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider
 hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-hibernate.cache.provider_configuration_file_resource_path=../ehcache.xml
 hibernate.id.new_generator_mappings = false
 
