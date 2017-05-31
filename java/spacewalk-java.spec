@@ -968,6 +968,7 @@ fi
 %dir %{_datadir}/rhn/lib
 %dir %{_datadir}/rhn/classes
 %{_datadir}/rhn/classes/log4j.properties
+%{_datadir}/rhn/classes/ehcache.xml
 %{_datadir}/rhn/lib/rhn.jar
 
 %if 0%{?with_oracle}
