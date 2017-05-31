@@ -391,6 +391,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         CONTEXT.checking(new Expectations() { {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)),
+                    with(any(Boolean.class)));
         } });
 
         // Setup product upgrade
