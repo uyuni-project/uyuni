@@ -25,11 +25,7 @@ Feature: CENTOS7 ssh feature.
     And I click on "Bootstrap"
     Then I wait until i see "Successfully bootstrapped host! " text
     And I wait for "60" seconds
-    And I follow "System Overview"
-    Then I should see centos ssh-minion hostname as link
-    And I follow centos ssh-minion hostname
-    Then I should see a "Push via SSH" text
-
+  
    Scenario: Subscribe centos ssh-minion to a base-channel for testing
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Software" in the content area
