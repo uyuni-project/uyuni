@@ -35,6 +35,7 @@ log4j.logger.com.redhat.rhn.taskomatic.task=INFO
 
 # this silences ehcache on Fedoras complaining about using default values
 log4j.logger.net.sf.ehcache.hibernate.AbstractEhcacheRegionFactory=ERROR
+log4j.logger.org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory=ERROR
 
 # General debug for everything.  Very noisy
 #log4j.logger.com.redhat.rhn=DEBUG
