@@ -21,8 +21,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -47,10 +47,12 @@ import com.suse.manager.webui.utils.gson.ImageInfoJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -62,6 +64,7 @@ import java.util.stream.Collectors;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
 /**
  * Spark controller class for image building and listing.
@@ -85,15 +88,25 @@ public class ImageBuildController {
      */
     public static ModelAndView rebuild(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
+        Optional<ImageInfo> imageInfo;
+        try {
+            imageInfo = ImageInfoFactory
+                    .lookupByIdAndOrg(Long.parseLong(req.params("id")), user.getOrg());
+        }
+        catch (NumberFormatException e) {
+            imageInfo = Optional.empty();
+        }
 
-        ImageInfo imageInfo = ImageInfoFactory.lookupByIdAndOrg(
-                Long.parseLong(req.params("id")), user.getOrg()).get();
-
-        String hostId = imageInfo.getBuildAction().getServerActions().stream().findFirst()
-                .map(ServerAction::getServerId).map(id -> "&host=" + id).orElse("");
-        res.redirect("/rhn/manager/cm/build?version=" + imageInfo.getVersion() +
-                hostId + "&profile=" + imageInfo.getProfile().getProfileId());
-        return new ModelAndView(model, "content_management/build.jade");
+        return imageInfo.map(i -> {
+            String hostId = i.getBuildAction().getServerActions().stream().findFirst()
+                    .map(ServerAction::getServerId).map(id -> "&host=" + id).orElse("");
+            res.redirect("/rhn/manager/cm/build?version=" + i.getVersion() + hostId +
+                    "&profile=" + i.getProfile().getProfileId());
+            return new ModelAndView(model, "content_management/build.jade");
+        }).orElseGet(() -> {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        });
     }
 
     /**
@@ -108,12 +121,21 @@ public class ImageBuildController {
         Map<String, Object> model = new HashMap<>();
 
         // Parse optional query string parameters
-        model.put("profileId", StringUtils.isNotBlank(req.queryParams("profile")) ?
-                Long.parseLong(req.queryParams("profile")) : null);
-        model.put("hostId", StringUtils.isNotBlank(req.queryParams("host")) ?
-                Long.parseLong(req.queryParams("host")) : null);
-        model.put("version", StringUtils.isNotBlank(req.queryParams("version")) ?
-                req.queryParams("version") : null);
+        try {
+            model.put("profileId", StringUtils.isNotBlank(req.queryParams("profile")) ?
+                    Long.parseLong(req.queryParams("profile")) :
+                    null);
+            model.put("hostId", StringUtils.isNotBlank(req.queryParams("host")) ?
+                    Long.parseLong(req.queryParams("host")) :
+                    null);
+            model.put("version", StringUtils.isNotBlank(req.queryParams("version")) ?
+                    req.queryParams("version") :
+                    null);
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
+        }
 
         return new ModelAndView(model, "content_management/build.jade");
     }
@@ -147,8 +169,14 @@ public class ImageBuildController {
 
         // Parse optional image id
         if (StringUtils.isNotBlank(req.params("id"))) {
-            Long profileId = Long.parseLong(req.params("id"));
-            model.put("id", profileId);
+            try {
+                Long profileId = Long.parseLong(req.params("id"));
+                model.put("id", profileId);
+            }
+            catch (NumberFormatException e) {
+                Spark.halt(HttpStatus.SC_NOT_FOUND);
+                return null;
+            }
         }
         else {
             model.put("id", null);
@@ -241,9 +269,16 @@ public class ImageBuildController {
     public static Object build(Request request, Response response, User user) {
         response.type("application/json");
 
-        BuildRequest buildRequest = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
-                .create().fromJson(request.body(), BuildRequest.class);
+        BuildRequest buildRequest;
+        try {
+            buildRequest = new GsonBuilder()
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+                    .create().fromJson(request.body(), BuildRequest.class);
+        }
+        catch (JsonParseException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
+        }
 
         Date scheduleDate = getScheduleDate(buildRequest);
 
@@ -277,9 +312,16 @@ public class ImageBuildController {
      * @return the result JSON object
      */
     public static Object inspect(Request req, Response res, User user) {
-        InspectRequest inspectRequest = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
-                .create().fromJson(req.body(), InspectRequest.class);
+        InspectRequest inspectRequest;
+        try {
+            inspectRequest = new GsonBuilder()
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+                    .create().fromJson(req.body(), InspectRequest.class);
+        }
+        catch (JsonParseException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
+        }
 
         Date scheduleDate = getScheduleDate(inspectRequest);
 
@@ -326,7 +368,14 @@ public class ImageBuildController {
      * @return the result JSON object
      */
     public static Object get(Request req, Response res, User user) {
-        Long id = Long.parseLong(req.params("id"));
+        Long id;
+        try {
+            id = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
 
         Optional<ImageOverview> imageInfo =
                 ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
@@ -343,7 +392,14 @@ public class ImageBuildController {
      * @return the result JSON object
      */
     public static Object getPatches(Request req, Response res, User user) {
-        Long id = Long.parseLong(req.params("id"));
+        Long id;
+        try {
+            id = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
 
         Optional<ImageOverview> imageInfo =
                 ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
@@ -361,7 +417,14 @@ public class ImageBuildController {
      * @return the result JSON object
      */
     public static Object getPackages(Request req, Response res, User user) {
-        Long id = Long.parseLong(req.params("id"));
+        Long id;
+        try {
+            id = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
 
         Optional<ImageOverview> imageInfo =
                 ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
@@ -385,7 +448,14 @@ public class ImageBuildController {
      * @return the result JSON object
      */
     public static Object delete(Request req, Response res, User user) {
-        List<Long> ids = GSON.fromJson(req.body(), List.class);
+        List<Long> ids;
+        try {
+            ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
+        }
+        catch (JsonParseException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
+        }
 
         List<ImageInfo> images = ImageInfoFactory.lookupByIdsAndOrg(ids, user.getOrg());
         if (images.size() < ids.size()) {

@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import com.google.gson.JsonParseException;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.image.ImageStore;
@@ -27,10 +28,13 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.utils.gson.ImageRegistryCreateRequest;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.utils.Json;
+import org.apache.http.HttpStatus;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +91,15 @@ public class ImageStoreController {
      * @return the model and view
      */
     public static ModelAndView updateView(Request req, Response res, User user) {
-        Long storeId = Long.parseLong(req.params("id"));
+        Long storeId;
+        try {
+            storeId = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
+
         Optional<ImageStore> store =
                 ImageStoreFactory.lookupByIdAndOrg(storeId, user.getOrg());
         if (!store.isPresent()) {
@@ -108,7 +120,14 @@ public class ImageStoreController {
      * @return the result JSON object
      */
     public static Object delete(Request req, Response res, User user) {
-        List<Long> ids = GSON.fromJson(req.body(), List.class);
+        List<Long> ids;
+        try {
+            ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
+        }
+        catch (JsonParseException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
+        }
 
         List<ImageStore> stores = ImageStoreFactory.lookupByIdsAndOrg(ids, user.getOrg());
         if (stores.size() < ids.size()) {
@@ -128,7 +147,14 @@ public class ImageStoreController {
      * @return the result JSON object
      */
     public static Object getSingle(Request req, Response res, User user) {
-        Long storeId = Long.parseLong(req.params("id"));
+        Long storeId;
+        try {
+            storeId = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
 
         Optional<ImageStore> store = ImageStoreFactory.lookupByIdAndOrg(storeId,
                 user.getOrg());
@@ -229,8 +255,14 @@ public class ImageStoreController {
      * @return the result JSON object
      */
     public static Object update(Request req, Response res, User user) {
-        ImageRegistryCreateRequest updateRequest =
-                GSON.fromJson(req.body(), ImageRegistryCreateRequest.class);
+        ImageRegistryCreateRequest updateRequest;
+        try {
+            updateRequest = GSON.fromJson(req.body(), ImageRegistryCreateRequest.class);
+        }
+        catch (JsonParseException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
+        }
 
         Long storeId = Long.parseLong(req.params("id"));
         Optional<ImageStore> store =
@@ -259,8 +291,14 @@ public class ImageStoreController {
      * @return the result JSON object
      */
     public static Object create(Request req, Response res, User user) {
-        ImageRegistryCreateRequest createRequest =
-                GSON.fromJson(req.body(), ImageRegistryCreateRequest.class);
+        ImageRegistryCreateRequest createRequest;
+        try {
+            createRequest = GSON.fromJson(req.body(), ImageRegistryCreateRequest.class);
+        }
+        catch (JsonParseException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
+        }
 
         ImageStore imageStore = new ImageStore();
         imageStore.setLabel(createRequest.getLabel());
