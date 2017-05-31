@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
@@ -38,10 +39,13 @@ import com.suse.manager.webui.utils.gson.ImageProfileJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.utils.Json;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpStatus;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -101,7 +105,15 @@ public class ImageProfileController {
      * @return the model and view
      */
     public static ModelAndView updateView(Request req, Response res, User user) {
-        Long profileId = Long.parseLong(req.params("id"));
+        Long profileId;
+        try {
+            profileId = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
+
         Optional<ImageProfile> profile =
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
         if (!profile.isPresent()) {
@@ -124,7 +136,14 @@ public class ImageProfileController {
      * @return the result JSON object
      */
     public static Object delete(Request req, Response res, User user) {
-        List<Long> ids = GSON.fromJson(req.body(), List.class);
+        List<Long> ids;
+        try {
+            ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
+        }
+        catch (JsonParseException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
+        }
 
         List<ImageProfile> profiles =
                 ImageProfileFactory.lookupByIdsAndOrg(ids, user.getOrg());
@@ -161,7 +180,14 @@ public class ImageProfileController {
      * @return the result JSON object
      */
     public static Object getSingle(Request req, Response res, User user) {
-        Long profileId = Long.parseLong(req.params("id"));
+        Long profileId;
+        try {
+            profileId = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
 
         Optional<ImageProfile> profile =
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
@@ -213,8 +239,14 @@ public class ImageProfileController {
      * @return the result JSON object
      */
     public static Object update(Request req, Response res, User user) {
-        ImageProfileCreateRequest reqData =
-                GSON.fromJson(req.body(), ImageProfileCreateRequest.class);
+        ImageProfileCreateRequest reqData;
+        try {
+            reqData = GSON.fromJson(req.body(), ImageProfileCreateRequest.class);
+        }
+        catch (JsonParseException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
+        }
 
         Long profileId = Long.parseLong(req.params("id"));
         Optional<ImageProfile> profile =
@@ -253,8 +285,14 @@ public class ImageProfileController {
      * @return the result JSON object
      */
     public static Object create(Request req, Response res, User user) {
-        ImageProfileCreateRequest reqData =
-                GSON.fromJson(req.body(), ImageProfileCreateRequest.class);
+        ImageProfileCreateRequest reqData;
+        try {
+            reqData = GSON.fromJson(req.body(), ImageProfileCreateRequest.class);
+        }
+        catch (JsonParseException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
+        }
 
         ImageProfile profile;
         if (ImageProfile.TYPE_DOCKERFILE.equals(reqData.getImageType())) {
