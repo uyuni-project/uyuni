@@ -775,7 +775,7 @@ Generating CA public certificate RPM:
 
     if verbosity >= 0:
         print """
-Make the public CA certficate publically available:
+Make the public CA certificate publically available:
     (NOTE: the RHN Satellite or Proxy installers may do this step for you.)
     The "noarch" RPM and raw CA certificate can be made publically accessible
     by copying it to the /srv/www/htdocs/pub directory of your RHN Satellite or
