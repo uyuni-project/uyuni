@@ -216,7 +216,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
             <listitem>
             <para></para>
 
-            <para><emphasis>CA public certficate:</emphasis> In the "3rd party
+            <para><emphasis>CA public certificate:</emphasis> In the "3rd party
             CA" case, simply copy the certificate authorities public
             certificate to the SSL build directory; renaming it to
             <emphasis>RHN-ORG-TRUSTED-SSL-CERT</emphasis>; and then run
