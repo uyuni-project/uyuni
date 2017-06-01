@@ -448,6 +448,8 @@
     </rule-result>
     <rule-result idref="rule-srvc-remove-stop" time="2017-02-17T14:06:41" weight="1.000000">
       <result>fail</result>
+      <ident system="https://nvd.nist.gov/cce/index.cfm">
+      </ident>
       <check system="http://oval.mitre.org/XMLSchema/oval-definitions-5">
         <check-content-ref name="oval:de.suse.suse121:def:43" href="scap-yast2sec-oval.xml"/>
       </check>

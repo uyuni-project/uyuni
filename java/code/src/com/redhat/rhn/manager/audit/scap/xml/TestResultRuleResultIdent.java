@@ -25,7 +25,7 @@ public class TestResultRuleResultIdent {
     @Attribute
     private String system;
 
-    @Text
+    @Text(required = false)
     private String text;
 
     /**
