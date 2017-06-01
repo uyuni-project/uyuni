@@ -51,3 +51,11 @@ Feature: Create a group
     And I should see a "system selected" text
     And I should see a "Selected Systems List" text
     Then I should see this client as link
+  
+  Scenario: remove client from group
+   Given I am on the Systems overview page of this "sle-client"
+   And I follow "Groups"
+   And I check "newgroup" in the list
+   And I click on "Leave Selected Groups"
+   Then I should see a "1 system groups removed." text
+
