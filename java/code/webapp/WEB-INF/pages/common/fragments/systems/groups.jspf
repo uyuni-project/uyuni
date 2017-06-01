@@ -15,19 +15,6 @@
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-
-<rhn:require acl="user_role(org_admin) or user_role(system_group_admin)">
-    <rhn:hidden name="sid" value="${system.id}" />
-    <rhn:submitted/>
-    <div class="spacewalk-section-toolbar">
-        <div class="action-button-wrapper">
-            <rhn:submitted/>
-            <input class="btn btn-default" type="submit" name ="dispatch"
-                value='<bean:message key="${param.action_key}"/>'/>
-        </div>
-    </div>
-</rhn:require>
-
 <div class="page-summary">
         <h2><rhn:icon type="header-system-groups" />
         <bean:message key="${param.title_key}"/>
@@ -45,6 +32,19 @@
 </rhn:require>
 
 <rl:listset name="groupListSet">
+    <rhn:require acl="user_role(org_admin) or user_role(system_group_admin)">
+        <rhn:hidden name="sid" value="${system.id}" />
+        <rhn:submitted/>
+        <c:if test="${!empty dataset}">
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <rhn:submitted/>
+                    <input class="btn btn-default" type="submit" name ="dispatch"
+                        value='<bean:message key="${param.action_key}"/>'/>
+                </div>
+            </div>
+        </c:if>
+    </rhn:require>
     <rhn:csrf />
         <rl:list emptykey="assignedgroups.jsp.nogroups"
          alphabarcolumn="name">
