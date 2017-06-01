@@ -109,7 +109,12 @@
       <th><bean:message key="system.audit.xccdfdetails.jsp.files"/>:</th>
       <td>
         <c:forEach items="${testResult.files}" var="file">
-          <a href="/rhn/systems/details/audit/ScapResultDownload.do?sid=${param.sid}&xid=${param.xid}&name=${file.filename}"
+          <c:url var="fileUrl" value="/systems/details/audit/ScapResultDownload.do">
+              <c:param name="sid" value="${param.sid}" />
+              <c:param name="xid" value="${param.xid}" />
+              <c:param name="name" value="${file.filename}" />
+          </c:url>
+          <a href="${fileUrl}"
              target="${file.HTML ? '_blank' : '_self'}"><c:out value="${file.filename}"/></a> &nbsp;
         </c:forEach>
       </td>
