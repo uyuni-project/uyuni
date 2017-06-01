@@ -35,13 +35,15 @@
     <rhn:require acl="user_role(org_admin) or user_role(system_group_admin)">
         <rhn:hidden name="sid" value="${system.id}" />
         <rhn:submitted/>
-        <div class="spacewalk-section-toolbar">
-            <div class="action-button-wrapper">
-                <rhn:submitted/>
-                <input class="btn btn-default" type="submit" name ="dispatch"
-                    value='<bean:message key="${param.action_key}"/>'/>
+        <c:if test="${!empty dataset}">
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <rhn:submitted/>
+                    <input class="btn btn-default" type="submit" name ="dispatch"
+                        value='<bean:message key="${param.action_key}"/>'/>
+                </div>
             </div>
-        </div>
+        </c:if>
     </rhn:require>
     <rhn:csrf />
         <rl:list emptykey="assignedgroups.jsp.nogroups"
