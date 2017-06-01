@@ -36,13 +36,13 @@
 
 <para>
     Once the bootstrap script is generated (by default
-    /var/www/html/pub/bootstrap/bootstrap.sh). The admin must edit it by hand
+    /srv/www/htdocs/pub/bootstrap/bootstrap.sh). The admin must edit it by hand
     to verify it is correct, and to enable it. It is then used to configure and
     register client systems as such:
 </para>
 
 <para>
-    <command>cd /var/www/html/pub/bootstrap/</command>
+    <command>cd /srv/www/htdocs/pub/bootstrap/</command>
 </para>
 <para>
     <command>cat bootstrap-&lt;edited_name&gt;.sh | ssh root@&lt;client-hostname&gt; /bin/bash</command>
