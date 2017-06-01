@@ -171,6 +171,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Keys").withPrimaryUrl("/rhn/manager/systems/keys"))
                 .addChild(new MenuItem("Remote Commands").withPrimaryUrl("/rhn/manager/systems/cmd"))
                 .addChild(new MenuItem("State Catalog").withPrimaryUrl("/rhn/manager/state-catalog")
+                    .withDir("/rhn/manager/state-catalog")
                     .withVisibility(adminRoles.get("org")))
                 .addChild(new MenuItem("Formula Catalog").withPrimaryUrl("/rhn/manager/formula-catalog")
                     .withVisibility(adminRoles.get("org") && checkAcl(user, "salt_formulas_installed()"))));
