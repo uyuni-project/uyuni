@@ -280,7 +280,7 @@ def parseCommandline():
 Note: for rhn-bootstrap to work, certain files are expected to be
       in %s/ (the default Apache public directory):
         - the CA SSL public certificate (probably RHN-ORG-TRUSTED-SSL-CERT)
-        - the CA SSL public certficate RPM
+        - the CA SSL public certificate RPM
           (probably rhn-org-trusted-ssl-cert-VER.noarch.rpm)""" % (_progName, DEFAULT_APACHE_PUB_DIRECTORY)
 
     # preliminary parse (-h/--help is acted upon during final parse)
