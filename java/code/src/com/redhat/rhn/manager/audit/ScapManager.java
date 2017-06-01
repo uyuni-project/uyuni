@@ -60,6 +60,7 @@ import com.redhat.rhn.manager.audit.scap.xml.TestResultRuleResultIdent;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.mutable.MutableBoolean;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
@@ -547,11 +548,14 @@ public class ScapManager extends BaseManager {
                     getOrCreateIdent("#IDREF#", truncate(rr.getId(), 100, truncated)));
             if (rr.getIdents() != null) {
                 for (TestResultRuleResultIdent rrIdent : rr.getIdents()) {
+                    String text = truncate(rrIdent.getText(), 100, truncated);
+                    if (StringUtils.isEmpty(text)) {
+                        continue;
+                    }
                     ruleResult.getIdents().add(
                             getOrCreateIdent(
                                     rrIdent.getSystem(),
-                                    truncate(rrIdent.getText(),
-                                            100, truncated)));
+                                    text));
                 }
 
             }
@@ -603,7 +607,7 @@ public class ScapManager extends BaseManager {
     }
 
     private static String truncate(String string, int maxLen, MutableBoolean truncated) {
-        if (string.length() > maxLen) {
+        if (string != null && string.length() > maxLen) {
             truncated.setValue(true);
             return string.substring(0, maxLen - 3) + "...";
         }
