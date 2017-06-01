@@ -23,6 +23,7 @@ import org.hibernate.Session;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * PackageEvrFactory
@@ -80,8 +81,10 @@ public class PackageEvrFactory {
      * @return Returns a committed PackageEvr
      */
     public static PackageEvr lookupOrCreatePackageEvr(String e, String v, String r) {
-        Long id = lookupPackageEvr(e, v, r);
-        return lookupPackageEvrById(id);
+        return lookupPackageEvrByEvr(e, v, r).orElseGet(() -> {
+            Long id = lookupPackageEvr(e, v, r);
+            return lookupPackageEvrById(id);
+        });
     }
 
     /**
@@ -93,6 +96,23 @@ public class PackageEvrFactory {
         Session session = HibernateFactory.getSession();
         return (PackageEvr) session.getNamedQuery("PackageEvr.findById").setLong(
                 "id", id).uniqueResult();
+    }
+
+    /**
+     * Lookup a PackageEvr by epoch version and release
+     * @param epoch epoch
+     * @param release release
+     * @param version version
+     * @return the PackageEvr found
+     */
+    public static Optional<PackageEvr> lookupPackageEvrByEvr(
+            String epoch, String version, String release) {
+        Session session = HibernateFactory.getSession();
+        return (Optional<PackageEvr>) session.getNamedQuery("PackageEvr.lookupByEvr")
+                .setString("e_in", epoch)
+                .setString("v_in", version)
+                .setString("r_in", release)
+                .uniqueResultOptional();
     }
 
 }
