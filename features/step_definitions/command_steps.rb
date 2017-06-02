@@ -327,11 +327,12 @@ $minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.
 $minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/sles12 -t sles12", true, 2000)
 $minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/sles12sp1 -t sles12sp1", true, 2000)
 # launch the key to master
-$minion.run("docker run -d --entrypoint '/bin/sh' rhel6 -c \"echo #{$MASTER} > /etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace\"")
-$minion.run("docker run -d --entrypoint '/bin/sh' rhel7 -c \"echo #{$MASTER} > /etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace\"")
-$minion.run("docker run -d --entrypoint '/bin/sh' sles11sp4 -c \"echo #{$MASTER} > /etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace\"")
-$minion.run("docker run -d --entrypoint '/bin/sh' sles12 -c \"echo #{$MASTER} > /etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace\"")
-$minion.run("docker run -d --entrypoint '/bin/sh' sles12sp1 -c \"echo #{$MASTER} > /etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace\"")
+spawn_minion = "/etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace"
+$minion.run("docker run -h rhel6 -d --entrypoint '/bin/sh' rhel6 -c \"echo \'#{master}\' > #{spawn_minion}\"")
+$minion.run("docker run -h rhel7 -d --entrypoint '/bin/sh' rhel7 -c \"echo \'#{master}\' >  #{spawn_minion}\"")
+$minion.run("docker run -h sles11sp4 -d --entrypoint '/bin/sh' sles11sp4 -c \"echo \'#{master}\' > #{spawn_minion}\"")
+$minion.run("docker run -h sles12 -d --entrypoint '/bin/sh' sles12 -c \"echo \'#{master}\' > #{spawn_minion}\"")
+$minion.run("docker run -h sle2sp1 -d --entrypoint '/bin/sh' sles12sp1 -c \"echo \'#{master}\' > #{spawn_minion}\"")
 # accept all the key on master
 $server.run("salt-key -A -y")
 end
