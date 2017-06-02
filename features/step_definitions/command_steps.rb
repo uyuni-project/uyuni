@@ -317,3 +317,22 @@ And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
     raise "#{out} should contain #{status}"
   end
 end
+
+And(/I create dockerized minions$/) do
+master, _code = $minion.run("cat /etc/salt/minion.d/susemanager.conf")
+## build everything
+$minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/rhel6/ -t rhel6", true, 2000)
+$minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/rhel7/ -t rhel7", true, 2000)
+$minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/sles11sp4 -t sles11sp4", true, 2000)
+$minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/sles12 -t sles12", true, 2000)
+$minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/sles12sp1 -t sles12sp1", true, 2000)
+# launch the key to master
+spawn_minion = "/etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace"
+$minion.run("docker run -h rhel6 -d --entrypoint '/bin/sh' rhel6 -c \"echo \'#{master}\' > #{spawn_minion}\"")
+$minion.run("docker run -h rhel7 -d --entrypoint '/bin/sh' rhel7 -c \"echo \'#{master}\' >  #{spawn_minion}\"")
+$minion.run("docker run -h sles11sp4 -d --entrypoint '/bin/sh' sles11sp4 -c \"echo \'#{master}\' > #{spawn_minion}\"")
+$minion.run("docker run -h sles12 -d --entrypoint '/bin/sh' sles12 -c \"echo \'#{master}\' > #{spawn_minion}\"")
+$minion.run("docker run -h sle2sp1 -d --entrypoint '/bin/sh' sles12sp1 -c \"echo \'#{master}\' > #{spawn_minion}\"")
+# accept all the key on master
+$server.run("salt-key -A -y")
+end

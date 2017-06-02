@@ -88,7 +88,7 @@
 
 ### Scalability tests (after debug always)
 - features/docker_xmlrpc.feature
-
+- features/minion_datacenter.feature
 ## smdba and change password feature always put them at the end of the testsuite.
 - features/change_password.feature
 
