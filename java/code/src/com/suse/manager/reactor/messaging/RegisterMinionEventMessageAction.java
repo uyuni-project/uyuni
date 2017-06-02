@@ -196,6 +196,14 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     // hardware will be refreshed anyway
                     // new secret will be generated later
 
+                    // set new contact method in case it has changed
+                    // to prevent using the old one to communicate
+                    // with the minion. (bsc#1040394)
+                    Optional<ActivationKey> activationKey = activationKeyOverride
+                            .map(ActivationKeyFactory::lookupByKey);
+                    minion.setContactMethod(
+                            getContactMethod(activationKey, isSaltSSH, minionId));
+
                     // remove package profile
                     minion.getPackages().clear();
 
