@@ -32,7 +32,7 @@ BINDIR	= /usr/bin
 SBINDIR	= /usr/sbin
 MANDIR  ?=  /usr/share/man
 
-PUB_BOOTSTRAP_DIR = /var/www/html/pub/bootstrap
+PUB_BOOTSTRAP_DIR = /srv/www/htdocs/pub/bootstrap
 EXTRA_DIRS = $(MANDIR)/man$(MANSECT) $(BINDIR) $(PUB_BOOTSTRAP_DIR) $(SBINDIR)
 
 # now include some Macros

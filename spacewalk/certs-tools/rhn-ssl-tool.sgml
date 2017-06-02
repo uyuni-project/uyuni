@@ -153,7 +153,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
                 that contains the public CA certificate. It needs to be
                 deployed to any clients making SSL connections to an RHN server
                 (Red Hat Satellite or Proxy). This is generally done by making the
-                RPM available in the <emphasis>/var/www/html/pub</emphasis>
+                RPM available in the <emphasis>/srv/www/htdocs/pub</emphasis>
                 directory. It is also a good idea to copy the CA certificate
                 itself in that directory: RHN-ORG-TRUSTED-CA-CERT.</para>
 
@@ -216,7 +216,7 @@ Generate and maintain SSL keys, certificates and deployment RPMs.
             <listitem>
             <para></para>
 
-            <para><emphasis>CA public certficate:</emphasis> In the "3rd party
+            <para><emphasis>CA public certificate:</emphasis> In the "3rd party
             CA" case, simply copy the certificate authorities public
             certificate to the SSL build directory; renaming it to
             <emphasis>RHN-ORG-TRUSTED-SSL-CERT</emphasis>; and then run
