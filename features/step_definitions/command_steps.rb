@@ -321,7 +321,7 @@ end
 And(/I create dockerized minions$/) do
   master, _code = $minion.run("cat /etc/salt/minion.d/susemanager.conf")
   # build everything
-  distros = %w(rhel6 rhel7 sles11sp4 sles12 sles12sp1)
+  distros = %w[rhel6 rhel7 sles11sp4 sles12 sles12sp1]
   distros.each do |os|
     $minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/#{os}/ -t #{os}", true, 2000)
     spawn_minion = "/etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace"
