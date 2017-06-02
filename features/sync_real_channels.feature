@@ -18,3 +18,12 @@ Feature: Sync real channels
     Given I add "sles11-sp4-pool-x86_64" channel
       And I add "sles11-sp4-suse-manager-tools-x86_64" channel
       And I add "sles11-sp4-updates-x86_64" channel
+      
+ Scenario: Sync Rhel7 product channels
+    Given I add "res7-x86_64" channel
+    And I add "res7-suse-manager-tools-x86_64"
+
+ Scenario: Sync Rhel6 product channels
+    Given I add "res6-x86_64" channel
+    And I add "res6-suse-manager-tools-x86_64"
+    
