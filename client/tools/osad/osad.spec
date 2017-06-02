@@ -303,12 +303,24 @@ fi
 
 %postun
 %if 0%{?fedora} || 0%{?rhel} >= 7
-%systemd_postun_with_restart osad.service
+%systemd_postun osad.service
 %else
 %if 0%{?suse_version} >= 1210
-%service_del_postun osad.service
+%service_del_postun -n osad.service
 %endif
 %endif
+
+%posttrans
+if [ -x /usr/bin/systemctl ]; then
+    (
+        test "$YAST_IS_RUNNING" = instsys && exit 0
+        test -f /etc/sysconfig/services -a \
+             -z "$DISABLE_RESTART_ON_UPDATE" && . /etc/sysconfig/services
+        test "$DISABLE_RESTART_ON_UPDATE" = yes -o \
+             "$DISABLE_RESTART_ON_UPDATE" = 1 && exit 0
+        /usr/bin/systemctl try-restart osad.service
+    ) || :
+fi
 
 %if 0%{?suse_version} >= 1210
 %pre
