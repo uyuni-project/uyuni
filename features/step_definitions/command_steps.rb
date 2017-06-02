@@ -326,21 +326,22 @@ And(/I create dockerized minions$/) do
     $minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/#{os}/ -t #{os}", true, 2000)
     spawn_minion = "/etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace"
     $minion.run("docker run -h #{os} -d --entrypoint '/bin/sh' #{os} -c \"echo \'#{master}\' > #{spawn_minion}\"")
+    puts "minion #{os} created and running"
   end
   # accept all the key on master, wait dinimically for last key
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        out, _code = $server.run("salt-key -L")
+        out, _code = $server.run("salt-key -l unaccepted")
         # if we see the last os, we can break
         if out.include? distros.last
 	  $server.run("salt-key -A -y")
-	  return true
+	  break
         end
         sleep 5
       end
     end
   rescue Timeout::Error
-    raise "FATAL: salt-key #{key} was not deleted"
+    raise "something wrong with creation of minion docker"
   end
 end
