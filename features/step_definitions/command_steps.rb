@@ -243,7 +243,7 @@ Then(/^I remove "(.*)" from "(.*)"$/) do |file, host|
 end
 
 Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
-  timeout = 400
+  timeout = 800
   if target == "sle-client"
     checkShutdown($client_fullhostname, timeout)
     checkRestart($client_fullhostname, get_target(target), timeout)
