@@ -293,7 +293,7 @@ end
 
 When(/^I click on run$/) do
   begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
+    Timeout.timeout(DEFAULT_TIMEOUT + 400) do
       loop do
         begin
           find('button#run').click
