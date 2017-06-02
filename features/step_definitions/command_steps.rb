@@ -319,20 +319,29 @@ And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
 end
 
 And(/I create dockerized minions$/) do
-master, _code = $minion.run("cat /etc/salt/minion.d/susemanager.conf")
-## build everything
-$minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/rhel6/ -t rhel6", true, 2000)
-$minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/rhel7/ -t rhel7", true, 2000)
-$minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/sles11sp4 -t sles11sp4", true, 2000)
-$minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/sles12 -t sles12", true, 2000)
-$minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/sles12sp1 -t sles12sp1", true, 2000)
-# launch the key to master
-spawn_minion = "/etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace"
-$minion.run("docker run -h rhel6 -d --entrypoint '/bin/sh' rhel6 -c \"echo \'#{master}\' > #{spawn_minion}\"")
-$minion.run("docker run -h rhel7 -d --entrypoint '/bin/sh' rhel7 -c \"echo \'#{master}\' >  #{spawn_minion}\"")
-$minion.run("docker run -h sles11sp4 -d --entrypoint '/bin/sh' sles11sp4 -c \"echo \'#{master}\' > #{spawn_minion}\"")
-$minion.run("docker run -h sles12 -d --entrypoint '/bin/sh' sles12 -c \"echo \'#{master}\' > #{spawn_minion}\"")
-$minion.run("docker run -h sle2sp1 -d --entrypoint '/bin/sh' sles12sp1 -c \"echo \'#{master}\' > #{spawn_minion}\"")
-# accept all the key on master
-$server.run("salt-key -A -y")
+  master, _code = $minion.run("cat /etc/salt/minion.d/susemanager.conf")
+  # build everything
+  distros = %w[rhel6 rhel7 sles11sp4 sles12 sles12sp1]
+  distros.each do |os|
+    $minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/#{os}/ -t #{os}", true, 2000)
+    spawn_minion = "/etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace"
+    $minion.run("docker run -h #{os} -d --entrypoint '/bin/sh' #{os} -c \"echo \'#{master}\' > #{spawn_minion}\"")
+    puts "minion #{os} created and running"
+  end
+  # accept all the key on master, wait dinimically for last key
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        out, _code = $server.run("salt-key -l unaccepted")
+        # if we see the last os, we can break
+        if out.include? distros.last
+          $server.run("salt-key -A -y")
+          break
+        end
+        sleep 5
+      end
+    end
+  rescue Timeout::Error
+    raise "something wrong with creation of minion docker"
+  end
 end
