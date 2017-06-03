@@ -37,5 +37,7 @@
 - features/docker_cve_audit.feature
 ### Scalability tests (after debug always)
 - features/docker_xmlrpc.feature
+- features/minion_datacenter.feature
+### debug and sync
 - features/spacewalk_debug.feature
 - features/sync_real_channels.feature
