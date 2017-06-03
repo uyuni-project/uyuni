@@ -20,6 +20,6 @@ Feature: Sync real channels
       And I add "sles11-sp4-updates-x86_64" channel
       
  Scenario: Sync RES7 product channels
-    Given I add "rhel-x86_64-server-7"
+    Given I add "rhel-x86_64-server-7" channel
     And I add "res7-x86_64" channel
     And I add "res7-suse-manager-tools-x86_64"
