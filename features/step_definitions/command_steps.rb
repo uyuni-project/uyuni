@@ -62,6 +62,7 @@ When(/^file "([^"]*)" not exists on server$/) do |arg1|
 end
 
 When(/^file "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
+  sleep(3)
   output = sshcmd("grep #{arg2} #{arg1}", ignore_err: true)
   unless output[:stderr].empty?
     $stderr.write("-----\n#{output[:stderr]}\n-----\n")
