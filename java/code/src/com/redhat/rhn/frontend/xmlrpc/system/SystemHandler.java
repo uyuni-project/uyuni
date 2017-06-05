@@ -4582,6 +4582,7 @@ public class SystemHandler extends BaseHandler {
     public Object[] listOutOfDateSystems(User loggedInUser) {
         DataResult<SystemOverview> list = SystemManager.outOfDateList(
                 loggedInUser, null);
+        list.elaborate();
         return list.toArray();
     }
 
