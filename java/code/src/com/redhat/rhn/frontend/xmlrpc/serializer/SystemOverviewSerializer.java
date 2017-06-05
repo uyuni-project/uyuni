@@ -76,6 +76,7 @@ public class SystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
         }
 
         helper.add("extra_pkg_count", system.getExtraPkgCount());
+        helper.add("outdated_pkg_count", system.getOutdatedPackages());
         helper.writeTo(output);
     }
 }
