@@ -3,6 +3,7 @@
 
 Feature: register a salt-minion via bootstrap
          run cmd and openscap scan, reboot test
+      
   Scenario: bootstrap a centos minion
      Given I am authorized
      And I go to the bootstrapping page
