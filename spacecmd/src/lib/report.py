@@ -79,13 +79,7 @@ def do_report_outofdatesystems(self, args):
 
     report = {}
     for system in systems:
-        system_id = system.get('id')
-
-        packages = \
-            self.client.system.listLatestUpgradablePackages(self.session,
-                                                            system_id)
-
-        report[system.get('name')] = len(packages)
+        report[system.get('name')] = system.get('outdated_pkg_count')
 
     if len(report):
         print '%s  %s' % ('System'.ljust(max_size), 'Packages')
