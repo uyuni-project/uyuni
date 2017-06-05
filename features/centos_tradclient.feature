@@ -2,6 +2,8 @@
 # Licensed under the terms of the MIT license.
 
 Feature: register a traditional client centos7
+         Run openscap audit for trad-client, exec pkg install and run script.
+	 Delete trad-clienclient
 
   Scenario: Install the trad-client on centos7
      Given I am authorized
@@ -27,9 +29,9 @@ Feature: register a traditional client centos7
   Scenario: Check results of the openscap centos
     Given I am on the Systems overview page of this "ceos-minion"
     And I follow "Audit" in the content area
-    When I follow "xccdf_org.open-scap_testresult_RHEL6-Default"
+    When I follow "xccdf_org.open-scap_testresult_common"
     Then I should see a "Details of XCCDF Scan" text
-    And I should see a "RHEL6-Default" text
+    And I should see a "RHEL-7" text
     And I should see a "XCCDF Rule Results" text
     And I should see a "CCE-" text
     And I should see a "rule-" link
