@@ -33,16 +33,16 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @xmlrpc.doc
  *
  * #struct("system")
- *      #prop("int", "id")
- *      #prop("string", "name")
- *       #prop_desc("dateTime.iso8601",  "last_checkin", "Last time server
- *              successfully checked in")
- *       #prop_desc("dateTime.iso8601",  "last_boot", "Last server boot time")
- *       #prop_desc("dateTime.iso8601",  "created", "Server registration time")
- *
+ *     #prop("int", "id")
+ *     #prop("string", "name")
+ *     #prop_desc("dateTime.iso8601",  "last_checkin", "Last time server
+ *             successfully checked in")
+ *     #prop_desc("dateTime.iso8601",  "created", "Server registration time")
+ *     #prop_desc("dateTime.iso8601",  "last_boot", "Last server boot time")
+ *     #prop_desc("int",  "extra_pkg_count", "Number of packages not belonging
+ *             to any assigned channel")
+ *     #prop_desc("int",  "outdated_pkg_count", "Number of out-of-date packages")
  * #struct_end()
- *
- *
  */
 public class SystemOverviewSerializer extends RhnXmlRpcCustomSerializer {
 
