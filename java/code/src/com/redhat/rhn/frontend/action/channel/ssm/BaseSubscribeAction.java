@@ -36,8 +36,10 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -63,6 +65,9 @@ import javax.servlet.http.HttpServletResponse;
 public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
     private static Logger log = Logger.getLogger(BaseSubscribeAction.class);
+
+    /** Taskomatic API instance */
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     static final String PREFIX = "base-for-";
     static final String NO_CHG = "__no_change__";
@@ -373,6 +378,15 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             else {
                 requestedChanges.put(newChanId, servers);
             }
+        }
+
+        // Is taskomatic running?
+        if (!TASKOMATIC_API.isRunning()) {
+            log.error("Cannot schedule action: Taskomatic is not running");
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError("taskscheduler.down", errors);
+            getStrutsDelegate().saveMessages(request, errors);
+            return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
         }
 
         alterSubscriptions(user, requestedChanges, successes, skipped);

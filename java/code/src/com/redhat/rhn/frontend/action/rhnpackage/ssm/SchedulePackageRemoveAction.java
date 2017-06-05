@@ -35,8 +35,10 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -61,6 +63,9 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
         Listable<Map<String, Object>> {
 
     private static Logger log = Logger.getLogger(SchedulePackageRemoveAction.class);
+
+    /** Taskomatic API instance */
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping actionMapping,
@@ -160,6 +165,16 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
         RequestContext context = new RequestContext(request);
         StrutsDelegate strutsDelegate = getStrutsDelegate();
         User user = context.getCurrentUser();
+
+        // Is taskomatic running?
+        if (!TASKOMATIC_API.isRunning()) {
+            log.error("Cannot schedule action: Taskomatic is not running");
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError("taskscheduler.down", errors);
+            getStrutsDelegate().saveMessages(request, errors);
+            return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
+        }
+
         // Load the date selected by the user
         DynaActionForm form = (DynaActionForm) formIn;
         Date earliest = getStrutsDelegate().readDatePicker(form, "date",

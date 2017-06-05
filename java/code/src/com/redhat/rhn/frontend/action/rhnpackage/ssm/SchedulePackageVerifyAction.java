@@ -21,6 +21,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -50,12 +51,21 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+
+import org.apache.log4j.Logger;
 
 /**
  * Handles the display and capturing of scheduling package verifications for systems in
  * the SSM.
  */
 public class SchedulePackageVerifyAction extends RhnAction implements Listable {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(SchedulePackageVerifyAction.class);
+
+    /** Taskomatic API instance */
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping actionMapping,
@@ -71,6 +81,14 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable {
 
         if (request.getParameter("dispatch") != null) {
             if (requestContext.wasDispatched("installconfirm.jsp.confirm")) {
+                // Is taskomatic running?
+                if (!TASKOMATIC_API.isRunning()) {
+                    log.error("Cannot schedule action: Taskomatic is not running");
+                    ActionErrors errors = new ActionErrors();
+                    getStrutsDelegate().addError("taskscheduler.down", errors);
+                    getStrutsDelegate().saveMessages(request, errors);
+                    return actionMapping.findForward(RhnHelper.CONFIRM_FORWARD);
+                }
 
                 RequestContext context = new RequestContext(request);
                 StrutsDelegate strutsDelegate = getStrutsDelegate();
