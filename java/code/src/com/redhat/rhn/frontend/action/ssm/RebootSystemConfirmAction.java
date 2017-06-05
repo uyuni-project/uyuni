@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
@@ -42,12 +43,21 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+
+import org.apache.log4j.Logger;
 
 /**
  * Confirm reboot of given systems
  */
 public class RebootSystemConfirmAction extends RhnAction
     implements Listable<SystemOverview> {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(RebootSystemConfirmAction.class);
+
+    /** Taskomatic API instance */
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /** {@inheritDoc} */
     @Override
@@ -90,6 +100,15 @@ public class RebootSystemConfirmAction extends RhnAction
         Date earliest = getStrutsDelegate().readDatePicker(formIn,
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
         ActionChain actionChain = ActionChainHelper.readActionChain(formIn, user);
+
+        // Is taskomatic running?
+        if (!TASKOMATIC_API.isRunning()) {
+            log.error("Cannot schedule action: Taskomatic is not running");
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError("taskscheduler.down", errors);
+            getStrutsDelegate().saveMessages(request, errors);
+            return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
+        }
 
         MessageQueue.publish(new SsmSystemRebootEvent(user.getId(), earliest, actionChain,
             set.getElementValues()));
