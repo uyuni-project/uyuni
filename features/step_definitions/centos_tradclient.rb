@@ -60,8 +60,3 @@ And(/^execute some tests for centos_trad_client$/) do
   assert_empty(@cli.call('schedule.listFailedActions', @sid))
   @cli.call("auth.logout", @sid)
 end
-
-And(/^And execute test for openscap tradclient$/) do
-   # todo : implement steps
-	# http://missingsmth.com/centos-7-spacewalk-features/
-end
