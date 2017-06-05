@@ -39,7 +39,7 @@ Feature: register a salt-minion via bootstrap
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
 
-  Scenario: Check results of the openscap centos
+  Scenario: Check results of the openscap centos minion
     Given I am on the Systems overview page of this "ceos-minion"
     And I follow "Audit" in the content area
     When I follow "xccdf_org.open-scap_testresult_standard"
