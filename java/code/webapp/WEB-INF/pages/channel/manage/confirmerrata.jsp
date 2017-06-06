@@ -18,6 +18,17 @@
   <rhn:submitted />
   <rhn:hidden name="cid" value="${cid}" />
 
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input class="btn btn-success" type="submit" name="dispatch"
+                value="<bean:message key='frontend.actions.channels.manager.add.submit'/>"
+                <c:choose>
+                    <c:when test="${totalSize < 1}">disabled</c:when>
+                </c:choose>
+            >
+        </div>
+    </div>
+
   <div class="row-0">
     <div class="col-md-6">
       <div class="panel panel-default">
@@ -82,15 +93,6 @@
       </div>
       <rl:csv  name="packageList" dataset="packageList" exportColumns="id,packageName,packageNvre,packageArch,summary" />
     </div>
-  </div>
-
-  <div class="text-right">
-    <hr />
-    <input class="btn btn-default" type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.submit'/>"
-      <c:choose>
-        <c:when test="${totalSize < 1}">disabled</c:when>
-      </c:choose>
-    >
   </div>
 </rl:listset>
 

@@ -19,19 +19,17 @@
   <rl:listset name="errata_list_set">
    <rhn:csrf />
    <rhn:hidden name="cid" value="${cid}" />
-
-       <%@ include file="/WEB-INF/pages/common/fragments/errata/selectableerratalist.jspf" %>
-
-                        <div class="text-right">
-                        <hr />
-                        <input class="btn btn-default" type="submit" name="dispatch"  value="<bean:message key='channel.jsp.errata.remove'/>"
-                            <c:choose>
-                                <c:when test="${empty pageList}">disabled</c:when>
-                            </c:choose>
-                        >
-                        </div>
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <input class="btn btn-default" type="submit" name="dispatch"  value="<bean:message key='channel.jsp.errata.remove'/>"
+                    <c:choose>
+                        <c:when test="${empty pageList}">disabled</c:when>
+                    </c:choose>
+                >
+            </div>
+        </div>
      <rhn:submitted/>
-
+     <%@ include file="/WEB-INF/pages/common/fragments/errata/selectableerratalist.jspf" %>
 
 </rl:listset>
 

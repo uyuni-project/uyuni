@@ -17,8 +17,16 @@
   <bean:message key="channel.jsp.errata.remove.confirmmessage"/>
 
   <rl:listset name="errata_list_set">
-          <rhn:csrf />
+    <rhn:csrf />
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input class="btn btn-danger" type="submit"
+                name="dispatch"  value="<bean:message key='channel.jsp.errata.confirmremove'/>">
+        </div>
+    </div>
+    <rhn:submitted/>
 
+     <rhn:hidden name="cid" value="${cid}" />
                   <rl:list
                                         emptykey="channel.jsp.errata.listempty"
                                         alphabarcolumn="advisory" >
@@ -62,15 +70,7 @@
                 </rl:column>
 
 
-                        </rl:list>
-
-                        <div class="text-right">
-                        <hr />
-                        <input class="btn btn-danger" type="submit" name="dispatch"  value="<bean:message key='channel.jsp.errata.confirmremove'/>">
-                        </div>
-     <rhn:submitted/>
-     <rhn:hidden name="cid" value="${cid}" />
-
+    </rl:list>
 </rl:listset>
 
 

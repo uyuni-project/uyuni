@@ -23,6 +23,14 @@
 <rl:listset name="packageList">
   <rhn:csrf />
   <rhn:submitted />
+  <c:if test="${not empty packages}">
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input type="submit" class="btn btn-danger" name="dispatch"
+                value='<bean:message key="confirm"/>' />
+        </div>
+    </div>
+  </c:if>
   <rhn:hidden name="eid" value="${param.eid}" />
   <rl:list emptykey="errata.edit.packages.add.nopackages"
       dataset="packages"
@@ -39,13 +47,6 @@
       </a>
     </rl:column>
   </rl:list>
-  <c:if test="${not empty packages}">
-    <div class="text-right">
-      <hr />
-      <input type="submit" class="btn btn-danger" name="dispatch"
-             value='<bean:message key="confirm"/>' />
-    </div>
-  </c:if>
 </rl:listset>
 
 </body>
