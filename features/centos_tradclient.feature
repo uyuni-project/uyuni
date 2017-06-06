@@ -15,7 +15,7 @@ Feature: register a traditional client centos7
      And  I run "yum install -y --nogpgcheck spacewalk-oscap scap-security-guide" on "ceos-minion"
      And  I register the centos7 as tradclient
      And  I run "rhn-actions-control --enable-all" on "ceos-minion"
-      
+
    Scenario: Schedule an openscap-audit job for centos tradclient
     Given I am on the Systems overview page of this "ceos-minion"
     And I follow "Audit" in the content area
@@ -33,13 +33,13 @@ Feature: register a traditional client centos7
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "RHEL-7" text
     And I should see a "XCCDF Rule Results" text
-    And I should see a "CCE-" text
-    And I should see a "rule-" link
+    And I should see a "pass" text
+    And I should see a "service_" link
 
   Scenario: Schedule some actions for centos7
      Given I am authorized as "admin" with password "admin"
      And execute some tests for centos_trad_client
-       
+
   Scenario: Delete Trad-client or migrated minion
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Delete System"
