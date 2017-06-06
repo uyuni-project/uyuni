@@ -104,46 +104,32 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testGetSystemGroups() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
-        ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
-
-
-        user1.addPermanentRole(RoleFactory.ORG_ADMIN);
-        // Here we have to commit the User because we added a Server
-        // and need to update their rhnUserServerPerms table.  This should be
-        // mapped to hibernate so we don't have to do these two manual commits!
-        UserFactory.save(user1);
+        ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
 
         PageControl pc = new PageControl();
         pc.setIndexData(false);
         pc.setFilterColumn("earliest");
         pc.setStart(1);
-        DataResult dr = ActionManager.pendingActions(user1, pc);
+        DataResult dr = ActionManager.pendingActions(user, pc);
         assertNotNull(dr);
         assertTrue(dr.size() > 0);
     }
 
     public void testLookupAction() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user1.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Action a1 = ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         Long actionId = a1.getId();
 
         //Users must have access to a server for the action to lookup the action
-        Server s = ServerFactoryTest.createTestServer(user1, true);
+        Server s = ServerFactoryTest.createTestServer(user, true);
         a1.addServerAction(ServerActionTest.createServerAction(s, a1));
         ActionManager.storeAction(a1);
 
-        Action a2 = ActionManager.lookupAction(user1, actionId);
+        Action a2 = ActionManager.lookupAction(user, actionId);
         assertNotNull(a2);
     }
 
     public void testFailedActions() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
@@ -160,8 +146,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testPendingActions() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
@@ -275,11 +259,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testSimpleCancelActions() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-
         Action parent = createActionWithServerActions(user, 1);
         List actionList = createActionList(user, new Action [] {parent});
 
@@ -291,11 +270,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testSimpleCancelMinionActions() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-
         Action parent = createActionWithMinionServerActions(user, 3);
         List actionList = createActionList(user, new Action [] {parent});
 
@@ -330,11 +304,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testSimpleCancelMixedActions() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-
         Action parent = createActionWithMinionServerActions(user, 4,
                 i -> {
                     try {
@@ -387,11 +356,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testCancelActionWithChildren() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-
         Action parent = createActionWithServerActions(user, 1);
         Action child = createActionWithServerActions(user, 1);
         child.setPrerequisite(parent);
@@ -405,11 +369,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testCancelActionWithMultipleServerActions() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-
         Action parent = createActionWithServerActions(user, 2);
         List<Action> actionList = Collections.singletonList(parent);
 
@@ -421,11 +380,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testCancelActionWithParentFails() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-
         Action parent = createActionWithServerActions(user, 1);
         Action child = createActionWithServerActions(user, 1);
         child.setPrerequisite(parent);
@@ -441,11 +395,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testComplexHierarchy() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-
         Action parent1 = createActionWithServerActions(user, 3);
         for (int i = 0; i < 9; i++) {
             Action child = createActionWithServerActions(user, 2);
@@ -472,11 +421,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     public void testCancelKickstartAction() throws Exception {
         Session session = HibernateFactory.getSession();
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-
         Action parentAction = createActionWithServerActions(user, 1);
         Server server = parentAction.getServerActions().iterator().next()
             .getServer();
@@ -512,8 +456,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testCompletedActions() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
@@ -530,8 +472,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testRecentlyScheduledActions() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction child = ServerActionTest.createServerAction(ServerFactoryTest
@@ -548,11 +488,9 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertNotEmpty(dr);
     }
 
-    public void testLookupFailLoookupAction() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
+    public void testLookupFailLookupAction() throws Exception {
         try {
-            ActionManager.lookupAction(user1, new Long(-1));
+            ActionManager.lookupAction(user, new Long(-1));
             fail("Expected to fail");
         }
         catch (LookupException le) {
@@ -561,9 +499,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testRescheduleAction() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        Action a1 = ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         sa.setStatus(ActionFactory.STATUS_FAILED);
@@ -577,22 +513,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testInProgressSystems() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-
-
-        Action a1 = ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         ActionFactory.save(a1);
-        // Gotta be ORG_ADMIN to view failed systems
-        user1.addPermanentRole(RoleFactory.ORG_ADMIN);
-        // Here we have to commit the User because we added a Server
-        // and need to update their rhnUserServerPerms table.  This should be
-        // mapped to hibernate so we don't have to do these two manual commits!
-        UserFactory.save(user1);
-        DataResult dr = ActionManager.inProgressSystems(user1, a1, null);
+        DataResult dr = ActionManager.inProgressSystems(user, a1, null);
         assertTrue(dr.size() > 0);
         assertTrue(dr.get(0) instanceof ActionedSystem);
         ActionedSystem as = (ActionedSystem) dr.get(0);
@@ -601,28 +527,16 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testFailedSystems() throws Exception {
-        User user1 = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-
-
-        Action a1 = ActionFactoryTest.createAction(user1, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
         ServerAction sa = (ServerAction) a1.getServerActions().toArray()[0];
 
         sa.setStatus(ActionFactory.STATUS_FAILED);
         ActionFactory.save(a1);
-        // Gotta be ORG_ADMIN to view failed systems
-        user1.addPermanentRole(RoleFactory.ORG_ADMIN);
-        // Here we have to commit the User because we added a Server
-        // and need to update their rhnUserServerPerms table.  This should be
-        // mapped to hibernate so we don't have to do these two manual commits!
-        UserFactory.save(user1);
 
-        assertTrue(ActionManager.failedSystems(user1, a1, null).size() > 0);
+        assertTrue(ActionManager.failedSystems(user, a1, null).size() > 0);
     }
 
     public void testCreateErrataAction() throws Exception {
-        User user = UserTestUtils.createUser("testUser",
-                UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Action a = ActionManager.createErrataAction(user.getOrg(), errata);
         assertNotNull(a);
@@ -649,11 +563,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testSchedulePackageRemoval() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        assertNotNull(user);
-
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         RhnSet set = RhnSetManager.createSet(user.getId(), "removable_package_list",
                 SetCleanup.NOOP);
@@ -676,11 +585,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testSchedulePackageVerify() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        assertNotNull(user);
-
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         RhnSet set = RhnSetManager.createSet(user.getId(), "verify_package_list",
                 SetCleanup.NOOP);
@@ -701,12 +605,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(pa, pa1);
     }
 
-    public void testScheduleSriptRun() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        assertNotNull(user);
-
+    public void testScheduleScriptRun() throws Exception {
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(srvr.getId(), "script.run", new Long(1));
         assertNotNull(srvr);
@@ -731,11 +630,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testScheduleKickstart() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        assertNotNull(user);
-
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         assertNotNull(srvr);
         KickstartData testKickstartData
@@ -762,11 +656,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testScheduleGuestKickstart() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        assertNotNull(user);
-
         Server srvr = ServerFactoryTest.createTestServer(user, true);
         assertNotNull(srvr);
         KickstartData testKickstartData
@@ -818,10 +708,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testSchedulePackageDelta() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-
         Server srvr = ServerFactoryTest.createTestServer(user, true);
 
         List profileList = new ArrayList();
@@ -864,7 +750,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void aTestSchedulePackageDelta() throws Exception {
-        User user = UserFactory.lookupById(new Long(3567268));
         Server srvr = ServerFactory.lookupById(new Long(1005385254));
         RhnSetDecl.PACKAGES_FOR_SYSTEM_SYNC.get(user);
 
