@@ -3,7 +3,7 @@
 
 Feature: register a salt-minion via bootstrap
          run cmd and openscap scan, reboot test
-      
+
   Scenario: bootstrap a centos minion
      Given I am authorized
      And I go to the bootstrapping page
@@ -24,7 +24,7 @@ Feature: register a salt-minion via bootstrap
     And I enter "/usr/share/xml/scap/ssg/content/ssg-centos7-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
-       
+
  Scenario: Run a remote command on centos
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
@@ -48,7 +48,7 @@ Feature: register a salt-minion via bootstrap
     And I click on "Reboot system"
     Then I wait and check that "ceos-minion" has rebooted
     And I wait until "salt-minion" service is up and running on "ceos-minion"
-     
+
   Scenario: Check results of the openscap centos minion
     Given I am on the Systems overview page of this "ceos-minion"
     And I follow "Audit" in the content area
@@ -56,5 +56,5 @@ Feature: register a salt-minion via bootstrap
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "RHEL-7" text
     And I should see a "XCCDF Rule Results" text
-    And I should see a "CCE-" text
-    And I should see a "rule-" link
+    And I should see a "pass" text
+    And I should see a "rpm_" link
