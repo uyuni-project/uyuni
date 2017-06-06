@@ -21,6 +21,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -46,12 +47,22 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+
+import org.apache.log4j.Logger;
 
 /**
  * Confirm application of errata to systems in SSM.
  */
 public class ErrataListConfirmAction extends RhnAction implements
         Listable<ErrataOverview> {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(ErrataListConfirmAction.class);
+
+    /** Taskomatic API instance */
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping,
@@ -87,6 +98,15 @@ public class ErrataListConfirmAction extends RhnAction implements
         Date earliest = getStrutsDelegate().readDatePicker(formIn,
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
         ActionChain actionChain = ActionChainHelper.readActionChain(formIn, user);
+
+        // Is taskomatic running?
+        if (!TASKOMATIC_API.isRunning()) {
+            log.error("Cannot schedule action: Taskomatic is not running");
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError("taskscheduler.down", errors);
+            getStrutsDelegate().saveMessages(request, errors);
+            return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
+        }
 
         List<SystemOverview> systems = SystemManager.inSet(user, SetLabels.SYSTEM_LIST);
         List<Long> serverIds = new ArrayList<Long>(systems.size());

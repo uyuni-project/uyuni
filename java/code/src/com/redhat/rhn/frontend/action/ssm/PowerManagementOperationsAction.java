@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand.Operation;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -42,12 +43,20 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 /**
  * Powers on, off and reboots multiple systems.
  * @author Silvio Moioli <smoioli@suse.de>
  */
 public class PowerManagementOperationsAction extends RhnAction implements
         Listable<SystemOverview> {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(PowerManagementOperationsAction.class);
+
+    /** Taskomatic API instance */
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /**
      * Runs this action.
@@ -66,6 +75,13 @@ public class PowerManagementOperationsAction extends RhnAction implements
         ActionErrors errors = new ActionErrors();
 
         if (context.isSubmitted()) {
+            // Is taskomatic running?
+            if (!TASKOMATIC_API.isRunning()) {
+                log.error("Cannot schedule action: Taskomatic is not running");
+                getStrutsDelegate().addError("taskscheduler.down", errors);
+                getStrutsDelegate().saveMessages(request, errors);
+                return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+            }
 
             List<SystemOverview> systemOverviews = getResult(context);
 
