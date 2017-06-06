@@ -14,7 +14,8 @@ Feature: register a salt-minion via bootstrap
      And I enter "linux" as "password"
      And I click on "Bootstrap"
      And I wait until i see "Successfully bootstrapped host! " text
-     And I wait for "100" seconds
+     And I navigate to "rhn/systems/Overview.do" page
+     And I wait until i see "min-centos" text
 
  Scenario: Schedule an openscap-audit job for centos minion
     Given I am on the Systems overview page of this "ceos-minion"
