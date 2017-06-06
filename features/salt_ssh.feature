@@ -20,9 +20,9 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I enter remote ssh-minion hostname as "hostname"
     And I enter "linux" as "password"
     And I click on "Bootstrap"
-    And I wait for "15" seconds
     Then I wait until i see "Successfully bootstrapped host! " text
-    And I wait for "40" seconds
+    And I navigate to "rhn/systems/Overview.do" page
+    And I wait until i see "minssh-sles" text
 
    Scenario: Subscribe ssh-minion to a base-channel for testing
     Given I am authorized as "testing" with password "testing"
