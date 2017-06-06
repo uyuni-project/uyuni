@@ -29,11 +29,13 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
@@ -53,6 +55,9 @@ import javax.servlet.http.HttpServletResponse;
 public class ChildChannelConfirmAction extends RhnAction implements Listable {
 
     private final Log log = LogFactory.getLog(this.getClass());
+
+    /** Taskomatic API instance */
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /**
      * {@inheritDoc}
@@ -92,6 +97,14 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
 
         ActionForward result;
         if (isSubmitted(daForm)) {
+            // Is taskomatic running?
+            if (!TASKOMATIC_API.isRunning()) {
+                log.error("Cannot schedule action: Taskomatic is not running");
+                ActionErrors errors = new ActionErrors();
+                getStrutsDelegate().addError("taskscheduler.down", errors);
+                getStrutsDelegate().saveMessages(request, errors);
+                return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+            }
 
             long operationId = SsmOperationManager.createOperation(user,
                     "ssm.subscription.operation.label", null);

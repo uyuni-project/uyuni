@@ -23,6 +23,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -46,6 +47,9 @@ import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+
+import org.apache.log4j.Logger;
 
 /**
  * SSM action that handles prompting the user for when to install the package as well as
@@ -53,6 +57,12 @@ import com.redhat.rhn.manager.system.SystemManager;
  */
 public class SchedulePackageInstallationAction extends RhnListAction implements
         Listable<EssentialServerDto> {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(SchedulePackageInstallationAction.class);
+
+    /** Taskomatic API instance */
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping actionMapping,
@@ -87,6 +97,16 @@ public class SchedulePackageInstallationAction extends RhnListAction implements
                 ActionChain actionChain = ActionChainHelper.readActionChain(f, user);
                 Long cid = requestContext.getRequiredParam(RequestContext.CID);
                 Set<String> data = SessionSetHelper.lookupAndBind(request, packagesDecl);
+
+                // Is taskomatic running?
+                if (!TASKOMATIC_API.isRunning()) {
+                    log.error("Cannot schedule action: Taskomatic is not running");
+                    ActionErrors errors = new ActionErrors();
+                    getStrutsDelegate().addError("taskscheduler.down", errors);
+                    getStrutsDelegate().saveMessages(request, errors);
+                    return actionMapping.findForward(RhnHelper.CONFIRM_FORWARD);
+                }
+
                 // Remove the packages from session once we have the above handle on
                 // them
                 SessionSetHelper.obliterate(request, packagesDecl);
