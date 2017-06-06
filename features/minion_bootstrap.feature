@@ -23,8 +23,9 @@ Feature: register a salt-minion via bootstrap
      And I go to the minion onboarding page
      Then I should see a "accepted" text
      And the salt-master can reach "sle-minion"
-     And I wait for "15" seconds
-
+     And I navigate to "rhn/systems/Overview.do" page
+     And I wait until i see "min-sles" text
+      
   Scenario: Run a remote command sles-minion (salt-service)
     Given I am authorized as "testing" with password "testing"
     And I follow "Salt"
@@ -68,7 +69,6 @@ Feature: register a salt-minion via bootstrap
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
-     # sle-minion = sles, rh_minion = redhat
      And  I enter the hostname of "sle-minion" as hostname
      And I enter "22" as "port"
      And I enter "root" as "user"
@@ -76,15 +76,16 @@ Feature: register a salt-minion via bootstrap
      And I select "1-MINION-TEST" from "activationKeys"
      And I click on "Bootstrap"
      Then I wait until i see "Successfully bootstrapped host! " text
-     And I wait for "100" seconds
+     And I navigate to "rhn/systems/Overview.do" page
+     And I wait until i see "min-sles" text
 
   Scenario: verify minion bootstrapped with activation key, packages
      Given I am authorized
      And I go to the minion onboarding page
      Then I should see a "accepted" text
      And the salt-master can reach "sle-minion"
-     And "orion-dummy" is installed on "minion"
-     And "perseus-dummy" is installed on "minion"
+     And I wait for "orion-dummy" to be installed on this "sle-minion"
+     And I wait for "perseus-dummy" to be installed on this "sle-minion"
      And I remove pkg "orion-dummy" on this "sle-minion"
      And I remove pkg "perseus-dummy" on this "sle-minion"
 
@@ -109,9 +110,8 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "5" seconds
+     And I wait until i see "A salt key for this host" text
      And I should not see a "GenericSaltError({" text
-     And I should see a "A salt key for this host" text
      And I should see a "seems to already exist, please check!" text
 
   Scenario: Delete sles-minion system profile (second-time)
@@ -120,7 +120,7 @@ Feature: register a salt-minion via bootstrap
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
- # https://github.com/SUSE/spacewalk/pull/831
+      
   Scenario: bootstrap a sles minion with wrong hostname
      Given I am authorized
      And I go to the bootstrapping page
@@ -130,9 +130,8 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "15" seconds
+     Then I wait until i see " Could not resolve hostname not-existing-name: Name or service not known" text
      And I should not see a "GenericSaltError({" text
-     Then I should see a " Could not resolve hostname not-existing-name: Name or service not known" text
 
   Scenario: bootstrap a sles minion with wrong ssh-credentials
      Given I am authorized
@@ -143,23 +142,10 @@ Feature: register a salt-minion via bootstrap
      And I enter "FRANZ" as "user"
      And I enter "KAFKA" as "password"
      And I click on "Bootstrap"
-     And I wait for "15" seconds
+     Then I wait until i see "Permission denied (publickey,keyboard-interactive)." text
      And I should not see a "GenericSaltError({" text
-     Then I should see a "Permission denied (publickey,keyboard-interactive)." text
-
-  Scenario: running command as user salt is forbidden.
-   Given I am authorized
-     And I go to the bootstrapping page
-     Then I should see a "Bootstrap Minions" text
-     And  I enter "`dmesg`" as "hostname"
-     And I enter "22" as "port"
-     And I enter "FRANZ" as "user"
-     And I enter "KAFKA" as "password"
-     And I click on "Bootstrap"
-     And I wait for "15" seconds
-     And I should not see a "dmesg: read kernel buffer failed:" text
-
-  Scenario: bootstrap a sles minion with wrong ssh-port-number
+      
+ Scenario: bootstrap a sles minion with wrong ssh-port-number
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
@@ -168,7 +154,6 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "30" seconds
+     And I wait until i see "ssh: connect to host" text
      And I should not see a "GenericSaltError({" text
-     And I should see a "ssh: connect to host" text
      Then I should see a "port 11: Connection refused" text

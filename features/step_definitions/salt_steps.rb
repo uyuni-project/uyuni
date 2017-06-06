@@ -157,16 +157,6 @@ When(/^we wait till Salt master sees this minion as accepted$/) do
     )
 end
 
-Given(/^this minion key is rejected$/) do
-  step "I list rejected keys at Salt Master"
-  unless $output.include? $minion_hostname
-    steps %(
-      Then I reject this minion key in the Salt master
-      And we wait till Salt master sees this minion as rejected
-        )
-  end
-end
-
 When(/^we wait till Salt master sees this minion as rejected$/) do
   steps %(
     When I list rejected keys at Salt Master
@@ -258,10 +248,6 @@ When(/^I enter as remote command a script to watch a picked-up test file$/) do
       done
       rm /tmp/PICKED-UP-#{$$}.test
       """)
-end
-
-When(/^I create picked-up test file on sle minion$/) do
-  $minion.run("touch /tmp/PICKED-UP-#{$$}.test")
 end
 
 Then(/^I should see "(.*?)" hostname$/) do |minion|
@@ -642,10 +628,6 @@ end
 
 When(/^I click save$/) do
   find('button#save').click
-end
-
-When(/^I click system$/) do
-  find('button#system').click
 end
 
 And(/^I wait until salt\-key "(.*?)" is deleted$/) do |key|
