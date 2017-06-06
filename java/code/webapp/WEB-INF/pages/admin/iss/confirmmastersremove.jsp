@@ -17,6 +17,14 @@
         <rl:listset name="issMasterListSet">
             <rhn:csrf />
             <rhn:submitted />
+            <c:if test="${not empty requestScope.all}">
+                <div class="spacewalk-section-toolbar">
+                    <div class="action-button-wrapper">
+                        <input type="submit" name="dispatch" class="btn btn-danger"
+                            value='<bean:message key="iss.confirm.remove.masters"/>' />
+                    </div>
+                </div>
+            </c:if>
             <rl:list dataset="pageList" name="issMasterList"
                      emptykey="iss.slave.jsp.nomasters">
                 <rl:column sortable="true" headerkey="iss.master.label" sortattr="label">
@@ -25,13 +33,6 @@
                     </html:link>
                 </rl:column>
             </rl:list>
-            <c:if test="${not empty requestScope.all}">
-                <div class="text-right">
-                    <rhn:submitted />
-                    <input type="submit" name="dispatch" class="btn btn-danger"
-                           value='<bean:message key="iss.confirm.remove.masters"/>' />
-                </div>
-            </c:if>
         </rl:listset>
     </body>
 </html:html>

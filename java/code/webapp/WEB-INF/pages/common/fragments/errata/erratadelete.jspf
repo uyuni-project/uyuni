@@ -1,5 +1,11 @@
+<div class="spacewalk-section-toolbar">
+    <div class="action-button-wrapper">
+        <input class="btn btn-danger" type="submit" name="dispatch"
+               value='<bean:message key="deleteconfirm.jsp.confirm"/>'/>
+    </div>
+</div>
 <rhn:list pageList="${requestScope.pageList}" noDataText="erratalist.jsp.noerrata">
-  <rhn:listdisplay button="deleteconfirm.jsp.confirm">
+  <rhn:listdisplay>
     <rhn:column header="erratalist.jsp.type">
         <c:if test="${current.securityAdvisory}">
             <rhn:icon type="errata-security" />

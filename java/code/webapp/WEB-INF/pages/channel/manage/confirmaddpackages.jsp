@@ -23,6 +23,14 @@
 
 <rhn:hidden name="cid" value="${cid}" />
 
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input type="submit" name="confirm" class="btn btn-success"
+                value="<bean:message key='channel.jsp.package.addconfirmbutton'/>" />
+        </div>
+    </div>
+        <rhn:submitted/>
+
         <rl:list dataset="pageList"
                         name="packageList"
                         emptykey="schedulesync.jsp.nopackagesselected"
@@ -64,13 +72,6 @@
         <rl:csv dataset="pageList"
                         name="packageList"
                         exportColumns="id, nvrea, summary, provider" />
-        <div class="text-right">
-          <hr />
-                <input type="submit" name="confirm" class="btn btn-default" value="<bean:message key='channel.jsp.package.addconfirmbutton'/>" />
-        </div>
-                <rhn:submitted/>
-
-
 </rl:listset>
 
 </body>

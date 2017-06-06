@@ -26,6 +26,14 @@
     <jsp:param name="option_source_packages" value="false"/>
 </jsp:include>
 
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input type="submit" name="confirm" class="btn btn-default"
+                value="<bean:message key='channel.jsp.package.addbutton'/>" ${empty pageList ? 'disabled' : 'btn btn-default'} >
+        </div>
+    </div>
+    <rhn:submitted/>
+
                   <rl:list dataset="pageList" name="packageList"
                   decorator="SelectableDecorator"
                                         emptykey="channel.jsp.package.addemptylist"
@@ -64,17 +72,7 @@
                           >
                         ${current.provider}
                 </rl:column>
-
-
-
-                          </rl:list>
-
-
-                        <div class="text-right">
-                            <hr />
-                            <input type="submit" name="confirm" class="btn btn-default"  value="<bean:message key='channel.jsp.package.addbutton'/>" ${empty pageList ? 'disabled' : 'btn btn-default'} >
-                        </div>
-     <rhn:submitted/>
+        </rl:list>
 </rl:listset>
 </body>
 </html>

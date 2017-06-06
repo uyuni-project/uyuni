@@ -22,6 +22,13 @@
 <rhn:csrf />
 <rhn:hidden name="cid" value="${cid}" />
 
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input type="submit" name="confirm" class="btn btn-default"
+                value="<bean:message key='channel.jsp.package.removebutton'/>" />
+        </div>
+    </div>
+    <rhn:submitted/>
         <rl:list dataset="pageList"
                         name="packageList"
                         decorator="SelectableDecorator"
@@ -67,14 +74,6 @@
         <rl:csv dataset="pageList"
                         name="packageList"
                         exportColumns="id, nvrea, provider" />
-        <div class="text-right">
-          <hr />
-                <input type="submit" name="confirm" class="btn btn-default"
-                                value="<bean:message key='channel.jsp.package.removebutton'/>" />
-        </div>
-                <rhn:submitted/>
-
-
 </rl:listset>
 
 </body>

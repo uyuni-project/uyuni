@@ -1,6 +1,14 @@
 <rl:listset name="groupSet" legend="errata">
     <rhn:csrf />
 
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <button type="submit" name="dispatch" class="btn btn-default">
+                <rhn:icon type="item-del" /> <bean:message key="erratalist.jsp.deleteerrata"/>
+            </button>
+        </div>
+    </div>
+
     <rl:list emptykey="${emptyListKey}">
 
         <rl:decorator name="ElaborationDecorator" />
@@ -41,13 +49,6 @@
 
     </rl:list>
 
-    <div class="pull-left">
-        <button type="submit"
-               name="dispatch"
-               class="btn btn-default">
-           <rhn:icon type="item-del" /> <bean:message key="erratalist.jsp.deleteerrata"/>
-        </button>
-    </div>
     <rl:csv
         name="errataList"
         exportColumns="advisoryType,advisoryName,synopsis,updateDate"/>

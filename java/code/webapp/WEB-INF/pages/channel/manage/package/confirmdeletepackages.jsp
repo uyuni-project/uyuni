@@ -27,6 +27,14 @@
 
 <rhn:hidden name="cid" value="${cid}" />
 
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <input type="submit" name="confirm" class="btn btn-danger"
+                value="<bean:message key='channel.jsp.manage.package.confirmbutton'/>" />
+        </div>
+    </div>
+    <rhn:submitted/>
+
         <rl:list dataset="pageList"
                         name="packageList"
                         emptykey="package.jsp.emptylistselected"
@@ -91,12 +99,6 @@
                     name="packageList"
                     exportColumns="id, nvrea, summary, provider" />
         </c:if>
-    
-        <div class="text-right">
-          <hr />
-                <input type="submit" name="confirm" value="<bean:message key='channel.jsp.manage.package.confirmbutton'/>" class="btn btn-danger" />
-        </div>
-                <rhn:submitted/>
 
 
 </rl:listset>
