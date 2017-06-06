@@ -33,7 +33,6 @@ Feature: register a salt-minion via bootstrap
     And I should see a "Remote Commands" text
     Then I enter command "cat /etc/os-release"
     And I click on preview
-    And I wait for "30" seconds
     And I click on run
     Then I should see "ceos-minion" hostname
     And I wait for "15" seconds
