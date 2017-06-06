@@ -14,7 +14,7 @@ And(/^I wait until i see "([^"]*)" text$/) do |text|
       loop do
         break if page.has_content?(text)
         sleep 3
-	page.evaluate_script 'window.location.reload()'
+        page.evaluate_script 'window.location.reload()'
       end
     end
   rescue Timeout::Error

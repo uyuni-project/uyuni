@@ -110,9 +110,8 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "5" seconds
+     And I wait until i see "A salt key for this host" text
      And I should not see a "GenericSaltError({" text
-     And I should see a "A salt key for this host" text
      And I should see a "seems to already exist, please check!" text
 
   Scenario: Delete sles-minion system profile (second-time)
@@ -131,9 +130,8 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "15" seconds
+     Then I wait until i see " Could not resolve hostname not-existing-name: Name or service not known" text
      And I should not see a "GenericSaltError({" text
-     Then I should see a " Could not resolve hostname not-existing-name: Name or service not known" text
 
   Scenario: bootstrap a sles minion with wrong ssh-credentials
      Given I am authorized
@@ -144,23 +142,10 @@ Feature: register a salt-minion via bootstrap
      And I enter "FRANZ" as "user"
      And I enter "KAFKA" as "password"
      And I click on "Bootstrap"
-     And I wait for "15" seconds
+     Then I wait until i see "Permission denied (publickey,keyboard-interactive)." text
      And I should not see a "GenericSaltError({" text
-     Then I should see a "Permission denied (publickey,keyboard-interactive)." text
-
-  Scenario: running command as user salt is forbidden.
-   Given I am authorized
-     And I go to the bootstrapping page
-     Then I should see a "Bootstrap Minions" text
-     And  I enter "`dmesg`" as "hostname"
-     And I enter "22" as "port"
-     And I enter "FRANZ" as "user"
-     And I enter "KAFKA" as "password"
-     And I click on "Bootstrap"
-     And I wait for "15" seconds
-     And I should not see a "dmesg: read kernel buffer failed:" text
-
-  Scenario: bootstrap a sles minion with wrong ssh-port-number
+      
+ Scenario: bootstrap a sles minion with wrong ssh-port-number
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
@@ -169,7 +154,6 @@ Feature: register a salt-minion via bootstrap
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I click on "Bootstrap"
-     And I wait for "30" seconds
+     And I wait until i see "ssh: connect to host" text
      And I should not see a "GenericSaltError({" text
-     And I should see a "ssh: connect to host" text
      Then I should see a "port 11: Connection refused" text
