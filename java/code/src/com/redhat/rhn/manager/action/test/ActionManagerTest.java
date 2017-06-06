@@ -81,8 +81,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/** JUnit test case for the User
- *  class.
+/**
+ * Tests for {@link ActionManager}.
  */
 public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = Logger.getLogger(ActionManagerTest.class);
