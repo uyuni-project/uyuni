@@ -279,10 +279,6 @@ When(/^I go to the admin configuration page$/) do
   find_link("SUSE Manager Configuration").click
 end
 
-When(/^I go to the users page$/) do
-  find_link("Users").click
-end
-
 When(/^I go to the configuration page$/) do
   find_link("Configuration").click
 end
@@ -324,13 +320,6 @@ end
 
 When(/^I check "([^"]*)" erratum$/) do |arg1|
   step %(I check "#{arg1}" in the list)
-end
-
-When(/^I search for "([^"]*)"$/) do |arg1|
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[contains(.,'Search For')]") do
-    fill_in "search_string", :with => arg1
-    click_button "Search"
-  end
 end
 
 When(/^I am on System Set Manager Overview$/) do
