@@ -6,7 +6,6 @@ gem 'jwt'
 gem 'lavanda'
 gem 'net-ssh'
 gem 'poltergeist', :require => false
-gem "rubyzip"
 gem "selenium-webdriver"
 gem 'simplecov'
 gem 'twopence'
