@@ -469,7 +469,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     }
 
     public static Server createTestServer(User owner, boolean ensureOwnerAccess,
-            ServerGroupType type) throws Exception {
+            ServerGroupType type) {
         return createTestServer(owner, ensureOwnerAccess, type, TYPE_SERVER_NORMAL,
                                 new Date());
     }
@@ -482,8 +482,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
 
     private static Server createTestServer(User owner, boolean ensureOwnerAccess,
-            ServerGroupType type, int stype, Date dateCreated)
-        throws Exception {
+            ServerGroupType type, int stype, Date dateCreated) {
 
         Server newS = createUnentitledTestServer(owner, ensureOwnerAccess, stype,
                 dateCreated);
@@ -518,10 +517,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * @param ensureOwnerAccess this flag will make sure the owner passed in has
      *                          access to the new server.
      * @return Server that was created
-     * @throws Exception if there are server creation errors
      */
     public static Server createUnentitledTestServer(User owner, boolean ensureOwnerAccess,
-                    int stype, Date dateCreated) throws Exception {
+                    int stype, Date dateCreated) {
         Server newS = createServer(stype);
         // We have to commit this change manually since
         // ServerGroups aren't actually mapped from within
@@ -600,7 +598,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         return newS;
     }
 
-    private static void populateServer(Server s, User owner, int type) throws Exception {
+    private static void populateServer(Server s, User owner, int type) {
         s.setCreator(owner);
         s.setOrg(owner.getOrg());
         s.setDigitalServerId("ID-" + TestUtils.randomString());
@@ -661,9 +659,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         return si;
     }
 
-    public static Server createTestServer(User owner, boolean ensureOwnerAccess)
-        throws Exception {
-
+    public static Server createTestServer(User owner, boolean ensureOwnerAccess) {
         return createTestServer(owner, ensureOwnerAccess,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
     }
