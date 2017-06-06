@@ -37,6 +37,7 @@ import com.suse.salt.netapi.event.JobReturnEvent;
 
 import org.apache.log4j.Logger;
 
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -124,16 +125,28 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                         jobReturnEvent.getData().isSuccess(),
                                         jobReturnEvent.getJobId(), jobResult.get(),
                                         jobReturnEvent.getData().getFun());
+                                ActionFactory.save(sa);
                             }
                             catch (Exception e) {
+                                // DB exceptions cause the transaction to go into
+                                // rollback-only state. We need to rollback this transaction
+                                // first.
+                                ActionFactory.rollbackTransaction();
+
+                                sa.setCompletionTime(new Date());
                                 sa.setStatus(ActionFactory.STATUS_FAILED);
+                                sa.setResultCode(-1L);
                                 sa.setResultMsg("An unexpected error has occured. " +
                                         "Please check the server logs.");
+
+                                ActionFactory.save(sa);
+                                // When we throw the exception again, the current
+                                // transaction will be set to rollback-only, so we
+                                // explicitly commit the transaction here
+                                ActionFactory.commitTransaction();
+
                                 // We don't actually want to catch any exceptions here
                                 throw e;
-                            }
-                            finally {
-                                ActionFactory.save(sa);
                             }
                         });
                     });
