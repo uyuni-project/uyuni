@@ -197,7 +197,9 @@ function pageResponse(data) {
     }
     if (document.getElementById('pagination_selcount_top')) {
       dwr.util.setValue("pagination_selcount_top", resp.pagination);
-      dwr.util.setValue("pagination_selcount_bottom", resp.pagination);
+      if ($('#pagination_selcount_bottom').lenght > 0) {
+        dwr.util.setValue("pagination_selcount_bottom", resp.pagination);
+      }
     }
 }
 
