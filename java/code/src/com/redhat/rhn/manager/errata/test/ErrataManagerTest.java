@@ -81,8 +81,7 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 
 /**
- * ErrataManagerTest
- * @version $Rev$
+ * Tests {@link ErrataManager}.
  */
 public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
