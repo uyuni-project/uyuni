@@ -121,9 +121,9 @@ const Element = React.createClass({
 const MenuLevel = React.createClass({
   render: function() {
     var length = this.props.elements.length;
-    var contentMenu = this.props.elements.map((el) =>
+    var contentMenu = this.props.elements.map((el, i) =>
       <Element element={el}
-        key={el.label + '_' + this.props.level}
+        key={this.props.level + '_' + el.label + '_' + i}
         level={this.props.level}
         searchString={this.props.searchString}
         visiblityForcedByParent={this.props.visiblityForcedByParent}
@@ -203,13 +203,13 @@ const Breadcrumb = React.createClass({
             const htmlElement =
             (
               a.submenu ?
-              <Link key={a.label + '_' + i} url={a.submenu[0].primaryUrl}
+              <Link url={a.submenu[0].primaryUrl}
                   label={a.label} target={a.target} />
               :
               <span className="level">{a.label}</span>
             );
             return (
-              <span>{htmlElement}{ i == breadcrumbArray.length -1 ? null : <span>></span>}</span>
+              <span key={a.label + '_' + i}>{htmlElement}{ i == breadcrumbArray.length -1 ? null : <span>></span>}</span>
             );
           })
         }
