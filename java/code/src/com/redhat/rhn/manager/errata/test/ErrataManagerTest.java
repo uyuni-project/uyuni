@@ -46,7 +46,6 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
