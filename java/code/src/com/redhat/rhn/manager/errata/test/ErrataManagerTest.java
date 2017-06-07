@@ -404,16 +404,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * TODO: need to put this test back in when we put back errata management.
-     */
-    /*public void aTestClonableErrata() {
-        Long cid = new Long(231);
-        Long orgid = new Long(1);
-        DataResult dr = ErrataManager.clonableErrata(cid, orgid, null);
-        System.out.println("Size [" + dr.size() + "]");
-    }*/
-
-    /**
      * Test only relevant errata per system.
      *
      * @throws Exception the exception
