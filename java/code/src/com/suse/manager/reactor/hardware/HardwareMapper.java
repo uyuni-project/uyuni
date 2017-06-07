@@ -39,6 +39,7 @@ import com.suse.manager.webui.services.SaltGrains;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Network;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -65,7 +66,6 @@ public class HardwareMapper {
 
     private final MinionServer server;
     private final ValueMap grains;
-    private boolean hasPrimaryInterfaceSet = false;
     private List<String> errors = new LinkedList<>();
 
     private static final Pattern PRINTER_REGEX = Pattern.compile(".*/lp\\d+$");
@@ -647,23 +647,29 @@ public class HardwareMapper {
                     "for minion: " + server.getMinionId());
             return;
         }
-
         Optional<String> primaryIPv4 = primaryIps
                     .flatMap(x -> Optional.ofNullable(x.get(SumaUtil.IPVersion.IPV4)))
-                    .map(SumaUtil.IPRoute::getSource);
+                    .map(SumaUtil.IPRoute::getSource)
+                    .filter(addr -> !"127.0.0.1".equals(addr));
         Optional<String> primaryIPv6 = primaryIps
                     .flatMap(x -> Optional.ofNullable(x.get(SumaUtil.IPVersion.IPV6)))
-                    .map(SumaUtil.IPRoute::getSource);
+                    .map(SumaUtil.IPRoute::getSource)
+                    .filter(addr -> !"::1".equals(addr));
 
         com.redhat.rhn.domain.server.Network network =
                 new com.redhat.rhn.domain.server.Network();
         network.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
-        primaryIPv4.ifPresent(network::setIpaddr);
-        primaryIPv6.ifPresent(network::setIp6addr);
 
         server.getNetworks().clear();
         server.addNetwork(network);
 
+        // remove interfaces not present in the Salt result
+        server.getNetworkInterfaces().removeAll(
+                server.getNetworkInterfaces().stream()
+                        .filter(netIf -> !interfaces.containsKey(netIf.getName()))
+                        .collect(Collectors.toSet()));
+
+        // add/update interfaces from the Salt result
         interfaces.forEach((name, saltIface) -> {
             NetworkInterface ifaceEntity = server.getNetworkInterface(name);
             if (ifaceEntity == null) {
@@ -703,11 +709,6 @@ public class HardwareMapper {
                 ipv4.setBroadcast(addr4.getBroadcast().orElse(null));
 
                 ServerNetworkFactory.saveServerNetAddress4(ipv4);
-
-                if (StringUtils.equals(ipv4.getAddress(), primaryIPv4.orElse(null))) {
-                    hasPrimaryInterfaceSet = true;
-                    iface.setPrimary("Y");
-                }
             });
 
             Optional<Network.INet6> inet6 = Optional.ofNullable(saltIface.getInet6())
@@ -731,16 +732,74 @@ public class HardwareMapper {
             });
         });
 
-        if (!hasPrimaryInterfaceSet) {
-            primaryIPv6.ifPresent(ipv6Primary -> {
+        // find the interface having primary IPv4 addr
+        Optional<NetworkInterface> primaryNetIf = primaryIPv4.flatMap(pipv4 ->
                 server.getNetworkInterfaces().stream()
-                    .filter(netIf -> netIf.getIPv6Addresses().stream()
-                        .anyMatch(address -> ipv6Primary.equals(address.getAddress()))
-                    )
-                    .findFirst()
-                    .ifPresent(primaryNetIf -> primaryNetIf.setPrimary("Y"));
-            });
+                    .filter(netIf -> ObjectUtils.equals(pipv4, netIf.getIpaddr()))
+                    .findFirst());
+
+        if (!primaryNetIf.isPresent()) {
+            // no primary IPv4, fallback to IPv6
+            primaryNetIf = primaryIPv6.flatMap(pipv6 ->
+                    server.getNetworkInterfaces().stream()
+                            .filter(netIf -> netIf.getIPv6Addresses().stream()
+                                    .anyMatch(addr ->
+                                            ObjectUtils.equals(pipv6, addr.getAddress()))
+                            )
+                            .findFirst()
+            );
         }
+
+        primaryNetIf.ifPresent(netIf -> {
+            // we found an interface with the same addr as the
+            // primary IPv4/v6 addr, make it primary
+            netIf.setPrimary("Y");
+        });
+
+        // set the primary addresses on the network entity (if any)
+        primaryIPv4.ifPresent(network::setIpaddr);
+        primaryIPv6.ifPresent(network::setIp6addr);
+
+        if (!primaryIPv4.isPresent()) {
+            // If no primary IPv4 reported by Salt then set the network addr
+            // to that of the primary interface (if any) or fallback to the first
+            // non localhost interface with a IPv4 addr
+            network.setIpaddr(primaryNetIf
+                    .map(n -> n.getIpaddr())
+                    .orElseGet(() -> firstNetIf(server)
+                            .filter(n -> StringUtils.isNotBlank(n.getIpaddr()))
+                            .map(i -> i.getIpaddr())
+                            .orElse(null)));
+        }
+
+        if (!primaryIPv6.isPresent()) {
+            // If no primary IPv6 reported by Salt then set the network addr
+            // to that of the primary interface (if any) or fallback to the first
+            // non localhost interface with a IPv6 addr
+            network.setIp6addr(primaryNetIf
+                    .flatMap(n -> n.getIPv6Addresses().stream().findFirst())
+                    .map(ipv6 -> ipv6.getAddress())
+                    .orElseGet(() -> firstNetIf(server)
+                            .filter(n -> !n.getIPv6Addresses().isEmpty())
+                            .flatMap(n -> n.getIPv6Addresses().stream().findFirst())
+                            .map(a -> a.getAddress())
+                            .orElse(null)
+                    ));
+        }
+    }
+
+    private Optional<NetworkInterface> firstNetIf(Server serverIn) {
+        return serverIn.getNetworkInterfaces().stream()
+                .filter(this::notLocalhost)
+                // just sort alphabetically. eth0 should come first
+                .sorted((if1, if2) -> ObjectUtils.compare(if1.getName(), if2.getName()))
+                .findFirst();
+    }
+
+    private boolean notLocalhost(NetworkInterface netIf) {
+        return !"127.0.0.1".equals(netIf.getIpaddr()) &&
+                !netIf.getIPv6Addresses().stream()
+                        .anyMatch(addr -> "::1".equals(addr.getAddress()));
     }
 
     /**

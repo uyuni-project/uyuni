@@ -14,7 +14,9 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -50,10 +52,12 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -503,7 +507,22 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(null, ethNames.get("lo").getPrimary());
             assertEquals(null, ethNames.get("eth0").getPrimary());
             assertEquals("Y", ethNames.get("eth1").getPrimary());
+            assertEquals("172.24.108.98", server.getIpAddress());
+            assertEquals("fe80::5054:ff:fefc:19a4", server.getIp6Address());
+        });
+    }
 
+    public void testHardwareProfileUpdatePrimaryIPv4OnlyLocalhost()  throws Exception {
+        testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4onlylocalhost.x86.json", (server) -> {
+            Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                    eth -> eth.getName(),
+                    Function.identity()
+            ));
+            assertEquals(null, ethNames.get("lo").getPrimary());
+            assertEquals(null, ethNames.get("eth0").getPrimary());
+            assertEquals(null, ethNames.get("eth1").getPrimary());
+            assertEquals("192.168.121.155", server.getIpAddress());
+            assertEquals("fe80::1234:ff:fed0:91", server.getIp6Address());
         });
     }
 
@@ -530,6 +549,34 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(null, ethNames.get("eth0").getPrimary());
             assertEquals("Y", ethNames.get("eth1").getPrimary());
         });
+    }
+
+    public void testHardwareProfileUpdatePrimaryIPsEmptySSH()  throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minionsles12-suma3pg.vagrant.local");
+
+        Action action = ActionFactoryTest.createAction(
+                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        ServerAction sa = ActionFactoryTest.createServerAction(server, action);
+        action.addServerAction(sa);
+
+        JsonObject obj = getJsonElement("hardware.profileupdate.primary_ips_empty_ssh.x86.json");
+        JsonElement element = obj.get("suma-ref31-min-centos7.mgr.suse.de");
+
+        Set<NetworkInterface> oldIfs = new HashSet<>();
+        oldIfs.addAll(server.getNetworkInterfaces());
+
+        SaltUtils.INSTANCE.updateServerAction(sa, 0L, true, "n/a", element, "state.apply");
+
+        Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                eth -> eth.getName(),
+                Function.identity()
+        ));
+        assertEquals(null, ethNames.get("lo").getPrimary());
+        assertEquals(null, ethNames.get("eth0").getPrimary());
+        assertEquals("10.162.210.36", server.getIpAddress());
+        assertEquals("fe80::a8b2:93ff:fe00:14", server.getIp6Address());
+        assertFalse(server.getNetworkInterfaces().containsAll(oldIfs));
     }
 
     public void testHardwareProfileUpdateS390() throws Exception {
@@ -643,6 +690,15 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return EVENTS.parse(eventString);
     }
 
+    private JsonObject getJsonElement(String filename) throws Exception {
+        Path path = new File(TestUtils.findTestData(
+                "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
+        String jsonString = Files.lines(path)
+                .collect(Collectors.joining("\n"));
+        return JsonParser.GSON.fromJson(jsonString, JsonObject.class);
+    }
+
+
     public void testUpdateServerAction() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("abcdefg.vagrant.local");
@@ -687,11 +743,19 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testOpenscap() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("minionsles12sp1.test.local");
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
         ScapAction action = ActionManager.scheduleXccdfEval(user,
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
+
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
 
         action.addServerAction(sa);
