@@ -15,9 +15,14 @@
 
 package com.redhat.rhn.manager.action.test;
 
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -26,6 +31,7 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -33,6 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Tests for {@link ActionChainManager}.
@@ -75,5 +82,27 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
             assertNotNull(retrievedAction);
             assertEquals(action, retrievedAction);
         }
+    }
+
+    /**
+     * Tests scheduleErrataUpdates().
+     * @throws Exception if something goes wrong
+     */
+    public void testScheduleErrataUpdates() throws Exception {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        Server s = ServerFactoryTest.createTestServer(user, true);
+
+        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+
+        Set<Long> serverIds = singleton(s.getId());
+        List<Integer> errataIds = singletonList(e.getId().intValue());
+        String label = TestUtils.randomString();
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        Set<Action> actions = ActionChainManager.scheduleErrataUpdates(user, serverIds,
+                errataIds, new Date(), actionChain);
+
+        assertSame(actionChain.getEntries().iterator().next().getAction(),
+                actions.iterator().next());
     }
 }
