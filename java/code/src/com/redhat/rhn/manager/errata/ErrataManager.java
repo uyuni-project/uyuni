@@ -1648,7 +1648,7 @@ public class ErrataManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     public static List<Long> applyErrataHelper(User loggedInUser, List<Long> systemIds,
-            List<Integer> errataIds, Date earliestOccurrence)
+            List<Long> errataIds, Date earliestOccurrence)
         throws TaskomaticApiException {
 
         if (systemIds.isEmpty()) {
@@ -1673,7 +1673,7 @@ public class ErrataManager extends BaseManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static List<Long> applyErrata(User user, List errataIds, Date earliest,
+    public static List<Long> applyErrata(User user, List<Long> errataIds, Date earliest,
         List<Long> serverIds) throws TaskomaticApiException {
         return applyErrata(user, errataIds, earliest, null, serverIds);
     }
@@ -1717,7 +1717,7 @@ public class ErrataManager extends BaseManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    private static List<Long> applyErrata(User user, List errataIds, Date earliest,
+    private static List<Long> applyErrata(User user, List<Long> errataIds, Date earliest,
             ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant)
         throws TaskomaticApiException {
 
@@ -1725,10 +1725,7 @@ public class ErrataManager extends BaseManager {
         List<Errata> otherErrata = new ArrayList<Errata>();
 
         // Divide errata in two lists: one updateStack updates and others
-        for (Object errataIdObject : errataIds) {
-            // HACK: ugly conversion needed because in some cases errataIds contains
-            // Integers, in other cases Longs
-            Long errataId = ((Number) errataIdObject).longValue();
+        for (Long errataId : errataIds) {
             List<Server> serverList = new ArrayList<Server>();
             Errata erratum = ErrataManager.lookupErrata(errataId, user);
             if (erratum.hasKeyword("restart_suggested")) {
