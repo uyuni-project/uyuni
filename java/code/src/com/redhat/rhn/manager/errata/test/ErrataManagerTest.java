@@ -46,6 +46,7 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.frontend.xmlrpc.system.test.SystemHandlerTest;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
@@ -404,12 +405,14 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * Test only relevant errata per system.
+     * Tests applyErrata(), note that the onlyRelevant flag is always set in
+     * this case. {@link SystemHandlerTest#testApplyIrrelevantErrata} covers the
+     * case in which the flag is false.
      *
-     * @throws Exception the exception
+     * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
-    public void testApplyErrataOnlyRelevant() throws Exception {
+    public void testApplyErrata() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -517,7 +520,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2ScheduledErrata.contains(errata2.getId()));
         assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
                 server2ScheduledErrata.contains(errata3.getId()));
-
     }
 
     /**
