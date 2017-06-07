@@ -409,7 +409,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception the exception
      */
     @SuppressWarnings("unchecked")
-    public void testOnlyRelevantErrataPerSystem() throws Exception {
+    public void testApplyErrataOnlyRelevant() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -528,7 +528,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception the exception
      */
     @SuppressWarnings("unchecked")
-    public void testPackageManagerErratas() throws Exception {
+    public void testApplyErrataOnManagementStack() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -674,7 +674,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception the exception
      */
     @SuppressWarnings("unchecked")
-    public void testPackageManagerErratasZypp() throws Exception {
+    public void testApplyErrataOnManagementStackForZypp() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
