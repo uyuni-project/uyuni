@@ -452,7 +452,7 @@ public class ActionChainManager {
      * @param server the affected server
      * @param errataIds a list of erratas IDs
      * @param earliest the earliest execution date
-     * @param actionChain the action chain or null
+     * @param actionChain the action chain
      * @return scheduled actions
      */
     public static Action scheduleErrataUpdate(User user, Server server,
@@ -470,7 +470,7 @@ public class ActionChainManager {
      * @param serverIds the affected servers' IDs
      * @param errataIds a list of erratas IDs
      * @param earliest the earliest execution date
-     * @param actionChain the action chain or null
+     * @param actionChain the action chain
      * @return scheduled actions
      */
     public static Set<Action> scheduleErrataUpdates(User user, Set<Long> serverIds,
