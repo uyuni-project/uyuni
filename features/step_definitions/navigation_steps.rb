@@ -14,6 +14,19 @@ And(/^I wait until i see "([^"]*)" text$/) do |text|
       loop do
         break if page.has_content?(text)
         sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "Couldn't find the #{text} in webpage"
+  end
+end
+
+And(/^I wait until i see "([^"]*)" text, refreshing the page$/) do |text|
+  begin
+    Timeout.timeout(150) do
+      loop do
+        break if page.has_content?(text)
+        sleep 3
         page.evaluate_script 'window.location.reload()'
       end
     end
