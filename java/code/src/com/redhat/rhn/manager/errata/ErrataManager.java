@@ -17,6 +17,12 @@
  */
 package com.redhat.rhn.manager.errata;
 
+import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.concat;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -70,6 +76,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
+
 import com.suse.manager.webui.utils.MinionServerUtils;
 
 import org.apache.commons.lang.StringUtils;
@@ -82,12 +89,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcFault;
@@ -1721,89 +1728,95 @@ public class ErrataManager extends BaseManager {
             ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant)
         throws TaskomaticApiException {
 
-        List<Errata> updateStackErrata = new ArrayList<Errata>();
-        List<Errata> otherErrata = new ArrayList<Errata>();
+        // compute server id to applicable errata id map
+        Map<Long, List<Long>> serverApplicableErrataMap = serverIds.stream()
+            .collect(toMap(
+                id -> id,
+                id -> SystemManager.unscheduledErrata(user, id, null).stream()
+                    .map(e -> e.getId())
+                    .collect(toList())
+            ));
 
-        // Divide errata in two lists: one updateStack updates and others
-        for (Long errataId : errataIds) {
-            List<Server> serverList = new ArrayList<Server>();
-            Errata erratum = ErrataManager.lookupErrata(errataId, user);
-            if (erratum.hasKeyword("restart_suggested")) {
-                updateStackErrata.add(erratum);
-            }
-            else {
-                otherErrata.add(erratum);
+
+        // if required, check that all specified errata ids are applicable
+        // throw Exception if that's not the case
+        if (!onlyRelevant) {
+            boolean allRelevant = errataIds.stream()
+                .allMatch(id -> serverApplicableErrataMap.values().stream()
+                    .allMatch(ids -> ids.contains(id)));
+
+            if (!allRelevant) {
+                throw new InvalidErrataException();
             }
         }
 
-        // For every Server prepare a list of relevant errata which needs to be applied
-        // devide them into update stack updates, which needs to be applied first and
-        // other updates which can be applied later
-        Map<Server, List<Errata>> updateStackForServers =
-                new HashMap<Server, List<Errata>>();
-        Map<Server, List<Errata>> errataForServers =
-                new HashMap<Server, List<Errata>>();
-        for (Long serverId : serverIds) {
-            Server server = SystemManager.lookupByIdAndOrg(serverId, user.getOrg());
-            updateStackForServers.put(server, new ArrayList<Errata>());
-            List<Errata> relevantErrata =
-                    SystemManager.unscheduledErrata(user, serverId, null);
-            Set<Long> relevantErrataIds = new HashSet<Long>();
-            for (Errata e : relevantErrata) {
-                relevantErrataIds.add(e.getId());
-            }
-            for (Errata updateStackErratum : updateStackErrata) {
-                if (relevantErrataIds.contains(updateStackErratum.getId())) {
-                    List<Errata> errataList = updateStackForServers.get(server);
-                    errataList.add(updateStackErratum);
-                }
-                else {
-                    if (!onlyRelevant) {
-                        throw new InvalidErrataException();
-                    }
-                }
-            }
-            errataForServers.put(server, new ArrayList<Errata>());
-            for (Errata otherErratum : otherErrata) {
-                if (relevantErrataIds.contains(otherErratum.getId())) {
-                    List<Errata> errataList = errataForServers.get(server);
-                    errataList.add(otherErratum);
-                }
-                else {
-                    if (!onlyRelevant) {
-                        throw new InvalidErrataException();
-                    }
-                }
-            }
-        }
+        // compute id to errata map
+        Map<Long, Errata> errataMap = errataIds.stream()
+            .collect(toMap(
+                id -> id,
+                id -> ErrataManager.lookupErrata(id, user)
+            ));
 
-        // create the required actions to apply the errata
-        // the handling differs depending on the used installer
-        List<ErrataAction> errataActions = new ArrayList<ErrataAction>();
-        for (Server s : updateStackForServers.keySet()) {
-            if ((PackageFactory.lookupByNameAndServer("zypper", s) == null) &&
-                    (!MinionServerUtils.isMinionServer(s))) {
-                errataActions.addAll(createErrataActionsForTraditionalYumClient(user,
-                        updateStackForServers.get(s), earliest, actionChain, s, true));
 
-            }
-            else {
-                errataActions.addAll(createErrataActions(user,
-                        updateStackForServers.get(s), earliest, actionChain, s, true));
-            }
-        }
+        // compute errata id to update stack bit map
+        Map<Errata, Boolean> updateStackMap = errataMap.values().stream()
+            .collect(toMap(
+                e -> e,
+                e -> e.hasKeyword("restart_suggested")
+            ));
 
-        for (Server s : errataForServers.keySet()) {
-            if ((PackageFactory.lookupByNameAndServer("zypper", s) == null) &&
-                    (!MinionServerUtils.isMinionServer(s))) {
-                errataActions.addAll(createErrataActionsForTraditionalYumClient(user,
-                        errataForServers.get(s), earliest, actionChain, s, false));
-            }
-            else {
-                errataActions.addAll(createErrataActions(user,
-                        errataForServers.get(s), earliest, actionChain, s, false));
-            }
-        }
+
+        // compute server list
+        List<Server> servers = serverIds.stream()
+            .map(id -> SystemManager.lookupByIdAndOrg(id, user.getOrg()))
+            .collect(toList());
+
+
+        // split servers based on type
+        Map<Boolean, List<Server>> serverTypeMap = servers.stream()
+            .collect(partitioningBy(s ->
+                PackageFactory.lookupByNameAndServer("zypper", s) == null &&
+                !MinionServerUtils.isMinionServer(s)
+            ));
+
+        List<Server> traditionalYumClients = serverTypeMap.get(true);
+        List<Server> otherServers = serverTypeMap.get(false);
+
+
+        // compute erratas that are both applicable and requested
+        // partition them by server (first) and by update stack bit (second)
+        Map<Server, Map<Boolean, List<Errata>>> serverErrataMap =
+            servers.stream()
+            .collect(toMap(
+                s -> s,
+                s -> serverApplicableErrataMap.get(s.getId()).stream()
+                    .filter(id -> errataMap.containsKey(id))
+                    .map(id -> errataMap.get(id))
+                    .collect(partitioningBy(e -> updateStackMap.get(e)))
+            ));
+
+
+        // compute actions
+        Stream<ErrataAction> traditionalYumClientActions = traditionalYumClients.stream()
+            .flatMap(s -> serverErrataMap.get(s).entrySet().stream()
+                .flatMap(entry -> createErrataActionsForTraditionalYumClient(user,
+                            entry.getValue(), earliest, actionChain, s, entry.getKey())
+                )
+            );
+
+        Stream<ErrataAction> otherServerActions = otherServers.stream()
+            .flatMap(s -> serverErrataMap.get(s).entrySet().stream()
+                .flatMap(entry -> createErrataActions(user,
+                        entry.getValue(), earliest, actionChain, s, entry.getKey())
+                )
+            );
+
+        List<ErrataAction> errataActions = concat(
+            traditionalYumClientActions,
+            otherServerActions
+        ).collect(toList());
+
+        // store actions and schedule them
         List<Long> actionIds = new ArrayList<Long>();
         for (ErrataAction errataAction : errataActions) {
             Action action = ActionManager.storeAction(errataAction);
@@ -1826,12 +1839,12 @@ public class ErrataManager extends BaseManager {
      * @param updateStack set to true if this is an update stack update
      * @return list of errata actions
      */
-    private static List<ErrataAction> createErrataActions(User user,
+    private static Stream<ErrataAction> createErrataActions(User user,
             List<Errata> errata, Date earliest, ActionChain actionChain, Server server,
             boolean updateStack) {
         List<ErrataAction> actions = new ArrayList<>();
         if (errata.isEmpty()) {
-            return actions;
+            return actions.stream();
         }
         ErrataAction errataUpdate = null;
         int sortOrder = 0;
@@ -1874,7 +1887,7 @@ public class ErrataManager extends BaseManager {
             }
         }
         actions.add(errataUpdate);
-        return actions;
+        return actions.stream();
     }
 
     /**
@@ -1888,7 +1901,7 @@ public class ErrataManager extends BaseManager {
      * @param updateStack set to true if this is an update stack update
      * @return list of errata actions
      */
-    private static List<ErrataAction> createErrataActionsForTraditionalYumClient(User user,
+    private static Stream<ErrataAction> createErrataActionsForTraditionalYumClient(User user,
             List<Errata> errata, Date earliest, ActionChain actionChain, Server server,
             boolean updateStack) {
         List<ErrataAction> actions = new ArrayList<>();
@@ -1908,7 +1921,7 @@ public class ErrataManager extends BaseManager {
             }
             actions.add(errataUpdate);
         }
-        return actions;
+        return actions.stream();
     }
 
     /**
