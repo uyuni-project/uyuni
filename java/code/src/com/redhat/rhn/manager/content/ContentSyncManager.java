@@ -774,6 +774,14 @@ public class ContentSyncManager {
      * can't be updated
      */
     public void updateChannelsInternal(String mirrorUrl) throws ContentSyncException {
+        List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
+        for (ContentSource cs : contentSources) {
+            // remove repos without channels which URL is not accessible anymore
+            if (cs.getChannels().isEmpty() && !accessibleUrl(cs.getSourceUrl())) {
+                ChannelFactory.remove(cs);
+            }
+        }
+
         if (StringUtils.isBlank(mirrorUrl)) {
             mirrorUrl = Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY);
         }
@@ -1669,6 +1677,46 @@ public class ContentSyncManager {
             // This is especially the case for updates.suse.com (token auth or no auth)
             return sourceUri.toString();
         }
+    }
+
+    /**
+     * Check if the given URL can be reached.
+     * @param url the url
+     * @return Returns true in case we can access this URL, otherwise false
+     */
+    private boolean accessibleUrl(String url) {
+        try {
+            URI uri = new URI(url);
+            String username = null;
+            String password = null;
+            if (uri.getUserInfo() != null) {
+                String userInfo = uri.getUserInfo();
+                username = userInfo.substring(0, userInfo.indexOf(':'));
+                password = userInfo.substring(userInfo.indexOf(':') + 1);
+            }
+
+            // SMT doesn't do dir listings, so we try to get the metadata
+            String testUrlPath =
+                    new File(StringUtils.defaultString(uri.getRawPath(), "/"),
+                            "/repodata/repomd.xml").getPath();
+
+            // Build full URL to test
+            URI testUri = new URI(uri.getScheme(), null, uri.getHost(),
+                    uri.getPort(), testUrlPath, uri.getQuery(), null);
+            // Verify the mirrored repo by sending a HEAD request
+            int status = MgrSyncUtils.sendHeadRequest(testUri.toString(),
+                    username, password).getStatusLine().getStatusCode();
+            if (status == HttpURLConnection.HTTP_OK) {
+                return true;
+            }
+        }
+        catch (IOException e) {
+            log.warn(e.getMessage());
+        }
+        catch (URISyntaxException e) {
+            log.warn(e.getMessage());
+        }
+        return false;
     }
 
     /**
