@@ -113,9 +113,12 @@ class BootstrapMinions extends React.Component {
                     loading: false
                 })
             } catch (err) {
+                var errMessages = xhr.status == 0 ?
+                    [t("Received invalid response from server. Please check if your minion was bootstraped correctly.")]
+                    : [Network.errorMessageByStatus(xhr.status)];
                 this.setState({
                     success: false,
-                    messages: [Network.errorMessageByStatus(xhr.status)],
+                    messages: errMessages,
                     loading: false
                 })
             }
