@@ -31,6 +31,7 @@ import org.hibernate.Session;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 
+import javax.persistence.FlushModeType;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +47,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
@@ -591,6 +593,34 @@ public abstract class HibernateFactory {
      */
     public static void initialize() {
         connectionManager.initialize();
+    }
+
+    /**
+     * Runs a piece of code with flush mode commit
+     * @param body code to run in flush mode commit
+     * @param <T> return type
+     * @return value of supplier
+     */
+    public static <T> T flushAtCommit(Supplier<T> body) {
+        FlushModeType old = getSession().getFlushMode();
+        getSession().setFlushMode(FlushModeType.COMMIT);
+        try {
+            return body.get();
+        }
+        finally {
+            getSession().setFlushMode(old);
+        }
+    }
+
+    /**
+     * Runs a piece of code with flush mode commit
+     * @param body code to run in flush mode commit
+     */
+    public static void flushAtCommit(Runnable body) {
+        flushAtCommit(() -> {
+            body.run();
+            return 0;
+        });
     }
 
     /**
