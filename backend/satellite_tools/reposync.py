@@ -878,9 +878,6 @@ class RepoSync(object):
                     # different package with SAME NVREA
                     # disassociate from channel if it doesn't match package which will be downloaded
                     to_disassociate[(db_pack['checksum_type'], db_pack['checksum'])] = True
-                # fix epoch
-                if pack.epoch == '0':
-                    pack.epoch = ''
 
             if to_download or to_link:
                 to_process.append((pack, to_download, to_link))
