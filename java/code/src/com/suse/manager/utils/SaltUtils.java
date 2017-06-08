@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -654,7 +655,9 @@ public class SaltUtils {
             PkgProfileUpdateSlsResult result) {
         Instant start = Instant.now();
 
-        updatePackages(server, result);
+        HibernateFactory.flushAtCommit(() -> {
+            updatePackages(server, result);
+        });
 
         Optional.ofNullable(result.getListProducts())
                 .map(products -> products.getChanges().getRet())
