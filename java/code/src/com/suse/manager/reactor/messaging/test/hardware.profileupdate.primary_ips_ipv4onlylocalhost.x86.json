@@ -3519,9 +3519,9 @@
                 "changes": {
                     "ret": {
                         "IPv4": {
-                            "interface": "eth1",
-                            "source": "172.24.108.98",
-                            "destination": "172.31.131.162",
+                            "interface": "lo",
+                            "source": "127.0.0.1",
+                            "destination": "127.0.0.1",
                             "gateway": null
                         }
                     }
