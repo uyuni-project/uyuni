@@ -166,8 +166,7 @@ end
 
 Then(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
   steps %(
-    When I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
+    When I navigate to "rhn/systems/Overview.do" page
     And I follow this "#{system}" link
     When I follow "Events"
     And I follow "History"
