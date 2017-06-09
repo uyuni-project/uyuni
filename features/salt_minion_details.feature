@@ -8,12 +8,7 @@ Feature: Verify the minion registration
   Scenario: Check for the Salt entitlement
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "[Salt]" text
-
-  Scenario: Check if package list has been refreshed
-    Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Events"
-    And I follow "History"
-    Then I try to reload page until contains "Package List Refresh scheduled by (none)" text
+    And we wait until onboarding is completed
 
   Scenario: Check installed packages are visible
     Given I am on the Systems overview page of this "sle-minion"
