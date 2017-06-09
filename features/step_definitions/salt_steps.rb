@@ -171,6 +171,8 @@ Then(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
     When I follow "Events"
     And I follow "History"
     Then I try to reload page until contains "Package List Refresh scheduled by (none)" text
+    And I follow first "Package List Refresh scheduled by (none)"
+    And I wait until i see "This action's status is: Completed." text, refreshing the page
     And I wait for "5" seconds
   )
 end
