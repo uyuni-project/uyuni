@@ -164,6 +164,15 @@ When(/^we wait till Salt master sees this minion as rejected$/) do
     )
 end
 
+Then(/^we wait until onboarding is completed$/) do
+  steps %(
+    When I follow "Events"
+    And I follow "History"
+    Then I try to reload page until contains "Package List Refresh scheduled by (none)" text
+    And I wait for "60" seconds
+  )
+end
+
 When(/^I delete this minion key in the Salt master$/) do
   $output, _code = $server.run("salt-key -y -d #{$minion_hostname}", false)
 end

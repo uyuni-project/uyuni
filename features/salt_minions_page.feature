@@ -38,7 +38,8 @@ Feature: Explore the Minions page
     When I accept this client's minion key
     And we wait till Salt master sees this minion as accepted
     # Registration takes a while
-    And I wait for "20" seconds
+    And I follow this "sle-minion" link
+    And we wait until onboarding is completed
 
   Scenario: The minion communicates with the master
     # It takes a while before we can get the grains and registration is done
