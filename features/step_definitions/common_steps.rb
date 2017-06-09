@@ -23,6 +23,21 @@ Then(/^I should see the "([^"]*)" as link$/) do |target|
   step %(I should see a "#{$ceos_minion_fullhostname}" link) if target == "ceos-minion"
 end
 
+Then(/^I can see all system information for "([^"]*)"$/) do |target|
+node = get_target(target)
+node_hostname, _code = node.run("hostname -f")
+puts "i should see hostname: " + node_hostname.strip
+step %(I should see a "#{node_hostname.strip}" text)
+kernel_version, _code = node.run("uname -r")
+puts "i should see kernel version: " + kernel_version
+step %(I should see a "#{kernel_version.strip}" text)
+os_pretty_raw, _code = node.run("grep \"PRETTY\" /etc/os-release")
+os_pretty = os_pretty_raw.strip.split("=")[1].delete "\""
+puts "i should see os version: " + os_pretty
+# skip this test for centos systems
+step %(I should see a "#{os_pretty}" text) if os_pretty.include? "SUSE Linux"
+end
+
 Then(/^I should not see the "([^"]*)" as text$/) do |target|
   step %(I should not see a "#{$client_fullhostname}" text) if target == "sle-client"
   step %(I should not see a "#{$minion_fullhostname}" text) if target == "sle-minion"
