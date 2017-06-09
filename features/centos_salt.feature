@@ -16,8 +16,7 @@ Feature: register a salt-minion via bootstrap
      And I wait until i see "Successfully bootstrapped host! " text
      And I navigate to "rhn/systems/Overview.do" page
      And I wait until i see "min-centos" text, refreshing the page
-     And I follow this "ceos-minion" link
-     And we wait until onboarding is completed
+     And I wait until onboarding is completed for "ceos-minion"
 
  Scenario: Schedule an openscap-audit job for centos minion
     Given I am on the Systems overview page of this "ceos-minion"
