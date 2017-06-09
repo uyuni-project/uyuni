@@ -1407,6 +1407,107 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test for {@link ContentSyncManager#updateChannels}. Fix invalid assignment
+     * @throws Exception if anything goes wrong
+     */
+    public void testUpdateChannelsCleanupNotAttachedRepos() throws Exception {
+        File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
+        try {
+            // Make sure that channel family "7261" exists
+            User admin = UserTestUtils.createUserInOrgOne();
+            ChannelFamilyTest.ensureChannelFamilyExists(admin, "7261");
+
+            // Create a test channel and set a label that exists in the xml file
+            String channelLabel = "sles12-sp1-debuginfo-pool-x86_64";
+            Channel c = SUSEProductTestUtils.createTestVendorChannel();
+            c.setLabel(channelLabel);
+            c.setDescription("UPDATE ME!");
+            c.setName("UPDATE ME!");
+            c.setSummary("UPDATE ME!");
+            c.setUpdateTag("UPDATE ME!");
+
+            // Setup content source
+            ContentSource cs = new ContentSource();
+            cs.setLabel(c.getLabel());
+            cs.setSourceUrl("https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product_debug?update-me");
+            cs.setType(ChannelFactory.lookupContentSourceType("yum"));
+            cs.setOrg(null);
+            ChannelFactory.save(cs);
+            cs = (ContentSource) TestUtils.saveAndReload(cs);
+            c.getSources().add(cs);
+            TestUtils.saveAndFlush(c);
+
+            String channelLabel2 = "sles12-sp1-pool-x86_64";
+            Channel c2 = SUSEProductTestUtils.createTestVendorChannel();
+            c2.setLabel(channelLabel2);
+            c2.setDescription("UPDATE ME 2!");
+            c2.setName("UPDATE ME 2!");
+            c2.setSummary("UPDATE ME 2!");
+            c2.setUpdateTag("UPDATE ME 2!");
+
+            c2.getSources().add(cs);
+            TestUtils.saveAndFlush(c2);
+
+            // Setup content source with is not accessible
+            ContentSource csna = new ContentSource();
+            csna.setLabel("sle-manager-tools12-updates-x86_64-sp2");
+            csna.setSourceUrl("http://smt-scc.nue.suse.com/NOT/EXISTING/REPO/update?6W2Zmf33GRPn");
+            csna.setType(ChannelFactory.lookupContentSourceType("yum"));
+            csna.setOrg(null);
+            ChannelFactory.save(csna);
+
+            // Save SCC repo to the cache
+            SCCRepository repo = new SCCRepository();
+            repo.setUrl("https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product_debug?qgtMzfPFsLpauJuXu");
+            SCCCachingFactory.saveRepository(repo);
+
+            SCCRepository repo2 = new SCCRepository();
+            repo2.setUrl("https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product?kANfkB7wMUO0u4rmgQ80UBe");
+            SCCCachingFactory.saveRepository(repo2);
+
+            // Update channel information from the xml file
+            ContentSyncManager csm = new ContentSyncManager();
+            ContentSyncManager.setChannelsXML(channelsXML);
+            csm.updateChannelsInternal(null);
+
+            // Verify channel attributes
+            c = ChannelFactory.lookupByLabel(channelLabel);
+            assertEquals("SLES12-SP1-Debuginfo-Pool for x86_64", c.getName());
+            assertEquals("SUSE Linux Enterprise Server 12 SP1 x86_64", c.getSummary());
+
+            // Verify content sources (there is only one)
+            Set<ContentSource> sources = c.getSources();
+            for (ContentSource s : sources) {
+                String url = "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product_debug?qgtMzfPFsLpauJuXu";
+                assertEquals(url, s.getSourceUrl());
+            }
+
+            c2 = ChannelFactory.lookupByLabel(channelLabel2);
+            assertEquals("SLES12-SP1-Pool for x86_64", c2.getName());
+            assertEquals("SUSE Linux Enterprise Server 12 SP1 x86_64", c2.getSummary());
+
+            // Verify content sources (there is only one)
+            Set<ContentSource> sources2 = c2.getSources();
+            for (ContentSource s2 : sources2) {
+                String url = "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product?kANfkB7wMUO0u4rmgQ80UBe";
+                assertEquals(url, s2.getSourceUrl());
+            }
+
+            // Verify that we only have two content source and not the
+            // not accessible anymore
+            List<ContentSource> cses = ChannelFactory.listVendorContentSources();
+            assertEquals(2, cses.size());
+            for (ContentSource s3 : cses) {
+                assertFalse("Found ContentSource which should not exist",
+                        s3.getSourceUrl().equals("http://smt-scc.nue.suse.com/NOT/EXISTING/REPO/update?6W2Zmf33GRPn"));
+            }
+        }
+        finally {
+            SUSEProductTestUtils.deleteIfTempFile(channelsXML);
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
