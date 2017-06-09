@@ -8,7 +8,7 @@ Feature: Verify the minion registration
   Scenario: Check for the Salt entitlement
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "[Salt]" text
-    And we wait until onboarding is completed
+    And I wait until onboarding is completed for "sle-minion"
 
   Scenario: Check installed packages are visible
     Given I am on the Systems overview page of this "sle-minion"

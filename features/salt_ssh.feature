@@ -11,7 +11,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
   Scenario: No Salt Package and service are running on Minion
     Given no Salt packages are installed on remote "ssh-minion"
     And remote minion host is not registered in Spacewalk
-    
+
   Scenario: Bootstrap a system (sles-salt-ssh managed)
     Given I am authorized
     And I go to the bootstrapping page
@@ -23,8 +23,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     Then I wait until i see "Successfully bootstrapped host! " text
     And I navigate to "rhn/systems/Overview.do" page
     And I wait until i see "minssh-sles" text, refreshing the page
-    And I follow this "ssh-minion" link
-    And we wait until onboarding is completed
+    And I wait until onboarding is completed for "ssh-minion"
 
    Scenario: Subscribe ssh-minion to a base-channel for testing
     Given I am authorized as "testing" with password "testing"

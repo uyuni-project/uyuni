@@ -164,8 +164,11 @@ When(/^we wait till Salt master sees this minion as rejected$/) do
     )
 end
 
-Then(/^we wait until onboarding is completed$/) do
+Then(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
   steps %(
+    When I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
+    And I follow this "#{system}" link
     When I follow "Events"
     And I follow "History"
     Then I try to reload page until contains "Package List Refresh scheduled by (none)" text
