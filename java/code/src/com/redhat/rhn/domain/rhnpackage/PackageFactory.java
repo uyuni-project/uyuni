@@ -153,7 +153,7 @@ public class PackageFactory extends HibernateFactory {
     public static PackageArch lookupPackageArchById(Long id) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", id);
-        return HibernateFactory.flushAtCommit(
+        return HibernateFactory.doWithoutAutoFlushing(
           () -> (PackageArch) singleton.
                   lookupObjectByNamedQuery("PackageArch.findById", params, true)
         );

@@ -617,7 +617,7 @@ public abstract class HibernateFactory {
      * @param <T> return type
      * @return the value of supplier
      */
-    public static <T> T flushAtCommit(Supplier<T> body) {
+    public static <T> T doWithoutAutoFlushing(Supplier<T> body) {
         FlushModeType old = getSession().getFlushMode();
         getSession().setFlushMode(FlushModeType.COMMIT);
         try {
@@ -648,8 +648,8 @@ public abstract class HibernateFactory {
      *
      * @param body code to run in FlushModeType.COMMIT
      */
-    public static void flushAtCommit(Runnable body) {
-        flushAtCommit(() -> {
+    public static void doWithoutAutoFlushing(Runnable body) {
+        doWithoutAutoFlushing(() -> {
             body.run();
             return 0;
         });
