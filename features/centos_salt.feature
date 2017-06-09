@@ -16,8 +16,8 @@ Feature: register a salt-minion via bootstrap
      And I wait until i see "Successfully bootstrapped host! " text
      And I navigate to "rhn/systems/Overview.do" page
      And I wait until i see "min-centos" text, refreshing the page
-     # FIXME: remove this wait, we need for wait until hardware/pkg refresh is done
-     And I wait for "60" seconds
+     And I wait until onboarding is completed for "ceos-minion"
+
  Scenario: Schedule an openscap-audit job for centos minion
     Given I am on the Systems overview page of this "ceos-minion"
     And I follow "Audit" in the content area
