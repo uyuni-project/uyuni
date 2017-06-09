@@ -1489,7 +1489,7 @@ class RepoSync(object):
         batch = []
 
         for notice in notices:
-            e = Erratum()
+            e = importLib.Erratum()
 
             version = notice.find(YUM+'version').get('ver')
             category = notice.findtext(PATCH+'category')
