@@ -596,10 +596,26 @@ public abstract class HibernateFactory {
     }
 
     /**
-     * Runs a piece of code with flush mode commit
-     * @param body code to run in flush mode commit
+     * Disables Hibernate's automatic flushing, runs <code>body</code>, and then
+     * enables it again. Returns the result from <code>body</code>.
+     *
+     * You might want this in order to improve performance by skipping automatic
+     * flushes, which might be costly if the number of objects in the Hibernate
+     * cache is high. As of hibernate 5.1 the algorithm is quadratic in the
+     * number of objects.
+     *
+     * WARNING: this might result in queries returning stale data -
+     * modifications to Hibernate objects before or in this call will not be
+     * seen by queries called from <code>body</code>!
+     *
+     * Only use with code that does not make assumptions about Hibernate cache
+     * modifications being reflected in the database. Also it is recommended to
+     * make sure via profiling that your method is spending too much CPU time in
+     * automatic flushing before attempting to use this method.
+     *
+     * @param body code to run in FlushModeType.COMMIT
      * @param <T> return type
-     * @return value of supplier
+     * @return the value of supplier
      */
     public static <T> T flushAtCommit(Supplier<T> body) {
         FlushModeType old = getSession().getFlushMode();
@@ -613,8 +629,24 @@ public abstract class HibernateFactory {
     }
 
     /**
-     * Runs a piece of code with flush mode commit
-     * @param body code to run in flush mode commit
+     * Disables Hibernate's automatic flushing, runs <code>body</code>, and then
+     * enables it again.
+     *
+     * You might want this in order to improve performance by skipping automatic
+     * flushes, which might be costly if the number of objects in the Hibernate
+     * cache is high. As of hibernate 5.1 the algorithm is quadratic in the
+     * number of objects.
+     *
+     * WARNING: this might result in queries returning stale data -
+     * modifications to Hibernate objects before or in this call will not be
+     * seen by queries called from <code>body</code>!
+     *
+     * Only use with code that does not make assumptions about Hibernate cache
+     * modifications being reflected in the database. Also it is recommended to
+     * make sure via profiling that your method is spending too much CPU time in
+     * automatic flushing before attempting to use this method.
+     *
+     * @param body code to run in FlushModeType.COMMIT
      */
     public static void flushAtCommit(Runnable body) {
         flushAtCommit(() -> {
