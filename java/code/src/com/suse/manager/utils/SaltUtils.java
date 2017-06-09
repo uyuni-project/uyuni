@@ -655,7 +655,7 @@ public class SaltUtils {
             PkgProfileUpdateSlsResult result) {
         Instant start = Instant.now();
 
-        HibernateFactory.flushAtCommit(() -> {
+        HibernateFactory.doWithoutAutoFlushing(() -> {
             updatePackages(server, result);
         });
 
