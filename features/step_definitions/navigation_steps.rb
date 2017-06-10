@@ -363,12 +363,13 @@ end
 Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
   found = false
   begin
-    Timeout.timeout(30) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         if page.has_content?(debrand_string(arg1))
           found = true
           break
         end
+        sleep(5)
         visit current_url
       end
     end
