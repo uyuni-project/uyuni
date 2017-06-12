@@ -16,33 +16,19 @@ Then(/^I download the SSL certificate$/) do
   $client.run("ls #{cert_path}")
 end
 
-Then(/^I should see the "([^"]*)" as link$/) do |target|
-  step %(I should see a "#{$client_fullhostname}" link) if target == "sle-client"
-  step %(I should see a "#{$minion_fullhostname}" link) if target == "sle-minion"
-  step %(I should see a "#{$ssh_minion_fullhostname}" link) if target == "ssh-minion"
-  step %(I should see a "#{$ceos_minion_fullhostname}" link) if target == "ceos-minion"
-end
-
 Then(/^I can see all system information for "([^"]*)"$/) do |target|
-node = get_target(target)
-node_hostname, _code = node.run("hostname -f")
-puts "i should see hostname: " + node_hostname.strip
-step %(I should see a "#{node_hostname.strip}" text)
-kernel_version, _code = node.run("uname -r")
-puts "i should see kernel version: " + kernel_version
-step %(I should see a "#{kernel_version.strip}" text)
-os_pretty_raw, _code = node.run("grep \"PRETTY\" /etc/os-release")
-os_pretty = os_pretty_raw.strip.split("=")[1].delete "\""
-puts "i should see os version: " + os_pretty
-# skip this test for centos systems
-step %(I should see a "#{os_pretty}" text) if os_pretty.include? "SUSE Linux"
-end
-
-Then(/^I should not see the "([^"]*)" as text$/) do |target|
-  step %(I should not see a "#{$client_fullhostname}" text) if target == "sle-client"
-  step %(I should not see a "#{$minion_fullhostname}" text) if target == "sle-minion"
-  step %(I should not see a "#{$ssh_minion_fullhostname}" text) if target == "ssh-minion"
-  step %(I should not see a "#{$ceos_minion_fullhostname}" text) if target == "ceos-minion"
+  node = get_target(target)
+  node_hostname, _code = node.run("hostname -f")
+  puts "i should see hostname: " + node_hostname.strip
+  step %(I should see a "#{node_hostname.strip}" text)
+  kernel_version, _code = node.run("uname -r")
+  puts "i should see kernel version: " + kernel_version
+  step %(I should see a "#{kernel_version.strip}" text)
+  os_pretty_raw, _code = node.run("grep \"PRETTY\" /etc/os-release")
+  os_pretty = os_pretty_raw.strip.split("=")[1].delete "\""
+  puts "i should see os version: " + os_pretty
+  # skip this test for centos systems
+  step %(I should see a "#{os_pretty}" text) if os_pretty.include? "SUSE Linux"
 end
 
 # spacewalk errors steps
@@ -52,22 +38,9 @@ Then(/^I control that up2date logs on client under test contains no Traceback er
   raise "error found, check the client up2date logs" if code.nonzero?
 end
 
-Then(/^I check the rhn logs for ERROR entries$/) do
-  cmd = "if grep -R \"Error\" /var/log/rhn/ ; then exit 1; else exit 0; fi"
-  out, code = $server.run(cmd)
-  raise "RHN_LOGS: ERROR FOUNDS ! #{out} " if code.nonzero?
-end
 # action chains
 When(/^I check radio button "(.*?)"$/) do |arg1|
    fail unless choose(arg1)
-end
-
-When(/^I open the action chain box$/) do
-   fail unless find('#s2id_action-chain span.select2-arrow').click
-end
-
-When(/^I enter "(.*?)" in action-chain$/) do |arg1|
-   find('#select2-drop input.select2-input').set(arg1)
 end
 
 When(/^I enter as remote command this script in$/) do |multiline|
