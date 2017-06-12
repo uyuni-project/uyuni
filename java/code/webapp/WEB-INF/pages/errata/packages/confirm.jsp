@@ -4,56 +4,57 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-
 <html>
-<head>
-</head>
+<head></head>
 <body>
-<rhn:toolbar base="h1" icon="header-errata"
-                   helpUrl="">
-    <bean:message key="errata.edit.toolbar"/> <c:out value="${advisory}" />
-  </rhn:toolbar>
+    <rhn:toolbar base="h1" icon="header-errata"
+                 helpUrl="">
+        <bean:message key="errata.edit.toolbar"/>
+        <c:out value="${advisory}"/>
+    </rhn:toolbar>
 
-  <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/manage_errata.xml"
-                  renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
+    <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/manage_errata.xml"
+                    renderer="com.redhat.rhn.frontend.nav.DialognavRenderer"/>
 
-  <h2><rhn:icon type="header-package" />
-      <bean:message key="errata.edit.packages.confirm.confirmpackageaddition"/></h2>
+    <h2>
+        <rhn:icon type="header-package"/>
+        <bean:message key="errata.edit.packages.confirm.confirmpackageaddition"/>
+    </h2>
 
-  <p><bean:message key="errata.edit.packages.confirm.instructions"/></p>
+    <p>
+        <bean:message key="errata.edit.packages.confirm.instructions"/>
+    </p>
 
-  <rl:listset name="groupSet">
-      <rhn:csrf />
+    <rl:listset name="groupSet">
+        <rhn:csrf/>
+        <rhn:submitted/>
+        <rhn:hidden name="eid" value="${param.eid}"/>
 
-      <rhn:hidden name="eid" value="${param.eid}" />
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <input type="submit"
+                       class="btn btn-success"
+                       name="dispatch"
+                       value='<bean:message key="errata.edit.packages.confirm.confirm"/>'/>
+            </div>
+        </div>
 
-      <rl:list dataset="pageList"
-               width="100%"
-               styleclass="list"
-               emptykey="packagelist.jsp.nopackages">
+        <rl:list dataset="pageList"
+                 width="100%"
+                 styleclass="list"
+                 emptykey="packagelist.jsp.nopackages">
 
-          <rl:decorator name="PageSizeDecorator"/>
+            <rl:decorator name="PageSizeDecorator"/>
 
-          <rl:column headerkey="errata.edit.packages.add.package" bound="false"
-                     sortattr="nvrea" sortable="true" filterattr="nvrea">
-              <a href="/rhn/software/packages/Details.do?pid=${current.id}">
-                  <c:out value="${current.nvrea}" escapeXml="false"/>
-              </a>
-          </rl:column>
+            <rl:column headerkey="errata.edit.packages.add.package" bound="false"
+                       sortattr="nvrea" sortable="true" filterattr="nvrea">
+                <a href="/rhn/software/packages/Details.do?pid=${current.id}">
+                    <c:out value="${current.nvrea}" escapeXml="false"/>
+                </a>
+            </rl:column>
+        </rl:list>
 
-      </rl:list>
-
-      <div class="text-right">
-          <rhn:submitted/>
-          <hr/>
-          <input type="submit"
-                 class="btn btn-success"
-                 name="dispatch"
-                 value='<bean:message key="errata.edit.packages.confirm.confirm"/>'/>
-      </div>
-
-  </rl:listset>
-
+    </rl:listset>
 
 </body>
 </html>
