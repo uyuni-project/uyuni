@@ -32,26 +32,6 @@ Then(/^I should see this client in spacewalk$/) do
     )
 end
 
-Then(/^this client should appear in spacewalk$/) do
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        begin
-          steps %(
-            Given I am on the Systems page
-            Then I should see this client as link
-                    )
-          break
-        rescue Capybara::ElementNotFound
-          sleep(1)
-        end
-      end
-    end
-  rescue Timeout::Error
-      fail "The minion never showed up in Spacewalk"
-  end
-end
-
 Then(/^I should see this client as link$/) do
   step %(I should see a "#{$client_fullhostname}" link)
 end
