@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Jun 12 09:06:15 CEST 2017 - mc@suse.de
+
+- version 2.7.1.9-1
+- display a generic non-empty err msg in case of xhr.status==0
+  (bsc#1041913)
+- Fix: update bottom pagination counter only if it is present
+- Fix reactjs unique keys generation and remove duplicated menu
+  element
+- Fix displaying images built by deleted build hosts
+- Update bootstrap success notification link to 'All Systems'
+  (bsc#1036272)
+
+-------------------------------------------------------------------
 Mon May 29 17:06:57 CEST 2017 - mc@suse.de
 
 - version 2.7.1.8-1
