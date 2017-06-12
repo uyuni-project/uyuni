@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 12 08:59:11 CEST 2017 - mc@suse.de
+
+- version 2.7.2.3-1
+- disable config channel population by default in non-interactive
+  mode (bsc#1043778)
+
+-------------------------------------------------------------------
 Mon May 29 15:32:31 CEST 2017 - mc@suse.de
 
 - version 2.7.2.2-1
