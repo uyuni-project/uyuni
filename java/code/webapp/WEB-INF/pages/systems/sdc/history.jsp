@@ -30,6 +30,7 @@
       <bean:message key="system.event.history.headerNoPending" />
     </c:otherwise>
   </c:choose>
+  <bean:message key="system.event.history.actionsWithoutDetails" />
 </div>
 
 <rl:listset name="eventSet" legend="system-history">
@@ -71,13 +72,19 @@
       </c:choose>
     </rl:column>
     <rl:column headerkey="system.event.history.summary">
+    <c:choose>
+    <c:when test="${current.detailsVisible}">
       <a href="/rhn/systems/details/history/Event.do?sid=${param.sid}&amp;aid=${current.id}">${current.summary}</a>
+	</c:when>
+	<c:otherwise>
+	  ${current.summary} *
+	</c:otherwise>
+	</c:choose>
     </rl:column>
     <rl:column headerkey="system.event.history.time">
       ${current.completed}
     </rl:column>
   </rl:list>
 </rl:listset>
-
 </body>
 </html>
