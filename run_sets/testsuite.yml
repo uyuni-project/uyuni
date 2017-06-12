@@ -80,7 +80,7 @@
 - features/centos_salt.feature
 - features/centos_salt_ssh.feature 
 
-# this feature test if hstoname, ip are correctly visualiz.  for all minions
+# test if hostoname, kernel, os-versino are correctly visualiz. for all minions
 - features/overview_systems_details.feature
 #### * Docker related features tests.  ###
 - features/docker_build_image.feature
