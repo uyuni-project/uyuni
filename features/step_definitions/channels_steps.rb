@@ -22,12 +22,6 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
   end
 end
 
-When(/^I choose "([^"]*)" for "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg2}')]]") do
-    find(:xpath, './/select').select(arg1)
-  end
-end
-
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   srvurl = "http://#{ENV['TESTHOST']}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
@@ -42,10 +36,4 @@ Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
     And I follow "Packages"
     Then I should see package "#{pkg}"
     )
-end
-
-Then(/^I should see a "([^"]*)" text in the "([^"]*)" column$/) do |arg1, arg2|
-  within(:xpath, "//*[@class=\"details\"]/table/tbody/tr[.//th[contains(.,'#{arg2}')]]") do
-    find("td", :text => "#{arg1}")
-  end
 end
