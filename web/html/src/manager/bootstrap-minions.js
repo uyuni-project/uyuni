@@ -262,12 +262,6 @@ class BootstrapMinions extends React.Component {
         )
     }
 
-    onBeforeUnload(event) {
-       this.setState({
-           pageUnloading: true
-       });
-    }
-
     componentDidMount() {
         window.addEventListener("beforeunload", (e) => {
             if (this.state.loading) {
@@ -278,9 +272,6 @@ class BootstrapMinions extends React.Component {
         })
     }
 
-    componentWillUnmount() {
-        window.removeEventListener("beforeunload", this.onBeforeUnload)
-    }
 }
 
 ReactDOM.render(
