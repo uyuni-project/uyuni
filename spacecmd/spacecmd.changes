@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 12 09:10:45 CEST 2017 - mc@suse.de
+
+- version 2.7.8.5-1
+- spacecmd report_outofdatesystems: avoid one XMLRPC call per system
+  (bsc#1015882)
+
+-------------------------------------------------------------------
 Mon May 29 15:38:31 CEST 2017 - mc@suse.de
 
 - version 2.7.8.4-1
