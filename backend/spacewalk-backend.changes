@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Jun 12 09:11:59 CEST 2017 - mc@suse.de
+
+- version 2.7.73.5-1
+- Removing conflicting epoch fix (bsc#1042861)
+- remove not implemented option --force-all-packages (bsc#1040194)
+- fix parsing oscap results - not every Rule has an
+  XCCDF ID Tag (bsc#1041992)
+
+-------------------------------------------------------------------
 Mon May 29 16:08:58 CEST 2017 - mc@suse.de
 
 - version 2.7.73.4-1
