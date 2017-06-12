@@ -31,13 +31,6 @@ Then(/^I can see all system information for "([^"]*)"$/) do |target|
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? "SUSE Linux"
 end
 
-Then(/^I should not see the "([^"]*)" as text$/) do |target|
-  step %(I should not see a "#{$client_fullhostname}" text) if target == "sle-client"
-  step %(I should not see a "#{$minion_fullhostname}" text) if target == "sle-minion"
-  step %(I should not see a "#{$ssh_minion_fullhostname}" text) if target == "ssh-minion"
-  step %(I should not see a "#{$ceos_minion_fullhostname}" text) if target == "ceos-minion"
-end
-
 # spacewalk errors steps
 Then(/^I control that up2date logs on client under test contains no Traceback error$/) do
   cmd = "if grep \"Traceback\" /var/log/up2date ; then exit 1; else exit 0; fi"
