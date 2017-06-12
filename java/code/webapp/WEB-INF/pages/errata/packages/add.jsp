@@ -4,50 +4,62 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-
 <html>
-<head>
-</head>
+<head></head>
 <body>
 
-<rhn:toolbar base="h1" icon="header-errata" iconAlt="errata.common.errataAlt"
-                   helpUrl="">
-    <bean:message key="errata.edit.toolbar"/> <c:out value="${advisory}" />
-  </rhn:toolbar>
+    <rhn:toolbar base="h1" icon="header-errata" iconAlt="errata.common.errataAlt"
+                 helpUrl="">
+        <bean:message key="errata.edit.toolbar"/>
+        <c:out value="${advisory}"/>
+    </rhn:toolbar>
 
-  <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/manage_errata.xml"
-                  renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
+    <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/manage_errata.xml"
+                    renderer="com.redhat.rhn.frontend.nav.DialognavRenderer"/>
 
-  <h2><bean:message key="errata.edit.packages.addpackages"/></h2>
+    <h2>
+        <bean:message key="errata.edit.packages.addpackages"/>
+    </h2>
 
-  <p><bean:message key="errata.edit.packages.add.instructions"/></p>
+    <p>
+        <bean:message key="errata.edit.packages.add.instructions"/>
+    </p>
 
     <rl:listset name="groupSet">
+        <rhn:csrf/>
+        <rhn:submitted/>
 
-        <rhn:csrf />
-        <p>
-        <div class="row-0">
-            <div class="col-xs-12 col-lg-6">
-                <div class="input-group">
-                    <select class="form-control" name="view_channel">
-                        <c:forEach items="${viewoptions}" var="option">
-                            <option value="<c:out value="${option.value}"/>"
-                                    <c:if test="${option.value == param.view_channel}">selected="1"</c:if>>
-                                <c:out value="${option.label}"/>
-                            </option>
-                        </c:forEach>
-                    </select>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit" name="view_clicked">
-                            <i class="fa fa-filter"></i>
-                        </button>
-                    </span>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-lg-3 control-label">
+                    <bean:message key="channel.jsp.manage.package.channel"/>:
+                </label>
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <select class="form-control" name="view_channel">
+                            <c:forEach items="${viewoptions}" var="option">
+                                <option value="<c:out value="${option.value}"/>" ${option.value == param.view_channel ? 'selected="1"' : ''}>
+                                    <c:out value="${option.label}"/>
+                                </option>
+                            </c:forEach>
+                        </select>
+                        <span class="input-group-btn">
+                            <input class="btn btn-default" type="submit" name="view_clicked" value="View Packages"/>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-        </p>
 
-        <rhn:hidden name="eid" value="${param.eid}" />
+        <rhn:hidden name="eid" value="${param.eid}"/>
+
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <button type="submit" name="dispatch" class="btn btn-primary" value="<bean:message key='errata.edit.packages.add.addpackages'/>">
+                    <bean:message key="errata.edit.packages.add.addpackages"/>
+                </button>
+            </div>
+        </div>
 
         <rl:list dataset="pageList"
                  width="100%"
@@ -71,26 +83,18 @@
 
             <rl:column headerkey="errata.edit.packages.add.channels" bound="false">
                 <c:choose>
-                  <c:when test="${current.packageChannels != null}">
-                    <c:forEach items="${current.packageChannels}" var="channel">
-                      <c:out value="${channel}"/> <br />
-                    </c:forEach>
-                  </c:when>
-                  <c:otherwise>
-                    (none)
-                  </c:otherwise>
+                    <c:when test="${current.packageChannels != null}">
+                        <c:forEach items="${current.packageChannels}" var="channel">
+                            <c:out value="${channel}"/>
+                            <br/>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        (none)
+                    </c:otherwise>
                 </c:choose>
             </rl:column>
         </rl:list>
-
-        <div class="text-right">
-            <hr />
-            <rhn:submitted/>
-            <button type="submit" name="dispatch" class="btn btn-primary" value="<bean:message key='errata.edit.packages.add.addpackages'/>">
-                <bean:message key="errata.edit.packages.add.addpackages"/>
-            </button>
-        </div>
-
     </rl:listset>
 
 </body>

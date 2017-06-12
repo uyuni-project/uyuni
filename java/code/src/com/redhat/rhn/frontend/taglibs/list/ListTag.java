@@ -515,15 +515,17 @@ public class ListTag extends BodyTagSupport {
             ListTagUtil.write(pageContext,
                     "<div class=\"spacewalk-list-head-addons\">");
 
-            ListTagUtil.write(pageContext,
-                    "<div class=\"spacewalk-list-filter\">");
-            ListTagUtil.write(pageContext, headFilterContent.toString());
-            ListTagUtil.write(pageContext, "</div>");
+            if (headFilterContent.getBuffer().length() > 0) {
+                ListTagUtil.write(pageContext, "<div class=\"spacewalk-list-filter\">");
+                ListTagUtil.write(pageContext, headFilterContent.toString());
+                ListTagUtil.write(pageContext, "</div>");
+            }
 
-            ListTagUtil.write(pageContext,
-                    "<div class=\"spacewalk-list-alphabar\">");
-            ListTagUtil.write(pageContext, headAlphaBarContent.toString());
-            ListTagUtil.write(pageContext, "</div>");
+            if (headAlphaBarContent.getBuffer().length() > 0) {
+                ListTagUtil.write(pageContext, "<div class=\"spacewalk-list-alphabar\">");
+                ListTagUtil.write(pageContext, headAlphaBarContent.toString());
+                ListTagUtil.write(pageContext, "</div>");
+            }
 
             ListTagUtil.write(pageContext,
                     "<div class=\"spacewalk-list-head-addons-extra\">");
