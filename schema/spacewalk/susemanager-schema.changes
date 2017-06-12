@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 12 09:13:09 CEST 2017 - mc@suse.de
+
+- version 3.1.8-1
+- Correct overly-broad comparison in the fixup-functions
+  Set ORA back to INDEX from CONSTRAINT (bsc#1043778)
+
+-------------------------------------------------------------------
 Mon May 29 16:06:25 CEST 2017 - mc@suse.de
 
 - version 3.1.7-1
