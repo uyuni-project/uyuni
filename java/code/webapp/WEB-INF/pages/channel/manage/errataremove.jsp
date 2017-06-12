@@ -4,35 +4,30 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-
 <html>
-<head>
-</head>
+<head></head>
 <body>
-<%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
-     <h2>
-      <rhn:icon type="header-errata" title="errata.common.errataAlt" /> <bean:message key="header.jsp.errata"/>
+    <%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
+    <h2>
+        <rhn:icon type="header-errata" title="errata.common.errataAlt"/>
+        <bean:message key="header.jsp.errata"/>
     </h2>
 
-  <bean:message key="channel.jsp.errata.remove.message"/>
+    <bean:message key="channel.jsp.errata.remove.message"/>
 
-  <rl:listset name="errata_list_set">
-   <rhn:csrf />
-   <rhn:hidden name="cid" value="${cid}" />
+    <rl:listset name="errata_list_set">
+        <rhn:csrf/>
+        <rhn:hidden name="cid" value="${cid}"/>
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <input class="btn btn-default" type="submit" name="dispatch"  value="<bean:message key='channel.jsp.errata.remove'/>"
-                    <c:choose>
-                        <c:when test="${empty pageList}">disabled</c:when>
-                    </c:choose>
-                >
+                <input class="btn btn-danger" type="submit" name="dispatch" value="<bean:message key='channel.jsp.errata.remove'/>" ${empty pageList ? 'disabled' : ''}/>
             </div>
         </div>
-     <rhn:submitted/>
-     <%@ include file="/WEB-INF/pages/common/fragments/errata/selectableerratalist.jspf" %>
+        <rhn:submitted/>
 
-</rl:listset>
+        <%@ include file="/WEB-INF/pages/common/fragments/errata/selectableerratalist.jspf" %>
 
+    </rl:listset>
 
 </body>
 </html>
