@@ -1,4 +1,46 @@
 -------------------------------------------------------------------
+Mon Jun 12 09:07:20 CEST 2017 - mc@suse.de
+
+- version 2.7.46.3-1
+- set flush mode to commit for updatePackage
+- Validate content management urls (bsc#1033808)
+- remove repositories which are not assigned to a channel and not
+  accessible anymore (bsc#1043131)
+- spacecmd report_outofdatesystems: avoid one XMLRPC call per system
+  (bsc1015882)
+- Fallback to first network interface if no primary ips provided
+  (bsc#1038677)
+- Fix reactjs unique keys generation and remove duplicated menu element
+- Correctly set action status to failed when an unexpected exception
+  occurs (bsc#1013606)
+- Fix action-buttons style for proper action and position
+- rollback transaction in error case
+- use hibernate for lookup first before falling back to mode query
+- SSM Actions: Showing UI error notification if Taskomatic is down
+  (bsc#1032952)
+- display alternative archs only from the same org
+- Bugfix: Traditional SSH Push to Minion migration (bsc#1040394)
+- fix parsing oscap xml result for minions, not every Rule has an
+  XCCDF ID Tag (bsc#1041812)
+- Do not show action-buttons if list is empty
+- Bugfix: submit action buttons have to stay inside the form (bsc#1042197)
+- properly encode scap file download url params
+- Fix navigation menu for state catalog
+- Prevents ISE if base channels data is not up-to-date on SSM. (bsc#1040420)
+- new patch install should schedule a package profile update (bsc#1039571)
+- prevent multiple registrations (bsc#1040352)
+- remove not working hibernate cache config variable
+- put ehcache config to classpath of taskomatic
+- silence ehcache warning complaining about using default values in
+  taskomatic
+- move ehcache.xml to classpath
+- silence ehcache warnings complaining about using default values
+- schedule a package list update after a Service Pack Migration
+  (bsc#1017703)
+- remove test.ping hack in distribution upgrade
+- Fix displaying of States tab in System Group details page
+
+-------------------------------------------------------------------
 Mon May 29 17:06:01 CEST 2017 - mc@suse.de
 
 - version 2.7.46.2-1
