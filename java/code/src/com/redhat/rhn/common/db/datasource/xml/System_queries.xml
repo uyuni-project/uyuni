@@ -2007,7 +2007,7 @@ select event_id as id,
        all_events.history_type,
        all_events.history_type_name,
        all_events.history_status,
-       case when action_details.org_id <> :oid then 0
+       case when action_details.org_id != :oid then 0
          else 1 end as details_visible
   from (select SH.id event_id,
                SH.summary summary,
