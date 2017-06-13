@@ -343,6 +343,20 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    public void testHardwareProfileUpdateDockerNoDmiUdev()  throws Exception {
+        testHardwareProfileUpdate("hardware.profileupdate.docker.json", (server) -> {
+            assertNotNull(server);
+            assertNotNull(server.getCpu());
+            assertNull(server.getVirtualInstance());
+            assertNotNull(server.getDmi());
+            assertNull(server.getDmi().getSystem());
+            assertNull(server.getDmi().getProduct());
+            assertNull(server.getDmi().getBios());
+            assertNull(server.getDmi().getVendor());
+            assertTrue(server.getDevices().isEmpty());
+        });
+    }
+
     public void testHardwareProfileUpdateX86() throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.x86.json", (server) -> {
             assertNotNull(server);
