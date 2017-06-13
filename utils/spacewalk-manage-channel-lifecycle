@@ -113,9 +113,7 @@ def ask(msg, password=False):
     Ask input from the console. Hide the echo, in case of password or sensitive information.
     """
     msg += ": "
-    if password:
-        return getpass.getpass(msg)
-    return raw_input(msg)
+    return password and getpass.getpass(msg) or raw_input(msg)
 
 
 def parse_enumerated(data):
