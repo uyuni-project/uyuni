@@ -74,10 +74,10 @@
     <rl:column headerkey="system.event.history.summary">
     <c:choose>
     <c:when test="${current.detailsVisible}">
-      <a href="/rhn/systems/details/history/Event.do?sid=${param.sid}&amp;aid=${current.id}">${current.summary}</a>
+            <a href="/rhn/systems/details/history/Event.do?sid=${param.sid}&amp;aid=${current.id}">${current.summary}</a>
 	</c:when>
 	<c:otherwise>
-	  ${current.summary} *
+	        ${current.summary} *
 	</c:otherwise>
 	</c:choose>
     </rl:column>
