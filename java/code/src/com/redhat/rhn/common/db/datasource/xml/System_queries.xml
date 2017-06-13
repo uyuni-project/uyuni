@@ -2040,7 +2040,7 @@ select event_id as id,
            and AStat.id = SA.status
            and AStat.id IN (1, 2, 3)
        ) X
- left join rhnaction on event_id = rhnaction.id
+  left join rhnaction on event_id = rhnaction.id
 order by completed desc, picked_up desc, X.created desc, event_id desc
   </query>
 </mode>
