@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.taglibs.list;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,29 +48,6 @@ public class ListFilterHelper {
         }
 
         // Otherwise, filter it
-        String tmp = null;
-        try {
-            tmp = URLDecoder.decode(filterBy, "UTF-8");
-            filterBy = tmp;
-        }
-        catch (UnsupportedEncodingException e) {
-            // nothing
-        }
-        catch (IllegalArgumentException e) {
-            // an illegal sequence was detected
-        }
-
-        try {
-            tmp = URLDecoder.decode(filterValue, "UTF-8");
-            filterValue = tmp;
-        }
-        catch (UnsupportedEncodingException e) {
-            // nothing
-        }
-        catch (IllegalArgumentException e) {
-            // an illegal sequence was detected
-        }
-
         List filteredData = new ArrayList();
         Expandable parent = null;
         for (Object object : dataSet) {
