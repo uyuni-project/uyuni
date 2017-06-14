@@ -111,7 +111,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
      */
     public Boolean getActive() {
         logger.debug("getActive() - start");
-        Boolean returnBoolean = this.ksdata.isActive();
+        Boolean returnBoolean = this.ksdata.getActive();
         logger.debug("getActive() - end - return value=" + returnBoolean);
         return returnBoolean;
     }
