@@ -260,7 +260,7 @@ public class AdvancedModeDetailsAction extends RhnAction {
             KickstartDetailsEditAction.setupCobblerFormValues(context, form, data);
 
             form.set(ORG_DEFAULT, data.isOrgDefault());
-            form.set(ACTIVE, data.isActive());
+            form.set(ACTIVE, data.getActive());
             KickstartDetailsEditAction.checkKickstartFile(context, getStrutsDelegate());
         }
     }

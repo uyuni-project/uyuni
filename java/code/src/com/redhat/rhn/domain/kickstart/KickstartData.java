@@ -201,7 +201,7 @@ public class KickstartData {
      * Getter for active
      * @return String to get
      */
-    public Boolean isActive() {
+    public Boolean getActive() {
         return this.active;
     }
 
@@ -1156,7 +1156,7 @@ public class KickstartData {
             String newLabel) {
 
         cloned.setLabel(newLabel);
-        cloned.setActive(this.isActive());
+        cloned.setActive(this.getActive());
         cloned.setPostLog(this.getPostLog());
         cloned.setPreLog(this.getPreLog());
         cloned.setKsCfg(this.getKsCfg());
