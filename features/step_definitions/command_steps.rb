@@ -353,7 +353,7 @@ When(/^I register this client for SSH push via tunnel$/) do
   $server.run("cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP")
   # Generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  expect_file = ExpectFileGenerator.new("#{$client_ip}", bootstrap)
+  expect_file = ExpectFileGenerator.new($client_ip, bootstrap)
   step "I copy to server \"" + expect_file.path + "\""
   filename = expect_file.filename
   # Perform the registration

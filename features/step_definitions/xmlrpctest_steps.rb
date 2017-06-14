@@ -63,11 +63,11 @@ end
 Then(/^I should get the test-channel$/) do
   arch = `uname -m`
   arch.chomp!
-  if arch != "x86_64"
-    channel = "test-channel-i586"
-  else
-    channel = "test-channel-x86_64"
-  end
+  channel = if arch != "x86_64"
+              "test-channel-i586"
+            else
+              "test-channel-x86_64"
+            end
   $stderr.puts "result: #{@result}"
   assert(@result["channel_labels"].include?(channel))
 end
