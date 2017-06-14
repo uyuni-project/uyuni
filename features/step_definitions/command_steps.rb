@@ -346,3 +346,52 @@ And(/I create dockerized minions$/) do
     raise "something wrong with creation of minion docker"
   end
 end
+
+When(/^I register this client for SSH push via tunnel$/) do
+  # Create backups of /etc/hosts and up2date config
+  $server.run("cp /etc/hosts /etc/hosts.BACKUP")
+  $server.run("cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP")
+  # Generate expect file
+  bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
+  expect_file = ExpectFileGenerator.new($client_ip, bootstrap)
+  step "I copy to server \"" + expect_file.path + "\""
+  filename = expect_file.filename
+  # Perform the registration
+  command = "expect #{filename}"
+  $server.run(command, true, 600, 'root')
+  # Restore files from backups
+  $server.run("mv /etc/hosts.BACKUP /etc/hosts")
+  $server.run("mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date")
+end
+# zypper
+
+And(/^I remove pkg "([^"]*)" on this "(.*?)"$/) do |pkg, host|
+  node = get_target(host)
+  node.run("zypper -n rm #{pkg}")
+end
+
+Given(/^I enable repository "(.*?)" on this "(.*?)"$/) do |repo, host|
+  node = get_target(host)
+  node.run("zypper mr --enable #{repo}")
+end
+
+Then(/^I disable repository "(.*?)" on this "(.*?)"$/) do |repo, host|
+  node = get_target(host)
+  node.run("zypper mr --disable #{repo}")
+end
+
+Then(/^I install pkg "(.*?)" on this "(.*?)"$/) do |pkg, host|
+  node = get_target(host)
+  node.run("zypper in -y #{pkg}")
+end
+
+And(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
+  node = get_target(host)
+  Timeout.timeout(DEFAULT_TIMEOUT) do
+    loop do
+      _out, code = node.run("ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{pkg_name}.rpm", false)
+      break if code.zero?
+      sleep 1
+    end
+  end
+end
