@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue May 23 11:55:59 CEST 2017 - mc@suse.de
+
+- version 2.5.24.10-1
+- don't let disabled user log in
+- Fix relative imports and update Copyright date (bsc#1037635)
+- Rename incomplete_package_import to package_import_skip_changelog
+- spacewalk-backend should require the exact version of
+  spacewalk-backend-libs (bsc#1037635)
+
+-------------------------------------------------------------------
 Thu May  4 10:23:23 UTC 2017 - can.bulut.bayburt@suse.com
 
 -  Non admin or disabled user cannot make changes to a system anymore 

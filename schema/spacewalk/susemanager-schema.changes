@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue May 23 11:52:05 CEST 2017 - mc@suse.de
+
+- version 3.0.20-1
+- add base column to suseProducts
+- add channel_family_id column to suseProducts (bsc#1031716)
+- recreate possible missing data (bsc#1032798)
+- take care that capability name exists (bsc#1035724)
+- add logging to can_entitle_server function to write out the reason
+  of a failure (bsc#1032798)
+
+-------------------------------------------------------------------
 Thu Apr 20 16:22:19 CEST 2017 - kwalter@suse.com
 
 - version 3.0.19-1

@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue May 23 11:54:07 CEST 2017 - mc@suse.de
+
+- version 3.0.22-1
+- add openssl to bootstrap repos (bsc#1037828)
+- add some basic packages to RES bootstrap repo (bsc#1037355)
+- add python-backports-ssl_match_hostname to RES7 bootstrap repo
+  (bsc#1038027)
+
+-------------------------------------------------------------------
 Thu Apr 20 16:23:54 CEST 2017 - kwalter@suse.com
 
 - version 3.0.21-1

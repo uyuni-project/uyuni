@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue May 23 11:50:33 CEST 2017 - mc@suse.de
+
+- version 0.1.21-1
+- add missing file name attr to yum plugin state
+- use include instead of state.apply channels to fix salt-ssh issue
+  (bsc#1036268)
+- Fix pkgset beacon (bsc#1029350)
+- Encode formula to str (bsc#1033825)
+- update basic packages when bootstrapping with salt
+
+-------------------------------------------------------------------
 Thu Apr 20 16:18:43 CEST 2017 - kwalter@suse.com
 
 - version 0.1.20-1

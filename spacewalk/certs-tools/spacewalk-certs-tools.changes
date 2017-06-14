@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue May 23 11:54:59 CEST 2017 - mc@suse.de
+
+- version 2.5.1.9-1
+- update openssl on bootstrap (bsc#1037828)
+- setup bootstrap repo also when no packages are missing
+- update important packages before registration (bsc#1037355)
+
+-------------------------------------------------------------------
 Thu Apr 20 16:46:05 CEST 2017 - kwalter@suse.com
 
 - version 2.5.1.8-1
