@@ -661,3 +661,93 @@ And(/^I wait until salt\-key "(.*?)" is deleted$/) do |key|
     raise "FATAL: salt-key #{key} was not deleted"
   end
 end
+# salt ssh steps
+
+SALT_PACKAGES = "salt salt-minion".freeze
+
+Given(/^no Salt packages are installed on remote "(.*)"$/) do |host|
+  if host == "ssh-minion"
+    $ssh_minion.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
+  end
+  if host == "centos"
+    $ceos_minion.run("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", false)
+  end
+end
+
+Given(/^remote minion host is not registered in Spacewalk$/) do
+  @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
+  @rpc.login('admin', 'admin')
+  sid = @rpc.listSystems.select { |s| s['name'] == ENV['SSHMINION'] }.map { |s| s['id'] }.first
+  @rpc.deleteSystem(sid) if sid
+  refute_includes(@rpc.listSystems.map { |s| s['id'] }, ENV['SSHMINION'])
+end
+
+Then(/^I enter remote ssh-minion hostname as "(.*?)"$/) do |hostname|
+  step %(I enter "#{ENV['SSHMINION']}" as "#{hostname}")
+end
+
+Then(/^I should see remote ssh-minion hostname as link$/) do
+  step %(I should see a "#{ENV['SSHMINION']}" link)
+end
+
+Then(/^I should see centos ssh-minion hostname as link$/) do
+  step %(I should see a "#{ENV['CENTOSMINION']}" link)
+end
+
+Then(/^I follow centos ssh-minion hostname$/) do
+  step %(I follow "#{ENV['CENTOSMINION']}")
+end
+
+Then(/^I follow remote ssh-minion hostname$/) do
+  step %(I follow "#{ENV['SSHMINION']}")
+end
+
+# minion bootstrap steps
+And(/^I enter the hostname of "([^"]*)" as hostname$/) do |minion|
+  case minion
+  when "sle-minion"
+    step %(I enter "#{$minion_fullhostname}" as "hostname")
+  when "ceos-minion"
+    step %(I enter "#{$ceos_minion_fullhostname}" as "hostname")
+  when "sle-migrated-minion"
+    step %(I enter "#{$client_fullhostname}" as "hostname")
+  else
+    raise "No valid target."
+  end
+end
+
+Given(/^the salt-master can reach "([^"]*)"$/) do |minion|
+  begin
+    # where it realizes the connection is stuck
+    Timeout.timeout(DEFAULT_TIMEOUT + 300) do
+      # only try 3 times
+      3.times do
+        if minion == "sle-minion"
+          out, _code = $server.run("salt #{$minion_fullhostname} test.ping")
+          break if out.include?($minion_fullhostname)
+        elsif minion == "ceos-minion"
+          out, _code = $server.run("salt #{$ceos_minion_fullhostname} test.ping")
+          break if out.include?($ceos_minion_fullhostname)
+        end
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+    fail "Master can not communicate with the minion: #{out}"
+  end
+end
+
+Then(/^I run spacecmd listevents for sle-minion$/) do
+  $server.run("spacecmd -u admin -p admin clear_caches")
+  $server.run("spacecmd -u admin -p admin system_listevents #{$minion_fullhostname}")
+end
+
+And(/^I cleanup minion: "([^"]*)"$/) do |target|
+  if target == "sle-minion"
+    $minion.run("systemctl stop salt-minion")
+    $minion.run("rm -Rf /var/cache/salt/minion")
+  elsif target == "ceos-minion"
+    $ceos_minion.run("systemctl stop salt-minion")
+    $ceos_minion.run("rm -Rf /var/cache/salt/minion")
+   end
+end
