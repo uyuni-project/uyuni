@@ -37,7 +37,7 @@ public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
         assertNotNull(k2.getComments());
         assertNotNull(k2.getLabel());
 
-        assertEquals(Boolean.TRUE, k2.isActive());
+        assertEquals(Boolean.TRUE, k2.getActive());
         assertEquals(command.getComments(), k2.getComments());
         assertEquals(command.getLabel(), k2.getLabel());
     }

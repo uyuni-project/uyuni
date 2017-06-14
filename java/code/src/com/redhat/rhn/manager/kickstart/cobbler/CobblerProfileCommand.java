@@ -122,7 +122,7 @@ public abstract class CobblerProfileCommand extends CobblerCommand {
                     getVirtualizationType().getLabel());
         }
 
-        profile.setEnableMenu(ksData.isActive());
+        profile.setEnableMenu(ksData.getActive());
 
         profile.save();
     }

@@ -581,7 +581,7 @@ public class KickstartHandler extends BaseHandler {
 
         KickstartData ksData = lookupKsData(profileLabel, loggedInUser.getOrg());
 
-        return !ksData.isActive();
+        return !ksData.getActive();
     }
 
     /**
