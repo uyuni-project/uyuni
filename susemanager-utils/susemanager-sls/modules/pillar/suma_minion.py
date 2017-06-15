@@ -88,16 +88,21 @@ def load_formulas_from_file(formula_filename):
     return formulas
 
 
-def process_formulas(formula_filename, minion_id, as_group=False):
+def process_formulas(formula_filename, minion_id, group_ids=[], as_group=False):
     pillar = {}
     out_formulas = []
     data = load_formulas_from_file(formula_filename)
 
-    for key, formulas in data.iteritems():
-        group = key if as_group else None
-        for formula in formulas:
+    if as_group:
+        for group in group_ids:
+            for formula in data.get(unicode(group), []):
+                out_formulas.append(formula.encode('utf-8'))
+                pillar.update(load_formula_pillar(minion_id, group, formula))
+
+    else:
+        for formula in data.get(unicode(minion_id), []):
             out_formulas.append(formula.encode('utf-8'))
-            pillar.update(load_formula_pillar(minion_id, group, formula))
+            pillar.update(load_formula_pillar(minion_id, None, formula))
 
     return pillar, out_formulas
 
@@ -110,7 +115,7 @@ def formula_pillars(minion_id, group_ids):
 
     # Loading group formulas
     group_pillar, group_formulas = process_formulas(
-        "group_formulas.json", minion_id, as_group=True)
+        "group_formulas.json", minion_id, group_ids, as_group=True)
     ret.update(group_pillar)
 
     # Loading minion formulas
@@ -118,7 +123,7 @@ def formula_pillars(minion_id, group_ids):
         "minion_formulas.json", minion_id)
     ret.update(minion_pillar)
 
-    ret["formulas"] = group_formulas + minion_formulas
+    ret["formulas"] = list(set(group_formulas + minion_formulas))
     return ret
 
 
