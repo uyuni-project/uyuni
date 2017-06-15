@@ -29,6 +29,9 @@ $(document).on("ready", function(){
   // Set up the behavior and the event function
   // for the spacewalk section toolbar [sst]
   handleSst();
+
+  // Show character length for textarea
+  addTextareaLengthNotification();
 });
 
 /* Getting the screen size to create a fixed padding-bottom in the Section tag to make both columns the same size */
@@ -457,3 +460,30 @@ $(document).on('keyup change', '.activationKey-check', function(e) {
     $(this).parent().removeClass('has-error');
   }
 });
+
+function addTextareaLengthNotification() {
+  // Add a notification text of the remaining length for a textarea
+  $('textarea.with-maxlength').each(function() {
+    const textareaId = $(this).attr('id');
+    $(this).after(
+      $('<div/>')
+        .attr("id", "newDiv1")
+        .addClass("remaining-length-wrapper text-right")
+        .html(
+          $('<span/>')
+            .html([
+              $('<span/>')
+              .attr("id", textareaId + '-remaining-length')
+              .text($(this).attr('maxlength') - $(this).val().length)
+              , $('<span/>').text(' ' + t('remaining'))
+            ])
+        )
+    );
+  });
+
+  // Update the remaining length text of the related textarea
+  $(document).on('input', 'textarea.with-maxlength', function() {
+    $('#' + $(this).attr('id') + '-remaining-length')
+      .html($(this).attr('maxlength') - $(this).val().length);
+  });
+}
