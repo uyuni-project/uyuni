@@ -114,7 +114,7 @@ class BootstrapMinions extends React.Component {
                 })
             } catch (err) {
                 var errMessages = xhr.status == 0 ?
-                    [t("Received invalid response from server. Please check if your minion was bootstraped correctly.")]
+                    [t("Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly.")]
                     : [Network.errorMessageByStatus(xhr.status)];
                 this.setState({
                     success: false,
@@ -261,6 +261,17 @@ class BootstrapMinions extends React.Component {
         </Panel>
         )
     }
+
+    componentDidMount() {
+        window.addEventListener("beforeunload", (e) => {
+            if (this.state.loading) {
+                var confirmationMessage = "Are you sure you want to close this page while bootstrapping is in progress ?";
+                (e || window.event).returnValue = confirmationMessage;
+                return confirmationMessage;
+            }
+        })
+    }
+
 }
 
 ReactDOM.render(
