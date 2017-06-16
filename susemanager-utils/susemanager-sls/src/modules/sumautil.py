@@ -150,16 +150,19 @@ def _kgr():
                 if stat['stdout'].strip().splitlines()[0] == 'ready':
                     break
                 time.sleep(1)
-            re_active = re.compile(r"^\s+active:\s*1$")
+            re_active = re.compile(r"^\s+active:\s*(\d+)$")
             ret = __salt__['cmd.run_all']('{0} -v patches'.format(kgr), output_loglevel='quiet')
             log.debug("kgr patches: {0}".format(ret['stdout']))
             if ret['retcode'] == 0:
                 for line in ret['stdout'].strip().splitlines():
                     if line.startswith('#'):
                         continue
-                    if re_active.match(line):
+
+                    match_active = re_active.match(line)
+                    if match_active and int(match_active.group(1)) > 0:
                         return {'mgr_kernel_live_version': patchname }
-                    if line.startswith('kgraft'):
+                    elif line.startswith('kgraft'):
                         patchname = line.strip()
+
         except Exception as error:
             log.error("kgr: {0}".format(str(error)))
