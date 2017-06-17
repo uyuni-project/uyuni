@@ -20,6 +20,8 @@ zypper --non-interactive in perl \
              perl-libwww-perl \
              perl-Net-LibIDN \
              perl-Satcon \
+             perl-Term-Size \
+             perl-Term-Completion \
              perl-DBI \
              which \
              timezone \
