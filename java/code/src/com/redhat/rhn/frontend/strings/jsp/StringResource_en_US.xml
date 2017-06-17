@@ -4528,7 +4528,7 @@ organization. You may grant or remove the organization administrator role in the
           </context-group>
         </trans-unit>
         <trans-unit id="provisioning.powermanagement.security_warning">
-          <source>&lt;strong&gt;SECURITY WARNING:&lt;/strong&gt; Information saved on this page is available to anyone on the network. See &lt;a href="https://fedorahosted.org/cobbler/wiki/PowerManagement#Important:SecurityImplications"&gt;cobbler documentation&lt;/a&gt; for more information and mitigation strategies.</source>
+          <source>&lt;strong&gt;SECURITY WARNING:&lt;/strong&gt; Information saved on this page is available to anyone on the network. See &lt;a href="https://cobbler.github.io/manuals/2.4.0/5/6_-_Power_Management.html"&gt;cobbler documentation&lt;/a&gt; for more information and mitigation strategies.</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -14714,13 +14714,13 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Delete Files</source>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.copy_to_sandbox">
-          <source>Copy to Local Sandbox</source>
+          <source>Copy Latest to Local Sandbox</source>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.copy_to_local">
-          <source>Copy to Locally-Managed Files</source>
+          <source>Copy Latest to Locally-Managed Files</source>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.copy_to_global">
-          <source>Copy to Centrally-Managed Files</source>
+          <source>Copy Latest to Centrally-Managed Files</source>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.sandbox.success">
           <source>{0} file(s) successfully copied to Sandbox</source>
@@ -16804,6 +16804,12 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
       </trans-unit>
       <trans-unit id="ssm.jsp.header">
         <source>System Set Manager Overview</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Set Manager header</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="view-log.jsp.header">
+        <source>System Set Manager Task Log</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager header</context>
         </context-group>

@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.46.3
+Version: 2.7.86
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -440,7 +440,7 @@ Requires: tomcat-taglibs-standard
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-dbcp
-Requires: jakarta-commons-lang >= 0:2.1
+Requires: jakarta-commons-lang
 Requires: jakarta-commons-logging
 Requires: jakarta-commons-pool
 BuildRequires: jakarta-commons-dbcp
@@ -703,7 +703,6 @@ ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/po
 # install docbook sources
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/xml
 install -m 644 build/reports/apidocs/docbook/susemanager_api_doc.xml $RPM_BUILD_ROOT%{_docdir}/%{name}/xml/susemanager_api_doc.xml
-
 # delete JARs which must not be deployed
 rm -rf $RPM_BUILD_ROOT%{jardir}/jspapi.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-compiler.jar
@@ -833,7 +832,6 @@ fi
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar
 %{jardir}/*jboss-logging.jar
-
 
 %endif
 %if 0%{?suse_version}
@@ -990,6 +988,183 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Thu Jun 15 2017 Grant Gainey 2.7.86-1
+- Increment 'earliest' date by a millisecond between chain actions
+
+* Thu Jun 15 2017 Grant Gainey 2.7.85-1
+- Add a link to action details in single errata schedule notification
+- Add a link to system pending events in errata schedule notification for a
+  single system
+
+* Thu Jun 15 2017 Grant Gainey 2.7.84-1
+- Fix sort directions when the sort column is changed
+- Allow sorting on avisory name in errata lists
+- Reformat relevant-errata-list.jspf
+
+* Wed Jun 14 2017 Grant Gainey 2.7.83-1
+- Checkstyle is a harsh mistress
+
+* Tue Jun 13 2017 Grant Gainey 2.7.82-1
+- Test create assertions only in the create test, refactor helper method so
+  that it can be used in other tests
+- Refactor: extract Tree operations tests to multiple classes, extract the
+  common helper method to a base class
+
+* Tue Jun 13 2017 Grant Gainey 2.7.81-1
+- extend package testing methods for more control
+
+* Tue Jun 13 2017 Grant Gainey 2.7.80-1
+- Teach NavNodeTest that not-found-l10n strings are already escaped
+- Teach NavTest to rely on different pages for its test
+- Fix KickstartUrlHelperTest that has never been correct
+- Teach SystemManagerTest correct way to say Integer to Hibernate
+- Removed UserManagerTest's fragile dependency on ordering of rhntimezone table
+- SystemHandlerTest relied on changing a readonly Hibernate entity - look it up
+  instead
+- ToolbarTagCloneTest relied on headers whose strings are no longer lowercase
+- VirtualSystemsListActionTest relied on a page that has been renamed
+- SessionSwapTest has always said 'DO NOT COMMIT THIS' - we should have
+  listened...
+- Teach JarFinderTest to not rely on packages that live in more than one jar
+- Teach AdvDataSourceTest to work even if test-table already exists
+- Update StrutsTestCase to version that supports Struts 1.3
+
+* Fri Jun 09 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.79-1
+- fixed checkstyle errors on Fedora 26
+- Remove more fedorahosted links
+
+* Thu Jun 01 2017 Michael Calmer <mc@suse.de>
+- PR 519 - make country, state/province and city searchable for system location
+
+* Wed May 31 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.77-1
+- 1444047 - display alternative archs only from the same org
+- Update system group details page
+
+* Wed May 24 2017 Jan Dobes 2.7.76-1
+- 1441219 - channel admin should be able to set org user restrictions for null-
+  org channels
+- 1441219 - fixing exploit - user permission is not checked
+- 1446310 - remove not existing links
+
+* Tue May 23 2017 Grant Gainey 2.7.75-1
+- 1368438 - Teach ListPackagesAction and list.jsp about packageChannels
+
+* Tue May 23 2017 Grant Gainey 2.7.74-1
+- 1005783 - I18N the 'NOT MAPPED' string of ISS
+- 1324737 - polish API description
+
+* Tue May 23 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.73-1
+- java devel package is needed even in runtime (on RHEL6)
+
+* Mon May 22 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.72-1
+- fixed java developer setup (mainly ivy config)
+- slf4j-log4j12 is in slf4j's subpackage on Fedora 25
+
+* Fri May 19 2017 Grant Gainey 2.7.71-1
+- 1452080 - Escape failure-text of failed-actions
+
+* Tue May 16 2017 Grant Gainey 2.7.70-1
+- 1067601 - Rename org-specific channel-family when org-name changes
+
+* Fri May 12 2017 Laurence Rochfort <laurence.rochfort@oracle.com>
+- 1436634 - PR 527 - Used StringBuilder correctly without '+' operator.
+- 1436634 - PR 527 - Fix KS Default Download Location appending URL verbatim.
+
+* Wed May 10 2017 Jan Dobes 2.7.68-1
+- 1414406. Fix schedulePackage{Install,Remove}ByNevra arguments description.
+
+* Tue May 09 2017 Grant Gainey 2.7.67-1
+- 1445868 - Handle attempting to create ISS Master/Slave with existing FQDN
+  more gracefully
+- 1440696 , fix updateRepoSsl description
+
+* Mon May 08 2017 Can Bulut Bayburt <cbbayburt@suse.com>
+- PR 472 - Add 'Latest' back to button labels to make clear the latest version
+  will be copied - Eric Herget <eherget@redhat.com>
+- PR 472 - Update 'view/modify file' action buttons text
+
+* Mon May 08 2017 Grant Gainey 2.7.65-1
+- 1381857 - Teach Postgres to correctly-unique-ify rhnConfigInfo rows
+
+* Mon May 08 2017 Silvio Moioli <smoioli@suse.de>
+- PR 485 - Leave System Set Manager page title as-is - Eric Herget <eherget@redhat.com>
+- PR 485 - SSM Task Log: make title coherent with menu item
+- PR 485 - ssm_status.xml: format XML
+- PR 485 - SSM Task Log page: put default as first tab
+- PR 485 - Rename SSM page titles for consistency (bsc#979623)
+
+* Mon May 08 2017 Eric Herget <eherget@redhat.com> 2.7.66-1
+- PR 476 - Change to support java version < 1.8
+- PR 476 - SidenavRenderer: do not ouput empty class
+- PR 476 - Use different symbols for collapsible sidebar items
+
+* Fri May 05 2017 Grant Gainey 2.7.62-1
+- 1448342 - Fix config-deploy success message
+
+* Thu May 04 2017 Can Bulut Bayburt <cbbayburt@suse.com>
+- PR 483 - Hides 'Save/Clear' buttons when no changes are present in action
+  chain lists
+- PR 483 - Fix plus/minus buttons in action chain list
+
+* Thu May 04 2017 Gennadii Altukhov <galt@redhat.com> 2.7.60-1
+- 1436746 - remove 'Add Selected to SSM' button, because now WebUI requires
+  enabled JavaScript
+
+* Wed May 03 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.59-1
+- recompile all packages with the same (latest) version of java
+- point ivy to local jars installed from rpms
+- fixed ant compile warning
+
+* Wed May 03 2017 Jiri Dostal <jdostal@redhat.com> 2.7.58-1
+- 1409537 Remove unused packages from KS > Rhel4
+
+* Fri Apr 28 2017 Eric Herget <eherget@redhat.com> 2.7.57-1
+- PR478 - Fix notification order for Create Organization page - Silvio Moioli <smoioli@suse.de>
+- Remove unused imports.
+
+* Thu Apr 27 2017 Grant Gainey 2.7.56-1
+- 1445225 - Don't link a package if it doesn't have an id
+
+* Thu Apr 27 2017 Grant Gainey 2.7.55-1
+- 1445711 - Fix incorrect reference for id/name in JSP
+- bz1441213. installation->removal in schedulePackageRemove,
+  remove->removal(for consistency), nerva->nevra
+
+* Tue Apr 25 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.54-1
+- use newer version of commons-digester on RHEL6
+- newer version of commons-beanutils is needed on RHEL6
+- some java packages has been built with java 1.8.0
+
+* Mon Apr 24 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.53-1
+- fixing upgrade on Fedora 24
+- no more special jar handling is needed
+- simplify mchange-commons setup
+
+* Fri Apr 21 2017 Jan Dobes 2.7.52-1
+- 1414454 - adding test
+- 1414454 - adding channel.listManageableChannels API and changing select to
+  provide all expected fields for serializer
+
+* Fri Apr 21 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.51-1
+- resolving dependencies during upgrade on RHEL6
+- resolving file conflicts on RHEL6 installation
+- obsolete jpackage remnants on RHEL7
+- 1441213 - fix description of api call
+
+* Tue Apr 11 2017 Jan Dobes 2.7.50-1
+- 1441219 - channel admin role shouldn't allow user to work with null-org
+  channels
+
+* Tue Apr 11 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.49-1
+- use fedora (not jpackage) version of concurrent
+- unify file ownership across subpackages
+
+* Mon Apr 10 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.48-1
+- updated RHEL6 (Build)Requires according to new java packages
+
+* Mon Apr 10 2017 Jan Dobes 2.7.47-1
+- obsolete some more packages for successfull upgrade on rhel 7
+
 * Thu Apr 06 2017 Jiri Dostal <jdostal@redhat.com> 2.7.46-1
 - 1380311 - API client.channel.software.createRepo() in 5.8.0 allows "yum" repo
   type only, 5.7.0 used "YUM"

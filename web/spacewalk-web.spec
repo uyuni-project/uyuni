@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.1.9
+Version: 2.7.3
 Release: 1%{?dist}
 URL:          https://github.com/spacewalkproject/spacewalk/
 Source0:      https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -185,6 +185,17 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Thu May 04 2017 Can Bulut Bayburt <cbbayburt@suse.com>
+- PR 483 - Hides 'Save/Clear' buttons when no changes are present in action
+  chain lists
+- PR 483 - Fix plus/minus buttons in action chain list
+
+* Mon Apr 24 2017 Eric Herget <eherget@redhat.com> 2.7.2-1
+- 1437875 - db-control online-backup returns success even when the backup has
+  failed
+- Updated links to github in spec files
+- Migrating Fedorahosted to GitHub
+
 * Wed Nov 23 2016 Eric Herget <eherget@redhat.com> 2.7.1-1
 - 1373900 - update failure message when db-control start fails
 - Bumping package versions for 2.7.

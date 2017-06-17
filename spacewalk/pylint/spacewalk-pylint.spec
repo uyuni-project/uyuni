@@ -1,5 +1,5 @@
 Name:		spacewalk-pylint
-Version:	2.7.0.3
+Version:	2.7.2
 Release:	1%{?dist}
 Summary:	Pylint configuration for spacewalk python packages
 
@@ -14,7 +14,11 @@ BuildArch:	noarch
 Requires:	pylint > 1.1
 %else
 %if 0%{?fedora} || 0%{?rhel} >= 7
+%if 0%{?fedora} >= 26
+Requires:	python2-pylint > 1.5
+%else
 Requires:	pylint > 1.5
+%endif
 %else
 Requires:	pylint < 1.0
 %endif
@@ -71,6 +75,14 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Wed Jun 07 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.2-1
+- use python2 pylint even on Fedora 26+
+
+* Wed May 24 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.1-1
+- Fedora and EPEL7 contain pylint 1.5+
+- Updated links to github in spec files
+- Migrating Fedorahosted to GitHub
+
 * Tue Aug 16 2016 Jan Dobes 2.6.2-1
 - redefined-variable-type check is broken in pylint-1.5.6-1.fc24.noarch
 

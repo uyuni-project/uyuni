@@ -4,11 +4,11 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.7.3.1
+Version: 2.7.5
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
-# git clone git://git.fedorahosted.org/git/spacewalk.git/
+# git clone https://github.com/spacewalkproject/spacewalk.git
 # cd search-server
 # make test-srpm
 URL: https://github.com/spacewalkproject/spacewalk
@@ -18,10 +18,6 @@ BuildArch: noarch
 ExcludeArch: aarch64
 
 #Requires: apache-ibatis-sqlmap
-Requires: apache-commons-cli
-Requires: apache-commons-codec
-Requires: apache-commons-lang
-Requires: apache-commons-logging
 Requires: c3p0 >= 0.9.1
 Requires: cglib
 Requires(pre): doc-indexes
@@ -41,16 +37,12 @@ Requires: tanukiwrapper
 Requires: simple-core
 Obsoletes: rhn-search < 5.3.0
 BuildRequires: ant
-BuildRequires: apache-commons-cli
-BuildRequires: apache-commons-codec
-BuildRequires: apache-commons-lang
-BuildRequires: apache-commons-logging
 #BuildRequires: apache-ibatis-sqlmap
 BuildRequires: c3p0 >= 0.9.1
 BuildRequires: cglib
 BuildRequires: jakarta-commons-httpclient
 BuildRequires: jakarta-oro
-BuildRequires: java-devel >= 1.6.0
+BuildRequires: java-1.8.0-openjdk-devel
 BuildRequires: javapackages-tools
 #BuildRequires: lucene
 BuildRequires: objectweb-asm
@@ -60,6 +52,23 @@ BuildRequires: redstone-xmlrpc
 BuildRequires: tanukiwrapper
 BuildRequires: simple-core
 
+Requires: apache-commons-cli
+Requires: apache-commons-codec
+Requires: apache-commons-lang
+Requires: apache-commons-logging
+BuildRequires: apache-commons-cli
+BuildRequires: apache-commons-codec
+BuildRequires: apache-commons-lang
+BuildRequires: apache-commons-logging
+%else
+Requires: jakarta-commons-cli
+Requires: jakarta-commons-codec
+Requires: jakarta-commons-lang
+Requires: jakarta-commons-logging
+BuildRequires: jakarta-commons-cli
+BuildRequires: jakarta-commons-codec
+BuildRequires: jakarta-commons-lang
+BuildRequires: jakarta-commons-logging
 %if 0%{?fedora} && 0%{?fedora} >= 21
 Requires: log4j12
 BuildRequires: log4j12
@@ -235,6 +244,13 @@ fi
 %endif
 
 %changelog
+* Wed May 03 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.5-1
+- recompile all packages with the same (latest) version of java
+
+* Mon Apr 10 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.4-1
+- use java 1.8.0
+- use default RHEL6 jakarta-commons-* packages
+
 * Wed Apr 05 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.3-1
 - updated RHEL6 Requires after jpackage removal
 - use simple logging

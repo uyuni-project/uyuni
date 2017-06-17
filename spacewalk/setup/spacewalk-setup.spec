@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.7.4.2
+Version:        2.7.9
 Release:        1%{?dist}
 Summary:        Initial setup tools for Spacewalk
 
@@ -29,6 +29,7 @@ BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildArch:      noarch
 Requires:       perl
 Requires:       perl-Params-Validate
+Requires:       perl(Term::Completion::Path)
 Requires:       spacewalk-schema
 %if 0%{?suse_version}
 Requires:       curl
@@ -222,6 +223,25 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Wed May 31 2017 Gennadii Altukhov <grinrag@gmail.com> 2.7.9-1
+- 1455948 - use only ASCII (including extended set) characters for the progress
+  spinner
+
+* Fri May 05 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.8-1
+- move sudoers configuration to /etc/sudoers.d/spacewalk
+
+* Thu May 04 2017 Gennadii Altukhov <galt@redhat.com> 2.7.7-1
+- 1415107 - change progress spinner for the installation script
+
+* Fri Apr 21 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.6-1
+- add new option skip-services-restart
+- point users to proper log on tomcat 7+
+
+* Tue Apr 11 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.5-1
+- 1440818 - add option for path completion
+- 1440818 - require perl-Term-Completion module
+- 1440818 - remove leading and trailing spaces when asking for information
+
 * Fri Mar 31 2017 Laurence Rochfort <laurence.rochfort@oracle.com>
 - 1430747 - Add support for Oracle 12.2.
 

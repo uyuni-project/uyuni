@@ -1,5 +1,5 @@
 Name:           spacewalk-setup-jabberd
-Version:        2.7.0.2
+Version:        2.7.1
 Release:        1%{?dist}
 Summary:        Tools to setup jabberd for Spacewalk
 Group:          Applications/System
@@ -66,6 +66,11 @@ rm -rf %{buildroot}
 /usr/share/spacewalk/setup/jabberd/create_sqlite3_database
 
 %changelog
+* Fri May 05 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.1-1
+- use sqlite as default osad database backend
+- Updated links to github in spec files
+- Migrating Fedorahosted to GitHub
+
 * Thu Mar 19 2015 Grant Gainey 2.3.2-1
 - Updating copyright info for 2015
 

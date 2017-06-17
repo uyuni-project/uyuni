@@ -7,6 +7,12 @@ Summary: Lucene indexes of help documentation for spacewalk
 
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
+# This src.rpm is cannonical upstream
+# You can obtain it using this set of commands
+# git clone https://github.com/spacewalkproject/spacewalk.git
+# cd search-server/spacewalk-doc-indexes
+# make test-srpm
+URL: https://fedorahosted.org/spacewalk
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python

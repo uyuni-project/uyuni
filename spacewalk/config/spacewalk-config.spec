@@ -12,7 +12,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.7.1.4
+Version: 2.7.2
 Release: 1%{?dist}
 URL: https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -90,6 +90,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(400,root,root) %config(noreplace) %{_sysconfdir}/rhn/spacewalk-repo-sync/uln.conf
 %config(noreplace) %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %config(noreplace) %{_sysconfdir}/webapp-keyring.gpg
+%attr(440,root,root) %config(noreplace) %{_sysconfdir}/sudoers.d/spacewalk
 %dir %{_var}/lib/cobbler/
 %dir %{_var}/lib/cobbler/kickstarts/
 %dir %{_var}/lib/cobbler/snippets/
@@ -169,6 +170,12 @@ if [ -e %{apacheconfdir}/vhosts.d/vhost-ssl.conf ]; then
 fi
 
 %changelog
+* Fri May 05 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.2-1
+- move sudoers configuration to /etc/sudoers.d/spacewalk
+- Use HTTPS in all Github links
+- Updated links to github in spec files
+- Migrating Fedorahosted to GitHub
+
 * Mon Jan 23 2017 Jan Dobes 2.7.1-1
 - Mandatory Perl build-requires added
   <https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl>

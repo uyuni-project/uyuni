@@ -20,7 +20,7 @@
 Name:           simple-xml
 Summary:        An XML serialization framework for Java
 Version:        2.6.7
-Release:        4%{?dist}
+Release:        5%{?dist}
 %if 0%{?suse_version}
 License:        Apache-2.0
 Group:          Development/Libraries/Java
@@ -37,7 +37,7 @@ BuildRequires:  bea-stax
 %else
 BuildRequires:  bea-stax-api
 %endif
-BuildRequires:  java-devel
+BuildRequires:  java-1.8.0-openjdk-devel
 %if 0%{?fedora} >= 20 || 0%{?rhel} >= 7
 BuildRequires: javapackages-tools
 %else
@@ -73,7 +73,7 @@ rm lib/*.jar
 build-jar-repository -p lib/ %third_party_jars
 
 %build
-ant -Dant.build.javac.source=1.5 -Dant.build.javac.target=1.5
+ant
 
 %install
 #jars
@@ -97,6 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_javadocdir}/%{name}
 
 %changelog
+* Wed May 03 2017 Michael Mraka <michael.mraka@redhat.com> 2.6.7-5
+- recompile all packages with the same (latest) version of java
+
 * Wed May 06 2015 Tomas Lestach <tlestach@redhat.com> 2.6.7-4
 - Copyright texts updated to SUSE LLC
 

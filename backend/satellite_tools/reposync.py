@@ -455,8 +455,6 @@ class RepoSync(object):
         """Trigger a reposync"""
         failed_packages = 0
         sync_error = 0
-        if not self.urls:
-            sync_error = -1
         start_time = datetime.now()
         for data in self.urls:
             data['source_url'] = self.set_repo_credentials(data)
