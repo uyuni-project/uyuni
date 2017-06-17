@@ -41,6 +41,7 @@ Requires: openssl
 %if 0%{?suse_version}
 BuildRequires: openssl
 BuildRequires: cobbler
+BuildRequires: sudo
 Requires: apache2-mod_xsendfile
 %endif
 
