@@ -85,7 +85,7 @@ public class PackageTest extends RhnBaseTestCase {
         assertEquals("foo", pkg.getFile());
     }
 
-    public static Package createTestPackage(Org org) {
+    public static Package createTestPackage(Org org) throws Exception {
         Package p = new Package();
         populateTestPackage(p, org);
 
