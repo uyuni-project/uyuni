@@ -51,7 +51,7 @@ BuildRequires: redstone-xmlrpc
 #BuildRequires: picocontainer
 BuildRequires: tanukiwrapper
 BuildRequires: simple-core
-
+%if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1315
 Requires: apache-commons-cli
 Requires: apache-commons-codec
 Requires: apache-commons-lang
@@ -69,6 +69,7 @@ BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-codec
 BuildRequires: jakarta-commons-lang
 BuildRequires: jakarta-commons-logging
+%endif
 %if 0%{?fedora} && 0%{?fedora} >= 21
 Requires: log4j12
 BuildRequires: log4j12
