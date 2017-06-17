@@ -1,6 +1,6 @@
 Name:		simple-core		
 Version:	3.1.3
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	Embeddable Java HTTP engine capable of handling large loads
 Group:	 	Development/Libraries	
 License:	GNU
@@ -14,11 +14,8 @@ BuildRequires:  ant
 BuildRequires: javapackages-tools
 Requires:      kxml
 %endif
-%if 0%{?fedora} >= 23
-BuildRequires: java-devel
-%endif
-BuildRequires:  java >= 1.5
-Requires:       java >= 1.5
+BuildRequires: java-1.8.0-openjdk-devel
+Requires:      java-headless >= 1:1.8.0
 
 %description
 The core API consists of a simple.http package and various sub-packages, it also contains various utilities. This is all that is required to develop HTTP services. 
@@ -68,6 +65,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_javadocdir}/*
 
 %changelog
+* Wed May 03 2017 Michael Mraka <michael.mraka@redhat.com> 3.1.3-9
+- recompile all packages with the same (latest) version of java
+
 * Wed Mar 15 2017 Michael Mraka <michael.mraka@redhat.com> 3.1.3-8
 - don't bundle kxml on Fedora and RHEL7
 

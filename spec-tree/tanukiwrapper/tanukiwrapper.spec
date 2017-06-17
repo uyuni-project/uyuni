@@ -39,7 +39,7 @@
 
 Name:		tanukiwrapper
 Version:	3.2.3
-Release:	16%{?dist}
+Release:	19%{?dist}
 Summary:	Java Service Wrapper
 Epoch:		0
 License:	BSD
@@ -55,6 +55,7 @@ Patch5:         %{name}-Makefile-sparc-sparc64.patch
 Patch6:		%{name}-nosun-jvm-64.patch
 Patch7:     %{name}-compilewithfpic.patch
 Patch8:         %{name}-Makefile-linux-arm-32.patch
+Patch9:         %{name}-gcc711.patch
 Group:		Development/Java
 %if 0%{?fedora} >= 20 || 0%{?rhel} >= 7
 BuildRequires: javapackages-tools
@@ -64,9 +65,7 @@ BuildRequires:	ant-nodeps >= 0:1.6.1
 BuildRequires:  jpackage-utils >= 0:1.6
 Requires:       jpackage-utils >= 0:1.6
 %endif
-%if 0%{?fedora} >= 23
 BuildRequires: java-1.8.0-openjdk-devel
-%endif
 BuildRequires:	glibc-devel
 BuildRequires:	ant >= 0:1.6.1
 BuildRequires:	ant-junit
@@ -127,6 +126,7 @@ Group:          Development/Documentation
 %endif
 %patch7
 %patch8
+%patch9
 find . -name "*.jar" -exec %__rm -f {} \;
 %__perl -p -i -e 's|-O3|%optflags|' src/c/Makefile*
 
@@ -225,6 +225,16 @@ fi
 %endif
 
 %changelog
+* Fri Jun 09 2017 Michael Mraka <michael.mraka@redhat.com> 3.2.3-19
+- preserve trailing spaces in patch
+
+* Thu Jun 08 2017 Michael Mraka <michael.mraka@redhat.com> 3.2.3-18
+- fixed gcc errors on Fedora 26
+- fixed RPM build errors: bogus date in changelog
+
+* Wed May 03 2017 Michael Mraka <michael.mraka@redhat.com> 3.2.3-17
+- recompile all packages with the same (latest) version of java
+
 * Sun Feb 21 2016 Jan Dobes <jdobes@redhat.com> 3.2.3-16
 - adding arm Makefile
 
@@ -327,7 +337,7 @@ fi
 - Fix build with newer Java/Ant and ant-nodeps not built with Sun's JDK.
 - Crosslink with local JDK javadocs.
 
-* Wed Apr 14 2005 David Walluck <david@jpackage.org> 0:3.1.2-1jpp
+* Thu Apr 14 2005 David Walluck <david@jpackage.org> 0:3.1.2-1jpp
 - 3.1.2
 - fix ant dependencies
 - change %%section to free

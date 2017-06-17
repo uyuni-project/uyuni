@@ -10,7 +10,7 @@ Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           https://github.com/spacewalkproject/spacewalk
-Version:       5.5.104.2
+Version:       5.5.105
 Release:       1%{?dist}
 Source0:       https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
@@ -98,6 +98,10 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING
 
 %changelog
+* Thu May 25 2017 Michael Mraka <michael.mraka@redhat.com> 5.5.105-1
+- fixed pylint warnings disabled python3 pylint on Fedora 26+ for now
+- removed outdated solaris2mpm script
+
 * Fri Mar 24 2017 Ondrej Gajdusek <ogajduse@redhat.com> 5.5.104-1
 - Disabling Pylint in Fedora<25 to prevent weird err
 

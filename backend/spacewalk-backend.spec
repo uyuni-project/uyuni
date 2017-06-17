@@ -2,7 +2,6 @@
 %global rhnconfigdefaults %{rhnroot}/config-defaults
 %global rhnconf %{_sysconfdir}/rhn
 %global m2crypto m2crypto
-
 %if 0%{?rhel} && 0%{?rhel} < 6
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %endif
@@ -38,7 +37,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.73.5
+Version: 2.7.113
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -894,6 +893,184 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Thu Jun 08 2017 Grant Gainey 2.7.113-1
+- 1425137 - fix remaining backend/manpage.sgml issues
+
+* Thu Jun 08 2017 Jan Dobes 2.7.112-1
+- 1438854 - improve message
+- 1438854 - unlink all packages when there isn't any repository attached in
+  strict mode
+- 1406178 - two typos in cdn-sync --help output
+
+* Mon Jun 05 2017 Jan Dobes 2.7.111-1
+- 1439758 - close Curl handle
+- 1439758 - workaround - make sure first item from queue is performed alone to
+  prevent multi-threading NSS error
+- 1439758 - split single download queue into multiple download queues based on
+  SSL certificates
+
+* Fri May 26 2017 Jan Dobes 2.7.110-1
+- 1455795 - move to different file to not conflict with web.default_mail_from
+  in Java code
+
+* Thu May 25 2017 Jan Dobes 2.7.109-1
+- 1455433 - don't trim channel content if there is major sync error in any
+  repository
+
+* Wed May 24 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.108-1
+- disable pylint on Fedora 26 because it's python3
+- 1348575 - rhn-charsets is meant to be run only under root user
+
+* Wed May 24 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.107-1
+- more pylint warning fixes
+
+* Wed May 24 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.106-1
+- fixed pylint warnings
+- hashlib is included in python since RHEL6
+
+* Tue May 23 2017 Eric Herget <eherget@redhat.com> 2.7.105-1
+- 1434786 - Unable to run cdn-sync if older channels do not exist anymore
+
+* Fri May 19 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.104-1
+- 1439622 - return no row if user has no privs for the server
+- 1439622 - don't let disabled user log in
+
+* Thu May 18 2017 Eric Herget <eherget@redhat.com> 2.7.103-1
+- 1434913 - fix exit code to indicate error in other commands when not
+  activated with CDN
+
+* Wed May 17 2017 Jan Dobes 2.7.102-1
+- 1427238 - normalize repository path to detect if it's part of any channels or
+  not
+- 1427238 - handle . and .. in path
+- 1427238 - fixing leaf detection
+
+* Mon May 15 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.101-1
+- 1450496 - Revert "1357480 - get_possible_orgs function never called? ->
+  removed"
+
+* Fri May 12 2017 Jan Dobes 2.7.100-1
+- fixing deb plug-in
+- updating help and man page
+- use repository type value from DB if it's possible
+
+* Thu May 11 2017 Gennadii Altukhov <galt@redhat.com> 2.7.99-1
+- 1447296 - fix examples in man page of satellite-sync
+- 1449914 - fixing 'NoneType' object is not iterable if no rows are selected
+
+* Wed May 10 2017 Jan Dobes 2.7.98-1
+- satellite-sync (iss) - enhancements to channel selection
+
+* Wed May 10 2017 Gennadii Altukhov <galt@redhat.com> 2.7.97-1
+- 1444894 - normalize path to an RHSM manifest
+
+* Wed May 10 2017 Jan Dobes 2.7.96-1
+- 1447296 - update man pages about batch size parameter
+- 1447296 - make batch size configurable
+
+* Wed May 10 2017 Jan Dobes 2.7.95-1
+- 1446118 - wildcard support for channel names
+
+* Wed May 10 2017 Jan Dobes 2.7.94-1
+- 1437835, 1441096 - updating help
+- 1447296 - can't rely on index in to_process, if last item has to_link only,
+  last chunk of packages is not imported
+- 1437835, 1441096 - optimize linking packages to channel
+- 1437835, 1441096 - disassociate packages later or keep them in channel if
+  they are same but missing package path
+- 1449374 - there may be multiple packages with given checksum in different
+  orgs
+- 1437835, 1441096 - upload with force to update missing package file paths on
+  existing packages
+- 1437835, 1441096 - change metadata_only to just not keep packages after
+  download
+
+* Tue May 09 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.93-1
+- 1444519 - org_id column can hold NULL
+- 1444894 - normalize path to an RHSM manifest
+- 1447296 - add package_import_skip_changelog option to speed reposync up
+- 1446198 - finish work in threads when KeyboardInterrupt occurs during download
+- 1446198 - fixing semantic error
+
+* Wed May 03 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.92-1
+- 1444047 - fix errata lookup for NULL org
+
+* Wed May 03 2017 Gennadii Altukhov <galt@redhat.com> 2.7.91-1
+- 1415193 - fix line with a mention about ISS synchronization
+
+* Wed May 03 2017 Gennadii Altukhov <galt@redhat.com> 2.7.90-1
+- 1415193 - remove mention about a live synchronization from satellite-sync man
+  page
+
+* Tue May 02 2017 Gennadii Altukhov <galt@redhat.com> 2.7.89-1
+- 1447296 - optimize package importing during syncing a software channel
+- 1446198 - fixing pylint
+
+* Tue May 02 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.88-1
+- 1444519 - allow sync of the same erratum to more orgs
+- 1444047 - look only for errata from the same org
+
+* Fri Apr 28 2017 Eric Herget <eherget@redhat.com> 2.7.87-1
+- 1342977 - Repository sync can causes ORA-01878 on insertion of timestamp that
+  doesn't exist in timezone - fix python 2.4 build
+
+* Fri Apr 28 2017 Jan Dobes 2.7.86-1
+- 1446198 - do not store SSL certificates per repository on disk cache
+- 1446198 - define CACHE_DIR once
+
+* Fri Apr 28 2017 Laurence Rochfort <laurence.rochfort@oracle.com>
+- 1342977 - Prevent ORA-01878 on repository sync.
+- Add timezone_utils.py to libs files for BZ 1342977
+
+* Fri Apr 28 2017 Jan Dobes 2.7.84-1
+- 1445957 - default_mail_from key exists but may be empty
+- Remove unused imports.
+
+* Thu Apr 27 2017 Eric Herget <eherget@redhat.com> 2.7.83-1
+- 1434913 - cdn-sync could provide information that the satellite is not
+  activated - lock release fix
+
+* Thu Apr 27 2017 Jan Dobes 2.7.82-1
+- 1446198 - fixing number of thread input
+- 1446198 - update imports
+- 1446198 - update build configuration
+- 1446198 - move downloading to module and don't block reusing connections
+
+* Wed Apr 26 2017 Gennadii Altukhov <galt@redhat.com> 2.7.81-1
+- revert 200924587a237b57d70d780a637c867c04393438 we don't need to remove
+  interrupted downloads, because we don't use yum to download packages anymore.
+
+* Tue Apr 25 2017 Jan Dobes 2.7.80-1
+- 1445220 - make sure each channel family label is selected only once
+
+* Fri Apr 21 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.79-1
+- replace dots in method names with underscore
+- do not fail with a traceback when media.1 is requested
+
+* Thu Apr 20 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.78-1
+- 1441135 1434471 - be more specific about catched exception
+
+* Wed Apr 19 2017 Jan Dobes 2.7.77-1
+- 1434787 - adding logrotate
+- 1434787 - adding logging to candlepin_api
+- 1434787 - adding logging to manifest
+- 1434787 - adding logging to activation
+- 1434787 - adding logging to rhn_satellite_activate
+
+* Tue Apr 18 2017 Jan Dobes 2.7.76-1
+- 1439721 - subset of log2disk messages is good to include in email too
+- 1439721 - adding to spacewalk-repo-sync
+- 1439721 - making traceback_mail overridable
+- 1439721 - send email report
+
+* Mon Apr 17 2017 Eric Herget <eherget@redhat.com> 2.7.75-1
+- 1434913 - cdn-sync could provide information that the satellite is not
+  activated
+
+* Tue Apr 11 2017 Eric Herget <eherget@redhat.com> 2.7.74-1
+- 1434913 - cdn-sync could provide information that the satellite is not
+  activated
+
 * Fri Apr 07 2017 Jan Dobes 2.7.73-1
 - 1397762 - adding examples section
 - 1397762 - add option to display info about currently used manifest

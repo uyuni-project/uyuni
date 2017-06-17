@@ -1,12 +1,3 @@
-%if 0%{?fedora} || 0%{?rhel} >= 7
-%define jpackage_run_jars antlr apache-commons-beanutils apache-commons-collections apache-commons-logging regexp
-%else
-%define jpackage_run_jars antlr jakarta-commons-beanutils jakarta-commons-collections jakarta-commons-logging regexp
-%endif
-
-%define jpackage_build_jars checkstyle junit
-%define jpackage_jars %jpackage_run_jars %jpackage_build_jars
-
 Summary: A JNI Wrapper for the Unix pam(8) subsystem and a JAAS bridge
 Name: jpam
 License: Apache Software License, v. 1.1
@@ -20,24 +11,45 @@ Patch3: jpam-0.4-no_checkstyle.patch
 Patch4: jpam-0.4-no-password-prompt.patch
 Patch5: jpam-0.4-arm.patch
 Version: 0.4
-Release: 32%{?dist}
+Release: 34%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
-Requires: %jpackage_run_jars
-BuildRequires: %jpackage_jars
 BuildRequires: apache-commons-beanutils >= 1.9
 BuildRequires: gcc
-BuildRequires: java-devel >= 1.6.0
+BuildRequires: java-1.8.0-openjdk-devel
 BuildRequires: make
 BuildRequires: pam-devel
 %if 0%{?fedora} || 0%{?rhel} >= 7
+Requires:      antlr
+Requires:      apache-commons-beanutils
+Requires:      apache-commons-collections
 Requires:      apache-commons-io
+Requires:      apache-commons-logging
 Requires:      javapackages-tools
+Requires:      regexp
 BuildRequires: ant
+BuildRequires: antlr
+BuildRequires: apache-commons-collections
+BuildRequires: apache-commons-io
+BuildRequires: apache-commons-logging
+BuildRequires: checkstyle
 BuildRequires: javapackages-tools
+BuildRequires: junit
+BuildRequires: regexp
 %else
+Requires:      antlr
+Requires:      jakarta-commons-beanutils
+Requires:      jakarta-commons-collections
+Requires:      jakarta-commons-logging
+Requires:      regexp
 BuildRequires: ant < 1.9
 BuildRequires: ant-nodeps < 1.9
+BuildRequires: antlr
+BuildRequires: checkstyle
+BuildRequires: jakarta-commons-collections
+BuildRequires: jakarta-commons-logging
+BuildRequires: junit
+BuildRequires: regexp
 %endif
 
 # ia64 doesnt have a new enough java.
@@ -64,7 +76,7 @@ Javadoc for %{name}.
 %patch5 -p1
 
 rm -Rfv tools/*.jar
-build-jar-repository -p tools/ ant %jpackage_jars
+build-jar-repository -p tools/ ant antlr commons-beanutils commons-collections commons-logging regexp checkstyle junit
 
 %build
 export JAVA_HOME=%{java_home}
@@ -113,6 +125,12 @@ fi
 %{_javadocdir}/%{name}-%{version}
 
 %changelog
+* Wed May 03 2017 Michael Mraka <michael.mraka@redhat.com> 0.4-34
+- recompile all packages with the same (latest) version of java
+
+* Mon Apr 10 2017 Michael Mraka <michael.mraka@redhat.com> 0.4-33
+- expanded (Build)Requires list to make it more readable
+
 * Thu Apr 06 2017 Michael Mraka <michael.mraka@redhat.com> 0.4-32
 - new checkstyle requirement
 

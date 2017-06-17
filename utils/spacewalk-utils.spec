@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.7.10.4
+Version:	2.7.15
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -124,6 +124,24 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Thu May 11 2017 Eric Herget <eherget@redhat.com> 2.7.15-1
+- 1449529 - taskotop retrieve list of each task by end date, not start date
+- Remove unused imports.
+
+* Wed Apr 26 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.14-1
+- update CentOS7 addon repos
+- removed definitions of EOLed products
+
+* Tue Apr 25 2017 Eric Herget <eherget@redhat.com> 2.7.13-1
+- 1434564 - RFE: taskotop enhancements continued - fix on Oracle
+
+* Fri Apr 21 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.12-1
+- add new channels Fedora 25 and Spacewalk 2.6
+- Adding and updating Oracle channels.
+
+* Wed Apr 19 2017 Eric Herget <eherget@redhat.com> 2.7.11-1
+- 1442238 - taskotop various fixes to command line arg processing and logging
+
 * Wed Mar 29 2017 Gennadii Altukhov <galt@redhat.com> 2.7.10-1
 - 1305744 - add UTF-8 encoding before output on stdout
 
