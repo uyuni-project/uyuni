@@ -1,7 +1,8 @@
-VERSION = 3.2.2
+VERSION = 3.2.3
 REGISTRY = registry.mgr.suse.de
 ORATARGET = suma-head-ora
-BUILDOPTS="" # --no-cache=true
+# --no-cache=true
+BUILDOPTS=
 
 all: suma-head-base suma-head-cobbler suma-head-gatherer suma-head-spacewalkkoan suma-head-pgsql suma-head-ora
 

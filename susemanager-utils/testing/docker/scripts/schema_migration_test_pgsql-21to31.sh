@@ -12,7 +12,7 @@ fi
 
 # Database schema creation
 
-rpm -ivh /root/susemanager-schema-2.1.50.5-0.7.1.noarch.rpm
+rpm -ivh /root/susemanager-schema-3.0.10-1.1.noarch.rpm
 
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
