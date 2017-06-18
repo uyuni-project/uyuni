@@ -2,7 +2,7 @@
 #
 # VERSION               1.1.1
 
-FROM registry.mgr.suse.de/suma-head-base:1.1.1
+FROM registry.mgr.suse.de/suma-head-base:latest
 MAINTAINER Michael Calmer "mc@suse.com"
 
 # Install the required packages

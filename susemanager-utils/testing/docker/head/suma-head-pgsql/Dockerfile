@@ -2,8 +2,8 @@
 #
 # VERSION               1.1.2
 
-FROM registry.mgr.suse.de/suma-head-base:1.1.1
-MAINTAINER Flavio Castelli "fcastelli@suse.com"
+FROM registry.mgr.suse.de/suma-head-base:latest
+MAINTAINER Michael Calmer "mc@suse.com"
 
 # Install the required packages
 ADD add_packages.sh /root/add_packages.sh
