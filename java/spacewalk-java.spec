@@ -239,7 +239,7 @@ BuildRequires: dwr >= 3
 BuildRequires: jaf
 BuildRequires: jakarta-commons-el
 BuildRequires: jakarta-commons-fileupload
-BuildRequires: jakarta-taglibs-standard
+BuildRequires: jakarta-taglibs-standard < 1.1.1-255.2
 BuildRequires: jcommon
 BuildRequires: jdom
 BuildRequires: jta
