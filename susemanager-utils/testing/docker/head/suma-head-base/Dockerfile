@@ -13,6 +13,9 @@ RUN /root/add_repositories.sh
 ADD add_packages.sh /root/add_packages.sh
 RUN /root/add_packages.sh
 
+# add schema RPMs for migration tests
+ADD susemanager-schema-3.0.10-1.1.noarch.rpm /root/susemanager-schema-3.0.10-1.1.noarch.rpm
+ADD susemanager-schema-3.1.8-1.2.noarch.rpm /root/susemanager-schema-3.1.8-1.2.noarch.rpm
 
 # Create fake filesystem entries required to run spacewalk-setup
 ADD create_fake_filesystem_entries.sh /root/create_fake_filesystem_entries.sh
