@@ -141,7 +141,7 @@ public class NavTest extends RhnBaseTestCase {
         String curPath = "/rhn/apidoc/handlers/PackagesProviderHandler.jsp";
         nti.computeActiveNodes(curPath, lastPath);
         NavNode bestNode = nti.getBestNode();
-        assertEquals("/rhn/help/dispatcher/reference_guide", bestNode.getPrimaryURL());
+        assertEquals("/rhn/apidoc/index.jsp", bestNode.getPrimaryURL());
     }
 
     public void testMatchByDir() throws Exception {
