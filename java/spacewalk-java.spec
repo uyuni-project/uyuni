@@ -60,6 +60,7 @@ Requires: spark-template-jade
 Requires: hibernate3 = 3.2.7
 Requires: gnu-jaf
 Requires: ehcache
+Requires: tomcat-taglibs-standard
 BuildRequires: hibernate3 = 3.2.7
 BuildRequires: ehcache
 BuildRequires: apache-commons-lang
@@ -84,6 +85,7 @@ Requires: java >= 1:1.7.0
 Requires: java-devel >= 1:1.7.0
 Requires: jpam
 Requires: oscache
+Requires: jakarta-taglibs-standard
 BuildRequires: java-devel >= 1:1.7.0
 BuildRequires: jpam
 BuildRequires: oscache
@@ -92,7 +94,6 @@ BuildRequires: oscache
 Requires: dwr >= 3
 Requires: jakarta-commons-el
 Requires: jakarta-commons-fileupload
-Requires: jakarta-taglibs-standard
 Requires: jcommon
 Requires: jdom
 Requires: jta
@@ -207,7 +208,9 @@ Requires: cglib
 BuildRequires: perl
 BuildRequires: libxml2-tools
 BuildRequires: libxml2
+BuildRequires: tomcat-taglibs-standard
 %else
+BuildRequires: jakarta-taglibs-standard
 BuildRequires: /usr/bin/perl
 BuildRequires: /usr/bin/xmllint
 %endif
@@ -225,7 +228,6 @@ BuildRequires: dwr >= 3
 BuildRequires: jaf
 BuildRequires: jakarta-commons-el
 BuildRequires: jakarta-commons-fileupload
-BuildRequires: jakarta-taglibs-standard
 BuildRequires: jcommon
 BuildRequires: jdom
 BuildRequires: jta
@@ -893,8 +895,6 @@ fi
 %{jardir}/sitemesh.jar
 %{jardir}/stringtree-json.jar
 %{jardir}/susestudio-java-client.jar
-%{jardir}/taglibs-core.jar
-%{jardir}/taglibs-standard.jar
 %{jardir}/tanukiwrapper.jar
 %{jardir}/velocity-*.jar
 %{jardir}/xalan-j2.jar
@@ -904,10 +904,15 @@ fi
 %if 0%{suse_version}
 %{jardir}/struts.jar
 %{jardir}/objectweb-asm_asm.jar
+%{jardir}/taglibs-standard-impl.jar
+%{jardir}/taglibs-standard-jstlel.jar
+%{jardir}/taglibs-standard-spec.jar
 %else
 %{jardir}/asm_asm.jar
 %{jardir}/struts*.jar
 %{jardir}/commons-chain.jar
+%{jardir}/taglibs-core.jar
+%{jardir}/taglibs-standard.jar
 %endif
 
 %dir %{cobprofdir}
@@ -10131,4 +10136,3 @@ Feature: Support channel-permissions on ISS
 - 576907 - making same display changes for system sync (tlestach@redhat.com)
 - Move systemlogs directory out of /var/satellite (joshua.roys@gtri.gatech.edu)
 - 580227 - displaying dates in the same format (tlestach@redhat.com)
-
