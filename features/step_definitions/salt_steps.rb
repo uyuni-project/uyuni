@@ -399,24 +399,28 @@ When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install -y #{package}-formula")
 end
 
-When(/^I check the "([^"]*)" formula$/) do |formula|
+When(/^I ([^"]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "check"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "uncheck"
   if all(:xpath, xpath_query).any?
     fail unless find(:xpath, xpath_query).click
   else
-    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']"
+    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "check"
+    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "uncheck"
     assert all(:xpath, xpath_query).any?, "Checkbox could not be found"
   end
 end
 
-Then(/^the "([^"]*)" formula should be checked$/) do |formula|
+Then(/^the "([^"]*)" formula should be ([^"]*)$/) do |formula, action|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "checked"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "unchecked"
   if all(:xpath, xpath_query).any?
-    fail "Checkbox is not checked"
+    fail "Checkbox is not #{action}"
   end
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "checked"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "unchecked"
   assert all(:xpath, xpath_query).any?, "Checkbox could not be found"
 end
 
@@ -474,9 +478,30 @@ When(/^I refresh the pillar data$/) do
   $server.run("salt '#{$minion_ip}' saltutil.refresh_pillar")
 end
 
-Then(/^the pillar data for "([^"]*)" should be "([^"]*)"$/) do |key, value|
-  output, _code = $server.run("salt '#{$minion_ip}' pillar.get '#{key}'")
-  fail unless output.split("\n")[1].strip == value
+Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+  if minion == "sle-minion"
+    target = $minion_ip
+    cmd = "salt"
+    extra_cmd = ""
+  elsif minion == "ssh-minion"
+    target = $ssh_minion_ip
+    cmd = "salt-ssh"
+    extra_cmd = "-i --roster-file=/tmp/tmp_roster_tests"
+    $server.run("printf '#{target}:\n  host: #{target}\n  user: root\n  passwd: linux' > /tmp/tmp_roster_tests")
+  else
+    fail "Invalid target"
+  end
+  output, _code = $server.run("#{cmd} '#{target}' pillar.get '#{key}' #{extra_cmd}")
+  puts output
+  if value == ""
+    fail unless output.split("\n").length == 1
+  else
+    fail unless output.split("\n")[1].strip == value
+  end
+end
+
+Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, minion|
+  step %(the pillar data for "#{key}" should be "" on "#{minion}")
 end
 
 Given(/^I try download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
