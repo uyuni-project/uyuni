@@ -493,8 +493,11 @@ Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key
   end
   output, _code = $server.run("#{cmd} '#{target}' pillar.get '#{key}' #{extra_cmd}")
   puts output
-  fail unless (output.split("\n")[1].strip == value) if value != ""
-  fail unless (output.split("\n").length == 1) if value == ""
+  if value == ""
+    fail unless output.split("\n").length == 1
+  else
+    fail unless output.split("\n")[1].strip == value
+  end
 end
 
 Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, minion|
