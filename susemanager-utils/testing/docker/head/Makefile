@@ -1,4 +1,4 @@
-VERSION = 3.2.3
+VERSION = 3.2.4
 REGISTRY = registry.mgr.suse.de
 ORATARGET = suma-head-ora
 # --no-cache=true
