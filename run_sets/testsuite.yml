@@ -91,8 +91,10 @@
 
 ### Scalability tests (after debug always)
 - features/docker_xmlrpc.feature
-- features/minion_datacenter.feature
-## smdba and change password feature always put them at the end of the testsuite.
+# - features/minion_datacenter.feature
+### Disabled: does not work if IPv6 broken
+
+## alway put smdba and change password features at the end of the testsuite.
 - features/change_password.feature
 
 # sync channels in background
