@@ -474,9 +474,27 @@ When(/^I refresh the pillar data$/) do
   $server.run("salt '#{$minion_ip}' saltutil.refresh_pillar")
 end
 
-Then(/^the pillar data for "([^"]*)" should be "([^"]*)"$/) do |key, value|
-  output, _code = $server.run("salt '#{$minion_ip}' pillar.get '#{key}'")
-  fail unless output.split("\n")[1].strip == value
+Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+  if minion == "sle-minion"
+    target = $minion_ip
+    cmd = "salt"
+    extra_cmd = ""
+  elsif minion == "ssh-minion"
+    target = $ssh_minion_ip
+    cmd = "salt-ssh"
+    extra_cmd = "-i --roster-file=/tmp/tmp_roster_tests"
+    $server.run("printf '#{target}:\n  host: #{target}\n  user: root\n  passwd: linux' > /tmp/tmp_roster_tests")
+  else
+    fail "Invalid target"
+  end
+  output, _code = $server.run("#{cmd} '#{target}' pillar.get '#{key}' #{extra_cmd}")
+  puts output
+  fail unless (output.split("\n")[1].strip == value) if value != ""
+  fail unless (output.split("\n").length == 1) if value == ""
+end
+
+Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, minion|
+  step %(the pillar data for "#{key}" should be "" on "#{minion}")
 end
 
 Given(/^I try download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
