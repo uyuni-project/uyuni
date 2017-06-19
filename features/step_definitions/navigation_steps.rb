@@ -230,6 +230,12 @@ When(/^I follow this "(.*?)" link$/) do |target|
   step %(I follow "#{$client_fullhostname}") if target == "sle-client"
 end
 
+When(/^I check the "(.*?)" client$/) do |target|
+  node = get_target(target)
+  hostname = node.run("hostname -f")[0].strip
+  step %(I check "#{hostname}" in the list)
+end
+
 Given(/^I am on the groups page$/) do
   steps %(
     Given I am on the Systems page
