@@ -99,7 +99,8 @@
              mailapi smtp jdom ${jmock-jars}
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg jcommon stringtree-json postgresql-jdbc
-             taglibs-core logdriver quartz dwr slf4j-api slf4j-log4j12
+             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
+             logdriver quartz dwr slf4j-api slf4j-log4j12
              concurrent velocity simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
 
   <!-- deps needed for testing, but required to build -->
@@ -124,9 +125,9 @@
        concurrent xalan-j2" />
 
   <property name="run.jar.dependencies"
-      value="antlr ${asm} cglib c3p0 commons-discovery dom4j jaf jta
-             ojdbc14 sitemesh taglibs-standard xalan-j2 xerces-j2
-             xml-commons-apis ${common.jar.dependencies}" />
+      value="antlr ${asm} cglib c3p0 commons-discovery dom4j jaf jta ojdbc14 sitemesh
+             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
+             xalan-j2 xerces-j2 xml-commons-apis ${common.jar.dependencies}" />
 
   <!-- =================== RPM build, use jpackage syntax ======================= -->
   <!-- property name="install.test.jar.dependencies"
@@ -146,9 +147,9 @@
       ${install.common.jar.dependencies} tanukiwrapper" />
 
   <property name="install.run.jar.dependencies"
-      value="antlr ${asm} cglib c3p0 commons-discovery dom4j dwr jaf jta
-             sitemesh taglibs-standard xalan-j2 xerces-j2
-             xml-commons-apis ${install.common.jar.dependencies}" />
+      value="antlr ${asm} cglib c3p0 commons-discovery dom4j dwr jaf jta sitemesh
+             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
+             xalan-j2 xerces-j2 xml-commons-apis ${install.common.jar.dependencies}" />
 
   <property name="install.common.jar.dependencies"
       value="bcel cglib commons-beanutils commons-cli commons-codec
@@ -157,7 +158,7 @@
              ${tomcat-jars} javamail jdom jsch dwr google-gson
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc
-             taglibs-core quartz
+             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec quartz
              ${suse-common-jars}
              concurrent simple-core snakeyaml simple-xml susestudio-java-client" />
 
@@ -169,8 +170,9 @@
              ${commons-validator} concurrent dom4j google-gson ${hibernate} jta
              jaf ${jasper-jars} javamail jcommon jdom ${other-jars}
              ${tomcat-jars} log4j redstone-xmlrpc-client redstone-xmlrpc
-             oro quartz stringtree-json sitemesh ${struts-jars} taglibs-core
-             taglibs-standard tanukiwrapper postgresql-jdbc snakeyaml simple-xml susestudio-java-client
+             oro quartz stringtree-json sitemesh ${struts-jars}
+             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
+             tanukiwrapper postgresql-jdbc snakeyaml simple-xml susestudio-java-client
              ${suse-common-jars} ${suse-runtime-jars}
              xalan-j2 xerces-j2 xml-commons-apis simple-core ehcache" />
 

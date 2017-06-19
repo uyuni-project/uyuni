@@ -60,6 +60,7 @@ Requires: spark-template-jade
 Requires: hibernate3 = 3.2.7
 Requires: gnu-jaf
 Requires: ehcache
+Requires: tomcat-taglibs-standard
 BuildRequires: hibernate3 = 3.2.7
 BuildRequires: ehcache
 BuildRequires: apache-commons-lang
@@ -84,6 +85,7 @@ Requires: java >= 1:1.7.0
 Requires: java-devel >= 1:1.7.0
 Requires: jpam
 Requires: oscache
+Requires: jakarta-taglibs-standard
 BuildRequires: java-devel >= 1:1.7.0
 BuildRequires: jpam
 BuildRequires: oscache
@@ -92,7 +94,6 @@ BuildRequires: oscache
 Requires: dwr >= 3
 Requires: jakarta-commons-el
 Requires: jakarta-commons-fileupload
-Requires: jakarta-taglibs-standard
 Requires: jcommon
 Requires: jdom
 Requires: jta
@@ -207,7 +208,9 @@ Requires: cglib
 BuildRequires: perl
 BuildRequires: libxml2-tools
 BuildRequires: libxml2
+BuildRequires: tomcat-taglibs-standard
 %else
+BuildRequires: jakarta-taglibs-standard
 BuildRequires: /usr/bin/perl
 BuildRequires: /usr/bin/xmllint
 %endif
@@ -225,7 +228,6 @@ BuildRequires: dwr >= 3
 BuildRequires: jaf
 BuildRequires: jakarta-commons-el
 BuildRequires: jakarta-commons-fileupload
-BuildRequires: jakarta-taglibs-standard
 BuildRequires: jcommon
 BuildRequires: jdom
 BuildRequires: jta
@@ -387,7 +389,6 @@ Requires: jpam
 Requires: oscache
 %endif
 Requires: concurrent
-Requires: jakarta-taglibs-standard
 Requires: jcommon
 Requires: log4j
 Requires: quartz < 2.0
@@ -613,31 +614,31 @@ install -d $RPM_BUILD_ROOT/srv/susemanager/tmp
 echo "hibernate.cache.region.factory_class=net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
 %endif
 %if 0%{?fedora} && 0%{?fedora} >= 21
-echo "wrapper.java.classpath.28=/usr/share/java/log4j-1.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.27=/usr/share/java/log4j-1.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
-echo "wrapper.java.classpath.28=/usr/share/java/log4j.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.27=/usr/share/java/log4j.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %endif
 %if 0%{?fedora}
-echo "wrapper.java.classpath.49=/usr/share/java/hibernate3/hibernate-core-3.jar
+echo "wrapper.java.classpath.47=/usr/share/java/hibernate3/hibernate-core-3.jar
 wrapper.java.classpath.61=/usr/share/java/hibernate-jpa-2.0-api.jar
 wrapper.java.classpath.62=/usr/share/java/hibernate3/hibernate-ehcache-3.jar
 wrapper.java.classpath.63=/usr/share/java/hibernate3/hibernate-c3p0-3.jar
 wrapper.java.classpath.64=/usr/share/java/hibernate*/hibernate-commons-annotations.jar
 wrapper.java.classpath.65=/usr/share/java/slf4j/api.jar
-wrapper.java.classpath.66=/usr/share/java/jboss-logging.jar
-wrapper.java.classpath.67=/usr/share/java/javassist.jar
-wrapper.java.classpath.68=/usr/share/java/ehcache-core.jar" >> conf/default/rhn_taskomatic_daemon.conf
+wrapper.java.classpath.64=/usr/share/java/jboss-logging.jar
+wrapper.java.classpath.65=/usr/share/java/javassist.jar
+wrapper.java.classpath.66=/usr/share/java/ehcache-core.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 %if 0%{suse_version}
 echo "hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider" >> conf/default/rhn_hibernate.conf
 echo "hibernate.cache.provider_configuration_file_resource_path=../ehcache.xml" >> conf/default/rhn_hibernate.conf
-echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.66=/usr/share/java/ehcache.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.67=/usr/share/java/httpcore.jar" >> conf/default/rhn_taskomatic_daemon.conf
-echo "wrapper.java.classpath.68=/usr/share/java/httpclient.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.47=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.64=/usr/share/java/ehcache.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.65=/usr/share/java/httpcore.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.66=/usr/share/java/httpclient.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
-echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.47=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %endif
 %endif
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
@@ -894,8 +895,6 @@ fi
 %{jardir}/sitemesh.jar
 %{jardir}/stringtree-json.jar
 %{jardir}/susestudio-java-client.jar
-%{jardir}/taglibs-core.jar
-%{jardir}/taglibs-standard.jar
 %{jardir}/tanukiwrapper.jar
 %{jardir}/velocity-*.jar
 %{jardir}/xalan-j2.jar
@@ -905,10 +904,15 @@ fi
 %if 0%{suse_version}
 %{jardir}/struts.jar
 %{jardir}/objectweb-asm_asm.jar
+%{jardir}/taglibs-standard-impl.jar
+%{jardir}/taglibs-standard-jstlel.jar
+%{jardir}/taglibs-standard-spec.jar
 %else
 %{jardir}/asm_asm.jar
 %{jardir}/struts*.jar
 %{jardir}/commons-chain.jar
+%{jardir}/taglibs-core.jar
+%{jardir}/taglibs-standard.jar
 %endif
 
 %dir %{cobprofdir}
@@ -10132,4 +10136,3 @@ Feature: Support channel-permissions on ISS
 - 576907 - making same display changes for system sync (tlestach@redhat.com)
 - Move systemlogs directory out of /var/satellite (joshua.roys@gtri.gatech.edu)
 - 580227 - displaying dates in the same format (tlestach@redhat.com)
-
