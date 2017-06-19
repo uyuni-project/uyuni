@@ -399,24 +399,28 @@ When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install -y #{package}-formula")
 end
 
-When(/^I check the "([^"]*)" formula$/) do |formula|
+When(/^I ([^"]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "check"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "uncheck"
   if all(:xpath, xpath_query).any?
     fail unless find(:xpath, xpath_query).click
   else
-    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']"
+    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "check"
+    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "uncheck"
     assert all(:xpath, xpath_query).any?, "Checkbox could not be found"
   end
 end
 
-Then(/^the "([^"]*)" formula should be checked$/) do |formula|
+Then(/^the "([^"]*)" formula should be ([^"]*)$/) do |formula, action|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "checked"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "unchecked"
   if all(:xpath, xpath_query).any?
-    fail "Checkbox is not checked"
+    fail "Checkbox is not #{action}"
   end
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "checked"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "unchecked"
   assert all(:xpath, xpath_query).any?, "Checkbox could not be found"
 end
 
