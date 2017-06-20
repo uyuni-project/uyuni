@@ -26,6 +26,7 @@ Feature: register a salt-minion via bootstrap
     And I enter "/usr/share/xml/scap/ssg/content/ssg-centos7-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
+    And I wait until OpenSCAP scan is completed for "ceos-minion"
 
  Scenario: Run a remote command on centos
     Given I am authorized as "testing" with password "testing"

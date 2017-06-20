@@ -177,6 +177,19 @@ Then(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
   )
 end
 
+Then(/^I wait until OpenSCAP scan is completed for "([^"]*)"$/) do |system|
+  steps %(
+    When I navigate to "rhn/systems/Overview.do" page
+    And I follow this "#{system}" link
+    When I follow "Events"
+    And I follow "History"
+    Then I try to reload page until contains "OpenSCAP xccdf scanning" text
+    And I follow first "OpenSCAP xccdf scanning"
+    And I wait until i see "This action's status is: Completed." text, refreshing the page
+    And I wait for "5" seconds
+  )
+end
+
 When(/^I delete this minion key in the Salt master$/) do
   $output, _code = $server.run("salt-key -y -d #{$minion_hostname}", false)
 end
