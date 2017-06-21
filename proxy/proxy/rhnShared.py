@@ -111,16 +111,20 @@ class SharedHandler:
             Should not return an error code -- simply connects.
         """
 
-        scheme, host, port, self.uri = self._parse_url(self.rhnParent)
+        scheme, host, port, self.uri, query = self._parse_url(self.rhnParent)
         self.responseContext.setConnection(self._create_connection())
 
         if not self.uri:
             self.uri = '/'
 
-        # Add any params onto the URI since _parse_url doesn't include them.
+        # if this request is for an upstream server, use the original query string.
+        # Otherwise, if it is for the local Squid instance, strip it so that
+        # Squid will not keep multiple cached copies of the same resource
         if self.httpProxy not in ['127.0.0.1:8080', 'localhost:8080']:
             if 'X-Suse-Auth-Token' in self.req.headers_in:
                 self.uri += '?%s' % self.req.headers_in['X-Suse-Auth-Token']
+            elif query:
+                self.uri += '?%s' % query
 
         log_debug(3, 'Scheme:', scheme)
         log_debug(3, 'Host:', host)
@@ -156,7 +160,7 @@ class SharedHandler:
 
     def _create_connection(self):
         """ Returns a Connection object """
-        scheme, host, port, _uri = self._parse_url(self.rhnParent)
+        scheme, host, port, _uri, _query = self._parse_url(self.rhnParent)
         # Build the list of params
         params = {
             'host':   host,
@@ -188,12 +192,12 @@ class SharedHandler:
 
     @staticmethod
     def _parse_url(url):
-        """ Returns scheme, host, port, path. """
-        scheme, netloc, path, _params, _query, _frag = rhnLib.parseUrl(url)
+        """ Returns scheme, host, port, path, query. """
+        scheme, netloc, path, _params, query, _frag = rhnLib.parseUrl(url)
         host, port = urllib.splitnport(netloc)
         if (port <= 0):
             port = None
-        return scheme, host, port, path
+        return scheme, host, port, path, query
 
     def _serverCommo(self):
         """ Handler part 2
