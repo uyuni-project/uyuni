@@ -231,6 +231,9 @@ Thank you for using @@PRODUCT_NAME@@.
       <trans-unit id="Bare Metal Kickstart">
         <source>Unprovisioned Autoinstallation</source>
       </trans-unit>
+      <trans-unit id="alphabar.label">
+        <source>Select first character</source>
+      </trans-unit>
 
       <!-- code/src/com/redhat/rhn/frontend/strings/jsp/StringResource_en_US.xml -->
         <trans-unit id="sdc.details.overview.installedproducts">
