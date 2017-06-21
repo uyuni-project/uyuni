@@ -118,7 +118,7 @@ class SharedHandler:
             self.uri = '/'
 
         # Add any params onto the URI since _parse_url doesn't include them.
-        if self.uri.find('?') < 0 and self.httpProxy not in ['127.0.0.1:8080', 'localhost:8080']:
+        if self.httpProxy not in ['127.0.0.1:8080', 'localhost:8080']:
             if 'X-Suse-Auth-Token' in self.req.headers_in:
                 self.uri += '?%s' % self.req.headers_in['X-Suse-Auth-Token']
 
