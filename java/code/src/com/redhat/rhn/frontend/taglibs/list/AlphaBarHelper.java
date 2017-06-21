@@ -84,15 +84,17 @@ public class AlphaBarHelper {
     public void writeAlphaBar(PageContext pageContext,
             Set<Character> activeChars, String listName) throws JspException {
 
+        LocalizationService ls = LocalizationService.getInstance();
+
         ListTagUtil.write(pageContext,
                 "<div class=\"dropdown dropdown-alphabar\">" +
                     "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">" +
-                        "Alphabetical index <span class=\"caret\"></span>" +
+                        ls.getMessage("alphabar.label") + " <span class=\"caret\"></span>" +
                     "</a>" +
                     "<ul class=\"dropdown-menu spacewalk-alphabar\">");
 
-        List<String> alphabet = LocalizationService.getInstance().getAlphabet();
-        List<String> numbers = LocalizationService.getInstance().getDigits();
+        List<String> alphabet = ls.getAlphabet();
+        List<String> numbers = ls.getDigits();
 
         for (String numberString : numbers) {
             char number = numberString.charAt(0);
