@@ -70,6 +70,7 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
         }
         catch (RuntimeException e) {
             LOG.error(ROLLBACK_MSG, e);
+            request.setAttribute("exception", stringifyNestedExceptionMessages(e));
             throw e;
         }
         catch (AssertionError e) {
@@ -101,6 +102,22 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
         if (LOG.isDebugEnabled()) {
             LOG.debug(msg);
         }
+    }
+
+    /**
+     *  Extract all exception nested messages to one ';' separated string
+     *
+     * @param e the Exception catched
+     * @return a string containing all the exception messages
+     */
+    public String stringifyNestedExceptionMessages(Exception e) {
+        StringBuilder messages = new StringBuilder();
+        Throwable currentException = e;
+        do {
+            messages.append(currentException.getMessage() + "; ");
+            currentException = currentException.getCause();
+        } while(currentException != null);
+        return messages.toString();
     }
 
     /** {@inheritDoc} */
