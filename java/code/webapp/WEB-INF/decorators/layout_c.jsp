@@ -43,6 +43,11 @@
         <html:messages id="message" message="true">
           <rhn:messages><c:out escapeXml="false" value="${message}" /></rhn:messages>
         </html:messages>
+        <c:if test="${ not empty exception }">
+          <div class="alert alert-danger">
+            <c:out value="${exception}"/>
+          </div>
+        </c:if>
         <decorator:body />
       </section>
       <script src='/javascript/manager/menu.bundle.js'></script>
