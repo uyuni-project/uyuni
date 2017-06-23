@@ -36,6 +36,23 @@ remove_traditional_stack:
       - rhnlib
       - rhnmd
 
+# disable all spacewalk:* repos
+{%- set repos_disabled = {'disabled': false} %}
+{%- set repos = salt['pkg.list_repos']() %}
+{%- for alias, data in repos.iteritems() %}
+{%- if 'spacewalk:' in alias %}
+{%- if data.get('enabled', true) %}
+disable_repo_{{ alias }}:
+  module.run:
+    - name: pkg.mod_repo
+    - repo: {{ alias }}
+    - kwargs:
+        enabled: False
+{%- if repos_disabled.update({'disabled': true}) %}{% endif %}
+{%- endif %}
+{%- endif %}
+{%- endfor %}
+
 # Remove suseRegisterInfo in a separate yum transaction to avoid being called by
 # the yum plugin.
 {%- if grains['os_family'] == 'RedHat' %}
