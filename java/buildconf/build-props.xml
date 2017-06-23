@@ -95,8 +95,8 @@
   <property name="common.jar.dependencies"
       value="bcel cglib commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
-             commons-el commons-fileupload commons-io commons-lang commons-logging ${commons-validator} ${hibernate}
-             mailapi smtp jdom ${jmock-jars}
+             commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
+             javamail smtp jdom ${jmock-jars}
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg jcommon stringtree-json postgresql-jdbc
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
