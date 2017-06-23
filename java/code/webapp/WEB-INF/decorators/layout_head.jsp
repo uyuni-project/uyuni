@@ -52,3 +52,4 @@
     <script src="/javascript/bootstrap-datepicker.js"></script>
 
     <script src='/javascript/reactjs/react.bundle.js'></script>
+    <script src='/javascript/momentjs/moment-with-langs.min.js' type='text/javascript'></script>

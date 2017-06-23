@@ -43,7 +43,6 @@ public class FormatDateTagTest extends RhnBaseTestCase {
             ht.doStartTag();
             ht.doEndTag();
             assertContains(out.toString(), "<time");
-            assertContains(out.toString(), "moment-with-langs.min.js");
             ht.release();
         }
         catch (JspException e) {

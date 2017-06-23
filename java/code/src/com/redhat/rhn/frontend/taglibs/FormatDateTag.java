@@ -18,7 +18,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import java.io.IOException;
-import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -215,26 +214,6 @@ public class FormatDateTag extends TagSupport {
     }
 
     /**
-     * renders code that includes the moment.js library, only
-     * if it has not been included before by the same tag
-     * @param out Where to render to
-     * @throws IOException
-     */
-    protected void renderMomentInclude(Writer out) throws IOException {
-        if (pageContext.getRequest().getAttribute(
-                "__spacewalk_momentjs_included") == null) {
-            this.bestLocale = null;
-            out.append("<script type=\"text/javascript\" src=\"" +
-                "/javascript/momentjs/moment-with-langs.min.js\"></script>");
-
-            out.append("<script type=\"text/javascript\">");
-            out.append("  moment.lang(\"" + getBestLocale() + "\");");
-            out.append("</script>");
-            pageContext.getRequest().setAttribute("__spacewalk_momentjs_included", true);
-        }
-    }
-
-    /**
      * @return the date formatted into the applications preferred
      *          string format
      */
@@ -275,7 +254,6 @@ public class FormatDateTag extends TagSupport {
             Calendar valDate = Calendar.getInstance();
             valDate.setTime(getValue());
 
-            renderMomentInclude(out);
             out.append("  <time");
             out.append(getCssClass());
             out.append(" data-reference-date=\"" +
