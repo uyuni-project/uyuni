@@ -7,7 +7,6 @@ Feature: register a traditional client centos7
 
   Scenario: Install the trad-client on centos7
      Given I am authorized
-     And  I run "sed s/enabled=.*/enabled=1/g /etc/yum.repos.d/Devel_Galaxy_Manager_Head_RES-Manager-Tools-7-x86_64.repo  -i" on "ceos-minion" without error control
      And  I run "sed s/enabled=.*/enabled=1/g /etc/yum.repos.d/Devel_Galaxy_Manager_3.1_RES-Manager-Tools-7-x86_64.repo  -i" on "ceos-minion" without error control
      And  I run "sed s/enabled=.*/enabled=1/g /etc/yum.repos.d/SLE-Manager-Tools-RES-7-x86_64.repo -i" on "ceos-minion" without error control
      And  I run "sed s/enabled=.*/enabled=1/g /etc/yum.repos.d/CentOS-Base.repo -i" on "ceos-minion" without error control
