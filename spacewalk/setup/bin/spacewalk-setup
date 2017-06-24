@@ -818,7 +818,6 @@ sub generate_server_cert {
     else {
       push @opts, qq(--$name=$params{$name});
     }
-    }
   }
 
   Spacewalk::Setup::system_or_exit(['/usr/bin/rhn-ssl-tool', @opts], 36, 'Could not generate server certificate.');
