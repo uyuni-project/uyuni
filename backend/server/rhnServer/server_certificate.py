@@ -196,9 +196,9 @@ class Certificate:
         """ compute the current checksum against a secret and check it against
             the current checksum
         """
-        if len(secret) == 64:
+        if len(self.__checksum) == 64:
             csum = self.compute_checksum(secret, algo='sha256')
-        elif len(secret) == 32:
+        elif len(self.__checksum) == 32:
             csum = self.compute_checksum(secret, algo='md5')
         if not csum == self.__checksum:
             # fail, current checksum does not match
