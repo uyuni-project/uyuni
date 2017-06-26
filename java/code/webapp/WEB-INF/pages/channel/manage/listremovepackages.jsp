@@ -4,77 +4,67 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-
 <html>
-<head>
-</head>
+<head></head>
 <body>
 
-<%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
-<BR>
+    <%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
+    <h2>
+        <rhn:icon type="header-package"/>
+        <bean:message key="channel.jsp.package.list"/>
+    </h2>
 
-<h2><rhn:icon type="header-package" /> <bean:message key="channel.jsp.package.list"/></h2>
+    <rl:listset name="packageSet" legend="system-group">
+        <rhn:csrf/>
+        <rhn:submitted/>
+        <rhn:hidden name="cid" value="${cid}"/>
 
-
-
-<rl:listset name="packageSet" legend="system-group">
-
-<rhn:csrf />
-<rhn:hidden name="cid" value="${cid}" />
-
-    <div class="spacewalk-section-toolbar">
-        <div class="action-button-wrapper">
-            <input type="submit" name="confirm" class="btn btn-default"
-                value="<bean:message key='channel.jsp.package.removebutton'/>" />
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <input type="submit" name="confirm" class="btn btn-danger"
+                       value="<bean:message key='channel.jsp.package.removebutton'/>"/>
+            </div>
         </div>
-    </div>
-    <rhn:submitted/>
+
         <rl:list dataset="pageList"
-                        name="packageList"
-                        decorator="SelectableDecorator"
-                        emptykey="package.jsp.emptylist"
-                        alphabarcolumn="nvrea"
-                        filter="com.redhat.rhn.frontend.taglibs.list.filters.PackageFilter" >
+                 name="packageList"
+                 decorator="SelectableDecorator"
+                 emptykey="package.jsp.emptylist"
+                 alphabarcolumn="nvrea"
+                 filter="com.redhat.rhn.frontend.taglibs.list.filters.PackageFilter">
 
+            <rl:decorator name="PageSizeDecorator"/>
 
-                        <rl:decorator name="PageSizeDecorator"/>
+            <rl:selectablecolumn value="${current.id}"
+                                 selected="${current.selected}"
+                                 disabled="${not current.selectable}"/>
 
-                    <rl:selectablecolumn value="${current.id}"
-                                                                selected="${current.selected}"
-                                                                disabled="${not current.selectable}"/>
+            <rl:column sortable="true"
+                       bound="false"
+                       headerkey="download.jsp.package"
+                       sortattr="nvrea"
+                       defaultsort="asc">
+                <a href="/rhn/software/packages/Details.do?pid=${current.id}">
+                    ${current.nvrea}
+                </a>
+            </rl:column>
 
+            <rl:column sortable="false"
+                       bound="false"
+                       headerkey="packagesearch.jsp.summary">
+                ${current.summary}
+            </rl:column>
 
-
-                 <rl:column sortable="true"
-                                   bound="false"
-                           headerkey="download.jsp.package"
-                           sortattr="nvrea"
-                                        defaultsort="asc"
-                           >
-
-                        <a href="/rhn/software/packages/Details.do?pid=${current.id}">${current.nvrea}</a>
-                </rl:column>
-
-
-                 <rl:column sortable="false"
-                                   bound="false"
-                           headerkey="packagesearch.jsp.summary"
-                          >
-                        ${current.summary}
-                </rl:column>
-
-                 <rl:column sortable="false"
-                                   bound="false"
-                           headerkey="package.jsp.provider"
-                          >
-                        ${current.provider}
-                </rl:column>
-
+            <rl:column sortable="false"
+                       bound="false"
+                       headerkey="package.jsp.provider">
+                ${current.provider}
+            </rl:column>
         </rl:list>
-        <rl:csv dataset="pageList"
-                        name="packageList"
-                        exportColumns="id, nvrea, provider" />
-</rl:listset>
+
+        <rl:csv dataset="pageList" name="packageList" exportColumns="id, nvrea, provider"/>
+
+    </rl:listset>
 
 </body>
 </html>

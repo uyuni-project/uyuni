@@ -371,7 +371,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>You may now publish this patch.</source>
       </trans-unit>
       <trans-unit id="errata.edit.publisherrata">
-        <source>Publish Patches</source>
+        <source>Publish Patch</source>
       </trans-unit>
       <trans-unit id="errata.edit.youmaynotify">
         <source>You can send an email notification of this patch.</source>
@@ -1240,7 +1240,7 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
 
       <trans-unit id="channel.manage.errata.packageassocmsg">
-			<source>(Recommended) With this selected only patches that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
+			<source>&lt;em&gt;(Recommended)&lt;/em&gt; With this selected only patches that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
       </trans-unit>
       <trans-unit id="kickstart.list.jsp.orgdefault">
         <source>This is your organizations default autoinstallation profile.</source>
@@ -1349,7 +1349,7 @@ As a Channel Administrator, you may change the base channels your systems are su
          <source>Click 'Confirm' below to remove these patches from your channel. Related packages will also be removed from the channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.finalmessage">
-         <source>Successfully removed {0} patches from this channel.</source>
+         <source>Successfully removed {0} patch(es) from this channel.</source>
       </trans-unit>
       <trans-unit id="unknown.package.msg">
          <source>Unfortunately, you have requested information about a package we do not have in our database. Most likely, this is a custom package you have installed by hand, or is from a distribution not supported by @@VENDOR_SERVICE_NAME@@.</source>
@@ -1794,6 +1794,9 @@ available for this kickstart profile to function properly.
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.viewErrata">
         <source>View Associated Patches</source>
+      </trans-unit>
+      <trans-unit id="frontend.actions.channels.manager.add.success">
+        <source>Successfully added {1} package(s) and {0} patches to channel {2}.</source>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartinstalltype">
           <source>Invalid autoinstall type: {0}.</source>
