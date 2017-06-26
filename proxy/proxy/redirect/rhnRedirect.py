@@ -284,11 +284,11 @@ class RedirectHandler(SharedHandler):
         # Tear apart the redirect URL.  We need the scheme, the host, the
         # port (if not the default), and the URI.
 
-        _scheme, host, port, uri = self._parse_url(redirectLocation)
+        _scheme, host, port, uri, query = self._parse_url(redirectLocation)
 
-        # Add any params onto the URI since _parse_url doesn't include them.
-        if redirectLocation.find('?') > -1:
-            uri += redirectLocation[redirectLocation.index('?'):]
+        # Add back the query string
+        if query:
+            uri += '?' + query
 
         # Now create a new connection.  We'll use SSL if configured to do
         # so.
