@@ -25,12 +25,12 @@ The tests are ordered and executed with the order of this yaml file:
 https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml
 
 
-### Usefull tutorial infos:
+### Useful tutorial infos:
 
-[Testing-api tutorial](docs/api-call.md), [Branches that we use](docs/branches.md)
-
-[Debug](docs/Debug.md), [Pitfalls-test.md](docs/Pitfalls-test.md)
-
+* [Testing-api tutorial](docs/api-call.md)
+* [Branches that we use](docs/branches.md)
+* [Debug](docs/Debug.md)
+* [Pitfalls-test.md](docs/Pitfalls-test.md)
 
 ## Custom feature run sets
 
