@@ -1,11 +1,11 @@
 ## Testing-Api cucumber/spacewalk
 
-This documentation, will explain you some usefull api-call.
+This documentation will explain you some usefull API calls.
 
-### Running commands on a system : 
 
-At moment, we have 3 official tergets: $server, $minion, $client. ( this are sles systems).
+### Running commands on a system
 
+At moment, we have 3 official tergets: $server, $minion, $client (these are SLES systems).
 
 ```console
 $server.run("uptime")
@@ -25,30 +25,30 @@ Arguments taken by method *run*
 
 4: user : **default** root. user that execute cmd
 
-### Accessing/Navigation through the Suse-manager-Server.
 
+### Navigating through the SUSE manager Web interface
 
-* if you want to go to a specif page, just add this in your feature :
+* if you want to go to a given page, just add this to your feature:
 
 ```
    Given I am authorized
    When I follow "Salt"
 ```
 
-* Check that a specific word exist on the webpage:
+* Check that a given text exists in the Web page:
 
 ```
  Then I should see a "System Overview" text
  Then I should see a "INSERT YOUR TEXT HERE" text
 ```
 
-* Click a specific link:
+* Click on a given link:
 
 ```
  And I click on "Finish"
 ```
 
-* Type text in specif field 
+* Type text in given field 
 
 ```
  When I enter "SUSE Test Key x86_64" as "description"
