@@ -10,36 +10,37 @@
 
 # Introduction
 
-Welcome! This is the Testsuite to automatically test Suse-Manager/Spacewalk.
+This is the automated testsuite for [SUSE Manager](https://www.suse.com/products/suse-manager/) and [Spacewalk](http://spacewalk.redhat.com/).
+The testsuite is based on [Cucumber](https://cucumber.io/).
 
-# Running testsuite locally
+We recommend you to read about the [**basics concept** of Cucumber that we will be using in this testsuite: features, scenarios and steps](https://cucumber.io/docs/reference).
+
+## Running the testsuite locally
 
 You can run the Spacewalk Testsuite [with sumaform (Official way)](docs/sumaform-howto.md).
 
-# Tests order
+### Development
+
+[How-to-contribute](docs/howto.md)
+
+## Tests order
 
 Tests are grouped into *features*.
 Features are executed sequentially from the top to the bottom of this file:
 
 https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml
 
-## Custom feature run sets
+## Run just a single feature
 
 Add a file into `run_sets/$name.yml` and then execute `rake cucumber:$name`.
 
-At moment we support only one, this is the refhost (smoke tests set)
-* The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file included in the distribution.
+# License
 
-# Useful tutorial infos
+The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file included in the distribution.
+
+# Useful tutorials
 
 * [Testing API tutorial](docs/api-call.md)
 * [Branches that we use](docs/branches.md)
 * [Debug](docs/Debug.md)
 * [Pitfalls-test.md](docs/Pitfalls-test.md)
-
-# Contribution 
-
-[How-to-contribute](docs/howto.md)
-
-
-
