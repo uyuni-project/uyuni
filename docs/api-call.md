@@ -1,6 +1,6 @@
-## Testing-Api cucumber/spacewalk
+## Testing API fot cucumber/spacewalk
 
-This documentation will explain you some usefull API calls.
+This documentation will explain you some usefull API calls. For more complete description of the underlying libraries, have a look at [Capybara documentation](http://www.rubydoc.info/github/jnicklas/capybara).
 
 
 ### Running commands on a system
