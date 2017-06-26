@@ -16,14 +16,10 @@ $client.run("uptime", false, 500, "root")
 ```
 Arguments taken by method *run*
 
-1: command to execute on the target system
-
-2: true/false, by **default** is true. If the returncode of the command is !=0 then we raise an error and make failing the test. 
-   Sometimes we expect that a command fail, or is not relevant that is succedded, so we use *false* in this case
-
-3: timeout : **default** is 200 . you can increase/decrease the timeout.
-
-4: user : **default** root. user that execute cmd
+1. command to execute on the target system.
+2. true/false, by **default** is true. If the return code of the command is nonzero, then we raise an error and make the test fail. Sometimes, we expect that a command fails, or sometimes, it is not relevant whether it succedded, so we use *false* in such cases.
+3. timeout : **default** is 200. You can increase/decrease the timeout.
+4. user : **default** root. user that executes the command.
 
 
 ### Navigating through the SUSE manager Web interface
