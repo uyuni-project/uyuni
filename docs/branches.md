@@ -6,7 +6,8 @@
 
 ### Actives BRANCHES:
 
-* [Manager 30](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager30)
+* [manager30](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager30)
+* [manager31](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager31)
 
 ## Not in use, but Reference Branches :
 
