@@ -7,6 +7,7 @@
 3. Once you get the machines up and running, log in on the control-node:
 
     ssh -t root@$YOURPREFIXcontrol-node.tf.local
+
 4. Run the tests with the command ```run-testsuite ``` 
 5. The results are stored in html format ```spacewalk-testsuite-base/output.html ``` 
 
