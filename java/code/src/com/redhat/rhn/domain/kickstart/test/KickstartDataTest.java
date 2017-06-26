@@ -639,7 +639,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         assertEquals(k.getBootloaderType(), cloned.getBootloaderType());
         assertEquals(k.getInstallType(), cloned.getInstallType());
         assertEquals(k.getKernelParams(), cloned.getKernelParams());
-        assertEquals(k.isActive(), cloned.isActive());
+        assertEquals(k.getActive(), cloned.getActive());
         assertEquals(k.isOrgDefault(), cloned.isOrgDefault());
         assertEquals(k.getOrg(), cloned.getOrg());
 
