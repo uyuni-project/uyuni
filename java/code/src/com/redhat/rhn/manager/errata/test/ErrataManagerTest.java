@@ -20,6 +20,8 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -41,12 +43,13 @@ import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.frontend.xmlrpc.system.test.SystemHandlerTest;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.errata.cache.test.ErrataCacheManagerTest;
@@ -75,6 +78,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
@@ -82,8 +86,7 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 
 /**
- * ErrataManagerTest
- * @version $Rev$
+ * Tests {@link ErrataManager}.
  */
 public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
@@ -406,22 +409,14 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * TODO: need to put this test back in when we put back errata management.
-     */
-    /*public void aTestClonableErrata() {
-        Long cid = new Long(231);
-        Long orgid = new Long(1);
-        DataResult dr = ErrataManager.clonableErrata(cid, orgid, null);
-        System.out.println("Size [" + dr.size() + "]");
-    }*/
-
-    /**
-     * Test only relevant errata per system.
+     * Tests applyErrata(), note that the onlyRelevant flag is always set in
+     * this case. {@link SystemHandlerTest#testApplyIrrelevantErrata} covers the
+     * case in which the flag is false.
      *
-     * @throws Exception the exception
+     * @throws Exception if something goes wrong
      */
     @SuppressWarnings("unchecked")
-    public void testOnlyRelevantErrataPerSystem() throws Exception {
+    public void testApplyErrata() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -529,7 +524,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2ScheduledErrata.contains(errata2.getId()));
         assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
                 server2ScheduledErrata.contains(errata3.getId()));
-
     }
 
     /**
@@ -540,7 +534,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception the exception
      */
     @SuppressWarnings("unchecked")
-    public void testPackageManagerErratas() throws Exception {
+    public void testApplyErrataOnManagementStack() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -686,7 +680,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception the exception
      */
     @SuppressWarnings("unchecked")
-    public void testPackageManagerErratasZypp() throws Exception {
+    public void testApplyErrataOnManagementStackForZypp() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         TestUtils.saveAndFlush(errata1);
@@ -837,6 +831,513 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2ScheduledErrata.contains(errata2.getId()));
         assertTrue("Server 2 Scheduled Erratas contain one yum errata",
                 server2ScheduledErrata.contains(yumErrata1.getId()));
+    }
+
+    /**
+     * Tests applyErrata() with an empty system list
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testApplyErrataNoSystems() throws Exception {
+
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+
+        List<Long> errataIds = new ArrayList<Long>();
+        errataIds.add(errata1.getId());
+
+        List<Long> serverIds = new ArrayList<Long>();
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        List<Long> result =
+                ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+
+        assertEquals("No Actions have been produced", 0, result.size());
+    }
+
+    /**
+     * Tests applyErrata() with an empty errata list
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testApplyErrataNoErrata() throws Exception {
+        List<Long> errataIds = new ArrayList<Long>();
+
+        List<Long> serverIds = new ArrayList<Long>();
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        serverIds.add(server1.getId());
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        List<Long> result =
+                ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+
+        assertEquals("No Actions have been produced", 0, result.size());
+    }
+
+    /**
+     * Tests applyErrata() with an empty errata and system list
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testApplyErrataNoErrataNoSystems() throws Exception {
+        List<Long> errataIds = new ArrayList<Long>();
+        List<Long> serverIds = new ArrayList<Long>();
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        List<Long> result =
+                ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+
+        assertEquals("No Actions have been produced", 0, result.size());
+    }
+
+    /**
+     * Tests applyErrata() with one inapplicable errata
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testApplyErrataInapplicable() throws Exception {
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+
+        List<Long> errataIds = new ArrayList<Long>();
+        errataIds.add(errata1.getId());
+
+        List<Long> serverIds = new ArrayList<Long>();
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        serverIds.add(server1.getId());
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        List<Long> result =
+                ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+
+        assertEquals("No Actions have been produced", 0, result.size());
+    }
+
+    /**
+     * Tests applyErrata() with 2 identical yum systems and 2 errata applicable to both.
+     * This should result in 4 Actions being created
+     *
+     * @throws Exception if something goes wrong
+     */
+    @SuppressWarnings("unchecked")
+    public void testApplyErrataMultipleErrataYum() throws Exception {
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata2);
+
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+
+        Set<Channel> serverChannels = new HashSet<Channel>();
+        serverChannels.add(channel);
+        Server server1 = createTestServer(user, serverChannels);
+        Server server2 = createTestServer(user, serverChannels);
+
+        // both servers have two errata for two packages available
+        Package package1 = createTestPackage(user, channel, "noarch");
+        Package package2 = createTestPackage(user, channel, "noarch");
+        createTestInstalledPackage(package1, server1);
+        createTestInstalledPackage(package1, server2);
+        createTestInstalledPackage(package2, server1);
+        createTestInstalledPackage(package2, server2);
+        createLaterTestPackage(user, errata1, channel, package1);
+        createLaterTestPackage(user, errata2, channel, package2);
+
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata2.getId(), package2.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata2.getId(), package2.getId());
+        HibernateFactory.getSession().flush();
+
+        List<Long> errataIds = new ArrayList<Long>();
+        errataIds.add(errata1.getId());
+        errataIds.add(errata2.getId());
+
+        List<Long> serverIds = new ArrayList<Long>();
+        serverIds.add(server1.getId());
+        serverIds.add(server2.getId());
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+
+        // 4 Actions should be created
+
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        assertEquals("2 actions have been scheduled for server 1", 2,
+                actionsServer1.size());
+        Set<Long> server1ScheduledErrata = new HashSet<Long>();
+        for (Action a : actionsServer1) {
+            ErrataAction errataAction = errataActionFromAction(a);
+            for (Errata e : errataAction.getErrata()) {
+                server1ScheduledErrata.add(e.getId());
+            }
+        }
+
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        assertEquals("2 actions have been scheduled for server 2", 2,
+                actionsServer2.size());
+        Set<Long> server2ScheduledErrata = new HashSet<Long>();
+        for (Action a : actionsServer2) {
+            ErrataAction errataAction = errataActionFromAction(a);
+            for (Errata e : errataAction.getErrata()) {
+                server2ScheduledErrata.add(e.getId());
+            }
+        }
+
+        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
+                2, server1ScheduledErrata.size());
+        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
+                server1ScheduledErrata.contains(errata1.getId()));
+        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
+                server1ScheduledErrata.contains(errata2.getId()));
+
+        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)",
+                2, server2ScheduledErrata.size());
+        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
+                server2ScheduledErrata.contains(errata1.getId()));
+        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
+                server2ScheduledErrata.contains(errata2.getId()));
+    }
+
+    /**
+     * Tests applyErrata() with 2 identical minions and 2 errata applicable to both.
+     * This should result in only one Action being created
+     *
+     * @throws Exception if something goes wrong
+     */
+    @SuppressWarnings("unchecked")
+    public void testApplyErrataMultipleErrataMinions() throws Exception {
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata2);
+
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+
+        Set<Channel> serverChannels = new HashSet<Channel>();
+        serverChannels.add(channel);
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        server1.addChannel(channel);
+        Server server2 = MinionServerFactoryTest.createTestMinionServer(user);
+        server2.addChannel(channel);
+
+        // both servers have two errata for two packages available
+        Package package1 = createTestPackage(user, channel, "noarch");
+        Package package2 = createTestPackage(user, channel, "noarch");
+        createTestInstalledPackage(package1, server1);
+        createTestInstalledPackage(package1, server2);
+        createTestInstalledPackage(package2, server1);
+        createTestInstalledPackage(package2, server2);
+        createLaterTestPackage(user, errata1, channel, package1);
+        createLaterTestPackage(user, errata2, channel, package2);
+
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata2.getId(), package2.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata2.getId(), package2.getId());
+        HibernateFactory.getSession().flush();
+
+        List<Long> errataIds = new ArrayList<Long>();
+        errataIds.add(errata1.getId());
+        errataIds.add(errata2.getId());
+
+        List<Long> serverIds = new ArrayList<Long>();
+        serverIds.add(server1.getId());
+        serverIds.add(server2.getId());
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+
+        // only one Action should be created
+
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        assertEquals("1 action has been scheduled for server 1", 1, actionsServer1.size());
+        Set<Long> server1ScheduledErrata = new HashSet<Long>();
+        for (Action a : actionsServer1) {
+            ErrataAction errataAction = errataActionFromAction(a);
+            for (Errata e : errataAction.getErrata()) {
+                server1ScheduledErrata.add(e.getId());
+            }
+        }
+
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        assertEquals("1 action has been scheduled for server 2", 1, actionsServer2.size());
+        assertEquals(
+                "action created for server 1 is actually the same as the one for server 2",
+                actionsServer1.get(0), actionsServer2.get(0));
+        assertEquals("action actually has 2 servers", 2,
+                actionsServer1.get(0).getServerActions().size());
+        Set<Long> server2ScheduledErrata = new HashSet<Long>();
+        for (Action a : actionsServer2) {
+            ErrataAction errataAction = errataActionFromAction(a);
+            for (Errata e : errataAction.getErrata()) {
+                server2ScheduledErrata.add(e.getId());
+            }
+        }
+
+        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
+                2, server1ScheduledErrata.size());
+        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
+                server1ScheduledErrata.contains(errata1.getId()));
+        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
+                server1ScheduledErrata.contains(errata2.getId()));
+
+        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)",
+                2, server2ScheduledErrata.size());
+        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
+                server2ScheduledErrata.contains(errata1.getId()));
+        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
+                server2ScheduledErrata.contains(errata2.getId()));
+    }
+
+    /**
+     * Tests applyErrata() with 2 identical clients and 2 errata applicable to both,
+     * to an Action Chain.
+     * 2 Actions should be created.
+     *
+     * @throws Exception if something goes wrong
+     */
+    @SuppressWarnings("unchecked")
+    public void testApplyErrataMultipleErrataActionChain() throws Exception {
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata2);
+
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+
+        Set<Channel> serverChannels = new HashSet<Channel>();
+        serverChannels.add(channel);
+        Server server1 = createTestServer(user, serverChannels);
+        Server server2 = createTestServer(user, serverChannels);
+
+        // add zypper as installed package
+        Package zypperPkg = PackageTest.createTestPackage(user.getOrg());
+        PackageName name = PackageManager.lookupPackageName("zypper");
+        if (name == null) {
+            name = zypperPkg.getPackageName();
+            name.setName("zypper");
+            TestUtils.saveAndFlush(name);
+        }
+        else {
+            // Handle the case that the package name exists in the DB
+            zypperPkg.setPackageName(name);
+            TestUtils.saveAndFlush(zypperPkg);
+        }
+        createTestInstalledPackage(zypperPkg, server1);
+        createTestInstalledPackage(zypperPkg, server2);
+
+        // both servers have two errata for two packages available
+        Package package1 = createTestPackage(user, channel, "noarch");
+        Package package2 = createTestPackage(user, channel, "noarch");
+        createTestInstalledPackage(package1, server1);
+        createTestInstalledPackage(package1, server2);
+        createTestInstalledPackage(package2, server1);
+        createTestInstalledPackage(package2, server2);
+        createLaterTestPackage(user, errata1, channel, package1);
+        createLaterTestPackage(user, errata2, channel, package2);
+
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata2.getId(), package2.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata2.getId(), package2.getId());
+        HibernateFactory.getSession().flush();
+
+        List<Long> errataIds = new ArrayList<Long>();
+        errataIds.add(errata1.getId());
+        errataIds.add(errata2.getId());
+
+        List<Long> serverIds = new ArrayList<Long>();
+        serverIds.add(server1.getId());
+        serverIds.add(server2.getId());
+
+        String label = TestUtils.randomString();
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        ErrataManager.applyErrata(user, errataIds, new Date(), actionChain, serverIds);
+
+        // only one Action should be created
+
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        assertEquals("no actions have been scheduled for server 1", 0, actionsServer1.size());
+        assertTrue("server 1 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)));
+        Set<Long> server1ScheduledErrata = actionChain.getEntries().stream()
+            .filter(e -> e.getServer().equals(server1))
+            .map(e -> e.getAction())
+            .map(a -> errataActionFromAction(a))
+            .flatMap(a -> a.getErrata().stream())
+            .map(e -> e.getId())
+            .collect(Collectors.toSet());
+
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        assertEquals("no actions have been scheduled for server 2", 0, actionsServer2.size());
+        assertTrue("server 2 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)));
+        assertEquals("action chain actually has 2 entries", 2, actionChain.getEntries().size());
+        assertEquals("action chain points to 2 actions only", 2, actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count());
+        assertEquals("action chain points to 2 servers", 2, actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count());
+        Set<Long> server2ScheduledErrata = actionChain.getEntries().stream()
+            .filter(e -> e.getServer().equals(server2))
+            .map(e -> e.getAction())
+            .map(a -> errataActionFromAction(a))
+            .flatMap(a -> a.getErrata().stream())
+            .map(e -> e.getId())
+            .collect(Collectors.toSet());
+
+        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
+                2, server1ScheduledErrata.size());
+        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
+                server1ScheduledErrata.contains(errata1.getId()));
+        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
+                server1ScheduledErrata.contains(errata2.getId()));
+
+        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)",
+                2, server2ScheduledErrata.size());
+        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
+                server2ScheduledErrata.contains(errata1.getId()));
+        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
+                server2ScheduledErrata.contains(errata2.getId()));
+    }
+
+    /**
+     * Tests applyErrata() with 2 identical yum clients and 2 errata applicable to both,
+     * to an Action Chain.
+     * 4 Actions should be created.
+     *
+     * @throws Exception if something goes wrong
+     */
+    @SuppressWarnings("unchecked")
+    public void testApplyErrataMultipleErrataActionChainYum() throws Exception {
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata2);
+
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+
+        Set<Channel> serverChannels = new HashSet<Channel>();
+        serverChannels.add(channel);
+        Server server1 = createTestServer(user, serverChannels);
+        Server server2 = createTestServer(user, serverChannels);
+
+        // both servers have two errata for two packages available
+        Package package1 = createTestPackage(user, channel, "noarch");
+        Package package2 = createTestPackage(user, channel, "noarch");
+        createTestInstalledPackage(package1, server1);
+        createTestInstalledPackage(package1, server2);
+        createTestInstalledPackage(package2, server1);
+        createTestInstalledPackage(package2, server2);
+        createLaterTestPackage(user, errata1, channel, package1);
+        createLaterTestPackage(user, errata2, channel, package2);
+
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata2.getId(), package2.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata2.getId(), package2.getId());
+        HibernateFactory.getSession().flush();
+
+        List<Long> errataIds = new ArrayList<Long>();
+        errataIds.add(errata1.getId());
+        errataIds.add(errata2.getId());
+
+        List<Long> serverIds = new ArrayList<Long>();
+        serverIds.add(server1.getId());
+        serverIds.add(server2.getId());
+
+        String label = TestUtils.randomString();
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        ErrataManager.applyErrata(user, errataIds, new Date(), actionChain, serverIds);
+
+        // only one Action should be created
+
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        assertEquals("no actions have been scheduled for server 1", 0, actionsServer1.size());
+        assertTrue("server 1 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)));
+        Set<Long> server1ScheduledErrata = actionChain.getEntries().stream()
+            .filter(e -> e.getServer().equals(server1))
+            .map(e -> e.getAction())
+            .map(a -> errataActionFromAction(a))
+            .flatMap(a -> a.getErrata().stream())
+            .map(e -> e.getId())
+            .collect(Collectors.toSet());
+
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        assertEquals("no actions have been scheduled for server 2", 0, actionsServer2.size());
+        assertTrue("server 2 has been added to the chain", actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)));
+        assertEquals("action chain actually has 4 entries", 4, actionChain.getEntries().size());
+        assertEquals("action chain points to 4 actions", 4, actionChain.getEntries().stream().map(e -> e.getActionId()).distinct().count());
+        assertEquals("action chain points to 2 servers", 2, actionChain.getEntries().stream().map(e -> e.getServerId()).distinct().count());
+        Set<Long> server2ScheduledErrata = actionChain.getEntries().stream()
+            .filter(e -> e.getServer().equals(server2))
+            .map(e -> e.getAction())
+            .map(a -> errataActionFromAction(a))
+            .flatMap(a -> a.getErrata().stream())
+            .map(e -> e.getId())
+            .collect(Collectors.toSet());
+
+        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
+                2, server1ScheduledErrata.size());
+        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
+                server1ScheduledErrata.contains(errata1.getId()));
+        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
+                server1ScheduledErrata.contains(errata2.getId()));
+
+        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)",
+                2, server2ScheduledErrata.size());
+        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
+                server2ScheduledErrata.contains(errata1.getId()));
+        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
+                server2ScheduledErrata.contains(errata2.getId()));
     }
 
     /**

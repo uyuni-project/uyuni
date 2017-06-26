@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.systemgroup;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -41,7 +43,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 
 /**
  * ServerGroupHandler
@@ -500,7 +501,7 @@ public class ServerGroupHandler extends BaseHandler {
      * at a specified time.
      * @param loggedInUser The current user
      * @param systemGroupName the system group
-     * @param errataIds List of errata IDs to apply (as Integers)
+     * @param errataIdsIn List of errata IDs to apply (as Integers)
      * @param earliestOccurrence Earliest occurrence of the errata update
      * @return list of action ids, exception thrown otherwise
      * @since 13.0
@@ -514,9 +515,12 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
     public List<Long> scheduleApplyErrataToActive(User loggedInUser, String systemGroupName,
-                                List<Integer> errataIds, Date earliestOccurrence) {
+                                List<Integer> errataIdsIn, Date earliestOccurrence) {
         try {
             List<Long> systemIds = activeSystemsInGroup(loggedInUser, systemGroupName);
+            List<Long> errataIds = errataIdsIn.stream()
+                .map(Integer::longValue)
+                .collect(toList());
             return ErrataManager.applyErrataHelper(loggedInUser, systemIds, errataIds,
                     earliestOccurrence);
         }

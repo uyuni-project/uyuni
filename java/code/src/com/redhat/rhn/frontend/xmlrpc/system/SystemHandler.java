@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -2873,8 +2875,8 @@ public class SystemHandler extends BaseHandler {
     /**
      * Schedules an action to apply errata updates to multiple systems at a specified time.
      * @param loggedInUser The current user
-     * @param serverIds List of server IDs to apply the errata to (as Integers)
-     * @param errataIds List of errata IDs to apply (as Integers)
+     * @param serverIdsIn List of server IDs to apply the errata to (as Integers)
+     * @param errataIdsIn List of errata IDs to apply (as Integers)
      * @param earliestOccurrence Earliest occurrence of the errata update
      * @return list of action ids, exception thrown otherwise
      * @since 13.0
@@ -2887,18 +2889,20 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
      * @xmlrpc.returntype #array_single("int", "actionId")
      */
-    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIds,
-            List<Integer> errataIds, Date earliestOccurrence) {
+    public List<Long> scheduleApplyErrata(User loggedInUser, List<Integer> serverIdsIn,
+            List<Integer> errataIdsIn, Date earliestOccurrence) {
 
         // we need long values to pass to ErrataManager.applyErrataHelper
-        List<Long> longServerIds = new ArrayList<Long>();
-        for (Iterator<Integer> it = serverIds.iterator(); it.hasNext();) {
-            longServerIds.add(new Long(it.next()));
-        }
+        List<Long> serverIds = serverIdsIn.stream()
+            .map(Integer::longValue)
+            .collect(toList());
+        List<Long> errataIds = errataIdsIn.stream()
+            .map(Integer::longValue)
+            .collect(toList());
 
         try {
             return ErrataManager.applyErrataHelper(loggedInUser,
-                    longServerIds, errataIds, earliestOccurrence);
+                    serverIds, errataIds, earliestOccurrence);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
