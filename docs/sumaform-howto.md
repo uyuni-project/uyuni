@@ -4,7 +4,7 @@
 2. Rename `main.tf.libvirt-testsuite.example` to `main.tf` in order to use [already provisioned machines](https://github.com/moio/sumaform/blob/master/main.tf.libvirt-testsuite.example) for running the testsuite.
 3. Once you get the machines up and running, log in the control node:
 ```
-$ ssh -t root@${YOURPREFIX}control-node.tf.local
+$ ssh -t root@controller.tf.local
 ```
 4. Run the tests with the command:
 ```
@@ -12,7 +12,7 @@ $ ssh -t root@${YOURPREFIX}control-node.tf.local
 ```
 5. Copy testsuite output to your local machine:
 ```
-$ scp root@control-node.tf.local:spacewalk-testsuite-base/output.html .
+$ scp root@controller.tf.local:spacewalk-testsuite-base/output.html .
 ```
 6. Open it with your preferred browser:
 ```
@@ -23,7 +23,7 @@ $ firefox output.html
 
 Substitute the `spacewalk-testsuite-base` repo with your custom repo:
 ```
-$ ssh -t root@control-node.tf.local
+$ ssh -t root@controller.tf.local
 # cd /root
 # rm -rF spacewalk-testsuite-base
 # git clone $YOUR_SPACEWALK_TESTSUITE_CUSTOM_REPO
