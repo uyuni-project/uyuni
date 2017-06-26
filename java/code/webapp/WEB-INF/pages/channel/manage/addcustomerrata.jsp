@@ -4,77 +4,84 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-
 <html>
-<head>
-</head>
+<head></head>
 <body>
-<%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
-<BR>
 
-<rl:listset name="errataSet">
-<rhn:csrf />
-<rhn:hidden name="cid" value="${cid}" />
+    <%@ include file="/WEB-INF/pages/common/fragments/channel/manage/manage_channel_header.jspf" %>
 
+    <rl:listset name="errataSet">
+        <rhn:csrf />
+        <rhn:hidden name="cid" value="${cid}" />
+        <rhn:submitted/>
 
+        <p><bean:message key="channel.manage.errata.custommsg"/></p>
 
-<table class="details" width="80%">
-        <tr><bean:message key="channel.manage.errata.custommsg"/><br /><br /></tr>
-
-         <tr>
-                <th>Package Association:</th>
-                <td>
-                           <input type="checkbox" name="assoc_checked"   <c:if test="${assoc_checked}">checked </c:if>  >
-                           <bean:message key="channel.manage.errata.packageassocmsg" />
-                 </td>
-   </tr>
-
-                <c:if test="${selected_channel != null}">
-                        <rhn:hidden name="selected_channel_old"  value="${selected_channel}" />
-                </c:if>
-                <c:if test="${channel_list != null}">
-
-                          <tr> <th width="10%">Channel:</th><td width="40%">
-                          <select name="selected_channel">
-                                    <option value="" >All Custom Channels</option>
-                                    <optgroup>
-                                        <c:forEach var="option" items="${channel_list}">
-                                                <c:choose>
-                                                        <c:when test="${option.baseChannel}">
-                                                            </optgroup>
-                                                                <option value="${option.id}"  <c:if test="${option.selected eq true}">selected = "selected"</c:if>    >${option.name}   </option>
-                                                                <optgroup>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                                <option value="${option.id}"   <c:if test="${option.selected eq true}">selected = "selected"</c:if> >${option.name}</option>
-                                                        </c:otherwise>
-                                                </c:choose>
-                                        </c:forEach>
-                                        </optgroup>
-                          </select>
-
-                          </td>
-                                          <td>
-                                                          <input class="btn btn-default" type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.viewErrata'/>">
-                                          </td>
-                             </tr>
-                  </c:if>
-
-
-  </table>
-  <br /><br />
-
-   <c:choose>
-                <c:when test="${pageList != null}">
-                    <%@ include file="/WEB-INF/pages/common/fragments/errata/selectableerratalist.jspf" %>
-  </c:when>
-</c:choose>
-                <div class="text-right">
-                    <hr />
-                    <input class="btn btn-default" type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.submit'/>" ${empty pageList ? 'disabled' : ''} >
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-md-2 col-lg-1 control-label">
+                    <strong>Package Association:</strong>
+                </label>
+                <div class="col-md-8 col-lg-5">
+                    <input type="checkbox" name="assoc_checked" ${assoc_checked ? 'checked' : ''}/>
+                    <bean:message key="channel.manage.errata.packageassocmsg" />
                 </div>
-     <rhn:submitted/>
-</rl:listset>
+            </div>
+
+            <c:if test="${selected_channel != null}">
+                <rhn:hidden name="selected_channel_old"  value="${selected_channel}" />
+            </c:if>
+
+            <c:if test="${channel_list != null}">
+                <div class="form-group">
+                    <label class="col-md-2 col-lg-1 control-label">Channel:</label>
+                    <div class="col-md-8 col-lg-5">
+                        <select name="selected_channel">
+                            <option value="">All Custom Channels</option>
+                            <c:set var="ingroup" value="false"/>
+                            <c:forEach var="option" items="${channel_list}">
+                                <c:choose>
+                                    <c:when test="${option.baseChannel}">
+                                        <c:if test="${ingroup}">
+                                            <c:set var="ingroup" value="false"/>
+                                            </optgroup>
+                                        </c:if>
+                                        <option value="${option.id}" <c:if test="${option.selected eq true}">selected = "selected"</c:if>>${option.name}   </option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:if test="${!ingroup}">
+                                            <c:set var="ingroup" value="true"/>
+                                            <optgroup>
+                                        </c:if>
+                                        <option value="${option.id}" <c:if test="${option.selected eq true}">selected = "selected"</c:if>>${option.name}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                            <c:if test="${ingroup}">
+                                </optgroup>
+                            </c:if>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-offset-2 col-md-8 col-lg-offset-1 col-lg-5">
+                      <input class="btn btn-default" type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.viewErrata'/>">
+                  </div>
+                </div>
+            </c:if>
+        </div>
+
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <input class="btn btn-success" type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.submit'/>" ${empty pageList ? 'disabled' : ''}/>
+            </div>
+        </div>
+
+        <c:if test="${pageList != null}">
+            <%@ include file="/WEB-INF/pages/common/fragments/errata/selectableerratalist.jspf" %>
+        </c:if>
+    </rl:listset>
 
 </body>
 </html>

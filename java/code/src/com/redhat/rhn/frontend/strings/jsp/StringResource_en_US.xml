@@ -3475,7 +3475,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.package">
-        <source>Package </source>
+        <source>Package</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -7940,7 +7940,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>This repository is not linked to any channel.</source>
       </trans-unit>
       <trans-unit id="repos.jsp.createRepo">
-        <source>&lt;a href="{0}"&gt;Create a new repository&lt;/a&gt;</source>
+        <source>Create Repository</source>
       </trans-unit>
       <trans-unit id="os">
         <source>Operating System</source>
@@ -19233,7 +19233,7 @@ given channel.</source>
         </source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addbutton">
-        <source>Add Package(s)</source>
+        <source>Add Packages</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addconfirmbutton">
         <source>Confirm Addition</source>
@@ -19353,7 +19353,7 @@ given channel.</source>
         <source>Clone Errata</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.list">
-        <source>Channel Packages.</source>
+        <source>Channel Packages</source>
       </trans-unit>
       <trans-unit id="system.jsp.customkey.title">
         <source>Custom System Info Keys</source>
@@ -19449,7 +19449,7 @@ given channel.</source>
         <source>Confirm Deletion</source>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.delete">
-        <source>Delete Package(s)</source>
+        <source>Delete Packages</source>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.channels">
         <source>Channels</source>
@@ -20739,7 +20739,7 @@ given channel.</source>
         <source>A system profile is inactive if its system has not checked in for:</source>
       </trans-unit>
       <trans-unit id="schedule.header">
-        <source>Select a schedule:</source>
+        <source>Select a Schedule</source>
       </trans-unit>
       <trans-unit id="schedule.disabled">
         <source>Disable Schedule</source>
