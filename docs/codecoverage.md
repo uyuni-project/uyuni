@@ -12,12 +12,9 @@ firefox coverage/input.html
 ##### Analyze:
 
 ***IMPORTANT***: 
-if you have 30 failures, the coverage will decrease because the steps were not executed.
+if you have a lot of failures, the coverage will decrease because the steps were not executed. Ideally, you need to have the testsuite results green to evaluate correctly the code coverage and find dead code.
 
 Code coverage result.hmtl is a great tool, **but** needs a human interpretation of the results.
 
-Ideally, you need to have the testsuite results green for evaulte 100% correct the code coverage and find dead code.
-
-
-##### Submit always a Pr for eliminate dead-code or a better fix that you had inspired by codecoverage.
+##### Always submit a PR for eliminating dead code or a better fix that you had inspired by code coverage.
 
