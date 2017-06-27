@@ -32,7 +32,7 @@ https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.
 
 ## Run just a single feature
 
-Add a file into `run_sets/$name.yml` and then execute `rake cucumber:$name`.
+Add the feature file into `run_sets/$name.yml` and then execute `rake cucumber:$name`.
 
 # License
 
