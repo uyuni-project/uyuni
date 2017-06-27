@@ -28,6 +28,6 @@ Steps files should be like:
 #### 2) Reuse steps, don't create new if you don't need them.
         
 
-#### 3) Check the code coverage results, after you runned the testsuite with your code.
+#### 3) Check the code coverage results, after you have run the testsuite with your code.
 
-[Howto check code coverage](docs/codecoverage.md)
+[How to check code coverage](docs/codecoverage.md) <- dead link
