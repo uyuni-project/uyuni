@@ -12,7 +12,7 @@ $ ssh -t root@controller.tf.local
 ```
 5. Copy testsuite output to your local machine:
 ```
-$ scp root@controller.tf.local:spacewalk-testsuite-base/output.html .
+$ scp root@controller.tf.local:/root/spacewalk-testsuite-base/output.html .
 ```
 6. Open it with your preferred browser:
 ```
