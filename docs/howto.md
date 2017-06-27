@@ -30,4 +30,4 @@ Steps files should be like:
 
 #### 3) Check the code coverage results, after you have run the testsuite with your code.
 
-[How to check code coverage](docs/codecoverage.md) <- dead link
+[How to check code coverage](codecoverage.md)
