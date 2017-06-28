@@ -30,7 +30,7 @@ You need to change the spacewalk-testsuite-base/features/support/env.rb file to 
        end
 
 
-This will stop on errors and let you debug.  You can connect to the debugger in your browser via http://$your_test_client:9664  I'll show you a list of urls being tested.  Click on the link and you'll be shown a webkit debugger.  It's like the chrome developer or firefox tools.  You can't see the page rendered, but you can run jquery commands or xpath queries in the console.  In your console where you are running the test suite, it'll sit here until you're ready to continue.  Just hit enter in the console and it'll go until the next failure.  
+This will stop on errors and let you debug.  You can connect to the debugger in your browser via http://$your_control_node:9664  I'll show you a list of urls being tested.  Click on the link and you'll be shown a webkit debugger.  It's like the chrome developer or firefox tools.  You can't see the page rendered, but you can run jquery commands or xpath queries in the console.  In your console where you are running the test suite, it'll sit here until you're ready to continue.  Just hit enter in the console and it'll go until the next failure.  
 
 If you want to manually insert a debug into the feature (or steps), you can use a special named "debug".  You can use it by putting "And debug" above the feature you want to stop on.
 
