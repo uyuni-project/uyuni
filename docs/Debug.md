@@ -36,9 +36,7 @@ This will stop on errors and let you debug.  You can connect to the debugger in 
 If you want to manually insert a debug into the feature, you can use a special step named "debug".  You can use it by putting "And debug" above the feature you want to stop on.  All it has to do is call ```page.driver.debug```.
 
 Click on the link and you'll be shown a webkit debugger.  It's like the chrome developer or firefox tools.  You can't see the page rendered, but you can run jquery commands or xpath queries in the console.  In your console where you are running the test suite, it'll sit here until you're ready to continue.  Just hit enter in the console and it'll go until the next failure.  
-
-If you want to manually insert a debug into the feature(or steps).  I added a debug step, called "debug".  You can use it by putting "And debug" above the feature you want to stop on.  
-
+    
 
 Some examples:
 
