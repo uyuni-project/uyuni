@@ -9,6 +9,8 @@ const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Formats = Functions.Formats;
 
+const messagesCounterLimit = 3;
+
 function msg(severityIn, textIn) {
     return {severity: severityIn, text: textIn};
 }
@@ -127,6 +129,12 @@ var Highstate = React.createClass({
             this.state.messages.push(msg('info', <span>{t("Applying the highstate has been ")}
                     <a href={"/rhn/schedule/ActionDetails.do?aid=" + data}>{t("scheduled")}</a>
                     {t(".")}</span>))
+
+            // Do not spam UI showing old messages
+            while (this.state.messages.length > messagesCounterLimit) {
+              this.state.messages.shift();
+            }
+
             this.setState({
                 messages: this.state.messages
             });
