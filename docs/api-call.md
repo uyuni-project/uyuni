@@ -5,7 +5,7 @@ This documentation will explain you some usefull API calls. For more complete de
 
 ### Running commands on a system
 
-At moment, we have 3 official tergets: $server, $minion, $client (these are SLES systems).
+Twopence "targets" look like: $server, $minion, or $client. For a complete list of the current targets we use look in Ruby code.
 
 ```console
 $server.run("uptime")
