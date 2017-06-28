@@ -121,7 +121,7 @@ Feature: Explore the main landing page
   Scenario: Check sidebar link destination for Systems => Duplicate Systems
     When I click Systems, under Systems node
     And I follow "Duplicate Systems" in the left menu
-    Then I should see a "Duplicate System Profiles" text
+    Then I should see a "Duplicate System" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/DuplicateIPList.do"
     And I should see a "Duplicate IP Address" link
@@ -313,8 +313,8 @@ Feature: Explore the main landing page
   Scenario: test Upload Kickstart/Autoyast File page
     When I am on the Create Autoinstallation Profile page
     And I follow "Profiles" in the left menu
-    Then I should see a "Distributions" text 
-    
+    Then I should see a "Distributions" text
+
   Scenario: upload a profile with the UI (requires a base channel)
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
@@ -385,7 +385,7 @@ Feature: Explore the main landing page
     And I enter "<test_element>a text string</test_element>" in the editor
     And I click on "Create Snippet"
     Then I should see a "created_test_snippet created successfully." text
-  
+
   Scenario: delete a snippet (requires "create a snippet" test was run)
     When I follow "Autoinstallation" in the left menu
     And I follow "Autoinstallation Snippets" in the left menu
