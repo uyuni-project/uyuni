@@ -4,8 +4,9 @@ This documentation will explain you some usefull API calls. For more complete de
 
 
 ### Running commands on a system
-
-Twopence "targets" look like: $server, $minion, or $client. For a complete list of the current targets we use look in Ruby code.
+We use "targets". This look like: $server, $minion, or $client(trad-client), etc.
+For a complete list of the current targets, look at the env_variable we pass to rake, and look
+https://github.com/SUSE/spacewalk-testsuite-base/blob/master/features/support/twopence_init.rb#L27
 
 ```console
 $server.run("uptime")
