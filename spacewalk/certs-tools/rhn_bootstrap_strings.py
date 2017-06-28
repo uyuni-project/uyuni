@@ -92,7 +92,7 @@ echo "    - ensure the value of HOSTNAME is correct."
 echo "    - ensure the value of ORG_CA_CERT is correct."
 echo
 echo "Enable this script: comment (with #'s) this block (or, at least just"
-echo "the exit below)"
+echo "the exit below, if present)"
 echo
 {exit_call}
 
