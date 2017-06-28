@@ -121,7 +121,7 @@ Feature: Explore the main landing page
   Scenario: Check sidebar link destination for Systems => Duplicate Systems
     When I click Systems, under Systems node
     And I follow "Duplicate Systems" in the left menu
-    Then I should see a "Duplicate System" text
+    Then I should see a "Duplicate Systems" text
     And I should see a "No systems." text
     And the current path is "/rhn/systems/DuplicateIPList.do"
     And I should see a "Duplicate IP Address" link
