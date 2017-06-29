@@ -179,8 +179,10 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |arg1|
-  within(:xpath, "//a[text()='#{arg1}']/../..") do
-    first('input[type=checkbox]').set(true)
+  within page.first('a', :text => "#{arg1}") do
+    within(:xpath, "../..") do
+      first('input[type=checkbox]').set(true)
+    end
   end
 end
 
