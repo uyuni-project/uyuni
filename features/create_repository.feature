@@ -36,7 +36,7 @@ Feature: Adding repository to a channel
     And I follow "Overview" in the left menu
     And I follow "Test-Channel-x86_64"
     And I follow "Repositories" in the content area
-    When I select the "Test-Repository-x86_64" repo
+    When I select the "Test-Repository-x86_64" repo and delete all whitespaces
     And I click on "Update Repositories"
     Then I should see a "Test-Channel-x86_64 repository information was successfully updated" text
 
@@ -65,7 +65,7 @@ Feature: Adding repository to a channel
     And I follow "Overview" in the left menu
     And I follow "Test-Channel-i586"
     And I follow "Repositories" in the content area
-    When I select the "Test-Repository-i586" repo
+    When I select the "Test-Repository-i586" repo and delete all whitespaces
     And I click on "Update Repositories"
     Then I should see a "Test-Channel-i586 repository information was successfully updated" text
 
