@@ -93,6 +93,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -104,6 +106,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -1058,4 +1061,35 @@ public class SaltUtils {
     public void setXccdfResumeXsl(String xccdfResumeXslIn) {
         this.xccdfResumeXsl = xccdfResumeXslIn;
     }
+
+
+    /**
+     * Returns the same provided UUID string but representing the first
+     * fields as little-endian according to RFC 4122.
+     *
+     * @param uuidIn the uuid string to transform without dashes "-"
+     * @return the same UUID with first fields represented as little-endian
+     */
+    public static String uuidToLittleEndian(String uuidIn) {
+        UUID uuidOrig = UUID.fromString(uuidIn.replaceAll(
+                "(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
+                "$1-$2-$3-$4-$5"));
+
+        ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+        bb.putLong(uuidOrig.getMostSignificantBits());
+        bb.putLong(uuidOrig.getLeastSignificantBits());
+        ByteBuffer source = ByteBuffer.wrap(bb.array());
+        ByteBuffer target = ByteBuffer.allocate(16)
+            .order(ByteOrder.LITTLE_ENDIAN)
+            .putInt(source.getInt())
+            .putShort(source.getShort())
+            .putShort(source.getShort())
+            .order(ByteOrder.BIG_ENDIAN)
+            .putLong(source.getLong());
+        target.rewind();
+
+        UUID uuidSwap = new UUID(target.getLong(), target.getLong());
+        return uuidSwap.toString().replaceAll("-", "");
+    }
+
 }
