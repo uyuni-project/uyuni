@@ -183,7 +183,8 @@ Then(/^I select the "([^"]*)" repo $/) do |arg1|
     first('input[type=checkbox]').set(true)
   end
 end
-
+# HACK: this step while cancel all whitespaces and also the steps
+# inside the repo name
 Then(/^I select the "([^"]*)" repo and delete all whitespaces$/) do |arg1|
   within(:xpath, "//a[normalize-space()='#{arg1}']/../..") do
     first('input[type=checkbox]').set(true)
