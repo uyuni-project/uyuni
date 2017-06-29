@@ -113,10 +113,12 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
     public String stringifyNestedExceptionMessages(Exception e) {
         StringBuilder messages = new StringBuilder();
         Throwable currentException = e;
+        // Limit the extraction depth of the exception message to prevent infinite loop
+        int countLimit = 5;
         do {
             messages.append(currentException.getMessage() + "; ");
             currentException = currentException.getCause();
-        } while(currentException != null);
+        } while(currentException != null && --countLimit > 0);
         return messages.toString();
     }
 
