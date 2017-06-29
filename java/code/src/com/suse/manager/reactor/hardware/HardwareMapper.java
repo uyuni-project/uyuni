@@ -34,6 +34,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltGrains;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Network;
@@ -602,12 +603,18 @@ public class HardwareMapper {
         }
 
         if (type != null) {
+            if (grains.getValueAsString("os_family").contentEquals("Suse") &&
+                    grains.getValueAsString("osrelease").startsWith("11")) {
+                virtUuid = fixAndReturnSle11Uuid(virtUuid);
+            }
+
             List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
                     .lookupVirtualInstanceByUuid(virtUuid);
 
             if (virtualInstances.isEmpty()) {
-                VirtualInstanceManager.addGuestVirtualInstance(virtUuid, server.getName(),
-                        type, VirtualInstanceFactory.getInstance().getRunningState(),
+                VirtualInstanceManager.addGuestVirtualInstance(
+                        virtUuid, server.getName(), type,
+                        VirtualInstanceFactory.getInstance().getRunningState(),
                         null, server);
             }
             else {
@@ -623,6 +630,29 @@ public class HardwareMapper {
                 });
             }
         }
+    }
+
+    /**
+     * Determine the correct virtual guest UUID on SLE11 systems:
+     * - Returns "swapped" (little-endianized) UUID and clean up a
+     * dangling virtual instance with incorrect UUID if such exists.
+     *
+     * @param virtUuid - the virtual UUID as reported from grains
+     * @return the correct UUID of a virtual guest
+     */
+    private String fixAndReturnSle11Uuid(String virtUuid) {
+        // Fix the wrong "uuid" reported by the minion
+        // and remove buggy VirtualInstances with such wrong "uuid" from the DB.
+        String virtUuidSwapped = SaltUtils.uuidToLittleEndian(virtUuid);
+        LOG.warn("Virtual machine doesn't report correct virtual UUID: " + virtUuid +
+                ". Coercing to : " + virtUuidSwapped + ".");
+        List<VirtualInstance> wrongVirtualInstances = VirtualInstanceFactory
+                .getInstance().lookupVirtualInstanceByUuid(virtUuid);
+        wrongVirtualInstances.forEach(virtInstance ->
+                VirtualInstanceFactory.getInstance()
+                        .deleteVirtualInstanceOnly(virtInstance)
+        );
+        return virtUuidSwapped;
     }
 
     /**
