@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Thu Jun 29 17:40:52 CEST 2017 - michele.bologna@suse.com
+
+- version 2.5.59.16-1
+- make system search comparator consistent (bsc#1040631)
+- Duplicate Systems: correct language not to mention 'profiles' (bsc#1035728)
+- Fix list filters to work with URL special characters (bsc#1042846)
+- Update Ivy's version of the taglibs (bsc#1044804)
+- Fix NPE when there's not udev results (bsc#1042552)
+- Fix: hide non-org event details (bsc#1039579)
+- Fallback to first netw interf if no primary ips (bsc#1038677)
+- remove repositories which are not assigned to a channel and not accessible
+  anymore (bsc#1043131)
+- spacecmd report_outofdatesystems: avoid one XMLRPC call per system
+  (bsc#1015882)
+- Correctly set action status to failed when an unexpected exception occurs
+  (bsc#1013606)
+- Bugfix: Traditional SSH Push to Minion migration (bsc#1040394)
+- fix parsing oscap xml result for minions, not every Rule has an XCCDF ID Tag
+  (bsc#1041812)
+- Prevents ISE if base channels data is not up-to-date on SSM. (bsc#1040420)
+- schedule a package list update after a Service Pack Migration (bsc#1017703)
+- show permission denied instead of internal server err (bsc#1036335)
+- use fallback now time as is without user preferences (bsc#1034465)
+
+-------------------------------------------------------------------
 Tue May 23 12:01:07 CEST 2017 - mc@suse.de
 
 - version 2.5.59.15-1
