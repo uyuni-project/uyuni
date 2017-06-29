@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Jun 29 17:33:10 CEST 2017 - michele.bologna@suse.com
+
+- version 0.1.22-1
+- Fix certs state for Tumbleweed (bsc#970630)
+- Fix certs state for Leap 42.2 (bsc#970630)
+- Make sumautil.get_kernel_live_version accept any kgr output 'active: NUM'
+  where NUM > 0 (bsc#1044074)
+- Avoids formula leaking on pillar data (bsc#1044236)
+- Fix yum plugin when installing patches on RHEL6 (bsc#1039294)
+- Remove suseRegisterInfo in a separate yum transaction so that it's not called
+  by yum plugin (bsc#1038732)
+- Refactoring formulas in suma_minion external pillar (bsc#1033825)
+
+-------------------------------------------------------------------
 Tue May 23 11:50:33 CEST 2017 - mc@suse.de
 
 - version 0.1.21-1
