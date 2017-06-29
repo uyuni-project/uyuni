@@ -25,6 +25,7 @@ import java.util.HashMap;
 /**
  * SessionCleanup
  * Deletes orphan uuids from rhnVirtualInstance table
+ * Deletes duplicated uuids for same system id from rhnVirtualInstances
  * @version $Rev$
  */
 public class UuidCleanup extends RhnJavaJob {
@@ -45,6 +46,19 @@ public class UuidCleanup extends RhnJavaJob {
         if (log.isDebugEnabled()) {
             log.debug("WriteMode " + TaskConstants.MODE_NAME + "::" +
                     TaskConstants.TASK_QUERY_UUID_CLEANUP + " returned");
+        }
+
+        CallableMode m2 = ModeFactory.getCallableMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_DUPLICATED_VIRTUALINSTANCE_CLEANUP);
+        if (log.isDebugEnabled()) {
+            log.debug("Calling CallableMode " + TaskConstants.MODE_NAME + "::" +
+                    TaskConstants.TASK_QUERY_DUPLICATED_VIRTUALINSTANCE_CLEANUP);
+        }
+        m2.execute(new HashMap(), new HashMap());
+        if (log.isDebugEnabled()) {
+            log.debug("CallableMode " + TaskConstants.MODE_NAME + "::" +
+                    TaskConstants.TASK_QUERY_DUPLICATED_VIRTUALINSTANCE_CLEANUP +
+                    " returned");
         }
     }
 
