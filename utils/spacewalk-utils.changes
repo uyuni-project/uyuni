@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jun 29 17:37:50 CEST 2017 - michele.bologna@suse.com
+
+- version 2.5.6.6-1
+- don't show password on input in spacewalk-manage-channel-lifecycle
+  (bsc#1043795)
+
+-------------------------------------------------------------------
 Fri Dec 16 13:55:48 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.6.5-1
