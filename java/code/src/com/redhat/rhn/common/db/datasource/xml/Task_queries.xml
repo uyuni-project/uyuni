@@ -762,4 +762,17 @@ select sa.action_id, sa.server_id
   </query>
 </write-mode>
 
+<callable-mode name="taskomatic_duplicated_virtualinstance_cleanup">
+  <query>
+    DELETE FROM rhnVirtualInstance WHERE id IN (
+        SELECT id
+        FROM (
+            select v.*, row_number() over (partition by virtual_system_id order by created asc) as cnt
+            from rhnvirtualinstance v
+        ) h
+        WHERE h.cnt > 1 and h.virtual_system_id is not null
+    )
+  </query>
+</callable-mode>
+
 </datasource_modes>
