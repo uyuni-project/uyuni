@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Jun 29 17:38:59 CEST 2017 - michele.bologna@suse.com
+
+- version 2.5.0.6-1
+- Conflict with postgresql version greater than 9.4 (bsc#1045152)
+
+-------------------------------------------------------------------
 Mon Jul 18 13:47:15 CEST 2016 - jrenner@suse.com
 
 - version 2.5.0.5-1
