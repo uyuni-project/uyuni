@@ -32,7 +32,7 @@ import java.util.Optional;
 public class MinionActionExecutor extends RhnJavaJob {
 
     private static final int ACTION_DATABASE_GRACE_TIME = 10000;
-    private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 10; // minutes
+    private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
 
     /**
      * @param context the job execution context
@@ -84,12 +84,12 @@ public class MinionActionExecutor extends RhnJavaJob {
         long timeDelta = Duration
                 .between(ZonedDateTime.ofInstant(action.getEarliestAction().toInstant(),
                         ZoneId.systemDefault()), ZonedDateTime.now())
-                .toMinutes();
+                .toHours();
         if (timeDelta >= MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS) {
             log.warn("Scheduled action " + action.getId() +
                     " was scheduled to be executed more than " +
                     MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS +
-                    " minute(s) ago. Skipping it.");
+                    " hours ago. Skipping it.");
             return;
         }
 
