@@ -13458,5 +13458,145 @@
     "installer_updates": false,
     "name": "SLES12-SP1-LTSS-Debuginfo-Updates",
     "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP1-LTSS/s390x/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Live-Patching12-SP3-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2463,
+    "installer_updates": false,
+    "name": "SLE-Live-Patching12-SP3-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Live-Patching/12-SP3/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Live-Patching12-SP3-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2464,
+    "installer_updates": false,
+    "name": "SLE-Live-Patching12-SP3-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Live-Patching/12-SP3/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Live-Patching12-SP3-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2465,
+    "installer_updates": false,
+    "name": "SLE-Live-Patching12-SP3-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Live-Patching/12-SP3/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Live-Patching12-SP3-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2466,
+    "installer_updates": false,
+    "name": "SLE-Live-Patching12-SP3-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Live-Patching/12-SP3/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-OpenStack-Cloud-Continuous-Delivery-6-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2471,
+    "installer_updates": false,
+    "name": "SUSE-OpenStack-Cloud-Continuous-Delivery-6-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/6-Continuous/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-OpenStack-Cloud-Continuous-Delivery-6-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2472,
+    "installer_updates": false,
+    "name": "SUSE-OpenStack-Cloud-Continuous-Delivery-6-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/OpenStack-Cloud/6-Continuous/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-OpenStack-Cloud-Continuous-Delivery-6-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2473,
+    "installer_updates": false,
+    "name": "SUSE-OpenStack-Cloud-Continuous-Delivery-6-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/OpenStack-Cloud/6-Continuous/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-OpenStack-Cloud-Continuous-Delivery-6-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2474,
+    "installer_updates": false,
+    "name": "SUSE-OpenStack-Cloud-Continuous-Delivery-6-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/OpenStack-Cloud/6-Continuous/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-OpenStack-Cloud-Continuous-Delivery-6-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2475,
+    "installer_updates": false,
+    "name": "SUSE-OpenStack-Cloud-Continuous-Delivery-6-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/OpenStack-Cloud/6-Continuous/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Web-Scripting12-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2476,
+    "installer_updates": false,
+    "name": "SLE-Module-Web-Scripting12-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/aarch64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Web-Scripting12-Debuginfo-Updates for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2477,
+    "installer_updates": false,
+    "name": "SLE-Module-Web-Scripting12-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/aarch64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Web-Scripting12-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": true,
+    "id": 2478,
+    "installer_updates": false,
+    "name": "SLE-Module-Web-Scripting12-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/aarch64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Web-Scripting12-Debuginfo-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2479,
+    "installer_updates": false,
+    "name": "SLE-Module-Web-Scripting12-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/aarch64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Web-Scripting12-Source-Pool for sle-12-aarch64",
+    "distro_target": "sle-12-aarch64",
+    "enabled": false,
+    "id": 2480,
+    "installer_updates": false,
+    "name": "SLE-Module-Web-Scripting12-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/aarch64/product_source/?my-fake-token"
   }
 ]
