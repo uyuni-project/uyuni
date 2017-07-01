@@ -37,7 +37,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.116
+Version: 2.7.119
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -893,6 +893,25 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Fri Jun 30 2017 Eric Herget <eherget@redhat.com> 2.7.119-1
+- PR 500 - correcting email address in change log.  Not able/willing to change
+  email addresses in individual commits, however.
+
+* Tue Jun 27 2017 Valérian Beaudoin <valouille@users.noreply.github.com>
+- PR 502 - fix model objects do not support item assignment errors and tuple
+  indices must be integers, not str errors
+- PR 502 - Correcting unused variable 'index' following the use of enumerates
+- PR 502 - Correcting C0200 and refactoring
+- PR 502 - Indentation & using IOError instead of UpdateNoticeException
+- PR 502 - Moving "import re" & adding "import fnmatch"
+- PR 502 - Adding filters feature to deb_src.py
+
+* Tue Jun 27 2017 Marc Dahlhaus <ossdev@dahlhaus.it>
+- PR 500 - Another try to fix the test suite
+- PR 500 - Fix version string for test-suite
+- PR 500 - Fix typo
+- PR 500 - Add epoch information for deb packages
+
 * Fri Jun 23 2017 Gennadii Altukhov <grinrag@gmail.com> 2.7.116-1
 - 1449172 - make documentation in man page and --help consistent
 
