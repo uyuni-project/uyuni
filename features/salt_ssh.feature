@@ -48,9 +48,9 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I should see a "Remote Commands" text
     Then I enter command "rpm -q salt-minion"
     And I click on preview
-    And I wait for "3" seconds
+    And I wait for "10" seconds
     And I click on run
-    And I wait for "3" seconds
+    And I wait for "10" seconds
     And I expand the results for "ssh-minion"
     Then I should see a "package salt-minion is not installed" text
 
@@ -124,9 +124,9 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I should see a "Remote Commands" text
     Then I enter command "rpm -q salt-minion"
     And I click on preview
-    And I wait for "3" seconds
+    And I wait for "10" seconds
     And I click on run
-    And I wait for "3" seconds
+    And I wait for "10" seconds
     And I expand the results for "ssh-minion"
     Then I should see a "package salt-minion is not installed" text
 
