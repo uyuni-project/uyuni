@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.89
+Version: 2.7.93
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -994,6 +994,25 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Fri Jun 30 2017 Eric Herget <eherget@redhat.com> 2.7.93-1
+- PR 500 - correcting email address in change log.  Not able/willing to change
+  email addresses in individual commits, however.
+- Duplicate Systems: correct language not to mention 'profiles' (bsc1035728)
+
+* Tue Jun 27 2017 Marc Dahlhaus <ossdev@dahlhaus.it>
+- Fix logging of errors to be at error level, not debug.  Also remove
+  milliseconds from metadata stale check to match non-debian stale check
+- PR 500 - fix copy and paste mistake
+- PR 500 - use the already imported and used equalsIgnoreCase
+- PR 500 - Add epoch information for deb packages
+
+* Tue Jun 27 2017 Jiri Dostal <jdostal@redhat.com> 2.7.91-1
+- 1460208 - organization name allows XSS
+- Revert "1460208 - organization name allows XSS"
+
+* Tue Jun 27 2017 Gennadii Altukhov <grinrag@gmail.com> 2.7.90-1
+- 1460960 - show 'Proxy' tab only if a system is proxy
+
 * Fri Jun 23 2017 Jiri Dostal <jdostal@redhat.com> 2.7.89-1
 - 1460208 - organization name allows XSS
 

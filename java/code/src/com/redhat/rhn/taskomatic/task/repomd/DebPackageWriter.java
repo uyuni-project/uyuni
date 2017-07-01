@@ -59,7 +59,7 @@ public class DebPackageWriter {
             f.createNewFile();
         }
         catch (Exception e) {
-            log.debug("Create file Packages failed " + e.toString());
+            log.error("Create file Packages failed " + e.toString());
         }
     }
 
@@ -69,18 +69,24 @@ public class DebPackageWriter {
      * @param pkgDto package object
      */
     public void addPackage(PackageDto pkgDto) {
+        String packageName = null;
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(
                     filenamePackages, true));
 
+            packageName = pkgDto.getName();
             out.write("Package: ");
-            out.write(pkgDto.getName());
+            out.write(packageName);
             out.newLine();
 
             out.write("Version: ");
+            String epoch = pkgDto.getEpoch();
+            if (epoch != null && !epoch.equalsIgnoreCase("")) {
+                out.write(epoch + ":");
+            }
             out.write(pkgDto.getVersion());
             String release = pkgDto.getRelease();
-            if (!release.equalsIgnoreCase("X")) {
+            if (release != null && !release.equalsIgnoreCase("X")) {
                 out.write("-" + release);
             }
             out.newLine();
@@ -134,9 +140,13 @@ public class DebPackageWriter {
                     TaskConstants.TASK_QUERY_REPOMD_GENERATOR_CAPABILITY_BREAKS,
                     pkgDto.getId(), "Breaks");
 
-            out.write("Filename: XMLRPC/GET-REQ/" + channelLabel + "/getPackage/" +
-                    pkgDto.getName() + "-" + pkgDto.getVersion() + "-" +
-                    pkgDto.getRelease() + "." + pkgDto.getArchLabel() + ".deb");
+            out.write("Filename: XMLRPC/GET-REQ/" + channelLabel + "/getPackage/");
+            out.write(pkgDto.getName() + "_");
+            if (epoch != null && !epoch.equalsIgnoreCase("")) {
+                out.write(epoch + ":");
+            }
+            out.write(pkgDto.getVersion() + "-" + pkgDto.getRelease());
+            out.write("." + pkgDto.getArchLabel() + ".deb");
             out.newLine();
 
             // size of package, is checked by apt
@@ -186,7 +196,7 @@ public class DebPackageWriter {
             out.close();
         }
         catch (Exception e) {
-            log.debug("Failed to add deb package " + e.toString());
+            log.error("Failed to add deb package " + packageName, e);
         }
     }
 
@@ -240,7 +250,7 @@ public class DebPackageWriter {
             }
         }
         catch (Exception e) {
-            log.debug("failed to write DEB dependency " + dep + " " + e.toString());
+            log.error("failed to write DEB dependency " + dep + " " + e.toString());
         }
         try {
             if (count > 0) {
@@ -248,7 +258,7 @@ public class DebPackageWriter {
             }
         }
         catch (Exception e) {
-            log.debug("failed to write new line " + e.toString());
+            log.error("failed to write new line " + e.toString());
         }
 
     }
@@ -305,7 +315,7 @@ public class DebPackageWriter {
             out.close();
         }
         catch (IOException e) {
-            log.debug("Failed to create Packages.gz " + e.toString());
+            log.error("Failed to create Packages.gz " + e.toString());
         }
     }
 

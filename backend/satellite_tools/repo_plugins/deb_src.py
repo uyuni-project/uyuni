@@ -17,6 +17,8 @@ import sys
 import os.path
 from shutil import rmtree
 import time
+import re
+import fnmatch
 import requests
 from spacewalk.common import fileutils
 from spacewalk.satellite_tools.download import get_proxies
@@ -39,6 +41,12 @@ class DebPackage(object):
         self.relativepath = None
         self.checksum_type = None
         self.checksum = None
+
+    def __getitem__(self, key):
+        return getattr(self, key)
+
+    def __setitem__(self, key, value):
+        return setattr(self, key, value)
 
     def is_populated(self):
         return all([attribute is not None for attribute in (self.name, self.epoch, self.version, self.release,
@@ -118,13 +126,17 @@ class DebRepo(object):
                 elif pair[0] == "Architecture:":
                     package.arch = pair[1] + '-deb'
                 elif pair[0] == "Version:":
-                    version = pair[1].split('-', 1)
-                    if len(version) == 1:
-                        package.version = version[0]
-                        package.release = 'X'
+                    package['epoch'] = ''
+                    version = pair[1]
+                    if version.find(':') != -1:
+                        package['epoch'], version = version.split(':')
+                    if version.find('-') != -1:
+                        tmp = version.split('-')
+                        package['version'] = '-'.join(tmp[:-1])
+                        package['release'] = tmp[-1]
                     else:
-                        package.version = version[0]
-                        package.release = version[1]
+                        package['version'] = version
+                        package['release'] = 'X'
                 elif pair[0] == "Filename:":
                     package.relativepath = pair[1]
                 elif pair[0] == "SHA256:":
@@ -192,8 +204,8 @@ class ContentSource(object):
                 filters.append(('-', [p]))
 
         if filters:
-            # TODO
-            pass
+            pkglist = self._filter_packages(pkglist, filters)
+            self.num_excluded = self.num_packages - len(pkglist)
 
         to_return = []
         for pack in pkglist:
@@ -215,6 +227,53 @@ class ContentSource(object):
             return 0
         else:
             return -1
+    @staticmethod
+    def _filter_packages(packages, filters):
+        """ implement include / exclude logic
+            filters are: [ ('+', includelist1), ('-', excludelist1),
+                           ('+', includelist2), ... ]
+        """
+        if filters is None:
+            return
+
+        selected = []
+        excluded = []
+        allmatched_include = []
+        allmatched_exclude = []
+        if filters[0][0] == '-':
+            # first filter is exclude, start with full package list
+            # and then exclude from it
+            selected = packages
+        else:
+            excluded = packages
+
+        for filter_item in filters:
+            sense, pkg_list = filter_item
+            regex = fnmatch.translate(pkg_list[0])
+            reobj = re.compile(regex)
+            if sense == '+':
+                # include
+                for (index, excluded_pkg) in enumerate(excluded):
+                    if (reobj.match(excluded_pkg['name'])):
+                        allmatched_include.insert(0,excluded_pkg)
+                        selected.insert(0,excluded_pkg)
+                for pkg in allmatched_include:
+                    if pkg in excluded:
+                        excluded.remove(pkg)
+            elif sense == '-':
+                # exclude
+                for (index, selected_pkg) in enumerate(selected):
+                    if (reobj.match(selected_pkg['name'])):
+                        allmatched_exclude.insert(0,selected_pkg)
+                        excluded.insert(0,selected_pkg)
+
+                for pkg in allmatched_exclude:
+                    if pkg in selected:
+                        selected.remove(pkg)
+                excluded = (excluded + allmatched_exclude)
+            else:
+                raise IOError("Filters are malformed")
+        return selected
 
     def clear_cache(self, directory=None):
         if directory is None:
