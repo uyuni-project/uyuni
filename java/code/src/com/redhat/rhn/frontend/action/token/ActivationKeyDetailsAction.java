@@ -103,7 +103,8 @@ public class ActivationKeyDetailsAction extends RhnAction {
                 ActionErrors errors = RhnValidationHelper.validateDynaActionForm(this,
                                             form);
 
-                if (!StringUtils.isBlank(form.getString(KEY)) && !ActivationKey.isValid(form.getString(KEY))) {
+                if (!StringUtils.isBlank(form.getString(KEY)) &&
+                    !ActivationKey.isValid(form.getString(KEY))) {
                     ActionMessages msg = new ActionMessages();
                     addToMessage(msg, "activation-key.java.allowed-values");
                     errors.add(msg);
