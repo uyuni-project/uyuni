@@ -266,7 +266,7 @@ public class SaltReactor implements EventListener {
                 Map<String, JsonElement> data = beaconEvent.getData(tt);
                 MessageQueue.publish(new VirtpollerBeaconEventMessage(
                         beaconEvent.getMinionId(),
-                        JsonParser.GSON.fromJson(data.get("data"), VirtpollerData.class)));
+                        JsonParser.GSON.fromJson(data.toString(), VirtpollerData.class)));
             }
         };
     }
