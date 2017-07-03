@@ -17,7 +17,7 @@ We recommend you to read about the [**basic concepts** of Cucumber that we will 
 
 ## Running the testsuite locally
 
-You can run the Spacewalk Testsuite [with sumaform (Official way)](docs/sumaform-howto.md).
+You can run the Spacewalk Testsuite [with sumaform](https://github.com/moio/sumaform/blob/master/README_ADVANCED.md#cucumber-testsuite).
 
 ### Development
 
