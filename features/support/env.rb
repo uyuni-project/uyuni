@@ -31,7 +31,10 @@ end
 
 # basic support for rebranding of strings in the UI
 BRANDING = ENV['BRANDING'] || 'suse'
-DEFAULT_TIMEOUT = 200
+
+# 10 minutes maximal wait before giving up
+# the tests return much before that delay in case of success
+DEFAULT_TIMEOUT = 600
 
 # Returns current url
 def current_url
