@@ -10,7 +10,7 @@ end
 
 When(/^I wait until i see "([^"]*)" text$/) do |text|
   begin
-    Timeout.timeout(150) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         break if page.has_content?(text)
         sleep 3
@@ -23,7 +23,7 @@ end
 
 When(/^I wait until i see "([^"]*)" text, refreshing the page$/) do |text|
   begin
-    Timeout.timeout(150) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         break if page.has_content?(text)
         sleep 3
