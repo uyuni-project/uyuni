@@ -1,17 +1,31 @@
+## Core feature BEGIN ###
+## this feature must be runned sequentially
+
+# FIXME: ADD/REMOVE TO LIST STUFF
 --- # initialize suse-manager server
 - features/setup_user_and_proxy.feature
-- features/mainpage.feature
 # smdba before we start to sync channels
-- features/smdba.feature
 - features/channels_add.feature
 - features/push_package.feature
 - features/create_repository.feature
-- features/systemspage.feature
-- features/create_activationkey.feature
 - features/users.feature
 - features/credentials.feature
-# traditional client
 - features/register_client.feature
+- features/minion_bootstrap.feature
+- features/docker_build_image.feature
+## CORE feature end ###
+
+# SECONDARY FEATURE:
+
+# this feature can be runned in random order.
+# FIXME: MAKE THIS HAPPEN
+
+# server secondary 
+- features/mainpage.feature
+- features/create_activationkey.feature
+- features/systemspage.feature
+- features/smdba.feature
+# traditional client
 - features/config_channel.feature
 - features/action_chain.feature
 - features/custom_system_info.feature
@@ -57,7 +71,6 @@
 - features/xmlrpc_user.feature 
 
 #### Salt related features   ###
-- features/minion_bootstrap.feature
 - features/salt.feature
 - features/salt_minions_page.feature
 - features/salt_minion_details.feature
@@ -85,7 +98,6 @@
 # test if hostoname, kernel, os-versino are correctly visualiz. for all minions
 - features/overview_systems_details.feature
 #### * Docker related features tests.  ###
-- features/docker_build_image.feature
 - features/docker_cve_audit.feature
 - features/docker_advanced_test.feature 
 # Debug suse-manager server
@@ -101,3 +113,4 @@
 
 # sync channels in background
 # - features/sync_real_channels.feature
+
