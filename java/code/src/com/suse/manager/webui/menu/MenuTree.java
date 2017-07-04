@@ -399,7 +399,6 @@ public class MenuTree {
                 .addChild(new MenuItem("Sign In").withPrimaryUrl("/rhn/Login.do"))
                 .addChild(new MenuItem("Help Desk").withPrimaryUrl("/rhn/help/index.do"))
                 .addChild(new MenuItem("Lookup Login/Password").withPrimaryUrl("/rhn/help/ForgotCredentials.do"))
-                .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/help/about.do"))
                 .addChild(new MenuItem("Getting Started Guide").withPrimaryUrl("/rhn/help/dispatcher/getting_started_guide")
                     .withDir("/rhn/help/getting-started"))
                 .addChild(new MenuItem("Reference Guide").withPrimaryUrl("/rhn/help/dispatcher/reference_guide")
