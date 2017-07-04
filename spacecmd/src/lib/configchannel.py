@@ -992,7 +992,7 @@ def export_configchannel_getdetails(self, channel):
                         f['contents_enc64'] = b64f['contents_enc64']
 
         for k in ['channel', 'revision', 'creation', 'modified',
-                  'permissions_mode', 'binary', 'sha256']:
+                  'permissions_mode', 'sha256']:
             if k in f:
                 del f[k]
 
