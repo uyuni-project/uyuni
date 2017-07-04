@@ -24,7 +24,7 @@ Feature: register a salt-minion via bootstrap
      Then I should see a "accepted" text
      And the salt-master can reach "sle-minion"
      And I navigate to "rhn/systems/Overview.do" page
-     And I wait until i see "min-sles" text, refreshing the page
+     And I wait until I see the name of "sle-minion", refreshing the page
      And I wait until onboarding is completed for "sle-minion"
 
   Scenario: Run a remote command sles-minion (salt-service)
@@ -78,7 +78,7 @@ Feature: register a salt-minion via bootstrap
      And I click on "Bootstrap"
      Then I wait until i see "Successfully bootstrapped host! " text
      And I navigate to "rhn/systems/Overview.do" page
-     And I wait until i see "min-sles" text, refreshing the page
+     And I wait until I see the name of "sle-minion", refreshing the page
      And I wait until onboarding is completed for "sle-minion"
 
   Scenario: verify minion bootstrapped with activation key, packages
