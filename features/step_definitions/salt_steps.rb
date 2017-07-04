@@ -25,7 +25,8 @@ Given(/^that the master can reach this client$/) do
     start = Time.now
     # 300 is the default 1st keepalive interval for the minion
     # where it realizes the connection is stuck
-    Timeout.timeout(DEFAULT_TIMEOUT) do
+    KEEPALIVE_TIMEOUT = 300
+    Timeout.timeout(KEEPALIVE_TIMEOUT) do
       # only try 3 times
       3.times do
         @output = sshcmd("salt #{$minion_hostname} test.ping", ignore_err: true)
@@ -634,7 +635,7 @@ Then(/^"([^"]*)" is not installed$/) do |package|
   uninstalled = false
   output = ""
   begin
-    Timeout.timeout(120) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         output, code = $minion.run("rpm -q #{package}", false)
         if code.nonzero?
@@ -653,7 +654,7 @@ Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, ho
   installed = false
   output = ""
   begin
-    Timeout.timeout(300) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         output, code = node.run("rpm -q #{package}", false)
         if code.zero?
@@ -683,7 +684,7 @@ end
 
 And(/^I wait until salt\-key "(.*?)" is deleted$/) do |key|
   begin
-    Timeout.timeout(300) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         cmd = "salt-key -L | grep '#{key}' "
         _output, code = $server.run(cmd, false)
@@ -756,8 +757,10 @@ end
 
 Given(/^the salt-master can reach "([^"]*)"$/) do |minion|
   begin
+    # 300 is the default 1st keepalive interval for the minion
     # where it realizes the connection is stuck
-    Timeout.timeout(DEFAULT_TIMEOUT) do
+    KEEPALIVE_TIMEOUT = 300
+    Timeout.timeout(KEEPALIVE_TIMEOUT) do
       # only try 3 times
       3.times do
         if minion == "sle-minion"
