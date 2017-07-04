@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
+
 /**
  * VirtualInstanceManager
  */
@@ -36,6 +38,12 @@ public class VirtualInstanceManager extends BaseManager {
     private static final String EVENT_TYPE_FULLREPORT = "fullreport";
     private static final String EVENT_TYPE_EXISTS = "exists";
     private static final String EVENT_TYPE_REMOVED = "removed";
+
+    /**
+     * Logger for this class
+     */
+    private static Logger log = Logger
+            .getLogger(VirtualInstanceManager.class);
 
     private VirtualInstanceManager() {
     }
@@ -198,19 +206,32 @@ public class VirtualInstanceManager extends BaseManager {
     public static void addGuestVirtualInstance(String vmGuid, String name,
             VirtualInstanceType type, VirtualInstanceState state,
             Server host, Server guest, int vCpus, long memory) {
-        VirtualInstance virtualInstance = new VirtualInstance();
-        virtualInstance.setUuid(vmGuid);
-        virtualInstance.setConfirmed(1L);
-        virtualInstance.setGuestSystem(guest);
-        virtualInstance.setState(state);
-        virtualInstance.setName(name);
-        virtualInstance.setType(type);
-        virtualInstance.setNumberOfCPUs(vCpus);
-        virtualInstance.setTotalMemory(memory);
 
-        if (host != null) {
-            // will also set the hostSystem for virtualInstance when present
-            host.addGuest(virtualInstance);
+        List<VirtualInstance> virtualInstances = VirtualInstanceFactory
+                .getInstance().lookupVirtualInstanceByUuid(vmGuid);
+
+        if (virtualInstances.isEmpty()) {
+            VirtualInstance virtualInstance = new VirtualInstance();
+            virtualInstance.setUuid(vmGuid);
+            virtualInstance.setConfirmed(1L);
+            virtualInstance.setGuestSystem(guest);
+            virtualInstance.setState(state);
+            virtualInstance.setName(name);
+            virtualInstance.setType(type);
+            virtualInstance.setNumberOfCPUs(vCpus);
+            virtualInstance.setTotalMemory(memory);
+
+            if (host != null) {
+                // will also set the hostSystem for virtualInstance when present
+                host.addGuest(virtualInstance);
+            }
+
+            VirtualInstanceFactory.getInstance()
+                    .saveVirtualInstance(virtualInstance);
+        }
+        else {
+            log.warn("Preventing creation of a duplicated VirtualInstance " +
+                     "for 'uuid': " + vmGuid);
         }
     }
 

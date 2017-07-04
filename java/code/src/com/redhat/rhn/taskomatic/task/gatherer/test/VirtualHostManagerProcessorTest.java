@@ -383,10 +383,10 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
     /**
      * Tests the situation when the virtual host gatherer reports a VM but we already have
-     * multiple guest VirtualInstances with this VM UUID in the database.
+     * a guest VirtualInstances with this VM UUID in the database.
      *
      * In this corner case we want the VirtualHostManagerProcessor to update all
-     * VirtualInstances.
+     * VirtualInstances and prevent from creating a duplicates for the same guest "uuid".
      *
      * @throws Exception - if anything goes wrong
      */
@@ -406,10 +406,10 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         Server newHost = ServerFactory
                 .lookupForeignSystemByDigitalServerId("101-existing_host_id");
 
-        // verify that both have a new name and both belong to the same host server
+        // verify that only one VirtualInstance is created and belong to the same host server
         List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
                 .lookupVirtualInstanceByUuid(guestUuid);
-        assertEquals(2, virtualInstances.size());
+        assertEquals(1, virtualInstances.size());
         virtualInstances.stream()
                 .forEach(vi -> {
                     assertEquals(newVmName, vi.getName());

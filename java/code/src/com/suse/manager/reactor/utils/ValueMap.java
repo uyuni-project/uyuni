@@ -94,6 +94,16 @@ public class ValueMap {
     }
 
     /**
+     * Get a value as a boolean (if possible)
+     * @param key the key
+     * @return an {@link Optional} containing the boolean value
+     * or an empty {@link Optional} if the value could not be converted.
+     */
+    public Optional<Boolean> getOptionalAsBoolean(String key) {
+        return get(key).flatMap(this::toBoolean);
+    }
+
+    /**
      * Get a value as a collection (if possible)
      * @param key the key
      * @return an {@link Optional} containing the value as a {@link Collection}
@@ -155,6 +165,24 @@ public class ValueMap {
         else {
             LOG.warn("Value '" + ObjectUtils.toString(value) +
                     "' could not be converted to long.");
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Convert a value to a Boolean
+     *
+     * @param value a value
+     * @return an {@link Optional} containing a boolean or empty if
+     * the value could not be converted.
+     */
+    public Optional<Boolean> toBoolean(Object value) {
+        if (value instanceof Boolean) {
+            return Optional.of((Boolean) value);
+        }
+        else {
+            LOG.warn("Value '" + ObjectUtils.toString(value) +
+                    "' could not be converted to Boolean.");
             return Optional.empty();
         }
     }

@@ -198,5 +198,8 @@ public class TaskConstants {
     public static final String TASK_QUERY_UUID_CLEANUP =
         "taskomatic_uuid_cleanup";
 
+    public static final String TASK_QUERY_DUPLICATED_VIRTUALINSTANCE_CLEANUP =
+        "taskomatic_duplicated_virtualinstance_cleanup";
+
     private TaskConstants() { }
 }
