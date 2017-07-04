@@ -8,9 +8,9 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
   fail unless (current_path == arg1)
 end
 
-And(/^I wait until i see "([^"]*)" text$/) do |text|
+When(/^I wait until i see "([^"]*)" text$/) do |text|
   begin
-    Timeout.timeout(150) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         break if page.has_content?(text)
         sleep 3
@@ -21,9 +21,9 @@ And(/^I wait until i see "([^"]*)" text$/) do |text|
   end
 end
 
-And(/^I wait until i see "([^"]*)" text, refreshing the page$/) do |text|
+When(/^I wait until i see "([^"]*)" text, refreshing the page$/) do |text|
   begin
-    Timeout.timeout(150) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         break if page.has_content?(text)
         sleep 3
@@ -34,6 +34,24 @@ And(/^I wait until i see "([^"]*)" text, refreshing the page$/) do |text|
     raise "Couldn't find the #{text} in webpage"
   end
 end
+
+When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |target|
+  case target
+  when "sle-minion"
+    step %(I wait until i see "#{$minion_fullhostname}" text, refreshing the page)
+  when "ssh-minion"
+    step %(I wait until i see "#{$ssh_minion_fullhostname}" text, refreshing the page)
+  when "ceos-minion"
+    step %(I wait until i see "#{$ceos_minion_fullhostname}" text, refreshing the page)
+  when "sle-client"
+    step %(I wait until i see "#{$client_fullhostname}" text, refreshing the page)
+  when "sle-migrated-minion"
+    step %(I wait until i see "#{$client_fullhostname}" text, refreshing the page)
+  else
+    raise "No valid target."
+  end
+end
+
 #
 # Check a checkbox of the given id
 #

@@ -22,7 +22,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Bootstrap"
     Then I wait until i see "Successfully bootstrapped host! " text
     And I navigate to "rhn/systems/Overview.do" page
-    And I wait until i see "minssh-sles" text, refreshing the page
+    And I wait until I see the name of "ssh-minion", refreshing the page
     And I wait until onboarding is completed for "ssh-minion"
 
    Scenario: Subscribe ssh-minion to a base-channel for testing
