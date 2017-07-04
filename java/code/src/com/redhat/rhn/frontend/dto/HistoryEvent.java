@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+
+import org.apache.log4j.Logger;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +36,7 @@ public class HistoryEvent extends BaseDto {
     private String historyType;
     private String historyTypeName;
     private String details;
-
+    private static Logger logger = Logger.getLogger(HistoryEvent.class);
     /**
      * gets details of the event
      * @return details
@@ -75,9 +78,9 @@ public class HistoryEvent extends BaseDto {
             this.completed = format.parse(completedIn);
         }
        catch (ParseException e) {
-            System.out.println("Cannot parse " + completedIn +
+            logger.error("Cannot parse " + completedIn +
                     " according to format " + dateFormat);
-            e.printStackTrace();
+            logger.error(e);
        }
     }
 
