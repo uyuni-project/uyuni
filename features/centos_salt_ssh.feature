@@ -25,7 +25,7 @@ Feature: CENTOS7 ssh feature.
     And I click on "Bootstrap"
     Then I wait until i see "Successfully bootstrapped host! " text
     And I navigate to "rhn/systems/Overview.do" page
-    And I wait until i see "min-centos" text, refreshing the page
+    And I wait until I see the name of "ceos-minion", refreshing the page
     And I wait until onboarding is completed for "ceos-minion"
 
    Scenario: Subscribe centos ssh-minion to a base-channel for testing
