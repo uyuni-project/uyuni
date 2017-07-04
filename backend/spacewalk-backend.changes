@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 04 11:33:31 CEST 2017 - michele.bologna@suse.com
+
+- version 2.5.24.12-1
+- make master_label static to keep its value when retrying (bsc#1038321)
+
+-------------------------------------------------------------------
 Thu Jun 29 17:36:55 CEST 2017 - michele.bologna@suse.com
 
 - version 2.5.24.11-1
