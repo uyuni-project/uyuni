@@ -25,7 +25,7 @@ Given(/^that the master can reach this client$/) do
     start = Time.now
     # 300 is the default 1st keepalive interval for the minion
     # where it realizes the connection is stuck
-    Timeout.timeout(DEFAULT_TIMEOUT + 300) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       # only try 3 times
       3.times do
         @output = sshcmd("salt #{$minion_hostname} test.ping", ignore_err: true)
@@ -305,7 +305,7 @@ end
 
 When(/^I click on run$/) do
   begin
-    Timeout.timeout(DEFAULT_TIMEOUT + 400) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         begin
           find('button#run').click
@@ -757,7 +757,7 @@ end
 Given(/^the salt-master can reach "([^"]*)"$/) do |minion|
   begin
     # where it realizes the connection is stuck
-    Timeout.timeout(DEFAULT_TIMEOUT + 300) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       # only try 3 times
       3.times do
         if minion == "sle-minion"
