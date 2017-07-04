@@ -19,7 +19,7 @@ cuke 'Add repository to the x86_64 channel$'
 cuke 'Sync the repository in the x86_64 channel$'
 
 cuke 'create an activation key with Channel and package list \(x64\)$'
-cuke 'Create the bootstrap script - traditional$'
+cuke 'Create the bootstrap script$'
 cuke 'Create activation key for SSH push$'
 cuke 'Create activation key for SSH push via tunnel$'
 
