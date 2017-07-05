@@ -11,11 +11,11 @@ We recommend you to read about the [**basic concepts** of Cucumber that we will 
 
 * Development (to be run against a HEAD version of SUSE Manager):
 
-  * [master](https://github.com/SUSE/spacewalk-testsuite-base)
+  * [`master`](https://github.com/SUSE/spacewalk-testsuite-base)
 
-* RELEASE (to be run against a nightly or released version of SUSE Manager):
-  * [manager30](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager30)
-  * [manager31](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager31)
+* Release (to be run against a nightly or released *tagged* version of SUSE Manager):
+  * [`manager30`](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager30)
+  * [`manager31`](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager31)
 
 All other branches are considered legacy (not under development anymore): `Manager 2.1`, `manager21-longterm`, `Manager 17`, `Manager 12`.
 
@@ -65,11 +65,11 @@ Steps files should be like the following:
 
 Automatic linting via Rubocop in Travis:
 
-* master
+* `master`
 [![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=master)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
-* manager30
+* `manager30`
 [![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=manager30)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
-* manager31
+* `manager31`
 [![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=manager30)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
 
 # License
