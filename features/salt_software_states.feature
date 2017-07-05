@@ -75,14 +75,14 @@ Feature: Check the Salt package state UI
     And I should see a "virgo-dummy" text
 
   Scenario: Test Salt presence ping mechanism on active minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this minion
     Then I follow "States" in the content area
     And I follow "Highstate" in the content area
     And I wait for "6" seconds
     And I should see "pkg_removed" or "running as PID" loaded in the textarea
 
   Scenario: Test Salt presence ping mechanism on unreachable minion
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this minion
     Then I follow "States" in the content area
     And I run "pkill salt-minion" on "sle-minion"
     And I follow "Highstate" in the content area
