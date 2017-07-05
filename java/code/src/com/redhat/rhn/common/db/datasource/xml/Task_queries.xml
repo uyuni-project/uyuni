@@ -762,7 +762,7 @@ select sa.action_id, sa.server_id
   </query>
 </write-mode>
 
-<callable-mode name="taskomatic_duplicated_virtualinstance_cleanup">
+<write-mode name="taskomatic_duplicated_virtualinstance_cleanup">
   <query>
     DELETE FROM rhnVirtualInstance WHERE id IN (
         SELECT id
@@ -773,6 +773,6 @@ select sa.action_id, sa.server_id
         WHERE h.cnt > 1 and h.virtual_system_id is not null
     )
   </query>
-</callable-mode>
+</write-mode>
 
 </datasource_modes>
