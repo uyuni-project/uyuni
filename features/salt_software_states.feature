@@ -84,7 +84,7 @@ Feature: Check the Salt package state UI
     Then I follow "States" in the content area
     And I follow "Highstate" in the content area
     And I wait for "6" seconds
-    And I should see a "pkg_removed" text in element "highstate"
+    And I should see a "pkg_removed" or "running as PID" text in element "highstate"
 
   Scenario: Test Salt presence ping mechanism on unreachable minion
     Given I am on the Systems overview page of this "sle-minion"
