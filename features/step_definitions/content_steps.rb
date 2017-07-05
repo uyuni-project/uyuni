@@ -37,6 +37,10 @@ Then(/^I should see "([^"]*)" loaded in the textarea$/) do |arg1|
   fail unless first('textarea').value.include?(debrand_string(arg1))
 end
 
+Then(/^I should see "([^"]*)" or "([^"]*)" loaded in the textarea$/) do |arg1, arg2|
+  fail if !first('textarea').value.include?(debrand_string(arg1)) && !first('textarea').value.include?(debrand_string(arg2))
+end
+
 Then(/^I should see that this system has been deleted$/) do
   system_id = client_system_id_to_i
   step %(I should see a "System profile #{system_id} has been deleted." text)
@@ -112,12 +116,6 @@ end
 Then(/^I should see a "([^"]*)" text in element "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
     fail unless has_content?(debrand_string(arg1))
-  end
-end
-
-Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |arg1, arg2, arg3|
-  within(:xpath, "//div[@id=\"#{arg3}\" or @class=\"#{arg3}\"]") do
-    fail if !has_content?(debrand_string(arg1)) && !has_content?(debrand_string(arg2))
   end
 end
 
