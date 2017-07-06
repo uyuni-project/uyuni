@@ -79,6 +79,5 @@ The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file 
 # Useful tutorials
 
 * [Testing API tutorial](docs/api-call.md)
-* [Branches that we use](docs/branches.md)
 * [Debug](docs/Debug.md)
 * [Pitfalls-test.md](docs/Pitfalls-test.md)
