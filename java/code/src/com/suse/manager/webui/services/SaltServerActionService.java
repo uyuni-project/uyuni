@@ -284,7 +284,10 @@ public enum SaltServerActionService {
                 .collect(Collectors.toMap(entry -> State.apply(
                         Arrays.asList(PACKAGES_PATCHINSTALL),
                         Optional.of(Collections.singletonMap(PARAM_PATCHES,
-                                entry.getKey())),
+                            entry.getKey().stream()
+                                .sorted()
+                                .collect(Collectors.toList())
+                        )),
                         Optional.of(true)
                 ),
                 Map.Entry::getValue));
