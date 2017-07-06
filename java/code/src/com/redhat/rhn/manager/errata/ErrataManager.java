@@ -1845,14 +1845,15 @@ public class ErrataManager extends BaseManager {
                     .map(sid -> serverMap.get(sid))
                     .collect(toList());
 
-                    return createErrataActions(user, erratas, earliest, actionChain,
-                            servers, updateStackMap.get(erratas.get(0).getId()));
+                return createErrataActions(user, erratas, earliest, actionChain,
+                        servers, updateStackMap.get(erratas.get(0).getId()));
             });
 
 
         // store all actions and return ids
-        List<ErrataAction> errataActions = concat(traditionalYumClientActions,
-            otherServerActions).collect(toList());
+        List<ErrataAction> errataActions =
+            concat(traditionalYumClientActions, otherServerActions)
+            .collect(toList());
         List<Long> actionIds = new ArrayList<Long>();
         for (ErrataAction errataAction : errataActions) {
             Action action = ActionManager.storeAction(errataAction);
@@ -1867,7 +1868,7 @@ public class ErrataManager extends BaseManager {
 
     /**
      * Turns a map from servers to list of erratas to apply on each to a map
-     * that groups together lists of patches on lists of servers.
+     * that groups together lists of erratas on lists of servers.
      *
      * This is needed in order to schedule Actions with multiple erratas
      * targeting multiple servers that all have the same errata list.
