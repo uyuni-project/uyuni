@@ -1,11 +1,11 @@
-# SUSE Manager (and spacewalk) Cucumber Test suite
+# spacewalk and SUSE Manager automated Cucumber Test suite
 
 # Introduction
 
 This is the automated testsuite for [SUSE Manager](https://www.suse.com/products/suse-manager/) and [Spacewalk](http://spacewalk.redhat.com/).
 The testsuite is based on [Cucumber](https://cucumber.io/).
 
-We recommend you to read about the [**basic concepts** of Cucumber that we will be using in this testsuite: features, scenarios and steps](https://cucumber.io/docs/reference).
+Read more about the [**basic concepts** of Cucumber that we will be using in this testsuite: features, scenarios and steps](https://cucumber.io/docs/reference).
 
 # Branch used
 
