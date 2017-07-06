@@ -42,7 +42,7 @@
                 <div class="col-md-6">
                     <rhn:submitted/>
                     <input type="submit" name ="dispatch" class="btn btn-success"
-                           value='<bean:message key="keyedit.jsp.submit"/>'/>
+                           value='<bean:message key="activation-key.jsp.edit-key"/>'/>
                 </div>
             </div>
             <html:hidden property="submitted" value="true" />
