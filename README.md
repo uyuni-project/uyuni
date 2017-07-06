@@ -1,4 +1,4 @@
-# spacewalk and SUSE Manager automated Cucumber Test suite
+# spacewalk and SUSE Manager automated test suite
 
 # Introduction
 
