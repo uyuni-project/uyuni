@@ -28,7 +28,7 @@ Feature: Test custom system info key value pairs
     And I follow "Create Value"
     And I follow "key-label"
     And I enter "key-value" as "value"
-    And I click on "Update Key"
+    And I click on "Update Activation Key"
     Then I should see a "key-label" text
     And I should see a "key-value" text
     And I should see a "Edit this value" link
@@ -39,7 +39,7 @@ Feature: Test custom system info key value pairs
     And I follow "Edit this value"
     And I should see a "Edit Custom Value" text
     And I enter "key-value-edited" as "value"
-    And I click on "Update Key"
+    And I click on "Update Activation Key"
     Then I should see a "key-label" text
     And I should see a "key-value-edited" text
     And I should see a "Edit this value" link
@@ -49,7 +49,7 @@ Feature: Test custom system info key value pairs
     And I follow "key-label"
     And I should see this client as link
     And I enter "key-desc-edited" as "description"
-    And I click on "Update Key"
+    And I click on "Update Activation Key"
     Then I should see a "key-label" link
     And I should see a "key-desc-edited" text
 
