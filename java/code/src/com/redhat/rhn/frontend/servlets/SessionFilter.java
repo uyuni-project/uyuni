@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.servlets;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
+import com.redhat.rhn.common.localization.LocalizationService;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -70,6 +71,8 @@ private static final String ROLLBACK_MSG = "Error during transaction. Rolling ba
         }
         catch (RuntimeException e) {
             LOG.error(ROLLBACK_MSG, e);
+            request.setAttribute("exception", LocalizationService.getInstance()
+                    .getMessage("errors.unexpected"));
             throw e;
         }
         catch (AssertionError e) {
