@@ -63,7 +63,7 @@ Feature: register a salt-minion via bootstrap
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "orion-dummy perseus-dummy" as "packages"
-    And I click on "Update Key"
+    And I click on "Update Activation Key"
     Then I should see a "Activation key Minion testing has been modified" text
 
   Scenario: bootstrap a sles minion with an activation-key

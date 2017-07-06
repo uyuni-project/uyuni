@@ -68,7 +68,7 @@ Feature: Create an activation key
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "man" as "packages"
-    And I click on "Update Key"
+    And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified." text
     And I should see a "Details" link
     And I should see a "Child Channels" link
@@ -88,7 +88,7 @@ Feature: Create an activation key
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "man" as "packages"
-    And I click on "Update Key"
+    And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key i586 has been modified." text
     And I should see a "Details" link
     And I should see a "Child Channels" link
