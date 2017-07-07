@@ -10,6 +10,7 @@
 - features/create_repository.feature
 - features/users.feature
 - features/credentials.feature
+- features/create_activationkey.feature
 - features/register_client.feature
 - features/minion_bootstrap.feature
 - features/docker_build_image.feature
@@ -20,9 +21,11 @@
 # this feature can be runned in random order.
 # FIXME: MAKE THIS HAPPEN
 
-# server secondary 
+# **** IDEMPOTENT ******
 - features/mainpage.feature
-- features/create_activationkey.feature
+
+# !!!!! NOT_IDEMPOTENT !!!!!!!!
+# server secondary 
 - features/systemspage.feature
 - features/smdba.feature
 # traditional client
