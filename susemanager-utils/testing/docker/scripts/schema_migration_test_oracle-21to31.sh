@@ -4,6 +4,18 @@ set -e
 
 cd /manager/susemanager-utils/testing/docker/scripts/
 
+MYHOSTNAME=`hostname`
+
+echo "
+LISTENER =
+  (DESCRIPTION_LIST =
+    (DESCRIPTION =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = $MYHOSTNAME)(PORT = 1521))
+      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))
+    )
+  )
+" > /opt/apps/oracle/product/12.1.0/dbhome_1/network/admin/listener.ora
+
 umount /dev/shm
 mount tmpfs -t tmpfs -o defaults /dev/shm
 
@@ -24,7 +36,10 @@ echo $PERLLIB
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 
 # Database schema creation
-spacewalk-setup --clear-db --db-only --answer-file=clear-db-answers-oracle21.txt --external-oracle --non-interactive
+spacewalk-setup --clear-db --db-only --answer-file=clear-db-answers-oracle.txt --external-oracle --non-interactive || {
+  cat /var/log/rhn/populate_db.log
+  exit 1
+}
 
 ./build-schema.sh
 

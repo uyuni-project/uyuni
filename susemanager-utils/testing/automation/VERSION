@@ -2,4 +2,4 @@ REGISTRY=registry.mgr.suse.de
 VER=3.1
 BASE_CONTAINER=suma-$VER-base
 PGSQL_CONTAINER=suma-$VER-pgsql
-ORACLE_CONTAINER=suma-head-ora  # 3.1 container does not work
+ORACLE_CONTAINER=suma-$VER-ora

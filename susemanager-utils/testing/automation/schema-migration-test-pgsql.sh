@@ -5,5 +5,5 @@ HERE=`dirname $0`
 GITROOT=`readlink -f $HERE/../../../`
 
 # we need a special (old) baseimage to migrate to current schema
-docker pull $REGISTRY/suma-2.1-pgsql
-docker run --privileged --rm=true -v "$GITROOT:/manager" $REGISTRY/suma-2.1-pgsql /manager/susemanager-utils/testing/docker/scripts/schema_migration_test_pgsql-21to31.sh
+docker pull $REGISTRY/$PGSQL_CONTAINER
+docker run --privileged --rm=true -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /manager/susemanager-utils/testing/docker/scripts/schema_migration_test_pgsql-21to31.sh
