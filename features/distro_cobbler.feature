@@ -155,3 +155,7 @@ Feature: test cobbler and distro Kickstart
     And I click on "Create PXE installation configuration"
     And I click on "Continue"
     Then file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks="
+
+  Scenario: cleanup distro clobber feature
+  Given I am authorized
+  When Cleanup for distro_clobber_feature
