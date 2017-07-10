@@ -7,7 +7,7 @@ Feature: register a salt-minion via bootstrap
      Given I am authorized
      And  I run "mgr-create-bootstrap-repo -c SLE-12-SP2-x86_64" on "server" without error control
 
-  Scenario: bootstrap a sles minion
+  Scenario: bootstrap a sles minion (it will be deleted after)
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
@@ -159,3 +159,14 @@ Feature: register a salt-minion via bootstrap
      And I wait until i see "ssh: connect to host" text
      And I should not see a "GenericSaltError({" text
      Then I should see a "port 11: Connection refused" text
+
+  Scenario: bootstrap a sles minion (permanently)
+     Given I am authorized
+     And I go to the bootstrapping page
+     Then I should see a "Bootstrap Minions" text
+     And  I enter the hostname of "sle-minion" as hostname
+     And I enter "22" as "port"
+     And I enter "root" as "user"
+     And I enter "linux" as "password"
+     And I click on "Bootstrap"
+     Then I wait until i see "Successfully bootstrapped host! " text
