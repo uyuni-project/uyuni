@@ -500,7 +500,7 @@ Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key
   elsif minion == "ssh-minion"
     target = $ssh_minion_ip
     cmd = "salt-ssh"
-    extra_cmd = "-i --roster-file=/tmp/tmp_roster_tests"
+    extra_cmd = "-i --roster-file=/tmp/tmp_roster_tests -w -W"
     $server.run("printf '#{target}:\n  host: #{target}\n  user: root\n  passwd: linux' > /tmp/tmp_roster_tests")
   else
     fail "Invalid target"
