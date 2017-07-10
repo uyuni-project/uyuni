@@ -1,7 +1,7 @@
 # Copyright (c) 2010-2017 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
-Feature: test cobbler and distro Kickstart
+Feature: cobbler and distro Kickstart
 
   Background:
     Given I am authorized
@@ -146,12 +146,8 @@ Feature: test cobbler and distro Kickstart
     And file "/srv/tftpboot/pxelinux.0" exists on server
 
   Scenario: trigger the creation of a cobbler system record
-    And I follow this "sle-client" link
-    And I follow "Provisioning"
-    And I click on "Create PXE installation configuration"
-    And I click on "Continue"
-    Then file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks="
+    Then trigger cobbler system record(not for ssh-push tradclient)
 
   Scenario: cleanup distro clobber feature
-  Given I am authorized
-  When Cleanup for distro_clobber_feature
+    # Delete test distro and profiles
+    Then Cleanup for distro_clobber_feature
