@@ -4,10 +4,10 @@
 Feature: test cobbler and distro Kickstart
 
   Background:
-  Given I am authorized
-  And I follow "Home" in the left menu
-  And I follow "Systems" in the left menu
-  And I follow "Overview" in the left menu
+    Given I am authorized
+    And I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
 
   Scenario: create a dummy distro with cobbler (not visible in UI, SLES)
     Given cobblerd is running
