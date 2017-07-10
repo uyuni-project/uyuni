@@ -1019,7 +1019,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             assertEquals(Collections.singletonList("packages.patchinstall"), kwarg.get("mods"));
             MinionServer minionServer = result.getValue().get(0);
             Map<String, Object> pillar = (Map<String, Object>)kwarg.get("pillar");
-            HashSet<String> param_patches = (HashSet<String>) pillar.get("param_patches");
+            Collection<String> param_patches = (Collection<String>) pillar.get("param_patches");
             assertEquals(1, param_patches.size());
             assertEquals(true, param_patches.contains("SUSE-" + updateTag + "-2016-1234"));
         });
