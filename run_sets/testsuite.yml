@@ -8,6 +8,7 @@
 - features/channels_add.feature
 - features/push_package.feature
 - features/create_repository.feature
+- features/systemspage.feature
 - features/users.feature
 - features/credentials.feature
 - features/create_activationkey.feature
@@ -26,7 +27,7 @@
 
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 # server secondary 
-- features/systemspage.feature
+- features/distro_cobbler.feature
 - features/smdba.feature
 # traditional client
 - features/config_channel.feature
