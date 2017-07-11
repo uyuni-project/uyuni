@@ -64,6 +64,6 @@ Feature: Create a group
    And I follow "newgroup" in the content area
    And I follow "Delete Group" in the content area
    When I click on "Confirm Deletion"
-   Then I should see a "System group" text
-   Then I should see a "newgroup" text
+   And I should see a "System group" text
+   And I should see a "newgroup" text
    Then I should see a "deleted" text
