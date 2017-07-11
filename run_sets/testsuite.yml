@@ -35,7 +35,9 @@
 - features/security.feature
 - features/xmlrpc_channel.feature
 - features/xmlrpc_activationkey.feature
+- features/overview_systems_details.feature
 - features/salt_reboot_test.feature
+- features/sp_migration.feature
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 # server secondary 
 # traditional client
@@ -53,7 +55,6 @@
 - features/weak_deps.feature
 - features/metadata_check.feature
 - features/check_registration.feature
-- features/sp_migration.feature
 - features/erratapage.feature
 - features/lock_packages_on_client.feature
 - features/install_package_and_errata.feature
@@ -61,7 +62,6 @@
 - features/openscap_audit.feature
 - features/spacewalk_repo_sync.feature
 - features/scc_sync_channels.feature
-- features/xmlrpc_system.feature
 - features/nagios.feature
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
@@ -91,8 +91,6 @@
 - features/salt_openscap_audit.feature
 # Formulas scenario needs sle-minion and ssh-minion
 - features/salt_formulas.feature
-# test if hostoname, kernel, os-versino are correctly visualiz. for all minions
-- features/overview_systems_details.feature
 #### * Docker related features tests.  ###
 - features/docker_cve_audit.feature
 - features/docker_advanced_test.feature 
