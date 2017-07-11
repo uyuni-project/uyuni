@@ -9,6 +9,14 @@ Feature: Explore the Minions page
   Background:
     Given I am authorized as "testing" with password "testing"
 
+  Scenario: Delete sles-minion system profile (Explore the Minions page)
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Delete System"
+    And I should see a "Confirm System Profile Deletion" text
+    And I click on "Delete Profile"
+    Then I should see a "has been deleted" text
+    And I restart salt-minion
+
   Scenario: Completeness of the Minions page
     Given I go to the minion onboarding page
     Then I should see a "Keys" text in the content area
