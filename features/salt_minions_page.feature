@@ -40,7 +40,7 @@ Feature: Explore the Minions page
 
   Scenario: Accepted minion shows up as a registered system
     Given I am authorized as "testing" with password "testing"
-    and this minion key is unaccepted
+    And this minion key is unaccepted
     And this minion is not registered in Spacewalk
     And I go to the minion onboarding page
     Then I should see a "pending" text

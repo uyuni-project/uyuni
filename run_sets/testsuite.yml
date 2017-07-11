@@ -4,7 +4,6 @@
 # FIXME: ADD/REMOVE TO LIST STUFF
 --- # initialize suse-manager server
 - features/setup_user_and_proxy.feature
-# smdba before we start to sync channels
 - features/channels_add.feature
 - features/push_package.feature
 - features/create_repository.feature
@@ -77,6 +76,7 @@
 # - features/xmlrpc_VHM.feature
 - features/setup_wizard.feature
 - features/check_VHM.feature
+
 #### Salt related features   ###
 - features/salt.feature
 - features/salt_minions_page.feature
@@ -96,7 +96,7 @@
 #### * Docker related features tests.  ###
 - features/docker_cve_audit.feature
 - features/docker_advanced_test.feature 
-# Debug suse-manager server
+# Debug suse-manager server ( this should be removed)
 - features/spacewalk_debug.feature
 
 ### Scalability tests (after debug always)
