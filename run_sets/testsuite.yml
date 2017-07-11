@@ -26,6 +26,7 @@
 - features/distro_cobbler.feature
 - features/mainpage.feature
 - features/smdba.feature
+- features/datepicker.feature
 
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 # server secondary 
@@ -58,7 +59,6 @@
 - features/test_reboot.feature
 - features/powermanagement.feature
 - features/CVE_ID_new_syntax.feature
-- features/datepicker.feature
 # - features/migrate_client_to_minion.feature
 - features/delete_system_profile.feature
 - features/baremetal_test.feature
