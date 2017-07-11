@@ -10,7 +10,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
 
   Scenario: No Salt Package and service are running on Minion
     Given no Salt packages are installed on remote "ssh-minion"
-    And remote minion host is not registered in Spacewalk
+    And "ssh-minion" is not registered in Spacewalk
 
   Scenario: Bootstrap a system (sles-salt-ssh managed)
     Given I am authorized
