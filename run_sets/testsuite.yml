@@ -25,6 +25,7 @@
 # **** IDEMPOTENT ******
 - features/distro_cobbler.feature
 - features/mainpage.feature
+- features/xmlrpc_user.feature 
 - features/smdba.feature
 - features/datepicker.feature
 
@@ -72,7 +73,6 @@
 - features/check_VHM.feature
 - features/setup_wizard.feature
 - features/security.feature
-- features/xmlrpc_user.feature 
 
 #### Salt related features   ###
 - features/salt.feature
