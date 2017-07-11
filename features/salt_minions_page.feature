@@ -6,9 +6,6 @@ Feature: Explore the Minions page
   As an authorized user
   I want to verify all the minion key management features in the UI
 
-  Background:
-    Given I am authorized as "testing" with password "testing"
-
   Scenario: Delete sles-minion system profile (Explore the Minions page)
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
@@ -18,19 +15,22 @@ Feature: Explore the Minions page
     And I restart salt-minion
 
   Scenario: Completeness of the Minions page
-    Given I go to the minion onboarding page
+    Given I am authorized as "testing" with password "testing"
+    And I go to the minion onboarding page
     Then I should see a "Keys" text in the content area
     And I should see a "Fingerprint" text
 
   Scenario: Minion is visible in the Pending section
-    Given this minion key is unaccepted
+    Given I am authorized as "testing" with password "testing"
+    And this minion key is unaccepted
     And I go to the minion onboarding page
     Then I refresh page until see this hostname as text
     And I see my fingerprint
     And I should see a "pending" text
 
   Scenario: Reject and delete the pending minion key
-    Given this minion key is unaccepted
+    Given I am authorized as "testing" with password "testing"
+    And this minion key is unaccepted
     And I go to the minion onboarding page
     And I reject this client from the Pending section
     And we wait till Salt master sees this minion as rejected
@@ -39,7 +39,8 @@ Feature: Explore the Minions page
     Then I should not see this client as a Minion anywhere
 
   Scenario: Accepted minion shows up as a registered system
-    Given this minion key is unaccepted
+    Given I am authorized as "testing" with password "testing"
+    and this minion key is unaccepted
     And this minion is not registered in Spacewalk
     And I go to the minion onboarding page
     Then I should see a "pending" text
@@ -50,6 +51,7 @@ Feature: Explore the Minions page
 
   Scenario: The minion communicates with the master
     # It takes a while before we can get the grains and registration is done
-    Given that the master can reach this client
+    Given I am authorized as "testing" with password "testing"
+    And that the master can reach this client
     When I get OS information of the Minion from the Master
     Then it should contain a "SLES" text

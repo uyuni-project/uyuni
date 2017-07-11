@@ -31,7 +31,6 @@
 - features/mainpage.feature
 - features/xmlrpc_user.feature 
 - features/smdba.feature
-- features/check_VHM.feature
 - features/datepicker.feature
 - features/xmlrpc_api.feature
 - features/security.feature
@@ -76,7 +75,7 @@
 - features/delete_config_channel.feature
 # - features/xmlrpc_VHM.feature
 - features/setup_wizard.feature
-
+- features/check_VHM.feature
 #### Salt related features   ###
 - features/salt.feature
 - features/salt_minions_page.feature
