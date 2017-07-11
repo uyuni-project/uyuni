@@ -242,7 +242,7 @@ public class ImageInfo extends BaseDomainHelper {
     /**
      * @return the build history
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo", cascade = CascadeType.ALL)
     public Set<ImageBuildHistory> getBuildHistory() {
         return buildHistory;
     }

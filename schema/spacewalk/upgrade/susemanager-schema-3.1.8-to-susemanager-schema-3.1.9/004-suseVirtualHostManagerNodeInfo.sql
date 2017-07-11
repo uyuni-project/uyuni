@@ -1,0 +1,14 @@
+CREATE TABLE suseVirtualHostManagerNodeInfo
+(
+    id NUMERIC NOT NULL CONSTRAINT suse_vhmnode_id_pk PRIMARY KEY,
+    node_arch_id NUMERIC CONSTRAINT suse_vhmnode_naid_fk REFERENCES rhnServerArch(id),
+    cpus NUMERIC,
+    memory NUMERIC,
+    created TIMESTAMP WITH LOCAL TIME ZONE DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
+    modified TIMESTAMP WITH LOCAL TIME ZONE DEFAULT (CURRENT_TIMESTAMP) NOT NULL
+)
+ENABLE ROW MOVEMENT
+;
+
+CREATE SEQUENCE suse_vhm_nodeinfo_id_seq;
+
