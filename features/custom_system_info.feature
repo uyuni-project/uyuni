@@ -56,7 +56,7 @@ Feature: Test custom system info key value pairs
   Scenario: Delete the value
     When I follow "Custom System Info" in the left menu
     And I follow "key-label"
-    And I follow this client link
+    And I follow this "sle-client" link
     And I follow "Custom Info"
     And I follow "Edit this value"
     And I follow "Delete Value"

@@ -1,14 +1,5 @@
 # Copyright (c) 2010-2017 SUSE-LINUX
 # Licensed under the terms of the MIT license.
-
-Given(/^I am on the Systems overview page of this client$/) do
-  steps %(
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
-    And I follow this client link
-    )
-end
-
 Given(/^I update the profile of this client$/) do
   $client.run("rhn-profile-sync", true, 500, 'root')
 end
@@ -34,10 +25,6 @@ end
 
 Then(/^I should see this client as link$/) do
   step %(I should see a "#{$client_fullhostname}" link)
-end
-
-When(/^I follow this client link$/) do
-  step %(I follow "#{$client_fullhostname}")
 end
 
 Then(/^config-actions are enabled$/) do
