@@ -14,7 +14,6 @@
  */
 
 package com.redhat.rhn.common.localization;
-
 import com.redhat.rhn.common.conf.Config;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -119,11 +118,14 @@ public final class XmlMessages {
         ResourceBundle retval = bundles.get(bundleKey);
 
         if (retval != null) {
-            // System.out.println("Got bundle from cache, returning : " + bundleKey);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Got bundle from cache, returning : " + bundleKey);
+            }
             return retval;
         }
-        // System.out.println("Reloading BUNDLE : " + bundleKey);
-
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Reloading BUNDLE : " + bundleKey);
+        }
         StringBuilder urlName = new StringBuilder("/" + bundleName.replace('.', '/'));
 
         // if we specified a locale
