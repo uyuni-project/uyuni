@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -67,6 +68,7 @@ public class ImageBuildHistory extends BaseDomainHelper {
     /**
      * @return the revision number
      */
+    @Column(name = "revision_num")
     public int getRevisionNumber() {
         return revisionNumber;
     }
@@ -97,7 +99,7 @@ public class ImageBuildHistory extends BaseDomainHelper {
     /**
      * @return the repo digests
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageBuildHistory")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "buildHistory", cascade = CascadeType.ALL)
     public Set<ImageRepoDigest> getRepoDigests() {
         return repoDigests;
     }

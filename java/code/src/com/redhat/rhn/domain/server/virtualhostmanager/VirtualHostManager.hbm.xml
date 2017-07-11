@@ -26,6 +26,11 @@
             <key column="vhmserver_id"/>
             <many-to-many class="com.redhat.rhn.domain.server.Server" column="server_id"/>
         </set>
+
+        <set name="nodes" lazy="true" table="suseServerVirtualHostManager" cascade="save-update">
+            <key column="node_id"/>
+            <many-to-many class="com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo" column="id"/>
+        </set>
     </class>
 
     <query name="VirtualHostManager.listByOrg">
