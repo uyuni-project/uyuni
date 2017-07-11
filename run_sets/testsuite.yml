@@ -32,6 +32,7 @@
 - features/smdba.feature
 - features/powermanagement.feature
 - features/datepicker.feature
+- features/create_group.feature
 - features/xmlrpc_api.feature
 - features/security.feature
 - features/xmlrpc_channel.feature
@@ -43,7 +44,6 @@
 - features/config_channel.feature
 - features/action_chain.feature
 - features/custom_system_info.feature
-- features/create_group.feature
 - features/configuration.feature
 - features/check_errata_npn.feature
 - features/cve_audit.feature
