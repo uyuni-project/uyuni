@@ -12,7 +12,7 @@ Feature: Explore the Minions page
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
-    And I restart salt-minion
+    And I restart salt-minion on "sle-minion"
 
   Scenario: Completeness of the Minions page
     Given I am authorized as "testing" with password "testing"
@@ -22,36 +22,36 @@ Feature: Explore the Minions page
 
   Scenario: Minion is visible in the Pending section
     Given I am authorized as "testing" with password "testing"
-    And this minion key is unaccepted
+    And "sle-minion" key is unaccepted
     And I go to the minion onboarding page
-    Then I refresh page until see this hostname as text
-    And I see my fingerprint
+    Then I refresh page until see "sle-minion" hostname as text
+    And I see "sle-minion" fingerprint
     And I should see a "pending" text
 
-  Scenario: Reject and delete the pending minion key
+  Scenario: Reject and delete the pending "sle-minion" key
     Given I am authorized as "testing" with password "testing"
-    And this minion key is unaccepted
+    And "sle-minion" key is unaccepted
     And I go to the minion onboarding page
-    And I reject this client from the Pending section
-    And we wait till Salt master sees this minion as rejected
+    And I reject "sle-minion" from the Pending section
+    And we wait till Salt master sees "sle-minion" as rejected
     Then I should see a "rejected" text
-    And I delete this client from the Rejected section
-    Then I should not see this client as a Minion anywhere
+    And I delete "sle-minion" from the Rejected section
+    Then I should not see "sle-minion" as a Minion anywhere
 
   Scenario: Accepted minion shows up as a registered system
     Given I am authorized as "testing" with password "testing"
-    And this minion key is unaccepted
-    And this minion is not registered in Spacewalk
+    And "sle-minion" key is unaccepted
+    And "sle-minion" is not registered in Spacewalk
     And I go to the minion onboarding page
     Then I should see a "pending" text
-    When I accept this client's minion key
-    And we wait till Salt master sees this minion as accepted
+    When I accept "sle-minion" key
+    And we wait till Salt master sees "sle-minion" as accepted
     # Registration takes a while
     And I wait until onboarding is completed for "sle-minion"
 
   Scenario: The minion communicates with the master
     # It takes a while before we can get the grains and registration is done
     Given I am authorized as "testing" with password "testing"
-    And that the master can reach this client
-    When I get OS information of the Minion from the Master
+    And the master can reach "sle-minion"
+    When I get OS information of "sle-minion" from the Master
     Then it should contain a "SLES" text

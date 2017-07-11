@@ -4,7 +4,7 @@
 Feature: System package list in the UI is updated if packages are manually installed/removed using zypper or yum
 
   Scenario: Manually removing a package in a minion
-    Given this minion key is accepted
+    Given "sle-minion" key is "accepted"
     And I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
@@ -15,7 +15,7 @@ Feature: System package list in the UI is updated if packages are manually insta
     And I click on the css "button.spacewalk-button-filter" until page does not contain "milkyway-dummy" text
 
   Scenario: Manually installing a package in a minion
-    Given this minion key is accepted
+    Given "sle-minion" key is "accepted"
     And I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
