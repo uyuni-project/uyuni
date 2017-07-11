@@ -25,6 +25,7 @@ CREATE TABLE suseImageInfo
     image_arch_id  NUMBER NOT NULL
                        CONSTRAINT suse_imginfo_said_fk
                            REFERENCES rhnServerArch (id),
+    curr_revision_num   NUMBER NOT NULL,
     org_id         NUMBER NOT NULL
                      CONSTRAINT suse_imginfo_oid_fk
                        REFERENCES web_customer (id)
