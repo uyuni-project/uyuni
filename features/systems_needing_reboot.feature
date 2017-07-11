@@ -31,7 +31,7 @@ Feature: Reboot required after patch
     And I follow "Overview" in the left menu
     And I click Systems, under Systems node
     And I follow "All" in the left menu
-    And I follow this client link
+    And I follow this "sle-client" link
     Then I should see a "The system requires a reboot" text
     And I follow "Overview" in the left menu
     And I click Systems, under Systems node

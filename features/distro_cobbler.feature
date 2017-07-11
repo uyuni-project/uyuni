@@ -146,11 +146,7 @@ Feature: test cobbler and distro Kickstart
     And file "/srv/tftpboot/pxelinux.0" exists on server
 
   Scenario: trigger the creation of a cobbler system record
-    Given I am authorized
-    And I follow "Home" in the left menu
-    And I follow "Systems"
-    And I follow "Overview" in the left menu
-    And I follow this client link
+    And I follow this "sle-client" link
     And I follow "Provisioning"
     And I click on "Create PXE installation configuration"
     And I click on "Continue"
