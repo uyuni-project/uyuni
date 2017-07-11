@@ -68,15 +68,15 @@ end
 
 When(/^I follow "(.*?)" link$/) do |minion|
   if minion == "sle-minion"
-    target_fullhostname = $minion_fullhostname
+    target_hostname = $minion_hostname
   elsif minion == "ceos-minion"
-    target_fullhostname = $ceos_minion_fullhostname
+    target_hostname = $ceos_minion_hostname
   elsif minion == "ssh-minion"
-    target_fullhostname = $ssh_minion_fullhostname
+    target_hostname = $ssh_minion_hostname
   elsif minion == "sle-client"
-    target_fullhostname = $client_fullhostname
+    target_hostname = $client_hostname
   elsif minion == "sle-migrated-minion"
-    target_fullhostname = $client_fullhostname
+    target_hostname = $client_hostname
   else
     raise "no valid name of minion given! "
   end
@@ -229,20 +229,20 @@ end
 
 When(/^I delete "(.*?)" key in the Salt master$/) do |minion|
   if minion == "sle-minion"
-    target_fullhostname = $minion_fullhostname
+    target_hostname = $minion_hostname
   elsif minion == "ceos-minion"
-    target_fullhostname = $ceos_minion_fullhostname
+    target_hostname = $ceos_minion_hostname
   else
     raise "no valid name of minion given! "
   end
-  $output, _code = $server.run("salt-key -y -d #{target_hostgame}", false)
+  $output, _code = $server.run("salt-key -y -d #{target_hostname}", false)
 end
 
 When(/^I accept "(.*?)" key in the Salt master$/) do |minion|
   if minion == "sle-minion"
-    target_fullhostname = $minion_fullhostname
+    target_hostname = $minion_hostname
   elsif minion == "ceos-minion"
-    target_fullhostname = $ceos_minion_fullhostname
+    target_hostname = $ceos_minion_hostname
   else
     raise "no valid name of minion given! "
   end
@@ -251,9 +251,9 @@ end
 
 When(/^I reject "(.*?)" key in the Salt master$/) do |minion|
   if minion == "sle-minion"
-    target_fullhostname = $minion_fullhostname
+    target_hostname = $minion_hostname
   elsif minion == "ceos-minion"
-    target_fullhostname = $ceos_minion_fullhostname
+    target_hostname = $ceos_minion_hostname
   else
     raise "no valid name of minion given! "
   end
@@ -340,7 +340,7 @@ Given(/^"(.*?)" is registered in Spacewalk$/) do |minion|
   end
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  assert_includes(@rpc.listSystems.map { |s| s['name'] }, $minion_fullhostname)
+  assert_includes(@rpc.listSystems.map { |s| s['name'] }, target_fullhostname)
 end
 
 Then(/^all local repositories are disabled$/) do
@@ -639,7 +639,7 @@ end
 # Perform actions
 When(/^I reject "(.*?)" from the Pending section$/) do |minion|
   if minion == "sle-minion"
-    target_hosthame = $minion_hostname
+    target_hostname = $minion_hostname
   elsif minion == "ceos-minion"
     target_hostname = $ceos_minion_hostname
   else
