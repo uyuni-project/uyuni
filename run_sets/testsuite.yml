@@ -23,12 +23,12 @@
 # FIXME: MAKE THIS HAPPEN
 
 # **** IDEMPOTENT ******
+- features/smdba.feature
 - features/mainpage.feature
 
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 # server secondary 
 - features/distro_cobbler.feature
-- features/smdba.feature
 # traditional client
 - features/config_channel.feature
 - features/action_chain.feature
