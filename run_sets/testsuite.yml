@@ -30,6 +30,7 @@
 - features/mainpage.feature
 - features/xmlrpc_user.feature 
 - features/smdba.feature
+- features/powermanagement.feature
 - features/datepicker.feature
 - features/xmlrpc_api.feature
 - features/security.feature
@@ -39,8 +40,6 @@
 - features/salt_reboot_test.feature
 - features/sp_migration.feature
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
-# server secondary 
-# traditional client
 - features/config_channel.feature
 - features/action_chain.feature
 - features/custom_system_info.feature
@@ -65,15 +64,12 @@
 - features/nagios.feature
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
-- features/powermanagement.feature
 - features/CVE_ID_new_syntax.feature
-# - features/migrate_client_to_minion.feature
 - features/delete_system_profile.feature
 - features/baremetal_test.feature
 - features/compare_channel.feature
 - features/ssh_push.feature
 - features/delete_config_channel.feature
-# - features/xmlrpc_VHM.feature
 - features/setup_wizard.feature
 - features/check_VHM.feature
 
@@ -96,12 +92,7 @@
 - features/docker_advanced_test.feature 
 # Debug suse-manager server ( this should be removed)
 - features/spacewalk_debug.feature
-
 ### Scalability tests (after debug always)
 - features/docker_xmlrpc.feature
-# - features/minion_datacenter.feature
-### Disabled: does not work if IPv6 broken
-
 ## alway put smdba and change password features at the end of the testsuite.
 - features/change_password.feature
-
