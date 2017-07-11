@@ -22,7 +22,6 @@ Feature: Salt is configured and running
     Then the Salt Minion should be running
 
   Scenario: The minion appears in the master's incoming queue
-    When I list unaccepted keys at Salt Master
     Then the list of the keys should contain this client's hostname
 
    Scenario: There are no top.sls file in certain folders
