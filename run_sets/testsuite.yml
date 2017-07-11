@@ -27,8 +27,12 @@
 - features/mainpage.feature
 - features/xmlrpc_user.feature 
 - features/smdba.feature
+- features/check_VHM.feature
 - features/datepicker.feature
-
+- features/xmlrpc_api.feature
+- features/security.feature
+- features/xmlrpc_channel.feature
+- features/xmlrpc_activationkey.feature
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 # server secondary 
 # traditional client
@@ -66,13 +70,8 @@
 - features/compare_channel.feature
 - features/ssh_push.feature
 - features/delete_config_channel.feature
-- features/xmlrpc_api.feature
-- features/xmlrpc_activationkey.feature
-- features/xmlrpc_channel.feature
 # - features/xmlrpc_VHM.feature
-- features/check_VHM.feature
 - features/setup_wizard.feature
-- features/security.feature
 
 #### Salt related features   ###
 - features/salt.feature
