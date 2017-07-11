@@ -36,6 +36,7 @@
 - features/security.feature
 - features/xmlrpc_channel.feature
 - features/xmlrpc_activationkey.feature
+- features/salt_reboot_test.feature
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 # server secondary 
 # traditional client
@@ -88,7 +89,6 @@
 - features/salt_install_with_staging.feature
 - features/salt_states_catalog.feature
 - features/salt_openscap_audit.feature
-- features/salt_reboot_test.feature
 # Formulas scenario needs sle-minion and ssh-minion
 - features/salt_formulas.feature
 # test if hostoname, kernel, os-versino are correctly visualiz. for all minions
