@@ -11,14 +11,18 @@
 
 CREATE TABLE suseServerVirtualHostManager
 (
-    server_id     NUMBER NOT NULL
+    server_id     NUMBER
                     CONSTRAINT suse_server_vhms_sid_fk
                     REFERENCES rhnServer (id)
-                    ON DELETE CASCADE,
+                    ON DELETE SET NULL,
     vhmserver_id  NUMBER NOT NULL
                     CONSTRAINT suse_server_vhms_vhmsid_fk
                     REFERENCES suseVirtualHostManager (id)
                     ON DELETE CASCADE
+    node_id       NUMBER
+                    CONSTRAINT suse_svhm_nodeinfo_fk
+                    REFERENCES suseVirtualHostManagerNodeInfo (id)
+                    ON DELETE SET NULL
 )
 ENABLE ROW MOVEMENT
 ;
