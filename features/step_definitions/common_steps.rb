@@ -180,19 +180,36 @@ Given(/cobblerd is running/) do
   end
 end
 
-Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |arg1, arg2, arg3|
+Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |distro, user, pwd|
   ct = CobblerTest.new
-  ct.login(arg2, arg3)
-  if ct.distro_exists(arg1)
-    raise "distro " + arg1 + " already exists"
+  ct.login(user, pwd)
+  if ct.distro_exists(distro)
+    raise "distro " + distro + " already exists"
   end
-  ct.distro_create(arg1, "/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux", "install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd")
+  ct.distro_create(distro, "/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux", "install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd")
 end
 
-Given(/distro "([^"]*)" exists/) do |arg1|
+Then(/^trigger cobbler system record\(not for ssh\-push tradclient\)$/) do
+  space = "spacecmd -u admin -p admin"
+  host = $client_fullhostname
+  cmd = "#{$space} system_details #{host}"
+  $server.run("#{space} clear_caches")
+  out, _code = $server.run(cmd)
+  unless out.include? "ssh-push-tunnel"
+    # trad-client normal
+    steps %(
+      And I follow this "sle-client" link
+      And I follow "Provisioning"
+      And I click on "Create PXE installation configuration"
+      And I click on "Continue"
+      Then file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks="
+      )
+  end
+end
+Given(/distro "([^"]*)" exists/) do |distro|
   ct = CobblerTest.new
-  unless ct.distro_exists(arg1)
-    raise "distro " + arg1 + " does not exist"
+  unless ct.distro_exists(distro)
+    raise "distro " + distro + " does not exist"
   end
 end
 

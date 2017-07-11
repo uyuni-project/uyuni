@@ -23,12 +23,14 @@
 # FIXME: MAKE THIS HAPPEN
 
 # **** IDEMPOTENT ******
-- features/smdba.feature
+- features/distro_cobbler.feature
 - features/mainpage.feature
+- features/xmlrpc_user.feature 
+- features/smdba.feature
+- features/datepicker.feature
 
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 # server secondary 
-- features/distro_cobbler.feature
 # traditional client
 - features/config_channel.feature
 - features/action_chain.feature
@@ -58,7 +60,6 @@
 - features/test_reboot.feature
 - features/powermanagement.feature
 - features/CVE_ID_new_syntax.feature
-- features/datepicker.feature
 # - features/migrate_client_to_minion.feature
 - features/delete_system_profile.feature
 - features/baremetal_test.feature
@@ -72,7 +73,6 @@
 - features/check_VHM.feature
 - features/setup_wizard.feature
 - features/security.feature
-- features/xmlrpc_user.feature 
 
 #### Salt related features   ###
 - features/salt.feature
