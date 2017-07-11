@@ -15,6 +15,10 @@
 - features/register_client.feature
 - features/minion_bootstrap.feature
 - features/docker_build_image.feature
+- features/salt_ssh.feature 
+- features/centos_tradclient.feature 
+- features/centos_salt.feature 
+- features/centos_salt_ssh.feature 
 ## CORE feature end ###
 
 # SECONDARY FEATURE:
@@ -86,18 +90,8 @@
 - features/salt_states_catalog.feature
 - features/salt_openscap_audit.feature
 - features/salt_reboot_test.feature
-- features/salt_ssh.feature 
-
 # Formulas scenario needs sle-minion and ssh-minion
 - features/salt_formulas.feature
-
-## Centos client related feat. ###
-# Salt centos7 trad_client
-- features/centos_tradclient.feature 
-# Salt centos7 feature
-- features/centos_salt.feature
-- features/centos_salt_ssh.feature 
-
 # test if hostoname, kernel, os-versino are correctly visualiz. for all minions
 - features/overview_systems_details.feature
 #### * Docker related features tests.  ###
@@ -113,7 +107,4 @@
 
 ## alway put smdba and change password features at the end of the testsuite.
 - features/change_password.feature
-
-# sync channels in background
-# - features/sync_real_channels.feature
 
