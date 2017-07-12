@@ -7,7 +7,6 @@ Feature: Register a system to be managed via SSH push
   As the testing user
   I want to register a client using spacewalk-ssh-push-init
 
-
   Scenario: Delete the trad-client for ssh-reverse bootrap
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
