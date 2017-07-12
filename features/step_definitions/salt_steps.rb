@@ -29,9 +29,9 @@ end
 
 Given(/^the salt-master can reach "(.*?)"$/) do |minion|
   if minion == "sle-minion"
-    target_hostname = $minion_hostname
+    target_fullhostname = $minion_fullhostname
   elsif minion == "ceos-minion"
-    target_hostname = $ceos_minion_hostname
+    target_fullhostname = $ceos_minion_fullhostname
   else
     raise "no valid name of minion given! "
   end
@@ -43,8 +43,8 @@ Given(/^the salt-master can reach "(.*?)"$/) do |minion|
     Timeout.timeout(KEEPALIVE_TIMEOUT) do
       # only try 3 times
       3.times do
-        out, _code = $server.run("salt #{target_hostname} test.ping")
-        if out.include?(target_hostname) && out.include?('True')
+        out, _code = $server.run("salt #{target_fullhostname} test.ping")
+        if out.include?(target_fullhostname) && out.include?('True')
           finished = Time.now
           puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
           break
@@ -181,13 +181,19 @@ Given(/^"(.*?)" key is "(.*?)"$/) do |minion, key_type|
   else
     raise "no valid name of minion given! "
   end
-  steps %(
-    Then I restart salt-minion on \"#{minion}\"
-    And I list \"all\" keys at Salt Master
-  )
+  step %(I list "#{key_type}" keys at Salt Master)
   unless $output.include?(target_hostname)
+    if key_type == "accepted"
+      step %(I accept "#{minion}" key in the Salt master)
+    elsif key_type == "rejected"
+      step %(I reject "#{minion}" key in the Salt master)
+    elsif key_type == "unaccepted"
+      step %(I delete "#{minion}" key in the Salt master)
+    else
+      raise "no valid key_type!"
+    end
     steps %(
-      Then I accept "#{minion}" key in the Salt master
+      And I restart salt-minion on "#{minion}"
       And we wait till Salt master sees "#{minion}" as "#{key_type}"
         )
   end
@@ -837,12 +843,24 @@ end
 
 SALT_PACKAGES = "salt salt-minion".freeze
 
-Given(/^no Salt packages are installed on remote "(.*)"$/) do |host|
-  if host == "ssh-minion"
-    $ssh_minion.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
+Given(/^no Salt packages are installed on "(.*)"$/) do |host|
+  if host == "sle-minion"
+    target = $minion
+  elsif host == "ceos-minion"
+    target = $ceos_minion
+  elsif host == "ssh-minion"
+    target = $ssh_minion
+  elsif host == "sle-client"
+    target = $client_hostname
+  elsif host == "sle-migrated-minion"
+    target = $client_hostname
+  else
+    raise "no valid name of host given! "
   end
-  if host == "centos"
-    $ceos_minion.run("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", false)
+  if ["sle-minion", "ssh-minion", "sle-client", "sle-migrated-minion"].include(host)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
+  elsif ["ceos-minion"].include(host)
+    target.run("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", false)
   end
 end
 
