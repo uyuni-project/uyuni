@@ -30,12 +30,14 @@
 - features/mainpage.feature
 - features/xmlrpc_user.feature 
 - features/smdba.feature
+- features/salt_states_catalog.feature
 - features/powermanagement.feature
 - features/datepicker.feature
 - features/create_group.feature
 - features/xmlrpc_api.feature
 - features/custom_system_info.feature
 - features/security.feature
+- features/salt_minions_page.feature
 - features/xmlrpc_channel.feature
 - features/config_channel.feature
 - features/xmlrpc_activationkey.feature
@@ -43,9 +45,10 @@
 - features/salt_reboot_test.feature
 - features/sp_migration.feature
 - features/salt.feature
-- features/salt_minions_page.feature
 - features/salt_minion_details.feature
 - features/change_password.feature
+- features/salt_download_endpoint.feature
+
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/action_chain.feature
 - features/check_errata_npn.feature
@@ -76,13 +79,11 @@
 - features/check_VHM.feature
 
 #### Salt related features   ###
-- features/salt_download_endpoint.feature
 - features/salt_software_states.feature
 - features/salt_pkgset_beacon.feature
 - features/salt_remote_cmds.feature
 - features/salt_install_package.feature
 - features/salt_install_with_staging.feature
-- features/salt_states_catalog.feature
 - features/salt_openscap_audit.feature
 # Formulas scenario needs sle-minion and ssh-minion
 - features/salt_formulas.feature
@@ -93,4 +94,3 @@
 - features/spacewalk_debug.feature
 ### Scalability tests (after debug always)
 - features/docker_xmlrpc.feature
-## alway put smdba and change password features at the end of the testsuite.
