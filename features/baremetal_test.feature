@@ -45,7 +45,7 @@ Feature: Test Bare-metal discovery
   Scenario: check tab links "Details" unprovisioned
     Given I am on the Systems page
     And I click Systems, under Systems node 
-    When I follow this client link
+    When I follow this "sle-client" link
     Then I should see a "Details" link in the content area
     And I should not see a "Software" link in the content area
     And I should not see a "Configuration" link in the content area
