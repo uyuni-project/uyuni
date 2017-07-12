@@ -73,7 +73,6 @@
 - features/baremetal_test.feature
 - features/compare_channel.feature
 - features/ssh_push.feature
-- features/delete_config_channel.feature
 - features/setup_wizard.feature
 - features/check_VHM.feature
 
