@@ -43,7 +43,7 @@
 - features/salt.feature
 - features/salt_minions_page.feature
 - features/salt_minion_details.feature
-
+- features/change_password.feature
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/config_channel.feature
 - features/action_chain.feature
@@ -96,4 +96,3 @@
 ### Scalability tests (after debug always)
 - features/docker_xmlrpc.feature
 ## alway put smdba and change password features at the end of the testsuite.
-- features/change_password.feature
