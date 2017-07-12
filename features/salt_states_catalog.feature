@@ -31,7 +31,7 @@ Feature: Check the Salt package state UI
     And I click on the css "button#save-btn"
     Then I should see a "State 'teststate' saved" text
 
-  Scenario: I add a apply a state via the UI
+  Scenario: I add and apply a state via the UI
     Given I am on the Systems overview page of this "sle-minion"
     And I follow "States"
     Then I follow "Custom"
@@ -43,3 +43,12 @@ Feature: Check the Salt package state UI
     And I click on the css "button#save-btn"
     And I click on the css "button#apply-btn"
     Then "/root/foobar" exists on the filesystem of "sle-minion"
+
+  Scenario: Remove the state from the UI and cleanup
+    Given I am authorized as "testing" with password "testing"
+    Then I follow "Salt"
+    And I follow "State Catalog"
+    And I follow "teststate"
+    When I click on the css "a#delete-btn" and confirm
+    Then I should see a "State 'teststate' deleted" text
+    And I remove "/root/foobar" from "sle-minion"
