@@ -419,22 +419,40 @@ When(/^I should not see my hostname$/) do
   fail if page.has_content?($minion_hostname)
 end
 
-When(/^I expand the results$/) do
-   find("div[id='#{$minion_fullhostname}']").click
-end
-
 When(/^I expand the results for "(.*)"$/) do |host|
- find("div[id='#{$ceos_minion_fullhostname}']").click if host == "ceos-minion"
- find("div[id='#{$ssh_minion_fullhostname}']").click if host == "ssh-minion"
- find("div[id='#{$minion_fullhostname}']").click if host == "sle-minion"
+  if host == "sle-minion"
+    target_fullhostname = $minion_fullhostname
+  elsif host == "ceos-minion"
+    target_fullhostname = $ceos_minion_fullhostname
+  elsif host == "ssh-minion"
+    target_fullhostname = $ssh_minion_fullhostname
+  elsif host == "sle-client"
+    target_fullhostname = $client_fullhostname
+  elsif host == "sle-migrated-minion"
+    target_fullhostname = $client_fullhostname
+  else
+    raise "no valid name of host given! "
+  end
+  find("div[id='#{target_fullhostname}']").click
 end
 
 Then(/^I enter command "([^"]*)"$/) do |arg1|
   fill_in "command", with: arg1
 end
 
-Then(/^I should see "([^"]*)" in the command output$/) do |text|
-  within("pre[id='#{$minion_fullhostname}-results']") do
+Then(/^I should see "([^"]*)" in the command output for "(.*)"$/) do |text, minion|
+  if host == "sle-minion"
+    target_fullhostname = $minion_fullhostname
+  elsif host == "ceos-minion"
+    target_fullhostname = $ceos_minion_fullhostname
+  elsif host == "ssh-minion"
+    target_fullhostname = $ssh_minion_fullhostname
+  elsif host == "sle-migrated-minion"
+    target_fullhostname = $client_fullhostname
+  else
+    raise "no valid name of minion given! "
+  end
+  within("pre[id='#{target_fullhostname}-results']") do
     fail unless page.has_content?(text)
   end
 end
