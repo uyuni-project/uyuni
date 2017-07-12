@@ -27,11 +27,11 @@ Given(/^salt-minion is configured on "(.*?)"$/) do |minion|
   step %(I start salt-minion on "#{minion}")
 end
 
-Given(/^the master can reach "(.*?)"$/) do |minion|
+Given(/^the salt-master can reach "(.*?)"$/) do |minion|
   if minion == "sle-minion"
-    target_hostname = $minion_hostname
+    target_fullhostname = $minion_fullhostname
   elsif minion == "ceos-minion"
-    target_hostname = $ceos_minion_hostname
+    target_fullhostname = $ceos_minion_fullhostname
   else
     raise "no valid name of minion given! "
   end
@@ -43,9 +43,8 @@ Given(/^the master can reach "(.*?)"$/) do |minion|
     Timeout.timeout(KEEPALIVE_TIMEOUT) do
       # only try 3 times
       3.times do
-        @output = sshcmd("salt #{target_hostname} test.ping", ignore_err: true)
-        if @output[:stdout].include?(target_hostname) &&
-           @output[:stdout].include?('True')
+        out, _code = $server.run("salt #{target_fullhostname} test.ping")
+        if out.include?(target_fullhostname) && out.include?('True')
           finished = Time.now
           puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
           break
@@ -182,13 +181,19 @@ Given(/^"(.*?)" key is "(.*?)"$/) do |minion, key_type|
   else
     raise "no valid name of minion given! "
   end
-  steps %(
-    Then I restart salt-minion on \"#{minion}\"
-    And I list \"all\" keys at Salt Master
-  )
+  step %(I list "#{key_type}" keys at Salt Master)
   unless $output.include?(target_hostname)
+    if key_type == "accepted"
+      step %(I accept "#{minion}" key in the Salt master)
+    elsif key_type == "rejected"
+      step %(I reject "#{minion}" key in the Salt master)
+    elsif key_type == "unaccepted"
+      step %(I delete "#{minion}" key in the Salt master)
+    else
+      raise "no valid key_type!"
+    end
     steps %(
-      Then I accept "#{minion}" key in the Salt master
+      And I restart salt-minion on "#{minion}"
       And we wait till Salt master sees "#{minion}" as "#{key_type}"
         )
   end
@@ -485,6 +490,12 @@ When(/^I click on the css "(.*)"$/) do |css|
   find(css).click
 end
 
+When(/^I click on the css "(.*)" and confirm$/) do |css|
+  accept_alert do
+    find(css).click
+  end
+end
+
 When(/^I enter "(.*)" in the css "(.*)"$/) do |input, css|
   find(css).set(input)
 end
@@ -630,28 +641,6 @@ Then(/^the download should get no error$/) do
 end
 
 # Verify content
-Then(/^I should see "(.*?)" in the Pending section$/) do |minion|
-  if minion == "sle-minion"
-    target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
-    target_hostname = $ceos_minion_hostname
-  else
-    raise "no valid name of minion given! "
-  end
-  fail unless find('#pending-list').find("b", :text => target_hostname).visible?
-end
-
-Then(/^I should see "(.*?)" in the Rejected section$/) do |minion|
-  if minion == "sle-minion"
-    target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
-    target_hostname = $ceos_minion_hostname
-  else
-    raise "no valid name of minion given! "
-  end
-  fail unless find('#rejected-list').find("b", :text => target_hostname).visible?
-end
-
 Then(/^I should not see "(.*?)" as a Minion anywhere$/) do |minion|
   if minion == "sle-minion"
     target_hostname = $minion_hostname
@@ -673,9 +662,7 @@ When(/^I reject "(.*?)" from the Pending section$/) do |minion|
     raise "no valid name of minion given! "
   end
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'reject']"
-  if all(:xpath, xpath_query).any?
-    fail unless find(:xpath, xpath_query).click
-  end
+  fail unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "(.*?)" from the Rejected section$/) do |minion|
@@ -687,9 +674,7 @@ When(/^I delete "(.*?)" from the Rejected section$/) do |minion|
     raise "no valid name of minion given! "
   end
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'delete']"
-  if all(:xpath, xpath_query).any?
-    fail unless find(:xpath, xpath_query).click
-  end
+  fail unless find(:xpath, xpath_query).click
 end
 
 When(/^I see "(.*?)" fingerprint$/) do |minion|
@@ -715,9 +700,7 @@ When(/^I accept "(.*?)" key$/) do |minion|
     raise "no valid name of minion given! "
   end
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'accept']"
-  if all(:xpath, xpath_query).any?
-    fail unless find(:xpath, xpath_query).click
-  end
+  fail unless find(:xpath, xpath_query).click
 end
 
 When(/^I go to the minion onboarding page$/) do
@@ -854,12 +837,12 @@ end
 
 SALT_PACKAGES = "salt salt-minion".freeze
 
-Given(/^no Salt packages are installed on remote "(.*)"$/) do |host|
-  if host == "ssh-minion"
-    $ssh_minion.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
-  end
-  if host == "centos"
-    $ceos_minion.run("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", false)
+Given(/^no Salt packages are installed on "(.*)"$/) do |host|
+  target = get_target(target)
+  if ["sle-minion", "ssh-minion", "sle-client", "sle-migrated-minion"].include(host)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
+  elsif ["ceos-minion"].include(host)
+    target.run("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", false)
   end
 end
 

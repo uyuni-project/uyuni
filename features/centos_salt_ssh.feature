@@ -6,9 +6,9 @@ Feature: CENTOS7 ssh feature.
    1) Bootstrap a new salt host via salt-ssh
 
   Scenario: Deletes centos minion
-    Given no Salt packages are installed on remote "centos"
+    Given no Salt packages are installed on remote "ceos-minion"
     When I am on the Systems overview page of this "ceos-minion"
-    And I stop salt-minion on centos
+    And I stop salt-minion on "ceos-minion"
     And I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
