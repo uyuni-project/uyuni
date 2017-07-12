@@ -838,19 +838,7 @@ end
 SALT_PACKAGES = "salt salt-minion".freeze
 
 Given(/^no Salt packages are installed on "(.*)"$/) do |host|
-  if host == "sle-minion"
-    target = $minion
-  elsif host == "ceos-minion"
-    target = $ceos_minion
-  elsif host == "ssh-minion"
-    target = $ssh_minion
-  elsif host == "sle-client"
-    target = $client_hostname
-  elsif host == "sle-migrated-minion"
-    target = $client_hostname
-  else
-    raise "no valid name of host given! "
-  end
+  target = get_target(target)
   if ["sle-minion", "ssh-minion", "sle-client", "sle-migrated-minion"].include(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
   elsif ["ceos-minion"].include(host)
