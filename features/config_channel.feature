@@ -260,3 +260,21 @@ Feature: Test configuration channel basic functions
     When I follow "Differences exist"
     Then I should not see a "Differences exist in a file that is not readable by all. Re-deployment of configuration file is recommended." text
     And I should see a "+MGR_PROXY=yes" text
+
+  Scenario: CLEAN_UP: remove configuration channel: Test Channel
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    And I follow "Test Channel"
+    And I follow "delete channel"
+    And I click on "Delete Config Channel"
+ 
+ Scenario: CLEAN_UP: remove configuration channel: New Test Channel
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    And I follow "New Test Channel"
+    And I follow "delete channel"
+    And I click on "Delete Config Channel"
