@@ -47,9 +47,10 @@
 - features/sp_migration.feature
 - features/salt.feature
 - features/salt_minion_details.feature
+- features/ssh_push.feature
 - features/change_password.feature
 - features/salt_download_endpoint.feature
-
+- features/baremetal_test.feature
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/action_chain.feature
 - features/check_errata_npn.feature
@@ -71,10 +72,7 @@
 - features/systems_needing_reboot.feature
 - features/test_reboot.feature
 - features/CVE_ID_new_syntax.feature
-- features/delete_system_profile.feature
-- features/baremetal_test.feature
 - features/compare_channel.feature
-- features/ssh_push.feature
 - features/setup_wizard.feature
 - features/check_VHM.feature
 
