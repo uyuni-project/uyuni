@@ -11,4 +11,5 @@ Feature: Delete a system profile
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
-    Then I should see that this system has been deleted
+    Then I should see a "System profile" text
+    Then I should see a "has been deleted" text
