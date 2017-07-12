@@ -37,8 +37,8 @@ Feature: register a salt-minion via bootstrap
     Then I should see my hostname
     And I click on run
     Then I wait for "3" seconds
-    And I expand the results
-    Then I should see "SuSE-release" in the command output
+    And I expand the results for "sle-minion"
+    Then I should see "SuSE-release" in the command output for "sle-minion"
  
   Scenario: Check spacecmd system ID of bootstrapped minion.
     Given I am on the Systems overview page of this "sle-minion"
