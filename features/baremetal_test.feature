@@ -3,6 +3,14 @@
 
 Feature: Test Bare-metal discovery
 
+  Scenario: Delete the normal trad-client for bare metal feature
+    Given I am on the Systems overview page of this "sle-client"
+    When I follow "Delete System"
+    And I should see a "Confirm System Profile Deletion" text
+    And I click on "Delete Profile"
+    Then I should see a "System profile" text
+    And I should see a "has been deleted" text
+
   Scenario: Enable Bare-metal discovery
     Given I am authorized as "admin" with password "admin"
     And I follow "Admin"
@@ -92,13 +100,13 @@ Feature: Test Bare-metal discovery
     And I should not see a "Audit" link in the content area
     And I follow "Clear"
 
-  Scenario: Delete the system profile
+  Scenario: Delete the system profile (bare metal) (cleanup)
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
 
-  Scenario: Disable Bare-metal discovery
+  Scenario: Disable Bare-metal discovery (cleanup)
     Given I am authorized as "admin" with password "admin"
     And I follow "Admin"
     And I follow "Manager Configuration" in the left menu
@@ -109,4 +117,7 @@ Feature: Test Bare-metal discovery
     When I click on "Disable adding to this organization"
     Then I should see a "Automatic bare-metal system discovery has been successfully disabled" text
     And the pxe-default-profile should be disabled
-
+  
+    Scenario: Register a trad-client (cleanup) (need always tradclient)
+    When I register using an activation key
+    Then I should see this client in spacewalk
