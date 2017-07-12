@@ -7,6 +7,13 @@ Feature: Register a system to be managed via SSH push
   As the testing user
   I want to register a client using spacewalk-ssh-push-init
 
+
+  Scenario: Delete the trad-client for ssh-reverse bootrap
+    Given I am on the Systems overview page of this "sle-client"
+    When I follow "Delete System"
+    And I should see a "Confirm System Profile Deletion" text
+    And I click on "Delete Profile"
+
   Scenario: Create activation key for SSH push
     Given I am on the Systems page
     And I follow "Activation Keys" in the left menu
@@ -39,3 +46,18 @@ Feature: Register a system to be managed via SSH push
   Scenario: Check this client's contact method
     Given I am on the Systems overview page of this "sle-client"
     Then I should see a "Push via SSH tunnel" text
+
+  Scenario: Delete the trad-ssh-push-client (CLEANUP)
+    Given I am on the Systems overview page of this "sle-client"
+    When I follow "Delete System"
+    And I should see a "Confirm System Profile Deletion" text
+    And I click on "Delete Profile"
+
+  Scenario: Cleaunp host file of trad-client ssh-tunnel
+    Given I am on the Systems page
+    And I run "sed -i '/127.0.1.1/d' /etc/hosts" on "sle-client"
+    And I remove server hostname from hosts trad-client
+ 
+  Scenario: Register a trad-client, after ssh-push removal(cleanup),(need always tradclient)
+    When I register using an activation key
+    Then I should see this client in spacewalk
