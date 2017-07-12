@@ -19,8 +19,8 @@ Feature: Verify the minion registration
 
   Scenario: Accepted minion has a base channel
     Given I am authorized as "testing" with password "testing"
-    And that this minion is registered in Spacewalk
-    And I follow the sle minion
+    And "sle-minion" is registered in Spacewalk
+    And I follow "sle-minion" link
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    Then this minion should have a Base channel set
+    Then the system should have a Base channel set

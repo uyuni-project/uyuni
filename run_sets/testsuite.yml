@@ -40,6 +40,10 @@
 - features/overview_systems_details.feature
 - features/salt_reboot_test.feature
 - features/sp_migration.feature
+- features/salt.feature
+- features/salt_minions_page.feature
+- features/salt_minion_details.feature
+
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/config_channel.feature
 - features/action_chain.feature
@@ -74,9 +78,6 @@
 - features/check_VHM.feature
 
 #### Salt related features   ###
-- features/salt.feature
-- features/salt_minions_page.feature
-- features/salt_minion_details.feature
 - features/salt_download_endpoint.feature
 - features/salt_software_states.feature
 - features/salt_pkgset_beacon.feature
