@@ -653,6 +653,8 @@ When(/^I reject "(.*?)" from the Pending section$/) do |minion|
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'reject']"
   if all(:xpath, xpath_query).any?
     fail unless find(:xpath, xpath_query).click
+  else
+    raise "reject key button not found for #{target_hostname}"
   end
 end
 
@@ -667,6 +669,8 @@ When(/^I delete "(.*?)" from the Rejected section$/) do |minion|
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'delete']"
   if all(:xpath, xpath_query).any?
     fail unless find(:xpath, xpath_query).click
+  else
+    raise "delete key button not found for #{target_hostname}"
   end
 end
 
@@ -695,6 +699,8 @@ When(/^I accept "(.*?)" key$/) do |minion|
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'accept']"
   if all(:xpath, xpath_query).any?
     fail unless find(:xpath, xpath_query).click
+  else
+    raise "accept key button not found for #{target_hostname}"
   end
 end
 
