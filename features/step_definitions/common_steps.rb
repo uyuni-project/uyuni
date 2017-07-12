@@ -420,3 +420,7 @@ Then(/^On this client the File "([^"]*)" should have the content "([^"]*)"$/) do
     $client.run("test -f #{filename}")
     $client.run("grep #{content} #{filename}")
 end
+
+Then(/^I remove server hostname from hosts trad-client$/) do
+  $client.run("sed -i \'s/#{$server_fullhostname}//\' /etc/hosts")
+end
