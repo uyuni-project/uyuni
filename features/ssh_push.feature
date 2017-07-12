@@ -71,6 +71,7 @@ Feature: Register a system to be managed via SSH push
   Scenario: Cleaunp host file of trad-client ssh-tunnel
     Given I am on the Systems page
     And I run "sed -i '/127.0.1.1/d' /etc/hosts" on "sle-client"
+    And I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh" on "server"
     And I remove server hostname from hosts trad-client
  
   Scenario: Register a trad-client, after ssh-push removal(cleanup),(need always tradclient)
