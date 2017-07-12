@@ -49,9 +49,9 @@ Feature: Explore the Minions page
     # Registration takes a while
     And I wait until onboarding is completed for "sle-minion"
 
-  Scenario: The minion communicates with the master
+  Scenario: The minion communicates with the salt-master
     # It takes a while before we can get the grains and registration is done
     Given I am authorized as "testing" with password "testing"
-    And the master can reach "sle-minion"
+    And the salt-master can reach "sle-minion"
     When I get OS information of "sle-minion" from the Master
     Then it should contain a "SLES" text

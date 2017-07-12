@@ -27,7 +27,7 @@ Given(/^salt-minion is configured on "(.*?)"$/) do |minion|
   step %(I start salt-minion on "#{minion}")
 end
 
-Given(/^the master can reach "(.*?)"$/) do |minion|
+Given(/^the salt-master can reach "(.*?)"$/) do |minion|
   if minion == "sle-minion"
     target_hostname = $minion_hostname
   elsif minion == "ceos-minion"
@@ -43,9 +43,8 @@ Given(/^the master can reach "(.*?)"$/) do |minion|
     Timeout.timeout(KEEPALIVE_TIMEOUT) do
       # only try 3 times
       3.times do
-        @output = sshcmd("salt #{target_hostname} test.ping", ignore_err: true)
-        if @output[:stdout].include?(target_hostname) &&
-           @output[:stdout].include?('True')
+        out, _code = $server.run("salt #{target_hostname} test.ping")
+        if out.include?(target_hostname) && out.include?('True')
           finished = Time.now
           puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
           break
