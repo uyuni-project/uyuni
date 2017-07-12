@@ -434,4 +434,11 @@ public class ImageInfoFactory extends HibernateFactory {
             throw new IllegalArgumentException("Checksumtype not supported");
         }
     }
+
+    public static List<ImageBuildHistory> listBuildHistory() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ImageBuildHistory> criteria = builder.createQuery(ImageBuildHistory.class);
+        Root<ImageBuildHistory> root = criteria.from(ImageBuildHistory.class);
+        return getSession().createQuery(criteria).getResultList();
+    }
 }
