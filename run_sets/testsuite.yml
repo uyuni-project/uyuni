@@ -34,8 +34,10 @@
 - features/datepicker.feature
 - features/create_group.feature
 - features/xmlrpc_api.feature
+- features/custom_system_info.feature
 - features/security.feature
 - features/xmlrpc_channel.feature
+- features/config_channel.feature
 - features/xmlrpc_activationkey.feature
 - features/overview_systems_details.feature
 - features/salt_reboot_test.feature
@@ -45,9 +47,7 @@
 - features/salt_minion_details.feature
 - features/change_password.feature
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
-- features/config_channel.feature
 - features/action_chain.feature
-- features/custom_system_info.feature
 - features/configuration.feature
 - features/check_errata_npn.feature
 - features/cve_audit.feature
