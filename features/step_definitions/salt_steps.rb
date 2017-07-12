@@ -630,28 +630,6 @@ Then(/^the download should get no error$/) do
 end
 
 # Verify content
-Then(/^I should see "(.*?)" in the Pending section$/) do |minion|
-  if minion == "sle-minion"
-    target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
-    target_hostname = $ceos_minion_hostname
-  else
-    raise "no valid name of minion given! "
-  end
-  fail unless find('#pending-list').find("b", :text => target_hostname).visible?
-end
-
-Then(/^I should see "(.*?)" in the Rejected section$/) do |minion|
-  if minion == "sle-minion"
-    target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
-    target_hostname = $ceos_minion_hostname
-  else
-    raise "no valid name of minion given! "
-  end
-  fail unless find('#rejected-list').find("b", :text => target_hostname).visible?
-end
-
 Then(/^I should not see "(.*?)" as a Minion anywhere$/) do |minion|
   if minion == "sle-minion"
     target_hostname = $minion_hostname
