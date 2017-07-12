@@ -52,6 +52,22 @@ Feature: Register a system to be managed via SSH push
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
 
+  Scenario: Delete the activation-key sshpush
+    Given I am on the Systems page
+    And I follow "Activation Keys" in the left menu
+    And I follow "SSH push key" in the content area
+    And I follow "Delete Key"
+    And I click on "Delete Activation Key"
+    And I should see a "Activation key SSH push key has been deleted." text
+
+  Scenario: Delete the activation-key sshpush via tunnel
+    Given I am on the Systems page
+    And I follow "Activation Keys" in the left menu
+    And I follow "SSH push via tunnel key" in the content area
+    And I follow "Delete Key"
+    And I click on "Delete Activation Key"
+    And I should see a "Activation key SSH push via tunnel key has been deleted." text
+
   Scenario: Cleaunp host file of trad-client ssh-tunnel
     Given I am on the Systems page
     And I run "sed -i '/127.0.1.1/d' /etc/hosts" on "sle-client"
