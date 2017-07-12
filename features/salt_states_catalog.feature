@@ -48,7 +48,7 @@ Feature: Check the Salt package state UI
     Given I am authorized as "testing" with password "testing"
     Then I follow "Salt"
     And I follow "State Catalog"
-    And I click on "teststate"
-    And I click on "Delete State" and confirm
-    And I should see "State 'teststate' deleted" text
+    And I follow "teststate"
+    When I click on the css "a#delete-btn" and confirm
+    Then I should see a "State 'teststate' deleted" text
     And I remove "/root/foobar" from "sle-minion"

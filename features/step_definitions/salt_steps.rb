@@ -490,6 +490,12 @@ When(/^I click on the css "(.*)"$/) do |css|
   find(css).click
 end
 
+When(/^I click on the css "(.*)" and confirm$/) do |css|
+  accept_alert do
+    find(css).click
+  end
+end
+
 When(/^I enter "(.*)" in the css "(.*)"$/) do |input, css|
   find(css).set(input)
 end
