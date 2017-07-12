@@ -12,4 +12,4 @@ Feature: Delete a system profile
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "System profile" text
-    Then I should see a "has been deleted" text
+    And I should see a "has been deleted" text
