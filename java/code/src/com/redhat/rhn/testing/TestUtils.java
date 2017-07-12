@@ -31,6 +31,7 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -57,6 +58,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * TestUtils, a simple package for utility functions helpful when
@@ -579,6 +581,12 @@ public class TestUtils {
             return false;
         }
         return o1.hashCode() == o2.hashCode();
+    }
+
+    public static String readRelativeFile(Object object, String file) throws IOException, ClassNotFoundException {
+        return FileUtils.readFileToString(new File(TestUtils.findTestDataInDir(
+                "/" + object.getClass().getPackage().getName().replaceAll("\\.", "/") + "/" + file).getPath()
+        ));
     }
 }
 
