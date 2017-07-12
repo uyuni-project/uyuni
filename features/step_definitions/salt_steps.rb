@@ -148,33 +148,23 @@ Then(/^salt-minion should be running on "(.*?)"$/) do |minion|
   end
 end
 
-When(/^I list unaccepted keys at Salt Master$/) do
-  $output, _code = $server.run("salt-key --list unaccepted", false)
-  $output.strip
-end
-
-When(/^I list accepted keys at Salt Master$/) do
-  $output, _code = $server.run("salt-key --list accepted", false)
-  $output.strip
-end
-
-When(/^I list rejected keys at Salt Master$/) do
-  $output, _code = $server.run("salt-key --list rejected", false)
+When(/^I list "(.*?)" keys at Salt Master$/) do |key_type|
+  $output, _code = $server.run("salt-key --list #{key_type}", false)
   $output.strip
 end
 
 Then(/^the list of the "(.*?)" keys should contain "(.*?)" hostname$/) do |key_type, minion|
   if minion == "sle-minion"
-    target_hostname = $minion_hostname
+    target_fullhostname = $minion_fullhostname
   elsif minion == "ceos-minion"
-    target_hostname = $ceos_minion_hostname
+    target_fullhostname = $ceos_minion_fullhostname
   else
     raise "no valid name of minion given! "
   end
   sleep 30
   # FIXME: find better way then to wait 30 seconds
   $output, _code = $server.run("salt-key --list #{key_type}", false)
-  assert_match(target_hostname, $output, "minion #{target_hostname} is not listed as #{key_type} key on salt-master #{$output}")
+  assert_match(target_fullhostname, $output, "minion #{target_fullhostname} is not listed as #{key_type} key on salt-master #{$output}")
 end
 
 When(/^we wait till Salt master sees "(.*?)" as "(.*?)"$/) do |minion, key_type|
@@ -192,7 +182,10 @@ Given(/^"(.*?)" key is "(.*?)"$/) do |minion, key_type|
   else
     raise "no valid name of minion given! "
   end
-  step "I list \"#{key_type}\" keys at Salt Master"
+  steps %(
+    Then I restart salt-minion on \"#{minion}\"
+    And I list \"all\" keys at Salt Master
+  )
   unless $output.include?(target_hostname)
     steps %(
       Then I accept "#{minion}" key in the Salt master
@@ -268,7 +261,7 @@ When(/^I accept all Salt unaccepted keys$/) do
   $server.run("salt-key -y -A")
 end
 
-When(/^I get OS information of "(.*?)" the Minion from the Master$/) do |minion|
+When(/^I get OS information of "(.*?)" from the Master$/) do |minion|
   if minion == "sle-minion"
     target_fullhostname = $minion_fullhostname
   elsif minion == "ceos-minion"
@@ -636,6 +629,40 @@ Then(/^the download should get no error$/) do
   assert_nil(@download_error)
 end
 
+# Verify content
+Then(/^I should see "(.*?)" in the Pending section$/) do |minion|
+  if minion == "sle-minion"
+    target_hostname = $minion_hostname
+  elsif minion == "ceos-minion"
+    target_hostname = $ceos_minion_hostname
+  else
+    raise "no valid name of minion given! "
+  end
+  fail unless find('#pending-list').find("b", :text => target_hostname).visible?
+end
+
+Then(/^I should see "(.*?)" in the Rejected section$/) do |minion|
+  if minion == "sle-minion"
+    target_hostname = $minion_hostname
+  elsif minion == "ceos-minion"
+    target_hostname = $ceos_minion_hostname
+  else
+    raise "no valid name of minion given! "
+  end
+  fail unless find('#rejected-list').find("b", :text => target_hostname).visible?
+end
+
+Then(/^I should not see "(.*?)" as a Minion anywhere$/) do |minion|
+  if minion == "sle-minion"
+    target_hostname = $minion_hostname
+  elsif minion == "ceos-minion"
+    target_hostname = $ceos_minion_hostname
+  else
+    raise "no valid name of minion given! "
+  end
+  step %(I should not see a "#{target_hostname}" text)
+end
+
 # Perform actions
 When(/^I reject "(.*?)" from the Pending section$/) do |minion|
   if minion == "sle-minion"
@@ -645,11 +672,24 @@ When(/^I reject "(.*?)" from the Pending section$/) do |minion|
   else
     raise "no valid name of minion given! "
   end
-  find(:xpath, "//tr[td[contains(.,'#{target_hostname}')]]/td/button", :title => 'reject').click
+  xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'reject']"
+  if all(:xpath, xpath_query).any?
+    fail unless find(:xpath, xpath_query).click
+  end
 end
 
-When(/^I delete this client from the Rejected section$/) do
-  find("button[title='delete']").click
+When(/^I delete "(.*?)" from the Rejected section$/) do |minion|
+  if minion == "sle-minion"
+    target_hostname = $minion_hostname
+  elsif minion == "ceos-minion"
+    target_hostname = $ceos_minion_hostname
+  else
+    raise "no valid name of minion given! "
+  end
+  xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'delete']"
+  if all(:xpath, xpath_query).any?
+    fail unless find(:xpath, xpath_query).click
+  end
 end
 
 When(/^I see "(.*?)" fingerprint$/) do |minion|
@@ -666,7 +706,7 @@ When(/^I see "(.*?)" fingerprint$/) do |minion|
   fail unless page.has_content?(fing)
 end
 
-When(/^I accept "(.*?)" key$/) do
+When(/^I accept "(.*?)" key$/) do |minion|
   if minion == "sle-minion"
     target_hostname = $minion_hostname
   elsif minion == "ceos-minion"
@@ -674,7 +714,10 @@ When(/^I accept "(.*?)" key$/) do
   else
     raise "no valid name of minion given! "
   end
-  find(:xpath, "//tr[td[contains(.,'#{target_hostname}')]]/td/button", :title => 'accept').click
+  xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'accept']"
+  if all(:xpath, xpath_query).any?
+    fail unless find(:xpath, xpath_query).click
+  end
 end
 
 When(/^I go to the minion onboarding page$/) do

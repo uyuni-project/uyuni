@@ -22,7 +22,7 @@ Feature: Salt is configured and running
     Then salt-minion should be running on "sle-minion"
 
   Scenario: The "sle-minion" appears in the master's incoming queue
-    Then the list of the "pending" keys should contain "sle-minion" hostname
+    Then the list of the "all" keys should contain "sle-minion" hostname
 
    Scenario: There are no top.sls file in certain folders
    When  I run "ls /srv/susemanager/salt/top.sls" on "server" without error control
