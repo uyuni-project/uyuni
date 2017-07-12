@@ -14,7 +14,6 @@ Feature: Test custom system info key value pairs
 
   Scenario: Create a new key
     When I follow "Custom System Info" in the left menu
-    And I should see a "No Custom Info Keys Found" text
     And I follow "Create Key"
     And I should see a "Create Custom Info Key" text
     And I enter "key-label" as "label"
@@ -61,11 +60,10 @@ Feature: Test custom system info key value pairs
     And I follow "Edit this value"
     And I follow "Delete Value"
     And I click on "Remove Value"
-    Then I should see a "No custom information defined for this system." text
 
   Scenario: Delete the key
     When I follow "Custom System Info" in the left menu
     And I follow "key-label"
     And I follow "Delete Key"
     And I click on "Delete Key"
-    Then I should see a "No Custom Info Keys Found" text
+    Then I should not see a "key-label" text
