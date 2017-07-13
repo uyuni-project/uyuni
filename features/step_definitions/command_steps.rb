@@ -1,5 +1,6 @@
 # Copyright (c) 2014-16 SUSE # Licensed under the terms of the MIT license.
 
+require "xmlrpc/client"
 require 'timeout'
 
 Then(/^I apply highstate on Sles minion$/) do
@@ -294,19 +295,22 @@ end
 
 When(/^I wait for the openSCAP audit to finish$/) do
   host = $server_fullhostname
+  @sle_id = retrieve_server_id($minion_fullhostname)
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
   begin
-    Timeout.timeout(30) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        scans = @cli.call('system.scap.listXccdfScans', @sid)
+        scans = @cli.call('system.scap.listXccdfScans', @sid, @sle_id)
         # in the openscap test, we schedule 2 scans
-        unless scans.size > 2
+        if scans.length > 1
+          @cli.call("auth.logout", @sid)
           break
         end
       end
     end
   rescue Timeout::Error
+    @cli.call("auth.logout", @sid)
     raise "process did not stop after several tries"
   end
 end
