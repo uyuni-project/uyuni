@@ -2,8 +2,17 @@
 
 require 'timeout'
 
-Then(/^I apply highstate on Sles minion$/) do
-  cmd = "salt '*min*sles12sp2*' state.highstate"
+Then(/^I apply highstate on "(.*?)"$/) do |minion|
+  if minion == "sle-minion"
+    target_fullhostname = $minion_fullhostname
+  elsif minion == "ceos-minion"
+    target_fullhostname = $ceos_minion_fullhostname
+  elsif minion == "sle-migrated-minion"
+    target_fullhostname = $client_fullhostname
+  else
+    raise "no valid name of minion given! "
+  end
+  cmd = "salt '#{target_fullhostname}' state.highstate"
   out, code = $server.run(cmd)
   puts out
   raise "Apply highstate FAILED!"  if code.nonzero?

@@ -154,6 +154,27 @@ Then(/^the list of the "(.*?)" keys should contain "(.*?)" hostname$/) do |key_t
   assert_match(target_fullhostname, $output, "minion #{target_fullhostname} is not listed as #{key_type} key on salt-master #{$output}")
 end
 
+When(/^I wait until no Salt job is running on "(.*?)"$/) do |minion|
+begin
+  if minion == "sle-minion"
+    target = $minion
+  elsif minion == "ceos-minion"
+    target = $ceos
+  elsif minion == "sle-migrated-minion"
+    target = $client
+  else
+    raise "no valid name of minion given! "
+  end
+  Timeout.timeout(DEFAULT_TIMEOUT) do
+    $output, _code = target.run("salt-call saltutil.running")
+    break if $output.split('\n').length == 1
+    sleep 3
+    end
+  rescue Timeout::Error
+    raise "a Salt job is still running on %{minion} after timeout"
+  end
+end
+
 When(/^we wait till Salt master sees "(.*?)" as "(.*?)"$/) do |minion, key_type|
   steps %(
     When I list "#{key_type}" keys at Salt Master
@@ -795,11 +816,11 @@ end
 
 SALT_PACKAGES = "salt salt-minion".freeze
 
-Given(/^no Salt packages are installed on "(.*)"$/) do |host|
-  target = get_target(target)
-  if ["sle-minion", "ssh-minion", "sle-client", "sle-migrated-minion"].include(host)
+Given(/^no Salt packages are installed on "(.*?)"$/) do |host|
+  target = get_target(host)
+  if ["sle-minion", "ssh-minion", "sle-client", "sle-migrated-minion"].include?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
-  elsif ["ceos-minion"].include(host)
+  elsif ["ceos-minion"].include?(host)
     target.run("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", false)
   end
 end
@@ -850,5 +871,5 @@ And(/^I cleanup minion: "([^"]*)"$/) do |target|
   elsif target == "ceos-minion"
     $ceos_minion.run("systemctl stop salt-minion")
     $ceos_minion.run("rm -Rf /var/cache/salt/minion")
-   end
+  end
 end
