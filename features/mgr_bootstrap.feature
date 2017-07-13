@@ -20,5 +20,6 @@ Feature: mgr-bootstrap generation and registration
     And config-actions are enabled
     And remote-commands are enabled
 
-  Scenario: Cleanup script
+ Scenario: Cleanup scripts
    Then I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-test.sh" on "server"
+   Then I run "rm /root/bootstrap-test.sh" on "sle-client"
