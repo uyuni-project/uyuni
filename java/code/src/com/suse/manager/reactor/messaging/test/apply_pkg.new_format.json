@@ -1,0 +1,101 @@
+{
+  "pkg_|-pkg_removed_|-pkg_removed_|-removed": {
+    "comment": "All targeted packages were removed.",
+    "name": "pkg_removed",
+    "start_time": "14:28:31.776256",
+    "result": true,
+    "duration": 794.822,
+    "__run_num__": 2,
+    "changes": {
+      "emacs-nox": {
+        "old": [
+          {
+            "install_date_time_t": 1498636531,
+            "version": "1.42.11",
+            "release": "7.1",
+            "arch": "x86_64"
+          }
+        ],
+        "new": ""
+      },
+      "emacs": {
+        "old": [
+          {
+            "install_date_time_t": 1498636531,
+            "version": "1.42.11",
+            "release": "7.1",
+            "arch": "x86_64"
+          }
+        ],
+        "new": ""
+      },
+      "vim": {
+        "old": [
+          {
+            "install_date_time_t": 1498636531,
+            "version": "1.42.11",
+            "release": "7.1",
+            "arch": "x86_64"
+          }
+        ],
+        "new": ""
+      }
+    },
+    "__id__": "pkg_removed"
+  },
+  "pkg_|-pkg_installed_|-pkg_installed_|-installed": {
+    "comment": "No packages to install provided",
+    "name": "pkg_installed",
+    "start_time": "14:28:31.775936",
+    "result": true,
+    "duration": 0.233,
+    "__run_num__": 1,
+    "changes": {
+      "emacs-nox": {
+        "old": "",
+        "new": [
+          {
+            "install_date_time_t": 1498636531,
+            "version": "1.42.11",
+            "release": "7.1",
+            "arch": "x86_64"
+          }
+        ]
+      },
+      "emacs": {
+        "old": "",
+        "new": [
+          {
+            "install_date_time_t": 1498636531,
+            "version": "1.42.11",
+            "release": "7.1",
+            "arch": "x86_64"
+          }
+        ]
+      }
+    },
+    "__id__": "pkg_installed"
+  },
+  "pkg_|-pkg_latest_|-pkg_latest_|-latest": {
+    "comment": "The following packages were successfully installed/upgraded: vim",
+    "name": "pkg_latest",
+    "start_time": "14:28:32.692242",
+    "result": true,
+    "duration": 2934.232,
+    "__run_num__": 3,
+    "changes": {
+      "vim": {
+        "old": "",
+        "new": [
+          {
+            "install_date_time_t": 1498636531,
+            "version": "1.42.11",
+            "release": "7.1",
+            "arch": "x86_64"
+          }
+        ]
+      }
+    },
+    "__id__": "pkg_latest"
+  }
+}
