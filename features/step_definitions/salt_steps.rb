@@ -169,9 +169,9 @@ begin
     $output, _code = target.run("salt-call saltutil.running")
     break if $output.split('\n').length == 1
     sleep 3
-    end
+  end
   rescue Timeout::Error
-    raise "a Salt job is still running on %{minion} after timeout"
+    raise "a Salt job is still running on #{minion} after timeout"
   end
 end
 
