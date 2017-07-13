@@ -261,24 +261,6 @@ Feature: Test configuration channel basic functions
     Then I should not see a "Differences exist in a file that is not readable by all. Re-deployment of configuration file is recommended." text
     And I should see a "+MGR_PROXY=yes" text
 
-  Scenario: CLEAN_UP: remove configuration channel: Test Channel
-    Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
-    And I follow "Test Channel"
-    And I follow "delete channel"
-    And I click on "Delete Config Channel"
- 
- Scenario: CLEAN_UP: remove configuration channel: New Test Channel
-    Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
-    And I follow "New Test Channel"
-    And I follow "delete channel"
-    And I click on "Delete Config Channel"
-
   Scenario: Check configuration page content
    Given I am authorized as "admin" with password "admin"
    And I follow "Home" in the left menu
@@ -335,3 +317,32 @@ Feature: Test configuration channel basic functions
     When I follow "Enable Configuration Management on Systems"
     Then I should see a "Managed Systems" link in the left menu
     And I should see a "Target Systems" link in the left menu
+
+  Scenario: Remove system from configuration channel
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    When I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    And I follow "Test Channel"
+    And I follow "Systems" in the content area
+    And I check this client
+    And I click on "Unsubscribe systems"
+    Then I should see a "Successfully unsubscribed 1 system(s)." text
+
+  Scenario: CLEAN_UP: remove configuration channel: Test Channel
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    And I follow "Test Channel"
+    And I follow "delete channel"
+    And I click on "Delete Config Channel"
+ 
+ Scenario: CLEAN_UP: remove configuration channel: New Test Channel
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    And I follow "New Test Channel"
+    And I follow "delete channel"
+    And I click on "Delete Config Channel"
