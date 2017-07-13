@@ -38,6 +38,7 @@
 - features/salt_states_catalog.feature
 - features/powermanagement.feature
 - features/datepicker.feature
+- features/openscap_audit.feature
 - features/create_group.feature
 - features/xmlrpc_api.feature
 - features/custom_system_info.feature
@@ -65,14 +66,12 @@
 - features/action_chain.feature
 - features/check_errata_npn.feature
 - features/cve_audit.feature
-- features/channels.feature
 - features/weak_deps.feature
 - features/metadata_check.feature
 - features/erratapage.feature
 - features/lock_packages_on_client.feature
 - features/install_package_and_errata.feature
 - features/clone_channel_npn.feature
-- features/openscap_audit.feature
 - features/scc_sync_channels.feature
 - features/nagios.feature
 - features/systems_needing_reboot.feature
