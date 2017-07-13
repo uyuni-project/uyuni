@@ -5,18 +5,6 @@ require "xmlrpc/client"
 require 'time'
 require 'date'
 
-def retrieve_server_id(server)
-  sysrpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
-  sysrpc.login('admin', 'admin')
-  systems = sysrpc.listSystems
-  refute_nil(systems)
-  server_id = systems
-              .select { |s| s['name'] == server }
-              .map { |s| s['id'] }.first
-  refute_nil(server_id, "client #{server} is not yet registered?")
-  server_id
-end
-
 def waitActionComplete(actionid)
   host = $server_fullhostname
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
