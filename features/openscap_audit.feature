@@ -52,7 +52,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager
     Then I should see a "Organization SUSE Test was successfully updated." text
 
   Scenario: Delete audit results (trad-client)
-    Given I am on the Systems overview page of this "sle-minion"
+    Given I am on the Systems overview page of this "sle-client"
     And I follow "Audit" in the content area
     And I follow "List Scans" in the content area
     When I click on "Select All"
