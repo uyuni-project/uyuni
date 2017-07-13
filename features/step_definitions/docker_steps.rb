@@ -5,6 +5,7 @@ require "xmlrpc/client"
 require 'time'
 require 'date'
 require 'securerandom'
+require 'timeout'
 
 # this module test image_profile
 module ImageProfile
@@ -96,13 +97,16 @@ And(/^I navigate to images build webpage$/) do
 end
 
 And(/^I verify that all "([^"]*)" container images were built correctly in the gui$/) do |count|
-  20.times do
-    raise "error detected while building images" if has_xpath?("//*[contains(@title, 'Failed')]")
-    break if has_xpath?("//*[contains(@title, 'Built')]", :count => count)
-    sleep 20
-    step %(I navigate to images webpage)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      raise "error detected while building images" if has_xpath?("//*[contains(@title, 'Failed')]")
+      break if has_xpath?("//*[contains(@title, 'Built')]", :count => count)
+      sleep 5
+      step %(I navigate to images webpage)
+    end
+  rescue Timeout::Error
+    raise "at least one image was not built correctly"
   end
-  raise "an image was not built correctly" unless has_xpath?("//*[contains(@title, 'Built')]", :count => count)
 end
 
 And(/^I schedule the build of image "([^"]*)" via xmlrpc-call$/) do |image|
