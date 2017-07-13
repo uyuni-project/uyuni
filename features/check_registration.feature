@@ -17,7 +17,6 @@ Feature: Check client registration
     And I should see a "Packages:" link
     And I should see a "Edit These Properties" link
     And I should see a "[Management]" text
-    And I should see a "Add to SSM" link
     And I should see a "Delete System" link
     And I should see a "Initial Registration Parameters:" text
     And I should see a "OS: sles-release" text
@@ -136,6 +135,9 @@ Feature: Check client registration
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Properties" in the content area
     Then I should see a "Edit System Details" text
+    # FIXME: add this wenn bug bsc#1048470 is closed
+    # And I should see a "Virtualization Host" text
+    And I should see a "Container Build Host" text 
     And I should see a "system_name" element in "systemDetailsForm" form
     And I should see a "Management" text
     And I should see a "receive_notifications" element in "systemDetailsForm" form
