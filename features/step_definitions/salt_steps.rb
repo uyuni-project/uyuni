@@ -66,19 +66,7 @@ Given(/^I am on the Systems overview page of "(.*?)"$/) do |minion|
 end
 
 When(/^I follow "(.*?)" link$/) do |host|
-  if host == "sle-minion"
-    target_hostname = $minion_hostname
-  elsif host == "ceos-minion"
-    target_hostname = $ceos_minion_hostname
-  elsif host == "ssh-minion"
-    target_hostname = $ssh_minion_hostname
-  elsif host == "sle-client"
-    target_hostname = $client_hostname
-  elsif host == "sle-migrated-minion"
-    target_hostname = $client_hostname
-  else
-    raise "no valid name of host given! "
-  end
+  target_hostname = get_target_hostname(host)
   step %(I follow "#{target_hostname}")
 end
 
@@ -271,10 +259,6 @@ When(/^I get OS information of "(.*?)" from the Master$/) do |minion|
     target_fullhostname = $minion_fullhostname
   elsif minion == "ceos-minion"
     target_fullhostname = $ceos_minion_fullhostname
-  elsif minion == "ssh-minion"
-    target_fullhostname = $ssh_minion_fullhostname
-  elsif minion == "sle-client"
-    target_fullhostname = $client_fullhostname
   elsif minion == "sle-migrated-minion"
     target_fullhostname = $client_fullhostname
   else
@@ -301,20 +285,8 @@ Then(/^the system should have a Base channel set$/) do
   step %(I should not see a "This system has no Base Software Channel. You can select a Base Channel from the list below." text)
 end
 
-And(/^"(.*?)" is not registered in Spacewalk$/) do |minion|
-  if minion == "sle-minion"
-    target_fullhostname = $minion_fullhostname
-  elsif minion == "ceos-minion"
-    target_fullhostname = $ceos_minion_fullhostname
-  elsif minion == "ssh-minion"
-    target_fullhostname = $ssh_minion_fullhostname
-  elsif minion == "sle-client"
-    target_fullhostname = $client_fullhostname
-  elsif minion == "sle-migrated-minion"
-    target_fullhostname = $client_fullhostname
-  else
-    raise "no valid name of minion given! "
-  end
+And(/^"(.*?)" is not registered in Spacewalk$/) do |host|
+  target_fullhostname = get_target_fullhostname(host)
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
   sid = @rpc.listSystems.select { |s| s['name'] == target_fullhostname }.map { |s| s['id'] }.first
@@ -322,20 +294,8 @@ And(/^"(.*?)" is not registered in Spacewalk$/) do |minion|
   refute_includes(@rpc.listSystems.map { |s| s['id'] }, target_fullhostname)
 end
 
-Given(/^"(.*?)" is registered in Spacewalk$/) do |minion|
-  if minion == "sle-minion"
-    target_fullhostname = $minion_fullhostname
-  elsif minion == "ceos-minion"
-    target_fullhostname = $ceos_minion_fullhostname
-  elsif minion == "ssh-minion"
-    target_fullhostname = $ssh_minion_fullhostname
-  elsif minion == "sle-client"
-    target_fullhostname = $client_fullhostname
-  elsif minion == "sle-migrated-minion"
-    target_fullhostname = $client_fullhostname
-  else
-    raise "no valid name of minion given! "
-  end
+Given(/^"(.*?)" is registered in Spacewalk$/) do |host|
+  target_fullhostname = get_target_fullhostname(host)
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
   assert_includes(@rpc.listSystems.map { |s| s['name'] }, target_fullhostname)
@@ -402,53 +362,17 @@ When(/^I click on run$/) do
 end
 
 When(/^I should see "(.*)" hostname$/) do |host|
-  if host == "sle-minion"
-    target_fullhostname = $minion_fullhostname
-  elsif host == "ceos-minion"
-    target_fullhostname = $ceos_minion_fullhostname
-  elsif host == "ssh-minion"
-    target_fullhostname = $ssh_minion_fullhostname
-  elsif host == "sle-client"
-    target_fullhostname = $client_fullhostname
-  elsif host == "sle-migrated-minion"
-    target_fullhostname = $client_fullhostname
-  else
-    raise "no valid name of host given! "
-  end
+  target_fullhostname = get_target_fullhostname(host)
   fail unless page.has_content?(target_fullhostname)
 end
 
 When(/^I should not see "(.*)" hostname$/) do |host|
-  if host == "sle-minion"
-    target_fullhostname = $minion_fullhostname
-  elsif host == "ceos-minion"
-    target_fullhostname = $ceos_minion_fullhostname
-  elsif host == "ssh-minion"
-    target_fullhostname = $ssh_minion_fullhostname
-  elsif host == "sle-client"
-    target_fullhostname = $client_fullhostname
-  elsif host == "sle-migrated-minion"
-    target_fullhostname = $client_fullhostname
-  else
-    raise "no valid name of host given! "
-  end
+  target_fullhostname = get_target_fullhostname(host)
   fail if page.has_content?(target_fullhostname)
 end
 
 When(/^I expand the results for "(.*)"$/) do |host|
-  if host == "sle-minion"
-    target_fullhostname = $minion_fullhostname
-  elsif host == "ceos-minion"
-    target_fullhostname = $ceos_minion_fullhostname
-  elsif host == "ssh-minion"
-    target_fullhostname = $ssh_minion_fullhostname
-  elsif host == "sle-client"
-    target_fullhostname = $client_fullhostname
-  elsif host == "sle-migrated-minion"
-    target_fullhostname = $client_fullhostname
-  else
-    raise "no valid name of host given! "
-  end
+  target_fullhostname = get_target_fullhostname(host)
   find("div[id='#{target_fullhostname}']").click
 end
 
