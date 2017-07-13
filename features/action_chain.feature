@@ -57,15 +57,15 @@ Feature: Test action chaining
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
-
+  # FIXME CREAT A CHANNEL, and add file to that, and client. see conf_file feature
   Scenario: I add a config file deployment to the action chain
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-    And I follow "New Test Channel"
+    And I follow "Action Test Channel"
     And I follow "Deploy Files" in the content area
-    And I click on "Deploy All Files" 
+    And I click on "Deploy All Files"
     And I check this client
     And I click on "Confirm & Deploy to Selected Systems"
     And I check radio button "schedule-by-action-chain"
@@ -128,6 +128,7 @@ Feature: Test action chaining
     And I should see a "Action Chain new action chain has been scheduled for execution." text
     When I run rhn_check on this client
     Then "/root/webui-actionchain-test" exists on the filesystem of "sle-client"
+    And I run "rm /root/webui-actionchain-test" on "sle-client"
 
   Scenario: Basic chain operations xmlrpc
     Given I am logged in via XML-RPC/actionchain as user "admin" and password "admin"
