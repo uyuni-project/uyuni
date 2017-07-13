@@ -22,4 +22,4 @@ Feature: mgr-bootstrap generation and registration
 
  Scenario: Cleanup scripts
    Then I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-test.sh" on "server"
-   Then I run "rm /root/bootstrap-test.sh" on "sle-client"
+   And I run "rm /root/bootstrap-test.sh" on "sle-client"
