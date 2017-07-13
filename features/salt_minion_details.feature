@@ -16,11 +16,3 @@ Feature: Verify the minion registration
     And I follow "List / Remove"
     Then I should see a "aaa_base" text
     And I should see a "aaa_base-extras" text
-
-  Scenario: Accepted minion has a base channel
-    Given I am authorized as "testing" with password "testing"
-    And "sle-minion" is registered in Spacewalk
-    And I follow "sle-minion" link
-    And I follow "Software" in the content area
-    And I follow "Software Channels" in the content area
-    Then the system should have a Base channel set

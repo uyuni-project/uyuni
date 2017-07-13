@@ -78,6 +78,46 @@ def get_target(host)
   node
 end
 
+def get_target_hostname(host)
+  case host
+  when "server"
+    hostname = $server_hostname
+  when "ceos-minion"
+    hostname = $ceos_minion_hostname
+  when "ssh-minion"
+    hostname = $ssh_minion_hostname
+  when "sle-minion"
+    hostname = $minion_hostname
+  when "sle-client"
+    hostname = $client_hostname
+  when "sle-migrated-minion"
+    hostname = $client_hostname
+  else
+    raise "Invalid target."
+  end
+  hostname
+end
+
+def get_target_fullhostname(host)
+  case host
+  when "server"
+    fullhostname = $server_fullhostname
+  when "ceos-minion"
+    fullhostname = $ceos_minion_fullhostname
+  when "ssh-minion"
+    fullhostname = $ssh_minion_fullhostname
+  when "sle-minion"
+    fullhostname = $minion_fullhostname
+  when "sle-client"
+    fullhostname = $client_fullhostname
+  when "sle-migrated-minion"
+    fullhostname = $client_fullhostname
+  else
+    raise "Invalid target."
+  end
+  fullhostname
+end
+
 def file_exists?(node, file)
   _out, _local, _remote, code = node.test_and_store_results_together("test -f #{file}", "root", 500)
   code.zero?
