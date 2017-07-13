@@ -86,7 +86,7 @@ Feature: Test configuration channel basic functions
     Then I should see a "Revision 1 of /etc/mgr-test-file.cnf from channel New Test Channel" text
     And I should see a "Update Configuration File" button
 
-  Scenario: Subscribe system to channel
+  Scenario: Subscribe system to channel "new test challen"
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     When I follow "Systems" in the left menu
@@ -318,12 +318,12 @@ Feature: Test configuration channel basic functions
     Then I should see a "Managed Systems" link in the left menu
     And I should see a "Target Systems" link in the left menu
 
-  Scenario: Remove system from configuration channel
+  Scenario: Remove system from conf channel "new test channel"
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     When I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-    And I follow "Test Channel"
+    And I follow "New Test Channel"
     And I follow "Systems" in the content area
     And I check this client
     And I click on "Unsubscribe systems"
