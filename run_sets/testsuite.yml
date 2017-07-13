@@ -46,6 +46,7 @@
 - features/check_registration.feature
 - features/salt_minions_page.feature
 - features/spacewalk_channel.feature
+- features/spacewalk_repo_sync.feature
 - features/xmlrpc_channel.feature
 - features/config_channel.feature
 - features/xmlrpc_activationkey.feature
@@ -72,7 +73,6 @@
 - features/install_package_and_errata.feature
 - features/clone_channel_npn.feature
 - features/openscap_audit.feature
-- features/spacewalk_repo_sync.feature
 - features/scc_sync_channels.feature
 - features/nagios.feature
 - features/systems_needing_reboot.feature
