@@ -19,3 +19,6 @@ Feature: mgr-bootstrap generation and registration
     And "man" is installed on "client"
     And config-actions are enabled
     And remote-commands are enabled
+
+  Scenario: Cleanup script
+   Then I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-test.sh" on "server"
