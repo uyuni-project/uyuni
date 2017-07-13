@@ -266,7 +266,8 @@ public class SystemDetailsEditAction extends RhnAction {
                         if (ConfigDefaults.get().isDocAvailable()) {
                             createSuccessMessage(request,
                                 "system.entitle.addedvirtualization",
-                                "/rhn/help/reference/en-US/ch-virtualization.jsp");
+                                "/rhn/help/advanced-topics/en-US/" +
+                                        "advanced.topics.virtualization.jsp");
                         }
                         else {
                             createSuccessMessage(request,
