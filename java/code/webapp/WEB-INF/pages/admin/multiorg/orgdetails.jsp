@@ -56,7 +56,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label"><bean:message key="org.id.jsp"/>:</label>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 form-control-static">
                             <bean:write name="orgDetailsForm" property="id"/>
                         </div>
                     </div>
@@ -70,23 +70,23 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label"><bean:message key="org.systems.jsp"/>:</label>
-                        <div class="col-lg-6"><bean:write name="orgDetailsForm" property="systems"/></div>
+                        <div class="col-lg-6 form-control-static"><bean:write name="orgDetailsForm" property="systems"/></div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label"><bean:message key="org.system.groups.jsp"/>:</label>
-                        <div class="col-lg-6"><bean:write name="orgDetailsForm" property="groups"/></div>
+                        <div class="col-lg-6 form-control-static"><bean:write name="orgDetailsForm" property="groups"/></div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label"><bean:message key="org.actkeys.jsp"/>:</label>
-                        <div class="col-lg-6"><bean:write name="orgDetailsForm" property="actkeys"/></div>
+                        <div class="col-lg-6 form-control-static"><bean:write name="orgDetailsForm" property="actkeys"/></div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label"><bean:message key="org.kickstart.profiles.jsp"/>:</label>
-                        <div class="col-lg-6"><bean:write name="orgDetailsForm" property="ksprofiles"/></div>
+                        <div class="col-lg-6 form-control-static"><bean:write name="orgDetailsForm" property="ksprofiles"/></div>
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label"><bean:message key="org.config.channels.jsp"/>:</label>
-                        <div class="col-lg-6"><bean:write name="orgDetailsForm" property="cfgchannels"/></div>
+                        <div class="col-lg-6 form-control-static"><bean:write name="orgDetailsForm" property="cfgchannels"/></div>
                     </div>
 
                     <div class="form-group">
