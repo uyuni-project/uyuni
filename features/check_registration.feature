@@ -6,23 +6,6 @@ Feature: Check client registration
   As the testing
   I want to see the system in the spacewalk server
 
-  Scenario: check registration values
-    Given I update the profile of this client
-    When I am on the Systems overview page of this "sle-client"
-    And I wait for the data update
-    Then I should see a "System Status" text
-    And I should see a "Software Updates Available" text
-    And I should see a "Critical:" link
-    And I should see a "Non-Critical:" link
-    And I should see a "Packages:" link
-    And I should see a "Edit These Properties" link
-    And I should see a "[Management]" text
-    And I should see a "Add to SSM" link
-    And I should see a "Delete System" link
-    And I should see a "Initial Registration Parameters:" text
-    And I should see a "OS: sles-release" text
-    And I should see a "Release: 12.2" text
-
   Scenario: check tab links "Details"
     When I am on the Systems overview page of this "sle-client"
     Then I should see a "Details" link in the content area
@@ -195,16 +178,6 @@ Feature: Check client registration
     And I should see a "Create Value" link
     And I should see a "Custom System Information" link
 
-  Scenario: check tab links "Software" => "Errata"
-    Given I am on the Systems overview page of this "sle-client"
-    When I follow "Software" in the content area
-    And I follow "Errata" in the content area
-    Then I should see a "Relevant Errata" text
-    And I should see a "Show" button
-    And I should see a "Test update for virgo-dummy" text
-    And I should see an update in the list
-    And I should see a "andromeda-dummy-6789" link
-
   Scenario: check tab links "Software" => "Software Channels"
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
@@ -318,7 +291,7 @@ Feature: Check client registration
     Then I should see a "System Snapshots" text
     And I should see a "Package profile changed" link
 
-  Scenario: check tab links "Provisioning" => "Snapshots Rolloback"
+  Scenario: check tab links "Provisioning" => "Snapshots Rollback"
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
     And I follow "Snapshots" in the content area
