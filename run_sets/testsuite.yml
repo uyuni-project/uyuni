@@ -39,6 +39,7 @@
 - features/security.feature
 - features/check_registration.feature
 - features/salt_minions_page.feature
+- features/spacewalk_channel.feature
 - features/xmlrpc_channel.feature
 - features/config_channel.feature
 - features/xmlrpc_activationkey.feature
@@ -55,7 +56,6 @@
 - features/action_chain.feature
 - features/check_errata_npn.feature
 - features/cve_audit.feature
-- features/spacewalk_channel.feature
 - features/mgr_bootstrap.feature
 - features/channels.feature
 - features/weak_deps.feature
