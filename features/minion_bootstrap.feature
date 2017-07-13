@@ -34,7 +34,7 @@ Feature: register a salt-minion via bootstrap
     And I should see a "Remote Commands" text
     Then I enter command "ls -lha /etc"
     And I click on preview
-    Then I should see my hostname
+    Then I should see "sle-minion" hostname
     And I click on run
     Then I wait for "3" seconds
     And I expand the results for "sle-minion"

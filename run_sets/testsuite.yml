@@ -20,11 +20,6 @@
 - features/centos_salt_ssh.feature 
 ## CORE feature end ###
 
-### Features affected by the package problem.
-- features/salt_software_states.feature
-- features/salt_pkgset_beacon.feature
-###
-
 # SECONDARY FEATURE:
 
 # this feature can be runned in random order.
@@ -83,6 +78,10 @@
 - features/check_VHM.feature
 
 #### Salt related features   ###
+### Features affected by the package problem.
+- features/salt_software_states.feature
+- features/salt_pkgset_beacon.feature
+###
 - features/salt_install_package.feature
 - features/salt_install_with_staging.feature
 # Formulas scenario needs sle-minion and ssh-minion
