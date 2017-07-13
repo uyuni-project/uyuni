@@ -293,11 +293,15 @@ And(/^I register the centos7 as tradclient$/) do
 end
 
 When(/^I wait for the openSCAP audit to finish$/) do
+  host = $server_fullhostname
+  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @cli.call('auth.login', 'admin', 'admin')
   begin
     Timeout.timeout(30) do
       loop do
-        _output, code = $minion.run('ps aux | grep "oscap\ xccdf"', false)
-        unless code.zero?
+        scans = @cli.call('system.scap.listXccdfScans', @sid)
+        # in the openscap test, we schedule 2 scans
+        unless scans.size > 2
           break
         end
       end
