@@ -9,7 +9,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
      verify tunnel proprety: repo 1233 port, and installation of pkg only via server.
 
   Scenario: No Salt Package and service are running on Minion
-    Given no Salt packages are installed on remote "ssh-minion"
+    Given no Salt packages are installed on "ssh-minion"
     And "ssh-minion" is not registered in Spacewalk
 
   Scenario: Bootstrap a system (sles-salt-ssh managed)
