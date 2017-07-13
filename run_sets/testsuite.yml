@@ -56,6 +56,8 @@
 - features/change_password.feature
 - features/salt_download_endpoint.feature
 - features/baremetal_test.feature
+- features/salt_remote_cmds.feature
+
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/action_chain.feature
 - features/check_errata_npn.feature
@@ -82,7 +84,6 @@
 - features/check_VHM.feature
 
 #### Salt related features   ###
-- features/salt_remote_cmds.feature
 - features/salt_install_package.feature
 - features/salt_install_with_staging.feature
 - features/salt_openscap_audit.feature

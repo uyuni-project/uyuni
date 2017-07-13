@@ -65,19 +65,19 @@ Given(/^I am on the Systems overview page of "(.*?)"$/) do |minion|
     )
 end
 
-When(/^I follow "(.*?)" link$/) do |minion|
-  if minion == "sle-minion"
+When(/^I follow "(.*?)" link$/) do |host|
+  if host == "sle-minion"
     target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
+  elsif host == "ceos-minion"
     target_hostname = $ceos_minion_hostname
-  elsif minion == "ssh-minion"
+  elsif host == "ssh-minion"
     target_hostname = $ssh_minion_hostname
-  elsif minion == "sle-client"
+  elsif host == "sle-client"
     target_hostname = $client_hostname
-  elsif minion == "sle-migrated-minion"
+  elsif host == "sle-migrated-minion"
     target_hostname = $client_hostname
   else
-    raise "no valid name of minion given! "
+    raise "no valid name of host given! "
   end
   step %(I follow "#{target_hostname}")
 end
@@ -367,16 +367,6 @@ When(/^I enter as remote command a script to watch a picked-up test file$/) do
       """)
 end
 
-Then(/^I should see "(.*?)" hostname$/) do |minion|
- if minion == "sle-minion"
-    step %(I should see a "#{$minion_fullhostname}" text)
- elsif minion == "ceos-minion"
-    step %(I should see a "#{$ceos_minion_fullhostname}" text)
- else
-    raise "no valid name of minion given! "
-  end
-end
-
 # user salt steps
 Given(/^I am authorized as an example user with no roles$/) do
   @rpc = XMLRPCUserTest.new(ENV["TESTHOST"])
@@ -411,12 +401,38 @@ When(/^I click on run$/) do
   end
 end
 
-When(/^I should see my hostname$/) do
-  fail unless page.has_content?($minion_hostname)
+When(/^I should see "(.*)" hostname$/) do |host|
+  if host == "sle-minion"
+    target_fullhostname = $minion_fullhostname
+  elsif host == "ceos-minion"
+    target_fullhostname = $ceos_minion_fullhostname
+  elsif host == "ssh-minion"
+    target_fullhostname = $ssh_minion_fullhostname
+  elsif host == "sle-client"
+    target_fullhostname = $client_fullhostname
+  elsif host == "sle-migrated-minion"
+    target_fullhostname = $client_fullhostname
+  else
+    raise "no valid name of host given! "
+  end
+  fail unless page.has_content?(target_fullhostname)
 end
 
-When(/^I should not see my hostname$/) do
-  fail if page.has_content?($minion_hostname)
+When(/^I should not see "(.*)" hostname$/) do |host|
+  if host == "sle-minion"
+    target_fullhostname = $minion_fullhostname
+  elsif host == "ceos-minion"
+    target_fullhostname = $ceos_minion_fullhostname
+  elsif host == "ssh-minion"
+    target_fullhostname = $ssh_minion_fullhostname
+  elsif host == "sle-client"
+    target_fullhostname = $client_fullhostname
+  elsif host == "sle-migrated-minion"
+    target_fullhostname = $client_fullhostname
+  else
+    raise "no valid name of host given! "
+  end
+  fail if page.has_content?(target_fullhostname)
 end
 
 When(/^I expand the results for "(.*)"$/) do |host|
@@ -441,13 +457,13 @@ Then(/^I enter command "([^"]*)"$/) do |arg1|
 end
 
 Then(/^I should see "([^"]*)" in the command output for "(.*)"$/) do |text, minion|
-  if host == "sle-minion"
+  if minion == "sle-minion"
     target_fullhostname = $minion_fullhostname
-  elsif host == "ceos-minion"
+  elsif minion == "ceos-minion"
     target_fullhostname = $ceos_minion_fullhostname
-  elsif host == "ssh-minion"
+  elsif minion == "ssh-minion"
     target_fullhostname = $ssh_minion_fullhostname
-  elsif host == "sle-migrated-minion"
+  elsif minion == "sle-migrated-minion"
     target_fullhostname = $client_fullhostname
   else
     raise "no valid name of minion given! "
