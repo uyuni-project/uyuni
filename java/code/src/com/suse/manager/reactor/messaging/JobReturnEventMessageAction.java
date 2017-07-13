@@ -23,8 +23,6 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
-import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.utils.SaltUtils;
@@ -142,25 +140,13 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             }
         });
 
-        // Schedule a package list refresh if either requested or detected as necessary
-        if (
-            forcePackageListRefresh(jobReturnEvent) ||
-            SaltUtils.INSTANCE.shouldRefreshPackageList(function, jobResult)
-        ) {
-            MinionServerFactory
-                    .findByMinionId(jobReturnEvent.getMinionId())
-                    .ifPresent(minionServer -> {
-                try {
-                    ActionManager.schedulePackageRefresh(minionServer.getOrg(),
-                        minionServer);
-                }
-                catch (TaskomaticApiException e) {
-                    LOG.error("Could not schedule package refresh for minion: " +
-                        minionServer.getMinionId());
-                    throw new RuntimeException(e);
-                }
-            });
-        }
+        MinionServerFactory
+                .findByMinionId(jobReturnEvent.getMinionId())
+                .ifPresent(minionServer -> {
+                    jobResult.ifPresent(result -> {
+                        SaltUtils.handlePackageRefresh(function, result, minionServer);
+                    });
+                });
 
         // For all jobs: update minion last checkin
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(

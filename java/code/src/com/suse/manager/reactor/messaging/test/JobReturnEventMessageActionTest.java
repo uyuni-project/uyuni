@@ -48,9 +48,25 @@ import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
+import com.suse.manager.webui.utils.MinionActionUtils;
+import com.suse.manager.webui.utils.salt.custom.Openscap;
+import com.suse.salt.netapi.calls.modules.Pkg;
+import com.suse.salt.netapi.calls.runner.Jobs;
+import com.suse.salt.netapi.datatypes.Arguments;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.parser.JsonParser;
+import com.suse.salt.netapi.parser.LocalDateTimeISOAdapter;
+import com.suse.salt.netapi.parser.OptionalTypeAdapterFactory;
+import com.suse.salt.netapi.parser.ResultSSHResultTypeAdapterFactory;
+import com.suse.salt.netapi.parser.ResultTypeAdapterFactory;
+import com.suse.salt.netapi.parser.StartTimeAdapter;
+import com.suse.salt.netapi.parser.StatsAdapter;
+import com.suse.salt.netapi.parser.XorTypeAdapterFactory;
+import com.suse.salt.netapi.parser.ZonedDateTimeISOAdapter;
+import com.suse.salt.netapi.results.Change;
+import com.suse.salt.netapi.utils.Xor;
+import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
 import com.suse.utils.Json;
@@ -59,16 +75,27 @@ import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Optional;
+import java.util.Set;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -158,6 +185,65 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .filter(serverAction -> serverAction.getServer().equals(minion))
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
     }
+
+    public void testApplyPackageDelta() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        assertEquals(0, minion.getPackages().size());
+
+        Map<String, Change<Xor<String, List<Pkg.Info>>>> install = Json.GSON.fromJson(new InputStreamReader(getClass()
+                .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_install.new_format.json")),
+                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
+        SaltUtils.applyChanges(install, minion);
+        assertEquals(1, minion.getPackages().size());
+        List<InstalledPackage> packages = new ArrayList<>(minion.getPackages());
+        assertEquals("vim", packages.get(0).getName().getName());
+        assertEquals("x86_64", packages.get(0).getArch().getLabel());
+        assertEquals("1.42.11", packages.get(0).getEvr().getVersion());
+        assertEquals("7.1", packages.get(0).getEvr().getRelease());
+        assertEquals(new Date(1498636531000L), packages.get(0).getInstallTime());
+
+
+        Map<String, Change<Xor<String, List<Pkg.Info>>>> update = Json.GSON.fromJson(new InputStreamReader(getClass()
+                        .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_update.new_format.json")),
+                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
+
+        SaltUtils.applyChanges(update, minion);
+        assertEquals(1, minion.getPackages().size());
+        List<InstalledPackage> packages1 = new ArrayList<>(minion.getPackages());
+        assertEquals("vim", packages1.get(0).getName().getName());
+        assertEquals("x86_64", packages1.get(0).getArch().getLabel());
+        assertEquals("1.42.12", packages1.get(0).getEvr().getVersion());
+        assertEquals("7.2", packages1.get(0).getEvr().getRelease());
+        assertEquals(new Date(1498636553000L), packages1.get(0).getInstallTime());
+
+
+        Map<String, Change<Xor<String, List<Pkg.Info>>>> remove = Json.GSON.fromJson(new InputStreamReader(getClass()
+                .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_remove.new_format.json")),
+                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
+
+
+        SaltUtils.applyChanges(remove, minion);
+        assertEquals(0, minion.getPackages().size());
+    }
+
+    public void testsPackageDeltaFromStateApply() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        assertEquals(0, minion.getPackages().size());
+
+        Map<String, JsonElement> apply = Json.GSON.fromJson(new InputStreamReader(getClass()
+                        .getResourceAsStream("/com/suse/manager/reactor/messaging/test/apply_pkg.new_format.json")),
+                new TypeToken<Map<String, JsonElement>>(){}.getType());
+        SaltUtils.packageDeltaFromStateApply(apply, minion);
+
+        assertEquals(1, minion.getPackages().size());
+        List<InstalledPackage> packages = new ArrayList<>(minion.getPackages());
+        assertEquals("vim", packages.get(0).getName().getName());
+        assertEquals("x86_64", packages.get(0).getArch().getLabel());
+        assertEquals("1.42.11", packages.get(0).getEvr().getVersion());
+        assertEquals("7.1", packages.get(0).getEvr().getRelease());
+        assertEquals(new Date(1498636531000L), packages.get(0).getInstallTime());
+    }
+
 
     /**
      * Test the processing of packages.profileupdate job return event on an existing

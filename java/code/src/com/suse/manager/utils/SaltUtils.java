@@ -69,7 +69,6 @@ import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
-import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
@@ -77,14 +76,18 @@ import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
+import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.salt.netapi.calls.modules.Pkg;
+import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.results.Change;
 import com.suse.salt.netapi.results.CmdExecCodeAll;
 import com.suse.salt.netapi.results.ModuleRun;
+import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
+import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
 import org.apache.commons.lang.StringUtils;
@@ -102,6 +105,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -110,7 +114,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -121,8 +124,7 @@ public class SaltUtils {
 
     /* List of Salt modules that could possibly change installed packages */
     private static final List<String> PACKAGE_CHANGING_MODULES = Arrays.asList(
-            "pkg.install", "pkg.remove", "pkg_installed", "pkg_latest", "pkg_removed",
-            "pkg.patch_installed", "patchinstall");
+            "pkg.install", "pkg.remove", "pkg.latest", "pkg.patch_installed", "pkg.upgrade");
 
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
@@ -155,23 +157,215 @@ public class SaltUtils {
             case "pkg.remove": return true;
             case "pkg.patch_installed": return true;
             case "state.apply":
-                Predicate<StateApplyResult<Map<String, Object>>> filterCondition = result ->
-                    PACKAGE_CHANGING_MODULES.contains(
-                        result.getName()) && !result.getChanges().isEmpty();
-
-                Optional<Map<String, StateApplyResult<Map<String, Object>>>>
-                resultsOptional = Opt.fold(
-                    callResult,
-                    Optional::empty,
-                    rawResult -> jsonEventToStateApplyResults(rawResult));
-
                 return Opt.fold(
-                    resultsOptional,
-                    () -> true,
+                    callResult.flatMap(SaltUtils::jsonEventToStateApplyResults),
+                    () -> false,
                     results ->
-                        results.values().stream().filter(
-                            filterCondition).findAny().isPresent());
+                            results.entrySet().stream().anyMatch(result ->
+                                extractFunction(result.getKey())
+                                        .map(fn -> PACKAGE_CHANGING_MODULES.contains(
+                                                fn.equals("module.run") ? result.getValue().getName() : fn
+                                        ))
+                                        .orElse(false)
+                                && !result.getValue().getChanges().isEmpty()));
             default: return false;
+        }
+    }
+
+    private static final List<String> PACKAGE_FUNCTIONS = Arrays.asList(
+            "pkg.latest", "pkg.removed", "pkg.installed", "pkg.patch_installed", "pkg.upgrade"
+    );
+
+    /**
+     * Handles package updates by applying delta information or scheduling a full
+     * refresh if necessary.
+     *
+     * @param function salt function
+     * @param callResult salt result
+     * @param server server to update
+     */
+    public static void handlePackageRefresh(String function,
+                                            JsonElement callResult, Server server) {
+        if (PACKAGE_FUNCTIONS.contains(function)) {
+            Map<String, Change<Xor<String, List<Pkg.Info>>>> delta = Json.GSON.fromJson(
+                callResult,
+                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }
+                .getType()
+            );
+            applyChanges(delta, server);
+        }
+        else if (function.equals("state.apply")) {
+            Map<String, JsonElement> apply = Json.GSON.fromJson(
+                callResult, new TypeToken<Map<String, JsonElement>>() { }.getType());
+            packageDeltaFromStateApply(apply, server);
+        }
+
+        // in any case, update of errata cache for this server
+        ErrataManager.insertErrataCacheTask(server);
+    }
+
+    /**
+     * Extract salt function/module information from state apply string
+     * @param value state apply string
+     * @return salt function / module info
+     */
+    public static Optional<String> extractFunction(String value) {
+        String[] split = value.split("_\\|-");
+        if (split.length == 4) {
+            String module = split[0];
+            String function = split[3];
+            return Optional.of(module + "." + function);
+        }
+        else {
+            LOG.error("Could not parse Salt function call: " + value);
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * applies the package changes to the server or schedules a package list
+     * refresh if not enough data is present
+     * @param changes map of packages changes
+     * @param server server to update
+     */
+    public static void applyChanges(
+            Map<String, Change<Xor<String, List<Pkg.Info>>>> changes,
+            Server server) {
+        boolean oldFormat = changes.entrySet().stream().anyMatch(
+            e -> e.getValue().getNewValue().isLeft() && e.getValue().getOldValue().isLeft()
+        );
+        if (oldFormat) {
+            // In this case we either got the old style response without
+            // enough package info or something went really wrong
+            // in both cases its safer to just do a full refresh
+            try {
+                ActionManager.schedulePackageRefresh(server.getOrg(), server);
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error(e);
+            }
+        }
+        else {
+            HibernateFactory.doWithoutAutoFlushing(() -> {
+                applyDeltaPackageInfo(changes, server);
+            });
+        }
+    }
+
+
+    /**
+     * Applies a package changeset to a server.
+     *
+     * @param changes the changes
+     * @param server the server
+     */
+    private static void applyDeltaPackageInfo(
+            Map<String, Change<Xor<String, List<Pkg.Info>>>> changes, Server server) {
+        // normalise salts type madness
+        Map<String, Change<List<Pkg.Info>>> collect = changes.entrySet().stream()
+                .collect(
+                Collectors.toMap(
+                        e -> e.getKey(),
+                        e -> e.getValue().map(
+                                xor -> xor.getOrElse(Collections::emptyList))
+                )
+        );
+        Map<String, InstalledPackage> currentPackages = server.getPackages().stream()
+                .collect(Collectors.toMap(
+                        SaltUtils::packageToKey,
+                        Function.identity()
+                ));
+        collect.entrySet().stream().forEach(e -> {
+            String name = e.getKey();
+            Change<List<Info>> change = e.getValue();
+
+            Map<String, Info> newPackages = change.getNewValue().stream()
+                .collect(Collectors.toMap(
+                    info -> packageToKey(name, info),
+                    Function.identity()
+                ));
+
+            change.getOldValue().stream().forEach(info -> {
+                String key = packageToKey(name, info);
+                if (!newPackages.containsKey(key)) {
+                    Optional.ofNullable(currentPackages.get(key))
+                    .ifPresent(ip -> {
+                        server.getPackages().remove(ip);
+                    });
+                }
+            });
+
+            newPackages.values().stream().forEach(info -> {
+                server.getPackages().add(
+                    Optional.ofNullable(
+                        currentPackages.get(packageToKey(name, info)))
+                        .orElseGet(
+                                () -> createPackageFromSalt(name, info, server)
+                        )
+                );
+            });
+        });
+    }
+
+    /**
+     * Extracts and applies package delta information and updates the server with it.
+     *
+     * @param apply map of state apply results
+     * @param server server to update
+     */
+    public static void packageDeltaFromStateApply(
+            Map<String, JsonElement> apply, Server server) {
+        apply.entrySet().stream().flatMap(e -> {
+            return extractFunction(e.getKey()).<Stream<StateApplyResult<JsonElement>>>map(fn -> {
+               if (fn.equals("module.run")) {
+                   StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
+                           e.getValue(),
+                           new TypeToken<StateApplyResult<JsonElement>>() { }.getType()
+                   );
+                   if (PACKAGE_FUNCTIONS.contains(ap.getName())) {
+                       return Stream.of(ap);
+                   } else {
+                       return Stream.empty();
+                   }
+               } else if (PACKAGE_FUNCTIONS.contains(fn)) {
+                   return Stream.of(
+                           (StateApplyResult<JsonElement>) Json.GSON.fromJson(
+                                   e.getValue(),
+                                   new TypeToken<StateApplyResult<JsonElement>>() { }.getType()
+                           )
+                   );
+               } else {
+                   return Stream.empty();
+               }
+            }).orElseGet(Stream::empty);
+        })
+          // we sort by run order process multiple package changing states right
+          .sorted(Comparator.comparingInt(StateApplyResult::getRunNum))
+          .forEach(value -> {
+              Map<String, Change<Xor<String, List<Pkg.Info>>>> delta =
+                      extractPackageDelta(value.getChanges());
+
+              applyChanges(delta, server);
+          });
+    }
+
+    private static Map<String, Change<Xor<String, List<Info>>>> extractPackageDelta(
+            JsonElement json) {
+        if (json.getAsJsonObject().has("ret")) {
+            return
+                Json.GSON.<Ret<Map<String, Change<Xor<String, List<Pkg.Info>>>>>>fromJson(
+                    json,
+                    new TypeToken<Ret<
+                            Map<String, Change<Xor<String, List<Pkg.Info>>>>
+                        >>() { }.getType()
+                ).getRet();
+        }
+        else {
+            return Json.GSON.fromJson(
+                json,
+                new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }
+                    .getType()
+            );
         }
     }
 
@@ -747,8 +941,9 @@ public class SaltUtils {
                     Function.identity()
              ));
 
-        Map<String, Pkg.Info> ret = result.getInfoInstalled().getChanges().getRet();
-        Map<String, Map.Entry<String, Pkg.Info>> newPackageMap = ret.entrySet().stream()
+        Map<String, Map.Entry<String, Pkg.Info>> newPackageMap = result
+            .getInfoInstalled().getChanges().getRet()
+            .entrySet().stream()
             .collect(Collectors.toMap(
                     SaltUtils::packageToKey,
                     Function.identity()
@@ -756,15 +951,14 @@ public class SaltUtils {
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
             e -> newPackageMap.containsKey(e.getKey())
-        ).map(
-            e -> e.getValue()
-        ).collect(Collectors.toList());
+        ).map(Map.Entry::getValue).collect(Collectors.toList());
         packages.retainAll(unchanged);
 
         Collection<InstalledPackage> added = newPackageMap.entrySet().stream().filter(
            e -> !oldPackageMap.containsKey(e.getKey())
         ).map(
-           e -> createPackageFromSalt(e.getValue(), server)
+           e -> createPackageFromSalt(e.getValue().getKey(), e.getValue().getValue(),
+                   server)
         ).collect(Collectors.toList());
         packages.addAll(added);
     }
@@ -794,27 +988,38 @@ public class SaltUtils {
      * Returns a key string that uniquely identifies an installed package (as
      * returned by Salt)
      *
-     * @param entry the package
+     * @param name the package name
+     * @param info the package info
      * @return the key
      */
-    public static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
-        Pkg.Info info = entry.getValue();
+    public static String packageToKey(String name, Pkg.Info info) {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(entry.getKey());
+        sb.append(name);
         sb.append("-");
         sb.append(
-            new PackageEvr(
-                info.getEpoch().orElse(null),
-                info.getVersion().get(),
-                info.getRelease().orElse("0")
-            ).toString()
+                new PackageEvr(
+                        info.getEpoch().orElse(null),
+                        info.getVersion().get(),
+                        info.getRelease().orElse("0")
+                ).toString()
         );
         sb.append(".");
         sb.append(info.getArchitecture().get());
 
         return sb.toString();
+    }
+
+    /**
+     * Returns a key string that uniquely identifies an installed package (as
+     * returned by Salt)
+     *
+     * @param entry the package
+     * @return the key
+     */
+    public static String packageToKey(Map.Entry<String, Pkg.Info> entry) {
+        return packageToKey(entry.getKey(), entry.getValue());
     }
 
     /**
@@ -867,14 +1072,13 @@ public class SaltUtils {
     /**
      * Create a {@link InstalledPackage} object from package name and info and return it.
      *
-     * @param entry name/package info from salt
+     * @param name package name from salt
+     * @param info package info from salt
      * @param server server this package will be added to
      * @return the InstalledPackage object
      */
-    private static InstalledPackage createPackageFromSalt(Map.Entry<String, Pkg.Info> entry,
+    private static InstalledPackage createPackageFromSalt(String name, Pkg.Info info,
             Server server) {
-        String name = entry.getKey();
-        Pkg.Info info = entry.getValue();
 
         String epoch = info.getEpoch().orElse(null);
         String release = info.getRelease().orElse("0");
