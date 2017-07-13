@@ -351,24 +351,24 @@ class FormulaForm extends React.Component {
                 <div>
                     {errors}{messages}
                     <form id="editFormulaForm" className="form-horizontal" onSubmit={this.saveFormula}>
+                        <div className="spacewalk-section-toolbar">
+                            <div className="btn-group">
+                                <a id="prev-btn" href={this.props.getFormulaUrl(this.props.formulaId - 1)} disabled={this.props.formulaId == 0} className="btn btn-default"><i className="fa fa-arrow-left" /> Prev</a>
+                                <a id="next-btn" href={this.props.getFormulaUrl(this.props.formulaId + 1)} disabled={this.state.formulaList.length - 1 <= this.props.formulaId} className="btn btn-default">Next <i className="fa fa-arrow-right" /></a>
+                            </div>
+                            <div className="action-button-wrapper">
+                                <div className="btn-group">
+                                    <Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className={"btn btn-success"} handler={function(e){$('<input type="submit">').hide().appendTo($("#editFormulaForm")).click().remove();}} />
+                                    <Button id="reset-btn" icon="fa-eraser" text="Clear values" className="btn btn-default" handler={this.clearValues} />
+                                </div>
+                            </div>
+                        </div>
                         <div className="panel panel-default">
                             <div className="panel-heading">
                                 <h4>{toTitle(get(this.state.formulaName, "Formula not found"))}</h4>
                             </div>
                             <div className="panel-body">
                                 {this.generateForm()}
-                                <div className="row">
-                                    <div className="col-lg-6 col-lg-offset-3">
-                                        <div className="btn-group">
-                                            <Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className={"btn btn-success"} handler={function(e){$('<input type="submit">').hide().appendTo($("#editFormulaForm")).click().remove();}} />
-                                            <Button id="reset-btn" icon="fa-eraser" text="Clear values" className="btn btn-default" handler={this.clearValues} />
-                                        </div>
-                                        <div className="btn-group pull-right">
-                                            <a id="prev-btn" href={this.props.getFormulaUrl(this.props.formulaId - 1)} disabled={this.props.formulaId == 0} className="btn btn-default"><i className="fa fa-arrow-left" /> Prev</a>
-                                            <a id="next-btn" href={this.props.getFormulaUrl(this.props.formulaId + 1)} disabled={this.state.formulaList.length - 1 <= this.props.formulaId} className="btn btn-default">Next <i className="fa fa-arrow-right" /></a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </form>
