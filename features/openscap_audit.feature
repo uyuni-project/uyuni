@@ -42,3 +42,28 @@ Feature: Use the openSCAP audit feature in SUSE Manager
     And I should see a "XCCDF Rule Results" text
     And I should see a "pass" text
     And I should see a "rule-" link
+
+  Scenario: Cleanup: remove audit scans retention period (trad-client)
+    Given I am on the Organizations page
+    And I follow "SUSE Test" in the content area
+    And I follow "Configuration" in the content area
+    When I enter "0" as "scap_retention_period"
+    And I click on "Update Organization"
+    Then I should see a "Organization SUSE Test was successfully updated." text
+
+  Scenario: Delete audit results (trad-client)
+    Given I am on the Systems overview page of this "sle-client"
+    And I follow "Audit" in the content area
+    And I follow "List Scans" in the content area
+    When I click on "Select All"
+    And I click on "Remove Selected Scans"
+    And I click on "Confirm"
+    Then I should see a "deleted. 0 SCAP Scan(s) retained" text
+
+  Scenario: Restore audit scans retention period (trad-client)
+    Given I am on the Organizations page
+    And I follow "SUSE Test" in the content area
+    And I follow "Configuration" in the content area
+    When I enter "90" as "scap_retention_period"
+    And I click on "Update Organization"
+    Then I should see a "Organization SUSE Test was successfully updated." text
