@@ -37,6 +37,7 @@
 - features/xmlrpc_api.feature
 - features/custom_system_info.feature
 - features/security.feature
+- features/mgr_bootstrap.feature
 - features/check_registration.feature
 - features/salt_minions_page.feature
 - features/spacewalk_channel.feature
@@ -56,7 +57,6 @@
 - features/action_chain.feature
 - features/check_errata_npn.feature
 - features/cve_audit.feature
-- features/mgr_bootstrap.feature
 - features/channels.feature
 - features/weak_deps.feature
 - features/metadata_check.feature

@@ -113,7 +113,7 @@ Feature: Test action chaining
     And I should see a "Action Chain new action chain has been scheduled for execution." text
     When I run rhn_check on this client
     Then "/root/webui-actionchain-test" exists on the filesystem of "sle-client"
-    Then I run "rm /root/webui-actionchain-test" on "sle-client"
+    And I run "rm /root/webui-actionchain-test" on "sle-client"
 
   Scenario: Basic chain operations xmlrpc
     Given I am logged in via XML-RPC/actionchain as user "admin" and password "admin"
