@@ -50,7 +50,7 @@ Feature: Create a group
     And I click on "Use in SSM" for "newgroup"
     And I should see a "system selected" text
     And I should see a "Selected Systems List" text
-    Then I should see this client as link
+    Then I should see "sle-client" as link
   
   Scenario: remove client from group
    Given I am on the Systems overview page of this "sle-client"
