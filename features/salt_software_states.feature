@@ -15,10 +15,8 @@ Feature: Check the Salt package state UI
     And I should see a "System's Base Channel has been updated." text
 
   Scenario: Accepted minion has a base channel
-    Given I am authorized as "testing" with password "testing"
-    And "sle-minion" is registered in Spacewalk
-    And I follow "sle-minion" link
-    And I follow "Software" in the content area
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     Then the system should have a Base channel set
 
