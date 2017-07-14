@@ -10,7 +10,7 @@ Feature:  Container Image namespace tests
     And I check "container_build_host" if not checked
     When I click on "Update Properties"
 
-  Scenario: Apply the highstate to container buid host
+  Scenario: Apply the highstate to ensure container buid host is ready
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "[Container Build Host]" text
     And I run "zypper mr -e `grep -h SLE-Manager-Tools-12-x86_64] /etc/zypp/repos.d/* | sed 's/\[//' | sed 's/\]//'`" on "sle-minion"
