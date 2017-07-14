@@ -23,8 +23,9 @@ Then(/^I should see this client in spacewalk$/) do
     )
 end
 
-Then(/^I should see this client as link$/) do
-  step %(I should see a "#{$client_fullhostname}" link)
+Then(/^I should see "(.*?)" as link$/) do |host|
+  target_fullhostname = get_target_fullhostname(host)
+  step %(I should see a "#{target_fullhostname}" link)
 end
 
 Then(/^config-actions are enabled$/) do

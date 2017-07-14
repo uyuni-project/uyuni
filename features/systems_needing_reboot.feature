@@ -36,4 +36,4 @@ Feature: Reboot required after patch
     And I follow "Overview" in the left menu
     And I click Systems, under Systems node
     And I follow "Requiring Reboot" in the left menu
-    Then I should see this client as link
+    Then I should see "sle-client" as link
