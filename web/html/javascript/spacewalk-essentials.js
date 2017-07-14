@@ -67,7 +67,7 @@ function alignContentDimensions() {
 }
 
 // empty function by default hooked on window.scroll event
-function sstScrollBehavior() {
+var sstScrollBehavior = function() {
   return;
 }
 
