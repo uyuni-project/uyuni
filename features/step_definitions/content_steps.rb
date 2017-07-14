@@ -193,6 +193,12 @@ Then(/^I check the row with the "([^"]*)" link$/) do |arg1|
   end
 end
 
+Then(/^I check the row with the "([^"]*)" text$/) do |text|
+  within(:xpath, "//tr[td[contains(., #{text})]]") do
+    first('input[type=checkbox]').set(true)
+  end
+end
+
 Then(/^I should see (\d+) "([^"]*)" links$/) do |count, text|
   page.all('a', :text => text, :count => count)
 end
