@@ -234,21 +234,15 @@ end
 
 # weak deaps steps
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
-  if host == "sle-client"
-    target = $client
-  else
-    raise "Invalid target."
-  end
+  raise "Invalid target." unless host == "sle-client"
+  target = $client
   target.run("rhn_check -vvv", true, 500, 'root')
   client_refresh_metadata
 end
 
 Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  if host == "sle-client"
-    target = $client
-  else
-    raise "Invalid target."
-  end
+  raise "Invalid target." unless host == "sle-client"
+  target = $client
   arch, _code = target.run("uname -m")
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
@@ -256,11 +250,8 @@ Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
 end
 
 Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  if host == "sle-client"
-    target = $client
-  else
-    raise "Invalid target."
-  end
+  raise "Invalid target." unless host == "sle-client"
+  target = $client
   arch, _code = target.run("uname -m")
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
@@ -268,11 +259,8 @@ Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, ho
 end
 
 Then(/^"([^"]*)" should exists in the metadata for "([^"]*)"$/) do |file, host|
-  if host == "sle-client"
-    target = $client
-  else
-    raise "Invalid target."
-  end
+  raise "Invalid target." unless host == "sle-client"
+  target = $client
   arch, _code = target.run("uname -m")
   arch.chomp!
   fail unless file_exists?(target, "#{client_raw_repodata_dir("test-channel-#{arch}")}/#{file}")
