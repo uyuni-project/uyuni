@@ -86,6 +86,7 @@ function handleSst() {
     // move each named tag into the 'spacewalk-section-toolbar'
     $('.move-to-fixed-toolbar').each(function() {
       sst.append($(this));
+      $(this).removeClass('move-to-fixed-toolbar');
     });
   }
 
@@ -105,6 +106,7 @@ function handleSst() {
     }
     $('.move-children-to-fixed-toolbar').each(function() {
       selectorButtonWrapper.append($(this).children());
+      $(this).removeClass('move-children-to-fixed-toolbar');
     });
   }
 
