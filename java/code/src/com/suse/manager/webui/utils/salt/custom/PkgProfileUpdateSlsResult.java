@@ -16,7 +16,7 @@ package com.suse.manager.webui.utils.salt.custom;
 
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Zypper;
-import com.suse.salt.netapi.results.CmdExecCodeAllResult;
+import com.suse.salt.netapi.results.CmdExecCodeAll;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 
@@ -53,13 +53,13 @@ public class PkgProfileUpdateSlsResult {
     private StateApplyResult<Ret<Map<String, Pkg.Info>>> infoInstalled;
 
     @SerializedName(PKG_PROFILE_REDHAT_RELEASE)
-    private StateApplyResult<CmdExecCodeAllResult> rhelReleaseFile;
+    private StateApplyResult<CmdExecCodeAll> rhelReleaseFile;
 
     @SerializedName(PKG_PROFILE_CENTOS_RELEASE)
-    private StateApplyResult<CmdExecCodeAllResult> centosReleaseFile;
+    private StateApplyResult<CmdExecCodeAll> centosReleaseFile;
 
     @SerializedName(PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
-    private StateApplyResult<CmdExecCodeAllResult> whatProvidesResReleasePkg;
+    private StateApplyResult<CmdExecCodeAll> whatProvidesResReleasePkg;
 
     /**
      * Gets live patching info.
@@ -96,21 +96,21 @@ public class PkgProfileUpdateSlsResult {
     /**
      * @return the content of the file /etc/redhat-release
      */
-    public StateApplyResult<CmdExecCodeAllResult> getRhelReleaseFile() {
+    public StateApplyResult<CmdExecCodeAll> getRhelReleaseFile() {
         return rhelReleaseFile;
     }
 
     /**
      * @return the content of the file /etc/centos-release
      */
-    public StateApplyResult<CmdExecCodeAllResult> getCentosReleaseFile() {
+    public StateApplyResult<CmdExecCodeAll> getCentosReleaseFile() {
         return centosReleaseFile;
     }
 
     /**
      * @return the package that provides 'sles_es-release-server'
      */
-    public StateApplyResult<CmdExecCodeAllResult> getWhatProvidesResReleasePkg() {
+    public StateApplyResult<CmdExecCodeAll> getWhatProvidesResReleasePkg() {
         return whatProvidesResReleasePkg;
     }
 }
