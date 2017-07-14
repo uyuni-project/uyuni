@@ -85,7 +85,7 @@ Feature: CVE Audit
 
   Scenario: Check NAGIOS pending patches for host
     Given I perform a nagios check patches for "sle-client"
-    Then I should see WARNING: 1 patch pending
+    Then I should see CRITICAL: 1 critical patch pending
 
   Scenario: after applying patches (xmlrpc test)
     Given I am on the Systems overview page of this "sle-client"
