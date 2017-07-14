@@ -58,7 +58,7 @@ Feature: CVE Audit
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"
     And I should see a "Affected, at least one patch available in an assigned channel" text
-    When I check checkbox with title "Affected, at least one patch available in an assigned channel" in the list
+    When I check the row with the "sle-client" hostname
     Then I should see a "system selected" text
     When I am on the System Manager System Overview page
     Then I should see "sle-client" as link
