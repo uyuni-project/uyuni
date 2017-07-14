@@ -83,6 +83,10 @@ Feature: CVE Audit
     And I should get the "milkyway-dummy-2345" patch
     Then I logout from XML-RPC/cve audit namespace.
 
+  Scenario: Check NAGIOS pending patches for host
+    Given I perform a nagios check patches for "sle-client"
+    Then I should see WARNING: 1 patch pending
+
   Scenario: after applying patches (xmlrpc test)
     Given I am on the Systems overview page of this "sle-client"
     And I follow "Software" in the content area

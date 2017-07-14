@@ -43,6 +43,10 @@ Feature: Use the openSCAP audit feature in SUSE Manager
     And I should see a "pass" text
     And I should see a "rule-" link
 
+  Scenario: Check NAGIOS status of last action
+    Given I perform a nagios check last event for "sle-client"
+    Then I should see Completed: OpenSCAP xccdf scanning scheduled by admin
+
   Scenario: Cleanup: remove audit scans retention period (trad-client)
     Given I am on the Organizations page
     And I follow "SUSE Test" in the content area

@@ -133,13 +133,15 @@ end
 
 # nagios steps
 
-When(/^I perform a nagios check patches$/) do
-  command = "/usr/lib/nagios/plugins/check_suma_patches #{$client_fullhostname} > /tmp/nagios.out"
+When(/^I perform a nagios check patches for "([^"]*)"$/) do |host|
+  target_fullhostname = get_target_fullhostname(host)
+  command = "/usr/lib/nagios/plugins/check_suma_patches #{target_fullhostname} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
-When(/^I perform a nagios check last event$/) do
-  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{$client_fullhostname} > /tmp/nagios.out"
+When(/^I perform a nagios check last event for "([^"]*)"$/) do |host|
+  target_fullhostname = get_target_fullhostname(host)
+  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{target_fullhostname} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
