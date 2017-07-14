@@ -829,22 +829,6 @@ Then(/^I enter remote ssh-minion hostname as "(.*?)"$/) do |hostname|
   step %(I enter "#{ENV['SSHMINION']}" as "#{hostname}")
 end
 
-Then(/^I should see remote ssh-minion hostname as link$/) do
-  step %(I should see a "#{ENV['SSHMINION']}" link)
-end
-
-Then(/^I should see centos ssh-minion hostname as link$/) do
-  step %(I should see a "#{ENV['CENTOSMINION']}" link)
-end
-
-Then(/^I follow centos ssh-minion hostname$/) do
-  step %(I follow "#{ENV['CENTOSMINION']}")
-end
-
-Then(/^I follow remote ssh-minion hostname$/) do
-  step %(I follow "#{ENV['SSHMINION']}")
-end
-
 # minion bootstrap steps
 And(/^I enter the hostname of "([^"]*)" as hostname$/) do |minion|
   case minion
