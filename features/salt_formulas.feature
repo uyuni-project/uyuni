@@ -130,3 +130,22 @@ Feature: Use salt formulas
      And the pillar data for "formulas" should be empty on "ssh-minion"
      And the pillar data for "timezone" should be empty on "ssh-minion"
      And the pillar data for "keyboard_and_language" should be empty on "ssh-minion"
+
+  Scenario: CLEANUP: Remove "locale-formula-group" system group
+     Given I am on the groups page
+     And I follow "locale-formula-group" in the content area
+     And I follow "Delete Group" in the content area
+     When I click on "Confirm Deletion"
+     Then I should see a "System group" text
+     And I should see a "locale-formula-group" text
+     And I should see a "deleted" text
+
+  Scenario: CLEANUP: Reset locale values on "sle-minion"
+     Given I am on the Systems overview page of this "sle-minion"
+     And I follow "States" in the content area
+     And I click on "Apply Highstate"
+     Then I should see a "Applying the highstate has been scheduled." text
+     And I wait for "40" seconds
+     And the timezone on "sle-minion" should be "CET"
+     And the keymap on "sle-minion" should be "us.map.gz"
+     And the language on "sle-minion" should be "en_US.UTF-8"
