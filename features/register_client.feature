@@ -8,7 +8,7 @@ Feature: Register a client
 
   Scenario: Register a client
     When I register using an activation key
-    Then I should see this client in spacewalk
+    Then I should "sle-client" in spacewalk
 
   Scenario: check registration values
     Given I update the profile of this client

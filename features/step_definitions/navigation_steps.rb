@@ -63,6 +63,10 @@ When(/^I uncheck "([^"]*)"$/) do |arg1|
   uncheck(arg1)
 end
 
+When(/^I check "([^"]*)" if not checked$/) do |arg1|
+  check(arg1) unless has_checked_field?(arg1)
+end
+
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
   select(arg1, :from => arg2)
 end

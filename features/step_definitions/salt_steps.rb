@@ -155,7 +155,6 @@ Then(/^the list of the "(.*?)" keys should contain "(.*?)" hostname$/) do |key_t
 end
 
 When(/^I wait until no Salt job is running on "(.*?)"$/) do |minion|
-begin
   if minion == "sle-minion"
     target = $minion
   elsif minion == "ceos-minion"
@@ -165,11 +164,14 @@ begin
   else
     raise "no valid name of minion given! "
   end
-  Timeout.timeout(DEFAULT_TIMEOUT) do
-    $output, _code = target.run("salt-call saltutil.running")
-    break if $output.split('\n').length == 1
-    sleep 3
-  end
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        $output, _code = target.run("salt-call -lquiet saltutil.running")
+        break if $output == "local:\n"
+        sleep 3
+      end
+    end
   rescue Timeout::Error
     raise "a Salt job is still running on #{minion} after timeout"
   end
@@ -827,22 +829,6 @@ end
 
 Then(/^I enter remote ssh-minion hostname as "(.*?)"$/) do |hostname|
   step %(I enter "#{ENV['SSHMINION']}" as "#{hostname}")
-end
-
-Then(/^I should see remote ssh-minion hostname as link$/) do
-  step %(I should see a "#{ENV['SSHMINION']}" link)
-end
-
-Then(/^I should see centos ssh-minion hostname as link$/) do
-  step %(I should see a "#{ENV['CENTOSMINION']}" link)
-end
-
-Then(/^I follow centos ssh-minion hostname$/) do
-  step %(I follow "#{ENV['CENTOSMINION']}")
-end
-
-Then(/^I follow remote ssh-minion hostname$/) do
-  step %(I follow "#{ENV['SSHMINION']}")
 end
 
 # minion bootstrap steps
