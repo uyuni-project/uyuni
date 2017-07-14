@@ -25,7 +25,7 @@ Feature: Test Bare-metal discovery
 
   Scenario: Register a client for bare-metal
     When I register using "1-spacewalk-bootstrap-activation-key" key
-    Then I should see this client in spacewalk
+    Then I should see "sle-client" in spacewalk
 
   Scenario: check registration values of client
     Given I am on the Systems overview page of this "sle-client"
@@ -120,4 +120,4 @@ Feature: Test Bare-metal discovery
   
     Scenario: Register a trad-client (cleanup) (need always tradclient)
     When I register using an activation key
-    Then I should see this client in spacewalk
+    Then I should see "sle-client" in spacewalk

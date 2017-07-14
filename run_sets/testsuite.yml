@@ -90,5 +90,6 @@
 
 # Debug suse-manager server ( this should be removed)
 - features/spacewalk_debug.feature
-### Scalability tests (after debug always)
+
+### Scalability tests (after debug always). IDEMPOTENT
 - features/docker_xmlrpc.feature
