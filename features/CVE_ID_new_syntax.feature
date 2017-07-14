@@ -15,7 +15,7 @@ Feature: Check if new CVE-ID syntax is working with SUSE Manager
     And I should see a "CVE-1999-99781" link
 
   Scenario: Check local metdata for long CVE IDs
-    When I refresh the metadata
+    When I refresh the metadata for "sle-client"
     Then I should have 'reference.*id="CVE-1999-12345' in the patch metadata
     And I should have 'reference.*id="CVE-1999-99781' in the patch metadata
     And I should have 'reference.*http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-12345' in the patch metadata

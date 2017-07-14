@@ -53,7 +53,7 @@ Feature: Test Powermanagement
     And I check this client
     And I am on System Set Manager Overview
     And I follow "Configure power management" in the content area
-    Then I should see this client as link
+    Then I should see "sle-client" as link
     And I should see a "Change Power Management Configuration" text
     And I should see a "Type" text
     And I should see a "Network address" text
@@ -74,7 +74,7 @@ Feature: Test Powermanagement
     Given I am authorized
     And I am on System Set Manager Overview
     And I follow "power management operations" in the content area
-    Then I should see this client as link
+    Then I should see "sle-client" as link
     And I should see a "Power On" button
     And I should see a "Power Off" button
     And I should see a "Reboot" button

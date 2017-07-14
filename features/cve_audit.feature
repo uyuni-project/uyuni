@@ -30,7 +30,7 @@ Feature: CVE Audit
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"
-    Then I should see this client as link
+    Then I should see "sle-client" as link
     And I should see a "Affected, at least one patch available in an assigned channel" text
     And I should see a "Install a new patch on this system" link
     And I should see a "milkyway-dummy-2345" text
@@ -38,7 +38,7 @@ Feature: CVE Audit
     And I should see a "Status" link
     And I should see a "Name" link
     And I should see a "extra CVE data update" link
-    Then I follow "Install a new patch on this system"
+    Then I follow "Install a new patch on this system" on "sle-client" row
     And I should see a "Relevant Patches" text
 
   Scenario: searching for an unknown CVE number
@@ -58,10 +58,10 @@ Feature: CVE Audit
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit Servers"
     And I should see a "Affected, at least one patch available in an assigned channel" text
-    When I check checkbox with title "Affected, at least one patch available in an assigned channel" in the list
+    When I check the row with the "sle-client" hostname
     Then I should see a "system selected" text
     When I am on the System Manager System Overview page
-    Then I should see this client as link
+    Then I should see "sle-client" as link
     And I follow "Clear"
 
   Scenario: before applying patches (xmlrpc test)
@@ -82,6 +82,10 @@ Feature: CVE Audit
     And I should get the test-channel
     And I should get the "milkyway-dummy-2345" patch
     Then I logout from XML-RPC/cve audit namespace.
+
+  Scenario: Check NAGIOS pending patches for host
+    Given I perform a nagios check patches for "sle-client"
+    Then I should see WARNING: 1 patch pending
 
   Scenario: after applying patches (xmlrpc test)
     Given I am on the Systems overview page of this "sle-client"

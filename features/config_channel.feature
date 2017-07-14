@@ -108,7 +108,7 @@ Feature: Test configuration channel basic functions
     And I follow "Centrally Managed Files" in the left menu
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "1 system"
 
-  Scenario: Check Centrally Managed Files of this client
+  Scenario: Check Centrally Managed Files of "sle-client"
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     When I follow "Systems" in the left menu
@@ -128,7 +128,7 @@ Feature: Test configuration channel basic functions
     And I follow "New Test Channel"
     And I follow "Deploy all configuration files to all subscribed systems"
     Then I should see a "/etc/mgr-test-file.cnf" link
-    And I should see this client as link
+    And I should see "sle-client" as link
     When I click on "Deploy Files to Selected Systems"
     Then I should see a "1 revision-deploy is being scheduled." text
     And I should see a "0 revision-deploys overridden." text
