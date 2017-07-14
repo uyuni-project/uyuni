@@ -57,6 +57,7 @@
 - features/salt_download_endpoint.feature
 - features/baremetal_test.feature
 - features/salt_remote_cmds.feature
+- features/salt_formulas.feature
 
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/action_chain.feature
@@ -81,11 +82,10 @@
 ### Features affected by the package problem.
 - features/salt_software_states.feature
 - features/salt_pkgset_beacon.feature
-###
 - features/salt_install_package.feature
 - features/salt_install_with_staging.feature
-# Formulas scenario needs sle-minion and ssh-minion
-- features/salt_formulas.feature
+###
+
 #### * Docker related features tests.  ###
 - features/docker_cve_audit.feature
 - features/docker_advanced_test.feature 
