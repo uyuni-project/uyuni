@@ -40,7 +40,7 @@ Feature: Register a system to be managed via SSH push
 
   Scenario: Register this client for SSH push via tunnel
     When I register this client for SSH push via tunnel
-    Then I should see this client in spacewalk
+    Then I should see "sle-client" in spacewalk
 
   Scenario: Check this client's contact method
     Given I am on the Systems overview page of this "sle-client"
@@ -76,4 +76,4 @@ Feature: Register a system to be managed via SSH push
  
   Scenario: Register a trad-client, after ssh-push removal(cleanup),(need always tradclient)
     When I register using an activation key
-    Then I should see this client in spacewalk
+    Then I should see "sle-client" in spacewalk

@@ -16,10 +16,10 @@ When(/^I register using an activation key$/) do
   step %(I register using "1-SUSE-DEV-#{arch}" key)
 end
 
-Then(/^I should see this client in spacewalk$/) do
+Then(/^I should see "(.*?)" in spacewalk$/) do |host|
   steps %(
     Given I am on the Systems page
-    Then I should see this client as link
+    Then I should see "#{host}" as link
     )
 end
 
