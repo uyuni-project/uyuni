@@ -150,8 +150,8 @@ When(/^I perform an invalid nagios check patches$/) do
   $server.run(command, false, 600, 'root')
 end
 
-Then(/^I should see WARNING: 1 patch pending$/) do
-  command = "grep \"WARNING: 1 patch(es) pending\" /tmp/nagios.out"
+Then(/^I should see CRITICAL: 1 critical patch pending$/) do
+  command = "grep \"CRITICAL: 1 critical patch(es) pending\" /tmp/nagios.out"
   $server.run(command, true, 600, 'root')
 end
 
