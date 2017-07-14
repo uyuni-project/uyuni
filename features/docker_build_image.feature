@@ -64,7 +64,6 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I wait until no Salt job is running on "sle-minion"
   And I apply highstate on "sle-minion"
   Then I wait until "docker" service is up and running on "sle-minion"
-
   # FIXME: We need a test for image store with credentials
   Scenario: Create an Image Store without credentials
   Given I am authorized as "admin" with password "admin"
