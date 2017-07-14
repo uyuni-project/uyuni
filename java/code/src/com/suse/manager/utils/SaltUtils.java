@@ -62,7 +62,7 @@ import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
-import com.suse.salt.netapi.results.CmdExecCodeAllResult;
+import com.suse.salt.netapi.results.CmdExecCodeAll;
 import com.suse.salt.netapi.results.ModuleRun;
 import com.suse.salt.netapi.results.OldNew;
 import com.suse.salt.netapi.results.StateApplyResult;
@@ -208,8 +208,7 @@ public class SaltUtils {
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            CmdExecCodeAllResult result = Json.GSON.fromJson(jsonResult,
-                    CmdExecCodeAllResult.class);
+            CmdExecCodeAll result = Json.GSON.fromJson(jsonResult, CmdExecCodeAll.class);
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = Optional.ofNullable(
                     scriptAction.getScriptActionDetails().getResults())
@@ -525,17 +524,17 @@ public class SaltUtils {
                 Optional.ofNullable(result.getRhelReleaseFile())
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(CmdExecCodeAllResult::getStdout);
+                .map(CmdExecCodeAll::getStdout);
         Optional<String> centosReleaseFile =
                 Optional.ofNullable(result.getCentosReleaseFile())
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(CmdExecCodeAllResult::getStdout);
+                .map(CmdExecCodeAll::getStdout);
         Optional<String> resReleasePkg =
                 Optional.ofNullable(result.getWhatProvidesResReleasePkg())
                 .map(StateApplyResult::getChanges)
                 .filter(ret -> ret.getStdout() != null)
-                .map(CmdExecCodeAllResult::getStdout);
+                .map(CmdExecCodeAll::getStdout);
         if (rhelReleaseFile.isPresent() || centosReleaseFile.isPresent() ||
                 resReleasePkg.isPresent()) {
             Set<InstalledProduct> products = getInstalledProductsForRhel(

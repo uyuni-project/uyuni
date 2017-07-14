@@ -43,6 +43,9 @@ import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.modules.Timezone;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
+import com.suse.salt.netapi.calls.wheel.Key.Fingerprints;
+import com.suse.salt.netapi.calls.wheel.Key.Names;
+import com.suse.salt.netapi.calls.wheel.Key.Pair;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.config.ClientConfig;
 import com.suse.salt.netapi.datatypes.target.Glob;
@@ -196,7 +199,8 @@ public class SaltService {
      */
     public <R> R callSync(RunnerCall<R> call) {
         try {
-            return call.callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            return call.callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE)
+                    .result().get();
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -210,9 +214,9 @@ public class SaltService {
      */
     public Key.Names getKeys() {
         try {
-            WheelResult<Key.Names> result = Key.listAll()
+            WheelResult<Result<Names>> result = Key.listAll()
                     .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            return result.getData().getResult();
+            return result.getData().getResult().result().get();
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -240,9 +244,9 @@ public class SaltService {
      */
     public Key.Fingerprints getFingerprints() {
         try {
-            WheelResult<Key.Fingerprints> result = Key.finger("*")
+            WheelResult<Result<Fingerprints>> result = Key.finger("*")
                     .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            return result.getData().getResult();
+            return result.getData().getResult().result().get();
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -259,9 +263,9 @@ public class SaltService {
     public Key.Pair generateKeysAndAccept(String id,
             boolean force) {
         try {
-            WheelResult<Key.Pair> result = Key.genAccept(id, Optional.of(force))
+            WheelResult<Result<Pair>> result = Key.genAccept(id, Optional.of(force))
                     .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            return result.getData().getResult();
+            return result.getData().getResult().result().get();
         }
         catch (SaltException e) {
             throw new RuntimeException(e);

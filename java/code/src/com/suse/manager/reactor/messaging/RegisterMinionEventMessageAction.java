@@ -61,7 +61,7 @@ import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.SaltError;
-import com.suse.salt.netapi.results.CmdExecCodeAllResult;
+import com.suse.salt.netapi.results.CmdExecCodeAll;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
@@ -488,19 +488,19 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Optional<String> centosReleaseContent =
                     applyResultMap.map(map ->
                         map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAllResult.class))
+                    .map(r -> r.getChanges(CmdExecCodeAll.class))
                     .map(c -> c.getStdout());
             Optional<String> rhelReleaseContent =
                     applyResultMap.map(map ->
                         map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAllResult.class))
+                    .map(r -> r.getChanges(CmdExecCodeAll.class))
                     .map(c -> c.getStdout());
             Optional<String> whatProvidesRes =
                     applyResultMap.map(map ->
                         map.get(
                             PkgProfileUpdateSlsResult
                                 .PKG_PROFILE_WHATPROVIDES_SLES_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAllResult.class))
+                    .map(r -> r.getChanges(CmdExecCodeAll.class))
                     .map(c -> c.getStdout());
 
             Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils
