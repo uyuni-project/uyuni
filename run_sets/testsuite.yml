@@ -60,13 +60,13 @@
 - features/salt_formulas.feature
 - features/docker_advanced_test.feature
 - features/docker_cve_audit.feature
+- features/metadata_check.feature
 
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/action_chain.feature
 - features/check_errata_npn.feature
 - features/cve_audit.feature
 - features/weak_deps.feature
-- features/metadata_check.feature
 - features/erratapage.feature
 - features/lock_packages_on_client.feature
 - features/install_package_and_errata.feature
