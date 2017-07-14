@@ -51,8 +51,8 @@ Feature: Test weak dependencies
     And I should see a "foobar" text
 
   Scenario: Check local metdata for weak deps
-    When I refresh the metadata
-    Then I should have 'rpm:recommends.*filesystem.*rpm:recommends' in the metadata
-    And I should have 'rpm:supplements.*packageand.a-blackhole:dummy.*rpm:supplements' in the metadata
-    And I should have 'rpm:suggests.*apache2.*rpm:suggests' in the metadata
-    And I should have 'rpm:enhances.*foobar.*rpm:enhances' in the metadata
+    When I refresh the metadata for "sle-client"
+    Then I should have 'rpm:recommends.*filesystem.*rpm:recommends' in the metadata for "sle-client"
+    And I should have 'rpm:supplements.*packageand.a-blackhole:dummy.*rpm:supplements' in the metadata for "sle-client"
+    And I should have 'rpm:suggests.*apache2.*rpm:suggests' in the metadata for "sle-client"
+    And I should have 'rpm:enhances.*foobar.*rpm:enhances' in the metadata for "sle-client"
