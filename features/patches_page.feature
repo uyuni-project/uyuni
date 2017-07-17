@@ -24,7 +24,7 @@ Feature: Explore the Errata page
     And I follow "Manage Patches" in the left menu
     And I follow "Published" in the left menu
     And I follow "Create Patch"
-    When I enter "Test Erratum" as "synopsis"
+    When I enter "Test Patch" as "synopsis"
     And I enter "Test Advisory" as "advisoryName"
     And I enter "Test Product" as "product"
     And I enter "test@test.org" as "errataFrom"
@@ -83,10 +83,10 @@ Feature: Explore the Errata page
     Given I am on the errata page
     And I follow "All" in the left menu
     And I follow "Bugfix Patches" in the content area
-    And I enter "Test Erratum" in the css "input[placeholder='Filter by Synopsis: ']"
+    And I enter "Test Patch" in the css "input[placeholder='Filter by Synopsis: ']"
     And I click on the css "button.spacewalk-button-filter"
     And I follow "Test Advisory"
-    Then I should see a "Test Erratum" text
+    Then I should see a "Test Patch" text
     And I should see a "test@test.org" text
     And I should see a "Test Topic" text
     And I should see a "Test Description" text
@@ -104,7 +104,7 @@ Feature: Explore the Errata page
     And I follow "Channels > All" in the left menu
     And I follow "Test Base Channel"
     And I follow "Errata" in the content area
-    Then I should see a "Test Erratum" text
+    Then I should see a "Test Patch" text
 
   Scenario: Delete the test advisory patch
     Given I am on the errata page
