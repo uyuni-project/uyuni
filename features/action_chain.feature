@@ -58,7 +58,7 @@ Feature: Test action chaining
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: Create a config channel "Action Test" for action-chain testing
+  Scenario: Create a config channel "Action Chain" for action-chain testing
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
@@ -83,21 +83,6 @@ Feature: Test action chaining
     Then I should see a "Revision 1 of /etc/action-chain.cnf from channel Action Chain Channel" text
     And I should see a "Update Configuration File" button
 
-
-  Scenario: I add a config file deployment to the action chain
-    Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Configuration Channels" in the left menu
-    And I follow "Action Chain Channel"
-    And I follow "Deploy Files" in the content area
-    And I click on "Deploy All Files"
-    And I check this client
-    And I click on "Confirm & Deploy to Selected Systems"
-    And I check radio button "schedule-by-action-chain"
-    And I click on "Deploy Files to Selected Systems"
-    Then I should see a "1 actions are being added to Action Chain new action chain" text
-
   Scenario: Subscribe system to channel "Action Chain channel"
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
@@ -111,6 +96,20 @@ Feature: Test action chaining
     And I click on "Continue"
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
+
+  Scenario: I add a config file deployment to the action chain
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    And I follow "Action Chain Channel"
+    And I follow "Deploy Files" in the content area
+    And I click on "Deploy All Files"
+    And I check this client
+    And I click on "Confirm & Deploy to Selected Systems"
+    And I check radio button "schedule-by-action-chain"
+    And I click on "Deploy Files to Selected Systems"
+    Then I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: I add a reboot action to the action chain
     Given I am on the Systems overview page of this "sle-client"
@@ -129,7 +128,7 @@ Feature: Test action chaining
     And I should see a "3. Apply patch(es) andromeda-dummy-6789 on 1 system" text
     And I should see a "4. Remove adaptec-firmware from 1 system" text
     And I should see a "5. Verify andromeda-dummy on 1 system" text
-    And I should see a text like "6. Deploy.*/etc/mgr-test-file.cnf.*to 1 system"
+    And I should see a text like "6. Deploy.*/etc/action-chain.cnf.*to 1 system"
     Then I should see a "7. Reboot 1 system" text
 
   Scenario: check that different user cannot see the action chain
@@ -208,7 +207,7 @@ Feature: Test action chaining
     Then I cancel all scheduled actions
     And there should be no more any scheduled actions
 
-  Scenario: CLEAN_UP: remove system from conf channel "Action-chain channel"
+  Scenario: CLEAN_UP: remove system from conf channel "Action chain channel"
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     When I follow "Configuration" in the left menu
@@ -219,7 +218,7 @@ Feature: Test action chaining
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
-  Scenario: CLEAN_UP: remove configuration channel: Action-chain channel
+  Scenario: CLEAN_UP: remove configuration channel: Action chain channel
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu

@@ -65,7 +65,6 @@
 - features/nagios.feature
 
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
-- features/action_chain.feature
 - features/check_errata_npn.feature
 - features/cve_audit.feature
 - features/weak_deps.feature
@@ -80,6 +79,13 @@
 - features/compare_channel.feature
 - features/setup_wizard.feature
 - features/check_VHM.feature
+
+
+
+## IDEMPOTENT BUT AFFECTED by PKG issue:
+- features/action_chain.feature
+
+## NOT IDEMPOTENT and AFFECTED by PKG issue:
 
 #### Salt related features   ###
 ### Features affected by the package problem.
