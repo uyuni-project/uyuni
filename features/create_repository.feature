@@ -7,12 +7,10 @@ Feature: Adding repository to a channel
   I want to add a repository
   And I want to add this repository to the base channel
 
-  Background:
-  Given I am authorized as "testing" with password "testing"
-  And I follow "Home" in the left menu
-  And I follow "Channels"
-
   Scenario: Adding Test-Repository-x86_64 repository
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Home" in the left menu
+    And I follow "Channels"
     When I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Create Repository"
@@ -23,6 +21,9 @@ Feature: Adding repository to a channel
     And I should see "metadataSigned" as checked
 
   Scenario: Disable Metadata check for Test-Repository-x86_64 repository
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Home" in the left menu
+    And I follow "Channels"
     When I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Test-Repository-x86_64"
@@ -32,6 +33,9 @@ Feature: Adding repository to a channel
     And I should see "metadataSigned" as unchecked
 
   Scenario: Add repository to the x86_64 channel
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Home" in the left menu
+    And I follow "Channels"
     When I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Test-Channel-x86_64"
@@ -41,6 +45,9 @@ Feature: Adding repository to a channel
     Then I should see a "Test-Channel-x86_64 repository information was successfully updated" text
 
   Scenario: Sync the repository in the x86_64 channel
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Home" in the left menu
+    And I follow "Channels"
     When I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Overview" in the left menu
@@ -51,6 +58,9 @@ Feature: Adding repository to a channel
     Then I should see a "Repository sync scheduled for Test-Channel-x86_64." text
 
   Scenario: Adding Test-Repository-i586 repository
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Home" in the left menu
+    And I follow "Channels"
     When I follow "Manage Software Channels" in the left menu
     And I follow "Manage Repositories" in the left menu
     And I follow "Create Repository"
@@ -61,6 +71,9 @@ Feature: Adding repository to a channel
     Then I should see a "Repository created successfully" text
 
   Scenario: Add repository to the i586 channel
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Home" in the left menu
+    And I follow "Channels"
     When I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Test-Channel-i586"
@@ -70,6 +83,9 @@ Feature: Adding repository to a channel
     Then I should see a "Test-Channel-i586 repository information was successfully updated" text
 
   Scenario: Sync the repository in the i586 channel
+    Given I am authorized as "testing" with password "testing"
+    And I follow "Home" in the left menu
+    And I follow "Channels"
     When I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Test-Channel-i586"
@@ -77,3 +93,25 @@ Feature: Adding repository to a channel
     And I follow "Sync"
     When I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-i586." text
+
+  Scenario: schedule "errata-cache" refresh
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait for "5" seconds
+
+  Scenario: schedule "channel-repodata" refresh
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "Task Schedules"
+    And I follow "channel-repodata-default"
+    And I follow "channel-repodata-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait for "5" seconds
