@@ -98,6 +98,20 @@ Feature: Test action chaining
     And I click on "Deploy Files to Selected Systems"
     Then I should see a "1 actions are being added to Action Chain new action chain" text
 
+  Scenario: Subscribe system to channel "Action Chain channel"
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    When I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
+    And I follow this "sle-client" link
+    When I follow "Configuration" in the content area
+    And I follow "Manage Configuration Channels" in the content area
+    And I follow first "Subscribe to Channels" in the content area
+    And I check "Action Chain Channel" in the list
+    And I click on "Continue"
+    And I click on "Update Channel Rankings"
+    Then I should see a "Channel Subscriptions successfully changed for" text
+
   Scenario: I add a reboot action to the action chain
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Schedule System Reboot" in the content area
