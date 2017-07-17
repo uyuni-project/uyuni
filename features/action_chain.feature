@@ -57,20 +57,46 @@ Feature: Test action chaining
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
-  # FIXME CREAT A CHANNEL, and add file to that, and client. see conf_file feature
+
+  Scenario: Create a config channel "Action Test" for action-chain testing
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    When I follow "Create Config Channel"
+    And I enter "Action Chain Channel" as "cofName"
+    And I enter "actionchainchannel" as "cofLabel"
+    And I enter "This is a test channel" as "cofDescription"
+    And I click on "Create Config Channel"
+    Then I should see a "Action Chain Channel" text
+
+  Scenario: Add a config file to Action Chain Channel
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    When I follow "Action Chain Channel"
+    And I follow "Create configuration file or directory"
+    And I enter "/etc/action-chain.cnf" as "cffPath"
+    And I enter "Testchain=YES_PLEASE" in the editor
+    And I click on "Create Configuration File"
+    Then I should see a "Revision 1 of /etc/action-chain.cnf from channel Action Chain Channel" text
+    And I should see a "Update Configuration File" button
+
+
   Scenario: I add a config file deployment to the action chain
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-    And I follow "Action Test Channel"
+    And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
     And I click on "Deploy All Files"
     And I check this client
     And I click on "Confirm & Deploy to Selected Systems"
     And I check radio button "schedule-by-action-chain"
     And I click on "Deploy Files to Selected Systems"
-    Then I should see a "3 actions are being added to Action Chain new action chain" text
+    Then I should see a "1 actions are being added to Action Chain new action chain" text
 
   Scenario: I add a reboot action to the action chain
     Given I am on the Systems overview page of this "sle-client"
@@ -167,3 +193,23 @@ Feature: Test action chaining
     And I should see scheduled action, called "System reboot scheduled by admin"
     Then I cancel all scheduled actions
     And there should be no more any scheduled actions
+
+  Scenario: CLEAN_UP: remove system from conf channel "Action-chain channel"
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    When I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    And I follow "Action Chain Channel"
+    And I follow "Systems" in the content area
+    And I check this client
+    And I click on "Unsubscribe systems"
+    Then I should see a "Successfully unsubscribed 1 system(s)." text
+
+  Scenario: CLEAN_UP: remove configuration channel: Test Channel
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    And I follow "Actin Chain Channel"
+    And I follow "delete channel"
+    And I click on "Delete Config Channel"
