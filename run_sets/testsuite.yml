@@ -49,6 +49,7 @@
 - features/xmlrpc_activationkey.feature
 - features/overview_systems_details.feature
 - features/salt_reboot_test.feature
+- features/docker_xmlrpc.feature
 - features/sp_migration.feature
 - features/salt.feature
 - features/salt_minion_details.feature
@@ -70,7 +71,7 @@
 - features/weak_deps.feature
 - features/erratapage.feature
 - features/lock_packages_on_client.feature
-- features/install_package_and_errata.feature
+- features/install_package_and_errata.featuref
 - features/clone_channel_npn.feature
 - features/scc_sync_channels.feature
 - features/systems_needing_reboot.feature
@@ -88,8 +89,5 @@
 - features/salt_install_with_staging.feature
 ###
 
-# Debug suse-manager server ( this should be removed)
+# Debug suse-manager server ( this should be removed and placed in tools)
 - features/spacewalk_debug.feature
-
-### Scalability tests (after debug always). IDEMPOTENT
-- features/docker_xmlrpc.feature
