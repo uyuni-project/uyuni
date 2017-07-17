@@ -219,11 +219,11 @@ Feature: Test action chaining
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
-  Scenario: CLEAN_UP: remove configuration channel: Test Channel
+  Scenario: CLEAN_UP: remove configuration channel: Action-chain channel
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-    And I follow "Actin Chain Channel"
+    And I follow "Action Chain Channel"
     And I follow "delete channel"
     And I click on "Delete Config Channel"
