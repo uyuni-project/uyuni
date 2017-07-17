@@ -53,6 +53,7 @@
 - features/sp_migration.feature
 - features/salt.feature
 - features/salt_minion_details.feature
+- features/patches_page.feature
 - features/ssh_push.feature
 - features/change_password.feature
 - features/salt_download_endpoint.feature
@@ -63,12 +64,7 @@
 - features/docker_cve_audit.feature
 - features/metadata_check.feature
 - features/nagios.feature
-
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
-- features/check_errata_npn.feature
-- features/cve_audit.feature
-- features/weak_deps.feature
-- features/erratapage.feature
 - features/lock_packages_on_client.feature
 - features/install_package_and_errata.feature
 - features/clone_channel_npn.feature
@@ -80,13 +76,13 @@
 - features/setup_wizard.feature
 - features/check_VHM.feature
 
-
-
 ## IDEMPOTENT BUT AFFECTED by PKG issue:
 - features/action_chain.feature
 
 ## NOT IDEMPOTENT and AFFECTED by PKG issue:
-
+- features/check_errata_npn.feature
+- features/cve_audit.feature
+- features/weak_deps.feature
 #### Salt related features   ###
 ### Features affected by the package problem.
 - features/salt_software_states.feature

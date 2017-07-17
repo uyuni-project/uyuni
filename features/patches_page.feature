@@ -19,12 +19,12 @@ Feature: Explore the Errata page
     And I should see a "Security Errata" link
     And I should see a Sign Out link
 
-  Scenario: Create new bugfix erratum with bnc URL
+  Scenario: Create new bugfix Patch with bnc URL
     Given I am on the errata page
     And I follow "Manage Patches" in the left menu
     And I follow "Published" in the left menu
     And I follow "Create Patch"
-    When I enter "Test Erratum" as "synopsis"
+    When I enter "Test Patch" as "synopsis"
     And I enter "Test Advisory" as "advisoryName"
     And I enter "Test Product" as "product"
     And I enter "test@test.org" as "errataFrom"
@@ -37,10 +37,10 @@ Feature: Explore the Errata page
     And I enter "test,keywords" as "keywords"
     And I enter "Test Reference" as "refersTo"
     And I enter "Test Note" as "notes"
-    And I click on "Create Errata"
+    And I click on "Create Patch"
     Then I should see a "Errata Test Advisory-1 created." text
 
-  Scenario: Create new enhancement erratum with no bnc URL
+  Scenario: Create new enhancement patch with no bnc URL
     Given I am on the errata page
     And I follow "Manage Patches" in the left menu
     And I follow "Published" in the left menu
@@ -57,19 +57,19 @@ Feature: Explore the Errata page
     And I enter "Enhancement,keywords" as "keywords"
     And I enter "Enhancement Reference" as "refersTo"
     And I enter "Enhancement Note" as "notes"
-    And I click on "Create Errata"
+    And I click on "Create Patch"
     Then I should see a "Errata Enhancement Advisory-1 created." text
 
-  Scenario: Delete enhancement erratum
+  Scenario: Delete enhancement patch
     Given I am on the errata page
     And I follow "Manage Patches" in the left menu
     And I follow "Unpublished" in the left menu
     And I check "Enhancement Advisory" erratum
-    And I click on "Delete Errata"
+    And I click on "Delete Patch"
     And I click on "Confirm"
     Then I should see a "Successfully deleted 1 errata." text
 
-  Scenario: Publish erratum
+  Scenario: Publish patch called "Test advisory"
     Given I am on the errata page
     And I follow "Manage Patches" in the left menu
     And I follow "Unpublished" in the left menu
@@ -78,20 +78,15 @@ Feature: Explore the Errata page
     And I check test channel
     And I click on "Publish Errata"
     Then I should see a "All Types" text
-    And I should see a "Test Erratum" text
 
-  Scenario: View bugfix errata
+  Scenario: Verify patch presence in webui(bugfixing patch)
     Given I am on the errata page
     And I follow "All" in the left menu
     And I follow "Bugfix Patches" in the content area
-    Then I should see a "Test Erratum" text
-
-  Scenario: View erratum
-    Given I am on the errata page
-    And I follow "All" in the left menu
-    And I follow "Bugfix Patches" in the content area
+    And I enter "Test Patch" in the css "input[placeholder='Filter by Synopsis: ']"
+    And I click on the css "button.spacewalk-button-filter"
     And I follow "Test Advisory"
-    Then I should see a "Test Erratum" text
+    Then I should see a "Test Patch" text
     And I should see a "test@test.org" text
     And I should see a "Test Topic" text
     And I should see a "Test Description" text
@@ -102,20 +97,20 @@ Feature: Explore the Errata page
     And I should see a "Test Reference" text
     And I should see a "Test Note" text
 
-  Scenario: Check erratum in channel
+  Scenario: Assert that Patch is now in Test-base channel
     Given I am on the errata page
     And I follow "Software" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Channels > All" in the left menu
     And I follow "Test Base Channel"
     And I follow "Errata" in the content area
-    Then I should see a "Test Erratum" text
+    Then I should see a "Test Patch" text
 
-  Scenario: Delete erratum
+  Scenario: Delete the test advisory patch
     Given I am on the errata page
     And I follow "Manage Patches" in the left menu
     And I follow "Published" in the left menu
     And I check "Test Advisory" erratum
-    And I click on "Delete Errata"
+    And I click on "Delete Patch"
     And I click on "Confirm"
     Then I should see a "Successfully deleted 1 errata." text
