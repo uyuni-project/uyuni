@@ -40,12 +40,12 @@ Feature: Install a package on the minion with staging enabled
     And I follow "Software" in the content area
     And I click on "Update Package List"
     And I wait for "30" seconds
-    And I follow "Errata" in the content area
+    And I follow "Patches" in the content area
     When I check "virgo-dummy-3456" in the list
-    And I click on "Apply Errata"
+    And I click on "Apply Patches"
     And I pick 2 minutes from now as schedule time
     And I click on "Confirm"
-    Then I should see a "1 errata update has been scheduled for" text
+    Then I should see a "1 patch update has been scheduled for" text
     And I wait until the package "virgo-dummy-2.0-1.1.noarch" has been cached on this "sle-minion"
     And I wait for "virgo-dummy-2.0-1.1" to be installed on this "sle-minion"
     Then I disable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"

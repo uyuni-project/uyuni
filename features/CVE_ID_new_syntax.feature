@@ -4,10 +4,10 @@
 Feature: Check if new CVE-ID syntax is working with SUSE Manager
   In Order to check if the new CVE-ID syntax is working with SUSE Manager
   As the testing user
-  I want to see the erratums in the web page with a long CVE ID
+  I want to see the patches in the web page with a long CVE ID
 
-  Scenario: check perseus-dummy-7891 errata
-    Given I am on the errata page
+  Scenario: check perseus-dummy-7891 patches
+    Given I am on the patches page
     When I follow "All" in the left menu
     And I follow "perseus-dummy-7891"
     Then I should see a "perseus-dummy-7891 - Security Advisory" text
@@ -22,7 +22,7 @@ Feature: Check if new CVE-ID syntax is working with SUSE Manager
     And I should have 'reference.*http://www.cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-1999-99781' in the patch metadata
 
   Scenario: Search for CVE ID with the new format
-    Given I am on the errata page
+    Given I am on the patches page
     And I follow "Advanced Search"
     When I enter "CVE-1999-12345" as "search_string" in the content area
     And I click on "Search"

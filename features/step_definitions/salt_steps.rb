@@ -447,7 +447,7 @@ Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) d
   begin
     Timeout.timeout(30) do
       loop do
-        unless page.has_content?(debrand_string(arg1))
+        unless page.has_content?(arg1)
           not_found = true
           break
         end
