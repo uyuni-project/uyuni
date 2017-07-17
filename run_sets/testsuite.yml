@@ -71,7 +71,7 @@
 - features/weak_deps.feature
 - features/erratapage.feature
 - features/lock_packages_on_client.feature
-- features/install_package_and_errata.featuref
+- features/install_package_and_errata.feature
 - features/clone_channel_npn.feature
 - features/scc_sync_channels.feature
 - features/systems_needing_reboot.feature
