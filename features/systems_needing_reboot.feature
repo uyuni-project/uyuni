@@ -20,12 +20,12 @@ Feature: Reboot required after patch
     Given I am on the Systems overview page of this "sle-client"
     Then I should not see a "The system requires a reboot" text
 
-  Scenario: Display Reboot Required after installing an Errata
+  Scenario: Display Reboot Required after installing an Patches
     Given I am on the Systems overview page of this "sle-client"
     And I follow "Software" in the content area
-    And I follow "Errata" in the content area
+    And I follow "Patches" in the content area
     When I check "andromeda-dummy-6789" in the list
-    And I click on "Apply Errata"
+    And I click on "Apply Patches"
     And I click on "Confirm"
     And I run rhn_check on this client
     And I follow "Overview" in the left menu

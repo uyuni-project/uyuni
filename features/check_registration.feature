@@ -32,7 +32,7 @@ Feature: Check client registration
     And I should see a "Provisioning" link in the content area
     And I should see a "Groups" link in the content area
     And I should see a "Events" link in the content area
-    And I should see a "Errata" link in the content area
+    And I should see a "Patches" link in the content area
     And I should see a "Packages" link in the content area
     And I should see a "Software Channels" link in the content area
     And I should see a "List / Remove" link
@@ -80,7 +80,7 @@ Feature: Check client registration
     And I should see a "Provisioning" link in the content area
     And I should see a "Groups" link in the content area
     And I should see a "Events" link in the content area
-    And I should see a "Kickstart" link in the content area
+    And I should see a "Autoinstallation" link in the content area
     And I should see a "Snapshots" link in the content area
     And I should see a "Snapshot Tags" link in the content area
     And I should see a "Schedule" link in the content area
@@ -123,7 +123,7 @@ Feature: Check client registration
     And I should see a "Management" text
     And I should see a "receive_notifications" element in "systemDetailsForm" form
     And I should see a "summary" element in "systemDetailsForm" form
-    And I should see a "autoerrataupdate" element in "systemDetailsForm" form
+    And I should see a "autopatchesupdate" element in "systemDetailsForm" form
     And I should see a "description" element in "systemDetailsForm" form
     And I should see a "address" element in "systemDetailsForm" form
     And I should see a "city" element in "systemDetailsForm" form

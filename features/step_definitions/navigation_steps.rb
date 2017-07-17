@@ -93,10 +93,10 @@ end
 #
 When(/^I click on "([^"]*)"$/) do |arg1|
   begin
-    click_button debrand_string(arg1), :match => :first
+    click_button arg1, :match => :first
   rescue
     sleep 10
-    click_button debrand_string(arg1), :match => :first
+    click_button arg1, :match => :first
   end
 end
 #
@@ -112,17 +112,17 @@ end
 #
 When(/^I follow "([^"]*)"$/) do |text|
   begin
-    click_link(debrand_string(text))
+    click_link(text)
   rescue
     sleep 10
-    click_link(debrand_string(text))
+    click_link(text)
   end
 end
 #
 # Click on the first link
 #
 When(/^I follow first "([^"]*)"$/) do |text|
-  click_link(debrand_string(text), :match => :first)
+  click_link(text, :match => :first)
 end
 
 #
@@ -331,14 +331,14 @@ When(/^I go to the configuration page$/) do
   find_link("Configuration").click
 end
 
-Given(/^I am on the errata page$/) do
+Given(/^I am on the patches page$/) do
   step %(I am authorized)
   visit("https://#{$server_fullhostname}/rhn/errata/RelevantErrata.do")
 end
 
-Given(/^I am on the "([^"]*)" errata Details page$/) do |arg1|
+Given(/^I am on the "([^"]*)" patches Details page$/) do |arg1|
   steps %(
-    Given I am on the errata page
+    Given I am on the patches page
     And I follow "All" in the left menu
     And I follow "#{arg1}"
     )
@@ -349,7 +349,7 @@ Then(/^I should see an update in the list$/) do
 end
 
 Given(/^Patches are visible for the registered client$/) do
-  step "I am on the errata page"
+  step "I am on the patches page"
   for c in 0..20
     begin
       step "I should see an update in the list"
@@ -366,7 +366,7 @@ When(/^I check test channel$/) do
   step %(I check "Test Base Channel" in the list)
 end
 
-When(/^I check "([^"]*)" erratum$/) do |arg1|
+When(/^I check "([^"]*)" patch$/) do |arg1|
   step %(I check "#{arg1}" in the list)
 end
 
@@ -399,7 +399,7 @@ Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        if page.has_content?(debrand_string(arg1))
+        if page.has_content?(arg1)
           found = true
           break
         end

@@ -72,7 +72,7 @@ Feature: Test Bare-metal discovery
   Scenario: check tabs Schedule and Power Management for sle-client
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
-    Then I should see a "Kickstart" link in the content area
+    Then I should see a "Autoinstallation" link in the content area
     And I should not see a "Snapshots" link in the content area
     And I should not see a "Snapshot Tags" link in the content area
     And I should see a "Power Management" link in the content area
@@ -93,7 +93,7 @@ Feature: Test Bare-metal discovery
     And I should see a "power management operations" link in the content area
     And I should see a "Delete" link in the content area
     And I should see a "Migrate" link in the content area
-    And I should not see a "Errata" link in the content area
+    And I should not see a "Patches" link in the content area
     And I should not see a "Packages" link in the content area
     And I should see a "Groups" link in the content area
     And I should not see a "Channels" link in the content area

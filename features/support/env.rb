@@ -41,40 +41,6 @@ def current_url
   driver.current_url
 end
 
-def debrand_string(str)
-  case BRANDING
-    when 'suse'
-      case str
-        # do not replace
-        when "Update Kickstart" then str
-        when "Kickstart Snippets" then str
-        when "Create a New Kickstart Profile" then str
-        when "Step 1: Create Kickstart Profile" then str
-        when "Create Kickstart Profile" then str
-        when "Test Erratum" then str
-        # replacement exceptions
-        when "Create Kickstart Distribution" then "Create Autoinstallable Distribution"
-        when "Upload Kickstart File" then "Upload Kickstart/Autoyast File"
-        when "Upload a New Kickstart File" then "Upload a New Kickstart/AutoYaST File"
-        when "RHN Reference Guide" then "Reference Guide"
-        when "Create Errata" then "Create Patch"
-        when "Publish Errata" then "Publish Patch"
-        # generic regex replace
-        when /.*kickstartable.*/ then str.gsub(/kickstartable/, 'autoinstallable')
-        when /.*Kickstartable.*/ then str.gsub(/Kickstartable/, 'Autoinstallable')
-        when /.*Kickstart.*/ then str.gsub(/Kickstart/, 'Autoinstallation')
-        when /Errata .* created./ then str.sub(/Errata/, 'Patch')
-        when /.*errata update.*/ then str.gsub(/errata update/, 'patch update')
-        when /.*Erratum.*/ then str.gsub(/Erratum/, 'Patch')
-        when /.*erratum.*/ then str.gsub(/erratum/, 'patch')
-        when /.*Errata.*/ then str.gsub(/Errata/, 'Patches')
-        when /.*errata.*/ then str.gsub(/errata/, 'patches')
-        else str
-      end
-    else str
-  end
-end
-
 # may be non url was given
 if host.include?("//")
   raise "TESTHOST must be the FQDN only"
