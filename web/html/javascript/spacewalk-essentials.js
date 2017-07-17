@@ -67,8 +67,28 @@ function alignContentDimensions() {
 }
 
 // empty function by default hooked on window.scroll event
-function sstScrollBehavior() {
+var sstScrollBehavior = function() {
   return;
+}
+
+let sstScrollBehaviorSetupIsDone = false; // flag to implement the function one time only
+function sstScrollBehaviorSetup(sst) {
+  sstScrollBehaviorSetupIsDone = true;
+  const adjustSpaceObject = $('<div>').height(sst.outerHeight());
+  var fixedTop = sst.offset().top;
+
+  // override the empty function hooked on window.scroll event                                              │
+  sstScrollBehavior = function() {
+    var currentScroll = $(window).scrollTop();
+    if (currentScroll >= fixedTop) {
+      sst.after(adjustSpaceObject);
+      $(sst).addClass('fixed');
+    } else {
+      $(sst).removeClass('fixed');
+      adjustSpaceObject.remove();
+    }
+    sstStyle();
+  }
 }
 
 // when the page scrolls down and the toolbar is going up and hidden,
@@ -86,6 +106,7 @@ function handleSst() {
     // move each named tag into the 'spacewalk-section-toolbar'
     $('.move-to-fixed-toolbar').each(function() {
       sst.append($(this));
+      $(this).removeClass('move-to-fixed-toolbar');
     });
   }
 
@@ -105,26 +126,14 @@ function handleSst() {
     }
     $('.move-children-to-fixed-toolbar').each(function() {
       selectorButtonWrapper.append($(this).children());
+      $(this).removeClass('move-children-to-fixed-toolbar');
     });
   }
 
-  // if so far no 'spacewalk-section-toolbar' exists, it's not needed at all
-  if (sst.length > 0) {
-    const adjustSpaceObject = $('<div>').height(sst.outerHeight());
-    var fixedTop = sst.offset().top;
-
-    // override the empty function hooked on window.scroll event
-    sstScrollBehavior = function() {
-      var currentScroll = $(window).scrollTop();
-      if (currentScroll >= fixedTop) {
-        sst.after(adjustSpaceObject);
-        $(sst).addClass('fixed');
-      } else {
-        $(sst).removeClass('fixed');
-        adjustSpaceObject.remove();
-      }
-      sstStyle();
-    }
+  // setup the function only if there is the 'spacewalk-section-toolbar'
+  // and the function is not yet setup
+  if (!sstScrollBehaviorSetupIsDone && sst.length > 0) {
+    sstScrollBehaviorSetup(sst);
   }
 }
 
@@ -404,6 +413,10 @@ function t(key) {
 var spacewalkContentObserver = new MutationObserver(function(mutations) {
   mutations.forEach(function(mutation) {
     alignContentDimensions();
+
+    // trigger the 'spacewalk-section-toolbar' (sst) handler on content change
+    // since it can happen that the sst has just been added right now
+    handleSst();
   });
 });
 $(document).ready(function() {
