@@ -86,7 +86,7 @@ Feature: Test configuration channel basic functions
     Then I should see a "Revision 1 of /etc/mgr-test-file.cnf from channel New Test Channel" text
     And I should see a "Update Configuration File" button
 
-  Scenario: Subscribe system to channel "new test challen"
+  Scenario: Subscribe system to channel "new test channel"
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     When I follow "Systems" in the left menu
