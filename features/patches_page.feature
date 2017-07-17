@@ -1,26 +1,26 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Explore the Errata page
-  In Order to validate completeness of the errata page
+Feature: Explore the Patches page
+  In Order to validate completeness of the patches page
   As a authorized user
   I want to see all the texts and links
 
   Scenario: Completeness of the Patches left menu
-    Given I am on the errata page
-    Then I should see a "Errata Relevant to Your Systems" text
+    Given I am on the patches page
+    Then I should see a "Patches Relevant to Your Systems" text
     And I should see a "Relevant" link in the left menu
     And I should see a "All" link in the left menu
     And I should see a "Advanced Search" link in the left menu
-    And I should see a "Manage Errata" link in the left menu
-    And I should see a "Clone Errata" link in the left menu
-    And I should see a "Bugfix Errata" link
-    And I should see a "Enhancement Errata" link
-    And I should see a "Security Errata" link
+    And I should see a "Manage Patches" link in the left menu
+    And I should see a "Clone Patches" link in the left menu
+    And I should see a "Bugfix Patches" link
+    And I should see a "Enhancement Patches" link
+    And I should see a "Security Patches" link
     And I should see a Sign Out link
 
-  Scenario: Create new bugfix Patch with bnc URL
-    Given I am on the errata page
+  Scenario: Create new bugfix patch with bnc URL
+    Given I am on the patches page
     And I follow "Manage Patches" in the left menu
     And I follow "Published" in the left menu
     And I follow "Create Patch"
@@ -38,14 +38,14 @@ Feature: Explore the Errata page
     And I enter "Test Reference" as "refersTo"
     And I enter "Test Note" as "notes"
     And I click on "Create Patch"
-    Then I should see a "Errata Test Advisory-1 created." text
+    Then I should see a "Patch Test Advisory-1 created." text
 
   Scenario: Create new enhancement patch with no bnc URL
-    Given I am on the errata page
+    Given I am on the patches page
     And I follow "Manage Patches" in the left menu
     And I follow "Published" in the left menu
     And I follow "Create Patch"
-    When I enter "Enhancement Erratum" as "synopsis"
+    When I enter "Enhancement Patch" as "synopsis"
     And I enter "Enhancement Advisory" as "advisoryName"
     And I select "Product Enhancement Advisory" from "advisoryType"
     And I enter "Enhancement Product" as "product"
@@ -58,29 +58,29 @@ Feature: Explore the Errata page
     And I enter "Enhancement Reference" as "refersTo"
     And I enter "Enhancement Note" as "notes"
     And I click on "Create Patch"
-    Then I should see a "Errata Enhancement Advisory-1 created." text
+    Then I should see a "Patch Enhancement Advisory-1 created." text
 
   Scenario: Delete enhancement patch
-    Given I am on the errata page
+    Given I am on the patches page
     And I follow "Manage Patches" in the left menu
     And I follow "Unpublished" in the left menu
-    And I check "Enhancement Advisory" erratum
-    And I click on "Delete Patch"
+    And I check "Enhancement Advisory" patch
+    And I click on "Delete Patches"
     And I click on "Confirm"
-    Then I should see a "Successfully deleted 1 errata." text
+    Then I should see a "Successfully deleted 1 patches." text
 
   Scenario: Publish patch called "Test advisory"
-    Given I am on the errata page
+    Given I am on the patches page
     And I follow "Manage Patches" in the left menu
     And I follow "Unpublished" in the left menu
     And I follow "Test Advisory"
-    And I click on "Publish Errata"
+    And I click on "Publish Patch"
     And I check test channel
-    And I click on "Publish Errata"
+    And I click on "Publish Patch"
     Then I should see a "All Types" text
 
   Scenario: Verify patch presence in webui(bugfixing patch)
-    Given I am on the errata page
+    Given I am on the patches page
     And I follow "All" in the left menu
     And I follow "Bugfix Patches" in the content area
     And I enter "Test Patch" in the css "input[placeholder='Filter by Synopsis: ']"
@@ -98,19 +98,19 @@ Feature: Explore the Errata page
     And I should see a "Test Note" text
 
   Scenario: Assert that Patch is now in Test-base channel
-    Given I am on the errata page
+    Given I am on the patches page
     And I follow "Software" in the left menu
     And I follow "Channels" in the left menu
     And I follow "Channels > All" in the left menu
     And I follow "Test Base Channel"
-    And I follow "Errata" in the content area
+    And I follow "Patches" in the content area
     Then I should see a "Test Patch" text
 
-  Scenario: Delete the test advisory patch
-    Given I am on the errata page
+  Scenario: Delete patch
+    Given I am on the patches page
     And I follow "Manage Patches" in the left menu
     And I follow "Published" in the left menu
-    And I check "Test Advisory" erratum
-    And I click on "Delete Patch"
+    And I check "Test Advisory" patch
+    And I click on "Delete Patches"
     And I click on "Confirm"
-    Then I should see a "Successfully deleted 1 errata." text
+    Then I should see a "Successfully deleted 1 patches." text

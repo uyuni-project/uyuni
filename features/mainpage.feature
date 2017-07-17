@@ -55,7 +55,7 @@ Feature: Explore the main landing page
     Given I am authorized
     Then I should see a "Overview" link
     And I should see a "Systems" link
-    And I should see a "Errata" link
+    And I should see a "Patches" link
     And I should see a "Channels" link
     And I should see a "Configuration" link
     And I should see a "Schedule" link
@@ -75,6 +75,6 @@ Feature: Explore the main landing page
     And I should see a "Inactive Systems" text
     And I should see a "Most Critical Systems" text
     And I should see a "Recently Scheduled Actions" text
-    And I should see a "Relevant Security Errata" text
+    And I should see a "Relevant Security Patches" text
     And I should see a "System Group Name" text
     And I should see a "Recently Registered Systems" text
