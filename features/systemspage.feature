@@ -23,7 +23,7 @@ Feature: Explore the main landing page
     And I should see a "Activation Keys" link in the left menu
     And I should see a "Stored Profiles" link in the left menu
     And I should see a "Custom System Info" link in the left menu
-    And I should see a "Kickstart" link in the left menu
+    And I should see a "Autoinstallation" link in the left menu
     And I should see a "View System Groups" link
     And I should see a "Software Crashes" link in the left menu
     And I should see a "Download CSV" link
@@ -158,7 +158,7 @@ Feature: Explore the main landing page
     And I should see a "Task Log" link in the left menu
     And I should see a "Overview" link in the content area
     And I should see a "Systems" link in the content area
-    And I should see a "Errata" link in the content area
+    And I should see a "Patches" link in the content area
     And I should see a "Packages" link in the content area
     And I should see a "Groups" link in the content area
     And I should see a "Channels" link in the content area
@@ -196,18 +196,18 @@ Feature: Explore the main landing page
     And I should see a "Distributions" link in the left menu
     And I should see a "File Preservation" link in the left menu
     And I should see a "Autoinstallation Snippets" link in the left menu
-    And I should see a "Create Kickstart Profile" link
-    And I should see a "Upload Kickstart File" link
-    And I should see a "View a List of Kickstart Profiles" link
-    And I should see a "Create a New Kickstart Profile" link
-    And I should see a "Upload a New Kickstart File" link
+    And I should see a "Create Autoinstallation Profile" link
+    And I should see a "Upload Autoinstallation/Autoyast File" link
+    And I should see a "View a List of Autoinstallation Profiles" link
+    And I should see a "Create a New Autoinstallation Profile" link
+    And I should see a "Upload a New Autoinstallation/AutoYaST File" link
 
-  Scenario: Check sidebar link destination for Systems => Kickstart => Profiles
+  Scenario: Check sidebar link destination for Systems => Autoinstallation => Profiles
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
-    Then I should see a "Kickstart Profiles" text
-    And I should see a "Create Kickstart Profile" link
-    And I should see a "Upload Kickstart File" link
+    Then I should see a "Autoinstallation Profiles" text
+    And I should see a "Create Autoinstallation Profile" link
+    And I should see a "Upload Autoinstallation/Autoyast File" link
 
   Scenario: Check sidebar link destination for Systems => Autoinstallation => Unprovisioned
     When I follow "Autoinstallation" in the left menu
@@ -215,29 +215,29 @@ Feature: Explore the main landing page
     Then I should see a "Unprovisioned Autoinstallation By IP" text
     And I should see a "No Ip Ranges Found" text
 
-  Scenario: Check sidebar link destination for Systems => Kickstart => GPG and SSL Keys
+  Scenario: Check sidebar link destination for Systems => Autoinstallation => GPG and SSL Keys
     When I follow "Autoinstallation" in the left menu
     And I follow "GPG and SSL Keys" in the left menu
     Then I should see a "GPG Public Keys and SSL Certificates" text
     And I should see a "Create Stored Key/Cert" link
-    And I should see a "RHN Reference Guide" link
+    And I should see a "Reference Guide" link
     And I should see a "RHN-ORG-TRUSTED-SSL-CERT" link
 
-  Scenario: Check sidebar link destination for Systems => Kickstart => Distributions
+  Scenario: Check sidebar link destination for Systems => Autoinstallation => Distributions
     When I follow "Autoinstallation" in the left menu
     And I follow "Distributions" in the left menu
-    Then I should see a "Kickstartable Distributions" text
-    And I should see a "No kickstartable distributions available." text
+    Then I should see a "Autoinstallable Distributions" text
+    And I should see a "No autoinstallable distributions available." text
     And I should see a "Create Distribution" link
 
-  Scenario: Check sidebar link destination for Systems => Kickstart => File Preservation
+  Scenario: Check sidebar link destination for Systems => Autoinstallation => File Preservation
     When I follow "Autoinstallation" in the left menu
     And I follow "File Preservation" in the left menu
     Then I should see a "File Preservation" text
-    And I should see a "RHN Reference Guide" link
+    And I should see a "Reference Guide" link
     And I should see a "Create File Preservation List" link
 
-  Scenario: Check sidebar link destination for Systems => Kickstart => Kickstart Snippets
+  Scenario: Check sidebar link destination for Systems => Autoinstallation => Autoinstallation Snippets
     When I follow "Autoinstallation" in the left menu
     And I follow "Autoinstallation Snippets" in the left menu
     Then I should see a "Autoinstallation Snippets" text
@@ -247,23 +247,23 @@ Feature: Explore the main landing page
     And I should see a "Custom Snippets" link in the content area
     And I should see a "All Snippets" link in the content area
 
-  Scenario: Check "Create Kickstart Profile" page Systems => Kickstart => Profiles => Create Kickstart Profile
+  Scenario: Check "Create Autoinstallation Profile" page Systems => Autoinstallation => Profiles => Create Autoinstallation Profile
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
-    And I follow "Create Kickstart Profile"
-    Then I should see a "Step 1: Create Kickstart Profile" text
+    And I follow "Create Autoinstallation Profile"
+    Then I should see a "Step 1: Create Autoinstallation Profile" text
 
-  Scenario: Check "Upload Kickstart File" page Systems => Kickstart => Profiles => Upload Kickstart File
+  Scenario: Check "Upload Autoinstallation/Autoyast File" page Systems => Autoinstallation => Profiles => Upload Autoinstallation/Autoyast File
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
-    And I follow "Upload Kickstart File"
+    And I follow "Upload Autoinstallation/Autoyast File"
     Then I should see a "Create Autoinstallation Profile" text
     And I should see a "File Contents:" text
-    And I should see a "Kickstart Details" text
+    And I should see a "Autoinstallation Details" text
 
-  Scenario: Check "create kickstart distribution" page Systems => Kickstart => Distributions => create new kickstart distribution
+  Scenario: Check "create kickstart distribution" page Systems => Autoinstallation => Distributions => create new kickstart distribution
     When I follow "Autoinstallation" in the left menu
     And I follow "Distributions" in the left menu
     And I follow "Create Distribution"
-    Then I should see a "Create Kickstart Distribution" text
+    Then I should see a "Create Autoinstallation Distribution" text
     And I should see a "Distribution Label" text

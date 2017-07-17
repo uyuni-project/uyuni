@@ -18,9 +18,9 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |arg1|
-  unless page.has_content?(debrand_string(arg1))
+  unless page.has_content?(arg1)
     sleep 25
-    fail unless page.has_content?(debrand_string(arg1))
+    fail unless page.has_content?(arg1)
   end
 end
 #
@@ -28,21 +28,21 @@ end
 #
 Then(/^I should see "([^"]*)" in the textarea$/) do |arg1|
   within('textarea') do
-    fail unless page.has_content?(debrand_string(arg1))
+    fail unless page.has_content?(arg1)
   end
 end
 
 Then(/^I should see "([^"]*)" loaded in the textarea$/) do |arg1|
-  fail unless first('textarea').value.include?(debrand_string(arg1))
+  fail unless first('textarea').value.include?(arg1)
 end
 
 #
 # Test for a text in the whole page using regexp
 #
 Then(/^I should see a text like "([^"]*)"$/) do |arg1|
-  unless page.has_content?(Regexp.new("#{debrand_string(arg1)}"))
+  unless page.has_content?(Regexp.new("#{arg1}"))
     sleep 10
-    fail unless page.has_content?(Regexp.new("#{debrand_string(arg1)}"))
+    fail unless page.has_content?(Regexp.new("#{arg1}"))
   end
 end
 
@@ -60,11 +60,11 @@ end
 # Test for a visible link in the whole page
 #
 Then(/^I should see a "([^"]*)" link$/) do |arg1|
-  link = first(:link, debrand_string(arg1))
+  link = first(:link, arg1)
   if link.nil?
     sleep 40
     $stderr.puts "ERROR - try again"
-    fail unless first(:link, debrand_string(arg1)).visible?
+    fail unless first(:link, arg1).visible?
   else
     fail unless link.visible?
   end
@@ -93,30 +93,30 @@ end
 #
 Then(/^I should see a "([^"]*)" link in element "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    fail unless find_link(debrand_string(arg1)).visible?
+    fail unless find_link(arg1).visible?
   end
 end
 
 Then(/^I should not see a "([^"]*)" link in element "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-      fail unless has_no_link?(debrand_string(arg1))
+      fail unless has_no_link?(arg1)
   end
 end
 
 Then(/^I should see a "([^"]*)" text in element "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    fail unless has_content?(debrand_string(arg1))
+    fail unless has_content?(arg1)
   end
 end
 
 Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |arg1, arg2, arg3|
   within(:xpath, "//div[@id=\"#{arg3}\" or @class=\"#{arg3}\"]") do
-    fail if !has_content?(debrand_string(arg1)) && !has_content?(debrand_string(arg2))
+    fail if !has_content?(arg1) && !has_content?(arg2)
   end
 end
 
 Then(/^I should see a "([^"]*)" link in "([^"]*)" "([^"]*)"$/) do |arg1, arg2, arg3|
-  fail unless page.has_xpath?("//#{arg2}[@id='#{arg3}' or @class='#{arg3}']/a[text()='#{debrand_string(arg1)}']")
+  fail unless page.has_xpath?("//#{arg2}[@id='#{arg3}' or @class='#{arg3}']/a[text()='#{arg1}']")
 end
 
 Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, column|

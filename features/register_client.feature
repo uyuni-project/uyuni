@@ -28,11 +28,11 @@ Feature: Register a client
     And I should see a "OS: sles-release" text
     And I should see a "Release: 12.2" text
 
-  Scenario: check tab links "Software" => "Errata"
+  Scenario: check tab links "Software" => "Patches"
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
-    And I follow "Errata" in the content area
-    Then I should see a "Relevant Errata" text
+    And I follow "Patches" in the content area
+    Then I should see a "Relevant Patches" text
     And I should see a "Show" button
     And I should see a "Test update for virgo-dummy" text
     And I should see an update in the list
