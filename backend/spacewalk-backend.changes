@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue Jul 04 11:33:31 CEST 2017 - michele.bologna@suse.com
+
+- version 2.5.24.12-1
+- make master_label static to keep its value when retrying (bsc#1038321)
+
+-------------------------------------------------------------------
+Thu Jun 29 17:36:55 CEST 2017 - michele.bologna@suse.com
+
+- version 2.5.24.11-1
+- remove not implemented option --force-all-packages (bsc#1040194)
+- fix parsing oscap results - not every Rule has an XCCDF ID Tag (bsc#1041992)
+
+-------------------------------------------------------------------
 Tue May 23 11:55:59 CEST 2017 - mc@suse.de
 
 - version 2.5.24.10-1

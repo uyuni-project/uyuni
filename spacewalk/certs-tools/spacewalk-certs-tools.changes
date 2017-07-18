@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jun 29 17:39:39 CEST 2017 - michele.bologna@suse.com
+
+- version 2.5.1.10-1
+- Improve text for bootstrap (bsc#1032324)
+- fix html pub path (bsc#1041989)
+
+-------------------------------------------------------------------
 Tue May 23 11:54:59 CEST 2017 - mc@suse.de
 
 - version 2.5.1.9-1

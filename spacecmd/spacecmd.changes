@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Tue Jul 04 11:33:08 CEST 2017 - michele.bologna@suse.com
+
+- version 2.5.5.8-1
+- configchannel export binary flag to json (bsc#729910)
+
+-------------------------------------------------------------------
+Thu Jun 29 17:34:23 CEST 2017 - michele.bologna@suse.com
+
+- version 2.5.5.7-1
+- spacecmd report_outofdatesystems: avoid one XMLRPC call per system
+  (bsc#1015882)
+
+-------------------------------------------------------------------
 Tue May 23 11:57:05 CEST 2017 - mc@suse.de
 
 - version 2.5.5.6-1
