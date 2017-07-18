@@ -71,7 +71,7 @@ var sstScrollBehavior = function() {
   return;
 }
 
-let sstScrollBehaviorSetupIsDone = false; // flag to implement the function one time only
+var sstScrollBehaviorSetupIsDone = false; // flag to implement the function one time only
 function sstScrollBehaviorSetup(sst) {
   sstScrollBehaviorSetupIsDone = true;
   const adjustSpaceObject = $('<div>').height(sst.outerHeight());
