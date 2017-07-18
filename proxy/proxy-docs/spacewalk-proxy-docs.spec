@@ -1,11 +1,11 @@
 Name: spacewalk-proxy-docs
 Summary: Spacewalk Proxy Server Documentation
+Version: 2.7.2
+Release: 1%{?dist}
 Group: Applications/Internet
 License: OPL-1.0
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-Version: 2.7.0.3
-Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: susemanager-advanced-topics_en-pdf
@@ -50,6 +50,17 @@ rm -rf $RPM_BUILD_ROOT
 %_defaultdocdir/%{name}/*
 
 %changelog
+* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.2-1
+- move version and release before sources
+
+* Mon Jul 17 2017 Jan Dobes 2.7.1-1
+- Updated links to github in spec files
+- Migrating Fedorahosted to GitHub
+- Bumping package versions for 2.7.
+- Bumping package versions for 2.6.
+- Bumping package versions for 2.5.
+- Bumping package versions for 2.4.
+
 * Wed Jan 14 2015 Matej Kollar <mkollar@redhat.com> 2.3.1-1
 - Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
 - Bumping package versions for 2.3.

@@ -37,7 +37,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.119
+Version: 2.7.123
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -893,6 +893,19 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.123-1
+- fixed msgfmt/translation error
+
+* Tue Jul 18 2017 Jan Dobes 2.7.122-1
+- 1450374 - fixing typos in man page
+
+* Mon Jul 17 2017 Jan Dobes 2.7.121-1
+- fixing pylint - Unused variable 'index' (unused-variable)
+
+* Mon Jul 17 2017 Jan Dobes 2.7.120-1
+- Regenerating .po and .pot files for backend
+- Updating .po translations from Zanata
+
 * Fri Jun 30 2017 Eric Herget <eherget@redhat.com> 2.7.119-1
 - PR 500 - correcting email address in change log.  Not able/willing to change
   email addresses in individual commits, however.

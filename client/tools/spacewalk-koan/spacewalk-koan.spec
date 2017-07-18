@@ -10,7 +10,7 @@ Group: System Environment/Kernel
 License: GPLv2
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 2.7.0.2
+Version: 2.7.1
 Release: 1%{?dist}
 URL:            https://github.com/spacewalkproject/spacewalk
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -61,6 +61,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/rhn/actions/
 
 %changelog
+* Mon Jul 17 2017 Jan Dobes 2.7.1-1
+- Updated links to github in spec files
+- Migrating Fedorahosted to GitHub
+- Bumping package versions for 2.7.
+
 * Mon Sep 26 2016 Jan Dobes 2.6.1-1
 - embed_kickstart was renamed to embed_autoinst in koan upstream
 - Bumping package versions for 2.6.
