@@ -1,10 +1,15 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-17 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Lock packages on client
+Feature: Lock packages on traditional client
  
   Background:
     Given I am on the Systems overview page of this "sle-client"
+
+  Scenario: Prequisite, install pkg need for test
+    And I run "zypper -n in orion-dummy" on "sle-client"
+    And I run "zypper -n in milkyway-dummy" on "sle-client"
+    And I run "zypper -n rm hoag-dummy" on "sle-client" without error control
 
   Scenario: Lock a package on the client
     And I follow "Software" in the content area
@@ -114,3 +119,7 @@ Feature: Lock packages on client
     And I follow "Lock"
     Then Package "hoag-dummy-1.1-2.1" is reported as unlocked
     And Package "orion-dummy-1.1-1.1" is reported as unlocked
+
+    Scenario: CLEAUNP: Remove package
+    Then I remove pkg "orion-dummy" on this "sle-client"
+    And I remove pkg "milkyway-dummy" on this "sle-client"
