@@ -19,6 +19,10 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 
 import java.util.Optional;
 
+import static com.suse.manager.model.kubernetes.ImageUsage.RUNTIME_OUTOFDATE;
+import static com.suse.manager.model.kubernetes.ImageUsage.RUNTIME_UNKNOWN;
+import static com.suse.manager.model.kubernetes.ImageUsage.RUNTIME_UPTODATE;
+
 /**
  * Created by matei on 7/11/17.
  */
@@ -28,6 +32,7 @@ public class ContainerInfo {
     private String podName;
     private Optional<Integer> buildRevision;
     private VirtualHostManager virtualHostManager;
+
 
     public String getContainerId() {
         return containerId;
@@ -71,5 +76,17 @@ public class ContainerInfo {
      */
     public void setVirtualHostManager(VirtualHostManager virtualHostManagerIn) {
         this.virtualHostManager = virtualHostManagerIn;
+    }
+
+    /**
+     * Gets container runtime currentness status, relative to the current revision number.
+     *
+     * @param currentRevision the current revision number
+     * @return the runtime status
+     */
+    public int getRuntimeStatus(int currentRevision) {
+        return getBuildRevision().map(
+                r -> r < currentRevision ? RUNTIME_OUTOFDATE : RUNTIME_UPTODATE)
+                .orElse(RUNTIME_UNKNOWN);
     }
 }

@@ -17,6 +17,7 @@ package com.suse.manager.kubernetes;
 
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.suse.manager.model.kubernetes.ImageUsage;
@@ -47,6 +48,18 @@ public class KubernetesManager {
 
     public KubernetesManager() {
         this.saltService = SaltService.INSTANCE;
+    }
+
+    /**
+     * Gets usage info for a single image.
+     *
+     * @param overview the overview
+     * @return the image usage
+     */
+    public Optional<ImageUsage> getImageUsage(ImageOverview overview) {
+        // TODO: Merge the logic with getImagesUsage?
+        return getImagesUsage().stream()
+                .filter(u -> u.getImageInfo().getId().equals(overview.getId())).findFirst();
     }
 
     public Set<ImageUsage> getImagesUsage() {

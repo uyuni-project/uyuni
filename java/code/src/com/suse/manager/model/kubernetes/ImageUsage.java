@@ -28,6 +28,13 @@ public class ImageUsage {
     private ImageInfo imageInfo;
     private List<ContainerInfo> containerInfos = new ArrayList<>();
 
+    // Image runtime status values, ordered by severity
+    public static final int RUNTIME_NOINSTANCE = 0;
+    public static final int RUNTIME_UPTODATE = 1;
+    public static final int RUNTIME_UNKNOWN = 2;
+    public static final int RUNTIME_OUTOFDATE = 3;
+
+
     public ImageUsage(ImageInfo imageInfo) {
         this.imageInfo = imageInfo;
     }
