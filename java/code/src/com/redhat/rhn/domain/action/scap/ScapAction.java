@@ -57,13 +57,6 @@ public class ScapAction extends Action {
         retval.append(ls.getMessage("system.event.scapParams"));
         retval.append(scapActionDetails.getParameters() == null ? "" :
             StringEscapeUtils.escapeHtml(scapActionDetails.getParametersContents()));
-        if (this.getSuccessfulCount() > 0) {
-            retval.append("</br>");
-            retval.append("<a href=\"/rhn/systems/details/audit/XccdfDetails.do?sid=" +
-                    server.getId() + "&xid=" + scapActionDetails.getId() + "\">");
-            retval.append(ls.getMessage("system.event.scapDownload"));
-            retval.append("</a>");
-        }
         return retval.toString();
     }
 
