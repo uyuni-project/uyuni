@@ -4,12 +4,12 @@
 
 Name: spacewalk-proxy
 Summary: Spacewalk Proxy Server
+Version: 2.7.4
+Release: 1%{?dist}
 Group:   Applications/Internet
 License: GPLv2
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-Version: 2.7.1.3
-Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
 BuildArch: noarch
@@ -472,6 +472,16 @@ fi
 
 
 %changelog
+* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.4-1
+- disable pylint warnings
+- fixed pylint warnings
+
+* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.3-1
+- move version and release before sources
+
+* Mon Jul 17 2017 Jan Dobes 2.7.2-1
+- add some small pep8 fixes for proxy code
+
 * Thu Mar 16 2017 Ondrej Gajdusek <ogajduse@redhat.com> 2.7.1-1
 - wrong-import-position is not present in pylint on Fedora 23
 - pylint fixes - proxy

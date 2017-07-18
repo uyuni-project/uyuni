@@ -1,7 +1,7 @@
 %define crawl_output crawl_output
 
 Name: spacewalk-doc-indexes
-Version: 2.7.0.2
+Version: 2.7.1
 Release: 1%{?dist}
 Summary: Lucene indexes of help documentation for spacewalk
 
@@ -60,6 +60,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Mon Jul 17 2017 Jan Dobes 2.7.1-1
+- Remove more fedorahosted links
+- Bumping package versions for 2.7.
+- Bumping package versions for 2.6.
+
 * Fri May 20 2016 Grant Gainey 2.5.2-1
 - spacewalk-doc-indexes: build on openSUSE
 
