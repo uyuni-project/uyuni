@@ -40,6 +40,7 @@ public class ImageInfoJson {
     private Long id;
     private String name;
     private String version;
+    private Integer revision;
     private String checksum;
     private boolean external;
     private JsonObject profile;
@@ -94,6 +95,20 @@ public class ImageInfoJson {
      */
     public void setVersion(String versionIn) {
         this.version = versionIn;
+    }
+
+    /**
+     * @return the revision
+     */
+    public Integer getRevision() {
+        return revision;
+    }
+
+    /**
+     * @param revisionIn the revision
+     */
+    public void setRevision(Integer revisionIn) {
+        this.revision = revisionIn;
     }
 
     /**
@@ -324,6 +339,7 @@ public class ImageInfoJson {
         json.setId(imageOverview.getId());
         json.setName(imageOverview.getName());
         json.setVersion(imageOverview.getVersion());
+        json.setRevision(imageOverview.getCurrRevisionNum());
         json.setChecksum(c != null ? c.getChecksum() : "");
         json.setExternal(imageOverview.isExternalImage());
         json.setProfile(imageOverview.getProfile());
