@@ -27,13 +27,22 @@ Read more about the [**basic concepts** of Cucumber that we will be using in thi
 
 All other branches are considered legacy (not under development anymore): `Manager 2.1`, `manager21-longterm`, `Manager 17`, `Manager 12`.
 
+
 # Running the testsuite
 
 You can run the Spacewalk Testsuite [with sumaform](https://github.com/moio/sumaform/blob/master/README_ADVANCED.md#cucumber-testsuite).
 
-## Tests order
+## Core-Features, Idempotency and tests-order.
 
-Tests are grouped into *features*.
+The test (features) are grouped by: core-features and secondary(idempotent) feature.
+
+For the group of the **core-feature**, the order is relevant. Furthermore this feature are by design not idempotent, and serve to create a basic testing env.
+
+The **secondary features** can be run XX number of times, and the order is irrelevant.
+
+All new features should be **secondary features**, so you need to write cleanup steps on each feature.
+
+
 [**Standard testsuite features Features included in the `testsuite.yml` file will be executed sequentially from the top to the bottom**](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml).
 
 ## Run just a single run set
@@ -42,6 +51,12 @@ You can override the tests that are executed by adding your run set:
 1. Login into the `controller` host.
 2. Add the feature(s) you would like to run into `run_sets/$name.yml`
 3. Call Cucumber to execute your custom run set (`rake cucumber:$name`)
+
+
+## Images used on the testsuite.
+
+The images are build by kiwi : http://download.suse.de/ibs/Devel:/Galaxy:/Terraform:/Images/, and sumaform deploy them.
+
 
 # Contributing
 
