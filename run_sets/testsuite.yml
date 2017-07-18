@@ -26,6 +26,10 @@
 # FIXME: MAKE THIS HAPPEN
 
 # **** IDEMPOTENT ******
+- features/xmlrpc_activationkey.feature
+- features/overview_systems_details.feature
+- features/salt_reboot_test.feature
+- features/docker_xmlrpc.feature
 - features/distro_cobbler.feature
 - features/mainpage.feature
 - features/xmlrpc_user.feature
@@ -41,20 +45,16 @@
 - features/security.feature
 - features/trad_client_inst_package_and_patch.feature
 - features/mgr_bootstrap.feature
+- features/sp_migration.feature
+- features/salt.feature
+- features/trad_client_lock_packages.feature
+- features/salt_minion_details.feature
 - features/check_registration.feature
 - features/salt_minions_page.feature
 - features/spacewalk_channel.feature
 - features/spacewalk_repo_sync.feature
 - features/xmlrpc_channel.feature
 - features/config_channel.feature
-- features/xmlrpc_activationkey.feature
-- features/overview_systems_details.feature
-- features/salt_reboot_test.feature
-- features/docker_xmlrpc.feature
-- features/sp_migration.feature
-- features/salt.feature
-- features/trad_client_lock_packages.feature
-- features/salt_minion_details.feature
 - features/patches_page.feature
 - features/ssh_push.feature
 - features/change_password.feature
