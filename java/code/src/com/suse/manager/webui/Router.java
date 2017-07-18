@@ -137,10 +137,13 @@ public class Router implements SparkApplication {
         get("/manager/vhms/:id",
                 withCsrfToken(withOrgAdmin(VirtualHostManagerController::show)),
                 jade);
-        post("/manager/vhms/:id/delete",
-                withOrgAdmin(VirtualHostManagerController::delete));
         post("/manager/vhms/:id/refresh",
                 withOrgAdmin(VirtualHostManagerController::refresh));
+
+        get("/manager/api/vhms", withOrgAdmin(VirtualHostManagerController::get));
+        get("/manager/api/vhms/:id", withOrgAdmin(VirtualHostManagerController::getSingle));
+        post("/manager/api/vhms/delete",
+                withOrgAdmin(VirtualHostManagerController::delete));
 
         // Subscription Matching
         get("/manager/subscription-matching",
@@ -305,10 +308,16 @@ public class Router implements SparkApplication {
 
         get("/manager/api/cm/images", withUser(ImageBuildController::list));
         get("/manager/api/cm/images/:id", withUser(ImageBuildController::get));
+        get("/manager/api/cm/runtime",
+                withUser(ImageBuildController::getRuntimeSummaryAll));
+        get("/manager/api/cm/runtime/:id",
+                withUser(ImageBuildController::getRuntimeSummary));
         get("/manager/api/cm/images/patches/:id",
                 withUser(ImageBuildController::getPatches));
         get("/manager/api/cm/images/packages/:id",
                 withUser(ImageBuildController::getPackages));
+        get("/manager/api/cm/images/runtime/:id",
+                withUser(ImageBuildController::getRuntime));
         post("/manager/api/cm/images/inspect/:id",
                 withImageAdmin(ImageBuildController::inspect));
         post("/manager/api/cm/images/delete", withImageAdmin(ImageBuildController::delete));

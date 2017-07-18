@@ -16,8 +16,8 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.utils.Json.GSON;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -44,7 +44,10 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.kubernetes.KubernetesManager;
+import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.ImageInfoJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
@@ -74,13 +77,16 @@ import spark.Spark;
  */
 public class ImageBuildController {
 
-    private static final Gson GSON = new GsonBuilder().create();
     private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
 
     private static final ViewHelper VIEW_HELPER = ViewHelper.INSTANCE;
     private static Logger log = Logger.getLogger(ImageBuildController.class);
 
-    private ImageBuildController() { }
+    private static final KubernetesManager K8S_MANAGER = new KubernetesManager();
+
+    private ImageBuildController() {
+        K8S_MANAGER.setSaltService(SaltService.INSTANCE);
+    }
 
     /**
      * rebuild image
@@ -509,7 +515,7 @@ public class ImageBuildController {
                 ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
         return json(res, imageInfo.map(ImageBuildController::getImageInfoWithPatchlist)
-                    .orElse(null));
+                .orElse(null));
     }
 
     /**
@@ -535,6 +541,72 @@ public class ImageBuildController {
 
         return json(res, imageInfo.map(ImageBuildController::getImageInfoWithPackageList)
                     .orElse(null));
+    }
+
+    /**
+     * Gets runtime summary for a single image in JSON
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getRuntimeSummary(Request req, Response res, User user) {
+        Long id;
+        try {
+            id = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
+
+        Optional<ImageOverview> imageInfo =
+                ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
+
+        return json(res,
+                imageInfo.map(ImageBuildController::getRuntimeOverviewJson).orElse(null));
+    }
+
+    /**
+     * Gets runtime summary for all images in JSON
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getRuntimeSummaryAll(Request req, Response res, User user) {
+        // Get runtime summary for all images
+        JsonObject obj = new JsonObject();
+        ImageInfoFactory.listImageOverviews(user.getOrg()).forEach(overview -> obj
+                .add(overview.getId().toString(), getRuntimeOverviewJson(overview)));
+        return json(res, obj);
+    }
+
+    /**
+     * Gets runtime info for a single image info object in JSON
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getRuntime(Request req, Response res, User user) {
+        Long id;
+        try {
+            id = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
+
+        Optional<ImageOverview> imageInfo =
+                ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
+
+        return json(res, imageInfo.map(ImageBuildController::getImageInfoWithRuntime)
+                .orElse(null));
     }
 
     private static List<JsonObject> getImageInfoSummaryList(
@@ -576,6 +648,7 @@ public class ImageBuildController {
         json.addProperty("name", imageOverview.getName());
         json.addProperty("version", imageOverview.getVersion());
         json.addProperty("external", imageOverview.isExternalImage());
+        json.addProperty("revision", imageOverview.getCurrRevisionNum());
         json.addProperty("modified", VIEW_HELPER.renderDate(imageOverview.getModified()));
 
         if (imageOverview.getOutdatedPackages() != null) {
@@ -617,6 +690,69 @@ public class ImageBuildController {
                 .getAsJsonObject();
 
         obj.add("packagelist", list);
+
+        return obj;
+    }
+
+    private static JsonObject getImageInfoWithRuntime(ImageOverview overview) {
+        JsonObject obj =
+                GSON.toJsonTree(ImageInfoJson.fromImageInfo(overview), ImageInfoJson.class)
+                        .getAsJsonObject();
+
+        Optional<ImageUsage> usage = K8S_MANAGER.getImageUsage(overview);
+        Map<String, JsonArray> clusterInfo = new HashMap<>();
+
+        usage.ifPresent(u -> u.getContainerInfos().forEach(c -> {
+            String vhmLabel = c.getVirtualHostManager().getLabel();
+
+            JsonArray podList = clusterInfo.get(vhmLabel);
+            if (podList == null) {
+                podList = new JsonArray();
+                clusterInfo.put(vhmLabel, podList);
+            }
+
+            JsonObject podInfo = new JsonObject();
+            podInfo.addProperty("name", c.getPodName());
+            podInfo.addProperty("statusId",
+                    c.getRuntimeStatus(overview.getCurrRevisionNum()));
+
+            podList.add(podInfo);
+        }));
+
+        JsonObject instanceInfo = new JsonObject();
+        clusterInfo.forEach(instanceInfo::add);
+        obj.add("clusters", instanceInfo);
+
+        return obj;
+    }
+
+    private static JsonObject getRuntimeOverviewJson(ImageOverview overview) {
+        Map<String, Integer> clusterCounts = new HashMap<>();
+
+        // Specifies the accumulated most severe status
+        // across all containers for an image
+        final int[] imageStatus = {ImageUsage.RUNTIME_NOINSTANCE};
+
+        Optional<ImageUsage> usage = K8S_MANAGER.getImageUsage(overview);
+
+        usage.ifPresent(u -> u.getContainerInfos().forEach(c -> {
+            String vhmLabel = c.getVirtualHostManager().getLabel();
+            Integer count = clusterCounts.get(vhmLabel);
+            if (count == null) {
+                count = 0;
+            }
+            clusterCounts.put(vhmLabel, count + 1);
+
+            int containerStatus = c.getRuntimeStatus(overview.getCurrRevisionNum());
+            imageStatus[0] =
+                    imageStatus[0] > containerStatus ? imageStatus[0] : containerStatus;
+        }));
+
+        JsonObject obj = new JsonObject();
+        JsonObject instanceInfo = new JsonObject();
+        obj.addProperty("runtimeStatus", imageStatus[0]);
+        clusterCounts.forEach(instanceInfo::addProperty);
+        obj.add("instances", instanceInfo);
 
         return obj;
     }
