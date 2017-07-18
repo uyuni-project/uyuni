@@ -36,7 +36,7 @@ You can run the Spacewalk Testsuite [with sumaform](https://github.com/moio/suma
 
 The test (features) are grouped by: core-features and secondary(idempotent) feature.
 
-For the group of the **core-feature**, the order is relevant. Furthermore this feature are by design not idempotent, and serve to create a basic testing env.
+For the group of the **core-feature**, the order is relevant. The core-features are by design not idempotent, and serve to create a basic testing env.
 
 The **secondary features** can be run XX number of times, and the order is irrelevant.
 
