@@ -9,6 +9,7 @@ Feature: Lock packages on traditional client
   Scenario: Prequisite, install pkg need for test
     And I run "zypper -n in orion-dummy" on "sle-client"
     And I run "zypper -n in milkyway-dummy" on "sle-client"
+    And I run "zypper -n rm hoag-dummy" on "sle-client" without error control
 
   Scenario: Lock a package on the client
     And I follow "Software" in the content area
