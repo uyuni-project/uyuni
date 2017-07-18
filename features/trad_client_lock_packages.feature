@@ -121,4 +121,4 @@ Feature: Lock packages on traditional client
 
     Scenario: CLEAUNP: Remove package
     Then I remove pkg "orion-dummy" on this "sle-client"
-    Then I remove pkg "milkyway-dummy" on this "sle-client"
+    And I remove pkg "milkyway-dummy" on this "sle-client"
