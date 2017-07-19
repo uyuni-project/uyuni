@@ -18,7 +18,6 @@ package com.suse.manager.kubernetes;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
-import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
@@ -52,31 +51,20 @@ public class KubernetesManager {
 
     /**
      * No arg constructor.
+     * Configures this with the default {@link SaltService} instance.
      */
     public KubernetesManager() {
         this.saltService = SaltService.INSTANCE;
     }
 
     /**
-     * Gets usage info for a single image.
-     *
-     * @param overview the overview
-     * @return the image usage
-     */
-    public Optional<ImageUsage> getImageUsage(ImageOverview overview) {
-        // TODO: Merge the logic with getImagesUsage?
-        return getImagesUsage().stream()
-                .filter(u -> u.getImageInfo().getId().equals(overview.getId())).findFirst();
-    }
-
-    /**
      * Queries all configured Kubernetes clusters and tries to match the containers to all
      * images know to SUSE Manager.
-     * @return
+     *
+     * @return a set of {@link ImageUsage} objects, one object for each matched {@link ImageInfo}
      */
     public Set<ImageUsage> getImagesUsage() {
-        List<ImageBuildHistory> buildHistory = ImageInfoFactory.listBuildHistory(); // TODO filter by org ?
-        // TODO cache buildHistory ?
+        List<ImageBuildHistory> buildHistory = ImageInfoFactory.listBuildHistory();
         Map<String, ImageBuildHistory> digestToHistory = buildHistory
                 .stream()
                 .flatMap(build -> build.getRepoDigests().stream())
@@ -91,13 +79,13 @@ public class KubernetesManager {
                         .map(p -> p.getValue())
                         .findFirst();
 
-                Optional<String> currentContext = virtHostMgr.getConfigs().stream()
-                        .filter(c -> "currentContext".equals(c.getParameter()))
+                Optional<String> context = virtHostMgr.getConfigs().stream()
+                        .filter(c -> "context".equals(c.getParameter()))
                         .map(p -> p.getValue())
                         .findFirst();
 
-                if (kubeconfig.isPresent() && currentContext.isPresent()) {
-                    MgrK8sRunner.ContainersList containers = saltService.getAllContainers(kubeconfig.get(), currentContext.get());
+                if (kubeconfig.isPresent() && context.isPresent()) {
+                    MgrK8sRunner.ContainersList containers = saltService.getAllContainers(kubeconfig.get(), context.get());
 
                     containers.getContainers().stream().forEach(container -> {
                         if (container.getImageId().startsWith(DOCKER_PULLABLE)) {
@@ -114,7 +102,7 @@ public class KubernetesManager {
                                 ));
                             }
                             else {
-                                LOG.warn("Image build history not found for digest: " +
+                                LOG.debug("Image build history not found for digest: " +
                                         imgDigest + " (maybe the image was not built by SUSE Manager).");
                                 String[] tokens = StringUtils.split(container.getImage(), "/", 2);
                                 String repo = tokens[0];
