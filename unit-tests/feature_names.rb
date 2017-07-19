@@ -15,7 +15,7 @@ def check_same_list(list1, list2)
     puts "ERROR:"
     puts "The testsuite.yml has a feature that is non features dir!"
     puts "===================================="
-    puts (list1 - list2) || (list2 - list1)
+    puts list1 - list2
     puts "===================================="
     raise "the testsuite.yml doesn't match the features"
   end
