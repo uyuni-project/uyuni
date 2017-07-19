@@ -491,6 +491,22 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests that the VirtualHostManagerProcessor does not automatically create a new Server entity
+     * for a Kubernetes virtual host manager.
+     */
+    public void testKubernetes() {
+        Map<String, JSONHost> data = createHostData("kubernetes_host_1_id", "Kubernetes",null);
+
+        new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
+
+        // check if a Server is created
+        Server host = ServerFactory
+                .lookupForeignSystemByDigitalServerId("101-kubernetes_host_1_id");
+        assertNull(host);
+    }
+
+
+    /**
      * Creates a map representing the parsed result from gatherer run on one virtual host
      * manager with one virtual host.
      *
@@ -500,8 +516,14 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     private Map<String, JSONHost> createHostData(String hostIdentifier,
             Map<String, String> vms) {
+        return createHostData(hostIdentifier, "para_virtualized", vms);
+    }
+
+    private Map<String, JSONHost> createHostData(String hostIdentifier,
+                                                 String type,
+                                                 Map<String, String> vms) {
         Map<String, JSONHost> data = new HashMap<>();
-        data.put(TestUtils.randomString(), createMinimalHost(hostIdentifier, vms));
+        data.put(TestUtils.randomString(), createMinimalHost(hostIdentifier, type, vms));
         return data;
     }
 
@@ -513,13 +535,25 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * @return JSONHost instance
      */
     private JSONHost createMinimalHost(String hostId, Map<String, String> vms) {
+        return createMinimalHost(hostId, "para_virtualized", vms);
+    }
+
+    /**
+     * Create a JSONHost instance filled with test data representing results from virtual
+     * host gatherer.
+     * @param hostId - host identifier
+     * @param type - type of the vhm
+     * @param vms - map of virtual machinesty
+     * @return JSONHost instance
+     */
+    private JSONHost createMinimalHost(String hostId, String type, Map<String, String> vms) {
         if (vms == null) {
             vms = new HashMap<>();
         }
         JSONHost minimalHost = new JSONHost();
         minimalHost.setHostIdentifier(hostId);
         minimalHost.setVms(vms);
-        minimalHost.setType("para_virtualized");
+        minimalHost.setType(type);
         minimalHost.setRamMb(128);
         minimalHost.setCpuArch("x86_64");
         minimalHost.setCpuMhz(400.0);
