@@ -55,9 +55,9 @@
 # **** IDEMPOTENT ******
 - features/srv_xmlrpc_activationkey.feature
 - features/allcli_overview_systems_details.feature
-- features/salt_reboot_test.feature
-- features/docker_xmlrpc.feature
-- features/distro_cobbler.feature
+- features/min_salt_reboot_test.feature
+- features/min_docker_xmlrpc.feature
+- features/srv_distro_cobbler.feature
 - features/mainpage.feature
 - features/xmlrpc_user.feature
 - features/smdba.feature
@@ -70,11 +70,11 @@
 - features/salt_openscap_audit.feature
 - features/custom_system_info.feature
 - features/security.feature
-- features/trad_client_inst_package_and_patch.feature
+- features/trad_inst_package_and_patch.feature
 - features/mgr_bootstrap.feature
 - features/sp_migration.feature
 - features/salt.feature
-- features/trad_client_lock_packages.feature
+- features/trad_lock_packages.feature
 - features/salt_minion_details.feature
 - features/check_registration.feature
 - features/salt_minions_page.feature
@@ -83,14 +83,14 @@
 - features/xmlrpc_channel.feature
 - features/config_channel.feature
 - features/patches_page.feature
-- features/trad_client_need_reboot.feature
-- features/trad_client_ssh_push.feature
+- features/trad_need_reboot.feature
+- features/trad_ssh_push.feature
 - features/change_password.feature
 - features/salt_download_endpoint.feature
 - features/srv_virtual_host_manager.feature
 - features/baremetal_test.feature
 - features/salt_remote_cmds.feature
-- features/trad_client_reboot.feature
+- features/trad_reboot.feature
 
 - features/srv_action_chain.feature
 - features/salt_formulas.feature
