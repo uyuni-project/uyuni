@@ -18,6 +18,7 @@ package com.suse.manager.kubernetes.test;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
+import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.ImageTestUtils;
@@ -61,10 +62,14 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    /**
+     * Containers use the same image version.
+     * @throws Exception
+     */
     public void testGetContainersUsage_sameVersion() throws Exception {
         expectGetAllContainers("local-context", "get_all_containers.same_version.json");
 
-        VirtualHostManager cluster1 = createVirtHostManager("Cluster 1");
+        VirtualHostManager cluster1 = createVirtHostManager();
 
 //        MinionServer server = ImageTestUtils.createBuildHost(user);
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v1", user);
@@ -90,10 +95,14 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
                         .count());
     }
 
+    /**
+     * Containers have two different versions of the same image.
+     * @throws Exception
+     */
     public void testGetContainersUsage_multipleVersions() throws Exception {
         expectGetAllContainers("local-context", "get_all_containers.multiple_versions.json");
 
-        createVirtHostManager("Cluster 1");
+        createVirtHostManager();
 
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v2", user);
 
@@ -121,12 +130,15 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
                         .count());
     }
 
+    /**
+     * Two clusters running the same image in different versions.
+     * @throws Exception
+     */
     public void testGetContainersUsage_multipleClusters() throws Exception {
-
         expectGetAllContainers("/srv/salt/kubeconfig1", "local-context", "get_all_containers.cluster1.json");
         expectGetAllContainers("/srv/salt/kubeconfig2", "local-context", "get_all_containers.cluster2.json");
-        VirtualHostManager cluster1 = createVirtHostManager("Cluster 1", "/srv/salt/kubeconfig1");
-        VirtualHostManager cluster2 = createVirtHostManager("Cluster 2", "/srv/salt/kubeconfig2");
+        VirtualHostManager cluster1 = createVirtHostManager("/srv/salt/kubeconfig1");
+        VirtualHostManager cluster2 = createVirtHostManager("/srv/salt/kubeconfig2");
 
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v2", user);
 
@@ -160,13 +172,24 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
                         .count());
     }
 
+    /**
+     * Externally build image (no Image ID in our db). Get three containers with the same names but different tags:
+     * 1) :v1
+     * 2) :latest
+     * 3) :latest
+     * In the db we have a history record for 3). Container 2) is built externally.
+     * For :v1 there's not corresponding image in the db.
+     * Both :latest should be matched, one by Repo Digest and the other one by repo/name:tag. :v1 should not be matched.
+     * @throws Exception
+     */
     public void testGetContainersUsage_externalBuild() throws Exception {
         expectGetAllContainers("local-context", "get_all_containers.external_build.json");
 
-        VirtualHostManager cluster1 = createVirtHostManager("Cluster 1");
+        VirtualHostManager cluster1 = createVirtHostManager();
 
-        ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v1", user);
-
+        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
+        ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "latest", user);
+        imgInfo.setStore(store);
         ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1, "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
 
         imgInfo.getBuildHistory().add(history1);
@@ -178,15 +201,15 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
         assertEquals(1, usages.size());
         assertTrue(usages.stream().filter(usage -> usage.getImageInfo().getName().equals(imgInfo.getName())).findFirst().isPresent());
-        assertEquals(1,
+        assertEquals(2,
                 matchContainers(imgInfo, usages, container -> true)
                         .count());
         assertEquals(1,
-                matchContainers(imgInfo, usages, container -> container.getBuildRevision().get() == 1)
+                matchContainers(imgInfo, usages, container -> container.getBuildRevision().orElse(0) == 1)
                         .count());
-//        assertEquals(1,
-//                matchContainers(imgInfo, usages, container -> !container.getBuildRevision().isPresent())
-//                        .count());
+        assertEquals(1,
+                matchContainers(imgInfo, usages, container -> !container.getBuildRevision().isPresent())
+                        .count());
     }
 
 
@@ -209,7 +232,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
                 .filter(filter);
     }
 
-    private VirtualHostManager createVirtHostManager(String label, String... kubeconfig) {
+    private VirtualHostManager createVirtHostManager(String... kubeconfig) {
         Map params = new HashMap<>();
         if (kubeconfig.length > 0) {
             params.put("kubeconfig", kubeconfig[0]);
@@ -217,6 +240,9 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
             params.put("kubeconfig", "/srv/salt/kubeconfig");
         }
         params.put("currentContext", "local-context");
+
+        String label = "K8s_" + TestUtils.randomString();
+
         VirtualHostManager virtualHostManager = VirtualHostManagerFactory.getInstance().createVirtualHostManager(
                 label,
                 user.getOrg(),
