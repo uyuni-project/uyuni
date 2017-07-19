@@ -1,33 +1,60 @@
 ## Core feature BEGIN ###
-## this feature must be runned sequentially
+# Prefix
+# core_type_topic
 
-# FIXME: ADD/REMOVE TO LIST STUFF
 --- # initialize suse-manager server
-- features/setup_user_and_proxy.feature
-- features/channels_add.feature
-- features/push_package.feature
-- features/create_repository.feature
-- features/systemspage.feature
-- features/users.feature
-- features/credentials.feature
-- features/create_activationkey.feature
-- features/register_client.feature
-- features/minion_bootstrap.feature
-- features/docker_build_image.feature
-- features/salt_ssh.feature
-- features/centos_tradclient.feature
-- features/centos_salt.feature
-- features/centos_salt_ssh.feature
+- features/core_setup_user_and_proxy.feature
+# this feature sync real channels sles12sp2
+- features/core_srv_sync_channels.feature
+- features/core_srv_channels_add.feature
+- features/core_srv_push_package.feature
+- features/core_srv_create_repository.feature
+- features/core_srv_systemspage.feature
+- features/core_srv_users.feature
+- features/core_srv_credentials.feature
+- features/core_srv_create_activationkey.feature
+- features/core_trad_register_client.feature
+- features/core_min_bootstrap.feature
+- features/core_min_docker_build_image.feature
+- features/core_min_salt_ssh.feature
+- features/core_centos_tradclient.feature
+- features/core_centos_salt.feature
+- features/core_centos_salt_ssh.feature
 ## CORE feature end ###
 
 # SECONDARY FEATURE:
 
-# this feature can be runned in random order.
-# FIXME: MAKE THIS HAPPEN
+# Prefix
+# TYPE_TOPIC
+
+# PREFIX:
+
+# 1) TYPE (mandatory and UNIQUE)
+# - srv (feature testing server side)
+# - min (feature testing minions sles) (not ssh)
+# - centos (feature testing centos/rhes)
+# - trad (feature testing tradional client)
+# - allcli (feature testing all clients trad + minion(centos/sles)
+
+
+# 2) TOPIC (for salt mandatory)
+# - salt (feature concering salt)
+# - docker
+# - .. 
+# - (empty)
+
+# EXAMPLES
+# * TYPE_TOPIC
+
+# * srv_reboot_server.feature 
+# * srv_salt_ping.feature
+# * srv_salt_service.feature
+# * min_salt_bootstrap.feature
+# * min_ping.feature 
 
 # **** IDEMPOTENT ******
-- features/xmlrpc_activationkey.feature
-- features/overview_systems_details.feature
+- features/srv_xmlrpc_activationkey.feature
+- features/allcli_overview_systems_details.feature
 - features/salt_reboot_test.feature
 - features/docker_xmlrpc.feature
 - features/distro_cobbler.feature
@@ -56,9 +83,11 @@
 - features/xmlrpc_channel.feature
 - features/config_channel.feature
 - features/patches_page.feature
-- features/ssh_push.feature
+- features/trad_client_need_reboot.feature
+- features/trad_client_ssh_push.feature
 - features/change_password.feature
 - features/salt_download_endpoint.feature
+- features/srv_virtual_host_manager.feature
 - features/baremetal_test.feature
 - features/salt_remote_cmds.feature
 - features/trad_client_reboot.feature
@@ -69,12 +98,9 @@
 - features/nagios.feature
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/clone_channel_npn.feature
-- features/scc_sync_channels.feature
-- features/systems_needing_reboot.feature
 - features/CVE_ID_new_syntax.feature
 - features/compare_channel.feature
 - features/setup_wizard.feature
-- features/check_VHM.feature
 
 ## IDEMPOTENT BUT AFFECTED by PKG issue:
 - features/action_chain.feature
