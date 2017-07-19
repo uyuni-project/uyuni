@@ -29,7 +29,7 @@
 
 # PREFIX:
 
-# 1) TYPE (mandatory)
+# 1) TYPE (mandatory and UNIQUE)
 # - srv (feature testing server side)
 # - min (feature testing minions sles) (not ssh)
 # - centos (feature testing centos/rhes)
@@ -41,7 +41,7 @@
 # - salt (feature concering salt)
 # - docker
 # - .. 
-# - (empty
+# - (empty)
 
 # EXAMPLES
 # * TYPE_TOPIC
