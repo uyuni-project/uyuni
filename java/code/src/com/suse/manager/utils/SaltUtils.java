@@ -516,6 +516,7 @@ public class SaltUtils {
             }
 
             ImageInfoFactory.lookupByBuildAction(ba).ifPresent(info -> {
+                info.setRevisionNumber(info.getRevisionNumber() + 1);
                 info.setInspectAction(iAction);
                 ImageInfoFactory.save(info);
             });
