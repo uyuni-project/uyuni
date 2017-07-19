@@ -8,19 +8,7 @@ const PopUp = require("../components/popup").PopUp;
 const Input = require("../components/input");
 const Functions = require("../utils/functions");
 const Network = require("../utils/network");
-
-function BootstrapPanel(props) {
-    return (
-        <div className="panel panel-default">
-            <div className="panel-heading">
-                <h4>{props.title}</h4>
-            </div>
-            <div className="panel-body">
-                {props.children}
-            </div>
-        </div>
-    );
-}
+const BootstrapPanel = require("../components/panel").BootstrapPanel;
 
 function StatusIcon(props) {
     const data = props.data;
@@ -88,79 +76,104 @@ function ActionStatus(props) {
     );
 }
 
-function ImageInfo(props) {
-    const data = props.data;
-    return (
-        <div className="table-responsive">
-            <table className="table">
-                <tbody>
-                    <tr>
-                        <td>Image Name:</td>
-                        <td>{data.name ? data.name : "-"}</td>
-                    </tr>
-                    <tr>
-                        <td>Version:</td>
-                        <td>{data.version ? data.version : "-"}</td>
-                    </tr>
-                    <tr>
-                        <td>Checksum:</td>
-                        <td>{data.checksum ? data.checksum : "-"}</td>
-                    </tr>
-                    { !data.external &&
-                    <tr>
-                        <td>Profile:</td>
-                        { data.profile ?
-                            <td>{data.profile.label}{ isAdmin && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imageprofiles/edit/" + data.profile.id + "?url_bounce=" + encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit profile")}/>}</td>
-                            :<td>-</td>
+class ImageInfo extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    renderInstances(data) {
+        let totalCount = 0;
+        if(data.instances && Object.keys(data.instances).length > 0) {
+            totalCount =  Object.keys(data.instances)
+                    .map(k => Number(data.instances[k]))
+                    .reduce((a,b) => a + b);
+        }
+
+        return totalCount === 0 ? '-' : <span>{totalCount}&nbsp;&nbsp;<a href="#"><i className="fa fa-external-link" title={t("View cluster summary")}/></a></span>;
+    }
+
+    render() {
+        const data = this.props.data;
+        return (
+            <div className="table-responsive">
+                <table className="table">
+                    <tbody>
+                        <tr>
+                            <td>Image Name:</td>
+                            <td>{data.name ? data.name : "-"}</td>
+                        </tr>
+                        <tr>
+                            <td>Version:</td>
+                            <td>{data.version ? data.version : "-"}</td>
+                        </tr>
+                        <tr>
+                            <td>Revision:</td>
+                            <td>{data.revision ? data.revision : "-"}</td>
+                        </tr>
+                        <tr>
+                            <td>Instances:</td>
+                            <td>{this.renderInstances(data)}</td>
+                        </tr>
+                        <tr>
+                            <td>Checksum:</td>
+                            <td>{data.checksum ? data.checksum : "-"}</td>
+                        </tr>
+                        { !data.external &&
+                        <tr>
+                            <td>Profile:</td>
+                            { data.profile ?
+                                <td>{data.profile.label}{ isAdmin && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imageprofiles/edit/" + data.profile.id + "?url_bounce=" + encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit profile")}/>}</td>
+                                :<td>-</td>
+                            }
+                        </tr>
                         }
-                    </tr>
-                    }
-                    <tr>
-                        <td>Store:</td>
-                        { data.store ?
-                            <td>{data.store.label}{ isAdmin && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imagestores/edit/" + data.store.id + "?url_bounce=" + encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit store")}/>}</td>
-                            :<td>-</td>
-                        }
-                    </tr>
-                    <tr>
-                        <td>Build Host:</td>
-                        { data.buildServer ?
-                            <td><a href={"/rhn/systems/details/Overview.do?sid=" + data.buildServer.id}>{data.buildServer.name}</a></td>
-                            :<td>-</td>
-                        }
-                    </tr>
-                    <tr>
-                        <td>Software Channels:</td>
-                        { data.channels && data.channels.base ?
-                            <td>
-                                <ul className="list-unstyled">
-                                    <li><a href={"/rhn/channels/ChannelDetail.do?cid=" + data.channels.base.id} title={data.channels.base.name}>{data.channels.base.name}</a></li>
-                                    <li>
-                                        <ul>{data.channels.children.map(ch => <li><a href={"/rhn/channels/ChannelDetail.do?cid=" + ch.id} title={ch.name}>{ch.name}</a></li>)}</ul>
-                                    </li>
-                                </ul>
-                            </td>
-                            :<td>-</td>
-                        }
-                    </tr>
-                    <tr>
-                        <td>Installed Products</td>
-                        { data.installedProducts ?
-                            <td>
-                                <ul className="list-group">
-                                    <li className="list-group-item">{data.installedProducts.base}</li>
-                                    {data.installedProducts.addons.map(addon =>
-                                        <li className="list-group-item">{addon}</li>
-                                    )}
-                                </ul>
-                            </td>
-                            :<td>-</td>
-                        }
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    );
+                        <tr>
+                            <td>Store:</td>
+                            { data.store ?
+                                <td>{data.store.label}{ isAdmin && <LinkButton icon="fa-edit" href={"/rhn/manager/cm/imagestores/edit/" + data.store.id + "?url_bounce=" + encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)} className="btn-xs btn-default pull-right" text={t("Edit")} title={t("Edit store")}/>}</td>
+                                :<td>-</td>
+                            }
+                        </tr>
+                        <tr>
+                            <td>Build Host:</td>
+                            { data.buildServer ?
+                                <td><a href={"/rhn/systems/details/Overview.do?sid=" + data.buildServer.id}>{data.buildServer.name}</a></td>
+                                :<td>-</td>
+                            }
+                        </tr>
+                        <tr>
+                            <td>Software Channels:</td>
+                            { data.channels && data.channels.base ?
+                                <td>
+                                    <ul className="list-unstyled">
+                                        <li><a href={"/rhn/channels/ChannelDetail.do?cid=" + data.channels.base.id} title={data.channels.base.name}>{data.channels.base.name}</a></li>
+                                        <li>
+                                            <ul>{data.channels.children.map(ch => <li><a href={"/rhn/channels/ChannelDetail.do?cid=" + ch.id} title={ch.name}>{ch.name}</a></li>)}</ul>
+                                        </li>
+                                    </ul>
+                                </td>
+                                :<td>-</td>
+                            }
+                        </tr>
+                        <tr>
+                            <td>Installed Products</td>
+                            { data.installedProducts ?
+                                <td>
+                                    <ul className="list-group">
+                                        <li className="list-group-item">{data.installedProducts.base}</li>
+                                        {data.installedProducts.addons.map(addon =>
+                                            <li className="list-group-item">{addon}</li>
+                                        )}
+                                    </ul>
+                                </td>
+                                :<td>-</td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
 }
 
 class ImageCustomInfo extends React.Component {
