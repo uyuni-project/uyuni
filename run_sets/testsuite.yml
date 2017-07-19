@@ -31,6 +31,9 @@
 # - min (feature testing minions sles)
 # - centos (feature testing centos/rhes)
 # - trad_cli (feature testing tradional client)
+# - allcli (feture testing trad + minion(centos/sles)
+
+# youn can combine the prefix.
 
 # topic (for salt mandatory) (sometimes is optional)
 # - salt (feature concering salt)
@@ -44,8 +47,8 @@
 # * min_ping.feature 
 
 # **** IDEMPOTENT ******
-- features/xmlrpc_activationkey.feature
-- features/overview_systems_details.feature
+- features/srv_xmlrpc_activationkey.feature
+- features/allcli_overview_systems_details.feature
 - features/salt_reboot_test.feature
 - features/docker_xmlrpc.feature
 - features/distro_cobbler.feature
