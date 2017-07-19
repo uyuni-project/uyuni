@@ -15,9 +15,6 @@
 
 package com.suse.manager.webui.controllers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.utils.Json.GSON;
-
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -43,7 +40,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
@@ -51,10 +47,13 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.ImageInfoJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Spark;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -65,12 +64,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.utils.Json.GSON;
 
 /**
  * Spark controller class for image building and listing.
@@ -560,12 +558,17 @@ public class ImageBuildController {
             Spark.halt(HttpStatus.SC_NOT_FOUND);
             return null;
         }
-
+        Set<ImageUsage> usages = getImagesUsage();
         Optional<ImageOverview> imageInfo =
                 ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
-        return json(res,
-                imageInfo.map(ImageBuildController::getRuntimeOverviewJson).orElse(null));
+        return json(res, imageInfo
+                .map(overview -> getRuntimeOverviewJson(usages, overview))
+                .orElse(null));
+    }
+
+    private static Set<ImageUsage> getImagesUsage() {
+        return K8S_MANAGER.getImagesUsage();
     }
 
     /**
@@ -579,8 +582,10 @@ public class ImageBuildController {
     public static Object getRuntimeSummaryAll(Request req, Response res, User user) {
         // Get runtime summary for all images
         JsonObject obj = new JsonObject();
+        Set<ImageUsage> usages = getImagesUsage();
         ImageInfoFactory.listImageOverviews(user.getOrg()).forEach(overview -> obj
-                .add(overview.getId().toString(), getRuntimeOverviewJson(overview)));
+                .add(overview.getId().toString(),
+                        getRuntimeOverviewJson(usages, overview)));
         return json(res, obj);
     }
 
@@ -601,11 +606,12 @@ public class ImageBuildController {
             Spark.halt(HttpStatus.SC_NOT_FOUND);
             return null;
         }
-
+        Set<ImageUsage> usages = getImagesUsage();
         Optional<ImageOverview> imageInfo =
                 ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
-        return json(res, imageInfo.map(ImageBuildController::getImageInfoWithRuntime)
+        return json(res, imageInfo
+                .map(overview -> getImageInfoWithRuntime(usages, overview))
                 .orElse(null));
     }
 
@@ -694,12 +700,13 @@ public class ImageBuildController {
         return obj;
     }
 
-    private static JsonObject getImageInfoWithRuntime(ImageOverview overview) {
+    private static JsonObject getImageInfoWithRuntime(Set<ImageUsage> imagesUsage,
+                                                      ImageOverview overview) {
         JsonObject obj =
                 GSON.toJsonTree(ImageInfoJson.fromImageInfo(overview), ImageInfoJson.class)
                         .getAsJsonObject();
 
-        Optional<ImageUsage> usage = K8S_MANAGER.getImageUsage(overview);
+        Optional<ImageUsage> usage = getImageUsage(imagesUsage, overview);
         Map<String, JsonArray> clusterInfo = new HashMap<>();
 
         usage.ifPresent(u -> u.getContainerInfos().forEach(c -> {
@@ -726,14 +733,15 @@ public class ImageBuildController {
         return obj;
     }
 
-    private static JsonObject getRuntimeOverviewJson(ImageOverview overview) {
+    private static JsonObject getRuntimeOverviewJson(Set<ImageUsage> imagesUsage,
+                                                     ImageOverview overview) {
         Map<String, Integer> clusterCounts = new HashMap<>();
 
         // Specifies the accumulated most severe status
         // across all containers for an image
         final int[] imageStatus = {ImageUsage.RUNTIME_NOINSTANCE};
 
-        Optional<ImageUsage> usage = K8S_MANAGER.getImageUsage(overview);
+        Optional<ImageUsage> usage = getImageUsage(imagesUsage, overview);
 
         usage.ifPresent(u -> u.getContainerInfos().forEach(c -> {
             String vhmLabel = c.getVirtualHostManager().getLabel();
@@ -755,6 +763,18 @@ public class ImageBuildController {
         obj.add("instances", instanceInfo);
 
         return obj;
+    }
+
+    /**
+     * Gets usage info for a single image.
+     *
+     * @param overview the overview
+     * @return the image usage
+     */
+    private static Optional<ImageUsage> getImageUsage(Set<ImageUsage> imagesUsage,
+                                                      ImageOverview overview) {
+        return imagesUsage.stream()
+                .filter(u -> u.getImageInfo().getId().equals(overview.getId())).findFirst();
     }
 
     private static JsonObject getImageInfoWithPatchlist(ImageOverview imageOverview) {
