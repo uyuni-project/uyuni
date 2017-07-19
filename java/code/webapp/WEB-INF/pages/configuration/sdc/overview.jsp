@@ -31,8 +31,8 @@
                                 </div>
                                 <rhn:require mixins="com.redhat.rhn.common.security.acl.SystemAclHandler" acl="client_capable(configfiles.deploy)">
                                 <div class="form-group">
-                                    <label class="col-md-3"><bean:message key="sdc.config.files.deployable"/>:</label>
-                                    <div class="col-md-9">
+                                    <label class="col-md-3 auto-width"><bean:message key="sdc.config.files.deployable"/>:</label>
+                                    <div class="col-md-9 auto-width">
                                         ${requestScope.deployableFiles}
                                     </div>
                                 </div>
