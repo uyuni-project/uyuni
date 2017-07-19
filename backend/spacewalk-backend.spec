@@ -13,7 +13,7 @@
 %endif
 
 %if (0%{?fedora} && 0%{?fedora} < 26) || 0%{?rhel} >= 7
-%{!?pylint_check: %global pylint_check 1}
+%{!?pylint_check: %global pylint_check 0}
 %endif
 
 %if 0%{?fedora} || 0%{?rhel}
