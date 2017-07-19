@@ -1,7 +1,6 @@
 ## Core feature BEGIN ###
 ## this feature must be runned sequentially
 
-# FIXME: ADD/REMOVE TO LIST STUFF
 --- # initialize suse-manager server
 - features/setup_user_and_proxy.feature
 - features/channels_add.feature
@@ -18,12 +17,29 @@
 - features/centos_tradclient.feature
 - features/centos_salt.feature
 - features/centos_salt_ssh.feature
+
 ## CORE feature end ###
 
 # SECONDARY FEATURE:
 
-# this feature can be runned in random order.
-# FIXME: MAKE THIS HAPPEN
+# PREFIX:
+
+# type (mandatory)
+# - srv (feature testing server side)
+# - min (feature testing minions sles)
+# - centos (feature testing centos/rhes)
+# - trad_cli (feature testing tradional client)
+
+# topic (for salt mandatory) (sometimes is optional)
+# - salt (feature concering salt)
+# - docker
+
+# EXAMPLES
+
+# * srv_salt_myname.feature
+# * srv_min_salt_bootstrap.feature
+# * srv_min_salt_bootstrap.feature
+# * min_ping.feature 
 
 # **** IDEMPOTENT ******
 - features/xmlrpc_activationkey.feature
@@ -56,7 +72,8 @@
 - features/xmlrpc_channel.feature
 - features/config_channel.feature
 - features/patches_page.feature
-- features/ssh_push.feature
+- features/trad_client_need_reboot.feature
+- features/trad_client_ssh_push.feature
 - features/change_password.feature
 - features/salt_download_endpoint.feature
 - features/baremetal_test.feature
