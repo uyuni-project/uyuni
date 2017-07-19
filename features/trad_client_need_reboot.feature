@@ -20,11 +20,17 @@ Feature: Reboot required after patch
     Given I am on the Systems overview page of this "sle-client"
     Then I should not see a "The system requires a reboot" text
 
+  Scenario: enable old-packages for test a "needing reboot"
+    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
+    And I run "zypper -n ref" on "sle-client"
+    And I run "rhn_check -vvv" on "sle-client"
+
   Scenario: Display Reboot Required after installing an Patches
     Given I am on the Systems overview page of this "sle-client"
     And I follow "Software" in the content area
     And I follow "Patches" in the content area
-    When I check "andromeda-dummy-6789" in the list
+    When I check "andromeda-dummy" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"
     And I run rhn_check on this client
@@ -37,3 +43,7 @@ Feature: Reboot required after patch
     And I click Systems, under Systems node
     And I follow "Requiring Reboot" in the left menu
     Then I should see "sle-client" as link
+
+  Scenario: Cleanup: remove virgo-dummy and restore non-update repo (needing-reboot test)
+    And I run "zypper -n rm andromeda-dummy" on "sle-client"
+    And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client"
