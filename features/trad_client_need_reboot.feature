@@ -23,8 +23,8 @@ Feature: Reboot required after patch
   Scenario: enable old-packages for test a "needing reboot"
     And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
-    And I run "zypper -n ref" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
+    And I run "zypper -n ref" on "sle-client"
 
   Scenario: Display Reboot Required after installing an Patches
     Given I am on the Systems overview page of this "sle-client"
