@@ -103,8 +103,6 @@
 - features/CVE_ID_new_syntax.feature
 - features/compare_channel.feature
 - features/setup_wizard.feature
-
-
 ## NOT IDEMPOTENT and AFFECTED by PKG issue:
 - features/check_errata_npn.feature
 - features/cve_audit.feature
