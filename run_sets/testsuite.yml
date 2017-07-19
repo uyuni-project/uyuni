@@ -37,11 +37,11 @@
 # - allcli (feature testing all clients trad + minion(centos/sles)
 
 
-# 2) TOPIC (for salt mandatory)
+# 2) TOPIC (for salt/docker mandatory)
 # - salt (feature concering salt)
 # - docker
 # - .. 
-# - (empty)
+# - feature specific name xmlrpc_user (etc.)
 
 # EXAMPLES
 # * TYPE_TOPIC
@@ -58,12 +58,12 @@
 - features/min_salt_reboot_test.feature
 - features/min_docker_xmlrpc.feature
 - features/srv_distro_cobbler.feature
-- features/mainpage.feature
-- features/xmlrpc_user.feature
-- features/smdba.feature
+- features/srv_mainpage.feature
+- features/srv_xmlrpc_user.feature
+- features/srv_smdba.feature
 - features/salt_states_catalog.feature
 - features/powermanagement.feature
-- features/datepicker.feature
+- features/srv_datepicker.feature
 - features/openscap_audit.feature
 - features/create_group.feature
 - features/xmlrpc_api.feature
