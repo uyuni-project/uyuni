@@ -100,6 +100,9 @@ public class VirtualHostManagerProcessor {
      */
     private void processVirtualHost(String hostLabel, JSONHost jsonHost) {
         Server server = updateAndGetServer(hostLabel, jsonHost);
+        if (server == null) {
+            return;
+        }
         if (!virtualHostManager.getServers().contains(server)) {
             virtualHostManager.addServer(server);
         }
@@ -143,6 +146,9 @@ public class VirtualHostManagerProcessor {
         Server server = ServerFactory.lookupForeignSystemByDigitalServerId(
                 buildServerFullDigitalId(jsonHost.getHostIdentifier()));
         if (server == null) {
+            if ("kubernetes".equalsIgnoreCase(jsonHost.getType())) {
+                return null;
+            }
             server = createNewServer(hostId, jsonHost);
         }
         else {
