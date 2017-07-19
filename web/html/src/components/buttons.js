@@ -112,9 +112,29 @@ class SubmitButton extends React.Component {
     }
 }
 
+function DropdownButton(props) {
+    return (
+        <div className="dropdown">
+            <button
+                id={props.id}
+                type="button"
+                title={props.title}
+                className={'dropdown-toggle btn ' + props.className}
+                onClick={props.handler} data-toggle="dropdown"
+            >
+                <i className={'fa ' + props.icon}/>{props.text} <span className="caret"/>
+            </button>
+            <ul className="dropdown-menu dropdown-menu-right">
+                {props.items.map(i => <li>{i}</li>)}
+            </ul>
+        </div>
+    );
+}
+
 module.exports = {
     Button : Button,
     LinkButton : LinkButton,
     AsyncButton : AsyncButton,
-    SubmitButton : SubmitButton
+    SubmitButton : SubmitButton,
+    DropdownButton : DropdownButton
 }
