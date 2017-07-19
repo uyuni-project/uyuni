@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Test "virtualhostmanager" Web UI.
@@ -56,3 +56,15 @@ Feature: Test "virtualhostmanager" Web UI.
     And I click on "Delete Virtual Host Manager"
     Then I should see a "Virtual Host Manager 'file-vmware' has been deleted." text
      And I should see a "No Virtual Host Managers." text
+
+ Scenario: Cleanup: delete virtualhost: 10.162.186.111
+   Given I am on the Systems page
+    When I follow "10.162.186.111"
+    And I follow "Delete System"
+    And I click on "Delete Profile"
+
+ Scenario: Cleanup: delete virtualhost: 10.162.186.112
+   Given I am on the Systems page
+    When I follow "10.162.186.112"
+    And I follow "Delete System"
+    And I click on "Delete Profile"

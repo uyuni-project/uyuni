@@ -11,3 +11,4 @@ script:
   - bundle exec rubocop
   - bundle exec cucumber_lint
   - ruby unit-tests/check_duplicata.scenario.rb
+  - ruby unit-tests/feature_names.rb
