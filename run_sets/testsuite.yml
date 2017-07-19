@@ -34,7 +34,7 @@
 # - min (feature testing minions sles) (not ssh)
 # - centos (feature testing centos/rhes)
 # - trad (feature testing tradional client)
-# - allcli (feture testing all clients trad + minion(centos/sles)
+# - allcli (feature testing all clients trad + minion(centos/sles)
 
 
 # 2) TOPIC (for salt mandatory)
