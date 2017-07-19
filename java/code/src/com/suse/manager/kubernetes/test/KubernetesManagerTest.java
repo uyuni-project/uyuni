@@ -239,7 +239,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         } else {
             params.put("kubeconfig", "/srv/salt/kubeconfig");
         }
-        params.put("currentContext", "local-context");
+        params.put("context", "local-context");
 
         String label = "K8s_" + TestUtils.randomString();
 
