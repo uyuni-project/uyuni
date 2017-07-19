@@ -26,20 +26,20 @@ Feature: smdba database helper tool
     And when I issue command "smdba db-status"
     Then I want to see if the database is "online"
 
-#  Scenario: Check system check of the database sets optimal configuration
-#    Given a postgresql database is running
-#    When I stop the database with the command "smdba db-stop"
-#    And when I configure "/var/lib/pgsql/data/postgresql.conf" parameter "wal_level" to "hot_standby"
-#    Then I start database with the command "smdba db-start"
-#    And when I issue command "smdba db-status"
-#    Then I want to see if the database is "online"
-#    And when I check internally configuration for "wal_level" option
-#    Then I expect to see the configuration is set to "hot_standby"
-#    And I issue command "smdba system-check"
-#    And when I stop the database with the command "smdba db-stop"
-#    And I start database with the command "smdba db-start"
-#    And when I check internally configuration for "wal_level" option
-#    Then I expect to see the configuration is set to "archive"
+  Scenario: Check system check of the database sets optimal configuration
+    Given a postgresql database is running
+    When I stop the database with the command "smdba db-stop"
+    And when I configure "/var/lib/pgsql/data/postgresql.conf" parameter "wal_level" to "logical"
+    Then I start database with the command "smdba db-start"
+    And when I issue command "smdba db-status"
+    Then I want to see if the database is "online"
+    And when I check internally configuration for "wal_level" option
+    Then I expect to see the configuration is set to "logical"
+    And I issue command "smdba system-check"
+    And when I stop the database with the command "smdba db-stop"
+    And I start database with the command "smdba db-start"
+    And when I check internally configuration for "wal_level" option
+    Then I expect to see the configuration is not set to "logical"
 
   Scenario: Check database utilities
     Given a postgresql database is running
