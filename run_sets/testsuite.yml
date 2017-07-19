@@ -78,6 +78,7 @@
 - features/trad_client_ssh_push.feature
 - features/change_password.feature
 - features/salt_download_endpoint.feature
+- features/srv_virtual_host_manager.feature
 - features/baremetal_test.feature
 - features/salt_remote_cmds.feature
 - features/trad_client_reboot.feature
@@ -91,7 +92,6 @@
 - features/CVE_ID_new_syntax.feature
 - features/compare_channel.feature
 - features/setup_wizard.feature
-- features/check_VHM.feature
 
 ## IDEMPOTENT BUT AFFECTED by PKG issue:
 - features/action_chain.feature
