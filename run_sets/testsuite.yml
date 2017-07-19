@@ -3,6 +3,8 @@
 
 --- # initialize suse-manager server
 - features/setup_user_and_proxy.feature
+# this feature sync real channels sles12sp2
+- features/srv_sync_channels.feature
 - features/channels_add.feature
 - features/push_package.feature
 - features/create_repository.feature
@@ -86,8 +88,6 @@
 - features/nagios.feature
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/clone_channel_npn.feature
-- features/scc_sync_channels.feature
-- features/systems_needing_reboot.feature
 - features/CVE_ID_new_syntax.feature
 - features/compare_channel.feature
 - features/setup_wizard.feature
