@@ -91,6 +91,8 @@
 - features/baremetal_test.feature
 - features/salt_remote_cmds.feature
 - features/trad_client_reboot.feature
+
+- features/srv_action_chain.feature
 - features/salt_formulas.feature
 - features/docker_advanced_test.feature
 - features/docker_cve_audit.feature
@@ -103,7 +105,6 @@
 - features/setup_wizard.feature
 
 ## IDEMPOTENT BUT AFFECTED by PKG issue:
-- features/action_chain.feature
 
 ## NOT IDEMPOTENT and AFFECTED by PKG issue:
 - features/check_errata_npn.feature
