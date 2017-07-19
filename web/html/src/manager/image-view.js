@@ -14,6 +14,7 @@ const TabContainer = require("../components/tab-container").TabContainer;
 const ImageViewOverview = require("./image-view-overview").ImageViewOverview;
 const ImageViewPatches = require("./image-view-patches").ImageViewPatches;
 const ImageViewPackages = require("./image-view-packages").ImageViewPackages;
+const ImageViewRuntime = require("./image-view-runtime").ImageViewRuntime;
 const DateTime = require("../components/datetime").DateTime;
 
 const msgMap = {
@@ -46,6 +47,7 @@ class ImageView extends React.Component {
     this.state = {
       messages: [],
       images: [],
+      imagesRuntime: {},
       selectedItems: []
     };
 
@@ -56,46 +58,34 @@ class ImageView extends React.Component {
   }
 
   updateView(id, tab) {
-    if(id)
-        this.getImageInfoDetails(id, tab)
-            .then(data => this.setState({selected: data}));
-    else {
-        this.getImageInfoList()
-            .then(data => this.setState({selected: undefined, images: data}));
-    }
-    this.clearMessages();
+      id ? this.getImageInfoDetails(id, tab) : this.getImageInfoList();
+      this.clearMessages();
   }
 
   reloadData() {
-    if(this.state.selected) {
-        this.getImageInfoDetails(this.state.selected.id, getHashTab())
-            .then(data => this.setState({selected: data}));
-    } else {
-        this.getImageInfoList()
-            .then(data => this.setState({images: data}));
-    }
-    this.clearMessages();
+      this.updateView(this.state.selected ? this.state.selected.id : undefined, getHashTab());
   }
 
   clearMessages() {
-    this.setState({
-        messages: undefined
-    });
+      this.setState({
+          messages: undefined
+      });
   }
 
   handleBackAction() {
     this.getImageInfoList().then(data => {
-        this.setState({selected: undefined, images: data});
         const loc = window.location;
         history.pushState(null, null, loc.pathname + loc.search);
     });
   }
 
   handleDetailsAction(row) {
-    this.getImageInfoDetails(row.id).then(data => {
-        this.setState({selected: data})
-        history.pushState(null, null, '#/' + (getHashTab() || 'overview') + '/' + row.id);
+    const tab = getHashTab() || 'overview';
+    this.getImageInfoDetails(row.id, tab).then(data => {
+        history.pushState(null, null, '#/' + tab + '/' + row.id);
     });
+
+    this.setState({selectedRuntime: undefined});
   }
 
   handleImportImage() {
@@ -103,17 +93,32 @@ class ImageView extends React.Component {
   }
 
   getImageInfoList() {
-    return Network.get("/rhn/manager/api/cm/images").promise;
+    let listPromise = Network.get("/rhn/manager/api/cm/images").promise
+        .then(data => this.setState({selected: undefined, images: data}));
+
+    const runtimeUrl = "/rhn/manager/api/cm/runtime";
+    Network.get(runtimeUrl).promise
+        .then(data => this.setState({imagesRuntime: data}));
+
+    return listPromise;
   }
 
   getImageInfoDetails(id, tab) {
     let url;
-    if(tab === "patches" || tab === "packages")
-        url = "/rhn/manager/api/cm/images/" + tab + "/" + id;
+    if(tab === "patches" || tab === "packages" || tab === "runtime")
+      url = "/rhn/manager/api/cm/images/" + tab + "/" + id;
     else
-        url = "/rhn/manager/api/cm/images/" + id;
+      url = "/rhn/manager/api/cm/images/" + id;
 
-    return Network.get(url).promise;
+    let detailsPromise = Network.get(url).promise.then(data => {
+      this.setState({selected: data});
+    });
+
+    const runtimeUrl = "/rhn/manager/api/cm/runtime/" + id;
+    Network.get(runtimeUrl).promise
+        .then(data => this.setState({selectedRuntime: data}));
+
+    return detailsPromise;
   }
 
   deleteImages(idList) {
@@ -190,15 +195,18 @@ class ImageView extends React.Component {
       <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
     </div>;
 
+    const selected = Object.assign({}, this.state.selected, this.state.selectedRuntime);
+    const list = this.state.images.map(i => Object.assign({}, i, this.state.imagesRuntime[i.id]));
+
     return (
       <span>
         <Panel title={this.state.selected ? this.state.selected.name : t("Images")} icon={this.state.selected ? "fa-hdd-o" : "fa-list"} button={ panelButtons }>
           {this.state.messages}
           { this.state.selected ?
-              <ImageViewDetails data={this.state.selected} onTabChange={() => this.updateView(getHashId(), getHashTab())}
+              <ImageViewDetails data={selected} onTabChange={() => this.updateView(getHashId(), getHashTab())}
                   onCancel={this.handleBackAction} onInspect={this.inspectImage} onBuild={this.buildImage}/>
           :
-              <ImageViewList data={this.state.images} onSelectCount={(c) => this.setState({selectedCount: c})}
+              <ImageViewList data={list} onSelectCount={(c) => this.setState({selectedCount: c})}
                   onSelect={this.handleDetailsAction} onDelete={this.deleteImages}/>
           }
         </Panel>
@@ -272,7 +280,7 @@ class ImageViewList extends React.Component {
         } else if(row.statusId === 1) {
             icon = <i className="fa fa-exchange fa-1-5x text-info" title="Building"/>
         } else if(row.statusId === 2) {
-            icon = <i className="fa fa-check-circle-o fa-1-5x text-success" title="Built"/>
+            icon = <i className="fa fa-check-circle fa-1-5x text-success" title="Built"/>
         } else if(row.statusId === 3) {
             icon = <i className="fa fa-times-circle-o fa-1-5x text-danger" title="Failed"/>
         } else {
@@ -280,6 +288,31 @@ class ImageViewList extends React.Component {
         }
 
         return icon;
+    }
+
+    renderRuntimeIcon(row) {
+      let icon = <span>-</span>;
+
+        if (row.runtimeStatus === 1) {
+            icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are up-to-date")}/>
+        } else if (row.runtimeStatus === 2) {
+            icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>
+        } else if (row.runtimeStatus === 3) {
+            icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Outdated instances found")}/>
+        }
+
+      return icon;
+    }
+
+    renderInstances(row) {
+      let totalCount = 0;
+      if(row.instances) {
+        for (let clusterCount of Object.values(row.instances)) {
+            totalCount += Number(clusterCount) || 0;
+        }
+      }
+
+      return totalCount === 0 ? '-' : <span>{totalCount}&nbsp;&nbsp;<a href="#"><i className="fa fa-external-link" title={t("View cluster summary")}/></a></span>;
     }
 
     render() {
@@ -305,7 +338,14 @@ class ImageViewList extends React.Component {
             <Column
               columnKey="version"
               header={t('Version')}
+              comparator={Utils.sortByText}
               cell={ (row, criteria) => row.version }
+            />
+            <Column
+              columnKey="revision"
+              header={t('Revision')}
+              comparator={Utils.sortByNumber}
+              cell={ (row, criteria) => row.revision }
             />
             <Column
               columnKey="updates"
@@ -329,8 +369,19 @@ class ImageViewList extends React.Component {
             />
             <Column
               columnKey="status"
-              header={t('Status')}
+              header={t('Build')}
               cell={ (row, criteria) => this.renderStatusIcon(row) }
+            />
+            <Column
+              columnKey="runtime"
+              header={t('Runtime')}
+              cell={ (row, criteria) => this.renderRuntimeIcon(row) }
+            />
+            <Column
+              columnKey="instances"
+              header={t('Instances')}
+              comparator={Utils.sortByNumber}
+              cell={ (row, criteria) => this.renderInstances(row) }
             />
             <Column
               columnKey="modified"
@@ -405,20 +456,36 @@ class ImageViewDetails extends React.Component {
         }
     }
 
+    renderRuntimeIcon(row) {
+      let icon;
+
+        if (row.runtimeStatus === 1) {
+            icon = <i className="fa fa-check-circle fa-1-5x text-success no-margin" title={t("All instances are up-to-date")}/>
+        } else if (row.runtimeStatus === 2) {
+            icon = <i className="fa fa-question-circle fa-1-5x no-margin" title={t("No information")}/>
+        } else if (row.runtimeStatus === 3) {
+            icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning no-margin" title={t("Outdated instances found")}/>
+        }
+
+      return icon;
+    }
+
     render() {
         const data = this.props.data;
+        const runtimeIcon = this.renderRuntimeIcon(data);
 
         return (
         <div>
             <TabContainer
-                labels={[t('Overview'), t('Patches'), t('Packages')]}
-                hashes={this.getHashUrls(['overview', 'patches', 'packages'])}
+                labels={[t('Overview'), t('Patches'), t('Packages'), <span>{t('Runtime')} {runtimeIcon}</span>]}
+                hashes={this.getHashUrls(['overview', 'patches', 'packages', 'runtime'])}
                 initialActiveTabHash={window.location.hash}
                 onTabHashChange={this.onTabChange}
                 tabs={[
                     <ImageViewOverview data={data} onBuild={this.props.onBuild} onInspect={this.props.onInspect}/>,
                     <ImageViewPatches data={data}/>,
-                    <ImageViewPackages data={data}/>
+                    <ImageViewPackages data={data}/>,
+                    <ImageViewRuntime data={data}/>
                     ]}
             />
             <Button
