@@ -1,16 +1,22 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Test action chaining
+Feature: Test action chaining 
+  The product feature is only for trad_client
 
-  Scenario: wait for taskomatic finished required jobs
-    Given Patches are visible for the registered client
+  Scenario: Prequisite: downgrade repo to lower version
+    When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
+    And I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
+    And I run "zypper -n rm virgo-dummy" on "sle-client" without error control
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
+    And I run "zypper -n ref" on "sle-client"
+    And I run "rhn_check -vvv" on "sle-client"
 
   Scenario: I add a package installation to an action chain
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
-    And I check "hoag-dummy-1.1-2.1" in the list
+    And I check "virgo-dummy" in the list
     And I click on "Install Selected Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
@@ -123,7 +129,7 @@ Feature: Test action chaining
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
-    And I should see a "1. Install or update hoag-dummy on 1 system" text
+    And I should see a "1. Install or update virgo-dummy on 1 system" text
     And I should see a "2. Run a remote command on 1 system" text
     And I should see a "3. Apply patch(es) andromeda-dummy-6789 on 1 system" text
     And I should see a "4. Remove adaptec-firmware from 1 system" text
@@ -226,3 +232,8 @@ Feature: Test action chaining
     And I follow "Action Chain Channel"
     And I follow "delete channel"
     And I click on "Delete Config Channel"
+
+  Scenario: Cleanup: remove pkgs and repo used in action chain
+    When I run "zypper -n rm andromeda-dummy" on "sle-client"
+    And I run "zypper -n rm virgo-dummy" on "sle-client" without error control
+    And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client"

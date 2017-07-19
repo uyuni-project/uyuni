@@ -348,6 +348,8 @@ Then(/^I should see an update in the list$/) do
   fail unless has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a")
 end
 
+# FIXME: remove this steps, this is really obscure and doesn't say intuitively
+# what it does
 Given(/^Patches are visible for the registered client$/) do
   step "I am on the patches page"
   for c in 0..20
