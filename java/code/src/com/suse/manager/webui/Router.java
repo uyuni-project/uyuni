@@ -137,13 +137,10 @@ public class Router implements SparkApplication {
         get("/manager/vhms/:id",
                 withCsrfToken(withOrgAdmin(VirtualHostManagerController::show)),
                 jade);
+        post("/manager/vhms/:id/delete",
+                withOrgAdmin(VirtualHostManagerController::delete));
         post("/manager/vhms/:id/refresh",
                 withOrgAdmin(VirtualHostManagerController::refresh));
-
-        get("/manager/api/vhms", withOrgAdmin(VirtualHostManagerController::get));
-        get("/manager/api/vhms/:id", withOrgAdmin(VirtualHostManagerController::getSingle));
-        post("/manager/api/vhms/delete",
-                withOrgAdmin(VirtualHostManagerController::delete));
 
         // Subscription Matching
         get("/manager/subscription-matching",
