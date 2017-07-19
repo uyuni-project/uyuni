@@ -104,7 +104,6 @@
 - features/compare_channel.feature
 - features/setup_wizard.feature
 
-## IDEMPOTENT BUT AFFECTED by PKG issue:
 
 ## NOT IDEMPOTENT and AFFECTED by PKG issue:
 - features/check_errata_npn.feature
