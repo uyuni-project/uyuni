@@ -41,7 +41,7 @@ Feature: cobbler and distro Autoinstallation
   Scenario: create a profile with the UI (requires a base channel)
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
-    And I follow "Create Autoinstallation Profile"
+    And I follow "Create Kickstart Profile"
     When I enter "fedora_kickstart_profile" as "kickstartLabel"
     And I click on "Next"
     And I click on "Next"
@@ -51,7 +51,7 @@ Feature: cobbler and distro Autoinstallation
     Then I should see a "Autoinstallation: fedora_kickstart_profile" text
     And I should see a "Autoinstallation Details" link
 
-  Scenario: test Upload Autoinstallation/Autoyast File page
+  Scenario: test Upload Kickstart/Autoyast File page
     When I am on the Create Autoinstallation Profile page
     And I follow "Profiles" in the left menu
     Then I should see a "Distributions" text
@@ -59,7 +59,7 @@ Feature: cobbler and distro Autoinstallation
   Scenario: upload a profile with the UI (requires a base channel)
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
-    And I follow "Upload Autoinstallation/Autoyast File"
+    And I follow "Upload Kickstart/Autoyast File"
     When I enter "fedora_kickstart_profile_upload" as "kickstartLabel"
     And I attach the file "/example.ks" to "fileUpload"
     And I click on "Create"
