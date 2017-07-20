@@ -196,7 +196,7 @@ Feature: Explore the main landing page
     And I should see a "Distributions" link in the left menu
     And I should see a "File Preservation" link in the left menu
     And I should see a "Autoinstallation Snippets" link in the left menu
-    And I should see a "Create Autoinstallation Profile" link
+    And I should see a "Create Kickstart Profile" link
     And I should see a "Upload Autoinstallation/Autoyast File" link
     And I should see a "View a List of Autoinstallation Profiles" link
     And I should see a "Create a New Autoinstallation Profile" link
@@ -206,7 +206,7 @@ Feature: Explore the main landing page
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     Then I should see a "Autoinstallation Profiles" text
-    And I should see a "Create Autoinstallation Profile" link
+    And I should see a "Create Kickstart Profile" link
     And I should see a "Upload Autoinstallation/Autoyast File" link
 
   Scenario: Check sidebar link destination for Systems => Autoinstallation => Unprovisioned
@@ -247,17 +247,17 @@ Feature: Explore the main landing page
     And I should see a "Custom Snippets" link in the content area
     And I should see a "All Snippets" link in the content area
 
-  Scenario: Check "Create Autoinstallation Profile" page Systems => Autoinstallation => Profiles => Create Autoinstallation Profile
+  Scenario: Check "Create Kickstart Profile" page Systems => Autoinstallation => Profiles => Create Kickstart Profile
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
-    And I follow "Create Autoinstallation Profile"
-    Then I should see a "Step 1: Create Autoinstallation Profile" text
+    And I follow "Create Kickstart Profile"
+    Then I should see a "Step 1: Create Kickstart Profile" text
 
   Scenario: Check "Upload Autoinstallation/Autoyast File" page Systems => Autoinstallation => Profiles => Upload Autoinstallation/Autoyast File
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "Upload Autoinstallation/Autoyast File"
-    Then I should see a "Create Autoinstallation Profile" text
+    Then I should see a "Create Kickstart Profile" text
     And I should see a "File Contents:" text
     And I should see a "Autoinstallation Details" text
 
