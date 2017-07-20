@@ -4,8 +4,6 @@
 
 --- # initialize suse-manager server
 - features/core_setup_user_and_proxy.feature
-# this feature sync real channels sles12sp2
-- features/core_srv_sync_channels.feature
 - features/core_srv_channels_add.feature
 - features/core_srv_push_package.feature
 - features/core_srv_create_repository.feature
@@ -20,6 +18,9 @@
 - features/core_centos_tradclient.feature
 - features/core_centos_salt.feature
 - features/core_centos_salt_ssh.feature
+
+# this feature sync real channels sles12sp2 (last core feature)
+- features/core_srv_sync_channels.feature
 ## CORE feature end ###
 
 # SECONDARY FEATURE:
