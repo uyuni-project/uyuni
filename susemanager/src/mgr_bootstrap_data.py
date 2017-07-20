@@ -353,6 +353,10 @@ DATA = {
                           'PDID' : 832, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/4/bootstrap/'
                         },
+    'SLES4SAP-11-SP1-x86_64' : {
+                          'PDID' : 1129, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
+                        },
     'SLES4SAP-11-SP2-x86_64' : {
                           'PDID' : 1130, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
