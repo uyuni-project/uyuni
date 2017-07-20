@@ -111,16 +111,13 @@ public class ImageInfoFactory extends HibernateFactory {
                 Collections.singletonList(server.getId()), version, profile, earliest);
         taskomaticApi.scheduleActionExecution(action);
 
-        // Create image info entry
-        Optional<ImageInfo> existingImage =
-                lookupByName(profile.getLabel(), version, profile.getTargetStore().getId());
-        int revisionNum = existingImage.map(ImageInfo::getRevisionNumber).orElse(0);
-        existingImage.ifPresent(ImageInfoFactory::delete);
+        // Load or create an image info entry
+        ImageInfo info =
+                lookupByName(profile.getLabel(), version, profile.getTargetStore().getId())
+                .orElseGet(ImageInfo::new);
 
-        ImageInfo info = new ImageInfo();
         info.setName(profile.getLabel());
         info.setVersion(version);
-        info.setRevisionNumber(revisionNum);
         info.setStore(profile.getTargetStore());
         info.setOrg(server.getOrg());
         info.setBuildAction(action);
