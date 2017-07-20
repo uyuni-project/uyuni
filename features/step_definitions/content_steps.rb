@@ -28,10 +28,7 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" or "([^"]*)" text$/) do |text, text2|
-  unless page.has_content?(text) || page.has_content?(text2)
-    sleep 10
-    fail unless page.has_content?(text) || page.has_content?(text2)
-  end
+  fail unless page.has_content?(text) || page.has_content?(text2)
 end
 
 #
