@@ -123,7 +123,7 @@ Feature: Check client registration
     And I should see a "Management" text
     And I should see a "receive_notifications" element in "systemDetailsForm" form
     And I should see a "summary" element in "systemDetailsForm" form
-    And I should see a "autopatchesupdate" element in "systemDetailsForm" form
+    And I should see a "autoerrataupdate" element in "systemDetailsForm" form
     And I should see a "description" element in "systemDetailsForm" form
     And I should see a "address" element in "systemDetailsForm" form
     And I should see a "city" element in "systemDetailsForm" form
