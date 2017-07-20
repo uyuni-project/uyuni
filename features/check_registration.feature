@@ -295,7 +295,7 @@ Feature: Check client registration
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
     And I follow "Snapshots" in the content area
-    And I follow "Package profile changed"
+    And I follow first "Package profile changed"
     Then I should see a "Rollback" link in row 3 of the content menu
     And I should see a "Groups" link in row 3 of the content menu
     And I should see a "Channels" link in row 3 of the content menu
