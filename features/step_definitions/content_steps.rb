@@ -19,7 +19,7 @@ end
 #
 Then(/^I should see a "([^"]*)" text$/) do |arg1|
   unless page.has_content?(arg1)
-    sleep 25
+    sleep 10
     fail unless page.has_content?(arg1)
   end
 end
@@ -29,7 +29,7 @@ end
 #
 Then(/^I should see a "([^"]*)" or "([^"]*)" text$/) do |text, text2|
   unless page.has_content?(text) || page.has_content?(text2)
-    sleep 25
+    sleep 10
     fail unless page.has_content?(text) || page.has_content?(text2)
   end
 end
@@ -73,7 +73,7 @@ end
 Then(/^I should see a "([^"]*)" link$/) do |arg1|
   link = first(:link, arg1)
   if link.nil?
-    sleep 40
+    sleep 10
     $stderr.puts "ERROR - try again"
     fail unless first(:link, arg1).visible?
   else
