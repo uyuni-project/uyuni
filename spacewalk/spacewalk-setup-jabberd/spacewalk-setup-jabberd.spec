@@ -62,13 +62,6 @@ rm -rf %{buildroot}
 %{_sysconfdir}/pki/spacewalk
 
 %post
-if [ $1 = 2 ]; then
-    # in case of upgrade
-    # remove jabberd database
-    # especially required for upgrade from 1.2 to 1.7
-    # because osad dispatcher password moved from rhn.conf to DB
-    rm -f /var/lib/jabberd/db/*
-fi;
 /usr/share/spacewalk/setup/jabberd/create_sqlite3_database
 
 %changelog
