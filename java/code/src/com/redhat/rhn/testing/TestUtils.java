@@ -58,7 +58,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * TestUtils, a simple package for utility functions helpful when
@@ -485,7 +484,17 @@ public class TestUtils {
      * @return String that is 13 chars long and alphanumeric
      */
     public static String randomString() {
-        return RandomStringUtils.randomAlphanumeric(13);
+        return randomString(13);
+    }
+
+    /**
+     * Return a random letter string.  Useful for creating unique
+     * string labels/names in your tests.
+     * @param length of the string
+     * @return A random alphanumeric string of the specified length
+     */
+    public static String randomString(int length) {
+        return RandomStringUtils.randomAlphanumeric(length);
     }
 
     /**
