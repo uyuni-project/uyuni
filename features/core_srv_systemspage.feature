@@ -257,7 +257,7 @@ Feature: Explore the main landing page
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "Upload Kickstart/Autoyast File"
-    Then I should see a "Create Kickstart Profile" text
+    Then I should see a "Create Autoinstallation Profile" text
     And I should see a "File Contents:" text
     And I should see a "Autoinstallation Details" text
 
