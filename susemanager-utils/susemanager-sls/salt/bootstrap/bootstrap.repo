@@ -9,13 +9,10 @@ baseurl=https://{{ salt['pillar.get']('mgr_server') }}/pub/repositories/sle/{{ g
 {%- else %}
 baseurl=https://{{ salt['pillar.get']('mgr_server') }}/pub/repositories/sle/{{ grains['osrelease'] }}/0/bootstrap/
 {%- endif %}
-{%- if grains['osrelease_info'][0] < 12 %}
-gpgcheck=0
-{%- endif %}
 {%- elif grains['os_family'] == 'RedHat' %}
 baseurl=https://{{ salt['pillar.get']('mgr_server') }}/pub/repositories/res/{{ grains['osmajorrelease'] }}/bootstrap/
-gpgcheck=0
 {%- endif %}
+gpgcheck=0
 enabled=1
 autorefresh=1
 keeppackages=0
