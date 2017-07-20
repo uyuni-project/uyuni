@@ -66,6 +66,10 @@ Then(/^I expect to see the configuration is set to "(.*?)"$/) do |value|
   assert_includes($current_checked_config_value, value)
 end
 
+Then(/^I expect to see the configuration is not set to "(.*?)"$/) do |value|
+  refute_includes($current_checked_config_value, value)
+end
+
 Then(/^I issue command "(.*?)"$/) do |cmd|
   $output = sshcmd(cmd, ignore_err: true)
 end
