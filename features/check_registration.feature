@@ -123,7 +123,7 @@ Feature: Check client registration
     And I should see a "Management" text
     And I should see a "receive_notifications" element in "systemDetailsForm" form
     And I should see a "summary" element in "systemDetailsForm" form
-    And I should see a "autopatchesupdate" element in "systemDetailsForm" form
+    And I should see a "autoerrataupdate" element in "systemDetailsForm" form
     And I should see a "description" element in "systemDetailsForm" form
     And I should see a "address" element in "systemDetailsForm" form
     And I should see a "city" element in "systemDetailsForm" form
@@ -295,7 +295,7 @@ Feature: Check client registration
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
     And I follow "Snapshots" in the content area
-    And I follow "Package profile changed"
+    And I follow first "Package profile changed"
     Then I should see a "Rollback" link in row 3 of the content menu
     And I should see a "Groups" link in row 3 of the content menu
     And I should see a "Channels" link in row 3 of the content menu
