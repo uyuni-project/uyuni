@@ -16,7 +16,7 @@ Feature: Register a client
     And I click on the css "a#clear-ssm"
     And I wait for the data update
     Then I should see a "System Status" text
-    And I should see a "Software Updates Available" text
+    And I should see a "Software Updates Available" or "System is up to date" text
     And I should see a "Critical:" link
     And I should see a "Non-Critical:" link
     And I should see a "Packages:" link
@@ -26,7 +26,6 @@ Feature: Register a client
     And I should see a "Delete System" link
     And I should see a "Initial Registration Parameters:" text
     And I should see a "OS: sles-release" text
-    And I should see a "Release: 12.2" text
 
   Scenario: check tab links "Software" => "Patches"
     Given I am on the Systems overview page of this "sle-client"
@@ -34,6 +33,3 @@ Feature: Register a client
     And I follow "Patches" in the content area
     Then I should see a "Relevant Patches" text
     And I should see a "Show" button
-    And I should see a "Test update for virgo-dummy" text
-    And I should see an update in the list
-    And I should see a "andromeda-dummy-6789" link
