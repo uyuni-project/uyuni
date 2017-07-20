@@ -20,12 +20,21 @@ import com.google.gson.JsonObject;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.image.ImageProfile;
+import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -46,12 +55,15 @@ import com.suse.salt.netapi.parser.JsonParser;
 
 import com.google.gson.reflect.TypeToken;
 import com.suse.utils.Json;
+import org.apache.commons.lang.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -71,6 +83,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     // JsonParser for parsing events from files
     public static final JsonParser<Event> EVENTS =
             new JsonParser<>(new TypeToken<Event>(){});
+
+    private TaskomaticApi taskomaticApi;
 
     @Override
     public void setUp() throws Exception {
@@ -750,11 +764,31 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      * @return event object parsed from the json file
      */
     private Event getJobReturnEvent(String filename, long actionId) throws Exception {
+        return getJobReturnEvent(filename, actionId, null);
+    }
+
+    /**
+     * Read a Salt job return event while substituting the corresponding action id
+     * and placeholders.
+     *
+     * @param filename the filename to read from
+     * @param actionId the id of the action to correlate this Salt job with
+     * @param placeholders map of placeholders to substitute
+     * @return event object parsed from the json file
+     */
+    private Event getJobReturnEvent(String filename, long actionId, Map<String, String> placeholders) throws Exception {
         Path path = new File(TestUtils.findTestData(
                 "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
         String eventString = Files.lines(path)
                 .collect(Collectors.joining("\n"))
                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
+        if (placeholders != null) {
+            for (Map.Entry<String, String> entries : placeholders.entrySet()) {
+                String placeholder = entries.getKey();
+                String value = entries.getValue();
+                eventString = StringUtils.replace(eventString, placeholder, value);
+            }
+        }
         return EVENTS.parse(eventString);
     }
 
@@ -860,6 +894,156 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.doExecute(message);
 
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
+    }
+
+    /**
+     * Build and inspect the same profile twice.
+     * Check that the same ImageInfo instance is kept during successive runs and that the build history and revision
+     * number are filled correctly.
+     * @throws Exception
+     */
+    public void testImageBuild()  throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId("minionsles12-suma3pg.vagrant.local");
+        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+
+        String imageName = "matei-apache-python" + TestUtils.randomString(5);
+        String imageVersion = "latest";
+
+        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
+        ImageProfile profile = ImageTestUtils.createImageProfile(imageName, store, user);
+
+        ImageInfo imgInfoBuild1 = doTestImageBuild(server, imageName, imageVersion, profile,
+                (imgInfo) -> {
+                    // assert initial revision number
+                    assertEquals(1, imgInfo.getRevisionNumber());
+                } );
+        doTestImageInspect(server, imageName, imageVersion, profile, imgInfoBuild1,
+                       "1111111111111111111111111111111111111111111111111111111111111111",
+                (imgInfo) -> {
+            // assertions after inspect
+            // reload imgInfo to get the build history
+            imgInfo = TestUtils.reload(imgInfo);
+            assertNotNull(imgInfo);
+            // test that the history of the build was updated correctly
+            assertEquals(1, imgInfo.getBuildHistory().size());
+            assertEquals(1, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
+            assertEquals(
+                    "docker-registry:5000/" + imageName + "@sha256:1111111111111111111111111111111111111111111111111111111111111111",
+                    imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).findFirst().get().getRepoDigest());
+            assertEquals(1,
+                    imgInfo.getBuildHistory().stream().findFirst().get().getRevisionNumber());
+        });
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        doTestImageBuild(server, imageName, imageVersion, profile,
+                (imgInfo) -> {
+                    // assert revision number incremented
+                    assertEquals(2, imgInfo.getRevisionNumber());
+                    // assert ImageInfo instance didn't change after second build
+                    assertEquals(imgInfoBuild1.getId(), imgInfo.getId());
+                } );
+        doTestImageInspect(server, imageName, imageVersion, profile, imgInfoBuild1,
+                       "2222222222222222222222222222222222222222222222222222222222222222",
+                (imgInfo) -> {
+            // reload imgInfo to get the build history
+            imgInfo = TestUtils.reload(imgInfo);
+            assertNotNull(imgInfo);
+            // test that history for the second build is present
+            assertEquals(2, imgInfo.getBuildHistory().size());
+            assertEquals(2, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
+            assertEquals(
+                    "docker-registry:5000/" + imageName + "@sha256:1111111111111111111111111111111111111111111111111111111111111111",
+                    imgInfo.getBuildHistory().stream()
+                            .filter(hist -> hist.getRevisionNumber() == 1)
+                            .flatMap(h -> h.getRepoDigests().stream())
+                            .findFirst().get().getRepoDigest());
+            assertEquals(
+                    "docker-registry:5000/" + imageName + "@sha256:2222222222222222222222222222222222222222222222222222222222222222",
+                    imgInfo.getBuildHistory().stream()
+                            .filter(hist -> hist.getRevisionNumber() == 2)
+                            .flatMap(h -> h.getRepoDigests().stream())
+                            .findFirst().get().getRepoDigest());
+            assertEquals(1,
+                    imgInfo.getBuildHistory().stream().findFirst().get().getRevisionNumber());
+        });
+    }
+
+    private void doTestImageInspect(MinionServer server, String imageName, String imageVersion, ImageProfile profile, ImageInfo imgInfo,
+                                    String digest,
+                                    Consumer<ImageInfo> assertions) throws Exception {
+        // schedule an inspect action
+        ImageInspectAction inspectAction = ActionManager.scheduleImageInspect(
+                user,
+                Collections.singletonList(server.getId()),
+                imageVersion,
+                profile.getLabel(),
+                profile.getTargetStore(),
+                Date.from(Instant.now()));
+        TestUtils.reload(inspectAction);
+        // Process the image inspect return event
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("$IMAGE$", imageName);
+        placeholders.put("$DIGEST$", digest);
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("image.profileupdate.json",
+                        inspectAction.getId(),
+                        placeholders
+                        ));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        // assertions after inspect
+        assertions.accept(imgInfo);
+    }
+
+    private ImageInfo doTestImageBuild(MinionServer server, String imageName, String imageVersion, ImageProfile profile, Consumer<ImageInfo> assertions) throws Exception {
+        // schedule the build
+        long actionId = ImageInfoFactory.scheduleBuild(server.getId(), imageVersion, profile, new Date(), user);
+        ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
+        TestUtils.reload(buildAction);
+        Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
+        assertTrue(imgInfoBuild.isPresent());
+
+        // Process the image build return event
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("image.build.json",
+                        actionId,
+                        Collections.singletonMap("$IMAGE$", imageName)));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        // assert we have the same initial ImageInfo even after processing the event
+        assertTrue(ImageInfoFactory.lookupById(imgInfoBuild.get().getId()).isPresent());
+        ImageInfo imgInfo = TestUtils.reload(imgInfoBuild.get());
+        assertNotNull(imgInfo);
+
+        // other assertions after build
+        assertions.accept(imgInfoBuild.get());
+
+        return imgInfoBuild.get();
+    }
+
+    public TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
+        if (taskomaticApi == null) {
+            taskomaticApi = context().mock(TaskomaticApi.class);
+            context().checking(new Expectations() {
+                {
+                    allowing(taskomaticApi)
+                            .scheduleActionExecution(with(any(Action.class)));
+                }
+            });
+        }
+
+        return taskomaticApi;
     }
 
 }
