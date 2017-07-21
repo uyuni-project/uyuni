@@ -11,6 +11,7 @@ Feature: Check patches
     And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
+    And I run "zypper -n in --oldpackage virgo-dummy-1.0-1.1" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
     When I follow "Admin"
     And I follow "Task Schedules"
@@ -61,6 +62,7 @@ Feature: Check patches
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control
     And I run "zypper -n ref" on "sle-client" without error control
     And I run "zypper -n rm --oldpackage andromeda-dummy-1.0-4.1" on "sle-client" without error control
+    And I run "zypper -n rm --oldpackage virgo-dummy-1.0-1.1" on "sle-client" without error control
     And I run "rhn_check -vvv" on "sle-client" without error control
     When I follow "Admin"
     And I follow "Task Schedules"
