@@ -3,7 +3,6 @@
 
 Feature: Check nagios plugins
   In order to check nagios probes for a host
-  As the root user
   I want to check the number of pending patches
   I want to check the status of the last action
 
