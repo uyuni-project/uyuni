@@ -87,6 +87,7 @@
 - features/srv_spacewalk_repo_sync.feature
 - features/srv_xmlrpc_channel.feature
 - features/trad_config_channel.feature
+- features/min_salt_pkgset_beacon.feature
 - features/srv_patches_page.feature
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
@@ -101,21 +102,17 @@
 - features/min_salt_formulas.feature
 - features/srv_docker_advanced_test.feature
 - features/srv_docker_cve_audit.feature
+- features/min_salt_install_package.feature
 - features/trad_metadata_check.feature
 - features/srv_clone_channel_npn.feature
 - features/trad_cve_id_new_syntax.feature
 - features/trad_weak_deps.feature
 - features/srv_nagios.feature
 - features/srv_cve_audit.feature
+- features/min_salt_install_with_staging.feature
 
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/srv_compare_channel.feature
-#### Salt related features   ###
-### Features affected by the package problem.
-- features/min_salt_pkgset_beacon.feature
-- features/min_salt_install_package.feature
-- features/min_salt_install_with_staging.feature
-###
 
 # Debug suse-manager server ( this should be removed and placed in tools)
 - features/spacewalk_debug.feature
