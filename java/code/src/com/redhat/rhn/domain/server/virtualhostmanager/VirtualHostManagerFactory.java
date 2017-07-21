@@ -29,6 +29,9 @@ import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -108,6 +111,24 @@ public class VirtualHostManagerFactory extends HibernateFactory {
                 .add(Restrictions.eq("org", org))
                 .add(Restrictions.eq("id", id))
                 .uniqueResult();
+    }
+
+    /**
+     * Lookup multiple virtual host managers by an id list and organization
+     * @param ids virtual host manager id list
+     * @param org the organization
+     * @return Returns a list of virtual host managers with the given ids if it exists
+     * inside the organization
+     */
+    public List<VirtualHostManager> lookupByIdsAndOrg(List<Long> ids, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<VirtualHostManager> criteria =
+                builder.createQuery(VirtualHostManager.class);
+        Root<VirtualHostManager> root = criteria.from(VirtualHostManager.class);
+        criteria.where(builder.and(
+                root.get("id").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
     }
 
     /**
