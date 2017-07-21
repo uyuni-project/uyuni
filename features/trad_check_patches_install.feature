@@ -6,6 +6,22 @@ Feature: Check patches
   As the testing user
   I want to see the patches in the web page including the packages
 
+  Scenario: enable old-packages for testing patches installation
+    Given I am authorized as "admin" with password "admin"
+    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
+    And I run "zypper -n ref" on "sle-client"
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
+    And I run "rhn_check -vvv" on "sle-client"
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
+
   Scenario: check all patches exists
     Given I am on the patches page
     When I follow "Relevant" in the left menu
@@ -39,3 +55,19 @@ Feature: Check patches
 
   Scenario: regenerate search index for later tests
     Then I clean the search index on the server
+
+  Scenario: CLEANUP: Remove installed packages
+    Given I am authorized as "admin" with password "admin"
+    And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control
+    And I run "zypper -n ref" on "sle-client" without error control
+    And I run "zypper -n rm --oldpackage andromeda-dummy-1.0-4.1" on "sle-client" without error control
+    And I run "rhn_check -vvv" on "sle-client" without error control
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text

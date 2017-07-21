@@ -14,7 +14,8 @@ Feature: CVE Audit for content management
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait for "5" seconds
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
 
   Scenario: Audit Images: searching for a known CVE number
     When I follow "Audit" in the left menu

@@ -5,12 +5,22 @@ Feature: Test action chaining
   The product feature is only for trad_client
 
   Scenario: Prequisite: downgrade repo to lower version
-    When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
+    Given I am authorized as "admin" with password "admin"
+    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
     And I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-client" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
 
   Scenario: I add a package installation to an action chain
     Given I am on the Systems overview page of this "sle-client"
