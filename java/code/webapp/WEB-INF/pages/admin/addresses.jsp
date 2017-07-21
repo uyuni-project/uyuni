@@ -9,7 +9,7 @@
     <body>
         <rhn:toolbar base="h1" icon="header-user"
                      imgAlt="users.jsp.imgAlt"
-                     helpUrl="/rhn/help/reference/en-US/ref.webui.overview.jsp#ref.webui.overview.account">
+                     helpUrl="/rhn/help/reference/en-US/ref.webui.overview.account.jsp#ref.webui.overview.account.addresses">
             <bean:message key="Addresses" />
         </rhn:toolbar>
         <p><bean:message key="addresses.summary" /></p>

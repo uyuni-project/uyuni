@@ -6,7 +6,7 @@
 <html>
     <body>
         <rhn:toolbar base="h1" icon="header-user" imgAlt="users.jsp.imgAlt"
-                     helpUrl="/rhn/help/reference/en-US/ref.webui.overview.jsp#ref.webui.overview.account">
+                     helpUrl="/rhn/help/reference/en-US/ref.webui.overview.account.jsp#ref.webui.overview.account.credentials">
             <bean:message key="credentials.jsp.delete.dispatch" />
         </rhn:toolbar>
         <p><bean:message key="credentials.jsp.delete.summary" /></p>
