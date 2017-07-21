@@ -100,6 +100,7 @@
 - features/srv_docker_advanced_test.feature
 - features/srv_docker_cve_audit.feature
 - features/trad_metadata_check.feature
+- features/trad_weak_deps.feature
 - features/srv_nagios.feature
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/clone_channel_npn.feature
@@ -107,7 +108,6 @@
 - features/compare_channel.feature
 ## NOT IDEMPOTENT and AFFECTED by PKG issue:
 - features/cve_audit.feature
-- features/weak_deps.feature
 #### Salt related features   ###
 ### Features affected by the package problem.
 - features/salt_software_states.feature
