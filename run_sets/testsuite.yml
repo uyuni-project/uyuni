@@ -12,7 +12,7 @@
 - features/core_srv_users.feature
 - features/core_srv_credentials.feature
 - features/core_srv_create_activationkey.feature
-- features/core_srv_setup_wizard.feature
+
 - features/core_trad_register_client.feature
 - features/core_min_bootstrap.feature
 - features/core_min_docker_build_image.feature
@@ -21,8 +21,9 @@
 - features/core_centos_salt.feature
 - features/core_centos_salt_ssh.feature
 
-# this feature sync real channels sles12sp2 (last core feature)
+# these features sync real channels (last core feature)
 - features/core_srv_sync_channels.feature
+- features/core_srv_setup_wizard.feature
 ## CORE feature end ###
 
 # SECONDARY FEATURE:
@@ -90,6 +91,7 @@
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
 - features/srv_change_password.feature
+- features/min_salt_software_states.feature
 - features/srv_salt_download_endpoint.feature
 - features/srv_virtual_host_manager.feature
 - features/trad_baremetal_test.feature
@@ -102,15 +104,14 @@
 - features/trad_metadata_check.feature
 - features/trad_weak_deps.feature
 - features/srv_nagios.feature
+- features/srv_cve_audit.feature
+
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
 - features/srv_clone_channel_npn.feature
 - features/trad_cve_id_new_syntax.feature
 - features/srv_compare_channel.feature
-## NOT IDEMPOTENT and AFFECTED by PKG issue:
-- features/srv_cve_audit.feature
 #### Salt related features   ###
 ### Features affected by the package problem.
-- features/min_salt_software_states.feature
 - features/min_salt_pkgset_beacon.feature
 - features/min_salt_install_package.feature
 - features/min_salt_install_with_staging.feature
