@@ -12,6 +12,11 @@ Feature: Test weak dependencies
     And I follow "Channels" in the left menu
     And I follow "Channels > All" in the left menu
 
+  Scenario: Prerequisite for weak-dep test.
+   And I run "zypper -n in virgo-dummy" on "sle-client" without error control
+   And I run "zypper -n in milkyway-dummy" on "sle-client" without error control
+   And I run "zypper -n in orion-dummy" on "sle-client" without error control
+
   Scenario: Check Package metadata displayed in WebUI (Supplements)
     And I follow "Test-Channel-x86_64"
     And I follow "Packages"
@@ -56,3 +61,8 @@ Feature: Test weak dependencies
     And I should have 'rpm:supplements.*packageand.a-blackhole:dummy.*rpm:supplements' in the metadata for "sle-client"
     And I should have 'rpm:suggests.*apache2.*rpm:suggests' in the metadata for "sle-client"
     And I should have 'rpm:enhances.*foobar.*rpm:enhances' in the metadata for "sle-client"
+
+  Scenario: CLEANUP: remove pkgs
+   And I run "zypper -n rm virgo-dummy" on "sle-client"
+   And I run "zypper -n rm milkyway-dummy" on "sle-client"
+   And I run "zypper -n rm orion-dummy" on "sle-client"
