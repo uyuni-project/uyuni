@@ -280,4 +280,12 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
         return credentials;
     }
+
+    public VirtualHostManagerNodeInfo lookupNodeInfoByIdentifier(String identifier) {
+        return (VirtualHostManagerNodeInfo) getSession()
+                .createCriteria(VirtualHostManagerNodeInfo.class)
+                .add(Restrictions.eq("identifier", identifier))
+                .uniqueResult();
+    }
+
 }
