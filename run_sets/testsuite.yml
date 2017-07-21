@@ -81,7 +81,7 @@
 - features/trad_lock_packages.feature
 - features/min_salt_minion_details.feature
 - features/trad_check_registration.feature
-- features/trad_salt_minions_page.feature
+- features/min_salt_minions_page.feature
 - features/srv_spacewalk_channel.feature
 - features/srv_spacewalk_repo_sync.feature
 - features/srv_xmlrpc_channel.feature
