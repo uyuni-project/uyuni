@@ -6,6 +6,21 @@ Feature: CVE Audit
   As an authorized user
   I want to see systems that need to be patched
 
+  Scenario: Prequisite: downgrade milkyway-dummy to lower version
+    Given I am authorized as "admin" with password "admin"
+    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
+    And I run "zypper -n in --oldpackage milkyway-dummy-1.0-2.1" on "sle-client"
+    And I run "zypper -n ref" on "sle-client"
+    And I run "rhn_check -vvv" on "sle-client"
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
+
   Scenario: schedule channel data refresh
     Given I am authorized as "admin" with password "admin"
     When I follow "Admin"
@@ -105,3 +120,18 @@ Feature: CVE Audit
     And I should get the test-channel
     And I should get the "milkyway-dummy-2345" patch
     Then I logout from XML-RPC/cve audit namespace.
+
+  Scenario: CLEANUP: Remove milkyway installed packages
+    Given I am authorized as "admin" with password "admin"
+    And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control
+    And I run "zypper -n rm milkyway-dummy" on "sle-client" without error control
+    And I run "rhn_check -vvv" on "sle-client" without error control
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
