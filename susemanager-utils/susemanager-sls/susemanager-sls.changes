@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Jul 21 12:02:24 CEST 2017 - mc@suse.de
+
+- version 3.1.9-1
+- disable gpgcheck for bootstrap repo to work with new libzypp (bsc#1049670)
+- Remove spacewalk:* repos when removing traditional stack (bsc#1024267)
+- susemanager-sls: fix certs state for Tumbleweed (bsc970630)
+- susemanager-sls: fix certs state for Leap 42.2 (bsc970630)
+- Make sumautil.get_kernel_live_version accept any kgr output 'active: NUM'
+  where NUM > 0 (bsc#1044074)
+
+-------------------------------------------------------------------
 Mon Jun 19 16:37:53 CEST 2017 - mc@suse.de
 
 - version 3.1.8-1
