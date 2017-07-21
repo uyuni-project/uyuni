@@ -5,6 +5,21 @@ Feature: Check the Salt package state UI
   In Order to test salt package states.
   As the testing
 
+  Scenario: Prequisite: Install milkyway-dummy-1.0 and virgo-dummy-1.0 packages
+    Given I am authorized as "admin" with password "admin"
+    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
+    And I run "zypper -n ref" on "sle-minion"
+    And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-minion" without error control
+    And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
+
   Scenario: Subscribe to base channel
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
@@ -100,3 +115,18 @@ Feature: Check the Salt package state UI
     And I wait for "6" seconds
     And I run "rcsalt-minion restart" on "sle-minion"
     And I should see a "No reply from minion" text in element "highstate"
+
+  Scenario: CLEANUP: Remove milkyway-dummy and virgo-dummy packages from sle-minion
+    Given I am authorized as "admin" with password "admin"
+    And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-minion"
+    And I run "zypper -n rm milkyway-dummy" on "sle-minion" without error control
+    And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
+    And I run "zypper -n ref" on "sle-minion"
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text

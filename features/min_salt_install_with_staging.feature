@@ -11,6 +11,21 @@
 
 Feature: Install a package on the minion with staging enabled
 
+  Scenario: Prequisite: Install virgo-dummy-1.0 and orion-dummy-1.1 packages
+    Given I am authorized as "admin" with password "admin"
+    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
+    And I run "zypper -n ref" on "sle-minion"
+    And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
+    And I run "zypper -n in --oldpackage orion-dummy-1.1" on "sle-minion" without error control
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
+
    Scenario: Enable content staging
     Given I am in the organization configuration page
     And I check "staging_content_enabled"
@@ -49,3 +64,17 @@ Feature: Install a package on the minion with staging enabled
     And I wait until the package "virgo-dummy-2.0-1.1.noarch" has been cached on this "sle-minion"
     And I wait for "virgo-dummy-2.0-1.1" to be installed on this "sle-minion"
     Then I disable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
+
+  Scenario: CLEANUP: Remove virgo-dummy and orion-dummy packages from sle-minion
+    Given I am authorized as "admin" with password "admin"
+    And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
+    And I run "zypper -n rm orion-dummy" on "sle-minion" without error control
+    And I run "zypper -n ref" on "sle-minion"
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
