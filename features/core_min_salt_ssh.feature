@@ -45,7 +45,18 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     Then I should see a "Applying the highstate has been scheduled." text
     And I follow "Events"
     And I follow "Pending"
-    And I try to reload page until does not contain "Apply states scheduled by admin" text
+    And I try to reload page until it does not contain "Apply states scheduled by admin" text
+
+  Scenario: schedule errata refresh to reflect channel assignment
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
 
   Scenario: Install a package for ssh minion
     Given I am authorized as "testing" with password "testing"
