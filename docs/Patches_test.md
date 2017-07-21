@@ -9,7 +9,6 @@ Since each feature must be idempotent, you need to cleanup.
 Look at this.
 features/trad_client_inst_package_and_patch.feature
 
-
 Basically,  we use 2 REPOS:
 
 FIXME: add links to repos
@@ -17,6 +16,17 @@ FIXME: add links to repos
 1) contains lower version of pkgs
 2) contains patches with higher version
 
+### WORKFLOW for patches
+
+1) downgrade pkg /Remove pkg
+2) Make the lowest pkg
+3) schedule taskomatic run, and wait for finish.
+4) make test with patch (install it etc)
+5) cleanup
+
+### Examples:
+
+#### FIXME: this need adaptation (taskomatic isn't scheduled)
 
 When you do patches test, you will always end-up with downgrading the pkg, install patch, remove it , and disable the repo.
 

@@ -45,15 +45,15 @@ The images are build by kiwi : http://download.suse.de/ibs/Devel:/Galaxy:/Terraf
 
 ## Guidelines for coding:
 
-1. Create **always** idempotent feature, with right prefixes. (Secondary feature)
+1. Create **always** idempotent feature, with right prefixes. (and **always** Secondary feature)
    -> If the feature is not idempotent, it will be not merged upstream.
-
 2. Scenario that cleanup, should be named : ```Scenario: CLEANUP: remove xx pkg""
+   or scenario before the actual test, should named "Prereq:"
 3. Steps should be grouped **by topic** and not by feature.
 4. Use the right prefix for your feature name.
-5. Reuse steps, don't create new if you don't need them (look under `./features/step_definitions/` to see which steps are already implemented)
-
-6. [Check the code coverage results](docs/codecoverage.md), after you have run the test suite with your code.
+5. If you do pkg operation, look [here](docs/Patches_test.md)
+6. Reuse steps, don't create new if you don't need them (look under `./features/step_definitions/` to see which steps are already implemented)
+7. [Check the code coverage results](docs/codecoverage.md), after you have run the test suite with your code.
 
 
 # Branch used
