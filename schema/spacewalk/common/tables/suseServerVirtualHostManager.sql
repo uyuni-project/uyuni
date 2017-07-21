@@ -18,7 +18,7 @@ CREATE TABLE suseServerVirtualHostManager
     vhmserver_id  NUMBER NOT NULL
                     CONSTRAINT suse_server_vhms_vhmsid_fk
                     REFERENCES suseVirtualHostManager (id)
-                    ON DELETE CASCADE
+                    ON DELETE CASCADE,
     node_id       NUMBER
                     CONSTRAINT suse_svhm_nodeinfo_fk
                     REFERENCES suseVirtualHostManagerNodeInfo (id)

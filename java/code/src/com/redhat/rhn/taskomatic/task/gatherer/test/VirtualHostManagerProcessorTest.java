@@ -8,6 +8,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.test.GuestBuilder;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.redhat.rhn.taskomatic.task.gatherer.VirtualHostManagerProcessor;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -494,15 +495,55 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * Tests that the VirtualHostManagerProcessor does not automatically create a new Server entity
      * for a Kubernetes virtual host manager.
      */
-    public void testKubernetes() {
+    public void testCreateNodeInfo() {
         Map<String, JSONHost> data = createHostData("kubernetes_host_1_id", "Kubernetes",null);
-
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
-        // check if a Server is created
+        // check that aServer was not created
         Server host = ServerFactory
                 .lookupForeignSystemByDigitalServerId("101-kubernetes_host_1_id");
         assertNull(host);
+        // check nodeInfo
+        assertEquals(1, virtualHostManager.getNodes().size());
+        VirtualHostManagerNodeInfo nodeInfo = virtualHostManager.getNodes().stream().findFirst().get();
+        assertEquals("kubernetes_host_1_id", nodeInfo.getIdentifier());
+        assertEquals(data.keySet().stream().findFirst().get(), nodeInfo.getName());
+        assertEquals("Windows", nodeInfo.getOs());
+        assertEquals("Vista", nodeInfo.getOsVersion());
+        assertEquals(new Integer(128), nodeInfo.getRam());
+        assertEquals(new Integer(1), nodeInfo.getCpuCores());
+        assertEquals(new Integer(1), nodeInfo.getCpuSockets());
+        assertEquals("x86_64-redhat-linux", nodeInfo.getNodeArch().getLabel());
+    }
+
+    public void testRemoveNodeInfo() {
+        Map<String, JSONHost> dataCreate = new HashMap<>();
+        dataCreate.putAll(createHostData("kubernetes_host_1_id", "Kubernetes",null));
+        dataCreate.putAll(createHostData("kubernetes_host_2_id", "Kubernetes",null));
+        new VirtualHostManagerProcessor(virtualHostManager, dataCreate).processMapping();
+
+        // check that aServer was not created
+        assertNull(ServerFactory
+                .lookupForeignSystemByDigitalServerId("101-kubernetes_host_1_id"));
+        assertNull(ServerFactory
+                .lookupForeignSystemByDigitalServerId("101-kubernetes_host_2_id"));
+        // check nodeInfo
+        assertEquals(2, virtualHostManager.getNodes().size());
+        assertTrue(virtualHostManager.getNodes().stream()
+                .filter(node -> node.getIdentifier().equals("kubernetes_host_1_id"))
+                .findFirst().isPresent());
+        assertTrue(virtualHostManager.getNodes().stream()
+                .filter(node -> node.getIdentifier().equals("kubernetes_host_2_id"))
+                .findFirst().isPresent());
+
+        Map<String, JSONHost> dataUpdate = new HashMap<>();
+        dataUpdate.putAll(createHostData("kubernetes_host_2_id", "Kubernetes",null));
+        new VirtualHostManagerProcessor(virtualHostManager, dataUpdate).processMapping();
+
+        assertEquals(1, virtualHostManager.getNodes().size());
+        assertTrue(virtualHostManager.getNodes().stream()
+                .filter(node -> node.getIdentifier().equals("kubernetes_host_2_id"))
+                .findFirst().isPresent());
     }
 
 
