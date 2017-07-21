@@ -65,55 +65,55 @@
 - features/srv_xmlrpc_user.feature
 - features/srv_smdba.feature
 - features/min_salt_states_catalog.feature
-- features/powermanagement.feature
+- features/srv_powermanagement.feature
 - features/srv_datepicker.feature
 - features/trad_openscap_audit.feature
-- features/create_group.feature
-- features/xmlrpc_api.feature
-- features/salt_openscap_audit.feature
-- features/custom_system_info.feature
-- features/security.feature
+- features/srv_create_group.feature
+- features/srv_xmlrpc_api.feature
+- features/min_salt_openscap_audit.feature
+- features/srv_custom_system_info.feature
+- features/srv_security.feature
 - features/trad_inst_package_and_patch.feature
 - features/trad_check_patches_install.feature
-- features/mgr_bootstrap.feature
-- features/sp_migration.feature
-- features/salt.feature
+- features/trad_mgr_bootstrap.feature
+- features/trad_sp_migration.feature
+- features/srv_salt.feature
 - features/trad_lock_packages.feature
-- features/salt_minion_details.feature
-- features/check_registration.feature
-- features/salt_minions_page.feature
-- features/spacewalk_channel.feature
-- features/spacewalk_repo_sync.feature
-- features/xmlrpc_channel.feature
-- features/config_channel.feature
-- features/patches_page.feature
+- features/min_salt_minion_details.feature
+- features/trad_check_registration.feature
+- features/min_salt_minions_page.feature
+- features/srv_spacewalk_channel.feature
+- features/srv_spacewalk_repo_sync.feature
+- features/srv_xmlrpc_channel.feature
+- features/trad_config_channel.feature
+- features/srv_patches_page.feature
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
 - features/srv_change_password.feature
-- features/salt_download_endpoint.feature
+- features/srv_salt_download_endpoint.feature
 - features/srv_virtual_host_manager.feature
 - features/trad_baremetal_test.feature
-- features/salt_remote_cmds.feature
+- features/srv_salt_remote_cmds.feature
 - features/trad_reboot.feature
 - features/srv_action_chain.feature
 - features/min_salt_formulas.feature
 - features/srv_docker_advanced_test.feature
 - features/srv_docker_cve_audit.feature
 - features/trad_metadata_check.feature
+- features/trad_weak_deps.feature
 - features/srv_nagios.feature
 # !!!!! NOT_IDEMPOTENT !!!!!!!!
-- features/clone_channel_npn.feature
-- features/CVE_ID_new_syntax.feature
-- features/compare_channel.feature
+- features/srv_clone_channel_npn.feature
+- features/trad_cve_id_new_syntax.feature
+- features/srv_compare_channel.feature
 ## NOT IDEMPOTENT and AFFECTED by PKG issue:
-- features/cve_audit.feature
-- features/weak_deps.feature
+- features/srv_cve_audit.feature
 #### Salt related features   ###
 ### Features affected by the package problem.
-- features/salt_software_states.feature
-- features/salt_pkgset_beacon.feature
-- features/salt_install_package.feature
-- features/salt_install_with_staging.feature
+- features/min_salt_software_states.feature
+- features/min_salt_pkgset_beacon.feature
+- features/min_salt_install_package.feature
+- features/min_salt_install_with_staging.feature
 ###
 
 # Debug suse-manager server ( this should be removed and placed in tools)
