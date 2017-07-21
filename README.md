@@ -20,12 +20,9 @@ You can run the Spacewalk Testsuite [with sumaform](https://github.com/moio/suma
 
 ## Core-Features, Idempotency and tests-order.
 
-The tests (features) are grouped by: core-features and secondary(idempotent) features.
-
+The tests (features) are grouped by: core-features and secondary (idempotent) features.
 For the group of the **core-feature**, the order is relevant. The core-features are by design not idempotent, and serve to create a basic testing env.
-
 The **secondary features** can be run XX number of times, and the order is irrelevant.
-
 All new features should be **secondary features**, so you need to write cleanup steps on each feature.
 
 
@@ -41,7 +38,7 @@ The images are build by kiwi : http://download.suse.de/ibs/Devel:/Galaxy:/Terraf
 ## Procedure
 
 1. Create **always** PR. (even for backporting)
-2. Your PR need always at least Reviewer that approve.
+2. Your PR needs always at least one Reviewer that approves
 
 ## Guidelines for coding:
 
