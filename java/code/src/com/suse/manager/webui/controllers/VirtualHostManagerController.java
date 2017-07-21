@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.controllers;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
@@ -27,18 +29,25 @@ import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
+import com.suse.manager.webui.utils.gson.JsonResult;
 import org.apache.commons.lang.StringUtils;
 
+import org.apache.http.HttpStatus;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 
+import javax.persistence.NoResultException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.utils.Json.GSON;
 
 /**
  * Controller class providing backend code for the VHM pages.
@@ -61,11 +70,54 @@ public class VirtualHostManagerController {
      */
     public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
+        data.put("pageSize", user.getPageSize());
         data.put("virtualHostManagers", getFactory()
                 .listVirtualHostManagers(user.getOrg()));
         data.put("modules", gathererRunner.listModules().keySet());
         data.put("info", FlashScopeHelper.flash(request));
         return new ModelAndView(data, "virtualhostmanager/list.jade");
+    }
+
+    /**
+     * Processes a GET request to get a list of all vhms
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object get(Request req, Response res, User user) {
+        List<VirtualHostManager> vhms =
+                getFactory().listVirtualHostManagers(user.getOrg());
+        return json(res, getJsonList(vhms));
+    }
+
+    /**
+     * Processes a GET request to get a single image store object
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getSingle(Request req, Response res, User user) {
+        Long storeId;
+        try {
+            storeId = Long.parseLong(req.params("id"));
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
+
+        try {
+            VirtualHostManager vhm = getFactory().lookupByIdAndOrg(storeId, user.getOrg());
+            return json(res, getJsonDetails(vhm));
+        }
+        catch (NoResultException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
     }
 
     /**
@@ -150,29 +202,31 @@ public class VirtualHostManagerController {
     }
 
     /**
-     * Deletes a VHM.
+     * Processes a POST request to delete multiple vhms
      *
-     * @param request the request
-     * @param response the response
-     * @param user the user
-     * @return dummy string to satisfy spark
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
      */
-    public static Object delete(Request request, Response response, User user) {
-        Long id = Long.parseLong(request.params("id"));
-        VirtualHostManager virtualHostManager = getFactory().lookupByIdAndOrg(id,
-                user.getOrg());
-        String message;
-        if (virtualHostManager == null) {
-            message = "Virtual Host Manager with id '" + id + "' couldn't be found.";
+    public static Object delete(Request req, Response res, User user) {
+        List<Long> ids;
+        try {
+            ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
         }
-        else {
-            message = "Virtual Host Manager '" + virtualHostManager.getLabel() +
-                "' has been deleted.";
-            getFactory().delete(virtualHostManager);
+        catch (JsonParseException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
         }
-        FlashScopeHelper.flash(request, message);
-        response.redirect("/rhn/manager/vhms");
-        return "";
+
+        List<VirtualHostManager> vhms =
+                getFactory().lookupByIdsAndOrg(ids, user.getOrg());
+        if (vhms.size() < ids.size()) {
+            return json(res, new JsonResult<>(false, "not_found"));
+        }
+
+        vhms.forEach(getFactory()::delete);
+        return json(res, new JsonResult<>(true, vhms.size()));
     }
 
     /**
@@ -247,5 +301,34 @@ public class VirtualHostManagerController {
      */
     public static void setGathererRunner(GathererRunner gathererRunnerIn) {
         gathererRunner = gathererRunnerIn;
+    }
+
+    /**
+     * Creates a list of JSON objects for a list of {@link VirtualHostManager} instances
+     *
+     * @param vhmList the vhm list
+     * @return the list of JSON objects
+     */
+    private static List<JsonObject> getJsonList(List<VirtualHostManager> vhmList) {
+        return vhmList.stream().map(imageStore -> {
+            JsonObject json = new JsonObject();
+            json.addProperty("id", imageStore.getId());
+            json.addProperty("label", imageStore.getLabel());
+            json.addProperty("orgName", imageStore.getOrg().getName());
+            return json;
+        }).collect(Collectors.toList());
+    }
+
+    private static JsonObject getJsonDetails(VirtualHostManager vhm) {
+        JsonObject json = new JsonObject();
+        json.addProperty("id", vhm.getId());
+        json.addProperty("label", vhm.getLabel());
+        json.addProperty("orgName", vhm.getOrg().getName());
+        json.addProperty("gathererModule", vhm.getGathererModule());
+
+        JsonObject config = new JsonObject();
+        vhm.getConfigs().forEach(c -> config.addProperty(c.getParameter(), c.getValue()));
+        json.add("config", config);
+        return json;
     }
 }
