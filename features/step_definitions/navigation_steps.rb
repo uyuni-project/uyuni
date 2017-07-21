@@ -420,7 +420,7 @@ Then(/^I try to reload page until it does not contain "([^"]*)" text$/) do |arg1
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        if !page.has_content?(arg1)
+        unless page.has_content?(arg1)
           found = false
           break
         end
