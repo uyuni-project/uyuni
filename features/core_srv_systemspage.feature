@@ -199,7 +199,7 @@ Feature: Explore the main landing page
     And I should see a "Create Kickstart Profile" link
     And I should see a "Upload Kickstart/Autoyast File" link
     And I should see a "View a List of Autoinstallation Profiles" link
-    And I should see a "Create a New Autoinstallation Profile" link
+    And I should see a "Create a New Kickstart Profile" link
     And I should see a "Upload a New Autoinstallation/AutoYaST File" link
 
   Scenario: Check sidebar link destination for Systems => Autoinstallation => Profiles
