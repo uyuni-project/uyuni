@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jul 21 12:03:58 CEST 2017 - mc@suse.de
+
+- version 0.1.23-1
+- disable gpgcheck for bootstrap repo to work with new libzypp (bsc#1049670)
+- Remove spacewalk:* repos when removing traditional stack (bsc#1024267)
+
+-------------------------------------------------------------------
 Thu Jun 29 17:33:10 CEST 2017 - michele.bologna@suse.com
 
 - version 0.1.22-1
