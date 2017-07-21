@@ -415,6 +415,25 @@ Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
   fail unless found
 end
 
+Then(/^I try to reload page until it does not contain "([^"]*)" text$/) do |arg1|
+  found = true
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        if !page.has_content?(arg1)
+          found = false
+          break
+        end
+        sleep(5)
+        visit current_url
+      end
+    end
+  rescue Timeout::Error
+    raise "'#{arg1}' is still found after wait and reload page"
+  end
+  fail if found
+end
+
 Given(/^I am in the organization configuration page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"

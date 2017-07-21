@@ -19,7 +19,8 @@ Feature: Check patches
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait for "5" seconds
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
 
   Scenario: check all patches exists
     Given I am on the patches page
@@ -68,4 +69,5 @@ Feature: Check patches
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait for "5" seconds
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text

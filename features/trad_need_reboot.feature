@@ -33,7 +33,8 @@ Feature: Reboot required after patch
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait for "5" seconds
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
 
   Scenario: Display Reboot Required after installing an Patches
     Given I am on the Systems overview page of this "sle-client"

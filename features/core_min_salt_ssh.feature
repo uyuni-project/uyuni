@@ -25,7 +25,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I wait until I see the name of "ssh-minion", refreshing the page
     And I wait until onboarding is completed for "ssh-minion"
 
-   Scenario: Subscribe ssh-minion to a base-channel for testing
+  Scenario: Subscribe ssh-minion to a base-channel for testing
     Given I am authorized as "testing" with password "testing"
     And I follow "Home" in the left menu
     And I follow "Systems" in the left menu
@@ -39,14 +39,16 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I should see a "System's Base Channel has been updated." text
 
   Scenario: Apply the highstate on ssh-minion to apply base channels
-     Given I am on the Systems overview page of this "ssh-minion"
-     And I follow "States" in the content area
-     And I click on "Apply Highstate"
-     Then I should see a "Applying the highstate has been scheduled." text
-     And I wait for "40" seconds
+    Given I am on the Systems overview page of this "ssh-minion"
+    And I follow "States" in the content area
+    And I click on "Apply Highstate"
+    Then I should see a "Applying the highstate has been scheduled." text
+    And I follow "Events"
+    And I follow "Pending"
+    And I try to reload page until does not contain "Apply states scheduled by admin" text
 
-   Scenario: Install a package for ssh minion
-   Given I am authorized as "testing" with password "testing"
+  Scenario: Install a package for ssh minion
+    Given I am authorized as "testing" with password "testing"
     And I follow "Home" in the left menu
     And I follow "Systems" in the left menu
     And I follow "Overview" in the left menu
@@ -59,7 +61,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     Then I should see a "1 package install has been scheduled" text
     And I wait for "hoag-dummy-1.1-2.1" to be installed on this "ssh-minion"
 
-   Scenario: Reboot a salt minion (ssh-managed) (sle)
+  Scenario: Reboot a salt minion (ssh-managed) (sle)
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
