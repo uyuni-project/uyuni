@@ -11,22 +11,8 @@
 # Introduction
 
 This is the automated testsuite for [SUSE Manager](https://www.suse.com/products/suse-manager/) and [Spacewalk](http://spacewalk.redhat.com/).
-The testsuite is based on [Cucumber](https://cucumber.io/).
 
 Read more about the [**basic concepts** of Cucumber that we will be using in this testsuite: features, scenarios and steps](https://cucumber.io/docs/reference).
-
-# Branch used
-
-* Development (to be run against a HEAD version of SUSE Manager):
-
-  * [`master`](https://github.com/SUSE/spacewalk-testsuite-base)
-
-* Release (to be run against a nightly or released *tagged* version of SUSE Manager):
-  * [`manager30`](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager30)
-  * [`manager31`](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager31)
-
-All other branches are considered legacy (not under development anymore): `Manager 2.1`, `manager21-longterm`, `Manager 17`, `Manager 12`.
-
 
 # Running the testsuite
 
@@ -45,49 +31,50 @@ All new features should be **secondary features**, so you need to write cleanup 
 
 [**Standard testsuite features Features included in the `testsuite.yml` file will be executed sequentially from the top to the bottom**](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml).
 
+
+## Images used on the testsuite.
+
+The images are build by kiwi : http://download.suse.de/ibs/Devel:/Galaxy:/Terraform:/Images/, and sumaform deploy them.
+
+# Contributing
+
+## Procedure
+
+1. Create **always** PR. (even for backporting)
+2. Your PR need always at least Reviewer that approve.
+
+## Guidelines for coding:
+
+1. Create **always** idempotent feature, with right prefixes. (Secondary feature)
+   -> If the feature is not idempotent, it will be not merged upstream.
+
+2. Scenario that cleanup, should be named : ```Scenario: CLEANUP: remove xx pkg""
+3. Steps should be grouped **by topic** and not by feature.
+4. Use the right prefix for your feature name.
+5. Reuse steps, don't create new if you don't need them (look under `./features/step_definitions/` to see which steps are already implemented)
+
+6. [Check the code coverage results](docs/codecoverage.md), after you have run the test suite with your code.
+
+
+# Branch used
+
+* Development (to be run against a HEAD version of SUSE Manager):
+
+  * [`master`](https://github.com/SUSE/spacewalk-testsuite-base)
+
+* Release (to be run against a nightly or released *tagged* version of SUSE Manager):
+  * [`manager30`](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager30)
+  * [`manager31`](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager31)
+
+All other branches are considered legacy (not under development anymore): `Manager 2.1`, `manager21-longterm`, `Manager 17`, `Manager 12`.
+
+
 ## Run just a single run set
 
 You can override the tests that are executed by adding your run set:
 1. Login into the `controller` host.
 2. Add the feature(s) you would like to run into `run_sets/$name.yml`
 3. Call Cucumber to execute your custom run set (`rake cucumber:$name`)
-
-
-## Images used on the testsuite.
-
-The images are build by kiwi : http://download.suse.de/ibs/Devel:/Galaxy:/Terraform:/Images/, and sumaform deploy them.
-
-
-# Contributing
-
-## Procedure
-
-1. Fork it
-2. Create your branch containing the new tests, starting from master (`git checkout master && git checkout -b my-new-tests`)
-3. Commit your changes (`git commit -am 'Add some tests'`)
-4. Push to the branch (`git push origin my-new-tests`)
-5. Create new Pull Request
-6. **IMPORTANT**: Create a Pull Request to backport your new tests to the other branches used in this project.
-
-## Guidelines
-
-* Steps should be grouped **by topic** and not by feature.
-
-Steps files should be like the following:
-
-    Creating users
-    Navigation
-    Running commands
-    Salt
-
-* Reuse steps, don't create new if you don't need them (look under `./features/step_definitions/` to see which steps are already implemented)
-
-* [Check the code coverage results](docs/codecoverage.md), after you have run the test suite with your code.
-
-
-# License
-
-The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file included in the distribution.
 
 # Useful tutorials
 
