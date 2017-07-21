@@ -5,7 +5,9 @@
 
 <html>
     <body>
-        <rhn:toolbar base="h1" icon="header-user">
+        <rhn:toolbar base="h1" icon="header-user"
+                     imgAlt="users.jsp.imgAlt"
+                     helpUrl="ref.webui.overview.account.jsp#ref.webui.overview.account.deactivate">
             <bean:message key="disableselfconfirm.jsp.warning_question" />
         </rhn:toolbar>
         <form method="POST" name="rhn_list" action="/rhn/account/AccountDeactivationConfirm.do">
