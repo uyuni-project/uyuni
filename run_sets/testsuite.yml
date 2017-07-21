@@ -90,6 +90,7 @@
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
 - features/srv_change_password.feature
+- features/min_salt_software_states.feature
 - features/srv_salt_download_endpoint.feature
 - features/srv_virtual_host_manager.feature
 - features/trad_baremetal_test.feature
@@ -110,7 +111,6 @@
 - features/srv_compare_channel.feature
 #### Salt related features   ###
 ### Features affected by the package problem.
-- features/min_salt_software_states.feature
 - features/min_salt_pkgset_beacon.feature
 - features/min_salt_install_package.feature
 - features/min_salt_install_with_staging.feature
