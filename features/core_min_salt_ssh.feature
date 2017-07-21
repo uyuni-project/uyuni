@@ -38,6 +38,13 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
 
+  Scenario: Apply the highstate on ssh-minion to apply base channels
+     Given I am on the Systems overview page of this "ssh-minion"
+     And I follow "States" in the content area
+     And I click on "Apply Highstate"
+     Then I should see a "Applying the highstate has been scheduled." text
+     And I wait for "40" seconds
+
    Scenario: Install a package for ssh minion
    Given I am authorized as "testing" with password "testing"
     And I follow "Home" in the left menu

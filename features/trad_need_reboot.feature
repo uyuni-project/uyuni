@@ -21,10 +21,19 @@ Feature: Reboot required after patch
     Then I should not see a "The system requires a reboot" text
 
   Scenario: enable old-packages for test a "needing reboot"
+    Given I am authorized as "admin" with password "admin"
     And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
+    And I run "zypper -n ref" on "sle-client"
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
-    And I run "zypper -n ref" on "sle-client"
+    When I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait for "5" seconds
 
   Scenario: Display Reboot Required after installing an Patches
     Given I am on the Systems overview page of this "sle-client"
