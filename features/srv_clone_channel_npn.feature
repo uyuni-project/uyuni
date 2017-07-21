@@ -17,7 +17,7 @@ Feature: Clone a Channel
     And I click on "Clone Channel"
     Then I should see a "Clone of Test-Channel-x86_64" text
 
-  Scenario: Check, that this channel has no patchess
+  Scenario: Check, that this channel has no patches
     Given I am on the manage software channels page
     And I follow "Clone of Test-Channel-x86_64"
     When I follow "Patches" in the content area
@@ -90,3 +90,23 @@ Feature: Clone a Channel
     Then I should see a "CL-virgo-dummy-3456 - Bug Fix Advisory" text
     And I should see a "mcalmer" text
     And I should see a "CVE-1999-9998" link
+
+  Scenario: CLEANUP: Remove cloned channels
+    Given I am on the manage software channels page
+    When I follow "Clone of Test-Channel-x86_64"
+    And I follow "Delete software channel"
+    And I check "unsubscribeSystems"
+    And I click on "Delete Channel"
+    Then I should see "Channel Clon of Test-Channel-x86_64 has been deleted." text
+    Given I am on the manage software channels page
+    When I follow "Clone 2 of Test-Channel-x86_64"
+    And I follow "Delete software channel"
+    And I check "unsubscribeSystems"
+    And I click on "Delete Channel"
+    Then I should see "Channel Clone 2 of Test-Channel-x86_64 has been deleted." text
+    Given I am on the manage software channels page
+    When I follow "Clone 3 of Test-Channel-x86_64"
+    And I follow "Delete software channel"
+    And I check "unsubscribeSystems"
+    And I click on "Delete Channel"
+    Then I should see "Channel Clone 3 of Test-Channel-x86_64 has been deleted." text
