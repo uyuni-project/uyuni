@@ -2,6 +2,7 @@
 # Prefix
 # core_type_topic
 
+# IMMUTABLE ORDER
 --- # initialize suse-manager server
 - features/core_setup_user_and_proxy.feature
 - features/core_srv_channels_add.feature
