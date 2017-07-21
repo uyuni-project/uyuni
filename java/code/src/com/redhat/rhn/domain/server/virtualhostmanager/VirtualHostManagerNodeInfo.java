@@ -36,9 +36,14 @@ import javax.persistence.Table;
 public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
 
     private Long id;
-    private Integer cpus;
-    private Integer memory;
+    private String identifier;
+    private String name;
+    private Integer cpuSockets;
+    private Integer cpuCores;
+    private Integer ram;
     private ServerArch nodeArch;
+    private String os;
+    private String osVersion;
 
     /**
      * @return the id
@@ -59,33 +64,33 @@ public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
     }
 
     /**
-     * @return the cpus
+     * @return the cpuSockets
      */
-    @Column(name = "cpus")
-    public Integer getCpus() {
-        return cpus;
+    @Column(name = "cpu_sockets")
+    public Integer getCpuSockets() {
+        return cpuSockets;
     }
 
     /**
-     * @param cpusIn the cpus
+     * @param cpusIn the cpuSockets
      */
-    public void setCpus(Integer cpusIn) {
-        this.cpus = cpusIn;
+    public void setCpuSockets(Integer cpusIn) {
+        this.cpuSockets = cpusIn;
     }
 
     /**
      * @return the memory
      */
-    @Column(name = "memory")
-    public Integer getMemory() {
-        return memory;
+    @Column(name = "ram")
+    public Integer getRam() {
+        return ram;
     }
 
     /**
      * @param memoryIn the memory
      */
-    public void setMemory(Integer memoryIn) {
-        this.memory = memoryIn;
+    public void setRam(Integer memoryIn) {
+        this.ram = memoryIn;
     }
 
     /**
@@ -104,4 +109,78 @@ public class VirtualHostManagerNodeInfo extends BaseDomainHelper {
         this.nodeArch = nodeArchIn;
     }
 
+    /**
+     * @return the identifier
+     */
+    @Column(name = "identifier")
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    /**
+     * @param identifierIn to set
+     */
+    public void setIdentifier(String identifierIn) {
+        this.identifier = identifierIn;
+    }
+
+    /**
+     * @return the name
+     */
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param nameIn to set
+     */
+    public void setName(String nameIn) {
+        this.name = nameIn;
+    }
+
+    /**
+     * @return the cpuCores
+     */
+    @Column(name = "cpu_cores")
+    public Integer getCpuCores() {
+        return cpuCores;
+    }
+
+    /**
+     * @param cpuCoresIn to set
+     */
+    public void setCpuCores(Integer cpuCoresIn) {
+        this.cpuCores = cpuCoresIn;
+    }
+
+    /**
+     * @return the os
+     */
+    @Column(name = "os")
+    public String getOs() {
+        return os;
+    }
+
+    /**
+     * @param osIn to set
+     */
+    public void setOs(String osIn) {
+        this.os = osIn;
+    }
+
+    /**
+     * @return the osVersion
+     */
+    @Column(name = "os_version")
+    public String getOsVersion() {
+        return osVersion;
+    }
+
+    /**
+     * @param osVersionIn to set
+     */
+    public void setOsVersion(String osVersionIn) {
+        this.osVersion = osVersionIn;
+    }
 }

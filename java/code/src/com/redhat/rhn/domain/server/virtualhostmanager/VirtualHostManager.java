@@ -192,6 +192,14 @@ public class VirtualHostManager extends BaseDomainHelper {
     }
 
     /**
+     * Remove a node from the set of managed nodes by this virtual host manager
+     * @param nodeIn a server
+     */
+    public void removeNode(VirtualHostManagerNodeInfo nodeIn) {
+        this.nodes.remove(nodeIn);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
