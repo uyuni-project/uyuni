@@ -7,7 +7,7 @@
 <html>
     <body>
         <rhn:toolbar base="h1" icon="header-user"
-                     helpUrl="/rhn/help/reference/en-US/ref.webui.overview.jsp#ref.webui.overview.account"
+                     helpUrl="/rhn/help/reference/en-US/ref.webui.overview.account.jsp#ref.webui.overview.account.email"
                      imgAlt="users.jsp.imgAlt">
             <bean:message key="yourchangeemail.jsp.title"/>
         </rhn:toolbar>

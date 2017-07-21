@@ -7,7 +7,7 @@
 <html>
     <body>
         <rhn:toolbar base="h1" icon="header-user" imgAlt="users.jsp.imgAlt"
-                     helpUrl="/rhn/help/reference/en-US/ref.webui.overview.jsp#ref.webui.overview.account"
+                     helpUrl="/rhn/help/reference/en-US/ref.webui.overview.account.jsp#ref.webui.overview.account.credentials"
                      deletionUrl="/rhn/account/DeleteCredentials.do"
                      deletionType="credentials">
             <bean:message key="Credentials"/>
