@@ -48,7 +48,7 @@ The images are build by kiwi : http://download.suse.de/ibs/Devel:/Galaxy:/Terraf
 1. Create **always** idempotent feature, with right prefixes. (and **always** Secondary feature)
    -> If the feature is not idempotent, it will be not merged upstream.
 2. Scenario that cleanup, should be named : ```Scenario: CLEANUP: remove xx pkg""
-   or scenario before the actual test, should named "Prereq:"
+   or scenario before the actual test, should named"Scanario: PRE-Requirement: install that"
 3. Steps should be grouped **by topic** and not by feature.
 4. Use the right prefix for your feature name.
 5. If you do pkg operation, look [here](docs/Patches_test.md)

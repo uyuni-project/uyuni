@@ -6,7 +6,7 @@ Feature: Check patches
   As the testing user
   I want to see the patches in the web page including the packages
 
-  Scenario: enable old-packages for testing patches installation
+  Scenario: PRE-Requirement: enable old-packages for testing patches installation
     Given I am authorized as "admin" with password "admin"
     And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
