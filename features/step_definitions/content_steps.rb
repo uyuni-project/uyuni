@@ -25,13 +25,6 @@ Then(/^I should see a "([^"]*)" text$/) do |arg1|
 end
 
 #
-# Test for a text in the whole page
-#
-Then(/^I should see a "([^"]*)" or "([^"]*)" text$/) do |text, text2|
-  fail unless page.has_content?(text) || page.has_content?(text2)
-end
-
-#
 # Test for text in a snippet textarea
 #
 Then(/^I should see "([^"]*)" in the textarea$/) do |arg1|

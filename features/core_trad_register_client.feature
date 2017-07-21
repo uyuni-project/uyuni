@@ -16,7 +16,7 @@ Feature: Register a client
     And I click on the css "a#clear-ssm"
     And I wait for the data update
     Then I should see a "System Status" text
-    And I should see a "Software Updates Available" or "System is up to date" text
+    And I should see a "Software Updates Available" text
     And I should see a "Critical:" link
     And I should see a "Non-Critical:" link
     And I should see a "Packages:" link
