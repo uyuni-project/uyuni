@@ -103,7 +103,8 @@ Feature: Adding repository to a channel
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait for "5" seconds
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
 
   Scenario: schedule "channel-repodata" refresh
     Given I am authorized as "admin" with password "admin"
@@ -114,4 +115,5 @@ Feature: Adding repository to a channel
     And I follow "channel-repodata-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait for "5" seconds
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text

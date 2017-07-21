@@ -74,6 +74,7 @@
 - features/custom_system_info.feature
 - features/security.feature
 - features/trad_inst_package_and_patch.feature
+- features/trad_check_patches_install.feature
 - features/mgr_bootstrap.feature
 - features/sp_migration.feature
 - features/salt.feature
@@ -105,7 +106,6 @@
 - features/CVE_ID_new_syntax.feature
 - features/compare_channel.feature
 ## NOT IDEMPOTENT and AFFECTED by PKG issue:
-- features/check_errata_npn.feature
 - features/cve_audit.feature
 - features/weak_deps.feature
 #### Salt related features   ###

@@ -14,7 +14,8 @@ Feature: CVE Audit
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait for "5" seconds
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
 
   Scenario: feature should be accessible
     Given I am authorized as "admin" with password "admin"
@@ -73,7 +74,8 @@ Feature: CVE Audit
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait for "10" seconds
+    And I reload the page
+    And I try to reload page until it does not contain "RUNNING" text
     And I am logged in via XML-RPC/cve audit as user "admin" and password "admin"
     When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for this client
