@@ -61,7 +61,6 @@ Requires: rhn-virtualization-common = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: cron
 Requires: python-curl
-PreReq:         %fillup_prereq %insserv_prereq
 %else
 Requires: /usr/sbin/crond
 Requires: python-pycurl
@@ -81,9 +80,6 @@ that is specific to the Host system (a.k.a. Dom0).
 
 %prep
 %setup -q
-%if 0%{?suse_version}
-cp scripts/rhn-virtualization-host.SUSE scripts/rhn-virtualization-host
-%endif
 
 %build
 make -f Makefile.rhn-virtualization
@@ -95,9 +91,10 @@ make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir
 %if 0%{?fedora} || (0%{?rhel} && 0%{?rhel} > 5)
 find $RPM_BUILD_ROOT -name "localvdsm*" -exec rm -f '{}' ';'
 %endif
-# add rclink
-mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
-ln -sf ../../etc/init.d/rhn-virtualization-host $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-virtualization-host
+
+%if 0%{?suse_version}
+rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -105,27 +102,16 @@ rm -rf $RPM_BUILD_ROOT
 %if 0%{?suse_version}
 
 %post host
-%{fillup_only -n rhn-virtualization-host}
 if [ -d /proc/xen ]; then
     # xen kernel is running
     # change the default template to the xen version
     sed -i 's@^IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-kvm-template.xml@IMAGE_CFG_TEMPLATE=/etc/sysconfig/rhn/studio-xen-template.xml@' /etc/sysconfig/rhn/image.cfg
 fi
 
-%preun host
-%{stop_on_removal rhn-virtualization-host}
-
-%postun host
-%{insserv_cleanup}
-
 %else
 %post host
 /sbin/chkconfig --add rhn-virtualization-host
-%if 0%{?suse_version}
-/sbin/service cron try-restart ||:
-%else
 /sbin/service crond condrestart
-%endif
 if [ -d /proc/xen ]; then
     # xen kernel is running
     # change the default template to the xen version
@@ -138,11 +124,7 @@ if [ $1 = 0 ]; then
 fi
 
 %postun host
-%if 0%{?suse_version}
-/sbin/service cron try-restart ||:
-%else
 /sbin/service crond condrestart
-%endif
 %endif
 
 %files common
@@ -168,8 +150,9 @@ fi
 %endif
 %dir %{rhn_conf_dir}/virt
 %dir %{rhn_conf_dir}/virt/auto
+%if ! 0%{?suse_version}
 %{_initrddir}/rhn-virtualization-host
-%{_sbindir}/rcrhn-virtualization-host
+%endif
 %config(noreplace) %attr(644,root,root) %{cron_dir}/rhn-virtualization.cron
 %{rhn_dir}/virtualization/domain_config.py*
 %{rhn_dir}/virtualization/domain_control.py*
