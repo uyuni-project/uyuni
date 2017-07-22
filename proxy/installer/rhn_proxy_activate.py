@@ -84,10 +84,10 @@ def _getProtocolError(e, hostname=''):
 
     if e.errcode == 407:
         return 47, "ERROR: http proxy authentication required"
-    elif e.errcode == 404:
+    if e.errcode == 404:
         return 44, "ERROR: host not found%s" % hostname
-    else:
-        return 10, "ERROR: connection issues? %s" % repr(e)
+
+    return 10, "ERROR: connection issues? %s" % repr(e)
 
 
 def _getSocketError(e, hostname=''):
@@ -102,10 +102,10 @@ def _getSocketError(e, hostname=''):
 
     if 'host not found' in e.args:
         return 11, 'ERROR: hostname could not be resolved%s' % hostname
-    elif 'connection refused' in e.args:
+    if 'connection refused' in e.args:
         return 12, 'ERROR: "connection refused"%s' % hostname
-    else:
-        return 10, "ERROR: connection issues? %s" % repr(e)
+
+    return 10, "ERROR: connection issues? %s" % repr(e)
 
 
 def _getActivationError(e):

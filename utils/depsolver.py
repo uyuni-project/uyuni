@@ -179,7 +179,7 @@ class DepSolver:
         reqlist = {}
         notfound = {}
         for pkg in results:
-            if len(results[pkg]) == 0:
+            if not results[pkg]:
                 continue
             for req in results[pkg]:
                 rlist = results[pkg][req]
@@ -201,7 +201,7 @@ class DepSolver:
     def printable_result(results):
         print_doc_str = ""
         for pkg in results:
-            if len(results[pkg]) == 0:
+            if not results[pkg]:
                 continue
             for req in results[pkg]:
                 rlist = results[pkg][req]
