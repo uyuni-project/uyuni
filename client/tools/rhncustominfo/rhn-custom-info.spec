@@ -1,11 +1,11 @@
 Name: rhn-custom-info
 Summary: Set and list custom values for Spacewalk-enabled machines
+Version: 5.4.35
+Release: 1%{?dist}
 Group: Applications/System
 License: GPLv2
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 URL:     https://github.com/spacewalkproject/spacewalk
-Version: 5.4.34
-Release: 1%{?dist}
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch: noarch
 BuildRequires: python-devel
@@ -68,6 +68,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/rhn-custom-info.*
 
 %changelog
+* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.35-1
+- move version and release before sources
+
 * Mon Jul 17 2017 Jan Dobes 5.4.34-1
 - Updated links to github in spec files
 - Migrating Fedorahosted to GitHub

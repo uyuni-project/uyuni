@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.95
+Version: 2.7.100
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -994,6 +994,24 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Thu Jul 20 2017 Grant Gainey 2.7.100-1
+- 1461898 - fix pulldown for 'Manage Software Repositories' page  * Use call
+  that returns correctly-sorted channel-hierarchy  * Fix JSP to stop using
+  <optgroup> in ways that are bad for display  * Remove HQL listCustomChannels
+  that doesn't do what we thought it did
+
+* Thu Jul 20 2017 Jiri Dostal <jdostal@redhat.com> 2.7.99-1
+- 1455887 - schedule.failSystemAction API overwrites system events history
+
+* Thu Jul 20 2017 Jiri Dostal <jdostal@redhat.com> 2.7.98-1
+- 1455880 - failSystemAction does not check system action id
+
+* Tue Jul 18 2017 Eric Herget <eherget@redhat.com> 2.7.97-1
+- PR 476 - Fix child nav items not being shown as active
+
+* Tue Jul 18 2017 Grant Gainey 2.7.96-1
+- 1458722 - Only make org-changes, if the org is allowed to be changed
+
 * Mon Jul 17 2017 Jan Dobes 2.7.95-1
 - Merging frontend L10N from Zanata
 

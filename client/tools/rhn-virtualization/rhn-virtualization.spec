@@ -10,6 +10,8 @@
 
 Name:           rhn-virtualization
 Summary:        Spacewalk action support for virualization
+Version:        5.4.59
+Release:        1%{?dist}
 
 Group:          System Environment/Base
 License:        GPLv2
@@ -17,8 +19,6 @@ URL:            https://github.com/spacewalkproject/spacewalk
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 
-Version:        5.4.58
-Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python
@@ -193,6 +193,9 @@ fi
 
 
 %changelog
+* Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.59-1
+- move version and release before sources
+
 * Mon Jul 17 2017 Jan Dobes 5.4.58-1
 - Updated links to github in spec files
 - Migrating Fedorahosted to GitHub
