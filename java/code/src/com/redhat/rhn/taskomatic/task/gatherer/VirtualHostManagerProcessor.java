@@ -109,7 +109,7 @@ public class VirtualHostManagerProcessor {
      * @param jsonHost object containing the information about the host and its VMs
      */
     private void processVirtualHost(String hostLabel, JSONHost jsonHost) {
-        Server server = updateAndGetServer(hostLabel, jsonHost, "kubernetes");
+        Server server = updateAndGetServer(hostLabel, jsonHost, VirtualHostManagerFactory.KUBERNETES);
         if (server == null) {
             VirtualHostManagerNodeInfo nodeInfo = updateAndGetNodeInfo(hostLabel, jsonHost);
             if (!virtualHostManager.getNodes().contains(nodeInfo)) {
