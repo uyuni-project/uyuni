@@ -5,6 +5,7 @@ const Button = require("../components/buttons").Button;
 const ModalButton = require("../components/dialogs").ModalButton;
 const DeleteDialog = require("../components/dialogs").DeleteDialog;
 const BootstrapPanel = require("../components/panel").BootstrapPanel;
+const {Utils} = require("../utils/functions");
 
 class VirtualHostManagerDetails extends React.Component {
 
@@ -57,19 +58,23 @@ class VirtualHostManagerDetails extends React.Component {
 
 function ConfigParams(props) {
     const data = props.data;
-    const params = {
-        "kubeconfig": t("Configuration file"),
-        "context": t("Context")
-    };
 
     const items = Object.keys(data.config).map(key => {
         return (
             <tr>
-                <td>{params[key] || key}:</td>
+                <td>{Utils.capitalize(key)}:</td>
                 <td>{data.config[key]}</td>
             </tr>
         );
     });
+    if (data.credentials && data.credentials.username) {
+        items.push((
+           <tr>
+               <td>{t("Username")}:</td>
+               <td>{data.credentials.username}</td>
+           </tr>
+       ));
+    }
 
     return (
         <div className="table-responsive">

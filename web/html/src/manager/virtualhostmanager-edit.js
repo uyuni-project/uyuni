@@ -1,8 +1,13 @@
 'use strict';
 
 const React = require("react");
+const ReactDOM = require("react-dom");
+const {Panel} = require("../components/panel");
 const {SubmitButton, Button} = require("../components/buttons");
 const Input = require("../components/input");
+const Network = require("../utils/network");
+const {Messages} = require("../components/messages");
+const {Utils} = require("../utils/functions");
 
 class VirtualHostManagerEdit extends React.Component {
 
@@ -10,11 +15,15 @@ class VirtualHostManagerEdit extends React.Component {
         super(props);
 
         this.state = {
-            model: {},
+            model: {
+                gathererModule: this.props.type
+            },
             messages: []
         };
 
-        ["onFormChange", "onValidate", "clearFields"]
+        ["onFormChange", "onValidate", "clearFields", "renderForm",
+         "onCreate", "onUpdate", "renderKubernetesForm", "renderModuleParamsForm",
+         "handleKubeconfigUpload", "bindForm"]
             .forEach(method => this[method] = this[method].bind(this));
 
         if(this.isEdit()) {
@@ -22,8 +31,31 @@ class VirtualHostManagerEdit extends React.Component {
         }
     }
 
+    componentWillMount() {
+        Network.get("/rhn/manager/api/vhms/module/" + this.props.type.toLowerCase())
+            .promise.then(data => {
+                this.setState({vhmParams: data});
+            })
+            .catch((err) => {
+                console.log(err);
+                this.setState({
+                    messages: errorMessages(["Internal server error"])
+                });
+            });
+    }
+
     setValues(item) {
-        //TODO: Set values for edit
+        var m = {};
+        m["id"] = item.id;
+        m["label"] = item.label;
+        m["gathererModule"] = item.gathererModule;
+        Object.keys(item.config).forEach(cfg => {
+            m["module_" + cfg] = item.config[cfg]
+        });
+        if (item.credentials) {
+            m["module_username"] = item.credentials.username;
+        }
+        Object.assign(this.state, {model: m});
     }
 
     isEdit() {
@@ -34,17 +66,29 @@ class VirtualHostManagerEdit extends React.Component {
         if(!this.isEdit()) {
             return false;
         }
+        let request = null;
+        if (this.props.type.toLowerCase()  === "kubernetes") {
+            request = Network.post("/rhn/manager/api/vhms/update/kubernetes",
+                new FormData(this.form), false, false);
+        } else {
+            request = Network.post("/rhn/manager/api/vhms/update/" + this.state.model.id,
+                $(this.form).serialize());
+        }
 
-        return Network.post(
-            "/rhn/manager/api/vhms/update/" + this.props.item.id,
-            JSON.stringify(model),
-            "application/json"
-        ).promise.then(data => {
+        return request.promise.then(data => {
             if(data.success) {
                 Utils.urlBounce("/rhn/manager/vhms");
             } else {
-                this.props.onMessage(data.messages);
+               this.setState({
+                messages: errorMessages(data.errors)
+               });
             }
+        })
+        .catch((err) => {
+           console.log(err);
+           this.setState({
+                messages: errorMessages(["Internal server error"])
+            });
         });
     }
 
@@ -52,18 +96,30 @@ class VirtualHostManagerEdit extends React.Component {
         if(this.isEdit()) {
             return false;
         }
+        let request = null;
+        if (this.props.type.toLowerCase()  === "kubernetes") {
+            request = Network.post("/rhn/manager/api/vhms/create/kubernetes",
+                new FormData(this.form), false, false);
+        } else {
+            request = Network.post("/rhn/manager/api/vhms/create",
+                $(this.form).serialize());
+        }
 
-        return Network.post(
-            "/rhn/manager/api/vhms/create/" + this.props.type,
-            JSON.stringify(model),
-            "application/json"
-        ).promise.then(data => {
-            if(data.success) {
-                Utils.urlBounce("/rhn/manager/vhms");
-            } else {
-                this.props.onMessage(data.messages);
-            }
-        });
+        return request.promise.then(data => {
+                if(data.success) {
+                    Utils.urlBounce("/rhn/manager/vhms");
+                } else {
+                   this.setState({
+                        messages: errorMessages(data.errors)
+                    });
+                }
+            })
+            .catch((err) => {
+               console.log(err);
+               this.setState({
+                    messages: errorMessages(["Internal server error"])
+                });
+            });
     }
 
     onFormChange(model) {
@@ -73,9 +129,15 @@ class VirtualHostManagerEdit extends React.Component {
     }
 
     onValidate(isValid) {
-        this.setState({
-            isInvalid: !isValid
-        });
+        if (this.props.type.toLowerCase()  === "kubernetes") {
+            this.setState({
+                isInvalid: !isValid || !this.state.model.validKubeconfig
+            });
+        } else {
+            this.setState({
+                isInvalid: !isValid
+            });
+        }
     }
 
     clearFields() {
@@ -86,7 +148,8 @@ class VirtualHostManagerEdit extends React.Component {
 
     renderButtons() {
         var buttons = [
-            <Button id="clear-btn" className="btn-default pull-right" icon="fa-eraser" text={t("Clear fields")} handler={this.clearFields}/>
+           <Button id="clear-btn" className="btn-default pull-right" icon="fa-eraser" text={t("Clear fields")} handler={this.clearFields}/>,
+           <Button id="back" className="btn-default pull-right" icon="fa-chevron-left" text={t("Back")}  title={t("Back")} handler={this.props.onCancel}/>
         ];
         if(this.isEdit()) {
             buttons.unshift(<SubmitButton id="update-btn" className="btn-success" icon="fa-edit" text={t("Update")} disabled={this.state.isInvalid}/>);
@@ -97,54 +160,137 @@ class VirtualHostManagerEdit extends React.Component {
         return buttons;
     }
 
-    render() {
+    paramField(name, defaultValue) {
+        let required = this.isEdit() ? name != "password" && name != "username" : true;
+        if (name.toLowerCase() === "password") {
+            return (<Input.Password name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
+                            hint={ this.isEdit() ? "Fill this field to change the password." : null }/>);
+        } else {
+            return (<Input.Text name={"module_" + name} label={Utils.capitalize(name)} required={required} labelClass="col-md-3" divClass="col-md-6"
+                            />);
+        }
+
+    }
+
+    renderModuleParamsForm() {
+        if (!this.state.vhmParams) {
+            return null;
+        }
+        var fields = Object.keys(this.state.vhmParams)
+            .map(param => this.paramField(param, this.state.vhmParams[param]));
+
+        fields.unshift(
+            <Input.Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
+            );
+
+        fields.unshift(
+            <Input.Text name="gathererModule" label={t("Gatherer module")} disabled labelClass="col-md-3" divClass="col-md-6"/>
+            );
         return (
-        <Input.Form model={this.state.model} className="virtualhostmanager-form"
-            onChange={this.onFormChange}
-            onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
-            onValidate={this.onValidate}
-        >
-            { type === "file" ?
-                <FileBasedFormFields/>
-            : (type === "vmware" ?
-                <VMWareBasedFormFields/>
-            : (type === "kubernetes" ?
-                <KubernetesFormFields/> : null)
-                )
-            }
-            <div className="form-group">
-                <div className="col-md-offset-3 col-md-6">
-                    {this.renderButtons()}
-                </div>
+            <div>
+                { fields }
             </div>
-        </Input.Form>
         );
     }
+
+    handleKubeconfigUpload(event) {
+        let kubeconfig = event.target.files[0];
+        let formData = new FormData();
+        formData.append("kubeconfig", kubeconfig);
+        Network.post("/rhn/manager/api/vhms/kubeconfig/prevalidate", formData, false, false)
+            .promise
+            .then(data => {
+                if (data.contexts) {
+                    this.setState({
+                        messages: null,
+                        model: Object.assign(this.state.model, {
+                               contexts: data.contexts,
+                               currentContext: data.currentContext,
+                               validKubeconfig: true
+                        })
+                    });
+                } else if (data.errors) {
+                    this.setState({
+                        messages: errorMessages(data.errors),
+                        model: Object.assign(this.state.model, {
+                           validKubeconfig: true
+                        })
+                    });
+                } else {
+                    this.setState({
+                        messages: errorMessages(["Invalid response"]),
+                        model: Object.assign(this.state.model, {
+                           validKubeconfig: true
+                        })
+                    });
+                }
+            });
+    }
+
+    renderKubernetesForm() {
+        var contextSelect;
+        if (this.state.model.contexts) {
+            contextSelect = <Input.Select name="context" label={t("Current Context")} labelClass="col-md-3" divClass="col-md-6"
+                value={this.state.model.currentContext}>
+            { this.state.model.contexts.map(k =>
+                <option key={k} value={k}>{k}</option>) }
+            </Input.Select>;
+        }
+
+        return (
+            <div>
+                <Input.Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
+                <Input.FormGroup>
+                    <Input.Label name={t("Kubeconfig file")} className="col-md-3" required={true}/>
+                    <div className="col-md-6">
+                        <input name="kubeconfig" type="file" onChange={this.handleKubeconfigUpload} className="col-md-6" />
+                    </div>
+                </Input.FormGroup>
+                { contextSelect }
+            </div>
+        );
+    }
+
+    renderForm() {
+        if (this.props.type.toLowerCase()  === "kubernetes") {
+            return this.renderKubernetesForm();
+        } else if (this.props.type) {
+            return this.renderModuleParamsForm();
+        }
+    }
+
+    bindForm(f) {
+        this.form = f;
+    }
+
+    render() {
+        return (
+            <Input.Form model={this.state.model} className="virtualhostmanager-form"
+                onChange={this.onFormChange}
+                onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
+                onValidate={this.onValidate}
+                formRef={ this.bindForm }
+            >
+                {this.state.messages}
+                <input type="hidden" name="module" value={this.props.type.toLowerCase()}/>
+                {
+                    this.props.type ? this.renderForm() : null
+                }
+                <div className="form-group">
+                    <div className="col-md-offset-3 col-md-6">
+                        {this.renderButtons()}
+                    </div>
+                </div>
+            </Input.Form>
+        );
+    }
+
 }
 
-function FileBasedFormFields(props) {
-    return (
-        <div>
-            <Input.Text name="label" label={t("Label")} required labelClass="col-md-3" divClass="col-md-6"/>
-            <Input.Text name="url" label={t("URL")} required labelClass="col-md-3" divClass="col-md-6"/>
-        </div>
-    );
-}
-
-function VMWareBasedFormFields(props) {
-    return (
-        <div>
-        //TODO: VMware form
-        </div>
-    );
-}
-
-function KubernetesFormFields(props) {
-    return (
-        <div>
-        //TODO: kubernetes form
-        </div>
-    );
+function errorMessages(errors) {
+    return <Messages items={errors.map(msg => {
+                 return {severity: "error", text: msg};
+             })}/>;
 }
 
 module.exports = {

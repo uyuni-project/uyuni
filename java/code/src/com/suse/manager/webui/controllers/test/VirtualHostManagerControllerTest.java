@@ -122,7 +122,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
             VirtualHostManagerController.setMockFactory(new VirtualHostManagerFactory() {
                 @Override
                 public boolean isConfigurationValid(String moduleName,
-                        Map<String, String> parameters) {
+                        Map<String, String> parameters, String... ignoreParams) {
                     return true;
                 }
             });
