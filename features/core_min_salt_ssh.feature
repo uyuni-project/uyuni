@@ -33,7 +33,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I follow "ssh-minion" link
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area
-    And I select "Test Base Channel" from "new_base_channel_id"
+    And I select "Test-Channel-x86_64" from "new_base_channel_id"
     And I click on "Confirm"
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
