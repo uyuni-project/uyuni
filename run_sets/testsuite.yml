@@ -13,7 +13,7 @@
 - features/core_srv_users.feature
 - features/core_srv_credentials.feature
 - features/core_srv_create_activationkey.feature
-- features/core_srv_channels.feature    # <-- check if can be idempotent
+
 
 - features/core_trad_register_client.feature
 - features/core_min_bootstrap.feature
@@ -82,6 +82,7 @@
 - features/trad_sp_migration.feature
 - features/srv_salt.feature
 - features/trad_lock_packages.feature
+- features/srv_check_channels_page.feature
 - features/min_salt_minion_details.feature
 - features/trad_check_registration.feature
 - features/min_salt_minions_page.feature
