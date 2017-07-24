@@ -97,16 +97,16 @@ Feature: Clone a Channel
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see "Channel Clon of Test-Channel-x86_64 has been deleted." text
+    Then I should see a "Channel Clon of Test-Channel-x86_64 has been deleted." text
     Given I am on the manage software channels page
     When I follow "Clone 2 of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see "Channel Clone 2 of Test-Channel-x86_64 has been deleted." text
+    Then I should see a "Channel Clone 2 of Test-Channel-x86_64 has been deleted." text
     Given I am on the manage software channels page
     When I follow "Clone 3 of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see "Channel Clone 3 of Test-Channel-x86_64 has been deleted." text
+    Then I should see a "Channel Clone 3 of Test-Channel-x86_64 has been deleted." text
