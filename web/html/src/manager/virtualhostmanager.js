@@ -2,12 +2,13 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const Panel = require("../components/panel").Panel;
-const DropdownButton = require("../components/buttons").DropdownButton;
 const Network = require("../utils/network");
-const VirtualHostManagerList = require("./virtualhostmanager-list").VirtualHostManagerList;
-const VirtualHostManagerDetails = require("./virtualhostmanager-details").VirtualHostManagerDetails;
-const VirtualHostManagerEdit = require("./virtualhostmanager-edit").VirtualHostManagerEdit;
+const {Panel} = require("../components/panel");
+const {DropdownButton} = require("../components/buttons");
+const {Messages} = require("../components/messages");
+const {VirtualHostManagerList} = require("./virtualhostmanager-list");
+const {VirtualHostManagerDetails} = require("./virtualhostmanager-details");
+const {VirtualHostManagerEdit} = require("./virtualhostmanager-edit");
 
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 
@@ -74,18 +75,18 @@ class VirtualHostManager extends React.Component {
         return Network.post("/rhn/manager/api/vhms/delete",
                 JSON.stringify(idList), "application/json").promise.then(data => {
             if (data.success) {
+                this.getVhmList();
                 this.setState({
-                    messages: <Messages items={[{severity: "success", text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]}]}/>,
-                    vhms: this.state.vhms.filter(vhm => !idList.includes(vhm.id))
+                    messages: <Messages items={[{severity: "success", text: "Virtual Host Manager has been deleted."}]}/>
                 });
             } else {
                 this.setState({
                     messages: <Messages items={state.messages.map(msg => {
-                        return {severity: "error", text: msgMap[msg]};
+                        return {severity: "error", text: msg};
                     })}/>
                 });
             }
-        }).promise;
+        });
     }
 
     getCreateType() {
@@ -139,7 +140,7 @@ class VirtualHostManager extends React.Component {
 
     render() {
         const panelButtons = <div className="pull-right btn-group">
-            { this.state.action !== "create" &&
+            { (this.state.action !== "create" && this.state.action !== "edit" && this.state.action !== "details") &&
                 <DropdownButton
                     text={t("Create")}
                     icon="fa-plus"
@@ -159,13 +160,12 @@ class VirtualHostManager extends React.Component {
                 icon="spacewalk-icon-virtual-host-manager"
                 button={panelButtons}
             >
-                {this.state.messages}
                 { this.state.action == 'details' ?
                     <VirtualHostManagerDetails data={this.state.selected} onCancel={this.handleBackAction} onEdit={this.handleEditAction} onDelete={this.deleteSingle}/>
                 : this.state.action == 'create' ?
-                    <VirtualHostManagerEdit type={this.getCreateType()}/>
+                    <VirtualHostManagerEdit type={this.getCreateType()} onCancel={this.handleBackAction}/>
                 : this.state.action == 'edit' ?
-                    <VirtualHostManagerEdit item={this.state.selected} type={this.state.selected.gathererModule}/>
+                    <VirtualHostManagerEdit item={this.state.selected} type={this.state.selected.gathererModule} onCancel={this.handleBackAction}/>
                 :
                     <VirtualHostManagerList data={this.state.vhms} onSelect={this.handleDetailsAction} onEdit={this.handleEditAction} onDelete={this.deleteVhms}/>
                 }

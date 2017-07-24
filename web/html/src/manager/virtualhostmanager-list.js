@@ -39,6 +39,12 @@ class VirtualHostManagerList extends React.Component {
                     cell={(row, criteria) => <a href={"#/details/" + row.id}><i className="fa spacewalk-icon-virtual-host-manager"/> {row.label}</a>}
                 />
                 <Column
+                    columnKey="gathererModule"
+                    comparator={Utils.sortByText}
+                    header={t('Gatherer module')}
+                    cell={(row, criteria) => row.gathererModule}
+                />
+                <Column
                     columnKey="org"
                     comparator={Utils.sortByText}
                     header={t('Organization')}
@@ -84,7 +90,7 @@ class VirtualHostManagerList extends React.Component {
                       {this.state.itemsToDelete.length == 1 ? t("Are you sure you want to delete the selected item?") : t("Are you sure you want to delete selected items? ({0} items selected)", this.state.itemsToDelete.length)}
                   </span>
                 }
-                onConfirm={(item) => this.props.onDelete(this.state.itemsToDelete)}
+                onConfirm={(item) => this.props.onDelete(this.state.itemsToDelete.map((item) => item.id))}
                 onClosePopUp={() => this.selectToDelete([])}
             />
         </div>
