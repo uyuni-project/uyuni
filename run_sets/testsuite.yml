@@ -114,8 +114,5 @@
 - features/srv_cve_audit.feature
 - features/min_salt_install_with_staging.feature
 
-# !!!!! NOT_IDEMPOTENT !!!!!!!!
-- features/srv_compare_channel.feature
-
 # Debug suse-manager server ( this should be removed and placed in tools)
 - features/spacewalk_debug.feature
