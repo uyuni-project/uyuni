@@ -43,7 +43,7 @@ public class TaskoTopCollector {
 
         // collect unfinished tasks
         List<TaskoTopJob> jobs = TaskoFactory.listUnfinishedRuns().stream()
-                .map(t -> new TaskoTopJob(TaskoFactory.lookupRunById(t.getId()), userIn))
+                .map(t -> new TaskoTopJob(t, userIn))
                 .sorted((j1, j2) -> j1.getId().compareTo(j2.getId()))
                 .collect(toList());
 
@@ -51,7 +51,7 @@ public class TaskoTopCollector {
         Date limitTime = new Date(System.currentTimeMillis() - SLICE_TIME);
         jobs.addAll(TaskoFactory.listRunsNewerThan(limitTime).stream()
                 .filter(j -> j.getEndTime() != null)
-                .map(t -> new TaskoTopJob(TaskoFactory.lookupRunById(t.getId()), userIn))
+                .map(t -> new TaskoTopJob(t, userIn))
                 .sorted((j1, j2) -> j1.getId().compareTo(j2.getId()))
                 .collect(toList()));
 
