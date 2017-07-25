@@ -91,22 +91,36 @@ Feature: Clone a Channel
     And I should see a "mcalmer" text
     And I should see a "CVE-1999-9998" link
 
+  Scenario: Compare channel Packages (bsc#904690)
+    Given I am on the manage software channels page
+    When I follow "Clone 2 of Test-Channel-x86_64"
+    And I follow "Packages" in the content area
+    And I follow "Compare"
+    And I select "Clone 3 of Test-Channel-x86_64" from "selected_channel"
+    And I click on "View Packages"
+    Then I should see a "andromeda-dummy" text
+    And I should see a "2.0-1.1" link
+    And I should see a "This channel only" text
+
   Scenario: CLEANUP: Remove cloned channels
     Given I am on the manage software channels page
     When I follow "Clone of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Channel Clon of Test-Channel-x86_64 has been deleted." text
-    Given I am on the manage software channels page
+    Then I should see a "Clone of Test-Channel-x86_64" text
+    Then I should see a "has been deleted." text
+    Given I follow "Overview" in the left menu
     When I follow "Clone 2 of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Channel Clone 2 of Test-Channel-x86_64 has been deleted." text
-    Given I am on the manage software channels page
+    Then I should see a "Clone 2 of Test-Channel-x86_64" text
+    Then I should see a "has been deleted." text
+    Given I follow "Overview" in the left menu
     When I follow "Clone 3 of Test-Channel-x86_64"
     And I follow "Delete software channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Channel Clone 3 of Test-Channel-x86_64 has been deleted." text
+    Then I should see a "Clone 3 of Test-Channel-x86_64" text
+    Then I should see a "has been deleted." text
