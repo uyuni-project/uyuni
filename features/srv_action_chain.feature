@@ -244,6 +244,6 @@ Feature: Test action chaining
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: remove pkgs and repo used in action chain
-    When I run "zypper -n rm andromeda-dummy" on "sle-client"
+    When I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-client" without error control
-    And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client"
+    And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control

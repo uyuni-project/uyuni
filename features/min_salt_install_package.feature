@@ -3,11 +3,16 @@
 
 Feature: Install a patch the client via salt through the UI
 
-  Scenario: Prequisite: Install virgo-dummy-1.0 packages
-    Given I am authorized as "admin" with password "admin"
+  Scenario: Pre-requisite: Install virgo-dummy-1.0 packages
+    Given I am on the Systems overview page of this "sle-minion"
     And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
+    And I follow "Software" in the content area
+    And I follow "List / Remove" in the content area
+    And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter"
+    And I wait until i see "virgo-dummy" text, refreshing the page
     When I follow "Admin"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"

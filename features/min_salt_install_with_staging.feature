@@ -16,7 +16,7 @@ Feature: Install a package on the minion with staging enabled
     And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
-    And I run "zypper -n in --oldpackage orion-dummy-1.1" on "sle-minion" without error control
+    And I run "zypper -n rm orion-dummy" on "sle-minion" without error control
     When I follow "Admin"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"
