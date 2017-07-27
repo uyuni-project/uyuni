@@ -54,14 +54,13 @@ Feature:  Build Container images with SUSE Manager. Basic image
   Scenario: Apply the highstate to container buid host
   Given I am on the Systems overview page of this "sle-minion"
   Then I should see a "[Container Build Host]" text
-  #And I run "zypper mr -e Devel_Galaxy_Manager_Head_SLE-Manager-Tools-12-x86_64" on "sle-minion"
+  And I wait until no Salt job is running on "sle-minion"
   And I run "zypper mr -e `grep -h SLE-Manager-Tools-12-x86_64] /etc/zypp/repos.d/* | sed 's/\[//' | sed 's/\]//'`" on "sle-minion"
   And I run "zypper mr -e SLE-Module-Containers-SLE-12-x86_64-Pool" on "sle-minion"
   And I run "zypper mr -e SLE-Module-Containers-SLE-12-x86_64-Update" on "sle-minion"
   And I run "zypper mr -e SLE-12-SP2-x86_64-Pool" on "sle-minion"
   And I run "zypper mr -e SLE-12-SP2-x86_64-Update" on "sle-minion"
   And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
-  And I wait until no Salt job is running on "sle-minion"
   And I apply highstate on "sle-minion"
   Then I wait until "docker" service is up and running on "sle-minion"
   # FIXME: We need a test for image store with credentials
@@ -162,3 +161,12 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I click on "submit-btn"
   And I wait for "5" seconds
   Then I should see a "GUI_DOCKERADMIN" text
+
+  Scenario: CLEANUP: Reset channels on the sle-minion
+    Given I am authorized as "admin" with password "admin"
+    And I run "zypper mr -d `grep -h SLE-Manager-Tools-12-x86_64] /etc/zypp/repos.d/* | sed 's/\[//' | sed 's/\]//'`" on "sle-minion"
+    And I run "zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Pool" on "sle-minion"
+    And I run "zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Update" on "sle-minion"
+    And I run "zypper mr -d SLE-12-SP2-x86_64-Pool" on "sle-minion"
+    And I run "zypper mr -d SLE-12-SP2-x86_64-Update" on "sle-minion"
+    And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"

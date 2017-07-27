@@ -134,6 +134,27 @@ Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, colum
   fail unless page.has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
 end
 
+Then(/^I reload the page until it does contain a "([^"]*)" text in the table (.*) row$/) do |text, row|
+  found = false
+  idx = ['first', 'second', 'third', 'fourth'].index(row)
+  fail("Unknown row '#{row}'") unless idx
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        if page.has_xpath?("//table//tr[#{idx + 1}]//td[contains(text(), '#{text}')]")
+          found = true
+          break
+        end
+        sleep(5)
+        visit current_url
+      end
+    end
+  rescue Timeout::Error
+    raise "'#{text}' is not found in the '#{row}' row of the table after wait and reload page"
+  end
+  fail unless found
+end
+
 Then(/^I should see a "([^"]*)" link in the (left menu|tab bar|tabs|content area)$/) do |arg1, arg2|
   tag = case arg2
   when /left menu/ then "aside"

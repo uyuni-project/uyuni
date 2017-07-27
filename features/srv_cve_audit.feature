@@ -19,7 +19,7 @@ Feature: CVE Audit
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I reload the page
-    And I try to reload page until it does not contain "RUNNING" text
+    And I reload the page until it does contain a "FINISHED" text in the table first row
 
   Scenario: schedule channel data refresh
     Given I am authorized as "admin" with password "admin"
@@ -30,7 +30,7 @@ Feature: CVE Audit
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I reload the page
-    And I try to reload page until it does not contain "RUNNING" text
+    And I reload the page until it does contain a "FINISHED" text in the table first row
 
   Scenario: feature should be accessible
     Given I am authorized as "admin" with password "admin"
@@ -90,7 +90,7 @@ Feature: CVE Audit
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I reload the page
-    And I try to reload page until it does not contain "RUNNING" text
+    And I reload the page until it does contain a "FINISHED" text in the table first row
     And I am logged in via XML-RPC/cve audit as user "admin" and password "admin"
     When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for this client
@@ -134,4 +134,4 @@ Feature: CVE Audit
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I reload the page
-    And I try to reload page until it does not contain "RUNNING" text
+    And I reload the page until it does contain a "FINISHED" text in the table first row
