@@ -56,7 +56,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I reload the page
-    And I try to reload page until it does not contain "RUNNING" text
+    And I reload the page until it does contain a "FINISHED" text in the table first row
 
   Scenario: Install a package for ssh minion
     Given I am authorized as "testing" with password "testing"
