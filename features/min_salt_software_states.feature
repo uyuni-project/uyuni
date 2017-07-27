@@ -18,7 +18,7 @@ Feature: Check the Salt package state UI
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I reload the page
-    And I try to reload page until it does not contain "RUNNING" text
+    And I reload the page until it does contain a "FINISHED" text in the table first row
 
   Scenario: Subscribe to base channel
     Given I am on the Systems overview page of this "sle-minion"
@@ -129,4 +129,4 @@ Feature: Check the Salt package state UI
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I reload the page
-    And I try to reload page until it does not contain "RUNNING" text
+    And I reload the page until it does contain a "FINISHED" text in the table first row
