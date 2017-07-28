@@ -129,9 +129,6 @@
                             <rhn:require acl="all_systems_in_set_have_feature(ftr_tag_system)">
                                 <li><bean:message key="ssm.overview.provisioning.rollback"/></li>
                             </rhn:require>
-                            <rhn:require acl="all_systems_in_set_have_feature(ftr_remote_command)">
-                                <li><bean:message key="ssm.overview.provisioning.remotecommands"/></li>
-                            </rhn:require>
                             <rhn:require acl="all_systems_in_set_have_feature(ftr_power_management)">
                                 <li><bean:message key="ssm.overview.provisioning.powermanagement.configure"/></li>
                                 <li><bean:message key="ssm.overview.provisioning.powermanagement.operations"/></li>
@@ -156,6 +153,9 @@
                                     <bean:message key="and"/> <bean:message key="ssm.overview.misc.systempreferences"/>
                                 </rhn:require>
                             </li>
+                        </rhn:require>
+                        <rhn:require acl="all_systems_in_set_have_feature(ftr_remote_command)">
+                            <li><bean:message key="ssm.overview.provisioning.remotecommands"/></li>
                         </rhn:require>
                         <rhn:require acl="all_systems_in_set_have_feature(ftr_system_custom_values)">
                           <li><bean:message key="ssm.overview.misc.customvalues"/></li>
