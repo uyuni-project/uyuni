@@ -81,16 +81,12 @@ When(/^file "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
 end
 
 When(/^I check the tomcat logs for errors$/) do
-  output = sshcmd("grep ERROR /var/log/tomcat6/catalina.out", ignore_err: true)[:stdout]
-  output.each_line do |line|
-    puts line
-  end
-end
-
-When(/^I check the tomcat logs for NullPointerExceptions$/) do
-  output = sshcmd("grep -n1 NullPointer /var/log/tomcat6/catalina.out", ignore_err: true)[:stdout]
-  output.each_line do |line|
-    puts line
+  output = $server.run('cat /var/log/tomcat/*')
+  msgs = ["ERROR", "NullPointer"]
+  msgs.each do |msg|
+    if output.include? msg
+      raise "-#{msg}-  msg found on tomcat logs"
+    end
   end
 end
 

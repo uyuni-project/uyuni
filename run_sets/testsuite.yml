@@ -114,5 +114,7 @@
 - features/srv_cve_audit.feature
 - features/min_salt_install_with_staging.feature
 
-# Debug suse-manager server ( this should be removed and placed in tools)
-- features/spacewalk_debug.feature
+# Post run feature (non idempotent)  
+# Debug suse-manager server is non idempotent
+# because it gather files and perfoms log checks 
+- features/srv_susemanager_debug.feature

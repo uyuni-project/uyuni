@@ -11,7 +11,6 @@ Feature:  Debug Suse-Manager server after the testsuite has run
 
   Scenario: Check the tomcat log on manager-server
     Then I check the tomcat logs for errors
-    And I check the tomcat logs for NullPointerExceptions
 
   Scenario: Check that no scheduled events have failed on manager server
      Then there should be no failed scheduled actions
