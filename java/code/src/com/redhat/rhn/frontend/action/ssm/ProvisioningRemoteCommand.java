@@ -33,6 +33,8 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.StringUtil;
@@ -328,16 +330,13 @@ public class ProvisioningRemoteCommand extends RhnAction implements
      */
     @Override
     public List<SystemOverview> getResult(RequestContext context) {
-        List<SystemOverview> dataset = new ArrayList<>();
-        List<SystemOverview> sysOvr = SystemManager.inSet(context.getCurrentUser(),
-            RhnSetDecl.SYSTEMS.getLabel(), true);
-        for (int i = 0; i < sysOvr.size(); i++) {
-            if (SystemManager.serverHasFeature(sysOvr.get(i).getId(),
-                    "ftr_remote_command") &&
-                    SystemManager.clientCapable(sysOvr.get(i).getId(), "script.run")) {
-                dataset.add(sysOvr.get(i));
-            }
-        }
+        List<SystemOverview> dataset = SystemManager
+                .inSet(context.getCurrentUser(), RhnSetDecl.SYSTEMS.getLabel(), true)
+                .stream()
+                .filter(s -> SystemManager.serverHasFeature(
+                        s.getId(), "ftr_remote_command") &&
+                        SystemManager.clientCapable(s.getId(), "script.run"))
+                .collect(toList());
 
         context.getRequest().setAttribute("affectedSystemsCount", dataset.size());
         return dataset;
