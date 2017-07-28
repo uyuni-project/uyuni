@@ -55,3 +55,13 @@ Feature: Explore the Minions page
     And the salt-master can reach "sle-minion"
     When I get OS information of "sle-minion" from the Master
     Then it should contain a "SLES" text
+
+  Scenario: CLEANUP: Re-apply highstate to restore channels on the minion
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Software" in the content area
+    Then I follow "Software Channels" in the content area
+    And I select "Test-Channel-x86_64" from "new_base_channel_id"
+    And I click on "Confirm"
+    And I click on "Modify Base Software Channel"
+    And I should see a "System's Base Channel has been updated." text
+    Then I apply highstate on "sle-minion"
