@@ -20,15 +20,6 @@ Feature: Check the Salt package state UI
     And I reload the page
     And I reload the page until it does contain a "FINISHED" text in the table first row
 
-  Scenario: Subscribe to base channel
-    Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Software" in the content area
-    Then I follow "Software Channels" in the content area
-    And I select "Test-Channel-x86_64" from "new_base_channel_id"
-    And I click on "Confirm"
-    And I click on "Modify Base Software Channel"
-    And I should see a "System's Base Channel has been updated." text
-
   Scenario: Accepted minion has a base channel
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
