@@ -75,5 +75,5 @@ Feature: Register a system to be managed via SSH push
     And I remove server hostname from hosts trad-client
  
   Scenario: Register a trad-client, after ssh-push removal(cleanup),(need always tradclient)
-    When I register using an activation key
+    When I register using "1-SUSE-DEV-X86_64" key
     Then I should see "sle-client" in spacewalk

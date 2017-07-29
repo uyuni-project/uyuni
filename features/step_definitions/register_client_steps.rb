@@ -10,12 +10,6 @@ When(/^I register using "([^"]*)" key$/) do |arg1|
   $client.run(command, true, 500, 'root')
 end
 
-When(/^I register using an activation key$/) do
-  arch, _code = $client.run('uname -m')
-  arch.chomp!
-  step %(I register using "1-SUSE-DEV-#{arch}" key)
-end
-
 Then(/^I should see "(.*?)" in spacewalk$/) do |host|
   steps %(
     Given I am on the Systems page
