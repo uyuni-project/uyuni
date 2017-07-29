@@ -24,7 +24,7 @@ The tests (features) are grouped by: core-features and secondary (idempotent) fe
 For the group of the **core-feature**, the order is relevant. The core-features are by design not idempotent, and serve to create a basic testing env.
 The **secondary features** can be run XX number of times, and the order is irrelevant.
 All new features should be **secondary features**, so you need to write cleanup steps on each feature.
-
+[idempotency](docs/idempotency.md)
 
 [**Standard testsuite features Features included in the `testsuite.yml` file will be executed sequentially from the top to the bottom**](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml).
 
