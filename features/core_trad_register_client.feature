@@ -7,7 +7,7 @@ Feature: Register a client
   I want to call rhnreg_ks
 
   Scenario: Register a client
-    When I register using "1-SUSE-DEV-X86_64" key
+    When I register using "1-SUSE-DEV-x86_64" key
     Then I should see "sle-client" in spacewalk
 
   Scenario: check registration values
