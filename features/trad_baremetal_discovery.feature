@@ -119,5 +119,5 @@ Feature: Test Bare-metal discovery
     And the pxe-default-profile should be disabled
   
     Scenario: Register a trad-client (cleanup) (need always tradclient)
-    When I register using "1-SUSE-DEV-X86_64" key
+    When I register using "1-SUSE-DEV-x86_64" key
     Then I should see "sle-client" in spacewalk
