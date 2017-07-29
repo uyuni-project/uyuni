@@ -94,7 +94,7 @@
 - features/min_salt_software_states.feature
 - features/srv_salt_download_endpoint.feature
 - features/srv_virtual_host_manager.feature
-- features/trad_baremetal_test.feature
+- features/trad_baremetal_discovery.feature 
 - features/srv_salt_remote_cmds.feature
 - features/trad_reboot.feature
 - features/trad_action_chain.feature
