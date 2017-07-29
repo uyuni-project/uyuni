@@ -6,15 +6,12 @@
 --- # initialize suse-manager server
 - features/core_setup_user_and_proxy.feature
 - features/core_srv_channels_add.feature
-
 - features/core_srv_push_package.feature
 - features/core_srv_create_repository.feature
 - features/core_srv_systemspage.feature
 - features/core_srv_users.feature
 - features/core_srv_credentials.feature
 - features/core_srv_create_activationkey.feature
-
-
 - features/core_trad_register_client.feature
 - features/core_min_bootstrap.feature
 - features/core_min_docker_build_image.feature
@@ -22,7 +19,6 @@
 - features/core_centos_tradclient.feature
 - features/core_centos_salt.feature
 - features/core_centos_salt_ssh.feature
-
 # these features sync real channels (last core feature)
 - features/core_srv_sync_channels.feature
 - features/core_srv_setup_wizard.feature
