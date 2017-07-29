@@ -720,7 +720,7 @@ class RepoSync(object):
             elif int(existing_errata['advisory_rel']) > int(notice['version']):
                 # the existing errata has a higher release than the now
                 # parsed one. We need to skip the current errata
-                continue
+                return None
             # else: release match, so we update the errata
 
 
@@ -730,7 +730,7 @@ class RepoSync(object):
             updated_date = self._to_db_date(notice['issued'])
         if (existing_errata and
             not self.errata_needs_update(existing_errata, notice['version'], updated_date)):
-            continue
+            return None
 
         log(0, "Add Patch %s" % patch_name)
         e = importLib.Erratum()
@@ -767,7 +767,7 @@ class RepoSync(object):
         elif not e['packages']:
             log(2, "Advisory %s skipped because of empty package list (filtered)."
                 % e['advisory_name'])
-            continue
+            return None
 
         e['keywords'] = self._update_keywords(notice)
         e['bugs'] = self._update_bugs(notice)
@@ -794,6 +794,8 @@ class RepoSync(object):
             # pylint: disable=W0703
             try:
                 erratum = self._populate_erratum(notice)
+                if not erratum:
+                    continue
                 batch.append(erratum)
 
                 if self.deep_verify:
