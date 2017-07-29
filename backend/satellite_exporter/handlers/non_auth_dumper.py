@@ -294,13 +294,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
                                                           validate_kickstarts=True)
 
     def dump_product_names(self):
-        log_debug(4)
-        writer = self._get_xml_writer()
-        d = dumper.SatelliteDumper(writer, exportLib.ProductNamesDumper(writer))
-        d.dump()
-        writer.flush()
-        self.close()
-        return 0
+        return dumper.XML_Dumper.dump_product_names(self)
 
     def dump_support_information(self):
         log_debug(4)
