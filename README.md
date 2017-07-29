@@ -65,14 +65,6 @@ The images are build by kiwi : http://download.suse.de/ibs/Devel:/Galaxy:/Terraf
 
 All other branches are considered legacy (not under development anymore): `Manager 2.1`, `manager21-longterm`, `Manager 17`, `Manager 12`.
 
-
-## Run just a single run set
-
-You can override the tests that are executed by adding your run set:
-1. Login into the `controller` host.
-2. Add the feature(s) you would like to run into `run_sets/$name.yml`
-3. Call Cucumber to execute your custom run set (`rake cucumber:$name`)
-
 # Useful tutorials
 
 * [Testing API tutorial](docs/api-call.md)

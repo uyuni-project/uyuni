@@ -1,7 +1,6 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-#@wip
 Feature: Adding channels
   In Order distribute software to the clients
   As an authorized user
