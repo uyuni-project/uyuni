@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<rhn:toolbar base="h1" icon="header-package" iconAlt="overview.jsp.alt">
+<rhn:toolbar base="h1" icon="header-package" iconAlt="overview.jsp.alt"
  helpUrl="">
    <bean:message key="channel.jsp.manage.package.title"/>
 </rhn:toolbar>
