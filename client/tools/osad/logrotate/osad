@@ -5,5 +5,5 @@
     compress
     notifempty
     missingok
-    size 100M
+    size 10M
 }
