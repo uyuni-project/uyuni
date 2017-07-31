@@ -1,103 +1,115 @@
+## Core feature BEGIN ###
+# Prefix
+# core_type_topic
+
+# IMMUTABLE ORDER
 --- # initialize suse-manager server
-- features/setup_user_and_proxy.feature
-- features/mainpage.feature
-# smdba before we start to sync channels
-- features/smdba.feature
-- features/channels_add.feature
-- features/push_package.feature
-- features/create_repository.feature
-- features/systemspage.feature
-- features/create_activationkey.feature
-- features/users.feature
-- features/credentials.feature
-# traditional client
-- features/register_client.feature
-- features/config_channel.feature
-- features/action_chain.feature
-- features/custom_system_info.feature
-- features/create_group.feature
-- features/configuration.feature
-- features/check_errata_npn.feature
-- features/cve_audit.feature
-- features/delete_system_from_conf.feature
-- features/spacewalk_channel.feature
-- features/mgr_bootstrap.feature
-- features/channels.feature
-- features/weak_deps.feature
-- features/metadata_check.feature
-- features/check_registration.feature
-- features/sp_migration.feature
-- features/erratapage.feature
-- features/lock_packages_on_client.feature
-- features/install_package_and_errata.feature
-- features/clone_channel_npn.feature
-- features/openscap_audit.feature
-- features/spacewalk_repo_sync.feature
-- features/scc_sync_channels.feature
-- features/xmlrpc_system.feature
-- features/nagios.feature
-- features/systems_needing_reboot.feature
-- features/test_reboot.feature
-- features/powermanagement.feature
-- features/CVE_ID_new_syntax.feature
-- features/datepicker.feature
-# - features/migrate_client_to_minion.feature
-- features/delete_system_profile.feature
-- features/baremetal_test.feature
-- features/compare_channel.feature
-- features/ssh_push.feature
-- features/delete_config_channel.feature
-- features/xmlrpc_api.feature
-- features/xmlrpc_activationkey.feature
-- features/xmlrpc_channel.feature
-# - features/xmlrpc_VHM.feature
-- features/check_VHM.feature
-- features/setup_wizard.feature
-- features/security.feature
-- features/xmlrpc_user.feature 
+- features/core_setup_user_and_proxy.feature
+- features/core_srv_channels_add.feature
+- features/core_srv_push_package.feature
+- features/core_srv_create_repository.feature
+- features/core_srv_systemspage.feature
+- features/core_srv_users.feature
+- features/core_srv_credentials.feature
+- features/core_srv_create_activationkey.feature
+- features/core_trad_register_client.feature
+- features/core_min_bootstrap.feature
+- features/core_min_docker_build_image.feature
+- features/core_min_salt_ssh.feature
+- features/core_centos_tradclient.feature
+- features/core_centos_salt.feature
+- features/core_centos_salt_ssh.feature
+# these features sync real channels (last core feature)
+- features/core_srv_sync_channels.feature
+- features/core_srv_setup_wizard.feature
+## CORE feature end ###
 
-#### Salt related features   ###
-- features/minion_bootstrap.feature
-- features/salt.feature
-- features/salt_minions_page.feature
-- features/salt_minion_details.feature
-- features/salt_download_endpoint.feature
-- features/salt_software_states.feature
-- features/salt_pkgset_beacon.feature
-- features/salt_remote_cmds.feature
-- features/salt_install_package.feature
-- features/salt_install_with_staging.feature
-- features/salt_states_catalog.feature
-- features/salt_openscap_audit.feature
-- features/salt_reboot_test.feature
-- features/salt_ssh.feature 
+# SECONDARY FEATURE:
 
-# Formulas scenario needs sle-minion and ssh-minion
-- features/salt_formulas.feature
+# Prefix
+# TYPE_TOPIC
 
-## Centos client related feat. ###
-# Salt centos7 trad_client
-- features/centos_tradclient.feature 
-# Salt centos7 feature
-- features/centos_salt.feature
-- features/centos_salt_ssh.feature 
+# PREFIX:
 
-# test if hostoname, kernel, os-versino are correctly visualiz. for all minions
-- features/overview_systems_details.feature
-#### * Docker related features tests.  ###
-- features/docker_build_image.feature
-- features/docker_cve_audit.feature
-- features/docker_advanced_test.feature 
-# Debug suse-manager server
-- features/spacewalk_debug.feature
+# 1) TYPE (mandatory and UNIQUE)
+# - srv (feature testing server side)
+# - min (feature testing minions sles) (not ssh)
+# - centos (feature testing centos/rhes)
+# - trad (feature testing tradional client)
+# - allcli (feature testing all clients trad + minion(centos/sles)
 
-### Scalability tests (after debug always)
-- features/docker_xmlrpc.feature
-# - features/minion_datacenter.feature
-### Disabled: does not work if IPv6 broken
 
-## alway put smdba and change password features at the end of the testsuite.
-- features/change_password.feature
+# 2) TOPIC (for salt/docker mandatory)
+# - salt (feature concering salt)
+# - docker
+# - .. 
+# - feature specific name xmlrpc_user (etc.)
 
-# sync channels in background
-# - features/sync_real_channels.feature
+# EXAMPLES
+# * TYPE_TOPIC
+
+# * srv_reboot_server.feature 
+# * srv_salt_ping.feature
+# * srv_salt_service.feature
+# * min_salt_bootstrap.feature
+# * min_ping.feature 
+
+# **** IDEMPOTENT ******
+- features/trad_need_reboot.feature
+- features/trad_ssh_push.feature
+- features/trad_reboot.feature
+- features/srv_change_password.feature
+- features/min_salt_software_states.feature
+- features/trad_metadata_check.feature
+- features/srv_clone_channel_npn.feature
+- features/trad_cve_id_new_syntax.feature
+- features/trad_weak_deps.feature
+- features/srv_nagios.feature
+- features/srv_cve_audit.feature
+- features/min_salt_install_with_staging.feature
+- features/srv_xmlrpc_activationkey.feature
+- features/allcli_overview_systems_details.feature
+- features/min_salt_reboot_test.feature
+- features/min_docker_xmlrpc.feature
+- features/srv_distro_cobbler.feature
+- features/srv_mainpage.feature
+- features/srv_xmlrpc_user.feature
+- features/srv_smdba.feature
+- features/min_salt_states_catalog.feature
+- features/srv_salt_download_endpoint.feature
+- features/srv_virtual_host_manager.feature
+- features/trad_baremetal_discovery.feature 
+- features/srv_salt_remote_cmds.feature
+- features/trad_action_chain.feature
+- features/min_salt_formulas.feature
+- features/srv_docker_advanced_test.feature
+- features/srv_docker_cve_audit.feature
+- features/min_salt_install_package.feature
+- features/srv_powermanagement.feature
+- features/srv_datepicker.feature
+- features/trad_openscap_audit.feature
+- features/srv_create_group.feature
+- features/srv_xmlrpc_api.feature
+- features/min_salt_openscap_audit.feature
+- features/srv_custom_system_info.feature
+- features/srv_security.feature
+- features/trad_inst_package_and_patch.feature
+- features/trad_check_patches_install.feature
+- features/trad_mgr_bootstrap.feature
+- features/trad_sp_migration.feature
+- features/srv_salt.feature
+- features/trad_lock_packages.feature
+- features/srv_check_channels_page.feature
+- features/min_salt_minion_details.feature
+- features/trad_check_registration.feature
+- features/min_salt_minions_page.feature
+- features/srv_spacewalk_channel.feature
+- features/srv_spacewalk_repo_sync.feature
+- features/srv_xmlrpc_channel.feature
+- features/trad_config_channel.feature
+- features/min_salt_pkgset_beacon.feature
+- features/srv_patches_page.feature
+# Post run feature (non idempotent)  
+# Debug suse-manager server is non idempotent
+# because it gather files and perfoms log checks 
+- features/srv_susemanager_debug.feature

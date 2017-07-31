@@ -1,14 +1,5 @@
 # Copyright (c) 2010-2017 SUSE-LINUX
 # Licensed under the terms of the MIT license.
-
-Given(/^I am on the Systems overview page of this client$/) do
-  steps %(
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
-    And I follow this client link
-    )
-end
-
 Given(/^I update the profile of this client$/) do
   $client.run("rhn-profile-sync", true, 500, 'root')
 end
@@ -19,25 +10,16 @@ When(/^I register using "([^"]*)" key$/) do |arg1|
   $client.run(command, true, 500, 'root')
 end
 
-When(/^I register using an activation key$/) do
-  arch, _code = $client.run('uname -m')
-  arch.chomp!
-  step %(I register using "1-SUSE-DEV-#{arch}" key)
-end
-
-Then(/^I should see this client in spacewalk$/) do
+Then(/^I should see "(.*?)" in spacewalk$/) do |host|
   steps %(
     Given I am on the Systems page
-    Then I should see this client as link
+    Then I should see "#{host}" as link
     )
 end
 
-Then(/^I should see this client as link$/) do
-  step %(I should see a "#{$client_fullhostname}" link)
-end
-
-When(/^I follow this client link$/) do
-  step %(I follow "#{$client_fullhostname}")
+Then(/^I should see "(.*?)" as link$/) do |host|
+  target_fullhostname = get_target_fullhostname(host)
+  step %(I should see a "#{target_fullhostname}" link)
 end
 
 Then(/^config-actions are enabled$/) do
@@ -54,7 +36,7 @@ end
 
 When(/^I wait for the data update$/) do
   for c in 0..6
-    if page.has_content?(debrand_string("Software Updates Available"))
+    if page.has_content?("Software Updates Available")
       break
     end
     sleep 30
