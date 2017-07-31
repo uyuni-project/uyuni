@@ -464,7 +464,7 @@ end
 #
 Then(/^I should see a "([^"]*)" text$/) do |arg1|
   unless page.has_content?(arg1)
-    sleep 2 
+    sleep 2
     fail unless page.has_content?(arg1)
   end
 end
@@ -485,20 +485,19 @@ end
 #
 # Test for a text in the whole page using regexp
 #
-Then(/^I should see a text like "([^"]*)"$/) do |arg1|
-  unless page.has_content?(Regexp.new("#{arg1}"))
+Then(/^I should see a text like "([^"]*)"$/) do |title|
+  unless page.has_content?(Regexp.new(titel))
     sleep 2
-    fail unless page.has_content?(Regexp.new("#{arg1}"))
+    fail unless page.has_content?(Regexp.new(title))
   end
 end
 
 #
 # Test for a text not allowed in the whole page
 #
-Then(/^I should not see a "([^"]*)" text$/) do |arg1|
-  unless page.has_no_content?(arg1)
-    print page.body
-    raise "#{arg1} found on the page! FAIL"
+Then(/^I should not see a "([^"]*)" text$/) do |text|
+  unless page.has_no_content?(text)
+    raise "#{text} found on the page! FAIL"
   end
 end
 
@@ -545,7 +544,7 @@ end
 
 Then(/^I should not see a "([^"]*)" link in element "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-      fail unless has_no_link?(arg1)
+    fail unless has_no_link?(arg1)
   end
 end
 
@@ -646,8 +645,8 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
   end
 end
 
-Then(/^I select the "([^"]*)" repo$/) do |arg1|
-  within page.first('a', :text => "#{arg1}") do
+Then(/^I select the "([^"]*)" repo$/) do |repo|
+  within page.first('a', :text => repo) do
     within(:xpath, "../..") do
       first('input[type=checkbox]').set(true)
     end
@@ -757,14 +756,14 @@ end
 
 When(/^I check "([^"]*)" in the list$/) do |arg1|
   within(:xpath, "//section") do
-      # use div/div/div for cve audit which has two tables
+    # use div/div/div for cve audit which has two tables
+    row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
+    if row.nil?
+      sleep 3
+      $stderr.puts "ERROR - try again"
       row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
-      if row.nil?
-          sleep 3
-          $stderr.puts "ERROR - try again"
-          row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
-      end
-      row.first(:xpath, ".//input[@type=\"checkbox\"]").set(true)
+    end
+    row.first(:xpath, ".//input[@type=\"checkbox\"]").set(true)
   end
 end
 
@@ -793,7 +792,7 @@ When(/^I uncheck "([^"]*)" in the list$/) do |arg1|
 end
 
 Then(/^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/) do |count, name, id|
-    within(:xpath, "//form[@id=\"#{id}\" or  @name=\"#{id}\"]") do
-        fail unless has_field?(name, :count => count.to_i)
-    end
+  within(:xpath, "//form[@id=\"#{id}\" or  @name=\"#{id}\"]") do
+    fail unless has_field?(name, :count => count.to_i)
+  end
 end
