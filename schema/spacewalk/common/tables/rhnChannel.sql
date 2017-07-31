@@ -36,6 +36,10 @@ CREATE TABLE rhnChannel
     product_name_id     NUMBER
                             CONSTRAINT rhn_channel_product_name_ch_fk
                                 REFERENCES rhnProductName (id),
+    gpg_check           CHAR(1)
+                            DEFAULT ('Y') NOT NULL
+                            CONSTRAINT rhn_channel_gc_ck
+                                CHECK (gpg_check in ('Y', 'N')),
     gpg_key_url         VARCHAR2(256),
     gpg_key_id          VARCHAR2(14),
     gpg_key_fp          VARCHAR2(50),
