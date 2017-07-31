@@ -16,6 +16,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="baseDir" type="string" column="basedir"/>
         <property name="description" type="string" column="description"/>
         <property name="endOfLife" type="date" column="end_of_life"/>
+        <property name="GPGCheck" type="yes_no" column="gpg_check"/>
         <property name="GPGKeyUrl" type="string" column="gpg_key_url"/>
         <property name="GPGKeyId" type="string" column="gpg_key_id"/>
         <property name="GPGKeyFp" type="string" column="gpg_key_fp"/>
