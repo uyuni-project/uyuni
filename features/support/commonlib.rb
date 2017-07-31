@@ -31,27 +31,3 @@ class ExpectFileGenerator
     File.basename(path)
   end
 end
-
-
-#
-# Function that loop and wait for a success action, otherwise keep sleep until timeout is
-# reached and will fail.
-#
-
-def waitOrFail(cmd, host)
-  node = get_target(host)
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-	puts "running #{cmd}"
-	out, code = node.run(cmd, "false")
-	puts out
-        break if code.nonzero?
-        sleep(1)
-      end
-    end
-  rescue Timeout::Error
-    puts "timeout reached! something went wrong!"
-  end
-end
-
