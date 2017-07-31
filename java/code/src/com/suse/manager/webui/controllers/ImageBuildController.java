@@ -33,6 +33,8 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -63,6 +65,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -542,6 +545,30 @@ public class ImageBuildController {
     }
 
     /**
+     * Gets a list of registered clusters in JSON
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getClusterList(Request req, Response res, User user) {
+        JsonArray clusterList = new JsonArray();
+        VirtualHostManagerFactory.getInstance().listVirtualHostManagers(user.getOrg())
+                .stream().filter(vhm -> KubernetesManager.KUBERNETES_MODULE
+                        .equals(vhm.getGathererModule()))
+                .forEach(vhm -> {
+                    JsonObject cluster = new JsonObject();
+                    cluster.addProperty("id", vhm.getId());
+                    cluster.addProperty("label", vhm.getLabel());
+                    clusterList.add(cluster);
+                });
+
+        // JSON structure: [{ id: cluster_id, label: cluster_label }, ...]
+        return json(res, clusterList);
+    }
+
+    /**
      * Gets runtime summary for a single image in JSON
      *
      * @param req the request object
@@ -550,21 +577,45 @@ public class ImageBuildController {
      * @return the result JSON object
      */
     public static Object getRuntimeSummary(Request req, Response res, User user) {
-        Long id;
+        Long id, clusterId;
         try {
             id = Long.parseLong(req.params("id"));
+            clusterId = Long.parseLong(req.params("clusterId"));
         }
         catch (NumberFormatException e) {
             Spark.halt(HttpStatus.SC_NOT_FOUND);
             return null;
         }
-        Set<ImageUsage> usages = getImagesUsage();
-        Optional<ImageOverview> imageInfo =
-                ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
-        return json(res, imageInfo
-                .map(overview -> getRuntimeOverviewJson(usages, overview))
-                .orElse(null));
+        VirtualHostManager cluster = VirtualHostManagerFactory.getInstance()
+                .lookupByIdAndOrg(clusterId, user.getOrg());
+
+        try {
+            Set<ImageUsage> usages = getImagesUsage(cluster);
+            Optional<ImageOverview> imageInfo =
+                    ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
+
+            return json(res,
+                    imageInfo
+                            .map(overview -> new JsonResult<>(true,
+                                    getRuntimeOverviewJson(usages, overview)))
+                            .orElse(new JsonResult<>(false, "not_found")));
+        }
+        catch (NoSuchElementException e) {
+            // Cluster is not available
+            return json(res, getClusterNotAvailableJsonResponse(cluster));
+        }
+    }
+
+    private static JsonResult<String> getClusterNotAvailableJsonResponse(
+            VirtualHostManager cluster) {
+        log.warn("Cannot get data from the cluster '" + cluster.getLabel() +
+                "'. Is the cluster API reachable?");
+        return new JsonResult<>(false, "not_available", cluster.getLabel());
+    }
+
+    private static Set<ImageUsage> getImagesUsage(VirtualHostManager cluster) {
+        return K8S_MANAGER.getImagesUsage(cluster);
     }
 
     private static Set<ImageUsage> getImagesUsage() {
@@ -580,39 +631,67 @@ public class ImageBuildController {
      * @return the result JSON object
      */
     public static Object getRuntimeSummaryAll(Request req, Response res, User user) {
-        // Get runtime summary for all images
+        Long clusterId;
+        try {
+            clusterId = Long.parseLong(req.params("clusterId"));
+        }
+        catch (NumberFormatException e) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        }
+
         JsonObject obj = new JsonObject();
-        Set<ImageUsage> usages = getImagesUsage();
-        ImageInfoFactory.listImageOverviews(user.getOrg()).forEach(overview -> obj
-                .add(overview.getId().toString(),
-                        getRuntimeOverviewJson(usages, overview)));
-        return json(res, obj);
+        VirtualHostManager cluster = VirtualHostManagerFactory.getInstance()
+                .lookupByIdAndOrg(clusterId, user.getOrg());
+        try {
+            Set<ImageUsage> usages = getImagesUsage(cluster);
+            ImageInfoFactory.listImageOverviews(user.getOrg()).forEach(overview -> obj
+                    .add(overview.getId().toString(),
+                            getRuntimeOverviewJson(usages, overview)));
+            return json(res, new JsonResult<>(true, obj));
+        }
+        catch (NoSuchElementException e) {
+            // Cluster is not available
+            return json(res, getClusterNotAvailableJsonResponse(cluster));
+        }
     }
 
     /**
-     * Gets runtime info for a single image info object in JSON
+     * Gets detailed runtime info for a single image info object in JSON
      *
      * @param req the request object
      * @param res the response object
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object getRuntime(Request req, Response res, User user) {
-        Long id;
+    public static Object getRuntimeDetails(Request req, Response res, User user) {
+        Long id, clusterId;
         try {
             id = Long.parseLong(req.params("id"));
+            clusterId = Long.parseLong(req.params("clusterId"));
         }
         catch (NumberFormatException e) {
             Spark.halt(HttpStatus.SC_NOT_FOUND);
             return null;
         }
-        Set<ImageUsage> usages = getImagesUsage();
-        Optional<ImageOverview> imageInfo =
-                ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
-        return json(res, imageInfo
-                .map(overview -> getImageInfoWithRuntime(usages, overview))
-                .orElse(null));
+        VirtualHostManager cluster = VirtualHostManagerFactory.getInstance()
+                .lookupByIdAndOrg(clusterId, user.getOrg());
+        try {
+            Set<ImageUsage> usages = getImagesUsage(cluster);
+            Optional<ImageOverview> imageInfo =
+                    ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
+
+            return json(res,
+                    imageInfo
+                            .map(overview -> new JsonResult<>(true,
+                                    getRuntimeDetailsJson(usages, overview)))
+                            .orElse(new JsonResult<>(false, "not_found")));
+        }
+        catch (NoSuchElementException e) {
+            // Cluster is not available
+            return json(res, getClusterNotAvailableJsonResponse(cluster));
+        }
     }
 
     private static List<JsonObject> getImageInfoSummaryList(
@@ -700,12 +779,9 @@ public class ImageBuildController {
         return obj;
     }
 
-    private static JsonObject getImageInfoWithRuntime(Set<ImageUsage> imagesUsage,
+    private static JsonObject getRuntimeDetailsJson(Set<ImageUsage> imagesUsage,
                                                       ImageOverview overview) {
-        JsonObject obj =
-                GSON.toJsonTree(ImageInfoJson.fromImageInfo(overview), ImageInfoJson.class)
-                        .getAsJsonObject();
-
+        JsonObject obj = new JsonObject();
         Optional<ImageUsage> usage = getImageUsage(imagesUsage, overview);
         Map<String, JsonArray> clusterInfo = new HashMap<>();
 

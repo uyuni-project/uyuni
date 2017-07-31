@@ -57,6 +57,27 @@ class ImageView extends React.Component {
     });
   }
 
+  pushMessages(severity, messages) {
+    const add = this.state.messages;
+
+    const getMsgObj = (msg) => {
+        if(typeof msgMap[msg] === "string") {
+            return {severity: severity, text: msgMap[msg]};
+        }
+        else {
+            return {severity: severity, text: msg};
+        }
+    };
+
+    if(Array.isArray(messages)) {
+        add.concat(messages.map(getMsgObj));
+    } else {
+        add.push(getMsgObj(messages));
+    }
+
+    this.setState({messages: add});
+  }
+
   updateView(id, tab) {
       id ? this.getImageInfoDetails(id, tab) : this.getImageInfoList();
       this.clearMessages();
@@ -68,7 +89,7 @@ class ImageView extends React.Component {
 
   clearMessages() {
       this.setState({
-          messages: undefined
+          messages: []
       });
   }
 
@@ -76,6 +97,7 @@ class ImageView extends React.Component {
     this.getImageInfoList().then(data => {
         const loc = window.location;
         history.pushState(null, null, loc.pathname + loc.search);
+        this.clearMessages();
     });
   }
 
@@ -83,6 +105,7 @@ class ImageView extends React.Component {
     const tab = getHashTab() || 'overview';
     this.getImageInfoDetails(row.id, tab).then(data => {
         history.pushState(null, null, '#/' + tab + '/' + row.id);
+        this.clearMessages();
     });
 
     this.setState({selectedRuntime: undefined});
@@ -92,31 +115,91 @@ class ImageView extends React.Component {
     Utils.urlBounce("/rhn/manager/cm/import");
   }
 
+  //Accumulate runtime data from individual clusters into 'toData'
+  mergeRuntimeList(data, toData) {
+    Object.keys(data).forEach(imgId => {
+        const clusterData = data[imgId];
+
+        if(toData[imgId] === undefined) {
+            toData[imgId] = clusterData;
+            return;
+        }
+        this.mergeRuntimeData(clusterData, toData[imgId]);
+    });
+
+    return toData;
+  }
+
+  //Accumulate runtime data for a single image from individual clusters into 'toData'
+  mergeRuntimeData(data, toData) {
+    if(toData.instances === undefined) toData.instances = {};
+
+    if(data.instances) {
+        toData.instances = toData.instances || {};
+        Object.keys(data.instances).forEach(cluster => {
+            toData.instances[cluster] = data.instances[cluster];
+        });
+    }
+
+    if(data.clusters) {
+        toData.clusters = toData.clusters || {};
+        Object.keys(data.clusters).forEach(cluster => {
+            toData.clusters[cluster] = data.clusters[cluster];
+        });
+    }
+
+    toData.runtimeStatus = Math.max(toData.runtimeStatus || 0, data.runtimeStatus);
+
+    return toData;
+  }
+
   getImageInfoList() {
     let listPromise = Network.get("/rhn/manager/api/cm/images").promise
         .then(data => this.setState({selected: undefined, images: data}));
 
-    const runtimeUrl = "/rhn/manager/api/cm/runtime";
-    Network.get(runtimeUrl).promise
-        .then(data => this.setState({imagesRuntime: data}));
+    let updatedData = {};
+    //Get a list of cluster ids
+    Network.get("/rhn/manager/api/cm/clusters").promise.then(data => {
+        const runtimeUrl = "/rhn/manager/api/cm/runtime/";
+        //Get runtime data for each individual cluster
+        data.forEach(cluster => Network.get(runtimeUrl + cluster.id).promise
+            .then(data => {
+                if(data.success) {
+                    this.setState({imagesRuntime: this.mergeRuntimeList(data.data, updatedData)});
+                }
+            }, () => {}));
+    });
 
     return listPromise;
   }
 
   getImageInfoDetails(id, tab) {
     let url;
-    if(tab === "patches" || tab === "packages" || tab === "runtime")
+    if(tab === "patches" || tab === "packages")
       url = "/rhn/manager/api/cm/images/" + tab + "/" + id;
-    else
+    else //overview, runtime
       url = "/rhn/manager/api/cm/images/" + id;
 
     let detailsPromise = Network.get(url).promise.then(data => {
       this.setState({selected: data});
     });
 
-    const runtimeUrl = "/rhn/manager/api/cm/runtime/" + id;
-    Network.get(runtimeUrl).promise
-        .then(data => this.setState({selectedRuntime: data}));
+    let updatedData = {};
+    //Get a list of cluster ids
+    Network.get("/rhn/manager/api/cm/clusters").promise.then(data => {
+        const runtimeUrl = (tab === "runtime" ? "/rhn/manager/api/cm/runtime/details/" : "/rhn/manager/api/cm/runtime/");
+        //Get runtime data for each individual cluster
+        data.forEach(cluster => Network.get(runtimeUrl + cluster.id + "/" + id).promise
+            .then(data => {
+                if(data.success) {
+                    this.setState({selectedRuntime: this.mergeRuntimeData(data.data, updatedData)});
+                }
+                else if(data.messages && data.messages[0] === "not_available" && tab === "runtime") {
+                    //Show this message only on Runtime tab
+                    this.pushMessages("warning", t("Cannot retrieve data from '{0}' cluster. Please make sure its API is accessable or remove it from the list of Virtual Host Managers.", data.data));
+                }
+            }, () => {}));
+    });
 
     return detailsPromise;
   }
@@ -126,16 +209,12 @@ class ImageView extends React.Component {
             JSON.stringify(idList), "application/json").promise.then(data => {
         if (data.success) {
             this.setState({
-                messages: <Messages items={[{severity: "success", text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]}]}/>,
                 images: this.state.images.filter(img => !idList.includes(img.id)),
                 selectedItems: this.state.selectedItems.filter(item => !idList.includes(item))
             });
+            pushMessages("success", idlist.length > 1 ? "delete_success_p" : "delete_success");
         } else {
-            this.setState({
-                messages: <Messages items={state.messages.map(msg => {
-                    return {severity: "error", text: msgMap[msg]};
-                })}/>
-            });
+            pushMessages("error", data.messages);
         }
     }).promise;
   }
@@ -145,18 +224,10 @@ class ImageView extends React.Component {
             JSON.stringify({imageId: id, earliest: earliest}),
             "application/json").promise.then(data => {
         if (data.success) {
-            this.setState({
-                messages: <Messages items={data.messages.map(msg => {
-                    return {severity: "info", text: msgMap[msg]};
-                })}/>
-            });
+            pushMessages("info", data.messages);
             this.reloadData();
         } else {
-            this.setState({
-                messages: <Messages items={state.messages.map(msg => {
-                    return {severity: "error", text: msgMap[msg]};
-                })}/>
-            });
+            pushMessages("error", data.messages);
         }
     }).promise;
   }
@@ -166,19 +237,11 @@ class ImageView extends React.Component {
             JSON.stringify({version: version, buildHostId: host, earliest: earliest}),
             "application/json").promise.then(data => {
         if (data.success) {
-            this.setState({
-                messages: <Messages items={data.messages.map(msg => {
-                    return {severity: "info", text: msgMap[msg]};
-                })}/>
-            });
+            pushMessages("info", data.messages);
             //The image id is changed so this page is not available anymore.
             this.handleBackAction();
         } else {
-            this.setState({
-                messages: <Messages items={state.messages.map(msg => {
-                    return {severity: "error", text: msgMap[msg]};
-                })}/>
-            });
+            pushMessages("error", data.messages);
         }
     }).promise;
   }
@@ -201,7 +264,7 @@ class ImageView extends React.Component {
     return (
       <span>
         <Panel title={this.state.selected ? this.state.selected.name : t("Images")} icon={this.state.selected ? "fa-hdd-o" : "fa-list"} button={ panelButtons }>
-          {this.state.messages}
+          { this.state.messages.length > 0 && <Messages items={this.state.messages}/> }
           { this.state.selected ?
               <ImageViewDetails data={selected} onTabChange={() => this.updateView(getHashId(), getHashTab())}
                   onCancel={this.handleBackAction} onInspect={this.inspectImage} onBuild={this.buildImage}/>
@@ -456,28 +519,13 @@ class ImageViewDetails extends React.Component {
         }
     }
 
-    renderRuntimeIcon(row) {
-      let icon;
-
-        if (row.runtimeStatus === 1) {
-            icon = <i className="fa fa-check-circle fa-1-5x text-success no-margin" title={t("All instances are up-to-date")}/>
-        } else if (row.runtimeStatus === 2) {
-            icon = <i className="fa fa-question-circle fa-1-5x no-margin" title={t("No information")}/>
-        } else if (row.runtimeStatus === 3) {
-            icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning no-margin" title={t("Outdated instances found")}/>
-        }
-
-      return icon;
-    }
-
     render() {
         const data = this.props.data;
-        const runtimeIcon = this.renderRuntimeIcon(data);
 
         return (
         <div>
             <TabContainer
-                labels={[t('Overview'), t('Patches'), t('Packages'), <span>{t('Runtime')} {runtimeIcon}</span>]}
+                labels={[t('Overview'), t('Patches'), t('Packages'), <span>{t('Runtime')}</span>]}
                 hashes={this.getHashUrls(['overview', 'patches', 'packages', 'runtime'])}
                 initialActiveTabHash={window.location.hash}
                 onTabHashChange={this.onTabChange}
