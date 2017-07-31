@@ -2,7 +2,6 @@
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
-require 'timeout'
 
 # Class for generating expect files to interactively run spacewalk-push-register.
 class ExpectFileGenerator
