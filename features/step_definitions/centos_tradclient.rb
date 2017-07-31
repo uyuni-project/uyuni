@@ -5,18 +5,6 @@ require "xmlrpc/client"
 require 'time'
 require 'date'
 
-def retrieve_server_id(server)
-  sysrpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
-  sysrpc.login('admin', 'admin')
-  systems = sysrpc.listSystems
-  refute_nil(systems)
-  server_id = systems
-              .select { |s| s['name'] == server }
-              .map { |s| s['id'] }.first
-  refute_nil(server_id, "client #{server} is not yet registered?")
-  server_id
-end
-
 def waitActionComplete(actionid)
   host = $server_fullhostname
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
@@ -57,6 +45,9 @@ And(/^execute some tests for centos_trad_client$/) do
   timeout = 400
   checkShutdown($ceos_minion_fullhostname, timeout)
   checkRestart($ceos_minion_fullhostname, $ceos_minion, timeout)
-  assert_empty(@cli.call('schedule.listFailedActions', @sid))
+  @cli.call('schedule.listFailedActions', @sid).each do |action|
+    systems = @cli.call('schedule.listFailedSystems', @sid, action['id'])
+    fail if systems.all? { |system| system['server_id'] == $centosid }
+  end
   @cli.call("auth.logout", @sid)
 end

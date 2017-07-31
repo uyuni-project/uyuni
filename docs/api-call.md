@@ -1,11 +1,12 @@
-## Testing-Api cucumber/spacewalk
+## Testing API fot cucumber/spacewalk
 
-This documentation, will explain you some usefull api-call.
+This documentation will explain you some usefull API calls. For more complete description of the underlying libraries, have a look at [Capybara documentation](http://www.rubydoc.info/github/jnicklas/capybara).
 
-### Running commands on a system : 
 
-At moment, we have 3 official tergets: $server, $minion, $client. ( this are sles systems).
-
+### Running commands on a system
+We use "targets". This look like: $server, $minion, or $client(trad-client), etc.
+For a complete list of the current targets, look at the env_variable we pass to rake, and look
+https://github.com/SUSE/spacewalk-testsuite-base/blob/master/features/support/twopence_init.rb#L27
 
 ```console
 $server.run("uptime")
@@ -16,39 +17,35 @@ $client.run("uptime", false, 500, "root")
 ```
 Arguments taken by method *run*
 
-1: command to execute on the target system
-
-2: true/false, by **default** is true. If the returncode of the command is !=0 then we raise an error and make failing the test. 
-   Sometimes we expect that a command fail, or is not relevant that is succedded, so we use *false* in this case
-
-3: timeout : **default** is 200 . you can increase/decrease the timeout.
-
-4: user : **default** root. user that execute cmd
-
-### Accessing/Navigation through the Suse-manager-Server.
+1. command to execute on the target system.
+2. true/false, by **default** is true. If the return code of the command is nonzero, then we raise an error and make the test fail. Sometimes, we expect that a command fails, or sometimes, it is not relevant whether it succedded, so we use *false* in such cases.
+3. timeout : **default** is 200. You can increase/decrease the timeout.
+4. user : **default** root. user that executes the command.
 
 
-* if you want to go to a specif page, just add this in your feature :
+### Navigating through the SUSE manager Web interface
+
+* if you want to go to a given page, just add this to your feature:
 
 ```
    Given I am authorized
    When I follow "Salt"
 ```
 
-* Check that a specific word exist on the webpage:
+* Check that a given text exists in the Web page:
 
 ```
  Then I should see a "System Overview" text
  Then I should see a "INSERT YOUR TEXT HERE" text
 ```
 
-* Click a specific link:
+* Click on a given link:
 
 ```
  And I click on "Finish"
 ```
 
-* Type text in specif field 
+* Type text in given field 
 
 ```
  When I enter "SUSE Test Key x86_64" as "description"

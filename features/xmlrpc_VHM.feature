@@ -46,7 +46,8 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
     And I follow "gatherer-matcher-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait for "10" seconds
+    And I reload the page
+    And I reload the page until it does contain a "FINISHED" text in the table first row
 
   Scenario: Check new Virtual Hosts
     Given I am on the Systems page
