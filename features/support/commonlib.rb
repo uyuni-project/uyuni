@@ -38,12 +38,14 @@ end
 # reached and will fail.
 #
 
-def waitOrFail(cmd)
+def waitOrFail(cmd, host)
   node = get_target(host)
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-	_out, code node.run(cmd, "false")
+	puts "running #{cmd}"
+	out, code = node.run(cmd, "false")
+	puts out
         break if code.nonzero?
         sleep(1)
       end
