@@ -314,16 +314,17 @@ public class Router implements SparkApplication {
 
         get("/manager/api/cm/images", withUser(ImageBuildController::list));
         get("/manager/api/cm/images/:id", withUser(ImageBuildController::get));
-        get("/manager/api/cm/runtime",
+        get("/manager/api/cm/clusters", withUser(ImageBuildController::getClusterList));
+        get("/manager/api/cm/runtime/:clusterId",
                 withUser(ImageBuildController::getRuntimeSummaryAll));
-        get("/manager/api/cm/runtime/:id",
+        get("/manager/api/cm/runtime/:clusterId/:id",
                 withUser(ImageBuildController::getRuntimeSummary));
+        get("/manager/api/cm/runtime/details/:clusterId/:id",
+                withUser(ImageBuildController::getRuntimeDetails));
         get("/manager/api/cm/images/patches/:id",
                 withUser(ImageBuildController::getPatches));
         get("/manager/api/cm/images/packages/:id",
                 withUser(ImageBuildController::getPackages));
-        get("/manager/api/cm/images/runtime/:id",
-                withUser(ImageBuildController::getRuntime));
         post("/manager/api/cm/images/inspect/:id",
                 withImageAdmin(ImageBuildController::inspect));
         post("/manager/api/cm/images/delete", withImageAdmin(ImageBuildController::delete));

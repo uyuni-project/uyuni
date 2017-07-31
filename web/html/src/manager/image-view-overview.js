@@ -22,7 +22,7 @@ function StatusIcon(props) {
     } else if(action.status === 1) {
         status = <span><i className="fa fa-exchange fa-1-5x text-info" title={t("In progress")}/><a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " in progress")}</a></span>
     } else if(action.status === 2) {
-        status = <span><i className="fa fa-check-circle-o fa-1-5x text-success" title={t("Successful")}/><a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " is successful")}</a></span>
+        status = <span><i className="fa fa-check-circle fa-1-5x text-success" title={t("Successful")}/><a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " is successful")}</a></span>
     } else if(action.status === 3) {
         status = <span><i className="fa fa-times-circle-o fa-1-5x text-danger" title={t("Failed")}/><a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " has failed")}</a></span>
     } else {
@@ -92,6 +92,20 @@ class ImageInfo extends React.Component {
         return totalCount === 0 ? '-' : <span>{totalCount}&nbsp;&nbsp;<a href="#"><i className="fa fa-external-link" title={t("View cluster summary")}/></a></span>;
     }
 
+    renderRuntime(data) {
+      let elm;
+
+        if (data.runtimeStatus === 1) {
+            elm = <span><i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are up-to-date")}/><a href={"#/runtime/" + data.id}>{t("All instances are up-to-date")}</a></span>
+        } else if (data.runtimeStatus === 2) {
+            elm = <span><i className="fa fa-question-circle fa-1-5x" title={t("No information")}/><a href={"#/runtime/" + data.id}>{t("No information")}</a></span>
+        } else if (data.runtimeStatus === 3) {
+            elm = <span><i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Outdated instances found")}/><a href={"#/runtime/" + data.id}>{t("Outdated instances found")}</a></span>
+        }
+
+      return elm;
+    }
+
     render() {
         const data = this.props.data;
         return (
@@ -109,6 +123,10 @@ class ImageInfo extends React.Component {
                         <tr>
                             <td>Revision:</td>
                             <td>{data.revision ? data.revision : "-"}</td>
+                        </tr>
+                        <tr>
+                            <td>Runtime:</td>
+                            <td>{this.renderRuntime(data)}</td>
                         </tr>
                         <tr>
                             <td>Instances:</td>
