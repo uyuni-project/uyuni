@@ -33,13 +33,3 @@ Then(/^remote-commands are enabled$/) do
     raise "remote-commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist"
   end
 end
-
-When(/^I wait for the data update$/) do
-  for c in 0..6
-    if page.has_content?("Software Updates Available")
-      break
-    end
-    sleep 30
-    visit current_url
-  end
-end

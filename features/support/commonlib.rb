@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
+require 'timeout'
 
 # Class for generating expect files to interactively run spacewalk-push-register.
 class ExpectFileGenerator
@@ -30,3 +31,25 @@ class ExpectFileGenerator
     File.basename(path)
   end
 end
+
+
+#
+# Function that loop and wait for a success action, otherwise keep sleep until timeout is
+# reached and will fail.
+#
+
+def waitOrFail(cmd)
+  node = get_target(host)
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+	_out, code node.run(cmd, "false")
+        break if code.nonzero?
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+    puts "timeout reached! something went wrong!"
+  end
+end
+
