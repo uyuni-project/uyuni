@@ -19,7 +19,7 @@ end
 #
 Then(/^I should see a "([^"]*)" text$/) do |arg1|
   unless page.has_content?(arg1)
-    sleep 10
+    sleep 2 
     fail unless page.has_content?(arg1)
   end
 end
@@ -42,7 +42,7 @@ end
 #
 Then(/^I should see a text like "([^"]*)"$/) do |arg1|
   unless page.has_content?(Regexp.new("#{arg1}"))
-    sleep 10
+    sleep 2
     fail unless page.has_content?(Regexp.new("#{arg1}"))
   end
 end
@@ -63,7 +63,7 @@ end
 Then(/^I should see a "([^"]*)" link$/) do |arg1|
   link = first(:link, arg1)
   if link.nil?
-    sleep 10
+    sleep 3
     $stderr.puts "ERROR - try again"
     fail unless first(:link, arg1).visible?
   else
@@ -315,7 +315,7 @@ When(/^I check "([^"]*)" in the list$/) do |arg1|
       # use div/div/div for cve audit which has two tables
       row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
       if row.nil?
-          sleep 10
+          sleep 3
           $stderr.puts "ERROR - try again"
           row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
       end
@@ -326,7 +326,7 @@ end
 When(/^I check checkbox with title "([^"]*)" in the list$/) do |arg1|
   row = first(:xpath, "//tr[.//i[@title='#{arg1}']]")
   if row.nil?
-    sleep 10
+    sleep 3
     $stderr.puts "ERROR - try again"
     row = first(:xpath, "//tr[.//i[@title='#{arg1}']]")
   end
@@ -339,7 +339,7 @@ When(/^I uncheck "([^"]*)" in the list$/) do |arg1|
     top_level_xpath_query = "//div[@class='table-responsive']/table/tbody/tr[.//td[contains(.,'#{arg1}')] and .//input[@type='checkbox' and @checked]]"
     row = first(:xpath, top_level_xpath_query)
     if row.nil?
-      sleep 10
+      sleep 3
       $stderr.puts "ERROR - try again"
       row = first(:xpath, top_level_xpath_query)
     end

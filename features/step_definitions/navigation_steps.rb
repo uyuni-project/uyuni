@@ -95,7 +95,7 @@ When(/^I click on "([^"]*)"$/) do |arg1|
   begin
     click_button arg1, :match => :first
   rescue
-    sleep 10
+    sleep 4
     click_button arg1, :match => :first
   end
 end
@@ -114,7 +114,7 @@ When(/^I follow "([^"]*)"$/) do |text|
   begin
     click_link(text)
   rescue
-    sleep 10
+    sleep 3
     click_link(text)
   end
 end
