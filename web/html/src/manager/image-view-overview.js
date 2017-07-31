@@ -242,7 +242,9 @@ class ImageViewOverview extends React.Component {
             <div className="row-0">
                 <div className="col-md-6">
                     <BootstrapPanel title={t("Image Info")}>
-                        <ImageInfo data={data}/>
+                         <div className="auto-overflow">
+                            <ImageInfo data={data}/>
+                         </div>
                     </BootstrapPanel>
                 </div>
                 <div className="col-md-6">
