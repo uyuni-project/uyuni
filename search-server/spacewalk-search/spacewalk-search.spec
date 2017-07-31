@@ -152,7 +152,7 @@ zip -d $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/lib/hadoop-0.18.1-core.jar co
 install -p -m 644 src/config/etc/logrotate.d/rhn-search $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn-search
 install -p -m 755 src/config/rhn-search $RPM_BUILD_ROOT%{_sbindir}
 %if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
-install -p -m 755 src/config/rhn-search.service $RPM_BUILD_ROOT%{_unitdir}
+install -p -m 644 src/config/rhn-search.service $RPM_BUILD_ROOT%{_unitdir}
 %else
 install -p -m 755 src/config/rhn-search.init $RPM_BUILD_ROOT%{_initrddir}/rhn-search
 %endif
@@ -257,7 +257,7 @@ fi
 %{_prefix}/share/rhn/search/lib/*
 %attr(755, root, root) %{_sbindir}/rhn-search
 %if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
-%attr(755, root, root) %{_unitdir}/rhn-search.service
+%attr(644, root, root) %{_unitdir}/rhn-search.service
 %else
 %attr(755, root, root) %{_initrddir}/rhn-search
 %endif

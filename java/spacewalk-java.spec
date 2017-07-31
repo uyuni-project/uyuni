@@ -655,7 +655,7 @@ sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_a
 mkdir -p $RPM_BUILD_ROOT%{_sbindir}
 mkdir -p $RPM_BUILD_ROOT%{_unitdir}
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_sbindir}
-install -m 755 scripts/taskomatic.service $RPM_BUILD_ROOT%{_unitdir}
+install -m 644 scripts/taskomatic.service $RPM_BUILD_ROOT%{_unitdir}
 %else
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_initrddir}
 %endif
@@ -955,7 +955,7 @@ fi
 %defattr(644,root,root,775)
 %if 0%{?fedora} || 0%{?suse_version}
 %attr(755, root, root) %{_sbindir}/taskomatic
-%attr(755, root, root) %{_unitdir}/taskomatic.service
+%attr(644, root, root) %{_unitdir}/taskomatic.service
 %else
 %attr(755, root, root) %{_initrddir}/taskomatic
 %endif
