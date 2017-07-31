@@ -18,8 +18,10 @@ package com.suse.manager.kubernetes;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.suse.manager.model.kubernetes.ContainerInfo;
 import com.suse.manager.model.kubernetes.ImageUsage;
@@ -33,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -44,8 +47,9 @@ public class KubernetesManager {
 
     // Logger
     private static final Logger LOG = Logger.getLogger(KubernetesManager.class);
-
     private static final String DOCKER_PULLABLE = "docker-pullable://";
+
+    public static final String KUBERNETES_MODULE = "kubernetes";
 
     private SaltService saltService;
 
@@ -61,67 +65,89 @@ public class KubernetesManager {
      * Queries all configured Kubernetes clusters and tries to match the containers to all
      * images know to SUSE Manager.
      *
-     * @return a set of {@link ImageUsage} objects, one object for each matched {@link ImageInfo}
+     * @return a set of {@link ImageUsage} objects, one object for each matched
+     * {@link ImageInfo}
      */
     public Set<ImageUsage> getImagesUsage() {
+        return getImagesUsage(null);
+    }
+
+    /**
+     * Queries the specified Kubernetes cluster and tries to match the containers to all
+     * images know to SUSE Manager.
+     *
+     * @param virtualHostManager the virtual host manager of type "kubernetes"
+     * @return a set of {@link ImageUsage} objects, one object for each matched
+     * {@link ImageInfo}
+     */
+    public Set<ImageUsage> getImagesUsage(VirtualHostManager virtualHostManager) {
         List<ImageBuildHistory> buildHistory = ImageInfoFactory.listBuildHistory();
-        Map<String, ImageBuildHistory> digestToHistory = buildHistory
-                .stream()
-                .flatMap(build -> build.getRepoDigests().stream())
-                .collect(Collectors.toMap(d -> d.getRepoDigest(), d -> d.getBuildHistory()));
+        Map<String, ImageBuildHistory> digestToHistory =
+                buildHistory.stream().flatMap(build -> build.getRepoDigests().stream())
+                        .collect(Collectors.toMap(ImageRepoDigest::getRepoDigest,
+                                ImageRepoDigest::getBuildHistory));
 
         Map<Long, ImageUsage> imgToUsage = new HashMap<>();
 
-        for (VirtualHostManager virtHostMgr : VirtualHostManagerFactory.getInstance().listVirtualHostManagers()) {
-            if ("kubernetes".equals(virtHostMgr.getGathererModule())) {
+        Consumer<VirtualHostManager> processCluster = virtHostMgr -> {
+            if (KUBERNETES_MODULE.equals(virtHostMgr.getGathererModule())) {
                 Optional<String> kubeconfig = virtHostMgr.getConfigs().stream()
                         .filter(c -> "kubeconfig".equals(c.getParameter()))
-                        .map(p -> p.getValue())
+                        .map(VirtualHostManagerConfig::getValue)
                         .findFirst();
 
                 Optional<String> context = virtHostMgr.getConfigs().stream()
                         .filter(c -> "context".equals(c.getParameter()))
-                        .map(p -> p.getValue())
+                        .map(VirtualHostManagerConfig::getValue)
                         .findFirst();
 
                 if (kubeconfig.isPresent() && context.isPresent()) {
-                    MgrK8sRunner.ContainersList containers = saltService.getAllContainers(kubeconfig.get(), context.get());
+                    MgrK8sRunner.ContainersList containers;
+                    containers = saltService
+                            .getAllContainers(kubeconfig.get(), context.get());
 
-                    containers.getContainers().stream().forEach(container -> {
+                    containers.getContainers().forEach(container -> {
                         if (container.getImageId().startsWith(DOCKER_PULLABLE)) {
-                            String imgDigest = StringUtils.removeStart(container.getImageId(), DOCKER_PULLABLE);
-                            ImageBuildHistory imgBuildHistory = digestToHistory.get(imgDigest);
+                            String imgDigest = StringUtils
+                                    .removeStart(container.getImageId(), DOCKER_PULLABLE);
+                            ImageBuildHistory imgBuildHistory =
+                                    digestToHistory.get(imgDigest);
                             Optional<Integer> imgBuildRevision = Optional.empty();
                             Optional<ImageUsage> usage;
                             if (imgBuildHistory != null) {
-                                imgBuildRevision = Optional.of(imgBuildHistory.getRevisionNumber());
-                                usage = Optional.of(
-                                        imgToUsage.computeIfAbsent(imgBuildHistory.getImageInfo().getId(),
-                                                (infoId) ->
-                                                    new ImageUsage(imgBuildHistory.getImageInfo())
-                                ));
+                                imgBuildRevision =
+                                        Optional.of(imgBuildHistory.getRevisionNumber());
+                                usage = Optional.of(imgToUsage.computeIfAbsent(
+                                        imgBuildHistory.getImageInfo().getId(),
+                                        (infoId) -> new ImageUsage(
+                                                imgBuildHistory.getImageInfo())));
                             }
                             else {
                                 LOG.debug("Image build history not found for digest: " +
-                                        imgDigest + " (maybe the image was not built by SUSE Manager).");
-                                String[] tokens = StringUtils.split(container.getImage(), "/", 2);
+                                        imgDigest + " (maybe the image was not built " +
+                                        "by SUSE Manager).");
+                                String[] tokens =
+                                        StringUtils.split(container.getImage(), "/", 2);
                                 String repo = tokens[0];
                                 String[] imgTag = StringUtils.split(tokens[1], ":", 2);
                                 String name = imgTag[0];
                                 String tag = imgTag[1];
 
                                 Optional<ImageInfo> imgByRepoNameTag =
-                                        ImageStoreFactory.lookupBylabel(repo)
-                                        .flatMap(st -> ImageInfoFactory.lookupByName(name, tag, st.getId()));
+                                        ImageStoreFactory.lookupBylabel(repo).flatMap(
+                                                st -> ImageInfoFactory
+                                                        .lookupByName(name, tag,
+                                                                st.getId()));
                                 usage = imgByRepoNameTag
                                         .map(imgInfo -> imgToUsage.get(imgInfo.getId()))
-                                        .map(Optional::of)
-                                        .orElseGet(() -> imgByRepoNameTag
-                                            .map(imgInfo -> new ImageUsage(imgInfo))
-                                            .map(usg -> {
-                                                imgToUsage.put(usg.getImageInfo().getId(), usg);
-                                                return usg;
-                                            }));
+                                        .map(Optional::of).orElseGet(() -> imgByRepoNameTag
+                                                .map(imgInfo -> new ImageUsage(imgInfo))
+                                                .map(usg -> {
+                                                    imgToUsage
+                                                            .put(usg.getImageInfo().getId(),
+                                                                    usg);
+                                                    return usg;
+                                                }));
                                 if (!usage.isPresent()) {
                                     return;
                                 }
@@ -132,9 +158,7 @@ public class KubernetesManager {
                             containerUsage.setPodName(container.getPodName());
                             containerUsage.setBuildRevision(imgBuildRevision);
                             containerUsage.setVirtualHostManager(virtHostMgr);
-                            usage.ifPresent(u ->
-                                u.getContainerInfos().add(containerUsage)
-                            );
+                            usage.ifPresent(u -> u.getContainerInfos().add(containerUsage));
                         }
                         else {
                             // TODO match docker:// prefix by container id ?
@@ -143,10 +167,23 @@ public class KubernetesManager {
                     });
                 }
                 else {
-                    LOG.debug("VirtualHostManager " + virtHostMgr.getLabel() + " lacks 'kubeconfig' and/or 'currentContext' config parameters.");
+                    LOG.debug("VirtualHostManager " + virtHostMgr.getLabel()
+                            + " lacks 'kubeconfig' and/or 'currentContext' "
+                            + "config parameters.");
                 }
             }
+        };
+
+        if (virtualHostManager != null) {
+            //Process single cluster
+            processCluster.accept(virtualHostManager);
         }
+        else {
+            //Process all registered clusters
+            VirtualHostManagerFactory.getInstance().listVirtualHostManagers()
+                    .forEach(processCluster);
+        }
+
         return imgToUsage.values().stream().collect(Collectors.toSet());
     }
 
