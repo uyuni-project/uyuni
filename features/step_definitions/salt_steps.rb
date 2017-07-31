@@ -148,8 +148,6 @@ Then(/^the list of the "(.*?)" keys should contain "(.*?)" hostname$/) do |key_t
   else
     raise "no valid name of minion given! "
   end
-  sleep 30
-  # FIXME: find better way then to wait 30 seconds
   $output, _code = $server.run("salt-key --list #{key_type}", false)
   assert_match(target_fullhostname, $output, "minion #{target_fullhostname} is not listed as #{key_type} key on salt-master #{$output}")
 end
