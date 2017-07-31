@@ -14,7 +14,7 @@ Feature: Register a client
     Given I update the profile of this client
     When I am on the Systems overview page of this "sle-client"
     And I click on the css "a#clear-ssm"
-    And I wait for the data update
+    And I wait until i see "Software Updates Available" text, refreshing the page
     Then I should see a "System Status" text
     And I should see a "Software Updates Available" text
     And I should see a "Critical:" link
