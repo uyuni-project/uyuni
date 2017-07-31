@@ -133,13 +133,15 @@ end
 
 # nagios steps
 
-When(/^I perform a nagios check patches$/) do
-  command = "/usr/lib/nagios/plugins/check_suma_patches #{$client_fullhostname} > /tmp/nagios.out"
+When(/^I perform a nagios check patches for "([^"]*)"$/) do |host|
+  target_fullhostname = get_target_fullhostname(host)
+  command = "/usr/lib/nagios/plugins/check_suma_patches #{target_fullhostname} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
-When(/^I perform a nagios check last event$/) do
-  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{$client_fullhostname} > /tmp/nagios.out"
+When(/^I perform a nagios check last event for "([^"]*)"$/) do |host|
+  target_fullhostname = get_target_fullhostname(host)
+  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{target_fullhostname} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
@@ -148,8 +150,8 @@ When(/^I perform an invalid nagios check patches$/) do
   $server.run(command, false, 600, 'root')
 end
 
-Then(/^I should see WARNING: 1 patch pending$/) do
-  command = "grep \"WARNING: 1 patch(es) pending\" /tmp/nagios.out"
+Then(/^I should see CRITICAL: 1 critical patch pending$/) do
+  command = "grep \"CRITICAL: 1 critical patch(es) pending\" /tmp/nagios.out"
   $server.run(command, true, 600, 'root')
 end
 
@@ -180,19 +182,36 @@ Given(/cobblerd is running/) do
   end
 end
 
-Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |arg1, arg2, arg3|
+Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |distro, user, pwd|
   ct = CobblerTest.new
-  ct.login(arg2, arg3)
-  if ct.distro_exists(arg1)
-    raise "distro " + arg1 + " already exists"
+  ct.login(user, pwd)
+  if ct.distro_exists(distro)
+    raise "distro " + distro + " already exists"
   end
-  ct.distro_create(arg1, "/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux", "install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd")
+  ct.distro_create(distro, "/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux", "install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd")
 end
 
-Given(/distro "([^"]*)" exists/) do |arg1|
+Then(/^trigger cobbler system record\(not for ssh\-push tradclient\)$/) do
+  space = "spacecmd -u admin -p admin"
+  host = $client_fullhostname
+  cmd = "#{$space} system_details #{host}"
+  $server.run("#{space} clear_caches")
+  out, _code = $server.run(cmd)
+  unless out.include? "ssh-push-tunnel"
+    # trad-client normal
+    steps %(
+      And I follow this "sle-client" link
+      And I follow "Provisioning"
+      And I click on "Create PXE installation configuration"
+      And I click on "Continue"
+      Then file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks="
+      )
+  end
+end
+Given(/distro "([^"]*)" exists/) do |distro|
   ct = CobblerTest.new
-  unless ct.distro_exists(arg1)
-    raise "distro " + arg1 + " does not exist"
+  unless ct.distro_exists(distro)
+    raise "distro " + distro + " does not exist"
   end
 end
 
@@ -214,29 +233,37 @@ When(/I view system with id "([^"]*)"/) do |arg1|
 end
 
 # weak deaps steps
-When(/^I refresh the metadata$/) do
-  $client.run("rhn_check -vvv", true, 500, 'root')
+When(/^I refresh the metadata for "([^"]*)"$/) do |host|
+  raise "Invalid target." unless host == "sle-client"
+  target = $client
+  target.run("rhn_check -vvv", true, 500, 'root')
   client_refresh_metadata
 end
 
-Then(/^I should have '([^']*)' in the metadata$/) do |text|
-  arch, _code = $client.run("uname -m")
+Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
+  raise "Invalid target." unless host == "sle-client"
+  target = $client
+  arch, _code = target.run("uname -m")
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
-  $client.run(cmd, true, 500, 'root')
+  target.run(cmd, true, 500, 'root')
 end
 
-Then(/^I should not have '([^']*)' in the metadata$/) do |text|
-  arch, _code = $client.run("uname -m")
+Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
+  raise "Invalid target." unless host == "sle-client"
+  target = $client
+  arch, _code = target.run("uname -m")
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
-  $client.run(cmd, true, 500, 'root')
+  target.run(cmd, true, 500, 'root')
 end
 
-Then(/^"([^"]*)" should exists in the metadata$/) do |file|
-  arch, _code = $client.run("uname -m")
+Then(/^"([^"]*)" should exists in the metadata for "([^"]*)"$/) do |file, host|
+  raise "Invalid target." unless host == "sle-client"
+  target = $client
+  arch, _code = target.run("uname -m")
   arch.chomp!
-  fail unless file_exists?($client, "#{client_raw_repodata_dir("test-channel-#{arch}")}/#{file}")
+  fail unless file_exists?(target, "#{client_raw_repodata_dir("test-channel-#{arch}")}/#{file}")
 end
 
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
@@ -402,4 +429,8 @@ end
 Then(/^On this client the File "([^"]*)" should have the content "([^"]*)"$/) do |filename, content|
     $client.run("test -f #{filename}")
     $client.run("grep #{content} #{filename}")
+end
+
+Then(/^I remove server hostname from hosts trad-client$/) do
+  $client.run("sed -i \'s/#{$server_fullhostname}//\' /etc/hosts")
 end

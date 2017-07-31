@@ -1,9 +1,19 @@
 # Copyright (c) 2014-16 SUSE # Licensed under the terms of the MIT license.
 
+require "xmlrpc/client"
 require 'timeout'
 
-Then(/^I apply highstate on Sles minion$/) do
-  cmd = "salt '*min*sles12sp2*' state.highstate"
+Then(/^I apply highstate on "(.*?)"$/) do |minion|
+  if minion == "sle-minion"
+    target_fullhostname = $minion_fullhostname
+  elsif minion == "ceos-minion"
+    target_fullhostname = $ceos_minion_fullhostname
+  elsif minion == "sle-migrated-minion"
+    target_fullhostname = $client_fullhostname
+  else
+    raise "no valid name of minion given! "
+  end
+  cmd = "salt '#{target_fullhostname}' state.highstate"
   out, code = $server.run(cmd)
   puts out
   raise "Apply highstate FAILED!"  if code.nonzero?
@@ -71,16 +81,12 @@ When(/^file "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
 end
 
 When(/^I check the tomcat logs for errors$/) do
-  output = sshcmd("grep ERROR /var/log/tomcat6/catalina.out", ignore_err: true)[:stdout]
-  output.each_line do |line|
-    puts line
-  end
-end
-
-When(/^I check the tomcat logs for NullPointerExceptions$/) do
-  output = sshcmd("grep -n1 NullPointer /var/log/tomcat6/catalina.out", ignore_err: true)[:stdout]
-  output.each_line do |line|
-    puts line
+  output = $server.run('cat /var/log/tomcat/*')
+  msgs = ["ERROR", "NullPointer"]
+  msgs.each do |msg|
+    if output.include? msg
+      raise "-#{msg}-  msg found on tomcat logs"
+    end
   end
 end
 
@@ -293,16 +299,23 @@ And(/^I register the centos7 as tradclient$/) do
 end
 
 When(/^I wait for the openSCAP audit to finish$/) do
+  host = $server_fullhostname
+  @sle_id = retrieve_server_id($minion_fullhostname)
+  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @cli.call('auth.login', 'admin', 'admin')
   begin
-    Timeout.timeout(30) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        _output, code = $minion.run('ps aux | grep "oscap\ xccdf"', false)
-        unless code.zero?
+        scans = @cli.call('system.scap.listXccdfScans', @sid, @sle_id)
+        # in the openscap test, we schedule 2 scans
+        if scans.length > 1
+          @cli.call("auth.logout", @sid)
           break
         end
       end
     end
   rescue Timeout::Error
+    @cli.call("auth.logout", @sid)
     raise "process did not stop after several tries"
   end
 end
