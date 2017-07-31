@@ -2,7 +2,7 @@ require "xmlrpc/client"
 require "socket"
 
 rpc = XMLRPCActionChain.new(ENV["TESTHOST"])
-sysrpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
+syschaintest = XMLRPCSystemTest.new(ENV['TESTHOST'])
 scdrpc = XMLRPCScheduleTest.new(ENV['TESTHOST'])
 
 users = nil
@@ -15,10 +15,10 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
   # Find target server once.
   unless $client_id
     rpc.login(luser, password)
-    sysrpc.login(luser, password)
+    syschaintest.login(luser, password)
     scdrpc.login(luser, password)
 
-    servers = sysrpc.listSystems
+    servers = syschaintest.listSystems
     refute_nil(servers)
 
     hostname = $client_fullhostname
@@ -110,26 +110,26 @@ end
 
 # Packages operations
 When(/^I call actionchain\.addPackageInstall\(\)$/) do
-  pkgs = sysrpc.listAllInstallablePackages($client_id)
+  pkgs = syschaintest.listAllInstallablePackages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
   refute(rpc.addPackageInstall($client_id, [pkgs[0]["id"]], $chain_label) < 1)
 end
 
 When(/^I call actionchain\.addPackageRemoval\(\)$/) do
-  pkgs = sysrpc.listAllInstallablePackages($client_id)
+  pkgs = syschaintest.listAllInstallablePackages($client_id)
   refute(rpc.addPackageRemoval($client_id, [pkgs[0]["id"]], $chain_label) < 1)
 end
 
 When(/^I call actionchain\.addPackageUpgrade\(\)$/) do
-  pkgs = sysrpc.listLatestUpgradablePackages($client_id)
+  pkgs = syschaintest.listLatestUpgradablePackages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
   refute(rpc.addPackageUpgrade($client_id, [pkgs[0]["to_package_id"]], $chain_label) < 1)
 end
 
 When(/^I call actionchain\.addPackageVerify\(\)$/) do
-  pkgs = sysrpc.listAllInstallablePackages($client_id)
+  pkgs = syschaintest.listAllInstallablePackages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
   refute(rpc.addPackageVerify($client_id, [pkgs[0]["id"]], $chain_label) < 1)
