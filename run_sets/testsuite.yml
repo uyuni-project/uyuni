@@ -55,6 +55,18 @@
 # * min_ping.feature 
 
 # **** IDEMPOTENT ******
+- features/trad_need_reboot.feature
+- features/trad_ssh_push.feature
+- features/trad_reboot.feature
+- features/srv_change_password.feature
+- features/min_salt_software_states.feature
+- features/trad_metadata_check.feature
+- features/srv_clone_channel_npn.feature
+- features/trad_cve_id_new_syntax.feature
+- features/trad_weak_deps.feature
+- features/srv_nagios.feature
+- features/srv_cve_audit.feature
+- features/min_salt_install_with_staging.feature
 - features/srv_xmlrpc_activationkey.feature
 - features/allcli_overview_systems_details.feature
 - features/min_salt_reboot_test.feature
@@ -64,6 +76,15 @@
 - features/srv_xmlrpc_user.feature
 - features/srv_smdba.feature
 - features/min_salt_states_catalog.feature
+- features/srv_salt_download_endpoint.feature
+- features/srv_virtual_host_manager.feature
+- features/trad_baremetal_discovery.feature 
+- features/srv_salt_remote_cmds.feature
+- features/trad_action_chain.feature
+- features/min_salt_formulas.feature
+- features/srv_docker_advanced_test.feature
+- features/srv_docker_cve_audit.feature
+- features/min_salt_install_package.feature
 - features/srv_powermanagement.feature
 - features/srv_datepicker.feature
 - features/trad_openscap_audit.feature
@@ -88,28 +109,6 @@
 - features/trad_config_channel.feature
 - features/min_salt_pkgset_beacon.feature
 - features/srv_patches_page.feature
-- features/trad_need_reboot.feature
-- features/trad_ssh_push.feature
-- features/srv_change_password.feature
-- features/min_salt_software_states.feature
-- features/srv_salt_download_endpoint.feature
-- features/srv_virtual_host_manager.feature
-- features/trad_baremetal_discovery.feature 
-- features/srv_salt_remote_cmds.feature
-- features/trad_reboot.feature
-- features/trad_action_chain.feature
-- features/min_salt_formulas.feature
-- features/srv_docker_advanced_test.feature
-- features/srv_docker_cve_audit.feature
-- features/min_salt_install_package.feature
-- features/trad_metadata_check.feature
-- features/srv_clone_channel_npn.feature
-- features/trad_cve_id_new_syntax.feature
-- features/trad_weak_deps.feature
-- features/srv_nagios.feature
-- features/srv_cve_audit.feature
-- features/min_salt_install_with_staging.feature
-
 # Post run feature (non idempotent)  
 # Debug suse-manager server is non idempotent
 # because it gather files and perfoms log checks 
