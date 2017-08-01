@@ -2,8 +2,6 @@ require 'rubygems'
 require 'yaml'
 require 'cucumber/rake/task'
 
-$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
-
 outputfile = 'output.html'
 html_results = "--format pretty --format html -o #{outputfile}"
 
@@ -17,12 +15,8 @@ Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
   end
 end
 
-task :cucumber do |t|
+task :cucumber do 
   Rake::Task['cucumber:testsuite'].invoke
-end
-
-task :docker do |t|
-  Rake::Task['cucumber:docker'].invoke
 end
 
 task :default => [:cucumber]
