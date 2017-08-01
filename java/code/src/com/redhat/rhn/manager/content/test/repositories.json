@@ -11911,6 +11911,16 @@
   },
   {
     "autorefresh": true,
+    "description": "SLE-12-SP3-SAP-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2220,
+    "installer_updates": false,
+    "name": "SLE-12-SP3-SAP-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SAP/12-SP3/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
     "description": "SLE-HA12-SP3-Updates for sle-12-x86_64",
     "distro_target": "sle-12-x86_64",
     "enabled": true,
@@ -11918,6 +11928,16 @@
     "installer_updates": false,
     "name": "SLE-HA12-SP3-Updates",
     "url": "https://updates.suse.com/SUSE/Updates/SLE-HA/12-SP3/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-12-SP3-SAP-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2222,
+    "installer_updates": false,
+    "name": "SLE-12-SP3-SAP-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SAP/12-SP3/x86_64/update_debug/?my-fake-token"
   },
   {
     "autorefresh": true,
@@ -11931,6 +11951,16 @@
   },
   {
     "autorefresh": false,
+    "description": "SLE12-SP3-SAP-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2224,
+    "installer_updates": false,
+    "name": "SLE12-SP3-SAP-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP3/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
     "description": "SLE-HA12-SP3-Pool for sle-12-x86_64",
     "distro_target": "sle-12-x86_64",
     "enabled": true,
@@ -11941,6 +11971,16 @@
   },
   {
     "autorefresh": false,
+    "description": "SLE12-SP3-SAP-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2226,
+    "installer_updates": false,
+    "name": "SLE12-SP3-SAP-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP3/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
     "description": "SLE-HA12-SP3-Debuginfo-Pool for sle-12-x86_64",
     "distro_target": "sle-12-x86_64",
     "enabled": false,
@@ -11948,6 +11988,16 @@
     "installer_updates": false,
     "name": "SLE-HA12-SP3-Debuginfo-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP3/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE12-SP3-SAP-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2228,
+    "installer_updates": false,
+    "name": "SLE12-SP3-SAP-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP3/x86_64/product_source/?my-fake-token"
   },
   {
     "autorefresh": false,
@@ -12208,6 +12258,56 @@
     "installer_updates": false,
     "name": "SLE-WE12-SP3-Source-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SLE-WE/12-SP3/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-HA12-SP3-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2255,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP3-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-HA/12-SP3/ppc64le/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-HA12-SP3-Debuginfo-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2256,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP3-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-HA/12-SP3/ppc64le/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-HA12-SP3-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2257,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP3-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP3/ppc64le/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-HA12-SP3-Debuginfo-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2258,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP3-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP3/ppc64le/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-HA12-SP3-Source-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2259,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP3-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP3/ppc64le/product_source/?my-fake-token"
   },
   {
     "autorefresh": true,
@@ -13598,5 +13698,55 @@
     "installer_updates": false,
     "name": "SLE-Module-Web-Scripting12-Source-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/aarch64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-12-SP3-SAP-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2509,
+    "installer_updates": false,
+    "name": "SLE-12-SP3-SAP-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SAP/12-SP3/ppc64le/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-12-SP3-SAP-Debuginfo-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2510,
+    "installer_updates": false,
+    "name": "SLE-12-SP3-SAP-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SAP/12-SP3/ppc64le/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE12-SP3-SAP-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2511,
+    "installer_updates": false,
+    "name": "SLE12-SP3-SAP-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP3/ppc64le/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE12-SP3-SAP-Debuginfo-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2512,
+    "installer_updates": false,
+    "name": "SLE12-SP3-SAP-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP3/ppc64le/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE12-SP3-SAP-Source-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2513,
+    "installer_updates": false,
+    "name": "SLE12-SP3-SAP-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP3/ppc64le/product_source/?my-fake-token"
   }
 ]
