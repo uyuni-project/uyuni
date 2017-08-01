@@ -16,7 +16,7 @@ Feature: Lock packages on traditional client
     And I follow "Lock"
     When I check "hoag-dummy-1.1-2.1" in the list
     And I click on "Lock"
-    And I run rhn_check on this client
+    And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "Packages has been requested for being locked." text
     And "hoag-dummy-1.1-2.1" is locked on this client
     Then I follow "Lock"
@@ -30,7 +30,7 @@ Feature: Lock packages on traditional client
     When I check "hoag-dummy-1.1-2.1" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
-    And I run rhn_check on this client
+    And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "1 package install has been scheduled for" text
     And I follow "Events"
     And I follow "History"
@@ -44,7 +44,7 @@ Feature: Lock packages on traditional client
     And Package "hoag-dummy-1.1-2.1" is reported as locked
     When I check "hoag-dummy-1.1-2.1" in the list
     And I click on "Unlock"
-    And I run rhn_check on this client
+    And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "Packages has been requested for being unlocked." text
     And "hoag-dummy-1.1-2.1" is unlocked on this client
     Then I follow "Lock"
@@ -71,7 +71,7 @@ Feature: Lock packages on traditional client
     And Package "hoag-dummy-1.1-2.1" cannot be selected
     And Package "milkyway-dummy-2.0-1.1" is reported as pending to be locked
     And Package "milkyway-dummy-2.0-1.1" cannot be selected
-    When I run rhn_check on this client
+    When I run "rhn_check -vvv" on "sle-client"
     Then "hoag-dummy-1.1-2.1" is locked on this client
     And "milkyway-dummy-2.0-1.1" is locked on this client
     When I follow "Lock"
@@ -98,7 +98,7 @@ Feature: Lock packages on traditional client
     Then Package "hoag-dummy-1.1-2.1" is reported as locked
     And Package "milkyway-dummy-2.0-1.1" is reported as pending to be unlocked
     And Package "orion-dummy-1.1-1.1" is reported as pending to be locked
-    When I run rhn_check on this client
+    When I run "rhn_check -vvv" on "sle-client"
     Then "hoag-dummy-1.1-2.1" is locked on this client
     And "milkyway-dummy-2.0-1.1" is unlocked on this client
     And "orion-dummy-1.1-1.1" is locked on this client
@@ -115,7 +115,7 @@ Feature: Lock packages on traditional client
     Then I should see a "Packages has been requested for being unlocked." text
     When I follow "Lock"
     Then Only packages "hoag-dummy-1.1-2.1, orion-dummy-1.1-1.1" are reported as pending to be unlocked
-    When I run rhn_check on this client
+    When I run "rhn_check -vvv" on "sle-client"
     And I follow "Lock"
     Then Package "hoag-dummy-1.1-2.1" is reported as unlocked
     And Package "orion-dummy-1.1-1.1" is reported as unlocked

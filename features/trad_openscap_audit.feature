@@ -10,7 +10,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager
     When I enter "--profile RHEL6-Default" as "params"
     And I enter "/usr/share/openscap/scap-rhel6-xccdf.xml" as "path"
     And I click on "Schedule"
-    And I run rhn_check on this client
+    And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "XCCDF scan has been scheduled" text
 
   Scenario: Check results of the audit job
@@ -30,7 +30,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager
     When I enter "--profile Default" as "params"
     And I enter "/usr/share/openscap/scap-yast2sec-xccdf.xml" as "path"
     And I click on "Schedule"
-    And I run rhn_check on this client
+    And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "XCCDF scan has been scheduled" text
 
   Scenario: Check results of the audit job suse profile

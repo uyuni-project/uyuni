@@ -43,7 +43,7 @@ Feature: Reboot required after patch
     When I check "andromeda-dummy-6789" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"
-    And I run rhn_check on this client
+    And I run "rhn_check -vvv" on "sle-client"
     And I follow "Overview" in the left menu
     And I click Systems, under Systems node
     And I follow "All" in the left menu
