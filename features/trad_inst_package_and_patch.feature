@@ -14,7 +14,7 @@ Feature: Install a package to the trad-client
     When I check "virgo-dummy" in the list
     And I click on "Install Selected Packages"
     And I click on "Confirm"
-    And I run rhn_check on this client
+    And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "1 package install has been scheduled for" text
     And "virgo-dummy-2.0-1.1" is installed on "client"
 
@@ -41,7 +41,7 @@ Feature: Install a package to the trad-client
     When I check "andromeda-dummy-6789" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"
-    And I run rhn_check on this client
+    And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "1 patch update has been scheduled for" text
     And "andromeda-dummy-2.0-1.1" is installed on "client"
 

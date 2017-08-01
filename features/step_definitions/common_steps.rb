@@ -5,10 +5,6 @@ When(/^I wait for "(\d+)" seconds$/) do |arg1|
   sleep(arg1.to_i)
 end
 
-When(/^I run rhn_check on this client$/) do
-  $client.run("rhn_check -vvv", true, 500, 'root')
-end
-
 Then(/^I download the SSL certificate$/) do
   cert_path = "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT"
   wget = "wget --no-check-certificate -O"

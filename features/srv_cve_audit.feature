@@ -112,7 +112,7 @@ Feature: CVE Audit
     And I click on "Apply Patches"
     And I click on "Confirm"
     And I wait for "5" seconds
-    And I run rhn_check on this client
+    And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "patch update has been scheduled" text
     Given I am logged in via XML-RPC/cve audit as user "admin" and password "admin"
     When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9999"
