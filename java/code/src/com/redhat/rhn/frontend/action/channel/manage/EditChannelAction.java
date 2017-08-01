@@ -76,6 +76,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
     public static final String GPG_FINGERPRINT = "gpg_key_fingerprint";
     public static final String GPG_KEY = "gpg_key_id";
     public static final String GPG_URL = "gpg_key_url";
+    public static final String GPG_CHECK = "gpg_check";
     public static final String SUPPORT_POLICY = "support_policy";
     public static final String ORG_SHARING = "org_sharing";
     public static final String MAINT_PHONE = "maintainer_phone";
@@ -102,6 +103,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
     public static final String DEFAULT_CHECKSUM = "sha1";
     public static final String DEFAULT_ORG_SHARING = "private";
     public static final String DEFAULT_SUBSCRIPTIONS = "all";
+    public static final boolean DEFAULT_GPG_CHECK = true;
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -268,6 +270,8 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         request.setAttribute(GPG_URL, form.get(GPG_URL));
         request.setAttribute(GPG_KEY, form.get(GPG_KEY));
         request.setAttribute(GPG_FINGERPRINT, form.get(GPG_FINGERPRINT));
+        request.setAttribute(GPG_CHECK, form.get(GPG_CHECK) != null &&
+                (boolean)form.get(GPG_CHECK) ? true : false);
     }
 
     /**
@@ -382,6 +386,8 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         ucc.setUser(loggedInUser);
         ucc.setGpgKeyId((String) form.get(GPG_KEY));
         ucc.setGpgKeyUrl((String) form.get(GPG_URL));
+        ucc.setGpgCheck(form.get(GPG_CHECK) != null && (boolean)form.get(GPG_CHECK) ?
+                true : false);
         ucc.setGpgKeyFp((String) form.get(GPG_FINGERPRINT));
         ucc.setMaintainerName((String) form.get(MAINT_NAME));
         ucc.setMaintainerEmail((String) form.get(MAINT_EMAIL));
@@ -450,6 +456,8 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         command.setGpgKeyFp(StringUtil.nullIfEmpty(form.getString(GPG_FINGERPRINT)));
         command.setGpgKeyId(StringUtil.nullIfEmpty(form.getString(GPG_KEY)));
         command.setGpgKeyUrl(StringUtil.nullIfEmpty(form.getString(GPG_URL)));
+        command.setGpgCheck(form.get(GPG_CHECK) != null &&
+                (boolean)form.get(GPG_CHECK) ? true : false);
         command.setParentId(parentId);
         command.setUser(user);
         command.setMaintainerName(StringUtil.nullIfEmpty(form.getString(MAINT_NAME)));
@@ -616,6 +624,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         form.set(GPG_URL, c.getGPGKeyUrl());
         form.set(GPG_KEY, c.getGPGKeyId());
         form.set(GPG_FINGERPRINT, c.getGPGKeyFp());
+        request.setAttribute(GPG_CHECK, c.isGPGCheck());
         form.set(MAINT_NAME, c.getMaintainerName());
         form.set(MAINT_PHONE, c.getMaintainerPhone());
         form.set(MAINT_EMAIL, c.getMaintainerEmail());
@@ -693,6 +702,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             form.set(SUBSCRIPTIONS, DEFAULT_SUBSCRIPTIONS);
             form.set(CHECKSUM, DEFAULT_CHECKSUM);
             request.setAttribute(CHANNEL_ARCH_LABEL, DEFAULT_ARCH);
+            request.setAttribute(GPG_CHECK, DEFAULT_GPG_CHECK);
         }
     }
 
