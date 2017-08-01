@@ -795,6 +795,7 @@
             <form-property name="gpg_key_url" type="java.lang.String" />
             <form-property name="gpg_key_id" type="java.lang.String" />
             <form-property name="gpg_key_fingerprint" type="java.lang.String" />
+            <form-property name="gpg_check" type="java.lang.Boolean" />
             <form-property name="checksum" type="java.lang.String" />
             <form-property name="clone_type" type="java.lang.String" />
             <form-property name="original_name" type="java.lang.String" />

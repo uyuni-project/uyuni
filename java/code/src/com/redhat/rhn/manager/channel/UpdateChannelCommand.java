@@ -71,6 +71,7 @@ public class UpdateChannelCommand extends CreateChannelCommand {
         gpgKeyUrl = channelIn.getGPGKeyUrl();
         gpgKeyId = channelIn.getGPGKeyId();
         gpgKeyFp = channelIn.getGPGKeyFp();
+        gpgCheck = channelIn.isGPGCheck();
         checksum = channelIn.getChecksumTypeLabel();
         maintainerName = channelIn.getMaintainerName();
         maintainerEmail = channelIn.getMaintainerEmail();
@@ -143,6 +144,7 @@ public class UpdateChannelCommand extends CreateChannelCommand {
         c.setGPGKeyId(gpgKeyId);
         c.setGPGKeyUrl(gpgKeyUrl);
         c.setGPGKeyFp(gpgKeyFp);
+        c.setGPGCheck(gpgCheck);
         c.setChecksumType(ct);
         c.setAccess(access);
         c.setMaintainerName(maintainerName);
