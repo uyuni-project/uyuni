@@ -250,8 +250,11 @@
     </exec>
   </target>
 
-  <target name="jscheckstyle" depends="install-gulp" description="checkstyle for javascript source">
-	  <echo message="lint javascript"/>
+  <target name="jscheckstyle" depends="warn-if-npm-not-installed" description="checkstyle for javascript source">
+	  <echo message="check prerequisites npm pkg"/>
+	      <exec executable="npm" dir="${js.components.dir}">
+	      <arg line="install"/>
+	  </exec>
 	  <exec executable="npm" dir="${js.components.dir}">
 	    <arg line="run lint"/>
           </exec>
