@@ -486,7 +486,7 @@ end
 # Test for a text in the whole page using regexp
 #
 Then(/^I should see a text like "([^"]*)"$/) do |title|
-  unless page.has_content?(Regexp.new(titel))
+  unless page.has_content?(Regexp.new(title))
     sleep 2
     fail unless page.has_content?(Regexp.new(title))
   end
