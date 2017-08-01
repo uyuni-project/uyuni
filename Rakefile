@@ -15,7 +15,7 @@ Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
   end
 end
 
-task :cucumber do 
+task :cucumber do
   Rake::Task['cucumber:testsuite'].invoke
 end
 
