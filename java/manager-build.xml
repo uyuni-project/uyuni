@@ -250,6 +250,13 @@
     </exec>
   </target>
 
+  <target name="jscheckstyle" depends="install-gulp" description="checkstyle for javascript source">
+	  <echo message="lint javascript"/>
+	  <exec executable="npm" dir="${js.components.dir}">
+	    <arg line="run lint"/>
+          </exec>
+  </target>
+
   <target name="restart-taskomatic" depends="open-ssh-socket" description="Restart the taskomatic process">
     <echo message="Launching Taskomatic restart..."/>
     <exec executable="ssh">
