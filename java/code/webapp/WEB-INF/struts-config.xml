@@ -1014,6 +1014,7 @@
     <form-bean name="channelDetailForm"
                type="org.apache.struts.action.DynaActionForm">
       <form-property name="global" type="java.lang.String" />
+      <form-property name="gpg_check" type="java.lang.Boolean" />
       <form-property name="cid" type="java.lang.Long" />
       <form-property name="submitted" type="java.lang.Boolean" />
     </form-bean>
