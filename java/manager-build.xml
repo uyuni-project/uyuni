@@ -254,9 +254,10 @@
 	  <echo message="check prerequisites npm pkg"/>
 	      <exec executable="npm" dir="${js.components.dir}">
 	      <arg line="install"/>
-	  </exec>
-	  <exec executable="npm" dir="${js.components.dir}">
-	    <arg line="run lint"/>
+              </exec>
+	  <echo message="lint js files"/>
+	  <exec vmlauncher="false" executable="gulp" dir="${js.components.dir}">
+	    <arg line="lint"/>
           </exec>
   </target>
 
