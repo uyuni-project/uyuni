@@ -430,3 +430,54 @@ end
 Then(/^I remove server hostname from hosts trad-client$/) do
   $client.run("sed -i \'s/#{$server_fullhostname}//\' /etc/hosts")
 end
+
+And(/^Cleanup for distro_clobber_feature$/) do
+  host = $server_fullhostname
+  @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
+  @sid = @cli.call('auth.login', 'admin', 'admin')
+  # -------------------------------
+  # cleanup kickstart profiles and distros
+  distro_name = "fedora_kickstart_distro"
+  @cli.call('kickstart.tree.deleteTreeAndProfiles', @sid, distro_name)
+  @cli.call("auth.logout", @sid)
+  # -------------------------------
+  # remove not from suma managed profile
+  $server.run("cobbler profile remove --name \"testprofile\"")
+  # remove not from suma man. distro
+  $server.run("cobbler distro remove --name \"testdistro\"")
+end
+
+# Register client
+Given(/^I update the profile of this client$/) do
+  $client.run("rhn-profile-sync", true, 500, 'root')
+end
+
+When(/^I register using "([^"]*)" key$/) do |arg1|
+  regurl = "http://#{$server_ip}/XMLRPC"
+  command = "rhnreg_ks --force --serverUrl=#{regurl} --activationkey=#{arg1}"
+  $client.run(command, true, 500, 'root')
+end
+
+Then(/^I should see "(.*?)" in spacewalk$/) do |host|
+  steps %(
+    Given I am on the Systems page
+    Then I should see "#{host}" as link
+    )
+end
+
+Then(/^I should see "(.*?)" as link$/) do |host|
+  target_fullhostname = get_target_fullhostname(host)
+  step %(I should see a "#{target_fullhostname}" link)
+end
+
+Then(/^config-actions are enabled$/) do
+  unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/configfiles/all')
+    raise "config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist on client"
+  end
+end
+
+Then(/^remote-commands are enabled$/) do
+  unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/script/run')
+    raise "remote-commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist"
+  end
+end
