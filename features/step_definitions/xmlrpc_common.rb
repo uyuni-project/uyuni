@@ -37,7 +37,7 @@ Then(/^I logout from XML\-RPC\/system\.$/) do
 end
 
 # xmlrpc_user tests
-CREATE_USER_PASSWORD = "die gurke"
+CREATE_USER_PASSWORD = 'die gurke'
 
 Given(/^I am logged in via XML\-RPC\/user as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   @rpc = XMLRPCUserTest.new(ENV["TESTHOST"])
@@ -57,7 +57,7 @@ When(/^I call user\.getDetails\(\) on user "([^"]*)"$/) do |luser|
 end
 
 Then(/^I should see at least one role that matches "([^"]*)" suffix$/) do |sfx|
-  refute(@roles.find_all { |el| el =~ /#{sfx}/ }.length < 1)
+  refute(@roles.find_all { |el| el =~ /#{sfx}/ }.empty?)
 end
 
 When(/^I call user\.create\(sid, login, pwd, name, lastname, email\) with login "([^"]*)"$/) do |luser|
@@ -91,7 +91,7 @@ Given(/^I make sure "([^"]*)" is not present$/) do |luser|
   @rpc.getUsers
     .map { |u| u['login'] }
     .select { |l| l == luser }
-    .each { |l| @rpc.deleteUser(luser) }
+    .each { @rpc.deleteUser(luser) }
 end
 
 When(/^I call user\.removeRole\(\) against uid "([^"]*)" with the role "([^"]*)"$/) do |luser, rolename|
@@ -101,7 +101,6 @@ end
 Then(/^I shall not see "([^"]*)" when I call user\.listRoles\(\) with "([^"]*)" uid$/) do |rolename, luser|
   refute_includes(@rpc.getUserRoles(luser), rolename)
 end
-
 
 Given(/^I am logged in via XML\-RPC\/channel as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   assert(rpctest.login(luser, password))
@@ -121,7 +120,9 @@ When(/^I create the following channels:/) do |table|
   channels.each do |ch|
     assert_equal(
       rpctest.create(
-        ch['LABEL'], ch['NAME'], ch['SUMMARY'], ch['ARCH'], ch['PARENT']), 1)
+        ch['LABEL'], ch['NAME'], ch['SUMMARY'], ch['ARCH'], ch['PARENT']
+                    ), 
+	       1)
   end
 end
 
