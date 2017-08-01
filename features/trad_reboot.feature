@@ -10,5 +10,5 @@ Feature: Test a reboot on a traditional-client
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
     And I click on "Reboot system"
-    And I run rhn_check on this client
+    And I run "rhn_check -vvv" on "sle-client"
     Then I wait and check that "sle-client" has rebooted

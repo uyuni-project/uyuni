@@ -134,7 +134,7 @@ Feature: Test configuration channel basic functions
     And I should see a "0 revision-deploys overridden." text
 
   Scenario: Check File deployment
-    When I run rhn_check on this client
+    When I run "rhn_check -vvv" on "sle-client"
     Then On this client the File "/etc/mgr-test-file.cnf" should exists
     And On this client the File "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY=yes"
 
@@ -151,7 +151,7 @@ Feature: Test configuration channel basic functions
     And I click on "Compare Files"
     And I click on "Schedule Compare"
     Then I should see a "1 files scheduled for comparison." text
-    When I run rhn_check on this client
+    When I run "rhn_check -vvv" on "sle-client"
     And I follow "Events" in the content area
     And I follow "History" in the content area
     Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
@@ -174,7 +174,7 @@ Feature: Test configuration channel basic functions
     And I click on "Import Configuration Files"
     And I click on "Confirm"
     Then I should see a "1 files scheduled for upload." text
-    When I run rhn_check on this client
+    When I run "rhn_check -vvv" on "sle-client"
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
@@ -193,7 +193,7 @@ Feature: Test configuration channel basic functions
     And I click on "Import Configuration Files"
     And I click on "Confirm"
     Then I should see a "1 files scheduled for upload." text
-    When I run rhn_check on this client
+    When I run "rhn_check -vvv" on "sle-client"
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
@@ -250,7 +250,7 @@ Feature: Test configuration channel basic functions
     And I click on "Compare Files"
     And I click on "Schedule Compare"
     Then I should see a "3 files scheduled for comparison." text
-    When I run rhn_check on this client
+    When I run "rhn_check -vvv" on "sle-client"
     And I follow "Events" in the content area
     And I follow "History" in the content area
     Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
