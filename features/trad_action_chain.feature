@@ -167,7 +167,7 @@ Feature: Test action chaining
     And I enter as remote command this script in
       """
       #!/bin/bash
-      touch /root/webui-actionchain-test
+      uptime
       """
     And I check radio button "schedule-by-action-chain"
     And I click on "Schedule"
@@ -181,9 +181,7 @@ Feature: Test action chaining
     And I should see a "1. Run a remote command on 1 system" text
     Then I click on "Save and Schedule"
     And I should see a "Action Chain new action chain has been scheduled for execution." text
-    When I run rhn_check on this client
-    Then "/root/webui-actionchain-test" exists on the filesystem of "sle-client"
-    And I run "rm /root/webui-actionchain-test" on "sle-client"
+    When I run "rhn_check -vvv" on "sle-client"
 
   Scenario: Basic chain operations xmlrpc
     Given I am logged in via XML-RPC/actionchain as user "admin" and password "admin"
