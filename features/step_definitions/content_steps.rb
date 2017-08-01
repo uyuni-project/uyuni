@@ -116,12 +116,6 @@ Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |ar
   end
 end
 
-Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |arg1, arg2, arg3|
-  within(:xpath, "//div[@id=\"#{arg3}\" or @class=\"#{arg3}\"]") do
-    fail if !has_content?(debrand_string(arg1)) && !has_content?(debrand_string(arg2))
-  end
-end
-
 Then(/^I should see a "([^"]*)" link in "([^"]*)" "([^"]*)"$/) do |arg1, arg2, arg3|
   fail unless page.has_xpath?("//#{arg2}[@id='#{arg3}' or @class='#{arg3}']/a[text()='#{arg1}']")
 end
