@@ -17,7 +17,8 @@
     "sigmund": "1.0.1",
     "minimatch": "3.0.0",
     "lru-cache": "4.0.0",
-    "eslint": "4.3.0",
+    "eslint": "^4.3.0",
+    "eslint-plugin-react": "^7.1.0",
     "glob": "7.0.0"
   },
   "devDependencies": {},
@@ -25,8 +26,8 @@
     "lint": "eslint **/*.js --ignore-pattern node_modules/"
   },
   "repository": {
-   "type": "git",
-   "url": "git@github.com:SUSE/spacewalk.git"
+    "type": "git",
+    "url": "git@github.com:SUSE/spacewalk.git"
   },
-    "license": "UNLICENSED"
+  "license": "UNLICENSED"
 }
