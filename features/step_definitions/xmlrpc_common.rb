@@ -13,7 +13,7 @@ end
 When(/^I call system\.listSystems\(\), I should get a list of them\.$/) do
   # This also assumes the test is called *after* the regular test.
   servers = systest.listSystems
-  assert(servers.length > 0, "Expect: 'number of system' > 0, but found only '#{servers.length}' servers")
+  assert(servers.!empty?, "Expect: 'number of system' > 0, but found only '#{servers.length}' servers")
   rabbit = servers[0]
 end
 
@@ -37,7 +37,7 @@ Then(/^I logout from XML\-RPC\/system\.$/) do
 end
 
 # xmlrpc_user tests
-CREATE_USER_PASSWORD = 'die gurke'
+CREATE_USER_PASSWORD = 'die gurke'.freeze
 
 Given(/^I am logged in via XML\-RPC\/user as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   @rpc = XMLRPCUserTest.new(ENV["TESTHOST"])
@@ -121,8 +121,8 @@ When(/^I create the following channels:/) do |table|
     assert_equal(
       rpctest.create(
         ch['LABEL'], ch['NAME'], ch['SUMMARY'], ch['ARCH'], ch['PARENT']
-                    ), 
-	       1)
+      ), 1
+    )
   end
 end
 
@@ -196,18 +196,6 @@ When(/^I add config channels "([^"]*)" to a newly created key$/) do |channelName
   fail if acttest.addConfigChannel(key, channelName) < 1
 end
 
-Then(/^I have to see a new config channel "([^"]*)"$/) do |channelName|
-  pending # express the regexp above with the code you wish you had
-end
-
-When(/^I add a child channel "([^"]*)"$/) do |channelName|
-  pending # express the regexp above with the code you wish you had
-end
-
-Then(/^I can see config child has been added\.$/) do
-  pending # express the regexp above with the code you wish you had
-end
-
 # Details
 When(/^I call activationkey\.setDetails\(\) to the key$/) do
   fail unless acttest.setDetails(key)
@@ -263,18 +251,18 @@ Then(/^I should get ([0-9]+) returned$/) do |num|
   assert(vhms.length == num.to_i, "Expect: 'number of VHMs' == '#{num}', but found '#{vhms.length}' VHMs")
 end
 
-Then(/^I should get "([^"]*)"$/) do |key|
-  assert(params.key?(key), "Expect parameter key '#{key}', but got only '#{params}'")
+Then(/^I should get "([^"]*)"$/) do |key1|
+  assert(params.key?(key1), "Expect parameter key '#{key1}', but got only '#{params}'")
 end
 
-Then(/^"([^"]*)" should be "([^"]*)"$/) do |key, value|
-  assert(detail.key?(key), "Expect parameter key '#{key}', but got only '#{detail}'")
-  assert(detail[key].to_s == value, "Expect value for #{key} should be '#{value}, but got '#{detail[key]}'")
+Then(/^"([^"]*)" should be "([^"]*)"$/) do |key1, value1|
+  assert(detail.key?(key1), "Expect parameter key '#{key1}', but got only '#{detail}'")
+  assert(detail[key1].to_s == value, "Expect value for #{key1} should be '#{value1}, but got '#{detail[key1]}'")
 end
 
-Then(/^configs "([^"]*)" should be "([^"]*)"$/) do |key, value|
-  assert(detail['configs'].key?(key), "Expect parameter key '#{key}', but got only '#{detail['configs']}'")
-  assert(detail['configs'][key].to_s == value, "Expect value for #{key} should be '#{value}, but got '#{detail['configs'][key]}'")
+Then(/^configs "([^"]*)" should be "([^"]*)"$/) do |key1, value1|
+  assert(detail['configs'].key?(key1), "Expect parameter key '#{key1}', but got only '#{detail['configs']}'")
+  assert(detail['configs'][key1].to_s == value1, "Expect value for #{key1} should be '#{value1}, but got '#{detail['configs'][key1]}'")
 end
 
 Then(/^I logout from XML\-RPC\/virtualhostmanager$/) do
