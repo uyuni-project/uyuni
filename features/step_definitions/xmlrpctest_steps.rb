@@ -29,11 +29,6 @@ end
 When(/^I call getApiCallList, I should get (\d+) available groups$/) do |groupCount|
   assert_equal(groupCount.to_i, rpc_api_tester.getCountOfApiCallListGroups)
 end
-
-Then(/^there should be no failed scheduled actions$/) do
-  scdrpc.login('admin', 'admin')
-  assert_empty(scdrpc.listFailedActions)
-end
 # cve audit
 
 Given(/^I am logged in via XML\-RPC\/cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
