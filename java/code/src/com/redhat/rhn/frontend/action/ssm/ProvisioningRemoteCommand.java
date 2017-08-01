@@ -33,6 +33,8 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.StringUtil;
@@ -48,7 +50,6 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -327,17 +328,15 @@ public class ProvisioningRemoteCommand extends RhnAction implements
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<SystemOverview> getResult(RequestContext context) {
-        List<SystemOverview> dataset = new ArrayList<SystemOverview>();
-        List<SystemOverview> sysOvr = SystemManager.inSet(context.getCurrentUser(),
-            RhnSetDecl.SYSTEMS.getLabel(), true);
-        for (int i = 0; i < sysOvr.size(); i++) {
-            if (SystemManager.hasEntitlement(sysOvr.get(i).getId(),
-                    EntitlementManager.MANAGEMENT) &&
-                    SystemManager.clientCapable(sysOvr.get(i).getId(), "script.run")) {
-                dataset.add(sysOvr.get(i));
-            }
-        }
+        List<SystemOverview> dataset = SystemManager
+                .inSet(context.getCurrentUser(), RhnSetDecl.SYSTEMS.getLabel(), true)
+                .stream()
+                .filter(s -> SystemManager.serverHasFeature(
+                        s.getId(), "ftr_remote_command") &&
+                        SystemManager.clientCapable(s.getId(), "script.run"))
+                .collect(toList());
 
         context.getRequest().setAttribute("affectedSystemsCount", dataset.size());
         return dataset;
