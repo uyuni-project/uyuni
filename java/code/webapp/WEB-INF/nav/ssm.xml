@@ -85,10 +85,6 @@
                 <rhn-tab-url>/rhn/systems/ssm/provisioning/RollbackToTag.do</rhn-tab-url>
             </rhn-tab>
         </rhn-require>
-        <rhn-tab name="Remote Command" url="/rhn/systems/ssm/provisioning/RemoteCommand.do"
-                acl="all_systems_in_set_have_feature(ftr_remote_command)">
-            <rhn-tab-url>/rhn/systems/ssm/provisioning/RemoteCommand.do</rhn-tab-url>
-        </rhn-tab>
         <rhn-require acl="all_systems_in_set_have_feature(ftr_power_management)">
             <rhn-tab name="Power Management Configuration" url="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do">
                 <rhn-tab-url>/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do</rhn-tab-url>
@@ -116,6 +112,10 @@
             <rhn-tab name="ssm.misc.index.tabs.hardware" url="/rhn/systems/ssm/misc/HardwareRefresh.do" />
             <rhn-tab name="ssm.misc.index.tabs.software" url="/rhn/systems/ssm/misc/SoftwareRefresh.do" />
         </rhn-require>
+        <rhn-tab name="Remote Command" url="/rhn/systems/ssm/provisioning/RemoteCommand.do"
+                acl="all_systems_in_set_have_feature(ftr_remote_command)">
+            <rhn-tab-url>/rhn/systems/ssm/provisioning/RemoteCommand.do</rhn-tab-url>
+        </rhn-tab>
         <rhn-tab name="ssm.misc.index.tabs.delete" url="/rhn/systems/ssm/DeleteConfirm.do"/>
         <rhn-tab name="ssm.misc.index.tabs.reboot" url="/rhn/systems/ssm/misc/RebootSystem.do"
                 acl="all_systems_in_set_have_feature(ftr_reboot)"/>
