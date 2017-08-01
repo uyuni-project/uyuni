@@ -2,7 +2,6 @@
 require "xmlrpc/client"
 
 rpc_api_tester = XMLRPCApiTest.new(ENV["TESTHOST"])
-scdrpc = XMLRPCScheduleTest.new(ENV['TESTHOST'])
 #
 # Steps
 #
