@@ -146,6 +146,56 @@ public class KickstartInstallType extends BaseDomainHelper {
     }
 
     /**
+     * @return true if the installer type is suse.
+     */
+    public boolean isSLES() {
+        return getLabel().startsWith(SLES_PREFIX);
+    }
+
+    /**
+     * @return true if the installer type is SLES 10
+     */
+    public boolean isSLES10() {
+        return isSUSE() && getLabel().startsWith(SLES_PREFIX + "10");
+    }
+
+    /**
+     * @return true if the installer type is SLES 11
+     */
+    public boolean isSLES11() {
+        return isSUSE() && getLabel().startsWith(SLES_PREFIX + "11");
+    }
+
+    /**
+     * @return true if the installer type is SLES 12
+     */
+    public boolean isSLES12() {
+        return isSUSE() && getLabel().startsWith(SLES_PREFIX + "12");
+    }
+
+    /**
+     * @return if this installer type is SLES 12 or greater (for SLES 15)
+     */
+    public boolean isSLES12OrGreater() {
+        return (isSLES11OrGreater() && !isSLES11());
+    }
+
+    /**
+     * @return if this installer type is SLES 11 or greater (for SLES 12)
+     */
+    public boolean isSLES11OrGreater() {
+        return (isSLES10OrGreater() && !isSLES10());
+    }
+
+    /**
+     * @return if this installer type is SLES 10 or greater (for SLES 11)
+     */
+    public boolean isSLES10OrGreater() {
+        // we need to reverse logic here
+        return (!isRhel() && !isFedora() && !isGeneric() && isSLES());
+    }
+
+    /**
      * @return Returns the id.
      */
     public Long getId() {
