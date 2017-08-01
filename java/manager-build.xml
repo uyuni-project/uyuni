@@ -256,7 +256,7 @@
 	      <arg line="install"/>
               </exec>
 	  <echo message="lint js files"/>
-	  <exec vmlauncher="false" executable="gulp" dir="${js.components.dir}">
+	  <exec failonerror="true" executable="gulp" dir="${js.components.dir}">
 	    <arg line="lint"/>
           </exec>
   </target>
