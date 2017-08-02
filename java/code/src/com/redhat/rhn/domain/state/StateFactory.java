@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 
+import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.StateRevisionService;
 
 import org.apache.log4j.Logger;
@@ -343,5 +344,6 @@ public class StateFactory extends HibernateFactory {
             })
             .forEach(state::addPackageState);
         StateFactory.save(state);
+        StatesAPI.generateServerPackageState(server);
     }
 }
