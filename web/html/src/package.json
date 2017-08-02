@@ -22,10 +22,6 @@
     "eslint-plugin-react": "^7.1.0",
     "glob": "7.0.0"
   },
-  "devDependencies": {},
-  "scripts": {
-    "lint": "eslint **/*.js --ignore-pattern node_modules/"
-  },
   "repository": {
     "type": "git",
     "url": "git@github.com:SUSE/spacewalk.git"
