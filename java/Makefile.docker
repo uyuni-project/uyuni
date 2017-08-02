@@ -6,6 +6,7 @@ DOCKER_CONTAINER_BASE = suma-3.1
 DOCKER_REGISTRY       = registry.mgr.suse.de
 DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
 DOCKER_PG_PORTS       = -p 5432:5432
+DOCKER_ORA_PORTS      = -p 1521:1521
 
 all :: dockerrun_pg
 
@@ -18,4 +19,4 @@ dockerrun_pg ::
 
 dockerrun_ora ::
 	cp buildconf/test/rhn.conf.oracle-example buildconf/test/rhn.conf
-	docker run --privileged -t -i $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-ora-4eclipse /root/docker-oracle-db4eclipse.sh
+	docker run --privileged $(DOCKER_ORA_PORTS) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-ora-4eclipse
