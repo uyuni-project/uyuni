@@ -6,6 +6,7 @@ const UtilComponent = require("./subscription-matching-util");
 const CsvLink = UtilComponent.CsvLink;
 const SystemLabel = UtilComponent.SystemLabel;
 const PopUp = require("../components/popup").PopUp;
+const ModalButton = require("../components/dialogs").ModalButton;
 const {Table, Column, SearchField} = require("../components/table");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
@@ -71,13 +72,13 @@ const UnmatchedProducts = React.createClass({
                 cell={ (row) => row.systemCount }
                 />
             <Column
-                cell={ (row) =>  <button
-                                className="btn btn-default btn-cell"
-                                onClick={() => {this.showPopUp(row.id);}}
-                                data-toggle="modal"
-                                data-target="#unmatchedProductsPopUp">
-                                {t("Show system list")}
-                              </button> }
+                cell={ (row) => <ModalButton
+                                className="btn-default btn-cell"
+                                title={t("Show system list")}
+                                text={t("Show system list")}
+                                target="unmatchedProductsPopUp"
+                                onClick={() => this.showPopUp(row.id)}
+                                /> }
                 />
           </Table>
 
