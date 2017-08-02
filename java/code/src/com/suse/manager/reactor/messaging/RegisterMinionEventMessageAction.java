@@ -120,6 +120,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doExecute(EventMessage msg) {
         registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false,
                 Optional.empty(), Optional.empty());
