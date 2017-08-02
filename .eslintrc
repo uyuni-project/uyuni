@@ -19,7 +19,8 @@
     "globals": {
         "d3":      true,
         "$": 	   true,
-        "t": 	   true
+        "t": 	   true,
+        "csrfToken": true,
     },
     "extends": [
         "eslint:recommended", 
