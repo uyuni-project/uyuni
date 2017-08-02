@@ -4,21 +4,21 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var source = require('vinyl-source-stream');
 var browserify = require('browserify');
-var babelify = require('babelify');
+require('babelify');
 var glob  = require('glob');
 var es = require('event-stream');
 var rename = require('gulp-rename')
 const eslint = require('gulp-eslint');
 var bundlerOpts = null;
 
-gulp.task('devel-opts', function(done) {
+gulp.task('devel-opts', function() {
     bundlerOpts = {
         debug: true, // Gives us sourcemapping
         cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
     };
 });
 
-gulp.task('prod-opts', function(done) {
+gulp.task('prod-opts', function() {
     bundlerOpts = {
         debug: false,
         cache: {}, packageCache: {}, fullPaths: false
@@ -60,9 +60,9 @@ gulp.task('lint', () => {
     // So, it's best to have gulp ignore the directory as well.
     // Also, Be sure to return the stream from the task;
     // Otherwise, the task may end before the stream has finished.
-    const components = "../../html/src/components/*.js"
-    const manager = "../src/manager/*.js"
-    const utils = "../../html/src/utils/*.js"
+    const components = "../../html/src/components/**/*.js"
+    const manager = "../src/manager/**/*.js"
+    const utils = "../../html/src/utils/**/*.js"
     const gulpfile = "gulpfile.js"
     return gulp.src([components, manager, utils, gulpfile, '!node_modules/**'])
         // eslint() attaches the lint output to the "eslint" property
@@ -77,13 +77,13 @@ gulp.task('lint', () => {
 });
 
 
-gulp.task("watch", function(event) {
-    var watcher1 = gulp.watch(["./manager/**/*.js"], ["bundle-manager"]);
+gulp.task("watch", function() {
+    const watcher1 = gulp.watch(["./manager/**/*.js"], ["bundle-manager"]);
     watcher1.on('change', function(event) {
         gutil.log('File changed: ' + event.path);
     });
-    var watcher1 = gulp.watch(["./components/*.js"], ["bundle-manager"]);
-    watcher1.on('change', function(event) {
+    const watcher2 = gulp.watch(["./components/*.js"], ["bundle-manager"]);
+    watcher2.on('change', function(event) {
         gutil.log('File changed: ' + event.path);
     })
 })
