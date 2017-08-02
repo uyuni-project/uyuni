@@ -211,9 +211,14 @@ end
 Then(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
   steps %(
     When I navigate to "rhn/systems/Overview.do" page
+    And I wait until I see the name of "#{system}", refreshing the page
     And I follow this "#{system}" link
     When I follow "Events"
     And I follow "History"
+  )
+  puts "I navigate to rhn/systems/Overview.do page, and"
+  puts "I go to #{system} events history page"
+  steps %(
     Then I try to reload page until contains "Package List Refresh scheduled by (none)" text
     And I follow first "Package List Refresh scheduled by (none)"
     And I wait until i see "This action's status is: Completed." text, refreshing the page
@@ -224,6 +229,7 @@ end
 Then(/^I wait until OpenSCAP scan is completed for "([^"]*)"$/) do |system|
   steps %(
     When I navigate to "rhn/systems/Overview.do" page
+    And I wait until I see the name of "#{system}", refreshing the page
     And I follow this "#{system}" link
     When I follow "Events"
     And I follow "History"
