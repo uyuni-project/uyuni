@@ -47,6 +47,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -270,8 +271,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         request.setAttribute(GPG_URL, form.get(GPG_URL));
         request.setAttribute(GPG_KEY, form.get(GPG_KEY));
         request.setAttribute(GPG_FINGERPRINT, form.get(GPG_FINGERPRINT));
-        request.setAttribute(GPG_CHECK, form.get(GPG_CHECK) != null &&
-                (boolean)form.get(GPG_CHECK) ? true : false);
+        request.setAttribute(GPG_CHECK, BooleanUtils.isTrue((Boolean)form.get(GPG_CHECK)));
     }
 
     /**
@@ -386,8 +386,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         ucc.setUser(loggedInUser);
         ucc.setGpgKeyId((String) form.get(GPG_KEY));
         ucc.setGpgKeyUrl((String) form.get(GPG_URL));
-        ucc.setGpgCheck(form.get(GPG_CHECK) != null && (boolean)form.get(GPG_CHECK) ?
-                true : false);
+        ucc.setGpgCheck(BooleanUtils.isTrue((Boolean)form.get(GPG_CHECK)));
         ucc.setGpgKeyFp((String) form.get(GPG_FINGERPRINT));
         ucc.setMaintainerName((String) form.get(MAINT_NAME));
         ucc.setMaintainerEmail((String) form.get(MAINT_EMAIL));
@@ -456,8 +455,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
         command.setGpgKeyFp(StringUtil.nullIfEmpty(form.getString(GPG_FINGERPRINT)));
         command.setGpgKeyId(StringUtil.nullIfEmpty(form.getString(GPG_KEY)));
         command.setGpgKeyUrl(StringUtil.nullIfEmpty(form.getString(GPG_URL)));
-        command.setGpgCheck(form.get(GPG_CHECK) != null &&
-                (boolean)form.get(GPG_CHECK) ? true : false);
+        command.setGpgCheck(BooleanUtils.isTrue((Boolean)form.get(GPG_CHECK)));
         command.setParentId(parentId);
         command.setUser(user);
         command.setMaintainerName(StringUtil.nullIfEmpty(form.getString(MAINT_NAME)));

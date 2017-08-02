@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -64,8 +65,8 @@ public class ChannelDetailsAction extends RhnAction {
             chan.setGloballySubscribable((global != null) &&
                     ("all".equals(global)), user.getOrg());
 
-            Object gpgCheck = form.get("gpg_check");
-            chan.setGPGCheck(gpgCheck != null && (boolean)gpgCheck ? true : false);
+            chan.setGPGCheck(BooleanUtils.isTrue((Boolean)form.get("gpg_check")));
+
 
             createSuccessMessage(request, "message.channelupdated",
                     chan.getName());
