@@ -41,19 +41,6 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
 
-  Scenario: Run a remote command on ssh-minion
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Salt"
-    And I follow "Remote Commands"
-    And I should see a "Remote Commands" text
-    Then I enter command "rpm -q salt-minion"
-    And I click on preview
-    And I wait for "20" seconds
-    And I click on run
-    And I wait for "10" seconds
-    And I expand the results for "ssh-minion"
-    Then I should see a "package salt-minion is not installed" text
-
    Scenario: Run a remote command from the systems overview page
     Given I am authorized as "testing" with password "testing"
     And I follow "Systems"
@@ -116,19 +103,6 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     And I click on "Confirm"
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
-
-  Scenario: Run a remote command on ssh-minion-tunnel
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Salt"
-    And I follow "Remote Commands"
-    And I should see a "Remote Commands" text
-    Then I enter command "rpm -q salt-minion"
-    And I click on preview
-    And I wait for "20" seconds
-    And I click on run
-    And I wait for "10" seconds
-    And I expand the results for "ssh-minion"
-    Then I should see a "package salt-minion is not installed" text
 
    Scenario: Run a remote command from the systems overview page: ssh-tunnel
     Given I am authorized as "testing" with password "testing"
