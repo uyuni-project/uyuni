@@ -225,8 +225,13 @@
     <condition property="static.files.dir" value="/var/www/html" else="/srv/www/htdocs">
       <isset property="spacewalk.upstream"/>
     </condition>
-    <echo message="Calling gulp..."/>
-    <exec executable="./node_modules/gulp/bin/gulp.js" dir="${js.components.dir}"/>
+    <condition property="gulp.target" value="devel" else="">
+      <istrue value="${javascript.devel}"/>
+    </condition>
+    <echo message="Calling gulp ${gulp.target} ..."/>
+    <exec executable="./node_modules/gulp/bin/gulp.js" dir="${js.components.dir}">
+      <arg line="${gulp.target}"/>
+    </exec>
 
     <echo message="Copying css/js files to remote host...${static.files.dir}"/>
     <exec executable="rsync">
