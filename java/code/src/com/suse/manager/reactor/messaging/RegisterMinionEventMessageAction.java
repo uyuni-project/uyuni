@@ -289,8 +289,24 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
             if (!activationKey.isPresent()) {
-                LOG.info("No base channel added, adding default channel (if applicable)");
-                lookupAndAddDefaultChannels(server, grains);
+                if (!activationKeyLabel.isPresent()) {
+                    LOG.info("No base channel added, adding default channel " +
+                            "(if applicable)");
+                    lookupAndAddDefaultChannels(server, grains);
+                }
+                else {
+                    LOG.warn("Default channel(s) will NOT be added: " +
+                            "specified Activation Key " + activationKeyLabel.get() +
+                            " is not valid for minionId " + minionId);
+                    ServerHistoryEvent historyEvent = new ServerHistoryEvent();
+                    historyEvent.setCreated(new Date());
+                    historyEvent.setServer(server);
+                    historyEvent.setSummary("Invalid Activation Key");
+                    historyEvent.setDetails(
+                            "Specified Activation Key " + activationKeyLabel.get() +
+                                    " is not valid. Default channel(s) NOT be added.");
+                    server.getHistory().add(historyEvent);
+                }
             }
 
             server.updateServerInfo();
