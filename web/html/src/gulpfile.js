@@ -9,7 +9,7 @@ const glob  = require('glob');
 const es = require('event-stream');
 const rename = require('gulp-rename')
 const eslint = require('gulp-eslint');
-const bundlerOpts = null;
+var bundlerOpts = null;
 
 gulp.task('devel-opts', function() {
     bundlerOpts = {
