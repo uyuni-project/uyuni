@@ -759,7 +759,7 @@ When(/^I check "([^"]*)" in the list$/) do |arg1|
     # use div/div/div for cve audit which has two tables
     row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
     if row.nil?
-      sleep 3
+      sleep 10
       $stderr.puts "ERROR - try again"
       row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
     end
