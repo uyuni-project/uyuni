@@ -19,11 +19,13 @@
     "globals": {
         "d3":      true,
         "$": 	   true,
+        "t": 	   true
     },
     "extends": [
         "eslint:recommended", 
         "plugin:react/recommended"
     ],    
     "rules": {
+	"no-console":0
     }
 }
