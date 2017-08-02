@@ -4,6 +4,7 @@ const React = require("react");
 const {Table, Column, SearchField, Highlight} = require("../components/table");
 const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const PopUp = require("../components/popup").PopUp;
+const ModalButton = require("../components/dialogs").ModalButton;
 const UtilComponent =  require("./subscription-matching-util");
 const StrongText = UtilComponent.StrongText;
 const SystemLabel = UtilComponent.SystemLabel;
@@ -142,9 +143,14 @@ const Pins = React.createClass({
           :
           <p>{t("No pins defined. You can create one with the button below.")}</p>}
 
-        <button type="button" className="btn btn-primary" onClick={this.showPopUp} data-toggle="modal" data-target="#addPinPopUp">
-          <i className="fa fa-plus"></i>{t("Add a Pin")}
-        </button>
+        <ModalButton
+          className="btn-primary"
+          title={t("Add a Pin")}
+          text={t("Add a Pin")}
+          icon="fa-plus"
+          target="addPinPopUp"
+          onClick={this.showPopUp}
+        />
         <PopUp
           title={t("Add a Pin")}
           className="modal-lg"
