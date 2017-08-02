@@ -1,15 +1,15 @@
 /* File: gulpfile.js */
 
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var source = require('vinyl-source-stream');
-var browserify = require('browserify');
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const source = require('vinyl-source-stream');
+const browserify = require('browserify');
 require('babelify');
-var glob  = require('glob');
-var es = require('event-stream');
-var rename = require('gulp-rename')
+const glob  = require('glob');
+const es = require('event-stream');
+const rename = require('gulp-rename')
 const eslint = require('gulp-eslint');
-var bundlerOpts = null;
+const bundlerOpts = null;
 
 gulp.task('devel-opts', function() {
     bundlerOpts = {
@@ -29,9 +29,9 @@ gulp.task('bundle-manager', function(done) {
     glob('./manager/**/*.js', function(err, files) {
         if(err) done(err);
 
-        var tasks = files.map(function(entry) {
+        const tasks = files.map(function(entry) {
             bundlerOpts['entries'] = [entry]
-            var bundler = browserify(bundlerOpts);
+            const bundler = browserify(bundlerOpts);
 
             return bundler
                 .transform("babelify", {presets: ["es2015", "react"]})
