@@ -85,7 +85,7 @@ public class JSONBootstrapHosts {
     }
 
     /**
-     * @return the host
+     * @return the password
      */
     public String getPassword() {
         return password;
