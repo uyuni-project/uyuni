@@ -112,7 +112,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private PushClient pushClient;
     private final ConfigChannelListProcessor configListProc =
         new ConfigChannelListProcessor();
-    private Set<ServerHistoryEvent> history;
+    private Set<ServerHistoryEvent> history = new HashSet<ServerHistoryEvent>();
     private Set<InstalledPackage> packages = new HashSet<>();
     private ProxyInfo proxyInfo;
     private Set<ServerGroup> groups;
