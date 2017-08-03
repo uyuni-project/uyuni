@@ -21,12 +21,14 @@
         "$": 	   true,
         "t": 	   true,
         "csrfToken": true,
+        "userPrefPageSize": true
     },
     "extends": [
         "eslint:recommended", 
         "plugin:react/recommended"
     ],    
     "rules": {
-	"no-console":0
+	"no-console":0,
+        "indent": ["error", 2]
     }
 }
