@@ -6,7 +6,7 @@
 #
 
 # :firefox requires MozillaFirefox 3.7 or later !!
-$: << File.join(File.dirname(__FILE__), "..", "..", "lib")
+$: << File.join(File.dirname(__FILE__), '..', '..', 'lib')
 require 'rubygems'
 require 'tmpdir'
 require 'base64'
@@ -42,15 +42,15 @@ def current_url
 end
 
 # may be non url was given
-if host.include?("//")
-  raise "TESTHOST must be the FQDN only"
+if host.include?('//')
+  raise 'TESTHOST must be the FQDN only'
 end
 host = "https://#{host}"
 
 $myhostname = host
 
-ENV['LANG'] = "en_US.UTF-8"
-ENV['IGNORECERT'] = "1"
+ENV['LANG'] = 'en_US.UTF-8'
+ENV['IGNORECERT'] = '1'
 $stdout.sync = true
 
 Capybara.default_wait_time = 10
