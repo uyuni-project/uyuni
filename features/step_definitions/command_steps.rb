@@ -84,9 +84,7 @@ When(/^I check the tomcat logs for errors$/) do
   output = $server.run('cat /var/log/tomcat/*')
   msgs = %w[ERROR NullPointer]
   msgs.each do |msg|
-    if output.include? msg
-      raise "-#{msg}-  msg found on tomcat logs"
-    end
+    raise "-#{msg}-  msg found on tomcat logs" if output.include? msg
   end
 end
 
@@ -107,17 +105,13 @@ end
 When(/^I copy "([^"]*)"$/) do |arg1|
   user = 'root@'
   $command_output = `echo | scp -o StrictHostKeyChecking=no #{user}$TESTHOST:#{arg1} . 2>&1`
-  unless $?.success?
-    raise "Execute command failed: #{$!}: #{$command_output}"
-  end
+  raise "Execute command failed: #{$!}: #{$command_output}" unless $?.success?
 end
 
 When(/^I copy to server "([^"]*)"$/) do |arg1|
   user = 'root@'
   $command_output = `echo | scp -o StrictHostKeyChecking=no #{arg1} #{user}$TESTHOST: 2>&1`
-  unless $?.success?
-    raise "Execute command failed: #{$!}: #{$command_output}"
-  end
+  raise "Execute command failed: #{$!}: #{$command_output}" unless $?.success?
 end
 
 Then(/^the pxe-default-profile should be enabled$/) do
@@ -132,9 +126,7 @@ end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
   output = sshcmd("cobbler system report --name #{$client_fullhostname}:1", ignore_err: true)[:stdout]
-  unless output.include?(arg1)
-    raise "Not found: #{output}"
-  end
+  raise "Not found: #{output}" unless output.include?(arg1)
 end
 
 Then(/^I clean the search index on the server$/) do
@@ -162,9 +154,7 @@ Then(/^I want to get "([^"]*)"$/) do |arg1|
       break
     end
   end
-  unless found
-    raise "'#{arg1}' not found in output '#{$command_output}'"
-  end
+  raise "'#{arg1}' not found in output '#{$command_output}'" unless found
 end
 
 Then(/^I wont get "([^"]*)"$/) do |arg1|
@@ -175,9 +165,7 @@ Then(/^I wont get "([^"]*)"$/) do |arg1|
       break
     end
   end
-  if found
-    raise "'#{arg1}' found in output '#{$command_output}'"
-  end
+  raise "'#{arg1}' found in output '#{$command_output}'" if found
 end
 
 Then(/^I wait for mgr-sync refresh is finished$/) do
@@ -328,9 +316,7 @@ And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
   cmd = "#{$space} system_listevents #{host} | head -n5"
   $server.run("#{$space} clear_caches")
   out, _code = $server.run(cmd)
-  unless out.include? status
-    raise "#{out} should contain #{status}"
-  end
+  raise "#{out} should contain #{status}" unless out.include? status
 end
 
 And(/I create dockerized minions$/) do

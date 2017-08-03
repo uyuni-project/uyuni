@@ -494,9 +494,7 @@ end
 # Test for a text not allowed in the whole page
 #
 Then(/^I should not see a "([^"]*)" text$/) do |text|
-  unless page.has_no_content?(text)
-    raise "#{text} found on the page! FAIL"
-  end
+  raise "#{text} found on the page! FAIL" unless page.has_no_content?(text)
 end
 
 #

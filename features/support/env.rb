@@ -42,9 +42,7 @@ def current_url
 end
 
 # may be non url was given
-if host.include?('//')
-  raise 'TESTHOST must be the FQDN only'
-end
+raise 'TESTHOST must be the FQDN only' if host.include?('//')
 host = "https://#{host}"
 
 $myhostname = host

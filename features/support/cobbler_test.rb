@@ -17,9 +17,7 @@ class CobblerTest
     @server_port = server_port
     @server_path = server_path
     @server = XMLRPC::Client.new(server_address, server_path, server_port)
-    unless is_running
-      raise 'No running server at found at ' + server_address
-    end
+    raise 'No running server at found at ' + server_address unless is_running
   end
 
   def login(user, pass)
@@ -113,9 +111,7 @@ class CobblerTest
     result = false
     ret = @server.call('get_' + what)
     ret.each do |a|
-      if a[key] == value
-        result = true
-      end
+      result = true if a[key] == value
     end
     result
   end
@@ -124,9 +120,7 @@ class CobblerTest
     result = nil
     ret = @server.call('get_' + what)
     ret.each do |a|
-      if a['name'] == name
-        result = a[key]
-      end
+      result = a[key] if a['name'] == name
     end
     result
   end
