@@ -84,20 +84,6 @@ Style/GuardClause:
   Exclude:
     - 'features/support/cobbler_test.rb'
 
-# Offense count: 21
-# Cop supports --auto-correct.
-# Configuration parameters: MaxLineLength.
-Style/IfUnlessModifier:
-  Exclude:
-    - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/common_steps.rb'
-    - 'features/step_definitions/datepicker_steps.rb'
-    - 'features/step_definitions/navigation_steps.rb'
-    - 'features/step_definitions/salt_steps.rb'
-    - 'features/support/cobbler_test.rb'
-    - 'features/support/env.rb'
-    - 'features/support/xmlrpc_api.rb'
-
 # Offense count: 81
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: snake_case, camelCase

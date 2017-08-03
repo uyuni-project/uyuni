@@ -511,9 +511,7 @@ Then(/^the "([^"]*)" formula should be ([^"]*)$/) do |formula, action|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'checked'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'unchecked'
-  if all(:xpath, xpath_query).any?
-    raise "Checkbox is not #{action}"
-  end
+  raise "Checkbox is not #{action}" if all(:xpath, xpath_query).any?
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'checked'
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'unchecked'
   assert all(:xpath, xpath_query).any?, 'Checkbox could not be found'
@@ -601,9 +599,7 @@ end
 
 Given(/^I try download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
   url = "#{Capybara.app_host}/rhn/manager/download/#{channel}/getPackage/#{rpm}"
-  if @token
-    url = "#{url}?#{@token}"
-  end
+  url = "#{url}?#{@token}" if @token
   puts url
   Tempfile.open(rpm) do |tmpfile|
     @download_path = tmpfile.path
