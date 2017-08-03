@@ -4,12 +4,6 @@ require "socket"
 rpc = XMLRPCActionChain.new(ENV["TESTHOST"])
 syschaintest = XMLRPCSystemTest.new(ENV['TESTHOST'])
 scdrpc = XMLRPCScheduleTest.new(ENV['TESTHOST'])
-
-users = nil
-roles = nil
-client_id = nil
-chain_label = nil
-
 # Auth
 Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(.*?)"$/) do |luser, password|
   # Find target server once.
