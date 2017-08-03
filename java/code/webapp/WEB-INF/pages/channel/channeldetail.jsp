@@ -300,6 +300,24 @@
                         </c:choose>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">
+                        <bean:message key="channel.jsp.gpgcheck"/>
+                    </label>
+                    <div class="col-lg-6">
+                        <div class="checkbox">
+                            <input type="checkbox" class="select-single"
+                                    name="gpg_check" id="gpg_check"
+                                <c:if test="${requestScope.gpg_check}">
+                                    checked
+                                </c:if>
+                            />
+                            <label for="gpg_check">
+                                <bean:message key="channel.jsp.gpgcheck.enabled"/>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
