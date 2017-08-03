@@ -175,7 +175,12 @@ int main (int argc, char **argv)
 
         if (setsid() < 0)
             exit(EXIT_FAILURE);
-	umask(0);
+        //umask(0); /* umask is 022 by default */
+        /* umask was being set to 0, so we did not enforce anything                     \
+         * and syscalls like open/mkdir could choose the file permission mode.          \
+         * We should be fine with a 022 umask, so files will be created with 0644.      \
+         * For references, please see bsc#1049936
+        */
 
 	chdir ("/");
 
