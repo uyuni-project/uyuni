@@ -4,15 +4,15 @@
 require 'nokogiri'
 require 'timeout'
 def client_is_zypp?
-  _out, _local, _remote, _code = $client.test_and_store_results_together("test -x /usr/bin/zypper", "root", 600)
+  $client.run('test -x /usr/bin/zypper', false)
 end
 
 def client_refresh_metadata
   if client_is_zypp?
-    $client.run("zypper --non-interactive ref -s", true, 500, 'root')
+    $client.run('zypper --non-interactive ref -s', true, 500, 'root')
   else
-    $client.run("yum clean all", true, 600, 'root')
-    $client.run("yum makecache", true, 600, 'root')
+    $client.run('yum clean all', true, 600, 'root')
+    $client.run('yum makecache', true, 600, 'root')
   end
 end
 
@@ -25,15 +25,13 @@ def client_raw_repodata_dir(channel)
 end
 
 def client_system_id
-  out, _local, _remote, _code = $client.test_and_store_results_together("grep \"system_id\" /etc/sysconfig/rhn/systemid", "root", 600)
-   puts out
+  _out, _code = $client.run('grep "system_id" /etc/sysconfig/rhn/systemid')
 end
 
 def client_system_id_to_i
-  out, _local, _remote, _code = $client.test_and_store_results_together("grep \"ID\" /etc/sysconfig/rhn/systemid | tr -d -c 0-9", "root", 600)
-  out.gsub(/\s+/, "")
+  out, _code = $client.run('grep "ID" /etc/sysconfig/rhn/systemid | tr -d -c 0-9')
+  out.gsub(/\s+/, '')
 end
-## functions for reboot tests
 
 def checkShutdown(host, time_out)
   cmd = "ping -c1 #{host}"
@@ -63,7 +61,7 @@ def checkRestart(host, node, time_out)
       sleep 1
     end
     loop do
-      _out, code = node.run("ls", false, 10)
+      _out, code = node.run('ls', false, 10)
       if code.zero?
         puts "machine: #{host} ssh is up"
         break

@@ -1,7 +1,7 @@
 # COPYRIGHT 2015 SUSE LLC
 require 'json'
 
-rpctest = XMLRPCChannelTest.new(ENV["TESTHOST"])
+rpctest = XMLRPCChannelTest.new(ENV['TESTHOST'])
 systest = XMLRPCSystemTest.new(ENV['TESTHOST'])
 servers = []
 rabbit = nil
@@ -40,7 +40,7 @@ end
 CREATE_USER_PASSWORD = 'die gurke'.freeze
 
 Given(/^I am logged in via XML\-RPC\/user as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @rpc = XMLRPCUserTest.new(ENV["TESTHOST"])
+  @rpc = XMLRPCUserTest.new(ENV['TESTHOST'])
   @rpc.login(luser, password)
 end
 
@@ -89,9 +89,9 @@ end
 
 Given(/^I make sure "([^"]*)" is not present$/) do |luser|
   @rpc.getUsers
-    .map { |u| u['login'] }
-    .select { |l| l == luser }
-    .each { @rpc.deleteUser(luser) }
+      .map { |u| u['login'] }
+      .select { |l| l == luser }
+      .each { @rpc.deleteUser(luser) }
 end
 
 When(/^I call user\.removeRole\(\) against uid "([^"]*)" with the role "([^"]*)"$/) do |luser, rolename|
@@ -163,46 +163,46 @@ Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
 end
 
 # activation key test xmlrpc
-acttest = XMLRPCActivationKeyTest.new(ENV["TESTHOST"])
+acttest = XMLRPCActivationKeyTest.new(ENV['TESTHOST'])
 key = nil
 
 Given(/^I am logged in via XML\-RPC\/activationkey as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  fail unless acttest.login(luser, password)
+  raise unless acttest.login(luser, password)
 end
 
 When(/^I create an AK with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/) do |id, dscr, limit|
   key = acttest.createKey(id, dscr, limit)
-  fail if key.nil?
+  raise if key.nil?
 end
 
 Then(/^I should get it listed with a call of listActivationKeys\.$/) do
-  fail unless acttest.verifyKey(key)
+  raise unless acttest.verifyKey(key)
 end
 
 When(/^I call listActivationKeys I should get some\.$/) do
-  fail if acttest.getActivationKeysCount < 1
+  raise if acttest.getActivationKeysCount < 1
 end
 
 Then(/^I should get key deleted\.$/) do
-  fail unless acttest.deleteKey(key)
-  fail if acttest.verifyKey(key)
+  raise unless acttest.deleteKey(key)
+  raise if acttest.verifyKey(key)
 end
 
 When(/^I add config channels to a newly created key$/) do
-  fail if acttest.getConfigChannelsCount(key) > 0
+  raise if acttest.getConfigChannelsCount(key) > 0
 end
 
 When(/^I add config channels "([^"]*)" to a newly created key$/) do |channelName|
-  fail if acttest.addConfigChannel(key, channelName) < 1
+  raise if acttest.addConfigChannel(key, channelName) < 1
 end
 
 # Details
 When(/^I call activationkey\.setDetails\(\) to the key$/) do
-  fail unless acttest.setDetails(key)
+  raise unless acttest.setDetails(key)
 end
 
 Then(/^I have to see them by calling activationkey\.getDetails\(\)$/) do
-  fail unless acttest.getDetails(key)
+  raise unless acttest.getDetails(key)
 end
 
 virtualhostmanager = XMLRPCVHMTest.new(ENV['TESTHOST'])
@@ -231,12 +231,12 @@ When(/^I call virtualhostmanager.create\("([^"]*)", "([^"]*)"\) and params from 
   fd = File.read(File.new(paramFile))
   p = JSON.parse(fd)
   r = virtualhostmanager.create(label, moduleName, p)
-  fail if r != 1
+  raise if r != 1
 end
 
 When(/^I call virtualhostmanager.delete\("([^"]*)"\)$/) do |label|
   r = virtualhostmanager.delete(label)
-  fail if r != 1
+  raise if r != 1
 end
 
 When(/^I call virtualhostmanager.getDetail\("([^"]*)"\)$/) do |label|
