@@ -6,32 +6,32 @@ When(/^I wait for "(\d+)" seconds$/) do |arg1|
 end
 
 Then(/^I download the SSL certificate$/) do
-  cert_path = "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT"
-  wget = "wget --no-check-certificate -O"
+  cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
+  wget = 'wget --no-check-certificate -O'
   $client.run("#{wget} #{cert_path} http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT", true, 500, 'root')
   $client.run("ls #{cert_path}")
 end
 
 Then(/^I can see all system information for "([^"]*)"$/) do |target|
   node = get_target(target)
-  node_hostname, _code = node.run("hostname -f")
-  puts "i should see hostname: " + node_hostname.strip
+  node_hostname, _code = node.run('hostname -f')
+  puts 'i should see hostname: ' + node_hostname.strip
   step %(I should see a "#{node_hostname.strip}" text)
-  kernel_version, _code = node.run("uname -r")
-  puts "i should see kernel version: " + kernel_version
+  kernel_version, _code = node.run('uname -r')
+  puts 'i should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
-  os_pretty_raw, _code = node.run("grep \"PRETTY\" /etc/os-release")
-  os_pretty = os_pretty_raw.strip.split("=")[1].delete "\""
-  puts "i should see os version: " + os_pretty
+  os_pretty_raw, _code = node.run('grep "PRETTY" /etc/os-release')
+  os_pretty = os_pretty_raw.strip.split('=')[1].delete '"'
+  puts 'i should see os version: ' + os_pretty
   # skip this test for centos systems
-  step %(I should see a "#{os_pretty}" text) if os_pretty.include? "SUSE Linux"
+  step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
 end
 
 # spacewalk errors steps
 Then(/^I control that up2date logs on client under test contains no Traceback error$/) do
-  cmd = "if grep \"Traceback\" /var/log/up2date ; then exit 1; else exit 0; fi"
+  cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
   _out, code = $client.run(cmd)
-  raise "error found, check the client up2date logs" if code.nonzero?
+  raise 'error found, check the client up2date logs' if code.nonzero?
 end
 
 # action chains
@@ -40,7 +40,7 @@ When(/^I check radio button "(.*?)"$/) do |arg1|
 end
 
 When(/^I enter as remote command this script in$/) do |multiline|
-  within(:xpath, "//section") do
+  within(:xpath, '//section') do
     x = find('textarea#fSptInput')
     x.set(multiline) # find("#{arg1}") #.set(lines)
   end
@@ -49,25 +49,25 @@ end
 # bare metal
 When(/^I check the ram value$/) do
   get_ram_value = "grep MemTotal /proc/meminfo |awk '{print $2}'"
-  ram_value, _local, _remote, _code = $client.test_and_store_results_together(get_ram_value, "root", 600)
-  ram_value = ram_value.gsub(/\s+/, "")
+  ram_value, _local, _remote, _code = $client.test_and_store_results_together(get_ram_value, 'root', 600)
+  ram_value = ram_value.gsub(/\s+/, '')
   ram_mb = ram_value.to_i / 1024
   step %(I should see a "#{ram_mb}" text)
 end
 
 When(/^I check the MAC address value$/) do
-  get_mac_address = "cat /sys/class/net/eth0/address"
-  mac_address, _local, _remote, _code = $client.test_and_store_results_together(get_mac_address, "root", 600)
-  mac_address = mac_address.gsub(/\s+/, "")
+  get_mac_address = 'cat /sys/class/net/eth0/address'
+  mac_address, _local, _remote, _code = $client.test_and_store_results_together(get_mac_address, 'root', 600)
+  mac_address = mac_address.gsub(/\s+/, '')
   mac_address.downcase!
   step %(I should see a "#{mac_address}" text)
 end
 
 Then(/^I should see the CPU frequency of the client$/) do
   get_cpu_freq = "lscpu  | grep 'CPU MHz'" # | awk '{print $4}'"
-  cpu_freq, _local, _remote, _code = $client.test_and_store_results_together(get_cpu_freq, "root", 600)
-  get_cpu = cpu_freq.gsub(/\s+/, "")
-  cpu = get_cpu.split(".")
+  cpu_freq, _local, _remote, _code = $client.test_and_store_results_together(get_cpu_freq, 'root', 600)
+  get_cpu = cpu_freq.gsub(/\s+/, '')
+  cpu = get_cpu.split('.')
   cpu = cpu[0].gsub(/[^\d]/, '')
   step %(I should see a "#{cpu.to_i / 1000} GHz" text)
 end
@@ -88,7 +88,7 @@ When(/^I select "(.*?)" as the origin channel$/) do |label|
 end
 
 Then(/^I sync "([^"]*)" channel$/) do |channel|
-  $server.run("spacewalk-repo-sync -c #{channel}", true, 130_000, "root")
+  $server.run("spacewalk-repo-sync -c #{channel}", true, 130_000, 'root')
 end
 
 Then(/^I add "([^"]*)" channel$/) do |channel|
@@ -96,7 +96,7 @@ Then(/^I add "([^"]*)" channel$/) do |channel|
 end
 
 # channel steps
-arch = "x86_64"
+arch = 'x86_64'
 When(/^I use spacewalk\-channel to add a valid child channel$/) do
   child_channel = "test-channel-#{arch}-child-channel"
   step %(I execute spacewalk\-channel and pass "--add -c #{child_channel} -u admin -p admin")
@@ -118,7 +118,7 @@ end
 Then(/^I create mock initrd if download fails$/) do
   # sometimes the download via sumaform fails. we create a fake empty img.
   # for current testing this is enough.
-  initrd = "/install/Fedora_12_i386/images/pxeboot/initrd.img"
+  initrd = '/install/Fedora_12_i386/images/pxeboot/initrd.img'
   _out, code = $server.run("test -f #{initrd}", false)
   $server.run("touch #{initrd}") if code.nonzero?
 end
@@ -142,22 +142,22 @@ When(/^I perform a nagios check last event for "([^"]*)"$/) do |host|
 end
 
 When(/^I perform an invalid nagios check patches$/) do
-  command = "/usr/lib/nagios/plugins/check_suma_patches does.not.exist > /tmp/nagios.out"
+  command = '/usr/lib/nagios/plugins/check_suma_patches does.not.exist > /tmp/nagios.out'
   $server.run(command, false, 600, 'root')
 end
 
 Then(/^I should see CRITICAL: 1 critical patch pending$/) do
-  command = "grep \"CRITICAL: 1 critical patch(es) pending\" /tmp/nagios.out"
+  command = 'grep "CRITICAL: 1 critical patch(es) pending" /tmp/nagios.out'
   $server.run(command, true, 600, 'root')
 end
 
 Then(/^I should see Completed: OpenSCAP xccdf scanning scheduled by admin/) do
-  command = "grep \"Completed: OpenSCAP xccdf scanning scheduled by admin\" /tmp/nagios.out"
+  command = 'grep "Completed: OpenSCAP xccdf scanning scheduled by admin" /tmp/nagios.out'
   $server.run(command, true, 600, 'root')
 end
 
 Then(/^I should see an unknown system message$/) do
-  command = "grep -i \"^Unknown system:.*does.not.exist\" /tmp/nagios.out 2>&1"
+  command = 'grep -i "^Unknown system:.*does.not.exist" /tmp/nagios.out 2>&1'
   $server.run(command, true, 600, 'root')
 end
 
@@ -174,7 +174,7 @@ end
 Given(/cobblerd is running/) do
   ct = CobblerTest.new
   unless ct.is_running
-    raise "cobblerd is not running"
+    raise 'cobblerd is not running'
   end
 end
 
@@ -182,18 +182,18 @@ Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |di
   ct = CobblerTest.new
   ct.login(user, pwd)
   if ct.distro_exists(distro)
-    raise "distro " + distro + " already exists"
+    raise 'distro ' + distro + ' already exists'
   end
-  ct.distro_create(distro, "/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux", "install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd")
+  ct.distro_create(distro, '/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux', 'install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
 Then(/^trigger cobbler system record\(not for ssh\-push tradclient\)$/) do
-  space = "spacecmd -u admin -p admin"
+  space = 'spacecmd -u admin -p admin'
   host = $client_fullhostname
   cmd = "#{$space} system_details #{host}"
   $server.run("#{space} clear_caches")
   out, _code = $server.run(cmd)
-  unless out.include? "ssh-push-tunnel"
+  unless out.include? 'ssh-push-tunnel'
     # trad-client normal
     steps %(
       And I follow this "sle-client" link
@@ -207,7 +207,7 @@ end
 Given(/distro "([^"]*)" exists/) do |distro|
   ct = CobblerTest.new
   unless ct.distro_exists(distro)
-    raise "distro " + distro + " does not exist"
+    raise 'distro ' + distro + ' does not exist'
   end
 end
 
@@ -215,9 +215,9 @@ Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |a
   ct = CobblerTest.new
   ct.login(arg2, arg3)
   if ct.profile_exists(arg1)
-    raise "profile " + arg1 + " already exists"
+    raise 'profile ' + arg1 + ' already exists'
   end
-  ct.profile_create("testprofile", "testdistro", "/install/empty.xml")
+  ct.profile_create('testprofile', 'testdistro', '/install/empty.xml')
 end
 
 When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
@@ -225,45 +225,45 @@ When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
 end
 
 When(/I view system with id "([^"]*)"/) do |arg1|
-  visit Capybara.app_host + "/rhn/systems/details/Overview.do?sid=" + arg1
+  visit Capybara.app_host + '/rhn/systems/details/Overview.do?sid=' + arg1
 end
 
 # weak deaps steps
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
-  raise "Invalid target." unless host == "sle-client"
+  raise 'Invalid target.' unless host == 'sle-client'
   target = $client
-  target.run("rhn_check -vvv", true, 500, 'root')
+  target.run('rhn_check -vvv', true, 500, 'root')
   client_refresh_metadata
 end
 
 Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  raise "Invalid target." unless host == "sle-client"
+  raise 'Invalid target.' unless host == 'sle-client'
   target = $client
-  arch, _code = target.run("uname -m")
+  arch, _code = target.run('uname -m')
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
   target.run(cmd, true, 500, 'root')
 end
 
 Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
-  raise "Invalid target." unless host == "sle-client"
+  raise 'Invalid target.' unless host == 'sle-client'
   target = $client
-  arch, _code = target.run("uname -m")
+  arch, _code = target.run('uname -m')
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/primary.xml.gz"
   target.run(cmd, true, 500, 'root')
 end
 
 Then(/^"([^"]*)" should exists in the metadata for "([^"]*)"$/) do |file, host|
-  raise "Invalid target." unless host == "sle-client"
+  raise 'Invalid target.' unless host == 'sle-client'
   target = $client
-  arch, _code = target.run("uname -m")
+  arch, _code = target.run('uname -m')
   arch.chomp!
   raise unless file_exists?(target, "#{client_raw_repodata_dir("test-channel-#{arch}")}/#{file}")
 end
 
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
-  arch, _code = $client.run("uname -m")
+  arch, _code = $client.run('uname -m')
   arch.chomp!
   cmd = "zgrep '#{text}' #{client_raw_repodata_dir("test-channel-#{arch}")}/updateinfo.xml.gz"
   $client.run(cmd, true, 500, 'root')
@@ -295,7 +295,7 @@ When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
   srvurl = "http://#{ENV['TESTHOST']}/APP"
   command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1} "
   $server.run(command, true, 500, 'root')
-  $server.run("ls -lR /var/spacewalk/packages", true, 500, 'root')
+  $server.run('ls -lR /var/spacewalk/packages', true, 500, 'root')
 end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
@@ -334,13 +334,13 @@ end
 
 When(/^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/) do |product, architecture|
   within(:xpath, "(//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]])[1]") do
-    raise unless find("button.product-add-btn").click
+    raise unless find('button.product-add-btn').click
     begin
       # wait to finish scheduling
       Timeout.timeout(DEFAULT_TIMEOUT) do
         loop do
           begin
-            break unless find("button.product-add-btn").visible?
+            break unless find('button.product-add-btn').visible?
             sleep 2
           rescue Capybara::ElementNotFound
             break
@@ -348,7 +348,7 @@ When(/^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/) do |p
         end
       end
     rescue Timeout::Error
-      puts "timeout reached"
+      puts 'timeout reached'
     end
   end
 end
@@ -359,13 +359,13 @@ When(/^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/) d
   xpath += "ancestor::tr[td[contains(text(), '#{archi}')]]/following::span"
   xpath += "[contains(text(), '#{addon}')]/../.."
   within(:xpath, xpath) do
-    raise unless find("button.product-add-btn").click
+    raise unless find('button.product-add-btn').click
     begin
       # wait to finish scheduling
       Timeout.timeout(DEFAULT_TIMEOUT) do
         loop do
           begin
-            break unless find("button.product-add-btn").visible?
+            break unless find('button.product-add-btn').visible?
             sleep 2
           rescue Capybara::ElementNotFound
             break
@@ -373,13 +373,13 @@ When(/^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/) d
         end
       end
     rescue Timeout::Error
-      puts "timeout reached"
+      puts 'timeout reached'
     end
   end
 end
 
 When(/^I click the Add Product button$/) do
-  raise unless find("button#synchronize").click
+  raise unless find('button#synchronize').click
 end
 
 When(/^I verify the products were added$/) do
@@ -397,7 +397,7 @@ When(/^I click the channel list of product "(.*?)" for the "(.*?)" architecture$
 end
 
 Then(/^I see verification succeeded/) do
-  find("i.text-success")
+  find('i.text-success')
 end
 
 # configuration steps
@@ -438,19 +438,19 @@ And(/^Cleanup for distro_clobber_feature$/) do
   @sid = @cli.call('auth.login', 'admin', 'admin')
   # -------------------------------
   # cleanup kickstart profiles and distros
-  distro_name = "fedora_kickstart_distro"
+  distro_name = 'fedora_kickstart_distro'
   @cli.call('kickstart.tree.deleteTreeAndProfiles', @sid, distro_name)
-  @cli.call("auth.logout", @sid)
+  @cli.call('auth.logout', @sid)
   # -------------------------------
   # remove not from suma managed profile
-  $server.run("cobbler profile remove --name \"testprofile\"")
+  $server.run('cobbler profile remove --name "testprofile"')
   # remove not from suma man. distro
-  $server.run("cobbler distro remove --name \"testdistro\"")
+  $server.run('cobbler distro remove --name "testdistro"')
 end
 
 # Register client
 Given(/^I update the profile of this client$/) do
-  $client.run("rhn-profile-sync", true, 500, 'root')
+  $client.run('rhn-profile-sync', true, 500, 'root')
 end
 
 When(/^I register using "([^"]*)" key$/) do |arg1|
@@ -473,12 +473,12 @@ end
 
 Then(/^config-actions are enabled$/) do
   unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/configfiles/all')
-    raise "config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist on client"
+    raise 'config actions are disabled: /etc/sysconfig/rhn/allowed-actions/configfiles/all does not exist on client'
   end
 end
 
 Then(/^remote-commands are enabled$/) do
   unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/script/run')
-    raise "remote-commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist"
+    raise 'remote-commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist'
   end
 end

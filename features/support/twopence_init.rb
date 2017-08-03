@@ -1,13 +1,13 @@
-require "twopence"
-require "lavanda"
+require 'twopence'
+require 'lavanda'
 
 # initialize ssh targets from environment variables.
 
-raise "Server ip var empty" if ENV['TESTHOST'].nil?
-raise "client ip var empty" if ENV['CLIENT'].nil?
-raise "minion ip var empty" if ENV['MINION'].nil?
-raise "ceos-minion ip var empty" if ENV['CENTOSMINION'].nil?
-raise "ssh-minion ip var empty" if ENV['SSHMINION'].nil?
+raise 'Server ip var empty' if ENV['TESTHOST'].nil?
+raise 'client ip var empty' if ENV['CLIENT'].nil?
+raise 'minion ip var empty' if ENV['MINION'].nil?
+raise 'ceos-minion ip var empty' if ENV['CENTOSMINION'].nil?
+raise 'ssh-minion ip var empty' if ENV['SSHMINION'].nil?
 
 $server_ip = ENV['TESTHOST']
 $client_ip = ENV['CLIENT']
@@ -36,10 +36,10 @@ node_hostnames = []
 node_fqn = []
 # get the hostnames of various vms
 for node in nodes
-  hostname, _local, _remote, code = node.test_and_store_results_together("hostname", "root", 500)
-  raise "cannot get hostname for node" if code.nonzero?
-  fqn, _local, _remote, code = node.test_and_store_results_together("hostname -f", "root", 500)
-  raise "no full qualified hostname for node" if code.nonzero?
+  hostname, _local, _remote, code = node.test_and_store_results_together('hostname', 'root', 500)
+  raise 'cannot get hostname for node' if code.nonzero?
+  fqn, _local, _remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
+  raise 'no full qualified hostname for node' if code.nonzero?
   # store normal hostname and full qualified hoststname
   node_fqn.push(fqn.strip)
   node_hostnames.push(hostname.strip)
@@ -60,70 +60,70 @@ $ssh_minion_fullhostname = node_fqn[4]
 # helper functions for moment this are used in salt.steps but maybe move this to lavanda.rb
 def get_target(host)
   case host
-  when "server"
+  when 'server'
     node = $server
-  when "ceos-minion"
+  when 'ceos-minion'
     node = $ceos_minion
-  when "ssh-minion"
+  when 'ssh-minion'
     node = $ssh_minion
-  when "sle-minion"
+  when 'sle-minion'
     node = $minion
-  when "sle-client"
+  when 'sle-client'
     node = $client
-  when "sle-migrated-minion"
+  when 'sle-migrated-minion'
     node = $client
   else
-    raise "Invalid target."
+    raise 'Invalid target.'
   end
   node
 end
 
 def get_target_hostname(host)
   case host
-  when "server"
+  when 'server'
     hostname = $server_hostname
-  when "ceos-minion"
+  when 'ceos-minion'
     hostname = $ceos_minion_hostname
-  when "ssh-minion"
+  when 'ssh-minion'
     hostname = $ssh_minion_hostname
-  when "sle-minion"
+  when 'sle-minion'
     hostname = $minion_hostname
-  when "sle-client"
+  when 'sle-client'
     hostname = $client_hostname
-  when "sle-migrated-minion"
+  when 'sle-migrated-minion'
     hostname = $client_hostname
   else
-    raise "Invalid target."
+    raise 'Invalid target.'
   end
   hostname
 end
 
 def get_target_fullhostname(host)
   case host
-  when "server"
+  when 'server'
     fullhostname = $server_fullhostname
-  when "ceos-minion"
+  when 'ceos-minion'
     fullhostname = $ceos_minion_fullhostname
-  when "ssh-minion"
+  when 'ssh-minion'
     fullhostname = $ssh_minion_fullhostname
-  when "sle-minion"
+  when 'sle-minion'
     fullhostname = $minion_fullhostname
-  when "sle-client"
+  when 'sle-client'
     fullhostname = $client_fullhostname
-  when "sle-migrated-minion"
+  when 'sle-migrated-minion'
     fullhostname = $client_fullhostname
   else
-    raise "Invalid target."
+    raise 'Invalid target.'
   end
   fullhostname
 end
 
 def file_exists?(node, file)
-  _out, _local, _remote, code = node.test_and_store_results_together("test -f #{file}", "root", 500)
+  _out, _local, _remote, code = node.test_and_store_results_together("test -f #{file}", 'root', 500)
   code.zero?
 end
 
 def file_delete(node, file)
-  _out, _local, _remote, code = node.test_and_store_results_together("rm  #{file}", "root", 500)
+  _out, _local, _remote, code = node.test_and_store_results_together("rm  #{file}", 'root', 500)
   code
 end

@@ -180,13 +180,6 @@ Style/RegexpLiteral:
 Style/SpecialGlobalVars:
   EnforcedStyle: use_perl_names
 
-# Offense count: 603
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Enabled: false
-
 # Offense count: 23
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: snake_case, camelCase

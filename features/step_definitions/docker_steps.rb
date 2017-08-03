@@ -1,7 +1,7 @@
 # Copyright (c) 2017 Suse Linux
 # Licensed under the terms of the MIT license.
 
-require "xmlrpc/client"
+require 'xmlrpc/client'
 require 'time'
 require 'date'
 require 'securerandom'
@@ -47,7 +47,7 @@ module ImageProfile
     # test listImageProfiles method
     ima_profiles = cont_op.listImageProfiles
     imagelabel = ima_profiles.select { |image| image['label'] = 'fakeone' }
-    assert_equal(imagelabel[0]['label'], 'fakeone', "label of container should be fakeone!")
+    assert_equal(imagelabel[0]['label'], 'fakeone', 'label of container should be fakeone!')
     # test set value and get value call
     details = {}
     details['storeLabel'] = 'galaxy-registry'
@@ -98,13 +98,13 @@ end
 And(/^I verify that all "([^"]*)" container images were built correctly in the gui$/) do |count|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
-      raise "error detected while building images" if has_xpath?("//*[contains(@title, 'Failed')]")
+      raise 'error detected while building images' if has_xpath?("//*[contains(@title, 'Failed')]")
       break if has_xpath?("//*[contains(@title, 'Built')]", :count => count)
       sleep 5
       step %(I navigate to images webpage)
     end
   rescue Timeout::Error
-    raise "at least one image was not built correctly"
+    raise 'at least one image was not built correctly'
   end
 end
 
@@ -131,7 +131,7 @@ end
 And(/^I delete the image "([^"]*)" with version "([^"]*)" via xmlrpc-call$/) do |image_name_todel, version|
   cont_op.login('admin', 'admin')
   images_list = cont_op.listImages
-  refute_nil(images_list, "ERROR: no images at all were retrieved.")
+  refute_nil(images_list, 'ERROR: no images at all were retrieved.')
   images_list.each do |element|
     if element['name'] == image_name_todel.strip && element['version'] == version.strip
       $image_id = element['id']

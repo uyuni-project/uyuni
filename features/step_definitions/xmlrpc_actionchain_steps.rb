@@ -1,7 +1,7 @@
-require "xmlrpc/client"
-require "socket"
+require 'xmlrpc/client'
+require 'socket'
 
-rpc = XMLRPCActionChain.new(ENV["TESTHOST"])
+rpc = XMLRPCActionChain.new(ENV['TESTHOST'])
 syschaintest = XMLRPCSystemTest.new(ENV['TESTHOST'])
 scdrpc = XMLRPCScheduleTest.new(ENV['TESTHOST'])
 # Auth
@@ -44,7 +44,7 @@ Then(/^I delete the action chain$/) do
   begin
     rpc.deleteChain($chain_label)
   rescue XMLRPC::FaultException => e
-    raise "deleteChain: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
+    raise 'deleteChain: XML-RPC failure, code %s: %s' % [e.faultCode, e.faultString]
   end
 end
 
@@ -52,7 +52,7 @@ Then(/^I delete an action chain, labeled "(.*?)"$/) do |label|
   begin
     rpc.deleteChain(label)
   rescue XMLRPC::FaultException => e
-    raise "deleteChain: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
+    raise 'deleteChain: XML-RPC failure, code %s: %s' % [e.faultCode, e.faultString]
   end
 end
 
@@ -88,12 +88,12 @@ Then(/^I should be able to see all these actions in the action chain$/) do
   begin
     actions = rpc.listChainActions($chain_label)
     refute_nil(actions)
-    puts "Running actions:"
+    puts 'Running actions:'
     actions.each do |action|
-      puts "\t- " + action["label"]
+      puts "\t- " + action['label']
     end
   rescue XMLRPC::FaultException => e
-    raise "Error listChainActions: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
+    raise 'Error listChainActions: XML-RPC failure, code %s: %s' % [e.faultCode, e.faultString]
   end
 end
 
@@ -107,26 +107,26 @@ When(/^I call actionchain\.addPackageInstall\(\)$/) do
   pkgs = syschaintest.listAllInstallablePackages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
-  refute(rpc.addPackageInstall($client_id, [pkgs[0]["id"]], $chain_label) < 1)
+  refute(rpc.addPackageInstall($client_id, [pkgs[0]['id']], $chain_label) < 1)
 end
 
 When(/^I call actionchain\.addPackageRemoval\(\)$/) do
   pkgs = syschaintest.listAllInstallablePackages($client_id)
-  refute(rpc.addPackageRemoval($client_id, [pkgs[0]["id"]], $chain_label) < 1)
+  refute(rpc.addPackageRemoval($client_id, [pkgs[0]['id']], $chain_label) < 1)
 end
 
 When(/^I call actionchain\.addPackageUpgrade\(\)$/) do
   pkgs = syschaintest.listLatestUpgradablePackages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
-  refute(rpc.addPackageUpgrade($client_id, [pkgs[0]["to_package_id"]], $chain_label) < 1)
+  refute(rpc.addPackageUpgrade($client_id, [pkgs[0]['to_package_id']], $chain_label) < 1)
 end
 
 When(/^I call actionchain\.addPackageVerify\(\)$/) do
   pkgs = syschaintest.listAllInstallablePackages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
-  refute(rpc.addPackageVerify($client_id, [pkgs[0]["id"]], $chain_label) < 1)
+  refute(rpc.addPackageVerify($client_id, [pkgs[0]['id']], $chain_label) < 1)
 end
 
 # Manage actions within the action chain
@@ -135,11 +135,11 @@ When(/^I call actionchain\.removeAction on each action within the chain$/) do
     actions = rpc.listChainActions($chain_label)
     refute_nil(actions)
     for action in actions do
-      refute(rpc.removeAction($chain_label, action["id"]) < 0)
-      puts "\t- Removed \"" + action["label"] + "\" action"
+      refute(rpc.removeAction($chain_label, action['id']) < 0)
+      puts "\t- Removed \"" + action['label'] + '" action'
     end
   rescue XMLRPC::FaultException => e
-    raise "Error removeAction: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
+    raise 'Error removeAction: XML-RPC failure, code %s: %s' % [e.faultCode, e.faultString]
   end
 end
 
@@ -165,8 +165,8 @@ end
 Then(/^I cancel all scheduled actions$/) do
   for action in scdrpc.listInProgressActions do
     # One-by-one, this is against single call in the API on purpose.
-    scdrpc.cancelActions([action["id"]])
-    puts "\t- Removed \"" + action["name"] + "\" action"
+    scdrpc.cancelActions([action['id']])
+    puts "\t- Removed \"" + action['name'] + '" action'
   end
 end
 

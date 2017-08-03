@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 Then(/^"(.*?)" is locked on this client$/) do |pkg|
-  zypp_lock_file = "/etc/zypp/locks"
+  zypp_lock_file = '/etc/zypp/locks'
   raise unless file_exists?($client, zypp_lock_file)
   command = "zypper locks  --solvables | grep #{pkg}"
   $client.run(command, true, 600, 'root')
@@ -16,7 +16,7 @@ Then(/^Package "(.*?)" is reported as locked$/) do |pkg|
 end
 
 Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
-  zypp_lock_file = "/etc/zypp/locks"
+  zypp_lock_file = '/etc/zypp/locks'
   raise unless file_exists?($client, zypp_lock_file)
   command = "zypper locks  --solvables | grep #{pkg}"
   $client.run(command, false, 600, 'root')
@@ -41,7 +41,7 @@ Then(/^The action status is "(.*?)"$/) do |status|
 end
 
 Then(/^Package "(.*?)" is reported as pending to be locked$/) do |pkg|
-  xpath_query = "//td[" \
+  xpath_query = '//td[' \
                 "a[text()='#{pkg}'] and " \
                 "i[@class='fa fa-clock-o'] and " \
                 "span[@class='label label-info' and contains(text(), 'Locking...')]]"
@@ -49,7 +49,7 @@ Then(/^Package "(.*?)" is reported as pending to be locked$/) do |pkg|
 end
 
 Then(/^Package "(.*?)" is reported as pending to be unlocked$/) do |pkg|
-  xpath_query = "//td[" \
+  xpath_query = '//td[' \
                 "a[text()='#{pkg}'] and " \
                 "i[@class='fa fa-clock-o'] and " \
                 "span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
@@ -57,22 +57,22 @@ Then(/^Package "(.*?)" is reported as pending to be unlocked$/) do |pkg|
 end
 
 Then(/^Package "(.*?)" cannot be selected$/) do |pkg|
-  xpath_query = "//tr[" \
+  xpath_query = '//tr[' \
                 "td[input[@type='checkbox' and @disabled]] and " \
-                "td[ " \
+                'td[ ' \
                 "a[text()='#{pkg}'] and " \
                 "i[@class='fa fa-clock-o'] and " \
                 "span[@class='label label-info']" \
-                "]]"
+                ']]'
   find(:xpath, xpath_query)
 end
 
 Then(/^Only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
-  pkgs = pkgs.split(",").map(&:strip)
+  pkgs = pkgs.split(',').map(&:strip)
 
   # ensure these packages are found as pending to be unlocked
   pkgs.each do |pkg|
-    xpath_query = "//td[" + # Looking for 1 td element with...
+    xpath_query = '//td[' + # Looking for 1 td element with...
                   "a[text()='#{pkg}'] and " \
                   "i[@class='fa fa-clock-o'] and " \
                   "span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
@@ -80,7 +80,7 @@ Then(/^Only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
   end
 
   # ensure no other packages are set as pending to be unlocked
-  xpath_query = "//td[" \
+  xpath_query = '//td[' \
                 "i[@class='fa fa-clock-o'] and " \
                 "span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
   matches = all(:xpath, xpath_query)
@@ -89,15 +89,15 @@ Then(/^Only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
 end
 
 When(/^I select all the packages$/) do
-  within(:xpath, "//section") do
+  within(:xpath, '//section') do
     # use div/div/div for cve audit which has two tables
     top_level_xpath_query = "//div[@class='table-responsive']/table/thead/tr[.//input[@type='checkbox']]"
     row = first(:xpath, top_level_xpath_query)
     if row.nil?
       sleep 1
-      $stderr.puts "ERROR - try again"
+      $stderr.puts 'ERROR - try again'
       row = first(:xpath, top_level_xpath_query)
     end
-    row.first(:xpath, ".//input[@type=\"checkbox\"]").set(true)
+    row.first(:xpath, './/input[@type="checkbox"]').set(true)
   end
 end
