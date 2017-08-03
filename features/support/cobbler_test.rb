@@ -40,7 +40,7 @@ class CobblerTest
 
   def get_list(what)
     result = []
-    unless ["systems", "profiles", "distros"].include?(what)
+    unless %w[systems profiles distros].include?(what)
       raise "unknown get_list parameter '#{what}'"
     end
     ret = @server.call("get_" + what)

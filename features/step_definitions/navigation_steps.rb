@@ -563,7 +563,7 @@ Then(/^I should see a "([^"]*)" link in "([^"]*)" "([^"]*)"$/) do |arg1, arg2, a
 end
 
 Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, column|
-  idx = ['first', 'second', 'third', 'fourth'].index(column)
+  idx = %w[first second third fourth].index(column)
   unless idx
     # try column by name
     # unquote if neeeded
@@ -578,7 +578,7 @@ end
 
 Then(/^I reload the page until it does contain a "([^"]*)" text in the table (.*) row$/) do |text, row|
   found = false
-  idx = ['first', 'second', 'third', 'fourth'].index(row)
+  idx = %w[first second third fourth].index(row)
   raise("Unknown row '#{row}'") unless idx
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
