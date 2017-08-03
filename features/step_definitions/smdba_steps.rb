@@ -135,10 +135,12 @@ end
 Then(/^in "(.*?)" directory there is "(.*?)" file and at least one backup checkpoint file$/) do |bkp_dir, archive_file|
   refute_includes(
     sshcmd("test -f #{bkp_dir}/#{archive_file} && echo \"exists\" || echo \"missing\"")[:stdout],
-    "missing")
+    "missing"
+  )
   refute_includes(
     sshcmd("ls #{bkp_dir}/*.backup 1>/dev/null 2>/dev/null && echo \"exists\" || echo \"missing\"")[:stdout],
-    "missing")
+    "missing"
+  )
 end
 
 Then(/^parameter "(.*?)" in the configuration file "(.*?)" is "(.*?)"$/) do |param, cfg_file, fuzzy_value|
@@ -162,7 +164,8 @@ When(/^when in the database I create dummy table "(.*?)" with column "(.*?)" and
   sshcmd("file -f #{fn} && rm #{fn}")
   assert_includes(
     sshcmd("sudo -u postgres psql -d #{$db} -c 'select * from dummy' 2>/dev/null", ignore_err: true)[:stdout],
-    val)
+    val
+  )
   puts "Table \"#{tbl}\" has been created with some dummy data inside"
 end
 
@@ -173,7 +176,8 @@ end
 
 Then(/^I disable backup in the directory "(.*?)"$/) do |arg1|
   assert_includes(
-    sshcmd("smdba backup-hot --enable=off")[:stdout], "Finished")
+    sshcmd("smdba backup-hot --enable=off")[:stdout], "Finished"
+  )
 end
 
 When(/^when I destroy "(.*?)" directory$/) do |pg_xlog|

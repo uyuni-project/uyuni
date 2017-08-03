@@ -36,40 +36,40 @@ end
 
 # action chains
 When(/^I check radio button "(.*?)"$/) do |arg1|
-   fail unless choose(arg1)
+  fail unless choose(arg1)
 end
 
 When(/^I enter as remote command this script in$/) do |multiline|
-   within(:xpath, "//section") do
-      x = find('textarea#fSptInput')
-      x.set(multiline) # find("#{arg1}") #.set(lines)
-   end
+  within(:xpath, "//section") do
+    x = find('textarea#fSptInput')
+    x.set(multiline) # find("#{arg1}") #.set(lines)
+  end
 end
 
 # bare metal
 When(/^I check the ram value$/) do
-   get_ram_value = "grep MemTotal /proc/meminfo |awk '{print $2}'"
-   ram_value, _local, _remote, _code = $client.test_and_store_results_together(get_ram_value, "root", 600)
-   ram_value = ram_value.gsub(/\s+/, "")
-   ram_mb = ram_value.to_i / 1024
-   step %(I should see a "#{ram_mb}" text)
+  get_ram_value = "grep MemTotal /proc/meminfo |awk '{print $2}'"
+  ram_value, _local, _remote, _code = $client.test_and_store_results_together(get_ram_value, "root", 600)
+  ram_value = ram_value.gsub(/\s+/, "")
+  ram_mb = ram_value.to_i / 1024
+  step %(I should see a "#{ram_mb}" text)
 end
 
 When(/^I check the MAC address value$/) do
-   get_mac_address = "cat /sys/class/net/eth0/address"
-   mac_address, _local, _remote, _code = $client.test_and_store_results_together(get_mac_address, "root", 600)
-   mac_address = mac_address.gsub(/\s+/, "")
-   mac_address.downcase!
-   step %(I should see a "#{mac_address}" text)
+  get_mac_address = "cat /sys/class/net/eth0/address"
+  mac_address, _local, _remote, _code = $client.test_and_store_results_together(get_mac_address, "root", 600)
+  mac_address = mac_address.gsub(/\s+/, "")
+  mac_address.downcase!
+  step %(I should see a "#{mac_address}" text)
 end
 
 Then(/^I should see the CPU frequency of the client$/) do
-   get_cpu_freq = "lscpu  | grep 'CPU MHz'" # | awk '{print $4}'"
-   cpu_freq, _local, _remote, _code = $client.test_and_store_results_together(get_cpu_freq, "root", 600)
-   get_cpu = cpu_freq.gsub(/\s+/, "")
-   cpu = get_cpu.split(".")
-   cpu = cpu[0].gsub(/[^\d]/, '')
-   step %(I should see a "#{cpu.to_i / 1000} GHz" text)
+  get_cpu_freq = "lscpu  | grep 'CPU MHz'" # | awk '{print $4}'"
+  cpu_freq, _local, _remote, _code = $client.test_and_store_results_together(get_cpu_freq, "root", 600)
+  get_cpu = cpu_freq.gsub(/\s+/, "")
+  cpu = get_cpu.split(".")
+  cpu = cpu[0].gsub(/[^\d]/, '')
+  step %(I should see a "#{cpu.to_i / 1000} GHz" text)
 end
 
 When(/^I should see the power is "([^"]*)"$/) do |arg1|
@@ -88,11 +88,11 @@ When(/^I select "(.*?)" as the origin channel$/) do |label|
 end
 
 Then(/^I sync "([^"]*)" channel$/) do |channel|
-    $server.run("spacewalk-repo-sync -c #{channel}", true, 130_000, "root")
+  $server.run("spacewalk-repo-sync -c #{channel}", true, 130_000, "root")
 end
 
 Then(/^I add "([^"]*)" channel$/) do |channel|
-    $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}")
+  $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}")
 end
 
 # channel steps
@@ -116,11 +116,11 @@ Then(/^I wont see any of the valid child channels$/) do
 end
 
 Then(/^I create mock initrd if download fails$/) do
-   # sometimes the download via sumaform fails. we create a fake empty img.
-   # for current testing this is enough.
-   initrd = "/install/Fedora_12_i386/images/pxeboot/initrd.img"
-   _out, code = $server.run("test -f #{initrd}", false)
-   $server.run("touch #{initrd}") if code.nonzero?
+  # sometimes the download via sumaform fails. we create a fake empty img.
+  # for current testing this is enough.
+  initrd = "/install/Fedora_12_i386/images/pxeboot/initrd.img"
+  _out, code = $server.run("test -f #{initrd}", false)
+  $server.run("touch #{initrd}") if code.nonzero?
 end
 
 And(/^I navigate to "([^"]*)" page$/) do |page|
@@ -281,13 +281,13 @@ end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
   50.times do
-      begin
-          sshcmd("ls /var/cache/rhn/repodata/#{channel}/updateinfo.xml.gz")
-      rescue
-          sleep 2
-      else
-          break
-      end
+    begin
+      sshcmd("ls /var/cache/rhn/repodata/#{channel}/updateinfo.xml.gz")
+    rescue
+      sleep 2
+    else
+      break
+    end
   end
 end
 
@@ -402,29 +402,29 @@ end
 # configuration steps
 
 When(/^I change the local file "([^"]*)" to "([^"]*)"$/) do |filename, content|
-    $client.run("echo \"#{content}\" > #{filename}", true, 600, 'root')
+  $client.run("echo \"#{content}\" > #{filename}", true, 600, 'root')
 end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
-      fail unless find_link(arg2)
-      fail unless find_link(arg3)
+    fail unless find_link(arg2)
+    fail unless find_link(arg3)
   end
 end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
-      fail unless find_link(arg2)
+    fail unless find_link(arg2)
   end
 end
 
 Then(/^On this client the File "([^"]*)" should exists$/) do |arg1|
-    $client.run("test -f #{arg1}", true)
+  $client.run("test -f #{arg1}", true)
 end
 
 Then(/^On this client the File "([^"]*)" should have the content "([^"]*)"$/) do |filename, content|
-    $client.run("test -f #{filename}")
-    $client.run("grep #{content} #{filename}")
+  $client.run("test -f #{filename}")
+  $client.run("grep #{content} #{filename}")
 end
 
 Then(/^I remove server hostname from hosts trad-client$/) do

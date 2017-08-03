@@ -5,7 +5,7 @@ class XMLRPCChannelTest < XMLRPCBaseTest
     @connection.call("channel.software.createRepo", @sid, label, 'yum', url)
   end
 
-  def  associateRepo(channelLabel, repoLabel)
+  def associateRepo(channelLabel, repoLabel)
     @connection.call("channel.software.associateRepo", @sid, channelLabel, repoLabel)
   end
 
@@ -43,8 +43,8 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   def verifyChannel(label)
     @connection.call("channel.listSoftwareChannels", @sid)
-      .map { |c| c['label'] }
-      .include?(label)
+               .map { |c| c['label'] }
+               .include?(label)
   end
 
   #
