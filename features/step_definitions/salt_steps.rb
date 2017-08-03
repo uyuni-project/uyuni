@@ -53,7 +53,7 @@ Given(/^the salt-master can reach "(.*?)"$/) do |minion|
       end
     end
   rescue Timeout::Error
-    fail "Master can not communicate with #{minion}: #{@output[:stdout]}"
+    raise "Master can not communicate with #{minion}: #{@output[:stdout]}"
   end
 end
 
@@ -384,18 +384,18 @@ When(/^I click on run$/) do
       end
     end
   rescue Timeout::Error
-    fail "Run button not found"
+    raise "Run button not found"
   end
 end
 
 When(/^I should see "(.*)" hostname$/) do |host|
   target_fullhostname = get_target_fullhostname(host)
-  fail unless page.has_content?(target_fullhostname)
+  raise unless page.has_content?(target_fullhostname)
 end
 
 When(/^I should not see "(.*)" hostname$/) do |host|
   target_fullhostname = get_target_fullhostname(host)
-  fail if page.has_content?(target_fullhostname)
+  raise if page.has_content?(target_fullhostname)
 end
 
 When(/^I expand the results for "(.*)"$/) do |host|
@@ -420,7 +420,7 @@ Then(/^I should see "([^"]*)" in the command output for "(.*)"$/) do |text, mini
     raise "no valid name of minion given! "
   end
   within("pre[id='#{target_fullhostname}-results']") do
-    fail unless page.has_content?(text)
+    raise unless page.has_content?(text)
   end
 end
 
@@ -430,7 +430,7 @@ Then(/^I manually install the "([^"]*)" package in the minion$/) do |package|
   elsif file_exists?($minion, "/usr/bin/yum")
     cmd = "yum -y install #{package}"
   else
-    fail "not found: zypper or yum"
+    raise "not found: zypper or yum"
   end
   $minion.run(cmd, false)
 end
@@ -441,7 +441,7 @@ Then(/^I manually remove the "([^"]*)" package in the minion$/) do |package|
   elsif file_exists?($minion, "/usr/bin/yum")
     cmd = "yum -y remove #{package}"
   else
-    fail "not found: zypper or yum"
+    raise "not found: zypper or yum"
   end
   $minion.run(cmd, false)
 end
@@ -461,7 +461,7 @@ Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) d
   rescue Timeout::Error
     raise "'#{arg1}' cannot be found after several tries"
   end
-  fail unless not_found
+  raise unless not_found
 end
 # states catalog
 When(/^I enter the salt state$/) do |multiline|
@@ -499,7 +499,7 @@ When(/^I ([^"]*) the "([^"]*)" formula$/) do |action, formula|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "check"
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "uncheck"
   if all(:xpath, xpath_query).any?
-    fail unless find(:xpath, xpath_query).click
+    raise unless find(:xpath, xpath_query).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "check"
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "uncheck"
@@ -512,7 +512,7 @@ Then(/^the "([^"]*)" formula should be ([^"]*)$/) do |formula, action|
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "checked"
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "unchecked"
   if all(:xpath, xpath_query).any?
-    fail "Checkbox is not #{action}"
+    raise "Checkbox is not #{action}"
   end
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "checked"
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "unchecked"
@@ -537,12 +537,12 @@ Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
   elsif minion == "ceos-minion"
     target = $ceos_minion
   else
-    fail "Invalid target"
+    raise "Invalid target"
   end
   output, _code = target.run("date +%Z")
   result = output.strip
   result = "CET" if result == "CEST"
-  fail unless result == timezone
+  raise unless result == timezone
 end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
@@ -551,10 +551,10 @@ Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
   elsif minion == "ceos-minion"
     target = $ceos_minion
   else
-    fail "Invalid target"
+    raise "Invalid target"
   end
   output, _code = target.run("cat /etc/vconsole.conf")
-  fail unless output.strip == "KEYMAP=#{keymap}"
+  raise unless output.strip == "KEYMAP=#{keymap}"
 end
 
 Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
@@ -563,10 +563,10 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
   elsif minion == "ceos-minion"
     target = $ceos_minion
   else
-    fail "Invalid target"
+    raise "Invalid target"
   end
   output, _code = target.run("grep 'RC_LANG=' /etc/sysconfig/language")
-  fail unless output.strip == "RC_LANG=\"#{language}\""
+  raise unless output.strip == "RC_LANG=\"#{language}\""
 end
 
 When(/^I refresh the pillar data$/) do
@@ -584,14 +584,14 @@ Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key
     extra_cmd = "-i --roster-file=/tmp/tmp_roster_tests -w -W"
     $server.run("printf '#{target}:\n  host: #{target}\n  user: root\n  passwd: linux' > /tmp/tmp_roster_tests")
   else
-    fail "Invalid target"
+    raise "Invalid target"
   end
   output, _code = $server.run("#{cmd} '#{target}' pillar.get '#{key}' #{extra_cmd}")
   puts output
   if value == ""
-    fail unless output.split("\n").length == 1
+    raise unless output.split("\n").length == 1
   else
-    fail unless output.split("\n")[1].strip == value
+    raise unless output.split("\n")[1].strip == value
   end
 end
 
@@ -647,7 +647,7 @@ When(/^I reject "(.*?)" from the Pending section$/) do |minion|
     raise "no valid name of minion given! "
   end
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'reject']"
-  fail unless find(:xpath, xpath_query).click
+  raise unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "(.*?)" from the Rejected section$/) do |minion|
@@ -659,7 +659,7 @@ When(/^I delete "(.*?)" from the Rejected section$/) do |minion|
     raise "no valid name of minion given! "
   end
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'delete']"
-  fail unless find(:xpath, xpath_query).click
+  raise unless find(:xpath, xpath_query).click
 end
 
 When(/^I see "(.*?)" fingerprint$/) do |minion|
@@ -673,7 +673,7 @@ When(/^I see "(.*?)" fingerprint$/) do |minion|
   output, _code = target.run("salt-call --local key.finger")
   fing = output.split("\n")[1].strip!
 
-  fail unless page.has_content?(fing)
+  raise unless page.has_content?(fing)
 end
 
 When(/^I accept "(.*?)" key$/) do |minion|
@@ -685,7 +685,7 @@ When(/^I accept "(.*?)" key$/) do |minion|
     raise "no valid name of minion given! "
   end
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'accept']"
-  fail unless find(:xpath, xpath_query).click
+  raise unless find(:xpath, xpath_query).click
 end
 
 When(/^I go to the minion onboarding page$/) do
@@ -704,7 +704,7 @@ end
 
 When(/^I should see this hostname as text$/) do
   within('#spacewalk-content') do
-    fail unless page.has_content?($minion_hostname)
+    raise unless page.has_content?($minion_hostname)
   end
 end
 
@@ -725,7 +725,7 @@ end
 
 When(/^I should see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
-    fail unless page.has_content?(txt)
+    raise unless page.has_content?(txt)
   end
 end
 

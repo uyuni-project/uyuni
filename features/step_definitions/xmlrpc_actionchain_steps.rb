@@ -44,7 +44,7 @@ Then(/^I delete the action chain$/) do
   begin
     rpc.deleteChain($chain_label)
   rescue XMLRPC::FaultException => e
-    fail "deleteChain: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
+    raise "deleteChain: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
   end
 end
 
@@ -52,7 +52,7 @@ Then(/^I delete an action chain, labeled "(.*?)"$/) do |label|
   begin
     rpc.deleteChain(label)
   rescue XMLRPC::FaultException => e
-    fail "deleteChain: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
+    raise "deleteChain: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
   end
 end
 
@@ -93,7 +93,7 @@ Then(/^I should be able to see all these actions in the action chain$/) do
       puts "\t- " + action["label"]
     end
   rescue XMLRPC::FaultException => e
-    fail "Error listChainActions: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
+    raise "Error listChainActions: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
   end
 end
 
@@ -139,7 +139,7 @@ When(/^I call actionchain\.removeAction on each action within the chain$/) do
       puts "\t- Removed \"" + action["label"] + "\" action"
     end
   rescue XMLRPC::FaultException => e
-    fail "Error removeAction: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
+    raise "Error removeAction: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
   end
 end
 
