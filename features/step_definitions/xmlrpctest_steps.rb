@@ -14,11 +14,11 @@ When(/^I call getApiNamespaces, I should get (\d+) namespaces$/) do |apiCount|
 end
 
 When(/^I call getVersion, I should get "([^"]*)" as result$/) do |version|
-  assert(rpc_api_tester.getVersion.include? version)
+  assert(rpc_api_tester.getVersion.include?(version))
 end
 
 When(/^I call systemVersion, I should get "([^"]*)" as result$/) do |version|
-  assert(rpc_api_tester.systemVersion.include? version)
+  assert(rpc_api_tester.systemVersion.include?(version))
 end
 
 When(/^I call getApiNamespaceCallList, I should get (\d+) available api calls$/) do |apiCount|
