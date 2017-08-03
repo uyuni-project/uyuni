@@ -116,11 +116,6 @@ Style/MethodName:
     - 'features/support/xmlrpc_user.rb'
     - 'features/support/xmlrpc_vhm.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/NestedParenthesizedCalls:
-  Exclude:
-    - 'features/step_definitions/xmlrpctest_steps.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
