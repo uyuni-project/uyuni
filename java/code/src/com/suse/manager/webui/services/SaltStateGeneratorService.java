@@ -145,7 +145,7 @@ public enum SaltStateGeneratorService {
                 chanProps.put("type", "rpm-md");
                 chanProps.put("gpgcheck", "0");
                 chanProps.put("repo_gpgcheck", "0");
-                chanProps.put("pkg_gpgcheck", "1");
+                chanProps.put("pkg_gpgcheck", chan.isGPGCheck() ? "1" : "0");
 
                 chanPillar.put(chan.getLabel(), chanProps);
             });
