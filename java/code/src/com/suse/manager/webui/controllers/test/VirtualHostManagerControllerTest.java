@@ -15,6 +15,8 @@
 
 package com.suse.manager.webui.controllers.test;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
@@ -22,18 +24,19 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.UserTestUtils;
-
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.utils.SparkTestUtils;
-
-import spark.HaltException;
 import spark.Request;
 import spark.RequestResponseFactory;
 import spark.Response;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,6 +49,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     private Response response;
     private VirtualHostManagerFactory factory;
     private final String baseUri = "http://localhost:8080/rhn/vhms/";
+    private static final Gson GSON = new GsonBuilder().create();
 
     /**
      * {@inheritDoc}
@@ -68,44 +72,32 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * Test the list endpoint.
      */
     @SuppressWarnings("unchecked")
-    public void testList() {
-        createVirtualHostManagerWithLabel("myVHM", user.getOrg());
-        Map<String, Object> modelMap = (Map<String, Object>) VirtualHostManagerController
-                .list(getRequestWithCsrf(""), response, user).getModel();
-
-        assertNotNull(modelMap.get("virtualHostManagers"));
-    }
-
-    /**
-     * Test the show endpoint.
-     */
-    @SuppressWarnings("unchecked")
-    public void testShow() {
-        String label = "myVHM";
-        VirtualHostManager manager = createVirtualHostManagerWithLabel(label,
-                user.getOrg());
-
-        Request request = getRequestWithCsrf("/:id", manager.getId());
-        Object result = VirtualHostManagerController.show(request, response, user)
-                .getModel();
-
-        assertEquals(manager, ((Map<String, Object>) result).get("virtualHostManager"));
+    public void testGet() {
+        VirtualHostManager vhm = createVirtualHostManagerWithLabel("myVHM", user.getOrg());
+        String json = (String)VirtualHostManagerController
+                .get(getRequestWithCsrf(""), response, user);
+        List<Map<String, Object>> model = GSON.fromJson(json, List.class);
+        assertEquals(1, model.size());
+        assertEquals("myVHM", model.get(0).get("label"));
+        assertEquals("File", model.get(0).get("gathererModule"));
+        assertEquals(user.getOrg().getName(), model.get(0).get("orgName"));
+        assertEquals((Object)vhm.getId(), ((Double)model.get(0).get("id")).longValue());
     }
 
     /**
      * Test the show endpoint from a wrong organization.
      */
     @SuppressWarnings("unchecked")
-    public void testShowWrongOrg() {
+    public void testGetWrongOrg() {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "myVHM";
-        VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, otherOrg);
+        createVirtualHostManagerWithLabel(label, otherOrg);
 
-        Request request = getRequestWithCsrf("/:id", vhm.getId());
-        Object result =
-                VirtualHostManagerController.show(request, response, user).getModel();
-
-        assertFalse(((Map<String, Object>) result).containsKey(label));
+        Request request = getRequestWithCsrf("/manager/api/vhms");
+        String result = (String)
+                VirtualHostManagerController.get(request, response, user);
+        List<Map<String, Object>> model = GSON.fromJson(result, List.class);
+        assertTrue(model.isEmpty());
     }
 
     /**
@@ -118,38 +110,39 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         queryParams.put("module_testParam", "testVal");
         Request request = SparkTestUtils.createMockRequestWithParams(baseUri + "add",
                 queryParams);
-        try {
-            VirtualHostManagerController.setMockFactory(new VirtualHostManagerFactory() {
-                @Override
-                public boolean isConfigurationValid(String moduleName,
-                        Map<String, String> parameters, String... ignoreParams) {
-                    return true;
-                }
-            });
-            VirtualHostManagerController.create(request, response, user);
-        } catch (HaltException e) {
-            VirtualHostManager created = VirtualHostManagerFactory.getInstance()
-                    .lookupByLabel("myVHM");
-            assertEquals("myVHM", created.getLabel());
-            assertEquals("File", created.getGathererModule());
-            assertEquals(1, created.getConfigs().size());
-            VirtualHostManagerConfig config = created.getConfigs().iterator().next();
-            assertEquals("testParam", config.getParameter());
-            assertEquals("testVal", config.getValue());
-            config.getVirtualHostManager();
-            return;
-        }
-        fail("Halt exception expected.");
+
+        VirtualHostManagerController.setMockFactory(new VirtualHostManagerFactory() {
+            @Override
+            public boolean isConfigurationValid(String moduleName,
+                    Map<String, String> parameters, String... ignoreParams) {
+                return true;
+            }
+        });
+        GathererModule module = new GathererModule();
+        module.setName("File");
+        module.setParameters(Collections.singletonMap("testParam", ""));
+        VirtualHostManagerController.setGathererModules(Collections.singletonMap("File", module));
+        VirtualHostManagerController.create(request, response, user);
+
+        VirtualHostManager created = VirtualHostManagerFactory.getInstance()
+                .lookupByLabel("myVHM");
+        assertEquals("myVHM", created.getLabel());
+        assertEquals("File", created.getGathererModule());
+        assertEquals(1, created.getConfigs().size());
+        VirtualHostManagerConfig config = created.getConfigs().iterator().next();
+        assertEquals("testParam", config.getParameter());
+        assertEquals("testVal", config.getValue());
+        config.getVirtualHostManager();
     }
 
     /**
      * Test delete.
      */
-    public void testDelete() {
+    public void testDelete() throws UnsupportedEncodingException {
         String label = "myVHM";
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, user.getOrg());
-
-        Request request = getRequestWithCsrf("/:id/delete", vhm.getId());
+        String body = GSON.toJson(Arrays.asList(vhm.getId()));
+        Request request = getPostRequestWithCsrfAndBody("/manager/api/vhms/delete", body);
         VirtualHostManagerController.delete(request, response, user);
 
         assertNull(factory.lookupByLabel(label));
@@ -158,11 +151,12 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     /**
      * Test the delete endpoint from a wrong organization.
      */
-    public void testGetDeleteWrongOrg() {
+    public void testGetDeleteWrongOrg() throws UnsupportedEncodingException {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "myVHM";
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, otherOrg);
-        Request request = getRequestWithCsrf("/:id/delete", vhm.getId());
+        String body = GSON.toJson(Arrays.asList(vhm.getId()));
+        Request request = getPostRequestWithCsrfAndBody("/manager/api/vhms/delete", body);
         VirtualHostManagerController.delete(request, response, user);
 
         // the original VHM is not deleted
@@ -183,6 +177,20 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         request.session(true).attribute("csrf_token", "bleh");
         return request;
     }
+
+    /**
+     * Creates a request with csrf token.
+     *
+     * @param uri the uri
+     * @param vars the vars
+     * @return the request with csrf
+     */
+    private Request getPostRequestWithCsrfAndBody(String uri, String body, Object... vars) throws UnsupportedEncodingException {
+        Request request = SparkTestUtils.createMockRequestWithBody(baseUri + uri, Collections.emptyMap(), body, vars);
+        request.session(true).attribute("csrf_token", "bleh");
+        return request;
+    }
+
 
     /**
      * Creates and saves a virtual host manager with a certain label.
