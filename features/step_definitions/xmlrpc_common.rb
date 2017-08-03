@@ -89,9 +89,9 @@ end
 
 Given(/^I make sure "([^"]*)" is not present$/) do |luser|
   @rpc.getUsers
-    .map { |u| u['login'] }
-    .select { |l| l == luser }
-    .each { @rpc.deleteUser(luser) }
+      .map { |u| u['login'] }
+      .select { |l| l == luser }
+      .each { @rpc.deleteUser(luser) }
 end
 
 When(/^I call user\.removeRole\(\) against uid "([^"]*)" with the role "([^"]*)"$/) do |luser, rolename|

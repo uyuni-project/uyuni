@@ -12,7 +12,7 @@ require "pp"
 # list = ct.get_list( "systems" )
 
 class CobblerTest
-  def initialize(server_address=ENV['TESTHOST'], server_port=80, server_path="/cobbler_api")
+  def initialize(server_address = ENV['TESTHOST'], server_port = 80, server_path = "/cobbler_api")
     @server_address = server_address
     @server_port = server_port
     @server_path = server_path
@@ -62,7 +62,7 @@ class CobblerTest
       raise "modify profile failed." + $!.to_s
     end
     begin
-      @server.call("save_profile", profile_id,                     @token)
+      @server.call("save_profile", profile_id, @token)
     rescue
       raise "saving profile failed." + $!.to_s
     end
@@ -81,7 +81,7 @@ class CobblerTest
     exists("distros", "name", name)
   end
 
-  def distro_create(name, kernel, initrd, breed="suse")
+  def distro_create(name, kernel, initrd, breed = "suse")
     begin
       distro_id = @server.call("new_distro", @token)
       @server.call("modify_distro", distro_id, 'name',   name,   @token)
@@ -109,7 +109,7 @@ class CobblerTest
     result
   end
 
-protected
+  protected
 
   def exists(what, key, value)
     result = false

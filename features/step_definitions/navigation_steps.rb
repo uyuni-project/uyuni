@@ -140,12 +140,11 @@ end
 
 When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-  when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
-  when /content area/ then "section"
-  else raise "Unknown element with description '#{desc}'"
-  end
-
+        when /left menu/ then "aside"
+        when /tab bar|tabs/ then "header"
+        when /content area/ then "section"
+        else raise "Unknown element with description '#{desc}'"
+        end
   within(:xpath, "//#{tag}") do
     step %(I follow "#{arg1}")
   end
@@ -153,12 +152,11 @@ end
 
 When(/^I follow first "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-  when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
-  when /content area/ then "section"
-  else raise "Unknown element with description '#{desc}'"
-  end
-
+        when /left menu/ then "aside"
+        when /tab bar|tabs/ then "header"
+        when /content area/ then "section"
+        else raise "Unknown element with description '#{desc}'"
+        end
   within(:xpath, "//#{tag}") do
     step "I follow first \"#{arg1}\""
   end
@@ -601,12 +599,11 @@ end
 
 Then(/^I should see a "([^"]*)" link in the (left menu|tab bar|tabs|content area)$/) do |arg1, arg2|
   tag = case arg2
-  when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
-  when /content area/ then "section"
-  else raise "Unknown element with description '#{arg2}'"
-  end
-
+        when /left menu/ then "aside"
+        when /tab bar|tabs/ then "header"
+        when /content area/ then "section"
+        else raise "Unknown element with description '#{arg2}'"
+        end
   within(:xpath, "//#{tag}") do
     step "I should see a \"#{arg1}\" link"
   end
@@ -614,12 +611,11 @@ end
 
 Then(/^I should not see a "([^"]*)" link in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-  when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
-  when /content area/ then "section"
-  else raise "Unknown element with description '#{arg2}'"
-  end
-
+        when /left menu/ then "aside"
+        when /tab bar|tabs/ then "header"
+        when /content area/ then "section"
+        else raise "Unknown element with description '#{arg2}'"
+        end
   within(:xpath, "//#{tag}") do
     step "I should not see a \"#{arg1}\" link"
   end

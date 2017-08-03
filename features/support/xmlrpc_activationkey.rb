@@ -22,8 +22,8 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
 
   def verifyKey(kid)
     @connection.call("activationkey.listActivationKeys", @sid)
-      .map { |key| key['key'] }
-      .include?(kid)
+               .map { |key| key['key'] }
+               .include?(kid)
   end
 
   def getConfigChannelsCount(key)
