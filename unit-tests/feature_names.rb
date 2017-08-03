@@ -10,13 +10,13 @@ require 'yaml'
 
 def check_same_list(list1, list2)
   if list1.uniq.sort == list2.uniq.sort
-    puts "OK. good work"
+    puts 'OK. good work'
   else
-    puts "ERROR:"
-    puts "The testsuite.yml has a feature that is non features dir!"
-    puts "===================================="
+    puts 'ERROR:'
+    puts 'The testsuite.yml has a feature that is non features dir!'
+    puts '===================================='
     puts list1 - list2
-    puts "===================================="
+    puts '===================================='
     raise "the testsuite.yml doesn't match the features"
   end
 end
@@ -30,7 +30,7 @@ feat_set = YAML.load_file('run_sets/testsuite.yml')
 core_set = []
 feat_set.each do |feature|
   # filter out core features
-  core_set.push(feature.split("/").last) if feature.include?("core_")
+  core_set.push(feature.split('/').last) if feature.include?('core_')
 end
 
 # 1 check the dir features get feature in directory
@@ -38,7 +38,7 @@ core_dir = Dir.entries('features')
 core_set2 = []
 core_dir.each do |feature|
   # filter out core features in dir features
-  core_set2.push(feature) if feature.include?("core_")
+  core_set2.push(feature) if feature.include?('core_')
 end
 
 # We check atm only core, but secondary can be extended
