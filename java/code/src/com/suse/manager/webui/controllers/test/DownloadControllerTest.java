@@ -21,6 +21,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.Comps;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -34,6 +35,7 @@ import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import spark.Request;
 import spark.RequestResponseFactory;
@@ -388,6 +390,56 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
             assertEquals(403, e.getStatusCode());
             assertTrue(e.getBody().contains("The JWT is no longer valid"));
             assertNull(response.raw().getHeader("X-Sendfile"));
+        }
+    }
+
+    /**
+     * Test for setting correct headers for comps.xml file.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testDownloadComps() throws Exception {
+        TokenBuilder tokenBuilder = new TokenBuilder(user.getOrg().getId());
+        tokenBuilder.useServerSecret();
+        String tokenOrg = tokenBuilder.getToken();
+
+        Map<String, String> params = new HashMap<>();
+        params.put(tokenOrg, "");
+        Request request =  SparkTestUtils.createMockRequestWithParams(
+                "http://localhost:8080/rhn/manager/download/:channel/repodata/:file",
+                params,
+                Collections.emptyMap(),
+                channel.getLabel(), "comps.xml");
+
+        String compsRelativeDirPath = "rhn/comps/" + channel.getName();
+        String compsDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/"
+                + compsRelativeDirPath;
+        String compsName = compsRelativeDirPath + "123hash123-comps-Server.x86_64";
+        File compsDir = new File(compsDirPath);
+        try {
+            compsDir.mkdirs();
+            File compsFile = File.createTempFile(compsDirPath + "/" + compsName, ".xml", compsDir);
+            Files.write(compsFile.getAbsoluteFile().toPath(),
+                    TestUtils.randomString().getBytes());
+
+            // create comps object
+            Comps comps = new Comps();
+            comps.setChannel(channel);
+            comps.setRelativeFilename(compsRelativeDirPath + "/" + compsFile.getName());
+            channel.setComps(comps);
+
+            try {
+                assertNotNull(DownloadController.downloadMetadata(request, response));
+
+                assertEquals(compsFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
+                assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
+                assertEquals("attachment; filename=" + compsFile.getName(),
+                        response.raw().getHeader("Content-Disposition"));
+            } catch (spark.HaltException e) {
+                fail("No HaltException should be thrown with a valid token!");
+            }
+        } finally {
+            FileUtils.deleteDirectory(compsDir);
         }
     }
 }
