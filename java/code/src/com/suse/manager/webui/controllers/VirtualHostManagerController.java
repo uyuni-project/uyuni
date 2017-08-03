@@ -76,6 +76,8 @@ public class VirtualHostManagerController {
 
     private static VirtualHostManagerFactory factory;
 
+    private static Map<String, GathererModule> gathererModules;
+
     /**
      * Displays a list of VHMs.
      *
@@ -85,13 +87,7 @@ public class VirtualHostManagerController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView list(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("pageSize", user.getPageSize());
-        data.put("virtualHostManagers", getFactory()
-                .listVirtualHostManagers(user.getOrg()));
-        data.put("modules", gathererRunner.listModules().keySet());
-        data.put("info", FlashScopeHelper.flash(request));
-        return new ModelAndView(data, "virtualhostmanager/list.jade");
+        return new ModelAndView(new HashMap<>(), "virtualhostmanager/list.jade");
     }
 
     /**
@@ -136,55 +132,23 @@ public class VirtualHostManagerController {
         }
     }
 
-    /**
-     * Displays a certain VHM.
-     *
-     * @param request the request
-     * @param response the response
-     * @param user the user
-     * @return the ModelAndView object to render the page
-     */
-    public static ModelAndView show(Request request, Response response, User user) {
-        Long id = Long.parseLong(request.params("id"));
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("virtualHostManager", getFactory().lookupByIdAndOrg(id,
-                user.getOrg()));
-        data.put("satAdmin", user.hasRole(RoleFactory.SAT_ADMIN));
-
-        return new ModelAndView(data, "virtualhostmanager/show.jade");
-    }
-
-    /**
-     * Displays a page to add a VHM.
-     *
-     * @param request the request
-     * @param response the response
-     * @param user the user
-     * @return the ModelAndView object to render the page
-     */
-    public static ModelAndView add(Request request, Response response, User user) {
-        String module = request.queryParams("module");
-        GathererModule gathererModule = gathererRunner.listModules().get(module);
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("virtualHostManager",
-                getFactory().createVirtualHostManager("", user.getOrg(), module,
-                        gathererModule.getParameters()));
-        return new ModelAndView(data, "virtualhostmanager/add.jade");
-
-        // TODO remove virtualhostmanager/add.jade
-    }
-
     public static String getModuleParams(Request request, Response response, User user) {
         String module = request.params("name");
-        Optional<GathererModule> gathererModule = gathererRunner.listModules()
+        Optional<GathererModule> gathererModule = getGathererModules()
                 .entrySet().stream()
                 .filter(e -> module.toLowerCase().equals(e.getKey().toLowerCase()))
                 .map(e -> e.getValue())
                 .findFirst();
         return json(response, gathererModule.map(m -> m.getParameters())
                 .orElse(Collections.emptyMap()));
+    }
+
+
+    private static Map<String, GathererModule> getGathererModules() {
+        if (gathererModules != null) {
+            return gathererModules;
+        }
+        return gathererRunner.listModules();
     }
 
     /**
@@ -209,7 +173,7 @@ public class VirtualHostManagerController {
         if (getFactory().lookupByLabel(label) != null) {
             errors.add("Virtual Host Manager with given label already exists.");
         }
-        Map<String, GathererModule> modules = new GathererRunner().listModules();
+        Map<String, GathererModule> modules = getGathererModules();
         if (!getFactory().isConfigurationValid(
                 moduleNameParam, gathererModuleParams, modules)) {
             errors.add("All fields are mandatory.");
@@ -497,6 +461,14 @@ public class VirtualHostManagerController {
      */
     public static void setMockFactory(VirtualHostManagerFactory mockFactory) {
         factory = mockFactory;
+    }
+
+    /**
+     * For testing only!
+     * @param gathererModulesIn to set
+     */
+    public static void setGathererModules(Map<String, GathererModule> gathererModulesIn) {
+        gathererModules = gathererModulesIn;
     }
 
     /**
