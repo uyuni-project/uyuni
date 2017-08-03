@@ -34,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
@@ -274,7 +275,10 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             String context,
             InputStream kubeconfigIn) throws IOException {
         // ensure we have the base directory
-        Files.createDirectory(Paths.get(KUBECONFIG_PATH_BASE));
+        Path kubeconfigDir = Paths.get(KUBECONFIG_PATH_BASE);
+        if (!Files.isDirectory(kubeconfigDir)) {
+            Files.createDirectory(kubeconfigDir);
+        }
 
         String kubeconfigPath = kubeconfigPath(label, org);
         try (FileOutputStream kubeconfigOut = new FileOutputStream(kubeconfigPath)) {
