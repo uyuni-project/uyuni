@@ -181,7 +181,8 @@ Then(/^I wont get "([^"]*)"$/) do |arg1|
 end
 
 Then(/^I wait for mgr-sync refresh is finished$/) do
-  for c in 0..20
+  # FIXME: remove this deprecated step
+  for _c in 0..20
     begin
       sshcmd('ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json')
     rescue

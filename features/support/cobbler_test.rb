@@ -109,8 +109,6 @@ class CobblerTest
     result
   end
 
-  protected
-
   def exists(what, key, value)
     result = false
     ret = @server.call("get_" + what)

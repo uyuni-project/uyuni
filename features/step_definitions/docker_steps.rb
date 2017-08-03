@@ -28,7 +28,6 @@ module ImageProfile
     values['arancio'] = 'arancia xmlrpc tests'
     cont_op.setProfileCustomValues('fakeone', values)
     pro_det = cont_op.getProfileCustomValues('fakeone')
-    puts pro_det
     assert_equal(pro_det['arancio'], 'arancia xmlrpc tests', 'setting custom profile value failed')
     pro_type = cont_op.listImageProfileTypes
     assert_equal(pro_type.length, 1, 'support at moment only one type of Profile!')

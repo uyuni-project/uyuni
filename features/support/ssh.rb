@@ -7,7 +7,7 @@ def sshcmd(command, host: ENV['TESTHOST'], user: 'root', ignore_err: false)
   out = StringIO.new
   err = StringIO.new
   Net::SSH.start(host, user, :paranoid => Net::SSH::Verifiers::Null.new) do |ssh|
-    ssh.exec!(command) do |chan, str, data|
+    ssh.exec!(command) do |_chan, str, data|
       out << data if str == :stdout
       err << data if str == :stderr
     end
