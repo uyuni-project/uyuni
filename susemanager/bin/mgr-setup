@@ -13,6 +13,14 @@ then
     exit 1
 fi
 
+# ensure correct java version is being used (bsc#1049575)
+echo "Asserting correct java version..."
+update-alternatives --set java /usr/lib64/jvm/jre-1.8.0-ibm/bin/java
+if [ ! $? -eq 0 ]; then
+    echo "Failed to set jre-1.8.0-ibm as default java version!"
+    exit 1
+fi
+
 TMPDIR="/var/spacewalk/tmp"
 DO_MIGRATION=0
 DO_SETUP=0
