@@ -138,6 +138,67 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         }
     }
 
+    public void testGeneratePillarForServerGPGCheckOn() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Channel channel1 = ChannelTestUtils.createBaseChannel(user);
+        minion.addChannel(channel1);
+        ServerFactory.save(minion);
+
+        SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+
+        Path filePath = tmpPillarRoot.resolve(
+                PILLAR_DATA_FILE_PREFIX + "_" +
+                minion.getMinionId() + "." +
+                PILLAR_DATA_FILE_EXT);
+
+        assertTrue(Files.exists(filePath));
+
+        Map<String, Object> map;
+        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
+            map = new Yaml().loadAs(fi, Map.class);
+        }
+
+        Map<String, Object> channels = (Map<String, Object>) map.get("channels");
+        assertEquals(1, channels.size());
+        assertTrue(channels.containsKey(channel1.getLabel()));
+
+        Map<String, Object> values = (Map<String, Object>) channels.get(channel1.getLabel());
+
+        assertTrue(values.containsKey("pkg_gpgcheck"));
+        assertEquals("1", (String) values.get("pkg_gpgcheck"));
+    }
+
+    public void testGeneratePillarForServerGPGCheckOff() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Channel channel1 = ChannelTestUtils.createBaseChannel(user);
+        channel1.setGPGCheck(false);
+        minion.addChannel(channel1);
+        ServerFactory.save(minion);
+
+        SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+
+        Path filePath = tmpPillarRoot.resolve(
+            PILLAR_DATA_FILE_PREFIX + "_" +
+            minion.getMinionId() + "." +
+            PILLAR_DATA_FILE_EXT);
+
+        assertTrue(Files.exists(filePath));
+
+        Map<String, Object> map;
+        try (FileInputStream fi = new FileInputStream(filePath.toFile())) {
+            map = new Yaml().loadAs(fi, Map.class);
+        }
+
+        Map<String, Object> channels = (Map<String, Object>) map.get("channels");
+        assertEquals(1, channels.size());
+        assertTrue(channels.containsKey(channel1.getLabel()));
+
+        Map<String, Object> values = (Map<String, Object>) channels.get(channel1.getLabel());
+
+        assertTrue(values.containsKey("pkg_gpgcheck"));
+        assertEquals("0", (String) values.get("pkg_gpgcheck"));
+    }
+
     /**
      * Test that the "host" attribute of the channel of the minion connected to a proxy
      * is populated with the proxy hostname.

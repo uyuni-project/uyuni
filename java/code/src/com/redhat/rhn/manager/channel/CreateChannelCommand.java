@@ -66,6 +66,7 @@ public class CreateChannelCommand {
     protected String gpgKeyUrl;
     protected String gpgKeyId;
     protected String gpgKeyFp;
+    protected boolean gpgCheck;
     protected String checksum;
 
 
@@ -157,6 +158,12 @@ public class CreateChannelCommand {
         gpgKeyUrl = url;
     }
 
+    /**
+     * @param gpgCheckIn gpgCheck flag
+     */
+    public void setGpgCheck(boolean gpgCheckIn) {
+        gpgCheck = gpgCheckIn;
+    }
 
     /**
      * @param email maintainer's email address
@@ -302,6 +309,7 @@ public class CreateChannelCommand {
         c.setGPGKeyId(gpgKeyId);
         c.setGPGKeyUrl(gpgKeyUrl);
         c.setGPGKeyFp(gpgKeyFp);
+        c.setGPGCheck(gpgCheck);
         c.setAccess(access);
         c.setMaintainerName(maintainerName);
         c.setMaintainerEmail(maintainerEmail);

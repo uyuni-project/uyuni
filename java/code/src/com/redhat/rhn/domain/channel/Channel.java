@@ -60,6 +60,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
 
     private String description;
     private Date endOfLife;
+    private boolean GPGCheck = true;
     private String GPGKeyUrl;
     private String GPGKeyId;
     private String GPGKeyFp;
@@ -867,6 +868,20 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public void setClonedChannels(Set<ClonedChannel> clonedChannelsIn) {
         this.clonedChannels = clonedChannelsIn;
+    }
+
+    /**
+     * @return the GPGCheck
+     */
+    public boolean isGPGCheck() {
+        return GPGCheck;
+    }
+
+    /**
+     * @param gpgCheckIn the GPGCheck to set
+     */
+    public void setGPGCheck(boolean gpgCheckIn) {
+        this.GPGCheck = gpgCheckIn;
     }
 
     /**
