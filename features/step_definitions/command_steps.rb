@@ -1,22 +1,22 @@
 # Copyright (c) 2014-16 SUSE # Licensed under the terms of the MIT license.
 
-require "xmlrpc/client"
+require 'xmlrpc/client'
 require 'timeout'
 
 Then(/^I apply highstate on "(.*?)"$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_fullhostname = $minion_fullhostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_fullhostname = $ceos_minion_fullhostname
-  elsif minion == "sle-migrated-minion"
+  elsif minion == 'sle-migrated-minion'
     target_fullhostname = $client_fullhostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   cmd = "salt '#{target_fullhostname}' state.highstate"
   out, code = $server.run(cmd)
   puts out
-  raise "Apply highstate FAILED!"  if code.nonzero?
+  raise 'Apply highstate FAILED!'  if code.nonzero?
 end
 
 Then(/^I wait until "([^"]*)" service is up and running on "([^"]*)"$/) do |service, target|
@@ -43,15 +43,15 @@ When(/^I execute mgr\-sync "([^"]*)"$/) do |arg1|
 end
 
 When(/^I remove the mgr\-sync cache file$/) do
-  $command_output = sshcmd("rm -f ~/.mgr-sync")[:stdout]
+  $command_output = sshcmd('rm -f ~/.mgr-sync')[:stdout]
 end
 
 When(/^I execute mgr\-sync refresh$/) do
-  $command_output = sshcmd("mgr-sync refresh", ignore_err: true)[:stderr]
+  $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
 end
 
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
-  arch = "x86_64"
+  arch = 'x86_64'
   $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1}")[:stdout]
 end
 
@@ -91,21 +91,21 @@ When(/^I check the tomcat logs for errors$/) do
 end
 
 Then(/^I restart the spacewalk service$/) do
-  sshcmd("spacewalk-service restart")
+  sshcmd('spacewalk-service restart')
   sleep(5)
 end
 
 Then(/^I shutdown the spacewalk service$/) do
-  $server.run("spacewalk-service stop")
+  $server.run('spacewalk-service stop')
 end
 
 Then(/^I execute spacewalk-debug on the server$/) do
-  $server.run("spacewalk-debug")
+  $server.run('spacewalk-debug')
   step %(I copy "/tmp/spacewalk-debug.tar.bz2")
 end
 
 When(/^I copy "([^"]*)"$/) do |arg1|
-  user = "root@"
+  user = 'root@'
   $command_output = `echo | scp -o StrictHostKeyChecking=no #{user}$TESTHOST:#{arg1} . 2>&1`
   unless $?.success?
     raise "Execute command failed: #{$!}: #{$command_output}"
@@ -113,7 +113,7 @@ When(/^I copy "([^"]*)"$/) do |arg1|
 end
 
 When(/^I copy to server "([^"]*)"$/) do |arg1|
-  user = "root@"
+  user = 'root@'
   $command_output = `echo | scp -o StrictHostKeyChecking=no #{arg1} #{user}$TESTHOST: 2>&1`
   unless $?.success?
     raise "Execute command failed: #{$!}: #{$command_output}"
@@ -138,19 +138,19 @@ Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
 end
 
 Then(/^I clean the search index on the server$/) do
-  output = sshcmd("/usr/sbin/rcrhn-search cleanindex", ignore_err: true)
+  output = sshcmd('/usr/sbin/rcrhn-search cleanindex', ignore_err: true)
   raise if output[:stdout].include?('ERROR')
 end
 
 When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
-  $command_output, _code = $client.run(command, true, 500, "root")
+  $command_output, _code = $client.run(command, true, 500, 'root')
 end
 
 When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
   # we are checking that the cmd should fail here
-  $command_output, code = $client.run(command, false, 500, "root")
+  $command_output, code = $client.run(command, false, 500, 'root')
   raise "#{command} should fail, but hasn't" if code.zero?
 end
 
@@ -200,20 +200,20 @@ end
 Then(/^Service "([^"]*)" is enabled on the Server$/) do |service|
   output = sshcmd("systemctl is-enabled '#{service}'", ignore_err: true)[:stdout]
   output.chomp!
-  raise if output != "enabled"
+  raise if output != 'enabled'
 end
 
 Then(/^Service "([^"]*)" is running on the Server$/) do |service|
   output = sshcmd("systemctl is-active '#{service}'", ignore_err: true)[:stdout]
   output.chomp!
-  raise if output != "active"
+  raise if output != 'active'
 end
 
 # snapshots
 When(/^I take a snapshot "([^"]*)"$/) do |name|
-  $sshout = ""
+  $sshout = ''
   $sshout = `echo | ssh -o StrictHostKeyChecking=no root@$VHOST qemu-img snapshot -c #{name} $IMGDIR/$VMDISK.qcow2`
-  puts "Creating snapsnot failed..." unless $?.success?
+  puts 'Creating snapsnot failed...' unless $?.success?
 end
 
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
@@ -227,7 +227,7 @@ When(/^I run "([^"]*)" on "([^"]*)" without error control$/) do |cmd, host|
 end
 
 Then(/^the command should fail$/) do
-  raise "Previous command must fail, but has NOT failed!" if $fail_code.zero?
+  raise 'Previous command must fail, but has NOT failed!' if $fail_code.zero?
 end
 
 When(/^"(.*)" exists on the filesystem of "(.*)"$/) do |file, host|
@@ -240,7 +240,7 @@ When(/^"(.*)" exists on the filesystem of "(.*)"$/) do |file, host|
       end
     end
   rescue Timeout::Error
-    puts "timeout waiting for the file to appear"
+    puts 'timeout waiting for the file to appear'
   end
   raise unless file_exists?(node, file)
 end
@@ -252,16 +252,16 @@ end
 
 Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
   timeout = 800
-  if target == "sle-client"
+  if target == 'sle-client'
     checkShutdown($client_fullhostname, timeout)
     checkRestart($client_fullhostname, get_target(target), timeout)
-  elsif target == "ceos-minion"
+  elsif target == 'ceos-minion'
     checkShutdown($ceos_minion_fullhostname, timeout)
     checkRestart($ceos_minion_fullhostname, get_target(target), timeout)
-  elsif target == "ssh-minion"
+  elsif target == 'ssh-minion'
     checkShutdown($ssh_minion_fullhostname, timeout)
     checkRestart($ssh_minion_fullhostname, get_target(target), timeout)
-  elsif target == "sle-minion"
+  elsif target == 'sle-minion'
     checkShutdown($minion_fullhostname, timeout)
     checkRestart($minion_fullhostname, get_target(target), timeout)
   end
@@ -272,7 +272,7 @@ When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)
 end
 
 When(/^I click on "([^"]+)" for "([^"]+)"$/) do |arg1, arg2|
-  within(:xpath, "//section") do
+  within(:xpath, '//section') do
     within(:xpath, "//table/tbody/tr[.//a[contains(.,'#{arg2}')]]") do
       find_link(arg1).click
     end
@@ -280,20 +280,20 @@ When(/^I click on "([^"]+)" for "([^"]+)"$/) do |arg1, arg2|
 end
 
 When(/^I disable IPv6 forwarding on all interfaces of the SLE minion$/) do
-  $minion.run("sysctl net.ipv6.conf.all.forwarding=0")
+  $minion.run('sysctl net.ipv6.conf.all.forwarding=0')
 end
 
 When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
-  $minion.run("sysctl net.ipv6.conf.all.forwarding=1")
+  $minion.run('sysctl net.ipv6.conf.all.forwarding=1')
 end
 
 And(/^I register the centos7 as tradclient$/) do
   cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
   wget = 'wget --no-check-certificate -O'
-  register = "rhnreg_ks --username=admin --password=admin --force \\" \
+  register = 'rhnreg_ks --username=admin --password=admin --force \\' \
               "--serverUrl=https://#{$server_ip}/XMLRPC \\" \
-              "--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT \\" \
-              "--activationkey=1-MINION-TEST"
+              '--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT \\' \
+              '--activationkey=1-MINION-TEST'
 
   $ceos_minion.run("#{wget} #{cert_path} http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT", true, 500)
   $ceos_minion.run(register)
@@ -310,21 +310,21 @@ When(/^I wait for the openSCAP audit to finish$/) do
         scans = @cli.call('system.scap.listXccdfScans', @sid, @sle_id)
         # in the openscap test, we schedule 2 scans
         if scans.length > 1
-          @cli.call("auth.logout", @sid)
+          @cli.call('auth.logout', @sid)
           break
         end
       end
     end
   rescue Timeout::Error
-    @cli.call("auth.logout", @sid)
-    raise "process did not stop after several tries"
+    @cli.call('auth.logout', @sid)
+    raise 'process did not stop after several tries'
   end
 end
 
-$space = "spacecmd -u admin -p admin "
+$space = 'spacecmd -u admin -p admin '
 And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
-  host = $ssh_minion_fullhostname if target == "ssh-minion"
-  host = $ceos_minion_fullhostname if target == "ceos-minion"
+  host = $ssh_minion_fullhostname if target == 'ssh-minion'
+  host = $ceos_minion_fullhostname if target == 'ceos-minion'
   cmd = "#{$space} system_listevents #{host} | head -n5"
   $server.run("#{$space} clear_caches")
   out, _code = $server.run(cmd)
@@ -334,12 +334,12 @@ And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
 end
 
 And(/I create dockerized minions$/) do
-  master, _code = $minion.run("cat /etc/salt/minion.d/susemanager.conf")
+  master, _code = $minion.run('cat /etc/salt/minion.d/susemanager.conf')
   # build everything
   distros = %w[rhel6 rhel7 sles11sp4 sles12 sles12sp1]
   distros.each do |os|
     $minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/#{os}/ -t #{os}", true, 2000)
-    spawn_minion = "/etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace"
+    spawn_minion = '/etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace'
     $minion.run("docker run -h #{os} -d --entrypoint '/bin/sh' #{os} -c \"echo \'#{master}\' > #{spawn_minion}\"")
     puts "minion #{os} created and running"
   end
@@ -347,35 +347,35 @@ And(/I create dockerized minions$/) do
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        out, _code = $server.run("salt-key -l unaccepted")
+        out, _code = $server.run('salt-key -l unaccepted')
         # if we see the last os, we can break
         if out.include? distros.last
-          $server.run("salt-key -A -y")
+          $server.run('salt-key -A -y')
           break
         end
         sleep 5
       end
     end
   rescue Timeout::Error
-    raise "something wrong with creation of minion docker"
+    raise 'something wrong with creation of minion docker'
   end
 end
 
 When(/^I register this client for SSH push via tunnel$/) do
   # Create backups of /etc/hosts and up2date config
-  $server.run("cp /etc/hosts /etc/hosts.BACKUP")
-  $server.run("cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP")
+  $server.run('cp /etc/hosts /etc/hosts.BACKUP')
+  $server.run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
   # Generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
   expect_file = ExpectFileGenerator.new($client_ip, bootstrap)
-  step "I copy to server \"" + expect_file.path + "\""
+  step 'I copy to server "' + expect_file.path + '"'
   filename = expect_file.filename
   # Perform the registration
   command = "expect #{filename}"
   $server.run(command, true, 600, 'root')
   # Restore files from backups
-  $server.run("mv /etc/hosts.BACKUP /etc/hosts")
-  $server.run("mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date")
+  $server.run('mv /etc/hosts.BACKUP /etc/hosts')
+  $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
 end
 # zypper
 

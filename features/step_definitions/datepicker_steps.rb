@@ -21,7 +21,7 @@ end
 def get_future_time(minutes_to_add)
   now = Time.new
   future_time = now + 60 * minutes_to_add.to_i
-  future_time.strftime("%l:%M %P").to_s.strip
+  future_time.strftime('%l:%M %P').to_s.strip
 end
 
 Given(/^I pick "([^"]*)" as date$/) do |arg1|

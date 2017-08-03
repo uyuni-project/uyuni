@@ -1,7 +1,7 @@
 # COPYRIGHT 2015 SUSE LLC
 require 'json'
 
-rpctest = XMLRPCChannelTest.new(ENV["TESTHOST"])
+rpctest = XMLRPCChannelTest.new(ENV['TESTHOST'])
 systest = XMLRPCSystemTest.new(ENV['TESTHOST'])
 servers = []
 rabbit = nil
@@ -40,7 +40,7 @@ end
 CREATE_USER_PASSWORD = 'die gurke'.freeze
 
 Given(/^I am logged in via XML\-RPC\/user as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @rpc = XMLRPCUserTest.new(ENV["TESTHOST"])
+  @rpc = XMLRPCUserTest.new(ENV['TESTHOST'])
   @rpc.login(luser, password)
 end
 
@@ -163,7 +163,7 @@ Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
 end
 
 # activation key test xmlrpc
-acttest = XMLRPCActivationKeyTest.new(ENV["TESTHOST"])
+acttest = XMLRPCActivationKeyTest.new(ENV['TESTHOST'])
 key = nil
 
 Given(/^I am logged in via XML\-RPC\/activationkey as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
