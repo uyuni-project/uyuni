@@ -60,14 +60,6 @@ Style/For:
     - 'features/support/xmlrpc_api.rb'
     - 'features/support/xmlrpc_channel.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: format, sprintf, percent
-Style/FormatString:
-  Exclude:
-    - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
-
 # Offense count: 390
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
