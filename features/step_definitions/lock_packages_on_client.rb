@@ -3,7 +3,7 @@
 
 Then(/^"(.*?)" is locked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
-  fail unless file_exists?($client, zypp_lock_file)
+  raise unless file_exists?($client, zypp_lock_file)
   command = "zypper locks  --solvables | grep #{pkg}"
   $client.run(command, true, 600, 'root')
 end
@@ -11,13 +11,13 @@ end
 Then(/^Package "(.*?)" is reported as locked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
-  fail if locked_pkgs.empty?
-  fail unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
+  raise if locked_pkgs.empty?
+  raise unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
 Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   zypp_lock_file = "/etc/zypp/locks"
-  fail unless file_exists?($client, zypp_lock_file)
+  raise unless file_exists?($client, zypp_lock_file)
   command = "zypper locks  --solvables | grep #{pkg}"
   $client.run(command, false, 600, 'root')
 end
@@ -26,14 +26,14 @@ Then(/^Package "(.*?)" is reported as unlocked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
 
-  fail if locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
+  raise if locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
 Then(/^The package scheduled is "(.*?)"$/) do |pkg|
   match = find(:xpath, "//li[@class='list-group-item']//li")
 
-  fail unless match
-  fail unless match.text =~ /^#{pkg}/
+  raise unless match
+  raise unless match.text =~ /^#{pkg}/
 end
 
 Then(/^The action status is "(.*?)"$/) do |status|
@@ -85,7 +85,7 @@ Then(/^Only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
                 "span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
   matches = all(:xpath, xpath_query)
 
-  fail if matches.size != pkgs.size
+  raise if matches.size != pkgs.size
 end
 
 When(/^I select all the packages$/) do
