@@ -75,9 +75,7 @@ Then(/^the date picker title should be the current month and year$/) do
 end
 
 Then(/^the date picker title should be "([^"]*)"$/) do |arg1|
-  if page.has_no_css?('.datepicker')
-    step %(I open the date picker)
-  end
+  step %(I open the date picker) if page.has_no_css?('.datepicker')
   switch = find('.datepicker .datepicker-days th.datepicker-switch')
   raise unless switch.has_content?(arg1)
 end

@@ -12,9 +12,7 @@ class XMLRPCApiTest < XMLRPCBaseTest
   def getCountOfApiNamespaces
     namespaces = @connection.call('api.getApiNamespaces', @sid)
     count = 0
-    unless namespaces.nil?
-      count = namespaces.length
-    end
+    count = namespaces.length unless namespaces.nil?
     count
   end
 
@@ -24,9 +22,7 @@ class XMLRPCApiTest < XMLRPCBaseTest
   def getCountOfApiCallListGroups
     call_list = @connection.call('api.getApiCallList', @sid)
     count = 0
-    unless call_list.nil?
-      count = call_list.length
-    end
+    count = call_list.length unless call_list.nil?
     count
   end
 

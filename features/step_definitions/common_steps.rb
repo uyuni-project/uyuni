@@ -173,17 +173,13 @@ end
 
 Given(/cobblerd is running/) do
   ct = CobblerTest.new
-  unless ct.is_running
-    raise 'cobblerd is not running'
-  end
+  raise 'cobblerd is not running' unless ct.is_running
 end
 
 Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |distro, user, pwd|
   ct = CobblerTest.new
   ct.login(user, pwd)
-  if ct.distro_exists(distro)
-    raise 'distro ' + distro + ' already exists'
-  end
+  raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
   ct.distro_create(distro, '/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux', 'install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
@@ -206,17 +202,13 @@ Then(/^trigger cobbler system record\(not for ssh\-push tradclient\)$/) do
 end
 Given(/distro "([^"]*)" exists/) do |distro|
   ct = CobblerTest.new
-  unless ct.distro_exists(distro)
-    raise 'distro ' + distro + ' does not exist'
-  end
+  raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
 end
 
 Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |arg1, arg2, arg3|
   ct = CobblerTest.new
   ct.login(arg2, arg3)
-  if ct.profile_exists(arg1)
-    raise 'profile ' + arg1 + ' already exists'
-  end
+  raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
   ct.profile_create('testprofile', 'testdistro', '/install/empty.xml')
 end
 
