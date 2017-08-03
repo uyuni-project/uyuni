@@ -58,14 +58,14 @@ Capybara.default_wait_time = 10
 # Setup browser: phantomjs
 Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new(app,
-                                    :phantomjs_options => ['--debug=no',
-                                                           '--ignore-ssl-errors=yes',
-                                                           '--ssl-protocol=TLSv1',
-                                                           '--web-security=false'],
-                                    :js_errors => false,
-                                    :timeout => 250,
-                                    :window_size => [1920, 1080],
-                                    :debug => false)
+                                    phantomjs_options: ['--debug=no',
+                                                        '--ignore-ssl-errors=yes',
+                                                        '--ssl-protocol=TLSv1',
+                                                        '--web-security=false'],
+                                    js_errors: false,
+                                    timeout: 250,
+                                    window_size: [1920, 1080],
+                                    debug: false)
 end
 Capybara.default_driver = :poltergeist
 Capybara.javascript_driver = :poltergeist
@@ -77,7 +77,7 @@ Capybara.run_server = false
 # screenshots
 After do |scenario|
   if scenario.failed?
-    encoded_img = page.driver.render_base64(:png, :full => true)
+    encoded_img = page.driver.render_base64(:png, full: true)
     embed("data:image/png;base64,#{encoded_img}", 'image/png')
   end
 end

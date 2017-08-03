@@ -84,7 +84,7 @@ def retrieve_minion_id
 end
 
 And(/^I select sle-minion hostname in Build Host$/) do
-  select($minion_fullhostname, :from => 'buildHostId')
+  select($minion_fullhostname, from: 'buildHostId')
 end
 
 And(/^I navigate to images webpage$/) do
@@ -99,7 +99,7 @@ And(/^I verify that all "([^"]*)" container images were built correctly in the g
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       raise 'error detected while building images' if has_xpath?("//*[contains(@title, 'Failed')]")
-      break if has_xpath?("//*[contains(@title, 'Built')]", :count => count)
+      break if has_xpath?("//*[contains(@title, 'Built')]", count: count)
       sleep 5
       step %(I navigate to images webpage)
     end

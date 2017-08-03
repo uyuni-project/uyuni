@@ -68,7 +68,7 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
-  select(arg1, :from => arg2)
+  select(arg1, from: arg2)
 end
 
 When(/^I choose "([^"]*)"$/) do |arg1|
@@ -79,12 +79,12 @@ end
 # Enter a text into a textfield
 #
 When(/^I enter "([^"]*)" as "([^"]*)"$/) do |arg1, arg2|
-  fill_in arg2, :with => arg1
+  fill_in arg2, with: arg1
 end
 
 When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |arg1, arg2|
   within(:xpath, '//section') do
-    fill_in arg2, :with => arg1
+    fill_in arg2, with: arg1
   end
 end
 
@@ -93,10 +93,10 @@ end
 #
 When(/^I click on "([^"]*)"$/) do |arg1|
   begin
-    click_button arg1, :match => :first
+    click_button arg1, match: :first
   rescue
     sleep 4
-    click_button arg1, :match => :first
+    click_button arg1, match: :first
   end
 end
 #
@@ -122,7 +122,7 @@ end
 # Click on the first link
 #
 When(/^I follow first "([^"]*)"$/) do |text|
-  click_link(text, :match => :first)
+  click_link(text, match: :first)
 end
 
 #
@@ -293,8 +293,8 @@ end
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2|
   visit Capybara.app_host
-  fill_in 'username', :with => arg1
-  fill_in 'password', :with => arg2
+  fill_in 'username', with: arg1
+  fill_in 'password', with: arg2
   click_button 'Sign In'
   step %(I should be logged in)
 end
@@ -642,7 +642,7 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|
-  within page.first('a', :text => repo) do
+  within page.first('a', text: repo) do
     within(:xpath, '../..') do
       first('input[type=checkbox]').set(true)
     end
@@ -669,13 +669,13 @@ Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
 end
 
 Then(/^I should see (\d+) "([^"]*)" links$/) do |count, text|
-  page.all('a', :text => text, :count => count)
+  page.all('a', text: text, count: count)
 end
 #
 # Test if an option is selected
 #
 Then(/^Option "([^"]*)" is selected as "([^"]*)"$/) do |arg1, arg2|
-  raise unless has_select?(arg2, :selected => arg1)
+  raise unless has_select?(arg2, selected: arg1)
 end
 
 #
@@ -711,18 +711,18 @@ Then(/^the "([^\"]*)" field should be disabled$/) do |arg1|
 end
 
 Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |arg1, arg2|
-  raise unless page.has_field?(arg2, :with => arg1)
+  raise unless page.has_field?(arg2, with: arg1)
 end
 
 Then(/^I should see a "([^"]*)" element in "([^"]*)" form$/) do |arg1, arg2|
   within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    raise unless find_field(arg1, :match => :first).visible?
+    raise unless find_field(arg1, match: :first).visible?
   end
 end
 
 Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
   within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    raise unless page.find("textarea##{arg1}", :visible => false)
+    raise unless page.find("textarea##{arg1}", visible: false)
     raise unless page.has_css?("##{arg1}-editor")
   end
 end
@@ -789,6 +789,6 @@ end
 
 Then(/^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/) do |count, name, id|
   within(:xpath, "//form[@id=\"#{id}\" or  @name=\"#{id}\"]") do
-    raise unless has_field?(name, :count => count.to_i)
+    raise unless has_field?(name, count: count.to_i)
   end
 end
