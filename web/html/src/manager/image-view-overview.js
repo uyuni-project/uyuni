@@ -3,7 +3,7 @@
 const React = require("react");
 const {LinkButton, Button} = require("../components/buttons");
 const DateTime = require("../components/datetime").DateTime;
-const ModalButton = require("../components/dialogs").ModalButton;
+const {ModalButton, ModalLink} = require("../components/dialogs");
 const PopUp = require("../components/popup").PopUp;
 const Input = require("../components/input");
 const Functions = require("../utils/functions");
@@ -79,6 +79,30 @@ function ActionStatus(props) {
 class ImageInfo extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            instancePopupContent: {}
+        };
+    }
+
+    renderInstanceDetails(row) {
+        let data;
+        if(row.instances) {
+            data = Object.keys(row.instances).map(i => <tr><td>{i}</td><td>{row.instances[i]}</td></tr>);
+        }
+
+        return (
+            <table className="table">
+              <thead>
+                <tr>
+                    <th>Cluster</th>
+                    <th>Instances</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data}
+              </tbody>
+            </table>
+        );
     }
 
     renderInstances(data) {
@@ -89,7 +113,23 @@ class ImageInfo extends React.Component {
                     .reduce((a,b) => a + b);
         }
 
-        return totalCount === 0 ? '-' : <span>{totalCount}&nbsp;&nbsp;<a href="#"><i className="fa fa-external-link" title={t("View cluster summary")}/></a></span>;
+        return totalCount === 0 ? '-' :
+            <span>{totalCount}&nbsp;&nbsp;
+                <ModalLink
+                    target="instance-details-popup"
+                    title={t("View cluster summary")}
+                    icon="fa-external-link"
+                    item={data}
+                    onClick={(data) => {
+                        this.setState({
+                            instancePopupContent: {
+                                name: data.name,
+                                content: this.renderInstanceDetails(data)
+                            }
+                        });
+                    }}
+                />
+            </span>;
     }
 
     renderRuntime(data) {
@@ -189,6 +229,11 @@ class ImageInfo extends React.Component {
                         </tr>
                     </tbody>
                 </table>
+              <PopUp
+                  id="instance-details-popup"
+                  title={t("Instance Details for '{0}'", this.state.instancePopupContent.name)}
+                  content={this.state.instancePopupContent.content}
+              />
             </div>
         );
     }
