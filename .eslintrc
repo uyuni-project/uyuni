@@ -15,7 +15,7 @@
         "browser": true,
         "node":    true,
         "mocha":   true
-    },  
+    },
     "globals": {
         "d3":      true,
         "$": 	   true,
@@ -24,11 +24,14 @@
         "userPrefPageSize": true
     },
     "extends": [
-        "eslint:recommended", 
+        "eslint:recommended",
         "plugin:react/recommended"
-    ],    
+    ],
     "rules": {
-	"no-console":0,
-        "indent": ["error", 2]
+	"no-console": "off",
+        "indent": ["error", 2],
+        "react/prop-types": "off",
+        "react/jsx-key": "warn",
+        "no-trailing-spaces": "warn"
     }
 }
