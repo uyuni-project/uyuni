@@ -6,12 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 6
-Lint/UselessAssignment:
-  Exclude:
-    - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
-
 # Offense count: 5
 Metrics/AbcSize:
   Max: 22
@@ -20,6 +14,7 @@ Metrics/AbcSize:
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
   Max: 107
+
 
 # Offense count: 3
 Metrics/CyclomaticComplexity:
@@ -177,21 +172,6 @@ Style/RegexpLiteral:
     - 'features/step_definitions/xmlrpc_common.rb'
     - 'features/step_definitions/xmlrpctest_steps.rb'
 
-# Offense count: 123
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: only_raise, only_fail, semantic
-Style/SignalException:
-  Exclude:
-    - 'features/step_definitions/centos_tradclient.rb'
-    - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/common_steps.rb'
-    - 'features/step_definitions/datepicker_steps.rb'
-    - 'features/step_definitions/lock_packages_on_client.rb'
-    - 'features/step_definitions/navigation_steps.rb'
-    - 'features/step_definitions/salt_steps.rb'
-    - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
 
 # Offense count: 19
 # Cop supports --auto-correct.

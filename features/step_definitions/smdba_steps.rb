@@ -58,7 +58,7 @@ When(/^when I configure "(.*?)" parameter "(.*?)" to "(.*?)"$/) do |config_file,
   assert_includes(local_output[:stdout], value)
 end
 
-Then(/^when I check internally configuration for "(.*?)" option$/) do |config_key|
+Then(/^when I check internally configuration for "(.*?)" option$/) do |_config_key|
   $current_checked_config_value = sshcmd("cd /;sudo -u postgres psql -c 'show wal_level;'")[:stdout]
 end
 
@@ -79,7 +79,7 @@ Then(/^I find tablespaces "(.*?)" and "(.*?)"$/) do |suma_ts, pg_ts|
   assert_includes($output[:stdout], pg_ts)
 end
 
-Then(/^I find core examination is "(.*?)", database analysis is "(.*?)" and space reclamation is "(.*?)"$/) do |arg1, arg2, arg3|
+Then(/^I find core examination is "(.*?)", database analysis is "(.*?)" and space reclamation is "(.*?)"$/) do |_arg1, _arg2, _arg3|
   refute_includes($output[:stdout], "failed")
 end
 
@@ -148,7 +148,7 @@ Then(/^parameter "(.*?)" in the configuration file "(.*?)" is "(.*?)"$/) do |par
   assert_includes($output[:stdout], fuzzy_value)
 end
 
-Then(/^"(.*?)" destination should be set to "(.*?)" in configuration file$/) do |arch_cmd, dest_dir|
+Then(/^"(.*?)" destination should be set to "(.*?)" in configuration file$/) do |_arch_cmd, dest_dir|
   assert_includes($output[:stdout], dest_dir)
 end
 
@@ -174,7 +174,7 @@ When(/^when I restore database from the backup$/) do
   sshcmd("smdba backup-restore")
 end
 
-Then(/^I disable backup in the directory "(.*?)"$/) do |arg1|
+Then(/^I disable backup in the directory "(.*?)"$/) do |_arg1|
   assert_includes(
     sshcmd("smdba backup-hot --enable=off")[:stdout], "Finished"
   )
