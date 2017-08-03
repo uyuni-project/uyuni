@@ -318,17 +318,17 @@ When(/^I refresh scc$/) do
 end
 
 When(/^I delete the primary credentials$/) do
-  raise unless find('i.fa-trash-o', :match => :first).click
+  raise unless find('i.fa-trash-o', match: :first).click
   step 'I click on "Delete"'
 end
 
 When(/^I view the primary subscription list$/) do
-  raise unless find('i.fa-th-list', :match => :first).click
+  raise unless find('i.fa-th-list', match: :first).click
 end
 
 When(/^I view the primary subscription list for asdf$/) do
   within(:xpath, "//h3[contains(text(), 'asdf')]/../..") do
-    raise unless find('i.fa-th-list', :match => :first).click
+    raise unless find('i.fa-th-list', match: :first).click
   end
 end
 

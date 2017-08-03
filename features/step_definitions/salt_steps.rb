@@ -528,7 +528,7 @@ When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
           when 'keyboard layout'
             "keyboard_and_language\$keyboard_layout"
           end
-  select(value, :from => boxid)
+  select(value, from: boxid)
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
