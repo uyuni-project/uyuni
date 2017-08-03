@@ -17,7 +17,9 @@ package com.suse.manager.webui.controllers;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.Comps;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.suse.manager.webui.utils.TokenBuilder;
@@ -57,6 +59,10 @@ public class DownloadController {
             .setVerificationKey(KEY)
             .build();
 
+    // cached value to avoid multiple calls
+    private static final String MOUNT_POINT_PATH = Config.get()
+            .getString(ConfigDefaults.MOUNT_POINT);
+
     private DownloadController() {
     }
 
@@ -68,15 +74,45 @@ public class DownloadController {
      * @return an object to make spark happy
      */
     public static Object downloadMetadata(Request request, Response response) {
-        String channel = request.params(":channel");
+        String channelLabel = request.params(":channel");
         String filename = request.params(":file");
 
         String token = getTokenFromRequest(request);
-        validateToken(token, channel, filename);
+        validateToken(token, channelLabel, filename);
 
-        File file = new File(new File("/var/cache/rhn/repodata", channel),
+        File file = new File(new File("/var/cache/rhn/repodata", channelLabel),
                 filename).getAbsoluteFile();
+
+        if (!file.exists() && filename.equals("comps.xml")) {
+            File compsFile = getCompsFile(ChannelFactory.lookupByLabel(channelLabel));
+            if (compsFile != null && compsFile.exists()) {
+                file = compsFile;
+            }
+        }
+
         return downloadFile(request, response, file);
+    }
+
+    /**
+     * Determines the comps file for a channel.
+     * If the channel doesn't have comps file associated and it's a cloned one, try to
+     * use the comps of the original channel.
+     *
+     * @param channel - the channel
+     * @return comps file to be used for this channel
+     */
+    private static File getCompsFile(Channel channel) {
+        Comps comps = channel.getComps();
+
+        if (comps == null && channel.isCloned()) {
+            comps = channel.getOriginal().getComps();
+        }
+        if (comps != null) {
+            return new File(MOUNT_POINT_PATH, comps.getRelativeFilename())
+                    .getAbsoluteFile();
+        }
+
+        return null;
     }
 
     /**
