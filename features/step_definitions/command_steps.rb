@@ -82,7 +82,7 @@ end
 
 When(/^I check the tomcat logs for errors$/) do
   output = $server.run('cat /var/log/tomcat/*')
-  msgs = ["ERROR", "NullPointer"]
+  msgs = %w[ERROR NullPointer]
   msgs.each do |msg|
     if output.include? msg
       raise "-#{msg}-  msg found on tomcat logs"
