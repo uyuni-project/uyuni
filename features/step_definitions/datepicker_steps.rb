@@ -55,10 +55,10 @@ Then(/^the date field is set to "([^"]*)"$/) do |arg1|
   month_compat = find('input#date_month', visible: false)
   year_compat = find('input#date_year', visible: false)
 
-  fail if day_compat.value.to_i != value.day
+  raise if day_compat.value.to_i != value.day
   # month field is 0-11, ruby 1-12
-  fail if month_compat.value.to_i + 1 != value.month
-  fail if year_compat.value.to_i != value.year
+  raise if month_compat.value.to_i + 1 != value.month
+  raise if year_compat.value.to_i != value.year
 end
 
 Given(/^I open the date picker$/) do
@@ -66,7 +66,7 @@ Given(/^I open the date picker$/) do
 end
 
 Then(/^the date picker is closed$/) do
-  fail unless page.has_no_css?('.datepicker')
+  raise unless page.has_no_css?('.datepicker')
 end
 
 Then(/^the date picker title should be the current month and year$/) do
@@ -79,7 +79,7 @@ Then(/^the date picker title should be "([^"]*)"$/) do |arg1|
     step %(I open the date picker)
   end
   switch = find('.datepicker .datepicker-days th.datepicker-switch')
-  fail unless switch.has_content?(arg1)
+  raise unless switch.has_content?(arg1)
 end
 
 Given(/^I pick "([^"]*)" as time$/) do |arg1|
@@ -102,7 +102,7 @@ Then(/^the time field is set to "([^"]*)"$/) do |arg1|
   m_compat = find('input#date_minute', visible: false)
   ampm_compat = find('input#date_am_pm', visible: false)
 
-  fail if h_compat.value.to_i != h % 12
-  fail if m_compat.value.to_i != m
-  fail if ampm_compat.value.to_i != (h >= 12 ? 1 : 0)
+  raise if h_compat.value.to_i != h % 12
+  raise if m_compat.value.to_i != m
+  raise if ampm_compat.value.to_i != (h >= 12 ? 1 : 0)
 end

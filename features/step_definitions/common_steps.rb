@@ -36,7 +36,7 @@ end
 
 # action chains
 When(/^I check radio button "(.*?)"$/) do |arg1|
-  fail unless choose(arg1)
+  raise unless choose(arg1)
 end
 
 When(/^I enter as remote command this script in$/) do |multiline|
@@ -79,7 +79,7 @@ When(/^I should see the power is "([^"]*)"$/) do |arg1|
       find(:xpath, '//button[@value="Get status"]').click unless has_content?(arg1)
       sleep 3
     end
-    fail unless has_content?(arg1)
+    raise unless has_content?(arg1)
   end
 end
 
@@ -259,7 +259,7 @@ Then(/^"([^"]*)" should exists in the metadata for "([^"]*)"$/) do |file, host|
   target = $client
   arch, _code = target.run("uname -m")
   arch.chomp!
-  fail unless file_exists?(target, "#{client_raw_repodata_dir("test-channel-#{arch}")}/#{file}")
+  raise unless file_exists?(target, "#{client_raw_repodata_dir("test-channel-#{arch}")}/#{file}")
 end
 
 Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
@@ -271,7 +271,7 @@ end
 
 # channel steps
 Then(/^I should see package "([^"]*)"$/) do |package|
-  fail unless has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a[contains(.,'#{package}')]")
+  raise unless has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a[contains(.,'#{package}')]")
 end
 
 Given(/^I am on the manage software channels page$/) do
@@ -310,7 +310,7 @@ end
 # setup wizard
 
 When(/^I make the credentials primary$/) do
-  fail unless find('i.fa-star-o').click
+  raise unless find('i.fa-star-o').click
 end
 
 When(/^I refresh scc$/) do
@@ -318,23 +318,23 @@ When(/^I refresh scc$/) do
 end
 
 When(/^I delete the primary credentials$/) do
-  fail unless find('i.fa-trash-o', :match => :first).click
+  raise unless find('i.fa-trash-o', :match => :first).click
   step 'I click on "Delete"'
 end
 
 When(/^I view the primary subscription list$/) do
-  fail unless find('i.fa-th-list', :match => :first).click
+  raise unless find('i.fa-th-list', :match => :first).click
 end
 
 When(/^I view the primary subscription list for asdf$/) do
   within(:xpath, "//h3[contains(text(), 'asdf')]/../..") do
-    fail unless find('i.fa-th-list', :match => :first).click
+    raise unless find('i.fa-th-list', :match => :first).click
   end
 end
 
 When(/^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/) do |product, architecture|
   within(:xpath, "(//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]])[1]") do
-    fail unless find("button.product-add-btn").click
+    raise unless find("button.product-add-btn").click
     begin
       # wait to finish scheduling
       Timeout.timeout(DEFAULT_TIMEOUT) do
@@ -359,7 +359,7 @@ When(/^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/) d
   xpath += "ancestor::tr[td[contains(text(), '#{archi}')]]/following::span"
   xpath += "[contains(text(), '#{addon}')]/../.."
   within(:xpath, xpath) do
-    fail unless find("button.product-add-btn").click
+    raise unless find("button.product-add-btn").click
     begin
       # wait to finish scheduling
       Timeout.timeout(DEFAULT_TIMEOUT) do
@@ -379,19 +379,20 @@ When(/^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/) d
 end
 
 When(/^I click the Add Product button$/) do
-  fail unless find("button#synchronize").click
+  raise unless find("button#synchronize").click
 end
 
 When(/^I verify the products were added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
-  fail unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
-  fail unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool x86_64 SP2 SUSE Manager Tools [sle-manager-tools12-pool-x86_64-sp2]'
-  fail unless output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 SP2 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
+  sle_module = '[I] SLE-Module-Legacy12-Updates for x86_64 SP2 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
+  raise unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
+  raise unless output[:stdout].include? '[I] SLE-Manager-Tools12-Pool x86_64 SP2 SUSE Manager Tools [sle-manager-tools12-pool-x86_64-sp2]'
+  raise unless output[:stdout].include? sle_module
 end
 
 When(/^I click the channel list of product "(.*?)" for the "(.*?)" architecture$/) do |product, architecture|
   within(:xpath, "//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]]") do
-    fail unless find('.product-channels-btn').click
+    raise unless find('.product-channels-btn').click
   end
 end
 
@@ -407,14 +408,14 @@ end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
-    fail unless find_link(arg2)
-    fail unless find_link(arg3)
+    raise unless find_link(arg2)
+    raise unless find_link(arg3)
   end
 end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
-    fail unless find_link(arg2)
+    raise unless find_link(arg2)
   end
 end
 

@@ -139,7 +139,7 @@ end
 
 Then(/^I clean the search index on the server$/) do
   output = sshcmd("/usr/sbin/rcrhn-search cleanindex", ignore_err: true)
-  fail if output[:stdout].include?('ERROR')
+  raise if output[:stdout].include?('ERROR')
 end
 
 When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
@@ -200,13 +200,13 @@ end
 Then(/^Service "([^"]*)" is enabled on the Server$/) do |service|
   output = sshcmd("systemctl is-enabled '#{service}'", ignore_err: true)[:stdout]
   output.chomp!
-  fail if output != "enabled"
+  raise if output != "enabled"
 end
 
 Then(/^Service "([^"]*)" is running on the Server$/) do |service|
   output = sshcmd("systemctl is-active '#{service}'", ignore_err: true)[:stdout]
   output.chomp!
-  fail if output != "active"
+  raise if output != "active"
 end
 
 # snapshots
@@ -242,7 +242,7 @@ When(/^"(.*)" exists on the filesystem of "(.*)"$/) do |file, host|
   rescue Timeout::Error
     puts "timeout waiting for the file to appear"
   end
-  fail unless file_exists?(node, file)
+  raise unless file_exists?(node, file)
 end
 
 Then(/^I remove "(.*)" from "(.*)"$/) do |file, host|
