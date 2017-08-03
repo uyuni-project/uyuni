@@ -8,8 +8,8 @@ const Network = require("../utils/network");
 const Utils = require("../utils/functions").Utils;
 const {Table, Column, SearchField} = require("../components/table");
 const Messages = require("../components/messages").Messages;
-const DeleteDialog = require("../components/dialogs").DeleteDialog;
-const ModalButton = require("../components/dialogs").ModalButton;
+const {ModalButton, ModalLink, DeleteDialog} = require("../components/dialogs");
+const PopUp = require("../components/popup").PopUp;
 const TabContainer = require("../components/tab-container").TabContainer;
 const ImageViewOverview = require("./image-view-overview").ImageViewOverview;
 const ImageViewPatches = require("./image-view-patches").ImageViewPatches;
@@ -285,7 +285,8 @@ class ImageViewList extends React.Component {
 
         ["selectImage", "handleSelectItems"].forEach(method => this[method] = this[method].bind(this));
         this.state = {
-          selectedItems: []
+          selectedItems: [],
+          instancePopupContent: {}
         };
         this.props.onSelectCount(0);
     }
@@ -367,6 +368,27 @@ class ImageViewList extends React.Component {
       return icon;
     }
 
+    renderInstanceDetails(row) {
+        let data;
+        if(row.instances) {
+            data = Object.keys(row.instances).map(i => <tr><td>{i}</td><td>{row.instances[i]}</td></tr>);
+        }
+
+        return (
+            <table className="table">
+              <thead>
+                <tr>
+                    <th>Cluster</th>
+                    <th>Instances</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data}
+              </tbody>
+            </table>
+        );
+    }
+
     renderInstances(row) {
       let totalCount = 0;
       if(row.instances) {
@@ -375,7 +397,23 @@ class ImageViewList extends React.Component {
         }
       }
 
-      return totalCount === 0 ? '-' : <span>{totalCount}&nbsp;&nbsp;<a href="#"><i className="fa fa-external-link" title={t("View cluster summary")}/></a></span>;
+        return totalCount === 0 ? '-' :
+            <span>{totalCount}&nbsp;&nbsp;
+                <ModalLink
+                    target="instance-details-popup"
+                    title={t("View cluster summary")}
+                    icon="fa-external-link"
+                    item={row}
+                    onClick={(row) => {
+                        this.setState({
+                            instancePopupContent: {
+                                name: row.name,
+                                content: this.renderInstanceDetails(row)
+                            }
+                        });
+                    }}
+                />
+            </span>;
     }
 
     render() {
@@ -494,6 +532,11 @@ class ImageViewList extends React.Component {
               </span>
             }
             onConfirm={() => this.props.onDelete(this.state.selectedItems)}
+          />
+          <PopUp
+              id="instance-details-popup"
+              title={t("Instance Details for '{0}'", this.state.instancePopupContent.name)}
+              content={this.state.instancePopupContent.content}
           />
         </div>
         );
