@@ -201,10 +201,3 @@ Style/VariableName:
     - 'features/support/xmlrpc_system.rb'
     - 'features/support/xmlrpc_vhm.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles, WordRegex.
-# SupportedStyles: percent, brackets
-Style/WordArray:
-  EnforcedStyle: percent
-  MinSize: 5
