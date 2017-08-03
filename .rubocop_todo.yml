@@ -6,108 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles, IndentationWidth.
-# SupportedStyles: outdent, indent
-Layout/AccessModifierIndentation:
-  EnforcedStyle: outdent
-
-# Offense count: 15
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentOneStep, IndentationWidth.
-# SupportedStyles: case, end
-Layout/CaseIndentation:
-  Exclude:
-    - 'features/step_definitions/navigation_steps.rb'
-    - 'features/step_definitions/salt_steps.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.
-Layout/ExtraSpacing:
-  Exclude:
-    - 'features/support/cobbler_test.rb'
-    - 'features/support/xmlrpc_channel.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: normal, rails
-Layout/IndentationConsistency:
-  Exclude:
-    - 'features/support/client_stack.rb'
-
-# Offense count: 30
-# Cop supports --auto-correct.
-# Configuration parameters: Width, IgnoredPatterns.
-Layout/IndentationWidth:
-  Exclude:
-    - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/common_steps.rb'
-    - 'features/step_definitions/salt_steps.rb'
-
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: symmetrical, new_line, same_line
-Layout/MultilineMethodCallBraceLayout:
-  Exclude:
-    - 'features/step_definitions/smdba_steps.rb'
-    - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
-
-# Offense count: 16
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: aligned, indented, indented_relative_to_receiver
-Layout/MultilineMethodCallIndentation:
-  Exclude:
-    - 'features/step_definitions/salt_steps.rb'
-    - 'features/step_definitions/security_steps.rb'
-    - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
-    - 'features/support/xmlrpc_activationkey.rb'
-    - 'features/support/xmlrpc_channel.rb'
-
-# Offense count: 17
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: aligned, indented
-Layout/MultilineOperationIndentation:
-  Exclude:
-    - 'features/step_definitions/lock_packages_on_client.rb'
-
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles.
-# SupportedStyles: space, no_space
-Layout/SpaceAroundEqualsInParameterDefault:
-  EnforcedStyle: no_space
-
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleAlignWith, SupportedStylesAlignWith, AutoCorrect.
-# SupportedStylesAlignWith: keyword, variable, start_of_line
-Lint/EndAlignment:
-  Exclude:
-    - 'features/step_definitions/navigation_steps.rb'
-    - 'features/step_definitions/salt_steps.rb'
-
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
-Lint/UnusedBlockArgument:
-  Exclude:
-    - 'features/step_definitions/smdba_steps.rb'
-    - 'features/support/ssh.rb'
-    - 'features/support/time.rb'
-
-# Offense count: 6
-Lint/UselessAssignment:
-  Exclude:
-    - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
-
 # Offense count: 5
 Metrics/AbcSize:
   Max: 22
@@ -116,6 +14,7 @@ Metrics/AbcSize:
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
   Max: 107
+
 
 # Offense count: 3
 Metrics/CyclomaticComplexity:
@@ -161,14 +60,6 @@ Style/For:
     - 'features/support/xmlrpc_api.rb'
     - 'features/support/xmlrpc_channel.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: format, sprintf, percent
-Style/FormatString:
-  Exclude:
-    - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
-
 # Offense count: 390
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
@@ -193,34 +84,6 @@ Style/GuardClause:
   Exclude:
     - 'features/support/cobbler_test.rb'
 
-# Offense count: 30
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
-# SupportedStyles: ruby19, hash_rockets, no_mixed_keys, ruby19_no_mixed_keys
-Style/HashSyntax:
-  Exclude:
-    - 'Rakefile'
-    - 'features/step_definitions/common_steps.rb'
-    - 'features/step_definitions/docker_steps.rb'
-    - 'features/step_definitions/navigation_steps.rb'
-    - 'features/step_definitions/salt_steps.rb'
-    - 'features/support/env.rb'
-    - 'features/support/ssh.rb'
-
-# Offense count: 21
-# Cop supports --auto-correct.
-# Configuration parameters: MaxLineLength.
-Style/IfUnlessModifier:
-  Exclude:
-    - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/common_steps.rb'
-    - 'features/step_definitions/datepicker_steps.rb'
-    - 'features/step_definitions/navigation_steps.rb'
-    - 'features/step_definitions/salt_steps.rb'
-    - 'features/support/cobbler_test.rb'
-    - 'features/support/env.rb'
-    - 'features/support/xmlrpc_api.rb'
-
 # Offense count: 81
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: snake_case, camelCase
@@ -239,11 +102,6 @@ Style/MethodName:
     - 'features/support/xmlrpc_user.rb'
     - 'features/support/xmlrpc_vhm.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/NestedParenthesizedCalls:
-  Exclude:
-    - 'features/step_definitions/xmlrpctest_steps.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -273,21 +131,6 @@ Style/RegexpLiteral:
     - 'features/step_definitions/xmlrpc_common.rb'
     - 'features/step_definitions/xmlrpctest_steps.rb'
 
-# Offense count: 123
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: only_raise, only_fail, semantic
-Style/SignalException:
-  Exclude:
-    - 'features/step_definitions/centos_tradclient.rb'
-    - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/common_steps.rb'
-    - 'features/step_definitions/datepicker_steps.rb'
-    - 'features/step_definitions/lock_packages_on_client.rb'
-    - 'features/step_definitions/navigation_steps.rb'
-    - 'features/step_definitions/salt_steps.rb'
-    - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
 
 # Offense count: 19
 # Cop supports --auto-correct.
@@ -295,13 +138,6 @@ Style/SignalException:
 # SupportedStyles: use_perl_names, use_english_names
 Style/SpecialGlobalVars:
   EnforcedStyle: use_perl_names
-
-# Offense count: 603
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Enabled: false
 
 # Offense count: 23
 # Configuration parameters: EnforcedStyle, SupportedStyles.
@@ -317,10 +153,3 @@ Style/VariableName:
     - 'features/support/xmlrpc_system.rb'
     - 'features/support/xmlrpc_vhm.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles, WordRegex.
-# SupportedStyles: percent, brackets
-Style/WordArray:
-  EnforcedStyle: percent
-  MinSize: 5

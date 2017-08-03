@@ -5,7 +5,7 @@
 # Test the current path of the URL
 #
 Then(/^the current path is "([^"]*)"$/) do |arg1|
-  fail unless (current_path == arg1)
+  raise unless (current_path == arg1)
 end
 
 When(/^I wait until i see "([^"]*)" text$/) do |text|
@@ -37,18 +37,18 @@ end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |target|
   case target
-  when "sle-minion"
+  when 'sle-minion'
     step %(I wait until i see "#{$minion_fullhostname}" text, refreshing the page)
-  when "ssh-minion"
+  when 'ssh-minion'
     step %(I wait until i see "#{$ssh_minion_fullhostname}" text, refreshing the page)
-  when "ceos-minion"
+  when 'ceos-minion'
     step %(I wait until i see "#{$ceos_minion_fullhostname}" text, refreshing the page)
-  when "sle-client"
+  when 'sle-client'
     step %(I wait until i see "#{$client_fullhostname}" text, refreshing the page)
-  when "sle-migrated-minion"
+  when 'sle-migrated-minion'
     step %(I wait until i see "#{$client_fullhostname}" text, refreshing the page)
   else
-    raise "No valid target."
+    raise 'No valid target.'
   end
 end
 
@@ -68,7 +68,7 @@ When(/^I check "([^"]*)" if not checked$/) do |arg1|
 end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
-  select(arg1, :from => arg2)
+  select(arg1, from: arg2)
 end
 
 When(/^I choose "([^"]*)"$/) do |arg1|
@@ -79,12 +79,12 @@ end
 # Enter a text into a textfield
 #
 When(/^I enter "([^"]*)" as "([^"]*)"$/) do |arg1, arg2|
-  fill_in arg2, :with => arg1
+  fill_in arg2, with: arg1
 end
 
 When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |arg1, arg2|
-  within(:xpath, "//section") do
-    fill_in arg2, :with => arg1
+  within(:xpath, '//section') do
+    fill_in arg2, with: arg1
   end
 end
 
@@ -93,10 +93,10 @@ end
 #
 When(/^I click on "([^"]*)"$/) do |arg1|
   begin
-    click_button arg1, :match => :first
+    click_button arg1, match: :first
   rescue
     sleep 4
-    click_button arg1, :match => :first
+    click_button arg1, match: :first
   end
 end
 #
@@ -122,7 +122,7 @@ end
 # Click on the first link
 #
 When(/^I follow first "([^"]*)"$/) do |text|
-  click_link(text, :match => :first)
+  click_link(text, match: :first)
 end
 
 #
@@ -135,17 +135,16 @@ When(/^I follow "([^"]*)" in element "([^"]*)"$/) do |arg1, arg2|
 end
 
 When(/^I want to add a new credential$/) do
-  fail unless find("i.fa-plus-circle").click
+  raise unless find('i.fa-plus-circle').click
 end
 
 When(/^I follow "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-  when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
-  when /content area/ then "section"
-  else raise "Unknown element with description '#{desc}'"
-  end
-
+        when /left menu/ then 'aside'
+        when /tab bar|tabs/ then 'header'
+        when /content area/ then 'section'
+        else raise "Unknown element with description '#{desc}'"
+        end
   within(:xpath, "//#{tag}") do
     step %(I follow "#{arg1}")
   end
@@ -153,12 +152,11 @@ end
 
 When(/^I follow first "([^"]*)" in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-  when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
-  when /content area/ then "section"
-  else raise "Unknown element with description '#{desc}'"
-  end
-
+        when /left menu/ then 'aside'
+        when /tab bar|tabs/ then 'header'
+        when /content area/ then 'section'
+        else raise "Unknown element with description '#{desc}'"
+        end
   within(:xpath, "//#{tag}") do
     step "I follow first \"#{arg1}\""
   end
@@ -176,7 +174,7 @@ end
 When(/^I follow "([^"]*)" on "(.*?)" row$/) do |text, host|
   target_fullhostname = get_target_fullhostname(host)
   xpath_query = "//tr[td[contains(.,'#{target_fullhostname}')]]//a[contains(., '#{text}')]"
-  fail unless find(:xpath, xpath_query).click
+  raise unless find(:xpath, xpath_query).click
 end
 
 When(/^I enter "(.*?)" in the editor$/) do |arg1|
@@ -191,7 +189,7 @@ end
 
 Given(/^I am not authorized$/) do
   visit Capybara.app_host
-  fail unless find_button('Sign In').visible?
+  raise unless find_button('Sign In').visible?
 end
 
 When(/^I go to the home page$/) do
@@ -201,7 +199,7 @@ end
 Given(/^I access the host the first time$/) do
   visit Capybara.app_host
   # fail if not page.has_content?("Create Spacewalk Administrator")
-  fail unless page.has_content?("Create SUSE Manager Administrator")
+  raise unless page.has_content?('Create SUSE Manager Administrator')
 end
 
 # Admin Page steps
@@ -236,31 +234,31 @@ Given(/^I am on the Systems overview page of this "(.*?)"$/) do |target|
     Given I am on the Systems page
     )
   case target
-  when "sle-minion"
+  when 'sle-minion'
     step %(I follow "#{$minion_fullhostname}")
-  when "ssh-minion"
+  when 'ssh-minion'
     step %(I follow "#{$ssh_minion_fullhostname}")
-  when "ceos-minion"
+  when 'ceos-minion'
     step %(I follow "#{$ceos_minion_fullhostname}")
-  when "sle-client"
+  when 'sle-client'
     step %(I follow "#{$client_fullhostname}")
-  when "sle-migrated-minion"
+  when 'sle-migrated-minion'
     step %(I follow "#{$client_fullhostname}")
   else
-    raise "No valid target."
+    raise 'No valid target.'
   end
 end
 
 When(/^I follow this "(.*?)" link$/) do |target|
-  step %(I follow "#{$minion_fullhostname}") if target == "sle-minion"
-  step %(I follow "#{$ssh_minion_fullhostname}") if target == "ssh-minion"
-  step %(I follow "#{$ceos_minion_fullhostname}") if target == "ceos-minion"
-  step %(I follow "#{$client_fullhostname}") if target == "sle-client"
+  step %(I follow "#{$minion_fullhostname}") if target == 'sle-minion'
+  step %(I follow "#{$ssh_minion_fullhostname}") if target == 'ssh-minion'
+  step %(I follow "#{$ceos_minion_fullhostname}") if target == 'ceos-minion'
+  step %(I follow "#{$client_fullhostname}") if target == 'sle-client'
 end
 
 When(/^I check the "(.*?)" client$/) do |target|
   node = get_target(target)
-  hostname = node.run("hostname -f")[0].strip
+  hostname = node.run('hostname -f')[0].strip
   step %(I check "#{hostname}" in the list)
 end
 
@@ -287,7 +285,7 @@ end
 
 Then(/^Table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg1}')]]") do
-    fail unless has_content?(arg2)
+    raise unless has_content?(arg2)
   end
 end
 
@@ -295,9 +293,9 @@ end
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2|
   visit Capybara.app_host
-  fill_in "username", :with => arg1
-  fill_in "password", :with => arg2
-  click_button "Sign In"
+  fill_in 'username', with: arg1
+  fill_in 'password', with: arg2
+  click_button 'Sign In'
   step %(I should be logged in)
 end
 
@@ -310,25 +308,25 @@ When(/^I sign out$/) do
 end
 
 Then(/^I should not be authorized$/) do
-  fail unless page.has_no_xpath?("//a[@href='/rhn/Logout.do']")
+  raise unless page.has_no_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 Then(/^I should be logged in$/) do
-  fail unless page.has_xpath?("//a[@href='/rhn/Logout.do']")
+  raise unless page.has_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 Then(/^I am logged-in$/) do
-  fail unless page.find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  fail unless page.has_content?("You have just created your first SUSE Manager user. To finalize your installation please use the Setup Wizard")
+  raise unless page.find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
+  raise unless page.has_content?('You have just created your first SUSE Manager user. To finalize your installation please use the Setup Wizard')
 end
 
 When(/^I go to the admin configuration page$/) do
-  find_link("Admin").click
-  find_link("SUSE Manager Configuration").click
+  find_link('Admin').click
+  find_link('SUSE Manager Configuration').click
 end
 
 When(/^I go to the configuration page$/) do
-  find_link("Configuration").click
+  find_link('Configuration').click
 end
 
 Given(/^I am on the patches page$/) do
@@ -345,16 +343,16 @@ Given(/^I am on the "([^"]*)" patches Details page$/) do |arg1|
 end
 
 Then(/^I should see an update in the list$/) do
-  fail unless has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a")
+  raise unless has_xpath?('//div[@class="table-responsive"]/table/tbody/tr/td/a')
 end
 
 # FIXME: remove this steps, this is really obscure and doesn't say intuitively
 # what it does
 Given(/^Patches are visible for the registered client$/) do
-  step "I am on the patches page"
+  step 'I am on the patches page'
   for c in 0..20
     begin
-      step "I should see an update in the list"
+      step 'I should see an update in the list'
     rescue
       puts "wait #{c} time 5 seconds"
       sleep 5
@@ -412,7 +410,7 @@ Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
   rescue Timeout::Error
     raise "'#{arg1}' cannot be found after wait and reload page"
   end
-  fail unless found
+  raise unless found
 end
 
 Then(/^I try to reload page until it does not contain "([^"]*)" text$/) do |arg1|
@@ -431,7 +429,7 @@ Then(/^I try to reload page until it does not contain "([^"]*)" text$/) do |arg1
   rescue Timeout::Error
     raise "'#{arg1}' is still found after wait and reload page"
   end
-  fail if found
+  raise if found
 end
 
 Given(/^I am in the organization configuration page$/) do
@@ -454,8 +452,8 @@ Then(/^I should see something$/) do
 end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
-  within(:xpath, "//span[@id=\"spacewalk-set-system_list-counter\"]") do
-    fail unless has_content?(arg)
+  within(:xpath, '//span[@id="spacewalk-set-system_list-counter"]') do
+    raise unless has_content?(arg)
   end
 end
 
@@ -465,7 +463,7 @@ end
 Then(/^I should see a "([^"]*)" text$/) do |arg1|
   unless page.has_content?(arg1)
     sleep 2
-    fail unless page.has_content?(arg1)
+    raise unless page.has_content?(arg1)
   end
 end
 
@@ -474,12 +472,12 @@ end
 #
 Then(/^I should see "([^"]*)" in the textarea$/) do |arg1|
   within('textarea') do
-    fail unless page.has_content?(arg1)
+    raise unless page.has_content?(arg1)
   end
 end
 
 Then(/^I should see "([^"]*)" loaded in the textarea$/) do |arg1|
-  fail unless first('textarea').value.include?(arg1)
+  raise unless first('textarea').value.include?(arg1)
 end
 
 #
@@ -488,7 +486,7 @@ end
 Then(/^I should see a text like "([^"]*)"$/) do |title|
   unless page.has_content?(Regexp.new(title))
     sleep 2
-    fail unless page.has_content?(Regexp.new(title))
+    raise unless page.has_content?(Regexp.new(title))
   end
 end
 
@@ -496,9 +494,7 @@ end
 # Test for a text not allowed in the whole page
 #
 Then(/^I should not see a "([^"]*)" text$/) do |text|
-  unless page.has_no_content?(text)
-    raise "#{text} found on the page! FAIL"
-  end
+  raise "#{text} found on the page! FAIL" unless page.has_no_content?(text)
 end
 
 #
@@ -508,10 +504,10 @@ Then(/^I should see a "([^"]*)" link$/) do |arg1|
   link = first(:link, arg1)
   if link.nil?
     sleep 3
-    $stderr.puts "ERROR - try again"
-    fail unless first(:link, arg1).visible?
+    $stderr.puts 'ERROR - try again'
+    raise unless first(:link, arg1).visible?
   else
-    fail unless link.visible?
+    raise unless link.visible?
   end
 end
 
@@ -519,11 +515,11 @@ end
 # Validate link is gone
 #
 Then(/^I should not see a "([^"]*)" link$/) do |arg1|
-  fail unless page.has_no_link?(arg1)
+  raise unless page.has_no_link?(arg1)
 end
 
 Then(/^I should see a "([^"]*)" button$/) do |arg1|
-  fail unless find_button(arg1).visible?
+  raise unless find_button(arg1).visible?
 end
 
 Then(/^I should see a "(.*?)" link in the text$/) do |linktext, text|
@@ -538,34 +534,34 @@ end
 #
 Then(/^I should see a "([^"]*)" link in element "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    fail unless find_link(arg1).visible?
+    raise unless find_link(arg1).visible?
   end
 end
 
 Then(/^I should not see a "([^"]*)" link in element "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    fail unless has_no_link?(arg1)
+    raise unless has_no_link?(arg1)
   end
 end
 
 Then(/^I should see a "([^"]*)" text in element "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    fail unless has_content?(arg1)
+    raise unless has_content?(arg1)
   end
 end
 
 Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |arg1, arg2, arg3|
   within(:xpath, "//div[@id=\"#{arg3}\" or @class=\"#{arg3}\"]") do
-    fail if !has_content?(arg1) && !has_content?(arg2)
+    raise if !has_content?(arg1) && !has_content?(arg2)
   end
 end
 
 Then(/^I should see a "([^"]*)" link in "([^"]*)" "([^"]*)"$/) do |arg1, arg2, arg3|
-  fail unless page.has_xpath?("//#{arg2}[@id='#{arg3}' or @class='#{arg3}']/a[text()='#{arg1}']")
+  raise unless page.has_xpath?("//#{arg2}[@id='#{arg3}' or @class='#{arg3}']/a[text()='#{arg1}']")
 end
 
 Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, column|
-  idx = ['first', 'second', 'third', 'fourth'].index(column)
+  idx = %w[first second third fourth].index(column)
   unless idx
     # try column by name
     # unquote if neeeded
@@ -573,15 +569,15 @@ Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, colum
     cols = page.all(:xpath, '//table//thead/tr[1]/th').map(&:text)
     idx = cols.index(colname)
   end
-  fail("Unknown column '#{column}'") unless idx
+  raise("Unknown column '#{column}'") unless idx
   # find(:xpath, "//table//thead//tr/td[#{idx + 1}]/a[text()='#{link}']")
-  fail unless page.has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
+  raise unless page.has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
 end
 
 Then(/^I reload the page until it does contain a "([^"]*)" text in the table (.*) row$/) do |text, row|
   found = false
-  idx = ['first', 'second', 'third', 'fourth'].index(row)
-  fail("Unknown row '#{row}'") unless idx
+  idx = %w[first second third fourth].index(row)
+  raise("Unknown row '#{row}'") unless idx
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
@@ -596,17 +592,16 @@ Then(/^I reload the page until it does contain a "([^"]*)" text in the table (.*
   rescue Timeout::Error
     raise "'#{text}' is not found in the '#{row}' row of the table after wait and reload page"
   end
-  fail unless found
+  raise unless found
 end
 
 Then(/^I should see a "([^"]*)" link in the (left menu|tab bar|tabs|content area)$/) do |arg1, arg2|
   tag = case arg2
-  when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
-  when /content area/ then "section"
-  else raise "Unknown element with description '#{arg2}'"
-  end
-
+        when /left menu/ then 'aside'
+        when /tab bar|tabs/ then 'header'
+        when /content area/ then 'section'
+        else raise "Unknown element with description '#{arg2}'"
+        end
   within(:xpath, "//#{tag}") do
     step "I should see a \"#{arg1}\" link"
   end
@@ -614,19 +609,18 @@ end
 
 Then(/^I should not see a "([^"]*)" link in the (.+)$/) do |arg1, arg2|
   tag = case arg2
-  when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
-  when /content area/ then "section"
-  else raise "Unknown element with description '#{arg2}'"
-  end
-
+        when /left menu/ then 'aside'
+        when /tab bar|tabs/ then 'header'
+        when /content area/ then 'section'
+        else raise "Unknown element with description '#{arg2}'"
+        end
   within(:xpath, "//#{tag}") do
     step "I should not see a \"#{arg1}\" link"
   end
 end
 
 Then(/^I should see a "([^"]*)" link in row ([0-9]+) of the content menu$/) do |arg1, arg2|
-  within(:xpath, "//section") do
+  within(:xpath, '//section') do
     within(:xpath, "//div[@class=\"spacewalk-content-nav\"]/ul[#{arg2}]") do
       step %(I should see a "#{arg1}" link)
     end
@@ -635,19 +629,19 @@ end
 
 Then(/^I should see a "([^"]*)" link in list "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//ul[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    fail unless find_link(arg1).visible?
+    raise unless find_link(arg1).visible?
   end
 end
 
 Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
   within(:xpath, "//form[@id='#{arg2}' or @name=\"#{arg2}\"]") do
-    fail unless find_button(arg1)
+    raise unless find_button(arg1)
   end
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|
-  within page.first('a', :text => repo) do
-    within(:xpath, "../..") do
+  within page.first('a', text: repo) do
+    within(:xpath, '../..') do
       first('input[type=checkbox]').set(true)
     end
   end
@@ -673,34 +667,34 @@ Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
 end
 
 Then(/^I should see (\d+) "([^"]*)" links$/) do |count, text|
-  page.all('a', :text => text, :count => count)
+  page.all('a', text: text, count: count)
 end
 #
 # Test if an option is selected
 #
 Then(/^Option "([^"]*)" is selected as "([^"]*)"$/) do |arg1, arg2|
-  fail unless has_select?(arg2, :selected => arg1)
+  raise unless has_select?(arg2, selected: arg1)
 end
 
 #
 # Test if a radio button is checked
 #
 Then(/^radio button "([^"]*)" is checked$/) do |arg1|
-  fail unless has_checked_field?(arg1)
+  raise unless has_checked_field?(arg1)
 end
 
 #
 # Test if a checkbox is checked
 #
 Then(/^I should see "([^"]*)" as checked$/) do |arg1|
-  fail unless has_checked_field?(arg1)
+  raise unless has_checked_field?(arg1)
 end
 
 #
 # Test if a checkbox is unchecked
 #
 Then(/^I should see "([^"]*)" as unchecked$/) do |arg1|
-  fail unless has_unchecked_field?(arg1)
+  raise unless has_unchecked_field?(arg1)
 end
 
 #
@@ -715,55 +709,55 @@ Then(/^the "([^\"]*)" field should be disabled$/) do |arg1|
 end
 
 Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |arg1, arg2|
-  fail unless page.has_field?(arg2, :with => arg1)
+  raise unless page.has_field?(arg2, with: arg1)
 end
 
 Then(/^I should see a "([^"]*)" element in "([^"]*)" form$/) do |arg1, arg2|
   within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    fail unless find_field(arg1, :match => :first).visible?
+    raise unless find_field(arg1, match: :first).visible?
   end
 end
 
 Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
   within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    fail unless page.find("textarea##{arg1}", :visible => false)
-    fail unless page.has_css?("##{arg1}-editor")
+    raise unless page.find("textarea##{arg1}", visible: false)
+    raise unless page.has_css?("##{arg1}-editor")
   end
 end
 
 Then(/^"([^"]*)" is installed on "([^"]*)"$/) do |package, target|
   # use target variable
   case target
-  when "client"
+  when 'client'
     $client.run("rpm -q #{package}", true, 600, 'root')
-  when "minion"
+  when 'minion'
     # this is a sles minion
     $minion.run("rpm -q #{package}", true, 600, 'root')
-  when "ssh-minion"
+  when 'ssh-minion'
     # this is a sles minion
     $ssh_minion.run("rpm -q #{package}", true, 600, 'root')
-  when "ceos-minion"
+  when 'ceos-minion'
     # this is a sles minion
     $ceos_minion.run("rpm -q #{package}", true, 600, 'root')
   else
-    raise "invalid target given"
+    raise 'invalid target given'
   end
 end
 
 Then(/^I should see a Sign Out link$/) do
-  fail unless has_xpath?("//a[@href='/rhn/Logout.do']")
+  raise unless has_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 When(/^I check "([^"]*)" in the list$/) do |arg1|
-  within(:xpath, "//section") do
+  within(:xpath, '//section') do
     # use div/div/div for cve audit which has two tables
     row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
     if row.nil?
       sleep 10
-      $stderr.puts "ERROR - try again"
+      $stderr.puts 'ERROR - try again'
       row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
     end
-    row.first(:xpath, ".//input[@type=\"checkbox\"]").set(true)
+    row.first(:xpath, './/input[@type="checkbox"]').set(true)
   end
 end
 
@@ -771,28 +765,28 @@ When(/^I check checkbox with title "([^"]*)" in the list$/) do |arg1|
   row = first(:xpath, "//tr[.//i[@title='#{arg1}']]")
   if row.nil?
     sleep 3
-    $stderr.puts "ERROR - try again"
+    $stderr.puts 'ERROR - try again'
     row = first(:xpath, "//tr[.//i[@title='#{arg1}']]")
   end
-  row.first(:xpath, ".//input[@type=\"checkbox\"]").set(true)
+  row.first(:xpath, './/input[@type="checkbox"]').set(true)
 end
 
 When(/^I uncheck "([^"]*)" in the list$/) do |arg1|
-  within(:xpath, "//section") do
+  within(:xpath, '//section') do
     # use div/div/div for cve audit which has two tables
     top_level_xpath_query = "//div[@class='table-responsive']/table/tbody/tr[.//td[contains(.,'#{arg1}')] and .//input[@type='checkbox' and @checked]]"
     row = first(:xpath, top_level_xpath_query)
     if row.nil?
       sleep 3
-      $stderr.puts "ERROR - try again"
+      $stderr.puts 'ERROR - try again'
       row = first(:xpath, top_level_xpath_query)
     end
-    row.first(:xpath, ".//input[@type=\"checkbox\"]").set(false)
+    row.first(:xpath, './/input[@type="checkbox"]').set(false)
   end
 end
 
 Then(/^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/) do |count, name, id|
   within(:xpath, "//form[@id=\"#{id}\" or  @name=\"#{id}\"]") do
-    fail unless has_field?(name, :count => count.to_i)
+    raise unless has_field?(name, count: count.to_i)
   end
 end

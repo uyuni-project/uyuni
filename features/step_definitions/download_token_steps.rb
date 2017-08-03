@@ -4,7 +4,7 @@ require 'securerandom'
 # Valid claims:
 #   - org
 #   - onlyChannels
-def token(secret, claims={})
+def token(secret, claims = {})
   payload = {}
   payload.merge!(claims)
   puts secret
