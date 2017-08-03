@@ -53,7 +53,7 @@ Given(/^the salt-master can reach "(.*?)"$/) do |minion|
       end
     end
   rescue Timeout::Error
-      fail "Master can not communicate with #{minion}: #{@output[:stdout]}"
+    fail "Master can not communicate with #{minion}: #{@output[:stdout]}"
   end
 end
 
@@ -330,15 +330,15 @@ end
 
 Then(/^all local repositories are disabled$/) do
   Nokogiri::XML(`zypper -x lr`)
-    .xpath('//repo-list')
-    .children
-    .select { |node| node.is_a?(Nokogiri::XML::Element) }
-    .select { |element| element.name == 'repo' }
-    .reject { |repo| repo[:alias].include?('susemanager:') }
-    .map do |repo|
-      assert_equal('0', repo[:enabled],
-                   "repo #{repo[:alias]} should be disabled")
-    end
+          .xpath('//repo-list')
+          .children
+          .select { |node| node.is_a?(Nokogiri::XML::Element) }
+          .select { |element| element.name == 'repo' }
+          .reject { |repo| repo[:alias].include?('susemanager:') }
+          .map do |repo|
+    assert_equal('0', repo[:enabled],
+                 "repo #{repo[:alias]} should be disabled")
+  end
 end
 
 When(/^I enter as remote command a script to watch a picked-up test file$/) do
@@ -384,7 +384,7 @@ When(/^I click on run$/) do
       end
     end
   rescue Timeout::Error
-      fail "Run button not found"
+    fail "Run button not found"
   end
 end
 
@@ -521,13 +521,13 @@ end
 
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
   boxid = case box
-    when "timezone name"
-      "timezone\$name"
-    when "language"
-      "keyboard_and_language\$language"
-    when "keyboard layout"
-      "keyboard_and_language\$keyboard_layout"
-  end
+          when "timezone name"
+            "timezone\$name"
+          when "language"
+            "keyboard_and_language\$language"
+          when "keyboard layout"
+            "keyboard_and_language\$keyboard_layout"
+          end
   select(value, :from => boxid)
 end
 

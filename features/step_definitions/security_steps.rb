@@ -8,7 +8,7 @@ Given(/^I navigate to any non-static page$/) do
   @headers = {}
   begin
     Capybara.current_session
-      .response_headers.each do |header, value|
+            .response_headers.each do |header, value|
       @headers[header.downcase] = value
     end
     @url = Capybara.current_session.current_url

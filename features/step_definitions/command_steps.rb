@@ -56,7 +56,7 @@ When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
 end
 
 When(/^I fetch "([^"]*)" from server$/) do |arg1|
-   $client.run("wget http://#{$server_ip}/#{arg1}", true, 500, 'root')
+  $client.run("wget http://#{$server_ip}/#{arg1}", true, 500, 'root')
 end
 
 When(/^I execute "([^"]*)"$/) do |arg1|
@@ -96,12 +96,12 @@ Then(/^I restart the spacewalk service$/) do
 end
 
 Then(/^I shutdown the spacewalk service$/) do
- $server.run("spacewalk-service stop")
+  $server.run("spacewalk-service stop")
 end
 
 Then(/^I execute spacewalk-debug on the server$/) do
-   out, _local, _remote, _code = $server.test_and_store_results_together("spacewalk-debug", "root", 600)
-   step %(I copy "/tmp/spacewalk-debug.tar.bz2")
+  $server.run("spacewalk-debug")
+  step %(I copy "/tmp/spacewalk-debug.tar.bz2")
 end
 
 When(/^I copy "([^"]*)"$/) do |arg1|
@@ -182,13 +182,13 @@ end
 
 Then(/^I wait for mgr-sync refresh is finished$/) do
   for c in 0..20
-      begin
-          sshcmd('ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json')
-      rescue
-          sleep 15
-      else
-          break
-      end
+    begin
+      sshcmd('ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json')
+    rescue
+      sleep 15
+    else
+      break
+    end
   end
 end
 
@@ -197,15 +197,15 @@ Then(/^I should see "(.*?)" in the output$/) do |arg1|
 end
 
 Then(/^Service "([^"]*)" is enabled on the Server$/) do |service|
-    output = sshcmd("systemctl is-enabled '#{service}'", ignore_err: true)[:stdout]
-    output.chomp!
-    fail if output != "enabled"
+  output = sshcmd("systemctl is-enabled '#{service}'", ignore_err: true)[:stdout]
+  output.chomp!
+  fail if output != "enabled"
 end
 
 Then(/^Service "([^"]*)" is running on the Server$/) do |service|
-    output = sshcmd("systemctl is-active '#{service}'", ignore_err: true)[:stdout]
-    output.chomp!
-    fail if output != "active"
+  output = sshcmd("systemctl is-active '#{service}'", ignore_err: true)[:stdout]
+  output.chomp!
+  fail if output != "active"
 end
 
 # snapshots
@@ -226,7 +226,7 @@ When(/^I run "([^"]*)" on "([^"]*)" without error control$/) do |cmd, host|
 end
 
 Then(/^the command should fail$/) do
-   raise "Previous command must fail, but has NOT failed!" if $fail_code.zero?
+  raise "Previous command must fail, but has NOT failed!" if $fail_code.zero?
 end
 
 When(/^"(.*)" exists on the filesystem of "(.*)"$/) do |file, host|

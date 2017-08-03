@@ -4,7 +4,7 @@
 require 'nokogiri'
 require 'timeout'
 def client_is_zypp?
-  _out, _local, _remote, _code = $client.test_and_store_results_together("test -x /usr/bin/zypper", "root", 600)
+  $client.run("test -x /usr/bin/zypper", false)
 end
 
 def client_refresh_metadata
@@ -25,15 +25,13 @@ def client_raw_repodata_dir(channel)
 end
 
 def client_system_id
-  out, _local, _remote, _code = $client.test_and_store_results_together("grep \"system_id\" /etc/sysconfig/rhn/systemid", "root", 600)
-   puts out
+  _out, _code = $client.run("grep \"system_id\" /etc/sysconfig/rhn/systemid")
 end
 
 def client_system_id_to_i
-  out, _local, _remote, _code = $client.test_and_store_results_together("grep \"ID\" /etc/sysconfig/rhn/systemid | tr -d -c 0-9", "root", 600)
+  out, _code = $client.run("grep \"ID\" /etc/sysconfig/rhn/systemid | tr -d -c 0-9")
   out.gsub(/\s+/, "")
 end
-## functions for reboot tests
 
 def checkShutdown(host, time_out)
   cmd = "ping -c1 #{host}"
