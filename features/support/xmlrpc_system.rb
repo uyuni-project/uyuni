@@ -1,5 +1,6 @@
 require_relative 'xmlrpctest'
 
+# system class
 class XMLRPCSystemTest < XMLRPCBaseTest
   def listSystems
     @connection.call('system.listSystems', @sid)

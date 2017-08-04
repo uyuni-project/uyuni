@@ -2,6 +2,7 @@
 
 require_relative 'xmlrpctest'
 
+# vhm namespace
 class XMLRPCVHMTest < XMLRPCBaseTest
   def listAvailableVirtualHostGathererModules
     @connection.call('virtualhostmanager.listAvailableVirtualHostGathererModules', @sid) || []

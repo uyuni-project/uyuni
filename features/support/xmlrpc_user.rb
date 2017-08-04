@@ -1,5 +1,6 @@
 require_relative 'xmlrpctest'
 
+# user class
 class XMLRPCUserTest < XMLRPCBaseTest
   def getUsers
     @connection.call('user.listUsers', @sid)

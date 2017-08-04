@@ -12,6 +12,7 @@ def retrieve_server_id(server)
   server_id
 end
 
+# base class from where other inherit
 class XMLRPCBaseTest
   def initialize(host)
     @host = host

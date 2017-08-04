@@ -1,5 +1,6 @@
 require_relative 'xmlrpctest'
 
+# actkey xmlrpc test
 class XMLRPCActivationKeyTest < XMLRPCBaseTest
   def createKey(id, descr, limit)
     @connection.call('activationkey.create', @sid, id, descr, '', limit.to_i, [], false)
