@@ -35,7 +35,7 @@ nodes = [$server, $client, $minion, $ceos_minion, $ssh_minion]
 node_hostnames = []
 node_fqn = []
 # get the hostnames of various vms
-for node in nodes
+nodes.each do |node|
   hostname, _local, _remote, code = node.test_and_store_results_together('hostname', 'root', 500)
   raise 'cannot get hostname for node' if code.nonzero?
   fqn, _local, _remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
