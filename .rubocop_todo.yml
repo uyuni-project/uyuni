@@ -79,18 +79,3 @@ Style/RegexpLiteral:
     - 'features/step_definitions/xmlrpc_common.rb'
     - 'features/step_definitions/xmlrpctest_steps.rb'
 
-
-# Offense count: 23
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: snake_case, camelCase
-Style/VariableName:
-  Exclude:
-    - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
-    - 'features/step_definitions/xmlrpc_common.rb'
-    - 'features/step_definitions/xmlrpctest_steps.rb'
-    - 'features/support/xmlrpc_actionchain.rb'
-    - 'features/support/xmlrpc_channel.rb'
-    - 'features/support/xmlrpc_image.rb'
-    - 'features/support/xmlrpc_system.rb'
-    - 'features/support/xmlrpc_vhm.rb'
-

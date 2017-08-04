@@ -12,16 +12,16 @@ class XMLRPCVHMTest < XMLRPCBaseTest
     @connection.call('virtualhostmanager.listVirtualHostManagers', @sid) || []
   end
 
-  def getModuleParameters(moduleName)
-    @connection.call('virtualhostmanager.getModuleParameters', @sid, moduleName) || {}
+  def getModuleParameters(module_name)
+    @connection.call('virtualhostmanager.getModuleParameters', @sid, module_name) || {}
   end
 
   def getDetail(label)
     @connection.call('virtualhostmanager.getDetail', @sid, label) || {}
   end
 
-  def create(label, moduleName, parameter)
-    @connection.call('virtualhostmanager.create', @sid, label, moduleName, parameter)
+  def create(label, module_name, parameter)
+    @connection.call('virtualhostmanager.create', @sid, label, module_name, parameter)
   end
 
   def delete(label)
