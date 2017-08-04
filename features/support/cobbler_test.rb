@@ -99,13 +99,8 @@ class CobblerTest
   end
 
   def repo_get_key(name, key)
-    result = nil
-    if repo_exists(name)
-      result = get('repo', name, key)
-    else
-      raise 'Repo ' + name + ' does not exists'
-    end
-    result
+    return get('repo', name, key) if repo_exists(name)
+    raise 'Repo ' + name + ' does not exists' unless repo_exists(name)
   end
 
   def exists(what, key, value)
