@@ -1,5 +1,6 @@
 require_relative 'xmlrpctest'
 
+# api namespace class
 class XMLRPCApiTest < XMLRPCBaseTest
   def getVersion
     @connection.call('api.getVersion')

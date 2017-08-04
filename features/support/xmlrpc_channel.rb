@@ -1,5 +1,6 @@
 require_relative 'xmlrpctest'
 
+# channel class
 class XMLRPCChannelTest < XMLRPCBaseTest
   def createRepo(label, url)
     @connection.call('channel.software.createRepo', @sid, label, 'yum', url)

@@ -11,6 +11,7 @@ require 'pp'
 # any  = ct.system_get_key( "vbox-ug", "uid" )
 # list = ct.get_list( "systems" )
 
+# Class for clobber test
 class CobblerTest
   def initialize(server_address = ENV['TESTHOST'], server_port = 80, server_path = '/cobbler_api')
     @server_address = server_address
