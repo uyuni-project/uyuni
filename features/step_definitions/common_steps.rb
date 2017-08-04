@@ -173,7 +173,7 @@ end
 
 Given(/cobblerd is running/) do
   ct = CobblerTest.new
-  raise 'cobblerd is not running' unless ct.is_running
+  raise 'cobblerd is not running' unless ct.running?
 end
 
 Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |distro, user, pwd|

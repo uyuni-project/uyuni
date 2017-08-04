@@ -31,35 +31,6 @@ Metrics/LineLength:
 Metrics/MethodLength:
   Max: 21
 
-# Offense count: 11
-Style/Documentation:
-  Exclude:
-    - 'spec/**/*'
-    - 'test/**/*'
-    - 'features/support/cobbler_test.rb'
-    - 'features/support/xmlrpc_actionchain.rb'
-    - 'features/support/xmlrpc_activationkey.rb'
-    - 'features/support/xmlrpc_api.rb'
-    - 'features/support/xmlrpc_channel.rb'
-    - 'features/support/xmlrpc_cve_search.rb'
-    - 'features/support/xmlrpc_schedule.rb'
-    - 'features/support/xmlrpc_system.rb'
-    - 'features/support/xmlrpc_user.rb'
-    - 'features/support/xmlrpc_vhm.rb'
-    - 'features/support/xmlrpctest.rb'
-
-# Offense count: 8
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: for, each
-Style/For:
-  Exclude:
-    - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/navigation_steps.rb'
-    - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
-    - 'features/support/twopence_init.rb'
-    - 'features/support/xmlrpc_api.rb'
-    - 'features/support/xmlrpc_channel.rb'
-
 # Offense count: 390
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
@@ -77,12 +48,6 @@ Style/GlobalVars:
     - 'features/support/client_stack.rb'
     - 'features/support/env.rb'
     - 'features/support/twopence_init.rb'
-
-# Offense count: 2
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'features/support/cobbler_test.rb'
 
 # Offense count: 81
 # Configuration parameters: EnforcedStyle, SupportedStyles.
@@ -103,23 +68,6 @@ Style/MethodName:
     - 'features/support/xmlrpc_vhm.rb'
 
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowSafeAssignment.
-Style/ParenthesesAroundCondition:
-  Exclude:
-    - 'features/step_definitions/navigation_steps.rb'
-
-# Offense count: 1
-# Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist.
-# NamePrefix: is_, has_, have_
-# NamePrefixBlacklist: is_, has_, have_
-# NameWhitelist: is_a?
-Style/PredicateName:
-  Exclude:
-    - 'spec/**/*'
-    - 'features/support/cobbler_test.rb'
-
 # Offense count: 14
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, AllowInnerSlashes.
@@ -131,13 +79,6 @@ Style/RegexpLiteral:
     - 'features/step_definitions/xmlrpc_common.rb'
     - 'features/step_definitions/xmlrpctest_steps.rb'
 
-
-# Offense count: 19
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles.
-# SupportedStyles: use_perl_names, use_english_names
-Style/SpecialGlobalVars:
-  EnforcedStyle: use_perl_names
 
 # Offense count: 23
 # Configuration parameters: EnforcedStyle, SupportedStyles.

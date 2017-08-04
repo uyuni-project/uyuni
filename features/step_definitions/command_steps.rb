@@ -105,13 +105,13 @@ end
 When(/^I copy "([^"]*)"$/) do |arg1|
   user = 'root@'
   $command_output = `echo | scp -o StrictHostKeyChecking=no #{user}$TESTHOST:#{arg1} . 2>&1`
-  raise "Execute command failed: #{$!}: #{$command_output}" unless $?.success?
+  raise "Execute command failed: #{$ERROR_INFO}: #{$command_output}" unless $CHILD_STATUS.success?
 end
 
 When(/^I copy to server "([^"]*)"$/) do |arg1|
   user = 'root@'
   $command_output = `echo | scp -o StrictHostKeyChecking=no #{arg1} #{user}$TESTHOST: 2>&1`
-  raise "Execute command failed: #{$!}: #{$command_output}" unless $?.success?
+  raise "Execute command failed: #{$ERROR_INFO}: #{$command_output}" unless $CHILD_STATUS.success?
 end
 
 Then(/^the pxe-default-profile should be enabled$/) do
@@ -170,7 +170,7 @@ end
 
 Then(/^I wait for mgr-sync refresh is finished$/) do
   # FIXME: remove this deprecated step
-  for _c in 0..20
+  20.times do
     begin
       sshcmd('ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json')
     rescue
@@ -201,7 +201,7 @@ end
 When(/^I take a snapshot "([^"]*)"$/) do |name|
   $sshout = ''
   $sshout = `echo | ssh -o StrictHostKeyChecking=no root@$VHOST qemu-img snapshot -c #{name} $IMGDIR/$VMDISK.qcow2`
-  puts 'Creating snapsnot failed...' unless $?.success?
+  puts 'Creating snapsnot failed...' unless $CHILD_STATUS.success?
 end
 
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|

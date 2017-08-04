@@ -6,27 +6,28 @@ require 'xmlrpc/client'
 require 'pp'
 
 # ct = CobblerTest.new( "taylor.suse.de" )
-# bool = ct.is_running()
+# bool = ct.running?()
 # bool = ct.system_exists( "bla" )
 # any  = ct.system_get_key( "vbox-ug", "uid" )
 # list = ct.get_list( "systems" )
 
+# Class for clobber test
 class CobblerTest
   def initialize(server_address = ENV['TESTHOST'], server_port = 80, server_path = '/cobbler_api')
     @server_address = server_address
     @server_port = server_port
     @server_path = server_path
     @server = XMLRPC::Client.new(server_address, server_path, server_port)
-    raise 'No running server at found at ' + server_address unless is_running
+    raise 'No running server at found at ' + server_address unless running?
   end
 
   def login(user, pass)
     @token = @server.call('login', user, pass)
   rescue
-    raise 'login to cobbler failed' + $!.to_s
+    raise 'login to cobbler failed' + $ERROR_INFO.to_s
   end
 
-  def is_running
+  def running?
     result = true
     begin
       @server.call('get_profiles')
@@ -50,19 +51,19 @@ class CobblerTest
     begin
       profile_id = @server.call('new_profile', @token)
     rescue
-      raise 'creating profile failed.' + $!.to_s
+      raise 'creating profile failed.' + $ERROR_INFO.to_s
     end
     begin
       @server.call('modify_profile', profile_id, 'name',      name,     @token)
       @server.call('modify_profile', profile_id, 'distro',    distro,   @token)
       @server.call('modify_profile', profile_id, 'kickstart', location, @token)
     rescue
-      raise 'modify profile failed.' + $!.to_s
+      raise 'modify profile failed.' + $ERROR_INFO.to_s
     end
     begin
       @server.call('save_profile', profile_id, @token)
     rescue
-      raise 'saving profile failed.' + $!.to_s
+      raise 'saving profile failed.' + $ERROR_INFO.to_s
     end
     profile_id
   end
@@ -88,7 +89,7 @@ class CobblerTest
       @server.call('modify_distro', distro_id, 'breed',  breed,  @token)
       @server.call('save_distro', distro_id,                     @token)
     rescue
-      raise 'creating distribution failed.' + $!.to_s
+      raise 'creating distribution failed.' + $ERROR_INFO.to_s
     end
     distro_id
   end
@@ -98,13 +99,8 @@ class CobblerTest
   end
 
   def repo_get_key(name, key)
-    result = nil
-    if repo_exists(name)
-      result = get('repo', name, key)
-    else
-      raise 'Repo ' + name + ' does not exists'
-    end
-    result
+    return get('repo', name, key) if repo_exists(name)
+    raise 'Repo ' + name + ' does not exists' unless repo_exists(name)
   end
 
   def exists(what, key, value)
