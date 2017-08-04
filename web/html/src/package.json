@@ -7,6 +7,7 @@
     "event-stream": "3.3.2",
     "vinyl-source-stream": "1.1.0",
     "gulp-concat": "2.6.0",
+    "gulp-eslint": "^4.0.0",
     "gulp": "3.9.1",
     "gulp-util": "3.0.7",
     "browserify": "13.0.0",
@@ -17,6 +18,13 @@
     "sigmund": "1.0.1",
     "minimatch": "3.0.0",
     "lru-cache": "4.0.0",
+    "eslint": "^4.3.0",
+    "eslint-plugin-react": "^7.1.0",
     "glob": "7.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:SUSE/spacewalk.git"
+  },
+  "license": "UNLICENSED"
 }
