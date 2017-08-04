@@ -49,12 +49,6 @@ Style/GlobalVars:
     - 'features/support/env.rb'
     - 'features/support/twopence_init.rb'
 
-# Offense count: 2
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'features/support/cobbler_test.rb'
-
 # Offense count: 81
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: snake_case, camelCase
