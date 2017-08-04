@@ -16,6 +16,8 @@ package com.suse.manager.webui.utils.gson;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +34,34 @@ public class JSONBootstrapHosts {
     private List<String> activationKeys;
     private boolean ignoreHostKeys;
     private Long proxy;
+
+    /**
+     * Default constructor.
+     */
+    public JSONBootstrapHosts() {
+    }
+
+    /**
+     * Constructor to be used for bootstrapping systems via API.
+     *
+     * @param hostIn target host
+     * @param portIn SSH port
+     * @param userIn SSH user
+     * @param passwordIn SSH password
+     * @param activationKey activation key
+     * @param proxyIn system ID of proxy server to use
+     */
+    public JSONBootstrapHosts(String hostIn, Integer portIn, String userIn,
+            String passwordIn, String activationKey, Long proxyIn) {
+        host = hostIn;
+        port = String.valueOf(portIn);
+        user = userIn;
+        password = passwordIn;
+        activationKeys = StringUtils.isEmpty(activationKey) ?
+                new ArrayList<>() : Arrays.asList(activationKey);
+        proxy = proxyIn;
+        ignoreHostKeys = true;
+    }
 
     /**
      * @return the host
@@ -55,7 +85,7 @@ public class JSONBootstrapHosts {
     }
 
     /**
-     * @return the host
+     * @return the password
      */
     public String getPassword() {
         return password;
