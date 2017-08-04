@@ -64,7 +64,7 @@
                             <rhn:icon type="action-failed" />
                         </c:when>
                         <c:when test="${current.historyStatus == 'Picked Up'}">
-                            <rhn:icon type="action-running" />
+                            <span class="text-info"><rhn:icon type="action-running" /></span>
                         </c:when>
                         <c:otherwise>
                             ${current.historyStatus}
