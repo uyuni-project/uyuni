@@ -31,18 +31,6 @@ Metrics/LineLength:
 Metrics/MethodLength:
   Max: 21
 
-# Offense count: 8
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: for, each
-Style/For:
-  Exclude:
-    - 'features/step_definitions/command_steps.rb'
-    - 'features/step_definitions/navigation_steps.rb'
-    - 'features/step_definitions/xmlrpc_actionchain_steps.rb'
-    - 'features/support/twopence_init.rb'
-    - 'features/support/xmlrpc_api.rb'
-    - 'features/support/xmlrpc_channel.rb'
-
 # Offense count: 390
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
