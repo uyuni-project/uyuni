@@ -6,7 +6,7 @@
 #
 
 # :firefox requires MozillaFirefox 3.7 or later !!
-$: << File.join(File.dirname(__FILE__), '..', '..', 'lib')
+$LOAD_PATH << File.join(File.dirname(__FILE__), '..', '..', 'lib')
 require 'rubygems'
 require 'tmpdir'
 require 'base64'
