@@ -35,9 +35,9 @@ class XMLRPCSystemTest < XMLRPCBaseTest
   end
 
   # Create a cobbler system record for a system that is not registered
-  def createSystemRecord(sysName, ksLabel, ip, mac)
+  def createSystemRecord(sys_name, ks_label, ip, mac)
     netdev = { 'ip' => ip, 'mac' => mac, 'name' => 'eth0' }
     netdevs = [netdev]
-    @connection.call('system.createSystemRecord', @sid, sysName, ksLabel, '', '', netdevs)
+    @connection.call('system.createSystemRecord', @sid, sys_name, ks_label, '', '', netdevs)
   end
 end

@@ -45,8 +45,8 @@ class XMLRPCImageTest < XMLRPCBaseTest
   end
 
   # profile methods
-  def createProfile(label, type, storeLabel, path, actkey)
-    @connection.call('image.profile.create', @sid, label, type, storeLabel, path, actkey)
+  def createProfile(label, type, store_label, path, actkey)
+    @connection.call('image.profile.create', @sid, label, type, store_label, path, actkey)
   end
 
   def deleteProfile(label)

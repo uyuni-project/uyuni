@@ -57,8 +57,8 @@ Then(/^I delete an action chain, labeled "(.*?)"$/) do |label|
 end
 
 # Renaming chain
-Then(/^I call actionchain\.renameChain\(\) to rename it from "(.*?)" to "(.*?)"$/) do |oldLabel, newLabel|
-  rpc.renameChain(oldLabel, newLabel)
+Then(/^I call actionchain\.renameChain\(\) to rename it from "(.*?)" to "(.*?)"$/) do |old_label, new_label|
+  rpc.renameChain(old_label, new_label)
 end
 
 Then(/^there should be a new action chain with the label "(.*?)"$/) do |label|

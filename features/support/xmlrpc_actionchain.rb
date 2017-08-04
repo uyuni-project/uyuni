@@ -19,8 +19,8 @@ class XMLRPCActionChain < XMLRPCBaseTest
     @connection.call('actionchain.removeAction', @sid, label, aid)
   end
 
-  def renameChain(oldLabel, newLabel)
-    @connection.call('actionchain.renameChain', @sid, oldLabel, newLabel)
+  def renameChain(old_label, new_label)
+    @connection.call('actionchain.renameChain', @sid, old_label, new_label)
   end
 
   def addScriptRun(system, script, label)

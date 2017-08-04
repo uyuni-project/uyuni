@@ -6,8 +6,8 @@ class XMLRPCChannelTest < XMLRPCBaseTest
     @connection.call('channel.software.createRepo', @sid, label, 'yum', url)
   end
 
-  def associateRepo(channelLabel, repoLabel)
-    @connection.call('channel.software.associateRepo', @sid, channelLabel, repoLabel)
+  def associateRepo(channel_label, repo_label)
+    @connection.call('channel.software.associateRepo', @sid, channel_label, repo_label)
   end
 
   #
