@@ -230,6 +230,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                         where (sg.groupType is not null) and f.label='ftr_config' and c.id.capability.name like 'configfiles%']]>
     </query>
 
+    <query name="Server.listMinionsByChannel">
+        <![CDATA[ select ms
+                                 from com.redhat.rhn.domain.server.MinionServer as ms
+                                         inner join ms.channels as c
+                                        where c.id = :cid]]>
+    </query>
+
      <query name="Server.listConfigDiffEnabledSystems">
         <![CDATA[ select s
                       from com.redhat.rhn.domain.server.Server as s
