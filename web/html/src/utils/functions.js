@@ -1,6 +1,6 @@
 "use strict";
 
-const React = require("react")
+require("react")
 
 const cancelable = (promise, onCancel) => {
     var rejectFn;
@@ -80,7 +80,7 @@ function getQueryStringValue(key) {
   // See for a standard implementation:
   // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
   return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" +
-        encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+        encodeURIComponent(key).replace(/[.+*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
 }
 
 function urlBounce(defaultUrl, qstrParamKey) {
