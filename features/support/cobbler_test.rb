@@ -6,7 +6,7 @@ require 'xmlrpc/client'
 require 'pp'
 
 # ct = CobblerTest.new( "taylor.suse.de" )
-# bool = ct.is_running()
+# bool = ct.running?()
 # bool = ct.system_exists( "bla" )
 # any  = ct.system_get_key( "vbox-ug", "uid" )
 # list = ct.get_list( "systems" )
@@ -17,7 +17,7 @@ class CobblerTest
     @server_port = server_port
     @server_path = server_path
     @server = XMLRPC::Client.new(server_address, server_path, server_port)
-    raise 'No running server at found at ' + server_address unless is_running
+    raise 'No running server at found at ' + server_address unless running?
   end
 
   def login(user, pass)
@@ -26,7 +26,7 @@ class CobblerTest
     raise 'login to cobbler failed' + $!.to_s
   end
 
-  def is_running
+  def running?
     result = true
     begin
       @server.call('get_profiles')
