@@ -31,23 +31,6 @@ Metrics/LineLength:
 Metrics/MethodLength:
   Max: 21
 
-# Offense count: 11
-Style/Documentation:
-  Exclude:
-    - 'spec/**/*'
-    - 'test/**/*'
-    - 'features/support/cobbler_test.rb'
-    - 'features/support/xmlrpc_actionchain.rb'
-    - 'features/support/xmlrpc_activationkey.rb'
-    - 'features/support/xmlrpc_api.rb'
-    - 'features/support/xmlrpc_channel.rb'
-    - 'features/support/xmlrpc_cve_search.rb'
-    - 'features/support/xmlrpc_schedule.rb'
-    - 'features/support/xmlrpc_system.rb'
-    - 'features/support/xmlrpc_user.rb'
-    - 'features/support/xmlrpc_vhm.rb'
-    - 'features/support/xmlrpctest.rb'
-
 # Offense count: 8
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: for, each
