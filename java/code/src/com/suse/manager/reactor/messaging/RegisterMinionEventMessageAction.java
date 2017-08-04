@@ -246,9 +246,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
 
-            assignChannelsByActivationKey(minionId, server, grains, activationKeyLabel,
-                    activationKey);
-
             Org org = activationKey.map(ActivationKey::getOrg)
                     .orElse(OrgFactory.getSatelliteOrg());
             if (server.getOrg() == null) {
@@ -288,6 +285,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
+
+            assignChannelsByActivationKey(minionId, server, grains, activationKeyLabel,
+                    activationKey);
 
             server.updateServerInfo();
 
