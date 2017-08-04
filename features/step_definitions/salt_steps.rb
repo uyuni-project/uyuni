@@ -4,12 +4,12 @@ require 'open-uri'
 require 'tempfile'
 
 Given(/^salt-minion is configured on "(.*?)"$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target = $minion
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target = $ceos_minion
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   # cleanup the key in case the image was reused
   # to run the test twice
@@ -28,12 +28,12 @@ Given(/^salt-minion is configured on "(.*?)"$/) do |minion|
 end
 
 Given(/^the salt-master can reach "(.*?)"$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_fullhostname = $minion_fullhostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_fullhostname = $ceos_minion_fullhostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   begin
     start = Time.now
@@ -53,7 +53,7 @@ Given(/^the salt-master can reach "(.*?)"$/) do |minion|
       end
     end
   rescue Timeout::Error
-      fail "Master can not communicate with #{minion}: #{@output[:stdout]}"
+    raise "Master can not communicate with #{minion}: #{@output[:stdout]}"
   end
 end
 
@@ -75,63 +75,63 @@ When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
 end
 
 When(/^I stop salt-master$/) do
-  $server.run("systemctl stop salt-master", false)
+  $server.run('systemctl stop salt-master', false)
 end
 
 When(/^I start salt-master$/) do
-  $server.run("systemctl start salt-master", false)
+  $server.run('systemctl start salt-master', false)
 end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target = $minion
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target = $ceos_minion
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
-  target.run("systemctl stop salt-minion", false)
+  target.run('systemctl stop salt-minion', false)
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target = $minion
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target = $ceos_minion
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
-  target.run("systemctl restart salt-minion", false)
+  target.run('systemctl restart salt-minion', false)
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target = $minion
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target = $ceos_minion
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
-  target.run("systemctl restart salt-minion", false)
+  target.run('systemctl restart salt-minion', false)
 end
 
 Then(/^salt-minion should be running on "(.*?)"$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target = $minion
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target = $ceos_minion
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   i = 0
   MAX_ITER = 40
   loop do
-    _out, code = target.run("systemctl status salt-minion", false)
+    _out, code = target.run('systemctl status salt-minion', false)
     break if code.zero?
     sleep 5
-    puts "sleeping 5 secs, minion not active."
+    puts 'sleeping 5 secs, minion not active.'
     i += 1
-    raise "TIMEOUT; something wrong with minion status" if i == MAX_ITER
+    raise 'TIMEOUT; something wrong with minion status' if i == MAX_ITER
   end
 end
 
@@ -141,31 +141,31 @@ When(/^I list "(.*?)" keys at Salt Master$/) do |key_type|
 end
 
 Then(/^the list of the "(.*?)" keys should contain "(.*?)" hostname$/) do |key_type, minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_fullhostname = $minion_fullhostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_fullhostname = $ceos_minion_fullhostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   $output, _code = $server.run("salt-key --list #{key_type}", false)
   assert_match(target_fullhostname, $output, "minion #{target_fullhostname} is not listed as #{key_type} key on salt-master #{$output}")
 end
 
 When(/^I wait until no Salt job is running on "(.*?)"$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target = $minion
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target = $ceos
-  elsif minion == "sle-migrated-minion"
+  elsif minion == 'sle-migrated-minion'
     target = $client
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        $output, _code = target.run("salt-call -lquiet saltutil.running")
+        $output, _code = target.run('salt-call -lquiet saltutil.running')
         break if $output == "local:\n"
         sleep 3
       end
@@ -183,23 +183,23 @@ When(/^we wait till Salt master sees "(.*?)" as "(.*?)"$/) do |minion, key_type|
 end
 
 Given(/^"(.*?)" key is "(.*?)"$/) do |minion, key_type|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_hostname = $ceos_minion_hostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   step %(I list "#{key_type}" keys at Salt Master)
   unless $output.include?(target_hostname)
-    if key_type == "accepted"
+    if key_type == 'accepted'
       step %(I accept "#{minion}" key in the Salt master)
-    elsif key_type == "rejected"
+    elsif key_type == 'rejected'
       step %(I reject "#{minion}" key in the Salt master)
-    elsif key_type == "unaccepted"
+    elsif key_type == 'unaccepted'
       step %(I delete "#{minion}" key in the Salt master)
     else
-      raise "no valid key_type!"
+      raise 'no valid key_type!'
     end
     steps %(
       And I restart salt-minion on "#{minion}"
@@ -216,7 +216,7 @@ Then(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
     When I follow "Events"
     And I follow "History"
   )
-  puts "I navigate to rhn/systems/Overview.do page, and"
+  puts 'I navigate to rhn/systems/Overview.do page, and'
   puts "I go to #{system} events history page"
   steps %(
     Then I try to reload page until contains "Package List Refresh scheduled by (none)" text
@@ -241,55 +241,55 @@ Then(/^I wait until OpenSCAP scan is completed for "([^"]*)"$/) do |system|
 end
 
 When(/^I delete "(.*?)" key in the Salt master$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_hostname = $ceos_minion_hostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   $output, _code = $server.run("salt-key -y -d #{target_hostname}", false)
 end
 
 When(/^I accept "(.*?)" key in the Salt master$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_hostname = $ceos_minion_hostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   $server.run("salt-key -y --accept=#{target_hostname}")
 end
 
 When(/^I reject "(.*?)" key in the Salt master$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_hostname = $ceos_minion_hostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   $server.run("salt-key -y --reject=#{target_hostname}")
 end
 
 When(/^I delete all keys in the Salt master$/) do
-  $server.run("salt-key -y -D")
+  $server.run('salt-key -y -D')
 end
 
 When(/^I accept all Salt unaccepted keys$/) do
-  $server.run("salt-key -y -A")
+  $server.run('salt-key -y -A')
 end
 
 When(/^I get OS information of "(.*?)" from the Master$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_fullhostname = $minion_fullhostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_fullhostname = $ceos_minion_fullhostname
-  elsif minion == "sle-migrated-minion"
+  elsif minion == 'sle-migrated-minion'
     target_fullhostname = $client_fullhostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   $output, _code = $server.run("salt #{target_fullhostname} grains.get osfullname")
 end
@@ -330,15 +330,15 @@ end
 
 Then(/^all local repositories are disabled$/) do
   Nokogiri::XML(`zypper -x lr`)
-    .xpath('//repo-list')
-    .children
-    .select { |node| node.is_a?(Nokogiri::XML::Element) }
-    .select { |element| element.name == 'repo' }
-    .reject { |repo| repo[:alias].include?('susemanager:') }
-    .map do |repo|
-      assert_equal('0', repo[:enabled],
-                   "repo #{repo[:alias]} should be disabled")
-    end
+          .xpath('//repo-list')
+          .children
+          .select { |node| node.is_a?(Nokogiri::XML::Element) }
+          .select { |element| element.name == 'repo' }
+          .reject { |repo| repo[:alias].include?('susemanager:') }
+          .map do |repo|
+    assert_equal('0', repo[:enabled],
+                 "repo #{repo[:alias]} should be disabled")
+  end
 end
 
 When(/^I enter as remote command a script to watch a picked-up test file$/) do
@@ -346,17 +346,17 @@ When(/^I enter as remote command a script to watch a picked-up test file$/) do
     When I enter as remote command this script in
       """
       #!/bin/bash
-      while [ ! -f /tmp/PICKED-UP-#{$$}.test ]
+      while [ ! -f /tmp/PICKED-UP-#{$PROCESS_ID}.test ]
       do
         sleep 1
       done
-      rm /tmp/PICKED-UP-#{$$}.test
+      rm /tmp/PICKED-UP-#{$PROCESS_ID}.test
       """)
 end
 
 # user salt steps
 Given(/^I am authorized as an example user with no roles$/) do
-  @rpc = XMLRPCUserTest.new(ENV["TESTHOST"])
+  @rpc = XMLRPCUserTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
   @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
   @rpc.createUser(@username, 'linux')
@@ -384,18 +384,18 @@ When(/^I click on run$/) do
       end
     end
   rescue Timeout::Error
-      fail "Run button not found"
+    raise 'Run button not found'
   end
 end
 
 When(/^I should see "(.*)" hostname$/) do |host|
   target_fullhostname = get_target_fullhostname(host)
-  fail unless page.has_content?(target_fullhostname)
+  raise unless page.has_content?(target_fullhostname)
 end
 
 When(/^I should not see "(.*)" hostname$/) do |host|
   target_fullhostname = get_target_fullhostname(host)
-  fail if page.has_content?(target_fullhostname)
+  raise if page.has_content?(target_fullhostname)
 end
 
 When(/^I expand the results for "(.*)"$/) do |host|
@@ -404,44 +404,44 @@ When(/^I expand the results for "(.*)"$/) do |host|
 end
 
 Then(/^I enter command "([^"]*)"$/) do |arg1|
-  fill_in "command", with: arg1
+  fill_in 'command', with: arg1
 end
 
 Then(/^I should see "([^"]*)" in the command output for "(.*)"$/) do |text, minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_fullhostname = $minion_fullhostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_fullhostname = $ceos_minion_fullhostname
-  elsif minion == "ssh-minion"
+  elsif minion == 'ssh-minion'
     target_fullhostname = $ssh_minion_fullhostname
-  elsif minion == "sle-migrated-minion"
+  elsif minion == 'sle-migrated-minion'
     target_fullhostname = $client_fullhostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   within("pre[id='#{target_fullhostname}-results']") do
-    fail unless page.has_content?(text)
+    raise unless page.has_content?(text)
   end
 end
 
 Then(/^I manually install the "([^"]*)" package in the minion$/) do |package|
-  if file_exists?($minion, "/usr/bin/zypper")
+  if file_exists?($minion, '/usr/bin/zypper')
     cmd = "zypper --non-interactive install -y #{package}"
-  elsif file_exists?($minion, "/usr/bin/yum")
+  elsif file_exists?($minion, '/usr/bin/yum')
     cmd = "yum -y install #{package}"
   else
-    fail "not found: zypper or yum"
+    raise 'not found: zypper or yum'
   end
   $minion.run(cmd, false)
 end
 
 Then(/^I manually remove the "([^"]*)" package in the minion$/) do |package|
-  if file_exists?($minion, "/usr/bin/zypper")
+  if file_exists?($minion, '/usr/bin/zypper')
     cmd = "zypper --non-interactive remove -y #{package}"
-  elsif file_exists?($minion, "/usr/bin/yum")
+  elsif file_exists?($minion, '/usr/bin/yum')
     cmd = "yum -y remove #{package}"
   else
-    fail "not found: zypper or yum"
+    raise 'not found: zypper or yum'
   end
   $minion.run(cmd, false)
 end
@@ -461,11 +461,11 @@ Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) d
   rescue Timeout::Error
     raise "'#{arg1}' cannot be found after several tries"
   end
-  fail unless not_found
+  raise unless not_found
 end
 # states catalog
 When(/^I enter the salt state$/) do |multiline|
-  within(:xpath, "//section") do
+  within(:xpath, '//section') do
     x = find('textarea[name="content"]')
     x.set(multiline) # find("#{arg1}") #.set(lines)
   end
@@ -496,77 +496,75 @@ end
 
 When(/^I ([^"]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "check"
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "uncheck"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
   if all(:xpath, xpath_query).any?
-    fail unless find(:xpath, xpath_query).click
+    raise unless find(:xpath, xpath_query).click
   else
-    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "check"
-    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "uncheck"
-    assert all(:xpath, xpath_query).any?, "Checkbox could not be found"
+    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
+    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
+    assert all(:xpath, xpath_query).any?, 'Checkbox could not be found'
   end
 end
 
 Then(/^the "([^"]*)" formula should be ([^"]*)$/) do |formula, action|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "checked"
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "unchecked"
-  if all(:xpath, xpath_query).any?
-    fail "Checkbox is not #{action}"
-  end
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == "checked"
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == "unchecked"
-  assert all(:xpath, xpath_query).any?, "Checkbox could not be found"
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'checked'
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'unchecked'
+  raise "Checkbox is not #{action}" if all(:xpath, xpath_query).any?
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'checked'
+  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'unchecked'
+  assert all(:xpath, xpath_query).any?, 'Checkbox could not be found'
 end
 
 When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
   boxid = case box
-    when "timezone name"
-      "timezone\$name"
-    when "language"
-      "keyboard_and_language\$language"
-    when "keyboard layout"
-      "keyboard_and_language\$keyboard_layout"
-  end
-  select(value, :from => boxid)
+          when 'timezone name'
+            "timezone\$name"
+          when 'language'
+            "keyboard_and_language\$language"
+          when 'keyboard layout'
+            "keyboard_and_language\$keyboard_layout"
+          end
+  select(value, from: boxid)
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target = $minion
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target = $ceos_minion
   else
-    fail "Invalid target"
+    raise 'Invalid target'
   end
-  output, _code = target.run("date +%Z")
+  output, _code = target.run('date +%Z')
   result = output.strip
-  result = "CET" if result == "CEST"
-  fail unless result == timezone
+  result = 'CET' if result == 'CEST'
+  raise unless result == timezone
 end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target = $minion
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target = $ceos_minion
   else
-    fail "Invalid target"
+    raise 'Invalid target'
   end
-  output, _code = target.run("cat /etc/vconsole.conf")
-  fail unless output.strip == "KEYMAP=#{keymap}"
+  output, _code = target.run('cat /etc/vconsole.conf')
+  raise unless output.strip == "KEYMAP=#{keymap}"
 end
 
 Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target = $minion
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target = $ceos_minion
   else
-    fail "Invalid target"
+    raise 'Invalid target'
   end
   output, _code = target.run("grep 'RC_LANG=' /etc/sysconfig/language")
-  fail unless output.strip == "RC_LANG=\"#{language}\""
+  raise unless output.strip == "RC_LANG=\"#{language}\""
 end
 
 When(/^I refresh the pillar data$/) do
@@ -574,24 +572,24 @@ When(/^I refresh the pillar data$/) do
 end
 
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target = $minion_ip
-    cmd = "salt"
-    extra_cmd = ""
-  elsif minion == "ssh-minion"
+    cmd = 'salt'
+    extra_cmd = ''
+  elsif minion == 'ssh-minion'
     target = $ssh_minion_ip
-    cmd = "salt-ssh"
-    extra_cmd = "-i --roster-file=/tmp/tmp_roster_tests -w -W"
+    cmd = 'salt-ssh'
+    extra_cmd = '-i --roster-file=/tmp/tmp_roster_tests -w -W'
     $server.run("printf '#{target}:\n  host: #{target}\n  user: root\n  passwd: linux' > /tmp/tmp_roster_tests")
   else
-    fail "Invalid target"
+    raise 'Invalid target'
   end
   output, _code = $server.run("#{cmd} '#{target}' pillar.get '#{key}' #{extra_cmd}")
   puts output
-  if value == ""
-    fail unless output.split("\n").length == 1
+  if value == ''
+    raise unless output.split("\n").length == 1
   else
-    fail unless output.split("\n")[1].strip == value
+    raise unless output.split("\n")[1].strip == value
   end
 end
 
@@ -601,9 +599,7 @@ end
 
 Given(/^I try download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
   url = "#{Capybara.app_host}/rhn/manager/download/#{channel}/getPackage/#{rpm}"
-  if @token
-    url = "#{url}?#{@token}"
-  end
+  url = "#{url}?#{@token}" if @token
   puts url
   Tempfile.open(rpm) do |tmpfile|
     @download_path = tmpfile.path
@@ -627,65 +623,65 @@ end
 
 # Verify content
 Then(/^I should not see "(.*?)" as a Minion anywhere$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_hostname = $ceos_minion_hostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   step %(I should not see a "#{target_hostname}" text)
 end
 
 # Perform actions
 When(/^I reject "(.*?)" from the Pending section$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_hostname = $ceos_minion_hostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'reject']"
-  fail unless find(:xpath, xpath_query).click
+  raise unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "(.*?)" from the Rejected section$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_hostname = $ceos_minion_hostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'delete']"
-  fail unless find(:xpath, xpath_query).click
+  raise unless find(:xpath, xpath_query).click
 end
 
 When(/^I see "(.*?)" fingerprint$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target = $minion
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target = $ceos_minion
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
-  output, _code = target.run("salt-call --local key.finger")
+  output, _code = target.run('salt-call --local key.finger')
   fing = output.split("\n")[1].strip!
 
-  fail unless page.has_content?(fing)
+  raise unless page.has_content?(fing)
 end
 
 When(/^I accept "(.*?)" key$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_hostname = $ceos_minion_hostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'accept']"
-  fail unless find(:xpath, xpath_query).click
+  raise unless find(:xpath, xpath_query).click
 end
 
 When(/^I go to the minion onboarding page$/) do
@@ -704,17 +700,17 @@ end
 
 When(/^I should see this hostname as text$/) do
   within('#spacewalk-content') do
-    fail unless page.has_content?($minion_hostname)
+    raise unless page.has_content?($minion_hostname)
   end
 end
 
 When(/^I refresh page until see "(.*?)" hostname as text$/) do |minion|
-  if minion == "sle-minion"
+  if minion == 'sle-minion'
     target_hostname = $minion_hostname
-  elsif minion == "ceos-minion"
+  elsif minion == 'ceos-minion'
     target_hostname = $ceos_minion_hostname
   else
-    raise "no valid name of minion given! "
+    raise 'no valid name of minion given! '
   end
   within('#spacewalk-content') do
     steps %(
@@ -725,7 +721,7 @@ end
 
 When(/^I should see a "(.*)" text in the content area$/) do |txt|
   within('#spacewalk-content') do
-    fail unless page.has_content?(txt)
+    raise unless page.has_content?(txt)
   end
 end
 
@@ -751,7 +747,7 @@ end
 
 Then(/^"([^"]*)" is not installed$/) do |package|
   uninstalled = false
-  output = ""
+  output = ''
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
@@ -764,13 +760,13 @@ Then(/^"([^"]*)" is not installed$/) do |package|
       end
     end
   end
-  raise "exec rpm removal failed (Code #{$?}): #{$!}: #{output}" unless uninstalled
+  raise "exec rpm removal failed (Code #{$CHILD_STATUS}): #{$ERROR_INFO}: #{output}" unless uninstalled
 end
 
 Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|
   node = get_target(host)
   installed = false
-  output = ""
+  output = ''
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
@@ -783,9 +779,9 @@ Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, ho
       end
     end
   rescue Timeout::Error
-    raise "exec rpm installation failed: timeout"
+    raise 'exec rpm installation failed: timeout'
   end
-  raise "exec rpm installation failed (Code #{$?}): #{$!}: #{output}" unless installed
+  raise "exec rpm installation failed (Code #{$CHILD_STATUS}): #{$ERROR_INFO}: #{output}" unless installed
 end
 
 When(/^I click undo for "(.*?)"$/) do |pkg|
@@ -808,7 +804,7 @@ And(/^I wait until salt\-key "(.*?)" is deleted$/) do |key|
         _output, code = $server.run(cmd, false)
         if code.nonzero?
           puts 'key has been deleted'
-          puts $server.run("salt-key -L", false)
+          puts $server.run('salt-key -L', false)
           break
         end
         sleep 5
@@ -820,13 +816,13 @@ And(/^I wait until salt\-key "(.*?)" is deleted$/) do |key|
 end
 # salt ssh steps
 
-SALT_PACKAGES = "salt salt-minion".freeze
+SALT_PACKAGES = 'salt salt-minion'.freeze
 
 Given(/^no Salt packages are installed on "(.*?)"$/) do |host|
   target = get_target(host)
-  if ["sle-minion", "ssh-minion", "sle-client", "sle-migrated-minion"].include?(host)
+  if ['sle-minion', 'ssh-minion', 'sle-client', 'sle-migrated-minion'].include?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
-  elsif ["ceos-minion"].include?(host)
+  elsif ['ceos-minion'].include?(host)
     target.run("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", false)
   end
 end
@@ -838,28 +834,28 @@ end
 # minion bootstrap steps
 And(/^I enter the hostname of "([^"]*)" as hostname$/) do |minion|
   case minion
-  when "sle-minion"
+  when 'sle-minion'
     step %(I enter "#{$minion_fullhostname}" as "hostname")
-  when "ceos-minion"
+  when 'ceos-minion'
     step %(I enter "#{$ceos_minion_fullhostname}" as "hostname")
-  when "sle-migrated-minion"
+  when 'sle-migrated-minion'
     step %(I enter "#{$client_fullhostname}" as "hostname")
   else
-    raise "No valid target."
+    raise 'No valid target.'
   end
 end
 
 Then(/^I run spacecmd listevents for sle-minion$/) do
-  $server.run("spacecmd -u admin -p admin clear_caches")
+  $server.run('spacecmd -u admin -p admin clear_caches')
   $server.run("spacecmd -u admin -p admin system_listevents #{$minion_fullhostname}")
 end
 
 And(/^I cleanup minion: "([^"]*)"$/) do |target|
-  if target == "sle-minion"
-    $minion.run("systemctl stop salt-minion")
-    $minion.run("rm -Rf /var/cache/salt/minion")
-  elsif target == "ceos-minion"
-    $ceos_minion.run("systemctl stop salt-minion")
-    $ceos_minion.run("rm -Rf /var/cache/salt/minion")
+  if target == 'sle-minion'
+    $minion.run('systemctl stop salt-minion')
+    $minion.run('rm -Rf /var/cache/salt/minion')
+  elsif target == 'ceos-minion'
+    $ceos_minion.run('systemctl stop salt-minion')
+    $ceos_minion.run('rm -Rf /var/cache/salt/minion')
   end
 end

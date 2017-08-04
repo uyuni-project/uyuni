@@ -1,7 +1,7 @@
 # COPYRIGHT 2017 SUSE LLC
-require "xmlrpc/client"
+require 'xmlrpc/client'
 
-rpc_api_tester = XMLRPCApiTest.new(ENV["TESTHOST"])
+rpc_api_tester = XMLRPCApiTest.new(ENV['TESTHOST'])
 #
 # Steps
 #
@@ -14,11 +14,11 @@ When(/^I call getApiNamespaces, I should get (\d+) namespaces$/) do |apiCount|
 end
 
 When(/^I call getVersion, I should get "([^"]*)" as result$/) do |version|
-  assert(rpc_api_tester.getVersion.include? version)
+  assert(rpc_api_tester.getVersion.include?(version))
 end
 
 When(/^I call systemVersion, I should get "([^"]*)" as result$/) do |version|
-  assert(rpc_api_tester.systemVersion.include? version)
+  assert(rpc_api_tester.systemVersion.include?(version))
 end
 
 When(/^I call getApiNamespaceCallList, I should get (\d+) available api calls$/) do |apiCount|
@@ -31,7 +31,7 @@ end
 
 # cve audit
 Given(/^I am logged in via XML\-RPC\/cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @rpctest = XMLRPCCVEAuditTest.new(ENV["TESTHOST"])
+  @rpctest = XMLRPCCVEAuditTest.new(ENV['TESTHOST'])
   @rpctest.login(luser, password)
 end
 
@@ -57,18 +57,18 @@ end
 Then(/^I should get the test-channel$/) do
   arch = `uname -m`
   arch.chomp!
-  channel = if arch != "x86_64"
-              "test-channel-i586"
+  channel = if arch != 'x86_64'
+              'test-channel-i586'
             else
-              "test-channel-x86_64"
+              'test-channel-x86_64'
             end
   $stderr.puts "result: #{@result}"
-  assert(@result["channel_labels"].include?(channel))
+  assert(@result['channel_labels'].include?(channel))
 end
 
 Then(/^I should get the "([^"]*)" patch$/) do |patch|
   $stderr.puts "result: #{@result}"
-  assert(@result["errata_advisories"].include?(patch))
+  assert(@result['errata_advisories'].include?(patch))
 end
 
 Then(/^I logout from XML\-RPC\/cve audit namespace\.$/) do

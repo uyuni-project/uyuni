@@ -19,4 +19,4 @@ task :cucumber do
   Rake::Task['cucumber:testsuite'].invoke
 end
 
-task :default => [:cucumber]
+task default: [:cucumber]

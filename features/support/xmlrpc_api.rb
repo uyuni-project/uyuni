@@ -1,20 +1,19 @@
 require_relative 'xmlrpctest'
 
+# api namespace class
 class XMLRPCApiTest < XMLRPCBaseTest
   def getVersion
-    @connection.call("api.getVersion")
+    @connection.call('api.getVersion')
   end
 
   def systemVersion
-    @connection.call("api.systemVersion")
+    @connection.call('api.systemVersion')
   end
 
   def getCountOfApiNamespaces
-    namespaces = @connection.call("api.getApiNamespaces", @sid)
+    namespaces = @connection.call('api.getApiNamespaces', @sid)
     count = 0
-    unless namespaces.nil?
-      count = namespaces.length
-    end
+    count = namespaces.length unless namespaces.nil?
     count
   end
 
@@ -22,26 +21,24 @@ class XMLRPCApiTest < XMLRPCBaseTest
   # Test lists all available api calls grouped by namespace.
   #
   def getCountOfApiCallListGroups
-    call_list = @connection.call("api.getApiCallList", @sid)
+    call_list = @connection.call('api.getApiCallList', @sid)
     count = 0
-    unless call_list.nil?
-      count = call_list.length
-    end
+    count = call_list.length unless call_list.nil?
     count
   end
 
   def getCountOfApiNamespaceCallList
     count = 0
-    namespaces = @connection.call("api.getApiNamespaces", @sid)
-    puts "    Spaces found: " + namespaces.length.to_s
-    for ns in namespaces
-      print "      Analyzing " + ns[0] + "... "
-      call_list = @connection.call("api.getApiNamespaceCallList", @sid, ns[0])
+    namespaces = @connection.call('api.getApiNamespaces', @sid)
+    puts '    Spaces found: ' + namespaces.length.to_s
+    namespaces.each do |ns|
+      print '      Analyzing ' + ns[0] + '... '
+      call_list = @connection.call('api.getApiNamespaceCallList', @sid, ns[0])
       if !call_list.nil?
         count += call_list.length
-        puts "Done"
+        puts 'Done'
       else
-        puts "Failed"
+        puts 'Failed'
       end
     end
     count
