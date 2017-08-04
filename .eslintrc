@@ -1,0 +1,37 @@
+{
+    "plugins": [
+        "react"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "es6":     true,
+        "commonjs": true,
+        "browser": true,
+        "node":    true,
+        "mocha":   true
+    },
+    "globals": {
+        "d3":      true,
+        "$": 	   true,
+        "t": 	   true,
+        "csrfToken": true,
+        "userPrefPageSize": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "rules": {
+	"no-console": "off",
+        "indent": ["error", 2],
+        "react/prop-types": "off",
+        "react/jsx-key": "warn",
+        "no-trailing-spaces": "warn"
+    }
+}
