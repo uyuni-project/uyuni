@@ -350,7 +350,7 @@ end
 # what it does
 Given(/^Patches are visible for the registered client$/) do
   step 'I am on the patches page'
-  for c in 0..20
+  20.times do
     begin
       step 'I should see an update in the list'
     rescue

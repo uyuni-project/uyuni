@@ -134,7 +134,7 @@ When(/^I call actionchain\.removeAction on each action within the chain$/) do
   begin
     actions = rpc.listChainActions($chain_label)
     refute_nil(actions)
-    for action in actions do
+    actions.each do |action|
       refute(rpc.removeAction($chain_label, action['id']) < 0)
       puts "\t- Removed \"" + action['label'] + '" action'
     end
@@ -163,7 +163,7 @@ Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
 end
 
 Then(/^I cancel all scheduled actions$/) do
-  for action in scdrpc.listInProgressActions do
+  scdrpc.listInProgressActions.each do |action|
     # One-by-one, this is against single call in the API on purpose.
     scdrpc.cancelActions([action['id']])
     puts "\t- Removed \"" + action['name'] + '" action'
