@@ -45,7 +45,7 @@ public class IconTag extends TagSupport {
         icons.put("action-failed", "fa fa-times-circle-o fa-1-5x text-danger");
         icons.put("action-ok", "fa fa-check-circle-o fa-1-5x text-success");
         icons.put("action-pending", "fa fa-clock-o fa-1-5x");
-        icons.put("action-running", "fa fa-exchange fa-1-5x text-info");
+        icons.put("action-running", "fa fa-exchange fa-1-5x");
         icons.put("errata-bugfix", "fa fa-bug fa-1-5x");
         icons.put("errata-enhance", "fa fa-1-5x spacewalk-icon-enhancement");
         icons.put("errata-security", "fa fa-shield fa-1-5x");
