@@ -68,17 +68,15 @@ public abstract class AbstractMinionBootstrapper {
      *                             key does not specify any other
      * @return map containing success flag and error messages.
      */
-    public Map<String, Object> bootstrap(JSONBootstrapHosts input, User user,
+    public BootstrapResult bootstrap(JSONBootstrapHosts input, User user,
                                          String defaultContactMethod) {
         List<String> errMessages = validateBootstrap(input);
         if (!errMessages.isEmpty()) {
             return new BootstrapResult(false, Optional.empty(),
-                    errMessages.toArray(new String[errMessages.size()]))
-                    .asMap();
+                    errMessages.toArray(new String[errMessages.size()]));
         }
 
-        return bootstrapInternal(createBootstrapParams(input), user, defaultContactMethod)
-                .asMap();
+        return bootstrapInternal(createBootstrapParams(input), user, defaultContactMethod);
     }
 
     /**
@@ -281,14 +279,19 @@ public abstract class AbstractMinionBootstrapper {
     }
 
     /**
-     * Internal representation of the status of bootstrap and possibly error messages.
+     * Representation of the status of bootstrap and possibly error messages.
      */
-    protected static class BootstrapResult {
+    public static class BootstrapResult {
 
         private final boolean success;
         private final String[] messages;
         private final Optional<String> contactMethod;
 
+        /**
+         * @param successIn success
+         * @param contactMethodIn contact method
+         * @param messagesIn messages
+         */
         public BootstrapResult(boolean successIn, Optional<String> contactMethodIn,
                                String ... messagesIn) {
             this.success = successIn;
@@ -296,14 +299,30 @@ public abstract class AbstractMinionBootstrapper {
             this.contactMethod = contactMethodIn;
         }
 
+        /**
+         * @return success
+         */
         public boolean isSuccess() {
             return success;
         }
 
+        /**
+         * @return messages
+         */
+        public String[] getMessages() {
+            return messages;
+        }
+
+        /**
+         * @return contactMethod
+         */
         public Optional<String> getContactMethod() {
             return contactMethod;
         }
 
+        /**
+         * @return bootstrap result converted to a map
+         */
         public Map<String, Object> asMap() {
             Map<String, Object> ret = new LinkedHashMap<>();
             ret.put("success", success);

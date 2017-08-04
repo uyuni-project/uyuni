@@ -5,6 +5,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
+
+import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -64,8 +66,8 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
             exactly(1).of(saltServiceMock).deleteKey("myhost");
         }});
 
-        Map<String, Object> bootstrap = bootstrapper.bootstrap(input, user, getDefaultContactMethod());
-        assertFalse((Boolean) bootstrap.get("success"));
+        BootstrapResult bootstrap = bootstrapper.bootstrap(input, user, getDefaultContactMethod());
+        assertFalse(bootstrap.isSuccess());
     }
 
     public void testIncompatibleActivationKeys() throws Exception {
