@@ -21,11 +21,13 @@ import com.redhat.rhn.frontend.xmlrpc.BootstrapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -127,7 +129,7 @@ public class XmlRpcSystemHelper {
      */
     public int bootstrap(User user, JSONBootstrapHosts input, boolean saltSSH)
             throws BootstrapException {
-        Map<String, Object> result = Stream.of(saltSSH).map(ssh -> {
+        BootstrapResult result = Stream.of(saltSSH).map(ssh -> {
             if (ssh) {
                 return SSHMinionBootstrapper.getInstance().bootstrap(input, user,
                         ContactMethodUtil.getSSHMinionDefault());
@@ -140,11 +142,9 @@ public class XmlRpcSystemHelper {
                 "No result for " + input.getHost()));
 
         // Determine the result, throw BootstrapException in case of failure
-        boolean success = (boolean) result.get("success");
-        if (!success) {
-            throw new BootstrapException(
-                    String.join("; ", (String[]) result.get("messages")));
+        if (!result.isSuccess()) {
+            throw new BootstrapException(Arrays.toString(result.getMessages()));
         }
-        return success ? 1 : 0;
+        return 1;
     }
 }

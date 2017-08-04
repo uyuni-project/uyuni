@@ -175,7 +175,7 @@ public class MinionsAPI {
                 response,
                 RegularMinionBootstrapper.getInstance().bootstrap(
                         GSON.fromJson(request.body(), JSONBootstrapHosts.class),
-                        user, ContactMethodUtil.getRegularMinionDefault()));
+                        user, ContactMethodUtil.getRegularMinionDefault()).asMap());
     }
 
 
@@ -197,7 +197,7 @@ public class MinionsAPI {
                 response,
                 SSHMinionBootstrapper.getInstance().bootstrap(
                         GSON.fromJson(request.body(), JSONBootstrapHosts.class),
-                        user, ContactMethodUtil.getSSHMinionDefault()));
+                        user, ContactMethodUtil.getSSHMinionDefault()).asMap());
     }
 
 }
