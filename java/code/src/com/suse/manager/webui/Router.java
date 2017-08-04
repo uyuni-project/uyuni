@@ -132,8 +132,14 @@ public class Router implements SparkApplication {
                 withOrgAdmin(VirtualHostManagerController::prevalidateKubeconfig));
         post("/manager/api/vhms/create/kubernetes",
                 withUser(VirtualHostManagerController::createKubernetes));
+        post("/manager/api/vhms/update/kubernetes",
+                withUser(VirtualHostManagerController::updateKubernetes));
+        get("/manager/api/vhms/kubeconfig/:id/contexts",
+                withOrgAdmin(VirtualHostManagerController::getKubeconfigContexts));
         post("/manager/api/vhms/:id/refresh",
                 withOrgAdmin(VirtualHostManagerController::refresh));
+        get("/manager/api/vhms/:id/nodes",
+                withOrgAdmin(VirtualHostManagerController::getNodes));
         get("/manager/api/vhms/module/:name",
                 withOrgAdmin(VirtualHostManagerController::getModuleParams));
         get("/manager/api/vhms", withOrgAdmin(VirtualHostManagerController::get));

@@ -1,13 +1,14 @@
 'use strict';
 
 const React = require("react");
-const Button = require("../components/buttons").Button;
-const ModalButton = require("../components/dialogs").ModalButton;
-const DeleteDialog = require("../components/dialogs").DeleteDialog;
+const {Button} = require("../components/buttons");
+const { ModalButton, DeleteDialog} = require("../components/dialogs");
 const BootstrapPanel = require("../components/panel").BootstrapPanel;
 const {Utils} = require("../utils/functions");
 const Network = require("../utils/network");
 const {Messages} = require("../components/messages");
+const MessagesUtils = require("../components/messages").Utils;
+const {Table, Column, SearchField} = require("../components/table");
 
 class VirtualHostManagerDetails extends React.Component {
 
@@ -22,26 +23,36 @@ class VirtualHostManagerDetails extends React.Component {
 
     }
 
+    componentWillMount() {
+        Network.get("/rhn/manager/api/vhms/" + this.props.data.id + "/nodes")
+            .promise.then(data => {
+                this.setState({nodes: data});
+            })
+            .catch((err) => {
+                console.log(err);
+                this.setState({
+                    messages: MessagesUtils.error(["Error getting nodes"])
+                });
+            });
+    }
+
     onRefresh() {
        return Network.post("/rhn/manager/api/vhms/" + this.props.data.id + "/refresh",
                 JSON.stringify(this.props.data.id), "application/json").promise.then(data => {
             if (data.success) {
                 this.setState({
-                    messages: <Messages items={[{severity: "success",
-                        text: "Refreshing the data for this Virtual Host Manager has been triggered."}]}/>
+                    messages:  MessagesUtils.info(t("Refreshing the data for this Virtual Host Manager has been triggered."))
                 });
             } else {
                 this.setState({
-                    messages: <Messages items={state.messages.map(msg => {
-                        return {severity: "error", text: msg};
-                    })}/>
+                    messages: MessagesUtils.error(msg)
                 });
             }
         })
         .catch((err) => {
             console.log(err);
             this.setState({
-                messages: errorMessages(["Server error"])
+                messages: MessagesUtils.error(["Error triggering refresh."])
             });
         });
     }
@@ -49,9 +60,28 @@ class VirtualHostManagerDetails extends React.Component {
     render() {
         return (
         <div>
-            {this.state.messages}
+            { this.state.messages ?
+                <Messages items={this.state.messages}/> : null }
             <BootstrapPanel title={t("Properties")}>
                 <ConfigParams data={this.props.data}/>
+            </BootstrapPanel>
+            <BootstrapPanel title={t("Nodes")}>
+            { this.state.nodes ?
+                <Table
+                    data={this.state.nodes}
+                    identifier={node => node.type + "_" + node.id}
+                    initialSortColumnKey="name"
+                    initialItemsPerPage={userPrefPageSize}
+                >
+                    <Column
+                        columnKey="name"
+                        comparator={Utils.sortByText}
+                        header={t('Name')}
+                        cell={(row, criteria) => row.type == "server" ? <a href={"/rhn/systems/details/Overview.do?sid=" + row.id}>{row.name}</a> : row.name }
+                    />
+                </Table>
+                : null
+            }
             </BootstrapPanel>
             <div className="btn-group">
                 <Button

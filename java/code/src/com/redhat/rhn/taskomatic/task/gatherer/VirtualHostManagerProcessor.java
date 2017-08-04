@@ -117,7 +117,8 @@ public class VirtualHostManagerProcessor {
             } else {
                 nodesToDelete.remove(nodeInfo);
             }
-            // for Kubernetes we don't create a foreign server if one doesn't already exist
+            // for Kubernetes we don't create a foreign entitled server
+            // if one doesn't already exist
             return;
         }
         if (!virtualHostManager.getServers().contains(server)) {

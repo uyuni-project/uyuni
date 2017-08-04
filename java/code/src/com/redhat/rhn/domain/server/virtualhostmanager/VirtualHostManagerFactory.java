@@ -53,7 +53,7 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
 public class VirtualHostManagerFactory extends HibernateFactory {
 
     public static final String KUBECONFIG_PATH_BASE = "/srv/susemanager/virt_host_mgr";
-    public static final String KUBERNETES = "kubernetes";
+    public static final String KUBERNETES = "Kubernetes";
 
     private static VirtualHostManagerFactory instance;
     private static Logger log;
@@ -63,6 +63,8 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     public static final String CONFIG_USER = "username";
     public static final String CONFIG_PASS = "password";
+    public static final String CONFIG_KUBECONFIG = "kubeconfig";
+
     private static final List<String> CONFIGS_TO_SKIP = Arrays.asList(
             new String[] {CONFIG_USER, CONFIG_PASS, "id", "module"});
 
@@ -206,7 +208,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
     private void cleanupOnDeleteKuberentes(VirtualHostManager virtualHostManager) {
         // remove kubeconfig file
-        String kubeconfig = kubeconfigPath(virtualHostManager.getLabel(), virtualHostManager.getOrg());
+        String kubeconfig = kubeconfigPath(virtualHostManager.getId(), virtualHostManager.getOrg());
         try {
             Files.delete(Paths.get(kubeconfig));
         } catch (IOException e) {
@@ -280,25 +282,56 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             Files.createDirectory(kubeconfigDir);
         }
 
-        String kubeconfigPath = kubeconfigPath(label, org);
+        Map<String, String> params = new HashMap<>();
+        params.put("context", context);
+
+        VirtualHostManager vhm = createVirtualHostManager(
+                label,
+                org,
+                KUBERNETES,
+                params
+            );
+
+        String kubeconfigPath = kubeconfigPath(vhm.getId(), org);
         try (FileOutputStream kubeconfigOut = new FileOutputStream(kubeconfigPath)) {
             IOUtils.copy(kubeconfigIn, kubeconfigOut);
+        }
+
+        vhm.getConfigs().add(createVirtualHostManagerConfig(
+                vhm,
+                CONFIG_KUBECONFIG,
+                kubeconfigPath));
+
+        return vhm;
+    }
+
+    public void updateKuberntesVirtualHostManager(
+            VirtualHostManager vhm,
+            String label,
+            String context,
+            Optional<InputStream> kubeconfigInOpt) throws IOException {
+        // ensure we have the base directory
+        Path kubeconfigDir = Paths.get(KUBECONFIG_PATH_BASE);
+        if (!Files.isDirectory(kubeconfigDir)) {
+            Files.createDirectory(kubeconfigDir);
+        }
+
+        String kubeconfigPath = kubeconfigPath(vhm.getId(), vhm.getOrg());
+        if (kubeconfigInOpt.isPresent()) {
+            try (FileOutputStream kubeconfigOut = new FileOutputStream(kubeconfigPath)) {
+                IOUtils.copy(kubeconfigInOpt.get(), kubeconfigOut);
+            }
         }
 
         Map<String, String> params = new HashMap<>();
         params.put("context", context);
         params.put("kubeconfig", kubeconfigPath);
 
-        return createVirtualHostManager(
-                label,
-                org,
-                KUBERNETES,
-                params
-            );
+        updateVirtualHostManager(vhm, label, params);
     }
 
-    private String kubeconfigPath(String label, Org org) {
-        return KUBECONFIG_PATH_BASE + "/" + org.getId() + "_" + label + "_kubeconfig";
+    private String kubeconfigPath(long vhmId, Org org) {
+        return KUBECONFIG_PATH_BASE + "/" + org.getId() + "_" + vhmId + "_kubeconfig";
     }
 
     /**
