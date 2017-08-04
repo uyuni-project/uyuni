@@ -1,5 +1,6 @@
 require_relative 'xmlrpctest'
 
+# channel class
 class XMLRPCChannelTest < XMLRPCBaseTest
   def createRepo(label, url)
     @connection.call('channel.software.createRepo', @sid, label, 'yum', url)
@@ -68,9 +69,9 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   def listSoftwareChannels
     channels = @connection.call('channel.listSoftwareChannels', @sid)
-    for c in channels
+    channels.each do |c|
       print '    Channel: ' + "\n"
-      for key in c.keys
+      c.keys.each do |key|
         print '      ' + key + ': ' + c[key] + "\n"
       end
     end

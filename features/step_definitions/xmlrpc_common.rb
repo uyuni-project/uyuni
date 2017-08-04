@@ -28,7 +28,7 @@ end
 
 Then(/^there is a system record in cobbler named "([^"]*)"$/) do |sysName|
   ct = CobblerTest.new
-  assert(ct.is_running, msg: 'cobblerd is not running')
+  assert(ct.running?, msg: 'cobblerd is not running')
   assert(ct.system_exists(sysName), msg: 'cobbler system record does not exist: ' + sysName)
 end
 

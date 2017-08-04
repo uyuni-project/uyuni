@@ -1,5 +1,6 @@
 require_relative 'xmlrpctest'
 
+# schedule class
 class XMLRPCScheduleTest < XMLRPCBaseTest
   def listAllActions
     @connection.call('schedule.listAllActions', @sid)
