@@ -25,6 +25,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.struts.action.ActionForm;
@@ -80,6 +82,9 @@ public class ChannelDetailsAction extends RhnAction {
             chan = (Channel) ChannelFactory.reload(chan);
             params.put("cid", cid);
             fwd = "success";
+            ServerFactory.listMinionsByChannel(cid).stream().forEach(ms -> {
+                SaltStateGeneratorService.INSTANCE.generatePillar(ms, false);
+            });
         }
 
         request.setAttribute("systems_subscribed",

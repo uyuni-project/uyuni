@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.SoftwareCrashDto;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
@@ -128,6 +129,18 @@ public class ServerFactory extends HibernateFactory {
         params.put("key", key);
         return singleton.listObjectsByNamedQuery(
                 "CustomDataValue.findByKey", params);
+    }
+
+    /**
+     * Lookup all MinionServers subscribed to the channel.
+     * @param cid The channel id
+     * @return List of minions.
+     */
+    public static List<MinionServer> listMinionsByChannel(long cid) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("cid", cid);
+        return singleton.listObjectsByNamedQuery(
+                "Server.listMinionsByChannel", params);
     }
 
     /**
