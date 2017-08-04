@@ -346,11 +346,11 @@ When(/^I enter as remote command a script to watch a picked-up test file$/) do
     When I enter as remote command this script in
       """
       #!/bin/bash
-      while [ ! -f /tmp/PICKED-UP-#{$$}.test ]
+      while [ ! -f /tmp/PICKED-UP-#{$PROCESS_ID}.test ]
       do
         sleep 1
       done
-      rm /tmp/PICKED-UP-#{$$}.test
+      rm /tmp/PICKED-UP-#{$PROCESS_ID}.test
       """)
 end
 
@@ -760,7 +760,7 @@ Then(/^"([^"]*)" is not installed$/) do |package|
       end
     end
   end
-  raise "exec rpm removal failed (Code #{$?}): #{$!}: #{output}" unless uninstalled
+  raise "exec rpm removal failed (Code #{$CHILD_STATUS}): #{$ERROR_INFO}: #{output}" unless uninstalled
 end
 
 Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|
@@ -781,7 +781,7 @@ Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, ho
   rescue Timeout::Error
     raise 'exec rpm installation failed: timeout'
   end
-  raise "exec rpm installation failed (Code #{$?}): #{$!}: #{output}" unless installed
+  raise "exec rpm installation failed (Code #{$CHILD_STATUS}): #{$ERROR_INFO}: #{output}" unless installed
 end
 
 When(/^I click undo for "(.*?)"$/) do |pkg|
