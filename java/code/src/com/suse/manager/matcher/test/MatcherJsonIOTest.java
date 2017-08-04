@@ -127,8 +127,8 @@ public class MatcherJsonIOTest extends BaseTestCaseWithUser {
         assertEquals(1L, sumaItself.getCpus().longValue());
         assertEquals("SUSE Manager Server system", sumaItself.getName());
         assertTrue(sumaItself.getPhysical());
-        assertTrue(sumaItself.getProductIds().contains(1349L));
-        assertTrue(sumaItself.getProductIds().contains(1322L));
+        assertTrue(sumaItself.getProductIds().contains(1518L));
+        assertTrue(sumaItself.getProductIds().contains(1357L));
     }
 
     public void testSystemsToJsonIssSlave() {
