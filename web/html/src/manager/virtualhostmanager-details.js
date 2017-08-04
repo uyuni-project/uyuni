@@ -6,16 +6,50 @@ const ModalButton = require("../components/dialogs").ModalButton;
 const DeleteDialog = require("../components/dialogs").DeleteDialog;
 const BootstrapPanel = require("../components/panel").BootstrapPanel;
 const {Utils} = require("../utils/functions");
+const Network = require("../utils/network");
+const {Messages} = require("../components/messages");
 
 class VirtualHostManagerDetails extends React.Component {
 
     constructor(props) {
         super(props);
+
+        ["onRefresh"]
+                .forEach(method => this[method] = this[method].bind(this));
+        this.state = {
+            messages: []
+        };
+
+    }
+
+    onRefresh() {
+       return Network.post("/rhn/manager/api/vhms/" + this.props.data.id + "/refresh",
+                JSON.stringify(this.props.data.id), "application/json").promise.then(data => {
+            if (data.success) {
+                this.setState({
+                    messages: <Messages items={[{severity: "success",
+                        text: "Refreshing the data for this Virtual Host Manager has been triggered."}]}/>
+                });
+            } else {
+                this.setState({
+                    messages: <Messages items={state.messages.map(msg => {
+                        return {severity: "error", text: msg};
+                    })}/>
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            this.setState({
+                messages: errorMessages(["Server error"])
+            });
+        });
     }
 
     render() {
         return (
         <div>
+            {this.state.messages}
             <BootstrapPanel title={t("Properties")}>
                 <ConfigParams data={this.props.data}/>
             </BootstrapPanel>
@@ -26,6 +60,13 @@ class VirtualHostManagerDetails extends React.Component {
                     title={t("Back")}
                     className="btn-default"
                     handler={this.props.onCancel}
+                />
+               <Button
+                    text={t("Schedule refresh data")}
+                    icon="fa-refresh"
+                    title={t("Refresh data from this Virtual Host Manager")}
+                    className="btn-default"
+                    handler={() => this.onRefresh(this.props.data)}
                 />
                 <Button
                     text={t("Edit")}

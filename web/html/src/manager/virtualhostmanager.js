@@ -160,6 +160,7 @@ class VirtualHostManager extends React.Component {
                 icon="spacewalk-icon-virtual-host-manager"
                 button={panelButtons}
             >
+                { this.state.messages }
                 { this.state.action == 'details' ?
                     <VirtualHostManagerDetails data={this.state.selected} onCancel={this.handleBackAction} onEdit={this.handleEditAction} onDelete={this.deleteSingle}/>
                 : this.state.action == 'create' ?
