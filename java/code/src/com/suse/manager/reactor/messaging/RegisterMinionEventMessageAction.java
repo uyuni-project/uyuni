@@ -246,7 +246,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
 
-            assignChannelsByActivationKey(minionId, server, grains, activationKeyLabel, activationKey);
+            assignChannelsByActivationKey(minionId, server, grains, activationKeyLabel,
+                    activationKey);
 
             Org org = activationKey.map(ActivationKey::getOrg)
                     .orElse(OrgFactory.getSatelliteOrg());
