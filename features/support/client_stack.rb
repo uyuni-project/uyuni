@@ -38,7 +38,7 @@ def checkShutdown(host, time_out)
   Timeout.timeout(time_out) do
     loop do
       _out = `#{cmd}`
-      if $?.exitstatus.nonzero?
+      if $CHILD_STATUS.exitstatus.nonzero?
         puts "machine: #{host} went down"
         break
       end
@@ -54,7 +54,7 @@ def checkRestart(host, node, time_out)
   Timeout.timeout(time_out) do
     loop do
       _out = `#{cmd}`
-      if $?.exitstatus.zero?
+      if $CHILD_STATUS.exitstatus.zero?
         puts "machine: #{host} network is up"
         break
       end

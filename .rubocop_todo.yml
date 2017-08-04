@@ -115,13 +115,6 @@ Style/RegexpLiteral:
     - 'features/step_definitions/xmlrpctest_steps.rb'
 
 
-# Offense count: 19
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles.
-# SupportedStyles: use_perl_names, use_english_names
-Style/SpecialGlobalVars:
-  EnforcedStyle: use_perl_names
-
 # Offense count: 23
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: snake_case, camelCase
