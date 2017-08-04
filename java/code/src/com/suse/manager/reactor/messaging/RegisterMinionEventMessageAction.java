@@ -245,9 +245,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             Optional<String> activationKeyLabel = activationKeyOverride.isPresent() ?
                     activationKeyOverride : activationKeyFromGrains;
-
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
+
+            assignChannelsByActivationKey(minionId, server, grains, activationKeyLabel, activationKey);
+
             Org org = activationKey.map(ActivationKey::getOrg)
                     .orElse(OrgFactory.getSatelliteOrg());
             if (server.getOrg() == null) {
@@ -264,8 +266,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             }
             server.setCreator(activationKey.map(ActivationKey::getCreator).orElseGet(
                     () -> UserFactory.findRandomOrgAdmin(OrgFactory.getSatelliteOrg())));
-            activationKey.map(ActivationKey::getChannels)
-                    .ifPresent(channels -> channels.forEach(server::addChannel));
 
             String osfullname = grains.getValueAsString("osfullname");
             String osfamily = grains.getValueAsString("os_family");
@@ -288,7 +288,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
-            checkActivationKey(minionId, server, grains, activationKeyLabel, activationKey);
             server.updateServerInfo();
 
             mapHardwareGrains(server, grains);
@@ -401,8 +400,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
     }
 
-    private void checkActivationKey(String minionId, MinionServer server, ValueMap grains,
-            Optional<String> activationKeyLabel, Optional<ActivationKey> activationKey) {
+    private void assignChannelsByActivationKey(String minionId, MinionServer server,
+            ValueMap grains, Optional<String> activationKeyLabel,
+            Optional<ActivationKey> activationKey) {
+
+        activationKey.map(ActivationKey::getChannels)
+                .ifPresent(channels -> channels.forEach(server::addChannel));
+
         if (!activationKey.isPresent()) {
             if (!activationKeyLabel.isPresent()) {
                 LOG.info("No base channel added, adding default channel " +
