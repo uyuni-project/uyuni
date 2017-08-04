@@ -87,7 +87,9 @@ public class VirtualHostManagerController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView list(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "virtualhostmanager/list.jade");
+        Map<String, Object> data = new HashMap<>();
+        data.put("pageSize", user.getPageSize());
+        return new ModelAndView(data, "virtualhostmanager/list.jade");
     }
 
     /**
@@ -419,14 +421,10 @@ public class VirtualHostManagerController {
         }
         catch (TaskomaticApiException e) {
             message  = "Problem when running Taskomatic job: " + e.getMessage();
+            return json(response, Collections.singletonMap("errors", Arrays.asList(message)));
         }
-        if (message == null) {
-            message = "Refresh for Virtual Host Manager with label '" +
-                    label + "' was triggered.";
-        }
-        FlashScopeHelper.flash(request, message);
-        response.redirect("/rhn/manager/vhms");
-        return "";
+
+        return json(response, Collections.singletonMap("success", true));
     }
 
     /**
