@@ -146,6 +146,8 @@ import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.SystemRecord;
@@ -6226,5 +6228,65 @@ public class SystemHandler extends BaseHandler {
         catch (LookupException e) {
             throw new NoSuchSystemException(e);
         }
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPassword SSH password of given user
+     * @param activationKey activation key to be used for registration
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("string", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPassword", "SSH password of given user")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+            String sshPassword, String activationKey, boolean saltSSH) {
+        JSONBootstrapHosts input = new JSONBootstrapHosts(
+                host, sshPort, sshUser, sshPassword, activationKey, null);
+        return XmlRpcSystemHelper.getInstance().bootstrap(user, input, saltSSH);
+    }
+
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     *
+     * @param user the current user
+     * @param host hostname or IP address of the target machine
+     * @param sshPort SSH port to be used on the target machine
+     * @param sshUser SSH user to be used on the target machine
+     * @param sshPassword SSH password of given user
+     * @param activationKey activation key to be used for registration
+     * @param proxyId system ID of proxy to use
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
+     * @xmlrpc.param #param_desc("string", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
+     * @xmlrpc.param #param_desc("string", "sshPassword", "SSH password of given user")
+     * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
+     * @xmlrpc.param #param_desc("int", "proxyId", "System ID of proxy to use")
+     * @xmlrpc.param #param_desc("boolean", "saltSSH", "Manage system with Salt SSH")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int bootstrap(User user, String host, Integer sshPort, String sshUser,
+            String sshPassword, String activationKey, Integer proxyId, boolean saltSSH) {
+        JSONBootstrapHosts input = new JSONBootstrapHosts(
+                host, sshPort, sshUser, sshPassword, activationKey, proxyId.longValue());
+        return XmlRpcSystemHelper.getInstance().bootstrap(user, input, saltSSH);
     }
 }
