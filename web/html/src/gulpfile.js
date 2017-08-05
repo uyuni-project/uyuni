@@ -55,7 +55,7 @@ gulp.task('bundle-manager', function(done) {
     })
 });
 
-gulp.task('lint', () => {
+gulp.task('lint', function() {
    // ESLint ignores files with "node_modules" paths.
     // So, it's best to have gulp ignore the directory as well.
     // Also, Be sure to return the stream from the task;
