@@ -69,7 +69,6 @@
 - features/min_salt_install_with_staging.feature
 - features/srv_xmlrpc_activationkey.feature
 - features/allcli_overview_systems_details.feature
-- features/min_salt_reboot_test.feature
 - features/min_docker_xmlrpc.feature
 - features/srv_distro_cobbler.feature
 - features/srv_mainpage.feature
@@ -109,6 +108,7 @@
 - features/trad_config_channel.feature
 - features/min_salt_pkgset_beacon.feature
 - features/srv_patches_page.feature
+- features/min_salt_reboot_test.feature
 # Post run feature (non idempotent)  
 # Debug suse-manager server is non idempotent
 # because it gather files and perfoms log checks 
