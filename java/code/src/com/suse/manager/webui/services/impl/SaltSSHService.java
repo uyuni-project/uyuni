@@ -424,12 +424,17 @@ public class SaltSSHService {
                 Optional.of(pillarData),
                 Optional.of(true));
 
-        List<String> bootstrapProxyPath = parameters.getProxyId()
-                .map(proxyId -> ServerFactory.lookupById(proxyId))
-                .map(proxy ->
-                        proxyPathToHostnames(proxy.getServerPaths(), proxy)
-                )
-                .orElse(Collections.emptyList());
+        List<String> bootstrapProxyPath;
+        if (parameters.getProxyId().isPresent()) {
+            bootstrapProxyPath = parameters.getProxyId()
+                    .map(proxyId -> ServerFactory.lookupById(proxyId))
+                    .map(proxy -> proxyPathToHostnames(proxy.getServerPaths(), proxy))
+                    .orElseThrow(() -> new SaltException(
+                            "Proxy not found for id: " + parameters.getProxyId().get()));
+        }
+        else {
+            bootstrapProxyPath = Collections.emptyList();
+        }
 
         Optional<String> portForwarding = parameters.getFirstActivationKey()
                 .map(ActivationKeyFactory::lookupByKey)

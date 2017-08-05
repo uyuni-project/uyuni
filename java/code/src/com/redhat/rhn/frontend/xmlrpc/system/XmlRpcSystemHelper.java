@@ -17,13 +17,22 @@ package com.redhat.rhn.frontend.xmlrpc.system;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.BootstrapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.BootstrapResult;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * XmlRpcSystemHelper
@@ -109,4 +118,33 @@ public class XmlRpcSystemHelper {
         return serverMap;
     }
 
+    /**
+     * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
+     *
+     * @param user the current user
+     * @param input input parameters
+     * @param saltSSH manage system with Salt SSH
+     * @return 1 on success, 0 on failure
+     * @throws BootstrapException if any error occurs
+     */
+    public int bootstrap(User user, JSONBootstrapHosts input, boolean saltSSH)
+            throws BootstrapException {
+        BootstrapResult result = Stream.of(saltSSH).map(ssh -> {
+            if (ssh) {
+                return SSHMinionBootstrapper.getInstance().bootstrap(input, user,
+                        ContactMethodUtil.getSSHMinionDefault());
+            }
+            else {
+                return RegularMinionBootstrapper.getInstance().bootstrap(input, user,
+                        ContactMethodUtil.getRegularMinionDefault());
+            }
+        }).findAny().orElseThrow(() -> new BootstrapException(
+                "No result for " + input.getHost()));
+
+        // Determine the result, throw BootstrapException in case of failure
+        if (!result.isSuccess()) {
+            throw new BootstrapException(Arrays.toString(result.getMessages()));
+        }
+        return 1;
+    }
 }
