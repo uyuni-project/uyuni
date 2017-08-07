@@ -11,8 +11,7 @@ Feature: Install a patch the client via salt through the UI
     And I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "virgo-dummy" in the css "input[placeholder='Filter by Package Name: ']"
-    And I click on the css "button.spacewalk-button-filter"
-    And I wait until i see "virgo-dummy" text, refreshing the page
+    And I click on the css "button.spacewalk-button-filter" until page does contain "virgo-dummy" text
     When I follow "Admin"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"

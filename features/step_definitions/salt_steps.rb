@@ -459,10 +459,29 @@ Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) d
       end
     end
   rescue Timeout::Error
-    raise "'#{arg1}' cannot be found after several tries"
+    raise "'#{arg1}' is still found after several tries"
   end
   raise unless not_found
 end
+
+Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |css, arg1|
+  found = false
+  begin
+    Timeout.timeout(30) do
+      loop do
+        unless page.has_content?(arg1)
+          found = true
+          break
+        end
+        find(css).click
+      end
+    end
+  rescue Timeout::Error
+    raise "'#{arg1}' cannot be found after several tries"
+  end
+  raise unless found
+end
+
 # states catalog
 When(/^I enter the salt state$/) do |multiline|
   within(:xpath, '//section') do
