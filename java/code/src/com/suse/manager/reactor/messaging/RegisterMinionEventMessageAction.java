@@ -120,6 +120,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void doExecute(EventMessage msg) {
         registerMinion(((RegisterMinionEventMessage) msg).getMinionId(), false,
                 Optional.empty(), Optional.empty());
@@ -244,9 +245,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             Optional<String> activationKeyLabel = activationKeyOverride.isPresent() ?
                     activationKeyOverride : activationKeyFromGrains;
-
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
+
             Org org = activationKey.map(ActivationKey::getOrg)
                     .orElse(OrgFactory.getSatelliteOrg());
             if (server.getOrg() == null) {
@@ -257,19 +258,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                           "organization. The activation key will not be used.");
                 activationKey = Optional.empty();
                 org = server.getOrg();
-                ServerHistoryEvent historyEvent = new ServerHistoryEvent();
-                historyEvent.setCreated(new Date());
-                historyEvent.setServer(server);
-                historyEvent.setSummary("Invalid Activation Key");
-                historyEvent.setDetails(
+                addHistoryEvent(server, "Invalid Activation Key",
                         "The Server organization does not match the activation key " +
-                        "organization. The activation key will not be used.");
-                server.getHistory().add(historyEvent);
+                                "organization. The activation key will not be used.");
             }
             server.setCreator(activationKey.map(ActivationKey::getCreator).orElseGet(
                     () -> UserFactory.findRandomOrgAdmin(OrgFactory.getSatelliteOrg())));
-            activationKey.map(ActivationKey::getChannels)
-                    .ifPresent(channels -> channels.forEach(server::addChannel));
 
             String osfullname = grains.getValueAsString("osfullname");
             String osfamily = grains.getValueAsString("os_family");
@@ -292,10 +286,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
-            if (!activationKey.isPresent()) {
-                LOG.info("No base channel added, adding default channel (if applicable)");
-                lookupAndAddDefaultChannels(server, grains);
-            }
+            assignChannelsByActivationKey(minionId, server, grains, activationKeyLabel,
+                    activationKey);
 
             server.updateServerInfo();
 
@@ -407,6 +399,41 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
         }
+    }
+
+    private void assignChannelsByActivationKey(String minionId, MinionServer server,
+            ValueMap grains, Optional<String> activationKeyLabel,
+            Optional<ActivationKey> activationKey) {
+
+        activationKey.map(ActivationKey::getChannels)
+                .ifPresent(channels -> channels.forEach(server::addChannel));
+
+        if (!activationKey.isPresent()) {
+            if (!activationKeyLabel.isPresent()) {
+                LOG.info("No base channel added, adding default channel " +
+                        "(if applicable)");
+                lookupAndAddDefaultChannels(server, grains);
+            }
+            else {
+                LOG.warn("Default channel(s) will NOT be added: " +
+                        "specified Activation Key " + activationKeyLabel.get() +
+                        " is not valid for minionId " + minionId);
+                addHistoryEvent(server, "Invalid Activation Key",
+                        "Specified Activation Key " + activationKeyLabel.get() +
+                                " is not valid. Default channel(s) NOT be added.");
+            }
+        }
+    }
+
+    private ServerHistoryEvent addHistoryEvent(MinionServer server, String summary,
+            String details) {
+        ServerHistoryEvent historyEvent = new ServerHistoryEvent();
+        historyEvent.setCreated(new Date());
+        historyEvent.setServer(server);
+        historyEvent.setSummary(summary);
+        historyEvent.setDetails(details);
+        server.getHistory().add(historyEvent);
+        return historyEvent;
     }
 
     private void setServerPaths(MinionServer server, String master,
