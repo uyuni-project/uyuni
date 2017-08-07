@@ -312,9 +312,6 @@
                                     checked
                                 </c:if>
                             />
-                            <label for="gpg_check">
-                                <bean:message key="channel.jsp.gpgcheck.enabled"/>
-                            </label>
                         </div>
                     </div>
                 </div>
