@@ -449,7 +449,7 @@ end
 Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) do |css, text|
   not_found = false
   begin
-    Timeout.timeout(30) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         unless page.has_content?(text)
           not_found = true
@@ -467,7 +467,7 @@ end
 Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |css, text|
   found = false
   begin
-    Timeout.timeout(30) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         unless page.has_content?(text)
           found = true
