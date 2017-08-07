@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.7.18
+Version:	2.7.21
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -124,6 +124,15 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Mon Aug 07 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.21-1
+- don't link old perl manpage in man
+
+* Fri Aug 04 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.20-1
+- rewrite spacewalk-api utility into python
+
+* Mon Jul 31 2017 Eric Herget <eherget@redhat.com> 2.7.19-1
+- update copyright year
+
 * Thu Jul 27 2017 Jan Dobes 2.7.18-1
 - Add Spacewalk 2.7 release for util
 - Add new Fedora 26 channels for util

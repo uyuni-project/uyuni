@@ -6,7 +6,7 @@
 %endif
 
 Name:           spacewalk
-Version:        2.7.2
+Version:        2.7.3
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://github.com/spacewalkproject/spacewalk
@@ -118,6 +118,8 @@ Requires: oracle-instantclient-selinux
 Requires: oracle-instantclient-sqlplus-selinux
 %endif
 
+Obsoletes: spacewalk-dobby
+
 %description oracle
 Spacewalk is a systems management application that will
 inventory, provision, update and control your Linux machines.
@@ -188,6 +190,10 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
 
 %changelog
+* Wed Aug 02 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.3-1
+- 1449124 - db-control no longer works with oracle, let's add
+  conflicts/obsoletes
+
 * Tue May 09 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.2-1
 - 1447591 - pull in spacewalk-dobby just on postgresql
 

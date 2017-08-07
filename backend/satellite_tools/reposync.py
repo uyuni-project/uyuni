@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2016 Red Hat, Inc.
+# Copyright (c) 2008--2017 Red Hat, Inc.
 # Copyright (c) 2010--2011 SUSE Linux Products GmbH
 #
 # This software is licensed to you under the GNU General Public License,
@@ -490,13 +490,7 @@ class RepoSync(object):
                         relative_url = '_'.join(url.split('://')[1].split('/')[1:])
                         repo_name = relative_url.replace("?", "_").replace("&", "_").replace("=", "_")
 
-                    plugin = self.repo_plugin(url, repo_name, insecure, self.interactive,
-                                              org=str(self.org_id or ''),
-                                              channel_label=self.channel_label)
-
-                    if update_repodata:
-                        plugin.clear_cache()
-
+                    (ca_cert_file, client_cert_file, client_key_file) = (None, None, None)
                     if data['id'] is not None:
                         keys = rhnSQL.fetchall_dict("""
                         select k1.description as ca_cert_name, k1.key as ca_cert, k1.org_id as ca_cert_org,
@@ -516,12 +510,22 @@ class RepoSync(object):
                                     (ssl_set['ca_cert_name'], ssl_set['ca_cert'], ssl_set['ca_cert_org']),
                                     (ssl_set['client_cert_name'], ssl_set['client_cert'], ssl_set['client_cert_org']),
                                     (ssl_set['client_key_name'], ssl_set['client_key'], ssl_set['client_key_org']))
-                                plugin.set_ssl_options(ca_cert_file, client_cert_file, client_key_file)
                             else:
                                 raise ValueError("No valid SSL certificates were found for repository.")
 
+                    plugin = repo_plugin(url, repo_name, insecure, self.interactive,
+                                         org=str(self.org_id or ''),
+                                         channel_label=self.channel_label,
+                                         ca_cert_file=ca_cert_file,
+                                         client_cert_file=client_cert_file,
+                                         client_key_file=client_key_file)
+
                     # update the checksum type of channels with org_id NULL
                     self.updateChannelChecksumType(plugin.get_md_checksum_type())
+
+
+                    if update_repodata:
+                        plugin.clear_cache()
 
                     if not self.no_packages:
                         ret = self.import_packages(plugin, data['id'], url)
@@ -578,7 +582,7 @@ class RepoSync(object):
                     sync_error = -1
 
         # In strict mode unlink all packages from channel which are not synced from current repositories
-        if self.strict and sync_error == 0:
+        if self.strict and sync_error == 0 and not self.no_packages:
             channel_packages = rhnSQL.fetchall_dict("""
                 select p.id, ct.label as checksum_type, c.checksum
                 from rhnChannelPackage cp,
