@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.103
+Version: 2.7.106
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -994,6 +994,16 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Thu Aug 03 2017 Jan Dobes 2.7.106-1
+- 1455791 - rename cobbler profile names containing org's name
+
+* Thu Aug 03 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.105-1
+- 1477508 - fix query for Oracle databases
+
+* Mon Jul 31 2017 Eric Herget <eherget@redhat.com> 2.7.104-1
+- bump java.apiversion
+- update copyright year
+
 * Fri Jul 28 2017 Grant Gainey 2.7.103-1
 - 1475067 - Fix SSM update-status icons
 

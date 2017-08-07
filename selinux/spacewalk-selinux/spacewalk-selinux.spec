@@ -8,7 +8,7 @@
 %define modulename spacewalk
 
 Name:           spacewalk-selinux
-Version:        2.7.3
+Version:        2.7.5
 Release:        1%{?dist}
 Summary:        SELinux policy module supporting Spacewalk Server
 
@@ -114,6 +114,12 @@ fi
 %attr(0755,root,root) %{_sbindir}/%{name}-enable
 
 %changelog
+* Wed Aug 02 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.5-1
+- fixed selinux denial with external (LDAP/Kerberos) authentication
+
+* Mon Jul 31 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.4-1
+- allow tomcat to search cobbler files
+
 * Thu Jul 27 2017 Eric Herget <eherget@redhat.com> 2.7.3-1
 - 1446487 - spacewalk-selinux error messages during package install
 - 1452560 - more tomcat selinux rules

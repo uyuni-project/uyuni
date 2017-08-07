@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.3
+Version: 2.7.5
 Release: 1%{?dist}
 URL:          https://github.com/spacewalkproject/spacewalk/
 Source0:      https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -104,6 +104,7 @@ Requires: perl-Filesys-Df
 Obsoletes: rhn-dobby < 5.3.0
 Provides: rhn-dobby = 5.3.0
 Requires: %{sbinpath}/runuser
+Conflicts: spacewalk-oracle
 
 %description -n spacewalk-dobby
 Dobby is collection of Perl modules and scripts to administer a PostgreSQL
@@ -185,6 +186,13 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Wed Aug 02 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.5-1
+- 1449124 - db-control no longer works with oracle, let's add
+  conflicts/obsoletes
+
+* Mon Jul 31 2017 Eric Herget <eherget@redhat.com> 2.7.4-1
+- update copyright year
+
 * Thu May 04 2017 Can Bulut Bayburt <cbbayburt@suse.com>
 - PR 483 - Hides 'Save/Clear' buttons when no changes are present in action
   chain lists

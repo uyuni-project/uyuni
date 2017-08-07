@@ -41,6 +41,8 @@ dontaudit httpd_sys_script_t httpd_log_t:file { ioctl };
 type spacewalk_initrc_exec_t;
 domain_entry_file(initrc_t, spacewalk_initrc_exec_t)
 
+allow tomcat_t self:netlink_audit_socket create;
+
 optional_policy(`
 	gen_require(`
 		type java_t;
@@ -133,5 +135,12 @@ optional_policy(`
                 type cobbler_var_log_t;
         ')
         allow httpd_t cobbler_var_log_t:dir { search };
+        allow tomcat_t cobbler_var_log_t:dir { search };
 ')
 
+optional_policy(`
+        gen_require(`
+                type cobbler_tmp_t;
+        ')
+        allow tomcat_t cobbler_tmp_t:dir { search };
+')

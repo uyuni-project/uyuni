@@ -1,7 +1,7 @@
 #
 # Higher-level SSL objects used by rpclib
 #
-# Copyright (c) 2002--2016 Red Hat, Inc.
+# Copyright (c) 2002--2017 Red Hat, Inc.
 #
 # Author: Mihai Ibanescu <misa@redhat.com>
 #
@@ -140,6 +140,11 @@ class SSLSocket:
             self._really_close()
             return
         self._makefile_called = self._makefile_called - 1
+
+    # BZ 1464157 - Python 3 http attempts to call this method during close,
+    # at least add it empty
+    def flush(self):
+        pass
 
     def _really_close(self):
         self._connection.shutdown()

@@ -17,7 +17,7 @@ Name: osad
 Summary: Open Source Architecture Daemon
 Group:   System Environment/Daemons
 License: GPLv2
-Version: 5.11.84
+Version: 5.11.86
 Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -25,13 +25,15 @@ Source1: %{name}-rpmlintrc
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: perl
-BuildRequires: python-devel
-Requires: python
 %if 0%{?fedora} >= 23
+BuildRequires: python3-devel
+Requires: python3
 Requires: python3-rhnlib
 Requires: python3-spacewalk-usix
 Requires: python3-jabberpy
 %else
+BuildRequires: python-devel
+Requires: python
 Requires: rhnlib >= 2.5.74
 Requires: spacewalk-usix
 Requires: jabberpy
@@ -167,6 +169,9 @@ cp prog.init.SUSE prog.init
 sed -i 's@^#!/usr/bin/python$@#!/usr/bin/python -s@' invocation.py
 %endif
 
+%if 0%{?fedora} >= 23
+%global __python /usr/bin/python3
+%endif
 
 %build
 make -f Makefile.osad all
@@ -401,6 +406,11 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %{rhnroot}/osad/osad.py*
 %{rhnroot}/osad/osad_client.py*
 %{rhnroot}/osad/osad_config.py*
+%if 0%{?fedora} >= 23
+%{rhnroot}/osad/__pycache__/osad.*
+%{rhnroot}/osad/__pycache__/osad_client.*
+%{rhnroot}/osad/__pycache__/osad_config.*
+%endif
 %config(noreplace) %{_sysconfdir}/sysconfig/rhn/osad.conf
 %verify(not md5 mtime size) %config(noreplace) %attr(600,root,root) %{_sysconfdir}/sysconfig/rhn/osad-auth.conf
 %config(noreplace) %{client_caps_dir}/*
@@ -426,6 +436,10 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(755,root,root) %{_sbindir}/osa-dispatcher
 %{rhnroot}/osad/osa_dispatcher.py*
 %{rhnroot}/osad/dispatcher_client.py*
+%if 0%{?fedora} >= 23
+%{rhnroot}/osad/__pycache__/osa_dispatcher.*
+%{rhnroot}/osad/__pycache__/dispatcher_client.*
+%endif
 %config(noreplace) %{_sysconfdir}/sysconfig/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/logrotate.d/osa-dispatcher
 %{rhnroot}/config-defaults/rhn_osa-dispatcher.conf
@@ -454,6 +468,11 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %{rhnroot}/osad/__init__.py*
 %{rhnroot}/osad/jabber_lib.py*
 %{rhnroot}/osad/rhn_log.py*
+%if 0%{?fedora} >= 23
+%{rhnroot}/osad/__pycache__/__init__.*
+%{rhnroot}/osad/__pycache__/jabber_lib.*
+%{rhnroot}/osad/__pycache__/rhn_log.*
+%endif
 
 %if 0%{?include_selinux_package}
 %files -n osa-dispatcher-selinux
@@ -467,6 +486,12 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Thu Aug 03 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.86-1
+- 1477753 - use standard brp-python-bytecompile to make proper .pyc/.pyo
+
+* Mon Jul 31 2017 Eric Herget <eherget@redhat.com> 5.11.85-1
+- update copyright year
+
 * Thu Jul 27 2017 Eric Herget <eherget@redhat.com> 5.11.84-1
 - 1446487 - spacewalk-selinux error messages during package install
 
