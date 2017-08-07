@@ -675,7 +675,7 @@ def channels_for_server(server_id):
         c.summary,
         c.description,
         c.gpg_key_url,
-        case when c.gpg_check = 'Y' then 1 ELSE 0 end gpg_check,
+        case when c.gpg_check = 'Y' then 1 ELSE 0 end gpgcheck,
         case s.org_id when c.org_id then 1 else 0 end local_channel,
         TO_CHAR(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
     from
