@@ -20625,10 +20625,7 @@ given channel.</source>
         <source> In Progress </source>
       </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck">
-        <source> GPG check </source>
-      </trans-unit>
-      <trans-unit id="channel.jsp.gpgcheck.enabled">
-        <source> GPG check enabled </source>
+        <source>Enable GPG Check </source>
       </trans-unit>
       <trans-unit id="channel.jsp.repolastbuild">
         <source>Last Repo Build</source>
