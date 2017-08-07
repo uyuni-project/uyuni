@@ -1,6 +1,7 @@
 'use strict';
 
-require('./utils.js');
+const Utils = require('./utils.js');
+
 function computeSvgDimensions() {
   const width = d3.select('#svg-wrapper').node().getBoundingClientRect().width - 2;
   const height = window.innerHeight -
