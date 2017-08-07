@@ -6245,7 +6245,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
-     * @xmlrpc.param #param_desc("string", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
      * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
      * @xmlrpc.param #param_desc("string", "sshPassword", "SSH password of given user")
      * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
@@ -6275,7 +6275,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Bootstrap a system for management via either Salt or Salt SSH.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "host", "Hostname or IP address of target")
-     * @xmlrpc.param #param_desc("string", "sshPort", "SSH port on target machine")
+     * @xmlrpc.param #param_desc("int", "sshPort", "SSH port on target machine")
      * @xmlrpc.param #param_desc("string", "sshUser", "SSH user on target machine")
      * @xmlrpc.param #param_desc("string", "sshPassword", "SSH password of given user")
      * @xmlrpc.param #param_desc("string", "activationKey", "Activation key")
