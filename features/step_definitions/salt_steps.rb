@@ -446,12 +446,12 @@ Then(/^I manually remove the "([^"]*)" package in the minion$/) do |package|
   $minion.run(cmd, false)
 end
 
-Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) do |css, arg1|
+Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) do |css, text|
   not_found = false
   begin
-    Timeout.timeout(30) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        unless page.has_content?(arg1)
+        unless page.has_content?(text)
           not_found = true
           break
         end
@@ -459,10 +459,29 @@ Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) d
       end
     end
   rescue Timeout::Error
-    raise "'#{arg1}' cannot be found after several tries"
+    raise "'#{text}' still found after several tries"
   end
   raise unless not_found
 end
+
+Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |css, text|
+  found = false
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        unless page.has_content?(text)
+          found = true
+          break
+        end
+        find(css).click
+      end
+    end
+  rescue Timeout::Error
+    raise "'#{text}' cannot be found after several tries"
+  end
+  raise unless found
+end
+
 # states catalog
 When(/^I enter the salt state$/) do |multiline|
   within(:xpath, '//section') do
