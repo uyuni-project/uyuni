@@ -513,12 +513,12 @@ class RepoSync(object):
                             else:
                                 raise ValueError("No valid SSL certificates were found for repository.")
 
-                    plugin = repo_plugin(url, repo_name, insecure, self.interactive,
-                                         org=str(self.org_id or ''),
-                                         channel_label=self.channel_label,
-                                         ca_cert_file=ca_cert_file,
-                                         client_cert_file=client_cert_file,
-                                         client_key_file=client_key_file)
+                    plugin = self.repo_plugin(url, repo_name, insecure, self.interactive,
+                                              org=str(self.org_id or ''),
+                                              channel_label=self.channel_label,
+                                              ca_cert_file=ca_cert_file,
+                                              client_cert_file=client_cert_file,
+                                              client_key_file=client_key_file)
 
                     # update the checksum type of channels with org_id NULL
                     self.updateChannelChecksumType(plugin.get_md_checksum_type())
