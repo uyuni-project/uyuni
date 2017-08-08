@@ -3,9 +3,9 @@
 
 Feature: register a salt-minion via bootstrap
 
-  Scenario: Create bootstrap-repo for sle12sp2
+  Scenario: Create bootstrap-repo for a salt client
      Given I am authorized
-     And  I run "mgr-create-bootstrap-repo -c SLE-12-SP2-x86_64" on "server" without error control
+     And I create the "x86_64" bootstrap-repo for "sle-minion" on the server
 
   Scenario: bootstrap a sles minion (it will be deleted after)
      Given I am authorized
