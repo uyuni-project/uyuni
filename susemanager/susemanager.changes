@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Aug 08 11:41:57 CEST 2017 - fkobzik@suse.de
+
+- version 3.1.8-1
+- Assert correct java version (bsc#1049575)
+- Create bootstrap repo for SLES for SAP 11 SP1 (bsc#1049471)
+- Adjust the bootstrap repo with SLE 12 SP3 repos
+
+-------------------------------------------------------------------
 Mon May 29 15:41:25 CEST 2017 - mc@suse.de
 
 - version 3.1.7-1
