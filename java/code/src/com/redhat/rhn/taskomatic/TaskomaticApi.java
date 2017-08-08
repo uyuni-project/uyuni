@@ -38,6 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
@@ -528,23 +529,35 @@ public class TaskomaticApi {
      * Delete a scheduled Action.
      *
      * @param actionId the action id to be removed
+     * @param minionIds the minionIds involved in the unscheduling of this action
      * @throws TaskomaticApiException if there was an error
      */
-    public void deleteScheduledAction(Long actionId) throws TaskomaticApiException {
-        try {
-            String jobLabel = MINION_ACTION_JOB_PREFIX + actionId;
+    public void deleteScheduledAction(Long actionId, Set<Long> minionIds)
+        throws TaskomaticApiException {
 
-            LOG.debug("Unscheduling job: " + jobLabel);
+        List<Long> minionServerIds = (List<Long>) HibernateFactory.getSession()
+                .getNamedQuery("Action.findMinionIds").setParameter("id", actionId)
+                .getResultList().stream().collect(Collectors.toList());
+        String jobLabel = MINION_ACTION_JOB_PREFIX + actionId;
 
-            invoke("tasko.unscheduleSatBunch", jobLabel);
-        }
-        catch (TaskomaticApiException e) {
-            if (e.getCause() instanceof XmlRpcFault &&
-                    e.getMessage().contains("InvalidParamException")) {
-                // bunch was not there to begin with. Move on
-                return;
+        if (minionIds.equals(minionServerIds)) {
+            try {
+                LOG.debug("Unscheduling job: " + jobLabel);
+                invoke("tasko.unscheduleSatBunch", jobLabel);
             }
-            throw e;
+            catch (TaskomaticApiException e) {
+                if (e.getCause() instanceof XmlRpcFault &&
+                        e.getMessage().contains("InvalidParamException")) {
+                    // bunch was not there to begin with. Move on
+                    return;
+                }
+                throw e;
+            }
+        }
+        else {
+            LOG.debug("Job " + jobLabel +
+                    " will NOT be unscheduled, as others minions are involved. " +
+                    "Action related to server id " + minionIds + " will be unscheduled.");
         }
     }
 }
