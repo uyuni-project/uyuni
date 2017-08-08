@@ -435,10 +435,14 @@ public class ImageInfoFactory extends HibernateFactory {
         }
     }
 
+    /**
+     * @return the image build history
+     */
     public static List<ImageBuildHistory> listBuildHistory() {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ImageBuildHistory> criteria = builder.createQuery(ImageBuildHistory.class);
-        Root<ImageBuildHistory> root = criteria.from(ImageBuildHistory.class);
+        CriteriaQuery<ImageBuildHistory> criteria = builder
+                .createQuery(ImageBuildHistory.class);
+        criteria.from(ImageBuildHistory.class);
         return getSession().createQuery(criteria).getResultList();
     }
 }

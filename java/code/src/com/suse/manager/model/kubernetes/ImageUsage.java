@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2017 SUSE LLC
- * <p>
+ *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
  * implied, including the implied warranties of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- * <p>
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by matei on 7/11/17.
+ * Information about the usage of a Docker image in
+ * a Kubernetes cluster.
  */
 public class ImageUsage {
 
@@ -34,11 +35,16 @@ public class ImageUsage {
     public static final int RUNTIME_UNKNOWN = 2;
     public static final int RUNTIME_OUTOFDATE = 3;
 
-
-    public ImageUsage(ImageInfo imageInfo) {
-        this.imageInfo = imageInfo;
+    /**
+     * @param imageInfoIn image info entity bean.
+     */
+    public ImageUsage(ImageInfo imageInfoIn) {
+        this.imageInfo = imageInfoIn;
     }
 
+    /**
+     * @return image info entity bean.
+     */
     public ImageInfo getImageInfo() {
         return imageInfo;
     }
@@ -50,6 +56,9 @@ public class ImageUsage {
         this.imageInfo = imageInfoIn;
     }
 
+    /**
+     * @return information about the containers created from this image.
+     */
     public List<ContainerInfo> getContainerInfos() {
         return containerInfos;
     }
@@ -63,8 +72,12 @@ public class ImageUsage {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ImageUsage)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ImageUsage)) {
+            return false;
+        }
 
         ImageUsage that = (ImageUsage) o;
 
