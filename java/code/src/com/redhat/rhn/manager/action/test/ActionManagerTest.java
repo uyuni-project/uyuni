@@ -83,11 +83,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -283,8 +285,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         result.put(sa[1].getServer().asMinionServer().get().getMinionId(),
                 new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
 
+        Set<Long> servers = new HashSet<>();
+        servers.add(sa[0].getServerId());
+        servers.add(sa[1].getServerId());
+        servers.add(sa[2].getServerId());
+
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())));
+            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())), with(equal(servers)));
         } });
 
         assertServerActionCount(parent, 3);
@@ -323,8 +330,14 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 new Result<>(Xor.right(new Schedule.Result(null, true))));
         result.put(sa.get(1).getServer().asMinionServer().get().getMinionId(),
                 new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
+
+        Set<Long> servers = new HashSet<>();
+        servers.add(sa.get(0).getServerId());
+        servers.add(sa.get(1).getServerId());
+        servers.add(sa.get(2).getServerId());
+
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())));
+            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())), with(equal(servers)));
         } });
         Optional<ServerAction> traditionalServerAction = parent.getServerActions().stream()
                 .filter(s -> !s.getServer().asMinionServer().isPresent())
