@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2017 SUSE LLC
- * <p>
+ *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
  * implied, including the implied warranties of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- * <p>
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -24,7 +24,8 @@ import static com.suse.manager.model.kubernetes.ImageUsage.RUNTIME_UNKNOWN;
 import static com.suse.manager.model.kubernetes.ImageUsage.RUNTIME_UPTODATE;
 
 /**
- * Created by matei on 7/11/17.
+ * Information about the usage of a Docker container in
+ * a Kubernetes cluster.
  */
 public class ContainerInfo {
 
@@ -33,7 +34,9 @@ public class ContainerInfo {
     private Optional<Integer> buildRevision;
     private VirtualHostManager virtualHostManager;
 
-
+    /**
+     * @return the container id.
+     */
     public String getContainerId() {
         return containerId;
     }
@@ -45,6 +48,9 @@ public class ContainerInfo {
         this.containerId = containerIdIn;
     }
 
+    /**
+     * @return the pod name.
+     */
     public String getPodName() {
         return podName;
     }
@@ -56,6 +62,9 @@ public class ContainerInfo {
         this.podName = podNameIn;
     }
 
+    /**
+     * @return the build revision.
+     */
     public Optional<Integer> getBuildRevision() {
         return buildRevision;
     }
@@ -67,6 +76,9 @@ public class ContainerInfo {
         this.buildRevision = buildRevisionIn;
     }
 
+    /**
+     * @return the virtual host manager.
+     */
     public VirtualHostManager getVirtualHostManager() {
         return virtualHostManager;
     }
