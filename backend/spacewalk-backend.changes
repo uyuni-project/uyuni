@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Aug 08 11:07:41 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.73.6-1
+- make master_label static to keep its value when retrying (bsc#1038321)
+- adapt for the new gpgcheck flag for the channels
+
+-------------------------------------------------------------------
 Mon Jun 12 09:11:59 CEST 2017 - mc@suse.de
 
 - version 2.7.73.5-1
