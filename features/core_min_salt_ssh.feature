@@ -57,6 +57,7 @@ Feature: 1) Bootstrap a new salt host via salt-ssh
     Then I should see a "bunch was scheduled" text
     And I reload the page
     And I reload the page until it does contain a "FINISHED" text in the table first row
+    And I run "zypper -n --gpg-auto-import-keys ref" on "ssh-minion"
 
   Scenario: Install a package for ssh minion
     Given I am authorized as "testing" with password "testing"
