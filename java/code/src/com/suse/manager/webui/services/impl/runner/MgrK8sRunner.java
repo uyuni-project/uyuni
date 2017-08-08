@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2017 SUSE LLC
- * <p>
+ *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
  * implied, including the implied warranties of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- * <p>
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -25,10 +25,15 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Created by matei on 7/11/17.
+ * Runner calls for Kubernetes.
  */
 public class MgrK8sRunner {
 
+    private MgrK8sRunner() { }
+
+    /**
+     * Container running in a Kubernetes cluster.
+     */
     public static class Container {
 
         @SerializedName("image")
@@ -43,6 +48,9 @@ public class MgrK8sRunner {
         @SerializedName("pod_name")
         private String podName;
 
+        /**
+         * @return the image name
+         */
         public String getImage() {
             return image;
         }
@@ -54,6 +62,9 @@ public class MgrK8sRunner {
             this.image = imageIn;
         }
 
+        /**
+         * @return the image id
+         */
         public String getImageId() {
             return imageId;
         }
@@ -65,6 +76,9 @@ public class MgrK8sRunner {
             this.imageId = imageIdIn;
         }
 
+        /**
+         * @return container id
+         */
         public String getContainerId() {
             return containerId;
         }
@@ -76,6 +90,9 @@ public class MgrK8sRunner {
             this.containerId = containerIdIn;
         }
 
+        /**
+         * @return the pod name
+         */
         public String getPodName() {
             return podName;
         }
@@ -88,11 +105,17 @@ public class MgrK8sRunner {
         }
     }
 
+    /**
+     * List of container objects.
+     */
     public static class ContainersList {
 
         @SerializedName("containers")
         private List<Container> containers;
 
+        /**
+         * @return the containers
+         */
         public List<Container> getContainers() {
             return containers;
         }
@@ -106,10 +129,13 @@ public class MgrK8sRunner {
     }
 
     /**
-     * @param kubeconfig path
+     * Get information about all containers running in a Kubernetes cluster.
+     * @param kubeconfig path to the kubeconfig file
+     * @param context kubeconfig context to use
      * @return the execution result
      */
-    public static RunnerCall<ContainersList> getAllContainers(String kubeconfig, String context) {
+    public static RunnerCall<ContainersList> getAllContainers(String kubeconfig,
+                                                              String context) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("kubeconfig", kubeconfig);
         args.put("context", context);

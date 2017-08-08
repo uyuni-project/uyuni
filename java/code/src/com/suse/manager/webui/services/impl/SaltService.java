@@ -977,6 +977,12 @@ public class SaltService {
         return callSync(call);
     }
 
+    /**
+     * Get information about all containers running in a Kubernetes cluster.
+     * @param kubeconfig path to the kubeconfig file
+     * @param context kubeconfig context to use
+     * @return a list of containers
+     */
     public MgrK8sRunner.ContainersList getAllContainers(String kubeconfig,
                                                         String context) {
         RunnerCall<MgrK8sRunner.ContainersList> call =

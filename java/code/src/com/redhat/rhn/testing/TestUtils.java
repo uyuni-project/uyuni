@@ -592,9 +592,20 @@ public class TestUtils {
         return o1.hashCode() == o2.hashCode();
     }
 
-    public static String readRelativeFile(Object object, String file) throws IOException, ClassNotFoundException {
+    /**
+     * Read a file relative to the given object package.
+     * @param object the object
+     * @param file path of the file to read
+     * @return the content of the file as string.
+     * @throws IOException in case of IO error
+     * @throws ClassNotFoundException in case of classpath problems
+     */
+    public static String readRelativeFile(Object object,
+                                          String file)
+            throws IOException, ClassNotFoundException {
         return FileUtils.readFileToString(new File(TestUtils.findTestDataInDir(
-                "/" + object.getClass().getPackage().getName().replaceAll("\\.", "/") + "/" + file).getPath()
+                "/" + object.getClass().getPackage().getName()
+                        .replaceAll("\\.", "/") + "/" + file).getPath()
         ));
     }
 }

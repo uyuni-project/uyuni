@@ -109,12 +109,14 @@ public class VirtualHostManagerProcessor {
      * @param jsonHost object containing the information about the host and its VMs
      */
     private void processVirtualHost(String hostLabel, JSONHost jsonHost) {
-        Server server = updateAndGetServer(hostLabel, jsonHost, VirtualHostManagerFactory.KUBERNETES);
+        Server server = updateAndGetServer(hostLabel, jsonHost,
+                VirtualHostManagerFactory.KUBERNETES);
         if (server == null) {
             VirtualHostManagerNodeInfo nodeInfo = updateAndGetNodeInfo(hostLabel, jsonHost);
             if (!virtualHostManager.getNodes().contains(nodeInfo)) {
                 virtualHostManager.getNodes().add(nodeInfo);
-            } else {
+            }
+            else {
                 nodesToDelete.remove(nodeInfo);
             }
             // for Kubernetes we don't create a foreign entitled server
@@ -134,7 +136,8 @@ public class VirtualHostManagerProcessor {
                 jsonHost.getVms());
     }
 
-    private VirtualHostManagerNodeInfo updateAndGetNodeInfo(String hostLabel, JSONHost jsonHost) {
+    private VirtualHostManagerNodeInfo updateAndGetNodeInfo(String hostLabel,
+                                                            JSONHost jsonHost) {
         VirtualHostManagerNodeInfo info = VirtualHostManagerFactory.getInstance()
                 .lookupNodeInfoByIdentifier(jsonHost.getHostIdentifier());
         if (info == null) {
@@ -146,7 +149,9 @@ public class VirtualHostManagerProcessor {
         return info;
     }
 
-    private void updateNodeInfo(VirtualHostManagerNodeInfo info, String hostLabel, JSONHost jsonHost) {
+    private void updateNodeInfo(VirtualHostManagerNodeInfo info,
+                                String hostLabel,
+                                JSONHost jsonHost) {
         info.setName(hostLabel);
         info.setNodeArch(ServerFactory.lookupServerArchByName(jsonHost.getCpuArch()));
         info.setCpuSockets(jsonHost.getTotalCpuSockets());
@@ -156,7 +161,8 @@ public class VirtualHostManagerProcessor {
         info.setOsVersion(jsonHost.getOsVersion());
     }
 
-    private VirtualHostManagerNodeInfo createNewNodeInfo(String hostLabel, JSONHost jsonHost) {
+    private VirtualHostManagerNodeInfo createNewNodeInfo(String hostLabel,
+                                                         JSONHost jsonHost) {
         VirtualHostManagerNodeInfo info = new VirtualHostManagerNodeInfo();
         info.setIdentifier(jsonHost.getHostIdentifier());
         updateNodeInfo(info, hostLabel, jsonHost);
@@ -191,7 +197,9 @@ public class VirtualHostManagerProcessor {
      * @param skipCreateForType - don't create a new server for the given host type
      * @return the updated server
      */
-    private Server updateAndGetServer(String hostId, JSONHost jsonHost, String skipCreateForType) {
+    private Server updateAndGetServer(String hostId,
+                                      JSONHost jsonHost,
+                                      String skipCreateForType) {
         Server server = ServerFactory.lookupForeignSystemByDigitalServerId(
                 buildServerFullDigitalId(jsonHost.getHostIdentifier()));
         if (server == null) {
