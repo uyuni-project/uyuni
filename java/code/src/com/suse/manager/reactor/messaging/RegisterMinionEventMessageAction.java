@@ -260,10 +260,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         "The Server organization does not match the activation key " +
                                 "organization. The activation key will not be used.");
             }
-            activationKey.map(ActivationKey::getChannels)
-                    .ifPresent(channels -> channels.forEach(server::addChannel));
-            server.setCreator(activationKey.map(ActivationKey::getCreator).orElseGet(
-                    () -> UserFactory.findRandomOrgAdmin(OrgFactory.getSatelliteOrg())));
 
             String osfullname = grains.getValueAsString("osfullname");
             String osfamily = grains.getValueAsString("os_family");
