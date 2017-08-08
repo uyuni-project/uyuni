@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 08 11:30:23 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.1.4-1
+- Proxy: use query string in upstream HEAD requests (bsc#1036260)
+
+-------------------------------------------------------------------
 Mon May 29 15:06:36 CEST 2017 - mc@suse.de
 
 - version 2.7.1.3-1
