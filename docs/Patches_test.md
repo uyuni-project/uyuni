@@ -2,10 +2,8 @@
 
 ###### [IMPROVE_ME]
 
-If you want to make pkgs install and patches, you can have some troubles.
-
-Since each feature must be idempotent, you need to cleanup, and do not assume that some pkgs are present at beginn 
-of your feature.
+If you want to make pkgs install and patches, you can have some troubles, since each features need to be idempotent:
+you need to cleanup, and do not assume that some pkgs are present at beginn of your feature, and assume that you remove the pkg
 
 Basically,  we use 2 REPOS for test packages:
 
