@@ -131,7 +131,7 @@ public class KubernetesManager {
                                 String repo = tokens[0];
                                 String[] imgTag = StringUtils.split(tokens[1], ":", 2);
                                 String name = imgTag[0];
-                                String tag = imgTag[1];
+                                String tag = imgTag.length > 1 ? imgTag[1] : "latest";
 
                                 Optional<ImageInfo> imgByRepoNameTag =
                                         ImageStoreFactory.lookupBylabel(repo).flatMap(
