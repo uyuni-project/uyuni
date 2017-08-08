@@ -1,4 +1,40 @@
 -------------------------------------------------------------------
+Tue Aug 08 11:46:36 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.46.5-1
+- Fix: don't add default channel if AK is not valid (bsc#1047656)
+- Add 'Enable GPG check' function for channels
+- No legend icon for Activity Ocurring. (bsc#1051719)
+- Implement API call for bootstrapping systems
+- Fix product ids reported for SUSE Manager Server to the subscription matcher
+- Fix adding products when assigning channels (bsc#1049664)
+- Set default memory size for SLES 12 installations to 1024MB (bsc#1047707)
+- BugFix: enable remote-command for Salt clients in SSM (bsc#1050385)
+- Add missing help icons/links (bsc#1049425) 
+- Fixed invalid help links (bsc#1049425) 
+- Fix: wrong openscap xid (bsc#1030898)
+- Organization name allows XSS CVE-2017-7538 (bsc#1048968)
+- Fixes overlapping text narrow window (bsc#1009118) 
+- Adapt to the salt-netapi-client update (v0.12.0)
+- Fixes alignment on the orgdetails (bsc#1017513)
+- Fix text for activation key buttons (bsc#1042975) 
+- Add a dynamic counter of the remaining textarea length
+- Bugfix: set, check and cut textarea maxlength (bsc#1043430)
+- MinionActionExecutor: raise skip timeout (bsc#1046865)
+- Update channels.xml with OpenStack Cloud Continuous Delivery 6 (bsc#1039458)
+- Do not create VirtualInstance duplicates for the same 'uuid'
+- Add taskomatic task to cleanup duplicated uuids for same system id
+- Handle possible wrong UUIDs on SLE11 minions (bsc#1046218)
+- Removed duplicate overview menu item (bsc#1045981) 
+- Enable act-key name empty on creation (bsc#1032350)
+- Fix NPE when there's not udev results (bsc#1042552)
+- Alphabar: change title to 'Select first character' (bsc1042199)
+- Duplicate Systems: correct language not to mention 'profiles' (bsc1035728)
+- Fix list filters to work with URL special characters (bsc#1042846)
+- Use getActive() instead of isActive() for JavaBeans compliance (bsc#1043143)
+- Fix: hide non-org event details (bsc#1039579)
+
+-------------------------------------------------------------------
 Mon Jun 19 16:36:09 CEST 2017 - mc@suse.de
 
 - version 2.7.46.4-1
