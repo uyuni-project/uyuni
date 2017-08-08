@@ -392,20 +392,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Remove an action for an rhnset of system ids with the given label
-     * @param actionId the action to remove
-     * @param setLabel the set label to pull the ids from
-     * @param user the user witht he set
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static void cancelActionForSystemSet(long actionId, String setLabel, User user)
-        throws TaskomaticApiException {
-        RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
-        cancelActionForSystems(actionId, set.getElementValues());
-    }
-
-    /**
      * Cancels the server actions associated with a given action, and if
      * required deals with associated pending kickstart actions and minion
      * jobs.
