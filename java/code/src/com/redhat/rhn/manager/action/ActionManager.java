@@ -80,7 +80,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -387,8 +386,11 @@ public class ActionManager extends BaseManager {
         }
         // cancel minion jobs and delete corresponding actions from db
         if (!minionServerActions.isEmpty()) {
+            Set<Long> minionIdsInvolved =
+                    serverActions.stream().map(ServerAction::getServer).map(Server::getId)
+                            .collect(Collectors.toSet());
             // cancel associated schedule in Taskomatic
-            taskomaticApi.deleteScheduledAction(actionId);
+            taskomaticApi.deleteScheduledAction(actionId, minionIdsInvolved);
 
             // delete successfully canceled minion actions from the db
             minionServerActions.stream().forEach(serverAction -> {
