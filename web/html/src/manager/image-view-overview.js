@@ -164,7 +164,7 @@ class ImageInfo extends React.Component {
             </tr>
             <tr>
               <td>Revision:</td>
-              <td>{data.revision ? data.revision : "-"}</td>
+              <td>{data.revision > 0 ? data.revision : "-"}</td>
             </tr>
             { this.props.runtimeInfoEnabled ?
               <tr>
