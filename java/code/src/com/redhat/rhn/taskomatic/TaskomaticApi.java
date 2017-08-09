@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
@@ -528,19 +529,19 @@ public class TaskomaticApi {
     /**
      * Delete a scheduled Action.
      *
-     * @param actionId the action id to be removed
-     * @param minionIds the minionIds involved in the unscheduling of this action
+     * @param action the action id to be removed
+     * @param minionsInvolved minions involved in the action to remove
      * @throws TaskomaticApiException if there was an error
      */
-    public void deleteScheduledAction(Long actionId, Set<Long> minionIds)
+    public void deleteScheduledAction(Action action, Set<Server> minionsInvolved)
         throws TaskomaticApiException {
 
         List<Long> minionServerIds = (List<Long>) HibernateFactory.getSession()
-                .getNamedQuery("Action.findMinionIds").setParameter("id", actionId)
+                .getNamedQuery("Action.findMinionIds").setParameter("id", action.getId())
                 .getResultList().stream().collect(Collectors.toList());
-        String jobLabel = MINION_ACTION_JOB_PREFIX + actionId;
+        String jobLabel = MINION_ACTION_JOB_PREFIX + action;
 
-        if (minionIds.equals(minionServerIds)) {
+        if (minionsInvolved.equals(minionServerIds)) {
             try {
                 LOG.debug("Unscheduling job: " + jobLabel);
                 invoke("tasko.unscheduleSatBunch", jobLabel);
@@ -557,7 +558,8 @@ public class TaskomaticApi {
         else {
             LOG.debug("Job " + jobLabel +
                     " will NOT be unscheduled, as others minions are involved. " +
-                    "Action related to server id " + minionIds + " will be unscheduled.");
+                    "Actions related to server ids " + minionsInvolved +
+                    " will be unscheduled.");
         }
     }
 }
