@@ -398,9 +398,7 @@ end
 
 And(/^I create the "([^"]*)" bootstrap-repo for "([^"]*)" on the server$/) do |arch, target|
   node = get_target(target)
-  os_version_raw, _code = node.run('grep "VERSION=" /etc/os-release')
-  os_version = os_version_raw.strip.split('=')[1].delete '"'
-  puts 'i should see the os version: ' + os_version
+  os_version = get_os_version(node)
   command = 'mgr-create-bootstrap-repo -c SLE-' + os_version + '-' + arch
   puts 'running the command on the server:' + command
   $server.run(command, false)
