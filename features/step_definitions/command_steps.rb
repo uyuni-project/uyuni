@@ -400,6 +400,6 @@ And(/^I create the "([^"]*)" bootstrap-repo for "([^"]*)" on the server$/) do |a
   node = get_target(target)
   os_version = get_os_version(node)
   command = 'mgr-create-bootstrap-repo -c SLE-' + os_version + '-' + arch
-  puts 'running the command on the server:' + command
+  puts 'Creating the boostrap-repo on the server: ' + command
   $server.run(command, false)
 end
