@@ -176,7 +176,7 @@ class ImageProfiles extends React.Component {
           title={t("Delete Profile")}
           content={<span>{t("Are you sure you want to delete profile")} <strong>{this.state.selected ? this.state.selected.label : ''}</strong>?</span>}
           item={this.state.selected}
-          onConfirm={this.deleteProfile}
+          onConfirm={(item) => this.deleteProfiles([item.profileId])}
           onClosePopUp={() => this.selectProfile(undefined)}
         />
         <DeleteDialog id="delete-selected-modal"
