@@ -73,8 +73,9 @@ rescue Timeout::Error
   raise "ERR: Machine didn't Went-up!"
 end
 
+# Extract the os_version dynamically decoding the value in '/etc/os-release'
+# e.g.: VERSION="12-SP1"
 def get_os_version(node)
-  # VERSION="12-SP1"
   os_version_raw, _code = node.run('grep "VERSION=" /etc/os-release')
   puts 'os_version_raw: ' + os_version_raw
   os_version = os_version_raw.strip.split('=')[1].delete '"'
