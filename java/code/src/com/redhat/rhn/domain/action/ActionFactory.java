@@ -57,7 +57,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -82,7 +81,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 /**
  * ActionFactory - the singleton class used to fetch and store
@@ -167,15 +167,17 @@ public class ActionFactory extends HibernateFactory {
         throws TaskomaticApiException {
 
         RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
-        Set<Long> ids = MinionServerFactory
+        Set<Server> minionsInvolved = MinionServerFactory
                     .lookupByIds(new ArrayList<>(set.getElementValues()))
-                    .map(MinionServer::getId)
-                    .collect(Collectors.toSet());
+                    .collect(toSet());
+        Action action = ActionFactory.lookupById(actionId);
 
-        TASKOMATIC_API.deleteScheduledAction(actionId, ids);
+        TASKOMATIC_API.deleteScheduledAction(action, minionsInvolved);
+
+        Set<Long> serverIds = minionsInvolved.stream().map(Server::getId).collect(toSet());
 
         int failed = 0;
-        for (Long sid : ids) {
+        for (Long sid : serverIds) {
             try {
                 removeActionForSystem(actionId, sid);
             }

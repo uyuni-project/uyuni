@@ -285,13 +285,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         result.put(sa[1].getServer().asMinionServer().get().getMinionId(),
                 new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
 
-        Set<Long> servers = new HashSet<>();
-        servers.add(sa[0].getServerId());
-        servers.add(sa[1].getServerId());
-        servers.add(sa[2].getServerId());
+        Set<Server> servers = new HashSet<>();
+        servers.add(sa[0].getServer());
+        servers.add(sa[1].getServer());
+        servers.add(sa[2].getServer());
 
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())), with(equal(servers)));
+            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent)), with(equal(servers)));
         } });
 
         assertServerActionCount(parent, 3);
@@ -331,13 +331,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         result.put(sa.get(1).getServer().asMinionServer().get().getMinionId(),
                 new Result<>(Xor.right(new Schedule.Result("Job 123 does not exist.", false))));
 
-        Set<Long> servers = new HashSet<>();
-        servers.add(sa.get(0).getServerId());
-        servers.add(sa.get(1).getServerId());
-        servers.add(sa.get(2).getServerId());
+        Set<Server> servers = new HashSet<>();
+        servers.add(sa.get(0).getServer());
+        servers.add(sa.get(1).getServer());
+        servers.add(sa.get(2).getServer());
 
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent.getId())), with(equal(servers)));
+            allowing(taskomaticMock).deleteScheduledAction(with(equal(parent)), with(equal(servers)));
         } });
         Optional<ServerAction> traditionalServerAction = parent.getServerActions().stream()
                 .filter(s -> !s.getServer().asMinionServer().isPresent())
