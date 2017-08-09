@@ -489,7 +489,7 @@ class ImageViewList extends React.Component {
           columnKey="revision"
           header={t('Revision')}
           comparator={Utils.sortByNumber}
-          cell={ (row) => row.revision }
+          cell={ (row) => row.revision > 0 ? row.revision : '-' }
         />
         <Column
           columnKey="updates"
