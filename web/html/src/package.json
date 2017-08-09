@@ -4,7 +4,6 @@
   "description": "Node.js software needed by SUSE Manager at build time.",
   "dependencies": {
     "gulp-rename": "1.2.2",
-    "gulp-concat": "2.6.0",
     "event-stream": "3.3.2",
     "vinyl-source-stream": "1.1.0",
     "gulp-concat": "2.6.0",
