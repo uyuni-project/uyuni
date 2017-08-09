@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerArch;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -66,6 +67,7 @@ public class ImageInfo extends BaseDomainHelper {
     private Set<InstalledProduct> installedProducts = new HashSet<>();
     private Org org;
     private ServerArch imageArch;
+    private boolean externalImage;
 
     /**
      * @return the id
@@ -220,6 +222,15 @@ public class ImageInfo extends BaseDomainHelper {
     }
 
     /**
+     * @return true if the image has been built outside SUSE Manager
+     */
+    @Column(name = "external_image")
+    @Type(type = "yes_no")
+    public boolean isExternalImage() {
+        return externalImage;
+    }
+
+    /**
      * @param idIn id to set
      */
     public void setId(Long idIn) {
@@ -308,6 +319,13 @@ public class ImageInfo extends BaseDomainHelper {
      */
     public void setPackages(Set<ImagePackage> packagesIn) {
         this.packages = packagesIn;
+    }
+
+    /**
+     * @param externalImageIn the external image
+     */
+    public void setExternalImage(boolean externalImageIn) {
+        this.externalImage = externalImageIn;
     }
 
     /**

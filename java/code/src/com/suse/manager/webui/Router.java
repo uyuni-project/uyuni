@@ -311,5 +311,7 @@ public class Router implements SparkApplication {
         post("/manager/api/cm/images/inspect/:id",
                 withImageAdmin(ImageBuildController::inspect));
         post("/manager/api/cm/images/delete", withImageAdmin(ImageBuildController::delete));
+        post("/manager/api/cm/images/import",
+                withImageAdmin(ImageBuildController::importImage));
     }
 }
