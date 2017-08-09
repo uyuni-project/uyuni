@@ -258,7 +258,9 @@ class ImageViewList extends React.Component {
 
     renderStatusIcon(row) {
         let icon;
-        if(row.statusId === 0) {
+        if(row.external) {
+            icon = <i className="fa fa-minus-circle fa-1-5x text-muted" title="Built externally"/>
+        } else if(row.statusId === 0) {
             icon = <i className="fa fa-clock-o fa-1-5x" title="Queued"/>
         } else if(row.statusId === 1) {
             icon = <i className="fa fa-exchange fa-1-5x text-info" title="Building"/>
