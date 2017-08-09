@@ -22,32 +22,45 @@ function BootstrapPanel(props) {
     );
 }
 
-function BuildStatus(props) {
-    return (<ActionStatus name="Build" data={props.data} action={props.data.buildAction}/>);
-}
-
-function InspectStatus(props) {
-    return (<ActionStatus name="Inspect" data={props.data} action={props.data.inspectAction}/>);
-}
-
-function ActionStatus(props) {
+function StatusIcon(props) {
     const data = props.data;
     const action = props.action;
 
     let status;
     if(!action) {
-        status = [<i className="fa fa-question-circle fa-1-5x" title="Unknown"/>,"No information"]
+        status = <span><i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>t("No information")</span>
     } else if(action.status === 0) {
-        status = [<i className="fa fa-clock-o fa-1-5x" title="Queued"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " is queued")}</a>]
+        status = <span><i className="fa fa-clock-o fa-1-5x" title={t("Queued")}/><a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " is queued")}</a></span>
     } else if(action.status === 1) {
-        status = [<i className="fa fa-exchange fa-1-5x text-info" title="In progress"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " in progress")}</a>]
+        status = <span><i className="fa fa-exchange fa-1-5x text-info" title={t("In progress")}/><a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " in progress")}</a></span>
     } else if(action.status === 2) {
-        status = [<i className="fa fa-check-circle-o fa-1-5x text-success" title="Successful"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " is successful")}</a>]
+        status = <span><i className="fa fa-check-circle-o fa-1-5x text-success" title={t("Successful")}/><a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " is successful")}</a></span>
     } else if(action.status === 3) {
-        status = [<i className="fa fa-times-circle-o fa-1-5x text-danger" title="Failed"/>,<a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " has failed")}</a>]
+        status = <span><i className="fa fa-times-circle-o fa-1-5x text-danger" title={t("Failed")}/><a title={t("Go to event")} href={"/rhn/systems/details/history/Event.do?sid=" + data.buildServer.id + "&aid=" + action.id}>{t(props.name + " has failed")}</a></span>
     } else {
-        status = [<i className="fa fa-question-circle fa-1-5x" title="Unknown"/>,"No information"]
+        status = <span><i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>t("No information")</span>
     }
+
+    return status;
+}
+
+function BuildStatus(props) {
+    let status;
+    if(props.data.external) {
+        status = <span><i className="fa fa-minus-circle fa-1-5x text-muted" title={t("Built externally")}/>{t("Built externally")}</span>
+    } else {
+        status = <StatusIcon name="Build" data={props.data} action={props.data.buildAction}/>;
+    }
+    return (<ActionStatus name="Build" status={status} data={props.data} action={props.data.buildAction}/>);
+}
+
+function InspectStatus(props) {
+    const status = <StatusIcon name="Inspect" data={props.data} action={props.data.inspectAction}/>;
+    return (<ActionStatus name="Inspect" status={status} action={props.data.inspectAction}/>);
+}
+
+function ActionStatus(props) {
+    const action = props.action;
 
     return (
         <div className="table-responsive">
@@ -55,7 +68,7 @@ function ActionStatus(props) {
                 <tbody>
                     <tr>
                         <td width="20%">{t(props.name + " Status")}:</td>
-                        <td>{status}</td>
+                        <td>{props.status}</td>
                     </tr>
                     { action && action.pickup_time &&
                         <tr>
@@ -93,6 +106,7 @@ function ImageInfo(props) {
                         <td>Checksum:</td>
                         <td>{data.checksum ? data.checksum : "-"}</td>
                     </tr>
+                    { !data.external &&
                     <tr>
                         <td>Profile:</td>
                         { data.profile ?
@@ -100,6 +114,7 @@ function ImageInfo(props) {
                             :<td>-</td>
                         }
                     </tr>
+                    }
                     <tr>
                         <td>Store:</td>
                         { data.store ?
@@ -223,7 +238,8 @@ class ImageViewOverview extends React.Component {
     }
 
     hasBuilt() {
-        return this.props.data.buildAction && this.props.data.buildAction.status === 2;
+        const data = this.props.data;
+        return data.external || (data.buildAction && data.buildAction.status === 2);
     }
 
     hasInspected() {
@@ -262,6 +278,7 @@ class ImageViewOverview extends React.Component {
                         }
                         { isAdmin && data.buildServer &&
                         <div className="btn-group pull-right">
+                            { !data.external &&
                             <ModalButton
                               className="btn-default btn-xs"
                               text={t("Rebuild")}
@@ -269,6 +286,7 @@ class ImageViewOverview extends React.Component {
                               icon="fa-cogs"
                               target="build-modal"
                             />
+                            }
                             { this.hasBuilt() &&
                             <ModalButton
                               className="btn-default btn-xs"
