@@ -95,6 +95,7 @@ public enum SaltServerActionService {
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
     private static final String PARAM_PKGS = "param_pkgs";
     private static final String PARAM_PATCHES = "param_patches";
+    private static final String UPDATE_STACK_ERRATA_KEYWORD = "restart_suggested";
 
     /**
      * For a given action and list of minion servers return the salt call(s) that need to be
@@ -111,7 +112,8 @@ public enum SaltServerActionService {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
                     .map(Errata::getId).collect(Collectors.toSet());
-            return errataAction(minions, errataIds);
+            return errataAction(minions, errataIds, errataAction.getErrata().stream()
+                    .anyMatch(m -> m.hasKeyword(UPDATE_STACK_ERRATA_KEYWORD)));
         }
         else if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(actionType)) {
             return packagesUpdateAction(minions, (PackageUpdateAction) actionIn);
@@ -262,15 +264,49 @@ public enum SaltServerActionService {
      *
      * @param minions list of minions
      * @param errataIds list of errata ids
+     * @param isUpdateStackErrata set erratas to be handled as update stack errata
      * @return minions grouped by local call
      */
     public Map<LocalCall<?>, List<MinionServer>> errataAction(List<MinionServer> minions,
-            Set<Long> errataIds) {
-        Set<Long> serverIds = minions.stream()
+            Set<Long> errataIds, boolean isUpdateStackErrata) {
+        // To prevent issues with outdated Salt version installed on the minion,
+        // update stack erratas (which include Salt package) are always installed
+        // using Salt 'pkg.installed' state instead the new 'pkg.patch_installed'
+        // which might be not available on the minion Salt version. (bsc#1049139)
+        return isUpdateStackErrata ? errataPackageInstallAction(minions, errataIds) :
+                errataPatchInstallAction(minions, errataIds);
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> errataPackageInstallAction(
+            List<MinionServer> minions, Set<Long> errataIds) {
+        Set<Long> minionIds = minions.stream()
+                .map(MinionServer::getId)
+                .collect(Collectors.toSet());
+        Map<Long, Map<String, String>> packageNames =
+                ServerFactory.listNewestPkgsForServerErrata(minionIds, errataIds);
+        // Group minions by packages that need to be updated
+        Map<Map<String, String>, List<MinionServer>> collect = minions.stream().collect(
+                Collectors.groupingBy(a -> packageNames.get(a.getId()))
+        );
+        return collect.entrySet().stream().collect(Collectors.toMap(
+                    m -> State.apply(
+                        Collections.singletonList(PACKAGES_PKGINSTALL),
+                        Optional.of(Collections.singletonMap(PARAM_PKGS,
+                            m.getKey().entrySet().stream().collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue)))),
+                        Optional.of(true)
+                    ),
+                    Map.Entry::getValue));
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> errataPatchInstallAction(
+            List<MinionServer> minions, Set<Long> errataIds) {
+        Set<Long> minionIds = minions.stream()
                 .map(MinionServer::getId)
                 .collect(Collectors.toSet());
         Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory
-                .listErrataNamesForServers(serverIds, errataIds);
+                .listErrataNamesForServers(minionIds, errataIds);
         // Group targeted minions by errata names
         Map<Set<String>, List<MinionServer>> collect = minions.stream()
                 .collect(Collectors.groupingBy(minion -> errataNames.get(minion.getId())
