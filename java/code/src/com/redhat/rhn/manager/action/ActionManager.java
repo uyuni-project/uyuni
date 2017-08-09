@@ -102,8 +102,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Calendar;
-import java.util.stream.Collectors;
 import java.util.Collections;
+
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toList;
+
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
@@ -369,7 +372,7 @@ public class ActionManager extends BaseManager {
         // fail any Kickstart sessions for this action and servers
         Action action = ActionFactory.lookupById(actionId);
         KickstartFactory.failKickstartSessions(Collections.singleton(action), serverActions
-                .stream().map(sa -> sa.getServer()).collect(Collectors.toSet()));
+                .stream().map(sa -> sa.getServer()).collect(toSet()));
 
         // first delete actions for traditional servers
         for (ServerAction serverAction : new ArrayList<>(serverActions)) {
@@ -386,11 +389,10 @@ public class ActionManager extends BaseManager {
         }
         // cancel minion jobs and delete corresponding actions from db
         if (!minionServerActions.isEmpty()) {
-            Set<Long> minionIdsInvolved =
-                    serverActions.stream().map(ServerAction::getServer).map(Server::getId)
-                            .collect(Collectors.toSet());
+            Set<Server> minionsInvolved =
+                    serverActions.stream().map(ServerAction::getServer).collect(toSet());
             // cancel associated schedule in Taskomatic
-            taskomaticApi.deleteScheduledAction(actionId, minionIdsInvolved);
+            taskomaticApi.deleteScheduledAction(action, minionsInvolved);
 
             // delete successfully canceled minion actions from the db
             minionServerActions.stream().forEach(serverAction -> {
@@ -415,7 +417,7 @@ public class ActionManager extends BaseManager {
         Action action = ActionFactory.lookupById(actionId);
         Set<ServerAction> setServerActions = action.getServerActions().stream()
                 .filter(sa -> serverIds.contains(sa.getServer().getId()))
-                .collect(Collectors.toSet());
+                .collect(toSet());
 
         cancelServerActions(actionId, setServerActions);
     }
@@ -1915,7 +1917,7 @@ public class ActionManager extends BaseManager {
                         return params;
                     });
                 })
-                .collect(Collectors.toList());
+                .collect(toList());
 
             ModeFactory.getWriteMode("Action_queries", "schedule_action")
                 .executeUpdates(paramList);
