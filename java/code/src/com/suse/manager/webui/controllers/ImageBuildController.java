@@ -29,10 +29,13 @@ import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
+import com.redhat.rhn.domain.image.ImageStoreFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -235,12 +238,7 @@ public class ImageBuildController {
          * @return the version
          */
         public String getVersion() {
-            if (version == null || version.isEmpty()) {
-                return "latest";
-            }
-            else {
-                return version;
-            }
+            return StringUtils.defaultIfBlank(version, "latest");
         }
     }
 
@@ -255,6 +253,52 @@ public class ImageBuildController {
          */
         public long getImageId() {
             return imageId;
+        }
+    }
+
+    /**
+     * Import request object
+     */
+    public static class ImportRequest extends ScheduleRequest {
+        private long buildHostId;
+        private String name;
+        private String version;
+        private String activationKey;
+        private long storeId;
+
+        /**
+         * @return the build host id
+         */
+        public long getBuildHostId() {
+            return buildHostId;
+        }
+
+        /**
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * @return the version
+         */
+        public String getVersion() {
+            return StringUtils.defaultIfBlank(version, "latest");
+        }
+
+        /**
+         * @return the activation key
+         */
+        public String getActivationKey() {
+            return activationKey;
+        }
+
+        /**
+         * @return the store id
+         */
+        public long getStoreId() {
+            return storeId;
         }
     }
 
@@ -342,6 +386,46 @@ public class ImageBuildController {
                 () -> GSON.toJson(new JsonResult(true, Collections.singletonList(
                         "unknown_error")))
         );
+    }
+
+    /**
+     * Schedules the import of an external image
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object importImage(Request req, Response res, User user) {
+        ImportRequest data;
+        try {
+            data = new GsonBuilder()
+                    .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+                    .create().fromJson(req.body(), ImportRequest.class);
+        }
+        catch (JsonParseException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+            return null;
+        }
+
+        Date scheduleDate = getScheduleDate(data);
+        res.type("application/json");
+        return ImageStoreFactory.lookupByIdAndOrg(data.getStoreId(), user.getOrg())
+                .map(store -> {
+                    try {
+                        Optional<ActivationKey> key = Optional.ofNullable(
+                                ActivationKeyFactory.lookupByKey(data.getActivationKey()));
+
+                        ImageInfoFactory.scheduleImport(data.getBuildHostId(),
+                                data.getName(), data.getVersion(), store,
+                                key.map(ActivationKey::getChannels), scheduleDate, user);
+                        return json(res, new JsonResult(true, "import_scheduled"));
+                    }
+                    catch (TaskomaticApiException e) {
+                        log.error("Could not schedule image import", e);
+                        return GSON.toJson(new JsonResult(false, "taskomatic_error"));
+                    }
+                }).orElseGet(() -> GSON.toJson(new JsonResult(false, "not_found")));
     }
 
     /**
