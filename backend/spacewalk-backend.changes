@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 09 12:11:50 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.73.7-1
+- disable pylint check during build also for RHEL7
+
+-------------------------------------------------------------------
 Tue Aug 08 11:07:41 CEST 2017 - fkobzik@suse.de
 
 - version 2.7.73.6-1
