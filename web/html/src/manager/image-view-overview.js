@@ -114,7 +114,8 @@ class ImageInfo extends React.Component {
         .reduce((a,b) => a + b);
     }
 
-    return totalCount === 0 ? '-' :
+    return totalCount === 0 ?
+      <span><i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/></span> :
       <span>{totalCount}&nbsp;&nbsp;
         <ModalLink
           target="instance-details-popup"
@@ -134,7 +135,7 @@ class ImageInfo extends React.Component {
   }
 
   renderRuntime(data) {
-    let elm;
+    let elm = <span><i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/></span>;
 
     if (data.runtimeStatus === 1) {
       elm = <span><i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are up-to-date")}/><a href={"#/runtime/" + data.id}>{t("All instances are up-to-date")}</a></span>
@@ -165,14 +166,16 @@ class ImageInfo extends React.Component {
               <td>Revision:</td>
               <td>{data.revision ? data.revision : "-"}</td>
             </tr>
-            <tr>
-              <td>Runtime:</td>
-              <td>{this.renderRuntime(data)}</td>
-            </tr>
-            <tr>
-              <td>Instances:</td>
-              <td>{this.renderInstances(data)}</td>
-            </tr>
+            { this.props.runtimeInfoEnabled ?
+              <tr>
+                <td>Runtime:</td>
+                <td>{this.renderRuntime(data)}</td>
+              </tr> : null }
+            { this.props.runtimeInfoEnabled ?
+              <tr>
+                <td>Instances:</td>
+                <td>{this.renderInstances(data)}</td>
+              </tr> : null }
             <tr>
               <td>Checksum:</td>
               <td>{data.checksum ? data.checksum : "-"}</td>
@@ -336,7 +339,7 @@ class ImageViewOverview extends React.Component {
           <div className="col-md-6">
             <BootstrapPanel title={t("Image Info")}>
               <div className="auto-overflow">
-                <ImageInfo data={data}/>
+                <ImageInfo data={data}  runtimeInfoEnabled={this.props.runtimeInfoEnabled}/>
               </div>
             </BootstrapPanel>
           </div>

@@ -18,14 +18,14 @@ const ImageViewPackages = require("./image-view-packages").ImageViewPackages;
 const ImageViewRuntime = require("./image-view-runtime").ImageViewRuntime;
 const DateTime = require("../components/datetime").DateTime;
 
-/* global isAdmin */
+/* global isAdmin, isRuntimeInfoEnabled */
 
 const msgMap = {
   "not_found": "Image cannot be found.",
   "cluster_info_err":
       "Cannot retrieve data from cluster '{0}'. Please make sure its API is accessible or remove it from the list of Virtual Host Managers.",
   "image_overview_not_found":
-      "Image overview not found"
+      "Image overview not found."
 };
 
 const hashUrlRegex = /^#\/([^/]*)\/(\d*)$/;
@@ -171,19 +171,21 @@ class ImageView extends React.Component {
       .then(data => this.setState({selected: undefined, images: data}))
       .catch(this.handleResponseError);
     let updatedData = {};
-    //Get a list of cluster ids
-    Network.get("/rhn/manager/api/cm/clusters").promise.then(data => {
-      const runtimeUrl = "/rhn/manager/api/cm/runtime/";
-      //Get runtime data for each individual cluster
-      data.forEach(cluster =>
-        Network.get(runtimeUrl + cluster.id).promise
-          .then(data => {
-            this.setState({imagesRuntime: this.mergeRuntimeList(data.data, updatedData)});
-          })
-          .catch(jqXHR => this.handleResponseError(jqXHR, cluster.label))
-      );
-    })
-      .catch(this.handleResponseError);
+    if (this.props.runtimeInfoEnabled) {
+      //Get a list of cluster ids
+      Network.get("/rhn/manager/api/cm/clusters").promise.then(data => {
+        const runtimeUrl = "/rhn/manager/api/cm/runtime/";
+        //Get runtime data for each individual cluster
+        data.forEach(cluster =>
+          Network.get(runtimeUrl + cluster.id).promise
+            .then(data => {
+              this.setState({imagesRuntime: this.mergeRuntimeList(data.data, updatedData)});
+            })
+            .catch(jqXHR => this.handleResponseError(jqXHR, cluster.label))
+        );
+      })
+        .catch(this.handleResponseError);
+    }
 
     return listPromise;
   }
@@ -201,27 +203,29 @@ class ImageView extends React.Component {
       .catch(this.handleResponseError);
 
     let updatedData = {};
-    //Get a list of cluster ids
-    Network.get("/rhn/manager/api/cm/clusters").promise.then(data => {
-      const runtimeUrl = (tab === "runtime" ? "/rhn/manager/api/cm/runtime/details/" : "/rhn/manager/api/cm/runtime/");
-      //Get runtime data for each individual cluster
-      if (data.length == 0) {
-        this.setState({selectedRuntime: {
-          clusters: [],
-          pods: []
-        }});
-      }
-      data.forEach(cluster =>
-        Network.get(runtimeUrl + cluster.id + "/" + id).promise
-          .then(data => {
-            this.setState({selectedRuntime: this.mergeRuntimeData(data.data, updatedData)});
-          })
-          .catch(jqXHR => {
-            this.handleResponseError(jqXHR, cluster.label);
-          })
-      );
-    })
-      .catch(this.handleResponseError);
+    if (this.props.runtimeInfoEnabled) {
+      //Get a list of cluster ids
+      Network.get("/rhn/manager/api/cm/clusters").promise.then(data => {
+        const runtimeUrl = (tab === "runtime" ? "/rhn/manager/api/cm/runtime/details/" : "/rhn/manager/api/cm/runtime/");
+        //Get runtime data for each individual cluster
+        if (data.length == 0) {
+          this.setState({selectedRuntime: {
+            clusters: [],
+            pods: []
+          }});
+        }
+        data.forEach(cluster =>
+          Network.get(runtimeUrl + cluster.id + "/" + id).promise
+            .then(data => {
+              this.setState({selectedRuntime: this.mergeRuntimeData(data.data, updatedData)});
+            })
+            .catch(jqXHR => {
+              this.handleResponseError(jqXHR, cluster.label);
+            })
+        );
+      })
+        .catch(this.handleResponseError);
+    }
 
     return detailsPromise;
   }
@@ -284,10 +288,12 @@ class ImageView extends React.Component {
           { this.state.messages.length > 0 && <Messages items={this.state.messages}/> }
           { this.state.selected ?
             <ImageViewDetails data={selected} onTabChange={() => this.updateView(getHashId(), getHashTab())}
-              onCancel={this.handleBackAction} onInspect={this.inspectImage} onBuild={this.buildImage}/>
+              onCancel={this.handleBackAction} onInspect={this.inspectImage} onBuild={this.buildImage}
+              runtimeInfoEnabled={this.props.runtimeInfoEnabled}/>
             :
             <ImageViewList data={list} onSelectCount={(c) => this.setState({selectedCount: c})}
-              onSelect={this.handleDetailsAction} onDelete={this.deleteImages}/>
+              onSelect={this.handleDetailsAction} onDelete={this.deleteImages}
+              runtimeInfoEnabled={this.props.runtimeInfoEnabled}/>
           }
         </Panel>
 
@@ -372,7 +378,7 @@ class ImageViewList extends React.Component {
   }
 
   renderRuntimeIcon(row) {
-    let icon = <span>-</span>;
+    let icon = <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
 
     if (row.runtimeStatus === 1) {
       icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are up-to-date")}/>
@@ -414,7 +420,8 @@ class ImageViewList extends React.Component {
       }
     }
 
-    return totalCount === 0 ? '-' :
+    return totalCount === 0 ?
+      <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/> :
       <span>{totalCount}&nbsp;&nbsp;
         <ModalLink
           target="instance-details-popup"
@@ -434,6 +441,25 @@ class ImageViewList extends React.Component {
   }
 
   render() {
+    let runtimeColumns = [];
+    if (this.props.runtimeInfoEnabled) {
+      runtimeColumns.push(
+        <Column
+          columnKey="runtime"
+          header={t('Runtime')}
+          cell={ (row) => this.renderRuntimeIcon(row) }
+        />
+      );
+      runtimeColumns.push(
+        <Column
+          columnKey="instances"
+          header={t('Instances')}
+          comparator={Utils.sortByNumber}
+          cell={ (row) => this.renderInstances(row) }
+        />
+      );
+    }
+
     return (<div>
       <Table
         data={this.props.data}
@@ -490,17 +516,7 @@ class ImageViewList extends React.Component {
           header={t('Build')}
           cell={ (row) => this.renderStatusIcon(row) }
         />
-        <Column
-          columnKey="runtime"
-          header={t('Runtime')}
-          cell={ (row) => this.renderRuntimeIcon(row) }
-        />
-        <Column
-          columnKey="instances"
-          header={t('Instances')}
-          comparator={Utils.sortByNumber}
-          cell={ (row) => this.renderInstances(row) }
-        />
+        { runtimeColumns }
         <Column
           columnKey="modified"
           header={t('Last Modified')}
@@ -585,15 +601,17 @@ class ImageViewDetails extends React.Component {
     return (
       <div>
         <TabContainer
-          labels={[t('Overview'), t('Patches'), t('Packages'), t('Runtime')]}
+          labels={[t('Overview'), t('Patches'), t('Packages'),
+            this.props.runtimeInfoEnabled ? t('Runtime') : null]}
           hashes={this.getHashUrls(['overview', 'patches', 'packages', 'runtime'])}
           initialActiveTabHash={window.location.hash}
           onTabHashChange={this.onTabChange}
           tabs={[
-            <ImageViewOverview key="1" data={data} onBuild={this.props.onBuild} onInspect={this.props.onInspect}/>,
+            <ImageViewOverview key="1" data={data} onBuild={this.props.onBuild} onInspect={this.props.onInspect}
+              runtimeInfoEnabled={this.props.runtimeInfoEnabled}/>,
             <ImageViewPatches key="2" data={data}/>,
             <ImageViewPackages key="3" data={data}/>,
-            <ImageViewRuntime key="4" data={data}/>
+            this.props.runtimeInfoEnabled ? <ImageViewRuntime key="4" data={data}/> : null
           ]}
         />
         <Button
@@ -609,6 +627,6 @@ class ImageViewDetails extends React.Component {
 }
 
 ReactDOM.render(
-  <ImageView />,
+  <ImageView runtimeInfoEnabled={isRuntimeInfoEnabled}/>,
   document.getElementById('image-view')
 )

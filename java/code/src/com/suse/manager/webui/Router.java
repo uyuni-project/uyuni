@@ -140,6 +140,8 @@ public class Router implements SparkApplication {
                 withOrgAdmin(VirtualHostManagerController::refresh));
         get("/manager/api/vhms/:id/nodes",
                 withOrgAdmin(VirtualHostManagerController::getNodes));
+        get("/manager/api/vhms/modules",
+                withOrgAdmin(VirtualHostManagerController::getModules));
         get("/manager/api/vhms/module/:name/params",
                 withOrgAdmin(VirtualHostManagerController::getModuleParams));
         get("/manager/api/vhms",
