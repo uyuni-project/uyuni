@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action;
 
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -81,8 +83,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
 
 /**
  * ActionFactory - the singleton class used to fetch and store
@@ -167,25 +167,22 @@ public class ActionFactory extends HibernateFactory {
         throws TaskomaticApiException {
 
         RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
-        Set<Server> minionsInvolved = MinionServerFactory
+        Set<Server> involvedMinions = MinionServerFactory
                     .lookupByIds(new ArrayList<>(set.getElementValues()))
                     .collect(toSet());
         Action action = ActionFactory.lookupById(actionId);
 
-        TASKOMATIC_API.deleteScheduledAction(action, minionsInvolved);
+        TASKOMATIC_API.deleteScheduledAction(action, involvedMinions);
 
-        Set<Long> serverIds = minionsInvolved.stream().map(Server::getId).collect(toSet());
-
-        int failed = 0;
-        for (Long sid : serverIds) {
+        return involvedMinions.stream().map(Server::getId).mapToInt(sid -> {
             try {
                 removeActionForSystem(actionId, sid);
+                return 0;
             }
             catch (Exception e) {
-                failed++;
+                return 1;
             }
-        }
-        return failed;
+        }).sum();
     }
 
     /**
