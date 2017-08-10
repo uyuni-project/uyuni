@@ -42,9 +42,12 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.kubernetes.KubernetesManager;
+import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.webui.controllers.utils.ImagesUtil;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.ImageInfoJson;
@@ -206,6 +209,8 @@ public class ImageBuildController {
 
         model.put("pageSize", user.getPageSize());
         model.put("isAdmin", user.hasRole(ADMIN_ROLE));
+        Map<String, GathererModule> modules = new GathererRunner().listModules();
+        model.put("isRuntimeInfoEnabled", ImagesUtil.isImageRuntimeInfoEnabled());
         return new ModelAndView(model, "content_management/view.jade");
     }
 
