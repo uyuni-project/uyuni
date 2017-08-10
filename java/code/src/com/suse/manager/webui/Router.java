@@ -128,8 +128,8 @@ public class Router implements SparkApplication {
         get("/manager/vhms",
                 withCsrfToken(withOrgAdmin(VirtualHostManagerController::list)),
                 jade);
-        post("/manager/api/vhms/kubeconfig/prevalidate",
-                withOrgAdmin(VirtualHostManagerController::prevalidateKubeconfig));
+        post("/manager/api/vhms/kubeconfig/validate",
+                withOrgAdmin(VirtualHostManagerController::validateKubeconfig));
         post("/manager/api/vhms/create/kubernetes",
                 withUser(VirtualHostManagerController::createKubernetes));
         post("/manager/api/vhms/update/kubernetes",
@@ -140,15 +140,17 @@ public class Router implements SparkApplication {
                 withOrgAdmin(VirtualHostManagerController::refresh));
         get("/manager/api/vhms/:id/nodes",
                 withOrgAdmin(VirtualHostManagerController::getNodes));
-        get("/manager/api/vhms/module/:name",
+        get("/manager/api/vhms/module/:name/params",
                 withOrgAdmin(VirtualHostManagerController::getModuleParams));
-        get("/manager/api/vhms", withOrgAdmin(VirtualHostManagerController::get));
-        get("/manager/api/vhms/:id", withOrgAdmin(VirtualHostManagerController::getSingle));
+        get("/manager/api/vhms",
+                withOrgAdmin(VirtualHostManagerController::get));
+        get("/manager/api/vhms/:id",
+                withOrgAdmin(VirtualHostManagerController::getSingle));
         post("/manager/api/vhms/create",
                 withOrgAdmin(VirtualHostManagerController::create));
         post("/manager/api/vhms/update/:id",
                 withOrgAdmin(VirtualHostManagerController::update));
-        post("/manager/api/vhms/delete",
+        delete("/manager/api/vhms/delete/:id",
                 withOrgAdmin(VirtualHostManagerController::delete));
 
         // Subscription Matching

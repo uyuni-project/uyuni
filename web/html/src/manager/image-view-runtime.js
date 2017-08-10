@@ -18,7 +18,7 @@ class ImageViewRuntime extends React.Component {
     if (!Array.isArray(runtimeInfo))
       msg = t("Loading runtime information...");
     else if (runtimeInfo.length === 0)
-      msg = <span><i className="fa fa-1-5x fa-info-circle"/>There is no container running with this image on any <a href="#">registered cluster</a>.</span>;
+      msg = <span><i className="fa fa-1-5x fa-info-circle"/>There is no container running with this image on any <a href="/rhn/manager/vhms">registered cluster</a>.</span>;
     return (
       <div>
         { msg ? <BootstrapPanel><h4>{msg}</h4></BootstrapPanel> : runtimeInfo }

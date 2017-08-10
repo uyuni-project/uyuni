@@ -8,6 +8,7 @@ const Network = require("../utils/network");
 const Utils = require("../utils/functions").Utils;
 const {Table, Column, SearchField} = require("../components/table");
 const Messages = require("../components/messages").Messages;
+const MessagesUtils = require("../components/messages").Utils;
 const {ModalButton, ModalLink, DeleteDialog} = require("../components/dialogs");
 const PopUp = require("../components/popup").PopUp;
 const TabContainer = require("../components/tab-container").TabContainer;
@@ -20,11 +21,11 @@ const DateTime = require("../components/datetime").DateTime;
 /* global isAdmin */
 
 const msgMap = {
-  "not_found": t("Image cannot be found."),
-  "delete_success": t("Image has been deleted."),
-  "delete_success_p": t("Images have been deleted."),
-  "inspect_scheduled": t("Image inspect has been scheduled."),
-  "build_scheduled": t("Image build has been scheduled.")
+  "not_found": "Image cannot be found.",
+  "cluster_info_err":
+      "Cannot retrieve data from cluster '{0}'. Please make sure its API is accessible or remove it from the list of Virtual Host Managers.",
+  "image_overview_not_found":
+      "Image overview not found"
 };
 
 const hashUrlRegex = /^#\/([^/]*)\/(\d*)$/;
@@ -117,6 +118,16 @@ class ImageView extends React.Component {
     Utils.urlBounce("/rhn/manager/cm/import");
   }
 
+  handleResponseError(jqXHR, arg = "") {
+    this.setState({
+      messages:
+            Network.responseErrorMessage(
+              jqXHR,
+              (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null
+            )
+    });
+  }
+
   //Accumulate runtime data from individual clusters into 'toData'
   mergeRuntimeList(data, toData) {
     Object.keys(data).forEach(imgId => {
@@ -157,20 +168,22 @@ class ImageView extends React.Component {
 
   getImageInfoList() {
     let listPromise = Network.get("/rhn/manager/api/cm/images").promise
-      .then(data => this.setState({selected: undefined, images: data}));
-
+      .then(data => this.setState({selected: undefined, images: data}))
+      .catch(this.handleResponseError);
     let updatedData = {};
     //Get a list of cluster ids
     Network.get("/rhn/manager/api/cm/clusters").promise.then(data => {
       const runtimeUrl = "/rhn/manager/api/cm/runtime/";
       //Get runtime data for each individual cluster
-      data.forEach(cluster => Network.get(runtimeUrl + cluster.id).promise
-        .then(data => {
-          if(data.success) {
+      data.forEach(cluster =>
+        Network.get(runtimeUrl + cluster.id).promise
+          .then(data => {
             this.setState({imagesRuntime: this.mergeRuntimeList(data.data, updatedData)});
-          }
-        }, () => {}));
-    });
+          })
+          .catch(jqXHR => this.handleResponseError(jqXHR, cluster.label))
+      );
+    })
+      .catch(this.handleResponseError);
 
     return listPromise;
   }
@@ -184,68 +197,70 @@ class ImageView extends React.Component {
 
     let detailsPromise = Network.get(url).promise.then(data => {
       this.setState({selected: data});
-    });
+    })
+      .catch(this.handleResponseError);
 
     let updatedData = {};
     //Get a list of cluster ids
     Network.get("/rhn/manager/api/cm/clusters").promise.then(data => {
       const runtimeUrl = (tab === "runtime" ? "/rhn/manager/api/cm/runtime/details/" : "/rhn/manager/api/cm/runtime/");
       //Get runtime data for each individual cluster
-      data.forEach(cluster => Network.get(runtimeUrl + cluster.id + "/" + id).promise
-        .then(data => {
-          if(data.success) {
+      if (data.length == 0) {
+        this.setState({selectedRuntime: {
+          clusters: [],
+          pods: []
+        }});
+      }
+      data.forEach(cluster =>
+        Network.get(runtimeUrl + cluster.id + "/" + id).promise
+          .then(data => {
             this.setState({selectedRuntime: this.mergeRuntimeData(data.data, updatedData)});
-          }
-          else if(data.messages && data.messages[0] === "not_available" && tab === "runtime") {
-            //Show this message only on Runtime tab
-            this.pushMessages("warning", t("Cannot retrieve data from '{0}' cluster. Please make sure its API is accessable or remove it from the list of Virtual Host Managers.", data.data));
-          }
-        }, () => {}));
-    });
+          })
+          .catch(jqXHR => {
+            this.handleResponseError(jqXHR, cluster.label);
+          })
+      );
+    })
+      .catch(this.handleResponseError);
 
     return detailsPromise;
   }
 
   deleteImages(idList) {
     return Network.post("/rhn/manager/api/cm/images/delete",
-      JSON.stringify(idList), "application/json").promise.then(data => {
-      if (data.success) {
-        this.setState({
-          images: this.state.images.filter(img => !idList.includes(img.id)),
-          selectedItems: this.state.selectedItems.filter(item => !idList.includes(item))
-        });
-        this.pushMessages("success", idList.length > 1 ? "delete_success_p" : "delete_success");
-      } else {
-        this.pushMessages("error", data.messages);
-      }
-    }).promise;
+      JSON.stringify(idList), "application/json").promise.then(() => {
+      this.setState({
+        images: this.state.images.filter(img => !idList.includes(img.id)),
+        selectedItems: this.state.selectedItems.filter(item => !idList.includes(item)),
+        messages: MessagesUtils.info(t("Deleted successfully."))
+      });
+    })
+      .catch(this.handleResponseError);
   }
 
   inspectImage(id, earliest) {
     return Network.post("/rhn/manager/api/cm/images/inspect/" + id,
       JSON.stringify({imageId: id, earliest: earliest}),
-      "application/json").promise.then(data => {
-      if (data.success) {
-        this.pushMessages("info", data.messages);
-        this.reloadData();
-      } else {
-        this.pushMessages("error", data.messages);
-      }
-    }).promise;
+      "application/json").promise.then(() => {
+      this.reloadData();
+      this.setState({
+        messages: MessagesUtils.info(t("Image inspect has been scheduled."))
+      });
+    })
+      .catch(this.handleResponseError);
   }
 
   buildImage(profile, version, host, earliest) {
     return Network.post("/rhn/manager/api/cm/build/" + profile,
       JSON.stringify({version: version, buildHostId: host, earliest: earliest}),
-      "application/json").promise.then(data => {
-      if (data.success) {
-        this.pushMessages("info", data.messages);
-        //The image id is changed so this page is not available anymore.
-        this.handleBackAction();
-      } else {
-        this.pushMessages("error", data.messages);
-      }
-    }).promise;
+      "application/json").promise.then(() => {
+      //The image id is changed so this page is not available anymore.
+      this.handleBackAction();
+      this.setState({
+        messages: MessagesUtils.info(t("Image build has been scheduled."))
+      });
+    })
+      .catch(this.handleResponseError);
   }
 
   render() {

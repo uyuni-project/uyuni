@@ -24,7 +24,8 @@ class VirtualHostManagerEdit extends React.Component {
 
         ["onFormChange", "onValidate", "clearFields", "renderForm",
          "onCreate", "onUpdate", "renderKubernetesForm", "renderModuleParamsForm",
-         "handleKubeconfigUpload", "bindForm", "setKubeconfigContexts"]
+         "handleKubeconfigUpload", "bindForm", "setKubeconfigContexts",
+         "handleResponseError"]
             .forEach(method => this[method] = this[method].bind(this));
 
         if(this.isEdit()) {
@@ -33,16 +34,17 @@ class VirtualHostManagerEdit extends React.Component {
     }
 
     componentWillMount() {
-        Network.get("/rhn/manager/api/vhms/module/" + this.props.type.toLowerCase())
+        Network.get("/rhn/manager/api/vhms/module/" + this.props.type.toLowerCase() + "/params")
             .promise.then(data => {
-                this.setState({vhmParams: data});
+                this.setState({vhmParams: data.data});
             })
-            .catch((err) => {
-                console.log(err);
-                this.setState({
-                    messages: MessagesUtils.error("Error getting gatherer module params.")
-                });
-            });
+            .catch(this.handleResponseError);
+    }
+
+    handleResponseError(jqXHR) {
+        this.setState({
+            messages:  Network.responseErrorMessage(jqXHR)
+        });
     }
 
     setValues(item) {
@@ -67,15 +69,10 @@ class VirtualHostManagerEdit extends React.Component {
         Network.get("/rhn/manager/api/vhms/kubeconfig/" + id + "/contexts")
             .promise.then(data => {
                 this.setState({
-                    model: Object.assign(this.state.model, {contexts: data})
+                    model: Object.assign(this.state.model, {contexts: data.data})
                 });
             })
-            .catch((err) => {
-                console.log(err);
-                this.setState({
-                    messages: MessagesUtils.error("Error getting kubeconfig contexts.")
-                });
-            });
+            .catch(this.handleResponseError);
     }
 
 
@@ -97,20 +94,9 @@ class VirtualHostManagerEdit extends React.Component {
         }
 
         return request.promise.then(data => {
-            if(data.success) {
-                Utils.urlBounce("/rhn/manager/vhms");
-            } else {
-               this.setState({
-                messages: MessagesUtils.error(data.errors)
-               });
-            }
+            Utils.urlBounce("/rhn/manager/vhms");
         })
-        .catch((err) => {
-           console.log(err);
-           this.setState({
-                messages: MessagesUtils.error("Error updating.")
-            });
-        });
+        .catch(this.handleResponseError);
     }
 
     onCreate(model) {
@@ -127,20 +113,9 @@ class VirtualHostManagerEdit extends React.Component {
         }
 
         return request.promise.then(data => {
-                if(data.success) {
-                    Utils.urlBounce("/rhn/manager/vhms");
-                } else {
-                   this.setState({
-                        messages: MessagesUtils.error(data.errors)
-                    });
-                }
+                Utils.urlBounce("/rhn/manager/vhms");
             })
-            .catch((err) => {
-               console.log(err);
-               this.setState({
-                    messages: MessagesUtils.error("Error creating.")
-                });
-            });
+            .catch(this.handleResponseError);
     }
 
     onFormChange(model) {
@@ -152,7 +127,7 @@ class VirtualHostManagerEdit extends React.Component {
     onValidate(isValid) {
         if (this.props.type.toLowerCase() === "kubernetes" && !this.isEdit()) {
             this.setState({
-                isInvalid: !isValid || !this.state.model.validKubeconfig
+                isInvalid: !isValid || !this.state.validKubeconfig
             });
         } else {
             this.setState({
@@ -218,35 +193,25 @@ class VirtualHostManagerEdit extends React.Component {
         let kubeconfig = event.target.files[0];
         let formData = new FormData();
         formData.append("kubeconfig", kubeconfig);
-        Network.post("/rhn/manager/api/vhms/kubeconfig/prevalidate", formData, false, false)
+        Network.post("/rhn/manager/api/vhms/kubeconfig/validate", formData, false, false)
             .promise
             .then(data => {
-                if (data.contexts) {
+                if (data.data.contexts) {
                     this.setState({
                         messages: null,
+                        validKubeconfig: true,
                         model: Object.assign(this.state.model, {
-                               contexts: data.contexts,
-                               currentContext: data.currentContext,
-                               validKubeconfig: true
-                        })
-                    });
-                } else if (data.errors) {
-                    this.setState({
-                        messages: MessagesUtils.error(data.errors),
-                        model: Object.assign(this.state.model, {
-                           validKubeconfig: false
+                               contexts: data.data.contexts,
+                               module_context: data.currentContext
                         })
                     });
                 }
             })
-            .catch((err) => {
-               console.log(err);
-               this.setState({
-                    messages: MessagesUtils.error("Error uploading."),
-                    model: Object.assign(this.state.model, {
-                       validKubeconfig: false
-                    })
+            .catch(jqXHR => {
+                this.setState({
+                    validKubeconfig: false
                 });
+                this.handleResponseError(jqXHR);
             });
     }
 
@@ -255,9 +220,10 @@ class VirtualHostManagerEdit extends React.Component {
         if (this.state.model.contexts) {
             contextSelect = <Input.Select name="module_context" label={t("Current Context")} required labelClass="col-md-3" divClass="col-md-6"
                 value={this.state.model.module_context}>
+                <option value="">---</option>
             { this.state.model.contexts.map(k =>
-                <option key={k} value={k}>{k}</option>) }
-            </Input.Select>;
+                <option key={k} value={k} selected={k === this.state.model.module_context ? true : null }>{k}</option>) }
+            </Input.Select>
         }
 
         return (
@@ -266,7 +232,7 @@ class VirtualHostManagerEdit extends React.Component {
                 <Input.FormGroup>
                     <Input.Label name={t("Kubeconfig file")} className="col-md-3" required={!this.isEdit()}/>
                     <div className="col-md-6">
-                        <input name="kubeconfig" type="file" onChange={this.handleKubeconfigUpload} className="col-md-6" />
+                        <input name="module_kubeconfig" type="file" onChange={this.handleKubeconfigUpload} className="col-md-6" />
                     </div>
                 </Input.FormGroup>
                 { contextSelect }
