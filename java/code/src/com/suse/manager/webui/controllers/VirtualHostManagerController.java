@@ -118,6 +118,22 @@ public class VirtualHostManagerController {
     }
 
     /**
+     * Get the names of the installed gatherer modules.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object getModules(Request request, Response response, User user) {
+        List<String> gathererModuleNames = getGathererModules()
+                .entrySet().stream()
+                .map(e -> e.getKey())
+                .collect(Collectors.toList());
+        return json(response, gathererModuleNames);
+    }
+
+    /**
      * Get the parameters of the given gatherer module.
      *
      * @param request the request object

@@ -13,6 +13,12 @@ const MessagesUtils = require("../components/messages").Utils;
 
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 
+const msgModuleTypes = {
+    "file": t('File-based'),
+    "vmware": t('VMWare-based'),
+    "kubernetes": t('Kubernetes Cluster')
+}
+
 function getHashId() {
     const match = window.location.hash.match(hashUrlRegex);
     return match ? match[2] : undefined;
@@ -29,11 +35,12 @@ class VirtualHostManager extends React.Component {
         super(props);
 
         ["deleteSelected", "deleteVhm", "handleBackAction", "handleDetailsAction",
-            "handleEditAction", "handleResponseError"]
+            "handleEditAction", "handleResponseError", "getAvailableModules"]
                 .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             vhms: [],
-            messages: []
+            messages: [],
+            availableModules: []
         };
     }
 
@@ -50,6 +57,7 @@ class VirtualHostManager extends React.Component {
             this.getVhmDetails(id, action)
                 .then(data => this.setState({selected: data.data, action: action}))
         else if (!action) {
+            this.getAvailableModules();
             this.getVhmList();
         } else {
             this.setState({action: action, id: id});
@@ -77,6 +85,12 @@ class VirtualHostManager extends React.Component {
     getVhmList() {
         return Network.get("/rhn/manager/api/vhms").promise
             .then(data => this.setState({action: undefined, selected: undefined, vhms: data.data}))
+            .catch(this.handleResponseError);
+    }
+
+    getAvailableModules() {
+        return Network.get("/rhn/manager/api/vhms/modules").promise
+            .then(data => this.setState({availableModules: data}))
             .catch(this.handleResponseError);
     }
 
@@ -128,13 +142,7 @@ class VirtualHostManager extends React.Component {
         if (action === "details") {
             return this.state.selected.label;
         } else if (action === "create") {
-            const types = {
-                "file": t("File-based Virtual Host Manager"),
-                "vmware": t("VMware-based Virtual Host Manager"),
-                "kubernetes": t("Kubernetes Cluster")
-            };
-
-            return t("Add a {0}", types[this.state.id] || types[0]);
+            return t("Add a {0}", msgModuleTypes[this.state.id] + " " + t("Virtual Host Manager"));
         } else {
             return t("Virtual Host Managers");
         }
@@ -148,11 +156,9 @@ class VirtualHostManager extends React.Component {
                     icon="fa-plus"
                     title={t("Add a virtual host manager")}
                     className="btn-default"
-                    items={[
-                        <a href="#/create/file">{t('File-based')}</a>,
-                        <a href="#/create/vmware">{t('VMWare-based')}</a>,
-                        <a href="#/create/kubernetes">{t('Kubernetes Cluster')}</a>
-                    ]}
+                    items={this.state.availableModules.map(name =>
+                        <a href={"#/create/" + name.toLocaleLowerCase()}>{msgModuleTypes[name.toLocaleLowerCase()]}</a>
+                    )}
                 />
             }
         </div>;
