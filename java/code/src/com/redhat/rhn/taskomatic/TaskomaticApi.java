@@ -39,12 +39,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
 
+import static java.util.stream.Collectors.toSet;
 
 /**
  * TaskomaticApi
@@ -530,18 +530,19 @@ public class TaskomaticApi {
      * Delete a scheduled Action.
      *
      * @param action the action id to be removed
-     * @param minionsInvolved minions involved in the action to remove
+     * @param involvedMinions minions involved in the action to remove
      * @throws TaskomaticApiException if there was an error
      */
-    public void deleteScheduledAction(Action action, Set<Server> minionsInvolved)
+    public void deleteScheduledAction(Action action, Set<Server> involvedMinions)
         throws TaskomaticApiException {
 
-        List<Long> minionServerIds = (List<Long>) HibernateFactory.getSession()
-                .getNamedQuery("Action.findMinionIds").setParameter("id", action.getId())
-                .getResultList().stream().collect(Collectors.toList());
-        String jobLabel = MINION_ACTION_JOB_PREFIX + action;
+        Set<Server> minionServers = (Set<Server>) HibernateFactory.getSession()
+                .getNamedQuery("Action.findMinions").setParameter("id", action.getId())
+                .getResultList().stream().collect(toSet());
 
-        if (minionsInvolved.equals(minionServerIds)) {
+        String jobLabel = MINION_ACTION_JOB_PREFIX + action.getId();
+
+        if (involvedMinions.equals(minionServers)) {
             try {
                 LOG.debug("Unscheduling job: " + jobLabel);
                 invoke("tasko.unscheduleSatBunch", jobLabel);
@@ -556,10 +557,10 @@ public class TaskomaticApi {
             }
         }
         else {
-            LOG.debug("Job " + jobLabel +
-                    " will NOT be unscheduled, as others minions are involved. " +
-                    "Actions related to server ids " + minionsInvolved +
-                    " will be unscheduled.");
+            LOG.debug("Job schedule" + jobLabel +
+                    " will NOT be deleted, as others minions are involved. " +
+                    "Actions related to server ids " + involvedMinions +
+                    " will be deleted.");
         }
     }
 }

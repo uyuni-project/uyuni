@@ -389,10 +389,10 @@ public class ActionManager extends BaseManager {
         }
         // cancel minion jobs and delete corresponding actions from db
         if (!minionServerActions.isEmpty()) {
-            Set<Server> minionsInvolved =
+            Set<Server> involvedMinions =
                     serverActions.stream().map(ServerAction::getServer).collect(toSet());
             // cancel associated schedule in Taskomatic
-            taskomaticApi.deleteScheduledAction(action, minionsInvolved);
+            taskomaticApi.deleteScheduledAction(action, involvedMinions);
 
             // delete successfully canceled minion actions from the db
             minionServerActions.stream().forEach(serverAction -> {
