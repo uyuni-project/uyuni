@@ -15,7 +15,7 @@ class VirtualHostManagerDetails extends React.Component {
     constructor(props) {
         super(props);
 
-        ["onRefresh"]
+        ["onRefresh", "handleResponseError"]
                 .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             messages: []
@@ -23,17 +23,18 @@ class VirtualHostManagerDetails extends React.Component {
 
     }
 
+    handleResponseError(jqXHR) {
+        this.setState({
+            messages: Network.responseErrorMessage(jqXHR)
+        });
+    }
+
     componentWillMount() {
         Network.get("/rhn/manager/api/vhms/" + this.props.data.id + "/nodes")
             .promise.then(data => {
-                this.setState({nodes: data});
+                this.setState({nodes: data.data});
             })
-            .catch((err) => {
-                console.log(err);
-                this.setState({
-                    messages: MessagesUtils.error(["Error getting nodes"])
-                });
-            });
+            .catch(this.handleResponseError);
     }
 
     onRefresh() {
@@ -41,20 +42,15 @@ class VirtualHostManagerDetails extends React.Component {
                 JSON.stringify(this.props.data.id), "application/json").promise.then(data => {
             if (data.success) {
                 this.setState({
-                    messages:  MessagesUtils.info(t("Refreshing the data for this Virtual Host Manager has been triggered."))
+                    messages: MessagesUtils.info(t("Refreshing the data for this Virtual Host Manager has been triggered."))
                 });
             } else {
                 this.setState({
-                    messages: MessagesUtils.error(msg)
+                    messages: MessagesUtils.error(data.messages)
                 });
             }
         })
-        .catch((err) => {
-            console.log(err);
-            this.setState({
-                messages: MessagesUtils.error(["Error triggering refresh."])
-            });
-        });
+        .catch(this.handleResponseError);
     }
 
     render() {
@@ -78,6 +74,30 @@ class VirtualHostManagerDetails extends React.Component {
                         comparator={Utils.sortByText}
                         header={t('Name')}
                         cell={(row, criteria) => row.type == "server" ? <a href={"/rhn/systems/details/Overview.do?sid=" + row.id}>{row.name}</a> : row.name }
+                    />
+                    <Column
+                        columnKey="os"
+                        comparator={Utils.sortByText}
+                        header={t('Os')}
+                        cell={(row, criteria) => row.os }
+                    />
+                    <Column
+                        columnKey="arch"
+                        comparator={Utils.sortByText}
+                        header={t('CPU Arch')}
+                        cell={(row, criteria) => row.arch }
+                    />
+                    <Column
+                        columnKey="cpuSockets"
+                        comparator={Utils.sortByText}
+                        header={t('CPU Sockets')}
+                        cell={(row, criteria) => row.cpuSockets }
+                    />
+                    <Column
+                        columnKey="memory"
+                        comparator={Utils.sortByText}
+                        header={t('RAM (Mb)')}
+                        cell={(row, criteria) => row.memory }
                     />
                 </Table>
                 : null

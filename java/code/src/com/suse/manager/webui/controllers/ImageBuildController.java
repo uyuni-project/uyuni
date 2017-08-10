@@ -60,7 +60,6 @@ import spark.Spark;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -331,8 +330,6 @@ public class ImageBuildController {
      * @return the result JSON object
      */
     public static Object build(Request request, Response response, User user) {
-        response.type("application/json");
-
         BuildRequest buildRequest;
         try {
             buildRequest = new GsonBuilder()
@@ -340,8 +337,8 @@ public class ImageBuildController {
                     .create().fromJson(request.body(), BuildRequest.class);
         }
         catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult(false));
         }
 
         Date scheduleDate = getScheduleDate(buildRequest);
@@ -354,16 +351,16 @@ public class ImageBuildController {
             try {
                 ImageInfoFactory.scheduleBuild(buildRequest.buildHostId,
                         buildRequest.getVersion(), profile, scheduleDate, user);
-                return GSON.toJson(new JsonResult(true, "build_scheduled"));
+                return json(response, new JsonResult(true, "build_scheduled"));
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule image build:");
-                log.error(e);
-                return GSON.toJson(new JsonResult(false, "taskomatic_error"));
+                log.error("Could not schedule image build:", e);
+                return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                        new JsonResult(false, "taskomatic_error"));
             }
         }).orElseGet(
-                () -> GSON.toJson(new JsonResult(true, Collections.singletonList(
-                        "unknown_error")))
+                () -> json(response, HttpStatus.SC_NOT_FOUND,
+                        new JsonResult(false, "not_found"))
         );
     }
 
@@ -383,28 +380,27 @@ public class ImageBuildController {
                     .create().fromJson(req.body(), InspectRequest.class);
         }
         catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
+            return json(res, HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult(false));
         }
 
         Date scheduleDate = getScheduleDate(inspectRequest);
 
         Long imageId = Long.parseLong(req.params("id"));
 
-        res.type("application/json");
         return ImageInfoFactory.lookupByIdAndOrg(imageId, user.getOrg()).map(info -> {
             try {
                 ImageInfoFactory.scheduleInspect(info, scheduleDate, user);
-                return GSON.toJson(new JsonResult(true, "inspect_scheduled"));
+                return json(res, new JsonResult(true, "inspect_scheduled"));
             }
             catch (TaskomaticApiException e) {
-                log.error("Could not schedule image inspect:");
-                log.error(e);
-                return GSON.toJson(new JsonResult(false, "taskomatic_error"));
+                log.error("Could not schedule image inspect:", e);
+                return json(res, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                        new JsonResult(false, "taskomatic_error"));
             }
         }).orElseGet(
-                () -> GSON.toJson(new JsonResult(true, Collections.singletonList(
-                        "unknown_error")))
+                () -> json(res, HttpStatus.SC_NOT_FOUND,
+                    new JsonResult(false, "not_found"))
         );
     }
 
@@ -555,7 +551,7 @@ public class ImageBuildController {
     public static Object getClusterList(Request req, Response res, User user) {
         JsonArray clusterList = new JsonArray();
         VirtualHostManagerFactory.getInstance().listVirtualHostManagers(user.getOrg())
-                .stream().filter(vhm -> KubernetesManager.KUBERNETES_MODULE
+                .stream().filter(vhm -> VirtualHostManagerFactory.KUBERNETES
                         .equals(vhm.getGathererModule()))
                 .forEach(vhm -> {
                     JsonObject cluster = new JsonObject();
@@ -583,8 +579,8 @@ public class ImageBuildController {
             clusterId = Long.parseLong(req.params("clusterId"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            return json(res, HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult<>(false, "Invalid id"));
         }
 
         VirtualHostManager cluster = VirtualHostManagerFactory.getInstance()
@@ -595,31 +591,28 @@ public class ImageBuildController {
             Optional<ImageOverview> imageInfo =
                     ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
+            JsonResult result = imageInfo
+                    .map(overview -> new JsonResult<>(true,
+                            getRuntimeOverviewJson(usages, overview)))
+                    .orElseGet(() -> {
+                        log.error("ImageOverview id=" + id + " not found");
+                        return new JsonResult<>(false, "image_overview_not_found");
+                    });
+
             return json(res,
-                    imageInfo
-                            .map(overview -> new JsonResult<>(true,
-                                    getRuntimeOverviewJson(usages, overview)))
-                            .orElse(new JsonResult<>(false, "not_found")));
+                    result.isSuccess() ? HttpStatus.SC_OK : HttpStatus.SC_NOT_FOUND,
+                    result);
         }
         catch (NoSuchElementException e) {
+            log.error("Could not retrieve cluster info", e);
             // Cluster is not available
-            return json(res, getClusterNotAvailableJsonResponse(cluster));
+            return json(res, HttpStatus.SC_NOT_FOUND,
+                    new JsonResult<>(false, "cluster_info_err"));
         }
-    }
-
-    private static JsonResult<String> getClusterNotAvailableJsonResponse(
-            VirtualHostManager cluster) {
-        log.warn("Cannot get data from the cluster '" + cluster.getLabel() +
-                "'. Is the cluster API reachable?");
-        return new JsonResult<>(false, "not_available", cluster.getLabel());
     }
 
     private static Set<ImageUsage> getImagesUsage(VirtualHostManager cluster) {
         return K8S_MANAGER.getImagesUsage(cluster);
-    }
-
-    private static Set<ImageUsage> getImagesUsage() {
-        return K8S_MANAGER.getImagesUsage();
     }
 
     /**
@@ -636,8 +629,8 @@ public class ImageBuildController {
             clusterId = Long.parseLong(req.params("clusterId"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            return json(res, HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult<>(false, "Invalid id"));
         }
 
         JsonObject obj = new JsonObject();
@@ -652,7 +645,9 @@ public class ImageBuildController {
         }
         catch (NoSuchElementException e) {
             // Cluster is not available
-            return json(res, getClusterNotAvailableJsonResponse(cluster));
+            log.error("Could not retrieve cluster info", e);
+            return json(res, HttpStatus.SC_NOT_FOUND,
+                    new JsonResult<>(false, "cluster_info_err"));
         }
     }
 
@@ -671,8 +666,8 @@ public class ImageBuildController {
             clusterId = Long.parseLong(req.params("clusterId"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            return json(res, HttpStatus.SC_BAD_REQUEST, new JsonResult<>(false,
+                    "Invalid id"));
         }
 
         VirtualHostManager cluster = VirtualHostManagerFactory.getInstance()
@@ -682,15 +677,20 @@ public class ImageBuildController {
             Optional<ImageOverview> imageInfo =
                     ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
+            JsonResult result = imageInfo
+                    .map(overview -> new JsonResult<>(true,
+                            getRuntimeDetailsJson(usages, overview)))
+                    .orElse(new JsonResult<>(false, "cluster_info_not_found"));
+
             return json(res,
-                    imageInfo
-                            .map(overview -> new JsonResult<>(true,
-                                    getRuntimeDetailsJson(usages, overview)))
-                            .orElse(new JsonResult<>(false, "not_found")));
+                    result.isSuccess() ? HttpStatus.SC_OK : HttpStatus.SC_NOT_FOUND,
+                    result);
         }
         catch (NoSuchElementException e) {
             // Cluster is not available
-            return json(res, getClusterNotAvailableJsonResponse(cluster));
+            log.error("Could not retrieve cluster info", e);
+            return json(res, HttpStatus.SC_NOT_FOUND, new JsonResult<>(false,
+                    "cluster_info_err"));
         }
     }
 
@@ -714,8 +714,9 @@ public class ImageBuildController {
             ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
         }
         catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
+            return json(res,
+                    HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult<>(false));
         }
 
         List<ImageInfo> images = ImageInfoFactory.lookupByIdsAndOrg(ids, user.getOrg());

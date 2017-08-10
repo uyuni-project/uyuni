@@ -17,7 +17,6 @@ package com.suse.manager.webui.controllers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -40,16 +39,13 @@ import org.yaml.snakeyaml.reader.ReaderException;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -63,7 +59,6 @@ import static com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager
 import static com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory.CONFIG_PASS;
 import static com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory.CONFIG_USER;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.utils.Json.GSON;
 
 /**
  * Controller class providing backend code for the VHM pages.
@@ -105,7 +100,8 @@ public class VirtualHostManagerController {
     public static Object get(Request req, Response res, User user) {
         List<VirtualHostManager> vhms =
                 getFactory().listVirtualHostManagers(user.getOrg());
-        return json(res, getJsonList(vhms));
+        return json(res,
+                new JsonResult<>(true, getJsonList(vhms)));
     }
 
     /**
@@ -121,6 +117,14 @@ public class VirtualHostManagerController {
                 (vhm) -> getJsonDetails(vhm));
     }
 
+    /**
+     * Get the parameters of the given gatherer module.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
     public static String getModuleParams(Request request, Response response, User user) {
         String module = request.params("name");
         Optional<GathererModule> gathererModule = getGathererModules()
@@ -128,10 +132,11 @@ public class VirtualHostManagerController {
                 .filter(e -> module.toLowerCase().equals(e.getKey().toLowerCase()))
                 .map(e -> e.getValue())
                 .findFirst();
-        return json(response, gathererModule.map(m -> m.getParameters())
-                .orElse(Collections.emptyMap()));
+        return json(response,
+                new JsonResult<>(true,
+                        gathererModule.map(m -> m.getParameters())
+                                .orElse(Collections.emptyMap())));
     }
-
 
     private static Map<String, GathererModule> getGathererModules() {
         if (gathererModules != null) {
@@ -140,6 +145,14 @@ public class VirtualHostManagerController {
         return gathererRunner.listModules();
     }
 
+    /**
+     * Get the nodes of a Virt Host Manager.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
     public static String getNodes(Request request, Response response, User user) {
         return withVirtualHostManager(request, response, user,
                 (vhm) -> getJsonNodes(vhm));
@@ -172,20 +185,27 @@ public class VirtualHostManagerController {
                 moduleNameParam, gathererModuleParams, modules)) {
             errors.add("All fields are mandatory.");
         }
-        String moduleName = modules.entrySet().stream()
-                .filter(entry -> moduleNameParam.equalsIgnoreCase(entry.getKey()))
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .orElse(null);
 
         if (errors.isEmpty()) {
-            VirtualHostManager vhm = getFactory().createVirtualHostManager(
-                    label, user.getOrg(), moduleName, gathererModuleParams);
+            String moduleName = modules.entrySet().stream()
+                    .filter(entry -> moduleNameParam.equalsIgnoreCase(entry.getKey()))
+                    .map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse(null);
+
+            VirtualHostManager vhm = getFactory()
+                    .createVirtualHostManager(
+                            label,
+                            user.getOrg(),
+                            moduleName,
+                            gathererModuleParams);
             getFactory().save(vhm);
-            return json(response, Collections.singletonMap("success", true));
+            return json(response,
+                    new JsonResult<>(true));
         }
         else {
-            return json(response, Collections.singletonMap("errors", errors));
+            return json(response,
+                    new JsonResult<>(false, errors));
         }
     }
 
@@ -195,24 +215,18 @@ public class VirtualHostManagerController {
      * @param request the request
      * @param response the response
      * @param user the user
-     * @return string containing the json response
+     * @return the json response
      */
     public static String update(Request request, Response response, User user) {
-        List<String> errors = new LinkedList<>();
-        try {
-            long id = Long.parseLong(request.params("id"));
-            Optional<VirtualHostManager> vhmOpt = getFactory().lookupById(id);
-            VirtualHostManager vhm = vhmOpt
-                    .orElseThrow(() ->
-                            new EntityNotFoundException(
-                                    "No virtual host manager found for id=" + id));
-
+        return withVirtualHostManager(request, response, user, (vhm) -> {
+            List<String> errors = new LinkedList<>();
             Map<String, String> gathererModuleParams =
                     paramsFromQueryMap(request.queryMap().toMap());
 
             if (StringUtils.isBlank(request.queryParams("label")) ||
                     !getFactory().isConfigurationValid(
-                            vhm.getGathererModule(), gathererModuleParams,
+                            vhm.getGathererModule(),
+                            gathererModuleParams,
                             CONFIG_USER, CONFIG_PASS)) {
                 errors.add("All fields are mandatory.");
             }
@@ -220,30 +234,31 @@ public class VirtualHostManagerController {
                 getFactory().updateVirtualHostManager(vhm,
                         request.queryParams("label"),
                         gathererModuleParams);
-                return json(response, Collections.singletonMap("success", true));
+                return new JsonResult<>(true);
             }
-        }
-        catch (NumberFormatException e) {
-            errors.add("Invalid id parameter.");
-        }
-        catch (EntityNotFoundException e) {
-            errors.add(e.getMessage());
-        }
-        return json(response,
-                Collections.singletonMap("errors",
-                        errors));
+            return new JsonResult<>(false, errors);
+        });
     }
 
-    public static String prevalidateKubeconfig(Request request, Response response,
-                                               User user) {
+    /**
+     * Validates the uploaded kubeconfig file.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the json response
+     */
+    public static String validateKubeconfig(Request request, Response response,
+                                            User user) {
         try {
             List<FileItem> items = parseMultipartRequest(request);
-            Optional<FileItem> kubeconfigFile = items.stream()
-                    .filter(item -> !item.isFormField() && CONFIG_KUBECONFIG.equals(item.getFieldName()))
-                    .findFirst();
+
+            Optional<FileItem> kubeconfigFile = findFileItem(items, CONFIG_KUBECONFIG);
+
             if (!kubeconfigFile.isPresent()) {
                 throw new IllegalArgumentException("No kubeconfig file found in request");
             }
+
             Map<String, Object> map;
             try (InputStream fi = kubeconfigFile.get().getInputStream()) {
                 map = new Yaml().loadAs(fi, Map.class);
@@ -253,7 +268,8 @@ public class VirtualHostManagerController {
                     contexts = (List<Map<String, Object>>)map.get("contexts");
                     contexts.forEach(ctx -> {
                         if (ctx.get("name") == null) {
-                            throw new IllegalArgumentException("'name' key missing from kube-config/contexts list");
+                            throw new IllegalArgumentException(
+                                    "'name' key missing from kube-config/contexts list");
                         }
                     });
                 }
@@ -265,48 +281,59 @@ public class VirtualHostManagerController {
                         .map(ctx -> ctx.get("name"))
                         .collect(Collectors.toList()));
                 json.put("currentContext", currentContext);
-                return json(response, json);
+                return json(response, new JsonResult<>(true, json));
             }
-
-            // TODO validate embedded certificate-authority client-certificate client-key
+        }
+        catch (IllegalArgumentException e) {
+            LOG.error("Invalid kubeconfig content", e);
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult<>(false,
+                            "Invalid kubeconfig content: " + e.getMessage()));
+        }
+        catch (ReaderException e) {
+            LOG.error("Invalid kubeconfig file syntax", e);
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult<>(false,
+                            "Invalid kubeconfig file syntax: " + e.getMessage()));
         }
         catch (FileUploadException e) {
-            LOG.error(e);
-            return json(response,
-                    Collections.singletonMap("errors",
-                            Arrays.asList(e.getMessage())));
+            LOG.error("Kubeconfig upload error", e);
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                        new JsonResult<>(false, e.getMessage()));
         }
         catch (IOException e) {
             LOG.error("Error reading the kubeconfig file", e);
-            return json(response,
-                    Collections.singletonMap("errors",
-                            Arrays.asList("Error reasing the kubeconfig file")));
-        }
-        catch (ReaderException e) {
-            return json(response,
-                    Collections.singletonMap("errors",
-                            Arrays.asList("Invalid YAML syntax: " + e.getMessage())));
-        }
-        catch (IllegalArgumentException e) {
-            return json(response,
-                    Collections.singletonMap("errors",
-                            Arrays.asList(e.getMessage())));
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    new JsonResult<>(false, "Error reading the kubeconfig file"));
         }
     }
 
-    public static String getKubeconfigContexts(Request request, Response response, User user) {
+    /**
+     * Gets the contexts available in the kubeconfig file of a
+     * Kubernetes Virtual Host Manager.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the json response
+     */
+    public static String getKubeconfigContexts(Request request,
+                                               Response response, User user) {
         return withVirtualHostManager(request, response, user, (vhm) -> {
             String kubeconfigPath = vhm.getConfigs().stream()
                     .filter(cfg -> CONFIG_KUBECONFIG.equals(cfg.getParameter()))
                     .map(kubeconfig -> kubeconfig.getValue())
                     .findFirst()
-                    .orElseThrow(() -> new RuntimeException("kubeconfig param not present"));
-            List<String> contextNames = null;
+                    .orElseThrow(() ->
+                            new IllegalArgumentException("kubeconfig param not present"));
+            List<String> contextNames = Collections.emptyList();
             try {
                 try (InputStream fi = new FileInputStream(kubeconfigPath)) {
                     Map<String, Object>  map = new Yaml().loadAs(fi, Map.class);
-                    if (map.get("contexts") != null && map.get("contexts") instanceof List) {
-                        List<Map<String, Object>> contexts = (List<Map<String, Object>>)map.get("contexts");
+                    if (map.get("contexts") != null &&
+                            map.get("contexts") instanceof List) {
+                        List<Map<String, Object>> contexts =
+                                (List<Map<String, Object>>)map.get("contexts");
                         contextNames = contexts.stream()
                                 .map(ctx -> (String)ctx.get("name"))
                                 .collect(Collectors.toList());
@@ -314,78 +341,116 @@ public class VirtualHostManagerController {
                 }
             }
             catch (IOException e) {
-                throw new RuntimeException("Could not get contexts from kubeconfig file " + kubeconfigPath, e);
+                return new JsonResult<>(false, "Could not get contexts from file " +
+                        kubeconfigPath + ": " + e.getMessage());
             }
-            return contextNames;
+            return new JsonResult(true, contextNames);
         });
     }
 
-    private static String withVirtualHostManager(Request request, Response response, User user,
-                                                 Function<VirtualHostManager, Object> operation) {
+    private static String withVirtualHostManager(Request request,
+                                                 Response response,
+                                                 User user,
+                                                 Function<VirtualHostManager, JsonResult>
+                                                         operation) {
         Long storeId;
         try {
             storeId = Long.parseLong(request.params("id"));
         }
         catch (NumberFormatException e) {
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult<>(false, "Invalid id"));
         }
         try {
             VirtualHostManager vhm = getFactory().lookupByIdAndOrg(storeId, user.getOrg());
+            if (vhm == null) {
+                return json(response, HttpStatus.SC_NOT_FOUND,
+                        new JsonResult<>(false, "Virtual Host Manager not found"));
+            }
+            JsonResult result = operation.apply(vhm);
 
-            Object result = operation.apply(vhm);
-
-            return json(response, result);
+            return json(response,
+                    result.isSuccess() ?
+                            HttpStatus.SC_OK : HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    result);
         }
-        catch (NoResultException e) {
-            LOG.error("Virtual host manager not found id=" + storeId, e);
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+        catch (IllegalArgumentException e) {
+            LOG.error("Invalid parameter: ", e);
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult<>(false, e.getMessage()));
         }
     }
 
+    /**
+     * Creates a Kubernetes Virtual Host Manager.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the json response
+     */
     public static String createKubernetes(Request request, Response response, User user) {
         try {
             List<FileItem> items = parseMultipartRequest(request);
 
             String label = findStringParam(items, "label")
-                    .orElseThrow(() -> new IllegalArgumentException("label param missing"));
+                    .orElseThrow(() ->
+                            new IllegalArgumentException("label param missing"));
             String context = findStringParam(items, "module_context")
-                    .orElseThrow(() -> new IllegalArgumentException("context param missing"));
-            FileItem kubeconfig = findParamItem(items, "module_kubeonfig")
-                    .orElseThrow(() -> new IllegalArgumentException("kubeconfig param missing"));
+                    .orElseThrow(() ->
+                            new IllegalArgumentException("context param missing"));
+            FileItem kubeconfig = findFileItem(items, "module_" + CONFIG_KUBECONFIG)
+                    .orElseThrow(() ->
+                            new IllegalArgumentException("kubeconfig param missing"));
 
             validateKubeconfig(context, kubeconfig);
 
             try (InputStream kubeconfigIn = kubeconfig.getInputStream()) {
-                VirtualHostManager virtualHostManager = VirtualHostManagerFactory.getInstance().createKuberntesVirtualHostManager(
-                        label,
-                        user.getOrg(),
-                        context,
-                        kubeconfigIn
-                        );
-                getFactory().save(virtualHostManager);
-                return json(response, Collections.singletonMap("success", true));
+                VirtualHostManagerFactory.getInstance()
+                        .createKuberntesVirtualHostManager(
+                            label,
+                            user.getOrg(),
+                            context,
+                            kubeconfigIn);
+                return json(response, new JsonResult<>(true));
             }
-
         }
-        catch (IOException | IllegalArgumentException | FileUploadException e) {
-            LOG.error(e);
-            return json(response, Collections.singletonMap("errors", Arrays.asList(e.getMessage())));
+        catch (IllegalArgumentException e) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult<>(false, e.getMessage()));
+        }
+        catch (IOException | FileUploadException e) {
+            LOG.error("Could not create Kuberentes Virt Host Mgr", e);
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    new JsonResult<>(false, e.getMessage()));
         }
     }
 
-    public static String updateKubernetes(Request request, Response response, User user) {
+    /**
+     * Updates a Kubernetes Virtual Host Manager.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the json response
+     */
+    public static String updateKubernetes(Request request,
+                                          Response response,
+                                          User user) {
         try {
             List<FileItem> items = parseMultipartRequest(request);
 
             long id = Long.parseLong(findStringParam(items, "id")
-                    .orElseThrow(() -> new IllegalArgumentException("id param missing")));
+                    .orElseThrow(() ->
+                            new IllegalArgumentException("id param missing")));
             String label = findStringParam(items, "label")
-                    .orElseThrow(() -> new IllegalArgumentException("label param missing"));
+                    .orElseThrow(() ->
+                            new IllegalArgumentException("label param missing"));
             String context = findStringParam(items, "module_context")
-                    .orElseThrow(() -> new IllegalArgumentException("context param missing"));
-            Optional<FileItem> kubeconfig = findParamItem(items, "module_kubeconfig");
+                    .orElseThrow(() ->
+                            new IllegalArgumentException("context param missing"));
+            Optional<FileItem> kubeconfig = findFileItem(items,
+                    "module_" + CONFIG_KUBECONFIG);
             Optional<InputStream> kubeconfigIn = Optional.empty();
             if (kubeconfig.isPresent()) {
                 validateKubeconfig(context, kubeconfig.get());
@@ -395,29 +460,37 @@ public class VirtualHostManagerController {
             VirtualHostManager vhm = getFactory().lookupByIdAndOrg(id, user.getOrg());
             VirtualHostManagerFactory.getInstance()
                     .updateKuberntesVirtualHostManager(vhm, label, context, kubeconfigIn);
-            return json(response, Collections.singletonMap("success", true));
+            return json(response, new JsonResult<>(true));
         }
-        catch (IOException | IllegalArgumentException | FileUploadException e) {
-            LOG.error(e);
-            return json(response, Collections.singletonMap("errors", Arrays.asList(e.getMessage())));
+        catch (IllegalArgumentException e) {
+            LOG.error("Error updating Kubernetes Virtual host manage", e);
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult<>(false, e.getMessage()));
+        }
+        catch (IOException | FileUploadException e) {
+            LOG.error("Error updating Kubernetes Virtual host manage", e);
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    new JsonResult<>(false, e.getMessage()));
         }
         catch (NoResultException e) {
             LOG.error("Virtual host manager not found", e);
-            Spark.halt(HttpStatus.SC_NOT_FOUND);
-            return null;
+            return json(response, HttpStatus.SC_NOT_FOUND,
+                    new JsonResult<>(false, "Virtual Host Manager not found"));
         }
-
     }
 
-    private static List<FileItem> parseMultipartRequest(Request request) throws FileUploadException {
-        DiskFileItemFactory factory = new DiskFileItemFactory();
+    private static List<FileItem> parseMultipartRequest(Request request)
+            throws FileUploadException {
+        DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
         ServletContext servletContext = request.raw().getServletContext();
-        File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
-        factory.setRepository(repository);
-        return new ServletFileUpload(factory).parseRequest(request.raw());
+        File repository = (File) servletContext
+                .getAttribute("javax.servlet.context.tempdir");
+        fileItemFactory.setRepository(repository);
+        return new ServletFileUpload(fileItemFactory).parseRequest(request.raw());
     }
 
-    private static void validateKubeconfig(String context, FileItem kubeconfig) throws IOException {
+    private static void validateKubeconfig(String context,
+                                           FileItem kubeconfig) throws IOException {
         Map<String, Object> map;
         try (InputStream fi = kubeconfig.getInputStream()) {
             map = new Yaml().loadAs(fi, Map.class);
@@ -428,15 +501,20 @@ public class VirtualHostManagerController {
                 .map(ctx -> (Map<String, String>)ctx.get("context"))
                 .map(attrs -> attrs.get("user"))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("kubeconfig param missing"));
+                .orElseThrow(() ->
+                        new IllegalArgumentException("user missing for context " +
+                                context));
         ((List<Map<String, Object>>)map.get("users"))
                 .stream()
                 .filter(usr -> currentUser.equals(usr.get("name")))
                 .map(usr -> (Map<String, Object>)usr.get("user"))
-                .filter(data -> data.get("client-certificate") != null || data.get("client-key") != null)
+                .filter(data -> data.get("client-certificate") != null ||
+                        data.get("client-key") != null)
                 .findAny()
                 .ifPresent(data -> {
-                    throw new IllegalStateException("client certificate and key must be embedded for user '" + currentUser + "'");
+                    throw new IllegalStateException(
+                            "client certificate and key must be embedded for user '" +
+                            currentUser + "'");
                 });
     }
 
@@ -452,8 +530,16 @@ public class VirtualHostManagerController {
                 .findFirst();
     }
 
+    private static Optional<FileItem> findFileItem(List<FileItem> items, String name) {
+        return items.stream()
+                .filter(item -> !item.isFormField())
+                .filter(item -> name.equals(item.getFieldName()))
+                .filter(item -> item.getSize() > 0)
+                .findFirst();
+    }
+
     /**
-     * Processes a POST request to delete multiple vhms
+     * Processes a DELETE request to delete multiple vhms
      *
      * @param req the request object
      * @param res the response object
@@ -461,23 +547,10 @@ public class VirtualHostManagerController {
      * @return the result JSON object
      */
     public static Object delete(Request req, Response res, User user) {
-        List<Long> ids;
-        try {
-            ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
-        }
-        catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
-        }
-
-        List<VirtualHostManager> vhms =
-                getFactory().lookupByIdsAndOrg(ids, user.getOrg());
-        if (vhms.size() < ids.size()) {
-            return json(res, new JsonResult<>(false, "not_found"));
-        }
-
-        vhms.forEach(getFactory()::delete);
-        return json(res, new JsonResult<>(true, vhms.size()));
+        return withVirtualHostManager(req, res, user, vhm -> {
+            getFactory().delete(vhm);
+            return new JsonResult<>(true);
+        });
     }
 
     /**
@@ -489,23 +562,23 @@ public class VirtualHostManagerController {
      * @return dummy string to satisfy spark
      */
     public static Object refresh(Request request, Response response, User user) {
-        Long id = Long.parseLong(request.params("id"));
-        VirtualHostManager virtualHostManager = getFactory().lookupByIdAndOrg(id,
-                user.getOrg());
-        String label = virtualHostManager.getLabel();
-        String message = null;
-        Map<String, String> params = new HashMap<>();
-        params.put(GathererJob.VHM_LABEL, label);
-        try {
-            new TaskomaticApi()
-                    .scheduleSingleSatBunch(user, "gatherer-matcher-bunch", params);
-        }
-        catch (TaskomaticApiException e) {
-            message  = "Problem when running Taskomatic job: " + e.getMessage();
-            return json(response, Collections.singletonMap("errors", Arrays.asList(message)));
-        }
+        return withVirtualHostManager(request, response, user, (vhm) -> {
+            String label = vhm.getLabel();
+            String message = null;
+            Map<String, String> params = new HashMap<>();
+            params.put(GathererJob.VHM_LABEL, label);
+            try {
+                new TaskomaticApi()
+                        .scheduleSingleSatBunch(user, "gatherer-matcher-bunch", params);
+            }
+            catch (TaskomaticApiException e) {
+                message  = "Problem when message Taskomatic job: " + e.getMessage();
+                LOG.error(message, e);
+                return new JsonResult(false, message);
+            }
 
-        return json(response, Collections.singletonMap("success", true));
+            return new JsonResult(true);
+        });
     }
 
     /**
@@ -575,7 +648,7 @@ public class VirtualHostManagerController {
         }).collect(Collectors.toList());
     }
 
-    private static JsonObject getJsonDetails(VirtualHostManager vhm) {
+    private static JsonResult getJsonDetails(VirtualHostManager vhm) {
         JsonObject json = new JsonObject();
         json.addProperty("id", vhm.getId());
         json.addProperty("label", vhm.getLabel());
@@ -590,11 +663,11 @@ public class VirtualHostManagerController {
             credentials.addProperty("username", vhm.getCredentials().getUsername());
             json.add("credentials", credentials);
         }
-        return json;
+        return new JsonResult(true, json);
     }
 
 
-    private static Object getJsonNodes(VirtualHostManager vhm) {
+    private static JsonResult getJsonNodes(VirtualHostManager vhm) {
         JsonArray list = new JsonArray();
 
         vhm.getServers().stream().map(srv -> {
@@ -602,6 +675,10 @@ public class VirtualHostManagerController {
             obj.addProperty("type", "server");
             obj.addProperty("id", srv.getId());
             obj.addProperty("name", srv.getName());
+            obj.addProperty("cpuSockets", srv.getCpu().getNrsocket());
+            obj.addProperty("memory", srv.getRam());
+            obj.addProperty("os", srv.getOs() + " " + srv.getRelease());
+            obj.addProperty("arch", srv.getServerArch().getName());
             return obj;
         })
                 .forEach(json -> list.add(json));
@@ -611,10 +688,14 @@ public class VirtualHostManagerController {
             obj.addProperty("type", "node");
             obj.addProperty("id", node.getId());
             obj.addProperty("name", node.getName());
+            obj.addProperty("cpuSockets", node.getCpuSockets());
+            obj.addProperty("memory", node.getRam());
+            obj.addProperty("os", node.getOs() + " " + node.getOsVersion());
+            obj.addProperty("arch", node.getNodeArch().getName());
             return obj;
         })
                 .forEach(json -> list.add(json));
 
-        return list;
+        return new JsonResult(true, list);
     }
 }

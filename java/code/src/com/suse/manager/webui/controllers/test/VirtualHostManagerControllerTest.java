@@ -23,7 +23,9 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.gatherer.GathererJsonIO;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
@@ -39,6 +41,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.suse.manager.webui.utils.SparkTestUtils.createMockRequestWithParams;
+
 /**
  * Test for basic scenarios in VirtualHostManagerController.
  */
@@ -50,6 +54,30 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     private VirtualHostManagerFactory factory;
     private final String baseUri = "http://localhost:8080/rhn/vhms/";
     private static final Gson GSON = new GsonBuilder().create();
+    private static final String VIRT_HOST_GATHERER_MODULES = "{\n"+
+        "    \"Kubernetes\": {\n"+
+        "        \"module\": \"Kubernetes\",\n"+
+        "        \"url\": \"\",\n"+
+        "        \"username\": \"\",\n"+
+        "        \"password\": \"\",\n"+
+        "        \"client-cert\": \"\",\n"+
+        "        \"client-key\": \"\",\n"+
+        "        \"ca-cert\": \"\",\n"+
+        "        \"kubeconfig\": \"\",\n"+
+        "        \"context\": \"\"\n"+
+        "    },\n"+
+        "    \"File\": {\n"+
+        "        \"module\": \"File\",\n"+
+        "        \"url\": \"\"\n"+
+        "    },\n"+
+        "    \"VMware\": {\n"+
+        "        \"module\": \"VMware\",\n"+
+        "        \"hostname\": \"\",\n"+
+        "        \"port\": 443,\n"+
+        "        \"username\": \"\",\n"+
+        "        \"password\": \"\"\n"+
+        "    }\n"+
+        "}\n";
 
     /**
      * {@inheritDoc}
@@ -66,6 +94,10 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
                 return new HashMap<>();
             }
         });
+
+        Map<String, GathererModule> modules = new GathererJsonIO()
+                .readGathererModules(VIRT_HOST_GATHERER_MODULES);
+        VirtualHostManagerController.setGathererModules(modules);
     }
 
     /**
@@ -101,14 +133,15 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test add.
+     * Test create.
      */
-    public void testAdd() {
+    public void testCreate() {
+        String label = "TestVHM_" + TestUtils.randomString(10);
         Map<String, String> queryParams = new HashMap<>();
-        queryParams.put("label", "myVHM");
+        queryParams.put("label", label);
         queryParams.put("module", "File");
-        queryParams.put("module_testParam", "testVal");
-        Request request = SparkTestUtils.createMockRequestWithParams(baseUri + "add",
+        queryParams.put("module_url", "file:///some/file");
+        Request request = createMockRequestWithParams("/manager/api/vhms/create",
                 queryParams);
 
         VirtualHostManagerController.setMockFactory(new VirtualHostManagerFactory() {
@@ -118,21 +151,37 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
                 return true;
             }
         });
-        GathererModule module = new GathererModule();
-        module.setName("File");
-        module.setParameters(Collections.singletonMap("testParam", ""));
-        VirtualHostManagerController.setGathererModules(Collections.singletonMap("File", module));
         VirtualHostManagerController.create(request, response, user);
 
         VirtualHostManager created = VirtualHostManagerFactory.getInstance()
-                .lookupByLabel("myVHM");
-        assertEquals("myVHM", created.getLabel());
+                .lookupByLabel(label);
+        assertEquals(label, created.getLabel());
         assertEquals("File", created.getGathererModule());
         assertEquals(1, created.getConfigs().size());
         VirtualHostManagerConfig config = created.getConfigs().iterator().next();
-        assertEquals("testParam", config.getParameter());
-        assertEquals("testVal", config.getValue());
+        assertEquals("url", config.getParameter());
+        assertEquals("file:///some/file", config.getValue());
         config.getVirtualHostManager();
+    }
+
+    /**
+     * Test create a VHM with a missing cfg param.
+     * Should result in an error.
+     */
+    public void testCreate_noCfgParam() {
+        String label = "TestVHM_" + TestUtils.randomString(10);
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("module", "file");
+        queryParams.put("label", label);
+
+        Request request = createMockRequestWithParams("/manager/api/vhms/create", queryParams,
+                new Object[] {});
+        String result = VirtualHostManagerController.create(request, response, user);
+        Map<String, Object> res = GSON.fromJson(result, Map.class);
+        assertEquals(1, res.size());
+        List<String> errs = (List<String>)res.get("errors");
+        assertEquals(1, errs.size());
+        assertEquals("All fields are mandatory.", errs.get(0));
     }
 
     /**
