@@ -2,7 +2,7 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {AsyncButton, LinkButton, Button} = require("../components/buttons");
+const {AsyncButton, LinkButton} = require("../components/buttons");
 const Panel = require("../components/panel").Panel;
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
@@ -11,6 +11,8 @@ const {Table, Column, SearchField} = require("../components/table");
 const Messages = require("../components/messages").Messages;
 const DeleteDialog = require("../components/dialogs").DeleteDialog;
 const ModalButton = require("../components/dialogs").ModalButton;
+
+/* global isAdmin */
 
 const typeMap = {
   "dockerfile": t("Dockerfile")
@@ -25,9 +27,9 @@ const msgMap = {
 class ImageProfiles extends React.Component {
 
   constructor(props) {
-    super();
+    super(props);
     ["reloadData", "handleSelectItems", "selectProfile", "deleteProfiles"]
-        .forEach(method => this[method] = this[method].bind(this));
+      .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
       imageprofiles: [],
@@ -46,47 +48,47 @@ class ImageProfiles extends React.Component {
 
   reloadData() {
     Network.get("/rhn/manager/api/cm/imageprofiles").promise.then(data => {
-        this.setState({
-            imageprofiles: data
-        });
+      this.setState({
+        imageprofiles: data
+      });
     });
     this.clearMessages();
   }
 
   handleSelectItems(items) {
     this.setState({
-        selectedItems: items
+      selectedItems: items
     });
   }
 
   selectProfile(row) {
     this.setState({
-        selected: row
+      selected: row
     });
   }
 
   clearMessages() {
     this.setState({
-        messages: undefined
+      messages: undefined
     });
   }
 
   deleteProfiles(idList) {
     return Network.post("/rhn/manager/api/cm/imageprofiles/delete",
-            JSON.stringify(idList), "application/json").promise.then(data => {
-        if (data.success) {
-            this.setState({
-                messages: <Messages items={[{severity: "success", text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]}]}/>,
-                imageprofiles: this.state.imageprofiles.filter(profile => !idList.includes(profile.profileId)),
-                selectedItems: this.state.selectedItems.filter(item => !idList.includes(item))
-            });
-        } else {
-            this.setState({
-                messages: <Messages items={data.messages.map(msg => {
-                    return {severity: "error", text: msgMap[msg]};
-                })}/>
-            });
-        }
+      JSON.stringify(idList), "application/json").promise.then(data => {
+      if (data.success) {
+        this.setState({
+          messages: <Messages items={[{severity: "success", text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]}]}/>,
+          imageprofiles: this.state.imageprofiles.filter(profile => !idList.includes(profile.profileId)),
+          selectedItems: this.state.selectedItems.filter(item => !idList.includes(item))
+        });
+      } else {
+        this.setState({
+          messages: <Messages items={data.messages.map(msg => {
+            return {severity: "error", text: msgMap[msg]};
+          })}/>
+        });
+      }
     }).promise;
   }
 
@@ -98,7 +100,7 @@ class ImageProfiles extends React.Component {
     const panelButtons = <div className="pull-right btn-group">
       { isAdmin && this.state.selectedItems.length > 0 &&
           <ModalButton id="delete-selected" icon="fa-trash" className="btn-default" text={t("Delete")}
-              title={t("Delete selected")} target="delete-selected-modal"/>
+            title={t("Delete selected")} target="delete-selected-modal"/>
       }
       <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
       { isAdmin &&
@@ -111,29 +113,29 @@ class ImageProfiles extends React.Component {
         <Panel title="Image Profiles" icon="fa-list" button={ panelButtons }>
           {this.state.messages}
           <Table
-              data={this.state.imageprofiles}
-              identifier={profile => profile.profileId}
-              initialSortColumnKey="profileId"
-              initialItemsPerPage={userPrefPageSize}
-              searchField={
-                  <SearchField filter={this.searchData} criteria={""} />
-              }
-              selectable
-              selectedItems={this.state.selectedItems}
-              onSelect={this.handleSelectItems}>
+            data={this.state.imageprofiles}
+            identifier={profile => profile.profileId}
+            initialSortColumnKey="profileId"
+            initialItemsPerPage={userPrefPageSize}
+            searchField={
+              <SearchField filter={this.searchData} criteria={""} />
+            }
+            selectable
+            selectedItems={this.state.selectedItems}
+            onSelect={this.handleSelectItems}>
             <Column
               columnKey="label"
               width="50%"
               comparator={Utils.sortByText}
               header={t('Label')}
-              cell={ (row, criteria) => row.label }
+              cell={ (row) => row.label }
             />
             <Column
               columnKey="imageType"
               width="35%"
               comparator={Utils.sortByText}
               header={t('Build Type')}
-              cell={ (row, criteria) => typeMap[row.imageType] }
+              cell={ (row) => typeMap[row.imageType] }
             />
             { isAdmin &&
               <Column
@@ -141,28 +143,28 @@ class ImageProfiles extends React.Component {
                 header={t('Actions')}
                 columnClass="text-right"
                 headerClass="text-right"
-                cell={ (row, criteria) => {
+                cell={ (row) => {
                   return <div className="btn-group">
-                      <LinkButton
-                          className="btn-default btn-sm"
-                          title={t("Build")}
-                          icon="fa-cogs"
-                          href={"/rhn/manager/cm/build?profile=" + row.profileId}
-                      />
-                      <LinkButton
-                          className="btn-default btn-sm"
-                          title={t("Edit")}
-                          icon="fa-edit"
-                          href={"/rhn/manager/cm/imageprofiles/edit/" + row.profileId}
-                      />
-                      <ModalButton
-                          className="btn-default btn-sm"
-                          title={t("Delete")}
-                          icon="fa-trash"
-                          target="delete-modal"
-                          item={row}
-                          onClick={this.selectProfile}
-                      />
+                    <LinkButton
+                      className="btn-default btn-sm"
+                      title={t("Build")}
+                      icon="fa-cogs"
+                      href={"/rhn/manager/cm/build?profile=" + row.profileId}
+                    />
+                    <LinkButton
+                      className="btn-default btn-sm"
+                      title={t("Edit")}
+                      icon="fa-edit"
+                      href={"/rhn/manager/cm/imageprofiles/edit/" + row.profileId}
+                    />
+                    <ModalButton
+                      className="btn-default btn-sm"
+                      title={t("Delete")}
+                      icon="fa-trash"
+                      target="delete-modal"
+                      item={row}
+                      onClick={this.selectProfile}
+                    />
                   </div>;
                 }}
               />
@@ -181,7 +183,7 @@ class ImageProfiles extends React.Component {
           title={t("Delete Selected Profile(s)")}
           content={
             <span>
-                {this.state.selectedItems.length == 1 ? t("Are you sure you want to delete the selected profile?") : t("Are you sure you want to delete selected profiles? ({0} profiles selected)", this.state.selectedItems.length)}
+              {this.state.selectedItems.length == 1 ? t("Are you sure you want to delete the selected profile?") : t("Are you sure you want to delete selected profiles? ({0} profiles selected)", this.state.selectedItems.length)}
             </span>
           }
           onConfirm={() => this.deleteProfiles(this.state.selectedItems)}
