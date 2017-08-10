@@ -18,7 +18,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
 import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
-import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 
 import javax.servlet.jsp.JspException;
 
@@ -32,12 +31,6 @@ import javax.servlet.jsp.JspException;
  */
 public class AddToSsmDecorator extends BaseListDecorator {
 
-    /**
-     * Name of the checkbox allowing the user to clear all servers in the SSM before adding
-     * the selected ones.
-     */
-    public static final String PARAM_CLEAR_SSM = "clear-ssm-first";
-
     /** {@inheritDoc} */
     @Override
     public void afterList() throws JspException {
@@ -48,8 +41,6 @@ public class AddToSsmDecorator extends BaseListDecorator {
 
             LocalizationService ls = LocalizationService.getInstance();
             String value = ls.getMessage(ListDisplayTag.ADD_TO_SSM_KEY);
-
-            String clearText = ls.getMessage("Clear SSM");
 
             // Generate the HTML to output
             StringBuilder buf = new StringBuilder();
@@ -63,20 +54,6 @@ public class AddToSsmDecorator extends BaseListDecorator {
             tag.setAttribute("value", value);
             tag.setBody(value);
             buf.append(tag.render()).append("&nbsp;");
-
-            //   Checkbox for whether or not to clear the existing SSM servers
-            tag = new HtmlTag("input");
-            String uId = TagHelper.generateUniqueName("chkbox-clear-ssm");
-            tag.setAttribute("id", uId);
-            tag.setAttribute("type", "checkbox");
-            tag.setAttribute("name", PARAM_CLEAR_SSM);
-
-            HtmlTag lbl = new HtmlTag("label");
-            lbl.setAttribute("for", uId);
-            lbl.setBody(clearText);
-
-            buf.append(tag.render());
-            buf.append(lbl.render());
 
             buf.append("</span>");
             ListTagUtil.write(pageContext, buf.toString());
