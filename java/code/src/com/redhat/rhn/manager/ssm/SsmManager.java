@@ -114,17 +114,6 @@ public class SsmManager {
     }
 
     /**
-     * Clears the list of servers in the SSM.
-     *
-     * @param user cannot be <code>null</code>
-     */
-    public static void clearSsm(User user) {
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
-        set.clear();
-        RhnSetManager.store(set);
-    }
-
-    /**
      * Returns a list of server-ids of the servers in the SSM selection, for the specified
      * user
      *
