@@ -44,8 +44,8 @@
 
                         <rl:decorator name="ElaborationDecorator"/>
                         <rl:decorator name="SelectableDecorator"/>
-                        <rl:decorator name="PageSizeDecorator"/>
                         <rl:decorator name="AddToSsmDecorator"/>
+                        <rl:decorator name="PageSizeDecorator"/>
 
                         <rl:selectablecolumn value="${current.id}"
                                 selected="${current.selected}"
