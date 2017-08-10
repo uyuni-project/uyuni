@@ -41,15 +41,12 @@ import java.util.stream.Collectors;
 /**
  * Queries a Kubernetes cluster via the API and matches containers running in the cluster
  * to images known to SUSE Manager.
- *
  */
 public class KubernetesManager {
 
     // Logger
     private static final Logger LOG = Logger.getLogger(KubernetesManager.class);
     private static final String DOCKER_PULLABLE = "docker-pullable://";
-
-    public static final String KUBERNETES_MODULE = "kubernetes";
 
     private SaltService saltService;
 
@@ -90,7 +87,8 @@ public class KubernetesManager {
         Map<Long, ImageUsage> imgToUsage = new HashMap<>();
 
         Consumer<VirtualHostManager> processCluster = virtHostMgr -> {
-            if (KUBERNETES_MODULE.equals(virtHostMgr.getGathererModule())) {
+            if (VirtualHostManagerFactory.KUBERNETES
+                    .equals(virtHostMgr.getGathererModule())) {
                 Optional<String> kubeconfig = virtHostMgr.getConfigs().stream()
                         .filter(c -> "kubeconfig".equals(c.getParameter()))
                         .map(VirtualHostManagerConfig::getValue)
@@ -167,9 +165,9 @@ public class KubernetesManager {
                     });
                 }
                 else {
-                    LOG.debug("VirtualHostManager " + virtHostMgr.getLabel()
-                            + " lacks 'kubeconfig' and/or 'currentContext' "
-                            + "config parameters.");
+                    LOG.debug("VirtualHostManager " + virtHostMgr.getLabel() +
+                            " lacks 'kubeconfig' and/or 'currentContext'" +
+                            " config parameters.");
                 }
             }
         };

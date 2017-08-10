@@ -17,9 +17,9 @@ class VirtualHostManagerList extends React.Component {
         };
     }
 
-    selectToDelete(items) {
+    selectToDelete(item) {
         this.setState({
-            itemsToDelete: items
+            itemToDelete: item
         });
     }
 
@@ -36,7 +36,7 @@ class VirtualHostManagerList extends React.Component {
                     columnKey="label"
                     comparator={Utils.sortByText}
                     header={t('Label')}
-                    cell={(row, criteria) => <a href={"#/details/" + row.id}><i className="fa spacewalk-icon-virtual-host-manager"/> {row.label}</a>}
+                    cell={(row, criteria) => <a href={"#/details/" + row.id}><i className="fa spacewalk-icon-virtual-host-manager"/>{row.label}</a>}
                 />
                 <Column
                     columnKey="gathererModule"
@@ -76,7 +76,7 @@ class VirtualHostManagerList extends React.Component {
                                     icon="fa-trash"
                                     target="delete-modal"
                                     item={row}
-                                    onClick={i => this.selectToDelete([i])}
+                                    onClick={i => this.selectToDelete(i)}
                                 />
                             </div>
                         );
@@ -84,14 +84,14 @@ class VirtualHostManagerList extends React.Component {
                 />
             </Table>
             <DeleteDialog id="delete-modal"
-                title={this.state.itemsToDelete.length == 1 ? t("Delete Virtual Host Manager") : t("Delete Virtual Host Managers")}
+                title={t("Delete Virtual Host Manager")}
                 content={
                   <span>
-                      {this.state.itemsToDelete.length == 1 ? t("Are you sure you want to delete the selected item?") : t("Are you sure you want to delete selected items? ({0} items selected)", this.state.itemsToDelete.length)}
+                      {t("Are you sure you want to delete the selected item?")}
                   </span>
                 }
-                onConfirm={(item) => this.props.onDelete(this.state.itemsToDelete.map((item) => item.id))}
-                onClosePopUp={() => this.selectToDelete([])}
+                onConfirm={() => this.props.onDelete(this.state.itemToDelete)}
+                onClosePopUp={() => this.selectToDelete(null)}
             />
         </div>
         );

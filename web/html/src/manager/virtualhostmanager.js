@@ -9,6 +9,7 @@ const {Messages} = require("../components/messages");
 const {VirtualHostManagerList} = require("./virtualhostmanager-list");
 const {VirtualHostManagerDetails} = require("./virtualhostmanager-details");
 const {VirtualHostManagerEdit} = require("./virtualhostmanager-edit");
+const MessagesUtils = require("../components/messages").Utils;
 
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 
@@ -27,8 +28,8 @@ class VirtualHostManager extends React.Component {
     constructor(props) {
         super(props);
 
-        ["deleteVhms", "deleteSingle", "handleBackAction", "handleDetailsAction",
-            "handleEditAction"]
+        ["deleteSelected", "deleteVhm", "handleBackAction", "handleDetailsAction",
+            "handleEditAction", "handleResponseError"]
                 .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             vhms: [],
@@ -47,13 +48,19 @@ class VirtualHostManager extends React.Component {
         let async;
         if ((action === "edit" || action === "details") && id)
             this.getVhmDetails(id, action)
-                .then(data => this.setState({selected: data, action: action}));
+                .then(data => this.setState({selected: data.data, action: action}))
         else if (!action) {
             this.getVhmList();
         } else {
             this.setState({action: action, id: id});
         }
         this.clearMessages();
+    }
+
+    handleResponseError(jqXHR) {
+        this.setState({
+            messages: Network.responseErrorMessage(jqXHR)
+        });
     }
 
     clearMessages() {
@@ -63,40 +70,35 @@ class VirtualHostManager extends React.Component {
     }
 
     getVhmDetails(id, action) {
-        return Network.get("/rhn/manager/api/vhms/" + id).promise;
+        return Network.get("/rhn/manager/api/vhms/" + id).promise
+             .catch(this.handleResponseError);
     }
 
     getVhmList() {
         return Network.get("/rhn/manager/api/vhms").promise
-            .then(data => this.setState({action: undefined, selected: undefined, vhms: data}));
+            .then(data => this.setState({action: undefined, selected: undefined, vhms: data.data}))
+            .catch(this.handleResponseError);
     }
 
-    deleteVhms(idList) {
-        return Network.post("/rhn/manager/api/vhms/delete",
-                JSON.stringify(idList), "application/json").promise.then(data => {
-            if (data.success) {
+    deleteSelected() {
+        this.deleteVhm(this.state.selected);
+    }
+
+    deleteVhm(item) {
+        if(!item) return false;
+        return Network.del("/rhn/manager/api/vhms/delete/" + item.id)
+            .promise.then(data => {
                 this.getVhmList();
                 this.setState({
-                    messages: <Messages items={[{severity: "success", text: "Virtual Host Manager has been deleted."}]}/>
+                    messages: MessagesUtils.info("Virtual Host Manager has been deleted.")
                 });
-            } else {
-                this.setState({
-                    messages: <Messages items={state.messages.map(msg => {
-                        return {severity: "error", text: msg};
-                    })}/>
-                });
-            }
-        });
+            })
+            .catch(this.handleResponseError);
     }
 
     getCreateType() {
         const types = ["file", "vmware", "kubernetes"];
         return types.includes(this.state.id) ? this.state.id : types[0];
-    }
-
-    deleteSingle() {
-        if(!this.state.selected) return false;
-        this.deleteVhms([this.state.selected.id]).then(() => this.handleBackAction());
     }
 
     handleBackAction() {
@@ -108,14 +110,14 @@ class VirtualHostManager extends React.Component {
 
     handleDetailsAction(row) {
         this.getVhmDetails(row.id).then(data => {
-            this.setState({selected: data, action: "details"});
+            this.setState({selected: data.data, action: "details"});
             history.pushState(null, null, "#/details/" + row.id);
         });
     }
 
     handleEditAction(row) {
         this.getVhmDetails(row.id).then(data => {
-            this.setState({selected: data, action: "edit"});
+            this.setState({selected: data.data, action: "edit"});
             history.pushState(null, null, "#/edit/" + row.id);
         });
     }
@@ -160,15 +162,18 @@ class VirtualHostManager extends React.Component {
                 icon="spacewalk-icon-virtual-host-manager"
                 button={panelButtons}
             >
-                { this.state.messages }
+                { this.state.messages ?
+                     <Messages items={this.state.messages}/> :
+                     null
+                }
                 { this.state.action == 'details' ?
-                    <VirtualHostManagerDetails data={this.state.selected} onCancel={this.handleBackAction} onEdit={this.handleEditAction} onDelete={this.deleteSingle}/>
+                    <VirtualHostManagerDetails data={this.state.selected} onCancel={this.handleBackAction} onEdit={this.handleEditAction} onDelete={this.deleteSelected}/>
                 : this.state.action == 'create' ?
                     <VirtualHostManagerEdit type={this.getCreateType()} onCancel={this.handleBackAction}/>
                 : this.state.action == 'edit' ?
                     <VirtualHostManagerEdit item={this.state.selected} type={this.state.selected.gathererModule} onCancel={this.handleBackAction}/>
                 :
-                    <VirtualHostManagerList data={this.state.vhms} onSelect={this.handleDetailsAction} onEdit={this.handleEditAction} onDelete={this.deleteVhms}/>
+                    <VirtualHostManagerList data={this.state.vhms} onSelect={this.handleDetailsAction} onEdit={this.handleEditAction} onDelete={this.deleteVhm}/>
                 }
             </Panel>
         );
