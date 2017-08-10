@@ -33,7 +33,7 @@ public class AddToSsmDecorator extends BaseListDecorator {
 
     /** {@inheritDoc} */
     @Override
-    public void afterList() throws JspException {
+    public void onFooterExtraAddons() throws JspException {
         if (!currentList.isEmpty()) {
 
             // Collect the values needed to hook into the rest of the list tag framework
