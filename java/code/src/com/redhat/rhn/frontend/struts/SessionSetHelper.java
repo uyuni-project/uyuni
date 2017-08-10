@@ -48,16 +48,6 @@ public class SessionSetHelper extends BaseSetHelper {
     }
 
     /**
-     * returns true if a set associated with the declaration exists in the set
-     * @param request the servlet request
-     * @param label the declaration
-     * @return true if a set associated with the declaration exists in the set
-     */
-    public static boolean exists(HttpServletRequest request, String label) {
-        return  request.getSession().getAttribute(makeLabel(label)) != null;
-    }
-
-    /**
      * returns the set if there exists a associated to a set declaration
      * in the session.. If no such set exists, the method
      * creates a new session set and associates it to the session
