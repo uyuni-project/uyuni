@@ -4,102 +4,102 @@ const React = require("react");
 const BootstrapPanel = require("../components/panel").BootstrapPanel;
 
 class ImageViewRuntime extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        const data = this.props.data;
-        const runtimeInfo = data.clusters ? Object.keys(data.clusters)
-                .map(cluster => <ClusterInfo data={{name: cluster, pods: data.clusters[cluster]}}/>)
-                : undefined;
+  render() {
+    const data = this.props.data;
+    const runtimeInfo = data.clusters ? Object.keys(data.clusters)
+      .map(cluster => <ClusterInfo key={cluster} data={{name: cluster, pods: data.clusters[cluster]}}/>)
+      : undefined;
 
-        let msg;
-        if (!Array.isArray(runtimeInfo))
-            msg = t("Loading runtime information...");
-        else if (runtimeInfo.length === 0)
-            msg = <span><i className="fa fa-1-5x fa-info-circle"/>There is no container running with this image on any <a href="#">registered cluster</a>.</span>;
-        return (
-            <div>
-            { msg ? <BootstrapPanel><h4>{msg}</h4></BootstrapPanel> : runtimeInfo }
-            </div>
-        );
-    }
+    let msg;
+    if (!Array.isArray(runtimeInfo))
+      msg = t("Loading runtime information...");
+    else if (runtimeInfo.length === 0)
+      msg = <span><i className="fa fa-1-5x fa-info-circle"/>There is no container running with this image on any <a href="#">registered cluster</a>.</span>;
+    return (
+      <div>
+        { msg ? <BootstrapPanel><h4>{msg}</h4></BootstrapPanel> : runtimeInfo }
+      </div>
+    );
+  }
 }
 
 class PodInfo extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
+  }
+
+  renderStatusIcon(statusId) {
+    let icon;
+
+    if (statusId === 1) {
+      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Instance is up-to-date")}/>
+    } else if (statusId === 2) {
+      icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>
+    } else if (statusId === 3) {
+      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Instance is out-of-date")}/>
+    } else {
+      icon = <span>-</span>
     }
 
-    renderStatusIcon(statusId) {
-        let icon;
+    return icon;
+  }
 
-        if (statusId === 1) {
-            icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Instance is up-to-date")}/>
-        } else if (statusId === 2) {
-            icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>
-        } else if (statusId === 3) {
-            icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Instance is out-of-date")}/>
-        } else {
-            icon = <span>-</span>
-        }
-
-        return icon;
-    }
-
-    render() {
-        const data = this.props.data;
-        return (
-            <tr>
-                <td>{data.name}</td>
-                <td>{this.renderStatusIcon(data.statusId)}</td>
-            </tr>
-        );
-    }
+  render() {
+    const data = this.props.data;
+    return (
+      <tr>
+        <td>{data.name}</td>
+        <td>{this.renderStatusIcon(data.statusId)}</td>
+      </tr>
+    );
+  }
 }
 
 class ClusterInfo extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
+  }
+
+  renderTitle(data) {
+    const statusId = data.pods.map(p => p.statusId).reduce((a,b) => Math.max(a,b));
+
+    let icon;
+
+    if (statusId === 1) {
+      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Cluster is up-to-date")}/>
+    } else if (statusId === 2) {
+      icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>
+    } else if (statusId === 3) {
+      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Cluster is out-of-date")}/>
     }
 
-    renderTitle(data) {
-        const statusId = data.pods.map(p => p.statusId).reduce((a,b) => Math.max(a,b));
+    return icon ? <span>{icon} {data.name}</span> : data.name;
+  }
 
-        let icon;
-
-        if (statusId === 1) {
-            icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Cluster is up-to-date")}/>
-        } else if (statusId === 2) {
-            icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>
-        } else if (statusId === 3) {
-            icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Cluster is out-of-date")}/>
-        }
-
-        return icon ? <span>{icon} {data.name}</span> : data.name;
-    }
-
-    render() {
-        const data = this.props.data;
-        return (
-            <BootstrapPanel title={this.renderTitle(data)}>
-                <div className="table-responsive">
-                    <table className="table">
-                        <tbody>
-                            <tr>
-                                <th>Pod</th>
-                                <th>Status</th>
-                            </tr>
-                            {data.pods.map(p => <PodInfo data={p}/>)}
-                        </tbody>
-                    </table>
-                </div>
-            </BootstrapPanel>
-        );
-    }
+  render() {
+    const data = this.props.data;
+    return (
+      <BootstrapPanel title={this.renderTitle(data)}>
+        <div className="table-responsive">
+          <table className="table">
+            <tbody>
+              <tr>
+                <th>Pod</th>
+                <th>Status</th>
+              </tr>
+              {data.pods.map(p => <PodInfo key={p.name} data={p}/>)}
+            </tbody>
+          </table>
+        </div>
+      </BootstrapPanel>
+    );
+  }
 }
 
 module.exports = {
-    ImageViewRuntime: ImageViewRuntime
+  ImageViewRuntime: ImageViewRuntime
 }
