@@ -46,21 +46,7 @@ function process_check_all(set_label, cbox_items, flag, ignorables_ids) {
         cboxes.push(cbox_items);
     }
 
-    var boxes = process_group(set_label, cboxes, flag);
-    var includes = new Array();
-    for (var i = 0; i < boxes.length; i++) {
-        var include = true;
-        for (var j = 0; j < ignorables.length; j++) {
-            if (ignorables[j].value == boxes[i]) {
-                include = false;
-                break;
-            }
-        }
-        if (include) {
-            includes.push(boxes[i]);
-        }
-    }
-    update_server_set("ids", set_label, flag, includes); 
+    process_group(set_label, cboxes, flag);
 }
 
 function ids_to_elements(elem_ids) {
@@ -118,13 +104,7 @@ function checkbox_clicked(thebox, set_label) {
  * members - if this is a child node then list the siblings and include the child or [] otherwise
  * parent_id - if this is a child node then list the parent_id or [] otherwise
  **/
-
 function process_checkbox_clicked(thebox, set_label, checkall, children, members, parent_id, parentIsElement) {
-    var a =  process_checkbox_clicked_client_side(thebox, set_label, checkall, children, members, parent_id, parentIsElement);
-    update_server_set("ids", set_label, thebox.checked, a);
-}
-
-function process_checkbox_clicked_client_side(thebox, set_label, checkall, children, members, parent_id, parentIsElement) {
     var a = new Array();
     if (parent_id == '') {
         if(parentIsElement) {
@@ -184,10 +164,6 @@ function process_single_checkbox(cboxes, checkall) {
   if (checkall) {
 	checkall.checked = all_checked;
   }
-}
-
-function update_server_set(variable, set_label, checked, values) {
-    DWRItemSelector.select(set_label, values, checked, makeAjaxHandler(pageResponse));
 }
 
 function pageResponse(data) {

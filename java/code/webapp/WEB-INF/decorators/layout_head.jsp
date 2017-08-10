@@ -47,7 +47,6 @@
 
     <script src="/rhn/dwr/engine.js"></script>
     <script src="/rhn/dwr/util.js"></script>
-    <script src="/rhn/dwr/interface/DWRItemSelector.js"></script>
     <script src="/javascript/jquery.timepicker.js"></script>
     <script src="/javascript/bootstrap-datepicker.js"></script>
 

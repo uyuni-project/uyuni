@@ -88,11 +88,7 @@ class CVEAudit extends React.Component {
     const isAdd = removed.length === 0;
     const list = isAdd ? items : removed;
 
-    this.setState({selectedItems: items}, () => {
-        DWRItemSelector.select("system_list", list, isAdd, (res) => {
-            dwr.util.setValue("header_selcount", eval(res).header, {escapeHtml: false});
-        });
-    });
+    this.setState({selectedItems: items});
   }
 
   onTargetChange(e) {

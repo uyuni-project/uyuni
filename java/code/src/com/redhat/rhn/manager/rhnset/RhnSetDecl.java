@@ -464,15 +464,6 @@ public class RhnSetDecl {
     }
 
     /**
-     * Retrieves the set declaration associated to the given label
-     * @param label the label for the set
-     * @return the set declaration or null if none exists
-     */
-    public static RhnSetDecl find(String label) {
-        return DECLS.get(label);
-    }
-
-    /**
      * get the set for Channel Errata cloning
      * @param chan the Channel passed in
      * @return the Set decl
