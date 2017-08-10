@@ -30,6 +30,7 @@
     <rl:selectablecolumn value="${current.systemId}"
                          selected="${current.selected}"
                          disabled="${!current.selectable}"/>
+    <rl:decorator name="AddToSsmDecorator"/>
 
     <rl:column sortable="false"
                bound="false"
