@@ -520,12 +520,12 @@ class RepoSync(object):
                                               client_cert_file=client_cert_file,
                                               client_key_file=client_key_file)
 
-                    # update the checksum type of channels with org_id NULL
-                    self.updateChannelChecksumType(plugin.get_md_checksum_type())
-
-
                     if update_repodata:
                         plugin.clear_cache()
+
+                    # update the checksum type of channels with org_id NULL
+                    # this fetch also the normal xml primary file
+                    self.updateChannelChecksumType(plugin.get_md_checksum_type())
 
                     if not self.no_packages:
                         ret = self.import_packages(plugin, data['id'], url)
