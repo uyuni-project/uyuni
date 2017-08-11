@@ -61,6 +61,7 @@ public class Router implements SparkApplication {
 
         // SSM
         post("/manager/api/ssm/add", withUser(SSMController::add));
+        post("/manager/api/ssm/remove", withUser(SSMController::remove));
 
         // CVE Audit
         get("/manager/audit/cve",
