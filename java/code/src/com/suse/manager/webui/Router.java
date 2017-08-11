@@ -35,6 +35,7 @@ import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
+import com.suse.manager.webui.controllers.SSMController;
 import com.suse.manager.webui.controllers.SaltSSHController;
 import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -58,8 +59,10 @@ public class Router implements SparkApplication {
     public void init() {
         JadeTemplateEngine jade = setup();
 
-        //CVEAudit
+        // SSM
+        post("/manager/api/ssm/add", withUser(SSMController::add));
 
+        // CVE Audit
         get("/manager/audit/cve",
                 withCsrfToken(withUser(CVEAuditController::cveAuditView)), jade);
 
