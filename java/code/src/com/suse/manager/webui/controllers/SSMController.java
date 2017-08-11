@@ -60,4 +60,24 @@ public class SSMController {
 
         return json(res, new JsonResult<>(true, set.size()));
     }
+
+    /**
+     * Removes a list of system ids to the System Set Manager. Returns the new
+     * count wrapped in a JsonResult
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static Object remove(Request req, Response res, User user) {
+        List<Long> serverIds = GSON.fromJson(req.body(),
+                new TypeToken<List<Long>>() { }.getType());
+
+        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        set.removeElements(serverIds.stream().map(String::valueOf).toArray(String[]::new));
+        RhnSetManager.store(set);
+
+        return json(res, new JsonResult<>(true, set.size()));
+    }
 }
