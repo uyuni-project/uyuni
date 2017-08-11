@@ -19,6 +19,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -536,9 +537,8 @@ public class TaskomaticApi {
     public void deleteScheduledAction(Action action, Set<Server> involvedMinions)
         throws TaskomaticApiException {
 
-        Set<Server> minionServers = (Set<Server>) HibernateFactory.getSession()
-                .getNamedQuery("Action.findMinions").setParameter("id", action.getId())
-                .getResultList().stream().collect(toSet());
+        Set<Server> minionServers = action.getServerActions().stream()
+                .map(ServerAction::getServer).collect(toSet());
 
         String jobLabel = MINION_ACTION_JOB_PREFIX + action.getId();
 

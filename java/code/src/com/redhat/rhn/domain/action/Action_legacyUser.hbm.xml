@@ -505,15 +505,6 @@ select {ra.*}
     ]]>
     </query>
     
-    <query name="Action.findMinions">
-    <![CDATA[
-    SELECT sa.server
-        FROM ServerAction sa
-        JOIN sa.server s
-        WHERE sa.server.class = com.redhat.rhn.domain.server.MinionServer AND action_id = :id
-    ]]>
-    </query>
-
    <sql-query name="Action.findServerIds">
         <![CDATA[
 select sa.server_id
