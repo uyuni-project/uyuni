@@ -13,11 +13,11 @@ const AddSelectedToSSMLink = React.createClass({
       "/rhn/manager/api/ssm/add",
       JSON.stringify(this.props.selectedItems),
       "application/json"
-     ).promise.then(data => {
-         if (data.success) {
-             $("#spacewalk-set-system_list-counter").text(data.data);
-         }
-     });
+    ).promise.then(data => {
+      if (data.success) {
+        $("#spacewalk-set-system_list-counter").text(data.data);
+      }
+    });
   },
 
   render: function() {
