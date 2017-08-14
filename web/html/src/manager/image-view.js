@@ -41,7 +41,7 @@ class ImageView extends React.Component {
   constructor(props) {
     super(props);
     ["reloadData", "handleBackAction", "handleDetailsAction", "deleteImages",
-        "inspectImage", "buildImage"]
+        "inspectImage", "buildImage", "handleImportImage"]
             .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
@@ -96,6 +96,10 @@ class ImageView extends React.Component {
         this.setState({selected: data})
         history.pushState(null, null, '#/' + (getHashTab() || 'overview') + '/' + row.id);
     });
+  }
+
+  handleImportImage() {
+    Utils.urlBounce("/rhn/manager/cm/import");
   }
 
   getImageInfoList() {
@@ -179,6 +183,9 @@ class ImageView extends React.Component {
       { isAdmin && this.state.selectedCount > 0 &&
           <ModalButton id="delete-selected" icon="fa-trash" className="btn-default" text={t("Delete")}
               title={t("Delete selected")} target="delete-selected-modal"/>
+      }
+      { isAdmin &&
+          <Button id="import" icon="fa-download" text={t("Import")} className="btn-default" handler={this.handleImportImage} />
       }
       <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
     </div>;
