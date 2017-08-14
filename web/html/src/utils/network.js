@@ -1,6 +1,7 @@
 "use strict";
 
 const Functions = require("../utils/functions.js");
+const MessagesUtils = require("../components/messages.js").Utils;
 
 function request(url, type, headers, data, contentType) {
    const a = $.ajax({
@@ -47,10 +48,36 @@ function errorMessageByStatus(status) {
     }
 }
 
+function responseErrorMessage(jqXHR, messageMapFunc = null) {
+   console.log("Error: " + jqXHR.status + " " + jqXHR.statusText + ", response text: " + jqXHR.responseText)
+   if (jqXHR.responseJSON && jqXHR.responseJSON.messages &&
+        Array.isArray(jqXHR.responseJSON.messages) &&
+        jqXHR.responseJSON.messages.length > 0) {
+      let msgs;
+      if (messageMapFunc) {
+        msgs = jqXHR.responseJSON.messages.map(msg => {
+            let m = messageMapFunc(jqXHR.status, msg);
+            return m ? m : msg;
+        })
+      } else {
+        msgs = jqXHR.responseJSON.messages;
+      }
+
+      return MessagesUtils.error(msgs);
+   } else {
+      let msg = errorMessageByStatus(jqXHR.status);
+      if (msg.length == 0) {
+        msg = "Server error, please check log files.";
+      }
+      return MessagesUtils.error(msg);
+   }
+}
+
 module.exports = {
     get: get,
     post: post,
     put: put,
     del: del,
-    errorMessageByStatus: errorMessageByStatus
+    errorMessageByStatus: errorMessageByStatus,
+    responseErrorMessage: responseErrorMessage
 }
