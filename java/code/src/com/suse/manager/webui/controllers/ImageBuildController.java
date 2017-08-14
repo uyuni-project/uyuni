@@ -144,6 +144,19 @@ public class ImageBuildController {
     }
 
     /**
+     * Returns a view to display import image form page
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public static ModelAndView importView(Request req, Response res, User user) {
+        Map<String, Object> model = new HashMap<>();
+        return new ModelAndView(model, "content_management/import.jade");
+    }
+
+    /**
      * Gets a JSON list of Container Build Host entitled systems
      *
      * @param req the request object
@@ -628,6 +641,8 @@ public class ImageBuildController {
 
     private static Date getScheduleDate(ScheduleRequest json) {
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
-        return Date.from(json.getEarliest().atZone(zoneId).toInstant());
+        return Date.from(Optional.ofNullable(json.getEarliest())
+                .orElseGet(() -> LocalDateTime.now())
+                .atZone(zoneId).toInstant());
     }
 }
