@@ -209,8 +209,10 @@ public class BaseSetHelper {
         for (Object obj : dataSet) {
             if (obj instanceof Selectable) {
                 Selectable next = (Selectable) obj;
-                next.setSelected(false);
-                keys.add(next.getSelectionKey());
+                if (next.isSelectable()) {
+                    next.setSelected(false);
+                    keys.add(next.getSelectionKey());
+                }
             }
             else if (obj instanceof Map) {
                 Map next = (Map) obj;
