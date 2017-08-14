@@ -417,12 +417,11 @@ public class ImageBuildController {
                     .create().fromJson(req.body(), ImportRequest.class);
         }
         catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
+            return json(res, HttpStatus.SC_BAD_REQUEST,
+                    new JsonResult<>(false, "invalid_id"));
         }
 
         Date scheduleDate = getScheduleDate(data);
-        res.type("application/json");
         return ImageStoreFactory.lookupByIdAndOrg(data.getStoreId(), user.getOrg())
                 .map(store -> {
                     try {
@@ -436,9 +435,17 @@ public class ImageBuildController {
                     }
                     catch (TaskomaticApiException e) {
                         log.error("Could not schedule image import", e);
-                        return GSON.toJson(new JsonResult(false, "taskomatic_error"));
+                        return json(res,
+                                HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                                new JsonResult(false, "taskomatic_error"));
                     }
-                }).orElseGet(() -> GSON.toJson(new JsonResult(false, "not_found")));
+                    catch (IllegalArgumentException e) {
+                        log.error("Could not schedule image import", e);
+                        return json(res,
+                                HttpStatus.SC_BAD_REQUEST,
+                                new JsonResult(false, e.getMessage()));
+                    }
+                }).orElseGet(() -> json(res, new JsonResult(false, "not_found")));
     }
 
     /**

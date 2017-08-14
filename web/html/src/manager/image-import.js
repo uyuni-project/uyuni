@@ -122,7 +122,7 @@ class ImageImport extends React.Component {
 
   handleResponseError(jqXHR) {
     this.setState({
-         messages: [{}] // TODO
+         messages: Network.responseErrorMessage(jqXHR)
     });
   }
 
@@ -174,7 +174,9 @@ class ImageImport extends React.Component {
                   Utils.urlBounce("/rhn/manager/cm/images");
               } else {
                   this.setState({
-                      messages: MessagesUtils.error(msgMap[data.messages[0]])
+                      messages: MessagesUtils.error(msgMap[data.messages[0]] ?
+                        msgMap[data.messages[0]] : data.messages[0]
+                      )
                   });
               }
           })
