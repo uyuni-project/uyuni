@@ -55,6 +55,8 @@
 # * min_ping.feature 
 
 # **** IDEMPOTENT ******
+- features/min_bootstrap_xmlrpc.feature
+- features/min_ssh_bootstrap_xmlrpc.feature
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
 - features/trad_reboot.feature
