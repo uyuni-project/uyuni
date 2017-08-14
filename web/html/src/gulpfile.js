@@ -34,7 +34,8 @@ gulp.task('bundle-manager', function(done) {
             var bundler = browserify(bundlerOpts);
 
             return bundler
-                .transform("babelify", {presets: ["es2015", "react"]})
+                .transform("babelify", {presets: ["es2015", "react"],
+                    plugins: ["transform-flow-strip-types", "transform-class-properties"]})
                 .external("react") // exclude react from these bundles
                 .external("react-dom") // exclude react-dom from these bundles
                 .bundle() // Create the initial bundle when starting the task
