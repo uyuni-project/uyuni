@@ -864,9 +864,10 @@ And(/^I enter the hostname of "([^"]*)" as hostname$/) do |minion|
   end
 end
 
-Then(/^I run spacecmd listevents for sle-minion$/) do
+Then(/^I run spacecmd listevents for ([^\s]*)$/) do |system|
+  system_fullhostname = get_target_fullhostname(system)
   $server.run('spacecmd -u admin -p admin clear_caches')
-  $server.run("spacecmd -u admin -p admin system_listevents #{$minion_fullhostname}")
+  $server.run("spacecmd -u admin -p admin system_listevents #{system_fullhostname}")
 end
 
 And(/^I cleanup minion: "([^"]*)"$/) do |target|
