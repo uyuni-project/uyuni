@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
@@ -29,6 +30,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Immutable;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -36,12 +38,12 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * View: suseImageOverview
@@ -59,8 +61,8 @@ public class ImageOverview extends BaseDomainHelper {
     private ImageProfile profile;
     private ImageStore store;
     private MinionServer buildServer;
-    private ServerAction buildAction;
-    private ServerAction inspectAction;
+    private Action buildAction;
+    private Action inspectAction;
     private Set<ImageInfoCustomDataValue> customDataValues;
     private Set<Channel> channels;
     private Set<InstalledProduct> installedProducts;
@@ -148,13 +150,9 @@ public class ImageOverview extends BaseDomainHelper {
      * @return the build action
      */
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "build_action_id", referencedColumnName = "action_id",
-                    insertable = false, updatable = false),
-            @JoinColumn(name = "build_server_id", referencedColumnName = "server_id",
-                    insertable = false, updatable = false)
-    })
-    public ServerAction getBuildAction() {
+    @JoinColumn(name = "build_action_id", referencedColumnName = "id", insertable = false,
+            updatable = false)
+    public Action getBuildAction() {
         return buildAction;
     }
 
@@ -162,13 +160,9 @@ public class ImageOverview extends BaseDomainHelper {
      * @return the inspect action
      */
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "inspect_action_id", referencedColumnName = "action_id",
-                    insertable = false, updatable = false),
-            @JoinColumn(name = "build_server_id", referencedColumnName = "server_id",
-                    insertable = false, updatable = false)
-    })
-    public ServerAction getInspectAction() {
+    @JoinColumn(name = "inspect_action_id", referencedColumnName = "id", insertable = false,
+            updatable = false)
+    public Action getInspectAction() {
         return inspectAction;
     }
 
@@ -283,6 +277,35 @@ public class ImageOverview extends BaseDomainHelper {
     }
 
     /**
+     * Gets build server action for the build host that built this image.
+     *
+     * @return the build server action
+     */
+    @Transient
+    public Optional<ServerAction> getBuildServerAction() {
+        return getServerAction(getBuildAction());
+    }
+
+    /**
+     * Gets inspect server action for the build host that built this image.
+     *
+     * @return the inspect server action
+     */
+    @Transient
+    public Optional<ServerAction> getInspectServerAction() {
+        return getServerAction(getInspectAction());
+    }
+
+    private Optional<ServerAction> getServerAction(Action action) {
+        if (action == null) {
+            return Optional.empty();
+        }
+
+        return action.getServerActions().stream()
+                .filter(sa -> sa.getServer().equals(getBuildServer())).findAny();
+    }
+
+    /**
      * @param idIn the id
      */
     public void setId(Long idIn) {
@@ -341,14 +364,14 @@ public class ImageOverview extends BaseDomainHelper {
     /**
      * @param actionIn the build action
      */
-    public void setBuildAction(ServerAction actionIn) {
+    public void setBuildAction(Action actionIn) {
         this.buildAction = actionIn;
     }
 
     /**
      * @param actionIn the inspect action
      */
-    public void setInspectAction(ServerAction actionIn) {
+    public void setInspectAction(Action actionIn) {
         this.inspectAction = actionIn;
     }
 

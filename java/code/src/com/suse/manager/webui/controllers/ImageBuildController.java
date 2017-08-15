@@ -491,10 +491,9 @@ public class ImageBuildController {
             json.add("patches", patches);
         }
 
-        if (imageOverview.getBuildAction() != null) {
-            json.addProperty("statusId",
-                    imageOverview.getBuildAction().getStatus().getId());
-        }
+        imageOverview.getBuildServerAction()
+                .ifPresent(ba -> json.addProperty("statusId", ba.getStatus().getId()));
+
         return json;
     }
 
