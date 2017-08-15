@@ -313,8 +313,8 @@ public class ImageInfoJson {
         json.setProfile(imageOverview.getProfile());
         json.setStore(imageOverview.getStore());
         json.setBuildServer(imageOverview.getBuildServer());
-        json.setBuildAction(imageOverview.getBuildAction());
-        json.setInspectAction(imageOverview.getInspectAction());
+        imageOverview.getBuildServerAction().ifPresent(json::setBuildAction);
+        imageOverview.getInspectServerAction().ifPresent(json::setInspectAction);
         json.setChannels(ChannelsJson.fromChannelSet(imageOverview.getChannels()));
         json.setPatches(imageOverview.getSecurityErrata(), imageOverview.getBugErrata(),
                 imageOverview.getEnhancementErrata());
