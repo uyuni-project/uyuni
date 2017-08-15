@@ -47,10 +47,10 @@ CREATE TABLE suseImageInfo
                      DEFAULT (current_timestamp) NOT NULL,
     modified       timestamp with local time zone
                      DEFAULT (current_timestamp) NOT NULL,
-    CONSTRAINT suse_imginfo_aid_fk FOREIGN KEY (build_action_id, build_server_id)
-        REFERENCES rhnServerAction (action_id, server_id) ON DELETE SET NULL,
-    CONSTRAINT suse_imginfo_aid_insp_fk FOREIGN KEY (inspect_action_id, build_server_id)
-        REFERENCES rhnServerAction (action_id, server_id) ON DELETE SET NULL
+    CONSTRAINT suse_imginfo_bldaid_fk FOREIGN KEY (build_action_id)
+        REFERENCES rhnAction (id) ON DELETE SET NULL,
+    CONSTRAINT suse_imginfo_insaid_fk FOREIGN KEY (inspect_action_id)
+        REFERENCES rhnAction (id) ON DELETE SET NULL
 )
 ENABLE ROW MOVEMENT
 ;

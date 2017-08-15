@@ -84,12 +84,11 @@ public class ImageOverviewSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("enhancementErrata", image.getEnhancementErrata());
         helper.add("outdatedPackages", image.getOutdatedPackages());
         helper.add("installedPackages", image.getInstalledPackages());
-        helper.add("buildStatus",
-                image.getBuildAction().getStatus().getName().toLowerCase());
-        if (image.getInspectAction() != null) {
-            helper.add("inspectStatus",
-                    image.getInspectAction().getStatus().getName().toLowerCase());
-        }
+        image.getBuildServerAction().ifPresent(
+                ba -> helper.add("buildStatus", ba.getStatus().getName().toLowerCase()));
+        image.getInspectServerAction().ifPresent(
+                ia -> helper.add("inspectStatus", ia.getStatus().getName().toLowerCase()));
+
         helper.writeTo(writer);
     }
 
