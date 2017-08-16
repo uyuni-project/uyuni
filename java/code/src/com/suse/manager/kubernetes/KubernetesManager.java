@@ -126,6 +126,11 @@ public class KubernetesManager {
                                         "by SUSE Manager).");
                                 String[] tokens =
                                         StringUtils.split(container.getImage(), "/", 2);
+                                if (tokens.length < 2) {
+                                    // No repository available. Ignore the image.
+                                    return;
+                                }
+
                                 String repo = tokens[0];
                                 String[] imgTag = StringUtils.split(tokens[1], ":", 2);
                                 String name = imgTag[0];
