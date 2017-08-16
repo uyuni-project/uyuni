@@ -246,7 +246,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         VirtualHostManager virtualHostManager = VirtualHostManagerFactory.getInstance().createVirtualHostManager(
                 label,
                 user.getOrg(),
-                "kubernetes",
+                VirtualHostManagerFactory.KUBERNETES,
                 params
         );
         TestUtils.saveAndFlush(virtualHostManager);

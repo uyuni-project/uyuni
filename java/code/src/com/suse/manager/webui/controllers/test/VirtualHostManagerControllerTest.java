@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
@@ -35,7 +36,6 @@ import spark.RequestResponseFactory;
 import spark.Response;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +52,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     // dealing with parameters in the url
     private Response response;
     private VirtualHostManagerFactory factory;
-    private final String baseUri = "http://localhost:8080/rhn/vhms/";
+    private final String baseUri = "http://localhost:8080/rhn";
     private static final Gson GSON = new GsonBuilder().create();
     private static final String VIRT_HOST_GATHERER_MODULES = "{\n"+
         "    \"Kubernetes\": {\n"+
@@ -108,12 +108,13 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         VirtualHostManager vhm = createVirtualHostManagerWithLabel("myVHM", user.getOrg());
         String json = (String)VirtualHostManagerController
                 .get(getRequestWithCsrf(""), response, user);
-        List<Map<String, Object>> model = GSON.fromJson(json, List.class);
-        assertEquals(1, model.size());
-        assertEquals("myVHM", model.get(0).get("label"));
-        assertEquals("File", model.get(0).get("gathererModule"));
-        assertEquals(user.getOrg().getName(), model.get(0).get("orgName"));
-        assertEquals((Object)vhm.getId(), ((Double)model.get(0).get("id")).longValue());
+        Map<String, Object> model = GSON.fromJson(json, Map.class);
+        List<Map<String, Object>> data = (List<Map<String, Object>>)model.get("data");
+        assertEquals(1, data.size());
+        assertEquals("myVHM", data.get(0).get("label"));
+        assertEquals("File", data.get(0).get("gathererModule"));
+        assertEquals(user.getOrg().getName(), data.get(0).get("orgName"));
+        assertEquals((Object)vhm.getId(), ((Double)data.get(0).get("id")).longValue());
     }
 
     /**
@@ -122,14 +123,14 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     @SuppressWarnings("unchecked")
     public void testGetWrongOrg() {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
-        String label = "myVHM";
+        String label = "TestVHM_" + TestUtils.randomString(10);
         createVirtualHostManagerWithLabel(label, otherOrg);
 
         Request request = getRequestWithCsrf("/manager/api/vhms");
         String result = (String)
                 VirtualHostManagerController.get(request, response, user);
-        List<Map<String, Object>> model = GSON.fromJson(result, List.class);
-        assertTrue(model.isEmpty());
+        Map<String, Object> model = GSON.fromJson(result, Map.class);
+        assertTrue(((List)model.get("data")).isEmpty());
     }
 
     /**
@@ -178,8 +179,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
                 new Object[] {});
         String result = VirtualHostManagerController.create(request, response, user);
         Map<String, Object> res = GSON.fromJson(result, Map.class);
-        assertEquals(1, res.size());
-        List<String> errs = (List<String>)res.get("errors");
+        List<String> errs = (List<String>)res.get("messages");
         assertEquals(1, errs.size());
         assertEquals("All fields are mandatory.", errs.get(0));
     }
@@ -188,11 +188,11 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * Test delete.
      */
     public void testDelete() throws UnsupportedEncodingException {
-        String label = "myVHM";
+        String label = "TestVHM_" + TestUtils.randomString(10);
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, user.getOrg());
-        String body = GSON.toJson(Arrays.asList(vhm.getId()));
-        Request request = getPostRequestWithCsrfAndBody("/manager/api/vhms/delete", body);
+        Request request = getDeleteRequestWithCsrfAndBody("/manager/api/vhms/delete/:id", "", vhm.getId());
         VirtualHostManagerController.delete(request, response, user);
+        HibernateFactory.getSession().flush();
 
         assertNull(factory.lookupByLabel(label));
     }
@@ -202,10 +202,9 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      */
     public void testGetDeleteWrongOrg() throws UnsupportedEncodingException {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
-        String label = "myVHM";
+        String label = "TestVHM_" + TestUtils.randomString(10);
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, otherOrg);
-        String body = GSON.toJson(Arrays.asList(vhm.getId()));
-        Request request = getPostRequestWithCsrfAndBody("/manager/api/vhms/delete", body);
+        Request request = getPostRequestWithCsrfAndBody("/manager/api/vhms/delete/" + vhm.getId(), "");
         VirtualHostManagerController.delete(request, response, user);
 
         // the original VHM is not deleted
@@ -236,6 +235,12 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      */
     private Request getPostRequestWithCsrfAndBody(String uri, String body, Object... vars) throws UnsupportedEncodingException {
         Request request = SparkTestUtils.createMockRequestWithBody(baseUri + uri, Collections.emptyMap(), body, vars);
+        request.session(true).attribute("csrf_token", "bleh");
+        return request;
+    }
+
+    private Request getDeleteRequestWithCsrfAndBody(String uri, String body, Object... vars) throws UnsupportedEncodingException {
+        Request request = SparkTestUtils.createDeleteMockRequestWithBody(baseUri + uri, Collections.emptyMap(), body, vars);
         request.session(true).attribute("csrf_token", "bleh");
         return request;
     }
