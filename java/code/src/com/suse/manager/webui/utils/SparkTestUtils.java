@@ -122,7 +122,7 @@ public class SparkTestUtils {
     }
 
     /**
-     * Creates a mock request with given parametrized url, query parameters.
+     * Creates a POST mock request with given parametrized url, query parameters.
      *
      * @param matchUrl - the url with parameters (prefixed by a colon) in path, for example:
      *     <code>http://localhost:8080/rhn/manager/:vhm/delete/:vhmlabel/</code>
@@ -138,14 +138,41 @@ public class SparkTestUtils {
                                                     Map<String, String> httpHeaders,
                                                     String body, Object... vals)
             throws UnsupportedEncodingException {
+        return createMockRequestWithBody("POST", matchUrl, httpHeaders, body, vals);
+    }
+
+    /**
+     * Creates a DELETE mock request with given parametrized url, query parameters.
+     *
+     * @param matchUrl - the url with parameters (prefixed by a colon) in path, for example:
+     *     <code>http://localhost:8080/rhn/manager/:vhm/delete/:vhmlabel/</code>
+     * @param httpHeaders - request headers to set
+     * @param body - request body to set
+     * @param vals - values that will substitute the parameters in matchUri
+     * @return Spark Request object corresponding to given URI (after params substitution)
+     * and query parameters
+     * @throws UnsupportedEncodingException in case the character encoding of the request
+     * is not valid.
+     */
+    public static Request createDeleteMockRequestWithBody(String matchUrl,
+                                                    Map<String, String> httpHeaders,
+                                                    String body, Object... vals)
+            throws UnsupportedEncodingException {
+        return createMockRequestWithBody("DELETE", matchUrl, httpHeaders, body, vals);
+    }
+
+    private static Request createMockRequestWithBody(String method, String matchUrl,
+                                                          Map<String, String> httpHeaders,
+                                                          String body, Object... vals)
+            throws UnsupportedEncodingException {
         final String requestUrl = substituteVariables(matchUrl, vals);
         final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
 
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
         mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setRequestURL(requestUrl);
-        mockRequest.setupGetMethod("POST");
-
+        mockRequest.setupGetMethod(method);
+        mockRequest.setMethod(method);
         // we need to set the query params twice as mockobjects request uses two separate
         // backing objects
         MockServletInputStream in = new MockServletInputStream();
