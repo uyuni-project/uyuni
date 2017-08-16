@@ -69,6 +69,7 @@ class ImageImport extends React.Component {
     (this:any).getBuildHosts = this.getBuildHosts.bind(this);
     (this:any).getActivationKeys = this.getActivationKeys.bind(this);
     (this:any).onImport = this.onImport.bind(this);
+    (this:any).handleActivationKeyChange = this.handleActivationKeyChange.bind(this);
     (this:any).clearFields = this.clearFields.bind(this);
     (this:any).handleResponseError = this.handleResponseError.bind(this);
 
@@ -118,6 +119,25 @@ class ImageImport extends React.Component {
         });
       })
       .catch(this.handleResponseError);
+  }
+
+  getChannels(token) {
+    if(!token) {
+      this.setState({
+        channels: undefined
+      });
+      return;
+    }
+
+    Network.get("/rhn/manager/api/cm/imageprofiles/channels/" + token).promise.then(res => {
+      // Prevent out-of-order async results
+      if(res.activationKey != this.state.model.activationKey)
+        return false;
+
+      this.setState({
+        channels: res
+      });
+    });
   }
 
   handleResponseError(jqXHR) {
@@ -190,6 +210,38 @@ class ImageImport extends React.Component {
     }
   }
 
+  handleActivationKeyChange(event) {
+    this.getChannels(event.target.value);
+  }
+
+  renderActivationKeySelect() {
+    const hint = this.state.channels && (
+      this.state.channels.base ?
+        <ul className="list-unstyled">
+          <li>{this.state.channels.base.name}</li>
+          <ul>
+            {
+              this.state.channels.children.map(c => <li key={c.id}>{c.name}</li>)
+            }
+          </ul>
+        </ul>
+        :
+        <span><em>{t("There are no channels assigned to this key.")}</em></span>
+    );
+
+    return (
+      <Select name="activationKey" label={t("Activation Key")} hint={hint}
+        labelClass="col-md-3" divClass="col-md-6" onChange={this.handleActivationKeyChange}>
+        <option key="0" value="">None</option>
+        {
+          this.state.activationkeys ? this.state.activationkeys.map(k =>
+            <option key={k} value={k}>{k}</option>
+          ) : null
+        }
+      </Select>
+    );
+  }
+
   render() {
     return (
         <Panel title={t("Import Image")} icon="fa fa-download">
@@ -227,15 +279,7 @@ class ImageImport extends React.Component {
                         }
                     </Select>
 
-                    <Select name="activationKey" label={t("Activation Key")}
-                            labelClass="col-md-3" divClass="col-md-6">
-                        <option key="0" value="">None</option>
-                        {
-                             this.state.activationkeys ? this.state.activationkeys.map(k =>
-                                <option key={k} value={k}>{k}</option>
-                             ) : null
-                        }
-                    </Select>
+                    { this.renderActivationKeySelect() }
                     <div className="form-group">
                         <div className="col-md-offset-3 col-md-6">
                           <SubmitButton id="update-btn" className="btn-success" icon="fa-download" text={t("Import")} disabled={this.state.isInvalid}/>
