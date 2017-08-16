@@ -161,11 +161,10 @@ Feature:  Build Container images with SUSE Manager. Basic image
   And I wait for "5" seconds
   Then I should see a "GUI_DOCKERADMIN" text
 
-  Scenario: CLEANUP: Reset channels on the sle-minion
-    Given I am authorized as "admin" with password "admin"
-    And I run "zypper mr -d `grep -h SLE-Manager-Tools-12-x86_64] /etc/zypp/repos.d/* | sed 's/\[//' | sed 's/\]//'`" on "sle-minion"
-    And I run "zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Pool" on "sle-minion"
-    And I run "zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Update" on "sle-minion"
-    And I run "zypper mr -d SLE-12-SP2-x86_64-Pool" on "sle-minion"
-    And I run "zypper mr -d SLE-12-SP2-x86_64-Update" on "sle-minion"
-    And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
+ Scenario: CLEANUP: Reset channels on the sle-minion
+  Given I am authorized as "admin" with password "admin"
+  And I run "zypper mr -d `grep -h SLE-Manager-Tools-12-x86_64] /etc/zypp/repos.d/* | sed 's/\[//' | sed 's/\]//'`" on "sle-minion"
+  And I run "zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Pool" on "sle-minion"
+  And I run "zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Update" on "sle-minion"
+  And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
+  And I disable sles pool and update repo on "sle-minion"
