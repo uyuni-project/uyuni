@@ -214,7 +214,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             Files.delete(Paths.get(kubeconfig));
         }
         catch (IOException e) {
-            log.warn("Could not remove Kubernetes config file: " + kubeconfig);
+            log.error("Could not remove Kubernetes config file: " + kubeconfig);
         }
     }
 
@@ -264,9 +264,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         if (StringUtils.isNotBlank(parameters.get(CONFIG_USER))) {
             virtualHostManager.getCredentials().setUsername(parameters.get(CONFIG_USER));
         }
-        virtualHostManager.getConfigs().forEach(cfg -> {
-            removeObject(cfg);
-        });
+        virtualHostManager.getConfigs().forEach(cfg -> removeObject(cfg));
         virtualHostManager.getConfigs().clear();
         virtualHostManager.getConfigs().addAll(
                 createVirtualHostManagerConfigs(virtualHostManager, parameters));
@@ -476,11 +474,14 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param identifier node identifier
      * @return the node with the given identifier or null
      */
-    public VirtualHostManagerNodeInfo lookupNodeInfoByIdentifier(String identifier) {
-        return (VirtualHostManagerNodeInfo) getSession()
+    public Optional<VirtualHostManagerNodeInfo> lookupNodeInfoByIdentifier(
+            String identifier) {
+        VirtualHostManagerNodeInfo result = (VirtualHostManagerNodeInfo) getSession()
                 .createCriteria(VirtualHostManagerNodeInfo.class)
                 .add(Restrictions.eq("identifier", identifier))
                 .uniqueResult();
+
+        return Optional.ofNullable(result);
     }
 
 }
