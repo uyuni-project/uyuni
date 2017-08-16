@@ -966,8 +966,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                             .filter(hist -> hist.getRevisionNumber() == 2)
                             .flatMap(h -> h.getRepoDigests().stream())
                             .findFirst().get().getRepoDigest());
-            assertEquals(1,
-                    imgInfo.getBuildHistory().stream().findFirst().get().getRevisionNumber());
+            assertEquals(2, imgInfo.getBuildHistory().size());
+            assertTrue(
+                    imgInfo.getBuildHistory().stream().anyMatch(h -> h.getRevisionNumber() == 1));
+            assertTrue(
+                    imgInfo.getBuildHistory().stream().anyMatch(h -> h.getRevisionNumber() == 2));
+
         });
     }
 
