@@ -300,6 +300,7 @@ class Select extends _InputBase {
     render() {
         const isError = this.state.showErrors && !this.state.isValid;
         const invalidHint = isError && this.props.invalidHint;
+        const hasHint = this.props.hint || invalidHint;
         const hint = [this.props.hint, (invalidHint && this.props.hint && <br/>), invalidHint];
         return (
             <FormGroup isError={isError}>
@@ -310,7 +311,7 @@ class Select extends _InputBase {
                             onBlur={this.onBlur.bind(this)} onChange={this.setValue.bind(this)}>
                         {this.props.children}
                     </select>
-                    { hint &&
+                    { hasHint &&
                         <div className="help-block">
                             {hint}
                         </div>
