@@ -439,8 +439,8 @@ public class ImageInfoFactory extends HibernateFactory {
      * @return the image build history
      */
     public static List<ImageBuildHistory> listBuildHistory() {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ImageBuildHistory> criteria = builder
+        CriteriaQuery<ImageBuildHistory> criteria = getSession()
+                .getCriteriaBuilder()
                 .createQuery(ImageBuildHistory.class);
         criteria.from(ImageBuildHistory.class);
         return getSession().createQuery(criteria).getResultList();

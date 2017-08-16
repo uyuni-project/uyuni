@@ -95,8 +95,8 @@ class ImageInfo extends React.Component {
       <table className="table">
         <thead>
           <tr>
-            <th>Cluster</th>
-            <th>Instances</th>
+            <th>{t("Cluster")}</th>
+            <th>{t("Instances")}</th>
           </tr>
         </thead>
         <tbody>

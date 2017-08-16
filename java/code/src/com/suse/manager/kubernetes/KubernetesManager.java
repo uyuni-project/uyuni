@@ -127,7 +127,9 @@ public class KubernetesManager {
                                 String[] tokens =
                                         StringUtils.split(container.getImage(), "/", 2);
                                 if (tokens.length < 2) {
-                                    // No repository available. Ignore the image.
+                                    LOG.warn("No repository available in the image name '" +
+                                            container.getImage() +
+                                            "'. Ignoring the image.");
                                     return;
                                 }
 
@@ -164,7 +166,9 @@ public class KubernetesManager {
                             usage.ifPresent(u -> u.getContainerInfos().add(containerUsage));
                         }
                         else {
-                            // TODO match docker:// prefix by container id ?
+                            LOG.warn("Expected image id with " + DOCKER_PULLABLE +
+                                    " prefix but got: " +
+                                    container.getImageId());
                         }
 
                     });

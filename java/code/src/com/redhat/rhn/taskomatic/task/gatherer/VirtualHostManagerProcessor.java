@@ -138,20 +138,14 @@ public class VirtualHostManagerProcessor {
 
     private VirtualHostManagerNodeInfo updateAndGetNodeInfo(String hostLabel,
                                                             JSONHost jsonHost) {
-        VirtualHostManagerNodeInfo info = VirtualHostManagerFactory.getInstance()
-                .lookupNodeInfoByIdentifier(jsonHost.getHostIdentifier());
-        if (info == null) {
-            info = createNewNodeInfo(hostLabel, jsonHost);
-        }
-        else {
-            updateNodeInfo(info, hostLabel, jsonHost);
-        }
-        return info;
+        return VirtualHostManagerFactory.getInstance()
+                .lookupNodeInfoByIdentifier(jsonHost.getHostIdentifier())
+                .map(i -> updateNodeInfo(i, hostLabel, jsonHost))
+                .orElse(createNewNodeInfo(hostLabel, jsonHost));
     }
 
-    private void updateNodeInfo(VirtualHostManagerNodeInfo info,
-                                String hostLabel,
-                                JSONHost jsonHost) {
+    private VirtualHostManagerNodeInfo updateNodeInfo(VirtualHostManagerNodeInfo info,
+            String hostLabel, JSONHost jsonHost) {
         info.setName(hostLabel);
         info.setNodeArch(ServerFactory.lookupServerArchByName(jsonHost.getCpuArch()));
         info.setCpuSockets(jsonHost.getTotalCpuSockets());
@@ -159,14 +153,14 @@ public class VirtualHostManagerProcessor {
         info.setRam(jsonHost.getRamMb());
         info.setOs(jsonHost.getOs());
         info.setOsVersion(jsonHost.getOsVersion());
+        return info;
     }
 
     private VirtualHostManagerNodeInfo createNewNodeInfo(String hostLabel,
                                                          JSONHost jsonHost) {
         VirtualHostManagerNodeInfo info = new VirtualHostManagerNodeInfo();
         info.setIdentifier(jsonHost.getHostIdentifier());
-        updateNodeInfo(info, hostLabel, jsonHost);
-        return info;
+        return updateNodeInfo(info, hostLabel, jsonHost);
     }
 
     /**

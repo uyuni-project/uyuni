@@ -902,6 +902,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
      * @throws Exception
      */
     public void testImageBuild()  throws Exception {
+        String digest1 = "1111111111111111111111111111111111111111111111111111111111111111";
+        String digest2 = "2222222222222222222222222222222222222222222222222222222222222222";
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
@@ -919,7 +921,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(1, imgInfo.getRevisionNumber());
                 } );
         doTestImageInspect(server, imageName, imageVersion, profile, imgInfoBuild1,
-                       "1111111111111111111111111111111111111111111111111111111111111111",
+                digest1,
                 (imgInfo) -> {
             // assertions after inspect
             // reload imgInfo to get the build history
@@ -929,7 +931,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(1, imgInfo.getBuildHistory().size());
             assertEquals(1, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
             assertEquals(
-                    "docker-registry:5000/" + imageName + "@sha256:1111111111111111111111111111111111111111111111111111111111111111",
+                    "docker-registry:5000/" + imageName + "@sha256:" + digest1,
                     imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).findFirst().get().getRepoDigest());
             assertEquals(1,
                     imgInfo.getBuildHistory().stream().findFirst().get().getRevisionNumber());
@@ -946,7 +948,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(imgInfoBuild1.getId(), imgInfo.getId());
                 } );
         doTestImageInspect(server, imageName, imageVersion, profile, imgInfoBuild1,
-                       "2222222222222222222222222222222222222222222222222222222222222222",
+                digest2,
                 (imgInfo) -> {
             // reload imgInfo to get the build history
             imgInfo = TestUtils.reload(imgInfo);
@@ -955,13 +957,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(2, imgInfo.getBuildHistory().size());
             assertEquals(2, imgInfo.getBuildHistory().stream().flatMap(h -> h.getRepoDigests().stream()).count());
             assertEquals(
-                    "docker-registry:5000/" + imageName + "@sha256:1111111111111111111111111111111111111111111111111111111111111111",
+                    "docker-registry:5000/" + imageName + "@sha256:" + digest1,
                     imgInfo.getBuildHistory().stream()
                             .filter(hist -> hist.getRevisionNumber() == 1)
                             .flatMap(h -> h.getRepoDigests().stream())
                             .findFirst().get().getRepoDigest());
             assertEquals(
-                    "docker-registry:5000/" + imageName + "@sha256:2222222222222222222222222222222222222222222222222222222222222222",
+                    "docker-registry:5000/" + imageName + "@sha256:" + digest2,
                     imgInfo.getBuildHistory().stream()
                             .filter(hist -> hist.getRevisionNumber() == 2)
                             .flatMap(h -> h.getRepoDigests().stream())
