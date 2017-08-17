@@ -72,3 +72,13 @@ def checkRestart(host, node, time_out)
 rescue Timeout::Error
   raise "ERR: Machine didn't Went-up!"
 end
+
+# Extract the os_version dynamically decoding the value in '/etc/os-release'
+# e.g.: VERSION="12-SP1"
+def get_os_version(node)
+  os_version_raw, _code = node.run('grep "VERSION=" /etc/os-release')
+  puts 'os_version_raw: ' + os_version_raw
+  os_version = os_version_raw.strip.split('=')[1].delete '"'
+  puts 'Extract os version from /etc/os-release: ' + os_version
+  os_version
+end

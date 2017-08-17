@@ -442,22 +442,18 @@ end
 
 And(/^I enable sles pool and update repo on "([^"]*)"$/) do |target|
   node = get_target(target)
-  # VERSION="12-SP1"
-  out, _code = node.run('grep VERSION= /etc/os-release')
-  version = out.strip.split('=')[1].delete '"'
+  os_version = get_os_version(node)
   arch, _code = node.run('uname -m')
-  puts node.run("zypper mr -e SLE-#{version}-#{arch.strip}-Update")
-  puts node.run("zypper mr -e SLE-#{version}-#{arch.strip}-Pool")
+  puts node.run("zypper mr -e SLE-#{os_version}-#{arch.strip}-Update")
+  puts node.run("zypper mr -e SLE-#{os_version}-#{arch.strip}-Pool")
 end
 
 And(/^I disable sles pool and update repo on "([^"]*)"$/) do |target|
   node = get_target(target)
-  # VERSION="12-SP1"
-  out, _code = node.run('grep VERSION= /etc/os-release')
-  version = out.strip.split('=')[1].delete '"'
+  os_version = get_os_version(node)
   arch, _code = node.run('uname -m')
-  puts node.run("zypper mr -d SLE-#{version}-#{arch.strip}-Update")
-  puts node.run("zypper mr -d SLE-#{version}-#{arch.strip}-Pool")
+  puts node.run("zypper mr -d SLE-#{os_version}-#{arch.strip}-Update")
+  puts node.run("zypper mr -d SLE-#{os_version}-#{arch.strip}-Pool")
 end
 
 # Register client
