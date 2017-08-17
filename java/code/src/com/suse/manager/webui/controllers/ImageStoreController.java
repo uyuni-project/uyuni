@@ -131,11 +131,11 @@ public class ImageStoreController {
 
         List<ImageStore> stores = ImageStoreFactory.lookupByIdsAndOrg(ids, user.getOrg());
         if (stores.size() < ids.size()) {
-            return json(res, new JsonResult<>(false, "not_found"));
+            return json(res, JsonResult.error("not_found"));
         }
 
         stores.forEach(ImageStoreFactory::delete);
-        return json(res, new JsonResult<>(true, stores.size()));
+        return json(res, JsonResult.success(stores.size()));
     }
 
     /**
@@ -177,8 +177,8 @@ public class ImageStoreController {
                 json.addProperty("useCredentials", false);
             }
 
-            return json(res, new JsonResult(true, json));
-        }).orElseGet(() -> json(res, new JsonResult(false, "not_found")));
+            return json(res, JsonResult.success(json));
+        }).orElseGet(() -> json(res, JsonResult.error("not_found")));
     }
 
     /**
@@ -213,8 +213,8 @@ public class ImageStoreController {
                 json.addProperty("useCredentials", false);
             }
 
-            return json(res, new JsonResult(true, json));
-        }).orElseGet(() -> json(res, new JsonResult(false, "not_found")));
+            return json(res, JsonResult.success(json));
+        }).orElseGet(() -> json(res, JsonResult.error("not_found")));
     }
 
     /**
@@ -276,8 +276,8 @@ public class ImageStoreController {
 
             ImageStoreFactory.save(s);
 
-            return new JsonResult(true);
-        }).orElseGet(() -> new JsonResult(false, "not_found"));
+            return JsonResult.success();
+        }).orElseGet(() -> JsonResult.error("not_found"));
 
         return json(res, result);
     }
@@ -311,7 +311,7 @@ public class ImageStoreController {
 
         ImageStoreFactory.save(imageStore);
 
-        return json(res, new JsonResult(true));
+        return json(res, JsonResult.success());
     }
 
     /**
