@@ -169,16 +169,7 @@ Then(/^I wont get "([^"]*)"$/) do |arg1|
 end
 
 Then(/^I wait for mgr-sync refresh is finished$/) do
-  # FIXME: remove this deprecated step
-  20.times do
-    begin
-      sshcmd('ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json')
-    rescue
-      sleep 15
-    else
-      break
-    end
-  end
+  $server.run_until_ok('ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json')
 end
 
 Then(/^I should see "(.*?)" in the output$/) do |arg1|
