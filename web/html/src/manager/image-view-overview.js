@@ -114,8 +114,13 @@ class ImageInfo extends React.Component {
         .reduce((a,b) => a + b);
     }
 
+    let spinIcon;
+    if (!this.props.runtimeInfoErr) {
+        spinIcon = <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
+    }
+
     return totalCount === 0 ?
-      <span><i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/></span> :
+      <span>{spinIcon}</span> :
       <span>{totalCount}&nbsp;&nbsp;
         <ModalLink
           target="instance-details-popup"
@@ -135,7 +140,9 @@ class ImageInfo extends React.Component {
   }
 
   renderRuntime(data) {
-    let elm = <span><i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/></span>;
+    let elm = !this.props.runtimeInfoErr ?
+        <span><i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/></span>
+        : null;
 
     if (data.runtimeStatus === 1) {
       elm = <span><i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are up-to-date")}/><a href={"#/runtime/" + data.id}>{t("All instances are up-to-date")}</a></span>
@@ -339,7 +346,8 @@ class ImageViewOverview extends React.Component {
           <div className="col-md-6">
             <BootstrapPanel title={t("Image Info")}>
               <div className="auto-overflow">
-                <ImageInfo data={data}  runtimeInfoEnabled={this.props.runtimeInfoEnabled}/>
+                <ImageInfo data={data} runtimeInfoEnabled={this.props.runtimeInfoEnabled}
+                    runtimeInfoErr={this.props.runtimeInfoErr}/>
               </div>
             </BootstrapPanel>
           </div>
