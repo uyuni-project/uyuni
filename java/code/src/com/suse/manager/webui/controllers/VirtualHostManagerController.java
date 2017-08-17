@@ -101,7 +101,7 @@ public class VirtualHostManagerController {
         List<VirtualHostManager> vhms =
                 getFactory().listVirtualHostManagers(user.getOrg());
         return json(res,
-                new JsonResult<>(true, getJsonList(vhms)));
+                JsonResult.success(getJsonList(vhms)));
     }
 
     /**
@@ -149,7 +149,7 @@ public class VirtualHostManagerController {
                 .map(e -> e.getValue())
                 .findFirst();
         return json(response,
-                new JsonResult<>(true,
+                JsonResult.success(
                         gathererModule.map(m -> m.getParameters())
                                 .orElse(Collections.emptyMap())));
     }
@@ -217,11 +217,11 @@ public class VirtualHostManagerController {
                             gathererModuleParams);
             getFactory().save(vhm);
             return json(response,
-                    new JsonResult<>(true));
+                    JsonResult.success());
         }
         else {
             return json(response,
-                    new JsonResult<>(false, errors));
+                    JsonResult.error(errors));
         }
     }
 
@@ -250,9 +250,9 @@ public class VirtualHostManagerController {
                 getFactory().updateVirtualHostManager(vhm,
                         request.queryParams("label"),
                         gathererModuleParams);
-                return new JsonResult<>(true);
+                return JsonResult.success();
             }
-            return new JsonResult<>(false, errors);
+            return JsonResult.error(errors);
         });
     }
 
@@ -297,30 +297,30 @@ public class VirtualHostManagerController {
                         .map(ctx -> ctx.get("name"))
                         .collect(Collectors.toList()));
                 json.put("currentContext", currentContext);
-                return json(response, new JsonResult<>(true, json));
+                return json(response, JsonResult.success(json));
             }
         }
         catch (IllegalArgumentException e) {
             LOG.error("Invalid kubeconfig content", e);
             return json(response, HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult<>(false,
+                    JsonResult.error(
                             "Invalid kubeconfig content: " + e.getMessage()));
         }
         catch (ReaderException e) {
             LOG.error("Invalid kubeconfig file syntax", e);
             return json(response, HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult<>(false,
+                    JsonResult.error(
                             "Invalid kubeconfig file syntax: " + e.getMessage()));
         }
         catch (FileUploadException e) {
             LOG.error("Kubeconfig upload error", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                        new JsonResult<>(false, e.getMessage()));
+                        JsonResult.error(e.getMessage()));
         }
         catch (IOException e) {
             LOG.error("Error reading the kubeconfig file", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    new JsonResult<>(false, "Error reading the kubeconfig file"));
+                    JsonResult.error("Error reading the kubeconfig file"));
         }
     }
 
@@ -357,10 +357,10 @@ public class VirtualHostManagerController {
                 }
             }
             catch (IOException e) {
-                return new JsonResult<>(false, "Could not get contexts from file " +
+                return JsonResult.error("Could not get contexts from file " +
                         kubeconfigPath + ": " + e.getMessage());
             }
-            return new JsonResult(true, contextNames);
+            return JsonResult.success(contextNames);
         });
     }
 
@@ -375,13 +375,13 @@ public class VirtualHostManagerController {
         }
         catch (NumberFormatException e) {
             return json(response, HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult<>(false, "Invalid id"));
+                    JsonResult.error("Invalid id"));
         }
         try {
             VirtualHostManager vhm = getFactory().lookupByIdAndOrg(storeId, user.getOrg());
             if (vhm == null) {
                 return json(response, HttpStatus.SC_NOT_FOUND,
-                        new JsonResult<>(false, "Virtual Host Manager not found"));
+                        JsonResult.error("Virtual Host Manager not found"));
             }
             JsonResult result = operation.apply(vhm);
 
@@ -393,7 +393,7 @@ public class VirtualHostManagerController {
         catch (IllegalArgumentException e) {
             LOG.error("Invalid parameter: ", e);
             return json(response, HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult<>(false, e.getMessage()));
+                    JsonResult.error(e.getMessage()));
         }
     }
 
@@ -428,17 +428,17 @@ public class VirtualHostManagerController {
                             user.getOrg(),
                             context,
                             kubeconfigIn);
-                return json(response, new JsonResult<>(true));
+                return json(response, JsonResult.success());
             }
         }
         catch (IllegalArgumentException e) {
             return json(response, HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult<>(false, e.getMessage()));
+                    JsonResult.error(e.getMessage()));
         }
         catch (IOException | FileUploadException e) {
             LOG.error("Could not create Kuberentes Virt Host Mgr", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    new JsonResult<>(false, e.getMessage()));
+                    JsonResult.error(e.getMessage()));
         }
     }
 
@@ -476,22 +476,22 @@ public class VirtualHostManagerController {
             VirtualHostManager vhm = getFactory().lookupByIdAndOrg(id, user.getOrg());
             VirtualHostManagerFactory.getInstance()
                     .updateKuberntesVirtualHostManager(vhm, label, context, kubeconfigIn);
-            return json(response, new JsonResult<>(true));
+            return json(response, JsonResult.success());
         }
         catch (IllegalArgumentException e) {
             LOG.error("Error updating Kubernetes Virtual host manage", e);
             return json(response, HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult<>(false, e.getMessage()));
+                    JsonResult.error(e.getMessage()));
         }
         catch (IOException | FileUploadException e) {
             LOG.error("Error updating Kubernetes Virtual host manage", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    new JsonResult<>(false, e.getMessage()));
+                    JsonResult.error(e.getMessage()));
         }
         catch (NoResultException e) {
             LOG.error("Virtual host manager not found", e);
             return json(response, HttpStatus.SC_NOT_FOUND,
-                    new JsonResult<>(false, "Virtual Host Manager not found"));
+                    JsonResult.error("Virtual Host Manager not found"));
         }
     }
 
@@ -565,7 +565,7 @@ public class VirtualHostManagerController {
     public static Object delete(Request req, Response res, User user) {
         return withVirtualHostManager(req, res, user, vhm -> {
             getFactory().delete(vhm);
-            return new JsonResult<>(true);
+            return JsonResult.success();
         });
     }
 
@@ -590,10 +590,10 @@ public class VirtualHostManagerController {
             catch (TaskomaticApiException e) {
                 message  = "Problem when message Taskomatic job: " + e.getMessage();
                 LOG.error(message, e);
-                return new JsonResult(false, message);
+                return JsonResult.error(message);
             }
 
-            return new JsonResult(true);
+            return JsonResult.success();
         });
     }
 
@@ -679,7 +679,7 @@ public class VirtualHostManagerController {
             credentials.addProperty("username", vhm.getCredentials().getUsername());
             json.add("credentials", credentials);
         }
-        return new JsonResult(true, json);
+        return JsonResult.success(json);
     }
 
 
@@ -712,6 +712,6 @@ public class VirtualHostManagerController {
         })
                 .forEach(json -> list.add(json));
 
-        return new JsonResult(true, list);
+        return JsonResult.success(list);
     }
 }

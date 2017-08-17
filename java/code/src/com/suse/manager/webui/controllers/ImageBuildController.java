@@ -343,7 +343,7 @@ public class ImageBuildController {
         }
         catch (JsonParseException e) {
             return json(response, HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult(false));
+                    JsonResult.error());
         }
 
         Date scheduleDate = getScheduleDate(buildRequest);
@@ -356,16 +356,16 @@ public class ImageBuildController {
             try {
                 ImageInfoFactory.scheduleBuild(buildRequest.buildHostId,
                         buildRequest.getVersion(), profile, scheduleDate, user);
-                return json(response, new JsonResult(true, "build_scheduled"));
+                return json(response, JsonResult.successMessage("build_scheduled"));
             }
             catch (TaskomaticApiException e) {
                 log.error("Could not schedule image build:", e);
                 return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                        new JsonResult(false, "taskomatic_error"));
+                        JsonResult.error("taskomatic_error"));
             }
         }).orElseGet(
                 () -> json(response, HttpStatus.SC_NOT_FOUND,
-                        new JsonResult(false, "not_found"))
+                        JsonResult.error("not_found"))
         );
     }
 
@@ -386,7 +386,7 @@ public class ImageBuildController {
         }
         catch (JsonParseException e) {
             return json(res, HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult(false));
+                    JsonResult.error());
         }
 
         Date scheduleDate = getScheduleDate(inspectRequest);
@@ -396,16 +396,16 @@ public class ImageBuildController {
         return ImageInfoFactory.lookupByIdAndOrg(imageId, user.getOrg()).map(info -> {
             try {
                 ImageInfoFactory.scheduleInspect(info, scheduleDate, user);
-                return json(res, new JsonResult(true, "inspect_scheduled"));
+                return json(res, JsonResult.successMessage("inspect_scheduled"));
             }
             catch (TaskomaticApiException e) {
                 log.error("Could not schedule image inspect:", e);
                 return json(res, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                        new JsonResult(false, "taskomatic_error"));
+                        JsonResult.error("taskomatic_error"));
             }
         }).orElseGet(
                 () -> json(res, HttpStatus.SC_NOT_FOUND,
-                    new JsonResult(false, "not_found"))
+                    JsonResult.error("not_found"))
         );
     }
 
@@ -426,7 +426,7 @@ public class ImageBuildController {
         }
         catch (JsonParseException e) {
             return json(res, HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult<>(false, "invalid_id"));
+                    JsonResult.error("invalid_id"));
         }
 
         Date scheduleDate = getScheduleDate(data);
@@ -439,21 +439,21 @@ public class ImageBuildController {
                         ImageInfoFactory.scheduleImport(data.getBuildHostId(),
                                 data.getName(), data.getVersion(), store,
                                 key.map(ActivationKey::getChannels), scheduleDate, user);
-                        return json(res, new JsonResult(true, "import_scheduled"));
+                        return json(res, JsonResult.successMessage("import_scheduled"));
                     }
                     catch (TaskomaticApiException e) {
                         log.error("Could not schedule image import", e);
                         return json(res,
                                 HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                                new JsonResult(false, "taskomatic_error"));
+                                JsonResult.error("taskomatic_error"));
                     }
                     catch (IllegalArgumentException e) {
                         log.error("Could not schedule image import", e);
                         return json(res,
                                 HttpStatus.SC_BAD_REQUEST,
-                                new JsonResult(false, e.getMessage()));
+                                JsonResult.error(e.getMessage()));
                     }
-                }).orElseGet(() -> json(res, new JsonResult(false, "not_found")));
+                }).orElseGet(() -> json(res, JsonResult.error("not_found")));
     }
 
     /**
@@ -585,7 +585,7 @@ public class ImageBuildController {
         }
         catch (NumberFormatException e) {
             return json(res, HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult<>(false, "Invalid id"));
+                    JsonResult.error("Invalid id"));
         }
 
         VirtualHostManager cluster = VirtualHostManagerFactory.getInstance()
@@ -597,11 +597,11 @@ public class ImageBuildController {
                     ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
             JsonResult result = imageInfo
-                    .map(overview -> new JsonResult<>(true,
+                    .map(overview -> JsonResult.success(
                             getRuntimeOverviewJson(usages, overview)))
                     .orElseGet(() -> {
                         log.error("ImageOverview id=" + id + " not found");
-                        return new JsonResult<>(false, "image_overview_not_found");
+                        return JsonResult.error("image_overview_not_found");
                     });
 
             return json(res,
@@ -612,7 +612,7 @@ public class ImageBuildController {
             log.error("Could not retrieve cluster info", e);
             // Cluster is not available
             return json(res, HttpStatus.SC_NOT_FOUND,
-                    new JsonResult<>(false, "cluster_info_err"));
+                    JsonResult.error("cluster_info_err"));
         }
     }
 
@@ -635,7 +635,7 @@ public class ImageBuildController {
         }
         catch (NumberFormatException e) {
             return json(res, HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult<>(false, "Invalid id"));
+                    JsonResult.error("Invalid id"));
         }
 
         JsonObject obj = new JsonObject();
@@ -646,13 +646,13 @@ public class ImageBuildController {
             ImageInfoFactory.listImageOverviews(user.getOrg()).forEach(overview -> obj
                     .add(overview.getId().toString(),
                             getRuntimeOverviewJson(usages, overview)));
-            return json(res, new JsonResult<>(true, obj));
+            return json(res, JsonResult.success(obj));
         }
         catch (NoSuchElementException e) {
             // Cluster is not available
             log.error("Could not retrieve cluster info", e);
             return json(res, HttpStatus.SC_NOT_FOUND,
-                    new JsonResult<>(false, "cluster_info_err"));
+                    JsonResult.error("cluster_info_err"));
         }
     }
 
@@ -671,7 +671,7 @@ public class ImageBuildController {
             clusterId = Long.parseLong(req.params("clusterId"));
         }
         catch (NumberFormatException e) {
-            return json(res, HttpStatus.SC_BAD_REQUEST, new JsonResult<>(false,
+            return json(res, HttpStatus.SC_BAD_REQUEST, JsonResult.error(
                     "Invalid id"));
         }
 
@@ -683,9 +683,9 @@ public class ImageBuildController {
                     ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
             JsonResult result = imageInfo
-                    .map(overview -> new JsonResult<>(true,
+                    .map(overview -> JsonResult.success(
                             getRuntimeDetailsJson(usages, overview)))
-                    .orElse(new JsonResult<>(false, "cluster_info_not_found"));
+                    .orElse(JsonResult.error("cluster_info_not_found"));
 
             return json(res,
                     result.isSuccess() ? HttpStatus.SC_OK : HttpStatus.SC_NOT_FOUND,
@@ -694,7 +694,7 @@ public class ImageBuildController {
         catch (NoSuchElementException e) {
             // Cluster is not available
             log.error("Could not retrieve cluster info", e);
-            return json(res, HttpStatus.SC_NOT_FOUND, new JsonResult<>(false,
+            return json(res, HttpStatus.SC_NOT_FOUND, JsonResult.error(
                     "cluster_info_err"));
         }
     }
@@ -721,16 +721,16 @@ public class ImageBuildController {
         catch (JsonParseException e) {
             return json(res,
                     HttpStatus.SC_BAD_REQUEST,
-                    new JsonResult<>(false));
+                    JsonResult.error());
         }
 
         List<ImageInfo> images = ImageInfoFactory.lookupByIdsAndOrg(ids, user.getOrg());
         if (images.size() < ids.size()) {
-            return json(res, new JsonResult<>(false, "not_found"));
+            return json(res, JsonResult.error("not_found"));
         }
 
         images.forEach(ImageInfoFactory::delete);
-        return json(res, new JsonResult<>(true, images.size()));
+        return json(res, JsonResult.success(images.size()));
     }
 
     private static JsonObject getImageInfoSummary(ImageOverview imageOverview) {
