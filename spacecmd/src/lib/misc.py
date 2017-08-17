@@ -581,7 +581,7 @@ def generate_package_cache(self, force=False):
         for i in v:
             # Alert in case of non-unique ID is detected.
             if i in self.all_packages_by_id:
-                logging.warning(
+                logging.debug(
                     'Non-unique package id "%s" is detected. Taking "%s" ' \
                     'instead of "%s"' % (i, k, self.all_packages_by_id[i]))
 
