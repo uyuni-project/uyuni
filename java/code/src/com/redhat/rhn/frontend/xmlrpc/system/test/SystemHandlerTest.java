@@ -699,6 +699,24 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         //TODO: when we can add packages to servers via a test method, make revisit this.
     }
 
+
+    public void testListExtraPackages() throws Exception {
+        Package testPackage = PackageTest.createTestPackage(admin.getOrg());
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        PackageManagerTest.associateSystemToPackage(server, testPackage);
+
+        int numPackages = SystemManager.listExtraPackages(server.getId()).size();
+
+        List<Map<String, Object>> result =
+                handler.listExtraPackages(admin,
+                new Integer(server.getId().intValue()));
+
+        int numPackages2 = result.size();
+
+        assertTrue(result.stream().anyMatch(m -> m.get("name").equals(testPackage.getPackageName().getName())));
+        assertEquals(numPackages, numPackages2);
+    }
+
     public void testIsNvreInstalled() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
 

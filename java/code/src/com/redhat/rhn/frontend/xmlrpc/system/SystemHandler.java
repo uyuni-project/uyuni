@@ -5704,7 +5704,9 @@ public class SystemHandler extends BaseHandler {
             if (row.getEpoch() != null) {
                 pkg.put("epoch", row.getEpoch());
             }
-            pkg.put("arch", row.getArch());
+            if (row.getArch() != null) {
+                pkg.put("arch", row.getArch());
+            }
             pkg.put("installtime", row.getInstallTime());
 
             returnList.add(pkg);
