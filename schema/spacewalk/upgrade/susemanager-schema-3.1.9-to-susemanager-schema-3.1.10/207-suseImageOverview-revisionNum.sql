@@ -15,6 +15,7 @@ suseImageOverview
     profile_id,
     store_id,
     build_server_id,
+    external_image,
     curr_revision_num,
     security_errata,
     bug_errata,
@@ -26,7 +27,8 @@ as
 select
     i.org_id, i.id, i.name, i.version, i.checksum_id, i.modified,
     ( select name from rhnServerArch where id = i.image_arch_id), i.build_action_id,
-    i.inspect_action_id, i.profile_id, i.store_id, i.build_server_id, i.curr_revision_num,
+    i.inspect_action_id, i.profile_id, i.store_id, i.build_server_id, i.external_image,
+    i.curr_revision_num,
     ( select count(*) from rhnImageErrataTypeView ietv
       where
             ietv.image_id = i.id

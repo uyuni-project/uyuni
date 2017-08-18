@@ -1,3 +1,4 @@
+-- oracle equivalent source sha1 91c81355c0585fa9caa76f630b70233e497f08ec
 ALTER TABLE suseServerVirtualHostManager ALTER COLUMN
     server_id DROP NOT NULL;
 
