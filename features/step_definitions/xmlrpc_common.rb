@@ -17,6 +17,36 @@ When(/^I call system\.listSystems\(\), I should get a list of them\.$/) do
   rabbit = servers[0]
 end
 
+When(/^I call system\.bootstrap\(\) on host "(.*?)" and saltSSH "(.*?)", \
+a new system should be bootstraped\.$/) do |host, salt_ssh_enabled|
+  salt_ssh = (salt_ssh_enabled == 'enabled')
+
+  result = systest.bootstrapSystem(get_target_fullhostname(host), '', salt_ssh)
+  assert(result == 1, 'Bootstrap return code not equal to 1.')
+end
+
+When(/^I call system\.bootstrap\(\) on unknown host, I should get an XMLRPC fault with code -1.$/) do
+  exception_thrown = false
+  begin
+    systest.bootstrapSystem('imprettysureidontexist', '', false)
+  rescue XMLRPC::FaultException => fault
+    exception_thrown = true
+    assert(fault.faultCode == -1, 'Fault code must be == -1.')
+  end
+  assert(exception_thrown, 'Exception must be thrown for non-existing host.')
+end
+
+When(/^I call system\.bootstrap\(\) on a salt minion with saltSSH = true, \
+but with activation key with Default contact method, I should get an XMLRPC fault with code -1\.$/) do
+  exception_thrown = false
+  begin
+    systest.bootstrapSystem($minion_fullhostname, '1-SUSE-DEV-x86_64', true)
+  rescue XMLRPC::FaultException => fault
+    exception_thrown = true
+    assert(fault.faultCode == -1, 'Fault code must be == -1.')
+  end
+  assert(exception_thrown, 'Exception must be thrown for non-compatible activation keys.')
+end
 When(/^I check a sysinfo by a number of XML\-RPC calls, it just works\. :\-\)$/) do
   assert(rabbit)
   systest.getSysInfo(rabbit)

@@ -3,7 +3,7 @@ require 'timeout'
 
 # extend the objects node vms with usefull methods needed for testsuite.
 # All function added here, will be avaible like $server.run
-#  or $minion.run_and_wait etc.
+#  or $minion.run_until_ok etc.
 module LavandaBasic
   def hostname
     hostname, _local, _remote, code = test_and_store_results_together('hostname', 'root', 500)
@@ -26,7 +26,7 @@ module LavandaBasic
     [out, code]
   end
 
-  def run_and_wait(cmd, ok_msg = nil)
+  def run_until_ok(cmd, ok_msg = nil)
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         _out, code = run(cmd, false)

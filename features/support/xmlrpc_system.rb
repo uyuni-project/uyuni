@@ -40,4 +40,26 @@ class XMLRPCSystemTest < XMLRPCBaseTest
     netdevs = [netdev]
     @connection.call('system.createSystemRecord', @sid, sys_name, ks_label, '', '', netdevs)
   end
+
+  # Bootstrap a salt system
+  #
+  # == Parameters:
+  # host::
+  #   hostname or IP address of system to be bootstrapped.
+  # activation_key::
+  #   activation key to be assigned to the system
+  # salt_ssh::
+  #   true if the bootstrapped system should be a salt ssh minion,
+  #   false if it should be regular salt minion
+  #
+  # == Returns:
+  # 1 if the bootstrap procedure was successful.
+  #
+  # == Raises:
+  # XMLRPC fault with faultCode = -1 and descriptive faultString
+  # when there was an error during bootstrap.
+  #
+  def bootstrapSystem(host, activation_key, salt_ssh)
+    @connection.call('system.bootstrap', @sid, host, 22, 'root', 'linux', activation_key, salt_ssh)
+  end
 end
