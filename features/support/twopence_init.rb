@@ -1,5 +1,4 @@
 require 'twopence'
-require 'lavanda'
 
 # initialize ssh targets from environment variables.
 
