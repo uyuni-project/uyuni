@@ -107,11 +107,11 @@ class ImageInfo extends React.Component {
   }
 
   renderInstances(data) {
-    let totalCount = 0;
-    if(data.instances && Object.keys(data.instances).length > 0) {
+    let totalCount = -1;
+    if(data.instances) {
       totalCount =  Object.keys(data.instances)
         .map(k => Number(data.instances[k]))
-        .reduce((a,b) => a + b);
+        .reduce((a,b) => a + b, 0);
     }
 
     let spinIcon;
@@ -119,24 +119,30 @@ class ImageInfo extends React.Component {
         spinIcon = <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
     }
 
-    return totalCount === 0 ?
-      <span>{spinIcon}</span> :
-      <span>{totalCount}&nbsp;&nbsp;
-        <ModalLink
-          target="instance-details-popup"
-          title={t("View cluster summary")}
-          icon="fa-external-link"
-          item={data}
-          onClick={(data) => {
-            this.setState({
-              instancePopupContent: {
-                name: data.name,
-                content: this.renderInstanceDetails(data)
+    if (totalCount < 0) {
+      return (<span>{spinIcon}</span>);
+    }
+
+    if (totalCount == 0) {
+      return (<span>{totalCount}</span>);
+    }
+
+    return (<span>{totalCount}&nbsp;&nbsp;
+            <ModalLink
+              target="instance-details-popup"
+              title={t("View cluster summary")}
+              icon="fa-external-link"
+              item={data}
+              onClick={(data) =>
+                this.setState({
+                  instancePopupContent: {
+                    name: data.name,
+                    content: this.renderInstanceDetails(data)
+                  }
+                })
               }
-            });
-          }}
-        />
-      </span>;
+            />
+            </span>);
   }
 
   renderRuntime(data) {
@@ -150,6 +156,8 @@ class ImageInfo extends React.Component {
       elm = <span><i className="fa fa-question-circle fa-1-5x" title={t("No information")}/><a href={"#/runtime/" + data.id}>{t("No information")}</a></span>
     } else if (data.runtimeStatus === 3) {
       elm = <span><i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Outdated instances found")}/><a href={"#/runtime/" + data.id}>{t("Outdated instances found")}</a></span>
+    } else if (data.runtimeStatus === 0 ) {
+      elm = <span> - </span>;
     }
 
     return elm;
