@@ -23,9 +23,9 @@ You can run the Spacewalk Testsuite [with sumaform](https://github.com/moio/suma
 
 ## Core features, idempotency and tests order
 
-Standard testsuite features Features included in the `[testsuite.yml](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml)` file will be executed sequentially from the top to the bottom.
+The tests (features) included in the `[testsuite.yml](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml)` file will be executed sequentially from the top to the bottom.
 
-The tests (features) are grouped by core features and secondary (idempotent) features.
+The features are grouped by core and secondary features.
 
 [Idempotency](docs/idempotency.md) is the faculty to run same the feature any number of times. The basic idea of such a feature is that it does not change its environment.
 
