@@ -346,22 +346,6 @@ Then(/^I should see an update in the list$/) do
   raise unless has_xpath?('//div[@class="table-responsive"]/table/tbody/tr/td/a')
 end
 
-# FIXME: remove this steps, this is really obscure and doesn't say intuitively
-# what it does
-Given(/^Patches are visible for the registered client$/) do
-  step 'I am on the patches page'
-  20.times do
-    begin
-      step 'I should see an update in the list'
-    rescue
-      puts "wait #{c} time 5 seconds"
-      sleep 5
-    else
-      break
-    end
-  end
-end
-
 When(/^I check test channel$/) do
   step %(I check "Test Base Channel" in the list)
 end
