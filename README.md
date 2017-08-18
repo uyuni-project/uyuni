@@ -1,4 +1,4 @@
-# spacewalk and SUSE Manager automated test suite
+# SUSE Manager automated test suite
 
 * `master`
 [![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=master)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
@@ -10,9 +10,12 @@
 
 # Introduction
 
-This is the automated testsuite for [SUSE Manager](https://www.suse.com/products/suse-manager/) and [Spacewalk](http://spacewalk.redhat.com/).
+This is the automated testsuite for [SUSE Manager](https://www.suse.com/products/suse-manager/).
 
-Read more about the [**basic concepts** of Cucumber that we will be using in this testsuite: features, scenarios and steps](https://cucumber.io/docs/reference).
+Before you start, make sure you know about the [**basic concepts**](https://cucumber.io/docs/reference) of Cucumber that we are using in this testsuite: features, scenarios and steps.
+
+Apart from Cucumber, testsuite relies on a number of [software components](docs/software-components.md).
+
 
 # Running the testsuite
 
@@ -30,9 +33,10 @@ For the group of the **core features**, the order is relevant. The core features
 
 The **secondary features** can be run any number of times, and the order is not important. All new features should be **secondary features**, therefore you need to write cleanup steps on each feature.
 
-## Images used on the testsuite.
+## Images used by the testsuite
 
-The images are build by kiwi : http://download.suse.de/ibs/Devel:/Galaxy:/Terraform:/Images/, and sumaform deploy them.
+The images are built by kiwi: http://download.suse.de/ibs/Devel:/Galaxy:/Terraform:/Images/, and sumaform deploys them.
+
 
 # Contributing
 
@@ -50,7 +54,7 @@ The images are build by kiwi : http://download.suse.de/ibs/Devel:/Galaxy:/Terraf
 3. Steps should be grouped **by topic** and not by feature.
 4. Use the right prefix for your feature name. See [here](run_sets/testsuite.yml)
 5. If you do operations on packages, look [here](docs/Patches_test.md)
-6. Reuse steps, don't create new if you don't need them (look under `./features/step_definitions/` to see which steps are already implemented)
+6. Reuse steps, don't create new ones if you don't need them (look under `./features/step_definitions/` to see which steps are already implemented)
 7. Check the [code coverage results](docs/codecoverage.md) after you have run the test suite with your code.
 
 
