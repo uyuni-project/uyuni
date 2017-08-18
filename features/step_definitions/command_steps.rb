@@ -169,7 +169,7 @@ Then(/^I wont get "([^"]*)"$/) do |arg1|
 end
 
 Then(/^I wait for mgr-sync refresh is finished$/) do
-  $server.run_and_wait('ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json')
+  $server.run_until_ok('ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json')
 end
 
 Then(/^I should see "(.*?)" in the output$/) do |arg1|
@@ -389,10 +389,8 @@ end
 
 And(/^I create the "([^"]*)" bootstrap-repo for "([^"]*)" on the server$/) do |arch, target|
   node = get_target(target)
-  os_version_raw, _code = node.run('grep "VERSION=" /etc/os-release')
-  os_version = os_version_raw.strip.split('=')[1].delete '"'
-  puts 'i should see the os version: ' + os_version
+  os_version = get_os_version(node)
   command = 'mgr-create-bootstrap-repo -c SLE-' + os_version + '-' + arch
-  puts 'running the command on the server:' + command
+  puts 'Creating the boostrap-repo on the server: ' + command
   $server.run(command, false)
 end

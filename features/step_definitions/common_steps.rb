@@ -440,6 +440,22 @@ And(/^Cleanup for distro_clobber_feature$/) do
   $server.run('cobbler distro remove --name "testdistro"')
 end
 
+And(/^I enable sles pool and update repo on "([^"]*)"$/) do |target|
+  node = get_target(target)
+  os_version = get_os_version(node)
+  arch, _code = node.run('uname -m')
+  puts node.run("zypper mr -e SLE-#{os_version}-#{arch.strip}-Update")
+  puts node.run("zypper mr -e SLE-#{os_version}-#{arch.strip}-Pool")
+end
+
+And(/^I disable sles pool and update repo on "([^"]*)"$/) do |target|
+  node = get_target(target)
+  os_version = get_os_version(node)
+  arch, _code = node.run('uname -m')
+  puts node.run("zypper mr -d SLE-#{os_version}-#{arch.strip}-Update")
+  puts node.run("zypper mr -d SLE-#{os_version}-#{arch.strip}-Pool")
+end
+
 # Register client
 Given(/^I update the profile of this client$/) do
   $client.run('rhn-profile-sync', true, 500, 'root')
