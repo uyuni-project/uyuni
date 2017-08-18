@@ -33,10 +33,6 @@ For the group of the **core features**, the order is relevant. The core features
 
 The **secondary features** can be run any number of times, and the order is not important.
 
-## Images used by the testsuite
-
-The images are built by kiwi: http://download.suse.de/ibs/Devel:/Galaxy:/Terraform:/Images/, and sumaform deploys them.
-
 
 # Contributing
 
