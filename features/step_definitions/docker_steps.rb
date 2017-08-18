@@ -59,11 +59,6 @@ module ImageProfile
     assert_equal(cont_detail['imageType'], 'dockerfile', 'imagetype test fail!')
     cont_op.deleteProfile('fakeone')
   end
-
-  # FIXME: implement random cration of profiles
-  def create_random_profile(num)
-    puts num
-  end
 end
 
 World(ImageProfile)
