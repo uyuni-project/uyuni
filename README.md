@@ -31,7 +31,7 @@ The features are grouped by core and secondary features.
 
 For the group of the **core features**, the order is relevant. The core features are by design not idempotent, and serve to create a basic testing environment.
 
-The **secondary features** can be run any number of times, and the order is not important. All new features should be **secondary features**, therefore you need to write cleanup steps on each feature.
+The **secondary features** can be run any number of times, and the order is not important.
 
 ## Images used by the testsuite
 
