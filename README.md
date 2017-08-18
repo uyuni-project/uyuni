@@ -38,15 +38,15 @@ The **secondary features** can be run any number of times, and the order is not 
 
 ## Procedure
 
-1.  **Always** create a PR (even for backporting)
+1. **Always** create a PR (even for backporting)
 2. Your PR always needs at least one reviewer to approve
 
 ## Guidelines for coding:
 
-1.  **Always** create an idempotent feature, with right prefixes, and **always** as a secondary feature
+1. **Always** create an idempotent feature, with right prefixes, and **always** as a secondary feature
    -> If the feature is not idempotent, it will be not merged upstream.
-2. Scenario that cleans up should be named : ```Scenario: CLEANUP: remove xx pkg""
-   or scenario before the actual test should named "Scanario: PRE-Requirement: install that"
+2. Scenario that cleans up should be named: ```Scenario: CLEANUP: remove xx pkg""
+   or scenario before the actual test should named: ```Scenario: PRE-Requirement: install that```
 3. Steps should be grouped **by topic** and not by feature.
 4. Use the right prefix for your feature name. See [here](run_sets/testsuite.yml)
 5. If you do operations on packages, look [here](docs/Patches_test.md)
@@ -61,6 +61,7 @@ The **secondary features** can be run any number of times, and the order is not 
   * [`master`](https://github.com/SUSE/spacewalk-testsuite-base)
 
 * Release (to be run against a nightly or released *tagged* version of SUSE Manager):
+
   * [`manager30`](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager30)
   * [`manager31`](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager31)
 
