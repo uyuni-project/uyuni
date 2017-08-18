@@ -18,16 +18,17 @@ Read more about the [**basic concepts** of Cucumber that we will be using in thi
 
 You can run the Spacewalk Testsuite [with sumaform](https://github.com/moio/sumaform/blob/master/README_ADVANCED.md#cucumber-testsuite).
 
-## Core-Features, Idempotency and tests-order.
+## Core features, idempotency and tests order
 
-The tests (features) are grouped by: core-features and secondary (idempotent) features.
-For the group of the **core-feature**, the order is relevant. The core-features are by design not idempotent, and serve to create a basic testing env.
-The **secondary features** can be run XX number of times, and the order is irrelevant.
-All new features should be **secondary features**, so you need to write cleanup steps on each feature.
-[idempotency](docs/idempotency.md)
+Standard testsuite features Features included in the `[testsuite.yml](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml)` file will be executed sequentially from the top to the bottom.
 
-[**Standard testsuite features Features included in the `testsuite.yml` file will be executed sequentially from the top to the bottom**](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml).
+The tests (features) are grouped by core features and secondary (idempotent) features.
 
+[Idempotency](docs/idempotency.md) is the faculty to run same the feature any number of times. The basic idea of such a feature is that it does not change its environment.
+
+For the group of the **core features**, the order is relevant. The core features are by design not idempotent, and serve to create a basic testing environment.
+
+The **secondary features** can be run any number of times, and the order is not important. All new features should be **secondary features**, therefore you need to write cleanup steps on each feature.
 
 ## Images used on the testsuite.
 
@@ -37,23 +38,23 @@ The images are build by kiwi : http://download.suse.de/ibs/Devel:/Galaxy:/Terraf
 
 ## Procedure
 
-1. Create **always** PR. (even for backporting)
-2. Your PR needs always at least one Reviewer that approves
+1.  **Always** create a PR (even for backporting)
+2. Your PR always needs at least one reviewer to approve
 
 ## Guidelines for coding:
 
-1. Create **always** idempotent feature, with right prefixes. (and **always** Secondary feature)
+1.  **Always** create an idempotent feature, with right prefixes, and **always** as a secondary feature
    -> If the feature is not idempotent, it will be not merged upstream.
-2. Scenario that cleanup, should be named : ```Scenario: CLEANUP: remove xx pkg""
-   or scenario before the actual test, should named"Scanario: PRE-Requirement: install that"
+2. Scenario that cleans up should be named : ```Scenario: CLEANUP: remove xx pkg""
+   or scenario before the actual test should named "Scanario: PRE-Requirement: install that"
 3. Steps should be grouped **by topic** and not by feature.
 4. Use the right prefix for your feature name. See [here](run_sets/testsuite.yml)
-5. If you do pkg operation, look [here](docs/Patches_test.md)
+5. If you do operations on packages, look [here](docs/Patches_test.md)
 6. Reuse steps, don't create new if you don't need them (look under `./features/step_definitions/` to see which steps are already implemented)
-7. [Check the code coverage results](docs/codecoverage.md), after you have run the test suite with your code.
+7. Check the [code coverage results](docs/codecoverage.md) after you have run the test suite with your code.
 
 
-# Branch used
+# Branches used
 
 * Development (to be run against a HEAD version of SUSE Manager):
 
@@ -65,8 +66,9 @@ The images are build by kiwi : http://download.suse.de/ibs/Devel:/Galaxy:/Terraf
 
 All other branches are considered legacy (not under development anymore): `Manager 2.1`, `manager21-longterm`, `Manager 17`, `Manager 12`.
 
+
 # Useful tutorials
 
 * [Testing API tutorial](docs/api-call.md)
 * [Debug](docs/Debug.md)
-* [Pitfalls-test.md](docs/Pitfalls-test.md)
+* [Pitfalls](docs/Pitfalls-test.md)
