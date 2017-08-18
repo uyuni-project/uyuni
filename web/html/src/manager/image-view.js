@@ -172,6 +172,7 @@ class ImageView extends React.Component {
       .catch(this.handleResponseError);
     let updatedData = {};
     if (this.props.runtimeInfoEnabled) {
+      this.setState({imagesRuntime: {}});
       //Get a list of cluster ids
       Network.get("/rhn/manager/api/cm/clusters").promise.then(data => {
         const runtimeUrl = "/rhn/manager/api/cm/runtime/";
@@ -380,7 +381,10 @@ class ImageViewList extends React.Component {
   renderRuntimeIcon(row) {
     let icon = <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
 
-    if (row.runtimeStatus === 1) {
+    if (row.runtimeStatus === 0) {
+        icon = <span>-</span>;
+    }
+    else if (row.runtimeStatus === 1) {
       icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are up-to-date")}/>
     } else if (row.runtimeStatus === 2) {
       icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>
@@ -414,14 +418,15 @@ class ImageViewList extends React.Component {
 
   renderInstances(row) {
     let totalCount = 0;
-    if(row.instances) {
+    if(row.instances !== undefined) {
       for (let clusterCount of Object.values(row.instances)) {
         totalCount += Number(clusterCount) || 0;
       }
+    } else {
+      return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
     }
 
-    return totalCount === 0 ?
-      <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/> :
+    return totalCount === 0 ? '-' :
       <span>{totalCount}&nbsp;&nbsp;
         <ModalLink
           target="instance-details-popup"

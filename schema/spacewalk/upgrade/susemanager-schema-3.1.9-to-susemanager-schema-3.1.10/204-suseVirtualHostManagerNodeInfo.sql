@@ -5,7 +5,7 @@ CREATE TABLE suseVirtualHostManagerNodeInfo
     identifier    VARCHAR2(1024) NOT NULL,
     name          VARCHAR2(128),
     node_arch_id  NUMBER
-                    CONSTRAINT rhn_server_said_fk
+                    CONSTRAINT rhn_vhmnodeinf_said_fk
                     REFERENCES rhnServerArch (id),
     cpu_sockets   NUMBER,
     cpu_cores     NUMBER,
