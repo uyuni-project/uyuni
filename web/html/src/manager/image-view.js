@@ -189,10 +189,10 @@ class ImageView extends React.Component {
                 this.setState({ runtimeInfoErr: true});
             })
         )
-        .catch(jqXHR => {
-          this.handleResponseError(jqXHR);
-          this.setState({ runtimeInfoErr: true});
-        });
+      })
+      .catch(jqXHR => {
+        this.handleResponseError(jqXHR);
+        this.setState({ runtimeInfoErr: true});
       });
     }
 
