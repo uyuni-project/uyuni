@@ -43,11 +43,6 @@ spacewalk-setup --skip-system-version-test --skip-selinux-test --skip-fqdn-test 
 # this copy the latest schema from the git into the system
 ./build-schema.sh
 
-################################################
-####### START COMMENT OUT
-####### IF A FIXED DESTINATION IS WANTED
-################################################
-
 RPMVERSION=`rpm -q --qf "%{version}" --specfile /manager/schema/spacewalk/susemanager-schema.spec`
 NEXTVERSION=`echo $RPMVERSION | awk '{ pre=post=$0; gsub("[0-9]+$","",pre); gsub(".*\\\\.","",post); print pre post+1; }'`
 
@@ -58,17 +53,23 @@ else
     export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
 fi
 
-# guessing and creating the link between 3.0 => 3.5 schema
-# obsolete: we have this link now in the package.
-#for v in `seq 30 -1 11`; do
-#    minusone=$(($v-1))
-#    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.0.$minusone-to-susemanager-schema-3.0.$v ]; then
-#        mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.0.$v-to-susemanager-schema-3.1.0
-#	# set hard this destination
-#        export SUMA_TEST_SCHEMA_VERSION="3.1.1"
-#        break
-#    fi
-#done
+################################################
+####### START COMMENT OUT
+####### IF A FIXED DESTINATION IS WANTED
+################################################
+
+set -x
+# guessing the link to next major version
+# THE NEXT BLOCK CAN BE COMMENTED OUT WHEN WE HAVE THE LINK PACKAGED
+for v in `seq 30 -1 2`; do
+    minusone=$(($v-1))
+    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.1.$minusone-to-susemanager-schema-3.1.$v ]; then
+        mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.1.$v-to-susemanager-schema-3.2.0
+        # set hard this destination
+        export SUMA_TEST_SCHEMA_VERSION="3.2.1"
+        break
+    fi
+done
 ###############################################
 ####### END
 ###############################################
