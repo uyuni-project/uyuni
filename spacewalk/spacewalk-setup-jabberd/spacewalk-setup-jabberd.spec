@@ -1,5 +1,5 @@
 Name:           spacewalk-setup-jabberd
-Version:        2.7.1
+Version:        2.8.0
 Release:        1%{?dist}
 Summary:        Tools to setup jabberd for Spacewalk
 Group:          Applications/System
@@ -8,12 +8,20 @@ URL:            https://github.com/spacewalkproject/spacewalk
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 PreReq:         sqlite3
+%if 0%{?fedora} && 0%{?fedora} > 26
+BuildRequires:  perl-interpreter
+%else
 BuildRequires:  perl
+%endif
 BuildRequires:  perl(ExtUtils::MakeMaker)
 BuildRequires:  jabberd
 BuildRequires:	 sqlite3
 BuildArch:      noarch
+%if 0%{?fedora} && 0%{?fedora} > 26
+Requires:       perl-interpreter
+%else
 Requires:       perl
+%endif
 %if 0%{?suse_version}
 Requires:       jabberd-sqlite
 %endif
@@ -66,6 +74,17 @@ rm -rf %{buildroot}
 /usr/share/spacewalk/setup/jabberd/create_sqlite3_database
 
 %changelog
+* Wed Aug 16 2017 Eric Herget <eherget@redhat.com> 2.7.4-1
+- SW 2.7 Release prep - update copyright year (3rd pass)
+
+* Mon Aug 14 2017 Eric Herget <eherget@redhat.com> 2.7.3-1
+- 1480697 - Need to initialize the jabberd sqlite database during setup
+
+* Thu Aug 10 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.2-1
+- 1479849 - Requires: perl has been renamed to perl-interpreter on Fedora 27
+- 1479849 - BuildRequires: perl has been renamed to perl-interpreter on Fedora
+  27
+
 * Fri May 05 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.1-1
 - use sqlite as default osad database backend
 - Updated links to github in spec files

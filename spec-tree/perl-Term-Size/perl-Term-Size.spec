@@ -1,6 +1,6 @@
 Name:           perl-Term-Size 
 Version:        0.207
-Release:        14%{?dist}.1
+Release:        14%{?dist}.2
 License:        GPL+ or Artistic 
 Summary:        Simple way to get terminal size 
 Source0:        http://search.cpan.org/CPAN/authors/id/F/FE/FERREIRA/Term-Size-%{version}.tar.gz
@@ -11,7 +11,11 @@ Patch0:         %{name}-0.207-perlio.patch
 BuildRequires:  findutils
 BuildRequires:  gcc
 BuildRequires:  make
+%if 0%{?fedora} && 0%{?fedora} > 26
+BuildRequires:  perl-interpreter
+%else
 BuildRequires:  perl
+%endif
 BuildRequires:  perl-devel
 BuildRequires:  perl(ExtUtils::MakeMaker)
 # Runtime
@@ -62,6 +66,10 @@ make test
 %{_mandir}/man3/*
 
 %changelog
+* Thu Aug 10 2017 Tomas Kasparek <tkasparek@redhat.com> 0.207-14.2
+- 1479849 - BuildRequires: perl has been renamed to perl-interpreter on Fedora
+  27
+
 * Tue Apr 11 2017 Tomas Kasparek <tkasparek@redhat.com> 0.207-14.1
 - 1440818 - add a patch and fix package version
 

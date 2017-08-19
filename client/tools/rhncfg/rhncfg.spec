@@ -9,7 +9,7 @@
 %global client_caps_dir %{rhnconf}/clientCaps.d
 
 Name: rhncfg
-Version: 5.10.108
+Version: 5.10.110
 Release: 1%{?dist}
 Summary: Spacewalk Configuration Client Libraries
 Group:   Applications/System
@@ -85,6 +85,9 @@ The code required to run configuration actions scheduled via Spacewalk.
 
 %prep
 %setup -q
+%if 0%{?fedora} >= 23
+%global __python /usr/bin/python3
+%endif
 
 %build
 make -f Makefile.rhncfg all
@@ -157,6 +160,13 @@ fi
 %ghost %attr(600,root,root) %{_localstatedir}/log/rhncfg-actions
 
 %changelog
+* Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 5.10.110-1
+- precompile py3 bytecode on Fedora 23+
+- use standard brp-python-bytecompile
+
+* Mon Aug 07 2017 Eric Herget <eherget@redhat.com> 5.10.109-1
+- another pass to update copyright year
+
 * Wed Aug 02 2017 Tomas Kasparek <tkasparek@redhat.com> 5.10.108-1
 - 1455513 - print different message if file does not exist
 - 1455513 - print a name of file which does not exist during diff

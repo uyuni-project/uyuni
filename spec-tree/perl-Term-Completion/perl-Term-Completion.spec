@@ -1,6 +1,6 @@
 Name:       perl-Term-Completion 
 Version:    1.00
-Release:    9%{?dist}.2
+Release:    9%{?dist}.3
 License:    GPL+ or Artistic 
 Group:      Development/Libraries
 Summary:    Read one line of user input, with convenience functions 
@@ -8,7 +8,11 @@ Source:     http://search.cpan.org/CPAN/authors/id/M/MA/MAREKR/Term-Completion-%
 Url:        http://search.cpan.org/dist/Term-Completion
 Requires:   perl(:MODULE_COMPAT_%(eval "`perl -V:version`"; echo $version))
 BuildArch:  noarch
+%if 0%{?fedora} && 0%{?fedora} > 26
+BuildRequires: perl-interpreter
+%else
 BuildRequires: perl
+%endif
 BuildRequires: perl(base)
 BuildRequires: perl(Carp)
 BuildRequires: perl(Exporter)
@@ -64,6 +68,10 @@ make test
 %{_mandir}/man3/*.3*
 
 %changelog
+* Thu Aug 10 2017 Tomas Kasparek <tkasparek@redhat.com> 1.00-9.3
+- 1479849 - BuildRequires: perl has been renamed to perl-interpreter on Fedora
+  27
+
 * Fri Jun 02 2017 Tomas Kasparek <tkasparek@redhat.com> 1.00-9.2
 - 1440818 - handle spaces at the end of input in more mannered way
 

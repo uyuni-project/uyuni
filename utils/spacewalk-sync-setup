@@ -2,7 +2,7 @@
 #
 # Utility for setting up ISS master/slave org-mappings
 #
-# Copyright (c) 2013--2015 Red Hat, Inc.
+# Copyright (c) 2013--2017 Red Hat, Inc.
 #
 #
 # This software is licensed to you under the GNU General Public License,
@@ -144,7 +144,6 @@ def initializeConfig(opt, handle):
 
     master_stanza = DEFAULT_CONFIG_FQDN_STANZA
     slave_stanza = DEFAULT_CONFIG_FQDN_STANZA
-
     master = opt.master and opt.master or ask("Fully qualified domain name for master")
     hdr = hdr.replace('MASTER', master)
     master_stanza = master_stanza.replace('FQDN', master)
@@ -281,7 +280,7 @@ def validateConnectInfo(info):
     "Something needs to connect - make sure we have fqdn/login/pwd, and ask for "
     " anything missing"
 
-    if not 'fqdn' in info or not info['fqdn']:
+    if not 'fqdn' in info or info['fqdn'] is None or len(info['fqdn']) == 0:
         fail("Can't connect, I don't know what machine you want to go to!")
     elif "." not in info['fqdn']:
         fail("Machine domain name is not fully qualified!")
@@ -298,6 +297,7 @@ def validateConnectInfo(info):
 
 def connectTo(info):
     logging.debug("Connect-to info = %s" % info)
+    logging.info("Connecting to " + info['login'] + "@" + str(info['fqdn']))
     info = validateConnectInfo(info)
     logging.info("Connecting to " + info['login'] + "@" + info['fqdn'])
     url = "https://%(fqdn)s/rpc/api" % {"fqdn": info['fqdn']}
@@ -598,7 +598,8 @@ def ask(msg, password=False):
 
 def fail(msg):
     logging.error(msg)
-    sys.exit(1)
+    logging.info("See spacewalk-sync-setup --help")
+    sys.exit()
 
 
 if __name__ == '__main__':

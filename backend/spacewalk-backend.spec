@@ -37,7 +37,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.133
+Version: 2.8.1
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -453,11 +453,6 @@ if [ -x %py_libdir/py_compile.py ]; then
     popd
 fi
 
-%if 0%{?fedora} && 0%{?fedora} >= 23
-rm -r $RPM_BUILD_ROOT%{python3rhnroot}/__pycache__
-rm -r $RPM_BUILD_ROOT%{python3rhnroot}/common/__pycache__
-%endif
-
 %pre server
 OLD_SECRET_FILE=%{_var}/www/rhns/server/secret/rhnSecret.py
 if [ -f $OLD_SECRET_FILE ]; then
@@ -747,6 +742,8 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{python3rhnroot}/common/rhnLib.py*
 %{python3rhnroot}/__init__.py
 %{python3rhnroot}/common/__init__.py
+%{python3rhnroot}/__pycache__/__init__.*
+%{python3rhnroot}/common/__pycache__/*
 %endif
 
 %files config-files-common
@@ -893,6 +890,24 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Fri Aug 18 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.1-1
+- 1482981 - stop synchronization if no space left on device
+- Bumping package versions for 2.8.
+
+* Mon Aug 14 2017 Jan Dobes 2.7.137-1
+- 1477344 - select all null-org channels and then fiter them
+
+* Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.136-1
+- 1477753 - precompile py3 stuff
+- 1477753 - use standard brp-python-bytecompile
+
+* Mon Aug 07 2017 Jan Dobes 2.7.135-1
+- 1459878 - cdn-sync of custom channel should unlink errata from channel if
+  repository is removed
+
+* Mon Aug 07 2017 Gennadii Altukhov <grinrag@gmail.com> 2.7.134-1
+- 1450445 - check url of repository contains protocol name
+
 * Wed Aug 02 2017 Jan Dobes 2.7.133-1
 - 1477667 - don't unlink packages if --no-packages is used
 

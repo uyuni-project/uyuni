@@ -17,14 +17,18 @@ Name: osad
 Summary: Open Source Architecture Daemon
 Group:   System Environment/Daemons
 License: GPLv2
-Version: 5.11.86
+Version: 5.11.89
 Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
+%if 0%{?fedora} && 0%{?fedora} > 26
+BuildRequires: perl-interpreter
+%else
 BuildRequires: perl
+%endif
 %if 0%{?fedora} >= 23
 BuildRequires: python3-devel
 Requires: python3
@@ -107,6 +111,9 @@ Common files needed by osad and osa-dispatcher
 Summary: OSA dispatcher
 Group:    System Environment/Daemons
 Requires: spacewalk-backend-server >= 1.2.32
+# this subpackage is python2 even on Fedora 23+ so it needs python v2
+BuildRequires: python-devel
+Requires: python
 Requires: jabberpy
 Requires: lsof
 Requires: osa-common = %{version}
@@ -195,6 +202,8 @@ install -d $RPM_BUILD_ROOT%{rhnroot}
 make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir}
 %if 0%{?fedora} >= 23
     sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/sbin/osad
+    # osa-dispatches is still py2 even on F23+, so we need to run py2 recompile in addition
+    /usr/lib/rpm/brp-python-bytecompile /usr/bin/python 1
 %endif
 mkdir -p %{buildroot}%{_var}/log/rhn
 touch %{buildroot}%{_var}/log/osad
@@ -486,6 +495,16 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Thu Aug 10 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.89-1
+- make sure osa_dispatcher_upstream_notif_server_port_t has been removed
+
+* Thu Aug 10 2017 Tomas Kasparek <tkasparek@redhat.com> 5.11.88-1
+- 1479849 - BuildRequires: perl has been renamed to perl-interpreter on Fedora
+  27
+
+* Mon Aug 07 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.87-1
+- recompile osa-dispatcher with py2 even on F23+
+
 * Thu Aug 03 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.86-1
 - 1477753 - use standard brp-python-bytecompile to make proper .pyc/.pyo
 

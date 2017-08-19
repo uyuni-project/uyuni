@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2015 Red Hat, Inc.
+ * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -220,14 +220,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<ErrataOverview> eos = ErrataManager.search(eids, user.getOrg());
         assertNotNull(eos);
         assertEquals(1, eos.size());
-    }
-
-    public void testAllErrataList() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        DataResult errata = ErrataManager.allErrata(user);
-        assertNotNull(errata);
-        assertTrue(errata.size() <= 20);
     }
 
     public void testRelevantErrataList() throws Exception {

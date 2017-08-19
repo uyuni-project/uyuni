@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.106
+Version: 2.8.2
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -994,6 +994,59 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Fri Aug 18 2017 Grant Gainey 2.8.2-1
+- 1469011 - updating about.jsp to bear some resemblance to current reality
+
+* Fri Aug 18 2017 Jan Dobes 2.8.1-1
+- workaround struts 1.3.10 ExceptionHandler call of isCommited method - not
+  implemented in old mockobjects lib (MockHttpServletResponse class)
+- Bumping package versions for 2.8.
+
+* Thu Aug 17 2017 Jiri Dostal <jdostal@redhat.com> 2.7.115-1
+- 1458712 - "Update Organization" button placed that way it is not clear that
+  it updates "Allow Organization Admin to manage Organization Configuration"
+  setting as well
+
+* Wed Aug 16 2017 Eric Herget <eherget@redhat.com> 2.7.114-1
+- SW 2.7 Release prep - update copyright year (3rd pass)
+
+* Tue Aug 15 2017 Grant Gainey 2.7.113-1
+- 1461898 - Fix SelectableChannel for other users of channel_selector.jspf
+
+* Tue Aug 15 2017 Jan Dobes 2.7.112-1
+- KickstartDownloadActionTest is useless
+
+* Mon Aug 14 2017 Jan Dobes 2.7.111-1
+- use LinkedHashSet same as in get method and as on web UI counterpart, TreeSet
+  evaluates all KickstartCommand instances as equal (because of compareTo
+  method)
+- fixing NoCobblerTokenException: We had an error trying to login.
+- this test doesn't make much sense - it lists also null-org errata and it
+  randomly passes/fails depending on synced content
+
+* Fri Aug 11 2017 Jan Dobes 2.7.110-1
+- assert is wrong - inverted TEST_CONFIG_BOOLEAN value is not saved when
+  required fields are missing in form
+- fixing various ClassNotFoundException in tests - add hamcrest to classpath
+- update struts libs, they are now in /usr/share/java/struts/, add only tiles
+  lib, others should be linked from tomcat lib dir
+- ChannelFactory.listAllBaseChannels lists also null-org channels, fix test
+- fix table name for set, hibernate is looking for
+  'rhnaction_rhnactionconfigchannel' and 'rhnaction_rhnactionconfigfilename'
+  tables in ConfigUploadActionTest and ConfigUploadMtimeActionTest
+
+* Fri Aug 11 2017 Jiri Dostal <jdostal@redhat.com> 2.7.109-1
+- 1471018 - Allow cancel event that was picked up from queue by WebUI
+
+* Thu Aug 10 2017 Jan Dobes 2.7.108-1
+- 'if not exists' is unsupported in PG 8.4, catch exception in Java code
+  instead
+- TEST_CONF_LOCATION path is still used in spacewalk-java-tests RPM, use it as
+  fallback when any config file is not found locally
+
+* Mon Aug 07 2017 Eric Herget <eherget@redhat.com> 2.7.107-1
+- another pass to update copyright year
+
 * Thu Aug 03 2017 Jan Dobes 2.7.106-1
 - 1455791 - rename cobbler profile names containing org's name
 
