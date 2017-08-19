@@ -32,13 +32,18 @@ Below is the list of Ruby gems used by the testsuite. It may change over time as
 * ```securerandom```: UUIDs and other random generation
 * ```socket```, ```stringio```, ```tempfile```, ```tmpdir```: file manipulation
 
-## Various
+### Various
 
 * ```english```: English language processing
 * ```jwt```: JSON Web Token (JWT) standard
 
 
-## Operating system images
+## Test machines
 
-The images are built by kiwi, and stored [here](http://download.suse.de/ibs/Devel:/Galaxy:/Terraform:/Images/). Then sumaform deploys them.
+Operating system images are built by kiwi, and stored [here](http://download.suse.de/ibs/Devel:/Galaxy:/Terraform:/Images/). Then sumaform uses them.
 
+sumaform starts tests machines with terraform, then provisions them with salt.
+
+sumaform can work with clouds, but most of the time we use it with libvirt/KVM/QEMU virtual machines. To do that, we rely on a libvirt extension to terraform we developed inhouse.
+
+The testsuite runs on a special machine called the control node.
