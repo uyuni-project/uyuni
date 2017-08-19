@@ -5,7 +5,8 @@
 # pipe it through "| tail -n +3" and store it in the template dir
 #
 
-nextnum=0
+#nextnum=0
+nextnum=1
 dest=""
 sqlname=""
 
@@ -16,7 +17,7 @@ function incr () {
 
 function new_path () {
 
-    dest="$basepath/susemanager-schema-3.1.0-to-susemanager-schema-3.1.1/$nextnum$fname"
+    dest="$basepath/susemanager-schema-3.2.0-to-susemanager-schema-3.2.1/$nextnum$fname"
 
 }
 
@@ -64,9 +65,12 @@ basepath="$basepath/upgrade/"
 echo "P: $basepath"
 echo "T: $templatedir"
 
-dirs=(spacewalk-schema-2.4-to-spacewalk-schema-2.5 spacewalk-schema-2.5-to-spacewalk-schema-2.6 spacewalk-schema-2.6-to-spacewalk-schema-2.7)
+dirs=(spacewalk-schema-2.7-to-spacewalk-schema-2.8)
 
 for d in ${dirs[*]}; do
+    if [ ! -d $basepath/$d ]; then
+        continue
+    fi
     for i in $basepath/$d/*; do
     	fname=`basename $i`
 	if [ "$fname" == "README" ]; then
