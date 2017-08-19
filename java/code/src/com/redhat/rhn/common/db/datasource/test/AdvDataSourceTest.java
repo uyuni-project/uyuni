@@ -358,10 +358,10 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
                     );
                 }
                 connection.commit();
-        }
-        catch (SQLException se) {
-            log.warn("Failed to create table adv_datasource: " + se.toString());
-            c.rollback();
+            }
+            catch (SQLException se) {
+                log.warn("Failed to create table adv_datasource: " + se.toString());
+                connection.rollback();
             }
             finally {
                 HibernateHelper.cleanupDB(statement);
