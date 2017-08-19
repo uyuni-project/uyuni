@@ -10,7 +10,7 @@
 
 Name:           rhn-virtualization
 Summary:        Spacewalk action support for virualization
-Version:        5.4.59
+Version:        5.4.60
 Release:        1%{?dist}
 
 Group:          System Environment/Base
@@ -36,6 +36,7 @@ Summary: Files needed by rhn-virtualization-host
 Group: System Environment/Base
 %if 0%{?fedora} >= 23
 Requires: python3-spacewalk-usix
+BuildRequires: python3-devel
 %else
 Requires: spacewalk-usix
 %endif
@@ -80,6 +81,9 @@ that is specific to the Host system (a.k.a. Dom0).
 
 %prep
 %setup -q
+%if 0%{?fedora} >= 23
+%global __python /usr/bin/python3
+%endif
 
 %build
 make -f Makefile.rhn-virtualization
@@ -142,6 +146,15 @@ fi
 %{rhn_dir}/virtualization/notification.py*
 %{rhn_dir}/virtualization/util.py*
 %doc LICENSE
+%if 0%{?fedora} >= 23
+%dir %{rhn_dir}/virtualization/__pycache__
+%{rhn_dir}/virtualization/__pycache__/__init__.*
+%{rhn_dir}/virtualization/__pycache__/batching_log_notifier.*
+%{rhn_dir}/virtualization/__pycache__/constants.*
+%{rhn_dir}/virtualization/__pycache__/errors.*
+%{rhn_dir}/virtualization/__pycache__/notification.*
+%{rhn_dir}/virtualization/__pycache__/util.*
+%endif
 
 %files host
 %defattr(-,root,root,-)
@@ -173,9 +186,28 @@ fi
 %{rhn_conf_dir}/studio-*-template.xml
 %config(noreplace) %{rhn_conf_dir}/image.cfg
 %doc LICENSE
-
+%if 0%{?fedora} >= 23
+%{rhn_dir}/virtualization/__pycache__/domain_config.*
+%{rhn_dir}/virtualization/__pycache__/domain_control.*
+%{rhn_dir}/virtualization/__pycache__/domain_directory.*
+%{rhn_dir}/virtualization/__pycache__/get_config_value.*
+%{rhn_dir}/virtualization/__pycache__/init_action.*
+%{rhn_dir}/virtualization/__pycache__/poller.*
+%{rhn_dir}/virtualization/__pycache__/schedule_poller.*
+%{rhn_dir}/virtualization/__pycache__/poller_state_cache.*
+%{rhn_dir}/virtualization/__pycache__/start_domain.*
+%{rhn_dir}/virtualization/__pycache__/state.*
+%{rhn_dir}/virtualization/__pycache__/support.*
+%dir %{rhn_dir}/actions/__pycache__
+%{rhn_dir}/actions/__pycache__/virt.*
+%{rhn_dir}/actions/__pycache__/image.*
+%endif
 
 %changelog
+* Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.60-1
+- precompile py3 bytecode on Fedora 23+
+- use standard brp-python-bytecompile
+
 * Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.59-1
 - move version and release before sources
 

@@ -10,7 +10,7 @@
 %global pythonrhnroot %{python_sitelib}/spacewalk
 
 Name:	    spacewalk-usix
-Version:	2.7.7
+Version:	2.8.0
 Release:	1%{?dist}
 Summary:	Spacewalk server and client nano six library
 
@@ -68,12 +68,6 @@ cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{python3rhnroo
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%check
-%if 0%{?fedora} && 0%{?fedora} >= 23
-rm -r -f $RPM_BUILD_ROOT%{python3rhnroot}/__pycache__
-rm -r -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__pycache__
-%endif
-
 %files
 %defattr(-,root,root)
 %dir %{pythonrhnroot}
@@ -96,13 +90,15 @@ rm -r -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__pycache__
 %{python3rhnroot}/__init__.py
 %{python3rhnroot}/common/__init__.py
 %{python3rhnroot}/common/usix.py*
-%exclude %{python3rhnroot}/__init__.pyc
-%exclude %{python3rhnroot}/__init__.pyo
-%exclude %{python3rhnroot}/common/__init__.pyc
-%exclude %{python3rhnroot}/common/__init__.pyo
+%{python3rhnroot}/common/__pycache__/*
+%exclude %{python3rhnroot}/__pycache__/*
+%exclude %{python3rhnroot}/common/__pycache__/__init__.*
 %endif
 
 %changelog
+* Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.8-1
+- 1477753 - precompile py3 bytecode
+
 * Mon Jul 31 2017 Eric Herget <eherget@redhat.com> 2.7.7-1
 - update copyright year
 

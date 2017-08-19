@@ -10,7 +10,7 @@ Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           https://github.com/spacewalkproject/spacewalk
-Version:       5.5.106
+Version:       5.5.107
 Release:       1%{?dist}
 Source0:       https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
@@ -70,6 +70,7 @@ ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
 
 %if 0%{?fedora} >= 23
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT%{_bindir}/rhnpush
+%global __python /usr/bin/python3
 %endif
 
 %clean
@@ -88,6 +89,9 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %dir %{_sysconfdir}/sysconfig/rhn
 %dir %{rhnroot}/rhnpush
 %{rhnroot}/rhnpush/*
+%if 0%{?fedora} >= 23
+%{rhnroot}/rhnpush/__pycache__/
+%endif
 %attr(755,root,root) %{_bindir}/rhnpush
 %if 0%{?suse_version}
 %{_bindir}/mgrpush
@@ -98,6 +102,10 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING
 
 %changelog
+* Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 5.5.107-1
+- precompile py3 bytecode on Fedora 23+
+- use standard brp-python-bytecompile
+
 * Mon Jul 31 2017 Eric Herget <eherget@redhat.com> 5.5.106-1
 - update copyright year
 

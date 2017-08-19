@@ -2,7 +2,7 @@
 
 Name:           perl-Satcon
 Summary:        Framework for configuration files
-Version:        2.7.1.2
+Version:        2.8.0
 Release:        1%{?dist}
 License:        GPLv2
 Group:          Applications/System
@@ -19,7 +19,11 @@ Requires:       policycoreutils
 BuildRequires:  coreutils
 BuildRequires:  findutils
 BuildRequires:  make
+%if 0%{?fedora} && 0%{?fedora} > 26
+BuildRequires:  perl-interpreter
+%else
 BuildRequires:  perl
+%endif
 BuildRequires:  perl-generators
 # Run-time:
 # bytes not used at tests
@@ -67,6 +71,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 
 %changelog
+* Thu Aug 10 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.3-1
+- 1479849 - BuildRequires: perl has been renamed to perl-interpreter on Fedora
+  27
+
 * Mon Jul 17 2017 Jan Dobes 2.7.2-1
 - Updated links to github in spec files
 - Migrating Fedorahosted to GitHub

@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.7.11
+Version:        2.8.0
 Release:        1%{?dist}
 Summary:        Initial setup tools for Spacewalk
 
@@ -20,14 +20,22 @@ URL:            http://www.spacewalkproject.org/
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+%if 0%{?fedora} && 0%{?fedora} > 26
+BuildRequires:  perl-interpreter
+%else
 BuildRequires:  perl
+%endif
 BuildRequires:  perl(ExtUtils::MakeMaker)
 ## non-core
 #BuildRequires:  perl(Getopt::Long), perl(Pod::Usage)
 #BuildRequires:  perl(Test::Pod::Coverage), perl(Test::Pod)
 
 BuildArch:      noarch
+%if 0%{?fedora} && 0%{?fedora} > 26
+Requires:       perl-interpreter
+%else
 Requires:       perl
+%endif
 Requires:       perl-Params-Validate
 Requires:       perl(Term::Completion::Path)
 Requires:       spacewalk-schema
@@ -223,6 +231,11 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Thu Aug 10 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.12-1
+- 1479849 - Requires: perl has been renamed to perl-interpreter on Fedora 27
+- 1479849 - BuildRequires: perl has been renamed to perl-interpreter on Fedora
+  27
+
 * Mon Jul 31 2017 Eric Herget <eherget@redhat.com> 2.7.11-1
 - update copyright year
 

@@ -1,6 +1,6 @@
 Name: rhn-custom-info
 Summary: Set and list custom values for Spacewalk-enabled machines
-Version: 5.4.35
+Version: 5.4.37
 Release: 1%{?dist}
 Group: Applications/System
 License: GPLv2
@@ -8,10 +8,11 @@ Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version
 URL:     https://github.com/spacewalkproject/spacewalk
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch: noarch
-BuildRequires: python-devel
 %if 0%{?fedora} >= 23
+BuildRequires: python3-devel
 Requires: python3-rhnlib
 %else
+BuildRequires: python-devel
 Requires: rhnlib
 %endif
 
@@ -39,6 +40,10 @@ an Spacewalk-enabled system.
 %prep
 %setup -q
 
+%if 0%{?fedora} >= 23
+%global __python /usr/bin/python3
+%endif
+
 %build
 make -f Makefile.rhn-custom-info all
 %if 0%{?fedora} >= 23
@@ -64,10 +69,20 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*-custom-info
 %dir %{_datadir}/rhn/custominfo
 %{_datadir}/rhn/custominfo/rhn-custom-info.py*
+%if 0%{?fedora} >= 23
+%{_datadir}/rhn/custominfo/__pycache__/
+%endif
 %doc LICENSE
 %{_mandir}/man8/rhn-custom-info.*
 
 %changelog
+* Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.37-1
+- fixed python3 buildrequires
+
+* Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.36-1
+- precompile py3 bytecode on Fedora 23+
+- use standard brp-python-bytecompile
+
 * Tue Jul 18 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.35-1
 - move version and release before sources
 

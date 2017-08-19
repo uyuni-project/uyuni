@@ -20,7 +20,7 @@
 %endif
 
 Name:            oracle-selinux
-Version:         0.1.23.38
+Version:         0.1.23.39
 Release:         1%{?obtag}%{?dist}%{?repo}
 Summary:         SELinux policy module supporting Oracle
 Group:           System Environment/Base
@@ -28,7 +28,11 @@ License:         GPLv2+
 URL:             http://www.stl.gtri.gatech.edu/rmyers/oracle-selinux/
 Source0:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:       %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+%if 0%{?fedora} && 0%{?fedora} > 26
+BuildRequires:   perl-interpreter
+%else
 BuildRequires:   perl
+%endif
 BuildRequires:   checkpolicy, selinux-policy-devel, hardlink
 BuildArch:       noarch
 
@@ -211,6 +215,10 @@ fi
 %attr(0755,root,root) %{_sbindir}/oracle-nofcontext-selinux-enable
 
 %changelog
+* Thu Aug 10 2017 Tomas Kasparek <tkasparek@redhat.com> 0.1.23.39-1
+- 1479849 - BuildRequires: perl has been renamed to perl-interpreter on Fedora
+  27
+
 * Mon Jul 17 2017 Jan Dobes 0.1.23.38-1
 - Updated links to github in spec files
 

@@ -8,7 +8,7 @@
 %define modulename spacewalk-proxy
 
 Name:           spacewalk-proxy-selinux
-Version:        2.7.2
+Version:        2.8.0
 Release:        1%{?dist}
 Summary:        SELinux policy module supporting Spacewalk Proxy
 
@@ -22,7 +22,11 @@ URL:            https://github.com/spacewalkproject/spacewalk
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+%if 0%{?fedora} && 0%{?fedora} > 26
+BuildRequires:  perl-interpreter
+%else
 BuildRequires:  perl
+%endif
 BuildRequires:  checkpolicy, selinux-policy-devel, hardlink
 BuildRequires:  policycoreutils >= %{POLICYCOREUTILSVER}
 BuildArch:      noarch
@@ -110,6 +114,10 @@ fi
 %attr(0755,root,root) %{_sbindir}/%{name}-enable
 
 %changelog
+* Thu Aug 10 2017 Tomas Kasparek <tkasparek@redhat.com> 2.7.3-1
+- 1479849 - BuildRequires: perl has been renamed to perl-interpreter on Fedora
+  27
+
 * Mon Jul 17 2017 Jan Dobes 2.7.2-1
 - Remove more fedorahosted links
 - Use HTTPS in all Github links
