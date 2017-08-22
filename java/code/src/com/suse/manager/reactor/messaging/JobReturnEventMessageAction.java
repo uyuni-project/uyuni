@@ -128,6 +128,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                 ActionFactory.save(sa);
                             }
                             catch (Exception e) {
+                                LOG.error("Error processing Salt job return", e);
                                 // DB exceptions cause the transaction to go into
                                 // rollback-only state. We need to rollback this transaction
                                 // first.
