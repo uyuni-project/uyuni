@@ -158,7 +158,13 @@ const Hierarchy = React.createClass({
   },
 
   showFilters: function() {
-    $('#visualization-filter-wrapper').toggle();
+    const filterBox = $('#visualization-filter-wrapper');
+    if (filterBox.hasClass("open")) {
+      filterBox.removeClass('open').slideUp('fast', () => {Utils.adjustSvgDimensions()});
+    }
+    else {
+      filterBox.addClass('open').slideDown('fast', () => {Utils.adjustSvgDimensions()});
+    }
   },
 
   render: function() {
