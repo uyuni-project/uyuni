@@ -19,11 +19,13 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
@@ -43,6 +45,7 @@ import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
 
+import static java.util.stream.Collectors.toSet;
 
 /**
  * TaskomaticApi
@@ -527,24 +530,37 @@ public class TaskomaticApi {
     /**
      * Delete a scheduled Action.
      *
-     * @param actionId the action id to be removed
+     * @param action the action id to be removed
+     * @param involvedMinions minions involved in the action to remove
      * @throws TaskomaticApiException if there was an error
      */
-    public void deleteScheduledAction(Long actionId) throws TaskomaticApiException {
-        try {
-            String jobLabel = MINION_ACTION_JOB_PREFIX + actionId;
+    public void deleteScheduledAction(Action action, Set<Server> involvedMinions)
+        throws TaskomaticApiException {
 
-            LOG.debug("Unscheduling job: " + jobLabel);
+        Set<Server> minionServers = action.getServerActions().stream()
+                .map(ServerAction::getServer).collect(toSet());
 
-            invoke("tasko.unscheduleSatBunch", jobLabel);
-        }
-        catch (TaskomaticApiException e) {
-            if (e.getCause() instanceof XmlRpcFault &&
-                    e.getMessage().contains("InvalidParamException")) {
-                // bunch was not there to begin with. Move on
-                return;
+        String jobLabel = MINION_ACTION_JOB_PREFIX + action.getId();
+
+        if (involvedMinions.equals(minionServers)) {
+            try {
+                LOG.debug("Unscheduling job: " + jobLabel);
+                invoke("tasko.unscheduleSatBunch", jobLabel);
             }
-            throw e;
+            catch (TaskomaticApiException e) {
+                if (e.getCause() instanceof XmlRpcFault &&
+                        e.getMessage().contains("InvalidParamException")) {
+                    // bunch was not there to begin with. Move on
+                    return;
+                }
+                throw e;
+            }
+        }
+        else {
+            LOG.debug("Job schedule" + jobLabel +
+                    " will NOT be deleted, as others minions are involved. " +
+                    "Actions related to server ids " + involvedMinions +
+                    " will be deleted.");
         }
     }
 }

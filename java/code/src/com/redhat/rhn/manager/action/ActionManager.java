@@ -80,7 +80,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerVirtualSystemCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -103,8 +102,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Calendar;
-import java.util.stream.Collectors;
 import java.util.Collections;
+
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toList;
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
@@ -361,7 +362,7 @@ public class ActionManager extends BaseManager {
         // fail any Kickstart sessions for this action and servers
         Action action = ActionFactory.lookupById(actionId);
         KickstartFactory.failKickstartSessions(Collections.singleton(action), serverActions
-                .stream().map(sa -> sa.getServer()).collect(Collectors.toSet()));
+                .stream().map(sa -> sa.getServer()).collect(toSet()));
 
         // first delete actions for traditional servers
         for (ServerAction serverAction : new ArrayList<>(serverActions)) {
@@ -378,8 +379,10 @@ public class ActionManager extends BaseManager {
         }
         // cancel minion jobs and delete corresponding actions from db
         if (!minionServerActions.isEmpty()) {
+            Set<Server> involvedMinions =
+                    serverActions.stream().map(ServerAction::getServer).collect(toSet());
             // cancel associated schedule in Taskomatic
-            taskomaticApi.deleteScheduledAction(actionId);
+            taskomaticApi.deleteScheduledAction(action, involvedMinions);
 
             // delete successfully canceled minion actions from the db
             minionServerActions.stream().forEach(serverAction -> {
@@ -387,20 +390,6 @@ public class ActionManager extends BaseManager {
                 ActionFactory.delete(serverAction);
             });
         }
-    }
-
-    /**
-     * Remove an action for an rhnset of system ids with the given label
-     * @param actionId the action to remove
-     * @param setLabel the set label to pull the ids from
-     * @param user the user witht he set
-     * @throws TaskomaticApiException if there was a Taskomatic error
-     * (typically: Taskomatic is down)
-     */
-    public static void cancelActionForSystemSet(long actionId, String setLabel, User user)
-        throws TaskomaticApiException {
-        RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
-        cancelActionForSystems(actionId, set.getElementValues());
     }
 
     /**
@@ -418,7 +407,7 @@ public class ActionManager extends BaseManager {
         Action action = ActionFactory.lookupById(actionId);
         Set<ServerAction> setServerActions = action.getServerActions().stream()
                 .filter(sa -> serverIds.contains(sa.getServer().getId()))
-                .collect(Collectors.toSet());
+                .collect(toSet());
 
         cancelServerActions(actionId, setServerActions);
     }
@@ -1918,7 +1907,7 @@ public class ActionManager extends BaseManager {
                         return params;
                     });
                 })
-                .collect(Collectors.toList());
+                .collect(toList());
 
             ModeFactory.getWriteMode("Action_queries", "schedule_action")
                 .executeUpdates(paramList);
