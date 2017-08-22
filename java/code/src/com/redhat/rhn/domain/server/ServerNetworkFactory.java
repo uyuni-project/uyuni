@@ -70,10 +70,26 @@ public class ServerNetworkFactory extends HibernateFactory {
     }
 
     /**
+     * Delete ServerNetAddress4
+     * @param serverNetAddress4 the address to delete
+     */
+    public static void removeServerNetAddress4(ServerNetAddress4 serverNetAddress4) {
+        singleton.removeObject(serverNetAddress4);
+    }
+
+    /**
      * Save ServerNetAddress4
      * @param serverNetAddress6 the address to save
      */
     public static void saveServerNetAddress6(ServerNetAddress6 serverNetAddress6) {
+        singleton.saveObject(serverNetAddress6);
+    }
+
+    /**
+     * Delete ServerNetAddress6
+     * @param serverNetAddress6 the address to delete
+     */
+    public static void removeServerNetAddress6(ServerNetAddress6 serverNetAddress6) {
         singleton.saveObject(serverNetAddress6);
     }
 
