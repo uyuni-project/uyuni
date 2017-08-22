@@ -37,13 +37,13 @@ function displayHierarchy(data) {
 // util function for adding the UI to the dom and setting its callbacks
 function initUI(tree) {
   // System name filter
-  UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system name', 'e.g., client.nue.sles', (input) => {
+  UI.addFilter(d3.select('#visualization-filter-wrapper'), 'Filter by system name', 'e.g., client.nue.sles', (input) => {
     tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
   });
 
   // Patch count filter
-  const patchCountsFilter = d3.select('#filter-wrapper')
+  const patchCountsFilter = d3.select('#visualization-filter-wrapper')
     .append('div').attr('class', 'filter');
 
   patchCountsFilter
@@ -78,13 +78,13 @@ function initUI(tree) {
   UI.addCheckbox(patchCountsFilter, 'product enhancement advisories', 'spacewalk-icon-enhancement', 'minor-patches', patchCountFilterCallback(1));
 
   // Base channel filter
-  UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system base channel', 'e.g., SLE12', (input) => {
+  UI.addFilter(d3.select('#visualization-filter-wrapper'), 'Filter by system base channel', 'e.g., SLE12', (input) => {
     tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
   });
 
   // Installed products filter
-  UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system installed products', 'e.g., SLES', (input) => {
+  UI.addFilter(d3.select('#visualization-filter-wrapper'), 'Filter by system installed products', 'e.g., SLES', (input) => {
     if (input == undefined || input == '') {
       tree.filters().remove('installedProducts');
     } else {
@@ -97,7 +97,7 @@ function initUI(tree) {
 
   // Grouping UI (based on the preprocessor type)
   if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
-    UI.addGroupSelector(d3.select('#filter-wrapper'),
+    UI.addGroupSelector(d3.select('#visualization-filter-wrapper'),
         tree.data().map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
         (data) => {
           tree.preprocessor().groupingConfiguration(data);
@@ -118,10 +118,10 @@ function initUI(tree) {
     tree.refresh();
   }
 
-  UI.addCheckinTimePartitioningSelect('#filter-wrapper', partitionByCheckin);
+  UI.addCheckinTimePartitioningSelect('#visualization-filter-wrapper', partitionByCheckin);
 
   // Partitioning by patch existence
-  const hasPatchesPartitioning = d3.select('#filter-wrapper')
+  const hasPatchesPartitioning = d3.select('#visualization-filter-wrapper')
     .append('div').attr('class', 'filter');
 
   hasPatchesPartitioning
@@ -143,7 +143,7 @@ function initUI(tree) {
 
   UI.addButton(hasPatchesPartitioning, 'Apply', applyPatchesPartitioning);
 
-  UI.addButton(d3.select('#filter-wrapper'), 'Reset partitioning', () => {
+  UI.addButton(d3.select('#visualization-filter-wrapper'), 'Reset partitioning', () => {
     tree.partitioning().get()['user-partitioning'] = d => { return ''};
     tree.refresh();
   });
@@ -162,7 +162,7 @@ const Hierarchy = React.createClass({
   },
 
   showFilters: function() {
-    $('#filter-wrapper').toggle();
+    $('#visualization-filter-wrapper').toggle();
   },
 
   render: function() {
@@ -170,7 +170,7 @@ const Hierarchy = React.createClass({
       <Panel title={t(title)}>
         <button id='toggle-svg-filter' className='btn btn-default' onClick={this.showFilters}>{t('Toggle filters')}</button>
         <div id='svg-wrapper'>
-          <div id='filter-wrapper'></div>
+          <div id='visualization-filter-wrapper'></div>
           <div className='detailBox'></div>
         </div>
       </Panel>
