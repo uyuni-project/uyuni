@@ -13,7 +13,7 @@ function addFilter(targetSelection, caption, placeholder, onInputCallback) {
   const filterDiv = targetSelection
     .append('div').attr('class', 'filter');
   filterDiv
-    .append('div')
+    .append('span')
     .attr('class', 'filter-title')
     .text(caption);
   filterDiv

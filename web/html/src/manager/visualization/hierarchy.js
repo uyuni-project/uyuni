@@ -32,18 +32,13 @@ function displayHierarchy(data) {
 
 // util function for adding the UI to the dom and setting its callbacks
 function initUI(tree) {
-  // System name filter
-  UI.addFilter(d3.select('#visualization-filter-wrapper'), 'Filter by system name', 'e.g., client.nue.sles', (input) => {
-    tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
-    tree.refresh();
-  });
-
   // Patch count filter
   const patchCountsFilter = d3.select('#visualization-filter-wrapper')
     .append('div').attr('class', 'filter');
 
   patchCountsFilter
-    .append('label')
+    .append('div')
+    .attr('class', 'filter-title')
     .text('Show systems with:');
 
   // state of the patch status checkboxes:
@@ -73,14 +68,21 @@ function initUI(tree) {
   UI.addCheckbox(patchCountsFilter, 'bug fix advisories', 'fa-bug', 'bug-patches', patchCountFilterCallback(0));
   UI.addCheckbox(patchCountsFilter, 'product enhancement advisories', 'spacewalk-icon-enhancement', 'minor-patches', patchCountFilterCallback(1));
 
+  d3.select('#visualization-filter-wrapper').append('div').attr('id', 'filter-systems-box');
+  // System name filter
+  UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system name', 'e.g., client.nue.sles', (input) => {
+    tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
+    tree.refresh();
+  });
+
   // Base channel filter
-  UI.addFilter(d3.select('#visualization-filter-wrapper'), 'Filter by system base channel', 'e.g., SLE12', (input) => {
+  UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system base channel', 'e.g., SLE12', (input) => {
     tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
   });
 
   // Installed products filter
-  UI.addFilter(d3.select('#visualization-filter-wrapper'), 'Filter by system installed products', 'e.g., SLES', (input) => {
+  UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system installed products', 'e.g., SLES', (input) => {
     if (input == undefined || input == '') {
       tree.filters().remove('installedProducts');
     } else {
