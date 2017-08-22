@@ -19,10 +19,10 @@
 #visualization-filter-wrapper {
   display: none;
   overflow-y: auto;
-  background-color: rgba(240, 240, 240, 0.95);
+  background: lighten(@spacewalk-gray-light, 8%);
   font-size: 0.9em;
-  border-bottom: 1px solid #ddd;
-  border-right: 1px solid #ddd;
+  border: 1px solid #ddd;
+  border-bottom: 0px;
   padding: 10px;
   div.button-wrapper {
     margin: 10px 0;
@@ -30,12 +30,12 @@
   div.filter {
     display: inline-block;
     vertical-align: top;
-    padding: 12px 0px;
-    margin-right: 4px;
-    border-bottom: 1px solid #ddd;
-    > div.filter-title {
+    padding: 3px 10px;
+    > .filter-title {
+      max-width: 250px;
       font-weight: bold;
       padding: 4px 2px;
+      margin-right: 4px;
     }
     label {
       font-weight: normal;
@@ -45,11 +45,14 @@
     input[type=text] {
       .form-control;
       .input-sm;
+      padding: 2px 6px;
+      height: auto;
+      width: auto;
+      display: inline-block;
     }
     .input-group {
       input {
-        width: 50%;
-        display: inline-block;
+        display: block;
       }
     }
     input[type=checkbox] {
@@ -60,27 +63,34 @@
   select {
     width: 100%;
   }
+
+  #filter-systems-box {
+    display: inline-block;
+    text-align: right;
+    > div.filter {
+      display: block;
+    }
+  }
 }
 
 #svg-wrapper {
   position: relative;
-  border-radius: 3px;
-  border: 1px solid #ccc;
-  box-shadow: 0px 0px 2px 1px #ddd;
+  border-radius: 2px;
+  border: 1px solid #ddd;
   background: #eff1f3;
 
   .detailBox {
     position: absolute;
     top: 0;
     right: 0;
-    border-radius: 0 0 0 3px;
-    border-bottom: 1px solid #ddd;
-    border-left: 1px solid #ddd;
     background-color: rgba(240, 240, 240, 0.95);
     font-size: 0.9em;
     min-width: 180px;
     max-width: 300px;
     div.content-wrapper {
+      border-radius: 0 0 0 3px;
+      border-bottom: 1px solid #ddd;
+      border-left: 1px solid #ddd;
       padding: 10px;
       table {
         width: 100%;
