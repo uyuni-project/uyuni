@@ -169,8 +169,8 @@ const Hierarchy = React.createClass({
     return (
       <Panel title={t(title)}>
         <button id='toggle-svg-filter' className='btn btn-default' onClick={this.showFilters}>{t('Toggle filters')}</button>
+        <div id='visualization-filter-wrapper'></div>
         <div id='svg-wrapper'>
-          <div id='visualization-filter-wrapper'></div>
           <div className='detailBox'></div>
         </div>
       </Panel>
