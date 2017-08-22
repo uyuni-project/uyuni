@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action;
 
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -57,7 +59,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -82,8 +83,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * ActionFactory - the singleton class used to fetch and store
@@ -168,22 +167,22 @@ public class ActionFactory extends HibernateFactory {
         throws TaskomaticApiException {
 
         RhnSet set = RhnSetManager.findByLabel(user.getId(), setLabel, null);
-        TASKOMATIC_API.deleteScheduledAction(actionId);
-
-        List<Long> ids = MinionServerFactory
+        Set<Server> involvedMinions = MinionServerFactory
                     .lookupByIds(new ArrayList<>(set.getElementValues()))
-                    .map(MinionServer::getId)
-                    .collect(toList());
-        int failed = 0;
-        for (Long sid : ids) {
+                    .collect(toSet());
+        Action action = ActionFactory.lookupById(actionId);
+
+        TASKOMATIC_API.deleteScheduledAction(action, involvedMinions);
+
+        return involvedMinions.stream().map(Server::getId).mapToInt(sid -> {
             try {
                 removeActionForSystem(actionId, sid);
+                return 0;
             }
             catch (Exception e) {
-                failed++;
+                return 1;
             }
-        }
-        return failed;
+        }).sum();
     }
 
     /**
