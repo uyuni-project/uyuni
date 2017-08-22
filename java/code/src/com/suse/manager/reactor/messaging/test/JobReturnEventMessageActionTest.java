@@ -16,6 +16,7 @@ package com.suse.manager.reactor.messaging.test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -562,6 +563,58 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         });
     }
 
+    public void testHardwareProfileChangeNetworkIP()  throws Exception {
+        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json", (server) -> {
+            Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                    eth -> eth.getName(),
+                    Function.identity()
+            ));
+            assertEquals(null, ethNames.get("lo").getPrimary());
+            assertEquals(null, ethNames.get("eth0").getPrimary());
+            assertEquals("Y", ethNames.get("eth1").getPrimary());
+        });
+
+        HibernateFactory.getSession().flush();
+
+        Action action = ActionFactoryTest.createAction(
+                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("hardware.profileupdate.ip_change_ipv4ipv6.x86.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+    }
+
+    public void testHardwareProfileNoNetworkIPChange()  throws Exception {
+        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json", (server) -> {
+            Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                    eth -> eth.getName(),
+                    Function.identity()
+            ));
+            assertEquals(null, ethNames.get("lo").getPrimary());
+            assertEquals(null, ethNames.get("eth0").getPrimary());
+            assertEquals("Y", ethNames.get("eth1").getPrimary());
+        });
+
+        HibernateFactory.getSession().flush();
+
+        Action action = ActionFactoryTest.createAction(
+                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+    }
+
     public void testHardwareProfileUpdatePrimaryIPsEmptySSH()  throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
@@ -663,7 +716,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
 
-    private void testHardwareProfileUpdate(String jsonFile, Consumer<MinionServer> assertions) throws Exception{
+    private MinionServer testHardwareProfileUpdate(String jsonFile, Consumer<MinionServer> assertions) throws Exception{
         // Prepare test objects: minion server and action
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
@@ -682,6 +735,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         messageAction.doExecute(message);
 
         assertions.accept(server);
+        return server;
     }
 
 

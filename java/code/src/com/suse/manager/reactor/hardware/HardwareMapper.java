@@ -722,37 +722,64 @@ public class HardwareMapper {
 
             inet.ifPresent(addr4 -> {
                 // set IPv4 network info
-                ServerNetAddress4 ipv4 = ServerNetworkFactory
-                        .findServerNetAddress4(iface.getInterfaceId());
-                if (ipv4 == null) {
-                    ipv4 = new ServerNetAddress4();
-                }
-                ipv4.setInterfaceId(iface.getInterfaceId());
-                ipv4.setAddress(addr4.getAddress().orElse(null));
-                ipv4.setNetmask(addr4.getNetmask().orElse(null));
-                ipv4.setBroadcast(addr4.getBroadcast().orElse(null));
+                String address = addr4.getAddress().orElse(null);
+                Long interfaceId = iface.getInterfaceId();
 
-                ServerNetworkFactory.saveServerNetAddress4(ipv4);
+                ServerNetAddress4 ipv4 = ServerNetworkFactory
+                        .findServerNetAddress4(interfaceId);
+
+                if (ipv4 != null &&
+                        Objects.equals(interfaceId, ipv4.getInterfaceId()) &&
+                        Objects.equals(address, ipv4.getAddress())) {
+                    ipv4.setNetmask(addr4.getNetmask().orElse(null));
+                    ipv4.setBroadcast(addr4.getBroadcast().orElse(null));
+                }
+                else {
+                    if (ipv4 != null) {
+                        ServerNetworkFactory.removeServerNetAddress4(ipv4);
+                    }
+                    ipv4 = new ServerNetAddress4();
+                    ipv4.setInterfaceId(interfaceId);
+                    ipv4.setAddress(address);
+                    ipv4.setNetmask(addr4.getNetmask().orElse(null));
+                    ipv4.setBroadcast(addr4.getBroadcast().orElse(null));
+
+                    ServerNetworkFactory.saveServerNetAddress4(ipv4);
+                }
             });
 
             Optional<Network.INet6> inet6 = Optional.ofNullable(saltIface.getInet6())
                     .flatMap(addr -> addr.stream().findFirst());
             inet6.ifPresent(addr6 -> {
                 // set IPv6 network info
+                Long interfaceId = iface.getInterfaceId();
+                String address = addr6.getAddress();
+
                 ServerNetAddress6 ipv6 = ServerNetworkFactory
-                        .findServerNetAddress6(iface.getInterfaceId());
-                if (ipv6 == null) {
-                    ipv6 = new ServerNetAddress6();
-                }
-                ipv6.setInterfaceId(iface.getInterfaceId());
-                ipv6.setAddress(addr6.getAddress());
-                ipv6.setNetmask(addr6.getPrefixlen());
+                        .findServerNetAddress6(interfaceId);
+
                 // scope is part of the entity's composite-id
                 // so if it's null we'll get a list with null on namedQuery.list()
                 // therefore we need a default value
-                ipv6.setScope(Optional.ofNullable(addr6.getScope()).orElse("unknown"));
+                String scope = Optional.ofNullable(addr6.getScope()).orElse("unknown");
+                if (ipv6 != null &&
+                        Objects.equals(interfaceId, ipv6.getInterfaceId()) &&
+                        Objects.equals(address, ipv6.getAddress()) &&
+                        Objects.equals(scope, ipv6.getScope())) {
+                    ipv6.setNetmask(addr6.getPrefixlen());
+                }
+                else {
+                    if (ipv6 != null) {
+                        ServerNetworkFactory.removeServerNetAddress6(ipv6);
+                    }
+                    ipv6 = new ServerNetAddress6();
+                    ipv6.setInterfaceId(interfaceId);
+                    ipv6.setAddress(address);
+                    ipv6.setNetmask(addr6.getPrefixlen());
+                    ipv6.setScope(scope);
 
-                ServerNetworkFactory.saveServerNetAddress6(ipv6);
+                    ServerNetworkFactory.saveServerNetAddress6(ipv6);
+                }
             });
         });
 
