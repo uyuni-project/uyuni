@@ -504,7 +504,7 @@ select {ra.*}
         WHERE sa.server.class = com.redhat.rhn.domain.server.MinionServer AND action_id = :id
     ]]>
     </query>
-    
+
    <sql-query name="Action.findServerIds">
         <![CDATA[
 select sa.server_id
