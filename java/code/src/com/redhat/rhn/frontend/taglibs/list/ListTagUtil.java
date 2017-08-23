@@ -651,12 +651,14 @@ public class ListTagUtil {
         String placeHolder = StringUtils.defaultString(ls.getMessage("message.filterby",
                 fields.get(0).toString()));
         sb.append(String.format("<input autofocus=\"autofocus\" type=\"text\" " +
-                " name=\"%s\" value=\"%s\" class=\"form-control\" placeholder=\"%s\"/>",
+                "name=\"%s\" value=\"%s\" class=\"form-control\" placeholder=\"%s\" " +
+                "onkeypress=\"return enterKeyHandler(event, $('button[name=%s]'))\"/>",
                                 filterValueKey,
                                 (filterValue != null ?
                                  StringEscapeUtils.escapeHtml(filterValue) :
                                  ""),
-                                 StringEscapeUtils.escapeHtml(placeHolder)
+                                 StringEscapeUtils.escapeHtml(placeHolder),
+                                 filterName
                                  ));
         sb.append("<span class=\"input-group-btn\">");
         sb.append(String.format("<button value=\"%s\" type=\"submit\" name=\"%s\" " +

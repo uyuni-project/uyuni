@@ -388,6 +388,14 @@ function disableEnterKey() {
   });
 }
 
+// Binds the enter key to a specific submit button on a key event
+function enterKeyHandler(event, $button) {
+    if(event.keyCode == 13) {
+        $button.click();
+        return false;
+    }
+}
+
 /**
  * Translates a string, implemented now as a 'true-bypass',
  * with placeholder replacement like Java's MessageFormat class.
