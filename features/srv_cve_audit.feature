@@ -75,10 +75,13 @@ Feature: CVE Audit
     And I click on "Audit Servers"
     And I should see a "Affected, at least one patch available in an assigned channel" text
     When I check the row with the "sle-client" hostname
-    Then I should see a "system selected" text
+    Then I should see "0" systems selected for SSM
+    When I follow "Add Selected to SSM"
+    Then I should see "1" systems selected for SSM
     When I am on the System Manager System Overview page
     Then I should see "sle-client" as link
     And I follow "Clear"
+    Then I should see "0" systems selected for SSM
 
   Scenario: before applying patches (xmlrpc test)
     Given I am authorized as "admin" with password "admin"

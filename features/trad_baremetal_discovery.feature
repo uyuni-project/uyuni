@@ -81,9 +81,10 @@ Feature: Test Bare-metal discovery
   Scenario: check SSM with bare-metal system
     Given I am on the Systems page
     When I check this client
-    And I wait for "30" seconds
-    Then I am on System Set Manager Overview
-  
+    Then I should see "0" systems selected for SSM
+    When I click on "Add Selected to SSM"
+    Then I should see "1" systems selected for SSM
+
   Scenario: check SSM page for bare-metal system
     Given I am authorized as "admin" with password "admin"
     And I am on System Set Manager Overview
@@ -99,6 +100,7 @@ Feature: Test Bare-metal discovery
     And I should not see a "Channels" link in the content area
     And I should not see a "Audit" link in the content area
     And I follow "Clear"
+    Then I should see "0" systems selected for SSM
 
   Scenario: Delete the system profile (bare metal) (cleanup)
     Given I am on the Systems overview page of this "sle-client"
