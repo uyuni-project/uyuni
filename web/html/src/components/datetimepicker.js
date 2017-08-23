@@ -136,8 +136,7 @@ class DateTimePicker extends React.Component {
         super();
         this.state = {
             dateOpen: false,
-            timeOpen: false,
-            timezone: new Date().toString().match(/\((.*)\)/)[1]
+            timeOpen: false
         };
     }
 
