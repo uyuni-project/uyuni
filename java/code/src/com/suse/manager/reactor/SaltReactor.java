@@ -20,8 +20,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
@@ -49,12 +47,10 @@ import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.event.MinionStartEvent;
 import com.suse.salt.netapi.exception.SaltException;
-import com.suse.salt.netapi.parser.JsonParser;
 
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -260,13 +256,10 @@ public class SaltReactor implements EventListener {
                         }));
             }
             else if (beaconEvent.getBeacon().equals("virtpoller")) {
-                TypeToken<Map<String, JsonElement>> tt =
-                        new TypeToken<Map<String, JsonElement>>() {
-                        };
-                Map<String, JsonElement> data = beaconEvent.getData(tt);
                 MessageQueue.publish(new VirtpollerBeaconEventMessage(
                         beaconEvent.getMinionId(),
-                        JsonParser.GSON.fromJson(data.toString(), VirtpollerData.class)));
+                        beaconEvent.getData(VirtpollerData.class)
+                ));
             }
         };
     }
