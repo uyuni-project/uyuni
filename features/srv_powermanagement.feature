@@ -51,6 +51,9 @@ Feature: Test Powermanagement
     Given I am authorized
     And I am on the System Overview page
     And I check this client
+    Then I should see "0" systems selected for SSM
+    When I click on "Add Selected to SSM"
+    Then I should see "1" systems selected for SSM
     And I am on System Set Manager Overview
     And I follow "Configure power management" in the content area
     Then I should see "sle-client" as link
@@ -79,3 +82,4 @@ Feature: Test Powermanagement
     And I should see a "Power Off" button
     And I should see a "Reboot" button
     And I follow "Clear"
+    Then I should see "0" systems selected for SSM
