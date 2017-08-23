@@ -390,7 +390,9 @@ end
 And(/^I create the "([^"]*)" bootstrap-repo for "([^"]*)" on the server$/) do |arch, target|
   node = get_target(target)
   os_version = get_os_version(node)
-  command = 'mgr-create-bootstrap-repo -c SLE-' + os_version + '-' + arch
-  puts 'Creating the boostrap-repo on the server: ' + command
-  $server.run(command, false)
+  sle11 = "#{os_version[0, 2]}-SP#{os_version[-1]}"
+  cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}" if os_version.include? '12'
+  cmd = "mgr-create-bootstrap-repo -c SLE-#{sle11}-#{arch}" if os_version.include? '11'
+  puts 'Creating the boostrap-repo on the server: ' + cmd
+  $server.run(cmd, false)
 end
