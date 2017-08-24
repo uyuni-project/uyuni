@@ -5,6 +5,8 @@ const Filters = require('./data-processing/filters.js');
 const Partitioning = require('./data-processing/partitioning.js');
 const Preprocessing = require('./data-processing/preprocessing.js');
 const Utils = require('./utils.js');
+const addToSSM = require('../../components/ssm.js').addToSSM;
+const removeFromSSM = require('../../components/ssm.js').removeFromSSM;
 
 // Render hierarchy view - take data, transform with preprocessor, filters and
 // partitioning, render it in the container.
@@ -169,12 +171,12 @@ function updateDetailBox(d) {
     ssmCell
       .append('button')
       .classed('detail-box-button addToSSM', true)
-      .on('click', () => addSystemToSSM([data.rawId]))
+      .on('click', () => addToSSM([data.rawId]))
       .html('<i class="fa fa-plus"></i>');
     ssmCell
       .append('button')
       .classed('detail-box-button removeFromSSM', true)
-      .on('click', () => removeSystemFromSSM([data.rawId]))
+      .on('click', () => removeFromSSM([data.rawId]))
       .html('<i class="fa fa-minus"></i>');
   }
 
@@ -248,7 +250,7 @@ function updateDetailBox(d) {
           .filter(Utils.isCompliantToSSM)
           .map(system => system.data.rawId);
         const uniqueIds = new Set(idsArray);
-        addSystemToSSM(Array.from(uniqueIds));
+        addToSSM(Array.from(uniqueIds));
       })
       .text('Add children to SSM');
   }
@@ -258,14 +260,6 @@ function closeDetailBox() {
   const detailBox = d3.select('.detailBox');
   detailBox.selectAll('*').remove();
   unselectAllNodes();
-}
-
-function addSystemToSSM(ids) {
-  return update_server_set('ids', 'system_list', true, ids);
-}
-
-function removeSystemFromSSM(ids) {
-  return update_server_set('ids', 'system_list', false, ids);
 }
 
 function deriveNodeName(d) {

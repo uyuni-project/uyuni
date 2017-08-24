@@ -37,8 +37,6 @@ import java.util.Map;
  * To create a new set, you need to first define the needed cleanup as a
  * constant in {@link SetCleanup} and then declare the set with a new constant
  * in this class.
- *
- * @version $Rev$
  */
 public class RhnSetDecl {
 
@@ -461,15 +459,6 @@ public class RhnSetDecl {
             result = new RhnSetDecl(label, cleanup);
         }
         return result;
-    }
-
-    /**
-     * Retrieves the set declaration associated to the given label
-     * @param label the label for the set
-     * @return the set declaration or null if none exists
-     */
-    public static RhnSetDecl find(String label) {
-        return DECLS.get(label);
     }
 
     /**
