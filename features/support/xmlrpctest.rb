@@ -16,7 +16,8 @@ end
 class XMLRPCBaseTest
   def initialize(host)
     @host = host
-    @connection = XMLRPC::Client.new2('http://' + @host + '/rpc/api')
+    # new2(uri, proxy=nil, timeout=nil)
+    @connection = XMLRPC::Client.new2('http://' + @host + '/rpc/api', nil, DEFAULT_TIMEOUT)
   end
 
   #
