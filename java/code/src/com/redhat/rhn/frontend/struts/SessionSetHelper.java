@@ -20,10 +20,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  * @author paji
- * @version $Rev$
  */
 public class SessionSetHelper extends BaseSetHelper {
 
@@ -45,16 +43,6 @@ public class SessionSetHelper extends BaseSetHelper {
      */
     private static String makeLabel(String label) {
         return "__session_set_" + label;
-    }
-
-    /**
-     * returns true if a set associated with the declaration exists in the set
-     * @param request the servlet request
-     * @param label the declaration
-     * @return true if a set associated with the declaration exists in the set
-     */
-    public static boolean exists(HttpServletRequest request, String label) {
-        return  request.getSession().getAttribute(makeLabel(label)) != null;
     }
 
     /**

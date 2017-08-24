@@ -8,6 +8,7 @@ const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 const {Table, Column, SearchField, Highlight} = require("../components/table");
+const AddSelectedToSSMLink = require("../components/ssm").AddSelectedToSSMLink;
 const Messages = require("../components/messages").Messages;
 
 const AFFECTED_PATCH_INAPPLICABLE = "AFFECTED_PATCH_INAPPLICABLE";
@@ -88,11 +89,7 @@ class CVEAudit extends React.Component {
     const isAdd = removed.length === 0;
     const list = isAdd ? items : removed;
 
-    this.setState({selectedItems: items}, () => {
-        DWRItemSelector.select("system_list", list, isAdd, (res) => {
-            dwr.util.setValue("header_selcount", eval(res).header, {escapeHtml: false});
-        });
-    });
+    this.setState({selectedItems: items});
   }
 
   onTargetChange(e) {
@@ -219,6 +216,9 @@ class CVEAudit extends React.Component {
               selectable={this.state.resultType === TARGET_SERVER && this.state.results.length > 0}
               onSelect={this.handleSelectItems}
               selectedItems={this.state.selectedItems}
+              additionalSelectLinks={
+                [<AddSelectedToSSMLink selectedItems={this.state.selectedItems}/>]
+              }
               searchField={
                   <SearchField filter={this.searchData} criteria={""} />
               }>
