@@ -351,14 +351,19 @@ public class DistUpgradeManager extends BaseManager {
             return result;
         }
 
+        SUSEProduct baseProduct = installedProducts.getBaseProduct();
+        if (baseProduct == null) {
+            logger.warn("No base product found");
+            return result;
+        }
+
         // installed_extensions = @installed_products - [base_product]
         List<SUSEProduct> installedExtensions = installedProducts.getAddonProducts();
-
         // base_successors = [base_product] + base_product.successors
         final List<SUSEProduct> baseSuccessors = new ArrayList<>(
-                installedProducts.getBaseProduct().getUpgrades().size() + 1);
-        baseSuccessors.add(installedProducts.getBaseProduct());
-        baseSuccessors.addAll(installedProducts.getBaseProduct().getUpgrades());
+                baseProduct.getUpgrades().size() + 1);
+        baseSuccessors.add(baseProduct);
+        baseSuccessors.addAll(baseProduct.getUpgrades());
 
         // extension_successors = installed_extensions.map {|e| [e] + e.successors }
         final List<List<SUSEProduct>> extensionSuccessors =
@@ -372,7 +377,7 @@ public class DistUpgradeManager extends BaseManager {
 
         final List<SUSEProduct> currentCombination =
                 new ArrayList<>(installedExtensions.size() + 1);
-        currentCombination.add(installedProducts.getBaseProduct());
+        currentCombination.add(baseProduct);
         currentCombination.addAll(installedExtensions);
 
         // combinations = base_successors.product(*extension_successors)
