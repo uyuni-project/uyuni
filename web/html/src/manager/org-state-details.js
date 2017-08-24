@@ -27,6 +27,10 @@ var StateDetail = React.createClass({
         return {};
     },
 
+    componentDidMount: function() {
+      setupTextareaEditor($('textarea[name="content"]'), "yaml");
+    },
+
     handleCreate: function(e) {
         this._save(e, "POST")
     },
