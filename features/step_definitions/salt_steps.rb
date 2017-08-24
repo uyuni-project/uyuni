@@ -66,8 +66,8 @@ Given(/^I am on the Systems overview page of "(.*?)"$/) do |minion|
 end
 
 When(/^I follow "(.*?)" link$/) do |host|
-  target_hostname = get_target_hostname(host)
-  step %(I follow "#{target_hostname}")
+  node = get_target(host)
+  step %(I follow "#{node.hostname}")
 end
 
 When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
@@ -141,15 +141,9 @@ When(/^I list "(.*?)" keys at Salt Master$/) do |key_type|
 end
 
 Then(/^the list of the "(.*?)" keys should contain "(.*?)" hostname$/) do |key_type, minion|
-  if minion == 'sle-minion'
-    target_fullhostname = $minion_fullhostname
-  elsif minion == 'ceos-minion'
-    target_fullhostname = $ceos_minion_fullhostname
-  else
-    raise 'no valid name of minion given! '
-  end
+  node = get_target(minion)
   $output, _code = $server.run("salt-key --list #{key_type}", false)
-  assert_match(target_fullhostname, $output, "minion #{target_fullhostname} is not listed as #{key_type} key on salt-master #{$output}")
+  assert_match(node.full_hostname, $output, "minion #{node.full_hostname} is not listed as #{key_type} key on salt-master #{$output}")
 end
 
 When(/^I wait until no Salt job is running on "(.*?)"$/) do |minion|
@@ -313,19 +307,19 @@ Then(/^the system should have a Base channel set$/) do
 end
 
 And(/^"(.*?)" is not registered in Spacewalk$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
+  node = get_target(host)
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  sid = @rpc.listSystems.select { |s| s['name'] == target_fullhostname }.map { |s| s['id'] }.first
+  sid = @rpc.listSystems.select { |s| s['name'] == node.full_hostname }.map { |s| s['id'] }.first
   @rpc.deleteSystem(sid) if sid
-  refute_includes(@rpc.listSystems.map { |s| s['id'] }, target_fullhostname)
+  refute_includes(@rpc.listSystems.map { |s| s['id'] }, node.full_hostname)
 end
 
 Given(/^"(.*?)" is registered in Spacewalk$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
+  node = get_target(host)
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  assert_includes(@rpc.listSystems.map { |s| s['name'] }, target_fullhostname)
+  assert_includes(@rpc.listSystems.map { |s| s['name'] }, node.full_hostname)
 end
 
 Then(/^all local repositories are disabled$/) do
@@ -389,18 +383,18 @@ When(/^I click on run$/) do
 end
 
 When(/^I should see "(.*)" hostname$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
-  raise unless page.has_content?(target_fullhostname)
+  node = get_target(host)
+  raise unless page.has_content?(node.full_hostname)
 end
 
 When(/^I should not see "(.*)" hostname$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
-  raise if page.has_content?(target_fullhostname)
+  node = get_target(host)
+  raise if page.has_content?(node.full_hostname)
 end
 
 When(/^I expand the results for "(.*)"$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
-  find("div[id='#{target_fullhostname}']").click
+  node = get_target(host)
+  find("div[id='#{node.full_hostname}']").click
 end
 
 Then(/^I enter command "([^"]*)"$/) do |arg1|
@@ -408,18 +402,8 @@ Then(/^I enter command "([^"]*)"$/) do |arg1|
 end
 
 Then(/^I should see "([^"]*)" in the command output for "(.*)"$/) do |text, minion|
-  if minion == 'sle-minion'
-    target_fullhostname = $minion_fullhostname
-  elsif minion == 'ceos-minion'
-    target_fullhostname = $ceos_minion_fullhostname
-  elsif minion == 'ssh-minion'
-    target_fullhostname = $ssh_minion_fullhostname
-  elsif minion == 'sle-migrated-minion'
-    target_fullhostname = $client_fullhostname
-  else
-    raise 'no valid name of minion given! '
-  end
-  within("pre[id='#{target_fullhostname}-results']") do
+  node = get_target(minion)
+  within("pre[id='#{node.full_hostname}-results']") do
     raise unless page.has_content?(text)
   end
 end
@@ -784,23 +768,7 @@ end
 
 Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|
   node = get_target(host)
-  installed = false
-  output = ''
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        output, code = node.run("rpm -q #{package}", false)
-        if code.zero?
-          installed = true
-          break
-        end
-        sleep 1
-      end
-    end
-  rescue Timeout::Error
-    raise 'exec rpm installation failed: timeout'
-  end
-  raise "exec rpm installation failed (Code #{$CHILD_STATUS}): #{$ERROR_INFO}: #{output}" unless installed
+  node.run_until_ok("rpm -q #{package}")
 end
 
 When(/^I click undo for "(.*?)"$/) do |pkg|
@@ -816,27 +784,12 @@ When(/^I click save$/) do
 end
 
 And(/^I wait until salt\-key "(.*?)" is deleted$/) do |key|
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        cmd = "salt-key -L | grep '#{key}' "
-        _output, code = $server.run(cmd, false)
-        if code.nonzero?
-          puts 'key has been deleted'
-          puts $server.run('salt-key -L', false)
-          break
-        end
-        sleep 5
-      end
-    end
-  rescue Timeout::Error
-    raise "FATAL: salt-key #{key} was not deleted"
-  end
+  cmd = "salt-key -L | grep '#{key}' "
+  $server.run_until_fail(cmd)
 end
+
 # salt ssh steps
-
 SALT_PACKAGES = 'salt salt-minion'.freeze
-
 Given(/^no Salt packages are installed on "(.*?)"$/) do |host|
   target = get_target(host)
   if ['sle-minion', 'ssh-minion', 'sle-client', 'sle-migrated-minion'].include?(host)
@@ -852,22 +805,14 @@ end
 
 # minion bootstrap steps
 And(/^I enter the hostname of "([^"]*)" as hostname$/) do |minion|
-  case minion
-  when 'sle-minion'
-    step %(I enter "#{$minion_fullhostname}" as "hostname")
-  when 'ceos-minion'
-    step %(I enter "#{$ceos_minion_fullhostname}" as "hostname")
-  when 'sle-migrated-minion'
-    step %(I enter "#{$client_fullhostname}" as "hostname")
-  else
-    raise 'No valid target.'
-  end
+  node = get_target(minion)
+  step %(I enter "#{node.full_hostname}" as "hostname")
 end
 
-Then(/^I run spacecmd listevents for ([^\s]*)$/) do |system|
-  system_fullhostname = get_target_fullhostname(system)
+Then(/^I run spacecmd listevents for ([^\s]*)$/) do |host|
+  node = get_target(host)
   $server.run('spacecmd -u admin -p admin clear_caches')
-  $server.run("spacecmd -u admin -p admin system_listevents #{system_fullhostname}")
+  $server.run("spacecmd -u admin -p admin system_listevents #{node.full_hostname}")
 end
 
 And(/^I cleanup minion: "([^"]*)"$/) do |target|

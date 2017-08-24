@@ -20,11 +20,6 @@ class XMLRPCSystemTest < XMLRPCBaseTest
     @connection.call('system.listLatestUpgradablePackages', @sid, server)
   end
 
-  # List the installed packages for a given system.
-  def listPackages(server)
-    @connection.call('system.listPackages', @sid, server)
-  end
-
   # Go wild...
   # No need to write monstrous scenario for a little checks.
   # We just do it all at once instead.
