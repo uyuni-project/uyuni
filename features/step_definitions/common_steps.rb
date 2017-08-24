@@ -129,14 +129,14 @@ end
 # nagios steps
 
 When(/^I perform a nagios check patches for "([^"]*)"$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
-  command = "/usr/lib/nagios/plugins/check_suma_patches #{target_fullhostname} > /tmp/nagios.out"
+  node = get_target(host)
+  command = "/usr/lib/nagios/plugins/check_suma_patches #{node.full_hostname} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
 When(/^I perform a nagios check last event for "([^"]*)"$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
-  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{target_fullhostname} > /tmp/nagios.out"
+  node = get_target(host)
+  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{node.full_hostname} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
@@ -271,15 +271,7 @@ Given(/^I am on the manage software channels page$/) do
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
-  50.times do
-    begin
-      sshcmd("ls /var/cache/rhn/repodata/#{channel}/updateinfo.xml.gz")
-    rescue
-      sleep 2
-    else
-      break
-    end
-  end
+  $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/updateinfo.xml.gz")
 end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
@@ -474,8 +466,8 @@ Then(/^I should see "(.*?)" in spacewalk$/) do |host|
 end
 
 Then(/^I should see "(.*?)" as link$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
-  step %(I should see a "#{target_fullhostname}" link)
+  node = get_target(host)
+  step %(I should see a "#{node.full_hostname}" link)
 end
 
 Then(/^config-actions are enabled$/) do
