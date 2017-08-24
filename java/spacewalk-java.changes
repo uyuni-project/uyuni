@@ -1,6 +1,7 @@
 - Exclude salt systems from the list of target systems for traditional
   configuration stack installation
-- Keep the the GPG Check value if validation fails (bsc#1061548)
+- Start registration for accepted minions only on the minion start event,
+  not automatically on any event (bsc#1054044)
 - Extract Proxy version from installed product (bsc#1055467)
 - Disallow entering multiple identical mirror credentials (bsc#971785)
 - Provide another create method(with additional parameter Gpgcheck) to create software channel through XML RPC(bsc#1060691).
