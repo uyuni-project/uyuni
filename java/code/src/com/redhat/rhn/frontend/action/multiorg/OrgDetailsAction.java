@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.multiorg;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -116,7 +117,8 @@ public class OrgDetailsAction extends RhnAction {
             org.setName(name);
             ActionMessages msg = new ActionMessages();
             msg.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("message.org_name_updated", name));
+                    new ActionMessage("message.org_name_updated",
+                    StringEscapeUtils.escapeHtml(name)));
             getStrutsDelegate().saveMessages(request, msg);
         }
         return oid;
