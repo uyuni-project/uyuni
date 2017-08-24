@@ -364,6 +364,10 @@ function setupTextareaEditor(textarea, mode) {
 
   // Set editor to read only according to data attribute
   editor.setReadOnly(textarea.data('readonly'));
+
+  editor.getSession().on('change', function() {
+    textarea.val(editor.getSession().getValue());
+  });
 }
 
 /**
