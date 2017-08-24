@@ -96,23 +96,22 @@ Then(/^I add "([^"]*)" channel$/) do |channel|
 end
 
 # channel steps
-arch = 'x86_64'
-When(/^I use spacewalk\-channel to add a valid child channel$/) do
-  child_channel = "test-channel-#{arch}-child-channel"
+When(/^I use spacewalk\-channel to add test-channel-x86_64-child-channel/) do
+  child_channel = 'test-channel-x86_64-child-channel'
   step %(I execute spacewalk\-channel and pass "--add -c #{child_channel} -u admin -p admin")
 end
 
-When(/^I use spacewalk\-channel to remove a valid child channel$/) do
-  child_channel = "test-channel-#{arch}-child-channel"
+When(/^I use spacewalk\-channel to remove test-channel-x86_64-child-channel/) do
+  child_channel = 'test-channel-x86_64-child-channel'
   step %(I execute spacewalk\-channel and pass "--remove -c #{child_channel} -u admin -p admin")
 end
 
-Then(/^I want to see all valid child channels$/) do
-  step %(I want to get "test-channel-#{arch}-child-channel")
+Then(/^I want to see test-channel-x86_64-child-channel$/) do
+  step %(I want to get "test-channel-x86_64-child-channel")
 end
 
-Then(/^I wont see any of the valid child channels$/) do
-  step %(I wont get "test-channel-#{arch}-child-channel")
+Then(/^I dont see test-channel-x86_64-child-channel$/) do
+  step %(I wont get "test-channel-x86_64-child-channel")
 end
 
 Then(/^I create mock initrd if download fails$/) do
