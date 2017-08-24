@@ -27,10 +27,6 @@ var StateDetail = React.createClass({
         return {};
     },
 
-    componentDidMount: function() {
-      setupTextareaEditor($('textarea.yaml-syntax'), "yaml");
-    },
-
     handleCreate: function(e) {
         this._save(e, "POST")
     },
@@ -125,8 +121,8 @@ var StateDetail = React.createClass({
                 <div className="form-group">
                     <label className="col-md-3 control-label">Content<span className="required-form-field">*</span>:</label>
                     <div className="col-md-6">
-                        <textarea className="form-control yaml-syntax" rows="20" name="content" ref="stateContent"
-                            defaultValue={this.props.sls.content}/>
+                        <textarea id="stateContent" className="form-control" rows="20" name="content" ref="stateContent"
+                            data-editor="yaml" defaultValue={this.props.sls.content}/>
                     </div>
                 </div>
 
