@@ -14,7 +14,6 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.redhat.rhn.common.hibernate.HibernateFactory;

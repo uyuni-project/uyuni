@@ -15,8 +15,8 @@
 package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.annotations.SerializedName;
+import com.suse.salt.netapi.results.Change;
 import com.suse.salt.netapi.results.ModuleRun;
-import com.suse.salt.netapi.results.OldNew;
 import com.suse.salt.netapi.results.StateApplyResult;
 
 import java.util.Map;
@@ -28,7 +28,7 @@ import java.util.Map;
 public class DistUpgradeOldSlsResult {
 
    @SerializedName("module_|-spmigration_|-pkg.upgrade_|-run")
-   private StateApplyResult<RetOpt<ModuleRun<Map<String, OldNew>>>> spmigration;
+   private StateApplyResult<RetOpt<ModuleRun<Map<String, Change<String>>>>> spmigration;
 
    /**
     * constructor
@@ -36,7 +36,7 @@ public class DistUpgradeOldSlsResult {
     * @param s spmigration state apply result
     */
    public DistUpgradeOldSlsResult(
-           StateApplyResult<RetOpt<ModuleRun<Map<String, OldNew>>>> s) {
+           StateApplyResult<RetOpt<ModuleRun<Map<String, Change<String>>>>> s) {
       this.spmigration = s;
    }
 
@@ -45,7 +45,8 @@ public class DistUpgradeOldSlsResult {
     *
     * @return spmigration state apply result
     */
-   public StateApplyResult<RetOpt<ModuleRun<Map<String, OldNew>>>> getSpmigration() {
+   public StateApplyResult<RetOpt<ModuleRun<Map<String, Change<String>>>>>
+       getSpmigration() {
        return spmigration;
    }
 }
