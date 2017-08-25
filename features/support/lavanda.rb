@@ -7,11 +7,11 @@ require 'timeout'
 module LavandaBasic
   # init the hotnames, only one time
   def init_hostname(hostname)
-    @in_hostname = hostname
+    @in_hostname = hostname.strip
   end
 
   def init_full_hostname(fqn)
-    @in_full_hostname = fqn
+    @in_full_hostname = fqn.strip
   end
 
   # getter functions, executed on testsuite
