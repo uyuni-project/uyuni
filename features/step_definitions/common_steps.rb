@@ -14,9 +14,7 @@ end
 
 Then(/^I can see all system information for "([^"]*)"$/) do |target|
   node = get_target(target)
-  node_hostname, _code = node.run('hostname -f')
-  puts 'i should see hostname: ' + node_hostname.strip
-  step %(I should see a "#{node_hostname.strip}" text)
+  step %(I should see a "#{node.hostname}" text)
   kernel_version, _code = node.run('uname -r')
   puts 'i should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
