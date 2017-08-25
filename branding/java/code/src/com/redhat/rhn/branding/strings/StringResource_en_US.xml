@@ -330,6 +330,11 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>&lt;a href="{1}"&gt;Apply system states&lt;/a&gt; for {0} system(s)</source>
       </trans-unit>
 
+      <!-- == Data not found == -->
+      <trans-unit id="lookup.customkey.title">
+        <source>We're sorry, but the custom key could not be found.</source>
+      </trans-unit>
+
       <!-- == ERRATA == -->
       <trans-unit id="erratalist.jsp.noerrata">
         <source>No Patches</source>
