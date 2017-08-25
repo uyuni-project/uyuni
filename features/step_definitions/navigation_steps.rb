@@ -243,7 +243,7 @@ Given(/^I am on the groups page$/) do
 end
 
 When(/^I check this client$/) do
-  step %(I check "#{$client_fullhostname}" in the list)
+  step %(I check "#{$client.full_hostname}" in the list)
 end
 
 Given(/^I am on the active Users page$/) do
@@ -304,7 +304,7 @@ end
 
 Given(/^I am on the patches page$/) do
   step %(I am authorized)
-  visit("https://#{$server_fullhostname}/rhn/errata/RelevantErrata.do")
+  visit("https://#{$server.full_hostname}/rhn/errata/RelevantErrata.do")
 end
 
 Given(/^I am on the "([^"]*)" patches Details page$/) do |arg1|
@@ -328,23 +328,23 @@ When(/^I check "([^"]*)" patch$/) do |arg1|
 end
 
 When(/^I am on System Set Manager Overview$/) do
-  visit("https://#{$server_fullhostname}/rhn/ssm/index.do")
+  visit("https://#{$server.full_hostname}/rhn/ssm/index.do")
 end
 
 When(/^I am on Autoinstallation Overview page$/) do
-  visit("https://#{$server_fullhostname}/rhn/kickstart/KickstartOverview.do")
+  visit("https://#{$server.full_hostname}/rhn/kickstart/KickstartOverview.do")
 end
 
 When(/^I am on the System Manager System Overview page$/) do
-  visit("https://#{$server_fullhostname}/rhn/systems/ssm/ListSystems.do")
+  visit("https://#{$server.full_hostname}/rhn/systems/ssm/ListSystems.do")
 end
 
 When(/^I am on the Create Autoinstallation Profile page$/) do
-  visit("https://#{$server_fullhostname}/rhn/kickstart/AdvancedModeCreate.do")
+  visit("https://#{$server.full_hostname}/rhn/kickstart/AdvancedModeCreate.do")
 end
 
 When(/^I am on the System Overview page$/) do
-  visit("https://#{$server_fullhostname}/rhn/systems/Overview.do")
+  visit("https://#{$server.full_hostname}/rhn/systems/Overview.do")
 end
 
 Then(/^I reload the page$/) do

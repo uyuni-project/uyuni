@@ -102,7 +102,7 @@ Then(/^the pxe-default-profile should be disabled$/) do
 end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
-  output = sshcmd("cobbler system report --name #{$client_fullhostname}:1", ignore_err: true)[:stdout]
+  output = sshcmd("cobbler system report --name #{$client.full_hostname}:1", ignore_err: true)[:stdout]
   raise "Not found: #{output}" unless output.include?(arg1)
 end
 
@@ -209,8 +209,8 @@ end
 Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
   timeout = 800
   if target == 'sle-client'
-    checkShutdown($client_fullhostname, timeout)
-    checkRestart($client_fullhostname, get_target(target), timeout)
+    checkShutdown($client.full_hostname, timeout)
+    checkRestart($client.full_hostname, get_target(target), timeout)
   elsif target == 'ceos-minion'
     checkShutdown($ceos_minion_fullhostname, timeout)
     checkRestart($ceos_minion_fullhostname, get_target(target), timeout)
@@ -256,7 +256,7 @@ And(/^I register the centos7 as tradclient$/) do
 end
 
 When(/^I wait for the openSCAP audit to finish$/) do
-  host = $server_fullhostname
+  host = $server.full_hostname
   @sle_id = retrieve_server_id($minion_fullhostname)
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
