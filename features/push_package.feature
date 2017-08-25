@@ -23,8 +23,3 @@ Feature: Push a package with unset vendor
     And I follow "subscription-tools-1.0-0.noarch"
     Then I should see a "Vendor:" text
     And I should see a "Not defined" text
-
-  Scenario: Push anaconda package in fedora channel
-    Given I am root
-    When I push package "/root/anaconda-18.37.11-1.fc18.x86_64.rpm" into "fedora-x86_64-channel" channel
-    Then I should see package "anaconda-18.37.11-1.fc18.x86_64" in channel "Fedora x86_64 Channel"
