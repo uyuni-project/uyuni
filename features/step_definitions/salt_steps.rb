@@ -22,7 +22,7 @@ Given(/^salt-minion is configured on "(.*?)"$/) do |minion|
 end
 
 Given(/^the salt-master can reach "(.*?)"$/) do |minion|
-  node = get_target(host)
+  node = get_target(minion)
   begin
     start = Time.now
     # 300 is the default 1st keepalive interval for the minion
