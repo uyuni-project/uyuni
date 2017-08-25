@@ -2,6 +2,7 @@
 
 var React = require("react")
 const ReactDOM = require("react-dom");
+var AceEditor = require("../components/ace-editor").AceEditor
 var Panel = require("../components/panel").Panel
 var PanelButton = require("../components/panel").PanelButton
 var Messages = require("../components/messages").Messages
@@ -24,7 +25,11 @@ var StateDetail = React.createClass({
                 errors: this.props.sls.errors
             };
         }
-        return {};
+        return { stateContent : ''};
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+      this.setState({stateContent: nextProps.sls.content});
     },
 
     handleCreate: function(e) {
@@ -45,7 +50,7 @@ var StateDetail = React.createClass({
     _save: function(e, httpMethod) {
         var formData = {};
         formData['name'] = React.findDOMNode(this.refs.stateName).value.trim();
-        formData['content'] = React.findDOMNode(this.refs.stateContent).value.trim();
+        formData['content'] = this.state.stateContent.trim();
         if (this.props.sls.checksum) {
             formData['checksum'] = this.props.sls.checksum;
         }
@@ -76,6 +81,10 @@ var StateDetail = React.createClass({
             });
         }
 
+    },
+
+    handleAceEditorChange: function(editorValue) {
+      this.setState({stateContent : editorValue});
     },
 
     render: function() {
@@ -121,8 +130,10 @@ var StateDetail = React.createClass({
                 <div className="form-group">
                     <label className="col-md-3 control-label">Content<span className="required-form-field">*</span>:</label>
                     <div className="col-md-6">
-                        <textarea id="stateContent" className="form-control" rows="20" name="content" ref="stateContent"
-                            data-editor="yaml" defaultValue={this.props.sls.content}/>
+                        <AceEditor className="form-control" id="content-state"
+                            minLines="20" maxLines="40" name="content"
+                            mode="yaml" content={this.props.sls.content}
+                            onChange={this.handleAceEditorChange}></AceEditor>
                     </div>
                 </div>
 
