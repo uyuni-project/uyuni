@@ -218,8 +218,8 @@ Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
     checkShutdown($ssh_minion.full_hostname, timeout)
     checkRestart($ssh_minion.full_hostname, get_target(target), timeout)
   elsif target == 'sle-minion'
-    checkShutdown($minion_fullhostname, timeout)
-    checkRestart($minion_fullhostname, get_target(target), timeout)
+    checkShutdown($minion.full_hostname, timeout)
+    checkRestart($minion.full_hostname, get_target(target), timeout)
   end
 end
 
@@ -257,7 +257,7 @@ end
 
 When(/^I wait for the openSCAP audit to finish$/) do
   host = $server.full_hostname
-  @sle_id = retrieve_server_id($minion_fullhostname)
+  @sle_id = retrieve_server_id($minion.full_hostname)
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
   begin
