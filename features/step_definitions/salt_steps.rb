@@ -4,37 +4,25 @@ require 'open-uri'
 require 'tempfile'
 
 Given(/^salt-minion is configured on "(.*?)"$/) do |minion|
-  if minion == 'sle-minion'
-    target = $minion
-  elsif minion == 'ceos-minion'
-    target = $ceos_minion
-  else
-    raise 'no valid name of minion given! '
-  end
+  node = get_target(host)
   # cleanup the key in case the image was reused
   # to run the test twice
   step %(I delete "#{minion}" key in the Salt master)
   step %(I stop salt-minion on "#{minion}")
   step %(I stop salt-master)
   key = '/etc/salt/pki/minion/minion_master.pub'
-  if file_exists?(target, key)
-    file_delete(target, key)
+  if file_exists?(node, key)
+    file_delete(node, key)
     puts "Key #{key} has been removed on minion"
   end
   cmd = " echo  \'master : #{$server_ip}\' > /etc/salt/minion.d/susemanager.conf"
-  target.run(cmd, false)
+  node.run(cmd, false)
   step %(I start salt-master)
   step %(I start salt-minion on "#{minion}")
 end
 
 Given(/^the salt-master can reach "(.*?)"$/) do |minion|
-  if minion == 'sle-minion'
-    target_fullhostname = $minion.full_hostname
-  elsif minion == 'ceos-minion'
-    target_fullhostname = $ceos_minion.full_hostname
-  else
-    raise 'no valid name of minion given! '
-  end
+  node = get_target(host)
   begin
     start = Time.now
     # 300 is the default 1st keepalive interval for the minion
@@ -43,8 +31,8 @@ Given(/^the salt-master can reach "(.*?)"$/) do |minion|
     Timeout.timeout(KEEPALIVE_TIMEOUT) do
       # only try 3 times
       3.times do
-        out, _code = $server.run("salt #{target_fullhostname} test.ping")
-        if out.include?(target_fullhostname) && out.include?('True')
+        out, _code = $server.run("salt #{node.full_hostname} test.ping")
+        if out.include?(node.full_hostname) && out.include?('True')
           finished = Time.now
           puts "Took #{finished.to_i - start.to_i} seconds to contact the minion"
           break
@@ -177,15 +165,9 @@ When(/^we wait till Salt master sees "(.*?)" as "(.*?)"$/) do |minion, key_type|
 end
 
 Given(/^"(.*?)" key is "(.*?)"$/) do |minion, key_type|
-  if minion == 'sle-minion'
-    target_hostname = $minion.hostname
-  elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion.hostname
-  else
-    raise 'no valid name of minion given! '
-  end
+  node = get_target(minion)
   step %(I list "#{key_type}" keys at Salt Master)
-  unless $output.include?(target_hostname)
+  unless $output.include?(node.hostname)
     if key_type == 'accepted'
       step %(I accept "#{minion}" key in the Salt master)
     elsif key_type == 'rejected'
@@ -235,36 +217,18 @@ Then(/^I wait until OpenSCAP scan is completed for "([^"]*)"$/) do |system|
 end
 
 When(/^I delete "(.*?)" key in the Salt master$/) do |minion|
-  if minion == 'sle-minion'
-    target_hostname = $minion.hostname
-  elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion.hostname
-  else
-    raise 'no valid name of minion given! '
-  end
-  $output, _code = $server.run("salt-key -y -d #{target_hostname}", false)
+  node = get_target(minion)
+  $output, _code = $server.run("salt-key -y -d #{node.hostname}", false)
 end
 
 When(/^I accept "(.*?)" key in the Salt master$/) do |minion|
-  if minion == 'sle-minion'
-    target_hostname = $minion.hostname
-  elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion.hostname
-  else
-    raise 'no valid name of minion given! '
-  end
-  $server.run("salt-key -y --accept=#{target_hostname}")
+  node = get_target(minion)
+  $server.run("salt-key -y --accept=#{node.hostname}")
 end
 
 When(/^I reject "(.*?)" key in the Salt master$/) do |minion|
-  if minion == 'sle-minion'
-    target_hostname = $minion.hostname
-  elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion.hostname
-  else
-    raise 'no valid name of minion given! '
-  end
-  $server.run("salt-key -y --reject=#{target_hostname}")
+  node = get_target(minion)
+  $server.run("salt-key -y --reject=#{node.hostname}")
 end
 
 When(/^I delete all keys in the Salt master$/) do
@@ -276,16 +240,8 @@ When(/^I accept all Salt unaccepted keys$/) do
 end
 
 When(/^I get OS information of "(.*?)" from the Master$/) do |minion|
-  if minion == 'sle-minion'
-    target_fullhostname = $minion.full_hostname
-  elsif minion == 'ceos-minion'
-    target_fullhostname = $ceos_minion.full_hostname
-  elsif minion == 'sle-migrated-minion'
-    target_fullhostname = $client.full_hostname
-  else
-    raise 'no valid name of minion given! '
-  end
-  $output, _code = $server.run("salt #{target_fullhostname} grains.get osfullname")
+  node = get_target(minion)
+  $output, _code = $server.run("salt #{node.full_hostname} grains.get osfullname")
 end
 
 Then(/^it should contain a "(.*?)" text$/) do |content|
@@ -626,64 +582,33 @@ end
 
 # Verify content
 Then(/^I should not see "(.*?)" as a Minion anywhere$/) do |minion|
-  if minion == 'sle-minion'
-    target_hostname = $minion.hostname
-  elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion.hostname
-  else
-    raise 'no valid name of minion given! '
-  end
-  step %(I should not see a "#{target_hostname}" text)
+  node = get_target(minion)
+  step %(I should not see a "#{node.hostname}" text)
 end
 
 # Perform actions
 When(/^I reject "(.*?)" from the Pending section$/) do |minion|
-  if minion == 'sle-minion'
-    target_hostname = $minion.hostname
-  elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion.hostname
-  else
-    raise 'no valid name of minion given! '
-  end
-  xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'reject']"
+  node = get_target(minion)
+  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'reject']"
   raise unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "(.*?)" from the Rejected section$/) do |minion|
-  if minion == 'sle-minion'
-    target_hostname = $minion.hostname
-  elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion.hostname
-  else
-    raise 'no valid name of minion given! '
-  end
-  xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'delete']"
+  node = get_target(minion)
+  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'delete']"
   raise unless find(:xpath, xpath_query).click
 end
 
 When(/^I see "(.*?)" fingerprint$/) do |minion|
-  if minion == 'sle-minion'
-    target = $minion
-  elsif minion == 'ceos-minion'
-    target = $ceos_minion
-  else
-    raise 'no valid name of minion given! '
-  end
-  output, _code = target.run('salt-call --local key.finger')
+  node = get_target(minion)
+  output, _code = node.run('salt-call --local key.finger')
   fing = output.split("\n")[1].strip!
-
   raise unless page.has_content?(fing)
 end
 
 When(/^I accept "(.*?)" key$/) do |minion|
-  if minion == 'sle-minion'
-    target_hostname = $minion.hostname
-  elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion.hostname
-  else
-    raise 'no valid name of minion given! '
-  end
-  xpath_query = "//tr[td[contains(.,'#{target_hostname}')]]//button[@title = 'accept']"
+  node = get_target(minion)
+  xpath_query = "//tr[td[contains(.,'#{node.hostname}')]]//button[@title = 'accept']"
   raise unless find(:xpath, xpath_query).click
 end
 
@@ -708,16 +633,10 @@ When(/^I should see this hostname as text$/) do
 end
 
 When(/^I refresh page until see "(.*?)" hostname as text$/) do |minion|
-  if minion == 'sle-minion'
-    target_hostname = $minion.hostname
-  elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion.hostname
-  else
-    raise 'no valid name of minion given! '
-  end
+  node = get_target(minion)
   within('#spacewalk-content') do
     steps %(
-     And I try to reload page until contains "#{target_hostname}" text
+     And I try to reload page until contains "#{node.hostname}" text
       )
   end
 end
