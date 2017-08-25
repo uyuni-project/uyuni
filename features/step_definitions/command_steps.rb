@@ -212,11 +212,11 @@ Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
     checkShutdown($client.full_hostname, timeout)
     checkRestart($client.full_hostname, get_target(target), timeout)
   elsif target == 'ceos-minion'
-    checkShutdown($ceos_minion_fullhostname, timeout)
-    checkRestart($ceos_minion_fullhostname, get_target(target), timeout)
+    checkShutdown($ceos_minion.full_hostname, timeout)
+    checkRestart($ceos_minion.full_hostname, get_target(target), timeout)
   elsif target == 'ssh-minion'
-    checkShutdown($ssh_minion_fullhostname, timeout)
-    checkRestart($ssh_minion_fullhostname, get_target(target), timeout)
+    checkShutdown($ssh_minion.full_hostname, timeout)
+    checkRestart($ssh_minion.full_hostname, get_target(target), timeout)
   elsif target == 'sle-minion'
     checkShutdown($minion_fullhostname, timeout)
     checkRestart($minion_fullhostname, get_target(target), timeout)
@@ -279,8 +279,8 @@ end
 
 $space = 'spacecmd -u admin -p admin '
 And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
-  host = $ssh_minion_fullhostname if target == 'ssh-minion'
-  host = $ceos_minion_fullhostname if target == 'ceos-minion'
+  host = $ssh_minion.full_hostname if target == 'ssh-minion'
+  host = $ceos_minion.full_hostname if target == 'ceos-minion'
   cmd = "#{$space} system_listevents #{host} | head -n5"
   $server.run("#{$space} clear_caches")
   out, _code = $server.run(cmd)

@@ -31,7 +31,7 @@ Given(/^the salt-master can reach "(.*?)"$/) do |minion|
   if minion == 'sle-minion'
     target_fullhostname = $minion_fullhostname
   elsif minion == 'ceos-minion'
-    target_fullhostname = $ceos_minion_fullhostname
+    target_fullhostname = $ceos_minion.full_hostname
   else
     raise 'no valid name of minion given! '
   end
@@ -180,7 +180,7 @@ Given(/^"(.*?)" key is "(.*?)"$/) do |minion, key_type|
   if minion == 'sle-minion'
     target_hostname = $minion_hostname
   elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion_hostname
+    target_hostname = $ceos_minion.hostname
   else
     raise 'no valid name of minion given! '
   end
@@ -238,7 +238,7 @@ When(/^I delete "(.*?)" key in the Salt master$/) do |minion|
   if minion == 'sle-minion'
     target_hostname = $minion_hostname
   elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion_hostname
+    target_hostname = $ceos_minion.hostname
   else
     raise 'no valid name of minion given! '
   end
@@ -249,7 +249,7 @@ When(/^I accept "(.*?)" key in the Salt master$/) do |minion|
   if minion == 'sle-minion'
     target_hostname = $minion_hostname
   elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion_hostname
+    target_hostname = $ceos_minion.hostname
   else
     raise 'no valid name of minion given! '
   end
@@ -260,7 +260,7 @@ When(/^I reject "(.*?)" key in the Salt master$/) do |minion|
   if minion == 'sle-minion'
     target_hostname = $minion_hostname
   elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion_hostname
+    target_hostname = $ceos_minion.hostname
   else
     raise 'no valid name of minion given! '
   end
@@ -279,7 +279,7 @@ When(/^I get OS information of "(.*?)" from the Master$/) do |minion|
   if minion == 'sle-minion'
     target_fullhostname = $minion_fullhostname
   elsif minion == 'ceos-minion'
-    target_fullhostname = $ceos_minion_fullhostname
+    target_fullhostname = $ceos_minion.full_hostname
   elsif minion == 'sle-migrated-minion'
     target_fullhostname = $client.full_hostname
   else
@@ -629,7 +629,7 @@ Then(/^I should not see "(.*?)" as a Minion anywhere$/) do |minion|
   if minion == 'sle-minion'
     target_hostname = $minion_hostname
   elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion_hostname
+    target_hostname = $ceos_minion.hostname
   else
     raise 'no valid name of minion given! '
   end
@@ -641,7 +641,7 @@ When(/^I reject "(.*?)" from the Pending section$/) do |minion|
   if minion == 'sle-minion'
     target_hostname = $minion_hostname
   elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion_hostname
+    target_hostname = $ceos_minion.hostname
   else
     raise 'no valid name of minion given! '
   end
@@ -653,7 +653,7 @@ When(/^I delete "(.*?)" from the Rejected section$/) do |minion|
   if minion == 'sle-minion'
     target_hostname = $minion_hostname
   elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion_hostname
+    target_hostname = $ceos_minion.hostname
   else
     raise 'no valid name of minion given! '
   end
@@ -679,7 +679,7 @@ When(/^I accept "(.*?)" key$/) do |minion|
   if minion == 'sle-minion'
     target_hostname = $minion_hostname
   elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion_hostname
+    target_hostname = $ceos_minion.hostname
   else
     raise 'no valid name of minion given! '
   end
@@ -711,7 +711,7 @@ When(/^I refresh page until see "(.*?)" hostname as text$/) do |minion|
   if minion == 'sle-minion'
     target_hostname = $minion_hostname
   elsif minion == 'ceos-minion'
-    target_hostname = $ceos_minion_hostname
+    target_hostname = $ceos_minion.hostname
   else
     raise 'no valid name of minion given! '
   end
