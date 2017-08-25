@@ -22,7 +22,7 @@ $ceos_minion = Twopence.init("ssh:#{$ceos_minion_ip}")
 $ssh_minion = Twopence.init("ssh:#{$ssh_minion_ip}")
 
 # lavanda library module extension.
-# look at support/lavanda.rb for more details 
+# look at support/lavanda.rb for more details
 $server.extend(LavandaBasic)
 $client.extend(LavandaBasic)
 $minion.extend(LavandaBasic)
