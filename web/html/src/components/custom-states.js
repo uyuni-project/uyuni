@@ -24,9 +24,24 @@ class SaltStatePopup extends React.Component {
     super(props);
   }
 
+  componentDidUpdate() {
+    var textarea = $('textarea#content-state');
+    if (this.props.saltState) {
+      setupTextareaEditor(textarea, "yaml"); // implement the ace.js editor plugin
+    }
+    else {
+      // HACK: handle object manually because they have been touched
+      // by the ace.js plugin externally from React.js
+      $('.ace_editor').each(function() {
+        $(this).remove();
+      });
+      textarea.remove();
+    }
+  }
+
   render() {
       const popUpContent = this.props.saltState ?
-            <textarea className="form-control" rows="20" name="content"
+            <textarea id="content-state" className="form-control" rows="20" name="content"
                 defaultValue={this.props.saltState.content} readOnly="true"/>
                 : null;
       const title = this.props.saltState ?

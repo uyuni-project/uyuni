@@ -316,10 +316,14 @@ $(document).on("ready", function() {
  * shows a select box to choose it.
  */
 function setupTextareaEditor(textarea, mode) {
+  // if textarea is in a "fadeIn" popup, the height will be negative,
+  // so we set the height of the editor in the popup to the 70% of the window height
+  var tH = textarea.height() > 0 ? textarea.height() : ($(window).height()  * 0.7);
+
   var editDiv = $('<div>', {
       position: 'absolute',
       width: textarea.width(),
-      height: textarea.height(),
+      height: tH,
       'class': textarea.attr('class')
   }).attr('id', textarea.attr('id') + '-editor').insertBefore(textarea);
 
