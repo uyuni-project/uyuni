@@ -23,19 +23,6 @@ Feature: register a salt-ssh system via XMLRPC API bootstrap procedure
     Given I am on the Systems overview page of this "ssh-minion"
     Then I should see a "Push via SSH" text
 
-  Scenario: Run a remote command on XMLRPC-bootstrapped ssh-minion
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Salt"
-    And I follow "Remote Commands"
-    And I should see a "Remote Commands" text
-    Then I enter command "ls -lha /etc"
-    And I click on preview
-    Then I should see "ssh-minion" hostname
-    And I click on run
-    Then I wait for "3" seconds
-    And I expand the results for "ssh-minion"
-    Then I should see "SuSE-release" in the command output for "ssh-minion"
-
   Scenario: Check spacecmd system ID of XMLRPC-bootstrapped ssh-minion.
     Given I am on the Systems overview page of this "ssh-minion"
     Then I run spacecmd listevents for ssh-minion
