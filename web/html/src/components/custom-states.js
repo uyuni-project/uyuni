@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require("react");
+const AceEditor = require("../components/ace-editor").AceEditor;
 const Buttons = require("../components/buttons");
 const Panels = require("../components/panel");
 const Fields = require("../components/fields");
@@ -24,25 +25,11 @@ class SaltStatePopup extends React.Component {
     super(props);
   }
 
-  componentDidUpdate() {
-    var textarea = $('textarea#content-state');
-    if (this.props.saltState) {
-      setupTextareaEditor(textarea, "yaml"); // implement the ace.js editor plugin
-    }
-    else {
-      // HACK: handle object manually because they have been touched
-      // by the ace.js plugin externally from React.js
-      $('.ace_editor').each(function() {
-        $(this).remove();
-      });
-      textarea.remove();
-    }
-  }
-
   render() {
       const popUpContent = this.props.saltState ?
-            <textarea id="content-state" className="form-control" rows="20" name="content"
-                defaultValue={this.props.saltState.content} readOnly="true"/>
+            <AceEditor className="form-control" id="content-state"
+                minLines="20" maxLines="40" name="content" readOnly="true"
+                mode="yaml" content={this.props.saltState.content} ></AceEditor>
                 : null;
       const title = this.props.saltState ?
             t("Salt State: {0}", this.props.saltState.name) : null;
