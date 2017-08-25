@@ -123,7 +123,7 @@ Then(/^I create mock initrd if download fails$/) do
 end
 
 And(/^I navigate to "([^"]*)" page$/) do |page|
-  visit("https://#{$server_fullhostname}/#{page}")
+  visit("https://#{$server.full_hostname}/#{page}")
 end
 
 # nagios steps
@@ -184,7 +184,7 @@ end
 
 Then(/^trigger cobbler system record\(not for ssh\-push tradclient\)$/) do
   space = 'spacecmd -u admin -p admin'
-  host = $client_fullhostname
+  host = $client.full_hostname
   cmd = "#{$space} system_details #{host}"
   $server.run("#{space} clear_caches")
   out, _code = $server.run(cmd)
@@ -267,7 +267,7 @@ end
 
 Given(/^I am on the manage software channels page$/) do
   step %(I am authorized as "testing" with password "testing")
-  visit("https://#{$server_fullhostname}/rhn/channels/manage/Manage.do")
+  visit("https://#{$server.full_hostname}/rhn/channels/manage/Manage.do")
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
@@ -412,11 +412,11 @@ Then(/^On this client the File "([^"]*)" should have the content "([^"]*)"$/) do
 end
 
 Then(/^I remove server hostname from hosts trad-client$/) do
-  $client.run("sed -i \'s/#{$server_fullhostname}//\' /etc/hosts")
+  $client.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
 And(/^Cleanup for distro_clobber_feature$/) do
-  host = $server_fullhostname
+  host = $server.full_hostname
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
   # -------------------------------

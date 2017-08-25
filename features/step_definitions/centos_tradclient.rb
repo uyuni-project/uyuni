@@ -6,7 +6,7 @@ require 'time'
 require 'date'
 
 def waitActionComplete(actionid)
-  host = $server_fullhostname
+  host = $server.full_hostname
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
   time_out = 300
@@ -25,7 +25,7 @@ end
 
 # centos7_tradclient tests
 And(/^execute some tests for centos_trad_client$/) do
-  host = $server_fullhostname
+  host = $server.full_hostname
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
   # -------------------------------

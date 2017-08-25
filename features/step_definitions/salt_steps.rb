@@ -281,7 +281,7 @@ When(/^I get OS information of "(.*?)" from the Master$/) do |minion|
   elsif minion == 'ceos-minion'
     target_fullhostname = $ceos_minion_fullhostname
   elsif minion == 'sle-migrated-minion'
-    target_fullhostname = $client_fullhostname
+    target_fullhostname = $client.full_hostname
   else
     raise 'no valid name of minion given! '
   end

@@ -83,11 +83,11 @@ And(/^I select sle-minion hostname in Build Host$/) do
 end
 
 And(/^I navigate to images webpage$/) do
-  visit("https://#{$server_fullhostname}/rhn/manager/cm/images")
+  visit("https://#{$server.full_hostname}/rhn/manager/cm/images")
 end
 
 And(/^I navigate to images build webpage$/) do
-  visit("https://#{$server_fullhostname}/rhn/manager/cm/build")
+  visit("https://#{$server.full_hostname}/rhn/manager/cm/build")
 end
 
 And(/^I verify that all "([^"]*)" container images were built correctly in the gui$/) do |count|

@@ -46,11 +46,6 @@ nodes.each do |node|
   node_hostnames.push(hostname.strip)
 end
 
-# this glob variable are used in cucumber steps.
-$server_hostname = node_hostnames[0]
-$server_fullhostname = node_fqn[0]
-$client_hostname = node_hostnames[1]
-$client_fullhostname = node_fqn[1]
 $minion_hostname = node_hostnames[2]
 $minion_fullhostname = node_fqn[2]
 $ceos_minion_hostname = node_hostnames[3]
