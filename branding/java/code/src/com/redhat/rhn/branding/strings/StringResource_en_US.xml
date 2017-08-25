@@ -276,6 +276,11 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Updates/Patches Email</source>
       </trans-unit>
 
+      <!-- == Data not found == -->
+      <trans-unit id="lookup.customkey.title">
+        <source>We're sorry, but the custom key could not be found.</source>
+      </trans-unit>
+
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright">
         <source>&lt;a href="/rhn/help/Copyright.do">Copyright Notice&lt;/a&gt;</source>
