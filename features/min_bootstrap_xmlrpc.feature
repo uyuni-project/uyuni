@@ -29,19 +29,6 @@ Feature: register a salt-minion via XMLRPC API bootstrap procedure
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "Default" text
 
-  Scenario: Run a remote command on XMLRPC-bootstrapped sles-minion (salt-service)
-    Given I am authorized as "testing" with password "testing"
-    And I follow "Salt"
-    And I follow "Remote Commands"
-    And I should see a "Remote Commands" text
-    Then I enter command "ls -lha /etc"
-    And I click on preview
-    Then I should see "sle-minion" hostname
-    And I click on run
-    Then I wait for "3" seconds
-    And I expand the results for "sle-minion"
-    Then I should see "SuSE-release" in the command output for "sle-minion"
-
   Scenario: Check spacecmd system ID of XMLRPC-bootstrapped minion.
     Given I am on the Systems overview page of this "sle-minion"
     Then I run spacecmd listevents for sle-minion
