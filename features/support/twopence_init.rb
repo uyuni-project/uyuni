@@ -22,14 +22,14 @@ $ceos_minion = Twopence.init("ssh:#{$ceos_minion_ip}")
 $ssh_minion = Twopence.init("ssh:#{$ssh_minion_ip}")
 
 # lavanda library module extension.
-# we have here for moment the command : $target.run call, $server.run("uptime")
+# look at support/lavanda.rb for more details 
 $server.extend(LavandaBasic)
 $client.extend(LavandaBasic)
 $minion.extend(LavandaBasic)
 $ceos_minion.extend(LavandaBasic)
 $ssh_minion.extend(LavandaBasic)
 
-# add here new vms ( fedora, redhat) etc.
+# add here new vms .
 nodes = [$server, $client, $minion, $ceos_minion, $ssh_minion]
 nodes.each do |node|
   hostname, _local, _remote, code = node.test_and_store_results_together('hostname', 'root', 500)
@@ -40,10 +40,7 @@ nodes.each do |node|
   node.init_full_hostname(fqn)
 end
 
-$minion_hostname = node_hostnames[2]
-$minion_fullhostname = node_fqn[2]
-
-# helper functions for moment this are used in salt.steps but maybe move this to lavanda.rb
+# this function is used to get the node from feature files.
 def get_target(host)
   case host
   when 'server'

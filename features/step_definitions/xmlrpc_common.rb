@@ -40,7 +40,7 @@ When(/^I call system\.bootstrap\(\) on a salt minion with saltSSH = true, \
 but with activation key with Default contact method, I should get an XMLRPC fault with code -1\.$/) do
   exception_thrown = false
   begin
-    systest.bootstrapSystem($minion_fullhostname, '1-SUSE-DEV-x86_64', true)
+    systest.bootstrapSystem($minion.full_hostname, '1-SUSE-DEV-x86_64', true)
   rescue XMLRPC::FaultException => fault
     exception_thrown = true
     assert(fault.faultCode == -1, 'Fault code must be == -1.')
