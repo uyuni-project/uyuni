@@ -3,14 +3,14 @@
 %define rhnroot %{_datadir}/rhn
 
 %if (0%{?fedora} && 0%{?fedora} < 26) || 0%{?rhel} >= 7
-%{!?pylint_check: %global pylint_check 1}
+%{!?pylint_check: %global pylint_check 0}
 %endif
 
 Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           https://github.com/spacewalkproject/spacewalk
-Version:       5.5.104.2
+Version:       5.5.104.3
 Release:       1%{?dist}
 Source0:       https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc

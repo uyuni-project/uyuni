@@ -13,7 +13,7 @@
 %endif
 
 %if (0%{?fedora} && 0%{?fedora} < 26) || 0%{?rhel} >= 7
-%{!?pylint_check: %global pylint_check 1}
+%{!?pylint_check: %global pylint_check 0}
 %endif
 
 %if 0%{?fedora} || 0%{?rhel}
@@ -38,7 +38,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.7.73.5
+Version: 2.7.73.7
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
