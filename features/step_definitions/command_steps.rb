@@ -73,10 +73,18 @@ end
 
 When(/^file "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
   sleep(3)
-  output = sshcmd("grep #{arg2} #{arg1}", ignore_err: true)
-  unless output[:stderr].empty?
+  output = {}
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        output = sshcmd("grep #{arg2} #{arg1}", ignore_err: true)
+        break if output[:stdout] =~ /#{arg2}/
+        sleep(2)
+      end
+    end
+  rescue Timeout::Error
     $stderr.write("-----\n#{output[:stderr]}\n-----\n")
-    raise "#{arg2} not found in File #{arg1}"
+    puts "#{arg2} not found in File #{arg1}"
   end
 end
 
