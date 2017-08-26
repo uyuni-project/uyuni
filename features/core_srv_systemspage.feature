@@ -58,7 +58,7 @@ Feature: Explore the main landing page
     When I click Systems, under Systems node
     And I follow "Virtual Systems" in the left menu
     Then I should see a "Virtual Systems" text
-    And I should see a "No systems." text
+    And I should see a "No Virtual Systems." text
     And the current path is "/rhn/systems/VirtualList.do"
 
   Scenario: Check sidebar link destination for Systems => Out of Date
