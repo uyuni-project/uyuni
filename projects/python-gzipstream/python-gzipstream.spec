@@ -4,24 +4,30 @@
 
 Summary: Streaming zlib (gzip) support for python
 Name: python-gzipstream
-Version: 2.8.0
+Version: 2.7.2
 Release: 1%{?dist}
 URL:        https://github.com/spacewalkproject/spacewalk/wiki/Projects_python-gzipstream
 Source0:    https://github.com/spacewalkproject/spacewalk/archive/python-gzipstream-%{version}.tar.gz
 License: GPLv2
-Group: Development/Libraries
-BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 %if ! (0%{?suse_version} && 0%{?suse_version} <= 1110)
 BuildArch: noarch
 %endif
 BuildRequires: python-devel
 
 
-%description
-A streaming gzip handler.
-gzipstream.GzipStream extends the functionality of the gzip.GzipFile class
-to allow the processing of streaming data.
+%global _description\
+A streaming gzip handler.\
+gzipstream.GzipStream extends the functionality of the gzip.GzipFile class\
+to allow the processing of streaming data.\
 
+
+%description %_description
+
+%package -n python2-gzipstream
+Summary: %summary
+%{?python_provide:%python_provide python2-gzipstream}
+
+%description -n python2-gzipstream %_description
 
 %prep
 %setup -q
@@ -30,19 +36,26 @@ to allow the processing of streaming data.
 %{__python} setup.py build
 
 %install
-rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix %{_usr}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -n python2-gzipstream
 %defattr(-,root,root)
 %{python_sitelib}/*
 %doc html
-%doc LICENSE
+%license LICENSE
 
 %changelog
+* Mon Aug 21 2017 Miroslav Suchý <msuchy@redhat.com> 2.7.2-1
+- modernize spec
+- rename python-gzipstream to python2-gzipstream
+- Bumping package versions for 2.8.
+
+* Sat Aug 19 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 2.7.1-2
+- Python 2 binary package renamed to python2-gzipstream
+  See https://fedoraproject.org/wiki/FinalizingFedoraSwitchtoPython3
+
 * Mon Jul 17 2017 Jan Dobes 2.7.1-1
 - Updated links to github in spec files
 - Migrating Fedorahosted to GitHub

@@ -182,6 +182,9 @@ public class DataSetManipulator {
     }
 
     /**
+        if (startOffset > dataset.size()) {
+            startOffset = 0;
+        }
      * Returns the pagination message (1 - 2 of 3 for example)
      * @return the pagination message
      */
