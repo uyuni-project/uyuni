@@ -25,7 +25,11 @@ to allow the processing of streaming data.\
 
 %package -n python2-gzipstream
 Summary: %summary
+%if 0%{?fedora}
 %{?python_provide:%python_provide python2-gzipstream}
+%else
+Provides: python-gzipstream
+%endif
 
 %description -n python2-gzipstream %_description
 
