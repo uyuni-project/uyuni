@@ -28,7 +28,7 @@ Summary: %summary
 %if 0%{?fedora}
 %{?python_provide:%python_provide python2-gzipstream}
 %else
-Provides: python-gzipstream
+Provides: python-gzipstream = %{version}-%{release}
 %endif
 
 %description -n python2-gzipstream %_description
