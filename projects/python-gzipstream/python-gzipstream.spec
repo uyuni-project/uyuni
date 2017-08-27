@@ -43,8 +43,7 @@ Summary: %summary
 %files -n python2-gzipstream
 %defattr(-,root,root)
 %{python_sitelib}/*
-%doc html
-%license LICENSE
+%doc html LICENSE
 
 %changelog
 * Mon Aug 21 2017 Miroslav Suchý <msuchy@redhat.com> 2.7.2-1
