@@ -4,34 +4,15 @@ require 'xmlrpc/client'
 require 'timeout'
 
 Then(/^I apply highstate on "(.*?)"$/) do |minion|
-  if minion == 'sle-minion'
-    target_fullhostname = $minion_fullhostname
-  elsif minion == 'ceos-minion'
-    target_fullhostname = $ceos_minion_fullhostname
-  elsif minion == 'sle-migrated-minion'
-    target_fullhostname = $client_fullhostname
-  else
-    raise 'no valid name of minion given! '
-  end
-  cmd = "salt '#{target_fullhostname}' state.highstate"
-  out, code = $server.run(cmd)
-  puts out
-  raise 'Apply highstate FAILED!'  if code.nonzero?
+  node = get_target(minion)
+  cmd = "salt '#{node.full_hostname}' state.highstate"
+  $server.run_until_ok(cmd)
 end
 
 Then(/^I wait until "([^"]*)" service is up and running on "([^"]*)"$/) do |service, target|
   cmd = "systemctl is-active #{service}"
   node = get_target(target)
-  Timeout.timeout(200) do
-    loop do
-      out, code = node.run(cmd, false, 200)
-      if code.zero?
-        puts "#{service} service is up and running \n #{out}"
-        break
-      end
-    end
-  end
-  sleep(3)
+  node.run_until_ok(cmd)
 end
 
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
@@ -57,10 +38,6 @@ end
 
 When(/^I fetch "([^"]*)" from server$/) do |arg1|
   $client.run("wget http://#{$server_ip}/#{arg1}", true, 500, 'root')
-end
-
-When(/^I execute "([^"]*)"$/) do |arg1|
-  $client.run("sh ./#{arg1}", true, 600, 'root')
 end
 
 When(/^file "([^"]*)" exists on server$/) do |arg1|
@@ -133,7 +110,7 @@ Then(/^the pxe-default-profile should be disabled$/) do
 end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
-  output = sshcmd("cobbler system report --name #{$client_fullhostname}:1", ignore_err: true)[:stdout]
+  output = sshcmd("cobbler system report --name #{$client.full_hostname}:1", ignore_err: true)[:stdout]
   raise "Not found: #{output}" unless output.include?(arg1)
 end
 
@@ -240,17 +217,17 @@ end
 Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
   timeout = 800
   if target == 'sle-client'
-    checkShutdown($client_fullhostname, timeout)
-    checkRestart($client_fullhostname, get_target(target), timeout)
+    checkShutdown($client.full_hostname, timeout)
+    checkRestart($client.full_hostname, get_target(target), timeout)
   elsif target == 'ceos-minion'
-    checkShutdown($ceos_minion_fullhostname, timeout)
-    checkRestart($ceos_minion_fullhostname, get_target(target), timeout)
+    checkShutdown($ceos_minion.full_hostname, timeout)
+    checkRestart($ceos_minion.full_hostname, get_target(target), timeout)
   elsif target == 'ssh-minion'
-    checkShutdown($ssh_minion_fullhostname, timeout)
-    checkRestart($ssh_minion_fullhostname, get_target(target), timeout)
+    checkShutdown($ssh_minion.full_hostname, timeout)
+    checkRestart($ssh_minion.full_hostname, get_target(target), timeout)
   elsif target == 'sle-minion'
-    checkShutdown($minion_fullhostname, timeout)
-    checkRestart($minion_fullhostname, get_target(target), timeout)
+    checkShutdown($minion.full_hostname, timeout)
+    checkRestart($minion.full_hostname, get_target(target), timeout)
   end
 end
 
@@ -287,8 +264,8 @@ And(/^I register the centos7 as tradclient$/) do
 end
 
 When(/^I wait for the openSCAP audit to finish$/) do
-  host = $server_fullhostname
-  @sle_id = retrieve_server_id($minion_fullhostname)
+  host = $server.full_hostname
+  @sle_id = retrieve_server_id($minion.full_hostname)
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
   begin
@@ -310,8 +287,8 @@ end
 
 $space = 'spacecmd -u admin -p admin '
 And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
-  host = $ssh_minion_fullhostname if target == 'ssh-minion'
-  host = $ceos_minion_fullhostname if target == 'ceos-minion'
+  host = $ssh_minion.full_hostname if target == 'ssh-minion'
+  host = $ceos_minion.full_hostname if target == 'ceos-minion'
   cmd = "#{$space} system_listevents #{host} | head -n5"
   $server.run("#{$space} clear_caches")
   out, _code = $server.run(cmd)
@@ -386,13 +363,8 @@ end
 
 And(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
-  Timeout.timeout(DEFAULT_TIMEOUT) do
-    loop do
-      _out, code = node.run("ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{pkg_name}.rpm", false)
-      break if code.zero?
-      sleep 1
-    end
-  end
+  cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{pkg_name}.rpm"
+  node.run_until_ok(cmd)
 end
 
 And(/^I create the "([^"]*)" bootstrap-repo for "([^"]*)" on the server$/) do |arch, target|

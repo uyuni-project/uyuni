@@ -36,20 +36,8 @@ When(/^I wait until i see "([^"]*)" text, refreshing the page$/) do |text|
 end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |target|
-  case target
-  when 'sle-minion'
-    step %(I wait until i see "#{$minion_fullhostname}" text, refreshing the page)
-  when 'ssh-minion'
-    step %(I wait until i see "#{$ssh_minion_fullhostname}" text, refreshing the page)
-  when 'ceos-minion'
-    step %(I wait until i see "#{$ceos_minion_fullhostname}" text, refreshing the page)
-  when 'sle-client'
-    step %(I wait until i see "#{$client_fullhostname}" text, refreshing the page)
-  when 'sle-migrated-minion'
-    step %(I wait until i see "#{$client_fullhostname}" text, refreshing the page)
-  else
-    raise 'No valid target.'
-  end
+  node = get_target(target)
+  step %(I wait until i see "#{node.full_hostname}" text, refreshing the page)
 end
 
 #
@@ -172,8 +160,8 @@ When(/^I follow "([^"]*)" in class "([^"]*)"$/) do |arg1, arg2|
 end
 
 When(/^I follow "([^"]*)" on "(.*?)" row$/) do |text, host|
-  target_fullhostname = get_target_fullhostname(host)
-  xpath_query = "//tr[td[contains(.,'#{target_fullhostname}')]]//a[contains(., '#{text}')]"
+  node = get_target(host)
+  xpath_query = "//tr[td[contains(.,'#{node.full_hostname}')]]//a[contains(., '#{text}')]"
   raise unless find(:xpath, xpath_query).click
 end
 
@@ -230,36 +218,21 @@ end
 
 # access the multi-clients/minions
 Given(/^I am on the Systems overview page of this "(.*?)"$/) do |target|
+  node = get_target(target)
   steps %(
     Given I am on the Systems page
-    )
-  case target
-  when 'sle-minion'
-    step %(I follow "#{$minion_fullhostname}")
-  when 'ssh-minion'
-    step %(I follow "#{$ssh_minion_fullhostname}")
-  when 'ceos-minion'
-    step %(I follow "#{$ceos_minion_fullhostname}")
-  when 'sle-client'
-    step %(I follow "#{$client_fullhostname}")
-  when 'sle-migrated-minion'
-    step %(I follow "#{$client_fullhostname}")
-  else
-    raise 'No valid target.'
-  end
+  )
+  step %(I follow "#{node.full_hostname}")
 end
 
 When(/^I follow this "(.*?)" link$/) do |target|
-  step %(I follow "#{$minion_fullhostname}") if target == 'sle-minion'
-  step %(I follow "#{$ssh_minion_fullhostname}") if target == 'ssh-minion'
-  step %(I follow "#{$ceos_minion_fullhostname}") if target == 'ceos-minion'
-  step %(I follow "#{$client_fullhostname}") if target == 'sle-client'
+  node = get_target(target)
+  step %(I follow "#{node.full_hostname}")
 end
 
 When(/^I check the "(.*?)" client$/) do |target|
   node = get_target(target)
-  hostname = node.run('hostname -f')[0].strip
-  step %(I check "#{hostname}" in the list)
+  step %(I check "#{node.full_hostname}" in the list)
 end
 
 Given(/^I am on the groups page$/) do
@@ -270,7 +243,7 @@ Given(/^I am on the groups page$/) do
 end
 
 When(/^I check this client$/) do
-  step %(I check "#{$client_fullhostname}" in the list)
+  step %(I check "#{$client.full_hostname}" in the list)
 end
 
 Given(/^I am on the active Users page$/) do
@@ -331,7 +304,7 @@ end
 
 Given(/^I am on the patches page$/) do
   step %(I am authorized)
-  visit("https://#{$server_fullhostname}/rhn/errata/RelevantErrata.do")
+  visit("https://#{$server.full_hostname}/rhn/errata/RelevantErrata.do")
 end
 
 Given(/^I am on the "([^"]*)" patches Details page$/) do |arg1|
@@ -355,23 +328,23 @@ When(/^I check "([^"]*)" patch$/) do |arg1|
 end
 
 When(/^I am on System Set Manager Overview$/) do
-  visit("https://#{$server_fullhostname}/rhn/ssm/index.do")
+  visit("https://#{$server.full_hostname}/rhn/ssm/index.do")
 end
 
 When(/^I am on Autoinstallation Overview page$/) do
-  visit("https://#{$server_fullhostname}/rhn/kickstart/KickstartOverview.do")
+  visit("https://#{$server.full_hostname}/rhn/kickstart/KickstartOverview.do")
 end
 
 When(/^I am on the System Manager System Overview page$/) do
-  visit("https://#{$server_fullhostname}/rhn/systems/ssm/ListSystems.do")
+  visit("https://#{$server.full_hostname}/rhn/systems/ssm/ListSystems.do")
 end
 
 When(/^I am on the Create Autoinstallation Profile page$/) do
-  visit("https://#{$server_fullhostname}/rhn/kickstart/AdvancedModeCreate.do")
+  visit("https://#{$server.full_hostname}/rhn/kickstart/AdvancedModeCreate.do")
 end
 
 When(/^I am on the System Overview page$/) do
-  visit("https://#{$server_fullhostname}/rhn/systems/Overview.do")
+  visit("https://#{$server.full_hostname}/rhn/systems/Overview.do")
 end
 
 Then(/^I reload the page$/) do
@@ -425,8 +398,6 @@ Given(/^I am in the organization configuration page$/) do
     And I follow first "Configuration"
   )
 end
-# Copyright (c) 2010-2011 Novell, Inc.
-# Licensed under the terms of the MIT license.
 
 Then(/^I should see something$/) do
   steps %(
@@ -644,8 +615,8 @@ Then(/^I check the row with the "([^"]*)" text$/) do |text|
 end
 
 Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
-  within(:xpath, "//tr[td[contains(., '#{target_fullhostname}')]]") do
+  node = get_target(host)
+  within(:xpath, "//tr[td[contains(., '#{node.full_hostname}')]]") do
     first('input[type=checkbox]').set(true)
   end
 end
@@ -710,22 +681,8 @@ Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^"([^"]*)" is installed on "([^"]*)"$/) do |package, target|
-  # use target variable
-  case target
-  when 'client'
-    $client.run("rpm -q #{package}", true, 600, 'root')
-  when 'minion'
-    # this is a sles minion
-    $minion.run("rpm -q #{package}", true, 600, 'root')
-  when 'ssh-minion'
-    # this is a sles minion
-    $ssh_minion.run("rpm -q #{package}", true, 600, 'root')
-  when 'ceos-minion'
-    # this is a sles minion
-    $ceos_minion.run("rpm -q #{package}", true, 600, 'root')
-  else
-    raise 'invalid target given'
-  end
+  node = get_target(target)
+  node.run("rpm -q #{package}")
 end
 
 Then(/^I should see a Sign Out link$/) do

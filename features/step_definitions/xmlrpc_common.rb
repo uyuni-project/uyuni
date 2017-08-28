@@ -20,8 +20,8 @@ end
 When(/^I call system\.bootstrap\(\) on host "(.*?)" and saltSSH "(.*?)", \
 a new system should be bootstraped\.$/) do |host, salt_ssh_enabled|
   salt_ssh = (salt_ssh_enabled == 'enabled')
-
-  result = systest.bootstrapSystem(get_target_fullhostname(host), '', salt_ssh)
+  node = get_target(host)
+  result = systest.bootstrapSystem(node.full_hostname, '', salt_ssh)
   assert(result == 1, 'Bootstrap return code not equal to 1.')
 end
 
@@ -40,26 +40,16 @@ When(/^I call system\.bootstrap\(\) on a salt minion with saltSSH = true, \
 but with activation key with Default contact method, I should get an XMLRPC fault with code -1\.$/) do
   exception_thrown = false
   begin
-    systest.bootstrapSystem($minion_fullhostname, '1-SUSE-DEV-x86_64', true)
+    systest.bootstrapSystem($minion.full_hostname, '1-SUSE-DEV-x86_64', true)
   rescue XMLRPC::FaultException => fault
     exception_thrown = true
     assert(fault.faultCode == -1, 'Fault code must be == -1.')
   end
   assert(exception_thrown, 'Exception must be thrown for non-compatible activation keys.')
 end
-When(/^I check a sysinfo by a number of XML\-RPC calls, it just works\. :\-\)$/) do
-  assert(rabbit)
-  systest.getSysInfo(rabbit)
-end
 
 When(/^I call system\.createSystemRecord\(\) with sys_name "([^"]*)", ks_label "([^"]*)", ip "([^"]*)", mac "([^"]*)"$/) do |sys_name, ks_lab, ip, mac|
   systest.createSystemRecord(sys_name, ks_lab, ip, mac)
-end
-
-Then(/^there is a system record in cobbler named "([^"]*)"$/) do |sys_name|
-  ct = CobblerTest.new
-  assert(ct.running?, msg: 'cobblerd is not running')
-  assert(ct.system_exists(sys_name), msg: 'cobbler system record does not exist: ' + sys_name)
 end
 
 Then(/^I logout from XML\-RPC\/system\.$/) do
@@ -216,10 +206,6 @@ end
 Then(/^I should get key deleted\.$/) do
   raise unless acttest.deleteKey(key)
   raise if acttest.verifyKey(key)
-end
-
-When(/^I add config channels to a newly created key$/) do
-  raise if acttest.getConfigChannelsCount(key) > 0
 end
 
 When(/^I add config channels "([^"]*)" to a newly created key$/) do |channel_name|
