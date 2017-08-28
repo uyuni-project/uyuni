@@ -7,8 +7,7 @@ function computeSvgDimensions() {
   const height = window.innerHeight -
     d3.select('header').node().getBoundingClientRect().height -
     d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height -
-    d3.select('#visualization-filter-wrapper').node().getBoundingClientRect().height -
-    d3.select('#toggle-svg-filter').node().getBoundingClientRect().height - 100;
+    d3.select('#visualization-filter-wrapper').node().getBoundingClientRect().height - 100;
 
   return [width, height];
 }
