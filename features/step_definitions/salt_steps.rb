@@ -4,7 +4,7 @@ require 'open-uri'
 require 'tempfile'
 
 Given(/^salt-minion is configured on "(.*?)"$/) do |minion|
-  node = get_target(host)
+  node = get_target(minion)
   # cleanup the key in case the image was reused
   # to run the test twice
   step %(I delete "#{minion}" key in the Salt master)
