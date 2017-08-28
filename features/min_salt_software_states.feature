@@ -33,7 +33,7 @@ Feature: Check the Salt package state UI
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "milkyway-dummy" text
-    And "milkyway-dummy" is installed on "minion"
+    And "milkyway-dummy" is installed on "sle-minion"
     And I change the state of "milkyway-dummy" to "Removed" and ""
     Then I should see a "1 Changes" text
     And I click save
@@ -61,7 +61,7 @@ Feature: Check the Salt package state UI
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "virgo-dummy" text
-    And "virgo-dummy-1.0" is installed on "minion"
+    And "virgo-dummy-1.0" is installed on "sle-minion"
     And I change the state of "virgo-dummy" to "Installed" and "Any"
     Then I should see a "1 Changes" text
     And I click save
@@ -75,7 +75,7 @@ Feature: Check the Salt package state UI
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "andromeda-dummy" text
-    And "andromeda-dummy-1.0-4.1" is installed on "minion"
+    And "andromeda-dummy-1.0-4.1" is installed on "sle-minion"
     And I change the state of "andromeda-dummy" to "Installed" and "Latest"
     Then I should see a "1 Changes" text
     And I click save

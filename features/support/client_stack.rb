@@ -24,10 +24,6 @@ def client_raw_repodata_dir(channel)
   end
 end
 
-def client_system_id
-  _out, _code = $client.run('grep "system_id" /etc/sysconfig/rhn/systemid')
-end
-
 def client_system_id_to_i
   out, _code = $client.run('grep "ID" /etc/sysconfig/rhn/systemid | tr -d -c 0-9')
   out.gsub(/\s+/, '')
