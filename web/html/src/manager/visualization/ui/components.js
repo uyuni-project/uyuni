@@ -155,7 +155,6 @@ function groupSelector(groups, element) {
         const selectedOpts = Array.apply(null, this.options)
           .filter(o => o.selected == true)
           .map(o => {
-            const val = o.value;
             if (o.value == noGrpOptionLabel) {
               return [];
             }
