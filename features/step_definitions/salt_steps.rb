@@ -403,8 +403,12 @@ When(/^I expand the results for "(.*)"$/) do |host|
   find("div[id='#{target_fullhostname}']").click
 end
 
-Then(/^I enter command "([^"]*)"$/) do |arg1|
-  fill_in 'command', with: arg1
+Then(/^I enter command "([^"]*)"$/) do |cmd|
+  fill_in 'command', with: cmd
+end
+
+Then(/^I enter target "([^"]*)"$/) do |minion|
+  fill_in 'target', with: minion
 end
 
 Then(/^I should see "([^"]*)" in the command output for "(.*)"$/) do |text, minion|

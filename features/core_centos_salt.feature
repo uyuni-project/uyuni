@@ -34,6 +34,7 @@ Feature: register a salt-minion via bootstrap
     And I follow "Remote Commands"
     And I should see a "Remote Commands" text
     Then I enter command "cat /etc/os-release"
+    Then I enter target "*centos*"
     And I click on preview
     And I click on run
     Then I should see "ceos-minion" hostname
