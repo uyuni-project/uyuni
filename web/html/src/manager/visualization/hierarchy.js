@@ -182,6 +182,10 @@ function initUI(tree) {
 }
 
 const Hierarchy = React.createClass({
+  getInitialState: function() {
+    return { showFilters: false }
+  },
+
   componentDidMount: function() {
     // Get data & put everything together in the graph!
     Network
@@ -197,16 +201,21 @@ const Hierarchy = React.createClass({
     const filterBox = $('#visualization-filter-wrapper');
     if (filterBox.hasClass("open")) {
       filterBox.removeClass('open').slideUp('fast', () => {Utils.adjustSvgDimensions()});
+      this.setState({ showFilters: false});
     }
     else {
       filterBox.addClass('open').slideDown('fast', () => {Utils.adjustSvgDimensions()});
+      this.setState({ showFilters: true});
     }
   },
 
   render: function() {
     return (
       <Panel title={t(title)}>
-        <button id='toggle-svg-filter' className='btn btn-default' onClick={this.showFilters}>{t('Toggle filters')}</button>
+        <button className='toggle-filter-button' onClick={this.showFilters}>
+          {t('Toggle filters')}
+          <i className={"fa fa-caret-" + (this.state.showFilters ? 'down' : 'right')} aria-hidden="true"></i>
+        </button>
         <div id='visualization-filter-wrapper'></div>
         <div id='svg-wrapper'>
           <div className='detailBox'></div>
