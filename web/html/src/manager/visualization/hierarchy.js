@@ -175,7 +175,8 @@ function initUI(tree) {
 
   UI.addButton(hasPatchesPartitioning, 'Apply', applyPatchesPartitioning);
 
-  UI.addButton(d3.select('#partitioning-tab'), 'Reset partitioning', () => {
+  var resetBox = d3.select('#partitioning-tab').append('div').attr('class', 'filter');
+  UI.addButton(resetBox, 'Reset partitioning', () => {
     tree.partitioning().get()['user-partitioning'] = d => { return ''};
     tree.refresh();
   });
