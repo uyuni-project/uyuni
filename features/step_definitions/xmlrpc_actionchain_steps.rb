@@ -15,7 +15,7 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
     servers = syschaintest.listSystems
     refute_nil(servers)
 
-    hostname = $client_fullhostname
+    hostname = $client.full_hostname
     $client_id = servers
                  .select { |s| s['name'] == hostname }
                  .map { |s| s['id'] }.first
