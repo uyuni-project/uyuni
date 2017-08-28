@@ -12,7 +12,9 @@ License: GPLv2
 %if ! (0%{?suse_version} && 0%{?suse_version} <= 1110)
 BuildArch: noarch
 %endif
+Group:          Development/Languages/Python
 BuildRequires: python-devel
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 
 %global _description\
@@ -25,6 +27,7 @@ to allow the processing of streaming data.\
 
 %package -n python2-gzipstream
 Summary: %summary
+Group:          Development/Languages/Python
 %if 0%{?fedora}
 %{?python_provide:%python_provide python2-gzipstream}
 %else
