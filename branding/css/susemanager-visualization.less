@@ -24,6 +24,36 @@
   border: 1px solid #ddd;
   border-bottom: 0px;
   padding: 10px;
+
+  .filter-tab-selector {
+    display: inline-block;
+    padding: 5px;
+    margin: 0px;
+    color: @spacewalk-gray;
+    border: 1px solid transparent;
+    border-bottom-width: 0px;
+  }
+  .filter-tab-selector:first-of-type {
+    margin-left: 4px;
+  }
+  .filter-tab-selector:hover {
+    text-decoration: underline;
+    color: @spacewalk-gray-dark;
+  }
+  .filter-tab-selector.selected {
+    text-decoration: underline;
+    color: @spacewalk-gray-dark;
+    border-color: @spacewalk-gray-light;
+  }
+  .filter-tab {
+    border-top: 1px solid @spacewalk-gray-light;
+    padding: 8px 0;
+    display: none;
+  }
+  .filter-tab.selected {
+    display: block;
+  }
+
   div.button-wrapper {
     margin: 10px 0;
   }
