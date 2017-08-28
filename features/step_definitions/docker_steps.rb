@@ -72,22 +72,22 @@ def retrieve_minion_id
   systems = sysrpc.listSystems
   refute_nil(systems)
   minion_id = systems
-              .select { |s| s['name'] == $minion_fullhostname }
+              .select { |s| s['name'] == $minion.full_hostname }
               .map { |s| s['id'] }.first
-  refute_nil(minion_id, "Minion #{$minion_fullhostname} is not yet registered?")
+  refute_nil(minion_id, "Minion #{$minion.full_hostname} is not yet registered?")
   minion_id
 end
 
 And(/^I select sle-minion hostname in Build Host$/) do
-  select($minion_fullhostname, from: 'buildHostId')
+  select($minion.full_hostname, from: 'buildHostId')
 end
 
 And(/^I navigate to images webpage$/) do
-  visit("https://#{$server_fullhostname}/rhn/manager/cm/images")
+  visit("https://#{$server.full_hostname}/rhn/manager/cm/images")
 end
 
 And(/^I navigate to images build webpage$/) do
-  visit("https://#{$server_fullhostname}/rhn/manager/cm/build")
+  visit("https://#{$server.full_hostname}/rhn/manager/cm/build")
 end
 
 And(/^I verify that all "([^"]*)" container images were built correctly in the gui$/) do |count|
@@ -208,7 +208,7 @@ Then(/I create "([^"]*)" random "([^"]*)" containers$/) do |count, image_input|
 end
 
 And(/^I check that sles-minion exists otherwise bootstrap it$/) do
-  ck_minion =  "salt #{$minion_fullhostname} test.ping"
+  ck_minion =  "salt #{$minion.full_hostname} test.ping"
   _out, code = $server.run(ck_minion, false)
   if code.nonzero?
     # bootstrap minion

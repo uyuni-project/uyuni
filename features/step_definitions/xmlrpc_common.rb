@@ -20,8 +20,8 @@ end
 When(/^I call system\.bootstrap\(\) on host "(.*?)" and saltSSH "(.*?)", \
 a new system should be bootstraped\.$/) do |host, salt_ssh_enabled|
   salt_ssh = (salt_ssh_enabled == 'enabled')
-
-  result = systest.bootstrapSystem(get_target_fullhostname(host), '', salt_ssh)
+  node = get_target(host)
+  result = systest.bootstrapSystem(node.full_hostname, '', salt_ssh)
   assert(result == 1, 'Bootstrap return code not equal to 1.')
 end
 
@@ -40,26 +40,16 @@ When(/^I call system\.bootstrap\(\) on a salt minion with saltSSH = true, \
 but with activation key with Default contact method, I should get an XMLRPC fault with code -1\.$/) do
   exception_thrown = false
   begin
-    systest.bootstrapSystem($minion_fullhostname, '1-SUSE-DEV-x86_64', true)
+    systest.bootstrapSystem($minion.full_hostname, '1-SUSE-DEV-x86_64', true)
   rescue XMLRPC::FaultException => fault
     exception_thrown = true
     assert(fault.faultCode == -1, 'Fault code must be == -1.')
   end
   assert(exception_thrown, 'Exception must be thrown for non-compatible activation keys.')
 end
-When(/^I check a sysinfo by a number of XML\-RPC calls, it just works\. :\-\)$/) do
-  assert(rabbit)
-  systest.getSysInfo(rabbit)
-end
 
-When(/^I call system\.createSystemRecord\(\) with sysName "([^"]*)", ksLabel "([^"]*)", ip "([^"]*)", mac "([^"]*)"$/) do |sysName, ksLabel, ip, mac|
-  systest.createSystemRecord(sysName, ksLabel, ip, mac)
-end
-
-Then(/^there is a system record in cobbler named "([^"]*)"$/) do |sysName|
-  ct = CobblerTest.new
-  assert(ct.running?, msg: 'cobblerd is not running')
-  assert(ct.system_exists(sysName), msg: 'cobbler system record does not exist: ' + sysName)
+When(/^I call system\.createSystemRecord\(\) with sys_name "([^"]*)", ks_label "([^"]*)", ip "([^"]*)", mac "([^"]*)"$/) do |sys_name, ks_lab, ip, mac|
+  systest.createSystemRecord(sys_name, ks_lab, ip, mac)
 end
 
 Then(/^I logout from XML\-RPC\/system\.$/) do
@@ -141,8 +131,8 @@ When(/^I create a repo with label "([^"]*)" and url$/) do |label|
   assert(rpctest.createRepo(label, url))
 end
 
-When(/^I associate repo "([^"]*)" with channel "([^"]*)"$/) do |repoLabel, channelLabel|
-  assert(rpctest.associateRepo(channelLabel, repoLabel))
+When(/^I associate repo "([^"]*)" with channel "([^"]*)"$/) do |repo_label, channel_label|
+  assert(rpctest.associateRepo(channel_label, repo_label))
 end
 
 When(/^I create the following channels:/) do |table|
@@ -218,12 +208,8 @@ Then(/^I should get key deleted\.$/) do
   raise if acttest.verifyKey(key)
 end
 
-When(/^I add config channels to a newly created key$/) do
-  raise if acttest.getConfigChannelsCount(key) > 0
-end
-
-When(/^I add config channels "([^"]*)" to a newly created key$/) do |channelName|
-  raise if acttest.addConfigChannel(key, channelName) < 1
+When(/^I add config channels "([^"]*)" to a newly created key$/) do |channel_name|
+  raise if acttest.addConfigChannel(key, channel_name) < 1
 end
 
 # Details
@@ -253,14 +239,14 @@ When(/^I call virtualhostmanager.listVirtualHostManagers\(\)$/) do
   vhms = virtualhostmanager.listVirtualHostManagers
 end
 
-When(/^I call virtualhostmanager.getModuleParameters\(\) for "([^"]*)"$/) do |moduleName|
-  params = virtualhostmanager.getModuleParameters(moduleName)
+When(/^I call virtualhostmanager.getModuleParameters\(\) for "([^"]*)"$/) do |module_name|
+  params = virtualhostmanager.getModuleParameters(module_name)
 end
 
-When(/^I call virtualhostmanager.create\("([^"]*)", "([^"]*)"\) and params from "([^"]*)"$/) do |label, moduleName, paramFile|
-  fd = File.read(File.new(paramFile))
+When(/^I call virtualhostmanager.create\("([^"]*)", "([^"]*)"\) and params from "([^"]*)"$/) do |label, module_name, param_file|
+  fd = File.read(File.new(param_file))
   p = JSON.parse(fd)
-  r = virtualhostmanager.create(label, moduleName, p)
+  r = virtualhostmanager.create(label, module_name, p)
   raise if r != 1
 end
 

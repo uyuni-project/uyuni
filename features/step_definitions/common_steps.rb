@@ -14,9 +14,7 @@ end
 
 Then(/^I can see all system information for "([^"]*)"$/) do |target|
   node = get_target(target)
-  node_hostname, _code = node.run('hostname -f')
-  puts 'i should see hostname: ' + node_hostname.strip
-  step %(I should see a "#{node_hostname.strip}" text)
+  step %(I should see a "#{node.hostname}" text)
   kernel_version, _code = node.run('uname -r')
   puts 'i should see kernel version: ' + kernel_version
   step %(I should see a "#{kernel_version.strip}" text)
@@ -123,20 +121,20 @@ Then(/^I create mock initrd if download fails$/) do
 end
 
 And(/^I navigate to "([^"]*)" page$/) do |page|
-  visit("https://#{$server_fullhostname}/#{page}")
+  visit("https://#{$server.full_hostname}/#{page}")
 end
 
 # nagios steps
 
 When(/^I perform a nagios check patches for "([^"]*)"$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
-  command = "/usr/lib/nagios/plugins/check_suma_patches #{target_fullhostname} > /tmp/nagios.out"
+  node = get_target(host)
+  command = "/usr/lib/nagios/plugins/check_suma_patches #{node.full_hostname} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
 When(/^I perform a nagios check last event for "([^"]*)"$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
-  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{target_fullhostname} > /tmp/nagios.out"
+  node = get_target(host)
+  command = "/usr/lib/nagios/plugins/check_suma_lastevent #{node.full_hostname} > /tmp/nagios.out"
   $server.run(command, false, 600, 'root')
 end
 
@@ -184,7 +182,7 @@ end
 
 Then(/^trigger cobbler system record\(not for ssh\-push tradclient\)$/) do
   space = 'spacecmd -u admin -p admin'
-  host = $client_fullhostname
+  host = $client.full_hostname
   cmd = "#{$space} system_details #{host}"
   $server.run("#{space} clear_caches")
   out, _code = $server.run(cmd)
@@ -267,19 +265,11 @@ end
 
 Given(/^I am on the manage software channels page$/) do
   step %(I am authorized as "testing" with password "testing")
-  visit("https://#{$server_fullhostname}/rhn/channels/manage/Manage.do")
+  visit("https://#{$server.full_hostname}/rhn/channels/manage/Manage.do")
 end
 
 Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
-  50.times do
-    begin
-      sshcmd("ls /var/cache/rhn/repodata/#{channel}/updateinfo.xml.gz")
-    rescue
-      sleep 2
-    else
-      break
-    end
-  end
+  $server.run_until_ok("ls /var/cache/rhn/repodata/#{channel}/updateinfo.xml.gz")
 end
 
 When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
@@ -420,11 +410,11 @@ Then(/^On this client the File "([^"]*)" should have the content "([^"]*)"$/) do
 end
 
 Then(/^I remove server hostname from hosts trad-client$/) do
-  $client.run("sed -i \'s/#{$server_fullhostname}//\' /etc/hosts")
+  $client.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
 And(/^Cleanup for distro_clobber_feature$/) do
-  host = $server_fullhostname
+  host = $server.full_hostname
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
   # -------------------------------
@@ -474,8 +464,8 @@ Then(/^I should see "(.*?)" in spacewalk$/) do |host|
 end
 
 Then(/^I should see "(.*?)" as link$/) do |host|
-  target_fullhostname = get_target_fullhostname(host)
-  step %(I should see a "#{target_fullhostname}" link)
+  node = get_target(host)
+  step %(I should see a "#{node.full_hostname}" link)
 end
 
 Then(/^config-actions are enabled$/) do
