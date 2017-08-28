@@ -30,10 +30,44 @@ function displayHierarchy(data) {
   });
 }
 
+function showFilterTab(tabIdToShow) {
+  d3.selectAll('.filter-tab-selector').classed('selected', false);
+  d3.selectAll('.filter-tab').classed('selected', false);
+  d3.select('#' + tabIdToShow + '-selector').classed('selected', true);
+  d3.select('#' + tabIdToShow).classed('selected', true);
+  Utils.adjustSvgDimensions();
+}
+
 // util function for adding the UI to the dom and setting its callbacks
 function initUI(tree) {
+  d3.select('#visualization-filter-wrapper')
+    .append('button')
+    .attr('id', 'filtering-tab-selector')
+    .attr('class', 'filter-tab-selector selected')
+    .text('Filtering')
+    .on('click', d => {
+      showFilterTab('filtering-tab');
+    });
+  d3.select('#visualization-filter-wrapper')
+    .append('button')
+    .attr('id', 'partitioning-tab-selector')
+    .attr('class', 'filter-tab-selector')
+    .text('Partitioning')
+    .on('click', d => {
+      showFilterTab('partitioning-tab');
+    });
+
+  d3.select('#visualization-filter-wrapper')
+    .append('div')
+    .attr('id', 'filtering-tab')
+    .attr('class', 'filter-tab selected');
+  d3.select('#visualization-filter-wrapper')
+    .append('div')
+    .attr('id', 'partitioning-tab')
+    .attr('class', 'filter-tab');
+
   // Patch count filter
-  const patchCountsFilter = d3.select('#visualization-filter-wrapper')
+  const patchCountsFilter = d3.select('#filtering-tab')
     .append('div').attr('class', 'filter');
 
   patchCountsFilter
@@ -68,7 +102,7 @@ function initUI(tree) {
   UI.addCheckbox(patchCountsFilter, 'bug fix advisories', 'fa-bug', 'bug-patches', patchCountFilterCallback(0));
   UI.addCheckbox(patchCountsFilter, 'product enhancement advisories', 'spacewalk-icon-enhancement', 'minor-patches', patchCountFilterCallback(1));
 
-  d3.select('#visualization-filter-wrapper').append('div').attr('id', 'filter-systems-box');
+  d3.select('#filtering-tab').append('div').attr('id', 'filter-systems-box');
   // System name filter
   UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system name', 'e.g., client.nue.sles', (input) => {
     tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
@@ -95,7 +129,7 @@ function initUI(tree) {
 
   // Grouping UI (based on the preprocessor type)
   if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
-    UI.addGroupSelector(d3.select('#visualization-filter-wrapper'),
+    UI.addGroupSelector(d3.select('#partitioning-tab'),
         tree.data().map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
         (data) => {
           tree.preprocessor().groupingConfiguration(data);
@@ -116,10 +150,10 @@ function initUI(tree) {
     tree.refresh();
   }
 
-  UI.addCheckinTimePartitioningSelect('#visualization-filter-wrapper', partitionByCheckin);
+  UI.addCheckinTimePartitioningSelect('#partitioning-tab', partitionByCheckin);
 
   // Partitioning by patch existence
-  const hasPatchesPartitioning = d3.select('#visualization-filter-wrapper')
+  const hasPatchesPartitioning = d3.select('#partitioning-tab')
     .append('div').attr('class', 'filter');
 
   hasPatchesPartitioning
@@ -141,7 +175,7 @@ function initUI(tree) {
 
   UI.addButton(hasPatchesPartitioning, 'Apply', applyPatchesPartitioning);
 
-  UI.addButton(d3.select('#visualization-filter-wrapper'), 'Reset partitioning', () => {
+  UI.addButton(d3.select('#partitioning-tab'), 'Reset partitioning', () => {
     tree.partitioning().get()['user-partitioning'] = d => { return ''};
     tree.refresh();
   });
