@@ -296,7 +296,8 @@ public class Router implements SparkApplication {
 
         get("/manager/cm/build", withCsrfToken(withUser(ImageBuildController::buildView)),
                 jade);
-
+        get("/manager/cm/import", withCsrfToken(withUser(ImageBuildController::importView)),
+                jade);
         get("/manager/cm/rebuild/:id",
                 withCsrfToken(withUser(ImageBuildController::rebuild)), jade);
 
@@ -315,5 +316,9 @@ public class Router implements SparkApplication {
         post("/manager/api/cm/images/inspect/:id",
                 withImageAdmin(ImageBuildController::inspect));
         post("/manager/api/cm/images/delete", withImageAdmin(ImageBuildController::delete));
+        post("/manager/api/cm/images/import",
+                withImageAdmin(ImageBuildController::importImage));
+        get("/manager/api/cm/activationkeys",
+                withUser(ImageProfileController::getActivationKeys));
     }
 }

@@ -1,0 +1,8 @@
+include ../common.jade
+
+#image-import
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+
+script(src='/javascript/manager/image-import.bundle.js', type='text/javascript')

@@ -41,7 +41,7 @@ class ImageView extends React.Component {
   constructor(props) {
     super(props);
     ["reloadData", "handleBackAction", "handleDetailsAction", "deleteImages",
-        "inspectImage", "buildImage"]
+        "inspectImage", "buildImage", "handleImportImage"]
             .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
@@ -96,6 +96,10 @@ class ImageView extends React.Component {
         this.setState({selected: data})
         history.pushState(null, null, '#/' + (getHashTab() || 'overview') + '/' + row.id);
     });
+  }
+
+  handleImportImage() {
+    Utils.urlBounce("/rhn/manager/cm/import");
   }
 
   getImageInfoList() {
@@ -180,6 +184,9 @@ class ImageView extends React.Component {
           <ModalButton id="delete-selected" icon="fa-trash" className="btn-default" text={t("Delete")}
               title={t("Delete selected")} target="delete-selected-modal"/>
       }
+      { isAdmin &&
+          <Button id="import" icon="fa-download" text={t("Import")} className="btn-default" handler={this.handleImportImage} />
+      }
       <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
     </div>;
 
@@ -258,7 +265,9 @@ class ImageViewList extends React.Component {
 
     renderStatusIcon(row) {
         let icon;
-        if(row.statusId === 0) {
+        if(row.external) {
+            icon = <i className="fa fa-minus-circle fa-1-5x text-muted" title="Built externally"/>
+        } else if(row.statusId === 0) {
             icon = <i className="fa fa-clock-o fa-1-5x" title="Queued"/>
         } else if(row.statusId === 1) {
             icon = <i className="fa fa-exchange fa-1-5x text-info" title="Building"/>
