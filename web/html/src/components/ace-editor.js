@@ -2,9 +2,9 @@
 
 var React = require("react");
 
-class AceEditor extends React.Component {
+const AceEditor = React.createClass({
 
-  propTypes : {
+  propTypes: {
     mode: React.PropTypes.string,
     content: React.PropTypes.string,
     className: React.PropTypes.string,
@@ -14,9 +14,9 @@ class AceEditor extends React.Component {
     readOnly: React.PropTypes.bool,
     name: React.PropTypes.string,
     onChange: React.PropTypes.func,
-  }
+  },
 
-  componentDidMount() {
+  componentDidMount: function() {
     const component = this;
 
     const node = React.findDOMNode(component.refs.editor);
@@ -31,16 +31,16 @@ class AceEditor extends React.Component {
     editor.getSession().on('change', function() {
       component.props.onChange(editor.getSession().getValue());
     });
-  }
+  },
 
-  render() {
+  render: function() {
     return (
       <div ref="editor" className={this.props.className} id={this.props.id}>
         {this.props.content}
       </div>
     );
   }
-}
+});
 
 module.exports = {
     AceEditor : AceEditor
