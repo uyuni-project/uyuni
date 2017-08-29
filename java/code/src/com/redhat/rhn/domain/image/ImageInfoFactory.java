@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.image;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -43,6 +44,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Factory class for ImageInfo entity
@@ -126,6 +128,8 @@ public class ImageInfoFactory extends HibernateFactory {
         }
 
         // Image arch should be the same as the build host
+        // If this is not the case, we can set the correct value in the inspect action
+        // return event
         info.setImageArch(server.getServerArch());
 
         // Checksum will be available from inspect
@@ -167,6 +171,54 @@ public class ImageInfoFactory extends HibernateFactory {
         ImageInfoFactory.save(image);
 
         return action.getId();
+    }
+
+    /**
+     * Schedule an Image Import
+     * @param buildHostId The ID of the build host
+     * @param name the image name
+     * @param version the tag/version of the image
+     * @param store the image store
+     * @param channels the set of channels used for inspection
+     * @param earliest earliest build
+     * @param user the current user
+     * @return the action ID
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static Long scheduleImport(long buildHostId, String name, String version,
+            ImageStore store, Optional<Set<Channel>> channels, Date earliest, User user)
+        throws TaskomaticApiException {
+        MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
+
+        if (!server.hasContainerBuildHostEntitlement()) {
+            throw new IllegalArgumentException("Server is not a build host.");
+        }
+
+        // Check if the image name:version is available
+        if (lookupByName(name, version, store.getId()).isPresent()) {
+            throw new IllegalArgumentException("Image already exists.");
+        }
+
+        // Create an image info entry
+        ImageInfo info = new ImageInfo();
+
+        info.setExternalImage(true);
+        info.setName(name);
+        info.setVersion(version);
+        info.setStore(store);
+        info.setOrg(server.getOrg());
+        info.setBuildServer(server);
+
+        channels.ifPresent(ch -> info.setChannels(new HashSet<>(ch)));
+
+        // Image arch should be the same as the build host
+        // If this is not the case, we can set the correct value in the inspect action
+        // return event
+        info.setImageArch(server.getServerArch());
+
+        save(info);
+        return scheduleInspect(info, earliest, user);
     }
 
     /**

@@ -41,6 +41,7 @@ public class ImageInfoJson {
     private String name;
     private String version;
     private String checksum;
+    private boolean external;
     private JsonObject profile;
     private JsonObject store;
     private JsonObject buildServer;
@@ -107,6 +108,20 @@ public class ImageInfoJson {
      */
     public void setChecksum(String checksumIn) {
         this.checksum = checksumIn;
+    }
+
+    /**
+     * @return true if the image is externally built
+     */
+    public boolean isExternal() {
+        return external;
+    }
+
+    /**
+     * @param externalIn the external boolean
+     */
+    public void setExternal(boolean externalIn) {
+        this.external = externalIn;
     }
 
     /**
@@ -310,6 +325,7 @@ public class ImageInfoJson {
         json.setName(imageOverview.getName());
         json.setVersion(imageOverview.getVersion());
         json.setChecksum(c != null ? c.getChecksum() : "");
+        json.setExternal(imageOverview.isExternalImage());
         json.setProfile(imageOverview.getProfile());
         json.setStore(imageOverview.getStore());
         json.setBuildServer(imageOverview.getBuildServer());

@@ -43,6 +43,7 @@ CREATE TABLE suseImageInfo
                       CONSTRAINT suse_imginfo_bsid_fk
                          REFERENCES suseMinionInfo (server_id)
                          ON DELETE SET NULL,
+    external_image CHAR(1) DEFAULT ('N') NOT NULL,
     created        timestamp with local time zone
                      DEFAULT (current_timestamp) NOT NULL,
     modified       timestamp with local time zone

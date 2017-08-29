@@ -10,17 +10,18 @@
     "gulp": "3.9.1",
     "gulp-util": "3.0.7",
     "browserify": "13.0.0",
-    "babelify": "7.2.0",
-    "babel-preset-react": "6.5.0",
-    "babel-preset-es2015": "6.5.0",
+    "babelify": "7.3.0",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-es2015": "6.24.1",
     "babel-polyfill": "6.5.0",
     "inherits": "2.0.1",
     "sigmund": "1.0.1",
-    "minimatch": "3.0.0",
     "lru-cache": "4.0.0",
     "glob": "7.0.0",
     "vinyl-buffer": "1.0.0",
     "gulp-uglify": "1.5.2",
     "gulp-sourcemaps": "1.6.0"
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-plugin-transform-flow-strip-types": "6.22.0"
   }
 }

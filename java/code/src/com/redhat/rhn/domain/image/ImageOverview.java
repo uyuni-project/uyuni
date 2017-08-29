@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Type;
 
 import java.util.Date;
 import java.util.Optional;
@@ -63,6 +64,7 @@ public class ImageOverview extends BaseDomainHelper {
     private MinionServer buildServer;
     private Action buildAction;
     private Action inspectAction;
+    private boolean externalImage;
     private Set<ImageInfoCustomDataValue> customDataValues;
     private Set<Channel> channels;
     private Set<InstalledProduct> installedProducts;
@@ -164,6 +166,15 @@ public class ImageOverview extends BaseDomainHelper {
             updatable = false)
     public Action getInspectAction() {
         return inspectAction;
+    }
+
+    /**
+     * @return true if the image has been built outside SUSE Manager
+     */
+    @Column(name = "external_image")
+    @Type(type = "yes_no")
+    public boolean isExternalImage() {
+        return externalImage;
     }
 
     /**
@@ -373,6 +384,13 @@ public class ImageOverview extends BaseDomainHelper {
      */
     public void setInspectAction(Action actionIn) {
         this.inspectAction = actionIn;
+    }
+
+    /**
+     * @param externalImageIn the external image boolean
+     */
+    public void setExternalImage(boolean externalImageIn) {
+        this.externalImage = externalImageIn;
     }
 
     /**
