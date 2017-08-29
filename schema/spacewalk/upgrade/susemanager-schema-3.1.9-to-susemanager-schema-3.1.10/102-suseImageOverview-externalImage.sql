@@ -1,13 +1,4 @@
---
--- Copyright (c) 2017 SUSE LLC
---
--- This software is licensed to you under the GNU General Public License,
--- version 2 (GPLv2). There is NO WARRANTY for this software, express or
--- implied, including the implied warranties of MERCHANTABILITY or FITNESS
--- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
--- along with this software; if not, see
--- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
---
+drop view suseImageOverview;
 
 create or replace view
 suseImageOverview
@@ -35,8 +26,7 @@ as
 select
     i.org_id, i.id, i.name, i.version, i.checksum_id, i.modified,
     ( select name from rhnServerArch where id = i.image_arch_id), i.build_action_id,
-    i.inspect_action_id, i.profile_id, i.store_id, i.build_server_id,
-    i.external_image,
+    i.inspect_action_id, i.profile_id, i.store_id, i.build_server_id, i.external_image,
     ( select count(*) from rhnImageErrataTypeView ietv
       where
             ietv.image_id = i.id

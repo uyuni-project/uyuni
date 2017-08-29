@@ -348,6 +348,18 @@ public class ImageProfileController {
     /**
      * Gets a list of activation keys available to the user, as a JSON string
      *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return a JSON string of the list of activation keys
+     */
+    public static String getActivationKeys(Request req, Response res, User user) {
+        return json(res, getActivationKeyNames(user));
+    }
+
+    /**
+     * Gets a list of activation keys available to the user, as a JSON string
+     *
      * @param user the user
      * @return a JSON string of the list of activation keys
      */
@@ -355,6 +367,13 @@ public class ImageProfileController {
         ActivationKeyManager akm = ActivationKeyManager.getInstance();
         return GSON.toJson(akm.findAll(user).stream().map(ActivationKey::getKey)
                 .collect(Collectors.toList()));
+    }
+
+    private static List<String> getActivationKeyNames(User user) {
+        return ActivationKeyManager.getInstance()
+                .findAll(user)
+                .stream().map(ActivationKey::getKey)
+                .collect(Collectors.toList());
     }
 
     /**

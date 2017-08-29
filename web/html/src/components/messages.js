@@ -23,8 +23,8 @@ var Messages = React.createClass({
 
 });
 
-function msg(severityIn, textIn) {
-    return [{severity: severityIn, text: textIn}];
+function msg(severityIn, ...textIn) {
+    return textIn.map(function(txt) {return {severity: severityIn, text: textIn}});
 }
 
 module.exports = {

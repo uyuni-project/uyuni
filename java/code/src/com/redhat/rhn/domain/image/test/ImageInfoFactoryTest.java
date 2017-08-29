@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.image.test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
@@ -59,6 +60,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
@@ -303,6 +305,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(2, info.getChannels().size());
         assertTrue(info.getChannels().equals(key.getChannels()));
         assertTrue(info.getCustomDataValues().isEmpty());
+        assertFalse(info.isExternalImage());
 
         // Add inspection data after build
         Package p = PackageTest.createTestPackage(user.getOrg());
@@ -344,6 +347,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals("suma-3.1-base", info.getName());
         assertEquals("v1.0", info.getVersion());
         assertEquals(buildHost, info.getBuildServer());
+        assertFalse(info.isExternalImage());
         assertEquals(buildHost.getServerArch(), info.getImageArch());
         assertEquals(profile, info.getProfile());
         assertEquals(store, info.getStore());
@@ -408,6 +412,58 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals((long) profile.getTargetStore().getId(), details.getImageStoreId());
         assertEquals(info.getVersion(), details.getVersion());
+    }
+
+    public final void testScheduleImport() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+        MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ImageStore store = createImageStore("myregistry", user);
+        Optional<Set<Channel>> channels = Optional.ofNullable(createActivationKey(user))
+                .map(ActivationKey::getChannels);
+        assertTrue(channels.isPresent());
+
+        assertFalse(
+                ImageInfoFactory.lookupByName("myimage", "1.0", store.getId()).isPresent());
+
+        try {
+            ImageInfoFactory.scheduleImport(buildHost.getId(), "myimage", "1.0", store,
+                    channels, new Date(), user);
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Server is not a build host.", e.getMessage());
+        }
+
+        assertFalse(
+                ImageInfoFactory.lookupByName("myimage", "1.0", store.getId()).isPresent());
+
+        SystemManager.entitleServer(buildHost, EntitlementManager.CONTAINER_BUILD_HOST);
+
+        // Schedule
+        assertNotNull(ImageInfoFactory.scheduleImport(buildHost.getId(), "myimage", "1.0",
+                store, channels, new Date(), user));
+        ImageInfo info =
+                ImageInfoFactory.lookupByName("myimage", "1.0", store.getId()).get();
+
+        assertTrue(info.isExternalImage());
+        assertEquals(buildHost, info.getBuildServer());
+        assertEquals(buildHost.getServerArch(), info.getImageArch());
+        assertNull(info.getProfile());
+        assertEquals(user.getOrg(), info.getOrg());
+        assertEquals(0, info.getCustomDataValues().size());
+        assertEquals(2, info.getChannels().size());
+        assertTrue(info.getChannels().equals(channels.get()));
+        assertTrue(info.getPackages().isEmpty());
+        assertTrue(info.getInstalledProducts().isEmpty());
+
+        // Reschedule
+        try {
+            ImageInfoFactory.scheduleImport(buildHost.getId(), "myimage", "1.0", store,
+                    channels, new Date(), user);
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Image already exists.", e.getMessage());
+        }
     }
 
     public void testLookupByIdsAndOrg() throws Exception {
