@@ -2,7 +2,7 @@
 
 var React = require("react")
 const ReactDOM = require("react-dom");
-var AceEditor = require("../components/ace-editor").AceEditor
+var AceEditor = require("../components/ace-editor").AceEditor;
 var Panel = require("../components/panel").Panel
 var PanelButton = require("../components/panel").PanelButton
 var Messages = require("../components/messages").Messages
