@@ -150,20 +150,9 @@ function groupSelector(groups, element) {
 
     const selectEnter = divEnter
       .append('select')
+      .attr('class', 'apply-select2js-on-this')
       .attr('multiple', 'multiple')
-      .on('change', function(d, i) {
-        const selectedOpts = Array.apply(null, this.options)
-          .filter(o => o.selected == true)
-          .map(o => {
-            if (o.value == noGrpOptionLabel) {
-              return [];
-            }
-            return o.value;
-          });
-
-        data[i] = selectedOpts;
-        onChange(data);
-      });
+      .attr('style', 'width: 250px');
 
     selectEnter
       .selectAll('option')
@@ -178,15 +167,29 @@ function groupSelector(groups, element) {
       .attr('value', noGrpOptionLabel)
       .text(noGrpOptionLabel);
 
-    divEnter
-      .append('a')
-      .attr('href', '#')
-      .text('Remove this level')
-      .on('click', function(d, i) {
-        data.splice(i, 1);
-        onChange(data);
-        update();
-      });
+    //HACK: usage of JQuery here is needed to apply the select2js plugin
+    $('select.apply-select2js-on-this').each(function(i) {
+      var select = $(this);
+      // apply select2js only one time
+      if (!select.hasClass('select2js-applied')) {
+        select.addClass('select2js-applied');
+        var select2js = select.select2();
+        select2js.on("change", function(event) {
+          data[i] = select.val();
+          onChange(data);
+        });
+
+        divEnter
+          .append('a')
+          .attr('href', '#')
+          .text('Remove this level')
+          .on('click', function() {
+            data.splice(i, 1);
+            onChange(data);
+            update();
+          });
+      }
+    });
   }
 
   function my() {

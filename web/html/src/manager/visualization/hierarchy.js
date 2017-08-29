@@ -72,7 +72,7 @@ function initUI(tree) {
 
   patchCountsFilter
     .append('div')
-    .attr('class', 'filter-title')
+    .attr('class', 'filter-title no-bold')
     .text('Show systems with:');
 
   // state of the patch status checkboxes:

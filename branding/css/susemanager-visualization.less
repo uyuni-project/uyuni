@@ -1,3 +1,16 @@
+.input-text {
+  .form-control;
+  .input-sm;
+  padding: 2px 6px;
+  height: auto;
+  width: auto;
+  display: inline-block;
+}
+
+.no-bold {
+  font-weight: normal!important;
+}
+
 .inline-icon {
   i {
     width: 1em;
@@ -89,13 +102,10 @@
       display: inline;
       .inline-icon;
     }
-    input[type=text] {
-      .form-control;
-      .input-sm;
-      padding: 2px 6px;
-      height: auto;
-      width: auto;
-      display: inline-block;
+    > input[type=text],
+    .partitioning-datepicker,
+    .partitioning-timepicker {
+      .input-text;
     }
     .input-group {
       input {
@@ -105,6 +115,11 @@
     input[type=checkbox] {
       margin-right: 5px;
       vertical-align: sub;
+    }
+    .select2-container-multi .select2-choices .select2-search-field input {
+      height: 28px;
+      padding: 3px 6px;
+
     }
   }
   select {
