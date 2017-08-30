@@ -189,6 +189,13 @@ function groupSelector(groups, element) {
             update();
           });
       }
+      else {
+        // if data is changed, e.g. a level is removed,
+        // we need to keep aligned data and selected values
+        if(data[i] != null && data[i].length > 0) {
+          select.val(data[i]).trigger('change');
+        }
+      }
     });
   }
 
