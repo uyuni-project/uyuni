@@ -83,11 +83,7 @@ When(/^I execute "([^"]*)"$/) do |arg1|
 end
 
 When(/^file "([^"]*)" exists on server$/) do |arg1|
-  $server.run("test -f #{arg1}")
-end
-
-When(/^file "([^"]*)" not exists on server$/) do |arg1|
-  $server.run("test -f #{arg1}")
+  $server.run_until_ok("test -f #{arg1}")
 end
 
 When(/^file "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
