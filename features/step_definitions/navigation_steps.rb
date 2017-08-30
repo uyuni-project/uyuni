@@ -70,7 +70,7 @@ When(/^I follow "([^"]*)"$/) do |text|
   begin
     click_link(debrand_string(text))
   rescue
-    sleep 10
+    sleep 15
     click_link(debrand_string(text))
   end
 end
