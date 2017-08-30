@@ -3,4 +3,4 @@ builder = tito.builder.Builder
 tagger = tito.tagger.SUSETagger
 changelog_with_email = 0
 changelog_do_not_remove_cherrypick = 0
-
+no_default_changelog = 1
