@@ -428,9 +428,8 @@ end
 
 # states catalog
 When(/^I enter the salt state$/) do |multiline|
-  within(:xpath, '//section') do
-    x = find('textarea[name="content"]')
-    x.set(multiline) # find("#{arg1}") #.set(lines)
+  within("div#content-state") do
+    find('.ace_text-input', visible: false).set(multiline)
   end
 end
 
