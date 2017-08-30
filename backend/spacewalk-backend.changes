@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug 30 15:50:16 CEST 2017 - fkobzik@suse.de
+
+- version 2.5.24.13-1
+- increase rpclib timeout to 10 minutes (bsc#1026930)
+- adapt for the new gpgcheck flag for the channels
+
+-------------------------------------------------------------------
 Tue Jul 04 11:33:31 CEST 2017 - michele.bologna@suse.com
 
 - version 2.5.24.12-1
