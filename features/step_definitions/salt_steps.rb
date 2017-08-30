@@ -428,7 +428,7 @@ end
 
 # states catalog
 When(/^I enter the salt state$/) do |multiline|
-  within("div#content-state") do
+  within('div#content-state') do
     find('.ace_text-input', visible: false).set(multiline)
   end
 end
