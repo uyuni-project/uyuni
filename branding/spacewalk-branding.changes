@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 30 15:54:32 CEST 2017 - fkobzik@suse.de
+
+- version 2.5.2.14-1
+- (bsc#1009118) fixes overlapping text narrow window
+
+-------------------------------------------------------------------
 Fri Dec 16 12:06:00 CET 2016 - michele.bologna@suse.com
 
 - version 2.5.2.13-1
