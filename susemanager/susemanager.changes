@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Aug 30 16:07:29 CEST 2017 - fkobzik@suse.de
+
+- version 3.0.23-1
+- Do not use checkpoint_segments parameter during migrations
+- Add script for migrating from postgresql94 to postgresql96
+- Create bootstrap repo for SLES for SAP 11 SP1 (bsc#1049471)
+- Adjust the bootstrap repo with SLE 12 SP3 repos
+
+-------------------------------------------------------------------
 Tue May 23 11:54:07 CEST 2017 - mc@suse.de
 
 - version 3.0.22-1
