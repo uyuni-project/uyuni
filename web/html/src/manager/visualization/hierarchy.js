@@ -214,8 +214,8 @@ const Hierarchy = React.createClass({
     return (
       <Panel title={t(title)}>
         <button className='toggle-filter-button' onClick={this.showFilters}>
-          {t('Toggle filters')}
-          <i className={"fa fa-caret-" + (this.state.showFilters ? 'down' : 'right')} aria-hidden="true"></i>
+          {t((this.state.showFilters ? 'Hide' : 'Show') + ' filters')}
+          <i className={"fa fa-caret-" + (this.state.showFilters ? 'up' : 'down')} aria-hidden="true"></i>
         </button>
         <div id='visualization-filter-wrapper'></div>
         <div id='svg-wrapper'>
