@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 30 15:59:51 CEST 2017 - mc@suse.de
+
+- version 3.1.9-1
+- Do not use checkpoint_segments parameter during migrations
+
+-------------------------------------------------------------------
 Tue Aug 08 11:41:57 CEST 2017 - fkobzik@suse.de
 
 - version 3.1.8-1
