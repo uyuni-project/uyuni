@@ -40,6 +40,8 @@ public class SelectableColumnTag extends TagSupport {
     private static final String CHECKBOX_CLICKED_SCRIPT =
                     "%s(%s,'%s', document.getElementById('%s'), %s, %s, '%s', %s);";
     private static final String CLICKED_COMPLETE = "process_checkbox_clicked";
+    private static final String CLICKED_CLIENT_SIDE =
+                                        "process_checkbox_clicked_client_side";
 
     private static final String CHECK_ALL_SCRIPT = "process_check_all('%s', %s, %s, %s);";
     private String valueExpr;
@@ -266,7 +268,7 @@ public class SelectableColumnTag extends TagSupport {
         ListTagUtil.write(pageContext, "/>");
         if (selected && !StringUtils.isBlank(rhnSet)) {
             String scriptId = "document.getElementById('" + checkboxId + "')";
-            addPostScript(getOnClickScript(CLICKED_COMPLETE, scriptId),
+            addPostScript(getOnClickScript(CLICKED_CLIENT_SIDE, scriptId),
                                             listName, pageContext.getRequest());
         }
     }

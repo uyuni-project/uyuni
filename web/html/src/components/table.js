@@ -60,14 +60,6 @@ const SearchPanel = (props) =>
     { props.selectable &&
         <a href="#" onClick={props.onSelectAll}>{t("Select All")}</a>
     }
-    { props.selectable && props.additionalSelectLinks &&
-        props.additionalSelectLinks.map((link, i) =>
-          <span key={i}>
-            &nbsp;/&nbsp;
-            {link}
-          </span>
-        )
-    }
   </div>
 ;
 
@@ -145,7 +137,6 @@ const Table = React.createClass({
     initialSortDirection: React.PropTypes.number, // 1 for ascending, -1 for descending
     cssClassFunction: React.PropTypes.func, // a function that return a css class for each row
     searchField: React.PropTypes.node, // the React Object that contains the filter search field
-    additionalSelectLinks: React.PropTypes.arrayOf(React.PropTypes.node), // extra selection components
     initialItemsPerPage: React.PropTypes.number, // the initial number of how many row-per-page to show
     selectable: React.PropTypes.bool, // enables item selection
     onSelect: React.PropTypes.func, // the handler to call when the table selection is updated. if this function is not provided, the select boxes won't be rendered
@@ -346,7 +337,6 @@ const Table = React.createClass({
               onSelectAll={handleSearchPanelSelectAll}
               selectedCount={this.state.selectedItems.length}
               selectable={this.state.selectable}
-              additionalSelectLinks={this.props.additionalSelectLinks}
             >{this.props.searchField}
             </SearchPanel>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">

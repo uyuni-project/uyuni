@@ -651,7 +651,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel custom = ChannelTestUtils.createBaseChannel(user);
         custom.setOrg(user.getOrg());
 
-        clearSsm();
+        SsmManager.clearSsm(user);
         SsmManager.addServersToSsm(user, new String[] {s.getId().toString()});
         ChannelFactory.commitTransaction();
         commitHappened();
@@ -897,12 +897,5 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     }
 
-    /**
-     * Clears the list of servers in the SSM.
-     */
-    private void clearSsm() {
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
-        set.clear();
-        RhnSetManager.store(set);
-    }
+
 }
