@@ -11,6 +11,7 @@ Feature: Use salt formulas
      When I manually install the "locale" formula on the server
      And I reload the page
      And I follow "Salt"
+     And I wait for "5" seconds
      And I follow "Formula Catalog"
      Then I should see a "locale" text
 
