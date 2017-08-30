@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Aug 30 16:06:06 CEST 2017 - fkobzik@suse.de
+
+- version 2.5.0.3-1
+- Change default backend for jabberd to sqlite (bsc#1047155)
+
+-------------------------------------------------------------------
 Mon Nov 30 11:19:59 CET 2015 - mc@suse.de
 
 - version 2.5.0.2-1
