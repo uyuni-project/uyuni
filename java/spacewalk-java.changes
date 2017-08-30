@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Wed Aug 30 15:55:45 CEST 2017 - fkobzik@suse.de
+
+- version 2.5.59.17-1
+- Delete and create new ServerNetAddress if it already exists on HW refresh
+  (bsc#1054225)
+- Fix XSS vulnerability (https://bugzilla.redhat.com/1460208)
+- Fix enter key submit on ListTag filter input (bsc#1048762)
+- Create VirtpollerData object with JSON content instead null (bsc#1049170)
+- Prevent malformed XML if 'arch' is set to NULL (bsc#1045575)
+- Resolve comps.xml file for repositories (bsc#1048528)
+- Fix: don't add default channel if AK is not valid (bsc#1047656)
+- Add 'Enable GPG check' function for channels
+- Regenerate pillar for the minions using the channel being modified
+- Remove executable bit from service files (bsc#1051518)
+- Fix wrong openscap xid (bsc#1030898)
+- Organization name allows XSS CVE-2017-7538 (bsc#1048968)
+- Fix overlapping text narrow window (bsc#1009118)
+- Manager: Update salt-netapi-client (v0.12.0)
+- Fix bsc#1033999 broken link
+- Fix alignment on the org details (bsc#1017513)
+- Update channels.xml with OpenStack Cloud Continuous Delivery 6 (bsc#1039458)
+- Handle possible wrong UUIDs on SLE11 minions (bsc#1046218)
+- Fix: allow blank key generation (bsc#1032350)
+
+-------------------------------------------------------------------
 Thu Jun 29 17:40:52 CEST 2017 - michele.bologna@suse.com
 
 - version 2.5.59.16-1
