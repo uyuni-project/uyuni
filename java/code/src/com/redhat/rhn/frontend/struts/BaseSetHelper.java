@@ -34,6 +34,7 @@ import com.redhat.rhn.frontend.taglibs.list.ListFilterHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
+import com.redhat.rhn.frontend.taglibs.list.decorators.AddToSsmDecorator;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.ssm.SsmManager;
 
@@ -88,6 +89,13 @@ public class BaseSetHelper {
 
             RequestContext context = new RequestContext(request);
             User user = context.getCurrentUser();
+
+            // If the user requested, first clear the SSM server set
+            // Note: if the checkbox is selected, this executes regardless of whether or not
+            // any servers were selected in the table
+            if (request.getParameter(AddToSsmDecorator.PARAM_CLEAR_SSM) != null) {
+                SsmManager.clearSsm(user);
+            }
 
             // If the user has made any selections, add those to the SSM
             if (selected != null && selected.length > 0) {

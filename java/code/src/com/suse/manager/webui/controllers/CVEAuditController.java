@@ -44,7 +44,7 @@ import java.util.stream.Stream;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 /**
- * Spark controller class the CVE Audit page.
+ * Spark controller class for image building and listing.
  */
 public class CVEAuditController {
 
