@@ -127,15 +127,6 @@ function initUI(tree) {
     tree.refresh();
   });
 
-  // Grouping UI (based on the preprocessor type)
-  if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
-    UI.addGroupSelector(d3.select('#partitioning-tab'),
-        tree.data().map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
-        (data) => {
-          tree.preprocessor().groupingConfiguration(data);
-          tree.refresh();
-        });
-  }
 
   // Partitioning by checkin time
   function partitionByCheckin(datetime) {
@@ -150,7 +141,21 @@ function initUI(tree) {
     tree.refresh();
   }
 
-  UI.addCheckinTimePartitioningSelect('#partitioning-tab', partitionByCheckin);
+  const anchorId = '#partitioning-tab';
+  const checkinTimePartitioning = UI.addCheckinTimePartitioningSelect(anchorId);
+  const checkinPartitioningButtons = checkinTimePartitioning.append('div').attr('class', 'btn-group');
+  UI.addButton(checkinPartitioningButtons, 'Apply', () => {
+    const date = $(anchorId + ' .partitioning-datepicker' ).datepicker( 'getDate' );
+    const time = $(anchorId + ' .partitioning-timepicker' ).timepicker( 'getTime' );
+    const datetime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+      time.getHours(), time.getMinutes(), time.getSeconds());
+    partitionByCheckin(datetime);
+  });
+  UI.addButton(checkinPartitioningButtons, 'Clear', () => {
+    tree.partitioning().get()['user-partitioning'] = d => { return ''};
+    tree.refresh();
+  });
+
 
   // Partitioning by patch existence
   const hasPatchesPartitioning = d3.select('#partitioning-tab')
@@ -173,13 +178,22 @@ function initUI(tree) {
     tree.refresh();
   }
 
-  UI.addButton(hasPatchesPartitioning, 'Apply', applyPatchesPartitioning);
-
-  var resetBox = d3.select('#partitioning-tab').append('div').attr('class', 'filter');
-  UI.addButton(resetBox, 'Reset partitioning', () => {
+  const patchesPartitioningButtons = hasPatchesPartitioning.append('div').attr('class', 'btn-group');
+  UI.addButton(patchesPartitioningButtons, 'Apply', applyPatchesPartitioning);
+  UI.addButton(patchesPartitioningButtons, 'Clear', () => {
     tree.partitioning().get()['user-partitioning'] = d => { return ''};
     tree.refresh();
   });
+
+  // Grouping UI (based on the preprocessor type)
+  if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
+    UI.addGroupSelector(d3.select('#partitioning-tab'),
+        tree.data().map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
+        (data) => {
+          tree.preprocessor().groupingConfiguration(data);
+          tree.refresh();
+        });
+  }
 }
 
 const Hierarchy = React.createClass({

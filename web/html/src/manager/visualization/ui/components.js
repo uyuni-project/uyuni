@@ -28,9 +28,7 @@ function addFilter(targetSelection, caption, placeholder, onInputCallback) {
 //
 // params:
 // - anchorId - id of element in DOM where the UI will be added
-// - callback - callback receiving picked time and date after user clicks
-// the 'Apply' button
-function addCheckinTimePartitioningSelect(anchorId, callback) {
+function addCheckinTimePartitioningSelect(anchorId) {
   const checkinTimePartitioning = d3.select(anchorId)
     .append('div').attr('class', 'filter');
 
@@ -61,13 +59,7 @@ function addCheckinTimePartitioningSelect(anchorId, callback) {
   $(anchorId + ' .partitioning-timepicker').timepicker({timeFormat: 'H:i:s', maxTime: '23:30:00'});
   $(anchorId + ' .partitioning-timepicker').timepicker('setTime', new Date());
 
-  addButton(checkinTimePartitioning, 'Apply', () => {
-      const date = $(anchorId + ' .partitioning-datepicker' ).datepicker( 'getDate' );
-      const time = $(anchorId + ' .partitioning-timepicker' ).timepicker( 'getTime' );
-      const datetime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
-        time.getHours(), time.getMinutes(), time.getSeconds());
-      callback(datetime);
-    });
+  return checkinTimePartitioning;
 }
 
 // Add a checkbox to given selection
@@ -130,11 +122,14 @@ function groupSelector(groups, element) {
     element
       .append('a')
       .attr('href', '#')
+      .attr('class', 'toggle-grouping-level')
       .text('Add a grouping level')
       .on('click', d => {
         data.push([]);
         update();
-      });
+      })
+      .append('i')
+      .attr('class', 'fa fa-plus');
   }
 
   function update() {
@@ -173,7 +168,7 @@ function groupSelector(groups, element) {
       // apply select2js only one time
       if (!select.hasClass('select2js-applied')) {
         select.addClass('select2js-applied');
-        var select2js = select.select2();
+        var select2js = select.select2({placeholder: t('Select a system group')});
         select2js.on("change", function(event) {
           data[i] = select.val();
           onChange(data);
@@ -182,12 +177,15 @@ function groupSelector(groups, element) {
         divEnter
           .append('a')
           .attr('href', '#')
-          .text('Remove this level')
+          .attr('class', 'toggle-grouping-level')
+          .attr('title', 'Remove this level')
           .on('click', function() {
             data.splice(i, 1);
             onChange(data);
             update();
-          });
+          })
+          .append('i')
+          .attr('class', 'fa fa-close');
       }
       else {
         // if data is changed, e.g. a level is removed,
@@ -241,9 +239,9 @@ function addButton(targetSelection, caption, callback) {
   targetSelection
     .append('button')
     .attr('type', 'button')
-    .attr('class', 'btn btn-default')
+    .attr('class', 'btn btn-default btn-sm')
     .on('click', callback)
-  .text(caption);
+    .text(caption);
 }
 
 module.exports = {
