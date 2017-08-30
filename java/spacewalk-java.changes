@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Wed Aug 30 16:00:28 CEST 2017 - mc@suse.de
+
+- version 2.7.46.6-1
+- Import image UI
+- Update images list and overview pages for external images
+- Add syntax highlighting for state catalog
+- Delete and create new ServerNetAddress if it already exists on
+  HW refresh (bsc#1054225)
+- organization name allows XSS
+- check if base product exists to prevent NPE
+- Fix enter key submit on ListTag filter input (bsc#1048762)
+- Create VirtpollerData object with JSON content instead null
+  (bsc#1049170)
+- Fix unsetting of image build host when a related action is deleted
+- Prevent malformed XML if 'arch' is set to NULL (bsc#1045575)
+- Resolve comps.xml file for repositories (bsc#1048528)
+- Fix: address review issues
+- Install update stack erratas as a package list (bsc#1049139)
+- Feat: allow deletion for server subset (bsc#1051452)
+
+-------------------------------------------------------------------
 Tue Aug 08 11:46:36 CEST 2017 - fkobzik@suse.de
 
 - version 2.7.46.5-1
