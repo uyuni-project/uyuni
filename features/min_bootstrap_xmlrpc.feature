@@ -41,6 +41,7 @@ Feature: register a salt-minion via XMLRPC API bootstrap procedure
     And I click on "Confirm"
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
+    Then I apply highstate on "sle-minion"
 
   Scenario: Bootstraping non-existing system
     Given I am logged in via XML-RPC/system as user "admin" and password "admin"
