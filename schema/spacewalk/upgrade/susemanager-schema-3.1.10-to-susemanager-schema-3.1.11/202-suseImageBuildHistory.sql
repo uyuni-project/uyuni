@@ -6,9 +6,9 @@ CREATE TABLE suseImageBuildHistory (
                         REFERENCES suseImageInfo (id)
                         ON DELETE CASCADE,
     revision_num    NUMBER NOT NULL,
-    created         TIMESTAMP WITH LOCAL TIME ZONE 
+    created         TIMESTAMP WITH LOCAL TIME ZONE
                         DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
-    modified        TIMESTAMP WITH LOCAL TIME ZONE 
+    modified        TIMESTAMP WITH LOCAL TIME ZONE
                         DEFAULT (CURRENT_TIMESTAMP) NOT NULL
 )
 ENABLE ROW MOVEMENT
