@@ -1,3 +1,6 @@
+
+- support postgresql 9.6 (bsc#1045152)
+
 -------------------------------------------------------------------
 Thu Jun 29 17:38:59 CEST 2017 - michele.bologna@suse.com
 
