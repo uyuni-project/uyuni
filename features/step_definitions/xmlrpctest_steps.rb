@@ -2,9 +2,6 @@
 require 'xmlrpc/client'
 
 rpc_api_tester = XMLRPCApiTest.new(ENV['TESTHOST'])
-#
-# Steps
-#
 Given(/^I am logged in via XML\-RPC\/api as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   assert(rpc_api_tester.login(luser, password))
 end
@@ -28,7 +25,6 @@ end
 When(/^I call getApiCallList, I should get (\d+) available groups$/) do |groupCount|
   assert_equal(groupCount.to_i, rpc_api_tester.getCountOfApiCallListGroups)
 end
-
 # cve audit
 Given(/^I am logged in via XML\-RPC\/cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   @rpctest = XMLRPCCVEAuditTest.new(ENV['TESTHOST'])
