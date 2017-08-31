@@ -5,7 +5,7 @@ ALTER TABLE suseServerVirtualHostManager ALTER COLUMN
 ALTER TABLE suseServerVirtualHostManager ADD COLUMN
     node_id NUMERIC CONSTRAINT suse_svhm_nodeinfo_fk
                     REFERENCES suseVirtualHostManagerNodeInfo (id)
-                    ON DELETE CASCADE;
+                    ON DELETE SET NULL;
 
 ALTER TABLE suseServerVirtualHostManager DROP CONSTRAINT suse_server_vhms_sid_fk;
 
