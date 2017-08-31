@@ -204,9 +204,8 @@ When(/^"(.*)" exists on the filesystem of "(.*)"$/) do |file, host|
       end
     end
   rescue Timeout::Error
-    puts 'timeout waiting for the file to appear'
+    raise unless file_exists?(node, file)
   end
-  raise unless file_exists?(node, file)
 end
 
 Then(/^I remove "(.*)" from "(.*)"$/) do |file, host|
@@ -216,19 +215,9 @@ end
 
 Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
   timeout = 800
-  if target == 'sle-client'
-    checkShutdown($client.full_hostname, timeout)
-    checkRestart($client.full_hostname, get_target(target), timeout)
-  elsif target == 'ceos-minion'
-    checkShutdown($ceos_minion.full_hostname, timeout)
-    checkRestart($ceos_minion.full_hostname, get_target(target), timeout)
-  elsif target == 'ssh-minion'
-    checkShutdown($ssh_minion.full_hostname, timeout)
-    checkRestart($ssh_minion.full_hostname, get_target(target), timeout)
-  elsif target == 'sle-minion'
-    checkShutdown($minion.full_hostname, timeout)
-    checkRestart($minion.full_hostname, get_target(target), timeout)
-  end
+  node = get_target(target)
+  checkShutdown(node.full_hostname, timeout)
+  checkRestart(node.full_hostname, get_target(target), timeout)
 end
 
 When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)"$/) do |arg1, arg2|
