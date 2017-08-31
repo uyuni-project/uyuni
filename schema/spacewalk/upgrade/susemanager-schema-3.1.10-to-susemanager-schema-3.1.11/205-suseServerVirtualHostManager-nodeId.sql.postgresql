@@ -1,0 +1,13 @@
+-- oracle equivalent source sha1 91c81355c0585fa9caa76f630b70233e497f08ec
+ALTER TABLE suseServerVirtualHostManager ALTER COLUMN
+    server_id DROP NOT NULL;
+
+ALTER TABLE suseServerVirtualHostManager ADD COLUMN
+    node_id NUMERIC CONSTRAINT suse_svhm_nodeinfo_fk
+                    REFERENCES suseVirtualHostManagerNodeInfo (id)
+                    ON DELETE CASCADE;
+
+ALTER TABLE suseServerVirtualHostManager DROP CONSTRAINT suse_server_vhms_sid_fk;
+
+ALTER TABLE suseServerVirtualHostManager ADD CONSTRAINT suse_server_vhms_sid_fk
+    FOREIGN KEY(server_id) REFERENCES rhnServer(id) ON DELETE SET NULL;

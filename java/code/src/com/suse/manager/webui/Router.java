@@ -128,19 +128,32 @@ public class Router implements SparkApplication {
         get("/manager/vhms",
                 withCsrfToken(withOrgAdmin(VirtualHostManagerController::list)),
                 jade);
-        get("/manager/vhms/add",
-                withCsrfToken(withOrgAdmin(VirtualHostManagerController::add)),
-                jade);
-        post("/manager/vhms",
-                withCsrfToken(withUser(VirtualHostManagerController::create)),
-                jade);
-        get("/manager/vhms/:id",
-                withCsrfToken(withOrgAdmin(VirtualHostManagerController::show)),
-                jade);
-        post("/manager/vhms/:id/delete",
-                withOrgAdmin(VirtualHostManagerController::delete));
-        post("/manager/vhms/:id/refresh",
+        post("/manager/api/vhms/kubeconfig/validate",
+                withOrgAdmin(VirtualHostManagerController::validateKubeconfig));
+        post("/manager/api/vhms/create/kubernetes",
+                withUser(VirtualHostManagerController::createKubernetes));
+        post("/manager/api/vhms/update/kubernetes",
+                withUser(VirtualHostManagerController::updateKubernetes));
+        get("/manager/api/vhms/kubeconfig/:id/contexts",
+                withOrgAdmin(VirtualHostManagerController::getKubeconfigContexts));
+        post("/manager/api/vhms/:id/refresh",
                 withOrgAdmin(VirtualHostManagerController::refresh));
+        get("/manager/api/vhms/:id/nodes",
+                withOrgAdmin(VirtualHostManagerController::getNodes));
+        get("/manager/api/vhms/modules",
+                withOrgAdmin(VirtualHostManagerController::getModules));
+        get("/manager/api/vhms/module/:name/params",
+                withOrgAdmin(VirtualHostManagerController::getModuleParams));
+        get("/manager/api/vhms",
+                withOrgAdmin(VirtualHostManagerController::get));
+        get("/manager/api/vhms/:id",
+                withOrgAdmin(VirtualHostManagerController::getSingle));
+        post("/manager/api/vhms/create",
+                withOrgAdmin(VirtualHostManagerController::create));
+        post("/manager/api/vhms/update/:id",
+                withOrgAdmin(VirtualHostManagerController::update));
+        delete("/manager/api/vhms/delete/:id",
+                withOrgAdmin(VirtualHostManagerController::delete));
 
         // Subscription Matching
         get("/manager/subscription-matching",
@@ -305,6 +318,13 @@ public class Router implements SparkApplication {
 
         get("/manager/api/cm/images", withUser(ImageBuildController::list));
         get("/manager/api/cm/images/:id", withUser(ImageBuildController::get));
+        get("/manager/api/cm/clusters", withUser(ImageBuildController::getClusterList));
+        get("/manager/api/cm/runtime/:clusterId",
+                withUser(ImageBuildController::getRuntimeSummaryAll));
+        get("/manager/api/cm/runtime/:clusterId/:id",
+                withUser(ImageBuildController::getRuntimeSummary));
+        get("/manager/api/cm/runtime/details/:clusterId/:id",
+                withUser(ImageBuildController::getRuntimeDetails));
         get("/manager/api/cm/images/patches/:id",
                 withUser(ImageBuildController::getPatches));
         get("/manager/api/cm/images/packages/:id",

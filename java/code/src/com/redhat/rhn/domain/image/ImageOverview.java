@@ -62,6 +62,7 @@ public class ImageOverview extends BaseDomainHelper {
     private ImageProfile profile;
     private ImageStore store;
     private MinionServer buildServer;
+    private Integer currRevisionNum;
     private Action buildAction;
     private Action inspectAction;
     private boolean externalImage;
@@ -146,6 +147,14 @@ public class ImageOverview extends BaseDomainHelper {
     @JoinColumn(name = "build_server_id")
     public MinionServer getBuildServer() {
         return buildServer;
+    }
+
+    /**
+     * @return the current revision number
+     */
+    @Column(name = "curr_revision_num")
+    public Integer getCurrRevisionNum() {
+        return currRevisionNum;
     }
 
     /**
@@ -370,6 +379,13 @@ public class ImageOverview extends BaseDomainHelper {
      */
     public void setBuildServer(MinionServer buildServerIn) {
         this.buildServer = buildServerIn;
+    }
+
+    /**
+     * @param currRevisionNumIn the current revision number
+     */
+    public void setCurrRevisionNum(Integer currRevisionNumIn) {
+        this.currRevisionNum = currRevisionNumIn;
     }
 
     /**

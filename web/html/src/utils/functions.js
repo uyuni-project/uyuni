@@ -87,6 +87,14 @@ function urlBounce(defaultUrl, qstrParamKey) {
     window.location = getQueryStringValue(qstrParamKey || "url_bounce") || defaultUrl;
 }
 
+/**
+ * Replace all "_" and "-" with spaces and capitalize the first letter of each word
+ */
+function capitalize(str) {
+    return str.replace(new RegExp("_|-", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
+
 module.exports = {
     Utils: {
         cancelable: cancelable,
@@ -95,7 +103,8 @@ module.exports = {
         dateWithTimezone: dateWithTimezone,
         sortByNumber: sortByNumber,
         sortByDate: sortByDate,
-        urlBounce: urlBounce
+        urlBounce: urlBounce,
+        capitalize: capitalize
     },
     Formats: {
         LocalDateTime: LocalDateTime

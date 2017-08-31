@@ -158,7 +158,7 @@ class Form extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.submit.bind(this)} className={this.props.className}>
+            <form ref={this.props.formRef} onSubmit={this.submit.bind(this)} className={this.props.className}>
                 <div className={"form-horizontal" + (this.props.divClass ? " " + this.props.divClass : "")}>
                     {this.renderChildren(this.props.children)}
                 </div>

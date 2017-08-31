@@ -39,11 +39,13 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImagePackage;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
+import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -516,6 +518,7 @@ public class SaltUtils {
             }
 
             ImageInfoFactory.lookupByBuildAction(ba).ifPresent(info -> {
+                info.setRevisionNumber(info.getRevisionNumber() + 1);
                 info.setInspectAction(iAction);
                 ImageInfoFactory.save(info);
             });
@@ -593,6 +596,18 @@ public class SaltUtils {
         if (result.getDockerngInspect().isResult()) {
             ImageInspectSlsResult iret = result.getDockerngInspect().getChanges().getRet();
             imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
+            ImageBuildHistory history = new ImageBuildHistory();
+            history.setImageInfo(imageInfo);
+            // revision number was already incremented in handleImageBuildData()
+            history.setRevisionNumber(imageInfo.getRevisionNumber());
+            history.getRepoDigests().addAll(
+                    iret.getRepoDigests().stream().map(digest -> {
+                        ImageRepoDigest repoDigest = new ImageRepoDigest();
+                        repoDigest.setRepoDigest(digest);
+                        repoDigest.setBuildHistory(history);
+                        return repoDigest;
+                    }).collect(Collectors.toSet()));
+            imageInfo.getBuildHistory().add(history);
         }
         else {
             serverAction.setResultMsg(result.getDockerngInspect().getComment());

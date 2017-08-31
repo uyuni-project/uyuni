@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,53 +28,54 @@ public class JsonResult<T> {
     private final T data;
 
     /**
-     * Instantiates a new Json result.
+     * Create an error result with the given messages.
      *
-     * @param successIn the success
+     * @param messagesIn a list of messages
+     * @return a JsonResult
      */
-    public JsonResult(boolean successIn) {
-        this(successIn, (T) null);
+    public static JsonResult error(String... messagesIn) {
+        return error(Arrays.asList(messagesIn));
     }
 
     /**
-     * Instantiates a new Json result.
+     * Create an error result with the given messages.
      *
-     * @param successIn the success
-     * @param message   the message
+     * @param messagesIn a list of messages
+     * @return a JsonResult
      */
-    public JsonResult(boolean successIn, String message) {
-        this(successIn, message, null);
+    public static JsonResult error(List<String> messagesIn) {
+        return new JsonResult<>(false, messagesIn, null);
     }
 
     /**
-     * Instantiates a new Json result.
+     * Create a success result without data.
      *
-     * @param successIn  the success
+     * @return a JsonResult
+     */
+    public static JsonResult success() {
+        return success(null);
+    }
+
+    /**
+     * Create a success result with the given data.
+     *
+     * @param dataIn the data
+     * @param <T> the type of data
+     * @return a JsonResult
+     */
+    public static <T> JsonResult<T> success(T dataIn) {
+        return new JsonResult<>(true, null, dataIn);
+    }
+
+    /**
+     * Create a success result with the given message.
+     *
      * @param messagesIn the messages
+     * @param <T> the type of data
+     * @return a JsonResult
      */
-    public JsonResult(boolean successIn, List<String> messagesIn) {
-        this(successIn, messagesIn, null);
-    }
-
-    /**
-     * Instantiates a new Json result.
-     *
-     * @param successIn the success
-     * @param dataIn    the data
-     */
-    public JsonResult(boolean successIn, T dataIn) {
-        this(successIn, Collections.emptyList(), dataIn);
-    }
-
-    /**
-     * Instantiates a new Json result.
-     *
-     * @param successIn the success
-     * @param message   the message
-     * @param dataIn    the data
-     */
-    public JsonResult(boolean successIn, String message, T dataIn) {
-        this(successIn, Collections.singletonList(message), dataIn);
+    public static <T> JsonResult<T> successMessage(String... messagesIn) {
+        return new JsonResult<>(true, Arrays.asList(messagesIn), null);
     }
 
     /**
