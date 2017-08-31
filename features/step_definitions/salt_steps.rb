@@ -104,17 +104,14 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
 end
 
 Then(/^salt-minion should be running on "(.*?)"$/) do |minion|
-  if minion == 'sle-minion'
-    target = $minion
-  elsif minion == 'ceos-minion'
-    target = $ceos_minion
-  else
-    raise 'no valid name of minion given! '
-  end
+  node = get_target(minion)
   i = 0
+  # bsc 1056615
+  salt_st = 'rcsalt-minion status'
+  salt_st = 'systemctl status salt-minion' if minion == 'ceos-minion'
   MAX_ITER = 40
   loop do
-    _out, code = target.run('systemctl status salt-minion', false)
+    _out, code = node.run(salt_st, false)
     break if code.zero?
     sleep 5
     puts 'sleeping 5 secs, minion not active.'
@@ -739,7 +736,7 @@ end
 
 And(/^I cleanup minion: "([^"]*)"$/) do |target|
   if target == 'sle-minion'
-    $minion.run('systemctl stop salt-minion')
+    $minion.run('rcsalt-minion stop')
     $minion.run('rm -Rf /var/cache/salt/minion')
   elsif target == 'ceos-minion'
     $ceos_minion.run('systemctl stop salt-minion')
