@@ -7,6 +7,7 @@ Feature: Check the Salt package state UI
 
   Scenario: Prequisite: Install milkyway-dummy-1.0 and virgo-dummy-1.0 packages
     Given I am authorized as "admin" with password "admin"
+    Then I apply highstate on "sle-minion"
     And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
     And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-minion" without error control
