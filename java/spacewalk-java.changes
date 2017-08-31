@@ -1,3 +1,5 @@
+- fixes ise error with invalid custom key id (bsc#1048294)
+
 -------------------------------------------------------------------
 Mon Jun 19 16:36:09 CEST 2017 - mc@suse.de
 
