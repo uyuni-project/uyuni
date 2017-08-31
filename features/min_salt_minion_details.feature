@@ -15,4 +15,3 @@ Feature: Verify the minion registration
     When I follow "Software" in the content area
     And I follow "List / Remove"
     Then I should see a "aaa_base" text
-    And I should see a "aaa_base-extras" text
