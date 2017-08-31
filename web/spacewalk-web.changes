@@ -1,3 +1,9 @@
+
+- Image runtime UI
+- Redesign VHM pages on ReactJS
+- Dropdown button ReactJS component
+- Use ModalButton component in subscription matching pages
+
 -------------------------------------------------------------------
 Wed Aug 30 15:57:36 CEST 2017 - mc@suse.de
 
