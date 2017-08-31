@@ -35,3 +35,4 @@ Feature: register a salt-ssh system via XMLRPC API bootstrap procedure
     And I click on "Confirm"
     And I click on "Modify Base Software Channel"
     And I should see a "System's Base Channel has been updated." text
+    Then I apply highstate on "sle-minion"
