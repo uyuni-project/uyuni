@@ -113,7 +113,7 @@ function addCheckbox(targetSelection, caption, icon, classes, callback) {
 //  - onChange: setter/getter for a function that is called after a selection
 //  is changed or a select box on one level is collapsed
 function groupSelector(groups, element) {
-  const noGrpOptionLabel = '<<NO GROUP>>';
+  const NO_GROUP_LABEL = '** NO GROUP **';
   const data = [];
   let onChange = function(data) { console.log('data changed: ' + data); };
   groups = Array.from(new Set(groups));
@@ -159,8 +159,8 @@ function groupSelector(groups, element) {
 
     selectEnter
       .append('option')
-      .attr('value', noGrpOptionLabel)
-      .text(noGrpOptionLabel);
+      .attr('value', NO_GROUP_LABEL)
+      .text(NO_GROUP_LABEL);
 
     //HACK: usage of JQuery here is needed to apply the select2js plugin
     $('select.apply-select2js-on-this').each(function(i) {
