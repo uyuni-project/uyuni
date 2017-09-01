@@ -12,22 +12,24 @@ Feature: Test "virtualhostmanager" Web UI.
   Scenario: Check VMware page
    Given I am on the Systems page
     When I follow "Virtual Host Managers"
-    And I follow "Add VMware-based Virtual Host Manager"
-    Then I should see a "Add a VMware-based Virtual Host Manager" text
-    And I should see a "Label:" text
-    And I should see a "Hostname:" text
-    And I should see a "Port:" text
-    And I should see a "Username:" text
-    And I should see a "Password:" text
+    And I click on "Create"
+    And I follow "VMWare-based"
+    Then I should see a "Add a VMWare-based Virtual Host Manager" text
+    And I should see a "Label" text
+    And I should see a "Hostname" text
+    And I should see a "Port" text
+    And I should see a "Username" text
+    And I should see a "Password" text
 
   Scenario: Check create Virtual Host
    Given I am on the Systems page
     When I follow "Virtual Host Managers"
-    And I follow "Add File-based Virtual Host Manager"
+    And I click on "Create"
+    And I follow "File-based"
     Then I should see a "Add a File-based Virtual Host Manager" text
     When I enter "file-vmware" as "label"
     And I enter "file:///var/tmp/vCenter.json" as "module_url"
-    And I click on "Add Virtual Host Manager"
+    And I click on "Create"
     Then I should see a "file-vmware" link
 
   Scenario: Run virtual-host-gatherer single run
@@ -37,8 +39,8 @@ Feature: Test "virtualhostmanager" Web UI.
      And I follow "file-vmware"
     Then I should see a "file:///var/tmp/vCenter.json" text
      And I should see a "SUSE Test" text
-    When I click on "Refresh data from this Virtual Host Manager"
-    Then I should see a "Refresh for Virtual Host Manager with label 'file-vmware' was triggered." text
+    When I click on "Schedule refresh data"
+    Then I should see a "Refreshing the data for this Virtual Host Manager has been triggered." text
 
   Scenario: Check new Virtual Hosts vhm page
     Given I am on the Systems page
@@ -53,8 +55,10 @@ Feature: Test "virtualhostmanager" Web UI.
    Given I am on the Systems page
     When I follow "Virtual Host Managers"
     And I follow "file-vmware"
-    And I click on "Delete Virtual Host Manager"
-    Then I should see a "Virtual Host Manager 'file-vmware' has been deleted." text
+    And I click on "Delete"
+    Then I should see a "Are you sure you want to delete this virtual host manager?" text
+    When I click on "Delete" inside element "#delete-single-modal"
+    Then I should see a "Virtual Host Manager has been deleted." text
      And I should see a "No Virtual Host Managers." text
 
  Scenario: Cleanup: delete virtualhost: 10.162.186.111
