@@ -181,3 +181,22 @@ Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
   end
   fail unless found
 end
+
+And(/^I navigate to "([^"]*)" page$/) do |page|
+  visit("https://#{$server_fullhostname/#{page}")
+end
+
+
+When(/^I wait until i see "([^"]*)" text, refreshing the page$/) do |text|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if page.has_content?(text)
+        sleep 3
+        page.evaluate_script 'window.location.reload()'
+      end
+    end
+  rescue Timeout::Error
+    raise "Couldn't find the #{text} in webpage"
+  end
+end
