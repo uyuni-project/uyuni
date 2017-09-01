@@ -140,8 +140,10 @@ const Table = React.createClass({
     initialItemsPerPage: React.PropTypes.number, // the initial number of how many row-per-page to show
     selectable: React.PropTypes.bool, // enables item selection
     onSelect: React.PropTypes.func, // the handler to call when the table selection is updated. if this function is not provided, the select boxes won't be rendered
-    selectedItems: React.PropTypes.array // the identifiers for selected items
+    selectedItems: React.PropTypes.array, // the identifiers for selected items
+    emptyText: React.PropTypes.string // The message which is shown when there are no rows to display
   },
+  defaultEmptyText: t('There are no entries to show.'),
 
   getInitialState: function() {
     return {
@@ -263,6 +265,7 @@ const Table = React.createClass({
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
     const currItems = filteredData.slice(firstItemIndex, firstItemIndex + itemsPerPage);
     const currIds = currItems.map(item => this.props.identifier(item));
+    const isEmpty = itemCount === 0;
 
     const handleSelectAll = (sel) => {
         let arr = this.state.selectedItems;
@@ -322,6 +325,8 @@ const Table = React.createClass({
                 .filter(id => !selected.includes(id))));
     }
 
+    const emptyText = this.props.emptyText || this.defaultEmptyText;
+
     return (
       <div className="spacewalk-list">
         <div className="panel panel-default">
@@ -347,20 +352,25 @@ const Table = React.createClass({
               </div>
             </div>
           </div>
-        <div>
-            <div className="table-responsive">
-                <table className="table table-striped vertical-middle">
-                   <thead>
-                      <tr>{headers}</tr>
-                   </thead>
-                   <tbody>
-                      {rows}
-                   </tbody>
-                </table>
+          { isEmpty ?
+            <div className="panel-body">
+              <h4>{emptyText}</h4>
             </div>
-        </div>
-
-        <div className="panel-footer">
+            :
+            <div>
+              <div className="table-responsive">
+                <table className="table table-striped vertical-middle">
+                  <thead>
+                    <tr>{headers}</tr>
+                  </thead>
+                  <tbody>
+                    {rows}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+          <div className="panel-footer">
             <div className="spacewalk-list-bottom-addons">
               <PaginationBlock key="paginationBlock"
                 currentPage={this.state.currentPage}
