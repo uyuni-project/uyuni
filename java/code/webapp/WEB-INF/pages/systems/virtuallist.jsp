@@ -25,12 +25,12 @@
     <rl:decorator name="PageSizeDecorator"/>
     <rl:decorator name="ElaborationDecorator"/>
     <rl:decorator name="SystemIconDecorator"/>
-    <rl:decorator name="AddToSsmDecorator" />
 
     <rl:decorator name="SelectableDecorator"/>
     <rl:selectablecolumn value="${current.systemId}"
                          selected="${current.selected}"
                          disabled="${!current.selectable}"/>
+    <rl:decorator name="AddToSsmDecorator"/>
 
     <rl:column sortable="false"
                bound="false"

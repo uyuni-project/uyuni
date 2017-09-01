@@ -19,6 +19,7 @@
 
 <rl:listset name="systemSet" legend="system">
 <rhn:csrf />
+  <c:set var="noAddToSsm" value="1" />
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
     <rhn:submitted/>
     <div class="form-horizontal">
