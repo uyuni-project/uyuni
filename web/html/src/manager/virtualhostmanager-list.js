@@ -31,6 +31,7 @@ class VirtualHostManagerList extends React.Component {
                 identifier={vhm => vhm.id}
                 initialSortColumnKey="label"
                 initialItemsPerPage={userPrefPageSize}
+                emptyText={t('No Virtual Host Managers.')}
             >
                 <Column
                     columnKey="label"
