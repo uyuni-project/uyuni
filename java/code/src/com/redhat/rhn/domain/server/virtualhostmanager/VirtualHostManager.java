@@ -38,6 +38,7 @@ public class VirtualHostManager extends BaseDomainHelper {
     private Credentials credentials;
     private Set<VirtualHostManagerConfig> configs;
     private Set<Server> servers;
+    private Set<VirtualHostManagerNodeInfo> nodes;
 
     /**
      * Constructor
@@ -45,6 +46,7 @@ public class VirtualHostManager extends BaseDomainHelper {
     public VirtualHostManager() {
         configs = new HashSet<>();
         servers = new HashSet<>();
+        nodes = new HashSet<>();
     }
 
     /**
@@ -173,6 +175,28 @@ public class VirtualHostManager extends BaseDomainHelper {
      */
     public void removeServer(Server serverIn) {
         this.servers.remove(serverIn);
+    }
+
+    /**
+     * @return the nodes
+     */
+    public Set<VirtualHostManagerNodeInfo> getNodes() {
+        return nodes;
+    }
+
+    /**
+     * @param nodesIn the nodes
+     */
+    public void setNodes(Set<VirtualHostManagerNodeInfo> nodesIn) {
+        this.nodes = nodesIn;
+    }
+
+    /**
+     * Remove a node from the set of managed nodes by this virtual host manager
+     * @param nodeIn a server
+     */
+    public void removeNode(VirtualHostManagerNodeInfo nodeIn) {
+        this.nodes.remove(nodeIn);
     }
 
     /**

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Aug 08 11:32:45 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.10.5-1
+- Don't show password on input in spacewalk-manage-channel-lifecycle
+  (bsc#1043795)
+
+-------------------------------------------------------------------
 Mon Jun 12 09:03:22 CEST 2017 - mc@suse.de
 
 - version 2.7.10.4-1

@@ -1972,6 +1972,12 @@ tree will not be usable for autoinstalling.
       <trans-unit id="task.status.mgr-sync-refresh">
         <source>Refresh mgr-sync data</source>
       </trans-unit>
+      <trans-unit id="task.status.minion-action-executor">
+        <source>Execute actions on minions</source>
+      </trans-unit>
+      <trans-unit id="task.status.token-cleanup">
+        <source>Cleanup channel tokens</source>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch">
         <source>Registers SUSE Manager clients</source>
       </trans-unit>

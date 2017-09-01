@@ -148,11 +148,11 @@ public class ImageProfileController {
         List<ImageProfile> profiles =
                 ImageProfileFactory.lookupByIdsAndOrg(ids, user.getOrg());
         if (profiles.size() < ids.size()) {
-            return json(res, new JsonResult<>(false, "not_found"));
+            return json(res, JsonResult.error("not_found"));
         }
 
         profiles.forEach(ImageProfileFactory::delete);
-        return json(res, new JsonResult<>(true, profiles.size()));
+        return json(res, JsonResult.success(profiles.size()));
     }
 
     /**
@@ -193,8 +193,8 @@ public class ImageProfileController {
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
         return profile.map(
-                p -> json(res, new JsonResult(true, ImageProfileJson.fromImageProfile(p))))
-                .orElseGet(() -> json(res, new JsonResult(false, "not_found")));
+                p -> json(res, JsonResult.success(ImageProfileJson.fromImageProfile(p))))
+                .orElseGet(() -> json(res, JsonResult.error("not_found")));
     }
 
     /**
@@ -212,8 +212,8 @@ public class ImageProfileController {
                 ImageProfileFactory.lookupByLabelAndOrg(profileLabel, user.getOrg());
 
         return profile.map(
-                p -> json(res, new JsonResult(true, ImageProfileJson.fromImageProfile(p))))
-                .orElseGet(() -> json(res, new JsonResult(false, "not_found")));
+                p -> json(res, JsonResult.success(ImageProfileJson.fromImageProfile(p))))
+                .orElseGet(() -> json(res, JsonResult.error("not_found")));
     }
 
     /**
@@ -270,8 +270,8 @@ public class ImageProfileController {
             ImageProfileFactory.save(p);
             updateCustomDataValues(p, reqData, user);
 
-            return new JsonResult(true);
-        }).orElseGet(() -> new JsonResult(false, "not_found"));
+            return JsonResult.success();
+        }).orElseGet(() -> JsonResult.error("not_found"));
 
         return json(res, result);
     }
@@ -311,13 +311,13 @@ public class ImageProfileController {
             profile = dockerfileProfile;
         }
         else {
-            return json(res, new JsonResult(false, "invalid_type"));
+            return json(res, JsonResult.error("invalid_type"));
         }
 
         ImageProfileFactory.save(profile);
         updateCustomDataValues(profile, reqData, user);
 
-        return json(res, new JsonResult(true));
+        return json(res, JsonResult.success());
     }
 
     /**
@@ -348,6 +348,18 @@ public class ImageProfileController {
     /**
      * Gets a list of activation keys available to the user, as a JSON string
      *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return a JSON string of the list of activation keys
+     */
+    public static String getActivationKeys(Request req, Response res, User user) {
+        return json(res, getActivationKeyNames(user));
+    }
+
+    /**
+     * Gets a list of activation keys available to the user, as a JSON string
+     *
      * @param user the user
      * @return a JSON string of the list of activation keys
      */
@@ -355,6 +367,13 @@ public class ImageProfileController {
         ActivationKeyManager akm = ActivationKeyManager.getInstance();
         return GSON.toJson(akm.findAll(user).stream().map(ActivationKey::getKey)
                 .collect(Collectors.toList()));
+    }
+
+    private static List<String> getActivationKeyNames(User user) {
+        return ActivationKeyManager.getInstance()
+                .findAll(user)
+                .stream().map(ActivationKey::getKey)
+                .collect(Collectors.toList());
     }
 
     /**

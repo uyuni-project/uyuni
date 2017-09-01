@@ -6,7 +6,7 @@
 %endif
 
 Name:           spacewalk
-Version:        2.7.0.4
+Version:        2.7.0.5
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://github.com/spacewalkproject/spacewalk

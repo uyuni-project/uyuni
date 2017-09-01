@@ -255,7 +255,7 @@ suseServerStateRevision        :: rhnServer suseStateRevision
 susePinnedSubscription         :: rhnServer
 suseStateRevision              :: web_contact
 suseUpgradePath                :: suseProducts
-suseServerVirtualHostManager   :: rhnServer suseVirtualHostManager
+suseServerVirtualHostManager   :: rhnServer suseVirtualHostManager suseVirtualHostManagerNodeInfo
 suseVHMConfig                  :: suseVirtualHostManager
 suseVirtualHostManager         :: web_customer suseCredentials rhnServerGroup
 suseCustomState                :: web_customer

@@ -25,6 +25,7 @@ CREATE TABLE suseImageInfo
     image_arch_id  NUMBER NOT NULL
                        CONSTRAINT suse_imginfo_said_fk
                            REFERENCES rhnServerArch (id),
+    curr_revision_num   NUMBER,
     org_id         NUMBER NOT NULL
                      CONSTRAINT suse_imginfo_oid_fk
                        REFERENCES web_customer (id)
@@ -43,6 +44,7 @@ CREATE TABLE suseImageInfo
                       CONSTRAINT suse_imginfo_bsid_fk
                          REFERENCES suseMinionInfo (server_id)
                          ON DELETE SET NULL,
+    external_image CHAR(1) DEFAULT ('N') NOT NULL,
     created        timestamp with local time zone
                      DEFAULT (current_timestamp) NOT NULL,
     modified       timestamp with local time zone

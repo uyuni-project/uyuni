@@ -1,3 +1,32 @@
+
+- Image runtime UI
+- Redesign VHM pages on ReactJS
+- Dropdown button ReactJS component
+- Use ModalButton component in subscription matching pages
+
+-------------------------------------------------------------------
+Wed Aug 30 15:57:36 CEST 2017 - mc@suse.de
+
+- version 2.7.1.11-1
+- Show a list of channels when an activation key is selected in
+  image import form
+- Improve error handling in image import UI
+- Import image UI
+- Update images list and overview pages for external images
+- Remove the unused code that caused problems on some browsers (bsc#1050399)
+- Use ace editor for custom states with yaml syntax highlighting
+- Fix enter key submit on ListTag filter input (bsc#1048762)
+
+-------------------------------------------------------------------
+Tue Aug 08 11:33:33 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.1.10-1
+- Fix overlapping of elem. (bsc#1031143)
+- Fix formulas action buttons position (bsc#1047513)
+- Do not show old messages (bsc#1043831)
+- Add a dynamic counter of the remaining textarea length
+- Confirm if navigating away while bootstrapping
+
 -------------------------------------------------------------------
 Mon Jun 12 09:06:15 CEST 2017 - mc@suse.de
 

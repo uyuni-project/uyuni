@@ -264,4 +264,18 @@ public class SparkApplicationHelper {
         response.type("application/json");
         return GSON.toJson(result);
     }
+
+    /**
+     * Serialize the result and set the response content type to JSON
+     * and the http status code to the given value.
+     * @param response the http response
+     * @param httpStatusCode the http status code of the response
+     * @param result the object to serialize to JSON
+     * @return a JSON string
+     */
+    public static String json(Response response, int httpStatusCode, Object result) {
+        response.type("application/json");
+        response.status(httpStatusCode);
+        return GSON.toJson(result);
+    }
 }

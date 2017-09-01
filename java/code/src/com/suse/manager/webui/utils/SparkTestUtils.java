@@ -15,12 +15,14 @@
 
 package com.suse.manager.webui.utils;
 
+import com.mockobjects.servlet.MockServletInputStream;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpSession;
 import spark.Request;
 import spark.RequestResponseFactory;
 import spark.routematch.RouteMatch;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
@@ -117,5 +119,72 @@ public class SparkTestUtils {
     public static String substituteVariables(String matchUrl, Object... vals) {
         final String format = matchUrl.replaceAll("/:[^/]+", "/%s");
         return String.format(format, vals);
+    }
+
+    /**
+     * Creates a POST mock request with given parametrized url, query parameters.
+     *
+     * @param matchUrl - the url with parameters (prefixed by a colon) in path, for example:
+     *     <code>http://localhost:8080/rhn/manager/:vhm/delete/:vhmlabel/</code>
+     * @param httpHeaders - request headers to set
+     * @param body - request body to set
+     * @param vals - values that will substitute the parameters in matchUri
+     * @return Spark Request object corresponding to given URI (after params substitution)
+     * and query parameters
+     * @throws UnsupportedEncodingException in case the character encoding of the request
+     * is not valid.
+     */
+    public static Request createMockRequestWithBody(String matchUrl,
+                                                    Map<String, String> httpHeaders,
+                                                    String body, Object... vals)
+            throws UnsupportedEncodingException {
+        return createMockRequestWithBody("POST", matchUrl, httpHeaders, body, vals);
+    }
+
+    /**
+     * Creates a DELETE mock request with given parametrized url, query parameters.
+     *
+     * @param matchUrl - the url with parameters (prefixed by a colon) in path, for example:
+     *     <code>http://localhost:8080/rhn/manager/:vhm/delete/:vhmlabel/</code>
+     * @param httpHeaders - request headers to set
+     * @param body - request body to set
+     * @param vals - values that will substitute the parameters in matchUri
+     * @return Spark Request object corresponding to given URI (after params substitution)
+     * and query parameters
+     * @throws UnsupportedEncodingException in case the character encoding of the request
+     * is not valid.
+     */
+    public static Request createDeleteMockRequestWithBody(String matchUrl,
+                                                    Map<String, String> httpHeaders,
+                                                    String body, Object... vals)
+            throws UnsupportedEncodingException {
+        return createMockRequestWithBody("DELETE", matchUrl, httpHeaders, body, vals);
+    }
+
+    private static Request createMockRequestWithBody(String method, String matchUrl,
+                                                          Map<String, String> httpHeaders,
+                                                          String body, Object... vals)
+            throws UnsupportedEncodingException {
+        final String requestUrl = substituteVariables(matchUrl, vals);
+        final RouteMatch match = new RouteMatch(new Object(), matchUrl, requestUrl, "");
+
+        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
+        mockRequest.setSession(new RhnMockHttpSession());
+        mockRequest.setRequestURL(requestUrl);
+        mockRequest.setupGetMethod(method);
+        mockRequest.setMethod(method);
+        // we need to set the query params twice as mockobjects request uses two separate
+        // backing objects
+        MockServletInputStream in = new MockServletInputStream();
+        in.setupRead(body.getBytes(
+                mockRequest.getCharacterEncoding() != null ?
+                        mockRequest.getCharacterEncoding() : "UTF-8"));
+        mockRequest.setupGetInputStream(in);
+        mockRequest.setupPathInfo(URI.create(requestUrl).getPath());
+
+        httpHeaders.forEach(
+                (name, val) -> mockRequest.setupGetHeader(name, val));
+
+        return RequestResponseFactory.create(match, mockRequest);
     }
 }

@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Type;
 
 import java.util.Date;
 import java.util.Optional;
@@ -61,8 +62,10 @@ public class ImageOverview extends BaseDomainHelper {
     private ImageProfile profile;
     private ImageStore store;
     private MinionServer buildServer;
+    private Integer currRevisionNum;
     private Action buildAction;
     private Action inspectAction;
+    private boolean externalImage;
     private Set<ImageInfoCustomDataValue> customDataValues;
     private Set<Channel> channels;
     private Set<InstalledProduct> installedProducts;
@@ -147,6 +150,14 @@ public class ImageOverview extends BaseDomainHelper {
     }
 
     /**
+     * @return the current revision number
+     */
+    @Column(name = "curr_revision_num")
+    public Integer getCurrRevisionNum() {
+        return currRevisionNum;
+    }
+
+    /**
      * @return the build action
      */
     @ManyToOne
@@ -164,6 +175,15 @@ public class ImageOverview extends BaseDomainHelper {
             updatable = false)
     public Action getInspectAction() {
         return inspectAction;
+    }
+
+    /**
+     * @return true if the image has been built outside SUSE Manager
+     */
+    @Column(name = "external_image")
+    @Type(type = "yes_no")
+    public boolean isExternalImage() {
+        return externalImage;
     }
 
     /**
@@ -362,6 +382,13 @@ public class ImageOverview extends BaseDomainHelper {
     }
 
     /**
+     * @param currRevisionNumIn the current revision number
+     */
+    public void setCurrRevisionNum(Integer currRevisionNumIn) {
+        this.currRevisionNum = currRevisionNumIn;
+    }
+
+    /**
      * @param actionIn the build action
      */
     public void setBuildAction(Action actionIn) {
@@ -373,6 +400,13 @@ public class ImageOverview extends BaseDomainHelper {
      */
     public void setInspectAction(Action actionIn) {
         this.inspectAction = actionIn;
+    }
+
+    /**
+     * @param externalImageIn the external image boolean
+     */
+    public void setExternalImage(boolean externalImageIn) {
+        this.externalImage = externalImageIn;
     }
 
     /**

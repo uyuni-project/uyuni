@@ -2,7 +2,7 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {AsyncButton, LinkButton, Button} = require("../components/buttons");
+const {AsyncButton, LinkButton} = require("../components/buttons");
 const Panel = require("../components/panel").Panel;
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
@@ -11,6 +11,8 @@ const {Table, Column, SearchField} = require("../components/table");
 const Messages = require("../components/messages").Messages;
 const DeleteDialog = require("../components/dialogs").DeleteDialog;
 const ModalButton = require("../components/dialogs").ModalButton;
+
+/* global isAdmin */
 
 const msgMap = {
   "not_found": t("Image store cannot be found."),
@@ -21,9 +23,9 @@ const msgMap = {
 class ImageStores extends React.Component {
 
   constructor(props) {
-    super();
+    super(props);
     ["reloadData", "handleSelectItems", "selectStore", "deleteStores"]
-        .forEach(method => this[method] = this[method].bind(this));
+      .forEach(method => this[method] = this[method].bind(this));
     this.state = {
       messages: [],
       imagestores: [],
@@ -42,47 +44,47 @@ class ImageStores extends React.Component {
 
   reloadData() {
     Network.get("/rhn/manager/api/cm/imagestores").promise.then(data => {
-        this.setState({
-            imagestores: data
-        });
+      this.setState({
+        imagestores: data
+      });
     });
     this.clearMessages();
   }
 
   clearMessages() {
     this.setState({
-        messages: undefined
+      messages: undefined
     });
   }
 
   handleSelectItems(items) {
     this.setState({
-        selectedItems: items
+      selectedItems: items
     });
   }
 
   selectStore(row) {
     this.setState({
-        selected: row
+      selected: row
     });
   }
 
   deleteStores(idList) {
     return Network.post("/rhn/manager/api/cm/imagestores/delete",
-            JSON.stringify(idList), "application/json").promise.then(data => {
-        if (data.success) {
-            this.setState({
-                messages: <Messages items={[{severity: "success", text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]}]}/>,
-                imagestores: this.state.imagestores.filter(store => !idList.includes(store.id)),
-                selectedItems: this.state.selectedItems.filter(item => !idList.includes(item))
-            });
-        } else {
-            this.setState({
-                messages: <Messages items={state.messages.map(msg => {
-                    return {severity: "error", text: msgMap[msg]};
-                })}/>
-            });
-        }
+      JSON.stringify(idList), "application/json").promise.then(data => {
+      if (data.success) {
+        this.setState({
+          messages: <Messages items={[{severity: "success", text: msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]}]}/>,
+          imagestores: this.state.imagestores.filter(store => !idList.includes(store.id)),
+          selectedItems: this.state.selectedItems.filter(item => !idList.includes(item))
+        });
+      } else {
+        this.setState({
+          messages: <Messages items={data.messages.map(msg => {
+            return {severity: "error", text: msgMap[msg]};
+          })}/>
+        });
+      }
     }).promise;
   }
 
@@ -94,7 +96,7 @@ class ImageStores extends React.Component {
     const panelButtons = <div className="pull-right btn-group">
       { isAdmin && this.state.selectedItems.length > 0 &&
           <ModalButton id="delete-selected" icon="fa-trash" className="btn-default" text={t("Delete")}
-              title={t("Delete selected")} target="delete-selected-modal"/>
+            title={t("Delete selected")} target="delete-selected-modal"/>
       }
       <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
       { isAdmin &&
@@ -107,29 +109,29 @@ class ImageStores extends React.Component {
         <Panel title="Image Stores" icon="fa-list" button={ panelButtons }>
           {this.state.messages}
           <Table
-              data={this.state.imagestores}
-              identifier={imagestore => imagestore.id}
-              initialSortColumnKey="id"
-              initialItemsPerPage={userPrefPageSize}
-              searchField={
-                  <SearchField filter={this.searchData} criteria={""} />
-              }
-              selectable
-              selectedItems={this.state.selectedItems}
-              onSelect={this.handleSelectItems}>
+            data={this.state.imagestores}
+            identifier={imagestore => imagestore.id}
+            initialSortColumnKey="id"
+            initialItemsPerPage={userPrefPageSize}
+            searchField={
+              <SearchField filter={this.searchData} criteria={""} />
+            }
+            selectable
+            selectedItems={this.state.selectedItems}
+            onSelect={this.handleSelectItems}>
             <Column
               columnKey="label"
               width="50%"
               comparator={Utils.sortByText}
               header={t('Label')}
-              cell={ (row, criteria) => row.label }
+              cell={ (row) => row.label }
             />
             <Column
               columnKey="type"
               width="35%"
               comparator={Utils.sortByText}
               header={t('Type')}
-              cell={ (row, criteria) => row.type }
+              cell={ (row) => row.type }
             />
             { isAdmin &&
               <Column
@@ -137,22 +139,22 @@ class ImageStores extends React.Component {
                 columnClass="text-right"
                 headerClass="text-right"
                 header={t('Actions')}
-                cell={ (row, criteria) => {
+                cell={ (row) => {
                   return <div className="btn-group">
-                      <LinkButton
-                        className="btn-default btn-sm"
-                        title={t("Edit")}
-                        icon="fa-edit"
-                        href = {"/rhn/manager/cm/imagestores/edit/" + row.id}
-                      />
-                      <ModalButton
-                          className="btn-default btn-sm"
-                          title={t("Delete")}
-                          icon="fa-trash"
-                          target="delete-modal"
-                          item={row}
-                          onClick={this.selectStore}
-                      />
+                    <LinkButton
+                      className="btn-default btn-sm"
+                      title={t("Edit")}
+                      icon="fa-edit"
+                      href = {"/rhn/manager/cm/imagestores/edit/" + row.id}
+                    />
+                    <ModalButton
+                      className="btn-default btn-sm"
+                      title={t("Delete")}
+                      icon="fa-trash"
+                      target="delete-modal"
+                      item={row}
+                      onClick={this.selectStore}
+                    />
                   </div>;
                 }}
               />
@@ -170,7 +172,7 @@ class ImageStores extends React.Component {
           title={t("Delete Selected Store(s)")}
           content={
             <span>
-                {this.state.selectedItems.length == 1 ? t("Are you sure you want to delete the selected store?") : t("Are you sure you want to delete selected stores? ({0} stores selected)", this.state.selectedItems.length)}
+              {this.state.selectedItems.length == 1 ? t("Are you sure you want to delete the selected store?") : t("Are you sure you want to delete selected stores? ({0} stores selected)", this.state.selectedItems.length)}
             </span>
           }
           onConfirm={() => this.deleteStores(this.state.selectedItems)}

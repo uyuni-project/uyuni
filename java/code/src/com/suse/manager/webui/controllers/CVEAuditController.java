@@ -44,7 +44,7 @@ import java.util.stream.Stream;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 /**
- * Spark controller class for image building and listing.
+ * Spark controller class the CVE Audit page.
  */
 public class CVEAuditController {
 
@@ -123,17 +123,17 @@ public class CVEAuditController {
                     cveAuditServers.forEach(serv -> {
                             serv.setSelected(systemSet.contains(serv.getId()));
                     });
-                    return json(res, new JsonResult<>(true, cveAuditServers));
+                    return json(res, JsonResult.success(cveAuditServers));
                 case IMAGE:
                     List<CVEAuditImage> cveAuditImages = CVEAuditManager
                     .listImagesByPatchStatus(user, cveAuditRequest.cveIdentifier,
                             cveAuditRequest.statuses);
-                    return json(res, new JsonResult<>(true, cveAuditImages));
+                    return json(res, JsonResult.success(cveAuditImages));
                     default: throw new RuntimeException("unreachable");
             }
         }
         catch (UnknownCVEIdentifierException e) {
-            return json(res, new JsonResult(false, "The specified CVE number was not" +
+            return json(res, JsonResult.error("The specified CVE number was not" +
                     " found. This can happen for very old or yet-unknown numbers, please" +
                     " also check it for possible typing errors."));
         }

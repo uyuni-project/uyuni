@@ -35,6 +35,40 @@ ModalButton.propTypes = {
 };
 
 /**
+ * Link to launch a modal dialog
+ */
+function ModalLink(props) {
+    const margin = props.text != undefined ? "" : " no-margin"
+    var icon = props.icon && <i className={'fa ' + props.icon + margin}/>;
+    return (
+        <a
+            id={props.id}
+            href="#"
+            title={props.title}
+            className={props.className}
+            onClick={ () => {
+                if(props.onClick) props.onClick(props.item);
+                $('#' + props.target).modal('show');
+            }}
+        >
+            {icon}
+            {props.text}
+        </a>
+    );
+}
+
+ModalLink.propTypes = {
+    target: React.PropTypes.string.isRequired,
+    id: React.PropTypes.string,
+    className: React.PropTypes.string,
+    title: React.PropTypes.string,
+    text: React.PropTypes.string,
+    icon: React.PropTypes.string,
+    item: React.PropTypes.object,
+    onClick: React.PropTypes.func
+};
+
+/**
  * A pop-up dialog for delete confirmation.
  * It contains a 'Delete' and a 'Cancel' button.
  * Related data may be passed with the 'item' property.
@@ -87,5 +121,6 @@ DeleteDialog.propTypes = {
 
 module.exports = {
     ModalButton: ModalButton,
+    ModalLink: ModalLink,
     DeleteDialog: DeleteDialog
 };

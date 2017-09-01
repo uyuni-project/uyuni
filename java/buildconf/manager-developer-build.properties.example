@@ -3,3 +3,7 @@ deploy.host = d52.suse.de
 
 # Uncomment to use .class files from the build/classes directory directly to avoid calling javac
 #precompiled = true
+
+# Uncomment to get javascript sourcemaps in Reactjs pages
+#javascript.devel = true
+

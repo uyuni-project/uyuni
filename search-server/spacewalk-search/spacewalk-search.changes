@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 08 11:31:54 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.3.2-1
+- remove executable bit from service files (bsc#1051518)
+
+-------------------------------------------------------------------
 Wed May 03 16:42:51 CEST 2017 - michele.bologna@suse.com
 
 - version 2.7.3.1-1

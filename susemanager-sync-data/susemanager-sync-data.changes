@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Wed Aug 30 15:55:17 CEST 2017 - mc@suse.de
+
+- version 3.1.7-1
+-  Add Proxy subchannels for SLES 12 SP3 (bsc#1053850)
+
+-------------------------------------------------------------------
+Tue Aug 08 11:44:26 CEST 2017 - fkobzik@suse.de
+
+- version 3.1.6-1
+- Support SUSE Storage Enterprise 5 and SUSE LINUX Enterprise Server 12 - SP3
+  for SAP Applications on ppc64le (bsc#1028098)
+- Update channels.xml with OpenStack Cloud Continuous Delivery 6 (bsc#1039458)
+- Add the SLE 12 SP3-related products (bsc#1037609)
+
+-------------------------------------------------------------------
 Mon May 29 15:39:42 CEST 2017 - mc@suse.de
 
 - version 3.1.5-1

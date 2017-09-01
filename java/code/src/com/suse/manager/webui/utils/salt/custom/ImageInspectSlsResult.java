@@ -17,6 +17,7 @@ package com.suse.manager.webui.utils.salt.custom;
 import com.google.gson.annotations.SerializedName;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 /**
  * Object representation of the results of a call to state.apply
@@ -166,6 +167,8 @@ public class ImageInspectSlsResult {
     private long size;
     @SerializedName("VirtualSize")
     private long virtualSize;
+    @SerializedName("RepoDigests")
+    private List<String> repoDigests;
 
     /**
      * @return the id
@@ -235,5 +238,12 @@ public class ImageInspectSlsResult {
      */
     public long getVirtualSize() {
         return virtualSize;
+    }
+
+    /**
+     * @return the repoDigests
+     */
+    public List<String> getRepoDigests() {
+        return repoDigests;
     }
 }
