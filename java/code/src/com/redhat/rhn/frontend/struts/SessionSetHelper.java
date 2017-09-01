@@ -20,10 +20,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  * @author paji
- * @version $Rev$
  */
 public class SessionSetHelper extends BaseSetHelper {
 
