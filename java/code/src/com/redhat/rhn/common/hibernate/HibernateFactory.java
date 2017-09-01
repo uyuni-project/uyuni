@@ -634,7 +634,7 @@ public abstract class HibernateFactory {
      *
      * You might want this in order to improve performance by skipping automatic
      * flushes, which might be costly if the number of objects in the Hibernate
-     * cache is high. As of hibernate 5.1 the algorithm is quadratic in the
+     * cache is high. As of Hibernate 5.1 the algorithm is quadratic in the
      * number of objects.
      *
      * WARNING: this might result in queries returning stale data -
