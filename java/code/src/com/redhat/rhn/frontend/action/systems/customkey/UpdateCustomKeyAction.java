@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.systems.customkey;
 
+import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -61,6 +63,13 @@ public class UpdateCustomKeyAction extends RhnAction implements Listable {
 
         Long cikid = context.getParamAsLong(CIKID_PARAM);
         CustomDataKey key = OrgFactory.lookupKeyById(cikid);
+
+        if (key == null) {
+            LocalizationService ls = LocalizationService.getInstance();
+            LookupException le = new LookupException("Unable to find key by id: " + cikid);
+            le.setLocalizedTitle(ls.getMessage("lookup.customkey.title"));
+            throw le;
+        }
 
         request.setAttribute(CIKID_PARAM, cikid);
         request.setAttribute(LABEL_PARAM, key.getLabel());

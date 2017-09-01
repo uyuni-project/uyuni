@@ -1,4 +1,5 @@
 
+- fixes ise error with invalid custom key id (bsc#1048294)
 - Image runtime UI
 - Redesign VHM pages on ReactJS
 - Add VHM type Kubernetes
