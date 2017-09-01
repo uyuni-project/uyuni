@@ -183,9 +183,8 @@ Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
 end
 
 And(/^I navigate to "([^"]*)" page$/) do |page|
-  visit("https://#{$server_fullhostname/#{page}")
+  visit("https://#{$server_fullhostname}/#{page}")
 end
-
 
 When(/^I wait until i see "([^"]*)" text, refreshing the page$/) do |text|
   begin
