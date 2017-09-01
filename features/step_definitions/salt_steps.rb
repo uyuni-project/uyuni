@@ -251,8 +251,6 @@ When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install -y #{package}-formula")
 end
 
-
-
 When(/^I check the "([^"]*)" formula$/) do |formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']"
