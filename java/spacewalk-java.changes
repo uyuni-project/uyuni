@@ -3,6 +3,7 @@
 - Redesign VHM pages on ReactJS
 - Add VHM type Kubernetes
 - Kubernetes runner and image matching implementation
+- Add back "Add Selected to SSM" buttons to Group pages (bsc#1047702)
 
 -------------------------------------------------------------------
 Wed Aug 30 16:00:28 CEST 2017 - mc@suse.de
