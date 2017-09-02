@@ -37,7 +37,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.2
+Version: 2.8.3
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -70,7 +70,7 @@ BuildRequires: rhn-client-tools
 BuildRequires: rpm-python
 #BuildRequires: python-crypto
 BuildRequires: python-debian
-BuildRequires: python-gzipstream
+BuildRequires: python2-gzipstream
 BuildRequires: yum
 BuildRequires: %{m2crypto}
 %endif
@@ -316,7 +316,7 @@ Requires: %{name}-app = %{version}-%{release}
 Requires: %{name}
 Requires: spacewalk-certs-tools
 Requires: spacewalk-admin >= 0.1.1-0
-Requires: python-gzipstream
+Requires: python2-gzipstream
 Requires: python-dateutil
 %if 0%{?suse_version}
 Requires: susemanager-tools
@@ -890,6 +890,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Tue Aug 29 2017 Jan Dobes 2.8.3-1
+- it's now python2-gzipstream
+
 * Mon Aug 21 2017 Jan Dobes 2.8.2-1
 - 1464540 - get relative path better
 
