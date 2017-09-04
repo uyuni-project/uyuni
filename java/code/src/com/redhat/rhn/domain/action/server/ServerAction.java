@@ -26,9 +26,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * ServerActionDetails - Class representation of the table rhnServerAction.
- *
- * @version $Rev$
+ * Class representation of the table rhnServerAction.
  */
 public class ServerAction extends ActionChild implements Serializable {
 
@@ -160,6 +158,7 @@ public class ServerAction extends ActionChild implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object otherObject) {
         if (otherObject == null || !(otherObject instanceof ServerAction)) {
             return false;
@@ -190,6 +189,7 @@ public class ServerAction extends ActionChild implements Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         // HACK: if object is fully populated, only look at IDs to avoid costly
         // hash operations
@@ -208,7 +208,6 @@ public class ServerAction extends ActionChild implements Serializable {
             .append(thisServer)
             .toHashCode();
     }
-
 
     /**
      * get the server ID
