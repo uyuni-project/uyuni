@@ -24,6 +24,7 @@ import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -973,6 +974,19 @@ public class SaltService {
         RunnerCall<MgrUtilRunner.ExecResult> call =
                 MgrUtilRunner.chainSSHCommand(
                         hosts, clientKey, proxyKey, user, options, command, outputfile);
+        return callSync(call);
+    }
+
+    /**
+     * Get information about all containers running in a Kubernetes cluster.
+     * @param kubeconfig path to the kubeconfig file
+     * @param context kubeconfig context to use
+     * @return a list of containers
+     */
+    public MgrK8sRunner.ContainersList getAllContainers(String kubeconfig,
+                                                        String context) {
+        RunnerCall<MgrK8sRunner.ContainersList> call =
+                MgrK8sRunner.getAllContainers(kubeconfig, context);
         return callSync(call);
     }
 

@@ -15,31 +15,45 @@
 
 package com.redhat.rhn.domain.server.virtualhostmanager;
 
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
-
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
-
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
  * Singleton representing Virtual Host Manager hibernate factory.
  */
 public class VirtualHostManagerFactory extends HibernateFactory {
+
+    public static final String KUBECONFIG_PATH_BASE = "/srv/susemanager/virt_host_mgr";
+    public static final String KUBERNETES = "Kubernetes";
 
     private static VirtualHostManagerFactory instance;
     private static Logger log;
@@ -48,7 +62,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * Name of parameter specifying username in Virtual Host Manager Config
      */
     public static final String CONFIG_USER = "username";
-    private static final String CONFIG_PASS = "password";
+    public static final String CONFIG_PASS = "password";
+    public static final String CONFIG_KUBECONFIG = "kubeconfig";
+
     private static final List<String> CONFIGS_TO_SKIP = Arrays.asList(
             new String[] {CONFIG_USER, CONFIG_PASS, "id", "module"});
 
@@ -96,6 +112,16 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up VirtualHostManager by id
+     * @param id the id
+     * @return VirtualHostManager object with given label or null if such object doesn't
+     * exist
+     */
+    public Optional<VirtualHostManager> lookupById(Long id) {
+        return Optional.ofNullable(getSession().get(VirtualHostManager.class, id));
+    }
+
+    /**
      * Looks up VirtualHostManager by id and Org
      * @param id the id
      * @param org the organization
@@ -108,6 +134,24 @@ public class VirtualHostManagerFactory extends HibernateFactory {
                 .add(Restrictions.eq("org", org))
                 .add(Restrictions.eq("id", id))
                 .uniqueResult();
+    }
+
+    /**
+     * Lookup multiple virtual host managers by an id list and organization
+     * @param ids virtual host manager id list
+     * @param org the organization
+     * @return Returns a list of virtual host managers with the given ids if it exists
+     * inside the organization
+     */
+    public List<VirtualHostManager> lookupByIdsAndOrg(List<Long> ids, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<VirtualHostManager> criteria =
+                builder.createQuery(VirtualHostManager.class);
+        Root<VirtualHostManager> root = criteria.from(VirtualHostManager.class);
+        criteria.where(builder.and(
+                root.get("id").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
     }
 
     /**
@@ -156,7 +200,22 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     public void delete(VirtualHostManager virtualHostManager) {
         getLogger().debug("Deleting VirtualHostManager " + virtualHostManager);
+        if (KUBERNETES.equalsIgnoreCase(virtualHostManager.getGathererModule())) {
+            cleanupOnDeleteKuberentes(virtualHostManager);
+        }
         removeObject(virtualHostManager);
+    }
+
+    private void cleanupOnDeleteKuberentes(VirtualHostManager virtualHostManager) {
+        // remove kubeconfig file
+        String kubeconfig = kubeconfigPath(virtualHostManager.getId(),
+                virtualHostManager.getOrg());
+        try {
+            Files.delete(Paths.get(kubeconfig));
+        }
+        catch (IOException e) {
+            log.error("Could not remove Kubernetes config file: " + kubeconfig);
+        }
     }
 
     /**
@@ -186,6 +245,113 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     }
 
     /**
+     * Creates a new VirtualHostManager entity from given arguments
+     * @param virtualHostManager - entity to update
+     * @param label - nonempty label
+     * @param parameters - non-null map with additional gatherer parameters
+     */
+    public void updateVirtualHostManager(
+            VirtualHostManager virtualHostManager,
+            String label,
+            Map<String, String> parameters) {
+        getLogger().debug("Update VirtualHostManager with id '" +
+                virtualHostManager.getId() + "'.");
+
+        virtualHostManager.setLabel(label);
+        if (StringUtils.isNotBlank(parameters.get(CONFIG_PASS))) {
+            virtualHostManager.getCredentials().setPassword(parameters.get(CONFIG_PASS));
+        }
+        if (StringUtils.isNotBlank(parameters.get(CONFIG_USER))) {
+            virtualHostManager.getCredentials().setUsername(parameters.get(CONFIG_USER));
+        }
+        virtualHostManager.getConfigs().forEach(cfg -> removeObject(cfg));
+        virtualHostManager.getConfigs().clear();
+        virtualHostManager.getConfigs().addAll(
+                createVirtualHostManagerConfigs(virtualHostManager, parameters));
+        save(virtualHostManager);
+    }
+
+    /**
+     * Creates a Kubernetes Virtual Host Manager.
+     * @param label the label
+     * @param org the organization
+     * @param context the selected context from the kubeconfig file
+     * @param kubeconfigIn the kubeconfig file
+     * @return the new Virtual Host Manager
+     * @throws IOException in case of IO errors
+     */
+    public VirtualHostManager createKuberntesVirtualHostManager(
+            String label,
+            Org org,
+            String context,
+            InputStream kubeconfigIn) throws IOException {
+        // ensure we have the base directory
+        Path kubeconfigDir = Paths.get(KUBECONFIG_PATH_BASE);
+        if (!Files.isDirectory(kubeconfigDir)) {
+            Files.createDirectory(kubeconfigDir);
+        }
+
+        Map<String, String> params = new HashMap<>();
+        params.put("context", context);
+
+        VirtualHostManager vhm = createVirtualHostManager(
+                label,
+                org,
+                KUBERNETES,
+                params
+            );
+        save(vhm);
+        String kubeconfigPath = kubeconfigPath(vhm.getId(), org);
+        try (FileOutputStream kubeconfigOut = new FileOutputStream(kubeconfigPath)) {
+            IOUtils.copy(kubeconfigIn, kubeconfigOut);
+        }
+
+        vhm.getConfigs().add(createVirtualHostManagerConfig(
+                vhm,
+                CONFIG_KUBECONFIG,
+                kubeconfigPath));
+
+        return vhm;
+    }
+
+    /**
+     * Updates the given Virtual Host Manager.
+     * @param vhm the Virtual Host Manager to update
+     * @param label the label
+     * @param context the context
+     * @param kubeconfigInOpt the kubeconfig file
+     * @throws IOException in case of IO errors
+     */
+    public void updateKuberntesVirtualHostManager(
+            VirtualHostManager vhm,
+            String label,
+            String context,
+            Optional<InputStream> kubeconfigInOpt) throws IOException {
+        // ensure we have the base directory
+        Path kubeconfigDir = Paths.get(KUBECONFIG_PATH_BASE);
+        if (!Files.isDirectory(kubeconfigDir)) {
+            Files.createDirectory(kubeconfigDir);
+        }
+
+        String kubeconfigPath = kubeconfigPath(vhm.getId(), vhm.getOrg());
+        if (kubeconfigInOpt.isPresent()) {
+            try (FileOutputStream kubeconfigOut = new FileOutputStream(kubeconfigPath)) {
+                IOUtils.copy(kubeconfigInOpt.get(), kubeconfigOut);
+            }
+        }
+
+        Map<String, String> params = new HashMap<>();
+        params.put("context", context);
+        params.put("kubeconfig", kubeconfigPath);
+
+        updateVirtualHostManager(vhm, label, params);
+    }
+
+    private String kubeconfigPath(long vhmId, Org org) {
+        return KUBECONFIG_PATH_BASE + "/" + org.getId() + "_" + vhmId + "_kubeconfig";
+    }
+
+    /**
      * Saves a Virtual Host Manager.
      *
      * @param virtualHostManager the Virtual Host Manager
@@ -200,18 +366,41 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      *  - existence of required parameters for given gatherer module
      * @param moduleName - gatherer module name
      * @param parameters - non-null map with gatherer parameters
+     * @param ignoreParams - params to ignore
      * @return false if the module name or configuration is not valid
      */
-    public boolean isConfigurationValid(String moduleName, Map<String, String> parameters) {
+    public boolean isConfigurationValid(String moduleName, Map<String, String> parameters,
+                                        String... ignoreParams) {
         Map<String, GathererModule> modules = new GathererRunner().listModules();
-        if (!modules.containsKey(moduleName)) {
+        return isConfigurationValid(moduleName, parameters, modules, ignoreParams);
+    }
+
+    /**
+     * Validate gatherer module configuration. Check for:
+     *  - existence of given gatherer module
+     *  - existence of required parameters for given gatherer module
+     * @param moduleName - gatherer module name
+     * @param parameters - non-null map with gatherer parameters
+     * @param ignoreParams - params to ignore
+     * @param modules - map containing {@link GathererModule}
+     * @return false if the module name or configuration is not valid
+     */
+    public boolean isConfigurationValid(String moduleName, Map<String, String> parameters,
+                                        Map<String, GathererModule> modules,
+                                        String... ignoreParams) {
+        Optional<GathererModule> details = modules.entrySet().stream()
+                .filter(entry -> moduleName.equalsIgnoreCase(entry.getKey()))
+                .map(entry -> entry.getValue())
+                .findFirst();
+        if (!details.isPresent()) {
             return false;
         }
 
-        GathererModule details = modules.get(moduleName);
-        Set<String> parameterNames = details.getParameters().keySet();
-
-        return parameterNames.stream().allMatch(n -> isNotEmpty(parameters.get(n)));
+        Set<String> parameterNames = details.get().getParameters().keySet();
+        List<String> ignoredParams = Arrays.asList(ignoreParams);
+        return parameterNames.stream()
+                .filter(name -> !ignoredParams.contains(name))
+                .allMatch(n -> isNotEmpty(parameters.get(n)));
     }
 
     /**
@@ -269,7 +458,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     private Credentials createCredentialsFromParams(Map<String, String> params) {
         String username = params.get(CONFIG_USER);
-        if (username == null) {
+        if (StringUtils.isBlank(username)) {
             return null;
         }
 
@@ -280,4 +469,19 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
         return credentials;
     }
+
+    /**
+     * @param identifier node identifier
+     * @return the node with the given identifier or null
+     */
+    public Optional<VirtualHostManagerNodeInfo> lookupNodeInfoByIdentifier(
+            String identifier) {
+        VirtualHostManagerNodeInfo result = (VirtualHostManagerNodeInfo) getSession()
+                .createCriteria(VirtualHostManagerNodeInfo.class)
+                .add(Restrictions.eq("identifier", identifier))
+                .uniqueResult();
+
+        return Optional.ofNullable(result);
+    }
+
 }
