@@ -1,3 +1,4 @@
+- fixes ise error with invalid custom key id (bsc#1048294)
 - Add back "Add Selected to SSM" buttons to Group pages (bsc#1047702)
 
 -------------------------------------------------------------------
