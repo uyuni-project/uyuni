@@ -1,3 +1,5 @@
+- Trim spaces around the target expression in the Salt remote
+  command page (bsc#1056678)
 - fixes ise error with invalid custom key id (bsc#1048294)
 - fix a ConstraintViolationException when refreshing hardware with
   changed network interfaces or IP addresses

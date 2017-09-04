@@ -127,13 +127,15 @@ public class RemoteMinionCommands {
 
                 this.failAfter = SaltService.INSTANCE.failAfter(timeOut);
 
+                String target = StringUtils.trim(msg.getTarget());
+
                 Optional<CompletionStage<Map<String, Result<Boolean>>>> resSSH =
-                        SaltService.INSTANCE.matchAsyncSSH(msg.getTarget(), failAfter);
+                        SaltService.INSTANCE.matchAsyncSSH(target, failAfter);
 
                 Map<String, CompletionStage<Result<Boolean>>> res = new HashMap<>();
                 try {
                     res = SaltService.INSTANCE
-                            .matchAsync(msg.getTarget(), failAfter);
+                            .matchAsync(target, failAfter);
                 }
                 catch (NullPointerException e) {
                     if (!resSSH.isPresent()) {
