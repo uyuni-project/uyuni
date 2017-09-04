@@ -164,8 +164,9 @@ public class ServerAction extends ActionChild implements Serializable {
             return false;
         }
         ServerAction castOther = (ServerAction) other;
-        return new EqualsBuilder().append(getParentAction(), castOther.getParentAction())
-                                  .append(server, castOther.getServer()).isEquals();
+        return new EqualsBuilder()
+            .append(getParentAction().getId(), castOther.getParentAction().getId())
+            .append(server, castOther.getServer()).isEquals();
     }
 
     /**
