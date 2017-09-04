@@ -111,11 +111,11 @@ public class ImageInfoFactory extends HibernateFactory {
                 Collections.singletonList(server.getId()), version, profile, earliest);
         taskomaticApi.scheduleActionExecution(action);
 
-        // Create image info entry
-        lookupByName(profile.getLabel(), version, profile.getTargetStore().getId())
-                .ifPresent(ImageInfoFactory::delete);
+        // Load or create an image info entry
+        ImageInfo info =
+                lookupByName(profile.getLabel(), version, profile.getTargetStore().getId())
+                .orElseGet(ImageInfo::new);
 
-        ImageInfo info = new ImageInfo();
         info.setName(profile.getLabel());
         info.setVersion(version);
         info.setStore(profile.getTargetStore());
@@ -433,5 +433,16 @@ public class ImageInfoFactory extends HibernateFactory {
         default:
             throw new IllegalArgumentException("Checksumtype not supported");
         }
+    }
+
+    /**
+     * @return the image build history
+     */
+    public static List<ImageBuildHistory> listBuildHistory() {
+        CriteriaQuery<ImageBuildHistory> criteria = getSession()
+                .getCriteriaBuilder()
+                .createQuery(ImageBuildHistory.class);
+        criteria.from(ImageBuildHistory.class);
+        return getSession().createQuery(criteria).getResultList();
     }
 }

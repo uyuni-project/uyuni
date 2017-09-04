@@ -31,6 +31,7 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -483,7 +484,17 @@ public class TestUtils {
      * @return String that is 13 chars long and alphanumeric
      */
     public static String randomString() {
-        return RandomStringUtils.randomAlphanumeric(13);
+        return randomString(13);
+    }
+
+    /**
+     * Return a random letter string.  Useful for creating unique
+     * string labels/names in your tests.
+     * @param length of the string
+     * @return A random alphanumeric string of the specified length
+     */
+    public static String randomString(int length) {
+        return RandomStringUtils.randomAlphanumeric(length);
     }
 
     /**
@@ -579,6 +590,23 @@ public class TestUtils {
             return false;
         }
         return o1.hashCode() == o2.hashCode();
+    }
+
+    /**
+     * Read a file relative to the given object package.
+     * @param object the object
+     * @param file path of the file to read
+     * @return the content of the file as string.
+     * @throws IOException in case of IO error
+     * @throws ClassNotFoundException in case of classpath problems
+     */
+    public static String readRelativeFile(Object object,
+                                          String file)
+            throws IOException, ClassNotFoundException {
+        return FileUtils.readFileToString(new File(TestUtils.findTestDataInDir(
+                "/" + object.getClass().getPackage().getName()
+                        .replaceAll("\\.", "/") + "/" + file).getPath()
+        ));
     }
 }
 

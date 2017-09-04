@@ -23,9 +23,5 @@ CREATE TABLE suseVHMConfig
 ENABLE ROW MOVEMENT
 ;
 
-CREATE UNIQUE INDEX suse_vhmc_id_para_uq
-ON suseVHMConfig (virtual_host_manager_id, parameter)
-TABLESPACE [[64k_tbs]];
-
 CREATE SEQUENCE suse_vhm_config_id_seq;
 

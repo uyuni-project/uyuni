@@ -3,12 +3,13 @@
 const Functions = require("../utils/functions.js");
 const MessagesUtils = require("../components/messages.js").Utils;
 
-function request(url, type, headers, data, contentType) {
+function request(url, type, headers, data, contentType, processData = true) {
    const a = $.ajax({
          url: url,
          data: data,
          type: type,
          contentType: contentType,
+         processData: processData,
          beforeSend: (xhr) => {
             if(headers !== undefined) {
                 Object.keys(headers).forEach(header => {
@@ -20,16 +21,16 @@ function request(url, type, headers, data, contentType) {
    return Functions.Utils.cancelable(Promise.resolve(a), () => a.abort());
 }
 
-function post(url, data, contentType) {
-    return request(url, "POST", { "X-CSRF-Token": csrfToken }, data, contentType);
+function post(url, data, contentType, processData = true) {
+    return request(url, "POST", { "X-CSRF-Token": csrfToken }, data, contentType, processData);
 }
 
-function del(url, data, contentType) {
-    return request(url, "DELETE", { "X-CSRF-Token": csrfToken }, data, contentType);
+function del(url, data, contentType, processData = true) {
+    return request(url, "DELETE", { "X-CSRF-Token": csrfToken }, data, contentType, processData);
 }
 
-function put(url, data, contentType) {
-    return request(url, "PUT", { "X-CSRF-Token": csrfToken }, data, contentType);
+function put(url, data, contentType, processData = true) {
+    return request(url, "PUT", { "X-CSRF-Token": csrfToken }, data, contentType, processData);
 }
 
 function get(url, contentType) {

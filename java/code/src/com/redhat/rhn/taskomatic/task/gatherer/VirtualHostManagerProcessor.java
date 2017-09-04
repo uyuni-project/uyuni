@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -46,6 +48,7 @@ public class VirtualHostManagerProcessor {
     private final VirtualHostManager virtualHostManager;
     private final Map<String, JSONHost> virtualHosts;
     private Set<Server> serversToDelete;
+    private Set<VirtualHostManagerNodeInfo> nodesToDelete;
     private Logger log;
 
     /**
@@ -61,6 +64,7 @@ public class VirtualHostManagerProcessor {
         this.virtualHostManager = managerIn;
         this.virtualHosts = virtualHostsIn;
         this.serversToDelete = new HashSet<>();
+        this.nodesToDelete = new HashSet<>();
     }
 
     /**
@@ -78,6 +82,7 @@ public class VirtualHostManagerProcessor {
             return;
         }
         serversToDelete.addAll(virtualHostManager.getServers());
+        nodesToDelete.addAll(virtualHostManager.getNodes());
         virtualHosts.entrySet().forEach(
                 virtualHost -> {
                     log.debug("Processing host: " + virtualHost.getKey());
@@ -87,19 +92,37 @@ public class VirtualHostManagerProcessor {
             log.debug("Removing link to virtual host: " + srv.getName());
             virtualHostManager.removeServer(srv);
         });
+        nodesToDelete.forEach(node -> {
+            log.debug("Removing virtual host node: " + node.getName());
+            virtualHostManager.removeNode(node);
+        });
     }
 
     /**
      * Processes Virtual Host:
      * - if there is no Server entry for given hostLabel, create a new Server
-     * - update mapping between this new Server and its VirtualInstance
+     * - if no server was created (e.f. for Kubernetes) then create a nodeInfo
+     * - for Server, update mapping between this new Server and its VirtualInstance
      * - for each VM (guest) reported to be running on this host, update the mapping
      *
      * @param hostLabel name of the Server (corresponds to label of Virtual Host Manager)
      * @param jsonHost object containing the information about the host and its VMs
      */
     private void processVirtualHost(String hostLabel, JSONHost jsonHost) {
-        Server server = updateAndGetServer(hostLabel, jsonHost);
+        Server server = updateAndGetServer(hostLabel, jsonHost,
+                VirtualHostManagerFactory.KUBERNETES);
+        if (server == null) {
+            VirtualHostManagerNodeInfo nodeInfo = updateAndGetNodeInfo(hostLabel, jsonHost);
+            if (!virtualHostManager.getNodes().contains(nodeInfo)) {
+                virtualHostManager.getNodes().add(nodeInfo);
+            }
+            else {
+                nodesToDelete.remove(nodeInfo);
+            }
+            // for Kubernetes we don't create a foreign entitled server
+            // if one doesn't already exist
+            return;
+        }
         if (!virtualHostManager.getServers().contains(server)) {
             virtualHostManager.addServer(server);
         }
@@ -111,6 +134,33 @@ public class VirtualHostManagerProcessor {
         VirtualInstanceManager.updateHostVirtualInstance(server, virtType);
         VirtualInstanceManager.updateGuestsVirtualInstances(server, virtType,
                 jsonHost.getVms());
+    }
+
+    private VirtualHostManagerNodeInfo updateAndGetNodeInfo(String hostLabel,
+                                                            JSONHost jsonHost) {
+        return VirtualHostManagerFactory.getInstance()
+                .lookupNodeInfoByIdentifier(jsonHost.getHostIdentifier())
+                .map(i -> updateNodeInfo(i, hostLabel, jsonHost))
+                .orElse(createNewNodeInfo(hostLabel, jsonHost));
+    }
+
+    private VirtualHostManagerNodeInfo updateNodeInfo(VirtualHostManagerNodeInfo info,
+            String hostLabel, JSONHost jsonHost) {
+        info.setName(hostLabel);
+        info.setNodeArch(ServerFactory.lookupServerArchByName(jsonHost.getCpuArch()));
+        info.setCpuSockets(jsonHost.getTotalCpuSockets());
+        info.setCpuCores(jsonHost.getTotalCpuCores());
+        info.setRam(jsonHost.getRamMb());
+        info.setOs(jsonHost.getOs());
+        info.setOsVersion(jsonHost.getOsVersion());
+        return info;
+    }
+
+    private VirtualHostManagerNodeInfo createNewNodeInfo(String hostLabel,
+                                                         JSONHost jsonHost) {
+        VirtualHostManagerNodeInfo info = new VirtualHostManagerNodeInfo();
+        info.setIdentifier(jsonHost.getHostIdentifier());
+        return updateNodeInfo(info, hostLabel, jsonHost);
     }
 
     /**
@@ -133,16 +183,23 @@ public class VirtualHostManagerProcessor {
 
     /**
      * Updates server with given hostId according to data in jsonHost.
-     * If such server doesn't exist, create it beforehand.
+     * If such server doesn't exist, create it beforehand unless the type
+     * of the server matches skipCreateForType.
      *
      * @param hostId - id of server to update
      * @param jsonHost - data for updating
+     * @param skipCreateForType - don't create a new server for the given host type
      * @return the updated server
      */
-    private Server updateAndGetServer(String hostId, JSONHost jsonHost) {
+    private Server updateAndGetServer(String hostId,
+                                      JSONHost jsonHost,
+                                      String skipCreateForType) {
         Server server = ServerFactory.lookupForeignSystemByDigitalServerId(
                 buildServerFullDigitalId(jsonHost.getHostIdentifier()));
         if (server == null) {
+            if (skipCreateForType.equalsIgnoreCase(jsonHost.getType())) {
+                return null;
+            }
             server = createNewServer(hostId, jsonHost);
         }
         else {
