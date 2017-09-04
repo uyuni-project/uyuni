@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.action.server;
 
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.server.Server;
@@ -159,22 +160,53 @@ public class ServerAction extends ActionChild implements Serializable {
     /**
      * {@inheritDoc}
      */
-    public boolean equals(final Object other) {
-        if (other == null || !(other instanceof ServerAction)) {
+    public boolean equals(final Object otherObject) {
+        if (otherObject == null || !(otherObject instanceof ServerAction)) {
             return false;
         }
-        ServerAction castOther = (ServerAction) other;
+        ServerAction other = (ServerAction) otherObject;
+
+        // HACK: if object are fully populated, only look at IDs to avoid costly
+        // compare hash operations
+        Action thisAction = getParentAction();
+        Action otherAction = other.getParentAction();
+        Server thisServer = getServer();
+        Server otherServer = other.getServer();
+
+        if (thisAction != null && otherAction != null && thisServer != null &&
+                otherServer != null) {
+            return new EqualsBuilder()
+                    .append(thisAction.getId(), otherAction.getId())
+                    .append(thisServer.getId(), otherServer.getId())
+                    .isEquals();
+        }
+
         return new EqualsBuilder()
-            .append(getParentAction().getId(), castOther.getParentAction().getId())
-            .append(server, castOther.getServer()).isEquals();
+                .append(thisAction, otherAction)
+                .append(thisServer, otherServer)
+                .isEquals();
     }
 
     /**
      * {@inheritDoc}
      */
     public int hashCode() {
-        return new HashCodeBuilder().append(getParentAction().getId()).append(server)
-                .toHashCode();
+        // HACK: if object is fully populated, only look at IDs to avoid costly
+        // hash operations
+        Action thisAction = getParentAction();
+        Server thisServer = getServer();
+
+        if (thisAction != null && thisServer != null) {
+            return new HashCodeBuilder()
+                    .append(thisAction.getId())
+                    .append(thisServer.getId())
+                    .toHashCode();
+        }
+
+        return new HashCodeBuilder()
+            .append(thisAction)
+            .append(thisServer)
+            .toHashCode();
     }
 
 
