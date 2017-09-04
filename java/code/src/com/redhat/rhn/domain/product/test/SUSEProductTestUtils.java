@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -179,17 +180,23 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * SLE-HA12 SP1 x86_64
      */
     public static void createVendorSUSEProducts() {
-        ChannelFamily cfsles = new ChannelFamily();
-        cfsles.setLabel("7261");
-        cfsles.setName("SUSE Linux Enterprise Server");
-        cfsles.setProductUrl("some url");
-        TestUtils.saveAndFlush(cfsles);
+        ChannelFamily cfsles = ChannelFamilyFactory.lookupByLabel("7261", null);
+        if (cfsles == null) {
+            cfsles = new ChannelFamily();
+            cfsles.setLabel("7261");
+            cfsles.setName("SUSE Linux Enterprise Server");
+            cfsles.setProductUrl("some url");
+            TestUtils.saveAndFlush(cfsles);
+        }
 
-        ChannelFamily cfha = new ChannelFamily();
-        cfha.setLabel("SLE-HAE-X86");
-        cfha.setName("SUSE Linux Enterprise High Availability Extension (x86)");
-        cfha.setProductUrl("some url");
-        TestUtils.saveAndFlush(cfha);
+        ChannelFamily cfha = ChannelFamilyFactory.lookupByLabel("SLE-HAE-X86", null);
+        if (cfha == null) {
+            cfha = new ChannelFamily();
+            cfha.setLabel("SLE-HAE-X86");
+            cfha.setName("SUSE Linux Enterprise High Availability Extension (x86)");
+            cfha.setProductUrl("some url");
+            TestUtils.saveAndFlush(cfha);
+        }
 
         SUSEProduct product = new SUSEProduct();
         product.setName("sles");
