@@ -164,13 +164,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
         if (optMinion.isPresent()) {
             MinionServer registeredMinion = optMinion.get();
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Minion already registered, updating profile: " +
-                        minionId + " [" + machineId + "]");
-            }
-
             String oldMinionId = registeredMinion.getMinionId();
             String oldName = registeredMinion.getName();
+
+            LOG.warn("Minion: " + oldMinionId + " already registered, updating profile: " +
+                    minionId + " [" + machineId + "]");
+            addHistoryEvent(registeredMinion, "Duplicate Machine ID",
+                    oldMinionId + " has been updated been updated to: " + minionId);
 
             if (!minionId.equals(oldMinionId) || !minionId.equals(oldName)) {
                 registeredMinion.setName(minionId);

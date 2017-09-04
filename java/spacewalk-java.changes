@@ -1,3 +1,4 @@
+- change log level and event history for duplicate machine id  (bsc#1041489)
 - Trim spaces around the target expression in the Salt remote
   command page (bsc#1056678)
 - check entitlement usage based on grains when onboarding a
