@@ -341,6 +341,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 ak.getToken().getEntitlements().forEach(sg -> {
                     Entitlement e = sg.getAssociatedEntitlement();
                     if (validEntits.contains(e) &&
+                        e.isAllowedOnServer(server, grains) &&
                         SystemManager.canEntitleServer(server, e)) {
                         ValidatorResult vr = SystemManager.entitleServer(server, e);
                         if (vr.getWarnings().size() > 0) {
