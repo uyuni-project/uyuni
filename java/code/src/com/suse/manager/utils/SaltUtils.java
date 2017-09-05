@@ -81,9 +81,9 @@ import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
+import com.suse.salt.netapi.results.Change;
 import com.suse.salt.netapi.results.CmdExecCodeAll;
 import com.suse.salt.netapi.results.ModuleRun;
-import com.suse.salt.netapi.results.OldNew;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
@@ -349,7 +349,7 @@ public class SaltUtils {
         try {
             DistUpgradeSlsResult distUpgradeSlsResult = Json.GSON.fromJson(
                     jsonResult, DistUpgradeSlsResult.class);
-            StateApplyResult<RetOpt<Map<String, OldNew>>> spmig =
+            StateApplyResult<RetOpt<Map<String, Change<String>>>> spmig =
                     distUpgradeSlsResult.getSpmigration();
             String message = spmig.getComment();
             if (spmig.isResult()) {
@@ -358,9 +358,9 @@ public class SaltUtils {
                         StringBuilder sb = new StringBuilder();
                         sb.append(entry.getKey());
                         sb.append(":");
-                        sb.append(entry.getValue().getOldVersion());
+                        sb.append(entry.getValue().getOldValue());
                         sb.append("->");
-                        sb.append(entry.getValue().getNewVersion());
+                        sb.append(entry.getValue().getNewValue());
                         return sb.toString();
                     }).collect(Collectors.joining(","));
                 }).orElse(spmig.getComment());
@@ -379,9 +379,9 @@ public class SaltUtils {
                                             StringBuilder sb = new StringBuilder();
                                             sb.append(entry.getKey());
                                             sb.append(":");
-                                            sb.append(entry.getValue().getOldVersion());
+                                            sb.append(entry.getValue().getOldValue());
                                             sb.append("->");
-                                            sb.append(entry.getValue().getNewVersion());
+                                            sb.append(entry.getValue().getNewValue());
                                             return sb.toString();
                                         }).collect(Collectors.joining(","));
                             }
