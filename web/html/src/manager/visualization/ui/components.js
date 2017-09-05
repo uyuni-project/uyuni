@@ -244,10 +244,28 @@ function addButton(targetSelection, caption, callback) {
     .text(caption);
 }
 
+function svgTextStyle(container) {
+  const textStyle = container
+    .append('defs')
+    .append('filter')
+    .attr('x', '0')
+    .attr('y', '0')
+    .attr('width', '1')
+    .attr('height', '1')
+    .attr('id', 'textStyle');
+  textStyle
+    .append('feFlood')
+    .attr('flood-color', '#454545');
+  textStyle
+    .append('feComposite')
+    .attr('in', 'SourceGraphic');
+}
+
 module.exports = {
   addFilter: addFilter,
   addCheckinTimePartitioningSelect: addCheckinTimePartitioningSelect,
   addCheckbox: addCheckbox,
   addGroupSelector: addGroupSelector,
-  addButton: addButton
+  addButton: addButton,
+  svgTextStyle: svgTextStyle
 }

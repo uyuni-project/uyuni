@@ -81,6 +81,7 @@ function hierarchyView(container, rootIn) {
       .attr('class', 'caption')
       .attr('dx', d => getIconDimensionByType(d)/2 + 'em' )
       .attr('dy', '.15em')
+      .attr('filter', 'url(#textStyle)')
       .text(captionFunction);
 
     const link = container.selectAll('line.link').data(links, d => d.target.id);
