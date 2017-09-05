@@ -1,5 +1,7 @@
 - fixes ise error with invalid custom key id (bsc#1048294)
 - Add back "Add Selected to SSM" buttons to Group pages (bsc#1047702)
+- fix a ConstraintViolationException when refreshing hardware with
+  changed network interfaces or IP addresses
 
 -------------------------------------------------------------------
 Mon Jun 12 09:07:20 CEST 2017 - mc@suse.de
