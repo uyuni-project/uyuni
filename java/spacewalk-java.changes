@@ -3,6 +3,8 @@
 - fixes ise error with invalid custom key id (bsc#1048294)
 - fix a ConstraintViolationException when refreshing hardware with
   changed network interfaces or IP addresses
+- check entitlement usage based on grains when onboarding a
+  minion (bsc#1043880)
 
 -------------------------------------------------------------------
 Wed Aug 30 15:55:45 CEST 2017 - fkobzik@suse.de
