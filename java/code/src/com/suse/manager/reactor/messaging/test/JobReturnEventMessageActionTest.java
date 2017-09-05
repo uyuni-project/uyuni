@@ -603,6 +603,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
         messageAction.doExecute(message);
+
+        HibernateFactory.getSession().flush();
     }
 
     public void testHardwareProfileNoNetworkIPChange()  throws Exception {

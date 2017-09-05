@@ -789,6 +789,9 @@ public class HardwareMapper {
             });
         });
 
+        // reset primary IP flag, we will re-compute it
+        server.getNetworkInterfaces().forEach(n -> n.setPrimary(null));
+
         // find the interface having primary IPv4 addr
         Optional<NetworkInterface> primaryNetIf = primaryIPv4.flatMap(pipv4 ->
                 server.getNetworkInterfaces().stream()
