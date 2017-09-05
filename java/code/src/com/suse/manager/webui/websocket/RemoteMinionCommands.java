@@ -32,6 +32,7 @@ import com.suse.manager.webui.websocket.json.SSHMinionMatchResultDto;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Json;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.websocket.OnOpen;
