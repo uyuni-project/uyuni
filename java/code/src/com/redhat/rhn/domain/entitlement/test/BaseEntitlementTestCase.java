@@ -50,6 +50,17 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
         assertTrue(foreign.getValidAddonEntitlementsForServer().size() == 0);
     }
 
+    public void testIsAllowedOnServerWithGrains() throws Exception {
+        Server traditional = ServerTestUtils.createTestSystem(user);
+        Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
+
+        traditional.setBaseEntitlement(EntitlementManager.MANAGEMENT);
+        foreign.setBaseEntitlement(EntitlementManager.FOREIGN);
+
+        assertTrue(ent.isAllowedOnServer(traditional, null));
+        assertFalse(ent.isAllowedOnServer(foreign, null));
+    }
+
     protected abstract void createEntitlement();
     protected abstract String getLabel();
 
