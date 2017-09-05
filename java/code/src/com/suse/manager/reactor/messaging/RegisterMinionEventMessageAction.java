@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -338,6 +339,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     Entitlement e = sg.getAssociatedEntitlement();
                     if (validEntits.contains(e) &&
                         SystemManager.canEntitleServer(server, e)) {
+                        if (e instanceof VirtualizationEntitlement &&
+                            !grains.getOptionalAsString("virtual")
+                                .orElse("physical").equals("physical")) {
+                            return;
+                        }
                         ValidatorResult vr = SystemManager.entitleServer(server, e);
                         if (vr.getWarnings().size() > 0) {
                             LOG.warn(vr.getWarnings().toString());
