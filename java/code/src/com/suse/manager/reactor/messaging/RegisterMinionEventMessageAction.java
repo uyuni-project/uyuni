@@ -180,49 +180,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             }
             return;
         }
-        else {
-            minionServer = ServerFactory.findByMachineId(machineId)
-                .flatMap(server -> {
-                    // change the type of the hibernate entity from Server to MinionServer
-                    SystemManager.addMinionInfoToServer(server.getId(), minionId);
-                    // need to clear the session to avoid NonUniqueObjectException
-                    ServerFactory.getSession().clear();
-                    return MinionServerFactory
-                            .lookupById(server.getId());
-                })
-                .map(minion -> {
-                    // hardware will be refreshed anyway
-                    // new secret will be generated later
 
-                    // set new contact method in case it has changed
-                    // to prevent using the old one to communicate
-                    // with the minion. (bsc#1040394)
-                    Optional<ActivationKey> activationKey = activationKeyOverride
-                            .map(ActivationKeyFactory::lookupByKey);
-                    minion.setContactMethod(
-                            getContactMethod(activationKey, isSaltSSH, minionId));
-
-                    // remove package profile
-                    minion.getPackages().clear();
-
-                    // change base channel
-                    minion.getChannels().clear();
-
-                    // clear previous capabilities
-                    minion.getCapabilities().clear();
-
-                    // add reactivation event to server history
-                    ServerHistoryEvent historyEvent = new ServerHistoryEvent();
-                    historyEvent.setCreated(new Date());
-                    historyEvent.setServer(minion);
-                    historyEvent.setSummary("Server reactivated as Salt minion");
-                    historyEvent.setDetails(
-                            "System type was changed from Management to Salt");
-                    minion.getHistory().add(historyEvent);
-
-                    return minion;
-            }).orElseGet(MinionServer::new);
+        if (duplicateMinionNamePresent(minionId)) {
+            return;
         }
+
+        minionServer = migrateTraditionalOrGetNew(minionId,
+                isSaltSSH, activationKeyOverride, machineId);
 
         try {
             MinionServer server = minionServer;
@@ -397,7 +361,88 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
+            // rethrow exception to force transaction rollback
+            throw new RuntimeException("Error registering minion " + minionId, t);
         }
+    }
+
+    /**
+     * If exists, migrate a traditional Server instance to MinionServer.
+     * Otherwise return a new MinionServer instance.
+     *
+     * @param minionId the minion id
+     * @param isSaltSSH true if salt-ssh minion
+     * @param activationKeyOverride the activation key
+     * @param machineId the machine-id
+     * @return a migrated or new MinionServer instance
+     */
+    private MinionServer migrateTraditionalOrGetNew(String minionId,
+                                                    boolean isSaltSSH,
+                                                    Optional<String> activationKeyOverride,
+                                                    String machineId) {
+        return ServerFactory.findByMachineId(machineId)
+            .flatMap(server -> {
+                // change the type of the hibernate entity from Server to MinionServer
+                SystemManager.addMinionInfoToServer(server.getId(), minionId);
+                // need to clear the session to avoid NonUniqueObjectException
+                ServerFactory.getSession().clear();
+                return MinionServerFactory
+                        .lookupById(server.getId());
+            })
+            .map(minion -> {
+                // hardware will be refreshed anyway
+                // new secret will be generated later
+
+                // set new contact method in case it has changed
+                // to prevent using the old one to communicate
+                // with the minion. (bsc#1040394)
+                Optional<ActivationKey> activationKey = activationKeyOverride
+                        .map(ActivationKeyFactory::lookupByKey);
+                minion.setContactMethod(
+                        getContactMethod(activationKey, isSaltSSH, minionId));
+
+                // remove package profile
+                minion.getPackages().clear();
+
+                // change base channel
+                minion.getChannels().clear();
+
+                // clear previous capabilities
+                minion.getCapabilities().clear();
+
+                // add reactivation event to server history
+                ServerHistoryEvent historyEvent = new ServerHistoryEvent();
+                historyEvent.setCreated(new Date());
+                historyEvent.setServer(minion);
+                historyEvent.setSummary("Server reactivated as Salt minion");
+                historyEvent.setDetails(
+                        "System type was changed from Management to Salt");
+                minion.getHistory().add(historyEvent);
+
+                return minion;
+        }).orElseGet(MinionServer::new);
+    }
+
+    /**
+     * Check if a MinionServer with the given name already exists and print
+     * an error message to the logs.
+     *
+     * @param minionId the minion id to check
+     * @return true if a MinionServer with the same id already exists
+     */
+    private boolean duplicateMinionNamePresent(String minionId) {
+        return MinionServerFactory
+                .findByMinionId(minionId)
+                .map(duplicateMinion -> {
+                    LOG.error("Can't register Salt minions with duplicate names." +
+                            " A Salt minion named " + minionId + " is already" +
+                            " registered with machine-id " + duplicateMinion.
+                            getMachineId() + ". Maybe the minion has the wrong " +
+                            "hostname or the /etc/machine-id of the minion has " +
+                            "changed.");
+                    return duplicateMinion;
+                })
+                .isPresent();
     }
 
     private void giveCapabilities(MinionServer server) {
