@@ -231,10 +231,14 @@ public class SaltUtils {
     public static void applyChanges(
             Map<String, Change<Xor<String, List<Pkg.Info>>>> changes,
             Server server) {
-        boolean oldFormat = changes.entrySet().stream().anyMatch(
-            e -> e.getValue().getNewValue().isLeft() && e.getValue().getOldValue().isLeft()
+        boolean fullRefreshNeeded = changes.entrySet().stream().anyMatch(
+            e ->
+                e.getKey().endsWith("-release") ||
+                (e.getValue().getNewValue().isLeft() &&
+                 e.getValue().getOldValue().isLeft())
+
         );
-        if (oldFormat) {
+        if (fullRefreshNeeded) {
             // In this case we either got the old style response without
             // enough package info or something went really wrong
             // in both cases its safer to just do a full refresh
