@@ -1,4 +1,5 @@
-
+- check entitlement usage based on grains when onboarding a
+  minion (bsc#1043880)
 - fixes ise error with invalid custom key id (bsc#1048294)
 - Image runtime UI
 - Redesign VHM pages on ReactJS

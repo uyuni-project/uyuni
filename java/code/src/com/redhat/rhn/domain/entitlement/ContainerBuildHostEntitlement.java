@@ -18,6 +18,8 @@ package com.redhat.rhn.domain.entitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import com.suse.manager.reactor.utils.ValueMap;
+
 /**
  * Container build host entitlement
  */
@@ -57,5 +59,12 @@ public class ContainerBuildHostEntitlement extends Entitlement {
     public boolean isAllowedOnServer(Server server) {
         return super.isAllowedOnServer(server) &&
                 server.getBaseEntitlement() instanceof SaltEntitlement;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isAllowedOnServer(Server server, ValueMap grains) {
+        return isAllowedOnServer(server);
     }
 }

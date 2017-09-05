@@ -17,6 +17,9 @@ package com.redhat.rhn.domain.entitlement;
 import com.redhat.rhn.common.localization.LocalizationService;
 
 import com.redhat.rhn.domain.server.Server;
+
+import com.suse.manager.reactor.utils.ValueMap;
+
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -99,6 +102,23 @@ public abstract class Entitlement implements Comparable {
      * @return boolean if the entitlement is compatible with the specified server.
      */
     public boolean isAllowedOnServer(Server server) {
+        if (server.getBaseEntitlement() instanceof ForeignEntitlement ||
+                server.getBaseEntitlement() instanceof BootstrapEntitlement) {
+            // no addon entitlement allowed for these
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check to see if the entitlement can be applied to a specific server.
+     *
+     * @param server to check
+     * @param grains to check
+     * @return boolean if the entitlement is compatible with the specified server.
+     */
+    public boolean isAllowedOnServer(Server server, ValueMap grains) {
         if (server.getBaseEntitlement() instanceof ForeignEntitlement ||
                 server.getBaseEntitlement() instanceof BootstrapEntitlement) {
             // no addon entitlement allowed for these
