@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.entitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import com.suse.manager.reactor.utils.ValueMap;
+
 
 /**
  * VirtualizationEntitlement
@@ -55,5 +57,13 @@ public class VirtualizationEntitlement extends Entitlement {
     @Override
     public boolean isAllowedOnServer(Server server) {
         return super.isAllowedOnServer(server) && !server.isVirtualGuest();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isAllowedOnServer(Server server, ValueMap grains) {
+        return super.isAllowedOnServer(server) &&
+                grains.getOptionalAsString("virtual").orElse("physical").equals("physical");
     }
 }
