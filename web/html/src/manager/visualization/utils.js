@@ -1,5 +1,6 @@
 'use strict';
 
+const UI = require('./ui/components.js');
 const Utils = require('./utils.js');
 
 function computeSvgDimensions() {
@@ -26,6 +27,9 @@ function prepareDom() {
     .append('svg')
     .attr('width', dimensions[0])
     .attr('height', dimensions[1]);
+
+  UI.svgTextStyle(svg);
+
   const container = svg.append('g');
 
   // Zoom handling
