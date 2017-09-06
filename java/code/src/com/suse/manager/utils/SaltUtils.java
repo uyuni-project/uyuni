@@ -122,10 +122,15 @@ import java.util.stream.Stream;
  */
 public class SaltUtils {
 
-    /* List of Salt modules that could possibly change installed packages */
-    private static final List<String> PACKAGE_CHANGING_MODULES = Arrays.asList(
-        "pkg.install", "pkg.remove", "pkg.latest", "pkg.upgrade",
-        "pkg.patch_installed"
+    /** Package-affecting Salt state module names. */
+    private static final List<String> PKG_STATE_MODULES = Arrays.asList(
+        "pkg.group_installed", "pkg.installed", "pkg.latest", "pkg.patch_installed",
+        "pkg.purged", "pkg.removed", "pkg.uptodate"
+    );
+
+    /** Package-affecting Salt execution module names. */
+    private static final List<String> PKG_EXECUTION_MODULES = Arrays.asList(
+        "pkg.group_install", "pkg.install", "pkg.purge", "pkg.remove", "pkg.upgrade"
     );
 
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
@@ -153,30 +158,25 @@ public class SaltUtils {
      */
     public boolean shouldRefreshPackageList(String function,
             Optional<JsonElement> callResult) {
-        switch (function) {
-            case "pkg.upgrade": return true;
-            case "pkg.install": return true;
-            case "pkg.remove": return true;
-            case "pkg.patch_installed": return true;
-            case "state.apply":
-                return Opt.fold(
-                    callResult.flatMap(SaltUtils::jsonEventToStateApplyResults),
-                    () -> false,
-                    results -> results.entrySet().stream()
-                        .anyMatch(result -> extractFunction(result.getKey())
-                            .map(fn -> PACKAGE_CHANGING_MODULES.contains(
-                                fn.equals("module.run") ? result.getValue().getName() : fn
-                            )).orElse(false) &&
-                            !result.getValue().getChanges().isEmpty()
-                        ));
-            default: return false;
+        if (PKG_EXECUTION_MODULES.contains(function)) {
+            return true;
         }
-    }
+        if (function.equals("state.apply")) {
+            return Opt.fold(
+                callResult.flatMap(SaltUtils::jsonEventToStateApplyResults),
+                () -> false,
+                results -> results.entrySet().stream()
+                    .anyMatch(result -> extractFunction(result.getKey())
+                        .map(fn -> fn.equals("module.run") ?
+                            PKG_EXECUTION_MODULES.contains(result.getValue().getName()) :
+                            PKG_STATE_MODULES.contains(fn)
+                        ).orElse(false) &&
+                        !result.getValue().getChanges().isEmpty()
+                    ));
+        }
 
-    private static final List<String> PACKAGE_FUNCTIONS = Arrays.asList(
-        "pkg.latest", "pkg.removed", "pkg.installed", "pkg.upgrade",
-        "pkg.patch_installed"
-    );
+        return false;
+    }
 
     /**
      * Handles package updates by applying delta information or scheduling a full
@@ -188,7 +188,7 @@ public class SaltUtils {
      */
     public static void handlePackageRefresh(String function,
                                             JsonElement callResult, Server server) {
-        if (PACKAGE_FUNCTIONS.contains(function)) {
+        if (PKG_STATE_MODULES.contains(function)) {
             Map<String, Change<Xor<String, List<Pkg.Info>>>> delta = Json.GSON.fromJson(
                 callResult,
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }
@@ -329,14 +329,14 @@ public class SaltUtils {
                            e.getValue(),
                            new TypeToken<StateApplyResult<JsonElement>>() { }.getType()
                        );
-                       if (PACKAGE_FUNCTIONS.contains(ap.getName())) {
+                       if (PKG_EXECUTION_MODULES.contains(ap.getName())) {
                            return Stream.of(ap);
                        }
                        else {
                            return Stream.empty();
                        }
                    }
-                   else if (PACKAGE_FUNCTIONS.contains(fn)) {
+                   else if (PKG_STATE_MODULES.contains(fn)) {
                        return Stream.of((StateApplyResult<JsonElement>)
                            Json.GSON.<StateApplyResult<JsonElement>>fromJson(
                                e.getValue(),
