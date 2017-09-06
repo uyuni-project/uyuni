@@ -201,7 +201,9 @@ public class MinionActionUtils {
     private static Optional<Info> infoForActionId(SaltService salt, long actionId) {
         Map<String, Object> metadata = new HashMap<>();
         metadata.put(ScheduleMetadata.SUMA_ACTION_ID, actionId);
-        Optional<String> jid = salt.jobsByMetadata(metadata).keySet().stream().findFirst();
-        return jid.map(id -> salt.listJob(id));
+        Optional<String> jid = salt.jobsByMetadata(metadata)
+                .map(info -> info.keySet().stream().findFirst())
+                .orElse(Optional.empty());
+        return jid.flatMap(id -> salt.listJob(id));
     }
 }
