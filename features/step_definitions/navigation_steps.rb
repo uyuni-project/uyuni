@@ -87,26 +87,14 @@ When(/^I click on "([^"]*)"$/) do |arg1|
     click_button arg1, match: :first
   end
 end
-
-#
-# Run a step inside any element (with a CSS selector)
-#
-When(/^(.+) inside element "([^"]*)"$/) do |arg1, elm|
-  within(:css, elm) do
-    step arg1.to_s
-  end
-end
-
 #
 # Click on a button and confirm in alert box
-#
 When(/^I click on "([^"]*)" and confirm$/) do |arg1|
   accept_alert do
     step %(I click on "#{arg1}")
     sleep 1
   end
 end
-
 #
 # Click on a link
 #
@@ -741,5 +729,35 @@ end
 Then(/^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/) do |count, name, id|
   within(:xpath, "//form[@id=\"#{id}\" or  @name=\"#{id}\"]") do
     raise unless has_field?(name, count: count.to_i)
+  end
+end
+
+#
+# Wait for a modal window to become visible
+#
+When(/^I wait until i see "([^"]*)" modal$/) do |title|
+  path = "//*[contains(@class, \"modal-title\") and text() = \"#{title}\"]" \
+    '/ancestor::div[contains(@class, "modal-dialog")]'
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if page.has_xpath?(path, visible: true)
+        sleep 3
+      end
+    end
+  rescue Timeout::Error
+    raise "Couldn't find the #{title} modal"
+  end
+end
+
+#
+# Click on a button in a modal window with a specific title
+#
+When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
+  path = "//*[contains(@class, \"modal-title\") and text() = \"#{title}\"]" \
+    '/ancestor::div[contains(@class, "modal-dialog")]'
+
+  within(:xpath, path) do
+    step %(I click on "#{btn}")
   end
 end
