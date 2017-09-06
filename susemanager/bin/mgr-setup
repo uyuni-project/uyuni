@@ -71,7 +71,7 @@ helper script to do migration or setup of SUSE Manager
   -m             full migration of an existing SUSE Manager
   -r             only sync remote files (useful for migration only)
   -f             version of SUSE Manager to migrate from.
-                 Must be one of: suma21 suma30 suma31 satellite
+                 Must be one of: 2.1 3.0 3.1 satellite
                  NOTE: Needs to be specified before '-r' or '-m'
   -s             fresh setup of the SUSE Manager installation
   -w             wait between steps (in case you do -r -m)
@@ -476,7 +476,7 @@ remove_ssh_key() {
 
 check_remote_type() {
     case "$FROMVERSION" in
-        suma21)
+        2.1)
             echo "Migrating from remote system SUSE Manager 2.1"
             ssh -i $KEYFILE root@$SATELLITE_IP "test -e /var/lib/spacewalk/scc/migrated"
             if [ $? -eq 0 ]; then
@@ -488,10 +488,10 @@ check_remote_type() {
                 exit 1
             fi
             ;;
-        suma30)
+        3.0)
             echo "Migrating from remote system SUSE Manager 3.0"
             ;;
-        suma31)
+        3.1)
             echo "Migrating from remote system SUSE Manager 3.1"
             ;;
         satellite)
