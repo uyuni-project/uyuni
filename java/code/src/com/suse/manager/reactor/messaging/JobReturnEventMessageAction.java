@@ -15,6 +15,7 @@
 package com.suse.manager.reactor.messaging;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
 import com.redhat.rhn.common.messaging.EventMessage;
@@ -144,7 +145,14 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 .findByMinionId(jobReturnEvent.getMinionId())
                 .ifPresent(minionServer -> {
                     jobResult.ifPresent(result -> {
-                        SaltUtils.handlePackageRefresh(function, result, minionServer);
+                        try {
+                            SaltUtils.handlePackageRefresh(function, result, minionServer);
+                        }
+                        catch (JsonParseException e) {
+                            LOG.warn("Could not determine if packages changed in call to " +
+                                    function + " because of a parse error");
+                            LOG.warn(e);
+                        }
                     });
                 });
 
