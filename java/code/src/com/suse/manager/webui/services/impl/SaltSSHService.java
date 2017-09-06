@@ -621,23 +621,26 @@ public class SaltSSHService {
         Map<String, String> options = new HashMap<>();
         options.put("StrictHostKeyChecking", "no");
         options.put("ConnectTimeout", ConfigDefaults.get().getSaltSSHConnectTimeout() + "");
-        MgrUtilRunner.ExecResult ret = SaltService.INSTANCE.chainSSHCommand(proxyPath,
-                SSH_KEY_PATH,
-                PROXY_SSH_PUSH_KEY,
-                PROXY_SSH_PUSH_USER,
-                options,
-                "cat " + PROXY_SSH_PUSH_KEY + ".pub",
-                SSH_KEY_DIR + "/" + keyFile);
-        if (ret.getReturnCode() == 0) {
+        Optional<MgrUtilRunner.ExecResult> ret = SaltService.INSTANCE
+                .chainSSHCommand(proxyPath,
+                        SSH_KEY_PATH,
+                        PROXY_SSH_PUSH_KEY,
+                        PROXY_SSH_PUSH_USER,
+                        options,
+                        "cat " + PROXY_SSH_PUSH_KEY + ".pub",
+                        SSH_KEY_DIR + "/" + keyFile);
+        if (ret.map(MgrUtilRunner.ExecResult::getReturnCode).orElse(-1) == 0) {
             return Optional.of(keyFile);
         }
         else {
-            LOG.error("Could not retrieve ssh pub key from proxy [" + proxy.getHostname() +
-                    "]. ssh return code [" + ret.getReturnCode() +
-                    "[, stderr [" + ret.getStderr() + "]");
-            throw new RuntimeException(
-                    "Could not retrieve ssh-push public key from proxy: " +
-                    ret.getStderr());
+            String msg = ret.map(r ->
+                    "Could not retrieve ssh pub key from proxy [" + proxy.getHostname() +
+                    "]. ssh return code [" + r.getReturnCode() +
+                    "[, stderr [" + r.getStderr() + "]")
+                    .orElse("Could not retrieve ssh pub key from proxy " +
+                            proxy.getHostname() + ". Please check the logs.");
+            LOG.error(msg);
+            throw new RuntimeException(msg);
         }
     }
 }
