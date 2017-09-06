@@ -1,3 +1,6 @@
+- addition of parameters to package manipulation states to improve
+  SUSE Manager performance
+
 -------------------------------------------------------------------
 Mon May 29 15:53:51 CEST 2017 - mc@suse.de
 
