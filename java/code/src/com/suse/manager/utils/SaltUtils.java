@@ -124,7 +124,9 @@ public class SaltUtils {
 
     /* List of Salt modules that could possibly change installed packages */
     private static final List<String> PACKAGE_CHANGING_MODULES = Arrays.asList(
-            "pkg.install", "pkg.remove", "pkg.latest", "pkg.patch_installed", "pkg.upgrade");
+        "pkg.install", "pkg.remove", "pkg.latest", "pkg.upgrade",
+        "pkg.patch_installed"
+    );
 
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
@@ -160,20 +162,20 @@ public class SaltUtils {
                 return Opt.fold(
                     callResult.flatMap(SaltUtils::jsonEventToStateApplyResults),
                     () -> false,
-                    results ->
-                            results.entrySet().stream().anyMatch(result ->
-                                extractFunction(result.getKey())
-                                        .map(fn -> PACKAGE_CHANGING_MODULES.contains(
-                                                fn.equals("module.run") ? result.getValue().getName() : fn
-                                        ))
-                                        .orElse(false)
-                                && !result.getValue().getChanges().isEmpty()));
+                    results -> results.entrySet().stream()
+                        .anyMatch(result -> extractFunction(result.getKey())
+                            .map(fn -> PACKAGE_CHANGING_MODULES.contains(
+                                fn.equals("module.run") ? result.getValue().getName() : fn
+                            )).orElse(false) &&
+                            !result.getValue().getChanges().isEmpty()
+                        ));
             default: return false;
         }
     }
 
     private static final List<String> PACKAGE_FUNCTIONS = Arrays.asList(
-            "pkg.latest", "pkg.removed", "pkg.installed", "pkg.patch_installed", "pkg.upgrade"
+        "pkg.latest", "pkg.removed", "pkg.installed", "pkg.upgrade",
+        "pkg.patch_installed"
     );
 
     /**
@@ -320,28 +322,32 @@ public class SaltUtils {
     public static void packageDeltaFromStateApply(
             Map<String, JsonElement> apply, Server server) {
         apply.entrySet().stream().flatMap(e -> {
-            return extractFunction(e.getKey()).<Stream<StateApplyResult<JsonElement>>>map(fn -> {
-               if (fn.equals("module.run")) {
-                   StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
+            return extractFunction(e.getKey()).<Stream<StateApplyResult<JsonElement>>>
+               map(fn -> {
+                    if (fn.equals("module.run")) {
+                       StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
                            e.getValue(),
                            new TypeToken<StateApplyResult<JsonElement>>() { }.getType()
-                   );
-                   if (PACKAGE_FUNCTIONS.contains(ap.getName())) {
-                       return Stream.of(ap);
-                   } else {
+                       );
+                       if (PACKAGE_FUNCTIONS.contains(ap.getName())) {
+                           return Stream.of(ap);
+                       }
+                       else {
+                           return Stream.empty();
+                       }
+                   }
+                   else if (PACKAGE_FUNCTIONS.contains(fn)) {
+                       return Stream.of((StateApplyResult<JsonElement>)
+                           Json.GSON.<StateApplyResult<JsonElement>>fromJson(
+                               e.getValue(),
+                               new TypeToken<StateApplyResult<JsonElement>>() { }.getType()
+                           )
+                       );
+                   }
+                   else {
                        return Stream.empty();
                    }
-               } else if (PACKAGE_FUNCTIONS.contains(fn)) {
-                   return Stream.of(
-                           (StateApplyResult<JsonElement>) Json.GSON.fromJson(
-                                   e.getValue(),
-                                   new TypeToken<StateApplyResult<JsonElement>>() { }.getType()
-                           )
-                   );
-               } else {
-                   return Stream.empty();
-               }
-            }).orElseGet(Stream::empty);
+               }).orElseGet(Stream::empty);
         })
           // we sort by run order process multiple package changing states right
           .sorted(Comparator.comparingInt(StateApplyResult::getRunNum))
@@ -357,12 +363,11 @@ public class SaltUtils {
             JsonElement json) {
         if (json.getAsJsonObject().has("ret")) {
             return
-                Json.GSON.<Ret<Map<String, Change<Xor<String, List<Pkg.Info>>>>>>fromJson(
-                    json,
-                    new TypeToken<Ret<
-                            Map<String, Change<Xor<String, List<Pkg.Info>>>>
-                        >>() { }.getType()
-                ).getRet();
+            Json.GSON.<Ret<Map<String, Change<Xor<String, List<Pkg.Info>>>>>>fromJson(
+                json,
+                new TypeToken<Ret<Map<String, Change<Xor<String, List<Pkg.Info>>>>>>() { }
+                        .getType()
+            ).getRet();
         }
         else {
             return Json.GSON.fromJson(
