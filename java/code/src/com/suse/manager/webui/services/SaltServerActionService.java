@@ -558,6 +558,7 @@ public enum SaltServerActionService {
         susemanager.put("distupgrade", distupgrade);
         distupgrade.put("dryrun", action.getDetails().isDryRun());
         distupgrade.put("channels", subbed.stream()
+                .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
                 .collect(Collectors.toList()));
 
