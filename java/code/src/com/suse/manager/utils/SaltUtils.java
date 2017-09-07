@@ -143,6 +143,20 @@ public class SaltUtils {
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
     /**
+     * Enumerates results of handlePackageChanges().
+     */
+    public enum PackageChangeOutcome {
+        /**
+         * Changed packages have been persisted in the database.
+         */
+        DONE,
+        /**
+         * A separate full refresh is necessary.
+         */
+        NEEDS_REFRESHING
+    }
+
+    /**
      * Constructor for testing purposes.
      */
     public SaltUtils() { }
@@ -185,25 +199,32 @@ public class SaltUtils {
      * @param function salt function
      * @param callResult salt result
      * @param server server to update
+     * @return an outcome
      */
-    public static void handlePackageRefresh(String function,
-                                            JsonElement callResult, Server server) {
+    public static PackageChangeOutcome handlePackageChanges(String function,
+            JsonElement callResult, Server server) {
+        final PackageChangeOutcome outcome;
+
         if (PKG_STATE_MODULES.contains(function)) {
             Map<String, Change<Xor<String, List<Pkg.Info>>>> delta = Json.GSON.fromJson(
                 callResult,
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>() { }
                 .getType()
             );
-            applyChanges(delta, server);
+            ErrataManager.insertErrataCacheTask(server);
+            outcome = applyChangesFromStateModule(delta, server);
         }
         else if (function.equals("state.apply")) {
             Map<String, JsonElement> apply = Json.GSON.fromJson(
                 callResult, new TypeToken<Map<String, JsonElement>>() { }.getType());
-            packageDeltaFromStateApply(apply, server);
+            ErrataManager.insertErrataCacheTask(server);
+            outcome = applyChangesFromStateApply(apply, server);
+        }
+        else {
+            outcome = PackageChangeOutcome.DONE;
         }
 
-        // in any case, update of errata cache for this server
-        ErrataManager.insertErrataCacheTask(server);
+        return outcome;
     }
 
     /**
@@ -229,8 +250,9 @@ public class SaltUtils {
      * refresh if not enough data is present
      * @param changes map of packages changes
      * @param server server to update
+     * @return an outcome
      */
-    public static void applyChanges(
+    public static PackageChangeOutcome applyChangesFromStateModule(
             Map<String, Change<Xor<String, List<Pkg.Info>>>> changes,
             Server server) {
         boolean fullRefreshNeeded = changes.entrySet().stream().anyMatch(
@@ -241,20 +263,13 @@ public class SaltUtils {
 
         );
         if (fullRefreshNeeded) {
-            // In this case we either got the old style response without
-            // enough package info or something went really wrong
-            // in both cases its safer to just do a full refresh
-            try {
-                ActionManager.schedulePackageRefresh(server.getOrg(), server);
-            }
-            catch (TaskomaticApiException e) {
-                LOG.error(e);
-            }
+            return PackageChangeOutcome.NEEDS_REFRESHING;
         }
         else {
             HibernateFactory.doWithoutAutoFlushing(() -> {
                 applyDeltaPackageInfo(changes, server);
             });
+            return PackageChangeOutcome.DONE;
         }
     }
 
@@ -318,45 +333,53 @@ public class SaltUtils {
      *
      * @param apply map of state apply results
      * @param server server to update
+     * @return an outcome
      */
-    public static void packageDeltaFromStateApply(
+    public static PackageChangeOutcome applyChangesFromStateApply(
             Map<String, JsonElement> apply, Server server) {
-        apply.entrySet().stream().flatMap(e -> {
+        List<StateApplyResult<JsonElement>> collect =
+                apply.entrySet().stream().flatMap(e -> {
             return extractFunction(e.getKey()).<Stream<StateApplyResult<JsonElement>>>
-               map(fn -> {
-                    if (fn.equals("module.run")) {
-                       StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
-                           e.getValue(),
-                           new TypeToken<StateApplyResult<JsonElement>>() { }.getType()
-                       );
-                       if (PKG_EXECUTION_MODULES.contains(ap.getName())) {
-                           return Stream.of(ap);
-                       }
-                       else {
-                           return Stream.empty();
-                       }
-                   }
-                   else if (PKG_STATE_MODULES.contains(fn)) {
-                       return Stream.of((StateApplyResult<JsonElement>)
-                           Json.GSON.<StateApplyResult<JsonElement>>fromJson(
-                               e.getValue(),
-                               new TypeToken<StateApplyResult<JsonElement>>() { }.getType()
-                           )
-                       );
-                   }
-                   else {
-                       return Stream.empty();
-                   }
-               }).orElseGet(Stream::empty);
+                    map(fn -> {
+                if (fn.equals("module.run")) {
+                    StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
+                            e.getValue(),
+                            new TypeToken<StateApplyResult<JsonElement>>() {
+                            }.getType()
+                    );
+                    if (PKG_EXECUTION_MODULES.contains(ap.getName())) {
+                        return Stream.of(ap);
+                    }
+                    else {
+                        return Stream.empty();
+                    }
+                }
+                else if (PKG_STATE_MODULES.contains(fn)) {
+                    return Stream.of(
+                            Json.GSON.<StateApplyResult<JsonElement>>fromJson(e.getValue(),
+                                    new TypeToken<StateApplyResult<JsonElement>>() {
+                                    }.getType()
+                            )
+                    );
+                }
+                else {
+                    return Stream.empty();
+                }
+            }).orElseGet(Stream::empty);
         })
-          // we sort by run order process multiple package changing states right
-          .sorted(Comparator.comparingInt(StateApplyResult::getRunNum))
-          .forEach(value -> {
+                // we sort by run order process multiple package changing states right
+                .sorted(Comparator.comparingInt(StateApplyResult::getRunNum))
+                .collect(Collectors.toList());
+        for (StateApplyResult<JsonElement> value : collect) {
               Map<String, Change<Xor<String, List<Pkg.Info>>>> delta =
                       extractPackageDelta(value.getChanges());
 
-              applyChanges(delta, server);
-          });
+            if (applyChangesFromStateModule(delta, server) ==
+                    PackageChangeOutcome.NEEDS_REFRESHING) {
+                return PackageChangeOutcome.NEEDS_REFRESHING;
+            }
+        }
+        return PackageChangeOutcome.DONE;
     }
 
     private static Map<String, Change<Xor<String, List<Info>>>> extractPackageDelta(

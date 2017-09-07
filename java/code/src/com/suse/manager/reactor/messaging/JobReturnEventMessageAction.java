@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.utils.SaltUtils.PackageChangeOutcome;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.event.JobReturnEvent;
 
@@ -143,30 +144,29 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             }
         });
 
-        MinionServerFactory
-                .findByMinionId(jobReturnEvent.getMinionId())
-                .ifPresent(minionServer -> {
-                    jobResult.ifPresent(result -> {
-                        try {
-                            if (forcePackageListRefresh(jobReturnEvent)) {
-                                    ActionManager.schedulePackageRefresh(
-                                            minionServer.getOrg(), minionServer);
-                            }
-                            else {
-                                SaltUtils.handlePackageRefresh(function, result,
+        MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
+            .ifPresent(minionServer -> {
+                jobResult.ifPresent(result -> {
+                    try {
+                        if (forcePackageListRefresh(jobReturnEvent) ||
+                            SaltUtils.handlePackageChanges(function, result,
+                                    minionServer) ==
+                                PackageChangeOutcome.NEEDS_REFRESHING) {
+                                ActionManager.schedulePackageRefresh(minionServer.getOrg(),
                                         minionServer);
                             }
                         }
-                        catch (JsonParseException e) {
-                            LOG.warn("Could not determine if packages changed in call to " +
-                                    function + " because of a parse error");
-                            LOG.warn(e);
-                        }
-                        catch (TaskomaticApiException e) {
-                            LOG.error(e);
-                        }
-                    });
+                    catch (JsonParseException e) {
+                        LOG.warn("Could not determine if packages changed " +
+                                "in call to " + function +
+                                " because of a parse error");
+                        LOG.warn(e);
+                    }
+                    catch (TaskomaticApiException e) {
+                        LOG.error(e);
+                    }
                 });
+            });
 
         // For all jobs: update minion last checkin
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(

@@ -123,7 +123,7 @@ public class MinionActionUtils {
                             else {
                                 SaltUtils.INSTANCE.updateServerAction(sa, 0L,
                                         true, info.getJid(), o, info.getFunction());
-                                SaltUtils.handlePackageRefresh(info.getFunction(), o,
+                                SaltUtils.handlePackageChanges(info.getFunction(), o,
                                         server);
                                 return sa;
                             }
