@@ -1185,6 +1185,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="sdc.channels.edit.deploy.warning">
+        <source>Changes to channel assignments will take effect at next highstate application</source>
+      </trans-unit>
+      <trans-unit id="sdc.channels.edit.ssm.deploy.warning">
+        <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
+      </trans-unit>
       <trans-unit id="sdc.channels.info.change">
         <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditional registered systems and added to the package state on salt managed system. For salt managed systems please apply the highstate to push these changes to the system. </source>
       </trans-unit>

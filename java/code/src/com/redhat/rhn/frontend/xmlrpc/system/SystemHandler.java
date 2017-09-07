@@ -308,7 +308,8 @@ public class SystemHandler extends BaseHandler {
      * method will unsubscribe the server from any child channels that the server
      * is currently subscribed to, but that are not included in the list.  The user may
      * provide either a list of channel ids (int) or a list of channel labels (string) as
-     * input.
+     * input. Changes to channel assignments on salt managed systems will take effect
+     * at next highstate application.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_single("int (deprecated) or string", "channelId (deprecated)
@@ -425,7 +426,8 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Assigns the server to a new base channel.  If the user provides an empty
      * string for the channelLabel, the current base channel and all child channels will
-     * be removed from the system.
+     * be removed from the system. Changes to channel assignments on salt managed systems
+     * will take effect at next highstate application.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("string", "channelLabel")
