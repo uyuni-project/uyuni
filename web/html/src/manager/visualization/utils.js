@@ -30,7 +30,7 @@ function prepareDom() {
 
   UI.svgTextStyle(svg);
 
-  const container = svg.append('g');
+  const container = svg.append('g').attr('class', 'container');
 
   // Zoom handling
   svg.call(d3.zoom()
