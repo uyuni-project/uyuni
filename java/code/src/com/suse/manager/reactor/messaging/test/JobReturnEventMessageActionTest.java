@@ -193,7 +193,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Map<String, Change<Xor<String, List<Pkg.Info>>>> install = Json.GSON.fromJson(new InputStreamReader(getClass()
                 .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_install.new_format.json")),
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
-        SaltUtils.applyChanges(install, minion);
+        SaltUtils.applyChangesFromStateModule(install, minion);
         assertEquals(1, minion.getPackages().size());
         List<InstalledPackage> packages = new ArrayList<>(minion.getPackages());
         assertEquals("vim", packages.get(0).getName().getName());
@@ -207,7 +207,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         .getResourceAsStream("/com/suse/manager/reactor/messaging/test/pkg_update.new_format.json")),
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
 
-        SaltUtils.applyChanges(update, minion);
+        SaltUtils.applyChangesFromStateModule(update, minion);
         assertEquals(1, minion.getPackages().size());
         List<InstalledPackage> packages1 = new ArrayList<>(minion.getPackages());
         assertEquals("vim", packages1.get(0).getName().getName());
@@ -222,7 +222,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new TypeToken<Map<String, Change<Xor<String, List<Pkg.Info>>>>>(){}.getType());
 
 
-        SaltUtils.applyChanges(remove, minion);
+        SaltUtils.applyChangesFromStateModule(remove, minion);
         assertEquals(0, minion.getPackages().size());
     }
 
@@ -233,7 +233,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Map<String, JsonElement> apply = Json.GSON.fromJson(new InputStreamReader(getClass()
                         .getResourceAsStream("/com/suse/manager/reactor/messaging/test/apply_pkg.new_format.json")),
                 new TypeToken<Map<String, JsonElement>>(){}.getType());
-        SaltUtils.packageDeltaFromStateApply(apply, minion);
+        SaltUtils.applyChangesFromStateApply(apply, minion);
 
         assertEquals(1, minion.getPackages().size());
         List<InstalledPackage> packages = new ArrayList<>(minion.getPackages());
