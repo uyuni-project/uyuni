@@ -1,3 +1,6 @@
+- Fix SP migration for traditional clients which were registered
+  by a currently disabled user (bsc#1057126)
+
 -------------------------------------------------------------------
 Wed Aug 30 16:03:25 CEST 2017 - mc@suse.de
 
