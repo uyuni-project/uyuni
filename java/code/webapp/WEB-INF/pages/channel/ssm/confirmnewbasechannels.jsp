@@ -23,7 +23,13 @@
         <h2>
             <bean:message key="basesub.jsp.confirm.header"/>
         </h2>
-
+        <rhn:require acl="any_system_with_salt_entitlement()">
+            <div class="form-group">
+                <div class="alert alert-info">
+                    <bean:message key="sdc.channels.edit.ssm.deploy.warning"/>
+                </div>
+            </div>
+        </rhn:require>
         <bean:message key="basesub.jsp.confirm.header.description"/>
 
         <c:if test="${foundUnmatchedChannels}">

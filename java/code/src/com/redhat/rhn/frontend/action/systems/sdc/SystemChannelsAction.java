@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.Collections;
@@ -268,8 +269,14 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
                     RhnValidationHelper.validatorErrorToActionErrors(error));
         }
         else {
-            getStrutsDelegate().saveMessage("sdc.channels.edit.base_channel_updated",
-                    request);
+            ActionMessages messages = new ActionMessages();
+            getStrutsDelegate().addInfo("sdc.channels.edit.base_channel_updated",
+                    messages);
+            if (s.asMinionServer().isPresent()) {
+                getStrutsDelegate().addInfo("sdc.channels.edit.deploy.warning",
+                        messages);
+            }
+            getStrutsDelegate().saveMessages(request, messages);
 
             String message =
                 LocalizationService.getInstance().getMessage("snapshots.basechannel");
@@ -315,8 +322,13 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
                     RhnValidationHelper.validatorErrorToActionErrors(error));
         }
         else {
-            getStrutsDelegate().saveMessage("sdc.channels.edit.child_channels_updated",
-                    request);
+            ActionMessages messages = new ActionMessages();
+            getStrutsDelegate().addInfo("sdc.channels.edit.child_channels_updated",
+                    messages);
+            if (s.asMinionServer().isPresent()) {
+                getStrutsDelegate().addInfo("sdc.channels.edit.deploy.warning", messages);
+            }
+            getStrutsDelegate().saveMessages(request, messages);
 
             String message =
                 LocalizationService.getInstance().getMessage("snapshots.childchannel");
