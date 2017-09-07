@@ -327,8 +327,7 @@ def search(user):
     """ search the database for a user """
     log_debug(3, user)
     userid = get_user_id(user)
-    if not userid or is_user_disabled(user):
-        # no user found or is disabled
+    if not userid:  # no user found
         return None
     ret = User(user, "")
     if not ret.reload(userid) == 0:

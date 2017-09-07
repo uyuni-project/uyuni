@@ -20,7 +20,7 @@
 import sys
 import unittest
 from spacewalk.common.rhnConfig import initCFG
-from spacewalk.server import rhnSQL
+from spacewalk.server import rhnSQL, rhnUser
 
 import misc_functions
 
@@ -82,6 +82,21 @@ class Tests(unittest.TestCase):
             u = misc_functions.create_new_user(org_id=org_id)
             self._verify_new_user(u)
             self.assertEqual(org_id, u.contact['org_id'])
+
+    def test_disabled_users_are_listed(self):
+        "Create a user, disable it and check if it is listed"
+        u = misc_functions.create_new_user()
+        self._verify_new_user(u)
+        username = u.contact['login']
+        uid = u.getid()
+        h = rhnSQL.prepare("""
+        INSERT INTO rhnwebcontactchangelog
+           (id, web_contact_id, change_state_id)
+        VALUES
+           (5555, :user_id, 2)
+        """)
+        h.execute(user_id=uid)
+        self.assertNotEqual(rhnUser.search(username), None)
 
 
 if __name__ == '__main__':
