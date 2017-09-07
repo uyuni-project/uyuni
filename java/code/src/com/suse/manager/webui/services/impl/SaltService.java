@@ -32,6 +32,7 @@ import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.RunnerCall;
+import com.suse.salt.netapi.calls.WheelCall;
 import com.suse.salt.netapi.calls.WheelResult;
 import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.Grains;
@@ -43,9 +44,6 @@ import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.modules.Timezone;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
-import com.suse.salt.netapi.calls.wheel.Key.Fingerprints;
-import com.suse.salt.netapi.calls.wheel.Key.Names;
-import com.suse.salt.netapi.calls.wheel.Key.Pair;
 import com.suse.salt.netapi.client.SaltClient;
 import com.suse.salt.netapi.config.ClientConfig;
 import com.suse.salt.netapi.datatypes.target.Glob;
@@ -82,7 +80,6 @@ import java.util.HashSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -268,14 +265,76 @@ public class SaltService {
      * @return the keys with their respective status as returned from salt
      */
     public Key.Names getKeys() {
+        return callSync(Key.listAll())
+                .orElseThrow(() -> new RuntimeException("no wheel results"));
+    }
+
+    /**
+     * Executes a salt wheel module function.
+     *
+     * @param call wheel call
+     * @param <R> result type of the wheel call
+     * @return the result of the call or empty on error
+     */
+    public <R> Optional<R> callSync(WheelCall<R> call) {
+        return callSync(call,  p ->
+                p.fold(
+                    e -> {
+                        LOG.error("Function [" + e.getFunctionName() +
+                                "] not available for wheel call " +
+                                wheelCallToString(call)
+                        );
+                        return Optional.empty();
+                    },
+                    e -> {
+                        LOG.error("Module [" + e.getModuleName() +
+                                "] not supported for wheel call " +
+                                wheelCallToString(call)
+                        );
+                        return Optional.empty();
+                    },
+                    e -> {
+                        LOG.error("Error parsing json response from wheel call " +
+                                wheelCallToString(call) +
+                                ": " + e.getJson());
+                        return Optional.empty();
+                    },
+                    e -> {
+                        LOG.error("Generic Salt error for wheel call " +
+                                wheelCallToString(call) +
+                                ": " + e.getMessage());
+                        return Optional.empty();
+                    }
+        ));
+    }
+
+    /**
+     * Executes a salt wheel module function. On error it
+     * invokes the {@code errorHandler} passed as parameter.
+     *
+     * @param call wheel call
+     * @param errorHandler function that handles errors
+     * @param <R> result type of the wheel call
+     * @return the result of the call or empty on error
+     */
+    public <R> Optional<R> callSync(WheelCall<R> call,
+                                     Function<SaltError, Optional<R>> errorHandler) {
         try {
-            WheelResult<Result<Names>> result = Key.listAll()
+            WheelResult<Result<R>> result = call
                     .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            return result.getData().getResult().result().get();
+            return result.getData().getResult().fold(
+                    err -> errorHandler.apply(err),
+                    r -> Optional.of(r));
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String wheelCallToString(WheelCall<?> call) {
+        return "[" + call.getModuleName() + "." +
+                call.getFunctionName() + "] with payload [" +
+                call.getPayload() + "]";
     }
 
     /**
@@ -298,14 +357,8 @@ public class SaltService {
      * @return the keys with their respective status and fingerprint as returned from salt
      */
     public Key.Fingerprints getFingerprints() {
-        try {
-            WheelResult<Result<Fingerprints>> result = Key.finger("*")
-                    .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            return result.getData().getResult().result().get();
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
+        return callSync(Key.finger("*"))
+                .orElseThrow(() -> new RuntimeException("no wheel results"));
     }
 
     /**
@@ -317,14 +370,8 @@ public class SaltService {
      */
     public Key.Pair generateKeysAndAccept(String id,
             boolean force) {
-        try {
-            WheelResult<Result<Pair>> result = Key.genAccept(id, Optional.of(force))
-                    .callSync(SALT_CLIENT, SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            return result.getData().getResult().result().get();
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
+        return callSync(Key.genAccept(id, Optional.of(force)))
+                .orElseThrow(() -> new RuntimeException("no wheel results"));
     }
 
     /**
@@ -377,13 +424,8 @@ public class SaltService {
      * @param match a pattern for minion ids
      */
     public void acceptKey(String match) {
-        try {
-            Key.accept(match).callSync(SALT_CLIENT,
-                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
+        callSync(Key.accept(match))
+                .orElseThrow(() -> new RuntimeException("no wheel results"));
     }
 
     /**
@@ -392,13 +434,8 @@ public class SaltService {
      * @param minionId id of the minion
      */
     public void deleteKey(String minionId) {
-        try {
-            Key.delete(minionId).callSync(SALT_CLIENT,
-                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
+        callSync(Key.delete(minionId))
+                .orElseThrow(() -> new RuntimeException("no wheel results"));
     }
 
     /**
@@ -407,13 +444,8 @@ public class SaltService {
      * @param minionId id of the minion
      */
     public void rejectKey(String minionId) {
-        try {
-            Key.reject(minionId).callSync(SALT_CLIENT,
-                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-        }
-        catch (SaltException e) {
-            throw new RuntimeException(e);
-        }
+        callSync(Key.reject(minionId))
+                .orElseThrow(() -> new RuntimeException("no wheel results"));
     }
 
     /**
