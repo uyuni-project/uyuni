@@ -26,6 +26,8 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.event.JobReturnEvent;
@@ -146,12 +148,22 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 .ifPresent(minionServer -> {
                     jobResult.ifPresent(result -> {
                         try {
-                            SaltUtils.handlePackageRefresh(function, result, minionServer);
+                            if (forcePackageListRefresh(jobReturnEvent)) {
+                                    ActionManager.schedulePackageRefresh(
+                                            minionServer.getOrg(), minionServer);
+                            }
+                            else {
+                                SaltUtils.handlePackageRefresh(function, result,
+                                        minionServer);
+                            }
                         }
                         catch (JsonParseException e) {
                             LOG.warn("Could not determine if packages changed in call to " +
                                     function + " because of a parse error");
                             LOG.warn(e);
+                        }
+                        catch (TaskomaticApiException e) {
+                            LOG.error(e);
                         }
                     });
                 });
