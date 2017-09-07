@@ -24,9 +24,10 @@ fi
 TMPDIR="/var/spacewalk/tmp"
 DO_MIGRATION=0
 DO_SETUP=0
-LOGFILE=0
+LOGFILE="0"
 WAIT_BETWEEN_STEPS=0
 MANAGER_FORCE_INSTALL=0
+PROGRAM="/usr/lib/susemanager/bin/mgr-setup"
 
 MIGRATION_ENV="/root/migration_env.sh"
 SETUP_ENV="/root/setup_env.sh"
@@ -43,9 +44,12 @@ SATELLITE_DB_SID=""
 SATELLITE_FQDN=""
 SATELLITE_IP=""
 
-SATELLITE_IS_RH=1
+SATELLITE_IS_RH=0
+FROMVERSION="undefined"
 KEYFILE="/root/migration-key"
 DBDUMPFILE="susemanager.dmp.gz"
+SERVER_CRT="/etc/pki/tls/certs/spacewalk.crt"
+SERVER_KEY="/etc/pki/tls/private/spacewalk.key"
 
 RSYNC_PASSWORD=""
 
@@ -65,11 +69,15 @@ Usage: $0 [OPTION]
 helper script to do migration or setup of SUSE Manager
 
   -m             full migration of an existing SUSE Manager
-  -s             fresh setup of the SUSE Manager installation
   -r             only sync remote files (useful for migration only)
+  -f             version of SUSE Manager to migrate from.
+                 Must be one of: 2.1 3.0 3.1 satellite
+                 NOTE: Needs to be specified before '-r' or '-m'
+  -s             fresh setup of the SUSE Manager installation
   -w             wait between steps (in case you do -r -m)
   -l LOGFILE     write a log to LOGFILE
   -h             this help screen
+
 
 "
 }
@@ -340,8 +348,10 @@ dump_remote_db() {
 }
 
 import_db() {
-    echo "`date +"%H:%M:%S"`   Checking the integrity of the database dump archive."
-    gzip -t $TMPDIR/$DBDUMPFILE || { echo "`date +"%H:%M:%S"`   FAILURE!"; exit 1; }
+    # Integrity check is no longer necessary since we ensure remote commands
+    # can be executed silently; so no motd should corrupt the dump any more
+    # echo "`date +"%H:%M:%S"`   Checking the integrity of the database dump archive."
+    # gzip -t $TMPDIR/$DBDUMPFILE || { echo "`date +"%H:%M:%S"`   FAILURE!"; exit 1; }
 
     echo "`date +"%H:%M:%S"`   Importing database dump. Please wait..."
     su -s /bin/bash - postgres -c "zcat $TMPDIR/$DBDUMPFILE | psql $MANAGER_DB_NAME > /dev/null"
@@ -379,8 +389,14 @@ copy_remote_files_common() {
     echo "`date +"%H:%M:%S"`   Copy /var/cache/rhn ..."
     rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/cache/rhn/ /var/cache/rhn >> $RSYNC_LOG
 
+    echo "`date +"%H:%M:%S"`   Copy certificates ..."
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/spacewalk/jabberd/server.pem /etc/pki/spacewalk/jabberd/server.pem
-    scp -i $KEYFILE root@$SATELLITE_IP:/etc/rhn/rhn.conf /etc/rhn/rhn.conf-SUMA21
+    scp -i $KEYFILE root@$SATELLITE_IP:$SERVER_CRT /etc/apache2/ssl.crt/server.crt
+    scp -i $KEYFILE root@$SATELLITE_IP:$SERVER_KEY /etc/apache2/ssl.key/server.key
+    ln -sf ../../../apache2/ssl.crt/server.crt /etc/pki/tls/certs/spacewalk.crt
+    ln -sf ../../../apache2/ssl.key/server.key /etc/pki/tls/private/spacewalk.key
+
+    scp -i $KEYFILE root@$SATELLITE_IP:/etc/rhn/rhn.conf /etc/rhn/rhn.conf-$FROMVERSION
     chown -R tomcat:tomcat /var/lib/rhn/kickstarts
     chmod 600 /etc/pki/spacewalk/jabberd/server.pem
     chown jabber:jabber /etc/pki/spacewalk/jabberd/server.pem
@@ -394,9 +410,6 @@ copy_remote_files_redhat() {
     rsync -e "ssh -i $KEYFILE -l root" -av root@$SATELLITE_IP:/var/satellite/ /var/spacewalk/ >> $RSYNC_LOG
     chown -R wwwrun.www /var/spacewalk
     rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/var/www/html/pub/ /srv/www/htdocs/pub/ >> $RSYNC_LOG
-
-    scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/tls/certs/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
-    scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/tls/private/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
 }
 
 copy_remote_files_suse() {
@@ -408,9 +421,6 @@ copy_remote_files_suse() {
     rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/srv/www/htdocs/pub/ /srv/www/htdocs/pub/ >> $RSYNC_LOG
     echo "`date +"%H:%M:%S"`   Copy /root/.ssh ..."
     rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/.ssh/ /root/.ssh.new >> $RSYNC_LOG
-
-    scp -i $KEYFILE root@$SATELLITE_IP:/etc/apache2/ssl.crt/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
-    scp -i $KEYFILE root@$SATELLITE_IP:/etc/apache2/ssl.key/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
 
     chown -R wwwrun.www /var/spacewalk
     ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors
@@ -465,22 +475,63 @@ remove_ssh_key() {
 }
 
 check_remote_type() {
-    ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/apache2/ssl.crt/spacewalk.crt"
+    case "$FROMVERSION" in
+        2.1)
+            echo "Migrating from remote system SUSE Manager 2.1"
+            ssh -i $KEYFILE root@$SATELLITE_IP "test -e /var/lib/spacewalk/scc/migrated"
+            if [ $? -eq 0 ]; then
+                echo "Remote system is already migrated to SCC. Good."
+            else
+                echo
+                echo "Remote system has not yet been migrated to SCC! Exit."
+                echo
+                exit 1
+            fi
+            ;;
+        3.0)
+            echo "Migrating from remote system SUSE Manager 3.0"
+            ;;
+        3.1)
+            echo "Migrating from remote system SUSE Manager 3.1"
+            ;;
+        satellite)
+            echo "Migrating from remote system Red Hat Satellite"
+            SATELLITE_IS_RH=1
+            ;;
+        *)
+            echo
+            echo "Unknown version to migrate from: \"$FROMVERSION\""
+            echo "Type \"$PROGRAM -h\" for valid versions."
+            echo
+            exit 1
+            ;;
+    esac
+
+    echo -n "Checking for /etc/pki/tls/certs/spacewalk.crt..."
+    ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/pki/tls/certs/spacewalk.crt"
     if [ $? -eq 0 ]; then
-        echo "Remote machine is SUSE Manager"
-        SATELLITE_IS_RH=0
+        echo " found"
+        SERVER_CRT="/etc/pki/tls/certs/spacewalk.crt"
+        SERVER_KEY="/etc/pki/tls/private/spacewalk.key"
     else
-        echo "Remote machine appears not to be a SUSE Manager. Exit."
-        exit 1
+        echo " not found"
+        echo -n "Checking for /etc/apache2/ssl.crt/spacewalk.crt..."
+        ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/apache2/ssl.crt/spacewalk.crt"
+        if [ $? -eq 0 ]; then
+            echo " found"
+            SERVER_CRT="/etc/apache2/ssl.crt/spacewalk.crt"
+            SERVER_KEY="/etc/apache2/ssl.key/spacewalk.key"
+        else
+            echo " not found"
+            echo
+            echo "Cannot find /etc/pki/tls/certs/spacewalk.crt nor /etc/pki/tls/certs/spacewalk.crt"
+            echo "on source system. Giving up!"
+            echo
+            exit 1
+        fi
     fi
 
-    ssh -i $KEYFILE root@$SATELLITE_IP "test -e /var/lib/spacewalk/scc/migrated"
-    if [ $? -eq 0 ]; then
-        echo "Remote system is already migrated to SCC. Good."
-    else
-        echo "Remote system has not yet been migrated to SCC! Exit."
-        exit 1
-    fi
+    echo "Found $SERVER_CRT and $SERVER_KEY on source system."
 }
 
 copy_remote_files() {
@@ -660,11 +711,18 @@ do_setup() {
     fi
 }
 
-for p in $@; do
-    if [ "$LOGFILE" = "1" ]; then
-        LOGFILE=$p
-        continue
-    fi
+####################################################
+# Start
+####################################################
+
+PROGRAM="$0"
+
+# clean up fake hostname in /etc/hosts in case of previous error
+cleanup_hostname
+
+while [ -n "$1" ]
+do
+    p="$1"
 
     case "$p" in
     -m)
@@ -672,6 +730,7 @@ for p in $@; do
         . $MIGRATION_ENV 2> /dev/null
         . $SETUP_ENV
         SATELLITE_FQDN="$SATELLITE_HOST.$SATELLITE_DOMAIN"
+        echo "Migrating from $SATELLITE_FQDN"
         SATELLITE_IP=`getent hosts $SATELLITE_FQDN | cut -f 1 -d " "`
         if [ -z "$SATELLITE_IP" ]; then
             echo "Something went wrong. IP address of remote host can not be found."
@@ -680,6 +739,10 @@ for p in $@; do
         if [ "$LOGFILE" = "0" ]; then
             LOGFILE=/var/log/rhn/migration.log
         fi
+       ;;
+    -f)
+        shift
+        FROMVERSION="$1"
        ;;
     -s)
         DO_SETUP=1
@@ -699,15 +762,21 @@ for p in $@; do
         help
        ;;
     -l)
-        LOGFILE="1"
+        shift
+        LOGFILE="$1"
         ;;
     -w)
         WAIT_BETWEEN_STEPS=1
         ;;
     *)
-       echo "That option is not recognized"
+       echo
+       echo "Option \"$p\" is not recognized. Type \"$PROGRAM -h\" for help."
+       echo
+       exit 1
        ;;
     esac
+
+    shift
 done
 
 if [ "$LOGFILE" != "0" ]; then
