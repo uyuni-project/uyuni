@@ -191,6 +191,11 @@ class Packages(RPC_Base):
         user = rhnUser.search(username)
         if not user or not user.check_password(password):
             raise rhnFault(2)
+        if rhnUser.is_user_disabled(username):
+            msg = _("""
+                   %s Account has been deactivated on this server.
+                   Please contact your Org administrator for more help.""")
+            raise rhnFault(1, msg % username, explain=0)
         if rhnUser.is_user_read_only(user.username):
             raise rhnFault(702)
         session = user.create_session()
