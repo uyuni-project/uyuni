@@ -1,4 +1,6 @@
 - fixes ise error with invalid custom key id (bsc#1048294)
+- Add message about channel changes on salt managed systems to
+  UI and API docs (bsc#1048845)
 
 -------------------------------------------------------------------
 Wed Aug 30 16:02:47 CEST 2017 - mc@suse.de

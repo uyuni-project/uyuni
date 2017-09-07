@@ -11,6 +11,9 @@
 - Add back "Add Selected to SSM" buttons to Group pages (bsc#1047702)
 - fix a ConstraintViolationException when refreshing hardware with
   changed network interfaces or IP addresses
+- Add message about channel changes on salt managed systems to
+  UI and API docs (bsc#1048845)
+- show Child Channels tab in SSM again if a salt minion is in the set
 
 -------------------------------------------------------------------
 Wed Aug 30 16:00:28 CEST 2017 - mc@suse.de
