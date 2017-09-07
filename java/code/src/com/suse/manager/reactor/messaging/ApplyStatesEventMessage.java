@@ -49,27 +49,6 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
      * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
      *
      * @param serverIdIn the server id
-     * @param userIdIn the user id
-     * @param stateNamesIn state names that need to be applied to the server
-     */
-    public ApplyStatesEventMessage(long serverIdIn, long userIdIn, String... stateNamesIn) {
-        this(serverIdIn, userIdIn, false, stateNamesIn);
-    }
-
-    /**
-     * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
-     *
-     * @param serverIdIn the server id
-     * @param stateNamesIn state module names to be applied to the server
-     */
-    public ApplyStatesEventMessage(long serverIdIn, String... stateNamesIn) {
-        this(serverIdIn, null, false, stateNamesIn);
-    }
-
-    /**
-     * Constructor for creating a {@link ApplyStatesEventMessage} for a given server.
-     *
-     * @param serverIdIn the server id
      * @param forcePackageListRefreshIn set true to request a package list refresh
      * @param stateNamesIn state module names to be applied to the server
      */
