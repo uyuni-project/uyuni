@@ -132,8 +132,10 @@ class Server(ServerWrapper):
             cert["architecture"] = self.archname
             cert["profile_name"] = self.server["name"]
             cert["description"] = self.server["description"]
-            if self.user:
+            if self.user and self.user.contact["login"]:
                 cert["username"] = self.user.contact["login"]
+            else:
+                cert["username"] = ""
             cert["type"] = self.type
             cert.set_secret(self.server["secret"])
             self.cert = cert
