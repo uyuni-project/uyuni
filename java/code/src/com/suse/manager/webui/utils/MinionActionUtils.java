@@ -67,6 +67,18 @@ public class MinionActionUtils {
                     .compose(Json::asObj);
 
     /**
+    * Lookup job metadata to see if a package list refresh was requested.
+    *
+    * @param jobInfo job info containing the metadata
+    * @return true if a package list refresh was requested, otherwise false
+    */
+    private static boolean forcePackageListRefresh(Info jobInfo) {
+        return jobInfo.getMetadata(ScheduleMetadata.class)
+                        .map(ScheduleMetadata::isForcePackageListRefresh)
+                        .orElse(false);
+    }
+
+    /**
      * Checks the current status of the ServerAction by looking
      * at running jobs on the minion and the job cache using the
      * action id we add to the job as metadata.
@@ -111,6 +123,8 @@ public class MinionActionUtils {
                             else {
                                 SaltUtils.INSTANCE.updateServerAction(sa, 0L,
                                         true, info.getJid(), o, info.getFunction());
+                                SaltUtils.handlePackageChanges(info.getFunction(), o,
+                                        server);
                                 return sa;
                             }
                         }).orElseGet(() -> {

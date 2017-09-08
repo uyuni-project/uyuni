@@ -5,6 +5,7 @@
 - Add back "Add Selected to SSM" buttons to Group pages (bsc#1047702)
 - fix a ConstraintViolationException when refreshing hardware with
   changed network interfaces or IP addresses
+- improve performance of package installation and patch application
 
 -------------------------------------------------------------------
 Mon Jun 12 09:07:20 CEST 2017 - mc@suse.de

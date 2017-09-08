@@ -15,6 +15,7 @@
 package com.suse.manager.reactor.messaging;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
 import com.redhat.rhn.common.messaging.EventMessage;
@@ -23,11 +24,12 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
-import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.domain.server.MinionServer;
 
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.utils.SaltUtils.PackageChangeOutcome;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.event.JobReturnEvent;
 
@@ -142,25 +144,29 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             }
         });
 
-        // Schedule a package list refresh if either requested or detected as necessary
-        if (
-            forcePackageListRefresh(jobReturnEvent) ||
-            SaltUtils.INSTANCE.shouldRefreshPackageList(function, jobResult)
-        ) {
-            MinionServerFactory
-                    .findByMinionId(jobReturnEvent.getMinionId())
-                    .ifPresent(minionServer -> {
-                try {
-                    ActionManager.schedulePackageRefresh(minionServer.getOrg(),
-                        minionServer);
-                }
-                catch (TaskomaticApiException e) {
-                    LOG.error("Could not schedule package refresh for minion: " +
-                        minionServer.getMinionId());
-                    throw new RuntimeException(e);
-                }
+        MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
+            .ifPresent(minionServer -> {
+                jobResult.ifPresent(result -> {
+                    try {
+                        if (forcePackageListRefresh(jobReturnEvent) ||
+                            SaltUtils.handlePackageChanges(function, result,
+                                    minionServer) ==
+                                PackageChangeOutcome.NEEDS_REFRESHING) {
+                                ActionManager.schedulePackageRefresh(minionServer.getOrg(),
+                                        minionServer);
+                            }
+                        }
+                    catch (JsonParseException e) {
+                        LOG.warn("Could not determine if packages changed " +
+                                "in call to " + function +
+                                " because of a parse error");
+                        LOG.warn(e);
+                    }
+                    catch (TaskomaticApiException e) {
+                        LOG.error(e);
+                    }
+                });
             });
-        }
 
         // For all jobs: update minion last checkin
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
