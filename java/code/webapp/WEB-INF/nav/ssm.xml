@@ -35,8 +35,7 @@
         <rhn-tab name="Base Channels">
             <rhn-tab-url>/rhn/channel/ssm/BaseChannelSubscribe.do</rhn-tab-url>
         </rhn-tab>
-        <rhn-tab name="Child Channels" acl="user_role(config_admin);
-                all_systems_in_set_have_feature(ftr_channel_config_subscription)">
+        <rhn-tab name="Child Channels">
             <rhn-tab-url>/rhn/channel/ssm/ChildSubscriptions.do</rhn-tab-url>
             <rhn-tab-url>/rhn/channel/ssm/ChildSubscriptionsConfirm.do</rhn-tab-url>
         </rhn-tab>
