@@ -48,6 +48,9 @@ public class MgrK8sRunner {
         @SerializedName("pod_name")
         private String podName;
 
+        @SerializedName("pod_namespace")
+        private String podNamespace;
+
         /**
          * @return the image name
          */
@@ -102,6 +105,20 @@ public class MgrK8sRunner {
          */
         public void setPodName(String podNameIn) {
             this.podName = podNameIn;
+        }
+
+        /**
+         * @return the pod namespace
+         */
+        public String getPodNamespace() {
+            return podNamespace;
+        }
+
+        /**
+         * @param podNamespaceIn the pod namespace
+         */
+        public void setPodNamespace(String podNamespaceIn) {
+            this.podNamespace = podNamespaceIn;
         }
     }
 

@@ -28,7 +28,8 @@ def get_all_containers(kubeconfig=None, context=None):
                     "image_id": "docker-pullable://some/image@sha256:hash....",
                     "image": "myregistry/some/image:v1",
                     "container_id": "docker://...hash...",
-                    "pod_name": "kubernetes-pod"
+                    "pod_name": "kubernetes-pod",
+                    "pod_namespace": "pod-namespace"
                 }
        }
     '''
@@ -49,6 +50,7 @@ def get_all_containers(kubeconfig=None, context=None):
             res_cont['image'] = container.image
             res_cont['image_id'] = container.image_id
             res_cont['pod_name'] = pod.metadata.name
+            res_cont['pod_namespace'] = pod.metadata.namespace
             output['containers'].append(res_cont)
 
     return output

@@ -53,6 +53,7 @@ class PodInfo extends React.Component {
     return (
       <tr>
         <td>{data.name}</td>
+        <td>{data.namespace}</td>
         <td>{this.renderStatusIcon(data.statusId)}</td>
       </tr>
     );
@@ -89,6 +90,7 @@ class ClusterInfo extends React.Component {
             <tbody>
               <tr>
                 <th>Pod</th>
+                <th>Namespace</th>
                 <th>Status</th>
               </tr>
               {data.pods.map(p => <PodInfo key={p.name} data={p}/>)}
