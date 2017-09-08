@@ -1,5 +1,7 @@
 
 - Kubernetes runner implementation
+- addition of parameters to package manipulation states to improve
+  SUSE Manager performance
 
 -------------------------------------------------------------------
 Fri Jul 21 12:02:24 CEST 2017 - mc@suse.de

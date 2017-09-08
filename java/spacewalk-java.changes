@@ -14,6 +14,7 @@
 - Add message about channel changes on salt managed systems to
   UI and API docs (bsc#1048845)
 - show Child Channels tab in SSM again if a salt minion is in the set
+- improve performance of package installation and patch application
 
 -------------------------------------------------------------------
 Wed Aug 30 16:00:28 CEST 2017 - mc@suse.de
