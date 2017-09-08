@@ -62,7 +62,7 @@ function hierarchyView(container, rootIn) {
       .attr('y', d => -(getIconDimensionByType(d)/2) + 'px')
       .attr('width', d => getIconDimensionByType(d) + 'px')
       .attr('height', d => getIconDimensionByType(d) + 'px')
-      .html(d => '<div class="icon-wrapper"><i class="fa ' +
+      .html(d => '<div class="icon-wrapper" title="' + captionFunction(d) + '"><i class="fa ' +
           deriveIconClass(d) + '"></i></div>'); // we must construct html manually
                                                 // otherwise the fa icon is not visible
 
