@@ -161,6 +161,7 @@ public class KubernetesManager {
                             ContainerInfo containerUsage = new ContainerInfo();
                             containerUsage.setContainerId(container.getContainerId());
                             containerUsage.setPodName(container.getPodName());
+                            containerUsage.setPodNamespace(container.getPodNamespace());
                             containerUsage.setBuildRevision(imgBuildRevision);
                             containerUsage.setVirtualHostManager(virtHostMgr);
                             usage.ifPresent(u -> u.getContainerInfos().add(containerUsage));

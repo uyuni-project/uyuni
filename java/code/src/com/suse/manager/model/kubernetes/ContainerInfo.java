@@ -31,6 +31,7 @@ public class ContainerInfo {
 
     private String containerId;
     private String podName;
+    private String podNamespace;
     private Optional<Integer> buildRevision;
     private VirtualHostManager virtualHostManager;
 
@@ -60,6 +61,20 @@ public class ContainerInfo {
      */
     public void setPodName(String podNameIn) {
         this.podName = podNameIn;
+    }
+
+    /**
+     * @return the pod namespace
+     */
+    public String getPodNamespace() {
+        return podNamespace;
+    }
+
+    /**
+     * @param podNamespaceIn the pod namespace
+     */
+    public void setPodNamespace(String podNamespaceIn) {
+        this.podNamespace = podNamespaceIn;
     }
 
     /**
