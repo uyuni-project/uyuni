@@ -30,9 +30,12 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * @xmlrpc.doc
  * #struct("Image information")
  *   #prop("int", "id")
- *   #prop("string", "name")
- *   #prop("string", "version")
- *   #prop("string", "arch")
+ *   #prop_desc("string", "name", "image name")
+ *   #prop_desc("string", "version", "image tag/version")
+ *   #prop_desc("int", "revision", "image build revision number")
+ *   #prop_desc("string", "arch", "image architecture")
+ *   #prop_desc("boolean", "external", "true if the image is built externally,
+ *          false otherwise")
  *   #prop("string", "storeLabel")
  *   #prop("string", "checksum")
  * #struct_end()
@@ -49,7 +52,9 @@ public class ImageInfoSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("id", image.getId());
         helper.add("name", image.getName());
         helper.add("version", image.getVersion());
+        helper.add("revision", image.getRevisionNumber());
         helper.add("arch", image.getImageArch().getLabel());
+        helper.add("external", image.isExternalImage());
         helper.add("storeLabel", store != null ? store.getLabel() : "");
         helper.add("checksum", chk != null ? chk.getChecksum() : "");
         helper.writeTo(writer);
