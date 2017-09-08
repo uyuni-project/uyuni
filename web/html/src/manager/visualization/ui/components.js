@@ -255,7 +255,7 @@ function svgTextStyle(container) {
     .attr('id', 'textStyle');
   textStyle
     .append('feFlood')
-    .attr('flood-color', '#454545');
+    .attr('flood-color', 'rgba(220, 220, 220, 0.8)');
   textStyle
     .append('feComposite')
     .attr('in', 'SourceGraphic');
