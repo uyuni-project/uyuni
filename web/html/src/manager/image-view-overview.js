@@ -151,7 +151,7 @@ class ImageInfo extends React.Component {
         : null;
 
     if (data.runtimeStatus === 1) {
-      elm = <span><i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are up-to-date")}/><a href={"#/runtime/" + data.id}>{t("All instances are up-to-date")}</a></span>
+      elm = <span><i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are consistent with SUSE Manager")}/><a href={"#/runtime/" + data.id}>{t("All instances are consistent with SUSE Manager")}</a></span>
     } else if (data.runtimeStatus === 2) {
       elm = <span><i className="fa fa-question-circle fa-1-5x" title={t("No information")}/><a href={"#/runtime/" + data.id}>{t("No information")}</a></span>
     } else if (data.runtimeStatus === 3) {
