@@ -105,6 +105,7 @@ public class VisualizationManager {
                 .getNamedQuery("Server.serverIdVirtualHostManagerId")
                 .list()
                 .stream()
+                .filter(o -> ((Object [])o)[0] != null)
                 .collect(Collectors.toMap(
                         o -> ((Object []) o)[0].toString(),
                         o -> ((Object []) o)[1].toString())
