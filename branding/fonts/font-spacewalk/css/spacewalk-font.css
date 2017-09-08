@@ -203,3 +203,6 @@
 .spacewalk-icon-desktop-filled-non-checking-in:before {
   content: "\e903";
 }
+.spacewalk-icon-desktop-filled-group:before {
+	content: "\e909";
+}
