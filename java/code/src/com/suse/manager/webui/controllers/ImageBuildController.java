@@ -802,6 +802,7 @@ public class ImageBuildController {
 
             JsonObject podInfo = new JsonObject();
             podInfo.addProperty("name", c.getPodName());
+            podInfo.addProperty("namespace", c.getPodNamespace());
             podInfo.addProperty("statusId",
                     c.getRuntimeStatus(overview.getCurrRevisionNum()));
 
