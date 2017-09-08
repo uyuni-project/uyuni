@@ -228,11 +228,23 @@ svg {
   // default
   .node {
     foreignObject {
-      width: 1em;
-      height: 1em;
+      width: 1.4em;
+      height: 1.4em;
       color: #ddd;
-      i {
-        font-size: 1em;
+      .icon-wrapper {
+        background-color: #fafafa;
+        border: 1px solid #aaa;
+        width: 1em;
+        height: 1em;
+        padding: 0.2em;
+        border-radius: 10em;
+        box-sizing: content-box;
+        i {
+          font-size: 0.8em;
+        }
+      }
+      .icon-wrapper:hover {
+        background-color: #333;
       }
     }
   }
@@ -246,11 +258,16 @@ svg {
 
   .node.root {
     foreignObject {
-      width: 4em;
-      height: 4em;
+      width: 5em;
+      height: 5em;
       color: #008d5f;
-      i {
-        font-size: 4em;
+      .icon-wrapper {
+        width: 4.4em;
+        height: 4.4em;
+        padding: 0.3em;
+        i {
+          font-size: 4em;
+        }
       }
     }
   }
@@ -264,33 +281,48 @@ svg {
 
   .node.vhm {
     foreignObject {
-      width: 3em;
-      height: 3em;
+      width: 4em;
+      height: 4em;
       color: #83a;
-      i {
-        font-size: 3em;
+      .icon-wrapper {
+        width: 3.4em;
+        height: 3.4em;
+        padding: 0.3em;
+        i {
+          font-size: 3em;
+        }
       }
     }
   }
 
   .node.inner-node {
     foreignObject {
-      width: 3em;
-      height: 3em;
+      width: 4em;
+      height: 4em;
       color: #c7b;
-      i {
-        font-size: 3em;
+      .icon-wrapper {
+        width: 3.4em;
+        height: 3.4em;
+          padding: 0.3em;
+        i {
+          font-size: 3em;
+        }
       }
     }
   }
 
   .node.system {
     foreignObject {
-      width: 1.2em;
-      height: 1.2em;
+      width: 2.4em;
+      height: 2.4em;
       color: #426a9a;
-      i {
-        font-size: 1.2em;
+      .icon-wrapper {
+        width: 2em;
+        height: 2em;
+        padding: 0.2em;
+        i {
+          font-size: 1.8em;
+        }
       }
     }
   }
