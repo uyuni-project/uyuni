@@ -20,13 +20,13 @@
 }
 
 .security-patches {
-  color: #dd0000;
+  color: @spacewalk-red;
 }
 .bug-patches {
-  color: #dd7700;
+  color: darken(@spacewalk-orange-light, 5%);
 }
 .minor-patches {
-  color: #008000;
+  color: darken(@spacewalk-green, 10%);
 }
 
 .toggle-filter-button {
@@ -228,45 +228,43 @@ svg {
   // default
   .node {
     foreignObject {
-      width: 1.4em;
-      height: 1.4em;
-      color: #ddd;
+      width: 22px;
+      height: 22px;
       .icon-wrapper {
-        background-color: #fafafa;
-        border: 1px solid #aaa;
-        width: 1em;
-        height: 1em;
-        padding: 0.2em;
-        border-radius: 10em;
-        box-sizing: content-box;
+        color: @spacewalk-gray-light;
+        text-align: center;
+        background-color: lighten(@spacewalk-gray-light, 10%);
+        border: 1px solid @spacewalk-gray;
+        padding: 3px;
+        width: 100%;
+        height: 100%;
+        border-radius: 100px;
+        box-sizing: border-box;
         i {
-          font-size: 0.8em;
+          font-size: 14px;
+          margin: 0;
         }
-      }
-      .icon-wrapper:hover {
-        background-color: #333;
       }
     }
   }
-  .node.selected {
-    foreignObject {
-      i {
-        color: #ffbb00;
-      }
-    }
+  .node foreignObject .icon-wrapper:hover {
+    background: @spacewalk-yellow!important;
+    border-color: @spacewalk-gray-dark;
+  }
+  .node.selected foreignObject .icon-wrapper {
+    background: @spacewalk-yellow!important;
+    border-color: @spacewalk-gray-dark;
+    color: @spacewalk-gray-dark!important;
   }
 
   .node.root {
     foreignObject {
-      width: 5em;
-      height: 5em;
-      color: #008d5f;
+      width: 50px;
+      height: 50px;
       .icon-wrapper {
-        width: 4.4em;
-        height: 4.4em;
-        padding: 0.3em;
+        color: @susemanager-green;
         i {
-          font-size: 4em;
+          font-size: 42px;
         }
       }
     }
@@ -279,17 +277,15 @@ svg {
     }
   }
 
-  .node.vhm {
+  .node.vhm,
+  .node.inner-node {
     foreignObject {
-      width: 4em;
-      height: 4em;
-      color: #83a;
+      width: 34px;
+      height: 34px;
       .icon-wrapper {
-        width: 3.4em;
-        height: 3.4em;
-        padding: 0.3em;
+        color: #9059DE;
         i {
-          font-size: 3em;
+          font-size: 26px;
         }
       }
     }
@@ -297,31 +293,20 @@ svg {
 
   .node.inner-node {
     foreignObject {
-      width: 4em;
-      height: 4em;
-      color: #c7b;
       .icon-wrapper {
-        width: 3.4em;
-        height: 3.4em;
-          padding: 0.3em;
-        i {
-          font-size: 3em;
-        }
+        color: #9873B7;
       }
     }
   }
 
   .node.system {
     foreignObject {
-      width: 2.4em;
-      height: 2.4em;
-      color: #426a9a;
+      width: 26px;
+      height: 26px;
       .icon-wrapper {
-        width: 2em;
-        height: 2em;
-        padding: 0.2em;
+        color: #4276A5;
         i {
-          font-size: 1.8em;
+          font-size: 18px;
         }
       }
     }
@@ -332,37 +317,29 @@ svg {
   }
 
   .link {
-    stroke: #bba;
+    stroke: darken(@spacewalk-gray-light, 5%);
     stroke-width: 0.5px;
   }
 
-  .stroke-red foreignObject {
-    i {
-      color: #b57a77;
+  .node.stroke-red foreignObject {
+    .icon-wrapper {
+      background: @spacewalk-red;
+      color: @spacewalk-gray-light;
     }
   }
-  .stroke-red.selected foreignObject {
-    i {
-      color: #900000!important;
+  .node.stroke-green foreignObject {
+    .icon-wrapper {
+      background: @susemanager-green;
+      color: darken(@spacewalk-gray-dark, 10%);
     }
   }
 
-  .stroke-green foreignObject {
-    i {
-      color: #7ab577;
-    }
-  }
-  .stroke-green.selected foreignObject {
-    i {
-      color: #009000!important;
-    }
-  }
-  .unpatched foreignObject {
+  .node.unpatched foreignObject {
     i:before {
       content: '\e902'!important;
     }
   }
-  .non-checking-in foreignObject {
+  .node.non-checking-in foreignObject {
     i:before {
       content: '\e903'!important;
     }
