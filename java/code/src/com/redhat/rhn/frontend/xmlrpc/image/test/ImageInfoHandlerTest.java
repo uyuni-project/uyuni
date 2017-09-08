@@ -43,6 +43,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
@@ -54,6 +56,7 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
@@ -71,20 +74,53 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         setThreadingPolicy(new Synchroniser());
     }};
 
+    private static TaskomaticApi taskomaticApi;
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
         CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
+    public final void testImportImage() throws Exception {
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
+
+        MinionServer server = ImageTestUtils.createBuildHost(admin);
+        ImageStore store = createImageStore("registry.reg", admin);
+        ActivationKey ak = createActivationKey(admin);
+
+        DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        int preScheduleSize = dr.size();
+
+        long ret = handler.importImage(admin, "my-external-image", "1.0",
+                server.getId().intValue(), store.getLabel(), ak.getKey(), getNow());
+        assertTrue(ret > 0);
+
+        Optional<ImageInfo> info = ImageInfoFactory
+                .lookupByName("my-external-image", "1.0", store.getId());
+        assertTrue(info.isPresent());
+
+        dr = ActionManager.recentlyScheduledActions(admin, null, 30);
+        assertEquals(1, dr.size() - preScheduleSize);
+        assertEquals("Inspect an Image", ((ScheduledAction)dr.get(0)).getTypeName());
+
+        try {
+            handler.importImage(admin, "my-external-image", "1.0",
+                    server.getId().intValue(), store.getLabel(), ak.getKey(), getNow());
+            fail("Overwriting image.");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Image already exists.", e.getMessage());
+        }
+
+        ImageInfoFactory.delete(info.get());
+        ret = handler.importImage(admin, "my-external-image", "1.0",
+                server.getId().intValue(), store.getLabel(), "", getNow());
+        assertTrue(ret > 0);
     }
 
     public final void testScheduleImageBuild() throws Exception {
-        TaskomaticApi taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
-        ImageInfoFactory.setTaskomaticApi(taskomaticMock);
-
-        CONTEXT.checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
-        } });
+        ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
@@ -179,5 +215,19 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, result.size());
         assertEquals("newvalue2", result.get(orgKey2.getLabel()));
         assertEquals("newvalue1", result.get(orgKey1.getLabel()));
+    }
+
+    private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
+        if (taskomaticApi == null) {
+            taskomaticApi = CONTEXT.mock(TaskomaticApi.class);
+            CONTEXT.checking(new Expectations() {
+                {
+                    allowing(taskomaticApi)
+                            .scheduleActionExecution(with(any(Action.class)));
+                }
+            });
+        }
+
+        return taskomaticApi;
     }
 }

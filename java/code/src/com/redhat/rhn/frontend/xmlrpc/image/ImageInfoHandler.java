@@ -22,17 +22,24 @@ import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageOverview;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
+import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
+
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageProfileException;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
-
+import com.redhat.rhn.frontend.xmlrpc.activationkey.NoSuchActivationKeyException;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -86,21 +93,80 @@ public class ImageInfoHandler extends BaseHandler {
     }
 
     /**
-     * Schedule an Image Build
-     * @param loggedInUser The current User
+     * Schedule an image import
+     * @param loggedInUser The current user
+     * @param name The name
+     * @param version The version
+     * @param buildHostId The system ID of the build host
+     * @param storeLabel The store label
+     * @param activationKey The activation key
+     * @param earliestOccurrence Earliest occurrence of the following image inspect
+     * @return the image inspect action id
+     *
+     * @xmlrpc.doc Import an image and schedule an inspect afterwards
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param_desc("string", "name", "image name as specified in the
+     * store")
+     * @xmlrpc.param #param_desc("string", "version", "version to import or empty")
+     * @xmlrpc.param #param_desc("int", "buildHostId", "system ID of the build
+     * host")
+     * @xmlrpc.param #param("string", "storeLabel")
+     * @xmlrpc.param #param_desc("string", "activationKey", "activation key to get
+     * the channel data from")
+     * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence", "earliest
+     * the following inspect can run")
+     * @xmlrpc.returntype int - ID of the inspect action created
+     */
+    public Long importImage(User loggedInUser, String name, String version,
+            Integer buildHostId, String storeLabel, String activationKey,
+            Date earliestOccurrence) {
+        if (StringUtils.isEmpty(name)) {
+            throw new InvalidParameterException("Image name cannot be empty.");
+        }
+        else if (StringUtils.isEmpty(storeLabel)) {
+            throw new InvalidParameterException("Store label cannot be empty.");
+        }
+
+        ImageStore store =
+                ImageStoreFactory.lookupBylabelAndOrg(storeLabel, loggedInUser.getOrg())
+                        .orElseThrow(NoSuchImageStoreException::new);
+
+        ActivationKey key = null;
+        if (!StringUtils.isEmpty(activationKey)) {
+            key = ActivationKeyFactory.lookupByKey(activationKey);
+            if (key == null) {
+                throw new NoSuchActivationKeyException();
+            }
+        }
+
+        validateBuildHost(buildHostId, loggedInUser.getOrg());
+
+        try {
+            return ImageInfoFactory.scheduleImport(buildHostId, name, version, store,
+                    Optional.ofNullable(key).map(ActivationKey::getChannels),
+                    earliestOccurrence, loggedInUser);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Schedule an image build
+     * @param loggedInUser The current user
      * @param profileLabel The profile label
      * @param version The version
      * @param buildHostId The system ID of the build host
      * @param earliestOccurrence Earliest occurrence of the image build
      * @return the image build action id
      *
-     * @xmlrpc.doc Schedule an Image Build
+     * @xmlrpc.doc Schedule an image build
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "profileLabel")
      * @xmlrpc.param #param_desc("string", "version", "version to build or empty")
      * @xmlrpc.param #param_desc("int", "buildHostId", "system id of the build host")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
-     * "Earliest the build can run.")
+     * "earliest the build can run.")
      * @xmlrpc.returntype int - ID of the build action created.
      */
     public Long scheduleImageBuild(User loggedInUser, String profileLabel, String version,
@@ -109,24 +175,14 @@ public class ImageInfoHandler extends BaseHandler {
         if (StringUtils.isEmpty(profileLabel)) {
             throw new InvalidParameterException("Profile label cannot be empty.");
         }
-        Optional<ImageProfile> oprof = ImageProfileFactory.lookupByLabelAndOrg(profileLabel,
-                loggedInUser.getOrg());
-        if (!oprof.isPresent()) {
-            throw new NoSuchImageProfileException();
-        }
+        ImageProfile profile =
+                ImageProfileFactory.lookupByLabelAndOrg(profileLabel, loggedInUser.getOrg())
+                        .orElseThrow(NoSuchImageProfileException::new);
 
-        Server buildHost = ServerFactory.lookupByIdAndOrg(new Long(buildHostId),
-                loggedInUser.getOrg());
-        if (buildHost == null) {
-            throw new NoSuchSystemException();
-        }
-        if (!buildHost.hasContainerBuildHostEntitlement()) {
-            throw new NoSuchSystemException(buildHost.getHostname() +
-                    " is not a valid container buildhost");
-        }
+        validateBuildHost(buildHostId, loggedInUser.getOrg());
 
         try {
-            return ImageInfoFactory.scheduleBuild(buildHostId, version, oprof.get(),
+            return ImageInfoFactory.scheduleBuild(buildHostId, version, profile,
                     earliestOccurrence, loggedInUser);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
@@ -255,5 +311,18 @@ public class ImageInfoHandler extends BaseHandler {
         }
         ImageInfoFactory.delete(opt.get());
         return 1;
+    }
+
+    private Server validateBuildHost(long buildHostId, Org org) {
+        Server buildHost = ServerFactory.lookupByIdAndOrg(buildHostId, org);
+        if (buildHost == null) {
+            throw new NoSuchSystemException();
+        }
+        if (!buildHost.hasContainerBuildHostEntitlement()) {
+            throw new NoSuchSystemException(
+                    buildHost.getHostname() + " is not a valid container buildhost");
+        }
+
+        return buildHost;
     }
 }
