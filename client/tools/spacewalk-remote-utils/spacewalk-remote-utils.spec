@@ -13,6 +13,7 @@ License:     GPLv2
 URL:         https://github.com/spacewalkproject/spacewalk
 Source:      https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildArch:   noarch
+BuildRoot:   %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires: python-devel
 %if 0%{?fedora} >= 23

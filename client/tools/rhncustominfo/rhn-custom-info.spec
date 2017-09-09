@@ -7,6 +7,7 @@ License: GPLv2
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 URL:     https://github.com/spacewalkproject/spacewalk
 BuildArch: noarch
+BuildRoot: %{_tmppath}/%{name}-%{version}-build
 %if 0%{?fedora} >= 23
 BuildRequires: python3-devel
 Requires: python3-rhnlib
