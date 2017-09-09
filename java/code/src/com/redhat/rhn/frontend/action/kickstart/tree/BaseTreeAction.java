@@ -108,6 +108,10 @@ public abstract class BaseTreeAction extends BaseEditAction {
         bte.setInstallType(type);
 
         bte.setServerName(request.getLocalName());
+            // disable YaST self update for SLE
+            if (!kopts.contains("self_update=")) {
+                kopts = kopts + " self_update=0 pt.options=+self_update";
+            }
         bte.setKernelOptions(form.getString(KERNEL_OPTS));
         bte.setKernelOptionsPost(form.getString(POST_KERNEL_OPTS));
 

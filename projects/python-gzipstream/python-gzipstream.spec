@@ -4,7 +4,7 @@
 
 Summary: Streaming zlib (gzip) support for python
 Name: python-gzipstream
-Version: 2.8.2
+Version: 2.8.3
 Release: 1%{?dist}
 URL:        https://github.com/spacewalkproject/spacewalk/wiki/Projects_python-gzipstream
 Source0:    https://github.com/spacewalkproject/spacewalk/archive/python-gzipstream-%{version}.tar.gz
@@ -54,6 +54,9 @@ Obsoletes: python-gzipstream < %{version}-%{release}
 %doc html LICENSE
 
 %changelog
+* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
+- purged changelog entries for Spacewalk 2.0 and older
+
 * Fri Sep 01 2017 Jan Dobes 2.8.2-1
 - rebuild package in Koji (rhel 7 buildroot was missing macros and python-gzipstream obsolete wasn't added)
 
@@ -87,36 +90,4 @@ Obsoletes: python-gzipstream < %{version}-%{release}
 - Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
 - Bumping package versions for 2.3.
 - Bumping package versions for 2.2.
-
-* Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 1.10.2-1
-- updating copyright years
-
-* Mon Jun 17 2013 Michael Mraka <michael.mraka@redhat.com> 1.10.1-1
-- removed old CVS/SVN version ids
-- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
-- %%defattr is not needed since rpm 4.4
-
-* Thu Feb 23 2012 Michael Mraka <michael.mraka@redhat.com> 1.7.1-1
-- we are now just GPL
-
-* Mon Oct 31 2011 Miroslav Suchý 1.6.2-1
-- point to python-gzipstream specific URL
-- add documentation
-
-* Fri Jul 22 2011 Jan Pazdziora 1.6.1-1
-- We only support version 14 and newer of Fedora, removing conditions for old
-  versions.
-
-* Tue Nov 30 2010 Miroslav Suchý <msuchy@redhat.com> 1.4.3-1
-- 657531 - correct  condition for defining the python_sitelib macro
-  (msuchy@redhat.com)
-
-* Fri Nov 26 2010 Miroslav Suchý <msuchy@redhat.com> 1.4.2-1
-- put license into doc section (msuchy@redhat.com)
-- make setup quiet (msuchy@redhat.com)
-- correct buildroot (msuchy@redhat.com)
-- correct url and source url to point to fedorahosted (msuchy@redhat.com)
-
-* Fri Nov 26 2010 Miroslav Suchý <msuchy@redhat.com> 1.4.1-1
-- new package built with tito
 

@@ -6,7 +6,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:            oracle-xe-selinux
-Version:         10.2.0.44
+Version:         10.2.0.46
 Release:         1%{?dist}
 Summary:         SELinux policy module supporting Oracle XE
 Group:           System Environment/Base
@@ -18,7 +18,6 @@ License:         GPLv2+
 # make srpm TAG=%{name}-%{version}-%{release}
 URL:             https://github.com/spacewalkproject/spacewalk
 Source0:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:       %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 %if 0%{?fedora} && 0%{?fedora} > 26
 BuildRequires:   perl-interpreter
 %else
@@ -30,8 +29,8 @@ BuildArch:       noarch
 %if "%{selinux_policyver}" != ""
 Requires:         selinux-policy >= %{selinux_policyver}
 %endif
-Requires(post):   /usr/sbin/semodule, %{sbinpath}/restorecon, /sbin/ldconfig, /usr/sbin/selinuxenabled
-Requires(postun): /usr/sbin/semodule, %{sbinpath}/restorecon
+Requires(post):   /usr/sbin/semodule, %{sbinpath}/restorecon, /sbin/ldconfig, /usr/sbin/selinuxenabled, /usr/sbin/semanage
+Requires(postun): /usr/sbin/semodule, %{sbinpath}/restorecon, /usr/sbin/semanage
 Requires:         /etc/init.d/oracle-xe
 Requires:         oracle-nofcontext-selinux
 Requires:         oracle-lib-compat
@@ -122,7 +121,7 @@ if [ $1 -eq 0 ]; then
   # Remove SELinux policy modules
   for selinuxvariant in %{selinux_variants}
     do
-      /usr/sbin/semodule -s ${selinuxvariant} -l > /dev/null 2>&1 \
+      /usr/sbin/semanage module -s ${selinuxvariant} -l > /dev/null 2>&1 \
         && /usr/sbin/semodule -s ${selinuxvariant} -r %{modulename} || :
     done
 
@@ -143,6 +142,13 @@ fi
 %attr(0755,root,root) %{_sbindir}/%{name}-enable
 
 %changelog
+* Thu Sep 07 2017 Michael Mraka <michael.mraka@redhat.com> 10.2.0.46-1
+- removed unnecessary BuildRoot tag
+
+* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 10.2.0.45-1
+- purged changelog entries for Spacewalk 2.0 and older
+- fixed selinux error messages during package install, see related BZ#1446487
+
 * Thu Aug 10 2017 Tomas Kasparek <tkasparek@redhat.com> 10.2.0.44-1
 - 1479849 - BuildRequires: perl has been renamed to perl-interpreter on Fedora
   27
@@ -176,65 +182,4 @@ fi
 
 * Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 10.2.0.35-1
 - spec file polish
-
-* Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 10.2.0.34-1
-- 919468 - fixed path in file based Requires
-- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
-
-* Mon Oct 29 2012 Jan Pazdziora 10.2.0.33-1
-- Setsebool without -P is rarely needed.
-
-* Tue Oct 16 2012 Jan Pazdziora 10.2.0.32-1
-- Lsnrctl wants to search as well.
-
-* Sat Oct 13 2012 Jan Pazdziora 10.2.0.31-1
-- corenet_udp_bind_compat_ipv4_node no available on newer OSes.
-
-* Sat Oct 13 2012 Jan Pazdziora 10.2.0.30-1
-- Configure of Oracle XE 11 on RHEL 5.
-
-* Tue Oct 09 2012 Jan Pazdziora 10.2.0.29-1
-- The auth_read_passwd is not available everywhere.
-- We need lib_t.
-
-* Tue Oct 09 2012 Jan Pazdziora 10.2.0.28-1
-- Addressing AVC denials on Fedora 17.
-
-* Thu Oct 04 2012 Jan Pazdziora 10.2.0.27-1
-- Allowing Oracle XE 11 to read sysfs.
-
-* Thu Oct 04 2012 Jan Pazdziora 10.2.0.26-1
-- Allowing Oracle XE 11 to read sysfs.
-
-* Mon Oct 01 2012 Jan Pazdziora 10.2.0.25-1
-- Adding file contexts and stuff for oracle-xe-11.2.0-1.0.x86_64.
-- %%defattr is not needed since rpm 4.4
-
-* Tue Apr 10 2012 Jan Pazdziora 10.2.0.24-1
-- The rman is more like the database server process.
-- The backup.sh and restore.sh need to run as sqlplus, so that their log files
-  can be used by sqlplus.
-- The backup.sh from Oracle XE 10g seems to want to access urandom.
-- Allow Oracle database to ptrace self.
-
-* Wed Nov 30 2011 Michael Mraka <michael.mraka@redhat.com> 10.2.0.23-1
-- system user uids are < 1000 on Fedora 16
-
-* Thu Jul 21 2011 Jan Pazdziora 10.2.0.22-1
-- Revert "Fedora 15 uses oracledb_port_t instead of oracle_port_t."
-
-* Mon Jul 18 2011 Jan Pazdziora 10.2.0.21-1
-- Fedora 15 uses oracledb_port_t instead of oracle_port_t.
-
-* Wed Apr 06 2011 Jan Pazdziora 10.2.0.20-1
-- 489548, 565417 - upon ORA-3136, database writes to network/log/sqlnet.log.
-
-* Thu Sep 23 2010 Michael Mraka <michael.mraka@redhat.com> 10.2.0.19-1
-- switched to default VersionTagger
-
-* Wed Sep 01 2010 Jan Pazdziora 10.2-18
-- 629232 - only restorecon files that exist.
-
-* Mon Jul 19 2010 Jan Pazdziora 10.2-17
-- 615901 - dontaudit Oracle XE's access to /dev/console.
 
