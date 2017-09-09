@@ -1679,6 +1679,9 @@ class Syncer:
     @staticmethod
     def _fix_erratum(erratum):
         """ Replace the list of packages with references to short packages"""
+        if erratum['org_id'] is not None:
+            erratum['org_id'] = OPTIONS.orgid or DEFAULT_ORG
+
         sp_coll = sync_handlers.ShortPackageCollection()
         pids = set(erratum['packages'] or [])
         # map all the pkgs objects to the erratum
@@ -1690,6 +1693,7 @@ class Syncer:
                 # sync
                 continue
             package = sp_coll.get_package(pid)
+            package['org_id'] = erratum['org_id']
 
             packages.append(package)
 
@@ -1697,14 +1701,11 @@ class Syncer:
         _validate_package_org(packages)
         erratum['packages'] = packages
 
-        if erratum['org_id'] is not None:
-            erratum['org_id'] = OPTIONS.orgid or DEFAULT_ORG
-
         if OPTIONS.channel:
             # If we are syncing only selected channels, do not link
             # to channels that do not have this erratum, they may not
             # have all related packages synced
-            imported_channels = _getImportedChannels(withAdvisory=erratum["advisory_name"])
+            imported_channels = _getImportedChannels(withAdvisory=erratum)
             # Import erratum to channels that are being synced
             imported_channels += OPTIONS.channel
         else:
@@ -2085,20 +2086,24 @@ def _getImportedChannels(withAdvisory=None):
     "Retrieves the channels already imported in the satellite's database"
 
     query = "select distinct c.label from rhnChannel c"
+    query_args={}
 
     if withAdvisory:
         query += """
             inner join rhnChannelErrata ce on c.id = ce.channel_id
-            inner join rhnErrata e on ce.errata_id = e.id and
-                                      e.advisory_name = :advisory
+            inner join rhnErrata e on ce.errata_id = e.id
+				    and e.advisory_name = :advisory
+				    and e.org_id = :org_id
         """
+        query_args={"advisory": withAdvisory["advisory_name"],
+                    "org_id": withAdvisory["org_id"]}
 
     if not OPTIONS.include_custom_channels:
         query += " where c.org_id is null"
 
     try:
         h = rhnSQL.prepare(query)
-        h.execute(advisory=withAdvisory)
+        h.execute(**query_args)
         return [x['label'] for x in h.fetchall_dict() or []]
     except (SQLError, SQLSchemaError, SQLConnectError):
         e = sys.exc_info()[1]

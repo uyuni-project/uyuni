@@ -113,6 +113,9 @@ rm -rf $RPM_BUILD_ROOT
 ldconfig
 
 %changelog
+* Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 11.2.0.15-1
+- purged changelog entries for Spacewalk 2.0 and older
+
 * Mon Jul 17 2017 Jan Dobes 11.2.0.14-1
 - Remove more fedorahosted links
 - Updated links to github in spec files
@@ -133,47 +136,4 @@ ldconfig
 * Wed Jan 22 2014 Michael Mraka <michael.mraka@redhat.com> 11.2.0.9-1
 - LD_PRELOAD setup has been moved to spacewalk-setup-tomcat
 - Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
-
-* Tue Dec 04 2012 Jan Pazdziora 11.2.0.8-1
-- On Fedoras, start to use tomcat >= 7.
-
-* Mon Oct 08 2012 Jan Pazdziora 11.2.0.7-1
-- Require latest greatest oracle-instantclient11.2-*.
-- %%defattr is not needed since rpm 4.4
-
-* Fri Feb 03 2012 Jan Pazdziora 11.2.0.6-1
-- Avoid cat: write error: Broken pipe when calling tomcat service under trap ''
-  PIPE
-
-* Mon May 16 2011 Jan Pazdziora 11.2.0.5-1
-- Both tomcat5 and tomcat6 which needs the LD_PRELOAD set.
-
-* Wed May 04 2011 Jan Pazdziora 11.2.0.4-1
-- We unset LD_PRELOAD to force ldd to show the libldap line with => even if
-  LD_PRELOAD was already set.
-
-* Mon Jan 17 2011 Jan Pazdziora 11.2.0.3-1
-- Set diag_adr_enabled to off.
-
-* Mon Jan 10 2011 Jan Pazdziora 11.2.0.2-1
-- On x86_64, require 64bit version of libaio for InstantClient 11g.
-
-* Fri Jan 07 2011 Jan Pazdziora 11.2.0.1-1
-- Have separate ld.so.conf.d for InstantClient and for XE server.
-- InstantClient 11 contains ojdbc5 and ojdbc6, we will change the target of the
-  symlink for now.
-- Need to use the "11" in .so Provides as well.
-- Switch to Oracle InstantClient 11 in oracle-lib-compat.
-
-* Thu Sep 23 2010 Michael Mraka <michael.mraka@redhat.com> 10.2.0.25-1
-- instantclient on s390(x) upgraded to 10.2.0.4
-- switched to default VersionTagger
-
-* Thu Sep 23 2010 Jan Pazdziora 10.2-24
-- 623115 - file lookup using just the linker name (libldap.so) fails if
-  openldap-devel is not installed.
-
-* Mon Sep 13 2010 Jan Pazdziora 10.2-23
-- 623115 - force tomcat to use the stock openldap, overriding the ldap_*
-  symbols in libclntsh.so*.
 

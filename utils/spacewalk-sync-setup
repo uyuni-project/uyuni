@@ -35,6 +35,7 @@ CONF_DIR = os.path.expanduser('~/.spacewalk-sync-setup')
 USER_CONF_FILE = os.path.join(CONF_DIR, 'config')
 DEFAULT_MASTER_SETUP_FILENAME = os.path.join(CONF_DIR, 'master.txt')
 DEFAULT_SLAVE_SETUP_FILENAME = os.path.join(CONF_DIR, 'slave.txt')
+UNKNOWN_FQDN = 'UNKNOWN-FQDN'
 
 DEFAULT_CONFIG = """
 # Default defines the slave and/or master we should connect to by default
@@ -66,17 +67,23 @@ def setupOptions():
     parser = OptionParser(usage=usage)
 
     cnxGrp = OptionGroup(parser, "Connections", "Identify the spacewalk instances we're going to connect to")
-    cnxGrp.add_option('--ss', '--slave-server', action='store', dest='slave',
+    cnxGrp.add_option('--ss', '--slave-server', action='store', dest='slave', default=UNKNOWN_FQDN,
+                      metavar='SLAVE-FQDN',
                       help="name of a slave to connect to.")
     cnxGrp.add_option('--sl', '--slave-login', action='store', dest='slave_login', default="",
+                      metavar='LOGIN',
                       help="A sat-admin login for slave-server")
     cnxGrp.add_option('--sp', '--slave-password', action='store', dest='slave_password', default="",
+                      metavar='PASSWORD',
                       help="Password for login slave-login on slave-server")
-    cnxGrp.add_option('--ms', '--master-server', action='store', dest='master',
+    cnxGrp.add_option('--ms', '--master-server', action='store', dest='master', default=UNKNOWN_FQDN,
+                      metavar='MASTER-FQDN',
                       help="name of a master to connect to.")
     cnxGrp.add_option('--ml', '--master-login', action='store', dest='master_login', default="",
+                      metavar='LOGIN',
                       help="A sat-admin login for master-server")
     cnxGrp.add_option('--mp', '--master-password', action='store', dest='master_password', default="",
+                      metavar='PASSWORD',
                       help="Password for login master-login on master-server")
     cnxGrp.add_option('--md', '--master-default', action='store_true', dest='master_default', default=False,
                       help="Should the specified master be made the default-master in a specified template-file")
@@ -280,7 +287,7 @@ def validateConnectInfo(info):
     "Something needs to connect - make sure we have fqdn/login/pwd, and ask for "
     " anything missing"
 
-    if not 'fqdn' in info or info['fqdn'] is None or len(info['fqdn']) == 0:
+    if not 'fqdn' in info or not info['fqdn'] or info['fqdn'] == UNKNOWN_FQDN:
         fail("Can't connect, I don't know what machine you want to go to!")
     elif "." not in info['fqdn']:
         fail("Machine domain name is not fully qualified!")
@@ -289,7 +296,7 @@ def validateConnectInfo(info):
         if not 'login' in info:
             fail("Can't connect, I don't have a login to use!")
     
-    if not info.get('login'):
+    if not 'password' in info or not info['password']:
         info['password'] = ask("Password for " + info['login'] + " on machine " + info['fqdn'], password=True)
 
     return info
@@ -299,9 +306,8 @@ def connectTo(info):
     logging.debug("Connect-to info = %s" % info)
     logging.info("Connecting to " + info['login'] + "@" + str(info['fqdn']))
     info = validateConnectInfo(info)
-    logging.info("Connecting to " + info['login'] + "@" + info['fqdn'])
-    url = "https://%(fqdn)s/rpc/api" % {"fqdn": info['fqdn']}
-    client = xmlrpclib.Server(url, verbose=0)
+    url = "http://%(fqdn)s/rpc/api" % {"fqdn": info['fqdn']}
+    client = xmlrpclib.Server(url, verbose=1)
     key = client.auth.login(info['login'], info['password'])
     return {"client": client, "key": key}
 
