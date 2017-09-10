@@ -61,7 +61,7 @@ When(/^file "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
     end
   rescue Timeout::Error
     $stderr.write("-----\n#{output[:stderr]}\n-----\n")
-    puts "#{arg2} not found in File #{arg1}"
+    raise "#{arg2} not found in File #{arg1}"
   end
 end
 
