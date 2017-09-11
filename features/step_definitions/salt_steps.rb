@@ -71,36 +71,27 @@ When(/^I start salt-master$/) do
 end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
-  if minion == 'sle-minion'
-    target = $minion
-  elsif minion == 'ceos-minion'
-    target = $ceos_minion
-  else
-    raise 'no valid name of minion given! '
-  end
-  target.run('systemctl stop salt-minion', false)
+  node = get_target(minion)
+  sysmd = 'systemctl stop salt-minion'
+  initd = 'rcsalt-minion stop'
+  node.run(initd, false) if minion == 'sle-minion'
+  node.run(sysmd, false) if minion == 'ceos-minion'
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
-  if minion == 'sle-minion'
-    target = $minion
-  elsif minion == 'ceos-minion'
-    target = $ceos_minion
-  else
-    raise 'no valid name of minion given! '
-  end
-  target.run('systemctl restart salt-minion', false)
+  node = get_target(minion)
+  sysmd = 'systemctl restart salt-minion'
+  initd = 'rcsalt-minion restart'
+  node.run(initd, false) if minion == 'sle-minion'
+  node.run(sysmd, false) if minion == 'ceos-minion'
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
-  if minion == 'sle-minion'
-    target = $minion
-  elsif minion == 'ceos-minion'
-    target = $ceos_minion
-  else
-    raise 'no valid name of minion given! '
-  end
-  target.run('systemctl restart salt-minion', false)
+  node = get_target(minion)
+  sysmd = 'systemctl restart salt-minion'
+  initd = 'rcsalt-minion restart'
+  node.run(initd, false) if minion == 'sle-minion'
+  node.run(sysmd, false) if minion == 'ceos-minion'
 end
 
 Then(/^salt-minion should be running on "(.*?)"$/) do |minion|
