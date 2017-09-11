@@ -72,26 +72,20 @@ end
 
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  sysmd = 'systemctl stop salt-minion'
-  initd = 'rcsalt-minion stop'
-  node.run(initd, false) if minion == 'sle-minion'
-  node.run(sysmd, false) if minion == 'ceos-minion'
+  node.run('rcsalt-minion stop', false) if minion == 'sle-minion'
+  node.run('systemctl stop salt-minion', false) if minion == 'ceos-minion'
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  sysmd = 'systemctl restart salt-minion'
-  initd = 'rcsalt-minion restart'
-  node.run(initd, false) if minion == 'sle-minion'
-  node.run(sysmd, false) if minion == 'ceos-minion'
+  node.run('rcsalt-minion stop', false) if minion == 'sle-minion'
+  node.run('systemctl stop salt-minion', false) if minion == 'ceos-minion'
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  sysmd = 'systemctl restart salt-minion'
-  initd = 'rcsalt-minion restart'
-  node.run(initd, false) if minion == 'sle-minion'
-  node.run(sysmd, false) if minion == 'ceos-minion'
+  node.run('rcsalt-minion stop', false) if minion == 'sle-minion'
+  node.run('systemctl stop salt-minion', false) if minion == 'ceos-minion'
 end
 
 Then(/^salt-minion should be running on "(.*?)"$/) do |minion|

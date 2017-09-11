@@ -13,9 +13,7 @@ Feature:  Container Image namespace tests
   Scenario: Apply the highstate to ensure container buid host is ready
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "[Container Build Host]" text
-    And I run "zypper mr -e `grep -h SLE-Manager-Tools-12-x86_64] /etc/zypp/repos.d/* | sed 's/\[//' | sed 's/\]//'`" on "sle-minion"
-    And I run "zypper mr -e SLE-Module-Containers-SLE-12-x86_64-Pool" on "sle-minion"
-    And I run "zypper mr -e SLE-Module-Containers-SLE-12-x86_64-Update" on "sle-minion"
+    And I enable Suse container repos, but not for Sles11 systems
     And I enable sles pool and update repo on "sle-minion"
     And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
     And I wait until no Salt job is running on "sle-minion"
@@ -52,8 +50,6 @@ Feature:  Container Image namespace tests
     And I follow "arancio"
     And I follow "Delete Key"
     And I click on "Delete Key"
-    And I run "zypper mr -d `grep -h SLE-Manager-Tools-12-x86_64] /etc/zypp/repos.d/* | sed 's/\[//' | sed 's/\]//'`" on "sle-minion"
-    And I run "zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Pool" on "sle-minion"
-    And I run "zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Update" on "sle-minion"
+    And I disable Suse container repos, but not for Sles11 systems
     And I disable sles pool and update repo on "sle-minion"
     And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
