@@ -1,8 +1,9 @@
-#!/usr/bin/ruby
 # Copyright (c) 2010-2017 SUSE-LINUX
 # Licensed under the terms of the MIT license.
+
 require 'nokogiri'
 require 'timeout'
+
 def client_is_zypp?
   $client.run('test -x /usr/bin/zypper', false)
 end
@@ -73,8 +74,9 @@ end
 # e.g.: VERSION="12-SP1"
 def get_os_version(node)
   os_version_raw, _code = node.run('grep "VERSION=" /etc/os-release')
-  puts 'os_version_raw: ' + os_version_raw
   os_version = os_version_raw.strip.split('=')[1].delete '"'
-  puts 'Extract os version from /etc/os-release: ' + os_version
-  os_version
+  _out, code = node.run('pidof systemd', false)
+  os_version if code.zero?
+  # os-release for sles11 is not coherent with 12, so we need to add a SP postfix
+  os_version.gsub(/\./, '-SP')
 end
