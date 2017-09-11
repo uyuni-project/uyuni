@@ -23,7 +23,7 @@ const DateTime = require("../components/datetime").DateTime;
 const msgMap = {
   "not_found": "Image cannot be found.",
   "cluster_info_err":
-      "Cannot retrieve data from cluster '{0}'. Please make sure its API is accessible or remove it from the list of Virtual Host Managers.",
+      "Cannot retrieve data from cluster '{0}'. Please check the logs and make sure the cluster API is accessible.",
   "image_overview_not_found":
       "Image overview not found."
 };

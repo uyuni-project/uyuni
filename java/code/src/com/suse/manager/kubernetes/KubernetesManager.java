@@ -100,11 +100,16 @@ public class KubernetesManager {
                         .findFirst();
 
                 if (kubeconfig.isPresent() && context.isPresent()) {
-                    MgrK8sRunner.ContainersList containers;
-                    containers = saltService
-                            .getAllContainers(kubeconfig.get(), context.get());
+                    Optional<MgrK8sRunner.ContainersList> containers =
+                            saltService.getAllContainers(kubeconfig.get(), context.get());
 
-                    containers.getContainers().forEach(container -> {
+                    if (!containers.isPresent()) {
+                        LOG.error("No container info returned by runner call " +
+                                "[mgrk8s.get_all_containers]");
+                        return;
+                    }
+
+                    containers.get().getContainers().forEach(container -> {
                         if (container.getImageId().startsWith(DOCKER_PULLABLE)) {
                             String imgDigest = StringUtils
                                     .removeStart(container.getImageId(), DOCKER_PULLABLE);

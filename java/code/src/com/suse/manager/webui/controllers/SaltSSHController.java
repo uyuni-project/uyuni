@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 import static spark.Spark.halt;
 
@@ -45,11 +46,14 @@ public class SaltSSHController {
     public static synchronized byte[] getPubKey(Request request, Response response) {
         File pubKey = new File(SaltSSHService.SSH_KEY_PATH + ".pub");
         if (!pubKey.isFile()) {
-            MgrUtilRunner.ExecResult res = SaltService.INSTANCE
+            Optional<MgrUtilRunner.ExecResult> res = SaltService.INSTANCE
                     .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
 
-            if (!(res.getReturnCode() == 0 || res.getReturnCode() == -1)) {
-                halt(500, res.getStderr() + "");
+            if (!res.isPresent()) {
+                halt(500, "Could not retrieve salt-ssh public key.");
+            }
+            if (!(res.get().getReturnCode() == 0 || res.get().getReturnCode() == -1)) {
+                halt(500, res.get().getStderr() + "");
             }
         }
 
