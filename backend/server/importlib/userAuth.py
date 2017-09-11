@@ -200,6 +200,12 @@ def getUserGroups(login, password):
         log_debug("user.check_password failed")
         raise rhnFault(2)
 
+    if rhnUser.is_user_disabled(username):
+        msg = _("""
+               %s Account has been deactivated on this server.
+               Please contact your Org administrator for more help.""")
+        raise rhnFault(1, msg % username, explain=0)
+
     return getUserGroupsFromUserInstance(user)
 
 
