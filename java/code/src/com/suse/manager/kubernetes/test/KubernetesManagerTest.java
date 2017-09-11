@@ -36,6 +36,7 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -71,7 +72,6 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
         VirtualHostManager cluster1 = createVirtHostManager();
 
-//        MinionServer server = ImageTestUtils.createBuildHost(user);
         ImageInfo imgInfo = ImageTestUtils.createImageInfo("jocatalin/kubernetes-bootcamp", "v1", user);
 
         ImageBuildHistory history1 = createImageBuildHistory(imgInfo, 1, "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
@@ -81,8 +81,6 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
         TestUtils.saveAndFlush(imgInfo);
 
-//        ImageBuildAction action = ActionManager.scheduleImageBuild(user,
-//                Collections.singletonList(server.getId()), "v1", profile, new Date());
         Set<ImageUsage> usages = manager.getImagesUsage();
 
         assertEquals(1, usages.size());
@@ -216,8 +214,8 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
     private void expectGetAllContainers(String kubeconfig, String context, String file) throws IOException, ClassNotFoundException {
         context().checking(new Expectations() { {
             allowing(saltServiceMock).getAllContainers(with(kubeconfig), with(context));
-            will(returnValue(new JsonParser<>(MgrK8sRunner.getAllContainers("", "").getReturnType()).parse(
-                    TestUtils.readRelativeFile(this, file))));
+            will(returnValue(Optional.of(new JsonParser<>(MgrK8sRunner.getAllContainers("", "").getReturnType()).parse(
+                    TestUtils.readRelativeFile(this, file)))));
         } });
     }
 

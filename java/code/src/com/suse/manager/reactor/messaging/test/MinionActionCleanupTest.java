@@ -52,6 +52,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -95,9 +96,9 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
             allowing(saltServiceMock).running(with(any(MinionList.class)));
             will(returnValue(running));
             oneOf(saltServiceMock).jobsByMetadata(with(any(Object.class)));
-            will(returnValue(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId())));
+            will(returnValue(Optional.of(jobsByMetadata("jobs.list_jobs.with_metadata.json", action.getId()))));
             oneOf(saltServiceMock).listJob(with(equal("20160602085832364245")));
-            will(returnValue(listJobResult));
+            will(returnValue(Optional.of(listJobResult)));
         } });
 
         MinionActionUtils.cleanupMinionActions(saltServiceMock);
