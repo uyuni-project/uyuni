@@ -493,10 +493,8 @@ public class ProfileManager extends BaseManager {
 
         Server source = ServerFactory.lookupById(sid1);
 
-        if (!SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT) ||
-                !SystemManager.hasEntitlement(sid1, EntitlementManager.MANAGEMENT)) {
-            throw new MissingEntitlementException(
-                    EntitlementManager.MANAGEMENT.getHumanReadableLabel());
+        if (!isComparable(sid) || !isComparable(sid1)) {
+            throw new MissingEntitlementException();
         }
 
         // passing in null PageControls since we want ALL of the records
@@ -509,6 +507,18 @@ public class ProfileManager extends BaseManager {
         // this has to return a DataResult full of PackageMetadata
         Collections.sort(result);
         return prepareList(result, pc);
+    }
+
+    /**
+     * Checks if the given sid corresponds to a system whose package list can be
+     * compared to others.
+     *
+     * @param sid the sid
+     * @return true, if is comparable
+     */
+    private static boolean isComparable(Long sid) {
+        return SystemManager.hasEntitlement(sid, EntitlementManager.MANAGEMENT) ||
+               SystemManager.hasEntitlement(sid, EntitlementManager.SALT);
     }
 
     /**
