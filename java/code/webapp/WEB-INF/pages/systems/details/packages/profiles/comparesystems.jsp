@@ -68,14 +68,6 @@
                     </html:submit>
                 </div>
             </rhn:require>
-            <rhn:require acl="not system_feature(ftr_delta_action)"
-                mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
-                <div align="left">
-                    <hr />
-                    <strong><bean:message key="compare.jsp.noprovisioning"
-                        arg0="${fn:escapeXml(system.name)}" arg1="${param.sid}"/></strong>
-                </div>
-            </rhn:require>
         </c:if>
 
         <html:hidden property="sid" value="${param.sid}" />
