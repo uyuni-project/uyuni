@@ -125,6 +125,11 @@ class ConfigFilesHandler(rhnHandler):
         self.user = rhnUser.search(username)
         if not self.user or not (self.user.check_password(password)):
             raise rhnFault(2)
+        if rhnUser.is_user_disabled(username):
+            msg = _("""
+                   %s Account has been deactivated on this server.
+                   Please contact your Org administrator for more help.""")
+            raise rhnFault(1, msg % username, explain=0)
 
         # Good to go
         session = self.user.create_session()

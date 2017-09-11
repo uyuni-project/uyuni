@@ -119,6 +119,27 @@ class Server(ServerWrapper):
             })
     __str__ = __repr__
 
+    def _get_active_org_admins(self, org_id):
+        h = rhnSQL.prepare("""
+            SELECT login
+            FROM web_contact
+            WHERE id in (
+                SELECT ugm.user_id
+                FROM rhnUserGroupMembers ugm
+                WHERE ugm.user_group_id = (SELECT id
+                                           FROM rhnUserGroup
+                                           WHERE org_id = :org_id
+                                           AND group_type = (SELECT id FROM
+                                     rhnUserGroupType WHERE label = 'org_admin'))
+                AND exists (select wc.id
+                            from rhnwebcontactenabled wc
+                            where wc.id = ugm.user_id)
+                ORDER BY ugm.user_id);
+        """)
+        h.execute(org_id=org_id)
+        rows = h.fetchall_dict()
+        return rows
+
     # Return a Digital Certificate that can be placed in a file on the
     # client side.
     def system_id(self):
@@ -132,8 +153,12 @@ class Server(ServerWrapper):
             cert["architecture"] = self.archname
             cert["profile_name"] = self.server["name"]
             cert["description"] = self.server["description"]
-            if self.user:
-                cert["username"] = self.user.contact["login"]
+            if not self.user:
+                log_debug(1, "The username is not available. Taking an active " \
+                             "administrator from the same organization")
+                self.user = rhnUser.search(self._get_active_org_admins(
+                    self.server["org_id"])[0]["login"])
+            cert["username"] = self.user.contact["login"]
             cert["type"] = self.type
             cert.set_secret(self.server["secret"])
             self.cert = cert
