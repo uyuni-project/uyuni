@@ -6401,12 +6401,6 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="compare.jsp.noprovisioning">
-        <source>You need to add the Provisioning Entitlement to '{0}' in order to sync the packages to the list above.  Click here to edit the entitlements for this system: &lt;a href="/rhn/systems/details/Edit.do?sid={1}"&gt;Edit Entitlements&lt;/a&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">NOTFILLEDOUT</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="compare.jsp.thissystem">
         <source>This System</source>
         <context-group name="ctx">
