@@ -168,12 +168,12 @@ function initUI(tree) {
 
   function applyPatchesPartitioning() {
     tree.partitioning().get()['user-partitioning'] = d => {
-      if (d.data.patch_counts == undefined) {
+      if (!Utils.isSystemType(d) || d.data.patch_counts == undefined) {
         return '';
       }
       const firstPartition = d.data.patch_counts.filter(pc => pc > 0).length > 0;
       d.data.partition = firstPartition;
-      return firstPartition  ? 'stroke-red unpatched' : 'stroke-green patched';
+      return firstPartition ? 'stroke-red unpatched' : 'stroke-green patched';
     };
     tree.refresh();
   }
