@@ -10,6 +10,8 @@
 - Redesign VHM pages on ReactJS
 - Add VHM type Kubernetes
 - Kubernetes runner and image matching implementation
+- XMLRPC method for importing images
+- Extra return data fields for content management XMLRPC methods
 - Add back "Add Selected to SSM" buttons to Group pages (bsc#1047702)
 - fix a ConstraintViolationException when refreshing hardware with
   changed network interfaces or IP addresses
