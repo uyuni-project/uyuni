@@ -408,7 +408,7 @@ class ImageViewList extends React.Component {
         icon = <span>-</span>;
     }
     else if (row.runtimeStatus === 1) {
-      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are up-to-date")}/>
+      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are consistent with SUSE Manager")}/>
     } else if (row.runtimeStatus === 2) {
       icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>
     } else if (row.runtimeStatus === 3) {
