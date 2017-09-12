@@ -31,27 +31,33 @@ function displayHierarchy(data) {
 }
 
 function showFilterTab(tabIdToShow) {
-  d3.selectAll('.filter-tab-selector').classed('selected', false);
-  d3.selectAll('.filter-tab').classed('selected', false);
-  d3.select('#' + tabIdToShow + '-selector').classed('selected', true);
-  d3.select('#' + tabIdToShow).classed('selected', true);
+  d3.selectAll('.filter-tab-selector').classed('active', false);
+  d3.selectAll('.filter-tab').classed('active', false);
+  d3.select('#' + tabIdToShow + '-selector').classed('active', true);
+  d3.select('#' + tabIdToShow).classed('active', true);
   Utils.adjustSvgDimensions();
 }
 
 // util function for adding the UI to the dom and setting its callbacks
 function initUI(tree) {
-  d3.select('#visualization-filter-wrapper')
-    .append('button')
+  const filterNavTab = d3.select('#visualization-filter-wrapper')
+    .append('ul')
+    .attr('class', 'nav nav-tabs');
+
+  filterNavTab
+    .append('li')
     .attr('id', 'filtering-tab-selector')
-    .attr('class', 'filter-tab-selector selected')
+    .attr('class', 'filter-tab-selector active')
+    .append('a')
     .text('Filtering')
     .on('click', d => {
       showFilterTab('filtering-tab');
     });
-  d3.select('#visualization-filter-wrapper')
-    .append('button')
+  filterNavTab
+    .append('li')
     .attr('id', 'partitioning-tab-selector')
     .attr('class', 'filter-tab-selector')
+    .append('a')
     .text('Partitioning')
     .on('click', d => {
       showFilterTab('partitioning-tab');
@@ -60,7 +66,7 @@ function initUI(tree) {
   d3.select('#visualization-filter-wrapper')
     .append('div')
     .attr('id', 'filtering-tab')
-    .attr('class', 'filter-tab selected');
+    .attr('class', 'filter-tab active');
   d3.select('#visualization-filter-wrapper')
     .append('div')
     .attr('id', 'partitioning-tab')
