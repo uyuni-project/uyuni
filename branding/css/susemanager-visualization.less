@@ -55,32 +55,22 @@
   border-bottom: 0px;
   padding: 10px;
 
-  .filter-tab-selector {
-    display: inline-block;
-    padding: 5px;
-    margin: 0px;
-    color: @spacewalk-gray;
-    border: 1px solid transparent;
-    border-bottom-width: 0px;
-  }
-  .filter-tab-selector:first-of-type {
-    margin-left: 4px;
-  }
   .filter-tab-selector:hover {
-    text-decoration: underline;
-    color: @spacewalk-gray-dark;
+    cursor: pointer;
+    a {
+      border-bottom-width: 1px;
+      padding-bottom: 5px;
+    }
   }
-  .filter-tab-selector.selected {
-    text-decoration: underline;
-    color: @spacewalk-gray-dark;
-    border-color: @spacewalk-gray-light;
+  .filter-tab-selector.active a {
+    border-bottom-width: 3px;
+    padding-bottom: 3px;
   }
   .filter-tab {
-    border-top: 1px solid @spacewalk-gray-light;
     padding: 8px 0;
     display: none;
   }
-  .filter-tab.selected {
+  .filter-tab.active {
     display: block;
   }
 
