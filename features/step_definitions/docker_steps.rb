@@ -90,7 +90,7 @@ And(/^I navigate to images build webpage$/) do
   visit("https://#{$server.full_hostname}/rhn/manager/cm/build")
 end
 
-And(/^I verify that all "([^"]*)" container images were built correctly in the gui$/) do |count|
+And(/^all "([^"]*)" container images should be built correctly in the GUI$/) do |count|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       raise 'error detected while building images' if has_xpath?("//*[contains(@title, 'Failed')]")
@@ -103,7 +103,7 @@ And(/^I verify that all "([^"]*)" container images were built correctly in the g
   end
 end
 
-And(/^I schedule the build of image "([^"]*)" via xmlrpc-call$/) do |image|
+And(/^I schedule the build of image "([^"]*)" via XML-RPC calls$/) do |image|
   cont_op.login('admin', 'admin')
   # empty by default
   version_build = ''
@@ -113,7 +113,7 @@ And(/^I schedule the build of image "([^"]*)" via xmlrpc-call$/) do |image|
   cont_op.scheduleImageBuild(image, version_build, build_hostid, date_build)
 end
 
-And(/^I schedule the build of image "([^"]*)" with version "([^"]*)" via xmlrpc-call$/) do |image, version|
+And(/^I schedule the build of image "([^"]*)" with version "([^"]*)" via XML-RPC calls$/) do |image, version|
   cont_op.login('admin', 'admin')
   # empty by default
   version_build = version
@@ -123,7 +123,7 @@ And(/^I schedule the build of image "([^"]*)" with version "([^"]*)" via xmlrpc-
   cont_op.scheduleImageBuild(image, version_build, build_hostid, date_build)
 end
 
-And(/^I delete the image "([^"]*)" with version "([^"]*)" via xmlrpc-call$/) do |image_name_todel, version|
+And(/^I delete the image "([^"]*)" with version "([^"]*)" via XML-RPC calls$/) do |image_name_todel, version|
   cont_op.login('admin', 'admin')
   images_list = cont_op.listImages
   refute_nil(images_list, 'ERROR: no images at all were retrieved.')
@@ -135,7 +135,7 @@ And(/^I delete the image "([^"]*)" with version "([^"]*)" via xmlrpc-call$/) do 
   cont_op.deleteImage($image_id)
 end
 
-And(/^The image "([^"]*)" with version "([^"]*)" doesn't exist via xmlrpc-call$/) do |image_non_exist, version|
+And(/^The image "([^"]*)" with version "([^"]*)" doesn't exist via XML-RPC calls$/) do |image_non_exist, version|
   cont_op.login('admin', 'admin')
   images_list = cont_op.listImages
   images_list.each do |element|
@@ -144,7 +144,7 @@ And(/^The image "([^"]*)" with version "([^"]*)" doesn't exist via xmlrpc-call$/
 end
 
 # images stores tests
-And(/^I run image.store tests via xmlrpc$/) do
+And(/^I run image.store tests via XML-RPC$/) do
   cont_op.login('admin', 'admin')
   # Test create and delete calls
   # create and delete a store, even with invalid uri.
@@ -193,7 +193,7 @@ And(/^I delete the random image stores$/) do
 end
 
 # Profiles tests using module
-And(/^I run image.profiles tests via xmlrpc$/, :image_profiles_xmlrpc)
+And(/^I run image.profiles tests via XML-RPC$/, :image_profiles_xmlrpc)
 
 Then(/I create "([^"]*)" random "([^"]*)" containers$/) do |count, image_input|
   cont_op.login('admin', 'admin')

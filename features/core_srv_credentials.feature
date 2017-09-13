@@ -6,18 +6,18 @@ Feature: Create external system or API credentials
   As the testing user
   I want to create credentials
 
-  Scenario: Fail to create credentials (empty)
+  Scenario: Fail to create empty credentials
     Given I am on the Credentials page
     When I click on "Update Credentials"
     Then I should see a "Your credentials are incomplete" text
 
-  Scenario: Fail to create credentials (API key is missing)
+  Scenario: Fail to create credentials wthout API key
     Given I am on the Credentials page
     When I enter "foobar-user" as "studio_user"
     And I click on "Update Credentials"
     Then I should see a "Your credentials are incomplete" text
 
-  Scenario: Fail to create credentials (API user is missing)
+  Scenario: Fail to create credentials without API user
     Given I am on the Credentials page
     When I enter "foobar-key" as "studio_key"
     And I click on "Update Credentials"

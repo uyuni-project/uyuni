@@ -35,8 +35,8 @@ Feature: Register a system to be managed via SSH push
 
   Scenario: Create bootstrap script for traditional SSH push via tunnel
     When I execute mgr-bootstrap "--activation-keys=1-ssh-push-tunnel --script=bootstrap-ssh-push-tunnel.sh --no-up2date --traditional"
-    Then I want to get "* bootstrap script (written):"
-    And I want to get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'"
+    Then I should get "* bootstrap script (written):"
+    And I should get "    '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'"
 
   Scenario: Register this client for SSH push via tunnel
     When I register this client for SSH push via tunnel

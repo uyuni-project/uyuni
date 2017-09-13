@@ -259,18 +259,6 @@ When(/^I call virtualhostmanager.getDetail\("([^"]*)"\)$/) do |label|
   detail = virtualhostmanager.getDetail(label)
 end
 
-Then(/^I should get two modules$/) do
-  assert(modules.length == 2, "Expect: 'number of modules' == 2, but found '#{modules.length}' modules")
-end
-
-Then(/^I should get ([0-9]+) returned$/) do |num|
-  assert(vhms.length == num.to_i, "Expect: 'number of VHMs' == '#{num}', but found '#{vhms.length}' VHMs")
-end
-
-Then(/^I should get "([^"]*)"$/) do |key1|
-  assert(params.key?(key1), "Expect parameter key '#{key1}', but got only '#{params}'")
-end
-
 Then(/^"([^"]*)" should be "([^"]*)"$/) do |key1, value1|
   assert(detail.key?(key1), "Expect parameter key '#{key1}', but got only '#{detail}'")
   assert(detail[key1].to_s == value, "Expect value for #{key1} should be '#{value1}, but got '#{detail[key1]}'")

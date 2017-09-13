@@ -10,12 +10,12 @@ Feature: Adding channels
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
 
-  Scenario: Adding a base channel
-    And I follow "Channels"
+  Scenario: Add a base channel
+    When I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Create Channel"
-    When I enter "Test Base Channel" as "Channel Name"
+    And I enter "Test Base Channel" as "Channel Name"
     And I enter "test_base_channel" as "Channel Label"
     And I select "None" from "Parent Channel"
     And I select "x86_64" from "Architecture:"
@@ -24,8 +24,8 @@ Feature: Adding channels
     And I click on "Create Channel"
     Then I should see a "Channel Test Base Channel created." text
 
-  Scenario: Adding a child channel
-    And I follow "Channels"
+  Scenario: Add a child channel
+    When I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Create Channel"
@@ -38,12 +38,12 @@ Feature: Adding channels
     And I click on "Create Channel"
     Then I should see a "Channel Test Child Channel created." text
 
-  Scenario: Adding Test-Channel-i586 base channel
-    And I follow "Channels"
+  Scenario: Add a base test channel for i586
+    When I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Create Channel"
-    When I enter "Test-Channel-i586" as "Channel Name"
+    And I enter "Test-Channel-i586" as "Channel Name"
     And I enter "test-channel-i586" as "Channel Label"
     And I select "None" from "Parent Channel"
     And I select "IA-32" from "Architecture:"
@@ -52,12 +52,12 @@ Feature: Adding channels
     And I click on "Create Channel"
     Then I should see a "Channel Test-Channel-i586 created." text
 
-  Scenario: Adding a child channel to Test-Channel-i586
-    And I follow "Channels"
+  Scenario: Add a child channel to the i586 test channel
+    When I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Create Channel"
-    When I enter "Test-Channel-i586 Child Channel" as "Channel Name"
+    And I enter "Test-Channel-i586 Child Channel" as "Channel Name"
     And I enter "test-channel-i586-child-channel" as "Channel Label"
     And I select "Test-Channel-i586" from "Parent Channel"
     And I select "IA-32" from "Architecture:"
@@ -66,12 +66,12 @@ Feature: Adding channels
     And I click on "Create Channel"
     Then I should see a "Channel Test-Channel-i586 Child Channel created." text
 
-  Scenario: Adding Test-Channel-x86_64 base channel
-    And I follow "Channels"
+  Scenario: Add a test base channel for x86_64
+    When I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Create Channel"
-    When I enter "Test-Channel-x86_64" as "Channel Name"
+    And I enter "Test-Channel-x86_64" as "Channel Name"
     And I enter "test-channel-x86_64" as "Channel Label"
     And I select "None" from "Parent Channel"
     And I select "x86_64" from "Architecture:"
@@ -80,12 +80,12 @@ Feature: Adding channels
     And I click on "Create Channel"
     Then I should see a "Channel Test-Channel-x86_64 created." text
 
-  Scenario: Adding a child channel to Test-Channel-x86_64
-    And I follow "Channels"
+  Scenario: Add a child channel to the x86_64 test channel
+    When I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Create Channel"
-    When I enter "Test-Channel-x86_64 Child Channel" as "Channel Name"
+    And I enter "Test-Channel-x86_64 Child Channel" as "Channel Name"
     And I enter "test-channel-x86_64-child-channel" as "Channel Label"
     And I select "Test-Channel-x86_64" from "Parent Channel"
     And I select "x86_64" from "Architecture:"
@@ -94,12 +94,12 @@ Feature: Adding channels
     And I click on "Create Channel"
     Then I should see a "Channel Test-Channel-x86_64 Child Channel created." text
 
-  Scenario: Adding Fedora x86_64 base channel
-    And I follow "Channels"
+  Scenario: Add Fedora x86_64 base channel
+    When I follow "Channels"
     And I follow "Manage Software Channels" in the left menu
     And I follow "Overview" in the left menu
     And I follow "Create Channel"
-    When I enter "Fedora x86_64 Channel" as "Channel Name"
+    And I enter "Fedora x86_64 Channel" as "Channel Name"
     And I enter "fedora-x86_64-channel" as "Channel Label"
     And I select "None" from "Parent Channel"
     And I select "x86_64" from "Architecture:"
@@ -108,12 +108,12 @@ Feature: Adding channels
     And I click on "Create Channel"
     Then I should see a "Channel Fedora x86_64 Channel created." text
 
-   Scenario: Adding a duplicate channel fails
-     And I follow "Channels"
+  Scenario: Fail when trying to add a duplicate channel
+     When I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
      And I follow "Overview" in the left menu
      And I follow "Create Channel"
-     When I enter "Test Base Channel" as "Channel Name"
+     And I enter "Test Base Channel" as "Channel Name"
      And I enter "test_base_channel" as "Channel Label"
      And I select "None" from "Parent Channel"
      And I select "x86_64" from "Architecture:"
@@ -122,66 +122,66 @@ Feature: Adding channels
      And I click on "Create Channel"
      Then I should see a "The channel name 'Test Base Channel' is already in use, please enter a different name" text
 
-    Scenario: I am not allowed to use invalid characters in the channel label
-      And I follow "Channels"
+  Scenario: Fail when trying to use invalid characters in the channel label
+      When I follow "Channels"
       And I follow "Manage Software Channels" in the left menu
       And I follow "Overview" in the left menu
       And I follow "Create Channel"
-      When I enter "test123" as "Channel Name"
+      And I enter "test123" as "Channel Name"
       And I enter "tesT123" as "Channel Label"
       And I enter "test123" as "Channel Summary"
       And I click on "Create Channel"
       Then I should see a "Invalid channel label, please see the format described below" text
 
-    Scenario: I am not allowed to invalid characters in the channel name
-      And I follow "Channels"
+  Scenario: Fail when trying to use invalid characters in the channel name
+      When I follow "Channels"
       And I follow "Manage Software Channels" in the left menu
       And I follow "Overview" in the left menu
       And I follow "Create Channel"
-      When I enter "!test123" as "Channel Name"
+      And I enter "!test123" as "Channel Name"
       And I enter "test123" as "Channel Label"
       And I enter "test123" as "Channel Summary"
       And I click on "Create Channel"
       Then I should see a "Invalid channel name, please see the format described below" text
 
-    Scenario: I am not allowed to use a reserved name
-     And I follow "Channels"
+  Scenario: Fail when trying to use reserved names for channels
+    When I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
      And I follow "Overview" in the left menu
      And I follow "Create Channel"
-    When I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
+     And I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
      And I enter "test123" as "Channel Label"
      And I enter "test123" as "Channel Summary"
      And I click on "Create Channel"
     Then I should see a "The channel name 'SLE-12-Cloud-Compute5-Pool for x86_64' is reserved, please enter a different name" text
 
-   Scenario: I am not allowed to use a reserved label
-     And I follow "Channels"
+  Scenario: Fail when trying to use reserved labels for channels
+    When I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
      And I follow "Overview" in the left menu
      And I follow "Create Channel"
-    When I enter "test123" as "Channel Name"
+     And I enter "test123" as "Channel Name"
      And I enter "sle-we12-pool-x86_64-sap" as "Channel Label"
      And I enter "test123" as "Channel Summary"
      And I click on "Create Channel"
     Then I should see a "The channel label 'sle-we12-pool-x86_64-sap' is reserved, please enter a different name" text
 
-   Scenario: I create a channel to change
-     And I follow "Channels"
+  Scenario: Create a channel that will be changed
+    When I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
      And I follow "Overview" in the left menu
      And I follow "Create Channel"
-    When I enter "aaaSLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
+     And I enter "aaaSLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
      And I enter "sle-we12aaa-pool-x86_64-sap" as "Channel Label"
      And I enter "test123" as "Channel Summary"
      And I click on "Create Channel"
     Then I should see a "Channel aaaSLE-12-Cloud-Compute5-Pool for x86_64 created." text
 
-  Scenario: I try to change the channel name to a reserved name
-     And I follow "Channels"
+  Scenario: Fail when trying to change the channel name to a reserved name
+    When I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
      And I follow "Overview" in the left menu
-     When I follow "aaaSLE-12-Cloud-Compute5-Pool for x86_64"
+     And I follow "aaaSLE-12-Cloud-Compute5-Pool for x86_64"
      And I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
      And I click on "Update Channel"
     Then I should see a "The channel name 'SLE-12-Cloud-Compute5-Pool for x86_64' is reserved, please enter a different name" text

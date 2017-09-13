@@ -25,7 +25,7 @@ Feature: register a salt-ssh system via XMLRPC API bootstrap procedure
 
   Scenario: Check spacecmd system ID of XMLRPC-bootstrapped ssh-minion.
     Given I am on the Systems overview page of this "ssh-minion"
-    Then I run spacecmd listevents for ssh-minion
+    Then I run spacecmd listevents for "ssh-minion"
 
   Scenario: Cleanup XMLRPC Bootstrap: Subscribe ssh-minion to base channel
     Given I am on the Systems overview page of this "ssh-minion"

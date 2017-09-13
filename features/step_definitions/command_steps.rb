@@ -131,7 +131,7 @@ When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
   raise "#{command} should fail, but hasn't" if code.zero?
 end
 
-Then(/^I want to get "([^"]*)"$/) do |arg1|
+Then(/^I should get "([^"]*)"$/) do |arg1|
   found = false
   $command_output.each_line do |line|
     if line.include?(arg1)
@@ -142,7 +142,7 @@ Then(/^I want to get "([^"]*)"$/) do |arg1|
   raise "'#{arg1}' not found in output '#{$command_output}'" unless found
 end
 
-Then(/^I wont get "([^"]*)"$/) do |arg1|
+Then(/^I shouldn't get "([^"]*)"$/) do |arg1|
   found = false
   $command_output.each_line do |line|
     if line.include?(arg1)
