@@ -1,11 +1,13 @@
 # Copyright (c) 2015-16 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+#  1) check users page
+#  2) create and delete users
+#  3) Change permissions and roles in web UI
  
-Feature: Tests user feature in suse-manager
-     Check users page, create delete users
-     Change permission, role on webui.
+Feature: Manage users
 
-  Scenario: Validate users page accessibility
+  Scenario: Display active users page
     Given I am on the active Users page
     Then I should see a "Active Users" text
     And I should see a "Create User" link
@@ -31,7 +33,7 @@ Feature: Tests user feature in suse-manager
     And I should see a "user1" link
     And I should see a "normal user" text
 
-  Scenario: Login as user1
+  Scenario: Login as the new user
     Given I am authorized as "user1" with password "user1"
     Then I should see a "user1" link
 
@@ -57,7 +59,7 @@ Feature: Tests user feature in suse-manager
     And I should see a "Created:" text
     And I should see a "Last Sign In:" text
 
-  Scenario: Change Roles (1)
+  Scenario: Add roles
     Given I am on the active Users page
     And I follow "user1"
     When the "role_satellite_admin" checkbox should be disabled
@@ -81,7 +83,7 @@ Feature: Tests user feature in suse-manager
     And I should see a "Configuration Administrator - [ Admin Access ]" text
     And I should see a "Above roles are granted via the Organization Administrator role." text
 
-  Scenario: Verify User List
+  Scenario: Verify user list
     Given I am on the active Users page
     Then Table row for "user1" should contain "Organization Administrator"
     And Table row for "user1" should contain "Channel Administrator"
@@ -89,7 +91,7 @@ Feature: Tests user feature in suse-manager
     And Table row for "user1" should contain "System Group Administrator"
     And Table row for "user1" should contain "Activation Key Administrator"
 
-  Scenario: Deactivate User (Fail)
+  Scenario: Fail to deactivate organization administrator
     Given I am on the active Users page
     And I follow "user1"
     When I follow "Deactivate User"
@@ -99,7 +101,7 @@ Feature: Tests user feature in suse-manager
     When I follow "Deactivated"
     Then I should see a "No deactivated users." text
 
-  Scenario: Change Role (2)
+  Scenario: Remove role
     Given I am on the active Users page
     And I follow "user1"
     When I uncheck "role_org_admin"
@@ -110,7 +112,7 @@ Feature: Tests user feature in suse-manager
     And I should see "role_activation_key_admin" as checked
     And I should see "role_config_admin" as checked
 
-  Scenario: Deactivate User (Succeed)
+  Scenario: Deactivate ordinary user
     Given I am on the active Users page
     And I follow "user1"
     Then I should see "role_org_admin" as unchecked
@@ -125,7 +127,7 @@ Feature: Tests user feature in suse-manager
     When I follow "All"
     Then I should see a "user1" link
 
-  Scenario: Reactivate User (Succeed)
+  Scenario: Reactivate user
     Given I am on the active Users page
     When I follow "Deactivated"
     And I follow "user1"
@@ -138,7 +140,7 @@ Feature: Tests user feature in suse-manager
     When I follow "Deactivated"
     Then I should not see a "user1" link
 
-  Scenario: Delete user1
+  Scenario: Delete user
     Given I am on the active Users page
     And I follow "user1"
     When I follow "Delete User"
@@ -148,7 +150,7 @@ Feature: Tests user feature in suse-manager
     Then I should see a "Active Users" text
     And I should not see a "user1" link
 
-  Scenario: Verify availability of the CSV separator preference
+  Scenario: Display the CSV separator preference
     Given I am authorized as "testing" with password "testing"
     And I follow "Your Preferences"
     Then I should see a "CSV Files" text

@@ -1,6 +1,6 @@
 require_relative 'xmlrpctest'
 
-# this class enable to use images namespaces operation via xmlrpc-calls
+# This class enables to use image namespace operations via XML-RPC calls
 class XMLRPCImageTest < XMLRPCBaseTest
   def deleteImage(imageid)
     @connection.call('image.delete', @sid, imageid)

@@ -22,7 +22,7 @@ Feature:  Container Image namespace tests
 
   Scenario: Test image.store Namespace
     Given I am authorized as "admin" with password "admin"
-    Then I run image.store tests via xmlrpc
+    Then I run image.store tests via XML-RPC
 
   Scenario: Scalability tests for image store
     Given I am authorized as "admin" with password "admin"
@@ -33,7 +33,7 @@ Feature:  Container Image namespace tests
 
   Scenario: Test image.profiles Namespace
     Given I am authorized as "admin" with password "admin"
-    Then I run image.profiles tests via xmlrpc
+    Then I run image.profiles tests via XML-RPC
 
   Scenario: Cleanup image namespaces tests
     Given I am authorized as "admin" with password "admin"
