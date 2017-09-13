@@ -185,7 +185,7 @@ function groupSelector(groups, element) {
         select.addClass('select2js-applied');
         var select2js = select.select2({placeholder: t('Select a system group')});
         select2js.on("change", function(event) {
-          data[i] = select.val();
+          data[i] = select.val() || [];
           onChange(data);
         });
 
