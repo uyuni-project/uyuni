@@ -145,6 +145,8 @@ function groupingPreprocessor(data, groupingConfiguration) {
       .reduce((v1,v2) => v1.concat(v2), []);
   }
 
+  const NO_GROUP_LABEL = '** NO GROUP **';
+
   // Creates groups of the given data (systems) according to the the
   // groupCriterion parameter.
   //
@@ -171,7 +173,7 @@ function groupingPreprocessor(data, groupingConfiguration) {
     return groupCriterion
       .map(gc =>
         data
-          .filter(d => containsAll(d.managed_groups || [], gc.groups || []))
+          .filter(d => containsAll(d.managed_groups || [NO_GROUP_LABEL], gc.groups || []))
           .map(d =>
             Object.assign(
               {},

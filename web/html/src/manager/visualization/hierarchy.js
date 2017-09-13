@@ -26,28 +26,59 @@ function displayHierarchy(data) {
   initUI(tree);
 
   d3.select(window).on('resize', function () {
-    const dimensions = Utils.computeSvgDimensions();
-    // try to find the object via d3
-    d3.select('#svg-wrapper svg')
-    .attr('width', dimensions[0])
-    .attr('height', dimensions[1]);
+    Utils.adjustSvgDimensions();
   });
+}
+
+function showFilterTab(tabIdToShow) {
+  d3.selectAll('.filter-tab-selector').classed('active', false);
+  d3.selectAll('.filter-tab').classed('active', false);
+  d3.select('#' + tabIdToShow + '-selector').classed('active', true);
+  d3.select('#' + tabIdToShow).classed('active', true);
+  Utils.adjustSvgDimensions();
 }
 
 // util function for adding the UI to the dom and setting its callbacks
 function initUI(tree) {
-  // System name filter
-  UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system name', 'e.g., client.nue.sles', (input) => {
-    tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
-    tree.refresh();
-  });
+  const filterNavTab = d3.select('#visualization-filter-wrapper')
+    .append('ul')
+    .attr('class', 'nav nav-tabs');
+
+  filterNavTab
+    .append('li')
+    .attr('id', 'filtering-tab-selector')
+    .attr('class', 'filter-tab-selector active')
+    .append('a')
+    .text('Filtering')
+    .on('click', d => {
+      showFilterTab('filtering-tab');
+    });
+  filterNavTab
+    .append('li')
+    .attr('id', 'partitioning-tab-selector')
+    .attr('class', 'filter-tab-selector')
+    .append('a')
+    .text('Partitioning')
+    .on('click', d => {
+      showFilterTab('partitioning-tab');
+    });
+
+  d3.select('#visualization-filter-wrapper')
+    .append('div')
+    .attr('id', 'filtering-tab')
+    .attr('class', 'filter-tab active');
+  d3.select('#visualization-filter-wrapper')
+    .append('div')
+    .attr('id', 'partitioning-tab')
+    .attr('class', 'filter-tab');
 
   // Patch count filter
-  const patchCountsFilter = d3.select('#filter-wrapper')
+  const patchCountsFilter = d3.select('#filtering-tab')
     .append('div').attr('class', 'filter');
 
   patchCountsFilter
-    .append('label')
+    .append('div')
+    .attr('class', 'filter-title no-bold')
     .text('Show systems with:');
 
   // state of the patch status checkboxes:
@@ -77,14 +108,21 @@ function initUI(tree) {
   UI.addCheckbox(patchCountsFilter, 'bug fix advisories', 'fa-bug', 'bug-patches', patchCountFilterCallback(0));
   UI.addCheckbox(patchCountsFilter, 'product enhancement advisories', 'spacewalk-icon-enhancement', 'minor-patches', patchCountFilterCallback(1));
 
+  d3.select('#filtering-tab').append('div').attr('id', 'filter-systems-box');
+  // System name filter
+  UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system name', 'e.g., client.nue.sles', (input) => {
+    tree.filters().put('name', d => d.data.name.toLowerCase().includes(input.toLowerCase()));
+    tree.refresh();
+  });
+
   // Base channel filter
-  UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system base channel', 'e.g., SLE12', (input) => {
+  UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system base channel', 'e.g., SLE12', (input) => {
     tree.filters().put('base_channel', d => (d.data.base_channel || '').toLowerCase().includes(input.toLowerCase()));
     tree.refresh();
   });
 
   // Installed products filter
-  UI.addFilter(d3.select('#filter-wrapper'), 'Filter by system installed products', 'e.g., SLES', (input) => {
+  UI.addFilter(d3.select('#filter-systems-box'), 'Filter by system installed products', 'e.g., SLES', (input) => {
     if (input == undefined || input == '') {
       tree.filters().remove('installedProducts');
     } else {
@@ -95,15 +133,6 @@ function initUI(tree) {
     tree.refresh();
   });
 
-  // Grouping UI (based on the preprocessor type)
-  if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
-    UI.addGroupSelector(d3.select('#filter-wrapper'),
-        tree.data().map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
-        (data) => {
-          tree.preprocessor().groupingConfiguration(data);
-          tree.refresh();
-        });
-  }
 
   // Partitioning by checkin time
   function partitionByCheckin(datetime) {
@@ -117,11 +146,15 @@ function initUI(tree) {
     };
     tree.refresh();
   }
+  function clearPartitioning() {
+    tree.partitioning().get()['user-partitioning'] = d => { return ''};
+    tree.refresh();
+  }
 
-  UI.addCheckinTimePartitioningSelect('#filter-wrapper', partitionByCheckin);
+  UI.addCheckinTimePartitioningSelect('#partitioning-tab', partitionByCheckin, clearPartitioning);
 
   // Partitioning by patch existence
-  const hasPatchesPartitioning = d3.select('#filter-wrapper')
+  const hasPatchesPartitioning = d3.select('#partitioning-tab')
     .append('div').attr('class', 'filter');
 
   hasPatchesPartitioning
@@ -131,25 +164,36 @@ function initUI(tree) {
 
   function applyPatchesPartitioning() {
     tree.partitioning().get()['user-partitioning'] = d => {
-      if (d.data.patch_counts == undefined) {
+      if (!Utils.isSystemType(d) || d.data.patch_counts == undefined) {
         return '';
       }
       const firstPartition = d.data.patch_counts.filter(pc => pc > 0).length > 0;
       d.data.partition = firstPartition;
-      return firstPartition  ? 'stroke-red unpatched' : 'stroke-green patched';
+      return firstPartition ? 'stroke-red unpatched' : 'stroke-green patched';
     };
     tree.refresh();
   }
 
-  UI.addButton(hasPatchesPartitioning, 'Apply', applyPatchesPartitioning);
+  const patchesPartitioningButtons = hasPatchesPartitioning.append('div').attr('class', 'btn-group');
+  UI.addButton(patchesPartitioningButtons, 'Apply', applyPatchesPartitioning);
+  UI.addButton(patchesPartitioningButtons, 'Clear', clearPartitioning);
 
-  UI.addButton(d3.select('#filter-wrapper'), 'Reset partitioning', () => {
-    tree.partitioning().get()['user-partitioning'] = d => { return ''};
-    tree.refresh();
-  });
+  // Grouping UI (based on the preprocessor type)
+  if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
+    UI.addGroupSelector(d3.select('#partitioning-tab'),
+        tree.data().map(e => e.managed_groups || []).reduce((a,b) => a.concat(b)),
+        (data) => {
+          tree.preprocessor().groupingConfiguration(data);
+          tree.refresh();
+        });
+  }
 }
 
 const Hierarchy = React.createClass({
+  getInitialState: function() {
+    return { showFilters: false }
+  },
+
   componentDidMount: function() {
     // Get data & put everything together in the graph!
     Network
@@ -162,15 +206,26 @@ const Hierarchy = React.createClass({
   },
 
   showFilters: function() {
-    $('#filter-wrapper').toggle();
+    const filterBox = $('#visualization-filter-wrapper');
+    if (filterBox.hasClass("open")) {
+      filterBox.removeClass('open').slideUp('fast', () => {Utils.adjustSvgDimensions()});
+      this.setState({ showFilters: false});
+    }
+    else {
+      filterBox.addClass('open').slideDown('fast', () => {Utils.adjustSvgDimensions()});
+      this.setState({ showFilters: true});
+    }
   },
 
   render: function() {
     return (
       <Panel title={t(title)}>
-        <button id='toggle-svg-filter' className='btn btn-default' onClick={this.showFilters}>{t('Toggle filters')}</button>
+        <button className='toggle-filter-button' onClick={this.showFilters}>
+          {t((this.state.showFilters ? 'Hide' : 'Show') + ' filters')}
+          <i className={"fa fa-caret-" + (this.state.showFilters ? 'up' : 'down')} aria-hidden="true"></i>
+        </button>
+        <div id='visualization-filter-wrapper'></div>
         <div id='svg-wrapper'>
-          <div id='filter-wrapper'></div>
           <div className='detailBox'></div>
         </div>
       </Panel>

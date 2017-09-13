@@ -1,5 +1,6 @@
 'use strict';
 
+const UI = require('./ui/components.js');
 const Utils = require('./utils.js');
 
 function computeSvgDimensions() {
@@ -7,9 +8,17 @@ function computeSvgDimensions() {
   const height = window.innerHeight -
     d3.select('header').node().getBoundingClientRect().height -
     d3.select('section .spacewalk-toolbar-h1').node().getBoundingClientRect().height -
-    d3.select('#toggle-svg-filter').node().getBoundingClientRect().height - 100;
+    d3.select('#visualization-filter-wrapper').node().getBoundingClientRect().height - 100;
 
   return [width, height];
+}
+
+function adjustSvgDimensions() {
+  const dimensions = computeSvgDimensions();
+  // try to find the object via d3
+  d3.select('#svg-wrapper svg')
+  .attr('width', dimensions[0])
+  .attr('height', dimensions[1]);
 }
 
 function prepareDom() {
@@ -18,7 +27,10 @@ function prepareDom() {
     .append('svg')
     .attr('width', dimensions[0])
     .attr('height', dimensions[1]);
-  const container = svg.append('g');
+
+  UI.svgTextStyle(svg);
+
+  const container = svg.append('g').attr('class', 'container');
 
   // Zoom handling
   svg.call(d3.zoom()
@@ -42,6 +54,7 @@ function isCompliantToSSM(d) {
 
 module.exports = {
     computeSvgDimensions: computeSvgDimensions,
+    adjustSvgDimensions: adjustSvgDimensions,
     prepareDom: prepareDom,
     isSystemType: isSystemType,
     isCompliantToSSM: isCompliantToSSM

@@ -13,7 +13,7 @@ function addFilter(targetSelection, caption, placeholder, onInputCallback) {
   const filterDiv = targetSelection
     .append('div').attr('class', 'filter');
   filterDiv
-    .append('div')
+    .append('span')
     .attr('class', 'filter-title')
     .text(caption);
   filterDiv
@@ -28,9 +28,10 @@ function addFilter(targetSelection, caption, placeholder, onInputCallback) {
 //
 // params:
 // - anchorId - id of element in DOM where the UI will be added
-// - callback - callback receiving picked time and date after user clicks
+// - applyCallback - applyCallback receiving picked time and date after user clicks
 // the 'Apply' button
-function addCheckinTimePartitioningSelect(anchorId, callback) {
+// - clearCallback - clearCallback will be executed when the user clicks the "Clear" button
+function addCheckinTimePartitioningSelect(anchorId, applyCallback, clearCallback) {
   const checkinTimePartitioning = d3.select(anchorId)
     .append('div').attr('class', 'filter');
 
@@ -61,13 +62,19 @@ function addCheckinTimePartitioningSelect(anchorId, callback) {
   $(anchorId + ' .partitioning-timepicker').timepicker({timeFormat: 'H:i:s', maxTime: '23:30:00'});
   $(anchorId + ' .partitioning-timepicker').timepicker('setTime', new Date());
 
-  addButton(checkinTimePartitioning, 'Apply', () => {
-      const date = $(anchorId + ' .partitioning-datepicker' ).datepicker( 'getDate' );
-      const time = $(anchorId + ' .partitioning-timepicker' ).timepicker( 'getTime' );
-      const datetime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
-        time.getHours(), time.getMinutes(), time.getSeconds());
-      callback(datetime);
-    });
+  const checkinPartitioningButtons = checkinTimePartitioning.append('div').attr('class', 'btn-group');
+  addButton(checkinPartitioningButtons, 'Apply', () => {
+    const date = $(anchorId + ' .partitioning-datepicker' ).datepicker( 'getDate' );
+    const time = $(anchorId + ' .partitioning-timepicker' ).timepicker( 'getTime' );
+    const datetime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+      time.getHours(), time.getMinutes(), time.getSeconds());
+      applyCallback(datetime);
+  });
+  addButton(checkinPartitioningButtons, 'Clear', () => {
+    clearCallback();
+  });
+
+  return checkinTimePartitioning;
 }
 
 // Add a checkbox to given selection
@@ -121,7 +128,7 @@ function addCheckbox(targetSelection, caption, icon, classes, callback) {
 //  - onChange: setter/getter for a function that is called after a selection
 //  is changed or a select box on one level is collapsed
 function groupSelector(groups, element) {
-  const noGrpOptionLabel = '<<NO GROUP>>';
+  const NO_GROUP_LABEL = '** NO GROUP **';
   const data = [];
   let onChange = function(data) { console.log('data changed: ' + data); };
   groups = Array.from(new Set(groups));
@@ -130,11 +137,14 @@ function groupSelector(groups, element) {
     element
       .append('a')
       .attr('href', '#')
+      .attr('class', 'toggle-grouping-level')
       .text('Add a grouping level')
       .on('click', d => {
         data.push([]);
         update();
-      });
+      })
+      .append('i')
+      .attr('class', 'fa fa-plus');
   }
 
   function update() {
@@ -150,21 +160,9 @@ function groupSelector(groups, element) {
 
     const selectEnter = divEnter
       .append('select')
+      .attr('class', 'apply-select2js-on-this')
       .attr('multiple', 'multiple')
-      .on('change', function(d, i) {
-        const selectedOpts = Array.apply(null, this.options)
-          .filter(o => o.selected == true)
-          .map(o => {
-            const val = o.value;
-            if (o.value == noGrpOptionLabel) {
-              return [];
-            }
-            return o.value;
-          });
-
-        data[i] = selectedOpts;
-        onChange(data);
-      });
+      .attr('style', 'width: 250px');
 
     selectEnter
       .selectAll('option')
@@ -176,18 +174,42 @@ function groupSelector(groups, element) {
 
     selectEnter
       .append('option')
-      .attr('value', noGrpOptionLabel)
-      .text(noGrpOptionLabel);
+      .attr('value', NO_GROUP_LABEL)
+      .text(NO_GROUP_LABEL);
 
-    divEnter
-      .append('a')
-      .attr('href', '#')
-      .text('Remove this level')
-      .on('click', function(d, i) {
-        data.splice(i, 1);
-        onChange(data);
-        update();
-      });
+    //HACK: usage of JQuery here is needed to apply the select2js plugin
+    $('select.apply-select2js-on-this').each(function(i) {
+      var select = $(this);
+      // apply select2js only one time
+      if (!select.hasClass('select2js-applied')) {
+        select.addClass('select2js-applied');
+        var select2js = select.select2({placeholder: t('Select a system group')});
+        select2js.on("change", function(event) {
+          data[i] = select.val() || [];
+          onChange(data);
+        });
+
+        divEnter
+          .append('a')
+          .attr('href', '#')
+          .attr('class', 'toggle-grouping-level')
+          .attr('title', 'Remove this level')
+          .on('click', function() {
+            data.splice(i, 1);
+            onChange(data);
+            update();
+          })
+          .append('i')
+          .attr('class', 'fa fa-close');
+      }
+      else {
+        // if data is changed, e.g. a level is removed,
+        // we need to keep aligned data and selected values
+        if(data[i] != null && data[i].length > 0) {
+          select.val(data[i]).trigger('change');
+        }
+      }
+    });
   }
 
   function my() {
@@ -230,12 +252,28 @@ function addGroupSelector(targetSelection, groups, callback) {
 // - callback - called after the button is clicked
 function addButton(targetSelection, caption, callback) {
   targetSelection
-    .append('div').attr('class', 'button-wrapper')
     .append('button')
     .attr('type', 'button')
-    .attr('class', 'btn btn-default')
+    .attr('class', 'btn btn-default btn-sm')
     .on('click', callback)
-  .text(caption);
+    .text(caption);
+}
+
+function svgTextStyle(container) {
+  const textStyle = container
+    .append('defs')
+    .append('filter')
+    .attr('x', '0')
+    .attr('y', '0')
+    .attr('width', '1')
+    .attr('height', '1')
+    .attr('id', 'textStyle');
+  textStyle
+    .append('feFlood')
+    .attr('flood-color', 'rgba(220, 220, 220, 0.8)');
+  textStyle
+    .append('feComposite')
+    .attr('in', 'SourceGraphic');
 }
 
 module.exports = {
@@ -243,5 +281,6 @@ module.exports = {
   addCheckinTimePartitioningSelect: addCheckinTimePartitioningSelect,
   addCheckbox: addCheckbox,
   addGroupSelector: addGroupSelector,
-  addButton: addButton
+  addButton: addButton,
+  svgTextStyle: svgTextStyle
 }
