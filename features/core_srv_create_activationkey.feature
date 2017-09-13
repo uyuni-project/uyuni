@@ -1,16 +1,16 @@
 # Copyright (c) 2010-2011 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
-Feature: Create an activation key
-  In Order register a system to the spacewalk server
+Feature: Be able to manipulate activation keys
+  In order to register systems to the spacewalk server
   As the testing user
-  I want to create an activation key
+  I want to use activation keys
 
-  Scenario: create an activation key
+  Scenario: Create an activation key
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow "Activation Keys" in the left menu
     And I follow "Create Key"
-    When I enter "SUSE Test Key i586" as "description"
+    And I enter "SUSE Test Key i586" as "description"
     And I enter "SUSE-DEV-i586" as "key"
     And I check "virtualization_host"
     And I click on "Create Activation Key"
@@ -24,26 +24,26 @@ Feature: Create an activation key
 
   Scenario: Change limit of the activation key
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow "Activation Keys" in the left menu
     And I follow "SUSE Test Key i586"
-    When I enter "20" as "usageLimit"
+    And I enter "20" as "usageLimit"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been modified." text
     And I should see "20" in field "usageLimit"
 
-  Scenario: Change Base Channel of the activation key
+  Scenario: Change the base channel of the activation key
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow "Activation Keys" in the left menu
     And I follow "SUSE Test Key i586"
-    When I select "Test-Channel-i586" from "selectedChannel"
+    And I select "Test-Channel-i586" from "selectedChannel"
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key i586 has been modified." text
 
-  Scenario: create an activation key with Channel
+  Scenario: Create an activation key with a channel
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow "Activation Keys" in the left menu
     And I follow "Create Key"
-    When I enter "SUSE Test Key x86_64" as "description"
+    And I enter "SUSE Test Key x86_64" as "description"
     And I enter "SUSE-DEV-x86_64" as "key"
     And I check "virtualization_host"
     And I enter "20" as "usageLimit"
@@ -57,11 +57,11 @@ Feature: Create an activation key
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
 
-  Scenario: create an activation key with Channel and package list (x64)
+  Scenario: Create an activation key with a channel and a package list for x86_64
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow "Activation Keys" in the left menu
     And I follow "Create Key"
-    When I enter "SUSE Test PKG Key x86_64" as "description"
+    And I enter "SUSE Test PKG Key x86_64" as "description"
     And I enter "SUSE-PKG-x86_64" as "key"
     And I enter "20" as "usageLimit"
     And I select "Test-Channel-x86_64" from "selectedChannel"
@@ -77,11 +77,11 @@ Feature: Create an activation key
     And I should see a "Groups" link
     And I should see a "Activated Systems" link
 
-  Scenario: create an activation key with Channel and package list (i586)
+  Scenario: Create an activation key with a channel and a package list for i586
     Given I am on the Systems page
-    And I follow "Activation Keys" in the left menu
+    When I follow "Activation Keys" in the left menu
     And I follow "Create Key"
-    When I enter "SUSE Test PKG Key i586" as "description"
+    And I enter "SUSE Test PKG Key i586" as "description"
     And I enter "SUSE-PKG-i586" as "key"
     And I enter "20" as "usageLimit"
     And I select "Test-Channel-i586" from "selectedChannel"

@@ -31,7 +31,7 @@ Feature: register a salt-minion via XMLRPC API bootstrap procedure
 
   Scenario: Check spacecmd system ID of XMLRPC-bootstrapped minion.
     Given I am on the Systems overview page of this "sle-minion"
-    Then I run spacecmd listevents for sle-minion
+    Then I run spacecmd listevents for "sle-minion"
 
   Scenario: Cleanup XMLRPC Bootstrap: Subscribe to base channel
     Given I am on the Systems overview page of this "sle-minion"

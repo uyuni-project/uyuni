@@ -196,7 +196,7 @@ Feature: Test action chaining
     And there should be no action chain with the label "Slow Gray Elephant"
     And no action chain with the label "Quick Brown Fox".
 
-  Scenario: Schedule operations via xmlrpc
+  Scenario: Schedule operations via XML-RPC
     Given I am logged in via XML-RPC/actionchain as user "admin" and password "admin"
     When I call XML-RPC/createChain with chainLabel "Quick Brown Fox"
     And I call actionchain.addPackageInstall()
@@ -210,7 +210,7 @@ Feature: Test action chaining
     Then I should be able to see that the current action chain is empty
     And I delete the action chain
 
-  Scenario: Run the action chain via xmlrpc
+  Scenario: Run the action chain via XML-RPC
     Given I am logged in via XML-RPC/actionchain as user "admin" and password "admin"
     When I call XML-RPC/createChain with chainLabel "Quick Brown Fox"
     And I call actionchain.addSystemReboot()
