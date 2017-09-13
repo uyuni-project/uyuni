@@ -28,7 +28,10 @@ function addFilter(targetSelection, caption, placeholder, onInputCallback) {
 //
 // params:
 // - anchorId - id of element in DOM where the UI will be added
-function addCheckinTimePartitioningSelect(anchorId) {
+// - applyCallback - applyCallback receiving picked time and date after user clicks
+// the 'Apply' button
+// - clearCallback - clearCallback will be executed when the user clicks the "Clear" button
+function addCheckinTimePartitioningSelect(anchorId, applyCallback, clearCallback) {
   const checkinTimePartitioning = d3.select(anchorId)
     .append('div').attr('class', 'filter');
 
@@ -58,6 +61,18 @@ function addCheckinTimePartitioningSelect(anchorId) {
   $(anchorId + ' .partitioning-datepicker').datepicker('setDate', new Date());
   $(anchorId + ' .partitioning-timepicker').timepicker({timeFormat: 'H:i:s', maxTime: '23:30:00'});
   $(anchorId + ' .partitioning-timepicker').timepicker('setTime', new Date());
+
+  const checkinPartitioningButtons = checkinTimePartitioning.append('div').attr('class', 'btn-group');
+  addButton(checkinPartitioningButtons, 'Apply', () => {
+    const date = $(anchorId + ' .partitioning-datepicker' ).datepicker( 'getDate' );
+    const time = $(anchorId + ' .partitioning-timepicker' ).timepicker( 'getTime' );
+    const datetime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+      time.getHours(), time.getMinutes(), time.getSeconds());
+      applyCallback(datetime);
+  });
+  addButton(checkinPartitioningButtons, 'Clear', () => {
+    clearCallback();
+  });
 
   return checkinTimePartitioning;
 }

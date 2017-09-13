@@ -146,22 +146,12 @@ function initUI(tree) {
     };
     tree.refresh();
   }
-
-  const anchorId = '#partitioning-tab';
-  const checkinTimePartitioning = UI.addCheckinTimePartitioningSelect(anchorId);
-  const checkinPartitioningButtons = checkinTimePartitioning.append('div').attr('class', 'btn-group');
-  UI.addButton(checkinPartitioningButtons, 'Apply', () => {
-    const date = $(anchorId + ' .partitioning-datepicker' ).datepicker( 'getDate' );
-    const time = $(anchorId + ' .partitioning-timepicker' ).timepicker( 'getTime' );
-    const datetime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
-      time.getHours(), time.getMinutes(), time.getSeconds());
-    partitionByCheckin(datetime);
-  });
-  UI.addButton(checkinPartitioningButtons, 'Clear', () => {
+  function clearPartitioning() {
     tree.partitioning().get()['user-partitioning'] = d => { return ''};
     tree.refresh();
-  });
+  }
 
+  UI.addCheckinTimePartitioningSelect('#partitioning-tab', partitionByCheckin, clearPartitioning);
 
   // Partitioning by patch existence
   const hasPatchesPartitioning = d3.select('#partitioning-tab')
@@ -186,10 +176,7 @@ function initUI(tree) {
 
   const patchesPartitioningButtons = hasPatchesPartitioning.append('div').attr('class', 'btn-group');
   UI.addButton(patchesPartitioningButtons, 'Apply', applyPatchesPartitioning);
-  UI.addButton(patchesPartitioningButtons, 'Clear', () => {
-    tree.partitioning().get()['user-partitioning'] = d => { return ''};
-    tree.refresh();
-  });
+  UI.addButton(patchesPartitioningButtons, 'Clear', clearPartitioning);
 
   // Grouping UI (based on the preprocessor type)
   if (tree.preprocessor().groupingConfiguration) { // we have a processor responding to groupingConfiguration
