@@ -6,25 +6,6 @@ Given(/^I am logged in via XML\-RPC\/api as user "([^"]*)" and password "([^"]*)
   assert(rpc_api_tester.login(luser, password))
 end
 
-When(/^I call getApiNamespaces, I should get (\d+) namespaces$/) do |apiCount|
-  assert_equal(apiCount.to_i, rpc_api_tester.getCountOfApiNamespaces)
-end
-
-When(/^I call getVersion, I should get "([^"]*)" as result$/) do |version|
-  assert(rpc_api_tester.getVersion.include?(version))
-end
-
-When(/^I call systemVersion, I should get "([^"]*)" as result$/) do |version|
-  assert(rpc_api_tester.systemVersion.include?(version))
-end
-
-When(/^I call getApiNamespaceCallList, I should get (\d+) available api calls$/) do |apiCount|
-  assert_equal(apiCount.to_i, rpc_api_tester.getCountOfApiNamespaceCallList)
-end
-
-When(/^I call getApiCallList, I should get (\d+) available groups$/) do |groupCount|
-  assert_equal(groupCount.to_i, rpc_api_tester.getCountOfApiCallListGroups)
-end
 # cve audit
 Given(/^I am logged in via XML\-RPC\/cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   @rpctest = XMLRPCCVEAuditTest.new(ENV['TESTHOST'])
