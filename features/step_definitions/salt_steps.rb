@@ -78,14 +78,14 @@ end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion stop', false) if minion == 'sle-minion'
-  node.run('systemctl stop salt-minion', false) if minion == 'ceos-minion'
+  node.run('rcsalt-minion restart', false) if minion == 'sle-minion'
+  node.run('systemctl restart salt-minion', false) if minion == 'ceos-minion'
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  node.run('rcsalt-minion stop', false) if minion == 'sle-minion'
-  node.run('systemctl stop salt-minion', false) if minion == 'ceos-minion'
+  node.run('rcsalt-minion restart', false) if minion == 'sle-minion'
+  node.run('systemctl restart salt-minion', false) if minion == 'ceos-minion'
 end
 
 Then(/^salt-minion should be running on "(.*?)"$/) do |minion|
