@@ -8,7 +8,7 @@ Feature: Listing and adding/removing channels using the spacewalk-channel comman
 
   Scenario: list available channels, verify child channels
     When I execute spacewalk-channel and pass "--available-channels -u admin -p admin"
-    And I want to see test-channel-x86_64-child-channel
+    And I should get "test-channel-x86_64-child-channel"
 
   Scenario: add an invalid child channel (bnc#875958)
     When spacewalk-channel fails with "--add -c test_child_channel -u admin -p admin"
@@ -18,11 +18,11 @@ Feature: Listing and adding/removing channels using the spacewalk-channel comman
 
   Scenario: list subscribed channels after adding child
     When I execute spacewalk-channel and pass "--list"
-    And I want to see test-channel-x86_64-child-channel
+    And I should get "test-channel-x86_64-child-channel"
 
   Scenario: remove a valid child channel test-channel
     When I use spacewalk-channel to remove test-channel-x86_64-child-channel
 
   Scenario: list subscribed channels after removing child test-channel
     When I execute spacewalk-channel and pass "--list"
-    And I dont see test-channel-x86_64-child-channel
+    And I shouldn't get "test-channel-x86_64-child-channel"

@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Register a client
-  In Order register a client to the spacewalk server
+  In order to register a client to the spacewalk server
   As the root user
   I want to call rhnreg_ks
 
@@ -10,11 +10,11 @@ Feature: Register a client
     When I register using "1-SUSE-DEV-x86_64" key
     Then I should see "sle-client" in spacewalk
 
-  Scenario: check registration values
+  Scenario: Check registration values
     Given I update the profile of this client
     When I am on the Systems overview page of this "sle-client"
     And I click on the css "a#clear-ssm"
-    And I wait until i see "Software Updates Available" text, refreshing the page
+    And I wait until I see "Software Updates Available" text, refreshing the page
     Then I should see a "System Status" text
     And I should see a "Software Updates Available" text
     And I should see a "Critical:" link
@@ -27,7 +27,7 @@ Feature: Register a client
     And I should see a "Initial Registration Parameters:" text
     And I should see a "OS: sles-release" text
 
-  Scenario: check tab links "Software" => "Patches"
+  Scenario: Check tab links "Software" => "Patches"
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area

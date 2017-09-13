@@ -2,15 +2,15 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Explore the main landing page
-  In Order to validate completeness of the systems page
+  In order to use the systems page
   As a authorized user
   I want to see all the texts and links
 
   Background:
-  Given I am authorized
-  And I follow "Home" in the left menu
-  And I follow "Systems" in the left menu
-  And I follow "Overview" in the left menu
+    Given I am authorized
+    And I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
 
   Scenario: Completeness of the side navigation bar and the content frame
     Then I should see a "System Overview" text

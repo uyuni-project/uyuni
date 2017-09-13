@@ -179,7 +179,7 @@ Then(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
   steps %(
     Then I try to reload page until contains "Package List Refresh scheduled by (none)" text
     And I follow first "Package List Refresh scheduled by (none)"
-    And I wait until i see "This action's status is: Completed." text, refreshing the page
+    And I wait until I see "This action's status is: Completed." text, refreshing the page
     And I wait for "5" seconds
   )
 end
@@ -193,7 +193,7 @@ Then(/^I wait until OpenSCAP scan is completed for "([^"]*)"$/) do |system|
     And I follow "History"
     Then I try to reload page until contains "OpenSCAP xccdf scanning" text
     And I follow first "OpenSCAP xccdf scanning"
-    And I wait until i see "This action's status is: Completed." text, refreshing the page
+    And I wait until I see "This action's status is: Completed." text, refreshing the page
     And I wait for "5" seconds
   )
 end
@@ -713,7 +713,7 @@ And(/^I enter the hostname of "([^"]*)" as hostname$/) do |minion|
   step %(I enter "#{node.full_hostname}" as "hostname")
 end
 
-Then(/^I run spacecmd listevents for ([^\s]*)$/) do |host|
+Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   node = get_target(host)
   $server.run('spacecmd -u admin -p admin clear_caches')
   $server.run("spacecmd -u admin -p admin system_listevents #{node.full_hostname}")

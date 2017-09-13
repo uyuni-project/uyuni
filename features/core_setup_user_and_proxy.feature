@@ -2,13 +2,13 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Create initial users
-  In Order to run the tests
-  As a testing users
+  In order to run the tests
+  As the admin user
   I need to create the admin and a testing users
 
-  Scenario: Create Admin users and first org
+  Scenario: Create admin user and first organization
     Given I access the host the first time
-    And  I run "rm -Rf /srv/salt/*" on "server"
+    And I run "rm -Rf /srv/salt/*" on "server"
     When I go to the home page
     And I enter "SUSE Test" as "orgName"
     And I enter "admin" as "login"
@@ -21,7 +21,7 @@ Feature: Create initial users
     And I click on "Create Organization"
     Then I am logged-in
 
-  Scenario: Create Testing username
+  Scenario: Create testing username
     Given I am authorized as "admin" with password "admin"
     When I follow "Users" in the left menu
     And I follow "User List" in the left menu
@@ -38,7 +38,7 @@ Feature: Create initial users
     Then I should see a "Account testing created, login information sent to galaxy-noise@suse.de" text
     And I should see a "testing" link
 
-  Scenario: Grant Testing user admin priviledges
+  Scenario: Grant testing user administrative priviledges
     Given I am authorized as "admin" with password "admin"
     When I follow "Users" in the left menu
     And I follow "User List" in the left menu
@@ -53,10 +53,10 @@ Feature: Create initial users
     Then I should see a "User information updated" text
     And I should see a "testing" text
 
-  Scenario: wait for mgr-sync refresh finished
-    Then I wait for mgr-sync refresh is finished
+  Scenario: Wait for refresh of list of products to finish
+    When I wait for mgr-sync refresh is finished
 
-  Scenario: check services which should run
+  Scenario: Check services which should run
     Then Service "atftpd" is enabled on the Server
     And Service "atftpd" is running on the Server
     And Service "auditlog-keeper" is enabled on the Server
@@ -80,11 +80,11 @@ Feature: Create initial users
     And Service "tomcat" is enabled on the Server
     And Service "tomcat" is running on the Server
 
-  Scenario: Verify proxy setup
+  Scenario: Setup HTTP proxy
     When I am authorized as "admin" with password "admin"
     And I follow "Admin" in the left menu
     And I follow "Setup Wizard" in the left menu
-    And I should see a "HTTP Proxy Hostname" text
+    Then I should see a "HTTP Proxy Hostname" text
     And I should see a "HTTP Proxy Username" text
     And I should see a "HTTP Proxy Password" text
     When I enter "galaxy-proxy.mgr.suse.de:3128" as "HTTP Proxy Hostname"

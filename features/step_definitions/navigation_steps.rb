@@ -8,7 +8,7 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
   raise unless current_path == arg1
 end
 
-When(/^I wait until i see "([^"]*)" text$/) do |text|
+When(/^I wait until I see "([^"]*)" text$/) do |text|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
@@ -21,7 +21,7 @@ When(/^I wait until i see "([^"]*)" text$/) do |text|
   end
 end
 
-When(/^I wait until i see "([^"]*)" text, refreshing the page$/) do |text|
+When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
@@ -37,7 +37,7 @@ end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |target|
   node = get_target(target)
-  step %(I wait until i see "#{node.full_hostname}" text, refreshing the page)
+  step %(I wait until I see "#{node.full_hostname}" text, refreshing the page)
 end
 
 #
@@ -735,7 +735,7 @@ end
 #
 # Wait for a modal window to become visible
 #
-When(/^I wait until i see "([^"]*)" modal$/) do |title|
+When(/^I wait until I see "([^"]*)" modal$/) do |title|
   path = "//*[contains(@class, \"modal-title\") and text() = \"#{title}\"]" \
     '/ancestor::div[contains(@class, "modal-dialog")]'
   begin
