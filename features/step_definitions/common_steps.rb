@@ -107,14 +107,6 @@ When(/^I use spacewalk\-channel to remove test-channel-x86_64-child-channel/) do
   step %(I execute spacewalk\-channel and pass "--remove -c #{child_channel} -u admin -p admin")
 end
 
-Then(/^I want to see test-channel-x86_64-child-channel$/) do
-  step %(I want to get "test-channel-x86_64-child-channel")
-end
-
-Then(/^I dont see test-channel-x86_64-child-channel$/) do
-  step %(I wont get "test-channel-x86_64-child-channel")
-end
-
 Then(/^I create mock initrd if download fails$/) do
   # sometimes the download via sumaform fails. we create a fake empty img.
   # for current testing this is enough.
@@ -297,7 +289,7 @@ When(/^I make the credentials primary$/) do
   raise unless find('i.fa-star-o').click
 end
 
-When(/^I refresh scc$/) do
+When(/^I refresh SCC$/) do
   sshcmd('echo -e "admin\nadmin\n" | mgr-sync refresh', ignore_err: true)
 end
 
@@ -366,7 +358,7 @@ When(/^I click the Add Product button$/) do
   raise unless find('button#synchronize').click
 end
 
-When(/^I verify the products were added$/) do
+When(/^the products should be added$/) do
   output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
   sle_module = '[I] SLE-Module-Legacy12-Updates for x86_64 SP2 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64-sp2]'
   raise unless output[:stdout].include? '[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]'
