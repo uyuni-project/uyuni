@@ -38,7 +38,11 @@ Feature: register a traditional client centos7
 
   Scenario: Schedule some actions for centos7
      Given I am authorized as "admin" with password "admin"
-     And execute some tests for centos_trad_client
+     When I authenticate to XML-RPC
+     And I refresh the packages on "ceos-minion" through XML-RPC
+     And I run a script on "ceos-minion" through XML-RPC
+     And I reboot "ceos-minion" through XML-RPC
+     And I unauthenticate from XML-RPC
 
   Scenario: Delete Trad-client or migrated minion
     Given I am on the Systems overview page of this "ceos-minion"
