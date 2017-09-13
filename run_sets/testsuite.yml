@@ -90,7 +90,6 @@
 - features/srv_datepicker.feature
 - features/trad_openscap_audit.feature
 - features/srv_create_group.feature
-- features/srv_xmlrpc_api.feature
 - features/min_salt_openscap_audit.feature
 - features/srv_custom_system_info.feature
 - features/srv_security.feature
