@@ -732,32 +732,19 @@ Then(/^I should see (\d+) "([^"]*)" fields in "([^"]*)" form$/) do |count, name,
   end
 end
 
-#
-# Wait for a modal window to become visible
-#
-When(/^I wait until I see "([^"]*)" modal$/) do |title|
-  path = "//*[contains(@class, \"modal-title\") and text() = \"#{title}\"]" \
-    '/ancestor::div[contains(@class, "modal-dialog")]'
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        break if page.has_xpath?(path, visible: true)
-        sleep 3
-      end
-    end
-  rescue Timeout::Error
-    raise "Couldn't find the #{title} modal"
-  end
-end
-
-#
 # Click on a button in a modal window with a specific title
-#
 When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   path = "//*[contains(@class, \"modal-title\") and text() = \"#{title}\"]" \
     '/ancestor::div[contains(@class, "modal-dialog")]'
 
-  within(:xpath, path) do
-    step %(I click on "#{btn}")
+  # We accept invisible elements because the fade out
+  # animation might still be in progress
+  unless page.has_xpath?(path, visible: :all)
+    raise "Couldn't find the #{title} modal"
+  end
+
+  within(:xpath, path, visible: :all) do
+    button = find(:xpath, ".//button[@title = \"#{btn}\"]", visible: :all)
+    button.trigger('click')
   end
 end
