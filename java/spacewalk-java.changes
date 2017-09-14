@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Sep 14 11:32:37 CEST 2017 - mc@suse.de
+
+- version 2.7.46.7-1
 - Adapt Salt runner and wheel calls to the new
   error handling introduced in salt-netapi-client-0.12.0
 - change log level and event history for duplicate machine id  (bsc#1041489)
