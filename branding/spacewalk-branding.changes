@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Sep 14 11:38:02 CEST 2017 - mc@suse.de
+
+- version 2.7.2.9-1
 - fixes ise error with invalid custom key id (bsc#1048294)
 - Add message about channel changes on salt managed systems to
   UI and API docs (bsc#1048845)
