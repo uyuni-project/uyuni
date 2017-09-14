@@ -78,7 +78,7 @@ class VirtualHostManagerDetails extends React.Component {
                     <Column
                         columnKey="os"
                         comparator={Utils.sortByText}
-                        header={t('Os')}
+                        header={t('OS')}
                         cell={(row, criteria) => row.os }
                     />
                     <Column
