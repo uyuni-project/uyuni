@@ -25,6 +25,11 @@ def client_raw_repodata_dir(channel)
   end
 end
 
+def sle11family(node)
+  _out, code = node.run('pidof systemd', false)
+  return true if code.nonzero?
+end
+
 def client_system_id_to_i
   out, _code = $client.run('grep "ID" /etc/sysconfig/rhn/systemid | tr -d -c 0-9')
   out.gsub(/\s+/, '')
