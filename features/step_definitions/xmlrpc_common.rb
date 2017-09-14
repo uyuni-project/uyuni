@@ -3,7 +3,6 @@ require 'json'
 require 'xmlrpc/client'
 require 'socket'
 
-
 rpctest = XMLRPCChannelTest.new(ENV['TESTHOST'])
 systest = XMLRPCSystemTest.new(ENV['TESTHOST'])
 servers = []
@@ -449,4 +448,3 @@ end
 Then(/^there should be no more any scheduled actions$/) do
   assert_empty(scdrpc.listInProgressActions)
 end
-
