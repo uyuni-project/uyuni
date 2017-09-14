@@ -34,33 +34,29 @@ module LavandaBasic
     [out, code]
   end
 
-  def run_until_ok(cmd, ok_msg = nil)
+  def run_until_ok(cmd)
+    result = nil
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        _out, code = run(cmd, false)
-        if code.zero?
-          puts ok_msg unless ok_msg.nil?
-          break
-        end
+        result, code = run(cmd, false)
+        break if code.zero?
         sleep 2
       end
     end
   rescue Timeout::Error
-    raise 'timeout finished! something went wrong'
+    raise "timeout finished! something went wrong! \n #{result}"
   end
 
-  def run_until_fail(cmd, nok_msg = nil)
+  def run_until_fail(cmd)
+    result = nil
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        _out, code = run(cmd, false)
-        if code.nonzero?
-          puts nok_msg unless nok_msg.nil?
-          break
-        end
+        result, code = run(cmd, false)
+        break if code.nonzero?
         sleep 2
       end
     end
   rescue Timeout::Error
-    raise 'timeout finished! something went wrong'
+    raise "timeout finished! something went wrong! \n #{result}"
   end
 end
