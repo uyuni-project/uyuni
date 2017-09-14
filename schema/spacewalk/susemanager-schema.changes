@@ -1,3 +1,6 @@
+
+- provide schema upgrade path from 3.0.21 to 3.1
+
 -------------------------------------------------------------------
 Thu Sep 14 11:26:31 CEST 2017 - mc@suse.de
 
