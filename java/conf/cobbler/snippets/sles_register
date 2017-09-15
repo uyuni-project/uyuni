@@ -22,11 +22,8 @@ if [ -f /tmp/key ]; then
     key=`cat /tmp/key`
 fi
 
-echo "export redhat_management_key=$redhat_management_key" > /var/adm/autoinstall/cache/SUSE_Manager_keys
-
 #if $varExists('registration_key')
 redhat_management_key="$redhat_management_key,$registration_key"
-echo "export registration_key=$registration_key" >> /var/adm/autoinstall/cache/SUSE_Manager_keys
 #else
 # the variable 'registration_key' was not set
 redhat_management_key="$redhat_management_key"
@@ -34,7 +31,6 @@ redhat_management_key="$redhat_management_key"
 
 #if not $varExists('dont_register')
 # if you don't want to register, set the 'dont_register' variable
-echo "export sm_registred=1" >> /var/adm/autoinstall/cache/SUSE_Manager_keys
 
 files=""
 directories=""
@@ -89,9 +85,6 @@ zypper mr -d --all
 zypper mr -e --medium-type plugin
 #end if
 
-#else
-# registration turned off
-echo "export sm_registred=0" >> /var/adm/autoinstall/cache/SUSE_Manager_keys
 #end if
 
 #else
