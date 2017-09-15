@@ -1,5 +1,9 @@
-# COPYRIGHT 2015 SUSE LLC
+# COPYRIGHT 2017 SUSE LLC
+
 require 'json'
+require 'xmlrpc/client'
+require 'socket'
+require 'xmlrpc/client'
 
 rpctest = XMLRPCChannelTest.new(ENV['TESTHOST'])
 systest = XMLRPCSystemTest.new(ENV['TESTHOST'])
@@ -271,4 +275,229 @@ end
 
 Then(/^I logout from XML\-RPC\/virtualhostmanager$/) do
   virtualhostmanager.logout
+end
+
+rpc = XMLRPCActionChain.new(ENV['TESTHOST'])
+syschaintest = XMLRPCSystemTest.new(ENV['TESTHOST'])
+scdrpc = XMLRPCScheduleTest.new(ENV['TESTHOST'])
+
+# Auth
+Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(.*?)"$/) do |luser, password|
+  # Find target server once.
+  unless $client_id
+    rpc.login(luser, password)
+    syschaintest.login(luser, password)
+    scdrpc.login(luser, password)
+
+    servers = syschaintest.listSystems
+    refute_nil(servers)
+
+    hostname = $client.full_hostname
+    $client_id = servers
+                 .select { |s| s['name'] == hostname }
+                 .map { |s| s['id'] }.first
+    refute_nil($client_id, "Client #{hostname} is not yet registered?")
+  end
+
+  # Flush all chains
+  rpc.listChains.each do |label|
+    rpc.deleteChain(label)
+  end
+end
+
+# Listing chains
+When(/^I call XML\-RPC\/createChain with chainLabel "(.*?)"$/) do |label|
+  action_id = rpc.createChain(label)
+  refute(action_id < 1)
+  $chain_label = label
+end
+
+When(/^I call actionchain\.listChains\(\) if label "(.*?)" is there$/) do |label|
+  assert_includes(rpc.listChains, label)
+end
+
+# Deleting chain
+Then(/^I delete the action chain$/) do
+  begin
+    rpc.deleteChain($chain_label)
+  rescue XMLRPC::FaultException => e
+    raise format('deleteChain: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
+  end
+end
+
+Then(/^I delete an action chain, labeled "(.*?)"$/) do |label|
+  begin
+    rpc.deleteChain(label)
+  rescue XMLRPC::FaultException => e
+    raise format('deleteChain: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
+  end
+end
+
+# Renaming chain
+Then(/^I call actionchain\.renameChain\(\) to rename it from "(.*?)" to "(.*?)"$/) do |old_label, new_label|
+  rpc.renameChain(old_label, new_label)
+end
+
+Then(/^there should be a new action chain with the label "(.*?)"$/) do |label|
+  assert_includes(rpc.listChains, label)
+end
+
+Then(/^there should be an action chain with the label "(.*?)"$/) do |label|
+  assert_includes(rpc.listChains, label)
+end
+
+Then(/^there should be no action chain with the label "(.*?)"$/) do |label|
+  refute_includes(rpc.listChains, label)
+end
+
+Then(/^no action chain with the label "(.*?)"\.$/) do |label|
+  refute_includes(rpc.listChains, label)
+end
+
+#
+# Schedule scenario
+#
+When(/^I call actionchain\.addScriptRun\(\) with the script like "(.*?)"$/) do |script|
+  refute(rpc.addScriptRun($client_id, script, $chain_label) < 1)
+end
+
+Then(/^I should be able to see all these actions in the action chain$/) do
+  begin
+    actions = rpc.listChainActions($chain_label)
+    refute_nil(actions)
+    puts 'Running actions:'
+    actions.each do |action|
+      puts "\t- " + action['label']
+    end
+  rescue XMLRPC::FaultException => e
+    raise format('Error listChainActions: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
+  end
+end
+
+# Reboot
+When(/^I call actionchain\.addSystemReboot\(\)$/) do
+  refute(rpc.addSystemReboot($client_id, $chain_label) < 1)
+end
+
+# Packages operations
+When(/^I call actionchain\.addPackageInstall\(\)$/) do
+  pkgs = syschaintest.listAllInstallablePackages($client_id)
+  refute_nil(pkgs)
+  refute_empty(pkgs)
+  refute(rpc.addPackageInstall($client_id, [pkgs[0]['id']], $chain_label) < 1)
+end
+
+When(/^I call actionchain\.addPackageRemoval\(\)$/) do
+  pkgs = syschaintest.listAllInstallablePackages($client_id)
+  refute(rpc.addPackageRemoval($client_id, [pkgs[0]['id']], $chain_label) < 1)
+end
+
+When(/^I call actionchain\.addPackageUpgrade\(\)$/) do
+  pkgs = syschaintest.listLatestUpgradablePackages($client_id)
+  refute_nil(pkgs)
+  refute_empty(pkgs)
+  refute(rpc.addPackageUpgrade($client_id, [pkgs[0]['to_package_id']], $chain_label) < 1)
+end
+
+When(/^I call actionchain\.addPackageVerify\(\)$/) do
+  pkgs = syschaintest.listAllInstallablePackages($client_id)
+  refute_nil(pkgs)
+  refute_empty(pkgs)
+  refute(rpc.addPackageVerify($client_id, [pkgs[0]['id']], $chain_label) < 1)
+end
+
+# Manage actions within the action chain
+When(/^I call actionchain\.removeAction on each action within the chain$/) do
+  begin
+    actions = rpc.listChainActions($chain_label)
+    refute_nil(actions)
+    actions.each do |action|
+      refute(rpc.removeAction($chain_label, action['id']) < 0)
+      puts "\t- Removed \"" + action['label'] + '" action'
+    end
+  rescue XMLRPC::FaultException => e
+    raise format('Error removeAction: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
+  end
+end
+
+Then(/^I should be able to see that the current action chain is empty$/) do
+  assert_empty(rpc.listChainActions($chain_label))
+end
+
+# Scheduling the action chain
+When(/^I schedule the action chain$/) do
+  refute(rpc.scheduleChain($chain_label, DateTime.now) < 0)
+end
+
+Then(/^there should be no more my action chain$/) do
+  refute_includes(rpc.listChains, $chain_label)
+end
+
+Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
+  assert_includes(
+    scdrpc.listInProgressActions.map { |a| a['name'] }, label
+  )
+end
+
+Then(/^I cancel all scheduled actions$/) do
+  scdrpc.listInProgressActions.each do |action|
+    # One-by-one, this is against single call in the API on purpose.
+    scdrpc.cancelActions([action['id']])
+    puts "\t- Removed \"" + action['name'] + '" action'
+  end
+end
+
+Then(/^there should be no more any scheduled actions$/) do
+  assert_empty(scdrpc.listInProgressActions)
+end
+
+rpc_api_tester = XMLRPCApiTest.new(ENV['TESTHOST'])
+Given(/^I am logged in via XML\-RPC\/api as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
+  assert(rpc_api_tester.login(luser, password))
+end
+
+# cve audit
+Given(/^I am logged in via XML\-RPC\/cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
+  @rpctest = XMLRPCCVEAuditTest.new(ENV['TESTHOST'])
+  @rpctest.login(luser, password)
+end
+
+Given(/^channel data has already been updated$/) do
+  assert_equals(@rpctest.populateCVEServerChannels, 1)
+end
+
+When(/^I call audit.listSystemsByPatchStatus with CVE identifier "([^\"]*)"$/) do |cve_identifier|
+  @result_list = @rpctest.listSystemsByPatchStatus(cve_identifier) || []
+end
+
+Then(/^I should get status "([^\"]+)" for system "([0-9]+)"$/) do |status, system|
+  @result = @result_list.select { |item| item['system_id'] == system.to_i }
+  refute_empty(@result)
+  @result = @result[0]
+  assert_equal(status, @result['patch_status'])
+end
+
+Then(/^I should get status "([^\"]+)" for this client$/) do |status|
+  step "I should get status \"#{status}\" for system \"#{client_system_id_to_i}\""
+end
+
+Then(/^I should get the test-channel$/) do
+  arch = `uname -m`
+  arch.chomp!
+  channel = if arch != 'x86_64'
+              'test-channel-i586'
+            else
+              'test-channel-x86_64'
+            end
+  $stderr.puts "result: #{@result}"
+  assert(@result['channel_labels'].include?(channel))
+end
+
+Then(/^I should get the "([^"]*)" patch$/) do |patch|
+  $stderr.puts "result: #{@result}"
+  assert(@result['errata_advisories'].include?(patch))
+end
+
+Then(/^I logout from XML\-RPC\/cve audit namespace\.$/) do
+  assert(@rpctest.logout)
 end
