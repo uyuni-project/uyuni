@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.8.3
+Version:	2.8.5
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -124,6 +124,13 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Mon Sep 11 2017 Grant Gainey 2.8.5-1
+- 1458440 - Reset to use https, make xmlrpc-cnx debuggable
+
+* Mon Sep 11 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.4-1
+- remove unused macro
+- updated spacewalk nightly url
+
 * Fri Sep 08 2017 Grant Gainey 2.8.3-1
 - 1458440 - Fixed processing in the absence of input           Also fixed
   'xmlrpclib ssl no longer likes self-signed sat-certs' - match examples, use
