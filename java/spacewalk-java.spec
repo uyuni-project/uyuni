@@ -77,7 +77,7 @@ BuildRequires: javassist
 BuildRequires: jboss-logging
 BuildRequires: statistics
 BuildRequires: objectweb-asm
-BuildRequires: apache-commons-lang
+BuildRequires: apache-commons-lang3
 BuildRequires: google-gson >= 2.2.4
 BuildRequires: java-devel-ibm >= 1.8.0
 BuildRequires: pam-modules
@@ -104,7 +104,7 @@ BuildRequires: java-devel >= 1:1.7.0
 BuildRequires: jpam
 BuildRequires: oscache
 
-%endif
+%endif # 0%{?suse_version}
 Requires: dwr >= 3
 Requires: jakarta-commons-el
 Requires: jakarta-commons-fileupload
@@ -127,7 +127,7 @@ Requires: xerces-j2
 %if 0%{?fedora}
 Requires: classpathx-jaf
 
-%endif
+%endif # 0%{?fedora}
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: struts >= 0:1.3.0
@@ -156,8 +156,8 @@ BuildRequires: struts >= 0:1.3.0
 BuildRequires: struts-taglib >= 0:1.3.0
 BuildRequires: tomcat6
 BuildRequires: tomcat6-lib
-%endif
-%endif
+%endif # 0%{?suse_version}
+%endif # 0%{?fedora} || 0%{?rhel} >= 7
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:      apache-commons-cli
 Requires:      apache-commons-codec
@@ -191,6 +191,25 @@ BuildRequires: javapackages-tools
 BuildRequires: mvn(ant-contrib:ant-contrib)
 BuildRequires: tomcat-taglibs-standard
 %else
+%if 0%{?suse_version}
+Requires:      apache-commons-cli
+Requires:      apache-commons-codec
+Requires:      jakarta-commons-discovery
+Requires:      apache-commons-io
+Requires:      apache-commons-lang3
+Requires:      apache-commons-logging
+Requires:      javapackages-tools
+BuildRequires: ant-contrib
+BuildRequires: ant-nodeps
+BuildRequires: apache-commons-cli
+BuildRequires: apache-commons-codec
+BuildRequires: apache-commons-collections
+BuildRequires: jakarta-commons-discovery
+BuildRequires: apache-commons-io
+BuildRequires: apache-commons-logging
+BuildRequires: jakarta-commons-validator
+BuildRequires: javapackages-tools
+%else
 Requires:      jakarta-commons-cli
 Requires:      jakarta-commons-codec
 Requires:      jakarta-commons-discovery
@@ -208,7 +227,8 @@ BuildRequires: jakarta-commons-io
 BuildRequires: jakarta-commons-logging
 BuildRequires: jakarta-commons-validator
 BuildRequires: jpackage-utils
-%endif
+%endif #0%{?suse_version}
+%endif #0%{?fedora} || 0%{?rhel} >=7
 
 # for RHEL6 we need to filter out several package versions
 %if  0%{?rhel} && 0%{?rhel} >= 6
@@ -227,7 +247,7 @@ BuildRequires: tomcat-taglibs-standard
 BuildRequires: jakarta-taglibs-standard
 BuildRequires: /usr/bin/perl
 BuildRequires: /usr/bin/xmllint
-%endif
+%endif # 0%{?suse_version}
 BuildRequires: ant
 BuildRequires: ant-apache-regexp
 BuildRequires: ant-junit
@@ -440,6 +460,16 @@ Requires: hibernate3-ehcache >= 3.6.10
 Requires: javassist
 Requires: tomcat-taglibs-standard
 %else
+%if 0%{?suse_version}
+Requires: apache-commons-cli
+Requires: apache-commons-codec
+Requires: jakarta-commons-dbcp
+Requires: apache-commons-lang3
+Requires: apache-commons-logging
+Requires: jakarta-commons-pool
+BuildRequires: jakarta-commons-dbcp
+BuildRequires: jakarta-commons-pool
+%else
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
 Requires: jakarta-commons-dbcp
@@ -448,7 +478,8 @@ Requires: jakarta-commons-logging
 Requires: jakarta-commons-pool
 BuildRequires: jakarta-commons-dbcp
 BuildRequires: jakarta-commons-pool
-%endif
+%endif # 0%{?suse_version}
+%endif # 0%{?fedora} || 0%{?rhel} >= 7
 Conflicts: quartz >= 2.0
 Obsoletes: taskomatic < 5.3.0
 Obsoletes: taskomatic-sat < 5.3.0
@@ -820,7 +851,6 @@ fi
 %{jardir}/commons-el.jar
 %{jardir}/commons-fileupload.jar
 %{jardir}/commons-io.jar
-%{jardir}/commons-lang.jar
 %{jardir}/commons-logging.jar
 %{jardir}/*commons-validator.jar
 %{jardir}/concurrent*.jar
