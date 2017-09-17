@@ -102,7 +102,7 @@
 
   <!-- deps needed for testing, but required to build -->
   <property name="test.build.jar.dependencies"
-      value="junit
+      value="junit commons-lang
              ${log4j-jars}
              regexp ${jmock-jars} postgresql-jdbc" />
 
