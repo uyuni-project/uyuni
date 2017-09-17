@@ -78,6 +78,7 @@ BuildRequires: jboss-logging
 BuildRequires: statistics
 BuildRequires: objectweb-asm
 BuildRequires: apache-commons-lang3
+BuildRequires: apache-commons-lang
 BuildRequires: google-gson >= 2.2.4
 BuildRequires: java-devel-ibm >= 1.8.0
 BuildRequires: pam-modules
