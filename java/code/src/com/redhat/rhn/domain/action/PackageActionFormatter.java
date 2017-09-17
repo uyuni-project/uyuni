@@ -53,8 +53,8 @@ public class PackageActionFormatter extends ActionFormatter {
                     "<a href=\"/rhn/software/packages/Details.do?pid=" +
                     packageDetail.getPackageId().toString() +
                     "\">" +
-                    StringEscapeUtils.escapeHtml4(packageDetail.getPackageName().getName()) +
-                    "</a>"
+                    StringEscapeUtils.escapeHtml4(packageDetail.getPackageName()
+                        .getName()) + "</a>"
                 );
             }
         }
