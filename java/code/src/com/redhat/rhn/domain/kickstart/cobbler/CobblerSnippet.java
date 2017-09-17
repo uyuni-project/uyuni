@@ -22,8 +22,8 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.File;
 

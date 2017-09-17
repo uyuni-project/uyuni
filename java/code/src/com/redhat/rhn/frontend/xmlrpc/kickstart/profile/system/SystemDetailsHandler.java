@@ -36,7 +36,7 @@ import com.redhat.rhn.manager.kickstart.KickstartLocaleCommand;
 import com.redhat.rhn.manager.kickstart.KickstartPartitionCommand;
 import com.redhat.rhn.manager.kickstart.SystemDetailsCommand;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.HashSet;

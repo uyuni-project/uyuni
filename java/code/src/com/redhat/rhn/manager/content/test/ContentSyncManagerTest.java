@@ -50,7 +50,7 @@ import com.suse.mgrsync.XMLProduct;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.nio.file.Files;

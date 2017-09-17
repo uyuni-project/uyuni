@@ -39,7 +39,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

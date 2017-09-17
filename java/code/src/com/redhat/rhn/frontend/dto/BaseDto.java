@@ -18,7 +18,7 @@ import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.frontend.struts.SelectableAdapter;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * All dtos used for listviews should extend this class allowing us to treat

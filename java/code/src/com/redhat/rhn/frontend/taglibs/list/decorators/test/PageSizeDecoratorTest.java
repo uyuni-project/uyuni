@@ -19,7 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 /**
  * ScapAction - Class representing TYPE_SCAP_*.
  * @version $Rev$
@@ -52,11 +52,11 @@ public class ScapAction extends Action {
         StringBuilder retval = new StringBuilder();
         retval.append("</br>");
         retval.append(ls.getMessage("system.event.scapPath"));
-        retval.append(StringEscapeUtils.escapeHtml(scapActionDetails.getPath()));
+        retval.append(StringEscapeUtils.escapeHtml4(scapActionDetails.getPath()));
         retval.append("</br>");
         retval.append(ls.getMessage("system.event.scapParams"));
         retval.append(scapActionDetails.getParameters() == null ? "" :
-            StringEscapeUtils.escapeHtml(scapActionDetails.getParametersContents()));
+            StringEscapeUtils.escapeHtml4(scapActionDetails.getParametersContents()));
         return retval.toString();
     }
 

@@ -22,7 +22,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchImageStoreException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;

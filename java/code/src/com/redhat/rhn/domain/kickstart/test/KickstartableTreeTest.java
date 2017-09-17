@@ -38,7 +38,7 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.cobbler.Distro;
 import org.hibernate.Session;
 

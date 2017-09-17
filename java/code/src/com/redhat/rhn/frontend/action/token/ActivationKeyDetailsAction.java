@@ -33,7 +33,7 @@ import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;

@@ -19,7 +19,7 @@ import com.redhat.rhn.frontend.struts.Expandable;
 import com.redhat.rhn.frontend.taglibs.RhnListTagFunctions;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListSessionSetHelper;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 

@@ -47,7 +47,7 @@ import com.redhat.rhn.manager.org.CreateOrgCommand;
 import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.org.OrgManager;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;

@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -65,7 +65,7 @@ public class PackageDependenciesAction extends RhnAction {
                 line += PackageManager.getDependencyModifier(sense, version);
             }
 
-            lines.add(StringEscapeUtils.escapeHtml(line));
+            lines.add(StringEscapeUtils.escapeHtml4(line));
         }
 
         return lines;

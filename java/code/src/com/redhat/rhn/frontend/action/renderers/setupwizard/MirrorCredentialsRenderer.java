@@ -20,7 +20,7 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;

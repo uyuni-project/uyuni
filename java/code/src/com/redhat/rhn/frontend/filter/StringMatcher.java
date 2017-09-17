@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.filter;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.util.StringUtil;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 
 /**

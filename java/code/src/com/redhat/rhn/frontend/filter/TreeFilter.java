@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.filter;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Method;

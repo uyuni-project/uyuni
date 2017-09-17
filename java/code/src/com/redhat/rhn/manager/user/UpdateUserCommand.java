@@ -19,7 +19,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Iterator;
 import java.util.LinkedList;

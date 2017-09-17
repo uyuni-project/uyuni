@@ -22,7 +22,7 @@ import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

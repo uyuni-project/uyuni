@@ -16,7 +16,7 @@
 package com.redhat.rhn.common.localization;
 import com.redhat.rhn.common.conf.Config;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -246,7 +246,7 @@ public final class XmlMessages {
 
         // Fetch the bundle
         ResourceBundle bundle = getBundle(getBundleName(clazz), locale);
-        String pattern = StringEscapeUtils.unescapeHtml(bundle.getString(key));
+        String pattern = StringEscapeUtils.unescapeHtml4(bundle.getString(key));
 
         pattern = pattern.replaceAll(PRODUCT_NAME_MACRO,
                 Config.get().getString("product_name"));

@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.Iterator;
 

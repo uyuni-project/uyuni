@@ -17,7 +17,7 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.cobbler.Network;
 import org.cobbler.SystemRecord;
 

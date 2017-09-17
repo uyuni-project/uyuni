@@ -18,7 +18,7 @@ package com.suse.manager.webui.utils;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
-import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

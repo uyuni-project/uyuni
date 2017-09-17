@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 import com.redhat.rhn.common.CommonConstants;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jcraft.jsch.ChannelExec;

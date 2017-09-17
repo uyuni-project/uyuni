@@ -18,8 +18,8 @@ package com.redhat.rhn.domain.kickstart;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.File;
 import java.util.ArrayList;

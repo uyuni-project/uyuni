@@ -36,7 +36,7 @@ import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.conf.Config;
@@ -220,7 +220,7 @@ public class LocalizationService {
      */
     public String getPlainText(String messageId, Object... args) {
         String msg = getMessage(messageId, args);
-        String unescaped = StringEscapeUtils.unescapeHtml(msg);
+        String unescaped = StringEscapeUtils.unescapeHtml4(msg);
         return StringUtil.toPlainText(unescaped);
     }
 
@@ -368,7 +368,7 @@ public class LocalizationService {
         if (exceptionMode) {
             throw new IllegalArgumentException(message);
         }
-        return StringEscapeUtils.escapeHtml("**" + messageId + "**");
+        return StringEscapeUtils.escapeHtml4("**" + messageId + "**");
     }
 
     /**

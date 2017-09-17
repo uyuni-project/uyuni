@@ -28,8 +28,8 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
@@ -796,7 +796,7 @@ public class ListTag extends BodyTagSupport {
         sortByInputTag.setAttribute("name", sortByLabel);
         sortByInputTag.setAttribute("id",
                 ListTagUtil.makeSortById(getUniqueName()));
-        sortByInputTag.setAttribute("value", StringEscapeUtils.escapeHtml(StringUtils
+        sortByInputTag.setAttribute("value", StringEscapeUtils.escapeHtml4(StringUtils
                 .defaultString(pageContext.getRequest().getParameter(sortByLabel))));
 
         HtmlTag sortByDirTag = new HtmlTag("input");

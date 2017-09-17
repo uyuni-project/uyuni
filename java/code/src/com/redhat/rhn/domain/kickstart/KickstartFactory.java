@@ -29,7 +29,7 @@ import com.redhat.rhn.manager.kickstart.KickstartManager;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.Profile;
 import org.hibernate.Criteria;

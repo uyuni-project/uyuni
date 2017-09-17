@@ -20,8 +20,8 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;

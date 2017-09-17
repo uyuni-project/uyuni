@@ -39,8 +39,8 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.suse.pam.Pam;
 import com.suse.pam.PamReturnValue;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
 
 import java.util.Collections;

@@ -19,8 +19,8 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.redhat.rhn.frontend.html.HiddenInputTag;
 import com.redhat.rhn.frontend.html.HtmlTag;
@@ -104,7 +104,7 @@ public class RhnHiddenTag extends TagSupport {
                 baseTag.setAttribute("id", getId());
             }
             baseTag.setAttribute("name", getName());
-            baseTag.setAttribute("value", StringEscapeUtils.escapeHtml(getValue()));
+            baseTag.setAttribute("value", StringEscapeUtils.escapeHtml4(getValue()));
             buf.append(baseTag.render());
             out.print(buf.toString());
             return SKIP_BODY;

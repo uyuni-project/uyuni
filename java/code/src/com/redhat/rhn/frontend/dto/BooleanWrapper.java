@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 /**
  * BooleanWrapper

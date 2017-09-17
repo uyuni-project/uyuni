@@ -18,7 +18,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.errata.Errata;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -86,7 +86,7 @@ public class ErrataActionFormatter extends ActionFormatter {
                     "<a href=\"/rhn/errata/details/Details.do?eid=" +
                     errata.getId().toString() +
                     "\">" +
-                    StringEscapeUtils.escapeHtml(errata.getAdvisory()) +
+                    StringEscapeUtils.escapeHtml4(errata.getAdvisory()) +
                     "</a>"
                 );
             }

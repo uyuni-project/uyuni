@@ -141,7 +141,7 @@ public class MessagesTest extends RhnBaseTestCase {
     /**
      * Test unescaping the HTML
      */
-    public void testUnescapeHtml() {
+    public void testUnescapeHtml4() {
         // htmltest
         String recieved = XmlMessages.getInstance().getMessage(clazz, locale,
             "htmltest");

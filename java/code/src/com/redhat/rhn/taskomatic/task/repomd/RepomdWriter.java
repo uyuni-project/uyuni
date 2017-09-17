@@ -18,7 +18,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.frontend.dto.PackageDto;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;

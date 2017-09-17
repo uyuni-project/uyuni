@@ -16,7 +16,7 @@ package com.redhat.rhn.domain.kickstart;
 
 import java.util.Date;
 import java.io.Serializable;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 
 /**

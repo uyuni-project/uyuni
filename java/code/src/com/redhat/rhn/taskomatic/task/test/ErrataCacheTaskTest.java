@@ -17,7 +17,7 @@ package com.redhat.rhn.taskomatic.task.test;
 import com.redhat.rhn.taskomatic.task.ErrataCacheTask;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * ErrataCacheTaskTest

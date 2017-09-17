@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;

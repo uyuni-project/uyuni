@@ -38,8 +38,8 @@ import com.redhat.rhn.manager.user.CreateUserCommand;
 import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;

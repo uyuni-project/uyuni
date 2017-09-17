@@ -14,7 +14,7 @@
  */
 package com.suse.manager.reactor.hardware;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Utility for CPU architectures.

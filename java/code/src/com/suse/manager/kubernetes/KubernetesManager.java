@@ -27,7 +27,7 @@ import com.suse.manager.model.kubernetes.ContainerInfo;
 import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;

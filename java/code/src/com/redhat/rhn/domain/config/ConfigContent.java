@@ -18,8 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.common.Checksum;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * ConfigContent - Class representation of the table rhnConfigContent.

@@ -22,7 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.listview.PageControl;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;

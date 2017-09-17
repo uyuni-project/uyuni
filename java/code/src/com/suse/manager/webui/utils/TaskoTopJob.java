@@ -26,7 +26,7 @@ import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
 import com.suse.utils.Opt;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 import java.util.LinkedList;

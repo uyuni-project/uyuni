@@ -58,7 +58,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit3.JUnit3Mockery;
@@ -1295,7 +1295,8 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
             ConfigRevision rev = ConfigTestUtils.createConfigRevision(fl,
                                                ConfigTestUtils.createConfigContent(),
                                                ConfigTestUtils.createConfigInfo(),
-                                               new Long(RandomUtils.nextInt())
+                                               new Long(RandomUtils.nextInt(0,
+                                                       Integer.MAX_VALUE))
                                                );
             revisions.add(rev.getRevision());
             ConfigurationFactory.commit(sandbox);

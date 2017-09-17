@@ -29,7 +29,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -163,8 +163,8 @@ public class CompareDeployedSubmitAction extends RhnSetAction {
             }
 
             Object[] args = new Object[2];
-            args[0] = StringEscapeUtils.escapeHtml(url);
-            args[1] = StringEscapeUtils.escapeHtml(number);
+            args[0] = StringEscapeUtils.escapeHtml4(url);
+            args[1] = StringEscapeUtils.escapeHtml4(number);
 
             //add in the success message
             msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(key, args));

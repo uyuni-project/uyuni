@@ -17,7 +17,7 @@ package com.redhat.rhn.manager.kickstart;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;

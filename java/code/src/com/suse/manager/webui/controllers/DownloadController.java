@@ -24,7 +24,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.suse.manager.webui.utils.TokenBuilder;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;

@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -189,7 +189,7 @@ public class ManageRevisionSubmit extends RhnSetAction {
         buffy.append(cfid);
         buffy.append("&amp;" + ConfigActionHelper.REVISION_ID + "=");
         buffy.append(revision.getId());
-        args[0] = StringEscapeUtils.escapeHtml(buffy.toString());
+        args[0] = StringEscapeUtils.escapeHtml4(buffy.toString());
         args[1] = revision.getRevision().toString();
 
         msg.add(ActionMessages.GLOBAL_MESSAGE,

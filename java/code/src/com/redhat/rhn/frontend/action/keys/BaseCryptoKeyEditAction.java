@@ -27,7 +27,7 @@ import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.kickstart.crypto.BaseCryptoKeyCommand;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;

@@ -20,7 +20,7 @@ import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

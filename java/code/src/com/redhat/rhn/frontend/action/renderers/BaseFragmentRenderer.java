@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 

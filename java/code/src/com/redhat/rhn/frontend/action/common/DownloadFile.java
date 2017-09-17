@@ -50,7 +50,7 @@ import com.redhat.rhn.manager.download.UnknownDownloadTypeException;
 import com.redhat.rhn.manager.kickstart.KickstartManager;
 import com.redhat.rhn.manager.system.CrashManager;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;

@@ -18,7 +18,7 @@ package com.redhat.rhn.frontend.nav;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.redhat.rhn.frontend.html.HtmlTag;
 
@@ -138,7 +138,7 @@ public class DialognavRenderer extends Renderable {
                 // just check values.
                 if (values != null) {
                     formVars.append(currentVar + "=" +
-                             StringEscapeUtils.escapeHtml(values[0]));
+                             StringEscapeUtils.escapeHtml4(values[0]));
                 }
             }
             href += formVars.toString();

@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.cobbler.Profile;
 
 import java.io.File;

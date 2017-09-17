@@ -35,7 +35,7 @@ import com.suse.salt.netapi.errors.JsonParsingError;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Json;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.websocket.OnOpen;
