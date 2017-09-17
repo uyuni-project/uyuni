@@ -24,7 +24,7 @@ import com.redhat.rhn.frontend.dto.PackageChangelogDto;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.task.TaskManager;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayOutputStream;

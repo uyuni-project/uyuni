@@ -25,7 +25,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestCaseHelper;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /** JUnit test case for the Session class.
  * @version $Rev$

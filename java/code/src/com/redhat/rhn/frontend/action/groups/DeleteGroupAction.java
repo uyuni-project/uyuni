@@ -18,7 +18,7 @@ package com.redhat.rhn.frontend.action.groups;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -47,7 +47,7 @@ public class DeleteGroupAction extends RhnAction {
         if (context.isSubmitted()) {
             ServerGroupManager manager = ServerGroupManager.getInstance();
             manager.remove(context.getCurrentUser(), serverGroup);
-            String [] params = {StringEscapeUtils.escapeHtml(serverGroup.getName())};
+            String [] params = {StringEscapeUtils.escapeHtml4(serverGroup.getName())};
             getStrutsDelegate().saveMessage(DELETED_MESSAGE_KEY, params, request);
             return mapping.findForward("success");
         }

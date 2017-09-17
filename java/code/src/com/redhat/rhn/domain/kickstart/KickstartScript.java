@@ -19,7 +19,7 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * KickstartScript - Class representation of the table rhnKickstartScript.

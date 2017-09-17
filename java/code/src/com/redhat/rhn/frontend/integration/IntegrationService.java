@@ -19,7 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.SessionSwap;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerLoginCommand;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.concurrent.ConcurrentHashMap;

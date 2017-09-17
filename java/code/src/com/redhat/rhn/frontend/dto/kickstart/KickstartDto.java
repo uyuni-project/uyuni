@@ -17,8 +17,8 @@ package com.redhat.rhn.frontend.dto.kickstart;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.frontend.dto.BaseDto;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * DTO for a com.redhat.rhn.domain.kickstart.KickStartData

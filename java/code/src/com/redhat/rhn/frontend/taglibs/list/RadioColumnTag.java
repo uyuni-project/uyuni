@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.taglibs.list;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;

@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 import java.util.stream.Collectors;

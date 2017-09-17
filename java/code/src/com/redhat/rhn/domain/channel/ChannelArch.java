@@ -19,9 +19,9 @@ import com.redhat.rhn.domain.common.ArchType;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.server.ServerArch;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Set;
 

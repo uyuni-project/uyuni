@@ -25,7 +25,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidPackageKeyTypeException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageProviderException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.List;
 import java.util.Set;
@@ -124,7 +124,7 @@ public class PackagesProviderHandler extends BaseHandler {
         PackageKey pKey = PackageFactory.lookupPackageKey(key);
         if (pKey == null) {
             pKey = new PackageKey();
-            pKey.setKey(StringEscapeUtils.escapeHtml(key));
+            pKey.setKey(StringEscapeUtils.escapeHtml4(key));
             pKey.setType(type);
         }
 

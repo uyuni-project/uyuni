@@ -20,7 +20,7 @@ import com.redhat.rhn.frontend.action.LoginAction;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 
 import org.apache.commons.collections.set.UnmodifiableSet;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.Set;

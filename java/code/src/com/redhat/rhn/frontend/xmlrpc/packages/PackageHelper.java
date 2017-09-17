@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

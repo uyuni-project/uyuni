@@ -17,7 +17,7 @@ package com.suse.manager.webui.utils;
 import com.redhat.rhn.common.validator.HostPortValidator;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedList;
 import java.util.List;

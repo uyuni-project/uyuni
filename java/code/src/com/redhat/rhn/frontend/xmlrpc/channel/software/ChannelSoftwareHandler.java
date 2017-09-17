@@ -83,9 +83,9 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;

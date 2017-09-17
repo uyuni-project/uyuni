@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.dto;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;

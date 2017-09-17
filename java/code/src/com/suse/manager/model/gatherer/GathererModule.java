@@ -15,7 +15,7 @@
 
 package com.suse.manager.model.gatherer;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

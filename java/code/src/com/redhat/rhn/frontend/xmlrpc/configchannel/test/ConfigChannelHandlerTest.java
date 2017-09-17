@@ -43,7 +43,7 @@ import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;

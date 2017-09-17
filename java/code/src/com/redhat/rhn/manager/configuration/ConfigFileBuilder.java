@@ -29,7 +29,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigFileForm;
 import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 

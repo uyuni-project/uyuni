@@ -30,7 +30,7 @@ import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.Network;
 import org.cobbler.Profile;

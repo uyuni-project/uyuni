@@ -61,8 +61,8 @@ import com.redhat.rhn.manager.kickstart.KickstartOptionsCommand;
 import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileEditCommand;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.cobbler.Profile;
 
 import java.util.ArrayList;

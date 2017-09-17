@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.MinionServer;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -73,7 +73,7 @@ public class SystemOverviewAction extends RhnAction {
         String description = null;
 
         if (s.getDescription() != null) {
-            description = StringEscapeUtils.escapeHtml(s.getDescription())
+            description = StringEscapeUtils.escapeHtml4(s.getDescription())
                 .replaceAll("\\n", "<br/>");
         }
 

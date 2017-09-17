@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.servlets.test;
 import com.redhat.rhn.frontend.action.LoginAction;
 import com.redhat.rhn.frontend.servlets.CreateRedirectURI;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.integration.junit3.MockObjectTestCase;
 

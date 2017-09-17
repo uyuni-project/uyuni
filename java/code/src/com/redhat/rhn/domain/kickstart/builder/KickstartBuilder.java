@@ -42,7 +42,7 @@ import com.redhat.rhn.manager.kickstart.KickstartScriptCreateCommand;
 import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerProfileCommand;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.Distro;
 

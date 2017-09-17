@@ -24,7 +24,7 @@ import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 
 import com.suse.manager.model.gatherer.GathererModule;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 

@@ -25,7 +25,7 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayOutputStream;

@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.db.ResetPasswordFactory;

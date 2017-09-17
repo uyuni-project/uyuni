@@ -18,7 +18,7 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 
 import com.google.gson.Gson;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

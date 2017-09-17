@@ -62,7 +62,7 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 import org.hibernate.criterion.Restrictions;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;

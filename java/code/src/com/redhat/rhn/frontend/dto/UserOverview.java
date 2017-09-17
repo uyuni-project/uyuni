@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.Date;
 
@@ -124,7 +124,7 @@ public class UserOverview extends BaseDto {
      * @return the user login
      */
     public String getUserLogin() {
-        return StringEscapeUtils.escapeHtml(userLogin);
+        return StringEscapeUtils.escapeHtml4(userLogin);
     }
 
     /**
@@ -145,7 +145,7 @@ public class UserOverview extends BaseDto {
 
     /**
      * get the user's first name
-     * Don't escape this using StringEscapeUtils.escapeHtml, because it should be
+     * Don't escape this using StringEscapeUtils.escapeHtml4, because it should be
      *   escaped at display time .
      * @return the user's first name
      */
@@ -155,7 +155,7 @@ public class UserOverview extends BaseDto {
 
     /**
      * get the user's last name
-     * Don't escape this using StringEscapeUtils.escapeHtml, because it should be
+     * Don't escape this using StringEscapeUtils.escapeHtml4, because it should be
      *   escaped at display time .
      * @return the user's last name
      */

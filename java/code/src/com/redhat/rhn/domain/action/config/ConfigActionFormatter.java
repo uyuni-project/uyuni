@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigRevision;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -77,7 +77,7 @@ public class ConfigActionFormatter extends ActionFormatter {
         args[0] = "/rhn/configuration/file/FileDetails.do?cfid=" + file.getId() +
             "&crid=" + revision.getId();
         args[1] = revision.getRevision();
-        args[2] = StringEscapeUtils.escapeHtml(file.getConfigFileName().getPath());
+        args[2] = StringEscapeUtils.escapeHtml4(file.getConfigFileName().getPath());
         args[3] = "/rhn/configuration/ChannelOverview.do?ccid=" +
             file.getConfigChannel().getId();
         args[4] = file.getConfigChannel().getName();
@@ -108,7 +108,7 @@ public class ConfigActionFormatter extends ActionFormatter {
                                 "<a href=\"/rhn/configuration/file/FileDetails.do?crid=" +
                                 revision.getId().toString() +
                                 "\">" +
-                                StringEscapeUtils.escapeHtml(configFileName.getPath()) +
+                                StringEscapeUtils.escapeHtml4(configFileName.getPath()) +
                                 "</a>"
                             );
                         }

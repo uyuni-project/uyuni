@@ -24,8 +24,8 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -317,7 +317,7 @@ public class ListDisplayTagBase extends BodyTagSupport {
         input.setAttribute("class", "form-control");
         input.setAttribute("name", RequestContext.FILTER_STRING);
         input.setAttribute("value", pageList.getFilterData());
-        String placeHolder = StringEscapeUtils.escapeHtml(
+        String placeHolder = StringEscapeUtils.escapeHtml4(
                 ls.getMessage("message.filterby", ls.getMessage(filterBy)));
         input.setAttribute("placeholder", placeHolder);
         input.setAttribute("maxlength", FILTER_MAXLENGTH);

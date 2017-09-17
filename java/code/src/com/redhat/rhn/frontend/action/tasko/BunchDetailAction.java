@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -80,7 +80,7 @@ public class BunchDetailAction extends RhnAction implements Listable {
         ListHelper helper = new ListHelper(this, request);
         helper.setListName(LIST_NAME);
         helper.setParentUrl(request.getRequestURI() + "?label=" +
-                        StringEscapeUtils.escapeHtml(bunchLabel));
+                        StringEscapeUtils.escapeHtml4(bunchLabel));
         helper.execute();
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

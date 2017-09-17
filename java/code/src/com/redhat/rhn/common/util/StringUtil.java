@@ -32,8 +32,8 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.xml.utils.XMLChar;
 import org.stringtree.json.JSONReader;
@@ -309,7 +309,7 @@ public class StringUtil {
      * href="http://foo.bar/example">http://foo.bar/example</a>
      * @param convertIn the String we want to convert
      * @return html version of the String
-     * @see org.apache.commons.lang.StringEscapeUtils
+     * @see org.apache.commons.lang3.StringEscapeUtils
      */
     public static String htmlifyText(String convertIn) {
         if (convertIn == null) {
@@ -318,7 +318,7 @@ public class StringUtil {
         if (logger.isDebugEnabled()) {
             logger.debug("htmlifyText() - " + convertIn);
         }
-        String retval = StringEscapeUtils.escapeHtml(convertIn);
+        String retval = StringEscapeUtils.escapeHtml4(convertIn);
         retval = retval.replaceAll("\\\\r\\\\n", "<br/>");
         retval = retval.replaceAll("\\\\n", "<br/>");
         retval = retval.replaceAll("\r\n", "<br/>");

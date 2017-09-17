@@ -70,7 +70,7 @@ import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
 import com.suse.utils.Json;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 

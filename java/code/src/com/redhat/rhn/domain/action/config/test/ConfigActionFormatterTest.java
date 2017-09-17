@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Tests for ConfigActionFormatter.
@@ -43,7 +43,7 @@ public class ConfigActionFormatterTest extends BaseTestCaseWithUser {
         String expected = "<a href=\"/rhn/configuration/file/FileDetails.do?crid=" +
             revision.getId().toString() +
             "\">" +
-            StringEscapeUtils.escapeHtml(revision.getConfigFile().getConfigFileName()
+            StringEscapeUtils.escapeHtml4(revision.getConfigFile().getConfigFileName()
                 .getPath()) + "</a>";
         String result = formatter.getRelatedObjectDescription();
 

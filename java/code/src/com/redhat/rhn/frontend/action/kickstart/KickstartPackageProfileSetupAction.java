@@ -25,7 +25,7 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.profile.ProfileManager;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;

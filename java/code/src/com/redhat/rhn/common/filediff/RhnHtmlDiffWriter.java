@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.common.filediff;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -131,7 +131,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
                 //This utility function doesn't escape spaces, so I'll do that
                 //myself, ... the easy way.
                 buffy.append(StringEscapeUtils
-                        .escapeHtml(line.substring(0, CHARS_PER_LINE))
+                        .escapeHtml4(line.substring(0, CHARS_PER_LINE))
                         .replaceAll(" ", "&nbsp;"));
                 buffy.append("<br />");
                 for (int p = 0; p < formatter.getMinimumIntegerDigits() + 1; p++) {
@@ -140,7 +140,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
                 line = line.substring(CHARS_PER_LINE);
                 numWritten++;
             }
-            buffy.append(StringEscapeUtils.escapeHtml(line)
+            buffy.append(StringEscapeUtils.escapeHtml4(line)
                     .replaceAll(" ", "&nbsp;"));
             buffy.append("<br />");
             numWritten++;

@@ -22,7 +22,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -45,7 +45,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  * Singleton representing Virtual Host Manager hibernate factory.

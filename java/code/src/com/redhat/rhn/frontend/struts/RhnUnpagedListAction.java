@@ -18,7 +18,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.listview.ListControl;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;

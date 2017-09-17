@@ -23,7 +23,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -72,7 +72,7 @@ public class EnableUserAction extends RhnAction {
             ActionMessages msg = new ActionMessages();
             msg.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("user.enable",
-                        StringEscapeUtils.escapeHtml(user.getLogin())));
+                        StringEscapeUtils.escapeHtml4(user.getLogin())));
             getStrutsDelegate().saveMessages(request, msg);
             return mapping.findForward("success");
         }

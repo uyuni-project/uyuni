@@ -46,9 +46,9 @@ import com.redhat.rhn.manager.user.DeleteSatAdminException;
 import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;

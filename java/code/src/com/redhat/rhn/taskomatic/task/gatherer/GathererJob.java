@@ -22,7 +22,7 @@ import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.gatherer.JSONHost;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
