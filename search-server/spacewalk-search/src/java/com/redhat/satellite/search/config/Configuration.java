@@ -17,7 +17,7 @@ package com.redhat.satellite.search.config;
 
 import com.redhat.satellite.search.config.translator.TranslatorRegistry;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
