@@ -28,7 +28,7 @@
       <svg>
         <g class="node inner-node" >
           <foreignObject width="1.1em" height="1.1em">
-            <i class="fa spacewalk-icon-system-groups"></i>
+            <i class="fa spacewalk-icon-desktop-filled-group"></i>
           </foreignObject>
         </g>
       </svg>
