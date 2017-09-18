@@ -302,7 +302,7 @@ function myDeriveIconClass(node) {
     iconClass = 'spacewalk-icon-suse-manager';
   }
   else if (node.data.type == 'group') {
-    iconClass = 'spacewalk-icon-system-groups';
+    iconClass = 'spacewalk-icon-desktop-filled-group';
   }
   else {
     iconClass = 'fa-question-circle';

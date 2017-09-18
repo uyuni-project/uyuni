@@ -58,12 +58,13 @@ function hierarchyView(container, rootIn) {
       .append('svg:foreignObject')
       // The icon starts to be drawn at top-left and it's developed to bottom-right.
       // Set the offset as half negative of its dimension to center.
-      .attr('x', d => -(getIconDimensionByType(d)/2) + 'em')
-      .attr('y', d => -(getIconDimensionByType(d)/2) + 'em')
-      .attr('width', d => getIconDimensionByType(d) + 'em')
-      .attr('height', d => getIconDimensionByType(d) + 'em')
-      .html(d => '<i class="fa ' + deriveIconClass(d) + '"></i>'); // we must construct html manually
-                                                                   // otherwise the fa icon is not visible
+      .attr('x', d => -(getIconDimensionByType(d)/2) + 'px')
+      .attr('y', d => -(getIconDimensionByType(d)/2) + 'px')
+      .attr('width', d => getIconDimensionByType(d) + 'px')
+      .attr('height', d => getIconDimensionByType(d) + 'px')
+      .html(d => '<div class="icon-wrapper" title="' + captionFunction(d) + '"><i class="fa ' +
+          deriveIconClass(d) + '"></i></div>'); // we must construct html manually
+                                                // otherwise the fa icon is not visible
 
     // common for enter + update sections
     node.merge(gEnter)
@@ -79,8 +80,9 @@ function hierarchyView(container, rootIn) {
       .enter()
       .append('text')
       .attr('class', 'caption')
-      .attr('dx', d => getIconDimensionByType(d)/2 + 'em' )
+      .attr('dx', d => getIconDimensionByType(d)/2 + 'px' )
       .attr('dy', '.15em')
+      .attr('filter', 'url(#textStyle)')
       .text(captionFunction);
 
     const link = container.selectAll('line.link').data(links, d => d.target.id);
@@ -162,16 +164,16 @@ function hierarchyView(container, rootIn) {
 function getIconDimensionByType(node) {
   let size;
   if (node.data.id == 'root') {
-    size = '4';
+    size = '50';
   }
   else if (view == 'proxy-hierarchy' && node.depth == 1 || ['vhm', 'group'].includes(node.data.type)) {
-    size = '3';
+    size = '34';
   }
   else if (Utils.isSystemType(node)) {
-    size = '1.2';
+    size = '26';
   }
   else {
-    size = '1';
+    size = '22';
   }
   return size;
 }
