@@ -8,6 +8,7 @@
   changed network interfaces or IP addresses
 - check entitlement usage based on grains when onboarding a
   minion (bsc#1043880)
+- Escape failure-text of failed-actions (CVE-2017-7514, bsc#1042265)
 
 -------------------------------------------------------------------
 Wed Aug 30 15:55:45 CEST 2017 - fkobzik@suse.de
