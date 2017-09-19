@@ -164,9 +164,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         if (optMinion.isPresent()) {
             MinionServer registeredMinion = optMinion.get();
             String oldMinionId = registeredMinion.getMinionId();
-            String oldName = registeredMinion.getName();
 
-            if (!minionId.equals(oldMinionId) || !minionId.equals(oldName)) {
+            if (!minionId.equals(oldMinionId)) {
                 LOG.warn("Minion '" + oldMinionId + "' already registered, updating " +
                         "profile to '" + minionId + "' [" + machineId + "]");
                 registeredMinion.setName(minionId);
