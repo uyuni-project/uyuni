@@ -1020,9 +1020,11 @@ class SystemInformation():
 
 class MachineInformation:
 
-    def __init__(self, sysid, data=None):
+    def __init__(self, sysid, name=None, data=None):
         machine_id = data.get("machine_id") if data and "machine_id" in data else None
-        log_debug(4, "updating machine_id", sysid, machine_id)
+        if not name:
+            name = "unknown"
+        log_debug(4, "updating machine_id", sysid, name, machine_id)
         if not self.__check_if_machine_id_exists(machine_id):
             s_update = rhnSQL.prepare("""
                         UPDATE rhnServer
@@ -1033,7 +1035,7 @@ class MachineInformation:
         else:
             # Send an alert email in case of machine_id collition.
             log_error("Unable to update machine id: machine id is not unique")
-            self.__send_machine_id_alert_email(machine_id, sysid)
+            self.__send_machine_id_alert_email(machine_id, sysid, name)
 
     def __check_if_machine_id_exists(self, machine_id):
         if machine_id:
@@ -1042,7 +1044,7 @@ class MachineInformation:
             return bool(h.fetchall_dict())
         return False
 
-    def __send_machine_id_alert_email(self, machine_id, sysid):
+    def __send_machine_id_alert_email(self, machine_id, sysid, name):
         log_debug(1, "Sending alert email about multiple machine_id")
         hostname = socket.getfqdn()
 
@@ -1057,7 +1059,7 @@ class MachineInformation:
             "From"    : "{0} <{1}>".format(hostname, fr),
             "To"      : to,
         }
-        body = MACHINE_ID_EMAIL_TEMPLATE.format(machine_id, sysid)
+        body = MACHINE_ID_EMAIL_TEMPLATE.format(machine_id, sysid, name)
         rhnMail.send(headers, body)
 
 
@@ -1114,7 +1116,7 @@ class Hardware:
             SystemInformation(hardware, self)
             return 0
         elif hw_class == "machineinfo":
-            MachineInformation(self.server["id"], hardware)
+            MachineInformation(self.server["id"], self.server["name"], hardware)
             return 0
         else:
             log_error("UNKNOWN CLASS TYPE `%s'" % hw_class)
@@ -1220,13 +1222,15 @@ class Hardware:
 MACHINE_ID_EMAIL_TEMPLATE = """A non-unique machine_id has been detected: "{0}"
 
 This is expected behavior when using cloned images of systems.
-Solution: Generate a new machine_id for system "{1}"
+Solution: Generate a new machine_id for system "{2} ({1})"
 
 For SLES12+ and RHEL7:
-  # rm /etc/machine-id
+  # rm -f /var/lib/dbus/machine-id
+  # rm -f /etc/machine-id
+  # dbus-uuidgen --ensure
   # systemd-machine-id-setup
   # rhn-profile-sync
-  
+
 
 For SLES11 and RHEL5/RHEL6:
   # rm /var/lib/dbus/machine-id
@@ -1235,5 +1239,5 @@ For SLES11 and RHEL5/RHEL6:
 
 
 For more information on generating a new machine_id for traditional systems refer to:
-https://www.suse.com/documentation/suse-manager-3/book_suma_best_practices/data/bp_chapt_suma3_troubleshooting_registering_cloned_traditional_systems.html
+https://www.suse.com/documentation/suse-manager-3/book_suma_best_practices_31/data/bp_chapt_suma3_troubleshooting_registering_cloned_traditional_systems.html
 """

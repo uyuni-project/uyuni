@@ -1,3 +1,7 @@
+
+- add hostname to duplicate machine_id email (bsc#1055292)
+- fix link to manual and the described procedure
+
 -------------------------------------------------------------------
 Thu Sep 14 11:40:39 CEST 2017 - mc@suse.de
 
