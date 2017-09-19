@@ -1,3 +1,5 @@
+- Support xccdf 1.2 namespace in openscap result file (bsc#1059319)
+
 -------------------------------------------------------------------
 Fri Jul 21 12:03:58 CEST 2017 - mc@suse.de
 
