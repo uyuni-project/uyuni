@@ -137,7 +137,7 @@ And(/^I delete the image "([^"]*)" with version "([^"]*)" via XML-RPC calls$/) d
   cont_op.deleteImage($image_id)
 end
 
-And(/^The image "([^"]*)" with version "([^"]*)" doesn't exist via XML-RPC calls$/) do |image_non_exist, version|
+And(/^the image "([^"]*)" with version "([^"]*)" doesn't exist via XML-RPC calls$/) do |image_non_exist, version|
   cont_op.login('admin', 'admin')
   images_list = cont_op.listImages
   images_list.each do |element|

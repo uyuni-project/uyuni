@@ -175,14 +175,14 @@ Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |di
   ct.distro_create(distro, '/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux', 'install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
-Then(/^trigger cobbler system record\(not for ssh\-push tradclient\)$/) do
+Then(/^trigger cobbler system record$/) do
+  # not for SSH-push traditional client
   space = 'spacecmd -u admin -p admin'
   host = $client.full_hostname
-  cmd = "#{$space} system_details #{host}"
   $server.run("#{space} clear_caches")
-  out, _code = $server.run(cmd)
+  out, _code = $server.run("#{$space} system_details #{host}")
   unless out.include? 'ssh-push-tunnel'
-    # trad-client normal
+    # normal traditional client
     steps %(
       And I follow this "sle-client" link
       And I follow "Provisioning"
@@ -192,6 +192,7 @@ Then(/^trigger cobbler system record\(not for ssh\-push tradclient\)$/) do
       )
   end
 end
+
 Given(/distro "([^"]*)" exists/) do |distro|
   ct = CobblerTest.new
   raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
@@ -238,7 +239,7 @@ Then(/^I should not have '([^']*)' in the metadata for "([^"]*)"$/) do |text, ho
   target.run(cmd, true, 500, 'root')
 end
 
-Then(/^"([^"]*)" should exists in the metadata for "([^"]*)"$/) do |file, host|
+Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   raise 'Invalid target.' unless host == 'sle-client'
   target = $client
   arch, _code = target.run('uname -m')
@@ -395,11 +396,11 @@ Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
   end
 end
 
-Then(/^On this client the File "([^"]*)" should exists$/) do |arg1|
+Then(/^on this client the file "([^"]*)" should exist$/) do |arg1|
   $client.run("test -f #{arg1}", true)
 end
 
-Then(/^On this client the File "([^"]*)" should have the content "([^"]*)"$/) do |filename, content|
+Then(/^on this client the file "([^"]*)" should have the content "([^"]*)"$/) do |filename, content|
   $client.run("test -f #{filename}")
   $client.run("grep #{content} #{filename}")
 end
@@ -408,7 +409,7 @@ Then(/^I remove server hostname from hosts trad-client$/) do
   $client.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
-And(/^Cleanup for distro_clobber_feature$/) do
+And(/^I remove kickstart profiles and distros$/) do
   host = $server.full_hostname
   @cli = XMLRPC::Client.new2('http://' + host + '/rpc/api')
   @sid = @cli.call('auth.login', 'admin', 'admin')
@@ -420,7 +421,7 @@ And(/^Cleanup for distro_clobber_feature$/) do
   # -------------------------------
   # remove not from suma managed profile
   $server.run('cobbler profile remove --name "testprofile"')
-  # remove not from suma man. distro
+  # remove not from suma managed distro
   $server.run('cobbler distro remove --name "testdistro"')
 end
 

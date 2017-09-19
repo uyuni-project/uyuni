@@ -1,8 +1,8 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Use the openSCAP audit feature in SUSE Manager for a salt minion
-  In order to audit my salt minions
+Feature: openSCAP audits
+  In order to audit my Salt minions
   As an authorized user
   I want to run openSCAP scans on them
 
@@ -65,7 +65,7 @@ Feature: Use the openSCAP audit feature in SUSE Manager for a salt minion
     And I click on "Confirm"
     Then I should see a "2 SCAP Scan(s) deleted. 0 SCAP Scan(s) retained" text
 
-  Scenario: Restore audit scans retention period
+  Scenario: Cleanup: restore audit scans retention period
     Given I am on the Organizations page
     And I follow "SUSE Test" in the content area
     And I follow "Configuration" in the content area

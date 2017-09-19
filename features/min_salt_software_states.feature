@@ -1,11 +1,9 @@
 # Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Check the Salt package state UI
-  In Order to test salt package states.
-  As the testing
+Feature: Salt states
 
-  Scenario: Prequisite: Install milkyway-dummy-1.0 and virgo-dummy-1.0 packages
+  Scenario: Pre-requisite: install milkyway-dummy-1.0 and virgo-dummy-1.0 packages
     Given I am authorized as "admin" with password "admin"
     Then I apply highstate on "sle-minion"
     And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
@@ -27,7 +25,7 @@ Feature: Check the Salt package state UI
     And I follow "Software Channels" in the content area
     Then the system should have a Base channel set
 
-  Scenario: Test package removal through the UI
+  Scenario: Remove a package through the UI
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
     And I follow "Packages"
@@ -41,7 +39,7 @@ Feature: Check the Salt package state UI
     And I click apply
     And "milkyway-dummy" is not installed 
 
-   Scenario: Test package installation through the UI
+  Scenario: Install a package through the UI
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
     And I follow "Packages"
@@ -55,7 +53,7 @@ Feature: Check the Salt package state UI
     And I click apply
     And I wait for "milkyway-dummy" to be installed on this "sle-minion"
 
-   Scenario: Test package installation with any through the UI
+  Scenario: Install an already installed package through the UI
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
     And I follow "Packages"
@@ -69,7 +67,7 @@ Feature: Check the Salt package state UI
     And I click apply
     And I wait for "virgo-dummy-1.0" to be installed on this "sle-minion"
 
-  Scenario: Test package upgrade through the UI
+  Scenario: Upgrade a package through the UI
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
     And I follow "Packages"
@@ -83,7 +81,7 @@ Feature: Check the Salt package state UI
     And I click apply
     And I wait for "andromeda-dummy-2.0-1.1" to be installed on this "sle-minion"
 
-  Scenario: I verify the system status of the salt ui
+  Scenario: Verify the package states
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
     And I follow "Packages"
@@ -92,14 +90,14 @@ Feature: Check the Salt package state UI
     And I should see a "andromeda-dummy" text
     And I should see a "virgo-dummy" text
 
-  Scenario: Test Salt presence ping mechanism on active minion
+  Scenario: Use Salt presence mechanism on an active minion
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
     And I follow "Highstate" in the content area
     And I wait for "6" seconds
     And I should see a "pkg_removed" or "running as PID" text in element "highstate"
 
-  Scenario: Test Salt presence ping mechanism on unreachable minion
+  Scenario: Use Salt presence mechanism on an unreachable minion
     Given I am on the Systems overview page of this "sle-minion"
     Then I follow "States" in the content area
     And I run "pkill salt-minion" on "sle-minion"
@@ -108,7 +106,7 @@ Feature: Check the Salt package state UI
     And I run "rcsalt-minion restart" on "sle-minion"
     And I should see a "No reply from minion" text in element "highstate"
 
-  Scenario: CLEANUP: Remove milkyway-dummy and virgo-dummy packages from sle-minion
+  Scenario: Cleanup: remove milkyway-dummy and virgo-dummy packages from SLES minion
     Given I am authorized as "admin" with password "admin"
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n rm milkyway-dummy" on "sle-minion" without error control

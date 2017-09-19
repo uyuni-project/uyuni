@@ -1,7 +1,7 @@
 # Copyright (c) 2010-2017 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
-Feature: cobbler and distro Autoinstallation
+Feature: Cobbler and distribution autoinstallation
 
   Background:
     Given I am authorized
@@ -9,16 +9,16 @@ Feature: cobbler and distro Autoinstallation
     And I follow "Systems" in the left menu
     And I follow "Overview" in the left menu
 
-  Scenario: create a dummy distro with cobbler (not visible in UI, SLES)
+  Scenario: Ask cobbler to create a distribution via XML-RPC
     Given cobblerd is running
     Then create distro "testdistro" as user "testing" with password "testing"
 
-  Scenario: create dummy profile
+  Scenario: Create dummy profile
     Given cobblerd is running
     And distro "testdistro" exists
     Then create profile "testprofile" as user "testing" with password "testing"
 
-  Scenario: Check cobbler created distro and profile Systems => Autoinstallation => Profiles
+  Scenario: Check cobbler created distro and profile
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     Then I should see a "testprofile" text
@@ -27,7 +27,7 @@ Feature: cobbler and distro Autoinstallation
   Scenario: Create mock initrd if download via sumaform fails
     Then I create mock initrd if download fails
 
-  Scenario: Create a distro with the UI (requires a base channel)
+  Scenario: Create a distribution via the UI
     When I follow "Autoinstallation" in the left menu
     And I follow "Distributions" in the left menu
     And I follow "Create Distribution"
@@ -38,7 +38,7 @@ Feature: cobbler and distro Autoinstallation
     Then I should see a "Autoinstallable Distributions" text
    And I should see a "fedora_kickstart_distro" link
 
-  Scenario: create a profile with the UI (requires a base channel)
+  Scenario: Create a profile via the UI
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "Create Kickstart Profile"
@@ -51,12 +51,12 @@ Feature: cobbler and distro Autoinstallation
     Then I should see a "Autoinstallation: fedora_kickstart_profile" text
     And I should see a "Autoinstallation Details" link
 
-  Scenario: test Upload Kickstart/Autoyast File page
+  Scenario: Autoinstallation profiles page
     When I am on the Create Autoinstallation Profile page
     And I follow "Profiles" in the left menu
     Then I should see a "Distributions" text
 
-  Scenario: upload a profile with the UI (requires a base channel)
+  Scenario: Upload a profile via the UI
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "Upload Kickstart/Autoyast File"
@@ -66,7 +66,7 @@ Feature: cobbler and distro Autoinstallation
     Then I should see a "Autoinstallation: fedora_kickstart_profile_upload" text
     And I should see a "Autoinstallation Details" text
 
-  Scenario: adding a unprovisioned range to a profile (requires fedora_kickstart_profile)
+  Scenario: Add an unprovisioned range to the created profile
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "fedora_kickstart_profile"
@@ -82,7 +82,7 @@ Feature: cobbler and distro Autoinstallation
     And I click on "Add IP Range"
     Then I should see a "Successfully added IP Range" text
 
-  Scenario: adding a variable to the uploaded profile (requires fedora_kickstart_profile_upload)
+  Scenario: Add a variable to the uploaded profile
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "fedora_kickstart_profile_upload"
@@ -92,7 +92,7 @@ Feature: cobbler and distro Autoinstallation
     And I follow "Autoinstallation File"
     Then I should see a "A_Test_String" text
 
-  Scenario: adding a kernel option (requires fedora_kickstart_profile)
+  Scenario: Add a kernel option to the created profile
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "fedora_kickstart_profile"
@@ -101,7 +101,7 @@ Feature: cobbler and distro Autoinstallation
     And I wait for "5" seconds
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value"
 
-  Scenario: adding a kernel option (requires fedora_kickstart_profile_upload)
+  Scenario: Add a kernel option to the uploaded profile
     When I follow "Autoinstallation" in the left menu
     And I follow "Profiles" in the left menu
     And I follow "fedora_kickstart_profile_upload"
@@ -110,7 +110,7 @@ Feature: cobbler and distro Autoinstallation
     And I wait for "5" seconds
     Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2"
 
-  Scenario: checking default snippets
+  Scenario: Check default snippets
     When I follow "Autoinstallation" in the left menu
     And I follow "Autoinstallation Snippets" in the left menu
     And I follow "Default Snippets"
@@ -118,7 +118,7 @@ Feature: cobbler and distro Autoinstallation
     And I follow "spacewalk/sles_no_signature_checks"
     Then I should see "<signature-handling>" in the textarea
 
-  Scenario: create a snippet
+  Scenario: Create a snippet
     When I follow "Autoinstallation" in the left menu
     And I follow "Autoinstallation Snippets" in the left menu
     And I follow "Create Snippet"
@@ -127,7 +127,7 @@ Feature: cobbler and distro Autoinstallation
     And I click on "Create Snippet"
     Then I should see a "created_test_snippet created successfully." text
 
-  Scenario: delete a snippet (requires "create a snippet" test was run)
+  Scenario: Delete a snippet
     When I follow "Autoinstallation" in the left menu
     And I follow "Autoinstallation Snippets" in the left menu
     And I follow "created_test_snippet"
@@ -135,7 +135,7 @@ Feature: cobbler and distro Autoinstallation
     And I click on "Delete Snippet"
     Then I should see a "created_test_snippet deleted successfully." text
 
-  Scenario: testing for pxe environment files. Requires cobbler_ui tests to have run
+  Scenario: Test for PXE environment files
     Given cobblerd is running
     Then file "/srv/tftpboot/pxelinux.cfg/default" exists on server
     And file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1"
@@ -145,9 +145,8 @@ Feature: cobbler and distro Autoinstallation
     And file "/srv/tftpboot/menu.c32" exists on server
     And file "/srv/tftpboot/pxelinux.0" exists on server
 
-  Scenario: trigger the creation of a cobbler system record
-    Then trigger cobbler system record(not for ssh-push tradclient)
+  Scenario: Trigger the creation of a cobbler system record
+    Then trigger cobbler system record
 
-  Scenario: cleanup distro clobber feature
-    # Delete test distro and profiles
-    Then Cleanup for distro_clobber_feature
+  Scenario: Cleanup: delete test distro and profiles
+    Then I remove kickstart profiles and distros

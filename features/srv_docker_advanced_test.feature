@@ -1,9 +1,9 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature:  Test advanced functionality of content management
+Feature: Advanced content management
 
-  Scenario: Create an Image Store as docker_admin
+  Scenario: Create an Image Store as docker admin
     Given I am authorized as "docker" with password "docker"
     And I follow "Images" in the left menu
     And I follow "Stores" in the left menu
@@ -12,7 +12,7 @@ Feature:  Test advanced functionality of content management
     And I enter "registry.mgr.suse.de" as "uri"
     And I click on "create-btn"
 
-  Scenario: Create a profile  As docker admin
+  Scenario: Create a profile as docker admin
     Given I am authorized as "docker" with password "docker"
     And I follow "Images" in the left menu
     And I follow "Profiles" in the left menu
@@ -23,7 +23,7 @@ Feature:  Test advanced functionality of content management
     And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile/serverhost" as "path"
     And I click on "create-btn"
 
-  Scenario: Create a user without rights/roles
+  Scenario: Create a user without rights nor roles
     Given I am on the active Users page
     When I follow "Create User"
     And I enter "norole" as "login"
@@ -38,7 +38,7 @@ Feature:  Test advanced functionality of content management
     And I should see a "norole" link
     And I should see a "normal user" text
 
-  Scenario: CLEANUP: Remove "suse_docker_admin" profile
+  Scenario: Cleanup: remove docker profile
     Given I am authorized as "docker" with password "docker"
     And I follow "Images" in the left menu
     And I follow "Profiles" in the left menu
@@ -47,7 +47,7 @@ Feature:  Test advanced functionality of content management
     And I click on the css "button.btn-danger"
     And I should see a "Image profile has been deleted." text
 
-  Scenario: CLEANUP: Remove "docker_admin" Image Store
+  Scenario: Cleanup: remove docker_admin" Image Store
     Given I am authorized as "docker" with password "docker"
     And I follow "Images" in the left menu
     And I follow "Stores" in the left menu
@@ -56,7 +56,7 @@ Feature:  Test advanced functionality of content management
     And I click on the css "button.btn-danger"
     And I should see a "Image store has been deleted." text
 
-  Scenario: CLEANUP: Delete norole user
+  Scenario: Cleanup: delete no role user
     Given I am on the active Users page
     And I follow "norole"
     When I follow "Delete User"
