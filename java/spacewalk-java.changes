@@ -1,3 +1,5 @@
+
+- do not store registration-keys during autoinstallation (bsc#1057599)
 - Adapt Salt runner and wheel calls to the new
   error handling introduced in salt-netapi-client-0.12.0
 - change log level and event history for duplicate machine id  (bsc#1041489)
