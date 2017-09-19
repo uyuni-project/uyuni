@@ -1,3 +1,7 @@
+
+- do not use registration keys from last autoinstallation
+  (bsc#1057599)
+
 -------------------------------------------------------------------
 Tue Aug 08 11:29:32 CEST 2017 - fkobzik@suse.de
 
