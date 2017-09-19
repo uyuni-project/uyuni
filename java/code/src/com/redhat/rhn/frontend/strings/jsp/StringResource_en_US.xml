@@ -11388,7 +11388,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>This history event was caused by a failed scheduled action.&lt;br /&gt;If you have corrected the problem, you may reschedule the action below.</source>
         </trans-unit>
         <trans-unit id="system.event.rescheduled">
-          <source>{0} successfully rescheduled.</source>
+          <source>&lt;strong&gt;{0}&lt;/strong&gt; has been successfully &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;rescheduled&lt;/a&gt;.</source>
         </trans-unit>
         <trans-unit id="system.event.return">
           <source>Return to history list for {0}</source>
