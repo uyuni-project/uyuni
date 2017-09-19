@@ -88,7 +88,8 @@ public class SystemHistoryEventAction extends RhnAction {
             request.setAttribute("headerLabel", "system.event.pendingHeader");
         }
         if (isSubmitted((DynaActionForm)formIn)) {
-            createSuccessMessage(request, "system.event.rescheduled", action.getName());
+            createMessage(request, "system.event.rescheduled", action.getName(),
+                    action.getId().toString());
             ActionFactory.rescheduleSingleServerAction(action, 5L, server.getId());
             MessageQueue.publish(new ActionScheduledEventMessage(action));
             return mapping.findForward("continue");

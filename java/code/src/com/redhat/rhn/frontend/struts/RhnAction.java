@@ -184,7 +184,7 @@ public abstract class RhnAction extends Action {
      * @param params String values to fill in
      */
     protected void createMessage(HttpServletRequest req, String msgKey,
-            String[] params) {
+            String... params) {
 
         ActionMessages msg = new ActionMessages();
         for (int i = 0; i < params.length; i++) {
