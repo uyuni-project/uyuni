@@ -8,7 +8,7 @@ Then(/^"(.*?)" is locked on this client$/) do |pkg|
   $client.run(command, true, 600, 'root')
 end
 
-Then(/^Package "(.*?)" is reported as locked$/) do |pkg|
+Then(/^package "(.*?)" is reported as locked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
   raise if locked_pkgs.empty?
@@ -22,25 +22,25 @@ Then(/^"(.*?)" is unlocked on this client$/) do |pkg|
   $client.run(command, false, 600, 'root')
 end
 
-Then(/^Package "(.*?)" is reported as unlocked$/) do |pkg|
+Then(/^package "(.*?)" is reported as unlocked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
 
   raise if locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
 end
 
-Then(/^The package scheduled is "(.*?)"$/) do |pkg|
+Then(/^the package scheduled is "(.*?)"$/) do |pkg|
   match = find(:xpath, "//li[@class='list-group-item']//li")
 
   raise unless match
   raise unless match.text =~ /^#{pkg}/
 end
 
-Then(/^The action status is "(.*?)"$/) do |status|
+Then(/^the action status is "(.*?)"$/) do |status|
   step %(I should see a "This action's status is: #{status}" text)
 end
 
-Then(/^Package "(.*?)" is reported as pending to be locked$/) do |pkg|
+Then(/^package "(.*?)" is reported as pending to be locked$/) do |pkg|
   xpath_query = '//td[' \
                 "a[text()='#{pkg}'] and " \
                 "i[@class='fa fa-clock-o'] and " \
@@ -48,7 +48,7 @@ Then(/^Package "(.*?)" is reported as pending to be locked$/) do |pkg|
   find(:xpath, xpath_query)
 end
 
-Then(/^Package "(.*?)" is reported as pending to be unlocked$/) do |pkg|
+Then(/^package "(.*?)" is reported as pending to be unlocked$/) do |pkg|
   xpath_query = '//td[' \
                 "a[text()='#{pkg}'] and " \
                 "i[@class='fa fa-clock-o'] and " \
@@ -56,7 +56,7 @@ Then(/^Package "(.*?)" is reported as pending to be unlocked$/) do |pkg|
   find(:xpath, xpath_query)
 end
 
-Then(/^Package "(.*?)" cannot be selected$/) do |pkg|
+Then(/^package "(.*?)" cannot be selected$/) do |pkg|
   xpath_query = '//tr[' \
                 "td[input[@type='checkbox' and @disabled]] and " \
                 'td[ ' \
@@ -67,7 +67,7 @@ Then(/^Package "(.*?)" cannot be selected$/) do |pkg|
   find(:xpath, xpath_query)
 end
 
-Then(/^Only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
+Then(/^only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
   pkgs = pkgs.split(',').map(&:strip)
 
   # ensure these packages are found as pending to be unlocked

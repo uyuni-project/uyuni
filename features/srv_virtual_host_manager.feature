@@ -1,7 +1,7 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Test "virtualhostmanager" Web UI.
+Feature: Virtual host manager web UI
 
   Scenario: Check the VHM page
     Given I am on the Systems page
@@ -21,7 +21,7 @@ Feature: Test "virtualhostmanager" Web UI.
     And I should see a "Username" text
     And I should see a "Password" text
 
-  Scenario: Check create Virtual Host
+  Scenario: Create Virtual Host
    Given I am on the Systems page
     When I follow "Virtual Host Managers"
     And I click on "Create"
@@ -32,7 +32,7 @@ Feature: Test "virtualhostmanager" Web UI.
     And I click on "Create"
     Then I should see a "file-vmware" link
 
-  Scenario: Run virtual-host-gatherer single run
+  Scenario: Run virtual-host-gatherer
    Given I am authorized as "admin" with password "admin"
     When I follow "Systems" in the left menu
      And I follow "Virtual Host Managers"
@@ -42,7 +42,7 @@ Feature: Test "virtualhostmanager" Web UI.
     When I click on "Schedule refresh data"
     Then I should see a "Refreshing the data for this Virtual Host Manager has been triggered." text
 
-  Scenario: Check new Virtual Hosts vhm page
+  Scenario: Check new virtual hosts
     Given I am on the Systems page
     When I follow "10.162.186.111"
     Then I should see a "OS: VMware ESXi" text
@@ -60,13 +60,13 @@ Feature: Test "virtualhostmanager" Web UI.
     Then I should see a "Virtual Host Manager has been deleted." text
      And I should see a "No Virtual Host Managers." text
 
- Scenario: Cleanup: delete virtualhost: 10.162.186.111
+  Scenario: Cleanup: delete virtual host 10.162.186.111
    Given I am on the Systems page
     When I follow "10.162.186.111"
     And I follow "Delete System"
     And I click on "Delete Profile"
 
- Scenario: Cleanup: delete virtualhost: 10.162.186.112
+  Scenario: Cleanup: delete virtual host 10.162.186.112
    Given I am on the Systems page
     When I follow "10.162.186.112"
     And I follow "Delete System"

@@ -12,7 +12,7 @@ Feature: Pick dates
     And I open the date picker
     Then the date picker title should be the current month and year
 
-  Scenario: Pick a time should set the right hidden fields
+  Scenario: Picking a time should set the hidden fields
     Given I am on the Systems overview page of this "sle-client"
     And I follow "Remote Command" in the content area
     And I enter "ls" as "Script"

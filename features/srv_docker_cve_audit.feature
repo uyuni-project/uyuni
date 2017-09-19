@@ -1,13 +1,13 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: CVE Audit for content management
+Feature: CVE audit for content management
   I want to see images that need to be patched or not 
 
   Background:
     Given I am authorized as "admin" with password "admin"
 
-  Scenario: schedule channel data refresh for content-management
+  Scenario: Schedule channel data refresh for content management
     When I follow "Admin"
     And I follow "Task Schedules"
     And I follow "cve-server-channels-default"
@@ -17,7 +17,7 @@ Feature: CVE Audit for content management
     And I reload the page
     And I reload the page until it does contain a "FINISHED" text in the table first row
 
-  Scenario: Audit Images: searching for a known CVE number
+  Scenario: Audit images, searching for a known CVE number
     When I follow "Audit" in the left menu
     And I follow "CVE Audit" in the left menu
     And I select "1999" from "cveIdentifierYear"
@@ -25,7 +25,7 @@ Feature: CVE Audit for content management
     And I click on "Audit Images"
     Then I should see a "No action required" text
 
-  Scenario: Audit Images: searching for an unknown CVE number
+  Scenario: Audit images, searching for an unknown CVE number
     When I follow "Audit" in the left menu
     And I follow "CVE Audit" in the left menu
     And I select "2012" from "cveIdentifierYear"

@@ -1,18 +1,16 @@
 # Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Check the Salt package state UI
-  In Order to test salt states catalog
-  As the testing user
+Feature: Salt states catalog
 
-  Scenario: Verify the states catalog UI
+  Scenario: Verify the states catalog page
     Given I am authorized as "testing" with password "testing"
     Then I follow "Salt"
     And I follow "State Catalog"
     And I should see a "State Catalog" text
     And I should see a "Items 0 - 0 of 0" text
 
-  Scenario: I add a state through the UI
+  Scenario: Add a state
     Given I am authorized as "testing" with password "testing"
     Then I follow "Salt"
     And I follow "State Catalog"
@@ -31,7 +29,7 @@ Feature: Check the Salt package state UI
     And I click on the css "button#save-btn"
     Then I should see a "State 'teststate' saved" text
 
-  Scenario: I add and apply a state via the UI
+  Scenario: Apply the added state
     Given I am on the Systems overview page of this "sle-minion"
     And I follow "States"
     Then I follow "Custom"
@@ -44,7 +42,7 @@ Feature: Check the Salt package state UI
     And I click on the css "button#apply-btn"
     Then "/root/foobar" exists on the filesystem of "sle-minion"
 
-  Scenario: Remove the state from the UI and cleanup
+  Scenario: Cleanup: remove the state and the file
     Given I am authorized as "testing" with password "testing"
     Then I follow "Salt"
     And I follow "State Catalog"
