@@ -1,4 +1,5 @@
 
+- Fix duplicate machine id in event history on minion restart (bsc#1059388)
 - Show link in message when rescheduling actions (bsc#1032122)
 - Prevent ISE when distribution does not exist (bsc#1059524)
 - Adapt Salt runner and wheel calls to the new
