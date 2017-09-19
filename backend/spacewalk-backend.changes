@@ -1,3 +1,6 @@
+
+- add hostname to duplicate machine_id email (bsc#1055292)
+- fix link to manual and the described procedure
 - Fix SP migration for traditional clients which were registered
   by a currently disabled user (bsc#1057126)
 
