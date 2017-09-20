@@ -1,3 +1,5 @@
+- Use the same datetime format as the rest of the product (bsc#1054424)
+
 -------------------------------------------------------------------
 Thu Sep 14 11:04:35 CEST 2017 - mc@suse.de
 
