@@ -11,6 +11,9 @@ BuildArch: noarch
 BuildRequires: python-devel
 %if 0%{?fedora}
 BuildRequires: python3-devel
+%else
+BuildRequires: python-devel
+%{!?python2_sitelib: %global python2_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %endif
 Requires: dnf >= 0.5.3
 Requires: dnf-plugins-core
@@ -44,20 +47,22 @@ install -m 644 actions/errata.py %{buildroot}/usr/share/rhn/actions/
 install -m 644 spacewalk.conf %{buildroot}%{_sysconfdir}/dnf/plugins/
 install -m 644 man/spacewalk.conf.5 %{buildroot}%{_mandir}/man5/
 install -m 644 man/dnf.plugin.spacewalk.8 %{buildroot}%{_mandir}/man8/
-
-%pre
-
-%post
+install -d %{buildroot}%{_datadir}/licenses
+install -d %{buildroot}%{_datadir}/licenses/%{name}
 
 %files
+%defattr(-,root,root,-)
 %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/dnf/plugins/spacewalk.conf
 %license LICENSE
+%dir %{_datadir}/licenses
 %dir /var/lib/up2date
 %{_mandir}/man*/*
 %{python2_sitelib}/dnf-plugins/*
 %if 0%{?fedora}
 %{python3_sitelib}/dnf-plugins/*
 %endif
+%dir %{_datadir}/rhn
+%dir %{_datadir}/rhn/actions
 %{_datadir}/rhn/actions/*
 %dir /var/lib/up2date
 %if 0%{?suse_version}
