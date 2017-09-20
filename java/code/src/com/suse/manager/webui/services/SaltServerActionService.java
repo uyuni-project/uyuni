@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
