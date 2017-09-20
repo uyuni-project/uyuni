@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic.core;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.Trigger;
+import org.quartz.Trigger.CompletedExecutionInstruction;
 import org.quartz.TriggerListener;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class ChainedListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return ChainedListener.LISTENER_NAME;
     }
@@ -44,17 +46,19 @@ public class ChainedListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void triggerComplete(Trigger trigger, JobExecutionContext ctx,
-            int triggerInstructionCode) {
+            CompletedExecutionInstruction cei) {
         for (Iterator iter = this.listenerChain.iterator(); iter.hasNext();) {
             TriggerListener listener = (TriggerListener) iter.next();
-            listener.triggerComplete(trigger, ctx, triggerInstructionCode);
+            listener.triggerComplete(trigger, ctx, cei);
         }
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void triggerFired(Trigger trigger, JobExecutionContext ctx) {
         for (Iterator iter = this.listenerChain.iterator(); iter.hasNext();) {
             TriggerListener listener = (TriggerListener) iter.next();
@@ -65,6 +69,7 @@ public class ChainedListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void triggerMisfired(Trigger trigger) {
         for (Iterator iter = this.listenerChain.iterator(); iter.hasNext();) {
             TriggerListener listener = (TriggerListener) iter.next();
@@ -75,6 +80,7 @@ public class ChainedListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean vetoJobExecution(Trigger trigger, JobExecutionContext ctx) {
         boolean retval = false;
         for (Iterator iter = this.listenerChain.iterator(); iter.hasNext();) {

@@ -14,17 +14,20 @@
  */
 package com.redhat.rhn.taskomatic;
 
-import com.redhat.rhn.taskomatic.core.SchedulerKernel;
+import static org.quartz.CronScheduleBuilder.cronSchedule;
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.TriggerBuilder.newTrigger;
+import static org.quartz.TriggerKey.triggerKey;
 
+import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
+
 import org.apache.log4j.Logger;
-import org.quartz.CronTrigger;
-import org.quartz.JobDetail;
+import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
 import org.quartz.SchedulerException;
-import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 
-import java.text.ParseException;
 import java.util.Date;
 
 
@@ -48,9 +51,10 @@ public class TaskoQuartzHelper {
      */
     public static void unscheduleTrigger(Trigger trigger) {
         try {
-            log.warn("Removing trigger " + trigger.getGroup() + "." + trigger.getName());
-            SchedulerKernel.getScheduler().unscheduleJob(trigger.getName(),
-                    trigger.getGroup());
+            log.warn("Removing trigger " + trigger.getKey().getGroup() + "." +
+                    trigger.getKey().getName());
+            SchedulerKernel.getScheduler().unscheduleJob(
+                    triggerKey(trigger.getKey().getName(), trigger.getKey().getGroup()));
         }
         catch (SchedulerException e) {
             // be silent
@@ -67,35 +71,44 @@ public class TaskoQuartzHelper {
         // create trigger
         Trigger trigger = null;
         if (isCronExpressionEmpty(schedule.getCronExpr())) {
-            trigger = new SimpleTrigger(schedule.getJobLabel(),
-                    getGroupName(schedule.getOrgId()));
+            trigger = newTrigger()
+                    .withIdentity(schedule.getJobLabel(), getGroupName(schedule.getOrgId()))
+                    .startAt(schedule.getActiveFrom())
+                    .endAt(schedule.getActiveTill())
+                    .forJob(schedule.getJobLabel(), getGroupName(schedule.getOrgId()))
+                    .build();
         }
         else {
             try {
-                trigger = new CronTrigger(schedule.getJobLabel(),
-                        getGroupName(schedule.getOrgId()),
-                            schedule.getCronExpr());
+                trigger = newTrigger()
+                        .withIdentity(schedule.getJobLabel(),
+                                getGroupName(schedule.getOrgId()))
+                        .withSchedule(cronSchedule(schedule.getCronExpr()))
+                        .startAt(schedule.getActiveFrom())
+                        .endAt(schedule.getActiveTill())
+                        .forJob(schedule.getJobLabel())
+                        .build();
             }
-            catch (ParseException e) {
+            catch (Exception e) {
                 throw new InvalidParamException("Invalid cron expression " +
                         schedule.getCronExpr());
             }
 
         }
-        trigger.setStartTime(schedule.getActiveFrom());
-        trigger.setEndTime(schedule.getActiveTill());
         // create job
-        JobDetail jobDetail = new JobDetail(schedule.getJobLabel(),
-                getGroupName(schedule.getOrgId()), TaskoJob.class);
+        JobBuilder jobDetail = newJob(TaskoJob.class)
+                .withIdentity(schedule.getJobLabel(),
+                getGroupName(schedule.getOrgId()));
         // set job params
         if (schedule.getDataMap() != null) {
-            jobDetail.getJobDataMap().putAll(schedule.getDataMap());
+            jobDetail.usingJobData(new JobDataMap(schedule.getDataMap()));
         }
-        jobDetail.getJobDataMap().put("schedule_id", schedule.getId());
+        jobDetail.usingJobData("schedule_id", schedule.getId());
 
         // schedule job
         try {
-            Date date = SchedulerKernel.getScheduler().scheduleJob(jobDetail, trigger);
+            Date date =
+                    SchedulerKernel.getScheduler().scheduleJob(jobDetail.build(), trigger);
             log.info("Job " + schedule.getJobLabel() + " scheduled succesfully.");
             return date;
         }
@@ -113,8 +126,8 @@ public class TaskoQuartzHelper {
      */
     public static Integer destroyJob(Integer orgId, String jobLabel) {
         try {
-            SchedulerKernel.getScheduler().unscheduleJob(jobLabel,
-                    getGroupName(orgId));
+            SchedulerKernel.getScheduler()
+                    .unscheduleJob(triggerKey(jobLabel, getGroupName(orgId)));
             log.info("Job " + jobLabel + " unscheduled succesfully.");
             return 1;
         }
@@ -149,7 +162,7 @@ public class TaskoQuartzHelper {
             return true;
         }
         try {
-            new CronTrigger().setCronExpression(cronExpression);
+            newTrigger().withSchedule(cronSchedule(cronExpression)).build();
         }
         catch (Exception e) {
             return false;
