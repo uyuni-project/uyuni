@@ -1,4 +1,5 @@
 - Visualization UI look&feel improvements
+- Use the same datetime format as the rest of the product (bsc#1054424)
 
 -------------------------------------------------------------------
 Mon Jun 12 09:06:15 CEST 2017 - mc@suse.de
