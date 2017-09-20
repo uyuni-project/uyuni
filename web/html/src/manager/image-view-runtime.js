@@ -36,11 +36,11 @@ class PodInfo extends React.Component {
     let icon;
 
     if (statusId === 1) {
-      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Instance is up-to-date")}/>
+      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Instance is consistent with SUSE Manager")}/>
     } else if (statusId === 2) {
       icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>
     } else if (statusId === 3) {
-      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Instance is out-of-date")}/>
+      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Instance is outdated")}/>
     } else {
       icon = <span>-</span>
     }
@@ -71,11 +71,11 @@ class ClusterInfo extends React.Component {
     let icon;
 
     if (statusId === 1) {
-      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Cluster is up-to-date")}/>
+      icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("Cluster is consistent with SUSE Manager")}/>
     } else if (statusId === 2) {
       icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>
     } else if (statusId === 3) {
-      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Cluster is out-of-date")}/>
+      icon = <i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Cluster is outdated")}/>
     }
 
     return icon ? <span>{icon} {data.name}</span> : data.name;
