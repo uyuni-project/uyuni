@@ -1,3 +1,5 @@
+- Fix build errors on dnf-plugin-spacewalk
+
 -------------------------------------------------------------------
 Mon Jun 12 09:02:26 CEST 2017 - mc@suse.de
 
