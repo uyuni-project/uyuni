@@ -13001,56 +13001,6 @@
   },
   {
     "autorefresh": true,
-    "description": "SUSE-CAASP-1.0-Updates for sle-12-x86_64",
-    "distro_target": "sle-12-x86_64",
-    "enabled": true,
-    "id": 2362,
-    "installer_updates": false,
-    "name": "SUSE-CAASP-1.0-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SUSE-CAASP/1.0/x86_64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SUSE-CAASP-1.0-Debuginfo-Updates for sle-12-x86_64",
-    "distro_target": "sle-12-x86_64",
-    "enabled": false,
-    "id": 2363,
-    "installer_updates": false,
-    "name": "SUSE-CAASP-1.0-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SUSE-CAASP/1.0/x86_64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SUSE-CAASP-1.0-Pool for sle-12-x86_64",
-    "distro_target": "sle-12-x86_64",
-    "enabled": true,
-    "id": 2364,
-    "installer_updates": false,
-    "name": "SUSE-CAASP-1.0-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SUSE-CAASP/1.0/x86_64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SUSE-CAASP-1.0-Debuginfo-Pool for sle-12-x86_64",
-    "distro_target": "sle-12-x86_64",
-    "enabled": false,
-    "id": 2365,
-    "installer_updates": false,
-    "name": "SUSE-CAASP-1.0-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SUSE-CAASP/1.0/x86_64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SUSE-CAASP-1.0-Source-Pool for sle-12-x86_64",
-    "distro_target": "sle-12-x86_64",
-    "enabled": false,
-    "id": 2366,
-    "installer_updates": false,
-    "name": "SUSE-CAASP-1.0-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SUSE-CAASP/1.0/x86_64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
     "description": "OpenStack-Cloud-Magnum-Orchestration-Updates for sle-12-x86_64",
     "distro_target": "sle-12-x86_64",
     "enabled": true,
@@ -13748,5 +13698,105 @@
     "installer_updates": false,
     "name": "SLE12-SP3-SAP-Source-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SLE-SAP/12-SP3/ppc64le/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-CAASP-ALL-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2514,
+    "installer_updates": false,
+    "name": "SUSE-CAASP-ALL-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-CAASP/ALL/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-CAASP-ALL-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2515,
+    "installer_updates": false,
+    "name": "SUSE-CAASP-ALL-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-CAASP/ALL/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-CAASP-ALL-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2516,
+    "installer_updates": false,
+    "name": "SUSE-CAASP-ALL-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-CAASP/ALL/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-CAASP-ALL-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2517,
+    "installer_updates": false,
+    "name": "SUSE-CAASP-ALL-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-CAASP/ALL/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-CAASP-ALL-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2518,
+    "installer_updates": false,
+    "name": "SUSE-CAASP-ALL-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-CAASP/ALL/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Retail-3.1-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2519,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Retail-3.1-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Retail/3.1/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Retail-3.1-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2520,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Retail-3.1-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Retail/3.1/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Retail-3.1-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2521,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Retail-3.1-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Retail/3.1/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Retail-3.1-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2522,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Retail-3.1-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Retail/3.1/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Retail-3.1-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2523,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Retail-3.1-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Retail/3.1/x86_64/product_source/?my-fake-token"
   }
 ]
