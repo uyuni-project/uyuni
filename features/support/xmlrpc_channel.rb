@@ -2,12 +2,12 @@ require_relative 'xmlrpctest'
 
 # channel class
 class XMLRPCChannelTest < XMLRPCBaseTest
-  def createRepo(label, url)
-    @connection.call('channel.software.createRepo', @sid, label, 'yum', url)
+  def create_repo(label, url)
+    @connection.call('channel.software.create_repo', @sid, label, 'yum', url)
   end
 
-  def associateRepo(channelLabel, repoLabel)
-    @connection.call('channel.software.associateRepo', @sid, channelLabel, repoLabel)
+  def associate_repo(channel_label, repo_label)
+    @connection.call('channel.software.associate_repo', @sid, channel_label, repo_label)
   end
 
   #
@@ -27,23 +27,23 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   # Delete a repo
   #
-  def deleteRepo(label)
-    @connection.call('channel.software.removeRepo', @sid, label)
+  def delete_repo(label)
+    @connection.call('channel.software.remove_repo', @sid, label)
   end
 
   #
   # Return the number of custom software channels
   #
-  def getSoftwareChannelsCount
-    channels = @connection.call('channel.listSoftwareChannels', @sid)
+  def get_software_channels_count
+    channels = @connection.call('channel.list_software_channels', @sid)
     channels.nil? ? 0 : channels.length
   end
 
   #
   # Check if a certain software channel is listed
   #
-  def verifyChannel(label)
-    @connection.call('channel.listSoftwareChannels', @sid)
+  def verify_channel(label)
+    @connection.call('channel.list_software_channels', @sid)
                .map { |c| c['label'] }
                .include?(label)
   end
@@ -51,8 +51,8 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   # Check if a software channel is the parent of a given child channel
   #
-  def isParentChannel(child, parent)
-    channel = @connection.call('channel.software.getDetails', @sid, child)
+  def is_parent_channel(child, parent)
+    channel = @connection.call('channel.software.get_details', @sid, child)
     return true if channel['parent_channel_label'] == parent
     false
   end
@@ -60,15 +60,15 @@ class XMLRPCChannelTest < XMLRPCBaseTest
   #
   # get channel details
   #
-  def getChannelDetails(label)
-    @connection.call('channel.software.getDetails', @sid, label)
+  def get_channel_details(label)
+    @connection.call('channel.software.get_details', @sid, label)
   end
 
   #
   # Debug: Get the list of channels and print some info
   #
-  def listSoftwareChannels
-    channels = @connection.call('channel.listSoftwareChannels', @sid)
+  def list_software_channels
+    channels = @connection.call('channel.list_software_channels', @sid)
     channels.each do |c|
       print '    Channel: ' + "\n"
       c.keys.each do |key|

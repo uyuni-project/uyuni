@@ -2,27 +2,27 @@ require_relative 'xmlrpctest'
 
 # user class
 class XMLRPCUserTest < XMLRPCBaseTest
-  def getUsers
-    @connection.call('user.listUsers', @sid)
+  def get_users
+    @connection.call('user.list_users', @sid)
   end
 
-  def getUserRoles(uid)
-    @connection.call('user.listRoles', @sid, uid)
+  def get_user_roles(uid)
+    @connection.call('user.list_roles', @sid, uid)
   end
 
-  def createUser(uid, password)
+  def create_user(uid, password)
     @connection.call('user.create', @sid, uid, password, 'Thiel', 'Testerschmidt', 'thiel@test.suse.de')
   end
 
-  def deleteUser(uid)
+  def delete_user(uid)
     @connection.call('user.delete', @sid, uid)
   end
 
-  def addRole(user, role)
-    @connection.call('user.addRole', @sid, user, role)
+  def add_role(user, role)
+    @connection.call('user.add_role', @sid, user, role)
   end
 
-  def delRole(user, role)
-    @connection.call('user.removeRole', @sid, user, role)
+  def del_role(user, role)
+    @connection.call('user.remove_role', @sid, user, role)
   end
 end

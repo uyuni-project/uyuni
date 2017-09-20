@@ -2,38 +2,38 @@ require_relative 'xmlrpctest'
 
 # system class
 class XMLRPCSystemTest < XMLRPCBaseTest
-  def listSystems
-    @connection.call('system.listSystems', @sid)
+  def list_systems
+    @connection.call('system.list_systems', @sid)
   end
 
-  def deleteSystem(id)
-    @connection.call('system.deleteSystems', @sid, id)
+  def delete_system(id)
+    @connection.call('system.delete_systems', @sid, id)
   end
 
   # Get the list of latest installable packages for a given system.
-  def listAllInstallablePackages(server)
-    @connection.call('system.listAllInstallablePackages', @sid, server)
+  def list_all_installable_packages(server)
+    @connection.call('system.list_all_installable_packages', @sid, server)
   end
 
   # Get the list of latest upgradable packages for a given system.
-  def listLatestUpgradablePackages(server)
-    @connection.call('system.listLatestUpgradablePackages', @sid, server)
+  def list_latest_upgradable_packages(server)
+    @connection.call('system.list_latest_upgradable_packages', @sid, server)
   end
 
   # Go wild...
   # No need to write monstrous scenario for a little checks.
   # We just do it all at once instead.
-  def getSysInfo(server)
+  def get_sys_info(server)
     server_id = server['id']
-    conn_path = @connection.call('system.getConnectionPath', @sid, server_id)
+    conn_path = @connection.call('system.get_connection_path', @sid, server_id)
     puts conn_path
   end
 
   # Create a cobbler system record for a system that is not registered
-  def createSystemRecord(sysName, ksLabel, ip, mac)
+  def create_system_record(sys_name, ks_label, ip, mac)
     netdev = { 'ip' => ip, 'mac' => mac, 'name' => 'eth0' }
     netdevs = [netdev]
-    @connection.call('system.createSystemRecord', @sid, sysName, ksLabel, '', '', netdevs)
+    @connection.call('system.create_system_record', @sid, sys_name, ks_label, '', '', netdevs)
   end
 
   # Bootstrap a salt system
@@ -54,7 +54,7 @@ class XMLRPCSystemTest < XMLRPCBaseTest
   # XMLRPC fault with faultCode = -1 and descriptive faultString
   # when there was an error during bootstrap.
   #
-  def bootstrapSystem(host, activation_key, salt_ssh)
+  def bootstrap_system(host, activation_key, salt_ssh)
     @connection.call('system.bootstrap', @sid, host, 22, 'root', 'linux', activation_key, salt_ssh)
   end
 end
