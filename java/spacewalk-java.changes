@@ -1,4 +1,6 @@
 
+- Install update stack erratas as a package list (bsc#1049139)
+- Schedule one action for all selected patches on RHEL (bsc#1038862)
 - Improve duplicate hostname and transaction handling in minion registration
 - Display GUI message after successfully deleting custom key (bsc#1048295)
 - Harmonize presentation of patch information (bsc#1032065)

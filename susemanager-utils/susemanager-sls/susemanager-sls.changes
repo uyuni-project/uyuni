@@ -1,3 +1,5 @@
+- Targeting patches instead of packages for non Zypper patch
+  installation (bsc#1038862)
 - Support xccdf 1.2 namespace in openscap result file (bsc#1059319)
 
 -------------------------------------------------------------------
