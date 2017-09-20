@@ -2,15 +2,15 @@ require_relative 'xmlrpctest'
 
 # api namespace class
 class XMLRPCApiTest < XMLRPCBaseTest
-  def getVersion
+  def get_version
     @connection.call('api.getVersion')
   end
 
-  def systemVersion
+  def system_version
     @connection.call('api.systemVersion')
   end
 
-  def getCountOfApiNamespaces
+  def get_count_of_api_namespaces
     namespaces = @connection.call('api.getApiNamespaces', @sid)
     count = 0
     count = namespaces.length unless namespaces.nil?
@@ -20,14 +20,14 @@ class XMLRPCApiTest < XMLRPCBaseTest
   #
   # Test lists all available api calls grouped by namespace.
   #
-  def getCountOfApiCallListGroups
+  def get_count_of_api_call_list_groups
     call_list = @connection.call('api.getApiCallList', @sid)
     count = 0
     count = call_list.length unless call_list.nil?
     count
   end
 
-  def getCountOfApiNamespaceCallList
+  def get_count_of_api_namespace_call_list
     count = 0
     namespaces = @connection.call('api.getApiNamespaces', @sid)
     puts '    Spaces found: ' + namespaces.length.to_s

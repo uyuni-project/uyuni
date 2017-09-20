@@ -248,16 +248,16 @@ And(/^"(.*?)" is not registered in Spacewalk$/) do |host|
   node = get_target(host)
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  sid = @rpc.listSystems.select { |s| s['name'] == node.full_hostname }.map { |s| s['id'] }.first
-  @rpc.deleteSystem(sid) if sid
-  refute_includes(@rpc.listSystems.map { |s| s['id'] }, node.full_hostname)
+  sid = @rpc.list_systems.select { |s| s['name'] == node.full_hostname }.map { |s| s['id'] }.first
+  @rpc.delete_system(sid) if sid
+  refute_includes(@rpc.list_systems.map { |s| s['id'] }, node.full_hostname)
 end
 
 Given(/^"(.*?)" is registered in Spacewalk$/) do |host|
   node = get_target(host)
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  assert_includes(@rpc.listSystems.map { |s| s['name'] }, node.full_hostname)
+  assert_includes(@rpc.list_systems.map { |s| s['name'] }, node.full_hostname)
 end
 
 Then(/^all local repositories are disabled$/) do
@@ -291,12 +291,12 @@ Given(/^I am authorized as an example user with no roles$/) do
   @rpc = XMLRPCUserTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
   @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
-  @rpc.createUser(@username, 'linux')
+  @rpc.create_user(@username, 'linux')
   step %(I am authorized as "#{@username}" with password "linux")
 end
 
 Then(/^I can cleanup the no longer needed user$/) do
-  @rpc.deleteUser(@username)
+  @rpc.delete_user(@username)
 end
 
 When(/^I click on preview$/) do
