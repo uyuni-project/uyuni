@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic.core;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.Trigger;
+import org.quartz.Trigger.CompletedExecutionInstruction;
 import org.quartz.TriggerListener;
 
 /**
@@ -42,6 +43,7 @@ public class SingleShotListener implements TriggerListener {
    /**
     * {@inheritDoc}
     */
+    @Override
     public String getName() {
         return "SingleShotListener";
     }
@@ -49,6 +51,7 @@ public class SingleShotListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void triggerFired(Trigger trigger, JobExecutionContext ctx) {
         synchronized (this) {
             if (this.jobCount > 0) {
@@ -63,6 +66,7 @@ public class SingleShotListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean vetoJobExecution(Trigger trigger, JobExecutionContext ctx) {
         synchronized (this) {
             if (this.jobCount == 0 && !this.shutdownStarted) {
@@ -76,6 +80,7 @@ public class SingleShotListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void triggerMisfired(Trigger trigger) {
         // TODO Auto-generated method stub
 
@@ -84,7 +89,9 @@ public class SingleShotListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
-    public void triggerComplete(Trigger trigger, JobExecutionContext ctx, int duration) {
+    @Override
+    public void triggerComplete(Trigger trigger, JobExecutionContext ctx,
+            CompletedExecutionInstruction cei) {
         synchronized (this) {
             if (this.jobCount == 0 && !this.shutdownStarted) {
                 this.shutdownStarted = true;

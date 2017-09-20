@@ -23,10 +23,10 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoQuartzHelper;
-import com.redhat.rhn.taskomatic.domain.TaskoRun;
-import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.TaskoXmlRpcServer;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.domain.TaskoRun;
+import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Transaction;
@@ -34,12 +34,14 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.matchers.GroupMatcher;
 
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Taskomatic Kernel.
@@ -109,7 +111,8 @@ public class SchedulerKernel {
             this.chainedTriggerListener.addListener(new TaskEnvironmentListener());
 
             try {
-                SchedulerKernel.scheduler.addTriggerListener(this.chainedTriggerListener);
+                scheduler.getListenerManager()
+                        .addTriggerListener(this.chainedTriggerListener);
             }
             catch (SchedulerException e) {
                 throw new ConfigException(e.getLocalizedMessage(), e);
@@ -166,6 +169,7 @@ public class SchedulerKernel {
      */
     public void startShutdown() {
         Runnable shutdownTask = new Runnable() {
+            @Override
             public void run() {
                 shutdown();
             }
@@ -202,12 +206,11 @@ public class SchedulerKernel {
      * load DB schedule configuration
      */
     public void initializeAllSatSchedules() {
-        List jobNames;
+        Set<String> jobNames;
         Date now = new Date();
         try {
-            jobNames = Arrays.asList(
-                    SchedulerKernel.scheduler.getJobNames(
-                        TaskoQuartzHelper.getGroupName(null)));
+            jobNames = SchedulerKernel.scheduler.getJobKeys(GroupMatcher.anyJobGroup())
+                    .stream().map(jobKey -> jobKey.getName()).collect(toSet());
             for (TaskoSchedule schedule : TaskoFactory.listActiveSchedulesByOrg(null)) {
                 if (!jobNames.contains(schedule.getJobLabel())) {
                     schedule.sanityCheckForPredefinedSchedules();

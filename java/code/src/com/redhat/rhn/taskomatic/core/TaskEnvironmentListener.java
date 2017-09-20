@@ -19,6 +19,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.Trigger;
+import org.quartz.Trigger.CompletedExecutionInstruction;
 import org.quartz.TriggerListener;
 
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class TaskEnvironmentListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return TaskEnvironmentListener.LISTENER_NAME;
     }
@@ -45,6 +47,7 @@ public class TaskEnvironmentListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void triggerFired(Trigger trigger, JobExecutionContext ctx) {
         // Insure that Hibernate is in a valid state before executing the task
         // Need to synchronize this because the method get called by multiple
@@ -67,6 +70,7 @@ public class TaskEnvironmentListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean vetoJobExecution(Trigger trigger, JobExecutionContext ctx) {
         // Closest we get to a unique id
         Integer contextHashCode = new Integer(ctx.hashCode());
@@ -76,13 +80,15 @@ public class TaskEnvironmentListener implements TriggerListener {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void triggerMisfired(Trigger trigger) {
     }
 
     /**
      * {@inheritDoc}
      */
-    public void triggerComplete(Trigger trigger, JobExecutionContext ctx, int reasonCode) {
+    @Override
+    public void triggerComplete(Trigger trigger, JobExecutionContext ctx,
+            CompletedExecutionInstruction cei) {
     }
-
 }
