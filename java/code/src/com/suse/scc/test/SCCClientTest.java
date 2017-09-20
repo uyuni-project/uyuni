@@ -174,6 +174,8 @@ public class SCCClientTest extends TestCase {
         assertTrue(s.getProductIds().contains(12L));
         assertTrue(s.getProductIds().contains(13L));
         assertTrue(s.getProductIds().contains(14L));
+        assertTrue(s.getSkus().contains("SKU1"));
+        assertTrue(s.getSkus().contains("SKU2"));
 
         // Product classes
         List<String> productClasses = s.getProductClasses();
