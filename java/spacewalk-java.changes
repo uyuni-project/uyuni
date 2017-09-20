@@ -1,4 +1,5 @@
 
+- Prevent ISE when distribution does not exist (bsc#1059524)
 - do not store registration-keys during autoinstallation (bsc#1057599)
 - Adapt Salt runner and wheel calls to the new
   error handling introduced in salt-netapi-client-0.12.0
