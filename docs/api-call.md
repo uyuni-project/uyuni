@@ -1,12 +1,15 @@
-## Testing API fot cucumber/spacewalk
+## Testing API for SUSE Manager
 
-This documentation will explain you some usefull API calls. For more complete description of the underlying libraries, have a look at [Capybara documentation](http://www.rubydoc.info/github/jnicklas/capybara).
+This documentation will explain you some useful API calls. For a more complete description of the underlying libraries, have a look at [Capybara documentation](http://www.rubydoc.info/github/jnicklas/capybara).
 
 
 ### Running commands on a system
-We use "targets". This look like: $server, $minion, or $client(trad-client), etc.
-For a complete list of the current targets, look at the env_variable we pass to rake, and look
-https://github.com/SUSE/spacewalk-testsuite-base/blob/master/features/support/twopence_init.rb#L27
+
+We use "targets". These look like ```$server```, ```$minion```, or ```$client```.
+The fully qualified names of the associated systems are defined in
+environment variables like ```TESTHOST```, ```MINION```, and ```CLIENT```.
+For a complete list of the current targets, look at
+[twopence_init.rb](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/features/support/twopence_init.rb#L17).
 
 ```console
 $server.run("uptime")
@@ -15,12 +18,12 @@ $minion.run("uptime", true)
 $minion.run("uptime", true, 300)
 $client.run("uptime", false, 500, "root")
 ```
-Arguments taken by method *run*
+Arguments taken by method ```run```:
 
 1. command to execute on the target system.
-2. true/false, by **default** is true. If the return code of the command is nonzero, then we raise an error and make the test fail. Sometimes, we expect that a command fails, or sometimes, it is not relevant whether it succedded, so we use *false* in such cases.
-3. timeout : **default** is 200. You can increase/decrease the timeout.
-4. user : **default** root. user that executes the command.
+2. true/false, by **default** is ```true```. If the return code of the command is nonzero, then we raise an error and make the test fail. Sometimes, we expect that a command fails, or sometimes, it is not relevant whether it succeeded, so we use ```false``` in such cases.
+3. timeout : **default** is 200. You can increase/decrease the timeout. You may want to use a smaller timeout, but retry several times until ```DEFAULT_TIMEOUT```.
+4. user : **default** is root. It's the user that executes the command.
 
 
 ### Navigating through the SUSE manager Web interface
@@ -45,7 +48,7 @@ Arguments taken by method *run*
  And I click on "Finish"
 ```
 
-* Type text in given field 
+* Type text in given field
 
 ```
  When I enter "SUSE Test Key x86_64" as "description"
