@@ -63,7 +63,7 @@ class DatePicker extends React.Component {
     render() {
         return (
             <input type="text" data-date-today-highlight="true" data-date-orientation="top auto"
-                    data-date-autoclose="true" data-date-language="en_US" data-date-format="m/d/yy"
+                    data-date-autoclose="true" data-date-language="en_US" data-date-format="dd.mm.yy"
                     data-date-week-start="0" className="form-control" size="15"
                     ref={(c) => this._input = $(c)} />
         );
@@ -124,7 +124,7 @@ class TimePicker extends React.Component {
 
     render() {
         return (
-            <input type="text" data-time-format="g:i a" className="form-control"
+            <input type="text" data-time-format="H:i" className="form-control"
                     size="10" ref={(c) => this._input = $(c)} />
         );
     }
