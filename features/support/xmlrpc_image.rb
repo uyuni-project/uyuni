@@ -2,81 +2,81 @@ require_relative 'xmlrpctest'
 
 # This class enables to use image namespace operations via XML-RPC calls
 class XMLRPCImageTest < XMLRPCBaseTest
-  def deleteImage(imageid)
+  def delete_image(imageid)
     @connection.call('image.delete', @sid, imageid)
   end
 
-  def scheduleImageBuild(profile_label, version_build, build_hostid, date)
-    @connection.call('image.scheduleImageBuild', @sid, profile_label, version_build, build_hostid, date)
+  def schedule_image_build(profile_label, version_build, build_hostid, date)
+    @connection.call('image.schedule_image_build', @sid, profile_label, version_build, build_hostid, date)
   end
 
-  def listImages
-    @connection.call('image.listImages', @sid)
+  def list_images
+    @connection.call('image.list_images', @sid)
   end
 
   # store methods
-  def createStore(label, uri, type, params = {})
+  def create_store(label, uri, type, params = {})
     @connection.call('image.store.create', @sid, label, uri, type, params)
   end
 
-  def deleteStore(label)
+  def delete_store(label)
     @connection.call('image.store.delete', @sid, label)
   end
 
-  def listImageStoreTypes
-    @connection.call('image.store.listImageStoreTypes', @sid)
+  def list_image_store_types
+    @connection.call('image.store.list_image_store_types', @sid)
   end
 
-  def listImageStores
-    @connection.call('image.store.listImageStores', @sid)
+  def list_image_stores
+    @connection.call('image.store.list_image_stores', @sid)
   end
 
-  def getDetailsStore(label)
-    @connection.call('image.store.getDetails', @sid, label)
+  def get_details_store(label)
+    @connection.call('image.store.get_details', @sid, label)
   end
 
-  def setDetails(label, details)
-    @connection.call('image.store.setDetails', @sid, label, details)
+  def set_details(label, details)
+    @connection.call('image.store.set_details', @sid, label, details)
   end
 
   # profile methods
-  def createProfile(label, type, store_label, path, actkey)
+  def create_profile(label, type, store_label, path, actkey)
     @connection.call('image.profile.create', @sid, label, type, store_label, path, actkey)
   end
 
-  def deleteProfile(label)
+  def delete_profile(label)
     @connection.call('image.profile.delete', @sid, label)
   end
 
-  def setProfileCustomValues(label, values)
-    @connection.call('image.profile.setCustomValues', @sid, label, values)
+  def set_profile_custom_values(label, values)
+    @connection.call('image.profile.set_custom_values', @sid, label, values)
   end
 
-  def deleteProfileCustomValues(label, values)
-    @connection.call('image.profile.deleteCustomValues', @sid, label, values)
+  def delete_profile_custom_values(label, values)
+    @connection.call('image.profile.delete_custom_values', @sid, label, values)
   end
 
-  def getProfileCustomValues(label)
-    @connection.call('image.profile.getCustomValues', @sid, label)
+  def get_profile_custom_values(label)
+    @connection.call('image.profile.get_custom_values', @sid, label)
   end
 
-  def createCustomKey(value, desc)
-    @connection.call('system.custominfo.createKey', @sid, value, desc)
+  def create_custom_key(value, desc)
+    @connection.call('system.custominfo.create_key', @sid, value, desc)
   end
 
-  def listImageProfileTypes
-    @connection.call('image.profile.listImageProfileTypes', @sid)
+  def list_image_profile_types
+    @connection.call('image.profile.list_image_profile_types', @sid)
   end
 
-  def listImageProfiles
-    @connection.call('image.profile.listImageProfiles', @sid)
+  def list_image_profiles
+    @connection.call('image.profile.list_image_profiles', @sid)
   end
 
-  def getDetails(label)
-    @connection.call('image.profile.getDetails', @sid, label)
+  def get_details(label)
+    @connection.call('image.profile.get_details', @sid, label)
   end
 
-  def setProfileDetails(label, values)
-    @connection.call('image.profile.setDetails', @sid, label, values)
+  def set_profile_details(label, values)
+    @connection.call('image.profile.set_details', @sid, label, values)
   end
 end

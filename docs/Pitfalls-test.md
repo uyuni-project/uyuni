@@ -160,14 +160,14 @@ The right code:
 ## Super defensive handling of null
 
 ```ruby
-  def listAllActions()
-    return (@connection.call("schedule.listAllActions", @sid) || [])
+  def list_all_actions()
+    return (@connection.call("schedule.list_all_actions", @sid) || [])
   end
 ```
 When I saw this I thought "the API is broken and it returns nil when there are no actions". Wrong. I tried it...
 
 ```ruby
-ret = conn.call('schedule.listAllActions', sid)
+ret = conn.call('schedule.list_all_actions', sid)
 puts ret.inspect
 => []
 ```
@@ -177,8 +177,8 @@ So if nil is returned, it is because something *ELSE* happened. The developer is
 ## Ruby is a bit functional
 
 ```ruby
-  def listChains()
-    chains = @connection.call("actionchain.listChains", @sid)
+  def list_chains()
+    chains = @connection.call("actionchain.list_chains", @sid)
     labels = []
     for chain in chains
       labels.push(chain['label'])
@@ -192,8 +192,8 @@ Don't think about methods on `how` do I get to the result. Thing more about `wha
 Can be writen as:
 
 ```ruby
-  def listChains()
-    @connection.call("actionchain.listChains", @sid).map {|x| x['label']}
+  def list_chains()
+    @connection.call("actionchain.list_chains", @sid).map {|x| x['label']}
   end
 ```
 
@@ -220,8 +220,8 @@ require_relative 'xmlrpctest'
 ## Just buggy code
 
 ```ruby
-  def getUserIds()
-    users = @connection.call("user.listUsers", @sid)
+  def get_user_ids()
+    users = @connection.call("user.list_users", @sid)
     ids = []
     for user in users
       ids.push(user['login'])
@@ -232,13 +232,13 @@ require_relative 'xmlrpctest'
 This function on inspection tries to return the ids of all users. However:
 
 * it collects the login attribute, not the ids (bug#1)
-* it never returns anything, so it ends returning the same as listUsers (bug#2)
+* it never returns anything, so it ends returning the same as list_users (bug#2)
 
 Because it is broken twice, the caller just access the attributes
 
 ```ruby
-Then /^when I call user\.listUsers\(\), I should see a user "([^"]*)"$/ do |luser|
-  users = rpctest.getUserIds()
+Then /^when I call user\.list_users\(\), I should see a user "([^"]*)"$/ do |luser|
+  users = rpctest.get_user_ids()
   seen = false
   for user in users
     if luser == user['login']
@@ -260,9 +260,9 @@ So, we will never know if the developer:
 Look at this one:
 
 ```ruby
-Then /^I shall not see "([^"]*)" when I call user\.listRoles\(\) with "([^"]*)" uid$/ do |rolename, luser|
+Then /^I shall not see "([^"]*)" when I call user\.list_roles\(\) with "([^"]*)" uid$/ do |rolename, luser|
   
-  roles = rpctest.getUserRoles(luser)
+  roles = rpctest.get_user_roles(luser)
   fail if roles != nil ? roles.length != 0 : false
 end
 ```
@@ -272,19 +272,19 @@ It asserts that `rolename` is not seen in a list of roles. It accomplishes it wi
 The correct code should be something (guessing developer's intent):
 
 ```ruby
-Then /^I shall not see "([^"]*)" when I call user\.listRoles\(\) with "([^"]*)" uid$/ do |rolename, luser|
-  refute_includes(@rpc.getUserRoles(luser), rolename)
+Then /^I shall not see "([^"]*)" when I call user\.list_roles\(\) with "([^"]*)" uid$/ do |rolename, luser|
+  refute_includes(@rpc.get_user_roles(luser), rolename)
 end
 ```
 ## The steps that could never be friends
 
 ```ruby
 Then(/^there should be no action chain with the label "(.*?)"\.$/) do |label|
-  fail if rpc.listChains().include?(label)
+  fail if rpc.list_chains().include?(label)
 end
 
 Then(/^there should be no action chain with the label "(.*?)"$/) do |label|
-  fail if rpc.listChains().include?(label)
+  fail if rpc.list_chains().include?(label)
 end
 ```
 

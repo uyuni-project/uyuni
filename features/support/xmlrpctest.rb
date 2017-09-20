@@ -3,7 +3,7 @@ require 'xmlrpc/client'
 def retrieve_server_id(server)
   sysrpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   sysrpc.login('admin', 'admin')
-  systems = sysrpc.listSystems
+  systems = sysrpc.list_systems
   refute_nil(systems)
   server_id = systems
               .select { |s| s['name'] == server }

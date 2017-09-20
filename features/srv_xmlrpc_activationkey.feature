@@ -14,8 +14,8 @@ Feature: Test XML-RPC "api" namespace.
 
   Scenario: Details
     Given I am logged in via XML-RPC/activationkey as user "admin" and password "admin"
-    When I call activationkey.setDetails() to the key
-    Then I have to see them by calling activationkey.getDetails()
+    When I call activationkey.set_details() to the key
+    Then I have to see them by calling activationkey.get_details()
 
   Scenario: Cleanup
     Then I should get key deleted.
