@@ -11,6 +11,7 @@
   changed network interfaces or IP addresses
 - improve performance of package installation and patch application
 - Visualization UI look&feel improvements
+- enable package profile comparisons on minions
 
 -------------------------------------------------------------------
 Mon Jun 12 09:07:20 CEST 2017 - mc@suse.de
