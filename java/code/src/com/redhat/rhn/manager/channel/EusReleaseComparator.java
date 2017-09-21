@@ -18,7 +18,7 @@ package com.redhat.rhn.manager.channel;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Comparator;
 

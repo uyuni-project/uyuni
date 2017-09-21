@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

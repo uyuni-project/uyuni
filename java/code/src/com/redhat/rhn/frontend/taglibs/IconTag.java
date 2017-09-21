@@ -25,7 +25,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Tag to easy display the icons
@@ -244,7 +244,7 @@ public class IconTag extends TagSupport {
         result.append("<i class=\"" + icons.get(type) + "\"");
         if (title != null) {
             result.append(" title=\"" +
-                StringEscapeUtils.escapeHtml(this.getTitle()) + "\"");
+                StringEscapeUtils.escapeHtml4(this.getTitle()) + "\"");
         }
         result.append("></i>");
 

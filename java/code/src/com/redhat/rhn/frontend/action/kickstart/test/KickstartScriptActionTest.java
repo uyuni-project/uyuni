@@ -21,7 +21,7 @@ import com.redhat.rhn.frontend.action.kickstart.KickstartScriptCreateAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 /**
  * KickstartScriptCreateActionTest

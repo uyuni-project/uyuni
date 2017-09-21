@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.xmlrpc.packages.provider.PackagesProviderHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.List;
 

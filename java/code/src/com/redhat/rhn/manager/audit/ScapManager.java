@@ -60,8 +60,8 @@ import com.redhat.rhn.manager.audit.scap.xml.TestResultRuleResultIdent;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.mutable.MutableBoolean;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.transform.RegistryMatcher;

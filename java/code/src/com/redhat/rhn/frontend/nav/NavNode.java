@@ -17,9 +17,9 @@ package com.redhat.rhn.frontend.nav;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -153,7 +153,7 @@ public class NavNode {
     public String getName() {
         //Return the translated and escaped name
         String unescapedName = LocalizationService.getInstance().getMessage(this.name);
-        return StringEscapeUtils.escapeHtml(unescapedName);
+        return StringEscapeUtils.escapeHtml4(unescapedName);
     }
 
     /**

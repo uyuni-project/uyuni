@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.common.util;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.DynaActionForm;
 
 import java.text.DateFormat;

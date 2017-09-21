@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.frontend.nav;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

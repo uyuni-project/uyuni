@@ -38,7 +38,7 @@ import com.suse.manager.webui.utils.gson.ImageProfileCreateRequest;
 import com.suse.manager.webui.utils.gson.ImageProfileJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.utils.Json;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import spark.ModelAndView;
 import spark.Request;

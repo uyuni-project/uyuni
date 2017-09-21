@@ -15,7 +15,7 @@
 package com.redhat.rhn.domain.rhnpackage.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;

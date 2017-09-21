@@ -17,7 +17,7 @@ package com.suse.manager.webui.menu;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -67,7 +67,7 @@ public class MenuItem {
      */
     public void setLabel(String labelKey) {
         String unescapedName = LocalizationService.getInstance().getMessage(labelKey);
-        this.label = StringEscapeUtils.escapeHtml(unescapedName);
+        this.label = StringEscapeUtils.escapeHtml4(unescapedName);
     }
 
     /**

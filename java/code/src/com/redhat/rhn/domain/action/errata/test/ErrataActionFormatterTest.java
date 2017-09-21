@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Tests for ErrataActionFormatter.
@@ -41,7 +41,7 @@ public class ErrataActionFormatterTest extends BaseTestCaseWithUser {
         Errata errata = action.getErrata().iterator().next();
         String expected = "<a href=\"/rhn/errata/details/Details.do?eid=" +
             errata.getId().toString() + "\">" +
-            StringEscapeUtils.escapeHtml(errata.getAdvisory()) + "</a>";
+            StringEscapeUtils.escapeHtml4(errata.getAdvisory()) + "</a>";
         String result = formatter.getRelatedObjectDescription();
 
         assertTrue(result.contains(expected));

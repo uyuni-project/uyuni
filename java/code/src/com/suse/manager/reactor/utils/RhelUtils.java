@@ -18,7 +18,7 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.Server;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
 import java.util.regex.Matcher;

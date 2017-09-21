@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.download.DownloadManager;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 
 /**
@@ -37,8 +37,8 @@ public class ScriptRunAction extends ScriptAction {
         StringBuilder retval = new StringBuilder();
         retval.append("</br>");
         retval.append(ls.getMessage("system.event.runAs",
-                StringEscapeUtils.escapeHtml(getScriptActionDetails().getUsername()),
-                StringEscapeUtils.escapeHtml(getScriptActionDetails().getGroupname()))
+                StringEscapeUtils.escapeHtml4(getScriptActionDetails().getUsername()),
+                StringEscapeUtils.escapeHtml4(getScriptActionDetails().getGroupname()))
         );
         retval.append("</br>");
         retval.append(ls.getMessage("system.event.timeout",
@@ -46,7 +46,7 @@ public class ScriptRunAction extends ScriptAction {
         retval.append("</br>");
         retval.append(ls.getMessage("system.event.scriptContents"));
         retval.append("</br><pre>");
-        retval.append(StringEscapeUtils.escapeHtml(getScriptActionDetails()
+        retval.append(StringEscapeUtils.escapeHtml4(getScriptActionDetails()
                 .getScriptContents()));
         retval.append("</pre></br>");
         for (ScriptResult sr : getScriptActionDetails().getResults()) {
@@ -69,7 +69,7 @@ public class ScriptRunAction extends ScriptAction {
                 retval.append(ls.getMessage("system.event.scriptFilteredOutput"));
                 retval.append("</br>");
                 retval.append("<pre>");
-                retval.append(StringEscapeUtils.escapeHtml(sr.getOutputContents()));
+                retval.append(StringEscapeUtils.escapeHtml4(sr.getOutputContents()));
                 retval.append("</pre>");
             }
         }

@@ -19,7 +19,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.manager.BasePersistOperation;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
 
 

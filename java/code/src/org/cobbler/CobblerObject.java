@@ -17,7 +17,7 @@ package org.cobbler;
 
 import com.redhat.rhn.common.util.StringUtil;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

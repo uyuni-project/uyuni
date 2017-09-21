@@ -29,7 +29,7 @@ import com.suse.manager.webui.services.StaleSaltStateException;
 import com.suse.manager.webui.services.SaltStateExistsException;
 import com.suse.manager.webui.utils.SaltFileUtils;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 

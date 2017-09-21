@@ -38,7 +38,7 @@ import com.suse.manager.model.products.OptionalChannels;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.XMLChannel;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

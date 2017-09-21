@@ -21,7 +21,7 @@ import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.token.ActivationKeyCloneCommand;
 import com.redhat.rhn.domain.token.ActivationKey;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;

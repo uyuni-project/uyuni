@@ -19,7 +19,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
@@ -111,9 +111,9 @@ public class EnvironmentFilter implements Filter {
             String param3 = req.getParameter("messagep3");
 
             Object[] args = new Object[3];
-            args[0] = StringEscapeUtils.escapeHtml(param1);
-            args[1] = StringEscapeUtils.escapeHtml(param2);
-            args[2] = StringEscapeUtils.escapeHtml(param3);
+            args[0] = StringEscapeUtils.escapeHtml4(param1);
+            args[1] = StringEscapeUtils.escapeHtml4(param2);
+            args[2] = StringEscapeUtils.escapeHtml4(param3);
 
             msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(messageKey, args));
             StrutsDelegate.getInstance().saveMessages(req, msg);

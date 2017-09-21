@@ -16,7 +16,7 @@ package com.redhat.rhn.common.util;
 
 import com.redhat.rhn.frontend.context.Context;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;

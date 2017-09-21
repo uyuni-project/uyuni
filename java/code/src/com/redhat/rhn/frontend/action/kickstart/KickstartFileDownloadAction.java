@@ -23,7 +23,7 @@ import com.redhat.rhn.manager.kickstart.KickstartFileDownloadCommand;
 import com.redhat.rhn.manager.kickstart.KickstartManager;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.DynaActionForm;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,13 +78,13 @@ public class KickstartFileDownloadAction extends BaseKickstartEditAction {
         if (helper.verifyKickstartChannel(
                     cmdIn.getKickstartData(), ctx.getCurrentUser(), false)) {
             try {
-                request.setAttribute(FILEDATA, StringEscapeUtils.escapeHtml(
+                request.setAttribute(FILEDATA, StringEscapeUtils.escapeHtml4(
                         KickstartManager.getInstance().renderKickstart(data)));
                 request.setAttribute(KSURL, KickstartUrlHelper.getCobblerProfileUrl(data));
             }
             catch (DownloadException de) {
                 request.setAttribute(FILEERROR,
-                                StringEscapeUtils.escapeHtml(de.getContent()));
+                                StringEscapeUtils.escapeHtml4(de.getContent()));
                 createErrorMessage(request, "kickstart.jsp.error.template_message", null);
             }
         }

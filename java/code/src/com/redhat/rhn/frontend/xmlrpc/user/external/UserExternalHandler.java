@@ -36,8 +36,8 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchExternalGroupToRoleMapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchExternalGroupToServerGroupMapException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * UserHandler

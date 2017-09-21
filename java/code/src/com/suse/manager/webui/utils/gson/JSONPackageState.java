@@ -22,8 +22,8 @@ import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;

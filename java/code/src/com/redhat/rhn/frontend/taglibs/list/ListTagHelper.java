@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.taglibs.list;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.frontend.struts.Selectable;
@@ -216,11 +216,11 @@ public class ListTagHelper {
 
         if (clicked == null) {
             if (oldValue  != null && !oldValue.equals("null")) {
-                return StringEscapeUtils.escapeHtml(oldValue);
+                return StringEscapeUtils.escapeHtml4(oldValue);
             }
             return "";
         }
-        return StringEscapeUtils.escapeHtml(newValue);
+        return StringEscapeUtils.escapeHtml4(newValue);
     }
 
     /**

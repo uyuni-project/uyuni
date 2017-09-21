@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.taglibs.list;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.Profile;
 
@@ -114,7 +114,7 @@ public class KickstartUrlHelper {
 
         StringBuilder urlBuf = new StringBuilder();
         urlBuf.append("/label/");
-        urlBuf.append(StringEscapeUtils.escapeHtml(ksData.getLabel()));
+        urlBuf.append(StringEscapeUtils.escapeHtml4(ksData.getLabel()));
 
         return getKickstartFileUrlBase() + urlBuf.toString();
     }

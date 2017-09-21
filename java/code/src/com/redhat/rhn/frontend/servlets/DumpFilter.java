@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.servlets;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;

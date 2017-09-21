@@ -28,7 +28,7 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;

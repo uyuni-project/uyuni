@@ -16,7 +16,7 @@ package com.redhat.rhn.common.security.acl;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * BaseHandler is the base class for all Acl handlers and should

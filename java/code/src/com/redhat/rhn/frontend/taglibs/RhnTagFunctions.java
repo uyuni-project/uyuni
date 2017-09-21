@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.taglibs;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -175,6 +175,6 @@ public class RhnTagFunctions {
      * @return escaped string
      */
     public static String escapeJS(String param) {
-        return StringEscapeUtils.escapeJavaScript(param);
+        return StringEscapeUtils.escapeEcmaScript(param);
     }
 }

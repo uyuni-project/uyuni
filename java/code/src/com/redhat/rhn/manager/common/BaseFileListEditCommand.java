@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.BasePersistOperation;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Iterator;
 

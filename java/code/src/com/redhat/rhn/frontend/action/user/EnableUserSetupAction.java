@@ -23,7 +23,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -67,7 +67,7 @@ public class EnableUserSetupAction extends RhnAction {
             ActionMessages msg = new ActionMessages();
             msg.add(ActionMessages.GLOBAL_MESSAGE,
                 new ActionMessage("userenable.error.usernotdisabled",
-                   StringEscapeUtils.escapeHtml(user.getLogin())));
+                   StringEscapeUtils.escapeHtml4(user.getLogin())));
             getStrutsDelegate().saveMessages(request, msg);
         }
 

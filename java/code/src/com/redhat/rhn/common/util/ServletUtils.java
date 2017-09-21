@@ -17,7 +17,7 @@ package com.redhat.rhn.common.util;
 
 import com.redhat.rhn.common.RhnRuntimeException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;

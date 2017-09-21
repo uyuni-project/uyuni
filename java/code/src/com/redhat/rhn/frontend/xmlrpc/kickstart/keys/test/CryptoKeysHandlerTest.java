@@ -24,7 +24,7 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.keys.CryptoKeysHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.List;
 

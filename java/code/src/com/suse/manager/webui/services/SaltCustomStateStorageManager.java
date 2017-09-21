@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.StateFactory;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

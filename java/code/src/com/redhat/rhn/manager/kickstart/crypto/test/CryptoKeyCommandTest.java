@@ -24,7 +24,7 @@ import com.redhat.rhn.manager.kickstart.crypto.DeleteCryptoKeyCommand;
 import com.redhat.rhn.manager.kickstart.crypto.EditCryptoKeyCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 /**
  * CryptoKeyCommandTest - test for CryptoKeyCommand
