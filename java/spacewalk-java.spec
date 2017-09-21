@@ -93,6 +93,7 @@ BuildRequires: salt-netapi-client >= 0.11.1
 BuildRequires: spark
 BuildRequires: spark-template-jade
 BuildRequires: httpcomponents-client
+BuildRequires: velocity
 %else
 Requires: cobbler20
 Requires: dojo
@@ -917,7 +918,7 @@ fi
 %{jardir}/stringtree-json.jar
 %{jardir}/susestudio-java-client.jar
 %{jardir}/tanukiwrapper.jar
-%{jardir}/velocity-*.jar
+# %{jardir}/velocity-*.jar
 %{jardir}/xalan-j2.jar
 %{jardir}/xerces-j2.jar
 %{jardir}/xml-commons-apis.jar
