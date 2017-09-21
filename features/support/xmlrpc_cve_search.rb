@@ -2,11 +2,11 @@ require_relative 'xmlrpctest'
 
 # audit class xmlrpc
 class XMLRPCCVEAuditTest < XMLRPCBaseTest
-  def populateCVEServerChannels
-    @connection.call('audit.populateCVEServerChannels', @sid)
+  def populate_cveserver_channels
+    @connection.call('audit.populate_cveserver_channels', @sid)
   end
 
-  def listSystemsByPatchStatus(cve_identifier)
-    @connection.call('audit.listSystemsByPatchStatus', @sid, cve_identifier)
+  def list_systems_by_patch_status(cve_identifier)
+    @connection.call('audit.list_systems_by_patch_status', @sid, cve_identifier)
   end
 end

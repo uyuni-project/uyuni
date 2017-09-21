@@ -4,20 +4,20 @@ require_relative 'xmlrpctest'
 
 # vhm namespace
 class XMLRPCVHMTest < XMLRPCBaseTest
-  def listAvailableVirtualHostGathererModules
-    @connection.call('virtualhostmanager.listAvailableVirtualHostGathererModules', @sid) || []
+  def list_available_virtual_host_gatherer_modules
+    @connection.call('virtualhostmanager.list_available_virtual_host_gatherer_modules', @sid) || []
   end
 
-  def listVirtualHostManagers
-    @connection.call('virtualhostmanager.listVirtualHostManagers', @sid) || []
+  def list_virtual_host_managers
+    @connection.call('virtualhostmanager.list_virtual_host_managers', @sid) || []
   end
 
-  def getModuleParameters(module_name)
-    @connection.call('virtualhostmanager.getModuleParameters', @sid, module_name) || {}
+  def get_module_parameters(module_name)
+    @connection.call('virtualhostmanager.get_module_parameters', @sid, module_name) || {}
   end
 
-  def getDetail(label)
-    @connection.call('virtualhostmanager.getDetail', @sid, label) || {}
+  def get_detail(label)
+    @connection.call('virtualhostmanager.get_detail', @sid, label) || {}
   end
 
   def create(label, module_name, parameter)

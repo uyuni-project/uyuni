@@ -12,9 +12,9 @@ Given(/^I am logged in via XML\-RPC\/system as user "([^"]*)" and password "([^"
   systest.login(luser, password)
 end
 
-When(/^I call system\.listSystems\(\), I should get a list of them\.$/) do
+When(/^I call system\.list_systems\(\), I should get a list of them\.$/) do
   # This also assumes the test is called *after* the regular test.
-  servers = systest.listSystems
+  servers = systest.list_systems
   assert(servers.!empty?, "Expect: 'number of system' > 0, but found only '#{servers.length}' servers")
   rabbit = servers[0]
 end
@@ -23,14 +23,14 @@ When(/^I call system\.bootstrap\(\) on host "(.*?)" and saltSSH "(.*?)", \
 a new system should be bootstraped\.$/) do |host, salt_ssh_enabled|
   salt_ssh = (salt_ssh_enabled == 'enabled')
   node = get_target(host)
-  result = systest.bootstrapSystem(node.full_hostname, '', salt_ssh)
+  result = systest.bootstrap_system(node.full_hostname, '', salt_ssh)
   assert(result == 1, 'Bootstrap return code not equal to 1.')
 end
 
 When(/^I call system\.bootstrap\(\) on unknown host, I should get an XMLRPC fault with code -1.$/) do
   exception_thrown = false
   begin
-    systest.bootstrapSystem('imprettysureidontexist', '', false)
+    systest.bootstrap_system('imprettysureidontexist', '', false)
   rescue XMLRPC::FaultException => fault
     exception_thrown = true
     assert(fault.faultCode == -1, 'Fault code must be == -1.')
@@ -42,7 +42,7 @@ When(/^I call system\.bootstrap\(\) on a salt minion with saltSSH = true, \
 but with activation key with Default contact method, I should get an XMLRPC fault with code -1\.$/) do
   exception_thrown = false
   begin
-    systest.bootstrapSystem($minion.full_hostname, '1-SUSE-DEV-x86_64', true)
+    systest.bootstrap_system($minion.full_hostname, '1-SUSE-DEV-x86_64', true)
   rescue XMLRPC::FaultException => fault
     exception_thrown = true
     assert(fault.faultCode == -1, 'Fault code must be == -1.')
@@ -50,8 +50,8 @@ but with activation key with Default contact method, I should get an XMLRPC faul
   assert(exception_thrown, 'Exception must be thrown for non-compatible activation keys.')
 end
 
-When(/^I call system\.createSystemRecord\(\) with sys_name "([^"]*)", ks_label "([^"]*)", ip "([^"]*)", mac "([^"]*)"$/) do |sys_name, ks_lab, ip, mac|
-  systest.createSystemRecord(sys_name, ks_lab, ip, mac)
+When(/^I call system\.create_system_record\(\) with sys_name "([^"]*)", ks_label "([^"]*)", ip "([^"]*)", mac "([^"]*)"$/) do |sys_name, ks_lab, ip, mac|
+  systest.create_system_record(sys_name, ks_lab, ip, mac)
 end
 
 Then(/^I logout from XML\-RPC\/system\.$/) do
@@ -66,16 +66,16 @@ Given(/^I am logged in via XML\-RPC\/user as user "([^"]*)" and password "([^"]*
   @rpc.login(luser, password)
 end
 
-When(/^I call user\.listUsers\(\)$/) do
-  @users = @rpc.getUsers
+When(/^I call user\.list_users\(\)$/) do
+  @users = @rpc.get_users
 end
 
 Then(/^I should get at least user "([^"]*)"$/) do |luser|
   assert_includes(@users.map { |u| u['login'] }, luser)
 end
 
-When(/^I call user\.getDetails\(\) on user "([^"]*)"$/) do |luser|
-  @roles = @rpc.getUserRoles(luser)
+When(/^I call user\.get_details\(\) on user "([^"]*)"$/) do |luser|
+  @roles = @rpc.get_user_roles(luser)
 end
 
 Then(/^I should see at least one role that matches "([^"]*)" suffix$/) do |sfx|
@@ -83,22 +83,22 @@ Then(/^I should see at least one role that matches "([^"]*)" suffix$/) do |sfx|
 end
 
 When(/^I call user\.create\(sid, login, pwd, name, lastname, email\) with login "([^"]*)"$/) do |luser|
-  refute(@rpc.createUser(luser, CREATE_USER_PASSWORD) != 1)
+  refute(@rpc.create_user(luser, CREATE_USER_PASSWORD) != 1)
 end
 
-Then(/^when I call user\.listUsers\(\), I should see a user "([^"]*)"$/) do |luser|
+Then(/^when I call user\.list_users\(\), I should see a user "([^"]*)"$/) do |luser|
   steps %{
-    When I call user.listUsers()
+    When I call user.list_users()
     Then I should get at least user "#{luser}"
   }
 end
 
-When(/^I call user\.addRole\(\) on "([^"]*)" with the role "([^"]*)"$/) do |luser, role|
-  refute(@rpc.addRole(luser, role) != 1)
+When(/^I call user\.add_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |luser, role|
+  refute(@rpc.add_role(luser, role) != 1)
 end
 
-Then(/^I should see "([^"]*)" when I call user\.listRoles\(\) with "([^"]*)"$/) do |rolename, luser|
-  assert_includes(@rpc.getUserRoles(luser), rolename)
+Then(/^I should see "([^"]*)" when I call user\.list_roles\(\) with "([^"]*)"$/) do |rolename, luser|
+  assert_includes(@rpc.get_user_roles(luser), rolename)
 end
 
 Then(/^I logout from XML\-RPC\/user namespace\.$/) do
@@ -106,22 +106,22 @@ Then(/^I logout from XML\-RPC\/user namespace\.$/) do
 end
 
 When(/^I delete user "([^"]*)"$/) do |luser|
-  @rpc.deleteUser(luser)
+  @rpc.delete_user(luser)
 end
 
 Given(/^I make sure "([^"]*)" is not present$/) do |luser|
-  @rpc.getUsers
+  @rpc.get_users
       .map { |u| u['login'] }
       .select { |l| l == luser }
-      .each { @rpc.deleteUser(luser) }
+      .each { @rpc.delete_user(luser) }
 end
 
-When(/^I call user\.removeRole\(\) against uid "([^"]*)" with the role "([^"]*)"$/) do |luser, rolename|
-  refute(@rpc.delRole(luser, rolename) != 1)
+When(/^I call user\.remove_role\(\) against uid "([^"]*)" with the role "([^"]*)"$/) do |luser, rolename|
+  refute(@rpc.del_role(luser, rolename) != 1)
 end
 
-Then(/^I shall not see "([^"]*)" when I call user\.listRoles\(\) with "([^"]*)" uid$/) do |rolename, luser|
-  refute_includes(@rpc.getUserRoles(luser), rolename)
+Then(/^I shall not see "([^"]*)" when I call user\.list_roles\(\) with "([^"]*)" uid$/) do |rolename, luser|
+  refute_includes(@rpc.get_user_roles(luser), rolename)
 end
 
 Given(/^I am logged in via XML\-RPC\/channel as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
@@ -130,11 +130,11 @@ end
 
 When(/^I create a repo with label "([^"]*)" and url$/) do |label|
   url = "http://#{$server_ip}/pub/AnotherRepo/"
-  assert(rpctest.createRepo(label, url))
+  assert(rpctest.create_repo(label, url))
 end
 
 When(/^I associate repo "([^"]*)" with channel "([^"]*)"$/) do |repo_label, channel_label|
-  assert(rpctest.associateRepo(channel_label, repo_label))
+  assert(rpctest.associate_repo(channel_label, repo_label))
 end
 
 When(/^I create the following channels:/) do |table|
@@ -153,33 +153,33 @@ When(/^I delete the software channel with label "([^"]*)"$/) do |label|
 end
 
 When(/^I delete the repo with label "([^"]*)"$/) do |label|
-  assert_equal(rpctest.deleteRepo(label), 1)
+  assert_equal(rpctest.delete_repo(label), 1)
 end
 
 Then(/^something should get listed with a call of listSoftwareChannels$/) do
-  assert_equal(rpctest.getSoftwareChannelsCount < 1, false)
+  assert_equal(rpctest.get_software_channels_count < 1, false)
 end
 
 Then(/^"([^"]*)" should get listed with a call of listSoftwareChannels$/) do |label|
-  assert(rpctest.verifyChannel(label))
+  assert(rpctest.verify_channel(label))
 end
 
 Then(/^"([^"]*)" should not get listed with a call of listSoftwareChannels$/) do |label|
-  assert_equal(rpctest.verifyChannel(label), false)
+  assert_equal(rpctest.verify_channel(label), false)
 end
 
 Then(/^"([^"]*)" should be the parent channel of "([^"]*)"$/) do |parent, child|
-  assert(rpctest.isParentChannel(child, parent))
+  assert(rpctest.is_parent_channel(child, parent))
 end
 
 Then(/^channel "([^"]*)" should have attribute "([^"]*)" from type "([^"]*)"$/) do |label, attr, type|
-  ret = rpctest.getChannelDetails(label)
+  ret = rpctest.get_channel_details(label)
   assert(ret)
   assert_equal(ret[attr].class.to_s, type)
 end
 
 Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
-  ret = rpctest.getChannelDetails(label)
+  ret = rpctest.get_channel_details(label)
   assert(ret)
   assert_equal(ret.key?(attr), false)
 end
@@ -193,34 +193,34 @@ Given(/^I am logged in via XML\-RPC\/activationkey as user "([^"]*)" and passwor
 end
 
 When(/^I create an AK with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/) do |id, dscr, limit|
-  key = acttest.createKey(id, dscr, limit)
+  key = acttest.create_key(id, dscr, limit)
   raise if key.nil?
 end
 
 Then(/^I should get it listed with a call of listActivationKeys\.$/) do
-  raise unless acttest.verifyKey(key)
+  raise unless acttest.verify_key(key)
 end
 
 When(/^I call listActivationKeys I should get some\.$/) do
-  raise if acttest.getActivationKeysCount < 1
+  raise if acttest.get_activation_keys_count < 1
 end
 
 Then(/^I should get key deleted\.$/) do
-  raise unless acttest.deleteKey(key)
-  raise if acttest.verifyKey(key)
+  raise unless acttest.delete_key(key)
+  raise if acttest.verify_key(key)
 end
 
 When(/^I add config channels "([^"]*)" to a newly created key$/) do |channel_name|
-  raise if acttest.addConfigChannel(key, channel_name) < 1
+  raise if acttest.add_config_channel(key, channel_name) < 1
 end
 
 # Details
-When(/^I call activationkey\.setDetails\(\) to the key$/) do
-  raise unless acttest.setDetails(key)
+When(/^I call activationkey\.set_details\(\) to the key$/) do
+  raise unless acttest.set_details(key)
 end
 
-Then(/^I have to see them by calling activationkey\.getDetails\(\)$/) do
-  raise unless acttest.getDetails(key)
+Then(/^I have to see them by calling activationkey\.get_details\(\)$/) do
+  raise unless acttest.get_details(key)
 end
 
 virtualhostmanager = XMLRPCVHMTest.new(ENV['TESTHOST'])
@@ -233,16 +233,16 @@ Given(/^I am logged in via XML\-RPC\/virtualhostmanager as user "([^"]*)" and pa
   virtualhostmanager.login(luser, password)
 end
 
-When(/^I call virtualhostmanager.listAvailableVirtualHostGathererModules\(\)$/) do
-  modules = virtualhostmanager.listAvailableVirtualHostGathererModules
+When(/^I call virtualhostmanager.list_available_virtual_host_gatherer_modules\(\)$/) do
+  modules = virtualhostmanager.list_available_virtual_host_gatherer_modules
 end
 
-When(/^I call virtualhostmanager.listVirtualHostManagers\(\)$/) do
-  vhms = virtualhostmanager.listVirtualHostManagers
+When(/^I call virtualhostmanager.list_virtual_host_managers\(\)$/) do
+  vhms = virtualhostmanager.list_virtual_host_managers
 end
 
-When(/^I call virtualhostmanager.getModuleParameters\(\) for "([^"]*)"$/) do |module_name|
-  params = virtualhostmanager.getModuleParameters(module_name)
+When(/^I call virtualhostmanager.get_module_parameters\(\) for "([^"]*)"$/) do |module_name|
+  params = virtualhostmanager.get_module_parameters(module_name)
 end
 
 When(/^I call virtualhostmanager.create\("([^"]*)", "([^"]*)"\) and params from "([^"]*)"$/) do |label, module_name, param_file|
@@ -257,8 +257,8 @@ When(/^I call virtualhostmanager.delete\("([^"]*)"\)$/) do |label|
   raise if r != 1
 end
 
-When(/^I call virtualhostmanager.getDetail\("([^"]*)"\)$/) do |label|
-  detail = virtualhostmanager.getDetail(label)
+When(/^I call virtualhostmanager.get_detail\("([^"]*)"\)$/) do |label|
+  detail = virtualhostmanager.get_detail(label)
 end
 
 Then(/^"([^"]*)" should be "([^"]*)"$/) do |key1, value1|
@@ -287,7 +287,7 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
     syschaintest.login(luser, password)
     scdrpc.login(luser, password)
 
-    servers = syschaintest.listSystems
+    servers = syschaintest.list_systems
     refute_nil(servers)
 
     hostname = $client.full_hostname
@@ -298,155 +298,155 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
   end
 
   # Flush all chains
-  rpc.listChains.each do |label|
-    rpc.deleteChain(label)
+  rpc.list_chains.each do |label|
+    rpc.delete_chain(label)
   end
 end
 
 # Listing chains
 When(/^I call XML\-RPC\/createChain with chainLabel "(.*?)"$/) do |label|
-  action_id = rpc.createChain(label)
+  action_id = rpc.create_chain(label)
   refute(action_id < 1)
   $chain_label = label
 end
 
-When(/^I call actionchain\.listChains\(\) if label "(.*?)" is there$/) do |label|
-  assert_includes(rpc.listChains, label)
+When(/^I call actionchain\.list_chains\(\) if label "(.*?)" is there$/) do |label|
+  assert_includes(rpc.list_chains, label)
 end
 
 # Deleting chain
 Then(/^I delete the action chain$/) do
   begin
-    rpc.deleteChain($chain_label)
+    rpc.delete_chain($chain_label)
   rescue XMLRPC::FaultException => e
-    raise format('deleteChain: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
+    raise format('deleteChain: XML-RPC failure, code %s: %s', e.faultCode, e.fault_string)
   end
 end
 
 Then(/^I delete an action chain, labeled "(.*?)"$/) do |label|
   begin
-    rpc.deleteChain(label)
+    rpc.delete_chain(label)
   rescue XMLRPC::FaultException => e
-    raise format('deleteChain: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
+    raise format('deleteChain: XML-RPC failure, code %s: %s', e.faultCode, e.fault_string)
   end
 end
 
 # Renaming chain
-Then(/^I call actionchain\.renameChain\(\) to rename it from "(.*?)" to "(.*?)"$/) do |old_label, new_label|
-  rpc.renameChain(old_label, new_label)
+Then(/^I call actionchain\.rename_chain\(\) to rename it from "(.*?)" to "(.*?)"$/) do |old_label, new_label|
+  rpc.rename_chain(old_label, new_label)
 end
 
 Then(/^there should be a new action chain with the label "(.*?)"$/) do |label|
-  assert_includes(rpc.listChains, label)
+  assert_includes(rpc.list_chains, label)
 end
 
 Then(/^there should be an action chain with the label "(.*?)"$/) do |label|
-  assert_includes(rpc.listChains, label)
+  assert_includes(rpc.list_chains, label)
 end
 
 Then(/^there should be no action chain with the label "(.*?)"$/) do |label|
-  refute_includes(rpc.listChains, label)
+  refute_includes(rpc.list_chains, label)
 end
 
 Then(/^no action chain with the label "(.*?)"\.$/) do |label|
-  refute_includes(rpc.listChains, label)
+  refute_includes(rpc.list_chains, label)
 end
 
 #
 # Schedule scenario
 #
-When(/^I call actionchain\.addScriptRun\(\) with the script like "(.*?)"$/) do |script|
-  refute(rpc.addScriptRun($client_id, script, $chain_label) < 1)
+When(/^I call actionchain\.add_script_run\(\) with the script like "(.*?)"$/) do |script|
+  refute(rpc.add_script_run($client_id, script, $chain_label) < 1)
 end
 
 Then(/^I should be able to see all these actions in the action chain$/) do
   begin
-    actions = rpc.listChainActions($chain_label)
+    actions = rpc.list_chain_actions($chain_label)
     refute_nil(actions)
     puts 'Running actions:'
     actions.each do |action|
       puts "\t- " + action['label']
     end
   rescue XMLRPC::FaultException => e
-    raise format('Error listChainActions: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
+    raise format('Error listChainActions: XML-RPC failure, code %s: %s', e.faultCode, e.fault_string)
   end
 end
 
 # Reboot
-When(/^I call actionchain\.addSystemReboot\(\)$/) do
-  refute(rpc.addSystemReboot($client_id, $chain_label) < 1)
+When(/^I call actionchain\.add_system_reboot\(\)$/) do
+  refute(rpc.add_system_reboot($client_id, $chain_label) < 1)
 end
 
 # Packages operations
-When(/^I call actionchain\.addPackageInstall\(\)$/) do
-  pkgs = syschaintest.listAllInstallablePackages($client_id)
+When(/^I call actionchain\.add_package_install\(\)$/) do
+  pkgs = syschaintest.list_all_installable_packages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
-  refute(rpc.addPackageInstall($client_id, [pkgs[0]['id']], $chain_label) < 1)
+  refute(rpc.add_package_install($client_id, [pkgs[0]['id']], $chain_label) < 1)
 end
 
-When(/^I call actionchain\.addPackageRemoval\(\)$/) do
-  pkgs = syschaintest.listAllInstallablePackages($client_id)
-  refute(rpc.addPackageRemoval($client_id, [pkgs[0]['id']], $chain_label) < 1)
+When(/^I call actionchain\.add_package_removal\(\)$/) do
+  pkgs = syschaintest.list_all_installable_packages($client_id)
+  refute(rpc.add_package_removal($client_id, [pkgs[0]['id']], $chain_label) < 1)
 end
 
-When(/^I call actionchain\.addPackageUpgrade\(\)$/) do
-  pkgs = syschaintest.listLatestUpgradablePackages($client_id)
+When(/^I call actionchain\.add_package_upgrade\(\)$/) do
+  pkgs = syschaintest.list_latest_upgradable_packages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
-  refute(rpc.addPackageUpgrade($client_id, [pkgs[0]['to_package_id']], $chain_label) < 1)
+  refute(rpc.add_package_upgrade($client_id, [pkgs[0]['to_package_id']], $chain_label) < 1)
 end
 
-When(/^I call actionchain\.addPackageVerify\(\)$/) do
-  pkgs = syschaintest.listAllInstallablePackages($client_id)
+When(/^I call actionchain\.add_package_verify\(\)$/) do
+  pkgs = syschaintest.list_all_installable_packages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
-  refute(rpc.addPackageVerify($client_id, [pkgs[0]['id']], $chain_label) < 1)
+  refute(rpc.add_package_verify($client_id, [pkgs[0]['id']], $chain_label) < 1)
 end
 
 # Manage actions within the action chain
-When(/^I call actionchain\.removeAction on each action within the chain$/) do
+When(/^I call actionchain\.remove_action on each action within the chain$/) do
   begin
-    actions = rpc.listChainActions($chain_label)
+    actions = rpc.list_chain_actions($chain_label)
     refute_nil(actions)
     actions.each do |action|
-      refute(rpc.removeAction($chain_label, action['id']) < 0)
+      refute(rpc.remove_action($chain_label, action['id']) < 0)
       puts "\t- Removed \"" + action['label'] + '" action'
     end
   rescue XMLRPC::FaultException => e
-    raise format('Error removeAction: XML-RPC failure, code %s: %s', e.faultCode, e.faultString)
+    raise format('Error remove_action: XML-RPC failure, code %s: %s', e.faultCode, e.fault_string)
   end
 end
 
 Then(/^I should be able to see that the current action chain is empty$/) do
-  assert_empty(rpc.listChainActions($chain_label))
+  assert_empty(rpc.list_chain_actions($chain_label))
 end
 
 # Scheduling the action chain
 When(/^I schedule the action chain$/) do
-  refute(rpc.scheduleChain($chain_label, DateTime.now) < 0)
+  refute(rpc.schedule_chain($chain_label, DateTime.now) < 0)
 end
 
 Then(/^there should be no more my action chain$/) do
-  refute_includes(rpc.listChains, $chain_label)
+  refute_includes(rpc.list_chains, $chain_label)
 end
 
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
   assert_includes(
-    scdrpc.listInProgressActions.map { |a| a['name'] }, label
+    scdrpc.list_in_progress_actions.map { |a| a['name'] }, label
   )
 end
 
 Then(/^I cancel all scheduled actions$/) do
-  scdrpc.listInProgressActions.each do |action|
+  scdrpc.list_in_progress_actions.each do |action|
     # One-by-one, this is against single call in the API on purpose.
-    scdrpc.cancelActions([action['id']])
+    scdrpc.cancel_actions([action['id']])
     puts "\t- Removed \"" + action['name'] + '" action'
   end
 end
 
 Then(/^there should be no more any scheduled actions$/) do
-  assert_empty(scdrpc.listInProgressActions)
+  assert_empty(scdrpc.list_in_progress_actions)
 end
 
 rpc_api_tester = XMLRPCApiTest.new(ENV['TESTHOST'])
@@ -461,11 +461,11 @@ Given(/^I am logged in via XML\-RPC\/cve audit as user "([^"]*)" and password "(
 end
 
 Given(/^channel data has already been updated$/) do
-  assert_equals(@rpctest.populateCVEServerChannels, 1)
+  assert_equals(@rpctest.populate_cveserver_channels, 1)
 end
 
-When(/^I call audit.listSystemsByPatchStatus with CVE identifier "([^\"]*)"$/) do |cve_identifier|
-  @result_list = @rpctest.listSystemsByPatchStatus(cve_identifier) || []
+When(/^I call audit.list_systems_by_patch_status with CVE identifier "([^\"]*)"$/) do |cve_identifier|
+  @result_list = @rpctest.list_systems_by_patch_status(cve_identifier) || []
 end
 
 Then(/^I should get status "([^\"]+)" for system "([0-9]+)"$/) do |status, system|
