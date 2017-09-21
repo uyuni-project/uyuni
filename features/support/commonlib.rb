@@ -30,3 +30,7 @@ class ExpectFileGenerator
     File.basename(path)
   end
 end
+
+def current_url
+  driver.current_url
+end
