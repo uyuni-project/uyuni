@@ -35,7 +35,7 @@ def client_system_id_to_i
   out.gsub(/\s+/, '')
 end
 
-def checkShutdown(host, time_out)
+def check_shutdown(host, time_out)
   cmd = "ping -c1 #{host}"
   Timeout.timeout(time_out) do
     loop do
@@ -51,7 +51,7 @@ rescue Timeout::Error
   raise "Machine didn't reboot!"
 end
 
-def checkRestart(host, node, time_out)
+def check_restart(host, node, time_out)
   cmd = "ping -c1 #{host}"
   Timeout.timeout(time_out) do
     loop do
