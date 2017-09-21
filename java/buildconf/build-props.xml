@@ -156,7 +156,7 @@
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec quartz
-             ${suse-common-jars}
+             ${suse-common-jars} velocity
              concurrent simple-core snakeyaml simple-xml susestudio-java-client" />
 
   <property name="dist.jar.dependencies"
