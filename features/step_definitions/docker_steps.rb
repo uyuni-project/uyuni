@@ -91,9 +91,7 @@ And(/^I navigate to images build webpage$/) do
 end
 
 And(/^all "([^"]*)" container images should be built correctly in the GUI$/) do |count|
-  # don't run this for sles11 (docker feature is not there)
-  return if sle11family($minion)
-  begin
+  def ck_container_imgs(count)
     Timeout.timeout(DEFAULT_TIMEOUT) do
       raise 'error detected while building images' if has_xpath?("//*[contains(@title, 'Failed')]")
       break if has_xpath?("//*[contains(@title, 'Built')]", count: count)
@@ -103,6 +101,8 @@ And(/^all "([^"]*)" container images should be built correctly in the GUI$/) do 
   rescue Timeout::Error
     raise 'at least one image was not built correctly'
   end
+  # don't run this for sles11 (docker feature is not there)
+  ck_container_imgs(count) unless sle11family($minion)
 end
 
 And(/^I schedule the build of image "([^"]*)" via XML-RPC calls$/) do |image|
