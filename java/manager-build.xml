@@ -255,17 +255,6 @@
     </exec>
   </target>
 
-  <target name="jscheckstyle" depends="warn-if-npm-not-installed" description="checkstyle for javascript source">
-	  <echo message="check prerequisites npm pkg"/>
-	      <exec executable="npm" dir="${js.components.dir}">
-	      <arg line="install"/>
-              </exec>
-	  <echo message="lint js files"/>
-	  <exec failonerror="true" executable="gulp" dir="${js.components.dir}">
-	    <arg line="lint"/>
-          </exec>
-  </target>
-
   <target name="restart-taskomatic" depends="open-ssh-socket" description="Restart the taskomatic process">
     <echo message="Launching Taskomatic restart..."/>
     <exec executable="ssh">
