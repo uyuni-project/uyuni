@@ -26,7 +26,6 @@ import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.log4j.Logger;
-import org.apache.velocity.util.StringUtils;
 import org.cobbler.XmlRpcException;
 
 import java.util.ArrayList;
@@ -69,8 +68,7 @@ public class SsmPowerManagementAction extends AbstractDatabaseAction {
                     error = new CobblerPowerCommand(user, server, operation).store();
                 }
                 catch (XmlRpcException e) {
-                    log.error(StringUtils.stackTrace(e));
-                    log.error(StringUtils.stackTrace(e.getCause()));
+                    log.error(e);
                     error = new ValidatorError(
                         "ssm.provisioning.powermanagement.cobbler_error");
                 }
