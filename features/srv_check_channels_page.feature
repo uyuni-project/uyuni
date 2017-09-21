@@ -1,12 +1,12 @@
 # Copyright (c) 2015-17 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Explore the Channels page
-  In Order to validate completeness of the Channels page and it's subpages
+Feature: The channels page
+  In Order to use the channels page and its subpages
   As an authorized user
   I want to see all the texts and links
 
-  Scenario: Completeness of Channels page
+  Scenario: Completeness of the channels page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
@@ -26,7 +26,7 @@ Feature: Explore the Channels page
     And I should see a "Shared" link in the content area
     And I should see a "Retired" link in the content area
 
-  Scenario: Completeness of Channels page part 2
+  Scenario: Popular channels
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
@@ -34,7 +34,7 @@ Feature: Explore the Channels page
     And I follow "Popular" in the left menu
     Then I should see a "Popular" text
 
-  Scenario: Check Packages in Test-Channel-x86_64
+  Scenario: Check packages in test channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
@@ -48,7 +48,7 @@ Feature: Explore the Channels page
     And I should see package "milkyway-dummy-2.0-1.1.x86_64"
     And I should see package "virgo-dummy-2.0-1.1.noarch"
 
-  Scenario: Check Package metadata displayed in WebUI
+  Scenario: Check package metadata
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
@@ -63,7 +63,7 @@ Feature: Explore the Channels page
     And I should see a "3bb3a56e6654f14300ab815c3f6e2af848874c829541b4e1b342262bb2f72d30" text
     And I should see a "packages/1/3bb/andromeda-dummy/2.0-1.1/noarch/3bb3a56e6654f14300ab815c3f6e2af848874c829541b4e1b342262bb2f72d30/andromeda-dummy-2.0-1.1.noarch.rpm" text
 
-  Scenario: Check Package dependencies page
+  Scenario: Check package dependencies page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
@@ -76,7 +76,7 @@ Feature: Explore the Channels page
     And I should see a "rpmlib(PayloadIsLzma) <= 4.4.6-1" text
     And I should see a "andromeda-dummy = 2.0-1.1" text
 
-  Scenario: Check Package Changelog page
+  Scenario: Check package change log page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu
@@ -88,7 +88,7 @@ Feature: Explore the Channels page
     Then I should see a "mc@suse.de" text
     And I should see a "version 2.0" text
 
-  Scenario: Check Package Filelist page
+  Scenario: Check package file list page
     Given I am authorized as "admin" with password "admin"
     When I follow "Software" in the left menu
     And I follow "Channels" in the left menu

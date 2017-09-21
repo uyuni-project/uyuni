@@ -116,14 +116,14 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I should not see a "GenericSaltError({" text
      And I should see a "seems to already exist, please check!" text
 
-  Scenario: Delete sles-minion system profile (second-time)
+  Scenario: Delete SLES minion system profile for the second time
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
       
-  Scenario: bootstrap a sles minion with wrong hostname
+  Scenario: Bootstrap a SLES minion with wrong hostname
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
@@ -135,7 +135,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      Then I wait until I see " Could not resolve hostname not-existing-name: Name or service not known" text
      And I should not see a "GenericSaltError({" text
 
-  Scenario: bootstrap a sles minion with wrong ssh-credentials
+  Scenario: Bootstrap a SLES minion with wrong SSH credentials
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
@@ -147,7 +147,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      Then I wait until I see "Permission denied (publickey,keyboard-interactive)." text
      And I should not see a "GenericSaltError({" text
       
-  Scenario: bootstrap a sles minion with wrong ssh-port-number
+  Scenario: Bootstrap a SLES minion with wrong SSH port number
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
@@ -160,7 +160,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I should not see a "GenericSaltError({" text
      Then I should see a "port 11: Connection refused" text
 
-  Scenario: bootstrap a sles minion (permanently)
+  Scenario: Bootstrap a SLES minion permanently
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text
@@ -171,7 +171,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I click on "Bootstrap"
      Then I wait until I see "Successfully bootstrapped host! " text
 
-  Scenario: wait and check for minion finish bootstrap
+  Scenario: Wait for minion to finish bootstrap
      Given I am authorized
      And I go to the minion onboarding page
      Then I should see a "accepted" text

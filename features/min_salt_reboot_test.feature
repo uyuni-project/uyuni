@@ -1,10 +1,9 @@
 # Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Test a reboot on a salt minion
-         And test the webui for this feature.
+Feature: Reboot of a salt minion
 
-  Scenario: Reboot a salt minion (sle)
+  Scenario: Reboot a SLES Salt minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text

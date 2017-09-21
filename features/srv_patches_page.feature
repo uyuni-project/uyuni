@@ -1,12 +1,12 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Explore the Patches page
-  In Order to validate completeness of the patches page
+Feature: Patches page
+  In order to use the Patches page
   As a authorized user
   I want to see all the texts and links
 
-  Scenario: Completeness of the Patches left menu
+  Scenario: Patches left menu
     Given I am on the patches page
     Then I should see a "Patches Relevant to Your Systems" text
     And I should see a "Relevant" link in the left menu
@@ -79,7 +79,7 @@ Feature: Explore the Patches page
     And I click on "Publish Patch"
     Then I should see a "All Types" text
 
-  Scenario: Verify patch presence in webui(bugfixing patch)
+  Scenario: Verify patch presence in web UI
     Given I am on the patches page
     And I follow "All" in the left menu
     And I follow "Bugfix Patches" in the content area
@@ -97,7 +97,7 @@ Feature: Explore the Patches page
     And I should see a "Test Reference" text
     And I should see a "Test Note" text
 
-  Scenario: Assert that Patch is now in Test-base channel
+  Scenario: Assert that patch is now in test base channel
     Given I am on the patches page
     And I follow "Software" in the left menu
     And I follow "Channels" in the left menu
