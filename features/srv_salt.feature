@@ -16,7 +16,7 @@ Feature: Salt is configured and running
     And salt-master should be listening on public port 4505
     And salt-master should be listening on public port 4506
 
-  Scenario: salt-minion is running on "sle-minion"
+  Scenario: salt-minion is running on SLES minion
     Given salt-minion is configured on "sle-minion"
     When I restart salt-minion on "sle-minion"
     Then salt-minion should be running on "sle-minion"

@@ -216,8 +216,8 @@ end
 Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
   timeout = 800
   node = get_target(target)
-  checkShutdown(node.full_hostname, timeout)
-  checkRestart(node.full_hostname, get_target(target), timeout)
+  check_shutdown(node.full_hostname, timeout)
+  check_restart(node.full_hostname, get_target(target), timeout)
 end
 
 When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)"$/) do |arg1, arg2|
@@ -260,7 +260,7 @@ When(/^I wait for the openSCAP audit to finish$/) do
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        scans = @cli.call('system.scap.listXccdfScans', @sid, @sle_id)
+        scans = @cli.call('system.scap.list_xccdf_scans', @sid, @sle_id)
         # in the openscap test, we schedule 2 scans
         if scans.length > 1
           @cli.call('auth.logout', @sid)

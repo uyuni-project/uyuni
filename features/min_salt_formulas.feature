@@ -144,7 +144,7 @@ Feature: Use salt formulas
      And I should see a "locale-formula-group" text
      And I should see a "deleted" text
 
-  Scenario: Cleanup: reset locale values on "sle-minion"
+  Scenario: Cleanup: reset locale values on SLES minion
      Given I am on the Systems overview page of this "sle-minion"
      And I follow "States" in the content area
      And I click on "Apply Highstate"
