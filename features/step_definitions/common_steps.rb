@@ -425,7 +425,7 @@ And(/^I remove kickstart profiles and distros$/) do
   $server.run('cobbler distro remove --name "testdistro"')
 end
 
-And(/^I enable Suse container repos, but not for Sles11 systems$/) do
+And(/^I enable Suse container repository, but not for SLES11 systems$/) do
   def apply_container_repos
     $minion.run("zypper mr -e `grep -h SLE-Manager-Tools-12-x86_64] /etc/zypp/repos.d/* | tr -d '[]'`")
     $minion.run('zypper mr -e SLE-Module-Containers-SLE-12-x86_64-Pool')
@@ -437,7 +437,7 @@ And(/^I enable Suse container repos, but not for Sles11 systems$/) do
   apply_container_repos if code.zero?
 end
 
-And(/^I disable Suse container repos, but not for Sles11 systems$/) do
+And(/^I disable Suse container repository, but not for SLES11 systems$/) do
   def disable_container_repos
     $minion.run("zypper mr -d `grep -h SLE-Manager-Tools-12-x86_64] /etc/zypp/repos.d/* | tr -d '[]'`")
     $minion.run('zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Pool')
@@ -450,15 +450,25 @@ And(/^I disable Suse container repos, but not for Sles11 systems$/) do
   disable_container_repos if code.zero?
 end
 
-And(/^I enable sles pool and update repo on "([^"]*)"$/) do |target|
-  node = get_target(target)
-  os_version = get_os_version(node)
-  arch, _code = node.run('uname -m')
-  puts node.run("zypper mr -e SLE-#{os_version}-#{arch.strip}-Update")
-  puts node.run("zypper mr -e SLE-#{os_version}-#{arch.strip}-Pool")
+And(/^I enable SLES pool and update repository on "([^"]*)", but not for SLES11$/) do |target|
+  def enable_pool(target)
+    node = get_target(target)
+    os_version = get_os_version(node)
+    arch, _code = node.run('uname -m')
+    puts node.run("zypper mr -e SLE-#{os_version}-#{arch.strip}-Update")
+    puts node.run("zypper mr -e SLE-#{os_version}-#{arch.strip}-Pool")
+    steps %(
+      And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
+      And I apply highstate on "sle-minion"
+      Then I wait until "docker" service is up and running on "sle-minion"
+    )
+  end
+  _out, code = $minion.run('pidof systemd', false)
+  # only for sle12 and major systems
+  enable_pool(target) if code.zero?
 end
 
-And(/^I disable sles pool and update repo on "([^"]*)"$/) do |target|
+And(/^I disable SLES pool and update repository on "([^"]*)"$/) do |target|
   node = get_target(target)
   os_version = get_os_version(node)
   arch, _code = node.run('uname -m')
