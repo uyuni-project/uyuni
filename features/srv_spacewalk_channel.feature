@@ -1,28 +1,25 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Listing and adding/removing channels using the spacewalk-channel command
-  In order to test the spacewalk-channel command
-  As user root
-  I want to be able to list available channels and add or remove them
+Feature: Listing, adding and removing channels using the spacewalk-channel command
+  Ino order to list available channels and add or remove them
+  As root user
+  I want to be able to use the spacewalk-channel command
 
-  Scenario: list available channels, verify child channels
+  Scenario: List available channels, verify child channels
     When I execute spacewalk-channel and pass "--available-channels -u admin -p admin"
     And I should get "test-channel-x86_64-child-channel"
 
-  Scenario: add an invalid child channel (bnc#875958)
-    When spacewalk-channel fails with "--add -c test_child_channel -u admin -p admin"
+  Scenario: Add an invalid child channel
+    # bnc#875958
+    Then spacewalk-channel fails with "--add -c test_child_channel -u admin -p admin"
 
-  Scenario: add a valid child channel test-channel
+  Scenario: Add a valid child channel
     When I run "spacewalk-channel --add -c test-channel-x86_64-child-channel -u admin -p admin" on "sle-client"
+    And I execute spacewalk-channel and pass "--list"
+    Then I should get "test-channel-x86_64-child-channel"
 
-  Scenario: list subscribed channels after adding child
-    When I execute spacewalk-channel and pass "--list"
-    And I should get "test-channel-x86_64-child-channel"
-
-  Scenario: remove a valid child channel test-channel
+  Scenario: Remove a valid child channel
     When I use spacewalk-channel to remove test-channel-x86_64-child-channel
-
-  Scenario: list subscribed channels after removing child test-channel
-    When I execute spacewalk-channel and pass "--list"
-    And I shouldn't get "test-channel-x86_64-child-channel"
+    And I execute spacewalk-channel and pass "--list"
+    Then I shouldn't get "test-channel-x86_64-child-channel"

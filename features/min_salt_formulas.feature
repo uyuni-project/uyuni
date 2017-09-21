@@ -135,7 +135,7 @@ Feature: Use salt formulas
      And the pillar data for "timezone" should be empty on "ssh-minion"
      And the pillar data for "keyboard_and_language" should be empty on "ssh-minion"
 
-  Scenario: CLEANUP: Remove "locale-formula-group" system group
+  Scenario: Cleanup: remove "locale-formula-group" system group
      Given I am on the groups page
      And I follow "locale-formula-group" in the content area
      And I follow "Delete Group" in the content area
@@ -144,7 +144,7 @@ Feature: Use salt formulas
      And I should see a "locale-formula-group" text
      And I should see a "deleted" text
 
-  Scenario: CLEANUP: Reset locale values on "sle-minion"
+  Scenario: Cleanup: reset locale values on SLES minion
      Given I am on the Systems overview page of this "sle-minion"
      And I follow "States" in the content area
      And I click on "Apply Highstate"

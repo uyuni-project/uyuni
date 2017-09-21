@@ -541,7 +541,7 @@ Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, mi
   step %(the pillar data for "#{key}" should be "" on "#{minion}")
 end
 
-Given(/^I try download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
+Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
   url = "#{Capybara.app_host}/rhn/manager/download/#{channel}/getPackage/#{rpm}"
   url = "#{url}?#{@token}" if @token
   puts url

@@ -1,10 +1,7 @@
 # Copyright (c) 2010-2017 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
-Feature: Explore the main landing page
-  In order to use the systems page
-  As a authorized user
-  I want to see all the texts and links
+Feature: Main landing page texts and links
 
   Background:
     Given I am authorized
@@ -187,7 +184,7 @@ Feature: Explore the main landing page
     And I should see a "Create Key" link
     And I should see a "No Custom Info Keys Found" text
 
-   Scenario: Check sidebar link destination for Systems => Autoinstallation
+  Scenario: Check sidebar link destination for Systems => Autoinstallation
     When I am on Autoinstallation Overview page
     Then I should see a "Autoinstallation Overview" text
     And I should see a "Profiles" link in the left menu
