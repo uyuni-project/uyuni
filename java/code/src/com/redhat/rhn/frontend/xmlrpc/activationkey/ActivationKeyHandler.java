@@ -55,7 +55,7 @@ import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.TokenBuilder;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.NonUniqueObjectException;
 import org.jose4j.lang.JoseException;

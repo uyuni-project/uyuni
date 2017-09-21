@@ -51,9 +51,7 @@
   <property name="git.home" location="${basedir}/../"/>
 
   <!-- =================== jar dependencies ======================= -->
-  <condition property="commons-lang" value="commons-lang commons-lang3" else="commons-lang">
-    <available file="/usr/share/java/commons-lang3.jar" />
-  </condition>
+  <property name="commons-lang" value="commons-lang3"/>
 
   <available file="/usr/share/java/hibernate/hibernate-commons-annotations.jar" type="file"
 	  property="hibernate-commons-annotations" value="hibernate/hibernate-commons-annotations"/>
@@ -104,7 +102,7 @@
 
   <!-- deps needed for testing, but required to build -->
   <property name="test.build.jar.dependencies"
-      value="junit
+      value="junit commons-lang
              ${log4j-jars}
              regexp ${jmock-jars} postgresql-jdbc" />
 
@@ -138,7 +136,7 @@
   <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpclient httpcore" />
 
   <!-- SUSE extra dependencies: runtime only -->
-  <property name="suse-runtime-jars" value="commons-jexl commons-lang3 concurrentlinkedhashmap-lru
+  <property name="suse-runtime-jars" value="commons-jexl ${commons-lang} concurrentlinkedhashmap-lru
       httpcore slf4j/api slf4j/log4j12" />
 
   <property name="install.build.jar.dependencies"

@@ -16,8 +16,8 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

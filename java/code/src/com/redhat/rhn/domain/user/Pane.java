@@ -16,7 +16,7 @@ package com.redhat.rhn.domain.user;
 
 import com.redhat.rhn.manager.acl.AclManager;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Pane. This is the domain object that contains the

@@ -68,8 +68,8 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

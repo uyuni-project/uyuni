@@ -19,7 +19,7 @@ import com.redhat.rhn.common.util.ServletUtils;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.Map;

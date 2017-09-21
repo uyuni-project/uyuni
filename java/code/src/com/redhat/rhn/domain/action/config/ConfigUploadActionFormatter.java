@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -65,7 +65,7 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", "/rhn/configuration/ChannelOverview.do?ccid=" +
                 channel.getId().toString());
-        a.addBody(StringEscapeUtils.escapeHtml(channel.getDisplayName()));
+        a.addBody(StringEscapeUtils.escapeHtml4(channel.getDisplayName()));
         return a.render();
     }
 
@@ -80,7 +80,7 @@ public class ConfigUploadActionFormatter extends ActionFormatter {
         //paths can have pretty much any character including newlines,
         //spaces, and control characters. Escaping html here is only
         //going to work happily for file names that make some kind of sense.
-        return (StringEscapeUtils.escapeHtml(name.getPath()) + "<br />");
+        return (StringEscapeUtils.escapeHtml4(name.getPath()) + "<br />");
     }
 
     private void displayChannels(StringBuffer buffy, Set channelSet) {

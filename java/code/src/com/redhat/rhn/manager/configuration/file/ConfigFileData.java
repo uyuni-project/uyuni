@@ -29,8 +29,8 @@ import com.redhat.rhn.frontend.action.configuration.ConfigFileForm;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationValidation;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.InputStream;
 import java.util.HashMap;

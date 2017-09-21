@@ -54,11 +54,11 @@ BuildRequires: simple-core
 %if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1315
 Requires: apache-commons-cli
 Requires: apache-commons-codec
-Requires: apache-commons-lang
+Requires: apache-commons-lang3
 Requires: apache-commons-logging
 BuildRequires: apache-commons-cli
 BuildRequires: apache-commons-codec
-BuildRequires: apache-commons-lang
+BuildRequires: apache-commons-lang3
 BuildRequires: apache-commons-logging
 %else
 Requires: jakarta-commons-cli

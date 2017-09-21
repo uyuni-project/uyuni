@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -244,7 +244,7 @@ public abstract class BaseSearchAction extends RhnAction {
         LocalizationService ls = LocalizationService.getInstance();
         Map<String, String> selection = new HashMap<String, String>();
         selection.put("display", (flag ? "*" : "") + ls.getMessage(key));
-        selection.put("value", StringEscapeUtils.escapeHtml(value));
+        selection.put("value", StringEscapeUtils.escapeHtml4(value));
         options.add(selection);
     }
 

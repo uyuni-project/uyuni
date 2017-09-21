@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.servlets;
 
 import com.redhat.rhn.frontend.context.Context;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;

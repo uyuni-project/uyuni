@@ -20,8 +20,8 @@ import com.redhat.rhn.domain.server.Server;
 
 import com.suse.manager.reactor.utils.ValueMap;
 
-import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Entitlements

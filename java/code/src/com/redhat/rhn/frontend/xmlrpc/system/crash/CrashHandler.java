@@ -40,7 +40,7 @@ import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.system.CrashManager;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;

@@ -34,8 +34,8 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.Tag;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
@@ -607,7 +607,7 @@ public class ListTagUtil {
         //We set this so we know next time around what the old filter value was
         ListTagUtil.write(pageContext, String.format(HIDDEN_TEXT,
                         makeOldFilterValueByLabel(uniqueName),
-                        StringEscapeUtils.escapeHtml(filterValue)));
+                        StringEscapeUtils.escapeHtml4(filterValue)));
 
 
         List fields = filter.getFieldNames();
@@ -655,9 +655,9 @@ public class ListTagUtil {
                 "onkeypress=\"return enterKeyHandler(event, $('button[name=%s]'))\"/>",
                                 filterValueKey,
                                 (filterValue != null ?
-                                 StringEscapeUtils.escapeHtml(filterValue) :
+                                 StringEscapeUtils.escapeHtml4(filterValue) :
                                  ""),
-                                 StringEscapeUtils.escapeHtml(placeHolder),
+                                 StringEscapeUtils.escapeHtml4(placeHolder),
                                  filterName
                                  ));
         sb.append("<span class=\"input-group-btn\">");

@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.common.security.acl;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class to assist with creating Acls.  This Factory will setup

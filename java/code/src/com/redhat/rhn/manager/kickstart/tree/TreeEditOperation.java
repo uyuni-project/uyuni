@@ -20,7 +20,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroEditCommand;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * TreeEditCommand to edit a KickstartableTree

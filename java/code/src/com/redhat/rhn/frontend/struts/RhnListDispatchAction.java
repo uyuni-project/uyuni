@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.struts;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -136,7 +136,7 @@ public abstract class RhnListDispatchAction extends RhnLookupDispatchAction {
             String param1) {
         ActionMessages msg = new ActionMessages();
         Object[] args = new Object[1];
-        args[0] = StringEscapeUtils.escapeHtml(param1);
+        args[0] = StringEscapeUtils.escapeHtml4(param1);
         msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(msgKey, args));
         getStrutsDelegate().saveMessages(req, msg);
     }

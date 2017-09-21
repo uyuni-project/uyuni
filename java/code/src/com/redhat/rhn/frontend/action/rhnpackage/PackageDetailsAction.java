@@ -30,7 +30,7 @@ import com.redhat.rhn.manager.EulaManager;
 import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -123,7 +123,7 @@ public class PackageDetailsAction extends RhnAction {
 
             // description can be null.
             if (pkg.getDescription() != null) {
-                String description = StringEscapeUtils.escapeHtml(pkg.getDescription());
+                String description = StringEscapeUtils.escapeHtml4(pkg.getDescription());
                 request.setAttribute("description", description.replace("\n", "<BR>\n"));
             }
             else {

@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * ActionFormatter - Class that is responsible for properly formatting the fields
@@ -195,7 +195,7 @@ public class ActionFormatter {
                     sa.getCompletionTime()));
             retval.append("</br>");
             retval.append(ls.getMessage("system.event.details.returned",
-                    StringEscapeUtils.escapeHtml(sa.getResultMsg()), sa.getResultCode()));
+                    StringEscapeUtils.escapeHtml4(sa.getResultMsg()), sa.getResultCode()));
         }
         else {
             retval.append(ls.getMessage("system.event.details.notCompleted"));

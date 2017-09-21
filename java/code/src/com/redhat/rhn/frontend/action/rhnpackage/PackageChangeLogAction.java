@@ -23,7 +23,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -62,7 +62,7 @@ public class PackageChangeLogAction extends RhnAction {
             request.setAttribute("changelog", null);
         }
         else {
-            changelog = StringEscapeUtils.escapeHtml(changelog);
+            changelog = StringEscapeUtils.escapeHtml4(changelog);
             String[] changes = changelog.split("\n");
             request.setAttribute("changelog", changes);
         }

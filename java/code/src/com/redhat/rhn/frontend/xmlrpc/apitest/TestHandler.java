@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.apitest;
 
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 import java.util.HashMap;
 import java.util.Map;

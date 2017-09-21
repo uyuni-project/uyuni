@@ -16,8 +16,8 @@ package com.redhat.rhn.domain.credentials;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * CredentialsType

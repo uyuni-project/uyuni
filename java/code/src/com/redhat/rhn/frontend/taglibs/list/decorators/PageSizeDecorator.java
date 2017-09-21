@@ -21,8 +21,8 @@ import java.util.List;
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -136,7 +136,7 @@ public class PageSizeDecorator extends BaseListDecorator {
             input.setAttribute("type", "hidden");
             input.setAttribute("id", makeSelectionId(listName));
             input.setAttribute("name", makeSelectionLabel(listName));
-            input.setAttribute("value", StringEscapeUtils.escapeHtml(pageContext
+            input.setAttribute("value", StringEscapeUtils.escapeHtml4(pageContext
                             .getRequest().getParameter(makeSelectionLabel(listName))));
             stringBuild.append(input.render());
             ListTagUtil.write(pageContext, stringBuild.toString());

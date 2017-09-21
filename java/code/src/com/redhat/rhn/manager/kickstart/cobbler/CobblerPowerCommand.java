@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
@@ -95,9 +95,7 @@ public class CobblerPowerCommand extends CobblerCommand {
                         }
                     }
                     catch (XmlRpcException e) {
-                        log.error(org.apache.velocity.util.StringUtils.stackTrace(e));
-                        log.error(org.apache.velocity.util.StringUtils.stackTrace(e
-                            .getCause()));
+                        log.error(e);
                     }
                     if (success) {
                         log.debug("Power management operation " + operation.toString() +

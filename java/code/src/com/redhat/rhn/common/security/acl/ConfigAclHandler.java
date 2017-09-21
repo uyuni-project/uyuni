@@ -23,7 +23,7 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 

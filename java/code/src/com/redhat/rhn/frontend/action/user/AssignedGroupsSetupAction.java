@@ -32,7 +32,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.user.UserManager;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -241,7 +241,7 @@ public class AssignedGroupsSetupAction extends RhnListAction {
         ActionMessages msgs = new ActionMessages();
         msgs.add(ActionMessages.GLOBAL_MESSAGE,
              new ActionMessage("message.defaultSystemGroups",
-                 StringEscapeUtils.escapeHtml(user.getLogin())));
+                 StringEscapeUtils.escapeHtml4(user.getLogin())));
         saveMessages(request, msgs);
     }
 
@@ -287,7 +287,7 @@ public class AssignedGroupsSetupAction extends RhnListAction {
         ActionMessages msgs = new ActionMessages();
         msgs.add(ActionMessages.GLOBAL_MESSAGE,
              new ActionMessage("message.perms_updated",
-             StringEscapeUtils.escapeHtml(user.getLogin())));
+             StringEscapeUtils.escapeHtml4(user.getLogin())));
         saveMessages(request, msgs);
     }
 

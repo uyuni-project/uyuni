@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * ApplyStatesAction - Action class representing the application of Salt states.
@@ -65,7 +65,7 @@ public class ApplyStatesAction extends Action {
                 retval.append("Results:");
                 retval.append("</br>");
                 retval.append("<pre>");
-                retval.append(StringEscapeUtils.escapeHtml(result.getOutputContents()));
+                retval.append(StringEscapeUtils.escapeHtml4(result.getOutputContents()));
                 retval.append("</pre>");
             }
         }

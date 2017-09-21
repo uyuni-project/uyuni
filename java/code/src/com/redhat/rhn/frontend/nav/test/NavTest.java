@@ -15,8 +15,8 @@
 
 package com.redhat.rhn.frontend.nav.test;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.frontend.nav.DepthGuard;

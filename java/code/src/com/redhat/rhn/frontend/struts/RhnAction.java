@@ -18,8 +18,8 @@ package com.redhat.rhn.frontend.struts;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.MethodUtil;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
@@ -171,7 +171,7 @@ public abstract class RhnAction extends Action {
 
         ActionMessages msg = new ActionMessages();
         Object[] args = new Object[1];
-        args[0] = StringEscapeUtils.escapeHtml(param1);
+        args[0] = StringEscapeUtils.escapeHtml4(param1);
         msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(msgKey, args));
         saveMessages(req, msg);
     }
@@ -188,7 +188,7 @@ public abstract class RhnAction extends Action {
 
         ActionMessages msg = new ActionMessages();
         for (int i = 0; i < params.length; i++) {
-            params[i] = StringEscapeUtils.escapeHtml(params[i]);
+            params[i] = StringEscapeUtils.escapeHtml4(params[i]);
         }
         msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(msgKey, params));
         saveMessages(req, msg);
@@ -220,7 +220,7 @@ public abstract class RhnAction extends Action {
     protected void createErrorMessage(HttpServletRequest req, String beanKey,
             String param) {
         ActionErrors errs = new ActionErrors();
-        String escParam = StringEscapeUtils.escapeHtml(param);
+        String escParam = StringEscapeUtils.escapeHtml4(param);
         errs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(beanKey, escParam));
         saveMessages(req, errs);
     }
@@ -236,7 +236,7 @@ public abstract class RhnAction extends Action {
         ActionErrors errs = new ActionErrors();
         String[] escArgs = new String[args.length];
         for (int i = 0; i < args.length; i++) {
-            escArgs[i] = StringEscapeUtils.escapeHtml(args[i]);
+            escArgs[i] = StringEscapeUtils.escapeHtml4(args[i]);
         }
         errs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(beanKey, escArgs));
         saveMessages(req, errs);

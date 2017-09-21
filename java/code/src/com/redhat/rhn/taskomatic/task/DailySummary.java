@@ -29,8 +29,8 @@ import com.redhat.rhn.frontend.dto.AwolServer;
 import com.redhat.rhn.frontend.dto.OrgIdWrapper;
 import com.redhat.rhn.frontend.dto.ReportingUser;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 

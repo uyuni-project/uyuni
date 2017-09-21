@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchDistChannelMapException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchOrgException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * DistChannelHandler - provides methods to access distribution channel information.

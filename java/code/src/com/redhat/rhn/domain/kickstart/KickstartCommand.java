@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.domain.kickstart;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 

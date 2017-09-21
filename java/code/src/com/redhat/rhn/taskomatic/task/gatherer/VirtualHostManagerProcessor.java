@@ -29,7 +29,7 @@ import com.redhat.rhn.manager.system.VirtualInstanceManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.gatherer.JSONHost;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;

@@ -26,7 +26,7 @@ import java.util.Properties;
 import com.redhat.satellite.search.config.Configuration;
 import com.redhat.satellite.search.config.ConfigException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.log4j.Logger;

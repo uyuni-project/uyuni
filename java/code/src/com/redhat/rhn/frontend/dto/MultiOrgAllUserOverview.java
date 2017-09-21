@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.dto;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
@@ -79,7 +79,7 @@ public class MultiOrgAllUserOverview extends BaseDto {
      * @return the user login
      */
     public String getUserLogin() {
-        return StringEscapeUtils.escapeHtml(userLogin);
+        return StringEscapeUtils.escapeHtml4(userLogin);
     }
 
     /**
@@ -103,7 +103,7 @@ public class MultiOrgAllUserOverview extends BaseDto {
      * @return the user's first name
      */
     public String getUserFirstName() {
-        return StringEscapeUtils.escapeHtml(userFirstName);
+        return StringEscapeUtils.escapeHtml4(userFirstName);
     }
 
     /**
@@ -111,7 +111,7 @@ public class MultiOrgAllUserOverview extends BaseDto {
      * @return the user's last name
      */
     public String getUserLastName() {
-        return StringEscapeUtils.escapeHtml(userLastName);
+        return StringEscapeUtils.escapeHtml4(userLastName);
     }
 
     /**

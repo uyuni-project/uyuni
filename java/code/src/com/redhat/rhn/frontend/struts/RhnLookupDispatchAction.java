@@ -16,8 +16,8 @@ package com.redhat.rhn.frontend.struts;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;

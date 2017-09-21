@@ -32,7 +32,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -219,7 +219,7 @@ public class ChannelOverviewTasks extends RhnAction {
             }
 
             Object[] args = new Object[1];
-            args[0] = StringEscapeUtils.escapeHtml(number);
+            args[0] = StringEscapeUtils.escapeHtml4(number);
 
             //add in the success message
             msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(key, args));

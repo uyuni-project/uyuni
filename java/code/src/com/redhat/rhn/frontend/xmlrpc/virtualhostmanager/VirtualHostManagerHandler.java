@@ -25,7 +25,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchGathererModuleException;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.List;

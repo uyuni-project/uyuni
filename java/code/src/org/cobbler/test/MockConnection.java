@@ -18,7 +18,7 @@ package org.cobbler.test;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.CobblerConnection;
 
