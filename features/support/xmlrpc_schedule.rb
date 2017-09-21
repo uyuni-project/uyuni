@@ -2,19 +2,19 @@ require_relative 'xmlrpctest'
 
 # schedule class
 class XMLRPCScheduleTest < XMLRPCBaseTest
-  def listAllActions
-    @connection.call('schedule.listAllActions', @sid)
+  def list_all_actions
+    @connection.call('schedule.list_all_actions', @sid)
   end
 
-  def listInProgressActions
-    @connection.call('schedule.listInProgressActions', @sid)
+  def list_in_progress_actions
+    @connection.call('schedule.list_in_progress_actions', @sid)
   end
 
-  def cancelActions(actions)
-    @connection.call('schedule.cancelActions', @sid, actions)
+  def cancel_actions(actions)
+    @connection.call('schedule.cancel_actions', @sid, actions)
   end
 
-  def listFailedActions
-    @connection.call('schedule.listFailedActions', @sid)
+  def list_failed_actions
+    @connection.call('schedule.list_failed_actions', @sid)
   end
 end

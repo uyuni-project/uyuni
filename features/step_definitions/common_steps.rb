@@ -415,7 +415,7 @@ And(/^Cleanup for distro_clobber_feature$/) do
   # -------------------------------
   # cleanup kickstart profiles and distros
   distro_name = 'fedora_kickstart_distro'
-  @cli.call('kickstart.tree.deleteTreeAndProfiles', @sid, distro_name)
+  @cli.call('kickstart.tree.delete_tree_and_profiles', @sid, distro_name)
   @cli.call('auth.logout', @sid)
   # -------------------------------
   # remove not from suma managed profile
