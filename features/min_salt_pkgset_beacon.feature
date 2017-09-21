@@ -1,9 +1,9 @@
 # Copyright (c) 2016 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: System package list in the UI is updated if packages are manually installed/removed using zypper or yum
+Feature: System package list is updated if packages are manually installed or removed
 
-  Scenario: Prequisite: Install milkyway-dummy-1.0 packages
+  Scenario: Pre-requisite: install milkyway-dummy-1.0 packages
     Given I am authorized as "admin" with password "admin"
     And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
@@ -17,7 +17,7 @@ Feature: System package list in the UI is updated if packages are manually insta
     And I reload the page
     And I reload the page until it does contain a "FINISHED" text in the table first row
 
-  Scenario: Manually removing a package in a minion
+  Scenario: Remove manually a package on a minion
     Given "sle-minion" key is "accepted"
     And I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
@@ -28,7 +28,7 @@ Feature: System package list in the UI is updated if packages are manually insta
     Then I manually remove the "milkyway-dummy" package in the minion
     And I click on the css "button.spacewalk-button-filter" until page does not contain "milkyway-dummy" text
 
-  Scenario: Manually installing a package in a minion
+  Scenario: Install manually a package on a minion
     Given "sle-minion" key is "accepted"
     And I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
@@ -39,7 +39,7 @@ Feature: System package list in the UI is updated if packages are manually insta
     Then I manually install the "milkyway-dummy" package in the minion
     And I click on the css "button.spacewalk-button-filter" until page does not contain "milkyway-dummy" text
 
-  Scenario: CLEANUP: Remove milkyway-dummy packages from sle-minion
+  Scenario: Cleanup: remove milkyway-dummy packages from SLES minion
     Given I am authorized as "admin" with password "admin"
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n rm milkyway-dummy" on "sle-minion" without error control

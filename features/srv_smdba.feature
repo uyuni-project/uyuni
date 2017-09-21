@@ -1,12 +1,12 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: smdba database helper tool
+Feature: SMBDA database helper tool
   In order to protect the data in SUSE Manager
-  As a Database administrator
+  As a database administrator
   I want to easily take backups and snapshots
 
-  Scenario: shutdown spacewalk services
+  Scenario: Shutdown spacewalk services
     Then I shutdown the spacewalk service
 
   Scenario: Check embedded database running
@@ -48,7 +48,7 @@ Feature: smdba database helper tool
     When I issue command "smdba space-reclaim"
     Then I find core examination is "finished", database analysis is "done" and space reclamation is "done"
     When I issue command "smdba space-tables"
-    Then I find "public.rhnserver", "public.rhnpackage" and "public.web_contact" are in the list.
+    Then I find "public.rhnserver", "public.rhnpackage" and "public.web_contact" are in the list
 
   Scenario: Check SMDBA backup setup facility
     Given a postgresql database is running
@@ -87,7 +87,7 @@ Feature: smdba database helper tool
     Then I disable backup in the directory "/smdba-backup-test" 
     And I remove backup directory "/smdba-backup-test"
 
-  Scenario: start spacewalk services
+  Scenario: Start spacewalk services
     When I stop the database with the command "smdba db-stop"
     And I start database with the command "smdba db-start"
     Then I restart the spacewalk service

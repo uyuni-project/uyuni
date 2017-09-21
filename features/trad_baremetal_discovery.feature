@@ -1,9 +1,9 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Test Bare-metal discovery
+Feature: Bare metal discovery
 
-  Scenario: Delete the normal trad-client for bare metal feature
+  Scenario: Delete the normal traditional client for bare metal feature
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
@@ -11,7 +11,7 @@ Feature: Test Bare-metal discovery
     Then I should see a "System profile" text
     And I should see a "has been deleted" text
 
-  Scenario: Enable Bare-metal discovery
+  Scenario: Enable bare metal discovery
     Given I am authorized as "admin" with password "admin"
     And I follow "Admin"
     And I follow "Manager Configuration" in the left menu
@@ -23,17 +23,17 @@ Feature: Test Bare-metal discovery
     Then I should see a "Automatic bare-metal system discovery has been successfully enabled" text
     And the pxe-default-profile should be enabled
 
-  Scenario: Register a client for bare-metal
+  Scenario: Register a client for bare metal discovery
     When I register using "1-spacewalk-bootstrap-activation-key" key
     Then I should see "sle-client" in spacewalk
 
-  Scenario: check registration values of client
+  Scenario: Check registration values of client
     Given I am on the Systems overview page of this "sle-client"
     Then I should see a "System Info" text
     And I should see a "Edit These Properties" link
     And I should not see a "[Management]" text
 
-  Scenario: see the client in Unprovisioned specific system list
+  Scenario: See the client in unprovisioned systems list
     Given I am on the Systems page
     And I click Systems, under Systems node 
     And I follow "Unprovisioned Systems" in the left menu
@@ -50,7 +50,7 @@ Feature: Test Bare-metal discovery
     And I should see a "MAC Address(es)" text
     And I check the MAC address value
 
-  Scenario: check tab links "Details" unprovisioned
+  Scenario: Check unprovisioned system details
     Given I am on the Systems page
     And I click Systems, under Systems node 
     When I follow this "sle-client" link
@@ -69,7 +69,7 @@ Feature: Test Bare-metal discovery
     And I should see a "Notes" link in the content area
     And I should not see a "Custom Info" link in the content area
 
-  Scenario: check tabs Schedule and Power Management for sle-client
+  Scenario: Check Provisioning page for this client
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Provisioning" in the content area
     Then I should see a "Autoinstallation" link in the content area
@@ -78,13 +78,13 @@ Feature: Test Bare-metal discovery
     And I should see a "Power Management" link in the content area
     And I should see a "Schedule" link in the content area
 
-  Scenario: check SSM with bare-metal system
+  Scenario: Check SSM with bare metal system
     Given I am on the Systems page
     When I check this client
     And I wait for "30" seconds
     Then I am on System Set Manager Overview
   
-  Scenario: check SSM page for bare-metal system
+  Scenario: Check SSM page for bare metal system
     Given I am authorized as "admin" with password "admin"
     And I am on System Set Manager Overview
     Then I should see a "List the systems" link in the content area
@@ -100,13 +100,13 @@ Feature: Test Bare-metal discovery
     And I should not see a "Audit" link in the content area
     And I follow "Clear"
 
-  Scenario: Delete the system profile (bare metal) (cleanup)
+  Scenario: Cleanup: delete the bare metal system profile
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
 
-  Scenario: Disable Bare-metal discovery (cleanup)
+  Scenario: Cleanup: disable bare metal discovery
     Given I am authorized as "admin" with password "admin"
     And I follow "Admin"
     And I follow "Manager Configuration" in the left menu
@@ -118,6 +118,6 @@ Feature: Test Bare-metal discovery
     Then I should see a "Automatic bare-metal system discovery has been successfully disabled" text
     And the pxe-default-profile should be disabled
   
-    Scenario: Register a trad-client (cleanup) (need always tradclient)
+  Scenario: Cleanup: register a traditional client after bare metal tests
     When I register using "1-SUSE-DEV-x86_64" key
     Then I should see "sle-client" in spacewalk

@@ -1,12 +1,12 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Explore the Minions page
+Feature: Management of minion keys
   In Order to validate the minion onboarding page
   As an authorized user
   I want to verify all the minion key management features in the UI
 
-  Scenario: Delete sles-minion system profile (Explore the Minions page)
+  Scenario: Delete SLES minion system profile before exploring the onboarding page
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
@@ -14,7 +14,7 @@ Feature: Explore the Minions page
     Then I should see a "has been deleted" text
     And I restart salt-minion on "sle-minion"
 
-  Scenario: Completeness of the Minions page
+  Scenario: Completeness of the onboarding page
     Given I am authorized as "testing" with password "testing"
     And I go to the minion onboarding page
     Then I should see a "Keys" text in the content area
@@ -28,7 +28,7 @@ Feature: Explore the Minions page
     And I see "sle-minion" fingerprint
     And I should see a "pending" text
 
-  Scenario: Reject and delete the pending "sle-minion" key
+  Scenario: Reject and delete the pending key
     Given I am authorized as "testing" with password "testing"
     And "sle-minion" key is "unaccepted"
     And I go to the minion onboarding page
@@ -49,14 +49,14 @@ Feature: Explore the Minions page
     # Registration takes a while
     And I wait until onboarding is completed for "sle-minion"
 
-  Scenario: The minion communicates with the salt-master
+  Scenario: The minion communicates with the Salt master
     # It takes a while before we can get the grains and registration is done
     Given I am authorized as "testing" with password "testing"
     And the salt-master can reach "sle-minion"
     When I get OS information of "sle-minion" from the Master
     Then it should contain a "SLES" text
 
-  Scenario: CLEANUP: Re-apply highstate to restore channels on the minion
+  Scenario: Cleanup: re-apply highstate to restore channels on the minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area

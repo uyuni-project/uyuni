@@ -1,16 +1,17 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# 1) Create configuration channel.
+# 2) Subscribe system to channel, deploy some files
 
-Feature: Test configuration channel basic functions
-  Create config channel.
-  Subscribe system to channel, deploy some files
+Feature: Configuration channel basic functions
 
-   Scenario: Successfully create configuration channel
+  Scenario: Successfully create configuration channel
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-    When I follow "Create Config Channel"
+    And I follow "Create Config Channel"
     And I enter "Test Channel" as "cofName"
     And I enter "testchannel" as "cofLabel"
     And I enter "This is a test channel" as "cofDescription"
@@ -28,10 +29,10 @@ Feature: Test configuration channel basic functions
 
   Scenario: Try to create same channel again; this should fail
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-    When I follow "Create Config Channel"
+    And I follow "Create Config Channel"
     And I enter "Test Channel" as "cofName"
     And I enter "testchannel" as "cofLabel"
     And I enter "This is a test channel" as "cofDescription"
@@ -41,10 +42,10 @@ Feature: Test configuration channel basic functions
 
   Scenario: Try to create a channel with an invalid label
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-    When I follow "Create Config Channel"
+    And I follow "Create Config Channel"
     And I enter "Test Channel2" as "cofName"
     And I enter "!testchannel" as "cofLabel"
     And I enter "This is a test channel 2" as "cofDescription"
@@ -52,12 +53,12 @@ Feature: Test configuration channel basic functions
     Then I should see a "Configuration channel label contains invalid characters. In addition to alphanumeric characters, '-', '_', and '.' are allowed." text
     And I should see a "Update Channel" button
 
-  Scenario: Successfully create newtestchannel configuration channel
+  Scenario: Successfully create a new configuration channel
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-    When I follow "Create Config Channel"
+    And I follow "Create Config Channel"
     And I enter "New Test Channel" as "cofName"
     And I enter "newtestchannel" as "cofLabel"
     And I enter "This is a test channel" as "cofDescription"
@@ -73,12 +74,12 @@ Feature: Test configuration channel basic functions
     And I should see a "Import a file from another channel or system" link
     And I should see a "delete channel" link
 
-  Scenario: Add a config file to newtestchannel
+  Scenario: Add a configuration file to new configuration channel
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-    When I follow "New Test Channel"
+    And I follow "New Test Channel"
     And I follow "Create configuration file or directory"
     And I enter "/etc/mgr-test-file.cnf" as "cffPath"
     And I enter "MGR_PROXY=yes" in the editor
@@ -86,13 +87,13 @@ Feature: Test configuration channel basic functions
     Then I should see a "Revision 1 of /etc/mgr-test-file.cnf from channel New Test Channel" text
     And I should see a "Update Configuration File" button
 
-  Scenario: Subscribe system to channel "new test channel"
+  Scenario: Subscribe a system to new configuration channel
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu 
+    When I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
     And I follow this "sle-client" link
-    When I follow "Configuration" in the content area
+    And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
     And I check "New Test Channel" in the list
@@ -100,28 +101,28 @@ Feature: Test configuration channel basic functions
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-  Scenario: Check Centrally Managed Files
+  Scenario: Check centrally managed files
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
-    When I follow "Configuration Files" in the left menu
+    And I follow "Configuration Files" in the left menu
     And I follow "Centrally Managed Files" in the left menu
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "1 system"
 
-  Scenario: Check Centrally Managed Files of "sle-client"
+  Scenario: Check centrally managed files of SLES client
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu 
+    When I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
     And I follow this "sle-client" link
-    When I follow "Configuration" in the content area
+    And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Centrally-Managed Files" in the content area
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "Revision 1"
 
-  Scenario: Deploy Centrally Managed Files
+  Scenario: Deploy centrally managed files
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I run "rhn-actions-control --enable-all" on "sle-client"
     And I follow "Configuration Channels" in the left menu
@@ -133,19 +134,19 @@ Feature: Test configuration channel basic functions
     Then I should see a "1 revision-deploy is being scheduled." text
     And I should see a "0 revision-deploys overridden." text
 
-  Scenario: Check File deployment
+  Scenario: Check file deployment
     When I run "rhn_check -vvv" on "sle-client"
-    Then On this client the File "/etc/mgr-test-file.cnf" should exists
-    And On this client the File "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY=yes"
+    Then on this client the file "/etc/mgr-test-file.cnf" should exist
+    And on this client the file "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY=yes"
 
   Scenario: Change local file and compare
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu 
+    When I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
     And I follow this "sle-client" link
     And I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=no"
-    When I follow "Configuration" in the content area
+    And I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
     And I click on "Compare Files"
@@ -161,13 +162,13 @@ Feature: Test configuration channel basic functions
     Then I should not see a "Differences exist in a file that is not readable by all. Re-deployment of configuration file is recommended." text
     And I should see a "+MGR_PROXY=no" text
 
-  Scenario: Import the changed file mgr-test-file.cnf
+  Scenario: Import the changed test configuration file
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu 
+    When I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
     And I follow this "sle-client" link
-    When I follow "Configuration" in the content area
+    And I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
@@ -180,13 +181,13 @@ Feature: Test configuration channel basic functions
     And I follow "Local Sandbox" in the content area
     Then I should see a table line with "/etc/mgr-test-file.cnf", "Revision 1"
 
- Scenario: Import the changed file sysconfig cron
+  Scenario: Import the changed cron configuration file
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu 
+    When I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
     And I follow this "sle-client" link
-    When I follow "Configuration" in the content area
+    And I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
     And I enter "/etc/sysconfig/cron" as "contents"
@@ -199,13 +200,13 @@ Feature: Test configuration channel basic functions
     And I follow "Local Sandbox" in the content area
     Then I should see a table line with "/etc/sysconfig/cron", "Revision 1"
 
-    Scenario: Copy Sandbox file to Centrally-Managed
+  Scenario: Copy sandbox file to centrally managed
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu 
+    When I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
+    And I follow "Overview" in the left menu
     And I follow this "sle-client" link
-    When I follow "Configuration" in the content area
+    And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
@@ -214,7 +215,7 @@ Feature: Test configuration channel basic functions
     And I click on "Copy To Central Channels"
     Then I should see a "1 file copied into 1 central configuration channel" text
     And I should see a table line with "/etc/mgr-test-file.cnf", "Revision 2"
-    And I follow "Local Sandbox" in the content area
+    When I follow "Local Sandbox" in the content area
     And I check "/etc/sysconfig/cron" in the list
     And I click on "Copy to Centrally-Managed Files"
     And I check "New Test Channel" in the list
@@ -222,7 +223,7 @@ Feature: Test configuration channel basic functions
     Then I should see a "1 file copied into 1 central configuration channel" text
     And I should see a table line with "/etc/sysconfig/cron", "Revision 1"
 
-  Scenario: Add another config file to newtestchannel
+  Scenario: Add another configure file to new test channel
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
@@ -235,12 +236,13 @@ Feature: Test configuration channel basic functions
     Then I should see a "Revision 1 of /tmp/mycache.txt from channel New Test Channel" text
     And I should see a "Update Configuration File" button
 
-  Scenario: Change one local file and compare multiple (bsc#910243, bsc#910247)
+  Scenario: Change one local file and compare multiple files
+    # bsc#910243, bsc#910247
     Given I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=yes"
     And I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     When I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu 
+    And I follow "Overview" in the left menu
     And I follow this "sle-client" link
     When I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
@@ -263,9 +265,9 @@ Feature: Test configuration channel basic functions
 
   Scenario: Check configuration page content
    Given I am authorized as "admin" with password "admin"
-   And I follow "Home" in the left menu
-   And I follow "Configuration" in the left menu
-   And I follow "Overview" in the left menu
+   When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Overview" in the left menu
    Then I should see a "Configuration Overview" text
     And I should see a "Configuration Summary" text
     And I should see a "Configuration Actions" text
@@ -283,45 +285,45 @@ Feature: Test configuration channel basic functions
     And I should see a "Create a New Configuration Channel" link
     And I should see a "Enable Configuration Management on Systems" link
 
-   Scenario: Check "View Systems with Managed Configuration Files"
+  Scenario: Show Systems with Managed Configuration Files page
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Overview" in the left menu
-    When I follow "View Systems with Managed Configuration Files"
-    Then I should see a "Managed Systems" link in the left menu
-    And I should see a "Target Systems" link in the left menu
- 
-   Scenario: Check "View All Managed Configuration Files"
-    Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Overview" in the left menu
-    When I follow "View All Managed Configuration Files"
-    Then I should see a "Centrally Managed Files" link in the left menu
-    And I should see a "Locally Managed Files" link in the left menu
- 
-   Scenario: Check "View All Managed Configuration Channels"
-    Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Overview" in the left menu
-    When I follow "View All Managed Configuration Channels"
-    Then I should see a "Create Config Channel" link
- 
-   Scenario: Check "Enable Configuration Management on Systems"
-    Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    And I follow "Configuration" in the left menu
-    And I follow "Overview" in the left menu
-    When I follow "Enable Configuration Management on Systems"
+    And I follow "View Systems with Managed Configuration Files"
     Then I should see a "Managed Systems" link in the left menu
     And I should see a "Target Systems" link in the left menu
 
-  Scenario: Remove system from conf channel "new test channel"
+  Scenario: Show All Managed Configuration Files page
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Configuration" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Overview" in the left menu
+    And I follow "View All Managed Configuration Files"
+    Then I should see a "Centrally Managed Files" link in the left menu
+    And I should see a "Locally Managed Files" link in the left menu
+
+  Scenario: Show All Managed Configuration Channels page
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Overview" in the left menu
+    And I follow "View All Managed Configuration Channels"
+    Then I should see a "Create Config Channel" link
+
+  Scenario: Show Enable Configuration Management on Systems page
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Overview" in the left menu
+    And I follow "Enable Configuration Management on Systems"
+    Then I should see a "Managed Systems" link in the left menu
+    And I should see a "Target Systems" link in the left menu
+
+  Scenario: Cleanup: remove system from new configuration channel
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Systems" in the content area
@@ -329,18 +331,18 @@ Feature: Test configuration channel basic functions
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
-  Scenario: CLEAN_UP: remove configuration channel: Test Channel
+  Scenario: Cleanup: remove test configuration channel
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Test Channel"
     And I follow "delete channel"
     And I click on "Delete Config Channel"
- 
- Scenario: CLEAN_UP: remove configuration channel: New Test Channel
+
+  Scenario: Cleanup: remove new configuration channel
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"

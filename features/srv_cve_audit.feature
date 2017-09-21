@@ -2,17 +2,17 @@
 # Licensed under the terms of the MIT license.
 
 Feature: CVE Audit
-  In Order to check if systems are patched against certain vulnerabilities
+  In order to check if systems are patched against certain vulnerabilities
   As an authorized user
-  I want to see systems that need to be patched
+  I want to see the systems that need to be patched
 
-  Scenario: Prequisite: downgrade milkyway-dummy to lower version
+  Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     Given I am authorized as "admin" with password "admin"
-    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
+    When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
     And I run "zypper -n in --oldpackage milkyway-dummy-1.0-2.1" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
-    When I follow "Admin"
+    And I follow "Admin"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
@@ -21,7 +21,7 @@ Feature: CVE Audit
     And I reload the page
     And I reload the page until it does contain a "FINISHED" text in the table first row
 
-  Scenario: schedule channel data refresh
+  Scenario: Schedule channel data refresh
     Given I am authorized as "admin" with password "admin"
     When I follow "Admin"
     And I follow "Task Schedules"
@@ -32,14 +32,14 @@ Feature: CVE Audit
     And I reload the page
     And I reload the page until it does contain a "FINISHED" text in the table first row
 
-  Scenario: feature should be accessible
+  Scenario: Display CVE audit page
     Given I am authorized as "admin" with password "admin"
     When I follow "Audit" in the left menu
     And I follow "CVE Audit" in the left menu
     Then I should see a "CVE Audit" link in the left menu
     And I should see a "CVE Audit" text
 
-  Scenario: searching for a known CVE number
+  Scenario: Search for a known CVE number
     Given I am authorized as "admin" with password "admin"
     When I follow "Audit" in the left menu
     And I follow "CVE Audit" in the left menu
@@ -57,7 +57,7 @@ Feature: CVE Audit
     Then I follow "Install a new patch on this system" on "sle-client" row
     And I should see a "Relevant Patches" text
 
-  Scenario: searching for an unknown CVE number
+  Scenario: Search for an unknown CVE number
     Given I am authorized as "admin" with password "admin"
     When I follow "Audit" in the left menu
     And I follow "CVE Audit" in the left menu
@@ -66,7 +66,7 @@ Feature: CVE Audit
     And I click on "Audit Servers"
     Then I should see a "The specified CVE number was not found" text
 
-  Scenario: selecting a system for the System Set Manager
+  Scenario: Select a system for the System Set Manager
     Given I am authorized as "admin" with password "admin"
     When I follow "Audit" in the left menu
     And I follow "CVE Audit" in the left menu
@@ -80,7 +80,7 @@ Feature: CVE Audit
     Then I should see "sle-client" as link
     And I follow "Clear"
 
-  Scenario: before applying patches (xmlrpc test)
+  Scenario: List systems by patch status via XML-RPC before patch
     Given I am authorized as "admin" with password "admin"
     When I follow "Admin"
     And I follow "Task Schedules"
@@ -91,20 +91,20 @@ Feature: CVE Audit
     Then I should see a "bunch was scheduled" text
     And I reload the page
     And I reload the page until it does contain a "FINISHED" text in the table first row
-    And I am logged in via XML-RPC/cve audit as user "admin" and password "admin"
+    And I am logged in via XML-RPC cve audit as user "admin" and password "admin"
     When I call audit.list_systems_by_patch_status with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for this client
     When I call audit.list_systems_by_patch_status with CVE identifier "CVE-1999-9999"
     Then I should get status "AFFECTED_PATCH_APPLICABLE" for this client
     And I should get the test-channel
     And I should get the "milkyway-dummy-2345" patch
-    Then I logout from XML-RPC/cve audit namespace.
+    Then I logout from XML-RPC cve audit namespace
 
-  Scenario: Check NAGIOS pending patches for host
+  Scenario: Check Nagios pending patches
     Given I perform a nagios check patches for "sle-client"
     Then I should see CRITICAL: 1 critical patch pending
 
-  Scenario: after applying patches (xmlrpc test)
+  Scenario: Apply patches
     Given I am on the Systems overview page of this "sle-client"
     And I follow "Software" in the content area
     And I follow "Patches" in the content area
@@ -114,14 +114,16 @@ Feature: CVE Audit
     And I wait for "5" seconds
     And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "patch update has been scheduled" text
-    Given I am logged in via XML-RPC/cve audit as user "admin" and password "admin"
+
+  Scenario: List systems by patch status via XML-RPC after patch
+    Given I am logged in via XML-RPC cve audit as user "admin" and password "admin"
     When I call audit.list_systems_by_patch_status with CVE identifier "CVE-1999-9999"
     Then I should get status "PATCHED" for this client
     And I should get the test-channel
     And I should get the "milkyway-dummy-2345" patch
-    Then I logout from XML-RPC/cve audit namespace.
+    Then I logout from XML-RPC cve audit namespace
 
-  Scenario: CLEANUP: Remove milkyway installed packages
+  Scenario: Cleanup: remove installed packages
     Given I am authorized as "admin" with password "admin"
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control
     And I run "zypper -n rm milkyway-dummy" on "sle-client" without error control

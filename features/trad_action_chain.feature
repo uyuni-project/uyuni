@@ -1,18 +1,19 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This product feature is only for trad_client
 
-Feature: Test action chaining 
-  The product feature is only for trad_client
+Feature: Action chaining
 
-  Scenario: Prequisite: downgrade repo to lower version
+  Scenario: Pre-requisite: downgrade repo to lower version
     Given I am authorized as "admin" with password "admin"
-    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
+    When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
     And I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-client" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
-    When I follow "Admin"
+    And I follow "Admin"
     And I follow "Task Schedules"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"
@@ -22,7 +23,7 @@ Feature: Test action chaining
     And I reload the page
     And I reload the page until it does contain a "FINISHED" text in the table first row
 
-  Scenario: I add a package installation to an action chain
+  Scenario: Add a package installation to an action chain
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
@@ -32,7 +33,7 @@ Feature: Test action chaining
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: I add a remote command to the action chain
+  Scenario: Add a remote command to the action chain
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Remote Command"
     And I enter as remote command this script in
@@ -44,7 +45,7 @@ Feature: Test action chaining
     And I click on "Schedule"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: I add a patch installation to the action chain
+  Scenario: Add a patch installation to the action chain
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
@@ -54,7 +55,7 @@ Feature: Test action chaining
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: I add a remove package to the action chain
+  Scenario: Add a package removal to the action chain
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
@@ -64,7 +65,7 @@ Feature: Test action chaining
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: I add a verify package to the action chain
+  Scenario: Add a package verification to the action chain
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Verify" in the content area
@@ -74,7 +75,7 @@ Feature: Test action chaining
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: Create a config channel "Action Chain" for action-chain testing
+  Scenario: Create a configuration channel for testing action chains
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
@@ -86,7 +87,7 @@ Feature: Test action chaining
     And I click on "Create Config Channel"
     Then I should see a "Action Chain Channel" text
 
-  Scenario: Add a config file to Action Chain Channel
+  Scenario: Add a configuration file to configuration channel
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
@@ -99,7 +100,7 @@ Feature: Test action chaining
     Then I should see a "Revision 1 of /etc/action-chain.cnf from channel Action Chain Channel" text
     And I should see a "Update Configuration File" button
 
-  Scenario: Subscribe system to channel "Action Chain channel"
+  Scenario: Subscribe system to configuration channel
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     When I follow "Systems" in the left menu
@@ -113,7 +114,7 @@ Feature: Test action chaining
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-  Scenario: I add a config file deployment to the action chain
+  Scenario: Add a configuration file deployment to the action chain
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
@@ -127,14 +128,14 @@ Feature: Test action chaining
     And I click on "Deploy Files to Selected Systems"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: I add a reboot action to the action chain
+  Scenario: Add a reboot action to the action chain
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Schedule System Reboot" in the content area
     And I check radio button "schedule-by-action-chain"
     And I click on "Reboot system"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: I verify the action chain list
+  Scenario: Verify the action chain list
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Schedule"
     And I follow "Action Chains"
@@ -147,13 +148,13 @@ Feature: Test action chaining
     And I should see a text like "6. Deploy.*/etc/action-chain.cnf.*to 1 system"
     Then I should see a "7. Reboot 1 system" text
 
-  Scenario: check that different user cannot see the action chain
+  Scenario: Check that a different user cannot see the action chain
     Given I am authorized as "testing" with password "testing"
     When I follow "Schedule"
     And I follow "Action Chains"
     Then I should not see a "new action chain" link
 
-  Scenario: I delete the action chain
+  Scenario: Delete the action chain
      Given I am authorized as "admin" with password "admin"
      Then I follow "Schedule"
      And I follow "Action Chains"
@@ -161,7 +162,7 @@ Feature: Test action chaining
      And I follow "delete action chain" in the content area
      Then I click on "Delete"
 
-  Scenario: I add a remote command to new action chain
+  Scenario: Add a remote command to the new action chain
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Remote Command"
     And I enter as remote command this script in
@@ -173,7 +174,7 @@ Feature: Test action chaining
     And I click on "Schedule"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: I execute the action chain from the web ui
+  Scenario: Execute the action chain from the web UI
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Schedule"
     And I follow "Action Chains"
@@ -183,22 +184,22 @@ Feature: Test action chaining
     And I should see a "Action Chain new action chain has been scheduled for execution." text
     When I run "rhn_check -vvv" on "sle-client"
 
-  Scenario: Basic chain operations xmlrpc
-    Given I am logged in via XML-RPC/actionchain as user "admin" and password "admin"
-    When I call XML-RPC/createChain with chainLabel "Quick Brown Fox"
+  Scenario: Create an action chain via XML-RPC
+    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
     And I call actionchain.list_chains() if label "Quick Brown Fox" is there
     Then I delete the action chain
     And there should be no action chain with the label "Quick Brown Fox"
-    When I call XML-RPC/createChain with chainLabel "Quick Brown Fox"
+    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
     Then I call actionchain.rename_chain() to rename it from "Quick Brown Fox" to "Slow Gray Elephant"
     And there should be a new action chain with the label "Slow Gray Elephant"
     And I delete an action chain, labeled "Slow Gray Elephant"
     And there should be no action chain with the label "Slow Gray Elephant"
-    And no action chain with the label "Quick Brown Fox".
+    And no action chain with the label "Quick Brown Fox"
 
-  Scenario: Schedule operations via XML-RPC
-    Given I am logged in via XML-RPC/actionchain as user "admin" and password "admin"
-    When I call XML-RPC/createChain with chainLabel "Quick Brown Fox"
+  Scenario: Add operations to the action chain via XML-RPC
+    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
     And I call actionchain.add_package_upgrade()
@@ -211,8 +212,8 @@ Feature: Test action chaining
     And I delete the action chain
 
   Scenario: Run the action chain via XML-RPC
-    Given I am logged in via XML-RPC/actionchain as user "admin" and password "admin"
-    When I call XML-RPC/createChain with chainLabel "Quick Brown Fox"
+    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
     And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
@@ -221,7 +222,7 @@ Feature: Test action chaining
     Then I cancel all scheduled actions
     And there should be no more any scheduled actions
 
-  Scenario: CLEAN_UP: remove system from conf channel "Action chain channel"
+  Scenario: Cleanup: remove system from configuration channel
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     When I follow "Configuration" in the left menu
@@ -232,7 +233,7 @@ Feature: Test action chaining
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
-  Scenario: CLEAN_UP: remove configuration channel: Action chain channel
+  Scenario: Cleanup: remove configuration channel
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
@@ -241,7 +242,7 @@ Feature: Test action chaining
     And I follow "delete channel"
     And I click on "Delete Config Channel"
 
-  Scenario: Cleanup: remove pkgs and repo used in action chain
+  Scenario: Cleanup: remove packages and repository used in action chain
     When I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-client" without error control
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control

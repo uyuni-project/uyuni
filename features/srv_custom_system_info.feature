@@ -1,10 +1,7 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Test custom system info key value pairs
-  In Order to test the functionality of custom system infos
-  As an authorized user
-  I want to create and delete custom system info key value pairs
+Feature: Custom system info key-value pairs
 
   Background:
     Given I am authorized
