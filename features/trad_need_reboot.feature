@@ -2,11 +2,11 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Reboot required after patch
-  In Order to avoid systems with different running/installed kernel
-  As a authorized user
+  In order to avoid systems with different running/installed kernel
+  As an authorized user
   I want to see systems that need a reboot
 
-  Scenario: Check requiring Rebot on the webui
+  Scenario: Check requiring reboot in the web UI
     Given I am authorized
     And I follow "Home" in the left menu
     And I follow "Systems" in the left menu
@@ -20,13 +20,13 @@ Feature: Reboot required after patch
     Given I am on the Systems overview page of this "sle-client"
     Then I should not see a "The system requires a reboot" text
 
-  Scenario: enable old-packages for test a "needing reboot"
+  Scenario: Enable old packages to test a "needing reboot"
     Given I am authorized as "admin" with password "admin"
-    And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
+    When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
     And I run "zypper -n ref" on "sle-client"
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
-    When I follow "Admin"
+    And I follow "Admin"
     And I follow "Task Schedules"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"
@@ -36,11 +36,11 @@ Feature: Reboot required after patch
     And I reload the page
     And I reload the page until it does contain a "FINISHED" text in the table first row
 
-  Scenario: Display Reboot Required after installing an Patches
+  Scenario: Display reboot required after installing a patch
     Given I am on the Systems overview page of this "sle-client"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "Patches" in the content area
-    When I check "andromeda-dummy-6789" in the list
+    And I check "andromeda-dummy-6789" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"
     And I run "rhn_check -vvv" on "sle-client"
@@ -54,6 +54,6 @@ Feature: Reboot required after patch
     And I follow "Requiring Reboot" in the left menu
     Then I should see "sle-client" as link
 
-  Scenario: Cleanup: remove virgo-dummy and restore non-update repo (needing-reboot test)
+  Scenario: Cleanup: remove packages and restore non-update repo after needing-reboot tests
     And I run "zypper -n rm andromeda-dummy" on "sle-client"
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client"

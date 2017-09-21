@@ -1,9 +1,9 @@
 # Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Test Powermanagement
+Feature: Power management
 
-  Scenario: Is the powermanagement page accessible
+  Scenario: Is the power management page accessible
     Given I am on the Systems overview page of this "sle-client"
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
@@ -11,7 +11,7 @@ Feature: Test Powermanagement
     And I should see a "IPMI" text
     And I should see a "Save" button
 
-  Scenario: Save powermanagement values
+  Scenario: Save power management values
     Given I am on the Systems overview page of this "sle-client"
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
@@ -47,7 +47,7 @@ Feature: Test Powermanagement
     Then I click on "Get status"
     And I should see the power is "On"
 
-  Scenario: check powermanagement SSM configuration
+  Scenario: Check powermanagement SSM configuration
     Given I am authorized
     And I am on the System Overview page
     And I check this client
@@ -70,7 +70,7 @@ Feature: Test Powermanagement
     And the cobbler report contains "Power Management Address       : 10.162.210.10"
     And the cobbler report contains "Power Management Type          : ipmitool"
 
-  Scenario: check powermanagement SSM Operation
+  Scenario: Check power management SSM operation
     Given I am authorized
     And I am on System Set Manager Overview
     And I follow "power management operations" in the content area

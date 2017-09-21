@@ -1,39 +1,42 @@
+# Copyright (c) 2017 SUSE LLC
+# Licensed under the terms of the MIT license.
+
 Feature: Endpoint to download packages
-  In Order distribute software to the clients
+  In order to distribute software to the clients
   As an authorized user
   I want to download packages from the channels
 
-  Scenario: user without token
-    Given I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
+  Scenario: Download package, user without token
+    Given I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
     Then the download should get a 403 response
 
-  Scenario: user with a valid token for the org
+  Scenario: Download package, user with a valid token for the org
     Given I have a valid token for organization "1"
-    Then I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
-    And the download should get no error
+    When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
+    Then the download should get no error
 
-  Scenario: user with an invalid token for the org
+  Scenario: Download package, user with an invalid token for the org
     Given I have an invalid token for organization "1"
-    Then I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
-    And the download should get a 403 response
+    When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
+    Then the download should get a 403 response
 
-  Scenario: user with an expired valid token for the org
+  Scenario: Download package, user with an expired valid token for the org
     Given I have an expired valid token for organization "1"
-    Then I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
-    And the download should get a 403 response
+    When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
+    Then the download should get a 403 response
 
-  Scenario: user with an non expired valid token for the org
+  Scenario: Download package, user with an non expired valid token for the org
     Given I have a valid token expiring tomorrow for organization "1"
-    Then I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
-    And the download should get no error
+    When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
+    Then the download should get no error
 
-  Scenario: user with a valid token that cant be used until tomorrow for the org
+  Scenario: Download package, user with a valid token that cant be used until tomorrow for the org
     Given I have a not yet usable valid token for organization "1"
-    Then I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
-    And the download should get a 403 response
+    When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
+    Then the download should get a 403 response
 
-  Scenario: user with a valid token for the org and specific channels
+  Scenario: Download package, user with a valid token for the org and specific channels
     Given I have a valid token for organization "1" and channel "foobar"
-    Then I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
-    And the download should get a 403 response
+    When I try to download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "test-channel-x86_64"
+    Then the download should get a 403 response
 

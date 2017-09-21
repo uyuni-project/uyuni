@@ -2,9 +2,9 @@
 # Licensed under the terms of the MIT license.
 
 Feature: The spacewalk-repo-sync command
-  In Order to sync channels without using the web interface
-  As an sysadmin logged into the server
-  I want to be able to run a command to do it
+  In order to synchronize channels without using the web interface
+  As an system administrator logged into the server
+  I want to be able to run the spacewalk-repo-sync command
 
   Scenario: spacewalk-repo-sync with custom urls
     When I call spacewalk-repo-sync for channel "test_base_channel" with a custom url "http://localhost/pub/TestRepo/"
