@@ -187,11 +187,11 @@ Feature: Action chaining
   Scenario: Create an action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
-    And I call actionchain.listChains() if label "Quick Brown Fox" is there
+    And I call actionchain.list_chains() if label "Quick Brown Fox" is there
     Then I delete the action chain
     And there should be no action chain with the label "Quick Brown Fox"
     When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
-    Then I call actionchain.renameChain() to rename it from "Quick Brown Fox" to "Slow Gray Elephant"
+    Then I call actionchain.rename_chain() to rename it from "Quick Brown Fox" to "Slow Gray Elephant"
     And there should be a new action chain with the label "Slow Gray Elephant"
     And I delete an action chain, labeled "Slow Gray Elephant"
     And there should be no action chain with the label "Slow Gray Elephant"
@@ -200,21 +200,21 @@ Feature: Action chaining
   Scenario: Add operations to the action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
-    And I call actionchain.addPackageInstall()
-    And I call actionchain.addPackageRemoval()
-    And I call actionchain.addPackageUpgrade()
-    And I call actionchain.addPackageVerify()
-    And I call actionchain.addScriptRun() with the script like "#!/bin/bash\nexit 1;"
-    And I call actionchain.addSystemReboot()
+    And I call actionchain.add_package_install()
+    And I call actionchain.add_package_removal()
+    And I call actionchain.add_package_upgrade()
+    And I call actionchain.add_package_verify()
+    And I call actionchain.add_script_run() with the script like "#!/bin/bash\nexit 1;"
+    And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
-    When I call actionchain.removeAction on each action within the chain
+    When I call actionchain.remove_action on each action within the chain
     Then I should be able to see that the current action chain is empty
     And I delete the action chain
 
   Scenario: Run the action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
-    And I call actionchain.addSystemReboot()
+    And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
     Then there should be no more my action chain

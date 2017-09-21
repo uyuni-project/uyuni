@@ -160,7 +160,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I should not see a "GenericSaltError({" text
      Then I should see a "port 11: Connection refused" text
 
-  Scenario: Bootstrap a sles minion permanently
+  Scenario: Bootstrap a SLES minion permanently
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text

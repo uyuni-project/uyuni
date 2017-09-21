@@ -92,9 +92,9 @@ Feature: CVE Audit
     And I reload the page
     And I reload the page until it does contain a "FINISHED" text in the table first row
     And I am logged in via XML-RPC cve audit as user "admin" and password "admin"
-    When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9979"
+    When I call audit.list_systems_by_patch_status with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for this client
-    When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9999"
+    When I call audit.list_systems_by_patch_status with CVE identifier "CVE-1999-9999"
     Then I should get status "AFFECTED_PATCH_APPLICABLE" for this client
     And I should get the test-channel
     And I should get the "milkyway-dummy-2345" patch
@@ -117,7 +117,7 @@ Feature: CVE Audit
 
   Scenario: List systems by patch status via XML-RPC after patch
     Given I am logged in via XML-RPC cve audit as user "admin" and password "admin"
-    When I call audit.listSystemsByPatchStatus with CVE identifier "CVE-1999-9999"
+    When I call audit.list_systems_by_patch_status with CVE identifier "CVE-1999-9999"
     Then I should get status "PATCHED" for this client
     And I should get the test-channel
     And I should get the "milkyway-dummy-2345" patch
