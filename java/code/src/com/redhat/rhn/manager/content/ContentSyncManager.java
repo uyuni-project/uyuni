@@ -681,6 +681,7 @@ public class ContentSyncManager {
             List<SCCSubscription> subscriptions = scc.listSubscriptions();
             refreshSubscriptionCache(subscriptions, credentials);
             refreshOrderItemCache(credentials);
+            generateOEMOrderItems(subscriptions, credentials);
             return subscriptions;
         }
         catch (URISyntaxException e) {
@@ -734,6 +735,41 @@ public class ContentSyncManager {
         catch (URISyntaxException e) {
             log.error("Invalid URL:" + e.getMessage());
         }
+    }
+
+    /**
+     * Generates OrderItems for OEM subscriptions.
+     *
+     * @param subscriptions the subscriptions
+     * @param credentials the credentials
+     */
+    private void generateOEMOrderItems(List<SCCSubscription> subscriptions,
+            Credentials credentials) {
+        subscriptions.stream()
+                .filter(sub -> "oem".equals(sub.getType()))
+                .forEach(sub -> {
+                    if (sub.getSkus().size() == 1) {
+                        log.debug("Generating order item for OEM subscription " +
+                                sub.getName() + ", SCC ID: " + sub.getId());
+                        SCCOrderItem oemOrder = new SCCOrderItem();
+                        long subscriptionSccId = Integer.valueOf(sub.getId()).longValue();
+                        // HACK: use inverted subscription id as new the order item id
+                        oemOrder.setSccId(-subscriptionSccId);
+                        oemOrder.setQuantity(sub.getSystemLimit().longValue());
+                        oemOrder.setCredentials(credentials);
+                        oemOrder.setStartDate(sub.getStartsAt());
+                        oemOrder.setEndDate(sub.getExpiresAt());
+                        oemOrder.setSku(sub.getSkus().get(0));
+                        oemOrder.setSubscriptionId(subscriptionSccId);
+                        SCCCachingFactory.saveOrderItem(oemOrder);
+                    }
+                    else {
+                        log.warn("Subscription " + sub.getName() + ", SCC ID: " +
+                                sub.getId() + " does not have a single SKU. " +
+                                "Not generating Order Item for it."
+                        );
+                    }
+                });
     }
 
     /**
