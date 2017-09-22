@@ -15,10 +15,6 @@ Feature: XML-RPC image namespace for containers
     Then I should see a "[Container Build Host]" text
     And I enable Suse container repository, but not for SLES11 systems
     And I enable SLES pool and update repository on "sle-minion", but not for SLES11
-    And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
-    And I wait until no Salt job is running on "sle-minion"
-    And I apply highstate on "sle-minion"
-    Then I wait until "docker" service is up and running on "sle-minion"
 
   Scenario: Test image.store namespace
     Given I am authorized as "admin" with password "admin"

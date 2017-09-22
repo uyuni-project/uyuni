@@ -459,6 +459,7 @@ And(/^I enable SLES pool and update repository on "([^"]*)", but not for SLES11$
     puts node.run("zypper mr -e SLE-#{os_version}-#{arch.strip}-Pool")
     steps %(
       And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
+      And I wait until no Salt job is running on "sle-minion"
       And I apply highstate on "sle-minion"
       Then I wait until "docker" service is up and running on "sle-minion"
     )
