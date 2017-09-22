@@ -166,7 +166,7 @@ When(/^I follow "([^"]*)" on "(.*?)" row$/) do |text, host|
 end
 
 When(/^I enter "(.*?)" in the editor$/) do |arg1|
-  page.execute_script("ace.edit('contents-editor').set_value('#{arg1}')")
+  page.execute_script("ace.edit('contents-editor').insert('#{arg1}')")
 end
 
 When(/^I click Systems, under Systems node$/) do
