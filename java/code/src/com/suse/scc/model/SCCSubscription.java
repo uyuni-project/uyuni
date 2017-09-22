@@ -15,6 +15,7 @@
 package com.suse.scc.model;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.xml.bind.DatatypeConverter;
@@ -44,6 +45,7 @@ public class SCCSubscription {
     @SerializedName("product_ids")
     private List<Long> productIds;
     private List<SCCSystem> systems;
+    private List<String> skus = new ArrayList<>();
 
     /**
      * @return the id
@@ -142,6 +144,15 @@ public class SCCSubscription {
         return systems;
     }
 
+    /**
+     * Gets the skus.
+     *
+     * @return skus
+     */
+    public List<String> getSkus() {
+        return skus;
+    }
+
     // Setters are only for JUnit tests
 
     /**
@@ -233,5 +244,14 @@ public class SCCSubscription {
      */
     public void setSystems(List<SCCSystem> systemsIn) {
         this.systems = systemsIn;
+    }
+
+    /**
+     * Sets the skus.
+     *
+     * @param skusIn - the skus
+     */
+    public void setSkus(List<String> skusIn) {
+        skus = skusIn;
     }
 }
