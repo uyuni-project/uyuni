@@ -36,7 +36,7 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ClassImposteriser.INSTANCE);
     }
 
-    public void testXccdfEvalTransform() throws Exception {
+    public void testXccdfEvalTransform_xccdf11() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
@@ -231,6 +231,45 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 ));
     }
 
+    public void testXccdfEvalTransform_xccdf12() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        ScapAction action = ActionManager.scheduleXccdfEval(user,
+                minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml",
+                "--profile xccdf_org.ssgproject.content_profile_rht-ccp", new Date());
+
+        File resumeXsl = new File(TestUtils.findTestData(
+                "/com/redhat/rhn/manager/audit/test/openscap/minionsles12sp1.test.local/xccdf-resume.xslt.in").getPath());
+        InputStream resultsIn = TestUtils.findTestData(
+                "/com/redhat/rhn/manager/audit/test/openscap/rhccp/results.xml")
+                .openStream();
+        XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        result = HibernateFactory.getSession().get(XccdfTestResult.class, result.getId());
+        assertNotNull(result);
+
+        assertEquals("xccdf_org.ssgproject.content_profile_rht-ccp", result.getProfile().getIdentifier());
+        assertEquals("Red Hat Corporate Profile for Certified Cloud Providers (RH CCP)", result.getProfile().getTitle());
+
+        assertEquals(841, result.getResults().size());
+        assertRuleResultsCount(result, "pass", 35);
+        assertRuleResultsCount(result, "fail", 34);
+        assertRuleResultsCount(result, "notchecked", 1);
+        assertRuleResultsCount(result, "notselected", 771);
+
+    }
+
     private void assertRuleResults(XccdfTestResult result, String ruleType, List<String> ruleIds) {
         Set<String> resultIds = result.getResults().stream()
                 .filter(rr -> rr.getResultType().getLabel().equals(ruleType))
@@ -239,6 +278,13 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 .collect(Collectors.toSet());
         assertEquals(ruleIds.size(), resultIds.size());
         assertTrue(resultIds.containsAll(ruleIds));
+    }
+
+    private void assertRuleResultsCount(XccdfTestResult result, String ruleType, int count) {
+        long matchedRulesCount = result.getResults().stream()
+                .filter(rr -> rr.getResultType().getLabel().equals(ruleType))
+                .count();
+        assertEquals(count, matchedRulesCount);
     }
 
     public void testXccdfEvalError() throws Exception {
