@@ -1,3 +1,4 @@
+- Extract Proxy version from installed product (bsc#1055467)
 - Disallow entering multiple identical mirror credentials (bsc#971785)
 - Provide another create method(with additional parameter Gpgcheck) to create software channel through XML RPC(bsc#1060691).
 - Added 'Machine Id' information as part of details in System namespace for XMLRPC API(bsc#1054902)
