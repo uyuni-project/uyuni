@@ -737,25 +737,6 @@ public class ContentSyncManager {
     }
 
     /**
-     * Deletes all order items stored in the database, fetch the new once
-     * and inserts them into the database
-     * @throws ContentSyncException  in case of an error
-     */
-    public void refreshOrderItemCache() throws ContentSyncException {
-        // FIXME: currently unused
-        List<Credentials> credentials = filterCredentials();
-        try {
-            // Query subscriptions for all mirror credentials
-            for (Credentials creds : credentials) {
-                refreshOrderItemCache(creds);
-            }
-        }
-        catch (SCCClientException e) {
-            throw new ContentSyncException(e);
-        }
-    }
-
-    /**
      * Update the repositories cache and the channel information in the database.
      * @param mirrorUrl optional mirror URL that can be null
      * @throws com.redhat.rhn.manager.content.ContentSyncException if channels
