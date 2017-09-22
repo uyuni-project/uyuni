@@ -14,6 +14,11 @@
  */
 package com.redhat.rhn.manager.errata.test;
 
+import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -79,11 +84,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.redhat.rhn.testing.ErrataTestUtils.createLaterTestPackage;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestServer;
 
 /**
  * Tests {@link ErrataManager}.
@@ -649,7 +649,26 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server1ScheduledErrata.contains(yumErrata1.getId()));
         assertTrue("Server 1 Scheduled Erratas contain both yum erratas",
                 server1ScheduledErrata.contains(yumErrata2.getId()));
+        assertTrue("Server 1 Scheduled Erratas contain both yum erratas",
+                server1ScheduledErrata.contains(yumErrata2.getId()));
 
+        List<Action> updateStackErrataActions1 = actionsServer1.stream()
+            .filter(a -> errataActionFromAction(a).getErrata().stream()
+                .anyMatch(ErrataManagerTest::doesUpdateStack))
+            .collect(Collectors.toList());
+        List<Action> nonUpdateStackErrataActions1 = actionsServer1.stream()
+            .filter(a -> !updateStackErrataActions1.contains(a))
+            .collect(Collectors.toList());
+
+        assertTrue("Action does not mix update-stack and non-update stack erratas",
+            updateStackErrataActions1.stream()
+                .flatMap(a -> errataActionFromAction(a).getErrata().stream())
+                .allMatch(ErrataManagerTest::doesUpdateStack));
+
+        assertTrue("Actions without update-stack erratas come after those that have",
+            nonUpdateStackErrataActions1.stream()
+                .allMatch(a -> updateStackErrataActions1.stream()
+                    .allMatch(b -> b.getId() < a.getId())));
 
         assertEquals("Server 2 Scheduled has 2 scheduled actions",
                 2, actionsServer2.size());
@@ -661,6 +680,29 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2ScheduledErrata.contains(errata2.getId()));
         assertTrue("Server 2 Scheduled Erratas contain one yum errata",
                 server2ScheduledErrata.contains(yumErrata1.getId()));
+
+        List<Action> updateStackErrataActions2 = actionsServer2.stream()
+                .filter(a -> errataActionFromAction(a).getErrata().stream()
+                    .anyMatch(ErrataManagerTest::doesUpdateStack))
+                .collect(Collectors.toList());
+        List<Action> nonUpdateStackErrataActions2 = actionsServer2.stream()
+            .filter(a -> !updateStackErrataActions2.contains(a))
+            .collect(Collectors.toList());
+
+        assertTrue("Action does not mix update-stack and non-update stack erratas",
+            updateStackErrataActions2.stream()
+                .flatMap(a -> errataActionFromAction(a).getErrata().stream())
+                .allMatch(ErrataManagerTest::doesUpdateStack));
+
+        assertTrue("Actions without update-stack erratas come after those that have",
+            nonUpdateStackErrataActions2.stream()
+                .allMatch(a -> updateStackErrataActions2.stream()
+                    .allMatch(b -> b.getId() < a.getId())));
+    }
+
+    private static boolean doesUpdateStack(Errata e) {
+        return e.getKeywords().stream()
+            .anyMatch(k -> ((PublishedKeyword) k).getKeyword().equals("restart_suggested"));
     }
 
     /**
