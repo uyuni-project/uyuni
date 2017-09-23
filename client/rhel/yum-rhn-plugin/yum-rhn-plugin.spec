@@ -90,8 +90,6 @@ fi
 %doc LICENSE
 %dir /etc/yum
 %dir /etc/yum/pluginconf.d
-%dir /usr/share/rhn
-%dir /usr/share/rhn/actions
 %dir /usr/share/yum-plugins
 
 
