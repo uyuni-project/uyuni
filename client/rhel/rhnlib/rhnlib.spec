@@ -1,3 +1,7 @@
+%if 0%{?fedora} || %{suse_version} > 1320
+%global build_py3   1
+%endif
+
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Summary: Python libraries for the Spacewalk project
@@ -16,7 +20,8 @@ BuildArch: noarch
 %endif
 BuildRequires: python-devel
 Provides: python2-rhnlib = %{version}-%{release}
-%{?python_provide:%python_provide python2-rhnlib}
+Obsoletes: python-rhnlib < %{version}-%{release}
+Obsoletes: rhnlib < %{version}-%{release}
 
 %if 0%{?suse_version}
 Requires: python-openssl
@@ -36,13 +41,12 @@ rhnlib is a collection of python modules used by the
 Spacewalk software.
 
 
-%if 0%{?fedora}
+%if 0%{?build_py3}
 %package -n python3-rhnlib
 Summary: Python libraries for the Spacewalk project
 Group: Development/Libraries
 BuildRequires: python3-devel
 Requires: python3-pyOpenSSL
-%{?python_provide:%python_provide python3-rhnlib}
 Conflicts: rhncfg < 5.10.45
 Conflicts: spacewalk-proxy-installer < 1.3.2
 Conflicts: rhn-client-tools < 1.3.3
@@ -73,7 +77,7 @@ make -f Makefile.rhnlib
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix=%{_prefix}
-%if 0%{?fedora}
+%if 0%{?build_py3}
 %{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix=%{_prefix}
 %endif
 
@@ -87,7 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc ChangeLog COPYING README TODO
 %{python_sitelib}/*
 
-%if 0%{?fedora}
+%if 0%{?build_py3}
 %files -n python3-rhnlib
 %doc ChangeLog COPYING README TODO
 %{python3_sitelib}/*

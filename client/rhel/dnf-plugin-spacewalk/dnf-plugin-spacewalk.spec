@@ -33,7 +33,8 @@ This DNF plugin provides access to a Spacewalk server for software updates.
 
 %package -n python2-%{name}
 Summary: DNF plugin for Spacewalk
-%{?python_provide:%python_provide python2-%{name}}
+Provides: python-%{name} = %{version}-%{release}
+Obsoletes: python-%{name} < %{version}-%{release}
 BuildRequires: python-devel
 Requires: python2-rhn-client-tools
 
@@ -43,7 +44,6 @@ Python 2 specific files for %{name}.
 %if 0%{?build_py3}
 %package -n python3-%{name}
 Summary: DNF plugin for Spacewalk
-%{?python_provide:%python_provide python3-%{name}}
 BuildRequires: python3-devel
 Requires: python3-rhn-client-tools
 
