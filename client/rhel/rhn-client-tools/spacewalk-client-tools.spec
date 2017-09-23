@@ -1,4 +1,4 @@
-%if 0%{?fedora} || 0{?suse_version} > 1320
+%if 0%{?fedora} || 0%{?suse_version} > 1320
 %global build_py3   1
 %global default_py3 1
 %endif
@@ -76,7 +76,8 @@ system to receive software updates from Spacewalk.
 
 %package -n python2-%{name}
 Summary: Support programs and libraries for Spacewalk
-%{?python_provide:%python_provide python2-%{name}}
+Provides: python-%{name} = %{version}-%{release}
+Obsoletes: python-%{name} < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: rpm-python
 %ifnarch s390 s390x
@@ -115,7 +116,6 @@ Python 2 specific files of %{name}.
 %if 0%{?build_py3}
 %package -n python3-%{name}
 Summary: Support programs and libraries for Spacewalk
-%{?python_provide:%python_provide python3-%{name}}
 Requires: %{name} = %{version}-%{release}
 Requires: python3-dbus
 Requires: python3-rpm
@@ -159,7 +159,8 @@ scheduled actions.
 
 %package -n python2-spacewalk-check
 Summary: Check for RHN actions
-%{?python_provide:%python_provide python2-spacewalk-check}
+Provides: python-spacewalk-check = %{version}-%{release}
+Obsoletes: python-spacewalk-check < %{version}-%{release}
 Requires: spacewalk-check = %{version}-%{release}
 
 %description -n python2-spacewalk-check
@@ -168,7 +169,6 @@ Python 2 specific files for rhn-check.
 %if 0%{?build_py3}
 %package -n python3-spacewalk-check
 Summary: Support programs and libraries for Spacewalk
-%{?python_provide:%python_provide python3-spacewalk-check}
 Requires: spacewalk-check = %{version}-%{release}
 
 %description -n python3-spacewalk-check
@@ -194,7 +194,8 @@ SUSE Manager or Spacewalk.
 
 %package -n python2-spacewalk-client-setup
 Summary: Configure and register an Spacewalk client
-%{?python_provide:%python_provide python2-spacewalk-client-setup}
+Requires: python-spacewalk-client-setup = %{version}-%{release}
+Obsoletes: python-spacewalk-client-setup < %{version}-%{release}
 Requires: spacewalk-client-setup = %{version}-%{release}
 %if 0%{?rhel} == 5
 Requires: newt
@@ -212,7 +213,6 @@ Python 2 specific files for spacewalk-client-setup.
 %if 0%{?build_py3}
 %package -n python3-spacewalk-client-setup
 Summary: Configure and register an Spacewalk client
-%{?python_provide:%python_provide python3-spacewalk-client-setup}
 Requires: spacewalk-client-setup = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: python3-newt
@@ -240,7 +240,8 @@ registering a system with a Red Hat Satellite or Spacewalk server.
 
 %package -n python2-spacewalk-client-setup-gnome
 Summary: Configure and register an RHN/Spacewalk client
-%{?python_provide:%python_provide python2-spacewalk-client-setup-gnome}
+Provides: python-spacewalk-client-setup-gnome = %{version}-%{release}
+Obsoletes: python-spacewalk-client-setup-gnome < %{version}-%{release}
 Requires: spacewalk-client-setup-gnome
 %if 0%{?suse_version}
 Requires: python-gnome python-gtk
@@ -259,7 +260,6 @@ Python 2 specific files for spacewalk-client-setup-gnome.
 %if 0%{?build_py3}
 %package -n python3-spacewalk-client-setup-gnome
 Summary: Configure and register an RHN/Spacewalk client
-%{?python_provide:%python_provide python3-spacewalk-client-setup-gnome}
 Requires: spacewalk-client-setup-gnome
 %if 0%{?suse_version}
 Requires: python-gnome python-gtk

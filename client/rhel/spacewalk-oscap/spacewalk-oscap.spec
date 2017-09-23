@@ -1,4 +1,4 @@
-%if 0%{?fedora}
+%if 0%{?fedora} || %{?suse_version} > 1320
 %global build_py3   1
 %global default_py3 1
 %endif
@@ -32,7 +32,8 @@ to run OpenSCAP scan from Spacewalk or Red Hat Satellite server.
 
 %package -n python2-%{name}
 Summary:	OpenSCAP plug-in for rhn-check
-%{?python_provide:%python_provide python2-%{name}}
+Provides:       python-%{name} = %{version}-%{release}
+Obsoletes:      python-%{name} < %{version}-%{release}
 Requires:       spacewalk-oscap
 Requires:       rhnlib >= 0:2.5.78-1
 Requires:       python2-rhn-check
@@ -44,7 +45,6 @@ Python 2 specific files for %{name}.
 %if 0%{?build_py3}
 %package -n python3-%{name}
 Summary:	OpenSCAP plug-in for rhn-check
-%{?python_provide:%python_provide python3-%{name}}
 Requires:       spacewalk-oscap
 Requires:       python3-rhnlib >= 0:2.5.78-1
 Requires:       python3-rhn-check
