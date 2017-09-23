@@ -86,10 +86,13 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %files -n python2-%{name}
+%dir %{python_sitelib}/actions
 %{python_sitelib}/actions/scap.*
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
+%dir %{python3_sitelib}/actions
+%dir %{python3_sitelib}/actions/__pycache__
 %{python3_sitelib}/actions/scap.*
 %{python3_sitelib}/actions/__pycache__/scap.*
 %endif
