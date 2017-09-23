@@ -1,6 +1,13 @@
+%if 0%{?fedora}
+%global build_py3   1
+%global default_py3 1
+%endif
+
+%define pythonX %{?default_py3: python3}%{!?default_py3: python2}
+
 Summary: DNF plugin for Spacewalk
 Name: dnf-plugin-spacewalk
-Version: 2.8.1
+Version: 2.8.2
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -8,12 +15,8 @@ Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version
 URL:     https://github.com/spacewalkproject/spacewalk
 BuildArch: noarch
 
-%if 0%{?fedora}
-BuildRequires: python3-devel
-%else
-BuildRequires: python-devel
+Requires: %{pythonX}-%{name}
 %{!?python2_sitelib: %global python2_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-%endif
 %if 0%{?fedora} <= 25
 Requires: dnf >= 0.5.3
 %else
@@ -21,13 +24,32 @@ Requires: dnf >= 2.0.0
 %endif
 Requires: dnf-plugins-core
 Requires: librepo >= 1.7.15
-Requires: rhn-client-tools >= 2.5.5
-%if 0%{?fedora} >= 22
+%if 0%{?fedora}
 Obsoletes: yum-rhn-plugin < 2.7
 %endif
 
 %description
 This DNF plugin provides access to a Spacewalk server for software updates.
+
+%package -n python2-%{name}
+Summary: DNF plugin for Spacewalk
+%{?python_provide:%python_provide python2-%{name}}
+BuildRequires: python-devel
+Requires: python2-rhn-client-tools
+
+%description -n python2-%{name}
+Python 2 specific files for %{name}.
+
+%if 0%{?build_py3}
+%package -n python3-%{name}
+Summary: DNF plugin for Spacewalk
+%{?python_provide:%python_provide python3-%{name}}
+BuildRequires: python3-devel
+Requires: python3-rhn-client-tools
+
+%description -n python3-%{name}
+Python 3 specific files for %{name}.
+%endif
 
 %prep
 %setup -q
@@ -39,23 +61,28 @@ patch -p4 < dnf-plugin-spacewalk-revert-to-1.0.patch
 
 %install
 install -d %{buildroot}%{_sysconfdir}/dnf/plugins/
-install -d %{buildroot}/usr/share/rhn/actions
 install -d %{buildroot}/var/lib/up2date
 install -d %{buildroot}%{_mandir}/man{5,8}
-%if 0%{?fedora}
-install -d %{buildroot}%{python3_sitelib}/dnf-plugins/
-install -m 644 spacewalk.py %{buildroot}%{python3_sitelib}/dnf-plugins/
-%else
-install -d %{buildroot}%{python2_sitelib}/dnf-plugins/
-install -m 644 spacewalk.py %{buildroot}%{python2_sitelib}/dnf-plugins/
-%endif
-install -m 644 actions/packages.py %{buildroot}/usr/share/rhn/actions/
-install -m 644 actions/errata.py %{buildroot}/usr/share/rhn/actions/
 install -m 644 spacewalk.conf %{buildroot}%{_sysconfdir}/dnf/plugins/
 install -m 644 man/spacewalk.conf.5 %{buildroot}%{_mandir}/man5/
 install -m 644 man/dnf.plugin.spacewalk.8 %{buildroot}%{_mandir}/man8/
 install -d %{buildroot}%{_datadir}/licenses
 install -d %{buildroot}%{_datadir}/licenses/%{name}
+# python2
+install -d %{buildroot}%{python2_sitelib}/actions
+install -d %{buildroot}%{python2_sitelib}/dnf-plugins/
+install -m 644 spacewalk.py %{buildroot}%{python2_sitelib}/dnf-plugins/
+install -m 644 actions/packages.py %{buildroot}%{python2_sitelib}/actions/
+install -m 644 actions/errata.py %{buildroot}%{python2_sitelib}/actions/
+
+%if 0%{?build_py3}
+install -d %{buildroot}%{python3_sitelib}/actions
+install -d %{buildroot}%{python3_sitelib}/dnf-plugins/
+install -m 644 spacewalk.py %{buildroot}%{python3_sitelib}/dnf-plugins/
+install -m 644 actions/packages.py %{buildroot}%{python3_sitelib}/actions/
+install -m 644 actions/errata.py %{buildroot}%{python3_sitelib}/actions/
+%endif
+
 
 %files
 %defattr(-,root,root,-)
@@ -64,14 +91,18 @@ install -d %{buildroot}%{_datadir}/licenses/%{name}
 %dir %{_datadir}/licenses
 %dir /var/lib/up2date
 %{_mandir}/man*/*
-%if 0%{?fedora}
+
+%files -n python2-%{name}
+%{python_sitelib}/dnf-plugins/*
+%{python_sitelib}/actions/*
+
+%if 0%{?build_py3}
+%files -n python3-%{name}
 %{python3_sitelib}/dnf-plugins/*
-%else
-%{python2_sitelib}/dnf-plugins/*
+%{python3_sitelib}/actions/*
 %endif
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/actions
-%{_datadir}/rhn/actions/*
 %if 0%{?suse_version}
 %dir %{python_sitelib}/dnf-plugins
 %dir %{_sysconfdir}/dnf
@@ -79,6 +110,10 @@ install -d %{buildroot}%{_datadir}/licenses/%{name}
 %endif
 
 %changelog
+* Fri Sep 22 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
+- install files into python_sitelib/python3_sitelib
+- split dnf-plugin-spacewalk into python2/python3 specific packages
+
 * Thu Sep 07 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.1-1
 - unload function has been renamed to _unload() in DNF 2
 - Bumping package versions for 2.8.

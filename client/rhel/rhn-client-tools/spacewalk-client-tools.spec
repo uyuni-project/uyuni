@@ -1,3 +1,11 @@
+%if 0%{?fedora} || 0{?suse_version} > 1320
+%global build_py3   1
+%global default_py3 1
+%endif
+
+%define pythonX %{?default_py3: python3}%{!?default_py3: python2}
+
+
 # package renaming fun :(
 %define rhn_client_tools spacewalk-client-tools
 %define rhn_setup	 spacewalk-client-setup
@@ -6,7 +14,6 @@
 #
 %define without_rhn_register 1
 
-%global rhnroot /usr/share/rhn
 
 Name: spacewalk-client-tools
 Summary: Support programs and libraries for Spacewalk
@@ -31,60 +38,17 @@ Requires: rpm >= 4.2.3-24_nonptl
 Requires: rpm-python
 Requires: gnupg
 Requires: sh-utils
-BuildRequires: python-devel
-%if 0%{?fedora} >= 23
-Requires: libgudev
-Requires: newt-python3
-Requires: python3-gobject-base
-Requires: python3-dmidecode
-Requires: python3-netifaces
-Requires: python3-hwdata
-Requires: python3-rhnlib >= 2.5.78
-%else
-%ifnarch s390 s390x
-Requires: python-dmidecode
-%endif
-Requires: python-ethtool >= 0.4
-Requires: rhnlib >= 2.5.78
-%if 0%{?fedora}
-Requires: newt-python
-Requires: pygobject3-base libgudev1
-Requires: python-hwdata
-%else
-%if 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
-Requires: python-gudev
-Requires: python-hwdata
-%else
-Requires: hal >= 0.5.8.1-52
-%endif # 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
-%if 0%{?suse_version}
-Requires: python-newt
-%endif
-%if 0%{?rhel} == 5
-Requires: newt
-%endif
-%if 0%{?rhel} > 5
-Requires: newt-python
-%endif
-%endif # 0%{?fedora}
-%endif # 0%{?fedora} >= 23
-%if 0%{?suse_version}
-Requires: dbus-1-python
-%else
-Requires: dbus-python
-%endif
+Requires: %{pythonX}-%{name} = %{version}-%{release}
+
 %if 0%{?suse_version}
 Requires: zypper
 %else
-%if 0%{?fedora} >= 22
+%if 0%{?fedora}
 Requires: dnf
 %else
 Requires: yum
-%endif # 0%{?fedora} >= 22
+%endif # 0%{?fedora}
 %endif # 0%{?suse_version}
-
-Requires: suseRegisterInfo
-Requires: logrotate
 
 Conflicts: up2date < 5.0.0
 Conflicts: yum-rhn-plugin < 1.6.4-1
@@ -99,30 +63,78 @@ BuildRequires: desktop-file-utils
 
 %if 0%{?fedora}
 BuildRequires: fedora-logos
-%if 0%{?fedora} >= 22
 BuildRequires: dnf
-%else
-BuildRequires: yum
-%endif
 %endif
 %if 0%{?rhel}
 BuildRequires: redhat-logos
-%endif
-
-# The following BuildRequires are for check only
-%if 0%{?fedora}
-BuildRequires: python-coverage
-BuildRequires: rpm-python
-%endif
-%if 0%{?fedora} >= 23
-Requires: python3-rhnlib >= 2.5.78
-%else
-Requires: rhnlib >= 2.5.78
+BuildRequires: yum
 %endif
 
 %description
 Spacewalk Client Tools provides programs and libraries to allow your
 system to receive software updates from Spacewalk.
+
+%package -n python2-%{name}
+Summary: Support programs and libraries for Spacewalk
+%{?python_provide:%python_provide python2-%{name}}
+Requires: %{name} = %{version}-%{release}
+Requires: rpm-python
+%ifnarch s390 s390x
+Requires: python-dmidecode
+%endif
+Requires: python-ethtool >= 0.4
+Requires: rhnlib >= 2.5.78
+BuildRequires: python-devel
+%if 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
+Requires: python-gudev
+Requires: python-hwdata
+%else
+Requires: hal >= 0.5.8.1-52
+%endif # 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
+%if 0%{?rhel} > 5
+Requires: newt-python
+%else
+Requires: newt
+%endif
+%if 0%{?suse_version}
+Requires: dbus-1-python
+Requires: python-newt
+%else
+Requires: dbus-python
+%endif # 0%{?suse_version}
+Requires: suseRegisterInfo
+Requires: logrotate
+
+# The following BuildRequires are for check only
+BuildRequires: python-coverage
+BuildRequires: rpm-python
+
+%description -n python2-%{name}
+Python 2 specific files of %{name}.
+
+%if 0%{?build_py3}
+%package -n python3-%{name}
+Summary: Support programs and libraries for Spacewalk
+%{?python_provide:%python_provide python3-%{name}}
+Requires: %{name} = %{version}-%{release}
+Requires: python3-dbus
+Requires: python3-rpm
+Requires: libgudev
+Requires: newt-python3
+Requires: python3-gobject-base
+Requires: python3-dmidecode
+Requires: python3-netifaces
+Requires: python3-hwdata
+Requires: python3-rhnlib >= 2.5.78
+BuildRequires: python3-devel
+
+# The following BuildRequires are for check only
+BuildRequires: python3-coverage
+BuildRequires: python3-rpm
+
+%description -n python3-%{name}
+Python 3 specific files of %{name}.
+%endif
 
 %package -n spacewalk-check
 Summary: Check for Spacewalk actions
@@ -130,10 +142,11 @@ Group: System Environment/Base
 Provides: rhn-check = %{version}-%{release}
 Obsoletes: rhn-check < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
+Requires: %{pythonX}-spacewalk-check = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: zypp-plugin-spacewalk >= 0.4
 %else
-%if 0%{?fedora} >= 22
+%if 0%{?fedora}
 Requires: dnf-plugin-spacewalk >= 2.4.0
 %else
 Requires: yum-rhn-plugin >= 1.6.4-1
@@ -144,11 +157,30 @@ Requires: yum-rhn-plugin >= 1.6.4-1
 spacewalk-check polls a SUSE Manager or Spacewalk server to find and execute
 scheduled actions.
 
+%package -n python2-spacewalk-check
+Summary: Check for RHN actions
+%{?python_provide:%python_provide python2-spacewalk-check}
+Requires: spacewalk-check = %{version}-%{release}
+
+%description -n python2-spacewalk-check
+Python 2 specific files for rhn-check.
+
+%if 0%{?build_py3}
+%package -n python3-spacewalk-check
+Summary: Support programs and libraries for Spacewalk
+%{?python_provide:%python_provide python3-spacewalk-check}
+Requires: spacewalk-check = %{version}-%{release}
+
+%description -n python3-spacewalk-check
+Python 3 specific files for spacewalk-check.
+%endif
+
 %package -n spacewalk-client-setup
 Summary: Configure and register an Spacewalk client
 Group: System Environment/Base
 Provides: rhn-setup = %{version}-%{release}
 Obsoletes: rhn-setup < %{version}-%{release}
+Requires: %{pythonX}-spacewalk-client-setup
 %if 0%{?fedora} || 0%{?rhel}
 Requires: usermode >= 1.36
 %endif
@@ -156,29 +188,60 @@ Requires: %{name} = %{version}-%{release}
 Requires: %{rhnsd}
 Requires: suseRegisterInfo
 
-%if 0%{?rhel} == 5
-Requires: newt
-%endif
-%if 0%{?suse_version}
-Requires: python-newt
-%endif
-%if 0%{?fedora} || 0%{?rhel} > 5
-Requires: newt-python
-%endif
-
 %description -n spacewalk-client-setup
 spacewalk-client-setup contains programs and utilities to configure a system to use
 SUSE Manager or Spacewalk.
 
+%package -n python2-spacewalk-client-setup
+Summary: Configure and register an Spacewalk client
+%{?python_provide:%python_provide python2-spacewalk-client-setup}
+Requires: spacewalk-client-setup = %{version}-%{release}
+%if 0%{?rhel} == 5
+Requires: newt
+%endif
+%if 0%{?fedora} || 0%{?rhel} > 5
+Requires: newt-python
+%endif
+%if 0%{?suse_version}
+Requires: python-newt
+%endif
+
+%description -n python2-spacewalk-client-setup
+Python 2 specific files for spacewalk-client-setup.
+
+%if 0%{?build_py3}
+%package -n python3-spacewalk-client-setup
+Summary: Configure and register an Spacewalk client
+%{?python_provide:%python_provide python3-spacewalk-client-setup}
+Requires: spacewalk-client-setup = %{version}-%{release}
+%if 0%{?suse_version}
+Requires: python3-newt
+%else
+Requires: newt-python3
+%endif
+
+%description -n python3-spacewalk-client-setup
+Python 3 specific files for spacewalk-client-setup.
+%endif
+
+
 %if ! 0%{?without_rhn_register}
 %package -n spacewalk-client-setup-gnome
-Summary: A GUI interface for SUSE Manager/Spacewalk Registration
+Summary: A GUI interface for RHN/Spacewalk Registration
 Group: System Environment/Base
-Provides: rhn-setup-gnome = %{version}-%{release}
-Obsoletes: rhn-setup-gnome < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
-Requires: %{rhn_setup} = %{version}-%{release}
+Requires: %{pythonX}-spacewalk-client-setup
+Requires: spacewalk-client-setup = %{version}-%{release}
 Requires: pam >= 0.72
+
+%description -n spacewalk-client-setup-gnome
+rhn-setup-gnome contains a GTK+ graphical interface for configuring and
+registering a system with a Red Hat Satellite or Spacewalk server.
+
+%package -n python2-spacewalk-client-setup-gnome
+Summary: Configure and register an RHN/Spacewalk client
+%{?python_provide:%python_provide python2-spacewalk-client-setup-gnome}
+Requires: spacewalk-client-setup-gnome
 %if 0%{?suse_version}
 Requires: python-gnome python-gtk
 %else
@@ -190,31 +253,48 @@ Requires: gnome-python2-gnome gnome-python2-bonobo
 Requires: liberation-sans-fonts
 %endif
 
-%description -n spacewalk-client-setup-gnome
-spacewalk-setup-gnome contains a GTK+ graphical interface for configuring and
-registering a system with a SUSE Manager server or Spacewalk server.
+%description -n python2-spacewalk-client-setup-gnome
+Python 2 specific files for spacewalk-client-setup-gnome.
+
+%if 0%{?build_py3}
+%package -n python3-spacewalk-client-setup-gnome
+Summary: Configure and register an RHN/Spacewalk client
+%{?python_provide:%python_provide python3-spacewalk-client-setup-gnome}
+Requires: spacewalk-client-setup-gnome
+%if 0%{?suse_version}
+Requires: python-gnome python-gtk
+%else
+Requires: pygtk2 pygtk2-libglade gnome-python2 gnome-python2-canvas
+Requires: usermode-gtk
+%endif
+%if 0%{?fedora} || 0%{?rhel} > 5
+Requires: gnome-python2-gnome gnome-python2-bonobo
+Requires: liberation-sans-fonts
+%endif
+
+%description -n python3-spacewalk-client-setup-gnome
+Python 3 specific files for spacewalk-client-setup-gnome.
+%endif
 %endif
 
 %prep
 %setup -q
-%if 0%{?rhel} && 0%{?rhel} <= 4
-patch -p1 < patches/rhel4-static.dif
-%endif
 
 %build
-%if 0%{?suse_version} < 1110
-# SLE10 gettext does not work with context feature feature
-# remove duplicate translation blocks
-for i in po/*.po; do sed -i -n '/^msgctxt/,/^$/d;p' "$i"; done
-%endif
 make -f Makefile.rhn-client-tools
-%if 0%{?fedora} >= 23
-    sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/actions/*.py src/bin/*.py test/*.py
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
+make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
+        PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version} \
+        PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
+%if 0%{?build_py3}
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/actions/*.py src/bin/*.py test/*.py
+make -f Makefile.rhn-client-tools
+make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
+        PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
+        PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
+%endif
 
 mkdir -p $RPM_BUILD_ROOT/var/lib/up2date
 mkdir -pm700 $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date
@@ -230,26 +310,26 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/rhn/actions/errata.py*
 %endif
 
 %if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
-rm $RPM_BUILD_ROOT%{_datadir}/rhn/up2date_client/hardware_hal.*
+rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_hal.*
 %else
-rm $RPM_BUILD_ROOT%{_datadir}/rhn/up2date_client/hardware_gudev.*
+rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_gudev.*
 %endif
 
-%if 0%{?rhel} > 0
-%if 0%{?rhel} < 6
-rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/up2date_client/firstboot
+%if 0%{?rhel} == 5
+rm -rf $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/firstboot
 rm -f $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_register.*
 %endif
 %if 0%{?rhel} == 6
 rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_*_*.*
 %endif
-%if 0%{?rhel} > 6
-rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/up2date_client/firstboot
+%if ! 0%{?rhel} || 0%{?rhel} > 6
+rm -rf $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/firstboot
 rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/
 %endif
-%else
-rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_*_*.*
+%if 0%{?build_py3}
+rm -rf $RPM_BUILD_ROOT%{python3_sitelib}/up2date_client/firstboot
 %endif
+
 
 %if 0%{?without_rhn_register}
 rm -rf $RPM_BUILD_ROOT/etc/pam.d
@@ -262,13 +342,13 @@ rm -f $RPM_BUILD_ROOT/usr/share/man/man8/rhn_register.8.gz
 rm -rf $RPM_BUILD_ROOT/%{_datadir}/firstboot
 rm -rf $RPM_BUILD_ROOT/%{_datadir}/pixmaps
 rm -rf $RPM_BUILD_ROOT/%{_datadir}/icons
-rm -rf $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/firstboot
+rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/firstboot
 
-rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/messageWindow.*
-rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/rhnregGui.*
-rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/rh_register.glade
-rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/gui.*
-rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/progress.*
+rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/messageWindow.*
+rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/rhnregGui.*
+rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/rh_register.glade
+rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/gui.*
+rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/progress.*
 rm -f $RPM_BUILD_ROOT/%{_datadir}/man/man8/rhn_register.*
 %else
 desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rhn rhn_register.desktop
@@ -294,10 +374,22 @@ cd -
 
 %find_lang rhn-client-tools
 
-%if 0%{?suse_version}
-%py_compile %{buildroot}/%{rhnroot}
-%py_compile -O %{buildroot}/%{rhnroot}
-%endif
+# create links to default script version
+%define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
+for i in \
+    /usr/sbin/rhn-profile-sync \
+    /usr/sbin/rhn_check \
+    /usr/sbin/rhn_register \
+    /usr/sbin/rhnreg_ks \
+    /usr/sbin/spacewalk-channel \
+; do
+    ln -s $(basename "$i")%{default_suffix} "$RPM_BUILD_ROOT$i"
+done
+
+#%if 0%{?suse_version}
+#%py_compile %{buildroot}/%{python_sitelib}
+#%py_compile -O %{buildroot}/%{python_sitelib}
+#%endif
 
 %post
 rm -f %{_localstatedir}/spool/up2date/loginAuth.pkl
@@ -348,30 +440,6 @@ make -f Makefile.rhn-client-tools test
 %dir %{_datadir}/rhn/up2date_client
 %dir %{_localstatedir}/spool/up2date
 
-#files
-%{_datadir}/rhn/up2date_client/__init__.*
-%{_datadir}/rhn/up2date_client/config.*
-%{_datadir}/rhn/up2date_client/haltree.*
-%{_datadir}/rhn/up2date_client/hardware*
-%{_datadir}/rhn/up2date_client/up2dateUtils.*
-%{_datadir}/rhn/up2date_client/up2dateLog.*
-%{_datadir}/rhn/up2date_client/up2dateErrors.*
-%{_datadir}/rhn/up2date_client/up2dateAuth.*
-%{_datadir}/rhn/up2date_client/rpcServer.*
-%{_datadir}/rhn/up2date_client/rhnserver.*
-%{_datadir}/rhn/up2date_client/pkgUtils.*
-%{_datadir}/rhn/up2date_client/rpmUtils.*
-%{_datadir}/rhn/up2date_client/debUtils.*
-%{_datadir}/rhn/up2date_client/rhnPackageInfo.*
-%{_datadir}/rhn/up2date_client/rhnChannel.*
-%{_datadir}/rhn/up2date_client/rhnHardware.*
-%{_datadir}/rhn/up2date_client/transaction.*
-%{_datadir}/rhn/up2date_client/clientCaps.*
-%{_datadir}/rhn/up2date_client/capabilities.*
-%{_datadir}/rhn/up2date_client/rhncli.*
-%{_datadir}/rhn/up2date_client/pkgplatform.*
-%{_datadir}/rhn/__init__.*
-
 %{_sbindir}/rhn-profile-sync
 
 %ghost %attr(600,root,root) %verify(not md5 size mtime) %{_localstatedir}/spool/up2date/loginAuth.pkl
@@ -383,47 +451,139 @@ make -f Makefile.rhn-client-tools test
 %{_presetdir}/50-spacewalk-client.preset
 %endif
 
+%files -n python2-%{name}
+%defattr(-,root,root,-)
+%{_sbindir}/rhn-profile-sync-%{python_version}
+%dir %{python_sitelib}/up2date_client/
+%{python_sitelib}/up2date_client/__init__.*
+%{python_sitelib}/up2date_client/config.*
+%{python_sitelib}/up2date_client/haltree.*
+%{python_sitelib}/up2date_client/hardware*
+%{python_sitelib}/up2date_client/up2dateUtils.*
+%{python_sitelib}/up2date_client/up2dateLog.*
+%{python_sitelib}/up2date_client/up2dateErrors.*
+%{python_sitelib}/up2date_client/up2dateAuth.*
+%{python_sitelib}/up2date_client/rpcServer.*
+%{python_sitelib}/up2date_client/rhnserver.*
+%{python_sitelib}/up2date_client/pkgUtils.*
+%{python_sitelib}/up2date_client/rpmUtils.*
+%{python_sitelib}/up2date_client/debUtils.*
+%{python_sitelib}/up2date_client/rhnPackageInfo.*
+%{python_sitelib}/up2date_client/rhnChannel.*
+%{python_sitelib}/up2date_client/rhnHardware.*
+%{python_sitelib}/up2date_client/transaction.*
+%{python_sitelib}/up2date_client/clientCaps.*
+%{python_sitelib}/up2date_client/capabilities.*
+%{python_sitelib}/up2date_client/rhncli.*
+%{python_sitelib}/up2date_client/pkgplatform.*
+
+%if 0%{?build_py3}
+%files -n python3-%{name}
+%defattr(-,root,root,-)
+%{_sbindir}/rhn-profile-sync-%{python3_version}
+%dir %{python3_sitelib}/up2date_client/
+%{python3_sitelib}/up2date_client/__init__.*
+%{python3_sitelib}/up2date_client/config.*
+%{python3_sitelib}/up2date_client/haltree.*
+%{python3_sitelib}/up2date_client/hardware*
+%{python3_sitelib}/up2date_client/up2dateUtils.*
+%{python3_sitelib}/up2date_client/up2dateLog.*
+%{python3_sitelib}/up2date_client/up2dateErrors.*
+%{python3_sitelib}/up2date_client/up2dateAuth.*
+%{python3_sitelib}/up2date_client/rpcServer.*
+%{python3_sitelib}/up2date_client/rhnserver.*
+%{python3_sitelib}/up2date_client/pkgUtils.*
+%{python3_sitelib}/up2date_client/rpmUtils.*
+%{python3_sitelib}/up2date_client/debUtils.*
+%{python3_sitelib}/up2date_client/rhnPackageInfo.*
+%{python3_sitelib}/up2date_client/rhnChannel.*
+%{python3_sitelib}/up2date_client/rhnHardware.*
+%{python3_sitelib}/up2date_client/transaction.*
+%{python3_sitelib}/up2date_client/clientCaps.*
+%{python3_sitelib}/up2date_client/capabilities.*
+%{python3_sitelib}/up2date_client/rhncli.*
+%{python3_sitelib}/up2date_client/pkgplatform.*
+%dir %{python3_sitelib}/up2date_client/__pycache__/
+%{python3_sitelib}/up2date_client/__pycache__/__init__.*
+%{python3_sitelib}/up2date_client/__pycache__/config.*
+%{python3_sitelib}/up2date_client/__pycache__/haltree.*
+%{python3_sitelib}/up2date_client/__pycache__/hardware*
+%{python3_sitelib}/up2date_client/__pycache__/up2dateUtils.*
+%{python3_sitelib}/up2date_client/__pycache__/up2dateLog.*
+%{python3_sitelib}/up2date_client/__pycache__/up2dateErrors.*
+%{python3_sitelib}/up2date_client/__pycache__/up2dateAuth.*
+%{python3_sitelib}/up2date_client/__pycache__/rpcServer.*
+%{python3_sitelib}/up2date_client/__pycache__/rhnserver.*
+%{python3_sitelib}/up2date_client/__pycache__/pkgUtils.*
+%{python3_sitelib}/up2date_client/__pycache__/rpmUtils.*
+%{python3_sitelib}/up2date_client/__pycache__/debUtils.*
+%{python3_sitelib}/up2date_client/__pycache__/rhnPackageInfo.*
+%{python3_sitelib}/up2date_client/__pycache__/rhnChannel.*
+%{python3_sitelib}/up2date_client/__pycache__/rhnHardware.*
+%{python3_sitelib}/up2date_client/__pycache__/transaction.*
+%{python3_sitelib}/up2date_client/__pycache__/clientCaps.*
+%{python3_sitelib}/up2date_client/__pycache__/capabilities.*
+%{python3_sitelib}/up2date_client/__pycache__/rhncli.*
+%{python3_sitelib}/up2date_client/__pycache__/pkgplatform.*
+%endif
+
 %files -n spacewalk-check
 %defattr(-,root,root,-)
-%dir %{_datadir}/rhn/actions
 %{_mandir}/man8/rhn_check.8*
-
 %{_sbindir}/rhn_check
-%{_sbindir}/mgr_check
-%{_sbindir}/spacewalk-update-status
-%{_sbindir}/mgr-update-status
 
-%{_datadir}/rhn/up2date_client/getMethod.*
-
+%files -n python2-spacewalk-check
+%defattr(-,root,root,-)
+%{_sbindir}/rhn_check-%{python_version}
+%dir %{python_sitelib}/actions/
+%{python_sitelib}/up2date_client/getMethod.*
 # actions for rhn_check to run
-%{_datadir}/rhn/actions/__init__.*
-%{_datadir}/rhn/actions/hardware.*
-%{_datadir}/rhn/actions/systemid.*
-%{_datadir}/rhn/actions/reboot.*
-%{_datadir}/rhn/actions/rhnsd.*
-%{_datadir}/rhn/actions/up2date_config.*
+%{python_sitelib}/actions/__init__.*
+%{python_sitelib}/actions/hardware.*
+%{python_sitelib}/actions/systemid.*
+%{python_sitelib}/actions/reboot.*
+%{python_sitelib}/actions/rhnsd.*
+%{python_sitelib}/actions/up2date_config.*
+
+%if 0%{?build_py3}
+%files -n python3-spacewalk-check
+%defattr(-,root,root,-)
+%{_sbindir}/rhn_check-%{python3_version}
+%dir %{python3_sitelib}/actions/
+%{python3_sitelib}/up2date_client/getMethod.*
+%{python3_sitelib}/actions/__init__.*
+%{python3_sitelib}/actions/hardware.*
+%{python3_sitelib}/actions/systemid.*
+%{python3_sitelib}/actions/reboot.*
+%{python3_sitelib}/actions/rhnsd.*
+%{python3_sitelib}/actions/up2date_config.*
+%dir %{python3_sitelib}/actions/__pycache__/
+%{python3_sitelib}/up2date_client/__pycache__/getMethod.*
+%{python3_sitelib}/actions/__pycache__/__init__.*
+%{python3_sitelib}/actions/__pycache__/hardware.*
+%{python3_sitelib}/actions/__pycache__/systemid.*
+%{python3_sitelib}/actions/__pycache__/reboot.*
+%{python3_sitelib}/actions/__pycache__/rhnsd.*
+%{python3_sitelib}/actions/__pycache__/up2date_config.*
+%endif
 
 %files -n spacewalk-client-setup
 %defattr(-,root,root,-)
 %{_mandir}/man8/rhnreg_ks.8*
+%{_mandir}/man8/rhn_register.8*
 %{_mandir}/man8/spacewalk-channel.8*
 %{_mandir}/man8/rhn-channel.8*
 
+%config(noreplace) %{_sysconfdir}/security/console.apps/rhn_register
+%config(noreplace) %{_sysconfdir}/pam.d/rhn_register
+%if 0%{?fedora} || 0%{?rhel}
+%{_bindir}/rhn_register
+%endif
+%{_sbindir}/rhn_register
 %{_sbindir}/rhnreg_ks
 %{_sbindir}/spacewalk-channel
 %{_sbindir}/rhn-channel
 
-%{_datadir}/rhn/up2date_client/rhnreg.*
-%{_datadir}/rhn/up2date_client/pmPlugin.*
-%{_datadir}/rhn/up2date_client/tui.*
-%{_datadir}/rhn/up2date_client/rhnreg_constants.*
-
-%if ! 0%{?without_rhn_register}
-%{_mandir}/man8/rhn_register.8*
-%config(noreplace) %{_sysconfdir}/security/console.apps/rhn_register
-%config(noreplace) %{_sysconfdir}/pam.d/rhn_register
-%{_bindir}/rhn_register
-%{_sbindir}/rhn_register
 %{_datadir}/setuptool/setuptool.d/99rhn_register
 
 %if 0%{?suse_version}
@@ -432,16 +592,36 @@ make -f Makefile.rhn-client-tools test
 %dir %{_datadir}/setuptool
 %dir %{_datadir}/setuptool/setuptool.d
 %endif
+
+%files -n python2-spacewalk-client-setup
+%defattr(-,root,root,-)
+%{_sbindir}/rhn_register-%{python_version}
+%{_sbindir}/rhnreg_ks-%{python_version}
+%{_sbindir}/spacewalk-channel-%{python_version}
+%{python2_sitelib}/up2date_client/rhnreg.*
+%{python2_sitelib}/up2date_client/pmPlugin.*
+%{python2_sitelib}/up2date_client/tui.*
+%{python2_sitelib}/up2date_client/rhnreg_constants.*
+
+%if 0%{?build_py3}
+%files -n python3-spacewalk-client-setup
+%defattr(-,root,root,-)
+%{_sbindir}/rhn_register-%{python3_version}
+%{_sbindir}/rhnreg_ks-%{python3_version}
+%{_sbindir}/spacewalk-channel-%{python3_version}
+%{python3_sitelib}/up2date_client/rhnreg.*
+%{python3_sitelib}/up2date_client/pmPlugin.*
+%{python3_sitelib}/up2date_client/tui.*
+%{python3_sitelib}/up2date_client/rhnreg_constants.*
+%{python3_sitelib}/up2date_client/__pycache__/rhnreg.*
+%{python3_sitelib}/up2date_client/__pycache__/pmPlugin.*
+%{python3_sitelib}/up2date_client/__pycache__/tui.*
+%{python3_sitelib}/up2date_client/__pycache__/rhnreg_constants.*
 %endif
 
 %if ! 0%{?without_rhn_register}
 %files -n spacewalk-client-setup-gnome
 %defattr(-,root,root,-)
-%{_datadir}/rhn/up2date_client/messageWindow.*
-%{_datadir}/rhn/up2date_client/rhnregGui.*
-%{_datadir}/rhn/up2date_client/rh_register.glade
-%{_datadir}/rhn/up2date_client/gui.*
-%{_datadir}/rhn/up2date_client/progress.*
 %{_datadir}/pixmaps/*png
 %{_datadir}/icons/hicolor/16x16/apps/up2date.png
 %{_datadir}/icons/hicolor/24x24/apps/up2date.png
@@ -452,30 +632,9 @@ make -f Makefile.rhn-client-tools test
 %{_datadir}/icons/hicolor/256x256/apps/up2date.png
 %endif
 %{_datadir}/applications/rhn_register.desktop
-
-%if 0%{?rhel} > 0 && 0%{?rhel} < 6
-%{_datadir}/firstboot/modules/rhn_login_gui.*
-%{_datadir}/firstboot/modules/rhn_choose_channel.*
-%{_datadir}/firstboot/modules/rhn_register_firstboot_gui_window.*
-%{_datadir}/firstboot/modules/rhn_start_gui.*
-%{_datadir}/firstboot/modules/rhn_choose_server_gui.*
-%{_datadir}/firstboot/modules/rhn_provide_certificate_gui.*
-%{_datadir}/firstboot/modules/rhn_create_profile_gui.*
-%{_datadir}/firstboot/modules/rhn_review_gui.*
-%{_datadir}/firstboot/modules/rhn_finish_gui.*
-%else
-%if 0%{?rhel} < 7
-%{_datadir}/firstboot/modules/rhn_register.*
-%{_datadir}/rhn/up2date_client/firstboot/rhn_login_gui.*
-%{_datadir}/rhn/up2date_client/firstboot/rhn_start_gui.*
-%{_datadir}/rhn/up2date_client/firstboot/rhn_choose_server_gui.*
-%{_datadir}/rhn/up2date_client/firstboot/rhn_choose_channel.*
-%{_datadir}/rhn/up2date_client/firstboot/rhn_provide_certificate_gui.*
-%{_datadir}/rhn/up2date_client/firstboot/rhn_create_profile_gui.*
-%{_datadir}/rhn/up2date_client/firstboot/rhn_review_gui.*
-%{_datadir}/rhn/up2date_client/firstboot/rhn_finish_gui.*
-%endif
-%endif
+%{_datadir}/rhn/up2date_client/gui.glade
+%{_datadir}/rhn/up2date_client/progress.glade
+%{_datadir}/rhn/up2date_client/rh_register.glade
 
 %if 0%{?suse_version}
 # on SUSE these directories are part of packages not installed
@@ -492,6 +651,49 @@ make -f Makefile.rhn-client-tools test
 %dir %{_datadir}/rhn/up2date_client/firstboot
 %dir %{_datadir}/firstboot
 %dir %{_datadir}/firstboot/modules
+%endif
+
+%files -n python2-spacewalk-client-setup-gnome
+%defattr(-,root,root,-)
+%{python_sitelib}/up2date_client/messageWindow.*
+%{python_sitelib}/up2date_client/rhnregGui.*
+%{python_sitelib}/up2date_client/gui.*
+%{python_sitelib}/up2date_client/progress.*
+%if 0%{?rhel} == 5
+%{_datadir}/firstboot/modules/rhn_login_gui.*
+%{_datadir}/firstboot/modules/rhn_choose_channel.*
+%{_datadir}/firstboot/modules/rhn_register_firstboot_gui_window.*
+%{_datadir}/firstboot/modules/rhn_start_gui.*
+%{_datadir}/firstboot/modules/rhn_choose_server_gui.*
+%{_datadir}/firstboot/modules/rhn_provide_certificate_gui.*
+%{_datadir}/firstboot/modules/rhn_create_profile_gui.*
+%{_datadir}/firstboot/modules/rhn_review_gui.*
+%{_datadir}/firstboot/modules/rhn_finish_gui.*
+%else
+%if 0%{?rhel} == 6
+%{_datadir}/firstboot/modules/rhn_register.*
+%{python_sitelib}/up2date_client/firstboot/rhn_login_gui.*
+%{python_sitelib}/up2date_client/firstboot/rhn_start_gui.*
+%{python_sitelib}/up2date_client/firstboot/rhn_choose_server_gui.*
+%{python_sitelib}/up2date_client/firstboot/rhn_choose_channel.*
+%{python_sitelib}/up2date_client/firstboot/rhn_provide_certificate_gui.*
+%{python_sitelib}/up2date_client/firstboot/rhn_create_profile_gui.*
+%{python_sitelib}/up2date_client/firstboot/rhn_review_gui.*
+%{python_sitelib}/up2date_client/firstboot/rhn_finish_gui.*
+%endif
+%endif
+
+%if 0%{?build_py3}
+%files -n python3-spacewalk-client-setup-gnome
+%defattr(-,root,root,-)
+%{python3_sitelib}/up2date_client/messageWindow.*
+%{python3_sitelib}/up2date_client/rhnregGui.*
+%{python3_sitelib}/up2date_client/gui.*
+%{python3_sitelib}/up2date_client/progress.*
+%{python3_sitelib}/up2date_client/__pycache__/messageWindow.*
+%{python3_sitelib}/up2date_client/__pycache__/rhnregGui.*
+%{python3_sitelib}/up2date_client/__pycache__/gui.*
+%{python3_sitelib}/up2date_client/__pycache__/progress.*
 %endif
 %endif
 

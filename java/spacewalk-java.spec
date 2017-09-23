@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.16
+Version: 2.8.18
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -595,6 +595,12 @@ cd build/reports/apidocs/docbook
 /usr/bin/xmllint --xinclude --postvalid book.xml > susemanager_api_doc.xml
 cd $RPM_BUILD_ROOT
 
+# disable crash dumps in IBM java (OpenJDK have them off by default)
+#if java -version 2>&1 | grep -q IBM ; then
+#    sed -i '/#wrapper\.java\.additional\.[0-9]=-Xdump:none/ { s/^#//; }' \
+#        conf/default/rhn_taskomatic_daemon.conf
+#fi
+
 %install
 export NO_BRP_CHECK_BYTECODE_VERSION=true
 export NO_BRP_STALE_LINK_ERROR=yes
@@ -1026,6 +1032,13 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Thu Sep 21 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.18-1
+- 1483503 - disable ibm java coredumps in tanukiwrapper
+
+* Thu Sep 21 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.17-1
+- 1493143 - keep errata in the original channel for
+  channel.software.mergeErrata
+
 * Fri Sep 15 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.16-1
 - Initialize prefix property in build.xml for install-tomcat target
 

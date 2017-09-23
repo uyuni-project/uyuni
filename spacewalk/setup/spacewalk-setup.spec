@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.8.1
+Version:        2.8.2
 Release:        1%{?dist}
 Summary:        Initial setup tools for Spacewalk
 
@@ -97,12 +97,12 @@ rm -rf %{buildroot}
 make pure_install PERL_INSTALL_ROOT=%{buildroot}
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -type d -depth -exec rmdir {} 2>/dev/null ';'
-%if 0%{?rhel} == 5
-cat share/tomcat.java_opts.rhel5 >>share/tomcat.java_opts
-%endif
 %if 0%{?rhel} == 6
 cat share/tomcat.java_opts.rhel6 >>share/tomcat.java_opts
 %endif
+#if java -version 2>&1 | grep -q IBM ; then
+#    cat share/tomcat.java_opts.ibm >>share/tomcat.java_opts
+#fi
 rm -f share/tomcat.java_opts.*
 %if 0%{?suse_version}
 # SLES12 tomcat has only tomcat.conf
@@ -231,6 +231,10 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Thu Sep 21 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
+- clean up RHEL5 specific settings
+- 1483503 - disable ibm java coredumps for tomcat
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
 - purged changelog entries for Spacewalk 2.0 and older
 - Bumping package versions for 2.8.
