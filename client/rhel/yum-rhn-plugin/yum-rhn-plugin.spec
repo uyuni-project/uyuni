@@ -91,6 +91,7 @@ fi
 %dir /etc/yum
 %dir /etc/yum/pluginconf.d
 %dir /usr/share/yum-plugins
+%dir %{python_sitelib}/actions
 
 
 %changelog
