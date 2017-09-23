@@ -4,7 +4,7 @@
 %endif
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
-
+%{!?python2_sitelib: %global python2_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 # package renaming fun :(
 %define rhn_client_tools spacewalk-client-tools
@@ -22,7 +22,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.7.6.2
+Version: 2.8.2
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -296,6 +296,8 @@ make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
 %endif
 
+ln -s spacewalk-channel $RPM_BUILD_ROOT%{_sbindir}/rhn-channel
+
 mkdir -p $RPM_BUILD_ROOT/var/lib/up2date
 mkdir -pm700 $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date
 touch $RPM_BUILD_ROOT%{_localstatedir}/spool/up2date/loginAuth.pkl
@@ -330,27 +332,7 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/
 rm -rf $RPM_BUILD_ROOT%{python3_sitelib}/up2date_client/firstboot
 %endif
 
-
-%if 0%{?without_rhn_register}
-rm -rf $RPM_BUILD_ROOT/etc/pam.d
-rm -rf $RPM_BUILD_ROOT/etc/security/console.apps
-rm -rf $RPM_BUILD_ROOT/usr/share/setuptool
-rm -f $RPM_BUILD_ROOT/usr/bin/rhn_register
-rm -f $RPM_BUILD_ROOT/usr/sbin/rhn_register
-rm -f $RPM_BUILD_ROOT/usr/share/man/man8/rhn_register.8.gz
-#spacewalk-client-setup-gnome
-rm -rf $RPM_BUILD_ROOT/%{_datadir}/firstboot
-rm -rf $RPM_BUILD_ROOT/%{_datadir}/pixmaps
-rm -rf $RPM_BUILD_ROOT/%{_datadir}/icons
-rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/firstboot
-
-rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/messageWindow.*
-rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/rhnregGui.*
-rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/rh_register.glade
-rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/gui.*
-rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/progress.*
-rm -f $RPM_BUILD_ROOT/%{_datadir}/man/man8/rhn_register.*
-%else
+%if ! 0%{?without_rhn_register}
 desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rhn rhn_register.desktop
 %if 0%{?suse_version}
 %suse_update_desktop_file -r rhn_register "Settings;System;SystemSetup;"
@@ -385,6 +367,29 @@ for i in \
 ; do
     ln -s $(basename "$i")%{default_suffix} "$RPM_BUILD_ROOT$i"
 done
+
+%if 0%{?without_rhn_register}
+rm -rf $RPM_BUILD_ROOT/etc/pam.d
+rm -rf $RPM_BUILD_ROOT/etc/security/console.apps
+rm -rf $RPM_BUILD_ROOT/usr/share/setuptool
+rm -f $RPM_BUILD_ROOT/usr/bin/rhn_register
+rm -f $RPM_BUILD_ROOT/usr/sbin/rhn_register
+rm -f $RPM_BUILD_ROOT/usr/share/man/man8/rhn_register.8.gz
+#spacewalk-client-setup-gnome
+rm -rf $RPM_BUILD_ROOT/%{_datadir}/firstboot
+rm -rf $RPM_BUILD_ROOT/%{_datadir}/pixmaps
+rm -rf $RPM_BUILD_ROOT/%{_datadir}/icons
+rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/firstboot
+
+rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/messageWindow.*
+rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/rhnregGui.*
+rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/progress.*
+rm -f $RPM_BUILD_ROOT/%{python_sitelib}/up2date_client/gui.*
+rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/rh_register.glade
+rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/gui.glade
+rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/progress.glade
+rm -f $RPM_BUILD_ROOT/%{_datadir}/man/man8/rhn_register.*
+%endif
 
 #%if 0%{?suse_version}
 #%py_compile %{buildroot}/%{python_sitelib}
@@ -531,6 +536,9 @@ make -f Makefile.rhn-client-tools test
 %defattr(-,root,root,-)
 %{_mandir}/man8/rhn_check.8*
 %{_sbindir}/rhn_check
+%{_sbindir}/mgr_check
+%{_sbindir}/spacewalk-update-status
+%{_sbindir}/mgr-update-status
 
 %files -n python2-spacewalk-check
 %defattr(-,root,root,-)
@@ -570,20 +578,21 @@ make -f Makefile.rhn-client-tools test
 %files -n spacewalk-client-setup
 %defattr(-,root,root,-)
 %{_mandir}/man8/rhnreg_ks.8*
-%{_mandir}/man8/rhn_register.8*
 %{_mandir}/man8/spacewalk-channel.8*
 %{_mandir}/man8/rhn-channel.8*
 
+%{_sbindir}/rhnreg_ks
+%{_sbindir}/spacewalk-channel
+%{_sbindir}/rhn-channel
+
+%if ! 0%{?without_rhn_register}
+%{_mandir}/man8/rhn_register.8*
 %config(noreplace) %{_sysconfdir}/security/console.apps/rhn_register
 %config(noreplace) %{_sysconfdir}/pam.d/rhn_register
 %if 0%{?fedora} || 0%{?rhel}
 %{_bindir}/rhn_register
 %endif
 %{_sbindir}/rhn_register
-%{_sbindir}/rhnreg_ks
-%{_sbindir}/spacewalk-channel
-%{_sbindir}/rhn-channel
-
 %{_datadir}/setuptool/setuptool.d/99rhn_register
 
 %if 0%{?suse_version}
@@ -591,6 +600,7 @@ make -f Makefile.rhn-client-tools test
 %dir %{_sysconfdir}/security/console.apps
 %dir %{_datadir}/setuptool
 %dir %{_datadir}/setuptool/setuptool.d
+%endif
 %endif
 
 %files -n python2-spacewalk-client-setup
