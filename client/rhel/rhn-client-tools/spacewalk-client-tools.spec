@@ -194,7 +194,7 @@ SUSE Manager or Spacewalk.
 
 %package -n python2-spacewalk-client-setup
 Summary: Configure and register an Spacewalk client
-Requires: python-spacewalk-client-setup = %{version}-%{release}
+Provides: python-spacewalk-client-setup = %{version}-%{release}
 Obsoletes: python-spacewalk-client-setup < %{version}-%{release}
 Requires: spacewalk-client-setup = %{version}-%{release}
 %if 0%{?rhel} == 5
