@@ -13,9 +13,6 @@ INSTALL_DIR     = $(INSTALL) -m 755 -d
 INSTALL_BIN     := $(INSTALL) -m 755
 
 DIRS		= $(BIN_DIR) $(SBIN_DIR)
-# default compile rule:
-%.pyc: %.py
-	python -c "import py_compile; py_compile.compile('$<')"
 
 $(DIRS):
 	@$(INSTALL_DIR) $@
@@ -24,15 +21,12 @@ all:
 	echo "Nothing to do"
 
 install:: all $(DIRS)
-	$(INSTALL_BIN) rhnreg_ks.py $(SBIN_DIR)/rhnreg_ks
-	$(INSTALL_BIN) rhn_register.py $(SBIN_DIR)/rhn_register
-	$(INSTALL_BIN) rhn-profile-sync.py $(SBIN_DIR)/rhn-profile-sync
-	$(INSTALL_BIN) rhn_check.py $(SBIN_DIR)/rhn_check
-	$(INSTALL_BIN) spacewalk-channel.py $(SBIN_DIR)/spacewalk-channel
+	$(INSTALL_BIN) rhnreg_ks.py $(SBIN_DIR)/rhnreg_ks-$(PYTHONVERSION)
+	$(INSTALL_BIN) rhn_register.py $(SBIN_DIR)/rhn_register-$(PYTHONVERSION)
+	$(INSTALL_BIN) rhn-profile-sync.py $(SBIN_DIR)/rhn-profile-sync-$(PYTHONVERSION)
+	$(INSTALL_BIN) rhn_check.py $(SBIN_DIR)/rhn_check-$(PYTHONVERSION)
+	$(INSTALL_BIN) spacewalk-channel.py $(SBIN_DIR)/spacewalk-channel-$(PYTHONVERSION)
 	$(INSTALL_BIN) spacewalk-update-status.py $(SBIN_DIR)/spacewalk-update-status
-
-	ln -sf consolehelper $(BIN_DIR)/rhn_register
-	ln -s spacewalk-channel $(SBIN_DIR)/rhn-channel
 
 # OTHER targets for internal use
 pychecker::

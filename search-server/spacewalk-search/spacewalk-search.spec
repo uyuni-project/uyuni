@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.8.1
+Version: 2.8.2
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -98,6 +98,12 @@ Spacewalk Server.
 
 %prep
 %setup -n %{name}-%{version}
+
+# disable crash dumps in IBM java (OpenJDK have them off by default)
+#if java -version 2>&1 | grep -q IBM ; then
+#    sed -i '/#wrapper\.java\.additional\.[0-9]=-Xdump:none/ { s/^#//; }' \
+#        src/config/search/rhn_search_daemon.conf
+#fi
 
 %install
 rm -fr ${RPM_BUILD_ROOT}
@@ -245,6 +251,9 @@ fi
 %endif
 
 %changelog
+* Thu Sep 21 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
+- 1483503 - disable ibm java coredumps in tanukiwrapper
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
 - purged changelog entries for Spacewalk 2.0 and older
 - Bumping package versions for 2.8.
