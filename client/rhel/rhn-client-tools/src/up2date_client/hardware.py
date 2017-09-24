@@ -1045,7 +1045,7 @@ def Hardware():
         if ret:
             allhw.append(ret)
     except:
-        print _("Error reading system info:"), sys.exc_type
+        print(_("Error reading system info:"), sys.exc_info()[0])
 
     try:
         ret = read_machineinfo()
