@@ -333,9 +333,9 @@ class RegistrationResult:
 
 def registerSystemAddProductProfile( server, data ):
     if server.capabilities.hasCapability('xmlrpc.packages.suse_products', 1):
-	# also send information about the installed products
-	log.log_me('Updating product profile')
-	data["suse_products"] = getProductProfile()
+        # also send information about the installed products
+        log.log_me('Updating product profile')
+        data["suse_products"] = getProductProfile()
 
 def registerSystem(username = None, password = None,
                    profileName = None,
