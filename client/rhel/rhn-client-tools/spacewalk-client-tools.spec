@@ -403,6 +403,12 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/rh_register.glade
 rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/gui.glade
 rm -f $RPM_BUILD_ROOT/%{_datadir}/rhn/up2date_client/progress.glade
 rm -f $RPM_BUILD_ROOT/%{_datadir}/man/man8/rhn_register.*
+%if 0%{?build_py3}
+rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/messageWindow.*
+rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/rhnregGui.*
+rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/progress.*
+rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/gui.*
+%endif
 %endif
 
 %if 0%{?suse_version}

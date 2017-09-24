@@ -33,14 +33,14 @@ def updatePackageProfile(timeout=None):
     s.registration.update_packages(up2dateAuth.getSystemId(), packages)
 
     if s.capabilities.hasCapability('xmlrpc.packages.suse_products', 1):
-	# also send information about the installed products
-	log.log_me('Updating product profile')
-	productProfile = getProductProfile()
-	s.registration.suse_update_products(up2dateAuth.getSystemId(),
-					    productProfile['guid'],
-					    productProfile['secret'],
-					    productProfile['ostarget'],
-					    productProfile['products'])
+        # also send information about the installed products
+        log.log_me('Updating product profile')
+        productProfile = getProductProfile()
+        s.registration.suse_update_products(up2dateAuth.getSystemId(),
+                                            productProfile['guid'],
+                                            productProfile['secret'],
+                                            productProfile['ostarget'],
+                                            productProfile['products'])
 
 def pprint_pkglist(pkglist):
     if type(pkglist) == type([]):
@@ -71,9 +71,9 @@ def customUpdateProductProfile(productProfile):
     log = up2dateLog.initLog()
     s = rhnserver.RhnServer()
     if s.capabilities.hasCapability('xmlrpc.packages.suse_products', 1):
-	log.log_me('Updating product profile')
-	s.registration.suse_update_products(up2dateAuth.getSystemId(),
-					    productProfile['guid'],
-					    productProfile['secret'],
-					    productProfile['ostarget'],
-					    productProfile['products'])
+        log.log_me('Updating product profile')
+        s.registration.suse_update_products(up2dateAuth.getSystemId(),
+                                            productProfile['guid'],
+                                            productProfile['secret'],
+                                            productProfile['ostarget'],
+                                            productProfile['products'])
