@@ -157,8 +157,12 @@ class SSLSocket:
                 self._connection.shutdown()
         # for Python 2
         else:
-            if self._connection.state_string() == 'SSL negotiation finished successfully':
-                self._connection.shutdown()
+            if hasattr(self._connection, "state_string"):
+                if self._connection.state_string() == 'SSL negotiation finished successfully':
+                    self._connection.shutdown()
+            else:
+                if self._connection.get_state_string() == 'SSL negotiation finished successfully':
+                    self._connection.shutdown()
 
         self._connection.close()
         self._closed = 1
