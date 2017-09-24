@@ -80,6 +80,8 @@ system to receive software updates from Spacewalk.
 Summary: Support programs and libraries for Spacewalk
 Provides: python-%{name} = %{version}-%{release}
 Obsoletes: python-%{name} < %{version}-%{release}
+Provides: python2-rhn-client-tools = %{version}-%{release}
+Obsoletes: python2-rhn-client-tools < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: rpm-python
 %ifnarch s390 s390x
@@ -118,6 +120,8 @@ Python 2 specific files of %{name}.
 %if 0%{?build_py3}
 %package -n python3-%{name}
 Summary: Support programs and libraries for Spacewalk
+Provides: python3-rhn-client-tools = %{version}-%{release}
+Obsoletes: python3-rhn-client-tools < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: python3-dbus
 Requires: python3-rpm
@@ -163,6 +167,8 @@ scheduled actions.
 Summary: Check for RHN actions
 Provides: python-spacewalk-check = %{version}-%{release}
 Obsoletes: python-spacewalk-check < %{version}-%{release}
+Provides: python2-rhn-check = %{version}-%{release}
+Obsoletes: python2-rhn-check < %{version}-%{release}
 Requires: spacewalk-check = %{version}-%{release}
 
 %description -n python2-spacewalk-check
@@ -171,6 +177,8 @@ Python 2 specific files for rhn-check.
 %if 0%{?build_py3}
 %package -n python3-spacewalk-check
 Summary: Support programs and libraries for Spacewalk
+Provides: python3-rhn-check = %{version}-%{release}
+Obsoletes: python3-rhn-check < %{version}-%{release}
 Requires: spacewalk-check = %{version}-%{release}
 
 %description -n python3-spacewalk-check
@@ -198,6 +206,8 @@ SUSE Manager or Spacewalk.
 Summary: Configure and register an Spacewalk client
 Provides: python-spacewalk-client-setup = %{version}-%{release}
 Obsoletes: python-spacewalk-client-setup < %{version}-%{release}
+Provides: python2-rhn-setup = %{version}-%{release}
+Obsoletes: python2-rhn-setup < %{version}-%{release}
 Requires: spacewalk-client-setup = %{version}-%{release}
 %if 0%{?rhel} == 5
 Requires: newt
@@ -215,6 +225,8 @@ Python 2 specific files for spacewalk-client-setup.
 %if 0%{?build_py3}
 %package -n python3-spacewalk-client-setup
 Summary: Configure and register an Spacewalk client
+Provides: python3-rhn-setup = %{version}-%{release}
+Obsoletes: python3-rhn-setup < %{version}-%{release}
 Requires: spacewalk-client-setup = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: python3-newt
