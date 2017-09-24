@@ -110,9 +110,11 @@ Requires: dbus-python
 Requires: suseRegisterInfo
 Requires: logrotate
 
+%if 0%{?rhel} != 6
 # The following BuildRequires are for check only
 BuildRequires: python-coverage
 BuildRequires: rpm-python
+%endif
 
 %description -n python2-%{name}
 Python 2 specific files of %{name}.
@@ -141,9 +143,11 @@ Requires: python3-hwdata
 Requires: python3-rhnlib >= 2.5.78
 BuildRequires: python3-devel
 
+%if 0%{?rhel} != 6
 # The following BuildRequires are for check only
 BuildRequires: python3-coverage
 BuildRequires: python3-rpm
+%endif
 
 %description -n python3-%{name}
 Python 3 specific files of %{name}.
