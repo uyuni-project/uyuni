@@ -162,8 +162,8 @@ fi
 %service_del_postun spacewalk-update-status.service
 %else
 %restart_on_update rhnsd
-%endif
 %{insserv_cleanup}
+%endif
 %else
 if [ "$1" -ge "1" ]; then
     %if 0%{?fedora} || 0%{?rhel} >= 7
