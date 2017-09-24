@@ -25,7 +25,9 @@ URL:     https://fedorahosted.org/spacewalk
 Version: 2.8.2
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch: noarch
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
+BuildArch:      noarch
+%endif
 %if 0%{?suse_version}
 BuildRequires: update-desktop-files
 %endif
