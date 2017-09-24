@@ -16,7 +16,8 @@ Group:       Applications/System
 License:     GPLv3+
 URL:         https://github.com/spacewalkproject/spacewalk/wiki/spacecmd
 Source:      https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-%if ((!0%{?suse_version}) || (0%{?suse_version} >= 1120))
+BuildRoot:   %{_tmppath}/%{name}-%{version}-build
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:   noarch
 %endif
 
