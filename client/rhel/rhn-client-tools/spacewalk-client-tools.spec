@@ -123,11 +123,18 @@ Summary: Support programs and libraries for Spacewalk
 Provides: python3-rhn-client-tools = %{version}-%{release}
 Obsoletes: python3-rhn-client-tools < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
+%if 0%{?suse_version}
+Requires: python3-dbus-python
+Requires: libgudev-1_0
+Requires: python3-newt
+Requires: python3-gobject2
+%else
 Requires: python3-dbus
-Requires: python3-rpm
 Requires: libgudev
 Requires: newt-python3
 Requires: python3-gobject-base
+%endif
+Requires: python3-rpm
 Requires: python3-dmidecode
 Requires: python3-netifaces
 Requires: python3-hwdata
