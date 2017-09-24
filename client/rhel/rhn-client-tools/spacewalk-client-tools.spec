@@ -125,7 +125,7 @@ Obsoletes: python3-rhn-client-tools < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: python3-dbus-python
-Requires: libgudev-1_0
+Requires: libgudev-1_0-0
 Requires: python3-newt
 Requires: python3-gobject2
 %else
