@@ -15,7 +15,7 @@ Group: Development/Libraries
 License: GPL-2.0
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%if %{?suse_version: %{?suse_version} > 1110} %{!?suse_version:1}
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch: noarch
 %endif
 BuildRequires: python-devel
