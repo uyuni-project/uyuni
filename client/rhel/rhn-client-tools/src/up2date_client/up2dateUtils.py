@@ -155,7 +155,7 @@ def version():
 
 
 if __name__ == "__main__":
-    print "Version: %s" % getVersion()
-    print "OSRelease: %s" % getOSRelease()
-    print "Release: %s" % getRelease()
-    print "Arch: %s" % getArch()
+    print("Version: %s" % getVersion())
+    print("OSRelease: %s" % getOSRelease())
+    print("Release: %s" % getRelease())
+    print("Arch: %s" % getArch())
