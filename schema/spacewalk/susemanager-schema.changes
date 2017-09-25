@@ -1,4 +1,5 @@
 - enablement of the package profile feature for minions
+- re-create unique index on minion_id (bsc#1059568)
 
 -------------------------------------------------------------------
 Thu Sep 14 17:36:43 CEST 2017 - mc@suse.de
