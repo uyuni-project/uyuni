@@ -26,6 +26,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.ActionMessage;
 
 import java.util.Map;
 
@@ -55,6 +57,11 @@ public class DeleteChannelAction extends RhnAction {
         if (cc != null) {
             if (isSubmitted(daForm)) {
                 deleteChannel(request, cc);
+                ActionMessages msgs = new ActionMessages();
+                msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("message.configuration.channel.deleted",
+                                cc.getName()));
+                saveMessages(request, msgs);
                 //Now that the config channel is gone, some of these sets may no longer
                 //be valid, so clear them.
                 ConfigActionHelper.clearRhnSets(user);
