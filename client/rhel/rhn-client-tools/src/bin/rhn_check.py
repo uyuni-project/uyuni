@@ -62,6 +62,7 @@ from rhn.tb import raise_with_tb
 
 import base64
 import time
+from distutils.sysconfig import get_python_lib
 
 try: # python2
     import xmlrpclib
@@ -370,7 +371,11 @@ class CheckCli(rhncli.RhnCli):
     def __do_call(method, params, kwargs={}):
         log.log_debug("do_call ", method, params, kwargs)
 
-        method = getMethod.getMethod(method, "/usr/share/rhn/", "actions")
+        try:
+            method = getMethod.getMethod(method, "/usr/share/rhn/", "actions")
+        except getMethod.GetMethodException:
+            method = getMethod.getMethod(method, get_python_lib(), "actions")
+
         retval = method(*params, **kwargs)
 
         return retval
