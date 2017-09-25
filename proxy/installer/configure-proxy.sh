@@ -572,13 +572,13 @@ if [ ! -f $HTMLPUB_DIR/$RPM_CA ] || [ ! -f $HTMLPUB_DIR/RHN-ORG-TRUSTED-SSL-CERT
 fi
 
 if [ "$USE_EXISTING_CERTS" -eq "1" ]; then
-    echo "Using custom SSL key and public certificate."
-    default_or_input "Path to the Server's SSL key:" SERVER_KEY ""
+    echo "Using custom SSL key and public certificate for the proxy."
+    default_or_input "Path to the Proxy Server's SSL key:" SERVER_KEY ""
     if [ ! -e $SERVER_KEY ]; then
         config_error 1 "Given file doesn't exist!"
     fi
 
-    default_or_input "Path to the Server's SSL certificate:" SERVER_CERT ""
+    default_or_input "Path to the Proxy Server's SSL certificate:" SERVER_CERT ""
     if [ ! -e $SERVER_CERT ]; then
         config_error 1 "Given file doesn't exist!"
     fi
