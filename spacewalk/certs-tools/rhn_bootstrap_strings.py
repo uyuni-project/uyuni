@@ -116,6 +116,7 @@ REGISTER_THIS_BOX=1
 ALLOW_CONFIG_ACTIONS={allow_config_actions}
 ALLOW_REMOTE_COMMANDS={allow_remote_commands}
 
+# this variable is only relevant for traditional clients and is ignored on salt minions
 FULLY_UPDATE_THIS_BOX={up2dateYN}
 
 # Set if you want to specify profilename for client systems.
