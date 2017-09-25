@@ -7837,6 +7837,9 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="message.configuration.channel.deleted">
+        <source>Channel &lt;strong&gt;'{0}'&lt;/strong&gt; has been deleted.</source>
+      </trans-unit>
       <trans-unit id="distribution.tree.exists">
         <source>A distribution already exists with the name '{0}'.  Please select another name.</source>
       </trans-unit>
