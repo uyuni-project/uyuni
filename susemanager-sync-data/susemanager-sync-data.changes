@@ -1,3 +1,5 @@
+- Support Open Enterprise Server 2018 (bsc#1060182)
+
 - fix description for HA channel (bsc#1063588)
 - Add support for CAASP (bsc#1052283)
 - Add IBM DLPAR channels to SLES for SAP SPx ppc64le (bsc#1068057)
