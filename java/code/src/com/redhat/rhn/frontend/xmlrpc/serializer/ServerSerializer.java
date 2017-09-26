@@ -42,6 +42,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
  *  #struct("server details")
  *         #prop_desc("int", "id", "System id")
  *         #prop("string", "profile_name")
+ *         #prop("string", "machine_id")
  *         #prop_desc("string", "base_entitlement", "System's base entitlement label")
  *
  *         #prop_array("string", "addon_entitlements","System's addon entitlements labels,
@@ -94,6 +95,7 @@ public class ServerSerializer extends RhnXmlRpcCustomSerializer {
         SerializerHelper helper = new SerializerHelper(serializer);
         helper.add("id", server.getId());
         helper.add("profile_name", server.getName());
+        helper.add("machine_id", server.getMachineId());
 
         Set networks = server.getNetworks();
         if (networks != null && !networks.isEmpty()) {
