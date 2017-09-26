@@ -1,4 +1,4 @@
-
+- Added 'Machine Id' information as part of details in System namespace(bsc#1054902)
 - fix links on schedule pages (bsc#1059201)
 - Harmonize presentation of patch information (bsc#1032065)
 - Display a feedback message when user deletes configuration channel(bsc#1048355)

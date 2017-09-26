@@ -41,6 +41,7 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
         assertTrue(finalOutput.indexOf(server.getName()) >= 0);
         assertTrue(finalOutput.indexOf(EntitlementManager.ENTERPRISE_ENTITLED) >= 0);
         assertTrue(finalOutput.indexOf("addon_entitlements") >= 0);
+        assertTrue(finalOutput.indexOf("machine_id") >= 0);
         assertTrue(finalOutput.indexOf("auto_update") >= 0);
         assertTrue(finalOutput.indexOf("description") >= 0);
 
