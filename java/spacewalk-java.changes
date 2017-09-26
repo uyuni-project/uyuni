@@ -1,4 +1,6 @@
 
+- fix links on schedule pages (bsc#1059201)
+- Harmonize presentation of patch information (bsc#1032065)
 - Display a feedback message when user deletes configuration channel(bsc#1048355)
 - Fix duplicate machine id in event history on minion restart (bsc#1059388)
 - Show link in message when rescheduling actions (bsc#1032122)
