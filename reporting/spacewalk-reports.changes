@@ -1,3 +1,7 @@
+
+- add machine_id and minion_id to system-profiles and inventory
+  report (bsc#1054902)
+
 -------------------------------------------------------------------
 Thu Apr 20 16:54:32 CEST 2017 - kwalter@suse.com
 
