@@ -24,12 +24,16 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import com.redhat.rhn.testing.TestUtils;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 
 public class ServerSerializerTest extends BaseHandlerTestCase {
-
-    public void testSerialize() throws Exception {
+    /**
+     * Test server of type Normal without machine Id
+     * @throws Exception
+     */
+    public void testSerializeNormalServer() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         Writer output = new StringWriter();
@@ -37,13 +41,53 @@ public class ServerSerializerTest extends BaseHandlerTestCase {
         ServerSerializer serializer = new ServerSerializer();
         serializer.serialize(server, output, new XmlRpcSerializer());
         String finalOutput = output.toString();
+        commonAssertions(finalOutput, server);
+        assertTrue(finalOutput.indexOf("machine_id") < 0);
 
+    }
+    /**
+     * Test server of type salt minion.
+     * @throws Exception
+     */
+    public void testSerializeMinion() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled(), ServerFactoryTest.TYPE_SERVER_MINION);
+        Writer output = new StringWriter();
+
+        ServerSerializer serializer = new ServerSerializer();
+        serializer.serialize(server, output, new XmlRpcSerializer());
+        String finalOutput = output.toString();
+        commonAssertions(finalOutput, server);
+        assertTrue(finalOutput.indexOf("machine_id") >= 0);
+    }
+    /**
+     * Test server of type Normal with machine Id
+     * @throws Exception
+     */
+    public void testSerializeNormalServerWithMachineId() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        server.setMachineId(TestUtils.randomString());
+        Writer output = new StringWriter();
+
+        ServerSerializer serializer = new ServerSerializer();
+        serializer.serialize(server, output, new XmlRpcSerializer());
+        String finalOutput = output.toString();
+        commonAssertions(finalOutput, server);
+        assertTrue(finalOutput.indexOf("machine_id") >= 0);
+
+    }
+    /**
+     * Check assertion which are common between all types of server.
+     * @param finalOutput
+     * @param server
+     */
+    public void commonAssertions(String finalOutput, Server server) {
         assertTrue(finalOutput.indexOf(server.getName()) >= 0);
         assertTrue(finalOutput.indexOf(EntitlementManager.ENTERPRISE_ENTITLED) >= 0);
         assertTrue(finalOutput.indexOf("addon_entitlements") >= 0);
         assertTrue(finalOutput.indexOf("auto_update") >= 0);
         assertTrue(finalOutput.indexOf("description") >= 0);
-
         assertTrue(finalOutput.indexOf("address1") >= 0);
         assertTrue(finalOutput.indexOf("address2") >= 0);
         assertTrue(finalOutput.indexOf("city") >= 0);
