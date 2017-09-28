@@ -1,4 +1,4 @@
-- Added 'Machine Id' information as part of details in System namespace(bsc#1054902)
+- Added 'Machine Id' information as part of details in System namespace for XMLRPC API(bsc#1054902)
 - Modified the displayed message after updation of activation key (bsc#1060389)
 - Improve duplicate hostname and transaction handling in minion registration
 - Display GUI message after successfully deleting custom key (bsc#1048295)
