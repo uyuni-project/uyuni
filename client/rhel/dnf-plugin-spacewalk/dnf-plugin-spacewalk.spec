@@ -86,27 +86,26 @@ install -m 644 actions/errata.py %{buildroot}%{python3_sitelib}/actions/
 
 %files
 %defattr(-,root,root,-)
+%dir %{_sysconfdir}/dnf
+%dir %{_sysconfdir}/dnf/plugins
+%dir %{_datadir}/licenses
 %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/dnf/plugins/spacewalk.conf
 %license LICENSE
-%dir %{_datadir}/licenses
 %dir /var/lib/up2date
 %{_mandir}/man*/*
 
 %files -n python2-%{name}
+%dir %{python_sitelib}/dnf-plugins
+%dir %{python_sitelib}/actions
 %{python_sitelib}/dnf-plugins/*
 %{python_sitelib}/actions/*
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
+%dir %{python3_sitelib}/dnf-plugins
+%dir %{python3_sitelib}/actions
 %{python3_sitelib}/dnf-plugins/*
 %{python3_sitelib}/actions/*
-%endif
-%dir %{_datadir}/rhn
-%dir %{_datadir}/rhn/actions
-%if 0%{?suse_version}
-%dir %{python_sitelib}/dnf-plugins
-%dir %{_sysconfdir}/dnf
-%dir %{_sysconfdir}/dnf/plugins
 %endif
 
 %changelog
