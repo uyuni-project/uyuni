@@ -237,7 +237,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
             if (!StringUtils.isBlank(enteredKey) &&
                         !enteredKey.equals(key.getKey())) {
                 addToMessage(msg, "activation-key.java.org_prefixed",
-                                                        enteredKey, newKey);
+                                                        key, newKey);
             }
 
         }
