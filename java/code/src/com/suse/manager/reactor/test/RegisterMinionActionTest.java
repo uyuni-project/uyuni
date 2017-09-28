@@ -17,6 +17,8 @@ package com.suse.manager.reactor.test;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -35,6 +37,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.StateFactory;
@@ -43,10 +46,12 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.token.ActivationKeyManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -59,7 +64,6 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -80,6 +84,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -108,7 +113,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @FunctionalInterface
     private interface Assertions {
 
-        void accept(MinionServer minion, String machineId, String key);
+        void accept(Optional<MinionServer> minion, String machineId, String key);
 
     }
 
@@ -145,7 +150,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         return key.getKey();
     };
 
-    private Assertions SLES_ASSERTIONS = (minion, machineId, key) -> {
+    private Assertions SLES_ASSERTIONS = (optMinion, machineId, key) -> {
+        assertTrue(optMinion.isPresent());
+        MinionServer minion = optMinion.get();
         assertEquals(MINION_ID, minion.getName());
         assertEquals(machineId, minion.getDigitalServerId());
         assertEquals(machineId, minion.getMachineId());
@@ -188,10 +195,15 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
     };
 
+    private Consumer<Void> CLEANUP = (arg) -> {
+        MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+    };
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
+        Config.get().setString("server.secret_key", "d8d796b3322d65928511769d180d284d2b15158165eb83083efa02c9024aa6cc");
     }
 
     /**
@@ -210,11 +222,16 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     public void executeTest(ExpectationsFunction expectations, ActivationKeySupplier keySupplier, Assertions assertions, String contactMethod) throws Exception {
+        executeTest(expectations, keySupplier, assertions, CLEANUP, contactMethod);
+    }
 
-        // cleanup
+    public void executeTest(ExpectationsFunction expectations, ActivationKeySupplier keySupplier, Assertions assertions, Consumer<Void> cleanup, String contactMethod) throws Exception {
+
         SaltService saltServiceMock = mock(SaltService.class);
-
-        MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        // cleanup
+        if (cleanup != null) {
+            cleanup.accept(null);
+        }
 
         String key = keySupplier != null ? keySupplier.get(contactMethod) : null;
 
@@ -222,6 +239,17 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         if (expectations != null) {
             Expectations exp = expectations.apply(saltServiceMock, key);
             context().checking(exp);
+
+            TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+            ActionManager.setTaskomaticApi(taskomaticMock);
+
+            context().checking(new Expectations() {{
+                try {
+                    allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+                } catch (TaskomaticApiException e) {
+                    e.printStackTrace();
+                }
+            }});
         }
 
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock);
@@ -230,13 +258,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         // Verify the resulting system entry
         String machineId = saltServiceMock.getMachineId(MINION_ID).get();
         Optional<MinionServer> optMinion = MinionServerFactory.findByMachineId(machineId);
-        assertTrue(optMinion.isPresent());
-        MinionServer minion = optMinion.get();
 
         if (assertions != null) {
-            assertions.accept(minion, machineId, key);
+            assertions.accept(optMinion, machineId, key);
         }
-
     }
 
     public void testReRegisterTraditionalAsMinion() throws Exception {
@@ -246,14 +271,23 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ServerFactory.save(server);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (minion, machineId, key) -> {
-            SLES_ASSERTIONS.accept(minion, machineId, key);
+        executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> {
+            SLES_ASSERTIONS.accept(optMinion, machineId, key);
+            MinionServer minion = optMinion.get();
             assertEquals(server.getId(), minion.getId());
             List<ServerHistoryEvent> history = new ArrayList<>();
             history.addAll(minion.getHistory());
             Collections.sort(history, (h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
             assertEquals(history.get(history.size()-1).getSummary(), "Server reactivated as Salt minion");
         }, DEFAULT_CONTACT_METHOD);
+    }
+
+    public void testRegisterDuplicateMinionId() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setMinionId(MINION_ID);
+        executeTest(SLES_EXPECTATIONS, null, (minion, machineId, key) -> {
+            assertFalse(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
+        }, null, DEFAULT_CONTACT_METHOD);
     }
 
     public void testChangeContactMethodRegisterMinion() throws Exception {
@@ -263,8 +297,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ServerFactory.save(server);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (minion, machineId, key) -> {
-            SLES_ASSERTIONS.accept(minion, machineId, key);
+        executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> {
+            SLES_ASSERTIONS.accept(optMinion, machineId, key);
+            MinionServer minion = optMinion.get();
             assertEquals(server.getId(), minion.getId());
             assertEquals(minion.getContactMethod().getLabel(), DEFAULT_CONTACT_METHOD);
             List<ServerHistoryEvent> history = new ArrayList<>();
@@ -344,7 +379,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 (DEFAULT_CONTACT_METHOD) -> {
                     return null;
                 },
-                (minion, machineId, key) -> {
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
                     assertEquals(MINION_ID, minion.getName());
                     // no base/required channels - e.g. we need an SCC sync
                     assertNull(minion.getBaseChannel());
@@ -384,7 +421,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 (DEFAULT_CONTACT_METHOD) -> {
                     return null;
                 },
-                (minion, machineId, key) -> {
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
                     assertEquals(MINION_ID, minion.getName());
 
                     assertNotNull(minion.getBaseChannel());
@@ -428,7 +467,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     ActivationKeyFactory.save(key);
                     return key.getKey();
                 },
-                (minion, machineId, key) -> {
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
                     assertEquals(MINION_ID, minion.getName());
 
                     // base channel check
@@ -476,7 +517,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     ActivationKeyFactory.save(key);
                     return key.getKey();
                 },
-                (minion, machineId, key) -> {
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
                     assertEquals(MINION_ID, minion.getName());
 
                     // base channel check
@@ -522,7 +565,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     ActivationKeyFactory.save(key);
                     return key.getKey();
                 },
-                (minion, machineId, key) -> {
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
                     assertEquals(MINION_ID, minion.getName());
 
                     // base channel check
@@ -558,7 +603,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
                 }},
                 null,
-                (minion, machineId, key) -> {
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
                     assertEquals("7Server", minion.getRelease());
 
                     assertNull(minion.getBaseChannel());
@@ -599,7 +646,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     ActivationKeyFactory.save(key);
                     return key.getKey();
                 },
-                (minion, machineId, key) -> {
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
                     assertEquals("7Server", minion.getRelease());
 
                     assertNotNull(minion.getBaseChannel());
@@ -634,7 +683,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             readFile("dummy_packages_redhatprodinfo_res.json")))));
                 }},
                 null,
-                (minion, machineId, key) -> {
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
                     assertEquals("7Server", minion.getRelease());
 
                     // base channel check
@@ -665,6 +716,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         throws ClassNotFoundException, IOException {
         SaltService saltService = mock(SaltService.class);
 
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
         MinionServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
         context().checking(new Expectations() { {
             allowing(saltService).getMasterHostname(MINION_ID);
@@ -687,6 +741,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                      with(any(LocalCall.class)),
                      with(any(String.class)));
             will(returnValue(Optional.of(pil)));
+            try {
+                allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+            } catch (TaskomaticApiException e) {
+                e.printStackTrace();
+            }
         } });
 
         RegisterMinionEventMessageAction action =
