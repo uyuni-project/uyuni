@@ -12,6 +12,8 @@ select m.minion_id, s.name, s.id, s.org_id, s.os
   join suseMinionInfo m on s.id = m.server_id
 order by m.minion_id, s.name;
 
+alter table suseMinionInfo drop CONSTRAINT IF EXISTS rhn_minion_info_miid_uq;
+
 drop index if exists rhn_minion_info_miid_uq;
 
 create unique index rhn_minion_info_miid_uq
