@@ -504,7 +504,6 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(null, result.getParentChannel());
     }
 
-
     public void testCreate() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -520,6 +519,25 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertNotNull(c.getChannelArch());
         assertEquals(ca.getLabel(), c.getChannelArch().getLabel());
         assertEquals(c.getChecksumTypeLabel(), "sha1");
+        assertTrue(c.isGPGCheck());
+    }
+
+    public void testCreateWithGPGCheckDisabled() throws Exception {
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
+        addRole(admin, RoleFactory.CHANNEL_ADMIN);
+        int i = csh.create(admin, "api-test-chan-label",
+                "apiTestChanName", "apiTestSummary", "channel-x86_64", null, "sha1", new HashMap<String, String>(),false);
+        assertEquals(1, i);
+        Channel c = ChannelFactory.lookupByLabel(admin.getOrg(), "api-test-chan-label");
+        assertNotNull(c);
+        assertEquals("apiTestChanName", c.getName());
+        assertEquals("apiTestSummary", c.getSummary());
+        ChannelArch ca = ChannelFactory.findArchByLabel("channel-x86_64");
+        assertNotNull(ca);
+        assertNotNull(c.getChannelArch());
+        assertEquals(ca.getLabel(), c.getChannelArch().getLabel());
+        assertEquals(c.getChecksumTypeLabel(), "sha1");
+        assertFalse(c.isGPGCheck());
     }
 
     public void testCreateWithChecksum() throws Exception {
