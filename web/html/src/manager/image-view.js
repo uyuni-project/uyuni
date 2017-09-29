@@ -294,7 +294,7 @@ class ImageView extends React.Component {
           <ModalButton id="delete-selected" icon="fa-trash" className="btn-default" text={t("Delete")}
             title={t("Delete selected")} target="delete-selected-modal"/>
       }
-      { isAdmin &&
+      { isAdmin && !this.state.selected &&
           <Button id="import" icon="fa-download" text={t("Import")} className="btn-default" handler={this.handleImportImage} />
       }
       <AsyncButton id="reload" icon="refresh" name={t("Refresh")} text action={this.reloadData} />
