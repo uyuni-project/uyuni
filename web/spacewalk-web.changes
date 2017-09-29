@@ -1,3 +1,4 @@
+- remove import button from image over page (bsc#1058128)
 - Use the same datetime format as the rest of the product (bsc#1054424)
 
 -------------------------------------------------------------------
