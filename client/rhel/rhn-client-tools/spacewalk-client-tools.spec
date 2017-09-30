@@ -581,7 +581,8 @@ make -f Makefile.rhn-client-tools test
 %files -n python2-spacewalk-check
 %defattr(-,root,root,-)
 %{_sbindir}/rhn_check-%{python_version}
-%dir %{python_sitelib}/rhn/actions/
+%dir %{python_sitelib}/rhn
+%dir %{python_sitelib}/rhn/actions
 %{python_sitelib}/up2date_client/getMethod.*
 # actions for rhn_check to run
 %{python_sitelib}/rhn/actions/__init__.*
@@ -595,7 +596,8 @@ make -f Makefile.rhn-client-tools test
 %files -n python3-spacewalk-check
 %defattr(-,root,root,-)
 %{_sbindir}/rhn_check-%{python3_version}
-%dir %{python3_sitelib}/rhn/actions/
+%dir %{python3_sitelib}/rhn
+%dir %{python3_sitelib}/rhn/actions
 %{python3_sitelib}/up2date_client/getMethod.*
 %{python3_sitelib}/rhn/actions/__init__.*
 %{python3_sitelib}/rhn/actions/hardware.*
