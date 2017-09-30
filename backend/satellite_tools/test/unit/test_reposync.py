@@ -158,9 +158,9 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(rs.import_packages.call_args,
                 ((rs.mocked_plugin, 42, "http://none.host/bogus-url"), {}))
         self.assertEqual(rs.import_updates.call_args,
-                ((rs.mocked_plugin, "http://none.host/bogus-url"), {}))
+                ((rs.mocked_plugin,), {}))
         self.assertEqual(rs.import_products.call_args,
-                         ((rs.mocked_plugin,), {}))
+                ((rs.mocked_plugin,), {}))
 
         # for the rest just check if they were called or not
         self.assertTrue(rs.update_date.called)
