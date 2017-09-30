@@ -267,7 +267,7 @@ registering a system with a Red Hat Satellite or Spacewalk server.
 Summary: Configure and register an RHN/Spacewalk client
 Provides: python-spacewalk-client-setup-gnome = %{version}-%{release}
 Obsoletes: python-spacewalk-client-setup-gnome < %{version}-%{release}
-Requires: spacewalk-client-setup-gnome
+Requires: spacewalk-client-setup-gnome = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: python-gnome python-gtk
 %else
@@ -285,7 +285,7 @@ Python 2 specific files for spacewalk-client-setup-gnome.
 %if 0%{?build_py3}
 %package -n python3-spacewalk-client-setup-gnome
 Summary: Configure and register an RHN/Spacewalk client
-Requires: spacewalk-client-setup-gnome
+Requires: spacewalk-client-setup-gnome = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: python-gnome python-gtk
 %else
@@ -477,7 +477,6 @@ make -f Makefile.rhn-client-tools test
 
 # dirs
 %dir %{_datadir}/rhn
-%dir %{_datadir}/rhn/up2date_client
 %dir %{_localstatedir}/spool/up2date
 
 %{_sbindir}/rhn-profile-sync
@@ -578,36 +577,36 @@ make -f Makefile.rhn-client-tools test
 %files -n python2-spacewalk-check
 %defattr(-,root,root,-)
 %{_sbindir}/rhn_check-%{python_version}
-%dir %{python_sitelib}/actions/
+%dir %{python_sitelib}/rhn/actions/
 %{python_sitelib}/up2date_client/getMethod.*
 # actions for rhn_check to run
-%{python_sitelib}/actions/__init__.*
-%{python_sitelib}/actions/hardware.*
-%{python_sitelib}/actions/systemid.*
-%{python_sitelib}/actions/reboot.*
-%{python_sitelib}/actions/rhnsd.*
-%{python_sitelib}/actions/up2date_config.*
+%{python_sitelib}/rhn/actions/__init__.*
+%{python_sitelib}/rhn/actions/hardware.*
+%{python_sitelib}/rhn/actions/systemid.*
+%{python_sitelib}/rhn/actions/reboot.*
+%{python_sitelib}/rhn/actions/rhnsd.*
+%{python_sitelib}/rhn/actions/up2date_config.*
 
 %if 0%{?build_py3}
 %files -n python3-spacewalk-check
 %defattr(-,root,root,-)
 %{_sbindir}/rhn_check-%{python3_version}
-%dir %{python3_sitelib}/actions/
+%dir %{python3_sitelib}/rhn/actions/
 %{python3_sitelib}/up2date_client/getMethod.*
-%{python3_sitelib}/actions/__init__.*
-%{python3_sitelib}/actions/hardware.*
-%{python3_sitelib}/actions/systemid.*
-%{python3_sitelib}/actions/reboot.*
-%{python3_sitelib}/actions/rhnsd.*
-%{python3_sitelib}/actions/up2date_config.*
-%dir %{python3_sitelib}/actions/__pycache__/
+%{python3_sitelib}/rhn/actions/__init__.*
+%{python3_sitelib}/rhn/actions/hardware.*
+%{python3_sitelib}/rhn/actions/systemid.*
+%{python3_sitelib}/rhn/actions/reboot.*
+%{python3_sitelib}/rhn/actions/rhnsd.*
+%{python3_sitelib}/rhn/actions/up2date_config.*
+%dir %{python3_sitelib}/rhn/actions/__pycache__/
 %{python3_sitelib}/up2date_client/__pycache__/getMethod.*
-%{python3_sitelib}/actions/__pycache__/__init__.*
-%{python3_sitelib}/actions/__pycache__/hardware.*
-%{python3_sitelib}/actions/__pycache__/systemid.*
-%{python3_sitelib}/actions/__pycache__/reboot.*
-%{python3_sitelib}/actions/__pycache__/rhnsd.*
-%{python3_sitelib}/actions/__pycache__/up2date_config.*
+%{python3_sitelib}/rhn/actions/__pycache__/__init__.*
+%{python3_sitelib}/rhn/actions/__pycache__/hardware.*
+%{python3_sitelib}/rhn/actions/__pycache__/systemid.*
+%{python3_sitelib}/rhn/actions/__pycache__/reboot.*
+%{python3_sitelib}/rhn/actions/__pycache__/rhnsd.*
+%{python3_sitelib}/rhn/actions/__pycache__/up2date_config.*
 %endif
 
 %files -n spacewalk-client-setup
@@ -693,7 +692,6 @@ make -f Makefile.rhn-client-tools test
 %dir %{_datadir}/icons/hicolor/32x32/apps
 %dir %{_datadir}/icons/hicolor/48x48
 %dir %{_datadir}/icons/hicolor/48x48/apps
-%dir %{_datadir}/rhn/up2date_client/firstboot
 %dir %{_datadir}/firstboot
 %dir %{_datadir}/firstboot/modules
 %endif

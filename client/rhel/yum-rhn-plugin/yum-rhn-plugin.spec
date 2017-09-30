@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.8.2
+Version: 2.8.3
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -21,7 +21,7 @@ BuildRequires: intltool
 BuildRequires: gettext
 
 Requires: yum >= 3.2.19-15
-Requires: %{rhn_client_tools} >= 1.10.3
+Requires: %{rhn_client_tools} >= 2.8.4
 %if 0%{?suse_version}
 Requires: python-m2crypto >= 0.16-6
 %else
@@ -30,7 +30,7 @@ Requires: m2crypto >= 0.16-6
 Requires: python-iniparse
 
 # Not really, but for upgrades we need these
-Requires: %{rhn_setup}
+Requires: %{rhn_setup} >= 2.8.4
 Obsoletes: up2date < 5.0.0
 Provides: up2date = 5.0.0
 
@@ -86,15 +86,20 @@ fi
 %dir /var/lib/up2date
 %{_mandir}/man*/*
 %{_datadir}/yum-plugins/*
-%{python_sitelib}/actions/*
+%{python_sitelib}/rhn/actions/*
 %doc LICENSE
 %dir /etc/yum
 %dir /etc/yum/pluginconf.d
 %dir /usr/share/yum-plugins
-%dir %{python_sitelib}/actions
+%dir %{python_sitelib}/rhn
+%dir %{python_sitelib}/rhn/actions
 
 
 %changelog
+* Fri Sep 29 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
+- require new version of rhn-client-tools
+- move client actions to rhn namespace
+
 * Fri Sep 22 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
 - move python files to sitelib
 

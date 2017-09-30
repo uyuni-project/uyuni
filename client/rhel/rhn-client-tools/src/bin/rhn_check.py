@@ -40,7 +40,6 @@ if not hasattr(t, 'ugettext'):
 _ = t.ugettext
 
 import OpenSSL
-sys.path.append("/usr/share/rhn/")
 
 # disable sgmlop module
 # it breaks rhn_check when loaded during xmlrpclib import
@@ -371,11 +370,7 @@ class CheckCli(rhncli.RhnCli):
     def __do_call(method, params, kwargs={}):
         log.log_debug("do_call ", method, params, kwargs)
 
-        try:
-            method = getMethod.getMethod(method, "/usr/share/rhn/", "actions")
-        except getMethod.GetMethodException:
-            method = getMethod.getMethod(method, get_python_lib(), "actions")
-
+        method = getMethod.getMethod(method, "rhn.actions")
         retval = method(*params, **kwargs)
 
         return retval

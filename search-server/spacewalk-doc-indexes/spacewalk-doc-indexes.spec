@@ -1,7 +1,7 @@
 %define crawl_output crawl_output
 
 Name: spacewalk-doc-indexes
-Version: 2.8.2
+Version: 2.8.3
 Release: 1%{?dist}
 Summary: Lucene indexes of help documentation for spacewalk
 
@@ -60,6 +60,10 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Sep 27 2017 Eric Herget <eherget@redhat.com> 2.8.3-1
+- fix urls, filters and conf for doc indexing
+- fixing crawler filter, 5.8 doc is using lower case url
+
 * Mon Sep 11 2017 Eric Herget <eherget@redhat.com> 2.8.2-1
 - update docs urls for indexing
 

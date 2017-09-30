@@ -7,7 +7,7 @@
 
 Summary: DNF plugin for Spacewalk
 Name: dnf-plugin-spacewalk
-Version: 2.8.2
+Version: 2.8.3
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -15,7 +15,7 @@ Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version
 URL:     https://github.com/spacewalkproject/spacewalk
 BuildArch: noarch
 
-Requires: %{pythonX}-%{name}
+Requires: %{pythonX}-%{name} = %{version}-%{release}
 %{!?python2_sitelib: %global python2_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %if 0%{?fedora} <= 25
 Requires: dnf >= 0.5.3
@@ -36,8 +36,8 @@ Summary: DNF plugin for Spacewalk
 Provides: python-%{name} = %{version}-%{release}
 Obsoletes: python-%{name} < %{version}-%{release}
 BuildRequires: python-devel
-Requires: python2-rhn-client-tools
-
+Requires: %{name} = %{version}-%{release}
+Requires: python2-rhn-client-tools >= 2.8.4
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
 
@@ -45,7 +45,8 @@ Python 2 specific files for %{name}.
 %package -n python3-%{name}
 Summary: DNF plugin for Spacewalk
 BuildRequires: python3-devel
-Requires: python3-rhn-client-tools
+Requires: %{name} = %{version}-%{release}
+Requires: python3-rhn-client-tools >= 2.8.4
 
 %description -n python3-%{name}
 Python 3 specific files for %{name}.
@@ -69,18 +70,18 @@ install -m 644 man/dnf.plugin.spacewalk.8 %{buildroot}%{_mandir}/man8/
 install -d %{buildroot}%{_datadir}/licenses
 install -d %{buildroot}%{_datadir}/licenses/%{name}
 # python2
-install -d %{buildroot}%{python2_sitelib}/actions
+install -d %{buildroot}%{python2_sitelib}/rhn/actions
 install -d %{buildroot}%{python2_sitelib}/dnf-plugins/
 install -m 644 spacewalk.py %{buildroot}%{python2_sitelib}/dnf-plugins/
-install -m 644 actions/packages.py %{buildroot}%{python2_sitelib}/actions/
-install -m 644 actions/errata.py %{buildroot}%{python2_sitelib}/actions/
+install -m 644 actions/packages.py %{buildroot}%{python2_sitelib}/rhn/actions/
+install -m 644 actions/errata.py %{buildroot}%{python2_sitelib}/rhn/actions/
 
 %if 0%{?build_py3}
-install -d %{buildroot}%{python3_sitelib}/actions
+install -d %{buildroot}%{python3_sitelib}/rhn/actions
 install -d %{buildroot}%{python3_sitelib}/dnf-plugins/
 install -m 644 spacewalk.py %{buildroot}%{python3_sitelib}/dnf-plugins/
-install -m 644 actions/packages.py %{buildroot}%{python3_sitelib}/actions/
-install -m 644 actions/errata.py %{buildroot}%{python3_sitelib}/actions/
+install -m 644 actions/packages.py %{buildroot}%{python3_sitelib}/rhn/actions/
+install -m 644 actions/errata.py %{buildroot}%{python3_sitelib}/rhn/actions/
 %endif
 
 
@@ -98,17 +99,21 @@ install -m 644 actions/errata.py %{buildroot}%{python3_sitelib}/actions/
 %dir %{python_sitelib}/dnf-plugins
 %dir %{python_sitelib}/actions
 %{python_sitelib}/dnf-plugins/*
-%{python_sitelib}/actions/*
+%{python_sitelib}/rhn/actions/*
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %dir %{python3_sitelib}/dnf-plugins
 %dir %{python3_sitelib}/actions
 %{python3_sitelib}/dnf-plugins/*
-%{python3_sitelib}/actions/*
+%{python3_sitelib}/rhn/actions/*
 %endif
 
 %changelog
+* Fri Sep 29 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
+- require new version of rhn-client-tools
+- move client actions to rhn namespace
+
 * Fri Sep 22 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
 - install files into python_sitelib/python3_sitelib
 - split dnf-plugin-spacewalk into python2/python3 specific packages

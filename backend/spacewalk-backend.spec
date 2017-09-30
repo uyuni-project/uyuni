@@ -37,7 +37,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.8
+Version: 2.8.11
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -890,6 +890,16 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Wed Sep 27 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.11-1
+- 1494575 - 2 parts of version are enough to dermine minor release
+- 1494575 - RHEL7 sends also release - drop it as it's not needed
+
+* Tue Sep 26 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.10-1
+- fix pylint issues: Unused argument 'url' (unused-argument)
+
+* Mon Sep 25 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.9-1
+- 1402418 - add output formatting for reposync
+
 * Fri Sep 15 2017 Jan Dobes 2.8.8-1
 - bz1490801 - [RFE] skip child channels with no repo during sync
 
