@@ -97,14 +97,16 @@ install -m 644 actions/errata.py %{buildroot}%{python3_sitelib}/rhn/actions/
 
 %files -n python2-%{name}
 %dir %{python_sitelib}/dnf-plugins
-%dir %{python_sitelib}/actions
+%dir %{python_sitelib}/rhn
+%dir %{python_sitelib}/rhn/actions
 %{python_sitelib}/dnf-plugins/*
 %{python_sitelib}/rhn/actions/*
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %dir %{python3_sitelib}/dnf-plugins
-%dir %{python3_sitelib}/actions
+%dir %{python3_sitelib}/rhn
+%dir %{python3_sitelib}/rhn/actions
 %{python3_sitelib}/dnf-plugins/*
 %{python3_sitelib}/rhn/actions/*
 %endif
