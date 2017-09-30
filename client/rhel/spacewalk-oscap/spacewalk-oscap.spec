@@ -6,7 +6,7 @@
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:		spacewalk-oscap
-Version:	2.8.2
+Version:	2.8.3
 Release:	1%{?dist}
 Summary:	OpenSCAP plug-in for rhn-check
 
@@ -26,7 +26,7 @@ Requires: openscap-utils
 Requires:	openscap-scanner
 %endif
 Requires:	libxslt
-Requires:       %{pythonX}-%{name}
+Requires:       %{pythonX}-%{name} = %{version}-%{release}
 
 %description
 spacewalk-oscap is a plug-in for rhn-check. With this plugin, user is able
@@ -36,22 +36,22 @@ to run OpenSCAP scan from Spacewalk or Red Hat Satellite server.
 Summary:	OpenSCAP plug-in for rhn-check
 Provides:       python-%{name} = %{version}-%{release}
 Obsoletes:      python-%{name} < %{version}-%{release}
-Requires:       spacewalk-oscap
-Requires:       rhnlib >= 0:2.5.78-1
-Requires:       python2-rhn-check
+Requires:       %{name} = %{version}-%{release}
+Requires:       rhnlib >= 2.8.3
+Requires:       python2-rhn-check >= 2.8.4
 BuildRequires:	python-devel
-BuildRequires:	rhnlib
+BuildRequires:	rhnlib >= 2.8.3
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
 Summary:	OpenSCAP plug-in for rhn-check
-Requires:       spacewalk-oscap
-Requires:       python3-rhnlib >= 0:2.5.78-1
-Requires:       python3-rhn-check
+Requires:       %{name} = %{version}-%{release}
+Requires:       python3-rhnlib >= 2.8.3
+Requires:       python3-rhn-check >= 2.8.4
 BuildRequires:	python3-devel
-BuildRequires:	python3-rhnlib
+BuildRequires:	python3-rhnlib >= 2.8.3
 %description -n python3-%{name}
 Python 3 specific files for %{name}.
 %endif
@@ -98,19 +98,25 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n python2-%{name}
 %defattr(-,root,root)
-%dir %{python_sitelib}/actions
-%{python_sitelib}/actions/scap.*
+%dir %{python_sitelib}/rhn/actions
+%{python_sitelib}/rhn/actions/scap.*
+
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %defattr(-,root,root)
-%dir %{python3_sitelib}/actions
-%dir %{python3_sitelib}/actions/__pycache__
-%{python3_sitelib}/actions/scap.*
-%{python3_sitelib}/actions/__pycache__/scap.*
+%dir %{python3_sitelib}/rhn/actions
+%dir %{python3_sitelib}/rhn/actions/__pycache__
+%{python3_sitelib}/rhn/actions/scap.*
+%{python3_sitelib}/rhn/actions/__pycache__/scap.*
+
 %endif
 
 %changelog
+* Fri Sep 29 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
+- require new version of rhn-client-tools and rhnlib
+- move client actions to rhn namespace
+
 * Fri Sep 22 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
 - install files into python_sitelib/python3_sitelib
 - split spacewalk-oscap into python2/python3 specific packages
