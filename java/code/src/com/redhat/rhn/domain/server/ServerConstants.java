@@ -24,6 +24,7 @@ public class ServerConstants {
      * Feature constant for kickstarts
      */
     public static final String FEATURE_KICKSTART = "ftr_kickstart";
+    public static final String SLES = "SLES";
 
     private ServerConstants() {
 

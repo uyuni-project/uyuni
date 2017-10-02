@@ -1,3 +1,4 @@
+- Added a method to check if OS on machine supports containerization or not(bsc#1052728)
 - 'Cancel Autoinstallation' link has been changed to look like button to make it more visible (bsc#1035955)
 - Make systems in system group list selectable by the group admins (bsc#1021432)
 - Hide non-relevant typed systems in SystemCurrency (bsc#1019097)

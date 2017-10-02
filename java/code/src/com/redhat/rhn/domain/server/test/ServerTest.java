@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -110,6 +111,28 @@ public class ServerTest extends BaseTestCaseWithUser {
         NetworkInterfaceTest.createTestNetworkInterface(s2);
         TestUtils.saveAndReload(s2);
         assertTrue("we didnt make it to the end", true);
+    }
+    /**
+     * Test for {@link Server#doesOsSupportsContainerization()}.
+     */
+    public void testOsSupportsContainerization() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("SLES");
+        s.setRelease("12.1");
+        assertTrue(s.doesOsSupportsContainerization());
+    }
+    /**
+     * Test for {@link Server#doesOsSupportsContainerization()}.
+     */
+    public void testOsDoesNotSupportsContainerization() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_MINION);
+        s.setOs("SLES");
+        s.setRelease("11.4");
+        assertFalse(s.doesOsSupportsContainerization());
     }
 
     public void testGetIpAddress() throws Exception {
