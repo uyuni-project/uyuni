@@ -198,6 +198,7 @@ RES6 = [
         "yum-rhn-plugin",
         "yum",
         "rhnlib",
+        "yum-plugin-security",
        ]
 
 RES7 = [
