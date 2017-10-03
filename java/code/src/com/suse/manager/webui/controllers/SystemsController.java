@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
@@ -39,6 +40,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
@@ -70,11 +72,12 @@ public class SystemsController {
                 ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH_TUNNEL)
         ).anyMatch(cm -> server.getContactMethod().equals(cm));
 
-        Optional<String> cleanupResult = Optional.empty();
         if (server.asMinionServer().isPresent() && sshPush) {
-            cleanupResult = syncSSHCleanup(server.asMinionServer().get());
-            if (cleanupResult.isPresent()) {
-                return cleanupResult.get();
+            if(!"true".equalsIgnoreCase(noclean)) {
+                Optional<String> cleanupErr = syncSSHCleanup(server.asMinionServer().get());
+                if (cleanupErr.isPresent()) {
+                    return json(response, JsonResult.error(cleanupErr.get()));
+                }
             }
         }
 
@@ -105,14 +108,13 @@ public class SystemsController {
                 throw e;
             }
         }
-        return json(response, "OK");
+        return json(response, JsonResult.success());
     }
 
     public static Optional<String> syncSSHCleanup(MinionServer minion) {
         CompletableFuture timeOut = SaltService.INSTANCE.failAfter(300); // 5 mins
 
         try {
-
             Map<String, CompletionStage<Result<Map<String, State.ApplyResult>>>> res =
                 SaltService.INSTANCE.completableAsyncCall(
                         State.apply("ssh_cleanup"),
@@ -127,26 +129,29 @@ public class SystemsController {
             return future.handle((applyResult, err) -> {
                 if (applyResult != null) {
                     return applyResult.fold((saltErr) -> {
-                        return saltErr.fold(
-                                fn -> Optional.of("Function not available: " + fn.getFunctionName()),
-                                fn -> Optional.of(""),
-                                fn -> Optional.of(""),
-                                fn -> Optional.of("")
+                                return saltErr.fold(
+                                        fn -> Optional.of("Function not available: " + fn.getFunctionName()),
+                                        fn -> Optional.of(""),
+                                        fn -> Optional.of(""),
+                                        fn -> Optional.of("")
                                 );
-                        },
-                        (saltRes) -> {
-                            if (!saltRes.get("").isResult()) {
-                                return Optional.of("");
+                            },
+                            (saltRes) -> {
+                                if (!saltRes.get("").isResult()) {
+                                    return Optional.of("");
+                                }
+                                return Optional.<String>empty();
                             }
-                            return Optional.<String>empty();
-                        }
                     );
+                } else if (err instanceof TimeoutException) {
+                    return Optional.of("minion_unreachable");
                 } else {
-                    return Optional.of("err");
+                    return Optional.of(err.getMessage());
                 }
             }).toCompletableFuture().get();
 
-        } catch (SaltException|InterruptedException|ExecutionException e) {
+        }
+        catch (SaltException|InterruptedException|ExecutionException e) {
             LOG.error("Error applying state ssh_cleanup", e);
             return Optional.of(e.getMessage());
         }
