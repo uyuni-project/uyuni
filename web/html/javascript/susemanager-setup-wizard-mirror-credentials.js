@@ -11,6 +11,8 @@ function initEdit(id, user) {
   editId = id;
   $('#edit-user').val(user);
   $('#edit-password').val("");
+  $('#mirror-credentials-error-container').hide(); // Hide the error container
+  $('.mirror-credentials-error').hide(); // Make sure all error elements are hidden
 }
 
 // Init modal to delete credentials
@@ -54,8 +56,21 @@ function saveCredentials() {
     var user = $('#edit-user').val();
     var password = $('#edit-password').val();
     showSpinner("edit-credentials-spinner");
+
+    var responseHandler = function(result) {
+      if (result == "ok") {
+        MirrorCredentialsRenderer.renderCredentials(makeRendererHandler("listset-container", false));
+      }
+      else {
+        $('#mirror-credentials-error-container').show(); // show the error container
+        $('#' + result).show(); //result contains the id of the error element to be shown
+      }
+    };
+
     MirrorCredentialsRenderer.saveCredentials(editId, user, password,
-        makeRendererHandler("listset-container", false));
+        makeAjaxHandler(responseHandler));
+
+    $("#edit-credentials-spinner").hide();
   }
 }
 

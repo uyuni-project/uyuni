@@ -20,6 +20,13 @@
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-edit.title" /></h4>
                     </div>
                     <div class="modal-body">
+                        <div class="alert alert-warning" role="alert" id="mirror-credentials-error-container" style="display:none">
+                            <ul>
+                                <li class="mirror-credentials-error" id="mirror-credentials-error-duplicate">
+                                    <bean:message key="mirror-credentials.jsp.error.duplicate" />
+                                </li>
+                            </ul>
+                        </div>
                         <form class="form-horizontal" role="form" id="add-credentials-form">
                             <div class="form-group">
                                 <label for="modal-user" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.username" />:</label>
@@ -30,7 +37,7 @@
                             <div class="form-group">
                                 <label for="modal-password" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.password" />:</label>
                                 <div class="col-sm-10">
-                                    <input type="password" class="form-control" autocomplete="off" id="edit-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" required>
+                                    <input type="password" class="form-control" autocomplete="off" id="edit-password" required>
                                 </div>
                             </div>
                         </form>
