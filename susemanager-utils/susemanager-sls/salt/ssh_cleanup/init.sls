@@ -31,8 +31,6 @@ no_own_key_authorized:
   ssh_auth.absent:
     - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
     - comment: susemanager-own-ssh-push
-    - require:
-      - file: ownership_own_ssh_key
 
 # remove own keys
 remove_own_ssh_pub_key:
