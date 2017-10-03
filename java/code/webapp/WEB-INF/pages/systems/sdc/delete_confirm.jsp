@@ -7,11 +7,16 @@
 <html:html >
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
+<script
+
+
     <h2><bean:message key="delete_confirm.jsp.header"/></h2>
     <bean:message key="delete_confirm.jsp.summary" arg0="${sid}" />
 
     <hr/>
 
+    <script src="/javascript/manager/delete-system.bundle.js" type="text/javascript"></script>
+<%--
     <html:form method="post" action="/systems/details/DeleteConfirm.do?sid=${sid}">
       <rhn:csrf />
       <html:hidden property="submitted" value="true"/>
@@ -25,6 +30,6 @@
             </div>
         </div>
     </html:form>
-
+--%>
 </body>
 </html:html>

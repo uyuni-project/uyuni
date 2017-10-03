@@ -473,6 +473,12 @@ public class SaltService {
         }
     }
 
+    public <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
+            LocalCall<R> call, Target<?> target,
+            CompletableFuture<GenericError> cancel) throws SaltException {
+        return completableAsyncCall(call, target, reactor.getEventStream(), cancel);
+    }
+
     private <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
             LocalCall<R> call, Target<?> target, EventStream events,
             CompletableFuture<GenericError> cancel) throws SaltException {
