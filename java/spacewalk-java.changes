@@ -1,4 +1,4 @@
-
+- Disallow entering multiple identical mirror credentials (bsc#971785)
 - Install update stack erratas as a package list (bsc#1049139)
 - Schedule one action for all selected patches on RHEL (bsc#1038862)
 - Improve duplicate hostname and transaction handling in minion registration

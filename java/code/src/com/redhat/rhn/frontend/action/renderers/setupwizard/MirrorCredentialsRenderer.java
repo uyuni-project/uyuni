@@ -18,6 +18,7 @@ import com.redhat.rhn.frontend.action.renderers.RendererHelper;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.setup.MirrorCredentialsNotUniqueException;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
 
 import org.apache.commons.lang.StringUtils;
@@ -45,6 +46,10 @@ public class MirrorCredentialsRenderer {
     private static final String ATTRIB_CREDS_ID = "credentialsId";
     private static final String ATTRIB_SUCCESS = "success";
     private static final String ATTRIB_SUBSCRIPTIONS = "subscriptions";
+
+    // Save credentials return codes
+    private static final String CRED_OK = "ok";
+    private static final String CRED_ERROR_DUPLICATE = "mirror-credentials-error-duplicate";
 
     // URL of the page to render
     private static final String CREDS_LIST_URL =
@@ -92,8 +97,16 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("Saving credentials: " + user + ":" + password);
         }
-        credsManager.storeMirrorCredentials(creds, request);
-        return renderCredentials();
+        try {
+            credsManager.storeMirrorCredentials(creds, request);
+        }
+        catch (MirrorCredentialsNotUniqueException e) {
+            if (logger.isDebugEnabled()) {
+                logger.info("Mirror credentials not saved: Username already exists");
+            }
+            return CRED_ERROR_DUPLICATE;
+        }
+        return CRED_OK;
     }
 
     /**

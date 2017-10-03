@@ -97,6 +97,13 @@ public class MirrorCredentialsManager {
         if (creds.getUser() == null || creds.getPassword() == null) {
             throw new ContentSyncException("User or password is empty");
         }
+        // Check if the supplied user name already exists in stored credentials
+        for (Credentials existingCred : CredentialsFactory.lookupSCCCredentials()) {
+            if (existingCred.getUsername().equals(creds.getUser()) &&
+                    (creds.getId() != existingCred.getId())) {
+                throw new MirrorCredentialsNotUniqueException("Username already exists");
+            }
+        }
 
         // Try to lookup the credentials first
         Credentials c = null;

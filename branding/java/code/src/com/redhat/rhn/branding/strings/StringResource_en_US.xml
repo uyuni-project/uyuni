@@ -147,7 +147,7 @@ Affected Systems List
 This Patch Advisory may apply to the systems listed below. If you know that
 this patch does not apply to a system listed, it might be possible that the
 package profile for that server is out of date. In that case you should run
-'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above) 
+'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
     </source>
         </trans-unit>
@@ -1966,7 +1966,7 @@ tree will not be usable for autoinstalling.
       <trans-unit id="sdc.details.edit.contact-method.unentitled">
         <source>Contact method not available for this system.</source>
       </trans-unit>
-      
+
       <!-- SSH Push Messages -->
       <trans-unit id="kickstart.schedule.invalid.contact.method">
         <source>Provisioning is currently not supported for systems managed with push via SSH tunnel.</source>
@@ -2185,6 +2185,9 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.info.p2">
         <source>You can find them in the &lt;a href="https://scc.suse.com/organization" target="_blank"&gt;Customer Center&lt;/a&gt;.</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.error.duplicate">
+        <source>Credentials with this username already exist</source>
       </trans-unit>
 
       <!-- SUSE Products -->
