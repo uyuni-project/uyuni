@@ -120,6 +120,7 @@ class VirtualHostManager extends React.Component {
             const loc = window.location;
             history.pushState(null, null, loc.pathname + loc.search);
         });
+        this.getAvailableModules();
     }
 
     handleDetailsAction(row) {
