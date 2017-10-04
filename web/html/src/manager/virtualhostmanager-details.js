@@ -111,7 +111,7 @@ class VirtualHostManagerDetails extends React.Component {
                     handler={this.props.onCancel}
                 />
                <Button
-                    text={t("Schedule refresh data")}
+                    text={t("Refresh Data")}
                     icon="fa-refresh"
                     title={t("Refresh data from this Virtual Host Manager")}
                     className="btn-default"
