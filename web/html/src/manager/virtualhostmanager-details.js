@@ -169,6 +169,7 @@ function ConfigParams(props) {
     return (
         <div className="table-responsive">
             <table className="table">
+              <tbody>
                 <tr>
                     <td>{t("Organization")}:</td>
                     <td>{data.orgName}</td>
@@ -178,6 +179,7 @@ function ConfigParams(props) {
                     <td>{data.gathererModule}</td>
                 </tr>
                 {items}
+              </tbody>
             </table>
         </div>
     );
