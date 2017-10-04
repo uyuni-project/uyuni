@@ -82,7 +82,8 @@ class BrokerHandler(SharedHandler):
                 # is used). We need to use the 'hostname' part in any case
                 # or we create bogus 'hostname:port' DNS queries
                 host_header = req.headers_in['Host'].split(':')[0]
-                if socket.gethostbyname(host_header) == my_ip_addr:
+                if host_header != my_ip_addr and \
+                    socket.gethostbyname(host_header) == my_ip_addr:
                     # if host header is valid (i.e. not just an /etc/hosts
                     # entry on the client or the hostname of some other
                     # machine (say a load balancer)) then use it
