@@ -403,7 +403,7 @@ echo "Spacewalk debug created on $(date)" > $DIR/timestamp
 if [ "$MAX_LOG_AGE" -eq "$MAX_LOG_AGE" 2>/dev/null ]; then
     # Remove all logs older than MAX_LOG_AGE to reduce the size of the tarball
     find $DIR/* -regextype sed \( -iregex ".*log\.[0-9]\{1,\}.*" -or -iregex ".*[0-9]\{8\}.*" \
-        -or -iregex ".*[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}\(\.\|_[0-9]\{6\}\.\).*" \) \
+        -or -iregex ".*[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}\(\.\|_[0-9]\{6\}\(_sync\)\?\.\).*" \) \
         -daystart -mtime +"$MAX_LOG_AGE" -not -ipath "*schema*" -delete
 
         # tasko and .trc files need to be parsed separately to find old ones
