@@ -216,6 +216,7 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             request.setAttribute(CHANNEL_ARCH, form.get(ARCH_NAME));
             request.setAttribute(CHANNEL_ARCH_LABEL, form.get(ARCH));
             request.setAttribute(CHECKSUM, form.get(CHECKSUM));
+            request.setAttribute(GPG_CHECK, form.get(GPG_CHECK));
             addErrors(request, errors);
             prepDropdowns(new RequestContext(request), null);
             return getStrutsDelegate().forwardParams(
