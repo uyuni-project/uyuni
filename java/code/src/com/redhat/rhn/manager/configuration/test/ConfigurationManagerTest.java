@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
@@ -55,6 +56,7 @@ import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -1429,5 +1431,50 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         // Make us config-admin - we SHOULD have access
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
         assertTrue(cm.accessToChannel(user.getId(), cc.getId()));
+    }
+
+    /**
+     * Tests listing of non-config-managed systems that are capable for config management.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testListCapableSystems() throws Exception {
+        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Server tradClient = ServerFactoryTest.createUnentitledTestServer(user, true,
+                ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
+
+        List<ConfigSystemDto> systems = ConfigurationManager.getInstance()
+                .listNonManagedSystems(user, null);
+
+        assertEquals(1, systems.stream()
+                .filter(s -> s.getId().equals(tradClient.getId()))
+                .count());
+        assertEquals(0, systems.stream()
+                .filter(s -> s.getId().equals(minion.getId()))
+                .count());
+    }
+
+    /**
+     * Tests listing of non-config-managed systems that are capable for config management.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testListCapableSystemsInSet() throws Exception {
+        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Server tradClient = ServerFactoryTest.createUnentitledTestServer(user, true,
+                ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
+
+        ServerTestUtils.addServersToSsm(user, tradClient.getId(), minion.getId());
+
+        String setLabel = RhnSetDecl.SYSTEMS.getLabel();
+        List<ConfigSystemDto> systems = ConfigurationManager.getInstance()
+                .listNonManagedSystemsInSet(user, null, setLabel);
+
+        assertEquals(1, systems.stream()
+                .filter(s -> s.getId().equals(tradClient.getId()))
+                .count());
+        assertEquals(0, systems.stream()
+                .filter(s -> s.getId().equals(minion.getId()))
+                .count());
     }
 }
