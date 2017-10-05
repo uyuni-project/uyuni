@@ -1,4 +1,5 @@
-
+- honor MAX_LOG_AGE for (renamed) cobbler/tasks logs file
+  in spacewalk-debug (bsc#1025201)
 - add hostname to duplicate machine_id email (bsc#1055292)
 - fix link to manual and the described procedure
 
