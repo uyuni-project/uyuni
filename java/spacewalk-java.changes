@@ -1,3 +1,5 @@
+- Exclude salt systems from the list of target systems for traditional
+  configuration stack installation
 - Start registration for accepted minions only on the minion start event,
   not automatically on any event (bsc#1054044)
 - Extract proxy version from named installed product (bsc#1055467)
