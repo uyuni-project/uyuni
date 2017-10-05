@@ -1,4 +1,4 @@
-- re-create unique index on minion_id (bsc#1059568)
+- re-create unique index on minion_id (bsc#1059568, bsc#1056358)
 
 -------------------------------------------------------------------
 Wed Aug 30 16:08:50 CEST 2017 - fkobzik@suse.de
