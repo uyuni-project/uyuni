@@ -14,8 +14,14 @@
  */
 package com.redhat.rhn.manager.kickstart.test;
 
+import com.redhat.rhn.domain.kickstart.KickstartCommand;
+import com.redhat.rhn.domain.kickstart.KickstartCommandName;
+import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.manager.kickstart.KickstartCloneCommand;
 import com.redhat.rhn.testing.TestUtils;
+
+import java.util.Date;
+import java.util.LinkedHashSet;
 
 /**
  * KickstartCloneCommandTest
@@ -26,9 +32,25 @@ public class KickstartCloneCommandTest extends BaseKickstartCommandTestCase {
     public void testClone() throws Exception {
         KickstartCloneCommand cmd = new KickstartCloneCommand(ksdata.getId(), user,
                 "someNewLabel [" + TestUtils.randomString() + "]");
+
+        LinkedHashSet<KickstartCommand> customSet = new LinkedHashSet<>();
+        KickstartCommand custom = new KickstartCommand();
+        KickstartCommandName cn = KickstartFactory
+                .lookupKickstartCommandName("custom");
+        custom.setCommandName(cn);
+        custom.setArguments("this is a test");
+        custom.setKickstartData(cmd.getKickstartData());
+        custom.setCustomPosition(0);
+        custom.setCreated(new Date());
+        custom.setModified(new Date());
+        customSet.add(custom);
+        cmd.getKickstartData().setCustomOptions(customSet);
+
         cmd.store();
+
         assertNotNull(cmd.getClonedKickstart());
         assertNotNull(cmd.getClonedKickstart().getId());
+        assertNotNull(cmd.getClonedKickstart().getCommand("custom").getCustomPosition());
         assertFalse(cmd.getClonedKickstart().getId().equals(ksdata.getId()));
     }
 
