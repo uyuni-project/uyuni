@@ -345,7 +345,9 @@ SELECT S.id,
                         'N' as capable
     FROM  rhnServer S
                 inner join rhnUserServerPerms USP on USP.server_id = S.id
+                left outer join suseMinionInfo SMI on S.id = SMI.server_id
    WHERE  USP.user_id = :user_id
+     AND  SMI.server_id is NULL
      AND  NOT EXISTS
                  (select 1 FROM  rhnClientCapability CC
                         inner join  rhnClientCapabilityName CCN on CC.capability_name_id = CCN.id
@@ -366,8 +368,10 @@ SELECT S.id,
     FROM  rhnUserServerPerms USP
                         inner join  rhnSet ST on ST.user_id = USP.user_id and ST.element = USP.server_id
                         inner join rhnServer S on USP.server_id = S.id
+                        left outer join suseMinionInfo SMI on S.id = SMI.server_id
    WHERE  ST.user_id = :user_id
      AND  ST.label = :set
+     AND  SMI.server_id is NULL
      AND  NOT EXISTS ( select 1 FROM  rhnClientCapability CC
                         inner join  rhnClientCapabilityName CCN on CC.capability_name_id = CCN.id
                         inner join rhnServerFeaturesView SFV on SFV.server_id = CC.server_id
