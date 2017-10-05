@@ -16,7 +16,8 @@
     <div id="delete-system">
     </div>
     <script>
-        var serverId=${sid}
+        var serverId=${sid};
+        var csrfToken="<%= com.redhat.rhn.common.security.CSRFTokenValidator.getToken(session) %>";
     </script>
     <script src="/javascript/manager/delete-system.bundle.js" type="text/javascript"></script>
 <%--

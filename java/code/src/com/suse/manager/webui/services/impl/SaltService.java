@@ -1147,4 +1147,7 @@ public class SaltService {
         );
     }
 
+    public Optional<List<String>> unregisterSSHMinion(MinionServer minionServer, int timeout) {
+        return saltSSHService.unregisterSSHMinion(minionServer, timeout);
+    }
 }
