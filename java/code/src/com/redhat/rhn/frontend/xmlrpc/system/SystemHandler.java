@@ -1472,8 +1472,10 @@ public class SystemHandler extends BaseHandler {
 
     public int deleteSystem(String clientCert) throws FaultException {
         Server server = validateClientCertificate(clientCert);
-        SystemManager.deleteServer(server.getOrg().getActiveOrgAdmins().get(0),
-                server.getId());
+        SystemManager.deleteServerAndCleanup(server.getOrg().getActiveOrgAdmins().get(0),
+                server.getId(),
+                SystemManager.ServerCleanupType.FORCE_DELETE
+                );
         return 1;
     }
 
@@ -1493,8 +1495,10 @@ public class SystemHandler extends BaseHandler {
             throws FaultException {
 
         Server server = lookupServer(loggedInUser, serverId);
-
-        SystemManager.deleteServer(loggedInUser, server.getId());
+        SystemManager.deleteServerAndCleanup(loggedInUser,
+                server.getId(),
+                SystemManager.ServerCleanupType.FORCE_DELETE
+        );
         return 1;
     }
 

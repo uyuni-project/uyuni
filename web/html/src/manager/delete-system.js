@@ -5,9 +5,13 @@ const ReactDOM = require("react-dom");
 
 const {AsyncButton, Button} = require("../components/buttons");
 const Network = require("../utils/network");
+const {Messages} = require("../components/messages");
+const MessagesUtils = require("../components/messages").Utils;
+const {Utils} = require("../utils/functions");
 
 const msgMap = {
-  "minion_unreachable": "Cleanup timed out. Please check if the machine is reachable.",
+  "minion_unreachable": t("Cleanup timed out. Please check if the machine is reachable."),
+  "apply_result_missing" : t("No result found in state apply response.")
 };
 
 class DeleteSystem extends React.Component {
@@ -21,19 +25,21 @@ class DeleteSystem extends React.Component {
   }
 
   handleDelete = () => {
-    const nocleanup = this.state.cleanupErr ? {"nocleanup": "true"} : null;
-    return Network.post(`/manager/api/systems/${this.props.serverId}/delete`, nocleanup)
+    const nocleanup = this.state.cleanupErr ? {"nocleanup": "true"} : {};
+    return Network.post(`/rhn/manager/api/systems/${this.props.serverId}/delete`, $.param(nocleanup))
     .promise.then(data => {
         if (data.success) {
           // TODO redirect to systems list and show display msg
-          this.setState({
-            messages: MessagesUtils.info(t("Deleted successfully."))
-          });
+          Utils.urlBounce("/rhn/systems/Overview.do");
+          // this.setState({
+          //   messages: MessagesUtils.info(t("Deleted successfully."))
+          // });
         } else {
           this.setState({
             cleanupErr: true,
-            messages: MessagesUtils.error(
-              [t("Minion cleanup failed.")].concat(data.messages)
+            messages:
+            MessagesUtils.error(
+              [t("Minion cleanup failed: ")].concat(data.messages)
             )
           });
         }

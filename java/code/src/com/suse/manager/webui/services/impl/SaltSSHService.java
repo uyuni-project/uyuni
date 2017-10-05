@@ -59,11 +59,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.singletonList;
 
 /**
  * Code for calling salt-ssh functions.
@@ -642,5 +646,56 @@ public class SaltSSHService {
             LOG.error(msg);
             throw new RuntimeException(msg);
         }
+    }
+
+    public Optional<List<String>> unregisterSSHMinion(MinionServer minion, int timeout) {
+        CompletableFuture timeoutAfter = SaltService.INSTANCE.failAfter(timeout);
+        try {
+            Map<String, CompletionStage<Result<Map<String, State.ApplyResult>>>> res =
+                    callAsyncSSH(
+                            State.apply("ssh_cleanup"),
+                            new MinionList(minion.getMinionId()), timeoutAfter);
+
+            CompletionStage<Result<Map<String, State.ApplyResult>>> future =
+                    res.get(minion.getMinionId());
+            if (future == null) {
+                return Optional.of(
+                        singletonList("apply_result_missing"));
+            }
+
+            return future.handle((applyResult, err) -> {
+                if (applyResult != null) {
+                    return applyResult.fold((saltErr) ->
+                                    Optional.of(singletonList(
+                                            saltErr.fold(
+                                                    Object::toString,
+                                                    Object::toString,
+                                                    Object::toString,
+                                                    Object::toString
+                                            ))),
+                            (saltRes) -> saltRes.values().stream()
+                                    .filter(value -> !value.isResult())
+                                    .map(value -> value.getComment())
+                                    .collect(Collectors
+                                            .collectingAndThen(Collectors.toList(),
+                                                    (list) -> list.isEmpty() ?
+                                                            Optional.<List<String>>empty() :
+                                                            Optional.of(list)))
+                    );
+                }
+                else if (err instanceof TimeoutException) {
+                    return Optional.of(singletonList("minion_unreachable"));
+                }
+                else {
+                    return Optional.of(singletonList(err.getMessage()));
+                }
+            }).toCompletableFuture().get();
+
+        }
+        catch (InterruptedException | ExecutionException e) {
+            LOG.error("Error applying state ssh_cleanup", e);
+            return Optional.of(singletonList(e.getMessage()));
+        }
+
     }
 }

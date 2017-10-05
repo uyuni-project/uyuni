@@ -87,6 +87,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.commons.lang.BooleanUtils;
@@ -108,7 +109,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * SystemManager
@@ -373,6 +376,39 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
         params.put("cid", cid);
         return m.execute(params);
+    }
+
+    public enum ServerCleanupType {
+        FAIL_ON_CLEANUP_ERR,
+        NO_CLEANUP,
+        FORCE_DELETE
+    }
+
+    public static Optional<List<String>> deleteServerAndCleanup(User user, long sid,
+                                                                ServerCleanupType cleanupType) {
+        return deleteServerAndCleanup(user, sid, cleanupType, 300);
+    }
+
+    public static Optional<List<String>> deleteServerAndCleanup(User user, long sid,
+                                                                ServerCleanupType cleanupType,
+                                                                int cleanupTimeout) {
+        if (!ServerCleanupType.NO_CLEANUP.equals(cleanupType)) {
+            Server server = lookupByIdAndUser(sid, user);
+            if (server.asMinionServer().isPresent()) {
+                boolean sshPush = Stream.of(
+                        ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH),
+                        ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH_TUNNEL)
+                ).anyMatch(cm -> server.getContactMethod().equals(cm));
+                if (sshPush) {
+                    Optional<List<String>> errs = saltServiceInstance.unregisterSSHMinion(server.asMinionServer().get(), cleanupTimeout);
+                    if (errs.isPresent() && ServerCleanupType.FAIL_ON_CLEANUP_ERR.equals(cleanupType)) {
+                        return errs;
+                    } // else FORCE_DELETE
+                }
+            }
+        }
+        deleteServer(user, sid);
+        return Optional.empty();
     }
 
     /**

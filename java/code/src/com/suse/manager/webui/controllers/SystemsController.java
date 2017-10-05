@@ -16,35 +16,32 @@
 package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.JsonResult;
-import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.exception.SaltException;
-import com.suse.salt.netapi.results.Result;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import spark.Request;
 import spark.Response;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static spark.Spark.halt;
 
 /**
  * Controller class providing backend code for the systems page.
@@ -56,14 +53,13 @@ public class SystemsController {
 
     public static String delete(Request request, Response response, User user) {
         String sidStr = request.params("sid");
-        String noclean = request.queryParams("noclean");
+        String noclean = request.queryParams("nocleanup");
         long sid;
         try {
             sid = Long.parseLong(sidStr);
         }
         catch (NumberFormatException e) {
-            halt(500, e.getMessage());
-            return null;
+            return json(response, 400, JsonResult.success());
         }
         Server server = ServerFactory.lookupById(sid);
 
@@ -73,8 +69,10 @@ public class SystemsController {
         ).anyMatch(cm -> server.getContactMethod().equals(cm));
 
         if (server.asMinionServer().isPresent() && sshPush) {
-            if(!"true".equalsIgnoreCase(noclean)) {
-                Optional<String> cleanupErr = syncSSHCleanup(server.asMinionServer().get());
+            if (!"true".equalsIgnoreCase(noclean)) {
+                Optional<List<String>> cleanupErr =
+                        SaltService.INSTANCE.
+                                unregisterSSHMinion(server.asMinionServer().get(), 300);
                 if (cleanupErr.isPresent()) {
                     return json(response, JsonResult.error(cleanupErr.get()));
                 }
@@ -95,68 +93,40 @@ public class SystemsController {
         try {
             // Now we can remove the system
             SystemManager.deleteServer(user, sid);
-//            createSuccessMessage(request, "message.serverdeleted.param",
-//                    sid.toString());
+            createSuccessMessage(request.raw(), "message.serverdeleted.param",
+                    Long.toString(sid));
         }
         catch (RuntimeException e) {
             if (e.getMessage().contains("cobbler")) {
-//                createErrorMessage(request, "message.servernotdeleted_cobbler",
-//                        sid.toString());
+                createErrorMessage(request.raw(), "message.servernotdeleted_cobbler",
+                        Long.toString(sid));
             }
             else {
-//                createErrorMessage(request, "message.servernotdeleted", sid.toString());
+                createErrorMessage(request.raw(), "message.servernotdeleted", Long.toString(sid));
                 throw e;
             }
         }
+        FlashScopeHelper.flash(request, "Deleted successfully");
         return json(response, JsonResult.success());
     }
 
-    public static Optional<String> syncSSHCleanup(MinionServer minion) {
-        CompletableFuture timeOut = SaltService.INSTANCE.failAfter(300); // 5 mins
-
-        try {
-            Map<String, CompletionStage<Result<Map<String, State.ApplyResult>>>> res =
-                SaltService.INSTANCE.completableAsyncCall(
-                        State.apply("ssh_cleanup"),
-                        new MinionList(minion.getMinionId()),
-                        timeOut
-                        );
-            CompletionStage<Result<Map<String, State.ApplyResult>>> future = res.get(minion.getMinionId());
-            if (future == null) {
-                // TODO err
-            }
-
-            return future.handle((applyResult, err) -> {
-                if (applyResult != null) {
-                    return applyResult.fold((saltErr) -> {
-                                return saltErr.fold(
-                                        fn -> Optional.of("Function not available: " + fn.getFunctionName()),
-                                        fn -> Optional.of(""),
-                                        fn -> Optional.of(""),
-                                        fn -> Optional.of("")
-                                );
-                            },
-                            (saltRes) -> {
-                                if (!saltRes.get("").isResult()) {
-                                    return Optional.of("");
-                                }
-                                return Optional.<String>empty();
-                            }
-                    );
-                } else if (err instanceof TimeoutException) {
-                    return Optional.of("minion_unreachable");
-                } else {
-                    return Optional.of(err.getMessage());
-                }
-            }).toCompletableFuture().get();
-
-        }
-        catch (SaltException|InterruptedException|ExecutionException e) {
-            LOG.error("Error applying state ssh_cleanup", e);
-            return Optional.of(e.getMessage());
-        }
-
+    protected static void createSuccessMessage(HttpServletRequest req, String msgKey,
+                                        String param1) {
+        ActionMessages msg = new ActionMessages();
+        Object[] args = new Object[1];
+        args[0] = StringEscapeUtils.escapeHtml4(param1);
+        msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(msgKey, args));
+        StrutsDelegate.getInstance().saveMessages(req, msg);
     }
+
+    protected static void createErrorMessage(HttpServletRequest req, String beanKey,
+                                      String param) {
+        ActionErrors errs = new ActionErrors();
+        String escParam = StringEscapeUtils.escapeHtml4(param);
+        errs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(beanKey, escParam));
+        StrutsDelegate.getInstance().saveMessages(req, errs);
+    }
+
 
 
 }
