@@ -22,6 +22,7 @@
 - enable package profile comparisons on minions
 - Disallow entering multiple identical mirror credentials (bsc#971785)
 - ensure correct ordering of patches (bsc#1059801)
+- fix cloning Kickstart Profiles with Custom Options (bsc#1061576)
 - checkin the foreign host if a s390 minion finished a job (bsc#971916)
 - increase max length of hardware address to 32 byte (bsc#989991)
 - Set the creator user for minions correctly in case it is known (bsc#1058862)
