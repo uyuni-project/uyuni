@@ -17,6 +17,8 @@ package com.redhat.rhn.frontend.action.systems.sdc;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,6 +27,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -56,8 +59,15 @@ public class ProxyClientsAction extends RhnAction implements Listable<SystemOver
         SystemManager.ensureAvailableToUser(user, sid);
 
         if (server.isProxy()) {
-            request.setAttribute("version",
-                    server.getProxyInfo().getVersion().getVersion());
+            // Try to extract the Proxy InstalledProduct on the client and
+            // get the current version. If the product is not found,
+            // then fallback to the version saved at the proxy activation time.
+            Optional<InstalledProduct> proxyProduct = server.getInstalledProducts().stream()
+                    .filter(p -> p.getName().toLowerCase().contains("proxy"))
+                    .findFirst();
+            request.setAttribute("version", proxyProduct.isPresent() ?
+                    proxyProduct.get().getVersion() :
+                        server.getProxyInfo().getVersion().getVersion());
         }
 
         ListHelper helper = new ListHelper(this, request);
