@@ -1,3 +1,5 @@
+- honor MAX_LOG_AGE for (renamed) cobbler/tasks logs file
+  in spacewalk-debug (bsc#1025201)
 - Fix SP migration for traditional clients which were registered
   by a currently disabled user (bsc#1057126)
 
