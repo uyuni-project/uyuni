@@ -17,6 +17,7 @@
 - Fix duplicate machine id in event history on minion restart (bsc#1059388)
 - Show link in message when rescheduling actions (bsc#1032122)
 - Prevent ISE when distribution does not exist (bsc#1059524)
+- fix cloning Kickstart Profiles with Custom Options (bsc#1061576)
 - checkin the foreign host if a s390 minion finished a job (bsc#971916)
 - increase max length of hardware address to 32 byte (bsc#989991)
 - Adapt Salt runner and wheel calls to the new
