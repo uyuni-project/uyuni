@@ -46,6 +46,7 @@ import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerArch;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerLock;
@@ -93,6 +94,7 @@ import java.net.IDN;
 import java.sql.Date;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -519,9 +521,11 @@ public class SystemManager extends BaseManager {
     public static DataResult<SystemCurrency> systemCurrencyList(User user,
             PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "system_currency");
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("uid", user.getId());
-        return m.execute(params);
+
+        return m.execute(params, Arrays.asList(
+                ServerConstants.getServerGroupTypeForeignEntitled().getId()));
     }
 
     /**
