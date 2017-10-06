@@ -1,3 +1,4 @@
+- Make systems in system group list selectable by the group admins (bsc#1021432)
 - Hide non-relevant typed systems in SystemCurrency (bsc#1019097)
 - Start registration for accepted minions only on the minion start event,
   not automatically on any event (bsc#1054044)
