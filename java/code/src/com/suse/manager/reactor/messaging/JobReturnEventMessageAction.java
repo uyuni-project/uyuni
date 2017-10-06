@@ -18,7 +18,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -185,11 +184,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 jobReturnEvent.getMinionId());
         if (minion.isPresent()) {
             minion.get().updateServerInfo();
-        }
-        else {
-            // Or trigger registration if minion is not present
-            MessageQueue.publish(new RegisterMinionEventMessage(
-                    jobReturnEvent.getMinionId()));
         }
     }
 
