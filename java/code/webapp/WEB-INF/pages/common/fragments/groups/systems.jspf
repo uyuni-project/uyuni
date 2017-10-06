@@ -24,7 +24,7 @@
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
 
 <c:if test="${not empty requestScope.pageList}">
- <rhn:require acl="user_role(org_admin) or user_role(system_group_admin)">
+ <rhn:require acl="user_role(system_group_admin)">
 <div class="text-right">
    <rhn:submitted/>
    <hr/>

@@ -52,7 +52,7 @@
       </c:if>
       <br />
 
-      <rhn:require acl="user_role(org_admin) or user_role(system_group_admin)">
+      <rhn:require acl="user_role(system_group_admin)">
       <br />
       <a href="/rhn/groups/AdminList.do?sgid=${id}"><bean:message key="systemgroup.details.manageadmins"/></a>
       </rhn:require>
@@ -78,7 +78,7 @@
 <div class="panel panel-default">
 <div class="panel-heading">
   <h3><bean:message key="systemgroup.details.properties"/>
-  <rhn:require acl="user_role(org_admin) or user_role(system_group_admin)">
+  <rhn:require acl="user_role(system_group_admin)">
     (<a href="/rhn/groups/EditGroup.do?sgid=${id}"><bean:message key="systemgroup.details.editproperties"/></a>)
   </rhn:require></h3>
 </div>
