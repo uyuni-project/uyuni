@@ -3,7 +3,7 @@
 const React = require("react");
 const {LinkButton, Button} = require("../components/buttons");
 const DateTime = require("../components/datetime").DateTime;
-const {ModalButton, ModalLink} = require("../components/dialogs");
+const {ModalButton, ModalLink, DeleteDialog} = require("../components/dialogs");
 const PopUp = require("../components/popup").PopUp;
 const Input = require("../components/input");
 const Functions = require("../utils/functions");
@@ -412,6 +412,13 @@ class ImageViewOverview extends React.Component {
               <InspectDialog data={data} onInspect={this.props.onInspect}/>
             </div>
         }
+        <DeleteDialog id="delete-modal"
+            title={t("Delete Image")}
+            content={<span>{t("Are you sure you want to delete image")} <strong>{data ? (data.name + " (" + data.version + ")") : ''}</strong>?</span>}
+            item={data}
+            onConfirm={this.props.onDelete}
+        />
+
       </div>
     );
   }
