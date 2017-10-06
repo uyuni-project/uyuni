@@ -16,6 +16,7 @@ package com.suse.manager.reactor.messaging.test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -1137,6 +1138,20 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         }
 
         return taskomaticApi;
+    }
+
+    public void testNoRegisterOnInexistentMinionReturnEvent() throws Exception {
+
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("openscap.xccdf.success.json", 123));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        assertEquals(0, MessageQueue.getMessageCount());
     }
 
 }
