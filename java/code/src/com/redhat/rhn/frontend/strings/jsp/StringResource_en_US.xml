@@ -4615,6 +4615,21 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="ssm.delete.systems.summary">
           <source>This will delete the selected profiles permanently.</source>
         </trans-unit>
+        <trans-unit id="ssm.delete.systems.saltssh.cleanup">
+          <source>SUSE Manager can try to remove the specific configuration from any Salt ssh-push systems. This requires connecting to the Salt ssh-push systems and executing the cleanup.</source>
+        </trans-unit>
+        <trans-unit id="ssm.delete.systems.saltssh.cleanup.type">
+          <source>Please chose how to handle SSH minions cleanup errors:</source>
+        </trans-unit>
+        <trans-unit id="ssm.delete.systems.saltssh.cleanup.no_cleanup">
+          <source>No cleanup, just remove the system</source>
+        </trans-unit>
+        <trans-unit id="ssm.delete.systems.saltssh.cleanup.force_delete">
+          <source>Always remove systems, even in case of cleanup errors</source>
+        </trans-unit>
+        <trans-unit id="ssm.delete.systems.saltssh.cleanup.skip_on_err">
+          <source>Don't delete systems where cleanup failed</source>
+        </trans-unit>
         <trans-unit id="ssm.delete.systems.confirmbutton">
           <source>Confirm Deletion</source>
         </trans-unit>

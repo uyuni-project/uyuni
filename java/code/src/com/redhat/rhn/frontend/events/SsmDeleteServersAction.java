@@ -54,7 +54,7 @@ public class SsmDeleteServersAction extends AbstractDatabaseAction {
                 try {
                     SystemManager.deleteServerAndCleanup(user,
                             sid,
-                            SystemManager.ServerCleanupType.FORCE_DELETE
+                            event.getServerCleanupType()
                     );
                     // commit after each deletion to prevent deadlocks with
                     // system registration

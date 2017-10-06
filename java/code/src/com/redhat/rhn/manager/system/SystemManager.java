@@ -90,7 +90,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
-import org.apache.commons.lang.BooleanUtils;
+import com.suse.utils.Opt;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -381,7 +382,16 @@ public class SystemManager extends BaseManager {
     public enum ServerCleanupType {
         FAIL_ON_CLEANUP_ERR,
         NO_CLEANUP,
-        FORCE_DELETE
+        FORCE_DELETE;
+
+        public static Optional<ServerCleanupType> fromString(String value) {
+            try {
+                return Optional.of(valueOf(value.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                return Optional.empty();
+            }
+        }
+
     }
 
     public static Optional<List<String>> deleteServerAndCleanup(User user, long sid,

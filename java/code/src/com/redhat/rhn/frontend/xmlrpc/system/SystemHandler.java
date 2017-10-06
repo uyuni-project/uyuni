@@ -1439,7 +1439,8 @@ public class SystemHandler extends BaseHandler {
 
         // Fire the request off asynchronously
         SsmDeleteServersEvent event =
-                new SsmDeleteServersEvent(loggedInUser, deletion);
+                new SsmDeleteServersEvent(loggedInUser, deletion,
+                        SystemManager.ServerCleanupType.FORCE_DELETE);
         MessageQueue.publish(event);
 
         // If we skipped any systems, create an error message and throw a FaultException

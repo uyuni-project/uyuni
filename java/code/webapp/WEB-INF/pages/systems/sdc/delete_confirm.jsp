@@ -7,12 +7,11 @@
 <html:html >
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
-<%--
     <h2><bean:message key="delete_confirm.jsp.header"/></h2>
     <bean:message key="delete_confirm.jsp.summary" arg0="${sid}" />
 
     <hr/>
---%>
+
     <div id="delete-system">
     </div>
     <script>
