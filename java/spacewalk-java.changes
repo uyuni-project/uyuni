@@ -1,3 +1,4 @@
+- Keep the the GPG Check value if validation fails (bsc#1061548)
 - Extract Proxy version from installed product (bsc#1055467)
 - Provide another create method(with additional parameter Gpgcheck) to create software channel through XML RPC(bsc#1060691).
 - Improve duplicate hostname and transaction handling in minion registration
