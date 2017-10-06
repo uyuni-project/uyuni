@@ -1161,6 +1161,108 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Tests applyErrata() with 2 identical minions and 2 errata applicable to both.
+     * This should result in only one Action being created, even if one of the erratas
+     * affects the management stack.
+     *
+     * @throws Exception if something goes wrong
+     */
+    @SuppressWarnings("unchecked")
+    public void testApplyErrataMultipleManagementStackErrataMinions() throws Exception {
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        errata2.addKeyword("restart_suggested");
+        TestUtils.saveAndFlush(errata2);
+
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+
+        Set<Channel> serverChannels = new HashSet<Channel>();
+        serverChannels.add(channel);
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        server1.addChannel(channel);
+        Server server2 = MinionServerFactoryTest.createTestMinionServer(user);
+        server2.addChannel(channel);
+
+        // both servers have two errata for two packages available
+        Package package1 = createTestPackage(user, channel, "noarch");
+        Package package2 = createTestPackage(user, channel, "noarch");
+        createTestInstalledPackage(package1, server1);
+        createTestInstalledPackage(package1, server2);
+        createTestInstalledPackage(package2, server1);
+        createTestInstalledPackage(package2, server2);
+        createLaterTestPackage(user, errata1, channel, package1);
+        createLaterTestPackage(user, errata2, channel, package2);
+
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata2.getId(), package2.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata2.getId(), package2.getId());
+        HibernateFactory.getSession().flush();
+
+        List<Long> errataIds = new ArrayList<Long>();
+        errataIds.add(errata1.getId());
+        errataIds.add(errata2.getId());
+
+        List<Long> serverIds = new ArrayList<Long>();
+        serverIds.add(server1.getId());
+        serverIds.add(server2.getId());
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ErrataManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+
+        // only one Action should be created
+
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        assertEquals("1 action has been scheduled for server 1", 1, actionsServer1.size());
+        Set<Long> server1ScheduledErrata = new HashSet<Long>();
+        for (Action a : actionsServer1) {
+            ErrataAction errataAction = errataActionFromAction(a);
+            for (Errata e : errataAction.getErrata()) {
+                server1ScheduledErrata.add(e.getId());
+            }
+        }
+
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        assertEquals("1 action has been scheduled for server 2", 1, actionsServer2.size());
+        assertEquals(
+                "action created for server 1 is actually the same as the one for server 2",
+                actionsServer1.get(0), actionsServer2.get(0));
+        assertEquals("action actually has 2 servers", 2,
+                actionsServer1.get(0).getServerActions().size());
+        Set<Long> server2ScheduledErrata = new HashSet<Long>();
+        for (Action a : actionsServer2) {
+            ErrataAction errataAction = errataActionFromAction(a);
+            for (Errata e : errataAction.getErrata()) {
+                server2ScheduledErrata.add(e.getId());
+            }
+        }
+
+        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata2)",
+                2, server1ScheduledErrata.size());
+        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
+                server1ScheduledErrata.contains(errata1.getId()));
+        assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
+                server1ScheduledErrata.contains(errata2.getId()));
+
+        assertEquals("Server 2 Scheduled Erratas has 2 erratas (errata1 and errata2)",
+                2, server2ScheduledErrata.size());
+        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
+                server2ScheduledErrata.contains(errata1.getId()));
+        assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
+                server2ScheduledErrata.contains(errata2.getId()));
+    }
+    /**
      * Tests applyErrata() with 2 identical clients and 2 errata applicable to both,
      * to an Action Chain.
      * 2 Actions should be created.
