@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -1017,11 +1018,15 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             assertEquals("state.apply", call.getPayload().get("fun"));
             Map<String, Object> kwarg = (Map<String, Object>)call.getPayload().get("kwarg");
             assertEquals(Collections.singletonList("packages.patchinstall"), kwarg.get("mods"));
-            MinionServer minionServer = result.getValue().get(0);
             Map<String, Object> pillar = (Map<String, Object>)kwarg.get("pillar");
-            Collection<String> param_patches = (Collection<String>) pillar.get("param_patches");
-            assertEquals(1, param_patches.size());
-            assertEquals(true, param_patches.contains("SUSE-" + updateTag + "-2016-1234"));
+            Collection<String> regularPatches = (Collection<String>) pillar
+                    .get(SaltServerActionService.PARAM_REGULAR_PATCHES);
+            assertEquals(1, regularPatches.size());
+            assertEquals(true, regularPatches.contains("SUSE-" + updateTag + "-2016-1234"));
+
+            Collection<String> updateStackPatches = (Collection<String>) pillar
+                    .get(SaltServerActionService.PARAM_UPDATE_STACK_PATCHES);
+            assertEquals(0, updateStackPatches.size());
         });
     }
 
@@ -1141,13 +1146,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         TestUtils.saveAndFlush(e);
 
-        Map<Long, Map<Long, Set<String>>> out =
+        Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
-        Set<String> errataName = out.get(server.getId()).get(e.getId());
-        assertContains(errataName, "SUSE-SLE-SERVER-2016-1234");
+        Set<ErrataInfo> errataName = out.get(server.getId()).get(e.getId());
+        assertContains(errataName, new ErrataInfo("SUSE-SLE-SERVER-2016-1234", false));
 
         errataName = out.get(server.getId()).get(ce.getId());
-        assertContains(errataName, "CL-SUSE-SLE-SERVER-2016-1234");
+        assertContains(errataName, new ErrataInfo("CL-SUSE-SLE-SERVER-2016-1234", false));
     }
 
     public void testListErrataNamesForServerSLE11() throws Exception {
@@ -1174,13 +1179,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         TestUtils.saveAndFlush(e);
 
-        Map<Long, Map<Long, Set<String>>> out =
+        Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
-        Set<String> errataName = out.get(server.getId()).get(e.getId());
-        assertContains(errataName, "slessp4-ecryptfs-utils-12379");
+        Set<ErrataInfo> errataName = out.get(server.getId()).get(e.getId());
+        assertContains(errataName, new ErrataInfo("slessp4-ecryptfs-utils-12379", false));
 
         errataName = out.get(server.getId()).get(ce.getId());
-        assertContains(errataName, "slessp4-CL-ecryptfs-utils-12379");
+        assertContains(errataName,
+                new ErrataInfo("slessp4-CL-ecryptfs-utils-12379", false));
     }
 
     /**
