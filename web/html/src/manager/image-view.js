@@ -290,9 +290,13 @@ class ImageView extends React.Component {
 
   render() {
     const panelButtons = <div className="pull-right btn-group">
-      { isAdmin && this.state.selectedCount > 0 &&
+      { isAdmin && this.state.selectedCount > 0 && !this.state.selected &&
           <ModalButton id="delete-selected" icon="fa-trash" className="btn-default" text={t("Delete")}
             title={t("Delete selected")} target="delete-selected-modal"/>
+      }
+      { isAdmin && this.state.selected &&
+          <ModalButton id="delete-single" icon="fa-trash" className="btn-default" text={t("Delete")}
+            title={t("Delete Image")} target="delete-modal"/>
       }
       { isAdmin && !this.state.selected &&
           <Button id="import" icon="fa-download" text={t("Import")} className="btn-default" handler={this.handleImportImage} />
@@ -310,7 +314,8 @@ class ImageView extends React.Component {
           { this.state.selected ?
             <ImageViewDetails data={selected} onTabChange={() => this.updateView(getHashId(), getHashTab())}
               onCancel={this.handleBackAction} onInspect={this.inspectImage} onBuild={this.buildImage}
-              runtimeInfoEnabled={this.props.runtimeInfoEnabled} runtimeInfoErr={this.state.runtimeInfoErr}/>
+              runtimeInfoEnabled={this.props.runtimeInfoEnabled} runtimeInfoErr={this.state.runtimeInfoErr}
+              onDelete={(item) => {this.deleteImages([item.id]) ; this.setState({selected:undefined})}} />
             :
             <ImageViewList data={list} onSelectCount={(c) => this.setState({selectedCount: c})}
               onSelect={this.handleDetailsAction} onDelete={this.deleteImages}
@@ -642,7 +647,7 @@ class ImageViewDetails extends React.Component {
           onTabHashChange={this.onTabChange}
           tabs={[
             <ImageViewOverview key="1" data={data} onBuild={this.props.onBuild} onInspect={this.props.onInspect}
-              runtimeInfoEnabled={this.props.runtimeInfoEnabled} runtimeInfoErr={this.props.runtimeInfoErr}/>,
+              runtimeInfoEnabled={this.props.runtimeInfoEnabled} runtimeInfoErr={this.props.runtimeInfoErr} onDelete={this.props.onDelete} />,
             <ImageViewPatches key="2" data={data}/>,
             <ImageViewPackages key="3" data={data}/>,
             this.props.runtimeInfoEnabled ? <ImageViewRuntime key="4" data={data}/> : null
