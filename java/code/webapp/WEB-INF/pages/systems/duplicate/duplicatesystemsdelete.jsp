@@ -46,9 +46,9 @@
   <div class="text-right">
 
     <hr />
-    <html:submit styleClass="btn btn-success" property="dispatch">
-        <bean:message key="ssm.delete.systems.confirmbutton"/>
-    </html:submit>
+      <jsp:include page="/WEB-INF/pages/ssm/systems/deleteconfirmdialog.jspf"">
+        <jsp:param name="sshMinionsPresent" value="${sshMinionsPresent}"/>
+      </jsp:include>
 
   </div>
 <rhn:submitted/>

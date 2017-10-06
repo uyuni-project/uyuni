@@ -23,8 +23,9 @@
     <rhn:submitted />
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
-            <input class="btn btn-danger" type="submit" name="dispatch"
-                    value="${rhn:localize('ssm.delete.systems.confirmbutton')}"/>
+          <jsp:include page="/WEB-INF/pages/ssm/systems/deleteconfirmdialog.jspf"">
+            <jsp:param name="sshMinionsPresent" value="${sshMinionsPresent}"/>
+          </jsp:include>
         </div>
     </div>
 
