@@ -75,4 +75,12 @@ public class ServerConstants {
     public static final ServerGroupType getServerGroupTypeSaltEntitled() {
         return ServerFactory.lookupServerGroupTypeByLabel("salt_entitled");
     }
+
+    /**
+     * Static representing the foreign entitled server group type
+     * @return ServerGroupType
+     */
+    public static final ServerGroupType getServerGroupTypeForeignEntitled() {
+        return ServerFactory.lookupServerGroupTypeByLabel("foreign_entitled");
+    }
 }
