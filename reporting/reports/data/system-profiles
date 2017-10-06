@@ -28,6 +28,8 @@ columns:
 	virtual_guest:i		        System identifier of virtual guests, if system is a host
 	is_virtualized	            Information whether system is virtualized or not
 	virt_type                   System virtualization type
+	minion_id                   Minion ID, as reported by the system
+	machine_id                  Machine ID of the system if available
 
 multival_columns:
 
@@ -46,10 +48,11 @@ sql:
         child_channel_id, child_channel_label,
         system_group_id, system_group,
         release, architecture,
-        virtual_host, virtual_guest, is_virtualized, virt_type
+        virtual_host, virtual_guest, is_virtualized, virt_type,
+        minion_id, machine_id
 	from (
 	select rhnServer.id as server_id, rhnServer.name as profile_name,
-		rhnServerNetwork.hostname,
+		rhnServerNetwork.hostname, suseMinionInfo.minion_id, rhnServer.machine_id,
         rhnServer.description,
         CASE WHEN rhnChannel.parent_channel IS NULL THEN rhnChannel.id ELSE NULL END AS base_channel_id,
         CASE WHEN rhnChannel.parent_channel IS NULL THEN NULL ELSE rhnChannel.id END AS child_channel_id,
@@ -86,6 +89,7 @@ sql:
 			on rhnServerGroupMembers.server_group_id = rhnServerGroup.id
 		where rhnServerGroup.group_type is null
 		) group_data on rhnServer.id = group_data.server_id
+		left outer join suseMinionInfo on rhnServer.id = suseMinionInfo.server_id
 	) X
 	-- where placeholder
 	order by organization_id, server_id, base_channel_id,
