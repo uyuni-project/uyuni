@@ -174,7 +174,7 @@ class BuildImage extends React.Component {
             <table className="table table-condensed">
               { !pselected ?
                 <tbody>
-                  <tr><td>{t("Please select a build profile")}</td></tr>
+                  <tr><td><i className="fa fa-info-circle"/>{t("No profile selected")}</td></tr>
                 </tbody>
                 :
                 <tbody>
@@ -229,10 +229,10 @@ class BuildImage extends React.Component {
 
           <Input.Text name="version" label={t("Version")} labelClass="col-md-3" divClass="col-md-9" placeholder="latest"/>
 
-          <Input.Select name="profileId" required label={t("Build Profile")}
+          <Input.Select name="profileId" required label={t("Image Profile")}
             onChange={this.handleProfileChange} labelClass="col-md-3"
-            divClass="col-md-9" invalidHint={<span>Build Profile is required.&nbsp;<a href={"/rhn/manager/cm/imageprofiles/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>}>
-            <option key="0" disabled="disabled" value="">Select a build profile</option>
+            divClass="col-md-9" invalidHint={<span>Image Profile is required.&nbsp;<a href={"/rhn/manager/cm/imageprofiles/create" + "?url_bounce=" + this.getBounceUrl()}>Create a new one</a>.</span>}>
+            <option key="0" disabled="disabled" value="">Select an image profile</option>
             {
               this.state.profiles.map(k =>
                 <option key={k.profileId} value={k.profileId}>{ k.label }</option>

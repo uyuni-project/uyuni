@@ -144,8 +144,10 @@ class VirtualHostManagerEdit extends React.Component {
 
     renderButtons() {
         var buttons = [
-           <Button id="clear-btn" className="btn-default pull-right" icon="fa-eraser" text={t("Clear fields")} handler={this.clearFields}/>,
-           <Button id="back" className="btn-default pull-right" icon="fa-chevron-left" text={t("Back")}  title={t("Back")} handler={this.props.onCancel}/>
+          <div className="btn-group pull-right">
+            <Button id="back" className="btn-default" icon="fa-chevron-left" text={t("Back")}  title={t("Back")} handler={this.props.onCancel}/>
+            <Button id="clear-btn" className="btn-default" icon="fa-eraser" text={t("Clear fields")} handler={this.clearFields}/>
+          </div>
         ];
         if(this.isEdit()) {
             buttons.unshift(<SubmitButton id="update-btn" className="btn-success" icon="fa-edit" text={t("Update")} disabled={this.state.isInvalid}/>);
