@@ -102,7 +102,7 @@ class VirtualHostManager extends React.Component {
         if(!item) return false;
         return Network.del("/rhn/manager/api/vhms/delete/" + item.id)
             .promise.then(data => {
-                this.getVhmList();
+                this.handleBackAction();
                 this.setState({
                     messages: MessagesUtils.info("Virtual Host Manager has been deleted.")
                 });
@@ -120,6 +120,7 @@ class VirtualHostManager extends React.Component {
             const loc = window.location;
             history.pushState(null, null, loc.pathname + loc.search);
         });
+        this.getAvailableModules();
     }
 
     handleDetailsAction(row) {
