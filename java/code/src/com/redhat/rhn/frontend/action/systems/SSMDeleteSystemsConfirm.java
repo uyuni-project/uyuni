@@ -67,11 +67,18 @@ public class SSMDeleteSystemsConfirm extends RhnAction implements Listable {
             ActionMapping mapping) {
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(context.getCurrentUser());
-
+        String saltSshCleanup = context.getRequiredParamAsString("saltsshcleanup");
         // Fire the request off asynchronously
         SsmDeleteServersEvent event =
             new SsmDeleteServersEvent(context.getCurrentUser(),
-                            new ArrayList<Long>(set.getElementValues()));
+                            new ArrayList<Long>(set.getElementValues()),
+                    SystemManager.ServerCleanupType
+                            .fromString(saltSshCleanup)
+                            .orElseThrow(() ->
+                                    new IllegalArgumentException(
+                                            "Invalid server cleanup type value: "
+                                                    + saltSshCleanup))
+                    );
         MessageQueue.publish(event);
         set.clear();
         RhnSetManager.store(set);

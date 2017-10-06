@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -63,11 +64,18 @@ public class DuplicateSystemsDeleteSetupAction extends RhnAction implements List
             ActionMapping mapping) {
 
         RhnSet set = RhnSetDecl.DUPLICATE_SYSTEMS.get(context.getCurrentUser());
-
+        String saltSshCleanup = context.getRequiredParamAsString("saltsshcleanup");
         // Fire the request off asynchronously
         SsmDeleteServersEvent event =
             new SsmDeleteServersEvent(context.getCurrentUser(),
-                            new ArrayList<Long>(set.getElementValues()));
+                            new ArrayList<Long>(set.getElementValues()),
+                    SystemManager.ServerCleanupType
+                            .fromString(saltSshCleanup)
+                            .orElseThrow(() ->
+                                    new IllegalArgumentException(
+                                            "Invalid server cleanup type value: "
+                                                    + saltSshCleanup))
+                    );
         MessageQueue.publish(event);
         set.clear();
         RhnSetManager.store(set);
