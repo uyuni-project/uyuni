@@ -1,3 +1,7 @@
+- Update wording for image profiles in image build page (bsc#1058323)
+- Rename 'Refresh Data' button in VHM details page
+- Update browser URL correctly after deleting a VHM from the details page (bsc#1061596)
+- Show 'Nodes' list only for Kubernetes VHMs (bsc#1061563)
 - remove import button from image over page (bsc#1058128)
 - Use the same datetime format as the rest of the product (bsc#1054424)
 

@@ -61,48 +61,47 @@ class VirtualHostManagerDetails extends React.Component {
             <BootstrapPanel title={t("Properties")}>
                 <ConfigParams data={this.props.data}/>
             </BootstrapPanel>
-            <BootstrapPanel title={t("Nodes")}>
-            { this.state.nodes ?
-                <Table
-                    data={this.state.nodes}
-                    identifier={node => node.type + "_" + node.id}
-                    initialSortColumnKey="name"
-                    initialItemsPerPage={userPrefPageSize}
-                >
-                    <Column
-                        columnKey="name"
-                        comparator={Utils.sortByText}
-                        header={t('Name')}
-                        cell={(row, criteria) => row.type == "server" ? <a href={"/rhn/systems/details/Overview.do?sid=" + row.id}>{row.name}</a> : row.name }
-                    />
-                    <Column
-                        columnKey="os"
-                        comparator={Utils.sortByText}
-                        header={t('OS')}
-                        cell={(row, criteria) => row.os }
-                    />
-                    <Column
-                        columnKey="arch"
-                        comparator={Utils.sortByText}
-                        header={t('CPU Arch')}
-                        cell={(row, criteria) => row.arch }
-                    />
-                    <Column
-                        columnKey="cpuSockets"
-                        comparator={Utils.sortByText}
-                        header={t('CPU Sockets')}
-                        cell={(row, criteria) => row.cpuSockets }
-                    />
-                    <Column
-                        columnKey="memory"
-                        comparator={Utils.sortByText}
-                        header={t('RAM (Mb)')}
-                        cell={(row, criteria) => row.memory }
-                    />
-                </Table>
-                : null
+            { this.state.nodes && this.state.nodes.length > 0 &&
+                <BootstrapPanel title={t("Nodes")}>
+                    <Table
+                        data={this.state.nodes}
+                        identifier={node => node.type + "_" + node.id}
+                        initialSortColumnKey="name"
+                        initialItemsPerPage={userPrefPageSize}
+                    >
+                        <Column
+                            columnKey="name"
+                            comparator={Utils.sortByText}
+                            header={t('Name')}
+                            cell={(row, criteria) => row.type == "server" ? <a href={"/rhn/systems/details/Overview.do?sid=" + row.id}>{row.name}</a> : row.name }
+                        />
+                        <Column
+                            columnKey="os"
+                            comparator={Utils.sortByText}
+                            header={t('OS')}
+                            cell={(row, criteria) => row.os }
+                        />
+                        <Column
+                            columnKey="arch"
+                            comparator={Utils.sortByText}
+                            header={t('CPU Arch')}
+                            cell={(row, criteria) => row.arch }
+                        />
+                        <Column
+                            columnKey="cpuSockets"
+                            comparator={Utils.sortByText}
+                            header={t('CPU Sockets')}
+                            cell={(row, criteria) => row.cpuSockets }
+                        />
+                        <Column
+                            columnKey="memory"
+                            comparator={Utils.sortByText}
+                            header={t('RAM (Mb)')}
+                            cell={(row, criteria) => row.memory }
+                        />
+                    </Table>
+                </BootstrapPanel>
             }
-            </BootstrapPanel>
             <div className="btn-group">
                 <Button
                     text={t("Back")}
@@ -112,7 +111,7 @@ class VirtualHostManagerDetails extends React.Component {
                     handler={this.props.onCancel}
                 />
                <Button
-                    text={t("Schedule refresh data")}
+                    text={t("Refresh Data")}
                     icon="fa-refresh"
                     title={t("Refresh data from this Virtual Host Manager")}
                     className="btn-default"
@@ -170,6 +169,7 @@ function ConfigParams(props) {
     return (
         <div className="table-responsive">
             <table className="table">
+              <tbody>
                 <tr>
                     <td>{t("Organization")}:</td>
                     <td>{data.orgName}</td>
@@ -179,6 +179,7 @@ function ConfigParams(props) {
                     <td>{data.gathererModule}</td>
                 </tr>
                 {items}
+              </tbody>
             </table>
         </div>
     );
