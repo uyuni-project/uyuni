@@ -1,3 +1,6 @@
+- Try to resolve the proxy hostname even if the HTTP 'Host' header
+  is an ip address (bsc#1057542)
+
 -------------------------------------------------------------------
 Thu Jun 29 17:32:20 CEST 2017 - michele.bologna@suse.com
 
