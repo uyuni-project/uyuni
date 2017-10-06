@@ -40,6 +40,7 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreFactory;
+import com.redhat.rhn.domain.server.ErrataInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -95,6 +96,13 @@ public enum SaltServerActionService {
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
     private static final String PARAM_PKGS = "param_pkgs";
     private static final String PARAM_PATCHES = "param_patches";
+
+
+    /** SLS pillar parameter name for the list of update stack patch names. */
+    public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
+
+    /** SLS pillar parameter name for the list of regular patch names. */
+    public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
 
     /**
      * For a given action and list of minion servers return the salt call(s) that need to be
@@ -266,31 +274,46 @@ public enum SaltServerActionService {
      */
     public Map<LocalCall<?>, List<MinionServer>> errataAction(List<MinionServer> minions,
             Set<Long> errataIds) {
-        Set<Long> serverIds = minions.stream()
+        Set<Long> minionIds = minions.stream()
                 .map(MinionServer::getId)
                 .collect(Collectors.toSet());
-        Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory
-                .listErrataNamesForServers(serverIds, errataIds);
+        Map<Long, Map<Long, Set<ErrataInfo>>> errataInfos = ServerFactory
+                .listErrataNamesForServers(minionIds, errataIds);
+
         // Group targeted minions by errata names
-        Map<Set<String>, List<MinionServer>> collect = minions.stream()
-                .collect(Collectors.groupingBy(minion -> errataNames.get(minion.getId())
+        Map<Set<ErrataInfo>, List<MinionServer>> collect = minions.stream()
+                .collect(Collectors.groupingBy(minion -> errataInfos.get(minion.getId())
                         .entrySet().stream()
                         .map(Map.Entry::getValue)
                         .flatMap(Set::stream)
                         .collect(Collectors.toSet())
         ));
+
         // Convert errata names to LocalCall objects of type State.apply
         return collect.entrySet().stream()
-                .collect(Collectors.toMap(entry -> State.apply(
+            .collect(Collectors.toMap(entry -> {
+                Map<String, Object> params = new HashMap<>();
+                params.put(PARAM_REGULAR_PATCHES,
+                    entry.getKey().stream()
+                        .filter(e -> !e.isUpdateStack())
+                        .map(e -> e.getName())
+                        .sorted()
+                        .collect(Collectors.toList())
+                );
+                params.put(PARAM_UPDATE_STACK_PATCHES,
+                    entry.getKey().stream()
+                        .filter(e -> e.isUpdateStack())
+                        .map(e -> e.getName())
+                        .sorted()
+                        .collect(Collectors.toList())
+                );
+                return State.apply(
                         Arrays.asList(PACKAGES_PATCHINSTALL),
-                        Optional.of(Collections.singletonMap(PARAM_PATCHES,
-                            entry.getKey().stream()
-                                .sorted()
-                                .collect(Collectors.toList())
-                        )),
+                        Optional.of(params),
                         Optional.of(true)
-                ),
-                Map.Entry::getValue));
+                );
+            },
+            Map.Entry::getValue));
     }
 
     private Map<LocalCall<?>, List<MinionServer>> packagesUpdateAction(
@@ -568,15 +591,17 @@ public enum SaltServerActionService {
         if (actionIn.getActionType().equals(ActionFactory.TYPE_ERRATA)) {
             Set<Long> errataIds = ((ErrataAction) actionIn).getErrata().stream()
                     .map(e -> e.getId()).collect(Collectors.toSet());
-            Map<Long, Map<Long, Set<String>>> errataNames = ServerFactory
+            Map<Long, Map<Long, Set<ErrataInfo>>> errataNames = ServerFactory
                     .listErrataNamesForServers(minions.stream().map(MinionServer::getId)
                             .collect(Collectors.toSet()), errataIds);
-            List<String> errataArgs = new ArrayList<>();
-            for (Long minionId : errataNames.keySet()) {
-                for (Long errId : errataNames.get(minionId).keySet()) {
-                    errataArgs.addAll(errataNames.get(minionId).get(errId));
-                }
-            }
+            List<String> errataArgs = errataNames.entrySet().stream()
+                .flatMap(e -> e.getValue().entrySet().stream()
+                     .flatMap(f -> f.getValue().stream()
+                         .map(ErrataInfo::getName)
+                     )
+                )
+                .collect(Collectors.toList());
+
             call = State.apply(Arrays.asList(PACKAGES_PATCHDOWNLOAD),
                     Optional.of(Collections.singletonMap(PARAM_PATCHES, errataArgs)),
                     Optional.of(true));
