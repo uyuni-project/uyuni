@@ -185,7 +185,6 @@ fi
 %{python_sitelib}/virtualization/errors.py*
 %{python_sitelib}/virtualization/notification.py*
 %{python_sitelib}/virtualization/util.py*
-%endif
 %doc LICENSE
 
 %if 0%{?build_py3}
