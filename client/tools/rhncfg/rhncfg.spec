@@ -45,7 +45,8 @@ The base libraries and functions needed by all rhncfg-* packages.
 
 %package -n python2-%{name}
 Summary: Spacewalk Configuration Client Libraries
-%{?python_provide:%python_provide python2-%{name}}
+Provides: python-%{name} = %{version}-%{release}
+Obsoletes: python-%{name} < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: python
 Requires: rhnlib >= 2.8.3
@@ -61,7 +62,6 @@ Python 2 specific files for %{name}.
 %if 0%{?build_py3}
 %package -n python3-%{name}
 Summary: Spacewalk Configuration Client Libraries
-%{?python_provide:%python_provide python3-%{name}}
 Requires: %{name} = %{version}-%{release}
 Requires: python3
 Requires: python3-rhnlib >= 2.8.3
@@ -86,7 +86,8 @@ Management system.
 
 %package -n python2-%{name}-client
 Summary: Spacewalk Configuration Client
-%{?python_provide:%python_provide python2-%{name}-client}
+Provides: python-%{name}-client = %{version}-%{release}
+Obsoletes: python-%{name}-client < %{version}-%{release}
 Requires: %{name}-client = %{version}-%{release}
 %description -n python2-%{name}-client
 Python 2 specific files for %{name}-client.
@@ -94,7 +95,6 @@ Python 2 specific files for %{name}-client.
 %if 0%{?build_py3}
 %package -n python3-%{name}-client
 Summary: Spacewalk Configuration Client
-%{?python_provide:%python_provide python3-%{name}-client}
 Requires: %{name}-client = %{version}-%{release}
 %description -n python3-%{name}-client
 Python 3 specific files for %{name}-client.
@@ -112,7 +112,8 @@ A command line interface used to manage Spacewalk configuration.
 
 %package -n python2-%{name}-management
 Summary: Spacewalk Configuration Management Client
-%{?python_provide:%python_provide python2-%{name}-management}
+Provides: python-%{name}-management = %{version}-%{release}
+Obsoletes: python-%{name}-management < %{version}-%{release}
 Requires: %{name}-management = %{version}-%{release}
 %description -n python2-%{name}-management
 Python 2 specific files for python2-%{name}-management.
@@ -120,7 +121,6 @@ Python 2 specific files for python2-%{name}-management.
 %if 0%{?build_py3}
 %package -n python3-%{name}-management
 Summary: Spacewalk Configuration Management Client
-%{?python_provide:%python_provide python3-%{name}-management}
 Requires: %{name}-management = %{version}-%{release}
 %description -n python3-%{name}-management
 Python 2 specific files for python3-%{name}-management.
@@ -138,7 +138,8 @@ The code required to run configuration actions scheduled via Spacewalk.
 
 %package -n python2-%{name}-actions
 Summary: Spacewalk Configuration Client Actions
-%{?python_provide:%python_provide python2-%{name}-actions}
+Provides: python-%{name}-actions = %{version}-%{release}
+Obsoletes: python-%{name}-actions < %{version}-%{release}
 Requires: %{name}-actions = %{version}-%{release}
 Requires: python2-%{name}-client
 %description -n python2-%{name}-actions
@@ -147,7 +148,6 @@ Python 2 specific files for python2-%{name}-actions.
 %if 0%{?build_py3}
 %package -n python3-%{name}-actions
 Summary: Spacewalk Configuration Client Actions
-%{?python_provide:%python_provide python3-%{name}-actions}
 Requires: %{name}-actions = %{version}-%{release}
 Requires: python3-%{name}-client
 %description -n python3-%{name}-actions

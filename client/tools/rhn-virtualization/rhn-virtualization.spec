@@ -40,7 +40,10 @@ virtual machine guest images.
 %package -n python2-%{name}-common
 Summary: Files needed by rhn-virtualization-host
 %{?python_provide:%python_provide python2-%{name}-common}
-Obsoletes: %{name}-common < 5.4.62
+Provides: python-%{name}-common = %{version}-%{release}
+Obsoletes: python-%{name}-common < %{version}-%{release}
+Provides: %{name}-common = %{version}-%{release}
+Obsoletes: %{name}-common < %{version}-%{release}
 Requires: python2-rhn-client-tools
 Requires: spacewalk-usix
 BuildRequires: python
@@ -59,8 +62,7 @@ package.
 %if 0%{?build_py3}
 %package -n python3-%{name}-common
 Summary: Files needed by rhn-virtualization-host
-%{?python_provide:%python_provide python3-%{name}-common}
-Obsoletes: %{name}-common < 5.4.62
+Obsoletes: %{name}-common < %{version}-%{release}
 Requires: python3-spacewalk-usix
 Requires: python3-rhn-client-tools
 BuildRequires: python3-devel
