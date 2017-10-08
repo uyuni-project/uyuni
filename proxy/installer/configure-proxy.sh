@@ -239,7 +239,6 @@ default_or_input() {
     echo -n "$MSG [$DEFAULT]: "
     if [ "$INTERACTIVE" = "1" -a  -z "$VARIABLE_ISSET" ]; then
         read INPUT
-        ACCUMULATED_ANSWERS+=$(printf "\n%q=%q" "$VARIABLE" "${INPUT:-$DEFAULT}")
     elif [ -z "$VARIABLE_ISSET" ]; then
         echo "$DEFAULT"
     else
@@ -249,6 +248,7 @@ default_or_input() {
     if [ -z "$INPUT" ]; then
         INPUT="$DEFAULT"
     fi
+    ACCUMULATED_ANSWERS+=$(printf "\n%q=%q" "$VARIABLE" "${INPUT:-$DEFAULT}")
     eval "$(printf "%q=%q" "$VARIABLE" "$INPUT")"
 }
 
@@ -269,8 +269,9 @@ config_error() {
 
 # Return 0 if rhnParent is Hosted. Otherwise return 1.
 is_hosted() {
+    HOSTEDWHITELIST=$(awk -F '=[[:space:]]*' '/^[[:space:]]*hostedWhitelist[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
     [ "$1" = "xmlrpc.rhn.redhat.com" -o \
-        $( PYTHONPATH='/usr/share/rhn' python -c "from up2date_client import config; cfg = config.initUp2dateConfig(); print  '$1' in cfg['hostedWhitelist']" ) = "True" ]
+        "$HOSTEDWHITELIST" = "True" ]
     return $?
 }
 
@@ -320,7 +321,9 @@ HTTPDCONFD_DIR=/etc/apache2/conf.d
 HTMLPUB_DIR=/srv/www/htdocs/pub
 JABBERD_DIR=/etc/jabberd
 SQUID_DIR=/etc/squid
-SYSTEMID_PATH=`PYTHONPATH='/usr/share/rhn' python -c "from up2date_client import config; cfg = config.initUp2dateConfig(); print cfg['systemIdPath'] "`
+UP2DATE_FILE=$SYSCONFIG_DIR/up2date
+SYSTEMID_PATH=$(awk -F '=[[:space:]]*' '/^[[:space:]]*systemIdPath[[:space:]]*=/ {print $2}' $UP2DATE_FILE)
+
 
 if [ ! -r $SYSTEMID_PATH ]; then
     echo ERROR: SUSE Manager Proxy does not appear to be registered
@@ -332,7 +335,6 @@ SYSTEM_ID=$(/usr/bin/xsltproc /usr/share/rhn/get_system_id.xslt $SYSTEMID_PATH |
 DIR=/usr/share/doc/proxy/conf-template
 HOSTNAME=$(hostname -f)
 
-UP2DATE_FILE=$SYSCONFIG_DIR/up2date
 default_or_input "SUSE Manager Parent" RHN_PARENT $(awk -F= '/serverURL=/ {split($2, a, "/")} END { print a[3]}' $UP2DATE_FILE)
 
 if [ "$RHN_PARENT" == "rhn.redhat.com" ]; then

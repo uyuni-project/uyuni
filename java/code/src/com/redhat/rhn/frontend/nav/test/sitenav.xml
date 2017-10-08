@@ -13,9 +13,6 @@
     <rhn-tab name="Getting Started Guide" url="/rhn/help/dispatcher/getting_started_guide">
       <rhn-tab-directory>/rhn/help/getting-started</rhn-tab-directory>
     </rhn-tab>
-    <rhn-tab name="Reference Guide" url="/rhn/help/dispatcher/reference_guide">
-      <rhn-tab-directory>/rhn/help/reference</rhn-tab-directory>
-    </rhn-tab>
     <rhn-tab name="Best Practices Guide" url="/rhn/help/dispatcher/best_practices_guide">
       <rhn-tab-directory>/rhn/help/best-practices</rhn-tab-directory>
     </rhn-tab>

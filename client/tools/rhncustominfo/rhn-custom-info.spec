@@ -1,6 +1,10 @@
+%if 0%{?fedora}
+%global build_py3   1
+%endif
+
 Name: rhn-custom-info
 Summary: Set and list custom values for Spacewalk-enabled machines
-Version: 5.4.39
+Version: 5.4.40
 Release: 1%{?dist}
 Group: Applications/System
 License: GPLv2
@@ -8,7 +12,7 @@ Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version
 URL:     https://github.com/spacewalkproject/spacewalk
 BuildArch: noarch
 BuildRoot: %{_tmppath}/%{name}-%{version}-build
-%if 0%{?fedora} >= 23
+%if 0%{?build_py3}
 BuildRequires: python3-devel
 Requires: python3-rhnlib
 %else
@@ -16,11 +20,7 @@ BuildRequires: python-devel
 Requires: rhnlib
 %endif
 
-%if 0%{?rhel} >= 5 || 0%{?fedora} && 0%{?fedora} < 22
-Requires: yum-rhn-plugin
-%else
-# rpm do not support elif
-%if 0%{?fedora} >= 22
+%if 0%{?fedora}
 Requires: dnf-plugin-spacewalk
 %else
 %if 0%{?suse_version}
@@ -28,8 +28,7 @@ Requires: zypp-plugin-spacewalk
 # provide rhn directories for filelist check
 BuildRequires: spacewalk-client-tools
 %else
-Requires: up2date
-%endif
+Requires: yum-rhn-plugin
 %endif
 %endif
 
@@ -40,20 +39,17 @@ an Spacewalk-enabled system.
 %prep
 %setup -q
 
-%if 0%{?fedora} >= 23
-%global __python /usr/bin/python3
-%endif
-
 %build
 make -f Makefile.rhn-custom-info all
-%if 0%{?fedora} >= 23
+%if 0%{?build_py3}
     sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' *.py
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT
-make -f Makefile.rhn-custom-info install PREFIX=$RPM_BUILD_ROOT
+%global pypath %{?build_py3:%{python3_sitelib}}%{!?build_py3:%{python_sitelib}}
+make -f Makefile.rhn-custom-info install PREFIX=$RPM_BUILD_ROOT ROOT=%{pypath}
 install -d $RPM_BUILD_ROOT%{_mandir}/man8/
 install -m 644 rhn-custom-info.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 %if 0%{?suse_version}
@@ -65,17 +61,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%dir %{_datadir}/rhn
+%{pypath}/custominfo/
 %{_bindir}/*-custom-info
-%dir %{_datadir}/rhn/custominfo
-%{_datadir}/rhn/custominfo/rhn-custom-info.py*
-%if 0%{?fedora} >= 23
-%{_datadir}/rhn/custominfo/__pycache__/
-%endif
 %doc LICENSE
 %{_mandir}/man8/rhn-custom-info.*
 
 %changelog
+* Fri Oct 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.40-1
+- install files into python_sitelib/python3_sitelib
+
 * Thu Sep 07 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.39-1
 - removed unnecessary BuildRoot tag
 
