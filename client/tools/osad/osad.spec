@@ -295,8 +295,15 @@ touch %{buildroot}%{_var}/log/osad
 touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
 
 %if 0%{?suse_version}
-%py_compile %{buildroot}/%{rhnroot}
-%py_compile -O %{buildroot}/%{rhnroot}
+%py_compile %{buildroot}/%{python_sitelib}
+%py_compile -O %{buildroot}/%{python_sitelib}
+%if 0%{?build_py3}
+%py3_compile %{buildroot}/%{python3_sitelib}
+%py3_compile -O %{buildroot}/%{python3_sitelib}
+%endif
+%endif
+
+%if 0%{?suse_version}
 # add rclinks
 %if 0%{?suse_version} < 1210
 ln -sf ../../etc/init.d/osad %{buildroot}%{_sbindir}/rcosad
