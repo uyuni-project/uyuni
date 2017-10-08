@@ -81,7 +81,8 @@ only poll the Spacewalk Server from time to time.
 
 %package -n python2-%{name}
 Summary: Open Source Architecture Daemon
-%{?python_provide:%python_provide python2-%{name}}
+Provides: python-%{name} = %{version}-%{release}
+Obsoletes: python-%{name} < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: python
 Requires: rhnlib >= 2.8.3
@@ -99,7 +100,6 @@ Python 2 specific files for %{name}
 %if 0%{?build_py3}
 %package -n python3-%{name}
 Summary: Open Source Architecture Daemon
-%{?python_provide:%python_provide python3-%{name}}
 Requires: %{name} = %{version}-%{release}
 Requires: python3
 Requires: python3-rhnlib >= 2.8.3
@@ -118,8 +118,8 @@ Group:    System Environment/Daemons
 Requires: jabberpy
 Conflicts: %{name} < %{version}-%{release}
 Conflicts: %{name} > %{version}-%{release}
-Obsoletes: osa-common <= 5.11.91
-Provides:  osa-common = %{version}
+Obsoletes: osa-common < %{version}-%{release}
+Provides:  osa-common = %{version}-%{release}
 %description -n python2-osa-common
 Python 2 common files needed by osad and osa-dispatcher
 
@@ -130,8 +130,8 @@ Group:    System Environment/Daemons
 Requires: python3-jabberpy
 Conflicts: %{name} < %{version}-%{release}
 Conflicts: %{name} > %{version}-%{release}
-Obsoletes: osa-common <= 5.11.91
-Provides:  osa-common = %{version}
+Obsoletes: osa-common < %{version}-%{release}
+Provides:  osa-common = %{version}-%{release}
 %description -n python3-osa-common
 Python 3 common files needed by osad and osa-dispatcher
 %endif
@@ -168,7 +168,7 @@ Summary: OSA dispatcher
 BuildRequires: python-devel
 Requires: python
 Requires: jabberpy
-Requires: python2-osa-common = %{version}
+Requires: python2-osa-common = %{version}-%{release}
 %description -n python2-osa-dispatcher
 Python 2 specific files for osa-dispatcher.
 
@@ -178,7 +178,7 @@ Summary: OSA dispatcher
 BuildRequires: python3-devel
 Requires: python3
 Requires: python3-jabberpy
-Requires: python3-osa-common = %{version}
+Requires: python3-osa-common = %{version}-%{release}
 %description -n python3-osa-dispatcher
 Python 3 specific files for osa-dispatcher.
 %endif
