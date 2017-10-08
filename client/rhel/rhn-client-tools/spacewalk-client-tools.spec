@@ -22,7 +22,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.8.4
+Version: 2.8.6
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
@@ -90,12 +90,18 @@ Requires: python-dmidecode
 Requires: python-ethtool >= 0.4
 Requires: rhnlib >= 2.5.78
 BuildRequires: python-devel
-%if 0%{?rhel} > 5 || 0%{?suse_version} >= 1140 || 0%{?fedora}
+%if 0%{?fedora}
+Requires: pygobject2
+Requires: libgudev
+Requires: python-hwdata
+%else
+%if 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
 Requires: python-gudev
 Requires: python-hwdata
 %else
 Requires: hal >= 0.5.8.1-52
-%endif # 0%{?rhel} > 5 || 0%{?suse_version} >= 1140 || 0%{?fedora}
+%endif # 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
+%endif # 0%{?fedora}
 
 %if 0%{?rhel} == 5
 Requires: newt
