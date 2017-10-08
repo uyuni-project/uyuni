@@ -13,48 +13,30 @@
 %global include_selinux_package 1
 %endif
 
+%if 0%{?fedora}
+%global build_py3   1
+%global default_py3 1
+%endif
+
+%define pythonX %{?default_py3: python3}%{!?default_py3: python2}
+
 Name: osad
 Summary: Open Source Architecture Daemon
 Group:   System Environment/Daemons
 License: GPLv2
-Version: 5.11.91
+Version: 5.11.94
 Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
-%if 0%{?fedora} && 0%{?fedora} > 26
+%if 0%{?fedora} > 26
 BuildRequires: perl-interpreter
 %else
 BuildRequires: perl
 %endif
-%if 0%{?fedora} >= 23
-BuildRequires: python3-devel
-Requires: python3
-Requires: python3-rhnlib
-Requires: python3-spacewalk-usix
-Requires: python3-jabberpy
-%else
-BuildRequires: python-devel
-Requires: python
-Requires: rhnlib >= 2.5.74
-Requires: spacewalk-usix
-Requires: jabberpy
-%endif
-Requires: osa-common = %{version}
-%if 0%{?rhel} && 0%{?rhel} < 6
-Requires: rhn-client-tools >= 0.4.20-66
-%else
-%if 0%{?el6}
-Requires: rhn-client-tools >= 1.0.0-44
-%else
-Requires: rhn-client-tools >= 1.3.7
-%endif
-%endif
-%if 0%{?rhel} && 0%{?rhel} <= 5
-Requires: python-hashlib
-%endif
+Requires: %{pythonX}-%{name} = %{version}-%{release}
 %if 0%{?suse_version} >= 1110
 Requires: python-xml
 %endif
@@ -97,26 +79,69 @@ commands are instantly executed.
 This package effectively replaces the behavior of rhnsd/rhn_check that
 only poll the Spacewalk Server from time to time.
 
-%package -n osa-common
+%package -n python2-%{name}
+Summary: Open Source Architecture Daemon
+%{?python_provide:%python_provide python2-%{name}}
+Requires: %{name} = %{version}-%{release}
+Requires: python
+Requires: rhnlib >= 2.8.3
+Requires: spacewalk-usix
+Requires: jabberpy
+Requires: python2-rhn-client-tools >= 2.8.4
+Requires: python2-osa-common = %{version}
+%if 0%{?rhel} && 0%{?rhel} <= 5
+Requires: python-hashlib
+%endif
+BuildRequires: python-devel
+%description -n python2-%{name}
+Python 2 specific files for %{name}
+
+%if 0%{?build_py3}
+%package -n python3-%{name}
+Summary: Open Source Architecture Daemon
+%{?python_provide:%python_provide python3-%{name}}
+Requires: %{name} = %{version}-%{release}
+Requires: python3
+Requires: python3-rhnlib >= 2.8.3
+Requires: python3-spacewalk-usix
+Requires: python3-jabberpy
+Requires: python3-rhn-client-tools >= 2.8.4
+Requires: python3-osa-common = %{version}
+BuildRequires: python3-devel
+%description -n python3-%{name}
+Python 3 specific files for %{name}
+%endif
+
+%package -n python2-osa-common
 Summary: OSA common files
 Group:    System Environment/Daemons
 Requires: jabberpy
 Conflicts: %{name} < %{version}-%{release}
 Conflicts: %{name} > %{version}-%{release}
+Obsoletes: osa-common <= 5.11.91
+Provides:  osa-common = %{version}
+%description -n python2-osa-common
+Python 2 common files needed by osad and osa-dispatcher
 
-%description -n osa-common
-Common files needed by osad and osa-dispatcher
+%if 0%{?build_py3}
+%package -n python3-osa-common
+Summary: OSA common files
+Group:    System Environment/Daemons
+Requires: python3-jabberpy
+Conflicts: %{name} < %{version}-%{release}
+Conflicts: %{name} > %{version}-%{release}
+Obsoletes: osa-common <= 5.11.91
+Provides:  osa-common = %{version}
+%description -n python3-osa-common
+Python 3 common files needed by osad and osa-dispatcher
+%endif
 
 %package -n osa-dispatcher
 Summary: OSA dispatcher
 Group:    System Environment/Daemons
 Requires: spacewalk-backend-server >= 1.2.32
-# this subpackage is python2 even on Fedora 23+ so it needs python v2
-BuildRequires: python-devel
-Requires: python
-Requires: jabberpy
+Requires: python2-osa-dispatcher = %{version}-%{release}
 Requires: lsof
-Requires: osa-common = %{version}
 Conflicts: %{name} < %{version}-%{release}
 Conflicts: %{name} > %{version}-%{release}
 %if 0%{?suse_version} >= 1210
@@ -137,6 +162,26 @@ Requires(preun): initscripts
 OSA dispatcher is supposed to run on the Spacewalk server. It gets information
 from the Spacewalk server that some command needs to be execute on the client;
 that message is transported via jabber protocol to OSAD agent on the clients.
+
+%package -n python2-osa-dispatcher
+Summary: OSA dispatcher
+BuildRequires: python-devel
+Requires: python
+Requires: jabberpy
+Requires: python2-osa-common = %{version}
+%description -n python2-osa-dispatcher
+Python 2 specific files for osa-dispatcher.
+
+%if 0%{?build_py3}
+%package -n python3-osa-dispatcher
+Summary: OSA dispatcher
+BuildRequires: python3-devel
+Requires: python3
+Requires: python3-jabberpy
+Requires: python3-osa-common = %{version}
+%description -n python3-osa-dispatcher
+Python 3 specific files for osa-dispatcher.
+%endif
 
 %if 0%{?include_selinux_package}
 %package -n osa-dispatcher-selinux
@@ -176,12 +221,8 @@ cp prog.init.SUSE prog.init
 sed -i 's@^#!/usr/bin/python$@#!/usr/bin/python -s@' invocation.py
 %endif
 
-%if 0%{?fedora} >= 23
-%global __python /usr/bin/python3
-%endif
-
 %build
-make -f Makefile.osad all
+make -f Makefile.osad all PYTHONPATH=%{python_sitelib}
 
 %if 0%{?include_selinux_package}
 %{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
@@ -199,12 +240,19 @@ done
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{rhnroot}
-make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir}
-%if 0%{?fedora} >= 23
-    sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/sbin/osad
-    # osa-dispatches is still py2 even on F23+, so we need to run py2 recompile in addition
-    /usr/lib/rpm/brp-python-bytecompile /usr/bin/python 1
+make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir} \
+        PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version}
+%if 0%{?build_py3}
+make -f Makefile.osad install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} INITDIR=%{_initrddir} \
+        PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version}
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/sbin/osad-%{python3_version}
 %endif
+
+%define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
+ln -s osad%{default_suffix} $RPM_BUILD_ROOT/usr/sbin/osad
+# osa-dispatcher is python2 even on Fedora
+ln -s osa-dispatcher-%{python_version} $RPM_BUILD_ROOT/usr/sbin/osa-dispatcher
+
 mkdir -p %{buildroot}%{_var}/log/rhn
 touch %{buildroot}%{_var}/log/osad
 touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
@@ -410,16 +458,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 
 %files
 %defattr(-,root,root)
-%dir %{rhnroot}/osad
-%attr(755,root,root) %{_sbindir}/osad
-%{rhnroot}/osad/osad.py*
-%{rhnroot}/osad/osad_client.py*
-%{rhnroot}/osad/osad_config.py*
-%if 0%{?fedora} >= 23
-%{rhnroot}/osad/__pycache__/osad.*
-%{rhnroot}/osad/__pycache__/osad_client.*
-%{rhnroot}/osad/__pycache__/osad_config.*
-%endif
+%{_sbindir}/osad
 %config(noreplace) %{_sysconfdir}/sysconfig/rhn/osad.conf
 %verify(not md5 mtime size) %config(noreplace) %attr(600,root,root) %{_sysconfdir}/sysconfig/rhn/osad-auth.conf
 %config(noreplace) %{client_caps_dir}/*
@@ -434,21 +473,33 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %if 0%{?suse_version}
 %{_sbindir}/rcosad
 # provide directories not owned by any package during build
-%dir %{rhnroot}
 %dir %{_sysconfdir}/sysconfig/rhn
 %dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
 %endif
 
+%files -n python2-%{name}
+%attr(755,root,root) %{_sbindir}/osad-%{python_version}
+%dir %{python_sitelib}/osad
+%{python_sitelib}/osad/osad.py*
+%{python_sitelib}/osad/osad_client.py*
+%{python_sitelib}/osad/osad_config.py*
+
+%if 0%{?build_py3}
+%files -n python3-%{name}
+%attr(755,root,root) %{_sbindir}/osad-%{python3_version}
+%dir %{python3_sitelib}/osad
+%{python3_sitelib}/osad/osad.py*
+%{python3_sitelib}/osad/osad_client.py*
+%{python3_sitelib}/osad/osad_config.py*
+%dir %{python3_sitelib}/osad/__pycache__
+%{python3_sitelib}/osad/__pycache__/osad.*
+%{python3_sitelib}/osad/__pycache__/osad_client.*
+%{python3_sitelib}/osad/__pycache__/osad_config.*
+%endif
+
 %files -n osa-dispatcher
 %defattr(0644,root,root,0755)
-%dir %{rhnroot}/osad
-%attr(755,root,root) %{_sbindir}/osa-dispatcher
-%{rhnroot}/osad/osa_dispatcher.py*
-%{rhnroot}/osad/dispatcher_client.py*
-%if 0%{?fedora} >= 23
-%{rhnroot}/osad/__pycache__/osa_dispatcher.*
-%{rhnroot}/osad/__pycache__/dispatcher_client.*
-%endif
+%{_sbindir}/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/sysconfig/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/logrotate.d/osa-dispatcher
 %{rhnroot}/config-defaults/rhn_osa-dispatcher.conf
@@ -472,15 +523,36 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif
 
-%files -n osa-common
+%files -n python2-osa-dispatcher
 %defattr(-,root,root)
-%{rhnroot}/osad/__init__.py*
-%{rhnroot}/osad/jabber_lib.py*
-%{rhnroot}/osad/rhn_log.py*
-%if 0%{?fedora} >= 23
-%{rhnroot}/osad/__pycache__/__init__.*
-%{rhnroot}/osad/__pycache__/jabber_lib.*
-%{rhnroot}/osad/__pycache__/rhn_log.*
+%attr(755,root,root) %{_sbindir}/osa-dispatcher-%{python_version}
+%dir %{python_sitelib}/osad
+%{python_sitelib}/osad/osa_dispatcher.py*
+%{python_sitelib}/osad/dispatcher_client.py*
+
+%if 0%{?build_py3}
+%files -n python3-osa-dispatcher
+%attr(755,root,root) %{_sbindir}/osa-dispatcher-%{python3_version}
+%dir %{python3_sitelib}/osad
+%{python3_sitelib}/osad/osa_dispatcher.py*
+%{python3_sitelib}/osad/dispatcher_client.py*
+%{python3_sitelib}/osad/__pycache__/osa_dispatcher.*
+%{python3_sitelib}/osad/__pycache__/dispatcher_client.*
+%endif
+
+%files -n python2-osa-common
+%{python_sitelib}/osad/__init__.py*
+%{python_sitelib}/osad/jabber_lib.py*
+%{python_sitelib}/osad/rhn_log.py*
+
+%if 0%{?build_py3}
+%files -n python3-osa-common
+%{python3_sitelib}/osad/__init__.py*
+%{python3_sitelib}/osad/jabber_lib.py*
+%{python3_sitelib}/osad/rhn_log.py*
+%{python3_sitelib}/osad/__pycache__/__init__.*
+%{python3_sitelib}/osad/__pycache__/jabber_lib.*
+%{python3_sitelib}/osad/__pycache__/rhn_log.*
 %endif
 
 %if 0%{?include_selinux_package}
@@ -495,6 +567,23 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Fri Oct 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.94-1
+- install files into python_sitelib/python3_sitelib
+- move osa-dispatcher files into proper python2/python3 subpackages
+- move osa-common files into proper python2/python3 subpackages
+- move osad files into proper python2/python3 subpackages
+- split osa-dispatcher into python2/python3 specific packages
+- split osa-common into python2/python3 specific packages
+- split osad into python2/python3 specific packages
+
+* Thu Oct 05 2017 Tomas Kasparek <tkasparek@redhat.com> 5.11.93-1
+- (bz#1491451) osad: set KillMode=process in systemd unit
+- 1494389 - Revert "[1260527] RHEL7 reboot loop"
+
+* Tue Oct 03 2017 Tomas Kasparek <tkasparek@redhat.com> 5.11.92-1
+- Revert "(bz#1491451) osad: set KillMode=process in systemd unit"
+- (bz#1491451) osad: set KillMode=process in systemd unit
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.91-1
 - purged changelog entries for Spacewalk 2.0 and older
 - fixed selinux error messages during package install, see related BZ#1446487

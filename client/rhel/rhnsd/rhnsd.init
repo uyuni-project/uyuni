@@ -54,7 +54,7 @@ start() {
 
 stop() {
     echo -n $"Stopping Spacewalk Daemon: "
-    killproc rhnsd -TERM
+    killproc rhnsd
     RETVAL=$?
     echo
     if [ $RETVAL -eq 0 ]; then

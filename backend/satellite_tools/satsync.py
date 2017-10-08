@@ -1693,7 +1693,8 @@ class Syncer:
                 # sync
                 continue
             package = sp_coll.get_package(pid)
-            package['org_id'] = erratum['org_id']
+            if package['org_id'] is not None:
+                package['org_id'] = erratum['org_id']
 
             packages.append(package)
 

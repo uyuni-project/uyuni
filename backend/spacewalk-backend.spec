@@ -37,7 +37,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.11
+Version: 2.8.13
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -66,7 +66,7 @@ BuildRequires: docbook-utils
 BuildRequires: spacewalk-usix
 %if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} > 1310
 BuildRequires: rhnlib >= 2.5.74
-BuildRequires: rhn-client-tools
+BuildRequires: python2-rhn-client-tools
 BuildRequires: rpm-python
 #BuildRequires: python-crypto
 BuildRequires: python-debian
@@ -317,6 +317,7 @@ Requires: %{name}
 Requires: spacewalk-certs-tools
 Requires: spacewalk-admin >= 0.1.1-0
 Requires: python2-gzipstream
+Requires: python2-rhn-client-tools
 Requires: python-dateutil
 %if 0%{?suse_version}
 Requires: susemanager-tools
@@ -890,6 +891,13 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/cdn-sync.8*
 
 %changelog
+* Wed Oct 04 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.13-1
+- 1456719 - don't move NULL org packages to the current org
+
+* Mon Oct 02 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.12-1
+- require python2 version of rhn-client-tools on all platforms
+- fix syntax error 'release..split'
+
 * Wed Sep 27 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.11-1
 - 1494575 - 2 parts of version are enough to dermine minor release
 - 1494575 - RHEL7 sends also release - drop it as it's not needed

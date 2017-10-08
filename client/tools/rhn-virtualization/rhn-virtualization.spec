@@ -8,9 +8,16 @@
 %define rhn_conf_dir %{_sysconfdir}/sysconfig/rhn
 %define cron_dir %{_sysconfdir}/cron.d
 
+%if 0%{?fedora}
+%global build_py3   1
+%global default_py3 1
+%endif
+
+%define pythonX %{?default_py3: python3}%{!?default_py3: python2}
+
 Name:           rhn-virtualization
 Summary:        Spacewalk action support for virualization
-Version:        5.4.61
+Version:        5.4.63
 Release:        1%{?dist}
 
 Group:          System Environment/Base
@@ -21,7 +28,6 @@ Source1:        %{name}-rpmlintrc
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
-BuildRequires:  python
 %if 0%{?suse_version}
 # make chkconfig work in OBS
 BuildRequires: sysconfig syslog
@@ -31,16 +37,13 @@ BuildRequires: sysconfig syslog
 rhn-virtualization provides various Spacewalk actions for manipulation
 virtual machine guest images.
 
-%package common
+%package -n python2-%{name}-common
 Summary: Files needed by rhn-virtualization-host
-Group: System Environment/Base
-%if 0%{?fedora} >= 23
-Requires: python3-spacewalk-usix
-BuildRequires: python3-devel
-%else
+%{?python_provide:%python_provide python2-%{name}-common}
+Obsoletes: %{name}-common < 5.4.62
+Requires: python2-rhn-client-tools
 Requires: spacewalk-usix
-%endif
-Requires: %{rhn_client_tools}
+BuildRequires: python
 %if 0%{?suse_version}
 # aaa_base provide chkconfig
 Requires: aaa_base
@@ -49,41 +52,63 @@ BuildRequires: rhn-client-tools rhn-check
 %else
 Requires: chkconfig
 %endif
-
-%description common
+%description -n python2-%{name}-common
 This package contains files that are needed by the rhn-virtualization-host
 package.
+
+%if 0%{?build_py3}
+%package -n python3-%{name}-common
+Summary: Files needed by rhn-virtualization-host
+%{?python_provide:%python_provide python3-%{name}-common}
+Obsoletes: %{name}-common < 5.4.62
+Requires: python3-spacewalk-usix
+Requires: python3-rhn-client-tools
+BuildRequires: python3-devel
+%description -n python3-%{name}-common
+This package contains files that are needed by the rhn-virtualization-host
+package.
+%endif
 
 %package host
 Summary: Spacewalk Virtualization support specific to the Host system
 Group: System Environment/Base
-Requires: libvirt-python
-Requires: rhn-virtualization-common = %{version}-%{release}
+Requires: %{pythonX}-%{name}-host = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: cron
-Requires: python-curl
 %else
 Requires: /usr/sbin/crond
-Requires: python-pycurl
-%endif
-%if 0%{?rhel} && 0%{?rhel} < 6
-# in RHEL5 we need libvirt, but in RHEV@RHEL5 there should not be libvirt
-# as there is vdsm and bunch of other packages, but we have no clue how to
-# distinguish those two scenarios
-%else
-Requires: libvirt
 %endif
 
 %description host
 This package contains code for Spacewalk's Virtualization support
 that is specific to the Host system (a.k.a. Dom0).
 
+%package -n python2-%{name}-host
+Summary: RHN/Spacewalk Virtualization support specific to the Host system
+Requires: %{name}-host = %{version}-%{release}
+Requires: libvirt-python
+Requires: python2-%{name}-common = %{version}-%{release}
+%if 0%{?suse_version}
+Requires: python-curl
+%else
+Requires: python-pycurl
+%endif
+%description -n python2-%{name}-host
+Python 2 files for %{name}-host.
+
+%if 0%{?build_py3}
+%package -n python3-%{name}-host
+Summary: RHN/Spacewalk Virtualization support specific to the Host system
+Requires: %{name}-host = %{version}-%{release}
+Requires: libvirt-python3
+Requires: python3-%{name}-common = %{version}-%{release}
+Requires: python3-pycurl
+%description -n python3-%{name}-host
+Python 3 files for %{name}-host.
+%endif
 
 %prep
 %setup -q
-%if 0%{?fedora} >= 23
-%global __python /usr/bin/python3
-%endif
 
 %build
 make -f Makefile.rhn-virtualization
@@ -91,7 +116,20 @@ make -f Makefile.rhn-virtualization
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir} install
+make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir} \
+        PYTHONPATH=%{python_sitelib} install
+sed -i 's,@PYTHON@,python,; s,@PYTHONPATH@,%{python_sitelib},;' \
+        $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host \
+        $RPM_BUILD_ROOT/%{cron_dir}/rhn-virtualization.cron
+
+%if 0%{?build_py3}
+make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir} \
+        PYTHONPATH=%{python3_sitelib} install
+        sed -i 's,@PYTHON@,python3,; s,@PYTHONPATH@,%{python3_sitelib},;' \
+                $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host \
+                $RPM_BUILD_ROOT/%{cron_dir}/rhn-virtualization.cron
+%endif
+
 %if 0%{?fedora} || (0%{?rhel} && 0%{?rhel} > 5)
 find $RPM_BUILD_ROOT -name "localvdsm*" -exec rm -f '{}' ';'
 %endif
@@ -131,29 +169,32 @@ fi
 /sbin/service crond condrestart
 %endif
 
-%files common
-%defattr(-,root,root,-)
-%dir %{rhn_dir}/
-%dir %{rhn_dir}/actions
-%dir %{rhn_dir}/virtualization
-%if 0%{?suse_version}
-%dir %{rhn_conf_dir}
+%files -n python2-%{name}-common
+%{python_sitelib}/virtualization/__init__.py*
+%{python_sitelib}/virtualization/batching_log_notifier.py*
+%{python_sitelib}/virtualization/constants.py*
+%{python_sitelib}/virtualization/errors.py*
+%{python_sitelib}/virtualization/notification.py*
+%{python_sitelib}/virtualization/util.py*
 %endif
-%{rhn_dir}/virtualization/__init__.py*
-%{rhn_dir}/virtualization/batching_log_notifier.py*
-%{rhn_dir}/virtualization/constants.py*
-%{rhn_dir}/virtualization/errors.py*
-%{rhn_dir}/virtualization/notification.py*
-%{rhn_dir}/virtualization/util.py*
 %doc LICENSE
-%if 0%{?fedora} >= 23
-%dir %{rhn_dir}/virtualization/__pycache__
-%{rhn_dir}/virtualization/__pycache__/__init__.*
-%{rhn_dir}/virtualization/__pycache__/batching_log_notifier.*
-%{rhn_dir}/virtualization/__pycache__/constants.*
-%{rhn_dir}/virtualization/__pycache__/errors.*
-%{rhn_dir}/virtualization/__pycache__/notification.*
-%{rhn_dir}/virtualization/__pycache__/util.*
+
+%if 0%{?build_py3}
+%files -n python3-%{name}-common
+%{python3_sitelib}/virtualization/__init__.py*
+%{python3_sitelib}/virtualization/batching_log_notifier.py*
+%{python3_sitelib}/virtualization/constants.py*
+%{python3_sitelib}/virtualization/errors.py*
+%{python3_sitelib}/virtualization/notification.py*
+%{python3_sitelib}/virtualization/util.py*
+%doc LICENSE
+%dir %{python3_sitelib}/virtualization/__pycache__
+%{python3_sitelib}/virtualization/__pycache__/__init__.*
+%{python3_sitelib}/virtualization/__pycache__/batching_log_notifier.*
+%{python3_sitelib}/virtualization/__pycache__/constants.*
+%{python3_sitelib}/virtualization/__pycache__/errors.*
+%{python3_sitelib}/virtualization/__pycache__/notification.*
+%{python3_sitelib}/virtualization/__pycache__/util.*
 %endif
 
 %files host
@@ -167,43 +208,69 @@ fi
 %{_initrddir}/rhn-virtualization-host
 %endif
 %config(noreplace) %attr(644,root,root) %{cron_dir}/rhn-virtualization.cron
-%{rhn_dir}/virtualization/domain_config.py*
-%{rhn_dir}/virtualization/domain_control.py*
-%{rhn_dir}/virtualization/domain_directory.py*
-%{rhn_dir}/virtualization/get_config_value.py*
-%{rhn_dir}/virtualization/init_action.py*
-%{rhn_dir}/virtualization/poller.py*
-%{rhn_dir}/virtualization/schedule_poller.py*
-%{rhn_dir}/virtualization/poller_state_cache.py*
-%{rhn_dir}/virtualization/start_domain.py*
-%{rhn_dir}/virtualization/state.py*
-%{rhn_dir}/virtualization/support.py*
-%{rhn_dir}/actions/virt.py*
-%{rhn_dir}/actions/image.py*
-%if 0%{?suse_version} || (0%{?rhel} && 0%{?rhel} < 6)
-%{rhn_dir}/virtualization/localvdsm.py*
-%endif
 %{rhn_conf_dir}/studio-*-template.xml
 %config(noreplace) %{rhn_conf_dir}/image.cfg
 %doc LICENSE
-%if 0%{?fedora} >= 23
-%{rhn_dir}/virtualization/__pycache__/domain_config.*
-%{rhn_dir}/virtualization/__pycache__/domain_control.*
-%{rhn_dir}/virtualization/__pycache__/domain_directory.*
-%{rhn_dir}/virtualization/__pycache__/get_config_value.*
-%{rhn_dir}/virtualization/__pycache__/init_action.*
-%{rhn_dir}/virtualization/__pycache__/poller.*
-%{rhn_dir}/virtualization/__pycache__/schedule_poller.*
-%{rhn_dir}/virtualization/__pycache__/poller_state_cache.*
-%{rhn_dir}/virtualization/__pycache__/start_domain.*
-%{rhn_dir}/virtualization/__pycache__/state.*
-%{rhn_dir}/virtualization/__pycache__/support.*
-%dir %{rhn_dir}/actions/__pycache__
-%{rhn_dir}/actions/__pycache__/virt.*
-%{rhn_dir}/actions/__pycache__/image.*
+
+%files -n python2-%{name}-host
+%{python_sitelib}/virtualization/domain_config.py*
+%{python_sitelib}/virtualization/domain_control.py*
+%{python_sitelib}/virtualization/domain_directory.py*
+%{python_sitelib}/virtualization/get_config_value.py*
+%{python_sitelib}/virtualization/init_action.py*
+%{python_sitelib}/virtualization/poller.py*
+%{python_sitelib}/virtualization/schedule_poller.py*
+%{python_sitelib}/virtualization/poller_state_cache.py*
+%{python_sitelib}/virtualization/start_domain.py*
+%{python_sitelib}/virtualization/state.py*
+%{python_sitelib}/virtualization/support.py*
+%{python_sitelib}/rhn/actions/virt.py*
+%{python_sitelib}/rhn/actions/image.py*
+%if 0%{?suse_version} || (0%{?rhel} && 0%{?rhel} < 6)
+%{python_sitelib}/virtualization/localvdsm.py*
+%endif
+
+%if 0%{?build_py3}
+%files -n python3-%{name}-host
+%{python3_sitelib}/virtualization/domain_config.py*
+%{python3_sitelib}/virtualization/domain_control.py*
+%{python3_sitelib}/virtualization/domain_directory.py*
+%{python3_sitelib}/virtualization/get_config_value.py*
+%{python3_sitelib}/virtualization/init_action.py*
+%{python3_sitelib}/virtualization/poller.py*
+%{python3_sitelib}/virtualization/schedule_poller.py*
+%{python3_sitelib}/virtualization/poller_state_cache.py*
+%{python3_sitelib}/virtualization/start_domain.py*
+%{python3_sitelib}/virtualization/state.py*
+%{python3_sitelib}/virtualization/support.py*
+%{python3_sitelib}/rhn/actions/virt.py*
+%{python3_sitelib}/rhn/actions/image.py*
+%{python3_sitelib}/virtualization/__pycache__/domain_config.*
+%{python3_sitelib}/virtualization/__pycache__/domain_control.*
+%{python3_sitelib}/virtualization/__pycache__/domain_directory.*
+%{python3_sitelib}/virtualization/__pycache__/get_config_value.*
+%{python3_sitelib}/virtualization/__pycache__/init_action.*
+%{python3_sitelib}/virtualization/__pycache__/poller.*
+%{python3_sitelib}/virtualization/__pycache__/schedule_poller.*
+%{python3_sitelib}/virtualization/__pycache__/poller_state_cache.*
+%{python3_sitelib}/virtualization/__pycache__/start_domain.*
+%{python3_sitelib}/virtualization/__pycache__/state.*
+%{python3_sitelib}/virtualization/__pycache__/support.*
+%{python3_sitelib}/rhn/actions/__pycache__/virt.*
+%{python3_sitelib}/rhn/actions/__pycache__/image.*
 %endif
 
 %changelog
+* Fri Oct 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.63-1
+- virt modules (and deps) are now in standard python path
+
+* Fri Oct 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.62-1
+- install files into python_sitelib/python3_sitelib
+- move rhn-virtualization-host files into proper python2/python3 subpackages
+- move rhn-virtualization-common files into proper python2/python3 subpackages
+- split rhn-virtualization-host into python2/python3 specific packages
+- split rhn-virtualization into python2/python3 specific packages
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.61-1
 - purged changelog entries for Spacewalk 2.0 and older
 

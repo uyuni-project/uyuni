@@ -1,3 +1,4 @@
+#!/usr/bin/python -u
 #
 # Copyright (c) 2008--2017 Red Hat, Inc.
 #
@@ -12,8 +13,7 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-""" Activate a Spacewalk Proxy 3.x ...not the executable
-    (original script can activate a Spacewalk Proxy version 1.1 to 3.x)
+""" Activate a Spacewalk Proxy
     USAGE: ./rhn-proxy-activate
 
     Author: Todd Warner <taw@redhat.com>
@@ -22,20 +22,26 @@
     work with older Spacewalk Proxies.
 """
 
-# pylint: disable=E1101
+# pylint: disable=E1101, invalid-name
 
 # core lang imports
 import os
 import sys
 import socket
-import urlparse
-import xmlrpclib
+
+try:                    # python 2
+    import urlparse
+    import xmlrpclib
+except ImportError:     # python3
+    # pylint: disable=F0401,E0611,redefined-builtin
+    import urllib.parse as urlparse
+    import xmlrpc.client as xmlrpclib
+    raw_input = input
 
 # lib imports
 from optparse import Option, OptionParser
 from rhn import rpclib, SSL
 
-sys.path.append('/usr/share/rhn')
 from up2date_client import config # pylint: disable=E0012, C0413
 
 DEFAULT_WEBRPC_HANDLER_v3_x = '/rpc/api'
@@ -186,18 +192,18 @@ def _errorHandler(pre='', post=''):
         errorString = pre
         try:
             raise
-        except xmlrpclib.ProtocolError, e:
+        except xmlrpclib.ProtocolError as e:
             errorCode, s = _getProtocolError(e)
             errorString = errorString + s
-        except socket.error, e:
+        except socket.error as e:
             errorCode, s = _getSocketError(e)
             errorString = errorString + s
-        except xmlrpclib.Fault, e:
+        except xmlrpclib.Fault as e:
             errorCode, errorString = _getActivationError(e)
-        except SSL.SSL.Error, e:
+        except SSL.SSL.Error as e:
             errorCode = 13
             errorString = "ERROR: failed SSL connection - bad or expired cert?"
-        except Exception, e:  # pylint: disable=E0012, W0703
+        except Exception as e:  # pylint: disable=E0012, W0703
             e0, e1 = str(e), repr(e)
             if e0:
                 s = "(%s)" % e0
@@ -520,4 +526,13 @@ def main():
     return 0
 
 if __name__ == '__main__':
-    sys.exit(abs(main() or 0))
+    try:
+        sys.exit(abs(main() or 0))
+    except KeyboardInterrupt:
+        sys.stderr.write("\nUser interrupted process.\n")
+        sys.exit(0)
+    except SystemExit:
+        raise
+    except:
+        sys.stderr.write("\nERROR: unhandled exception occurred:\n")
+        raise
