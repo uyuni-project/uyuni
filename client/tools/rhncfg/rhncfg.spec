@@ -25,7 +25,9 @@ URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch: noarch
+%endif
 BuildRequires: docbook-utils
 Requires: %{pythonX}-%{name} = %{version}-%{release}
 
@@ -214,10 +216,12 @@ fi
 %doc LICENSE
 
 %files -n python2-%{name}
+%defattr(-,root,root,-)
 %{python_sitelib}/config_common
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
+%defattr(-,root,root,-)
 %{python3_sitelib}/config_common
 %endif
 
@@ -231,11 +235,13 @@ fi
 %{_mandir}/man8/rhncfg-client.8*
 
 %files -n python2-%{name}-client
+%defattr(-,root,root,-)
 %{python_sitelib}/config_client
 %{_bindir}/rhncfg-client-%{python_version}
 
 %if 0%{?build_py3}
 %files -n python3-%{name}-client
+%defattr(-,root,root,-)
 %{python3_sitelib}/config_client
 %{_bindir}/rhncfg-client-%{python3_version}
 %endif
@@ -250,11 +256,13 @@ fi
 %{_mandir}/man8/rhncfg-manager.8*
 
 %files -n python2-%{name}-management
+%defattr(-,root,root,-)
 %{python_sitelib}/config_management
 %{_bindir}/rhncfg-manager-%{python_version}
 
 %if 0%{?build_py3}
 %files -n python3-%{name}-management
+%defattr(-,root,root,-)
 %{python3_sitelib}/config_management
 %{_bindir}/rhncfg-manager-%{python3_version}
 %endif
@@ -270,11 +278,13 @@ fi
 %ghost %attr(600,root,root) %{_localstatedir}/log/rhncfg-actions
 
 %files -n python2-%{name}-actions
+%defattr(-,root,root,-)
 %{python_sitelib}/rhn/actions
 %{_bindir}/rhn-actions-control-%{python_version}
 
 %if 0%{?build_py3}
 %files -n python3-%{name}-actions
+%defattr(-,root,root,-)
 %{python3_sitelib}/rhn/actions
 %{_bindir}/rhn-actions-control-%{python3_version}
 %endif
