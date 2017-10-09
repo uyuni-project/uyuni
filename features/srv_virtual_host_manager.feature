@@ -39,7 +39,7 @@ Feature: Virtual host manager web UI
      And I follow "file-vmware"
     Then I should see a "file:///var/tmp/vCenter.json" text
      And I should see a "SUSE Test" text
-    When I click on "Schedule refresh data"
+    When I click on "Refresh Data"
     Then I should see a "Refreshing the data for this Virtual Host Manager has been triggered." text
 
   Scenario: Check new virtual hosts
