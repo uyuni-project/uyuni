@@ -577,7 +577,7 @@ class Server(ServerWrapper):
             server_lib.join_rhn(org_id)
 
         # Update virtual guest attributes on re-registration
-        if tokens_obj and tokens_obj.is_rereg_token:
+        if getattr(tokens_obj, "is_rereg_token", False):
             self.handle_virtual_guest()
 
         # Update the uuid - but don't commit yet
