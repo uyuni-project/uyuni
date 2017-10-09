@@ -1,6 +1,10 @@
+# This file describes the order of features in a normal testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
 ## Core feature BEGIN ###
-# Prefix
-# core_type_topic
 
 # IMMUTABLE ORDER
 --- # initialize suse-manager server
@@ -25,34 +29,6 @@
 ## CORE feature end ###
 
 # SECONDARY FEATURE:
-
-# Prefix
-# TYPE_TOPIC
-
-# PREFIX:
-
-# 1) TYPE (mandatory and UNIQUE)
-# - srv (feature testing server side)
-# - min (feature testing minions sles) (not ssh)
-# - centos (feature testing centos/rhes)
-# - trad (feature testing tradional client)
-# - allcli (feature testing all clients trad + minion(centos/sles)
-
-
-# 2) TOPIC (for salt/docker mandatory)
-# - salt (feature concering salt)
-# - docker
-# - .. 
-# - feature specific name xmlrpc_user (etc.)
-
-# EXAMPLES
-# * TYPE_TOPIC
-
-# * srv_reboot_server.feature 
-# * srv_salt_ping.feature
-# * srv_salt_service.feature
-# * min_salt_bootstrap.feature
-# * min_ping.feature 
 
 # **** IDEMPOTENT ******
 - features/min_bootstrap_xmlrpc.feature
