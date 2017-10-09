@@ -37,7 +37,7 @@ fi
 
 for THISRPM in $RPMLIST
 do
-   validate_rpm_if_installed $THISRPM
+   validate_rpm $THISRPM
 done
 
 for i in $DAEMONLIST
