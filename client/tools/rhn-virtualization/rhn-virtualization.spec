@@ -27,7 +27,9 @@ Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{
 Source1:        %{name}-rpmlintrc
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
+%endif
 %if 0%{?suse_version}
 # make chkconfig work in OBS
 BuildRequires: sysconfig syslog
