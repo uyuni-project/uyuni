@@ -1,3 +1,4 @@
+- Hide non-relevant typed systems in SystemCurrency (bsc#1019097)
 - Start registration for accepted minions only on the minion start event,
   not automatically on any event (bsc#1054044)
 - Exclude salt systems from the list of target systems for traditional
