@@ -4,6 +4,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -34,19 +36,22 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testfilterSSHMinionIdsBootstrap() {
-        MinionPendingRegistrationService.addMinion(user, "m1", "salt-ssh", Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, "m1", ContactMethodUtil.SSH_PUSH, Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, "m2", ContactMethodUtil.DEFAULT, Optional.empty());
         List<String> minionIds = new ArrayList<>();
         minionIds.add("m1");
         minionIds.add("m2");
+        minionIds.add("m3");
         assertEquals(
                 Collections.singletonList("m1"),
                 SaltService.partitionMinionsByContactMethod(minionIds).get(true));
         MinionPendingRegistrationService.removeMinion("m1");
+        MinionPendingRegistrationService.removeMinion("m2");
     }
 
     public void testfilterSSHMinionIds() throws Exception {
         MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
-        sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
+        sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
 
         List<String> minionIds = new ArrayList<>();
         minionIds.add(sshMinion.getMinionId());
@@ -58,7 +63,7 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
 
     public void testfilterSSHMinionIdsMixedMinions() throws Exception {
         MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
-        sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
+        sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
