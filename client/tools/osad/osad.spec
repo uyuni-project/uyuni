@@ -485,6 +485,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %files -n python2-%{name}
+%defattr(-,root,root)
 %attr(755,root,root) %{_sbindir}/osad-%{python_version}
 %dir %{python_sitelib}/osad
 %{python_sitelib}/osad/osad.py*
@@ -493,6 +494,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
+%defattr(-,root,root)
 %attr(755,root,root) %{_sbindir}/osad-%{python3_version}
 %dir %{python3_sitelib}/osad
 %{python3_sitelib}/osad/osad.py*
@@ -525,6 +527,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %if 0%{?suse_version}
 %{_sbindir}/rcosa-dispatcher
 %dir %attr(750, root, %{apache_group}) %{_sysconfdir}/rhn
+%dir %{rhnroot}
 %attr(755,root,%{apache_group}) %dir %{rhnroot}/config-defaults
 %dir %{_sysconfdir}/rhn/tns_admin
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
@@ -539,6 +542,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 
 %if 0%{?build_py3}
 %files -n python3-osa-dispatcher
+%defattr(-,root,root)
 %attr(755,root,root) %{_sbindir}/osa-dispatcher-%{python3_version}
 %dir %{python3_sitelib}/osad
 %{python3_sitelib}/osad/osa_dispatcher.py*
@@ -548,12 +552,14 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %files -n python2-osa-common
+%defattr(-,root,root)
 %{python_sitelib}/osad/__init__.py*
 %{python_sitelib}/osad/jabber_lib.py*
 %{python_sitelib}/osad/rhn_log.py*
 
 %if 0%{?build_py3}
 %files -n python3-osa-common
+%defattr(-,root,root)
 %{python3_sitelib}/osad/__init__.py*
 %{python3_sitelib}/osad/jabber_lib.py*
 %{python3_sitelib}/osad/rhn_log.py*
@@ -564,6 +570,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 
 %if 0%{?include_selinux_package}
 %files -n osa-dispatcher-selinux
+%defattr(-,root,root)
 %doc osa-dispatcher-selinux/%{modulename}.fc
 %doc osa-dispatcher-selinux/%{modulename}.if
 %doc osa-dispatcher-selinux/%{modulename}.te
