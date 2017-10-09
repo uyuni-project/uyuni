@@ -279,12 +279,14 @@ fi
 
 %files -n python2-%{name}-actions
 %defattr(-,root,root,-)
+%dir %{python_sitelib}/rhn
 %{python_sitelib}/rhn/actions
 %{_bindir}/rhn-actions-control-%{python_version}
 
 %if 0%{?build_py3}
 %files -n python3-%{name}-actions
 %defattr(-,root,root,-)
+%dir %{python3_sitelib}/rhn
 %{python3_sitelib}/rhn/actions
 %{_bindir}/rhn-actions-control-%{python3_version}
 %endif
