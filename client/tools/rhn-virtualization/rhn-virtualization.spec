@@ -181,6 +181,8 @@ fi
 %endif
 
 %files -n python2-%{name}-common
+%defattr(-,root,root,-)
+%dir %{python_sitelib}/virtualization
 %{python_sitelib}/virtualization/__init__.py*
 %{python_sitelib}/virtualization/batching_log_notifier.py*
 %{python_sitelib}/virtualization/constants.py*
@@ -191,6 +193,8 @@ fi
 
 %if 0%{?build_py3}
 %files -n python3-%{name}-common
+%defattr(-,root,root,-)
+%dir %{python3_sitelib}/virtualization
 %{python3_sitelib}/virtualization/__init__.py*
 %{python3_sitelib}/virtualization/batching_log_notifier.py*
 %{python3_sitelib}/virtualization/constants.py*
@@ -223,6 +227,7 @@ fi
 %doc LICENSE
 
 %files -n python2-%{name}-host
+%defattr(-,root,root,-)
 %{python_sitelib}/virtualization/domain_config.py*
 %{python_sitelib}/virtualization/domain_control.py*
 %{python_sitelib}/virtualization/domain_directory.py*
@@ -242,6 +247,7 @@ fi
 
 %if 0%{?build_py3}
 %files -n python3-%{name}-host
+%defattr(-,root,root,-)
 %{python3_sitelib}/virtualization/domain_config.py*
 %{python3_sitelib}/virtualization/domain_control.py*
 %{python3_sitelib}/virtualization/domain_directory.py*
