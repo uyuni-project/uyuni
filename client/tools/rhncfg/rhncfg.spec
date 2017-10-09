@@ -54,7 +54,7 @@ Requires: python
 Requires: rhnlib >= 2.8.3
 Requires: spacewalk-usix
 Requires: python2-rhn-client-tools >= 2.8.4
-%if 0%{?rhel} <= 5
+%if 0%{?rhel} && 0%{?rhel} <= 5
 Requires: python-hashlib
 %endif
 BuildRequires: python
