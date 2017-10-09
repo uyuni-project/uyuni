@@ -97,7 +97,7 @@ class ImageView extends React.Component {
   }
 
   handleBackAction() {
-    this.getImageInfoList().then(() => {
+    return this.getImageInfoList().then(() => {
       const loc = window.location;
       history.pushState(null, null, loc.pathname + loc.search);
       this.clearMessages();
@@ -254,12 +254,15 @@ class ImageView extends React.Component {
   deleteImages(idList) {
     return Network.post("/rhn/manager/api/cm/images/delete",
       JSON.stringify(idList), "application/json").promise.then(() => {
-      this.setState({
-        images: this.state.images.filter(img => !idList.includes(img.id)),
-        selectedItems: this.state.selectedItems.filter(item => !idList.includes(item)),
-        messages: MessagesUtils.info(t("Deleted successfully."))
-      });
-    })
+        // Waits for the 'Back' action if not in the list page
+        const backAction = this.state.selected ? this.handleBackAction() : Promise.resolve();
+        backAction.then(() =>
+          this.setState({
+            images: this.state.images.filter(img => !idList.includes(img.id)),
+            selectedItems: this.state.selectedItems.filter(item => !idList.includes(item)),
+            messages: MessagesUtils.info(t("Deleted successfully."))
+          }));
+      })
       .catch(this.handleResponseError);
   }
 
@@ -315,7 +318,7 @@ class ImageView extends React.Component {
             <ImageViewDetails data={selected} onTabChange={() => this.updateView(getHashId(), getHashTab())}
               onCancel={this.handleBackAction} onInspect={this.inspectImage} onBuild={this.buildImage}
               runtimeInfoEnabled={this.props.runtimeInfoEnabled} runtimeInfoErr={this.state.runtimeInfoErr}
-              onDelete={(item) => {this.deleteImages([item.id]) ; this.setState({selected:undefined})}} />
+              onDelete={(item) => this.deleteImages([item.id])}/>
             :
             <ImageViewList data={list} onSelectCount={(c) => this.setState({selectedCount: c})}
               onSelect={this.handleDetailsAction} onDelete={this.deleteImages}
