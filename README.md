@@ -14,20 +14,20 @@ This is the automated testsuite for [SUSE Manager](https://www.suse.com/products
 
 Before you start, make sure you know about the [**basic concepts**](https://cucumber.io/docs/reference) of Cucumber that we are using in this testsuite: features, scenarios and steps.
 
-Apart from Cucumber, testsuite relies on a number of [software components](docs/software-components.md).
+Apart from Cucumber, the testsuite relies on a number of [software components](docs/software-components.md).
 
 
 # Running the testsuite
 
-You can run the Spacewalk Testsuite [with sumaform](https://github.com/moio/sumaform/blob/master/README_ADVANCED.md#cucumber-testsuite).
+You can run the SUSE Manager testsuite [with sumaform](https://github.com/moio/sumaform/blob/master/README_ADVANCED.md#cucumber-testsuite).
 
 ## Core features, idempotency and tests order
 
 The tests (features) included in the `[testsuite.yml](https://github.com/SUSE/spacewalk-testsuite-base/blob/master/run_sets/testsuite.yml)` file will be executed sequentially from the top to the bottom.
 
-The features are grouped by core and secondary features.
-
 [Idempotency](docs/idempotency.md) is the faculty to run same the feature any number of times. The basic idea of such a feature is that it does not change its environment.
+
+The features are grouped by core and secondary features.
 
 For the group of the **core features**, the order is relevant. The core features are by design not idempotent, and serve to create a basic testing environment.
 
@@ -41,17 +41,15 @@ The **secondary features** can be run any number of times, and the order is not 
 1. **Always** create a PR (even for backporting)
 2. Your PR always needs at least one reviewer to approve
 
-## Guidelines for coding:
+## Guidelines for coding
 
-1. **Always** create an idempotent feature, with right prefixes, and **always** as a secondary feature
-   -> If the feature is not idempotent, it will be not merged upstream.
-2. Scenario that cleans up should be named: ```Scenario: CLEANUP: remove xx pkg```
-   or scenario before the actual test should be named: ```Scenario: PRE-Requirement: install that```
-3. Steps should be grouped **by topic** and not by feature.
-4. Use the right prefix for your feature name. See [here](run_sets/testsuite.yml)
-5. If you do operations on packages, look [here](docs/Patches_test.md)
-6. Reuse steps, don't create new ones if you don't need them (look under `./features/step_definitions/` to see which steps are already implemented)
-7. Check the [code coverage results](docs/codecoverage.md) after you have run the test suite with your code.
+To get started, see the documentation about [Using and writing Cucumber steps](docs/cucumber-steps.md). It covers most common steps in an ordered manner, as well as the way to write new steps.
+
+Please read with attention the [guidelines](docs/Guidelines.md). They cover style issues, idempotency concerns, file naming conventions, and features, scenarios and test naming conventions.
+
+Check the [code coverage results](docs/codecoverage.md) after you have run the test suite with your code.
+
+There are also hints about how to [debug the testsuite](docs/Debug.md) and about [Pitfalls in writing the testsuite](docs/Pitfalls-test.md).
 
 
 # Branches used
@@ -67,9 +65,3 @@ The **secondary features** can be run any number of times, and the order is not 
 
 All other branches are considered legacy (not under development anymore): `Manager 2.1`, `manager21-longterm`, `Manager 17`, `Manager 12`.
 
-
-# Useful tutorials
-
-* [Testing API tutorial](docs/api-call.md)
-* [Debug](docs/Debug.md)
-* [Pitfalls](docs/Pitfalls-test.md)
