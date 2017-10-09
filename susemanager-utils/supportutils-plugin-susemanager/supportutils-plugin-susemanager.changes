@@ -1,3 +1,5 @@
+- use correct function validate_rpm for supportconfig (bsc#1062094)
+
 -------------------------------------------------------------------
 Wed Mar 02 11:14:32 CET 2016 - mc@suse.de
 
