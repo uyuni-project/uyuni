@@ -10,10 +10,6 @@
 
 <%@ include file="/WEB-INF/pages/common/fragments/groups/header.jspf" %>
 
-<rhn:require acl="not user_role(org_admin);not user_role(system_group_admin)">
- <c:set var="notSelectable" value="True"/>
- </rhn:require>
-
     <h2>
       <rhn:icon type="header-system" title="system.common.systemAlt" />
       <bean:message key="${param.title_key}"/>
@@ -28,7 +24,7 @@
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system_listdisplay.jspf" %>
 
 <c:if test="${not empty requestScope.pageList}">
- <rhn:require acl="user_role(org_admin) or user_role(system_group_admin)">
+ <rhn:require acl="user_role(system_group_admin)">
 <div class="text-right">
    <rhn:submitted/>
    <hr/>
