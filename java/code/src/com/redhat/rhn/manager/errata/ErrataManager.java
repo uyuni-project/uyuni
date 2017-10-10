@@ -1804,6 +1804,7 @@ public class ErrataManager extends BaseManager {
         // those get one Action per system, per errata (yum is known to have problems)
         Stream<ErrataAction> traditionalYumClientActions = traditionalYumClients.stream()
             .flatMap(sid -> serverErrataMap.get(sid).stream()
+                .sorted((a, b) -> updateStackMap.get(b).compareTo(updateStackMap.get(a)))
                 .map(eid -> createErrataActionForTraditionalYumClient(user,
                     errataMap.get(eid), earliest, actionChain, serverMap.get(sid),
                     updateStackMap.get(eid))
@@ -1830,11 +1831,51 @@ public class ErrataManager extends BaseManager {
                 ));
 
         // 2- compute a map from lists of erratas to lists of target systems
-        Map<List<Long>, List<Long>> targets = groupServersByErrataSet(updateStackErrataMap);
-        targets.putAll(groupServersByErrataSet(nonUpdateStackErrataMap));
+        Map<List<Long>, List<Long>> updateStackTargets =
+                groupServersByErrataSet(updateStackErrataMap);
 
         // 3- compute the actions
-        Stream<ErrataAction> otherServerActions = targets.entrySet().stream()
+        Stream<ErrataAction> updateStackActions = computeActions(user, earliest,
+                actionChain, errataMap, updateStackMap, serverMap, updateStackTargets);
+
+        // 4- same as above, for non-update stack erratas/actions
+        Map<List<Long>, List<Long>> nonUpdateStackTargets =
+                groupServersByErrataSet(nonUpdateStackErrataMap);
+        Stream<ErrataAction> nonUpdateStackActions = computeActions(user, earliest,
+                actionChain, errataMap, updateStackMap, serverMap, nonUpdateStackTargets);
+
+        // store all actions and return ids
+        List<ErrataAction> errataActions =
+            concat(traditionalYumClientActions,
+            concat(updateStackActions, nonUpdateStackActions))
+            .collect(toList());
+        List<Long> actionIds = new ArrayList<Long>();
+        for (ErrataAction errataAction : errataActions) {
+            Action action = ActionManager.storeAction(errataAction);
+
+            taskomaticApi.scheduleActionExecution(action);
+            MinionActionManager.scheduleStagingJobsForMinions(action, user);
+            actionIds.add(action.getId());
+        }
+        return actionIds;
+    }
+
+    /**
+     * Computes Action objects
+     * @param user the user scheduling Actions
+     * @param earliest the earliest execution date
+     * @param actionChain an action chain, if any
+     * @param errataMap map from errata ids to errata
+     * @param updateStackMap map from errata ids to update stack booleans
+     * @param serverMap map from server ids to servers
+     * @param targets map from lists of server ids to lists of errata ids
+     * @return a stream of actions
+     */
+    public static Stream<ErrataAction> computeActions(User user, Date earliest,
+            ActionChain actionChain, Map<Long, Errata> errataMap,
+            Map<Long, Boolean> updateStackMap, Map<Long, Server> serverMap,
+            Map<List<Long>, List<Long>> targets) {
+        return targets.entrySet().stream()
             .flatMap(e -> {
                 if (e.getKey().isEmpty()) {
                     return Stream.empty();
@@ -1851,23 +1892,7 @@ public class ErrataManager extends BaseManager {
                 return createErrataActions(user, erratas, earliest, actionChain,
                         servers, updateStackMap.get(erratas.get(0).getId()));
             });
-
-
-        // store all actions and return ids
-        List<ErrataAction> errataActions =
-            concat(traditionalYumClientActions, otherServerActions)
-            .collect(toList());
-        List<Long> actionIds = new ArrayList<Long>();
-        for (ErrataAction errataAction : errataActions) {
-            Action action = ActionManager.storeAction(errataAction);
-
-            taskomaticApi.scheduleActionExecution(action);
-            MinionActionManager.scheduleStagingJobsForMinions(action, user);
-            actionIds.add(action.getId());
-        }
-        return actionIds;
     }
-
 
     /**
      * Turns a map from servers to list of erratas to apply on each to a map
