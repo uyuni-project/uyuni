@@ -1008,7 +1008,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(e1);
 
         List<MinionServer> minions = Arrays.asList(zypperSystem, nonZypperSystem);
-        Map<LocalCall<?>, List<MinionServer>> localCallListMap = SaltServerActionService.INSTANCE.errataAction(minions, Collections.singleton(e1.getId()), false);
+        Map<LocalCall<?>, List<MinionServer>> localCallListMap = SaltServerActionService.INSTANCE.errataAction(minions, Collections.singleton(e1.getId()));
 
         assertEquals(1, localCallListMap.size());
         localCallListMap.entrySet().forEach(result -> {
@@ -1022,20 +1022,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             Collection<String> param_patches = (Collection<String>) pillar.get("param_patches");
             assertEquals(1, param_patches.size());
             assertEquals(true, param_patches.contains("SUSE-" + updateTag + "-2016-1234"));
-        });
-
-        Map<LocalCall<?>, List<MinionServer>> localCallListMap2 = SaltServerActionService.INSTANCE.errataAction(minions, Collections.singleton(e1.getId()), true);
-        assertEquals(1, localCallListMap2.size());
-        localCallListMap2.entrySet().forEach(result -> {
-            assertEquals(2, result.getValue().size());
-            final LocalCall<?> call = result.getKey();
-            assertEquals("state.apply", call.getPayload().get("fun"));
-            Map<String, Object> kwarg = (Map<String, Object>)call.getPayload().get("kwarg");
-            assertEquals(Collections.singletonList("packages.pkginstall"), kwarg.get("mods"));
-            MinionServer minionServer = result.getValue().get(0);
-            Map<String, Object> pillar = (Map<String, Object>)kwarg.get("pillar");
-            Map<String, String> param_pkgs = (Map<String, String>) pillar.get("param_pkgs");
-            assertEquals(1, param_pkgs.size());
         });
     }
 
