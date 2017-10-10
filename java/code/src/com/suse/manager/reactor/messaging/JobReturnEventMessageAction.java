@@ -23,10 +23,13 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.domain.server.MinionServer;
 
+
+import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -183,7 +186,15 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
                 jobReturnEvent.getMinionId());
         if (minion.isPresent()) {
-            minion.get().updateServerInfo();
+            MinionServer m = minion.get();
+            m.updateServerInfo();
+            // for s390 update the host as well
+            if (CpuArchUtil.isS390(m.getCpu().getArch().getLabel())) {
+                VirtualInstance virtInstance = m.getVirtualInstance();
+                if (virtInstance != null && virtInstance.getHostSystem() != null) {
+                    virtInstance.getHostSystem().updateServerInfo();
+                }
+            }
         }
     }
 
