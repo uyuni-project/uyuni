@@ -17,7 +17,7 @@ function ModalButton(props) {
             icon={props.icon}
             handler={ () => {
                 if(props.onClick) props.onClick(props.item);
-                $('#' + props.target).modal('show');
+                showDialog(props.target);
             }}
         />
     );
@@ -48,13 +48,21 @@ function ModalLink(props) {
             className={props.className}
             onClick={ () => {
                 if(props.onClick) props.onClick(props.item);
-                $('#' + props.target).modal('show');
+                showDialog(props.target);
             }}
         >
             {icon}
             {props.text}
         </a>
     );
+}
+
+function showDialog(dialogId) {
+  $('#' + dialogId).modal('show');
+}
+
+function hideDialog(modalId) {
+  $('#' + dialogId).modal('hide');
 }
 
 ModalLink.propTypes = {
@@ -109,6 +117,19 @@ function DeleteDialog(props) {
     );
 }
 
+function Dialog(props) {
+  return (
+      <PopUp
+          id={props.id}
+          className={props.className}
+          content={props.content}
+          title={props.title}
+          footer={props.buttons}
+          onClosePopUp={() => props.onClosePopUp && props.onClosePopUp(props.item)}
+      />
+  );
+}
+
 DeleteDialog.propTypes = {
     id: React.PropTypes.string.isRequired,
     onClosePopUp: React.PropTypes.func,
@@ -122,5 +143,8 @@ DeleteDialog.propTypes = {
 module.exports = {
     ModalButton: ModalButton,
     ModalLink: ModalLink,
-    DeleteDialog: DeleteDialog
+    DeleteDialog: DeleteDialog,
+    Dialog: Dialog,
+    showDialog: showDialog,
+    hideDialog: hideDialog
 };

@@ -12,27 +12,14 @@
 
     <hr/>
 
-    <div id="delete-system">
-    </div>
+    <div id="delete_system_button"></div>
     <script>
-        var serverId=${sid};
         var csrfToken="<%= com.redhat.rhn.common.security.CSRFTokenValidator.getToken(session) %>";
+
+        function getServerIdToDelete(){
+            return ${sid};
+        }
     </script>
-    <script src="/javascript/manager/delete-system.bundle.js" type="text/javascript"></script>
-<%--
-    <html:form method="post" action="/systems/details/DeleteConfirm.do?sid=${sid}">
-      <rhn:csrf />
-      <html:hidden property="submitted" value="true"/>
-        <div class="form-horizontal">
-            <div class="form-group">
-                <div class="col-md-12">
-                    <html:submit property="button" styleClass="btn btn-danger">
-                        <bean:message key="delete_confirm.jsp.button"/>
-                    </html:submit>
-                </div>
-            </div>
-        </div>
-    </html:form>
---%>
+    <script src="/javascript/manager/delete-system-confirm.bundle.js" type="text/javascript"></script>
 </body>
 </html:html>

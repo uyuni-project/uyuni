@@ -46,7 +46,7 @@
   <div class="text-right">
 
     <hr />
-      <jsp:include page="/WEB-INF/pages/ssm/systems/deleteconfirmdialog.jspf"">
+      <jsp:include page="/WEB-INF/pages/ssm/systems/deleteconfirmdialog.jspf">
         <jsp:param name="sshMinionsPresent" value="${sshMinionsPresent}"/>
       </jsp:include>
 
