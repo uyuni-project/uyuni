@@ -1,3 +1,8 @@
+{% if (grains.get('os_family', 'unknown') == 'Suse' and grains.get('saltversioninfo', []) < [2015, 8, 12]) or
+      (grains.get('os_family', 'unknown') != 'Suse' and grains.get('saltversioninfo', []) < [2017, 7, 0]) %}
+{{ salt.test.exception("You are running an old version of salt-minion that does not support patching. Please update salt-minion and try again.") }}
+{% endif %}
+
 {% if pillar.get('param_update_stack_patches', []) %}
 mgr_update_stack_patches:
   pkg.patch_installed:
