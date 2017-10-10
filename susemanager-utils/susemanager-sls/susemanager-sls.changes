@@ -1,5 +1,6 @@
 - Support xccdf 1.2 namespace in openscap result file (bsc#1059319)
 - ensure correct ordering of patches (bsc#1059801)
+- fix create empty top.sls with no-op (bsc#1053038)
 
 -------------------------------------------------------------------
 Thu Sep 14 11:41:56 CEST 2017 - mc@suse.de
