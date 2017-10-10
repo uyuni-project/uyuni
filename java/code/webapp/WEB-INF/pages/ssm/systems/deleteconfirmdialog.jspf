@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<c:chose>
+<c:choose>
     <c:when test="${sshMinionsPresent}">
         <div class="modal fade text-left" role="dialog" aria-labelledby="addPinPopUpLabel" id="confirmDeleteDialog" >
             <div class="modal-dialog">
@@ -14,13 +14,12 @@
                   <h4 class="modal-title"><bean:message key="ssm.delete.systems.header" /></h4>
                 </div>
                 <div class="modal-body">
-                    <p><bean:message key="ssm.delete.systems.summary" /></p>
                     <p><bean:message key="ssm.delete.systems.saltssh.cleanup"/></p>
-                    <p><bean:message key="ssm.delete.systems.saltssh.cleanup.type"/>:
+                    <p><bean:message key="ssm.delete.systems.saltssh.cleanup.type"/>
                     <select name="saltsshcleanup" id="saltsshcleanup">
                         <option value="FORCE_DELETE" selected><bean:message key="ssm.delete.systems.saltssh.cleanup.force_delete"/></option>
                         <option value="NO_CLEANUP"><bean:message key="ssm.delete.systems.saltssh.cleanup.no_cleanup"/></option>
-                        <option value="SKIP_ON_ERR"><bean:message key="ssm.delete.systems.saltssh.cleanup.skip_on_err"/></option>
+                        <option value="FAIL_ON_CLEANUP_ERR"><bean:message key="ssm.delete.systems.saltssh.cleanup.skip_on_err"/></option>
                     </select>
                     </p>
                 </div>
@@ -32,12 +31,14 @@
             </div>
         </div>
 
-        <button class="btn btn-default" type="button" data-toggle="modal"
+        <button class="btn btn-danger" type="button" data-toggle="modal"
             data-target="#confirmDeleteDialog">${rhn:localize('ssm.delete.systems.confirmbutton')}</button>
     </c:when>
     <c:otherwise>
-        <html:submit styleClass="btn btn-success" property="dispatch">
+        <input type="hidden" name="saltsshcleanup" value="FORCE_DELETE"/>
+        <html:submit styleClass="btn btn-danger" property="dispatch">
+        <html:submit styleClass="btn btn-danger" property="dispatch">
             <bean:message key="ssm.delete.systems.confirmbutton"/>
         </html:submit>
     </c:otherwise>
-</c:chose>
+</c:choose>
