@@ -909,6 +909,31 @@ Please note that some manual configuration of these scripts may still be require
       <trans-unit id="kickstart.activationkeys.jsp.note">
         <source>&lt;strong&gt;Note: The selection of incompatible activation keys can prevent a system from registering properly after it is kickstarted.&lt;/strong&gt;  You'll want to review the Reference Guide section on using multiple activation keys before making use of this feature.</source>
       </trans-unit>
+      <trans-unit id="keys.jsp.summary">
+        <source>
+You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
+A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
+For more information, see the &lt;a href="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.keys" target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
+         <context-group name="ctx">
+           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
+         </context-group>
+      </trans-unit>
+      <trans-unit id="preservation_list.jsp.summary">
+        <source>
+        File preservation lists are lists of files that will be restored to a system during a particular kickstart.
+        You can reference a file preservation list in a kickstart profile.
+        For more information refer to the &lt;a href="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.preserve" target="_blank" &gt;Reference Guide&lt;/a&gt;.
+        The following file preservation lists have been created for use by your organization:</source>
+         <context-group name="ctx">
+           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
+         </context-group>
+      </trans-unit>
+      <trans-unit id="preservation_edit.jsp.summary">
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.preserve" target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="kickstartranges.jsp.toolbar">
         <source>Unprovisioned Autoinstallation By IP</source>
       </trans-unit>
