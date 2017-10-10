@@ -1,6 +1,7 @@
 - Targeting patches instead of packages for non Zypper patch
   installation (bsc#1038862)
 - Support xccdf 1.2 namespace in openscap result file (bsc#1059319)
+- fix create empty top.sls with no-op (bsc#1053038)
 
 -------------------------------------------------------------------
 Fri Jul 21 12:03:58 CEST 2017 - mc@suse.de
