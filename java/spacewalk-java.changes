@@ -20,7 +20,7 @@
 - do not store registration-keys during autoinstallation (bsc#1057599)
 - enable package profile comparisons on minions
 - Disallow entering multiple identical mirror credentials (bsc#971785)
-- ensure correct ordering of patches for traditional clients (bsc#1059801)
+- ensure correct ordering of patches (bsc#1059801)
 
 -------------------------------------------------------------------
 Thu Sep 14 11:32:37 CEST 2017 - mc@suse.de

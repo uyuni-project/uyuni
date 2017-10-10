@@ -1068,7 +1068,7 @@ public class ServerFactory extends HibernateFactory {
      * @return map from server id to map from errata id to patch name
      */
     @SuppressWarnings("unchecked")
-    public static Map<Long, Map<Long, Set<String>>> listErrataNamesForServers(
+    public static Map<Long, Map<Long, Set<ErrataInfo>>> listErrataNamesForServers(
             Set<Long> serverIds, Set<Long> errataIds) {
         if (serverIds.isEmpty() || errataIds.isEmpty()) {
             return new HashMap<>();
@@ -1079,24 +1079,27 @@ public class ServerFactory extends HibernateFactory {
         List<Object[]> result = singleton.listObjectsByNamedQuery(
                 "Server.listErrataNamesForServers", params);
         return result.stream().collect(
-                // Group by server id
-                Collectors.groupingBy(row -> (Long) row[1],
+            // Group by server id
+            Collectors.groupingBy(row -> (Long) row[1],
                 // Group by errata id
                 Collectors.groupingBy(row -> (Long) row[0],
-                // Generate names including the update tag
-                Collectors.mapping(row -> {
-                    String name = (String) row[2];
-                    String tag = (String) row[3];
-                    if (StringUtils.isBlank(tag)) {
-                        return name;
-                    }
-                    if (name.matches("^([C-Z][A-Z]-)*SUSE-(.*)$")) {
-                        return name.replaceFirst("SUSE", "SUSE-" + tag);
-                    }
-                    else {
-                        return tag + "-" + name;
-                    }
-                }, Collectors.toSet())))
+                    // Generate names including the update tag
+                    Collectors.mapping(row -> {
+                        String name = (String) row[2];
+                        String tag = (String) row[3];
+                        if (StringUtils.isBlank(tag)) {
+                            return new ErrataInfo(name, (boolean)row[4]);
+                        }
+                        if (name.matches("^([C-Z][A-Z]-)*SUSE-(.*)$")) {
+                            return new ErrataInfo(name.replaceFirst("SUSE", "SUSE-" + tag),
+                                    (boolean)row[4]);
+                        }
+                        else {
+                            return new ErrataInfo(tag + "-" + name, (boolean)row[4]);
+                        }
+                    }, Collectors.toSet())
+                )
+            )
         );
     }
 

@@ -17,9 +17,9 @@
  */
 package com.redhat.rhn.manager.errata;
 
-import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.concat;
 
 import com.redhat.rhn.common.conf.Config;
@@ -92,6 +92,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -1772,19 +1773,6 @@ public class ErrataManager extends BaseManager {
                 sid -> SystemManager.lookupByIdAndOrg(sid, user.getOrg())
             ));
 
-
-        // split server ids based on type
-        Map<Boolean, List<Long>> serverTypeMap = serverMap.values().stream()
-            .collect(partitioningBy(s ->
-                PackageFactory.lookupByNameAndServer("zypper", s) == null &&
-                !MinionServerUtils.isMinionServer(s),
-                Collectors.mapping(s -> s.getId(), toList())
-            ));
-
-        List<Long> traditionalYumClients = serverTypeMap.get(true);
-        List<Long> otherServers = serverTypeMap.get(false);
-
-
         // compute erratas that are both applicable and requested
         // group them by server id
         Map<Long, List<Long>> serverErrataMap =
@@ -1796,8 +1784,25 @@ public class ErrataManager extends BaseManager {
                     .collect(toList())
             ));
 
+        // separate server ids based on zypper/yum, salt/traditional
+        Set<Long> minions = serverMap.values().stream()
+            .filter(MinionServerUtils::isMinionServer)
+            .map(Server::getId)
+            .collect(toSet());
 
-        // compute actions for traditional clients running yum
+        Set<Long> traditionalYumClients = serverMap.entrySet().stream()
+            .filter(e -> !minions.contains(e.getKey()))
+            .filter(e ->
+                PackageFactory.lookupByNameAndServer("zypper", e.getValue()) == null)
+            .map(Map.Entry::getKey)
+            .collect(toSet());
+
+        Set<Long> otherServers = serverMap.keySet().stream()
+            .filter(sid -> !minions.contains(sid))
+            .filter(sid -> !traditionalYumClients.contains(sid))
+            .collect(toSet());
+
+        // 1- compute actions for traditional clients running yum
         // those get one Action per system, per errata (yum is known to have problems)
         Stream<ErrataAction> traditionalYumClientActions = traditionalYumClients.stream()
             .flatMap(sid -> serverErrataMap.get(sid).stream()
@@ -1808,9 +1813,18 @@ public class ErrataManager extends BaseManager {
                 )
             );
 
-        // compute actions for other systems
-        // those get one Action per homogeneous errata set
-        // 1- "slice" serverErrataMap into update stack erratas and non-update stack erratas
+        // 2- compute actions for all others
+        // 2.1- compute a system to errata map for minions
+        // those get one Action per system, with all erratas in it
+        Map<Long, List<Long>> minionErrataMap = minions.stream()
+            .collect(toMap(
+                sid -> sid,
+                sid -> serverErrataMap.get(sid).stream()
+                    .collect(toList())
+            ));
+
+        // 2.2- compute two system to errata maps for others (traditional non-yum)
+        // those get two Actions per system: one with update stack erratas, one with others
         Map<Long, List<Long>> updateStackErrataMap = otherServers.stream()
             .collect(toMap(
                 sid -> sid,
@@ -1827,24 +1841,28 @@ public class ErrataManager extends BaseManager {
                         .collect(toList())
                 ));
 
-        // 2- compute a map from lists of erratas to lists of target systems
+        // 2.3- compute a map from lists of erratas to lists of target systems
         Map<List<Long>, List<Long>> updateStackTargets =
                 groupServersByErrataSet(updateStackErrataMap);
-
-        // 3- compute the actions
-        Stream<ErrataAction> updateStackActions = computeActions(user, earliest,
-                actionChain, errataMap, updateStackMap, serverMap, updateStackTargets);
-
-        // 4- same as above, for non-update stack erratas/actions
         Map<List<Long>, List<Long>> nonUpdateStackTargets =
                 groupServersByErrataSet(nonUpdateStackErrataMap);
+        Map<List<Long>, List<Long>> minionTargets =
+                groupServersByErrataSet(minionErrataMap);
+
+        // 2.4- compute the actions
+        Stream<ErrataAction> updateStackActions = computeActions(user, earliest,
+                actionChain, errataMap, updateStackMap, serverMap, updateStackTargets);
         Stream<ErrataAction> nonUpdateStackActions = computeActions(user, earliest,
                 actionChain, errataMap, updateStackMap, serverMap, nonUpdateStackTargets);
+        Stream<ErrataAction> minionActions = computeActions(user, earliest,
+                actionChain, errataMap, updateStackMap, serverMap, minionTargets);
 
         // store all actions and return ids
         List<ErrataAction> errataActions =
             concat(traditionalYumClientActions,
-            concat(updateStackActions, nonUpdateStackActions))
+            concat(updateStackActions,
+            concat(nonUpdateStackActions,
+                   minionActions)))
             .collect(toList());
         List<Long> actionIds = new ArrayList<Long>();
         for (ErrataAction errataAction : errataActions) {
@@ -1886,10 +1904,14 @@ public class ErrataManager extends BaseManager {
                     .map(sid -> serverMap.get(sid))
                     .collect(toList());
 
+                boolean updateStackAction = errataMap.keySet().stream()
+                    .anyMatch(updateStackMap::get);
+
                 return createErrataActions(user, erratas, earliest, actionChain,
-                        servers, updateStackMap.get(erratas.get(0).getId()));
+                        servers, updateStackAction);
             });
-    }
+     }
+
 
     /**
      * Turns a map from servers to list of erratas to apply on each to a map
