@@ -1455,12 +1455,10 @@ public class ChannelManager extends BaseManager {
      * SHOULD be
      * @param usr User asking the question
      * @param sid Server id of interest
-     * @return Channel id
+     * @return Channel
      */
-    public static Long guessServerBaseChannelId(User usr, Long sid) {
-        Channel c = guessServerBaseChannel(usr, ServerFactory.lookupById(sid));
-
-        return c.getId();
+    public static Channel guessServerBaseChannel(User usr, Long sid) {
+        return guessServerBaseChannel(usr, ServerFactory.lookupById(sid));
     }
 
     /**
