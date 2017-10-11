@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2017 SUSE LLC
- * <p>
+ *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
  * implied, including the implied warranties of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- * <p>
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -48,9 +48,18 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
  */
 public class SystemsController {
 
+    private SystemsController() { }
+
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(SystemsController.class);
 
+    /**
+     * Deletes a system.
+     * @param request the request
+     * @param response the reposen
+     * @param user the user
+     * @return the json response
+     */
     public static String delete(Request request, Response response, User user) {
         String sidStr = request.params("sid");
         String noclean = request.queryParams("nocleanup");
@@ -72,7 +81,7 @@ public class SystemsController {
             if (!"true".equalsIgnoreCase(noclean)) {
                 Optional<List<String>> cleanupErr =
                         SaltService.INSTANCE.
-                                unregisterSSHMinion(server.asMinionServer().get(), 300);
+                                cleanupSSHMinion(server.asMinionServer().get(), 300);
                 if (cleanupErr.isPresent()) {
                     return json(response, JsonResult.error(cleanupErr.get()));
                 }
@@ -102,7 +111,8 @@ public class SystemsController {
                         Long.toString(sid));
             }
             else {
-                createErrorMessage(request.raw(), "message.servernotdeleted", Long.toString(sid));
+                createErrorMessage(request.raw(),
+                        "message.servernotdeleted", Long.toString(sid));
                 throw e;
             }
         }
