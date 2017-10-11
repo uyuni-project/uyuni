@@ -153,7 +153,8 @@ class DebRepo(object):
 
 class ContentSource(object):
 
-    def __init__(self, url, name, org=1, channel_label=""):
+    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None, org=1, channel_label="",
+                 no_mirrors=False):
         # pylint: disable=W0613
         self.url = url
         self.name = name
