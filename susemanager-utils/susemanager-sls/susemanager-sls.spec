@@ -67,7 +67,7 @@ cp src/modules/udevdb.py %{buildroot}/usr/share/susemanager/salt/_modules
 %post
 # HACK! Create broken link when it will be replaces with the real file
 ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
-   /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 || exit 0
+   /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 ||:
 # Pre-create top.sls to suppress empty/absent top.sls warning/error (bsc#1017754)
 USERLAND="/srv/salt"
 TOP="$USERLAND/top.sls"
