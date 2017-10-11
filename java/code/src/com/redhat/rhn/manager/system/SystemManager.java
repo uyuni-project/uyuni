@@ -428,7 +428,8 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Delete a server and in case of Salt ssh-push minions remove SUSE Manager specific configuration.
+     * Delete a server and in case of Salt ssh-push minions remove SUSE Manager
+     * specific configuration.
      *
      * @param user the user
      * @param sid the server id
@@ -436,19 +437,22 @@ public class SystemManager extends BaseManager {
      * @param cleanupTimeout timeout for cleanup operation
      * @return a list of cleanup errors or empty if no errors or no cleanup was done
      */
-    public static Optional<List<String>> deleteServerAndCleanup(User user, long sid,
-                                                                ServerCleanupType cleanupType,
-                                                                int cleanupTimeout) {
+    public static Optional<List<String>> deleteServerAndCleanup(
+            User user, long sid, ServerCleanupType cleanupType, int cleanupTimeout) {
         if (!ServerCleanupType.NO_CLEANUP.equals(cleanupType)) {
             Server server = lookupByIdAndUser(sid, user);
             if (server.asMinionServer().isPresent()) {
                 boolean sshPush = Stream.of(
                         ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH),
-                        ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH_TUNNEL)
+                        ServerFactory
+                                .findContactMethodByLabel(ContactMethodUtil.SSH_PUSH_TUNNEL)
                 ).anyMatch(cm -> server.getContactMethod().equals(cm));
                 if (sshPush) {
-                    Optional<List<String>> errs = saltServiceInstance.unregisterSSHMinion(server.asMinionServer().get(), cleanupTimeout);
-                    if (errs.isPresent() && ServerCleanupType.FAIL_ON_CLEANUP_ERR.equals(cleanupType)) {
+                    Optional<List<String>> errs = saltServiceInstance
+                            .cleanupSSHMinion(server.asMinionServer().get(),
+                                    cleanupTimeout);
+                    if (errs.isPresent() &&
+                            ServerCleanupType.FAIL_ON_CLEANUP_ERR.equals(cleanupType)) {
                         return errs;
                     } // else FORCE_DELETE
                 }
