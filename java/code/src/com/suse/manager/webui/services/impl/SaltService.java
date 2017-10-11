@@ -473,12 +473,6 @@ public class SaltService {
         }
     }
 
-    public <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
-            LocalCall<R> call, Target<?> target,
-            CompletableFuture<GenericError> cancel) throws SaltException {
-        return completableAsyncCall(call, target, reactor.getEventStream(), cancel);
-    }
-
     private <R> Map<String, CompletionStage<Result<R>>> completableAsyncCall(
             LocalCall<R> call, Target<?> target, EventStream events,
             CompletableFuture<GenericError> cancel) throws SaltException {
@@ -1147,7 +1141,15 @@ public class SaltService {
         );
     }
 
-    public Optional<List<String>> unregisterSSHMinion(MinionServer minionServer, int timeout) {
-        return saltSSHService.unregisterSSHMinion(minionServer, timeout);
+    /**
+     * Remove SUSE Manager specific configuration from a Salt ssh minion.
+     *
+     * @param minion the minion.
+     * @param timeout operation timeout
+     * @return list of error messages or empty if no error
+     */
+    public Optional<List<String>> cleanupSSHMinion(MinionServer minion,
+                                                   int timeout) {
+        return saltSSHService.cleanupSSHMinion(minion, timeout);
     }
 }

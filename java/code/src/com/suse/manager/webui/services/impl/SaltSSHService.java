@@ -648,7 +648,14 @@ public class SaltSSHService {
         }
     }
 
-    public Optional<List<String>> unregisterSSHMinion(MinionServer minion, int timeout) {
+    /**
+     * Remove SUSE Manager specific configuration from a Salt ssh minion.
+     *
+     * @param minion the minion.
+     * @param timeout operation timeout
+     * @return list of error messages or empty if no error
+     */
+    public Optional<List<String>> cleanupSSHMinion(MinionServer minion, int timeout) {
         CompletableFuture timeoutAfter = SaltService.INSTANCE.failAfter(timeout);
         try {
             Map<String, CompletionStage<Result<Map<String, State.ApplyResult>>>> res =
