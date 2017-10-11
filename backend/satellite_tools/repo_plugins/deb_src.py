@@ -230,7 +230,7 @@ class ContentSource(object):
     @staticmethod
     def get_updates():
         # There isn't any update info in the repository
-        return []
+        return ('', [])
 
     @staticmethod
     def get_groups():
