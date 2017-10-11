@@ -21,6 +21,7 @@
 - enable package profile comparisons on minions
 - Disallow entering multiple identical mirror credentials (bsc#971785)
 - ensure correct ordering of patches (bsc#1059801)
+- checkin the foreign host if a s390 minion finished a job (bsc#971916)
 
 -------------------------------------------------------------------
 Thu Sep 14 11:32:37 CEST 2017 - mc@suse.de
