@@ -1985,6 +1985,9 @@ class RepoSync(object):
         check, if the checksum_type of the channel matches the one of the repo
         if not, change the type of the channel
         """
+        if repo_checksum_type is None:
+            return
+
         if self.channel['org_id']:
             # custom channels are user managed.
             # Do not autochange this
