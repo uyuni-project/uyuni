@@ -86,8 +86,8 @@ public class SSMDeleteSystemsConfirm extends RhnAction implements Listable {
                             .fromString(saltSshCleanup)
                             .orElseThrow(() ->
                                     new IllegalArgumentException(
-                                            "Invalid server cleanup type value: "
-                                                    + saltSshCleanup))
+                                            "Invalid server cleanup type value: " +
+                                                    saltSshCleanup))
                     );
         MessageQueue.publish(event);
         set.clear();
