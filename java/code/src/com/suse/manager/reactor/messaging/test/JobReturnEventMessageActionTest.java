@@ -749,20 +749,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             ));
             assertEquals(59, ethNames.get("ib0.8001").getHwaddr().length());
         });
-
-        HibernateFactory.getSession().flush();
-
-        Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
-        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
-        // Setup an event message from file contents
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("hardware.profileupdate.infiniband.json", action.getId()));
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-
-        // Process the event message
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.doExecute(message);
     }
 
     /**
