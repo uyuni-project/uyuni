@@ -178,7 +178,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             MinionServer m = minion.get();
             m.updateServerInfo();
             // for s390 update the host as well
-            if (CpuArchUtil.isS390(m.getCpu().getArch().getLabel())) {
+            if (m.getCpu() != null &&
+                CpuArchUtil.isS390(m.getCpu().getArch().getLabel())) {
                 VirtualInstance virtInstance = m.getVirtualInstance();
                 if (virtInstance != null && virtInstance.getHostSystem() != null) {
                     virtInstance.getHostSystem().updateServerInfo();
