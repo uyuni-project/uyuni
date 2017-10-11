@@ -216,7 +216,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     // default base channel:
                     List<Long> servers = serversInSSMWithBase(user, oldBaseChannelId);
                     Server s = SystemManager.lookupByIdAndUser(servers.get(0), user);
-                    newBase = ChannelManager.guessServerBase(user, s);
+                    newBase = ChannelManager.guessServerBaseChannel(user, s);
 
                     if (newBase == null) {
                         // lets search for suse systems
@@ -540,7 +540,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
                 Long cid = null;
                 if (toId == -1L) {
-                    cid = ChannelManager.guessServerBase(u, s.getId());
+                    cid = ChannelManager.guessServerBaseChannelId(u, s.getId());
                 }
                 else {
                     cid = toId;
