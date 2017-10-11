@@ -554,7 +554,15 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
                 Long cid = null;
                 if (toId == -1L) {
-                    cid = ChannelManager.guessServerBaseChannelId(u, s.getId());
+                    Channel guessedChannel =
+                            ChannelManager.guessServerBaseChannel(u, s.getId());
+                    if (guessedChannel == null) {
+                        // if no channel can be guessed, skip this server
+                        // but add a message to the skipped list
+                        skip(toId, srvId, skipped);
+                        continue;
+                    }
+                    cid = guessedChannel.getId();
                 }
                 else {
                     cid = toId;
