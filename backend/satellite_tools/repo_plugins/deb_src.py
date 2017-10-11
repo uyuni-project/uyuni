@@ -174,6 +174,9 @@ class ContentSource(object):
         self.num_packages = 0
         self.num_excluded = 0
 
+    def get_md_checksum_type(self):
+        return None
+
     def list_packages(self, filters, latest):
         """ list packages"""
 
