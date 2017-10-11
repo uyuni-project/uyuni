@@ -57,8 +57,9 @@ public class ContainerBuildHostEntitlement extends Entitlement {
      */
     @Override
     public boolean isAllowedOnServer(Server server) {
-        return server.doesOsSupportsContainerization() && super.isAllowedOnServer(server) &&
-                server.getBaseEntitlement() instanceof SaltEntitlement;
+        return  super.isAllowedOnServer(server) &&
+                server.getBaseEntitlement() instanceof SaltEntitlement &&
+                server.doesOsSupportsContainerization();
     }
 
     /**

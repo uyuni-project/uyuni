@@ -499,7 +499,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return <code>true</code> if OS supports Containerization
      */
     public boolean doesOsSupportsContainerization() {
-        return true;
+        return false;
     }
     /**
      * Setter for os
