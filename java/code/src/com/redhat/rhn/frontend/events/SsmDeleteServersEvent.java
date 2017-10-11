@@ -37,6 +37,7 @@ public class SsmDeleteServersEvent implements EventMessage {
      *
      * @param userIn    user making the changes; cannot be <code>null</code>
      * @param sidsIn server ids to delete; cannot be <code>null</code>
+     * @param serverCleanupTypeIn how to clean up the system (if needed)
      */
     public SsmDeleteServersEvent(User userIn,
                                  List<Long> sidsIn,
@@ -74,6 +75,9 @@ public class SsmDeleteServersEvent implements EventMessage {
         return toString();
     }
 
+    /**
+     * @return how to clean up the system (if needed)
+     */
     public SystemManager.ServerCleanupType getServerCleanupType() {
         return serverCleanupType;
     }
