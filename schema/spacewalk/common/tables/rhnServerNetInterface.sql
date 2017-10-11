@@ -23,7 +23,7 @@ CREATE TABLE rhnServerNetInterface
                    CONSTRAINT rhn_srv_net_iface_sid_fk
                        REFERENCES rhnServer (id),
     name       VARCHAR2(32) NOT NULL,
-    hw_addr    VARCHAR2(18),
+    hw_addr    VARCHAR2(96),
     module     VARCHAR2(128),
     is_primary VARCHAR2(1),
     created    timestamp with local time zone
