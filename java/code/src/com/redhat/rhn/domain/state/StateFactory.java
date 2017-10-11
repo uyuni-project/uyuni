@@ -318,12 +318,16 @@ public class StateFactory extends HibernateFactory {
      * part of the state.
      *
      * @param server the minion
-     * @param userId the creator of the state
+     * @param eventUserId the creator of the state
      * @param pkgs list of packages to add to the state
      */
-    public static void addPackagesToNewStateRevision(Server server, Optional<Long> userId,
-            List<Package> pkgs) {
-        User user = userId.map(UserFactory::lookupById).orElse(server.getCreator());
+    public static void addPackagesToNewStateRevision(Server server,
+            Optional<Long> eventUserId, List<Package> pkgs) {
+        Optional<User> eventUser = eventUserId.map(UserFactory::lookupById);
+        Optional<User> creatorUser = Optional.ofNullable(server.getCreator());
+        User orgUser = UserFactory.findRandomOrgAdmin(server.getOrg());
+
+        User user = eventUser.orElse(creatorUser.orElse(orgUser));
 
         ServerStateRevision state = StateRevisionService.INSTANCE
                 .cloneLatest(server, user, true, true);

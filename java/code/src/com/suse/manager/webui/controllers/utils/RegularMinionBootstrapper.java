@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -98,9 +99,13 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
     @Override
     protected BootstrapResult bootstrapInternal(BootstrapParameters input, User user,
                                                 String defaultContactMethod) {
+        String minionId = input.getHost();
+        MinionPendingRegistrationService.addMinion(
+                user, minionId, defaultContactMethod, Optional.empty());
         BootstrapResult result = super.bootstrapInternal(input, user, defaultContactMethod);
         if (!result.isSuccess()) {
             saltService.deleteKey(input.getHost());
+            MinionPendingRegistrationService.removeMinion(minionId);
         }
         LOG.info("Minion bootstrap success: " + result.isSuccess());
         return result;
