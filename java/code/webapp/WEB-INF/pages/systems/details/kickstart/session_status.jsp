@@ -75,7 +75,7 @@
   <tr>
     <th><bean:message key="kickstart.session_status.jsp.cancel_cancel" /></th>
     <td>
-      <a href="/rhn/systems/details/kickstart/SessionCancel.do?sid=${system.id}"><bean:message key="kickstart.session_cancel.jsp.cancel"/></a>
+      <a class ="btn btn-danger" href="/rhn/systems/details/kickstart/SessionCancel.do?sid=${system.id}"><bean:message key="kickstart.session_cancel.jsp.cancel"/></a>
     </td>
   </tr>
   </c:if>
