@@ -843,6 +843,15 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         return server;
     }
 
+    public void testHardwareProfileInfiniband()  throws Exception {
+        MinionServer minion = testHardwareProfileUpdate("hardware.profileupdate.infiniband.json", (server) -> {
+            Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
+                    eth -> eth.getName(),
+                    Function.identity()
+            ));
+            assertEquals(59, ethNames.get("ib0.8001").getHwaddr().length());
+        });
+    }
 
     /**
      * Read a Salt job return event while substituting the corresponding action id.
