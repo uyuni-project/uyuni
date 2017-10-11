@@ -104,8 +104,8 @@ public class MinionServer extends Server {
      * @return true if the installer type is of SLES 11 or 10
      */
     private boolean isSLES11OrOlder() {
-        return   getOs().equals(ServerConstants.SLES) &&
-                 (getRelease().startsWith("10") || getRelease().startsWith("11"));
+        return ServerConstants.SLES.equals(getOs()) &&
+               (getRelease().startsWith("10") || getRelease().startsWith("11"));
     }
 
     /**
