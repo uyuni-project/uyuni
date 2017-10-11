@@ -52,7 +52,16 @@ public class ContactMethodUtil {
      * @return true if contact method is ssh-push or ssh-push-default
      */
     public static boolean isSSHPushContactMethod(ContactMethod cm) {
-        return cm.getLabel().equals(SSH_PUSH) || cm.getLabel().equals(SSH_PUSH_TUNNEL);
+        return isSSHPushContactMethod(cm.getLabel());
+    }
+
+    /**
+     * Returns true if contact method is ssh-push or ssh-push-default
+     * @param  cm contact method given as string
+     * @return true if contact method is ssh-push or ssh-push-default
+     */
+    public static boolean isSSHPushContactMethod(String cm) {
+        return cm.equals(SSH_PUSH) || cm.equals(SSH_PUSH_TUNNEL);
     }
 
     /**

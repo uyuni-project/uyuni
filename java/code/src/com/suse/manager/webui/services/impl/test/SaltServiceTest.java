@@ -4,7 +4,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.suse.manager.webui.services.impl.SSHMinionsPendingRegistrationService;
+import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -34,14 +34,14 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testfilterSSHMinionIdsBootstrap() {
-        SSHMinionsPendingRegistrationService.addMinion("m1", "salt-ssh", Optional.empty());
+        MinionPendingRegistrationService.addMinion(user, "m1", "salt-ssh", Optional.empty());
         List<String> minionIds = new ArrayList<>();
         minionIds.add("m1");
         minionIds.add("m2");
         assertEquals(
                 Collections.singletonList("m1"),
                 SaltService.partitionMinionsByContactMethod(minionIds).get(true));
-        SSHMinionsPendingRegistrationService.removeMinion("m1");
+        MinionPendingRegistrationService.removeMinion("m1");
     }
 
     public void testfilterSSHMinionIds() throws Exception {
