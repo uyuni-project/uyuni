@@ -12,7 +12,7 @@
                 "queue": true
             }
         ],
-        "id": "sibelius.arch.suse.de",
+        "id": "minionsles12-suma3pg.vagrant.local",
         "jid": "20171011135826333223",
         "metadata": {
             "suma-action-id": 60
@@ -226,8 +226,8 @@
                             ],
                             "sortlist": []
                         },
-                        "domain": "arch.suse.de",
-                        "fqdn": "sibelius.arch.suse.de",
+                        "domain": "vagrant.local",
+                        "fqdn": "minionsles12-suma3pg.vagrant.local",
                         "fqdn_ip4": [
                             "10.161.8.239"
                         ],
@@ -242,7 +242,7 @@
                             }
                         ],
                         "groupname": "root",
-                        "host": "sibelius",
+                        "host": "minionsles12-suma3pg",
                         "hwaddr_interfaces": {
                             "eth0": "00:30:48:c9:bf:3e",
                             "eth1": "00:30:48:c9:bf:3f",
@@ -250,7 +250,7 @@
                             "ib0.8001": "80:00:02:0e:fe:80:00:00:00:00:00:00:00:30:48:c9:7b:d0:00:01",
                             "lo": "00:00:00:00:00:00"
                         },
-                        "id": "sibelius.arch.suse.de",
+                        "id": "minionsles12-suma3pg.vagrant.local",
                         "init": "systemd",
                         "ip4_interfaces": {
                             "eth0": [
@@ -329,7 +329,7 @@
                             "defaultlanguage": "en_US",
                             "detectedencoding": "UTF-8"
                         },
-                        "localhost": "sibelius.arch.suse.de",
+                        "localhost": "minionsles12-suma3pg.vagrant.local",
                         "lsb_distrib_codename": "SUSE Linux Enterprise Server 12 SP3",
                         "lsb_distrib_id": "SLES",
                         "lsb_distrib_release": "12.3",
@@ -337,7 +337,7 @@
                         "manufacturer": "SGI.COM",
                         "master": "suma-ref31-srv.mgr.suse.de",
                         "mem_total": 7800,
-                        "nodename": "sibelius.arch.suse.de",
+                        "nodename": "minionsles12-suma3pg.vagrant.local",
                         "num_cpus": 16,
                         "num_gpus": 1,
                         "os": "SUSE",
@@ -8527,5 +8527,5 @@
         },
         "success": true
     },
-    "tag": "salt/job/20171011135826333223/ret/sibelius.arch.suse.de"
+    "tag": "salt/job/20171011135826333223/ret/minionsles12-suma3pg.vagrant.local"
 }
