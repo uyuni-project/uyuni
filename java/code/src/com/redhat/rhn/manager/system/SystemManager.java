@@ -90,7 +90,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.utils.Opt;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -379,26 +378,64 @@ public class SystemManager extends BaseManager {
         return m.execute(params);
     }
 
+    /**
+     * How to cleanup the server on deletion.
+      */
     public enum ServerCleanupType {
+        /**
+         * Fail in case of cleanup error.
+         */
         FAIL_ON_CLEANUP_ERR,
+        /**
+         * Don't cleanup, just delete.
+         */
         NO_CLEANUP,
+        /**
+         * Try cleanup first but delete server
+         * anyway in case of error.
+         */
         FORCE_DELETE;
 
+        /**
+         * Get enum value from string.
+         * @param value the string
+         * @return an Optional with the enum value or empty if string didn't
+         * match any enum value.
+         */
         public static Optional<ServerCleanupType> fromString(String value) {
             try {
                 return Optional.of(valueOf(value.toUpperCase()));
-            } catch (IllegalArgumentException e) {
+            }
+            catch (IllegalArgumentException e) {
                 return Optional.empty();
             }
         }
 
     }
 
-    public static Optional<List<String>> deleteServerAndCleanup(User user, long sid,
-                                                                ServerCleanupType cleanupType) {
+    /**
+     * Delete a server and in case of Salt ssh-push minions remove SUSE Manager
+     * specific configuration.
+     *
+     * @param user the user
+     * @param sid the server id
+     * @param cleanupType cleanup options
+     * @return a list of cleanup errors or empty if no errors or no cleanup was done
+     */
+    public static Optional<List<String>> deleteServerAndCleanup(
+            User user, long sid, ServerCleanupType cleanupType) {
         return deleteServerAndCleanup(user, sid, cleanupType, 300);
     }
 
+    /**
+     * Delete a server and in case of Salt ssh-push minions remove SUSE Manager specific configuration.
+     *
+     * @param user the user
+     * @param sid the server id
+     * @param cleanupType cleanup options
+     * @param cleanupTimeout timeout for cleanup operation
+     * @return a list of cleanup errors or empty if no errors or no cleanup was done
+     */
     public static Optional<List<String>> deleteServerAndCleanup(User user, long sid,
                                                                 ServerCleanupType cleanupType,
                                                                 int cleanupTimeout) {

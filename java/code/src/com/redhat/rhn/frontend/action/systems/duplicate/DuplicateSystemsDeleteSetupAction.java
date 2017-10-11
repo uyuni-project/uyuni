@@ -82,8 +82,8 @@ public class DuplicateSystemsDeleteSetupAction extends RhnAction implements List
                             .fromString(saltSshCleanup)
                             .orElseThrow(() ->
                                     new IllegalArgumentException(
-                                            "Invalid server cleanup type value: "
-                                                    + saltSshCleanup))
+                                            "Invalid server cleanup type value: " +
+                                                    saltSshCleanup))
                     );
         MessageQueue.publish(event);
         set.clear();
