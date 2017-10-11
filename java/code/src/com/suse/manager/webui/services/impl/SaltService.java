@@ -125,7 +125,7 @@ public class SaltService {
             SaltCustomStateStorageManager.INSTANCE;
 
     private static final Predicate<? super String> SALT_MINION_PREDICATE = (mid) ->
-            SSHMinionsPendingRegistrationService.containsMinion(mid) ||
+            MinionPendingRegistrationService.containsSSHMinion(mid) ||
                         MinionServerFactory
                                 .findByMinionId(mid)
                                 .filter(m -> MinionServerUtils.isSshPushMinion(m))

@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 import com.suse.manager.webui.utils.gson.JSONSaltMinion;
@@ -33,6 +34,7 @@ import spark.Response;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Predicate;
@@ -106,7 +108,15 @@ public class MinionsAPI {
      */
     public static String accept(Request request, Response response, User user) {
         String target = request.params("target");
-        SALT_SERVICE.acceptKey(target);
+        MinionPendingRegistrationService.addMinion(
+                user, target, ContactMethodUtil.DEFAULT, Optional.empty());
+        try {
+            SALT_SERVICE.acceptKey(target);
+        }
+        catch (Exception e) {
+            MinionPendingRegistrationService.removeMinion(target);
+            throw e;
+        }
         return json(response, true);
     }
 
