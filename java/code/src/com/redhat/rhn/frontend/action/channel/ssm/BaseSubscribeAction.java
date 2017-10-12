@@ -51,6 +51,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -216,7 +217,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     // default base channel:
                     List<Long> servers = serversInSSMWithBase(user, oldBaseChannelId);
                     Server s = SystemManager.lookupByIdAndUser(servers.get(0), user);
-                    newBase = ChannelManager.guessServerBaseChannel(user, s);
+                    newBase = ChannelManager.guessServerBaseChannel(user, s).orElse(null);
 
                     if (newBase == null) {
                         // lets search for suse systems
@@ -540,15 +541,16 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
                 Long cid = null;
                 if (toId == -1L) {
-                    Channel guessedChannel =
+                    Optional<Channel> guessedChannel =
                             ChannelManager.guessServerBaseChannel(u, s.getId());
-                    if (guessedChannel == null) {
+                    if (!guessedChannel.isPresent()) {
                         // if no channel can be guessed, skip this server
                         // but add a message to the skipped list
                         skip(toId, srvId, skipped);
                         continue;
+
                     }
-                    cid = guessedChannel.getId();
+                    cid = guessedChannel.get().getId();
                 }
                 else {
                     cid = toId;
