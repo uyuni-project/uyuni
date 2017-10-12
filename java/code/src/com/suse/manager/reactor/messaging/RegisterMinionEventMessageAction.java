@@ -42,7 +42,6 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
-import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -55,6 +54,7 @@ import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
@@ -224,8 +224,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         "The Server organization does not match the activation key " +
                                 "organization. The activation key will not be used.");
             }
-            server.setCreator(activationKey.map(ActivationKey::getCreator).orElseGet(
-                    () -> UserFactory.findRandomOrgAdmin(OrgFactory.getSatelliteOrg())));
+
+            // Set creator to the user who accepted the key if available
+            server.setCreator(MinionPendingRegistrationService.getCreator(minionId)
+                    .orElse(null));
 
             String osfullname = grains.getValueAsString("osfullname");
             String osfamily = grains.getValueAsString("os_family");
@@ -363,6 +365,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             LOG.error("Error registering minion id: " + minionId, t);
             // rethrow exception to force transaction rollback
             throw new RuntimeException("Error registering minion " + minionId, t);
+        }
+        finally {
+            if (MinionPendingRegistrationService.containsMinion(minionId)) {
+                MinionPendingRegistrationService.removeMinion(minionId);
+            }
         }
     }
 

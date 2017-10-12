@@ -137,8 +137,8 @@ public class SaltSSHService {
         // per-minionserver
         target.getTarget().stream()
             .forEach(mid -> {
-                if (SSHMinionsPendingRegistrationService.containsMinion(mid)) {
-                    SSHMinionsPendingRegistrationService.get(mid).ifPresent(minion -> {
+                if (MinionPendingRegistrationService.containsSSHMinion(mid)) {
+                    MinionPendingRegistrationService.get(mid).ifPresent(minion -> {
                         roster.addHost(mid, getSSHUser(), Optional.empty(),
                                 Optional.of(SSH_PUSH_PORT),
                                 remotePortForwarding(minion.getProxyPath().orElse(null),
@@ -358,7 +358,7 @@ public class SaltSSHService {
         SaltRoster roster = new SaltRoster();
 
         // Add temporary systems
-        SSHMinionsPendingRegistrationService.getMinions().forEach((mid, minion) ->
+        MinionPendingRegistrationService.getSSHMinions().forEach((mid, minion) ->
                         roster.addHost(mid,
                                 getSSHUser(),
                                 Optional.empty(),
