@@ -1,3 +1,4 @@
+- Keep the the GPG Check value if validation fails (bsc#1061548)
 - Make systems in system group list selectable by the group admins (bsc#1021432)
 - Hide non-relevant typed systems in SystemCurrency (bsc#1019097)
 - Exclude salt systems from the list of target systems for traditional
