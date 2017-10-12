@@ -3,6 +3,8 @@
   SUSE Manager performance
 - ensure correct ordering of patches (bsc#1059801)
 - fix create empty top.sls with no-op (bsc#1053038)
+- Enabling certificate deployment for Leap 42.3 clients which is
+  needed for bootstrapping
 
 -------------------------------------------------------------------
 Thu Sep 14 11:41:56 CEST 2017 - mc@suse.de
