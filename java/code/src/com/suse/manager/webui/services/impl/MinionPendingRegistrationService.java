@@ -15,43 +15,56 @@
 
 package com.suse.manager.webui.services.impl;
 
+import com.redhat.rhn.domain.user.User;
+
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
- * POC
- * in-memory database of minions pending registration
- * todo: move to database and come up with a sane name!
+ * In-memory database of minions pending registration
  */
-public class SSHMinionsPendingRegistrationService {
+public class MinionPendingRegistrationService {
 
     /**
      * Information about the minion to bootstrap
-     * (contect method, proxy path)
+     * (contact method, creator user and proxy path)
      */
     public static class PendingMinion {
 
         private String contactMethod;
-
+        private User creator;
         private Optional<List<String>> proxyPath;
 
         /**
-         * @param contactMethodIn the contect method
+         * @param creatorIn user who accepted the key or bootstrapped the system
+         * @param contactMethodIn the contact method
          * @param proxyPathIn the proxy path
          */
-        public PendingMinion(String contactMethodIn, Optional<List<String>> proxyPathIn) {
+        public PendingMinion(User creatorIn, String contactMethodIn,
+                Optional<List<String>> proxyPathIn) {
             this.contactMethod = contactMethodIn;
+            this.creator = creatorIn;
             this.proxyPath = proxyPathIn;
         }
 
         /**
-         * @return the contect method
+         * @return the contact method
          */
         public String getContactMethod() {
             return contactMethod;
+        }
+
+        /**
+         * @return the creator
+         */
+        public User getCreator() {
+            return creator;
         }
 
         /**
@@ -68,18 +81,19 @@ public class SSHMinionsPendingRegistrationService {
     /**
      * Prevent instantiation.
      */
-    private SSHMinionsPendingRegistrationService() {
+    private MinionPendingRegistrationService() {
     }
 
     /**
      * Adds minion id to the database.
+     * @param creator user who accepted the key or bootstrapped the system
      * @param minionId minion id to be added
      * @param contactMethod the contact method of the minion
      * @param proxyPath list of proxies hostnames in the order they connect through
      */
-    public static void addMinion(String minionId, String contactMethod,
+    public static void addMinion(User creator, String minionId, String contactMethod,
                                  Optional<List<String>> proxyPath) {
-        minionIds.put(minionId, new PendingMinion(contactMethod, proxyPath));
+        minionIds.put(minionId, new PendingMinion(creator, contactMethod, proxyPath));
     }
 
     /**
@@ -91,12 +105,23 @@ public class SSHMinionsPendingRegistrationService {
     }
 
     /**
-     * Checks whether minion id is contained in the db.
+     * Checks whether minion id is contained in the db with default contact method.
      * @param minionId minion id to be checked for.
      * @return true if the minion is in the database, false otherwise.
      */
     public static boolean containsMinion(String minionId) {
-        return minionIds.containsKey(minionId);
+        return minionIds.containsKey(minionId) && minionIds.get(minionId)
+                .contactMethod.equals(ContactMethodUtil.DEFAULT);
+    }
+
+    /**
+     * Checks whether minion id is contained in the db with SSH contact method.
+     * @param minionId minion id to be checked for.
+     * @return true if the minion is in the database, false otherwise.
+     */
+    public static boolean containsSSHMinion(String minionId) {
+        return minionIds.containsKey(minionId) && ContactMethodUtil
+                .isSSHPushContactMethod(minionIds.get(minionId).contactMethod);
     }
 
     /**
@@ -108,20 +133,23 @@ public class SSHMinionsPendingRegistrationService {
     }
 
     /**
-     * Get all minion ids in the database.
-     * @return all minion ids
+     * @param minionId the minion id
+     * @return creator of the given minion
      */
-    public static Map<String, PendingMinion> getMinions() {
-        return Collections.unmodifiableMap(minionIds);
+    public static Optional<User> getCreator(String minionId) {
+        return Optional.ofNullable(minionIds.get(minionId))
+                .map(minion -> minion.getCreator());
     }
 
     /**
-     * @param minionId the minion id
-     * @return contact method of the given minion
+     * Get all SSH minion ids in the database.
+     * @return all SSH minion ids
      */
-    public static Optional<String> getContactMethod(String minionId) {
-        return Optional.ofNullable(minionIds.get(minionId))
-                .map(minion -> minion.getContactMethod());
+    public static Map<String, PendingMinion> getSSHMinions() {
+        return Collections.unmodifiableMap(minionIds.entrySet().stream()
+                .filter(e -> ContactMethodUtil.isSSHPushContactMethod(
+                        e.getValue().contactMethod))
+                .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue())));
     }
 
 }

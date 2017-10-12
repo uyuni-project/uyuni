@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
-import com.suse.manager.webui.services.impl.SSHMinionsPendingRegistrationService;
+import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.InputValidator;
@@ -106,7 +106,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
                         .map(proxyId -> ServerFactory.lookupById(proxyId))
                         .map(proxy -> SaltSSHService.proxyPathToHostnames(
                                 proxy.getServerPaths(), proxy));
-                SSHMinionsPendingRegistrationService.addMinion(minionId,
+                MinionPendingRegistrationService.addMinion(user, minionId,
                         result.getContactMethod().orElse(defaultContactMethod),
                         proxyPath);
                 getRegisterAction().registerSSHMinion(
@@ -115,7 +115,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
             }
         }
         finally {
-            SSHMinionsPendingRegistrationService.removeMinion(minionId);
+            MinionPendingRegistrationService.removeMinion(minionId);
         }
         return result;
     }
