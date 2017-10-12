@@ -2,6 +2,8 @@
   installation (bsc#1038862)
 - Support xccdf 1.2 namespace in openscap result file (bsc#1059319)
 - fix create empty top.sls with no-op (bsc#1053038)
+- Enabling certificate deployment for Leap 42.3 clients which is
+  needed for bootstrapping
 
 -------------------------------------------------------------------
 Fri Jul 21 12:03:58 CEST 2017 - mc@suse.de
