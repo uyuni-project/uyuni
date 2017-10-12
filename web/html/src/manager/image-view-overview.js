@@ -107,59 +107,49 @@ class ImageInfo extends React.Component {
   }
 
   renderInstances(data) {
-    let totalCount = -1;
+    if (!this.props.gotRuntimeInfo) {
+        return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
+    }
+
+    let totalCount = 0;
     if(data.instances) {
       totalCount =  Object.keys(data.instances)
         .map(k => Number(data.instances[k]))
         .reduce((a,b) => a + b, 0);
     }
 
-    let spinIcon;
-    if (!this.props.runtimeInfoErr) {
-        spinIcon = <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
-    }
-
-    if (totalCount < 0) {
-      return (<span>{spinIcon}</span>);
-    }
-
-    if (totalCount == 0) {
-      return (<span>{totalCount}</span>);
-    }
-
-    return (<span>{totalCount}&nbsp;&nbsp;
-            <ModalLink
-              target="instance-details-popup"
-              title={t("View cluster summary")}
-              icon="fa-external-link"
-              item={data}
-              onClick={(data) =>
-                this.setState({
-                  instancePopupContent: {
-                    name: data.name,
-                    content: this.renderInstanceDetails(data)
-                  }
-                })
-              }
-            />
-            </span>);
+    return totalCount === 0 ? '-' :
+      <span>{totalCount}&nbsp;&nbsp;
+        <ModalLink
+          target="instance-details-popup"
+          title={t("View cluster summary")}
+          icon="fa-external-link"
+          item={data}
+          onClick={(data) =>
+              this.setState({
+                instancePopupContent: {
+                  name: data.name,
+                  content: this.renderInstanceDetails(data)
+                }
+              })
+          }
+        />
+      </span>;
   }
 
   renderRuntime(data) {
-    let elm = !this.props.runtimeInfoErr ?
-        <span><i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/></span>
-        : null;
+    if(!this.props.gotRuntimeInfo) {
+      return <span><i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/></span>;
+    }
 
+    let elm = <span> - </span>;
     if (data.runtimeStatus === 1) {
       elm = <span><i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are consistent with SUSE Manager")}/><a href={"#/runtime/" + data.id}>{t("All instances are consistent with SUSE Manager")}</a></span>
     } else if (data.runtimeStatus === 2) {
       elm = <span><i className="fa fa-question-circle fa-1-5x" title={t("No information")}/><a href={"#/runtime/" + data.id}>{t("No information")}</a></span>
     } else if (data.runtimeStatus === 3) {
       elm = <span><i className="fa fa-exclamation-triangle fa-1-5x text-warning" title={t("Outdated instances found")}/><a href={"#/runtime/" + data.id}>{t("Outdated instances found")}</a></span>
-    } else if (data.runtimeStatus === 0 ) {
-      elm = <span> - </span>;
     }
-
     return elm;
   }
 
@@ -355,7 +345,7 @@ class ImageViewOverview extends React.Component {
             <BootstrapPanel title={t("Image Info")}>
               <div className="auto-overflow">
                 <ImageInfo data={data} runtimeInfoEnabled={this.props.runtimeInfoEnabled}
-                    runtimeInfoErr={this.props.runtimeInfoErr}/>
+                    gotRuntimeInfo={this.props.gotRuntimeInfo}/>
               </div>
             </BootstrapPanel>
           </div>
