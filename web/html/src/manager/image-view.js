@@ -119,13 +119,9 @@ class ImageView extends React.Component {
   }
 
   handleResponseError(jqXHR, arg = "") {
-    this.setState({
-      messages:
-            Network.responseErrorMessage(
-              jqXHR,
-              (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null
-            )
-    });
+    const msg = Network.responseErrorMessage(jqXHR,
+      (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
+    this.setState({ messages: this.state.messages.concat(msg) });
   }
 
   //Accumulate runtime data from individual clusters into 'toData'
