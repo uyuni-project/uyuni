@@ -22,12 +22,12 @@ sql:
 	select rhnErrata.advisory_name as advisory,
 		rhnServerNeededErrataCache.server_id,
 		rhnServer.name as profile_name,
-		rhnservernetwork.hostname, trim(rhnservernetwork.ipaddr) as ip_address,
+		rhnServer.hostname, trim(rhnservernetwork.ipaddr) as ip_address,
 		trim(rhnservernetwork.ip6addr) as ipv6_address
 	from rhnErrata, rhnServer,
 		rhnServerNeededErrataCache left outer join
 		(
-		select server_id, hostname, ipaddr, ip6addr
+		select server_id, ipaddr, ip6addr
 		from rhnservernetwork
 		where id in (
 			select min(id)
@@ -41,4 +41,3 @@ sql:
 	) X
 	-- where placeholder
 	order by advisory, server_id
-
