@@ -25,7 +25,7 @@ Feature: The Setup Wizard
   Scenario: Play with the products page
     When I refresh SCC
     And I follow "SUSE Products" in the content area
-    And I wait until I see "RES 5" text
+    And I wait until I see "RHEL Expanded Support 5" text
     Then I should see a "Available Products Below" text
     And I should see a "Architecture" text
     And I should see a "Channels" text
@@ -39,7 +39,7 @@ Feature: The Setup Wizard
 
   Scenario: View the channels list in the products page
     When I follow "SUSE Products" in the content area
-    And I wait until I see "RES 5" text
+    And I wait until I see "RHEL Expanded Support 5" text
     And I click the channel list of product "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2" for the "x86_64" architecture
     Then I should see a "Product Channels" text
     And I should see a "Mandatory Channels" text
