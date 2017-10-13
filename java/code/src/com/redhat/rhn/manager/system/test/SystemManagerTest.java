@@ -1088,12 +1088,6 @@ public class SystemManagerTest extends RhnBaseTestCase {
 
     }
 
-    private void setHostname(Server s, String newHostName) {
-        for (Network n : s.getNetworks()) {
-            n.setHostname(newHostName);
-        }
-    }
-
     public void testListDuplicatesByHostname() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -1101,12 +1095,11 @@ public class SystemManagerTest extends RhnBaseTestCase {
         String[] hostnames = {"DUPHOST", "notADup", "duphost"};
         for (String name : hostnames) {
             Server s1 = ServerFactoryTest.createTestServer(user, true);
+            s1.setHostname(name);
             Network net = new Network();
-            net.setHostname("server_" + s1.getId());
             net.setIpaddr("192.168.1.1");
             net.setServer(s1);
             s1.addNetwork(net);
-            setHostname(s1, name);
         }
 
         List<SystemOverview> list = SystemManager.listDuplicatesByHostname(user, "duphost");
