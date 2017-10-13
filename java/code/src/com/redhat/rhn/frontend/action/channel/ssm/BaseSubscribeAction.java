@@ -54,6 +54,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,6 +67,8 @@ import javax.servlet.http.HttpServletResponse;
 public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
     private static Logger log = Logger.getLogger(BaseSubscribeAction.class);
+    private static LocalizationService localizationInstance =
+            LocalizationService.getInstance();
 
     /** Taskomatic API instance */
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
@@ -202,6 +205,40 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             // "Default system base channel" option was selected
             if (newBaseChannelId.intValue() == -1) {
                 log.debug("Default system base channel was selected.");
+
+                List<Long> servers = serversInSSMWithBase(user, oldBaseChannelId);
+                List<Server> skippedServers = new LinkedList<>();
+
+                // Check if for all servers in the set we can guess base channel;
+                // if not add them to the skipped list
+                for (Long sId : servers) {
+                    Server server = SystemManager.lookupByIdAndUser(sId, user);
+                    if (!ChannelManager.guessServerBaseChannel(user, server).isPresent()) {
+                        skippedServers.add(server);
+                    }
+                }
+
+                if (skippedServers.size() > 0) {
+                    // Display the name list of not manageable to the user
+                    // and return empty handed.
+                    StrutsDelegate strutsDelegate = getStrutsDelegate();
+                    ActionMessages msgs = new ActionMessages();
+                    String oldBaseChannelMessage = oldBaseChannelId.intValue() == -1 ?
+                            localizationInstance.getMessage("basesub.jsp.noBaseChannel") :
+                                ChannelFactory.lookupByIdAndUser(oldBaseChannelId, user)
+                                    .getLabel();
+                    ActionMessage actionMessage = new ActionMessage(
+                            "basesub.jsp.unableToLookupSystemDefaultChannelWithParams",
+                            String.join(", ", skippedServers.stream()
+                                    .map(s -> "'" + s.getName() + "'")
+                                    .collect(Collectors.toList())), oldBaseChannelMessage);
+                    msgs.add(ActionMessages.GLOBAL_MESSAGE, actionMessage);
+                    strutsDelegate.saveMessages(request, msgs);
+
+                    return strutsDelegate.forwardParams(mapping.findForward("success"),
+                            new HashMap());
+                }
+
                 List<DistChannelMap> dcms = ChannelFactory.listDistChannelMaps(oldBase);
                 if (!dcms.isEmpty() && oldBase != null) {
                     for (DistChannelMap dcm : dcms) {
@@ -226,7 +263,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     // Should be safe to assume there's at least one result returned here,
                     // we need a server object to call the stored procedure and guess a
                     // default base channel:
-                    List<Long> servers = serversInSSMWithBase(user, oldBaseChannelId);
+
                     // take the first system of the list, guess its base channel and use it
                     Server s = SystemManager.lookupByIdAndUser(servers.get(0), user);
                     newBase = ChannelManager.guessServerBaseChannel(user, s).orElse(null);
@@ -458,7 +495,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
     // Create the container for the "No Base Channel Currently" 'row' in our UI
     protected SystemsPerChannelDto createNoneRow(DataResult noBase) {
         SystemsPerChannelDto rslt;
-        String none = LocalizationService.getInstance().getMessage("none");
+        String none = localizationInstance.getMessage("none");
         rslt = new SystemsPerChannelDto();
         rslt.setId(new Long(-1L));
         rslt.setSystemCount(noBase.size());
