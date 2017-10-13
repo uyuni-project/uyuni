@@ -168,6 +168,7 @@ class ContentSource(object):
         self.proxy_addr = CFG.http_proxy
         self.proxy_user = CFG.http_proxy_username
         self.proxy_pass = CFG.http_proxy_password
+        self.authtoken = None
 
         self.repo = DebRepo(url, os.path.join(CACHE_DIR, self.org, name),
                             os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'))
@@ -253,6 +254,7 @@ class ContentSource(object):
         if not os.path.exists(target_dir):
             os.makedirs(target_dir, int('0755', 8))
 
+        params['authtoken'] = self.authtoken
         params['urls'] = self.repo.urls
         params['relative_path'] = relative_path
         params['target_file'] = target_file
