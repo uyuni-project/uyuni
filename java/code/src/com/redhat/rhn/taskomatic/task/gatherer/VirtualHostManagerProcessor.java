@@ -227,8 +227,8 @@ public class VirtualHostManagerProcessor {
     }
 
     private void updateServerNetwork(Server server, String hostId) {
+        server.setHostname(hostId);
         Network n = new Network();
-        n.setHostname(hostId);
         n.setServer(server);
         server.getNetworks().clear();
         server.getNetworks().add(n);

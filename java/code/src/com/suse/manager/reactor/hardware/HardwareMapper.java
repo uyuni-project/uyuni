@@ -694,10 +694,10 @@ public class HardwareMapper {
                     .map(SumaUtil.IPRoute::getSource)
                     .filter(addr -> !"::1".equals(addr));
 
+        server.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
+
         com.redhat.rhn.domain.server.Network network =
                 new com.redhat.rhn.domain.server.Network();
-        network.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
-
         server.getNetworks().clear();
         server.addNetwork(network);
 

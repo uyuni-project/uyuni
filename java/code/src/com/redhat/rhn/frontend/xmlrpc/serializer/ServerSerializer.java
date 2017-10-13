@@ -94,17 +94,8 @@ public class ServerSerializer extends RhnXmlRpcCustomSerializer {
         SerializerHelper helper = new SerializerHelper(serializer);
         helper.add("id", server.getId());
         helper.add("profile_name", server.getName());
-
-        Set networks = server.getNetworks();
-        if (networks != null && !networks.isEmpty()) {
-            // we only care about the first one
-            Network net = (Network) networks.iterator().next();
-            helper.add("hostname", net.getHostname());
-        }
-        else {
-            helper.add("hostname", LocalizationService.getInstance().getMessage(
-                    "sdc.details.overview.unknown"));
-        }
+        helper.add("machine_id", server.getMachineId());
+        helper.add("hostname", server.getHostname());
 
         // Find this server's base entitlement:
         String baseEntitlement = EntitlementManager.UNENTITLED;
