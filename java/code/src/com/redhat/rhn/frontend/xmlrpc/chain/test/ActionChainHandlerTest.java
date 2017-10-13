@@ -92,12 +92,6 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
         this.server = ServerFactoryTest.createTestServer(this.admin, true);
 
-        // Network
-        Network net = new Network();
-        net.setHostname(InetAddress.getLocalHost().getHostName());
-        net.setIpaddr(InetAddress.getLocalHost().getHostAddress());
-        this.server.addNetwork(net);
-
         // Add capabilities
         SystemManagerTest.giveCapability(this.server.getId(), "script.run", new Long(1));
         SystemManagerTest.giveCapability(this.server.getId(),

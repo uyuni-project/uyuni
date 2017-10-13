@@ -32,7 +32,6 @@ import java.util.Date;
  */
 public class NetworkTest extends RhnBaseTestCase {
 
-    public static final String HOSTNAME = "foo.bar.com";
     public static final String IP_ADDRESS = "192.168.0.101";
 
     /**
@@ -41,7 +40,6 @@ public class NetworkTest extends RhnBaseTestCase {
      */
     public static Network createNetworkInstance() {
         Network net = new Network();
-        net.setHostname(HOSTNAME);
         net.setIpaddr(IP_ADDRESS);
         return net;
     }
