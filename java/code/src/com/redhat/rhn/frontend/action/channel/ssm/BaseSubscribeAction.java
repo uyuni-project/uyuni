@@ -185,17 +185,21 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             }
         }
 
+        // for each old to new base channel value in the form
         for (Long oldBaseChannelId : changedChannels.keySet()) {
             Channel oldBase = null;
+            // if old channel was present, get it
             if (oldBaseChannelId.intValue() != -1) {
                 oldBase = ChannelFactory.lookupByIdAndUser(oldBaseChannelId, user);
             }
             Channel newBase = null;
 
+            // get new base channel from the key-value map from the form
             Long newBaseChannelId = changedChannels.get(oldBaseChannelId);
             log.debug("newBaseChannelId = " + newBaseChannelId);
 
             // First add an entry for the default base channel:
+            // "Default system base channel" option was selected
             if (newBaseChannelId.intValue() == -1) {
                 log.debug("Default system base channel was selected.");
                 List<DistChannelMap> dcms = ChannelFactory.listDistChannelMaps(oldBase);
@@ -207,6 +211,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                                 user.getOrg(),
                                 ChannelManager.RHEL_PRODUCT_NAME, version,
                                 oldBase.getChannelArch());
+                        // Default base channel FOUND
                         if (defaultDcm != null) {
                             newBase = defaultDcm.getChannel();
                             log.debug("Determined default base channel will be: " +
@@ -215,17 +220,20 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                         }
                     }
                 }
+                // no "default base channel" found so far
                 if (newBase == null) {
                     // Looks like an EUS or custom channel, need to get a little crazy :(
                     // Should be safe to assume there's at least one result returned here,
                     // we need a server object to call the stored procedure and guess a
                     // default base channel:
                     List<Long> servers = serversInSSMWithBase(user, oldBaseChannelId);
+                    // take the first system of the list, guess its base channel and use it
                     Server s = SystemManager.lookupByIdAndUser(servers.get(0), user);
                     newBase = ChannelManager.guessServerBaseChannel(user, s).orElse(null);
 
+                    // no "default base channel" found so far
                     if (newBase == null) {
-                        // lets search for suse systems
+                        // lets search for suse channels
                         List<EssentialChannelDto> dr = ChannelManager.
                                 listPossibleSuseBaseChannelsForServer(s);
                         if (dr != null && dr.get(0) != null) {
@@ -235,11 +243,14 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     }
                 }
             }
-            if (newBase == null) {
 
+            // we are here because:
+            // 1- system default base channel selected but we couldn't guess a channel
+            // 2- option selected is a specific base channel not yet evaluated
+            if (newBase == null) {
+                // case 1 --> see comments above
+                // (can happen in the case of solaris systems)
                 if (newBaseChannelId.intValue() == -1) {
-                    // System default base channel selected but we couldn't guess a
-                    // channel. (can happen in the case of solaris systems)
                     // Display a warning to the user and return empty handed.
                     StrutsDelegate strutsDelegate = getStrutsDelegate();
                     ActionMessages msgs = new ActionMessages();
@@ -251,9 +262,11 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     return strutsDelegate.forwardParams(mapping.findForward("success"),
                             new HashMap());
                 }
+                //case 2 --> evaluate the new base channel selected and use it
                 newBase = ChannelManager.lookupByIdAndUser(newBaseChannelId, user);
             }
 
+            // an old base channel was present
             if (oldBase != null) {
                 log.debug(oldBase.getName() + " -> " + newBase.getName());
                 Map<Channel, Channel> preservations = ChannelManager.findCompatibleChildren(
