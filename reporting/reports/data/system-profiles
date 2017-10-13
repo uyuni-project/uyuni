@@ -52,7 +52,7 @@ sql:
         minion_id, machine_id
 	from (
 	select rhnServer.id as server_id, rhnServer.name as profile_name,
-		rhnServerNetwork.hostname, suseMinionInfo.minion_id, rhnServer.machine_id,
+		rhnServer.hostname, suseMinionInfo.minion_id, rhnServer.machine_id,
         rhnServer.description,
         CASE WHEN rhnChannel.parent_channel IS NULL THEN rhnChannel.id ELSE NULL END AS base_channel_id,
         CASE WHEN rhnChannel.parent_channel IS NULL THEN NULL ELSE rhnChannel.id END AS child_channel_id,
@@ -71,7 +71,7 @@ sql:
 		(select rvit.name from rhnVirtualInstance rvi inner join rhnVirtualInstanceInfo rvii on rvi.id = rvii.instance_id inner join rhnVirtualInstanceType rvit on rvii.instance_type = rvit.id where rvi.virtual_system_id = rhnServer.id) as virt_type
 	from rhnServer left outer join
 		(
-		select server_id, hostname, ipaddr, ip6addr
+		select server_id, ipaddr, ip6addr
 		from rhnServerNetwork
 		where id in (
 			select min(id)
