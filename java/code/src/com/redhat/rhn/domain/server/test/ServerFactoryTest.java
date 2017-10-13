@@ -104,6 +104,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final int TYPE_SERVER_VIRTUAL = 3;
     public static final int TYPE_SERVER_MINION = 4;
     public static final String RUNNING_KERNEL = "2.6.9-55.EL";
+    public static final String HOSTNAME = "foo.bar.com";
 
     @Override
     public void setUp() throws Exception {
@@ -1270,7 +1271,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests looking up of a proxy server, assuming the proxy's FQDN is
-     * in rhnServerNetwork.
+     * in rhnServer.
      * @throws Exception - if anything goes wrong.
      */
     public void testLookupProxyServer() throws Exception {
@@ -1278,23 +1279,21 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 TYPE_SERVER_PROXY);
-        Network net = NetworkTest.createNetworkInstance();
-        net.setServer(s);
-        TestUtils.saveAndFlush(net);
+        s.setHostname(HOSTNAME);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
         // FQDN: precise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(net.getHostname()).get());
+        assertEquals(s, ServerFactory.lookupProxyServer(HOSTNAME).get());
         // plain hostname: imprecise lookup
-        String simpleHostname = net.getHostname().split("\\.")[0];
+        String simpleHostname = HOSTNAME.split("\\.")[0];
         assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).get());
     }
 
     /**
      * Tests looking up of a proxy server, assuming the proxy's simple name is
-     * in rhnServerNetwork.
+     * in rhnServer.
      * @throws Exception - if anything goes wrong.
      */
     public void testLookupProxyServerWithSimpleName() throws Exception {
@@ -1302,12 +1301,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 TYPE_SERVER_PROXY);
-        Network net = NetworkTest.createNetworkInstance();
-        String fullyQualifiedDomainName = net.getHostname();
-        String simpleHostname = net.getHostname().split("\\.")[0];
-        net.setHostname(simpleHostname);
-        net.setServer(s);
-        TestUtils.saveAndFlush(net);
+        String fullyQualifiedDomainName = HOSTNAME;
+        String simpleHostname = HOSTNAME.split("\\.")[0];
+        s.setHostname(simpleHostname);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
