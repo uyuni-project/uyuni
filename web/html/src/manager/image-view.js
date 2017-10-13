@@ -119,13 +119,9 @@ class ImageView extends React.Component {
   }
 
   handleResponseError(jqXHR, arg = "") {
-    this.setState({
-      messages:
-            Network.responseErrorMessage(
-              jqXHR,
-              (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null
-            )
-    });
+    const msg = Network.responseErrorMessage(jqXHR,
+      (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
+    this.setState({ messages: this.state.messages.concat(msg) });
   }
 
   //Accumulate runtime data from individual clusters into 'toData'
@@ -172,29 +168,35 @@ class ImageView extends React.Component {
       .catch(this.handleResponseError);
     let updatedData = {};
     if (this.props.runtimeInfoEnabled) {
+      const runtimePromises = [];
       this.setState({imagesRuntime: {}});
       //Get a list of cluster ids
-      Network.get("/rhn/manager/api/cm/clusters").promise.then(data => {
-        const runtimeUrl = "/rhn/manager/api/cm/runtime/";
-        //Get runtime data for each individual cluster
-        data.forEach(cluster =>
-          Network.get(runtimeUrl + cluster.id).promise
-            .then(data =>
-              this.setState({
-                imagesRuntime: this.mergeRuntimeList(data.data, updatedData)
-              })
-            )
-            .catch(jqXHR => {
+      Network.get("/rhn/manager/api/cm/clusters").promise
+        .then(data => {
+          const runtimeUrl = "/rhn/manager/api/cm/runtime/";
+          //Get runtime data for each individual cluster
+          data.forEach(cluster => {
+            const clusterPromise = Network.get(runtimeUrl + cluster.id).promise
+              .then(data =>
+                this.setState({
+                  imagesRuntime: this.mergeRuntimeList(data.data, updatedData)
+                })
+              )
+              .catch(jqXHR => {
                 this.handleResponseError(jqXHR, cluster.label);
-                this.setState({ runtimeInfoErr: true});
-            })
-        )
-      })
-      .catch(jqXHR => {
-        this.handleResponseError(jqXHR);
-        this.setState({ runtimeInfoErr: true});
-      });
+              });
+            runtimePromises.push(clusterPromise);
+          });
+          //Finished with runtime calls
+          Promise.all(runtimePromises).then(() => {this.setState({ gotRuntimeInfo: true })});
+        })
+        .catch(jqXHR => {
+          this.handleResponseError(jqXHR);
+        });
     }
+
+    // Show spinners while waiting on runtime data
+    listPromise.then(() => this.setState({ gotRuntimeInfo: false }));
 
     return listPromise;
   }
@@ -213,40 +215,42 @@ class ImageView extends React.Component {
 
     let updatedData = {};
     if (this.props.runtimeInfoEnabled) {
+      const runtimePromises = [];
       //Get a list of cluster ids
-      Network.get("/rhn/manager/api/cm/clusters").promise.then(data => {
-            const runtimeUrl = (tab === "runtime" ? "/rhn/manager/api/cm/runtime/details/" : "/rhn/manager/api/cm/runtime/");
-            //Get runtime data for each individual cluster
-            if (data.length == 0) {
-              this.setState({
-                selectedRuntime: {
-                  clusters: [],
-                  pods: []
-                },
-                runtimeInfoErr: false
-              });
-            }
-            data.forEach(cluster =>
-              Network.get(runtimeUrl + cluster.id + "/" + id).promise
-                .then(data =>
-                  this.setState({
-                    selectedRuntime: this.mergeRuntimeData(data.data, updatedData),
-                    runtimeInfoErr: false
-                  })
-                )
-                .catch(jqXHR => {
-                  this.handleResponseError(jqXHR, cluster.label);
-                  this.setState({ runtimeInfoErr: true  });
+      Network.get("/rhn/manager/api/cm/clusters").promise
+        .then(data => {
+          const runtimeUrl = (tab === "runtime" ? "/rhn/manager/api/cm/runtime/details/" : "/rhn/manager/api/cm/runtime/");
+          //Get runtime data for each individual cluster
+          if (data.length == 0) {
+            this.setState({
+              selectedRuntime: {
+                clusters: [],
+                pods: []
+              }
+            });
+          }
+          data.forEach(cluster => {
+            const clusterPromise = Network.get(runtimeUrl + cluster.id + "/" + id).promise
+              .then(data =>
+                this.setState({
+                  selectedRuntime: this.mergeRuntimeData(data.data, updatedData)
                 })
-            )
-      })
-      .catch(jqXHR => {
-          this.handleResponseError(jqXHR);
-          this.setState({
-            runtimeInfoErr: true
+              )
+              .catch(jqXHR => {
+                this.handleResponseError(jqXHR, cluster.label);
+              });
+            runtimePromises.push(clusterPromise);
           });
-      });
+          //Finished with runtime calls
+          Promise.all(runtimePromises).then(() => this.setState({ gotRuntimeInfo: true }));
+        })
+        .catch(jqXHR => {
+          this.handleResponseError(jqXHR);
+        });
     }
+
+    // Show spinners while waiting on runtime data
+    detailsPromise.then(() => this.setState({ gotRuntimeInfo: false }));
 
     return detailsPromise;
   }
@@ -317,12 +321,12 @@ class ImageView extends React.Component {
           { this.state.selected ?
             <ImageViewDetails data={selected} onTabChange={() => this.updateView(getHashId(), getHashTab())}
               onCancel={this.handleBackAction} onInspect={this.inspectImage} onBuild={this.buildImage}
-              runtimeInfoEnabled={this.props.runtimeInfoEnabled} runtimeInfoErr={this.state.runtimeInfoErr}
+              runtimeInfoEnabled={this.props.runtimeInfoEnabled} gotRuntimeInfo={this.state.gotRuntimeInfo}
               onDelete={(item) => this.deleteImages([item.id])}/>
             :
             <ImageViewList data={list} onSelectCount={(c) => this.setState({selectedCount: c})}
               onSelect={this.handleDetailsAction} onDelete={this.deleteImages}
-              runtimeInfoEnabled={this.props.runtimeInfoEnabled} runtimeInfoErr={this.state.runtimeInfoErr}/>
+              runtimeInfoEnabled={this.props.runtimeInfoEnabled} gotRuntimeInfo={this.state.gotRuntimeInfo}/>
           }
         </Panel>
 
@@ -408,14 +412,12 @@ class ImageViewList extends React.Component {
   }
 
   renderRuntimeIcon(row) {
-    let icon = <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
-    if (this.props.runtimeInfoErr) {
-      return null;
+    if (!this.props.gotRuntimeInfo) {
+      return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
     }
-    if (row.runtimeStatus === 0) {
-        icon = <span>-</span>;
-    }
-    else if (row.runtimeStatus === 1) {
+
+    let icon = <span>-</span>;
+    if (row.runtimeStatus === 1) {
       icon = <i className="fa fa-check-circle fa-1-5x text-success" title={t("All instances are consistent with SUSE Manager")}/>
     } else if (row.runtimeStatus === 2) {
       icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")}/>
@@ -427,7 +429,7 @@ class ImageViewList extends React.Component {
   }
 
   renderInstanceDetails(row) {
-    if (this.props.runtimeInfoErr) {
+    if (!this.props.gotRuntimeInfo) {
       return null;
     }
     let data;
@@ -451,16 +453,15 @@ class ImageViewList extends React.Component {
   }
 
   renderInstances(row) {
-    if (this.props.runtimeInfoErr) {
-      return null;
+    if (!this.props.gotRuntimeInfo) {
+      return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
     }
+
     let totalCount = 0;
-    if(row.instances !== undefined) {
+    if(row.instances) {
       for (let clusterCount of Object.values(row.instances)) {
         totalCount += Number(clusterCount) || 0;
       }
-    } else {
-      return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
     }
 
     return totalCount === 0 ? '-' :
@@ -650,10 +651,10 @@ class ImageViewDetails extends React.Component {
           onTabHashChange={this.onTabChange}
           tabs={[
             <ImageViewOverview key="1" data={data} onBuild={this.props.onBuild} onInspect={this.props.onInspect}
-              runtimeInfoEnabled={this.props.runtimeInfoEnabled} runtimeInfoErr={this.props.runtimeInfoErr} onDelete={this.props.onDelete} />,
+              runtimeInfoEnabled={this.props.runtimeInfoEnabled} gotRuntimeInfo={this.props.gotRuntimeInfo} onDelete={this.props.onDelete} />,
             <ImageViewPatches key="2" data={data}/>,
             <ImageViewPackages key="3" data={data}/>,
-            this.props.runtimeInfoEnabled ? <ImageViewRuntime key="4" data={data}/> : null
+            this.props.runtimeInfoEnabled ? <ImageViewRuntime key="4" data={data} gotRuntimeInfo={this.props.gotRuntimeInfo}/> : null
           ]}
         />
         <Button
