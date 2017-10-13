@@ -405,7 +405,7 @@ class NetworkInformation(Device):
     table = "rhnServerNetwork"
 
     def __init__(self, dict=None):
-        fields = ["hostname", "ipaddr", "ip6addr"]
+        fields = ["ipaddr", "ip6addr"]
         mapping = {'class': None}
         Device.__init__(self, fields, dict, mapping)
         self._autonull = ('ipaddr', 'ip6addr')
