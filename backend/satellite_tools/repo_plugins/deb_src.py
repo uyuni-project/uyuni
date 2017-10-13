@@ -179,6 +179,14 @@ class ContentSource(object):
     def get_md_checksum_type(self):
         return None
 
+    def get_products(self):
+        # No products
+        return []
+
+    def get_susedata(self):
+        # No susedata
+        return []
+
     def list_packages(self, filters, latest):
         """ list packages"""
 
