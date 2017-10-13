@@ -54,7 +54,7 @@ sql:
 		minion_id, machine_id
 	from (
 	select rhnserver.id as server_id, rhnserver.name as profile_name,
-		rhnservernetwork.hostname, suseminioninfo.minion_id, trim(rhnservernetwork.ipaddr) as ip_address,
+		rhnserver.hostname, suseminioninfo.minion_id, trim(rhnservernetwork.ipaddr) as ip_address,
 		trim(rhnservernetwork.ip6addr) as ipv6_address,
 		rhnserver.machine_id,
 		( select login from web_contact where rhnserver.creator_id = web_contact.id ) as registered_by,
@@ -88,7 +88,7 @@ sql:
 		get_hw_info_as_clob(rhnserver.id, '; ') as hardware
 	from rhnserver left outer join
 		(
-		select server_id, hostname, ipaddr, ip6addr
+		select server_id, ipaddr, ip6addr
 		from rhnservernetwork
 		where id in (
 			select min(id)
@@ -135,4 +135,3 @@ sql:
 	order by server_id, parent_channel nulls first, channel_id,
 		configuration_channel_id, entitlements_server_group_id, system_group_server_group_id,
 		virtual_host
-

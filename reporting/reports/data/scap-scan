@@ -36,7 +36,7 @@ sql:
 		profile, profile_title, end_time, pass, fail, error, notselected, informational, other from (
 	select rhnserver.org_id as org_id,
 		rhnxccdftestresult.server_id as system_id,
-		rhnservernetwork.hostname as hostname,
+		rhnserver.hostname as hostname,
 		trim(rhnservernetwork.ipaddr) as ip_address,
 		rhnactionscap.action_id as event_id,
 		rhnxccdftestresult.id as testresult_id,
