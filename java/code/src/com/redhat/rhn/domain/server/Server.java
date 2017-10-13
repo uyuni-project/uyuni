@@ -121,6 +121,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Set<Crash> crashes;
     private Set<InstalledProduct> installedProducts = new HashSet<>();
     private String machineId;
+    private String hostname;
 
     public static final String VALID_CNAMES = "valid_cnames_";
 
@@ -1030,18 +1031,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
         NetworkInterface network = findPrimaryNetworkInterface();
         if (network != null) {
             return network.getHwaddr();
-        }
-        return null;
-    }
-
-    /**
-     * Get the primary hostname for this server
-     * @return Returns the primary hostname for this server
-     */
-    public String getHostname() {
-        if (!networks.isEmpty()) {
-            Network net = networks.iterator().next();
-            return net.getHostname();
         }
         return null;
     }
@@ -2056,5 +2045,23 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setMachineId(String machineIdIn) {
         this.machineId = machineIdIn;
+    }
+
+    /**
+     * Gets the hostname.
+     *
+     * @return the hostname
+     */
+    public String getHostname() {
+        return hostname;
+    }
+
+    /**
+     * Sets the hostname.
+     *
+     * @param hostnameIn the new hostname
+     */
+    public void setHostname(String hostnameIn) {
+        hostname = hostnameIn;
     }
 }

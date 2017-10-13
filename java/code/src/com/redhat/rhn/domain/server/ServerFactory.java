@@ -185,17 +185,13 @@ public class ServerFactory extends HibernateFactory {
             log.warn("Please use a FQDN in /etc/salt/minion.d/susemanager.conf");
         }
 
-        DetachedCriteria matchingNameServerIds = DetachedCriteria.forClass(Network.class)
-                .add(Restrictions.eq("hostname", name))
-                .setProjection(Projections.property("server.id"));
-
         DetachedCriteria proxyIds = DetachedCriteria.forClass(ProxyInfo.class)
                 .setProjection(Projections.property("server.id"));
 
         Optional<Server> result = HibernateFactory.getSession()
             .createCriteria(Server.class)
-            .add(Subqueries.propertyIn("id", matchingNameServerIds))
             .add(Subqueries.propertyIn("id", proxyIds))
+            .add(Restrictions.eq("hostname", name))
             .list()
             .stream()
             .findFirst();
@@ -208,27 +204,19 @@ public class ServerFactory extends HibernateFactory {
         if (nameIsFullyQualified) {
             String srippedHostname = name.split("\\.")[0];
 
-            DetachedCriteria impreciseServerIds = DetachedCriteria.forClass(Network.class)
-                    .add(Restrictions.eq("hostname", srippedHostname))
-                    .setProjection(Projections.property("server.id"));
-
             return HibernateFactory.getSession()
                     .createCriteria(Server.class)
-                    .add(Subqueries.propertyIn("id", impreciseServerIds))
                     .add(Subqueries.propertyIn("id", proxyIds))
+                    .add(Restrictions.eq("hostname", srippedHostname))
                     .list()
                     .stream()
                     .findFirst();
         }
         else {
-            DetachedCriteria impreciseServerIds = DetachedCriteria.forClass(Network.class)
-                    .add(Restrictions.like("hostname", name + ".", MatchMode.START))
-                    .setProjection(Projections.property("server.id"));
-
             return HibernateFactory.getSession()
                     .createCriteria(Server.class)
-                    .add(Subqueries.propertyIn("id", impreciseServerIds))
                     .add(Subqueries.propertyIn("id", proxyIds))
+                    .add(Restrictions.like("hostname", name + ".", MatchMode.START))
                     .list()
                     .stream()
                     .findFirst();
