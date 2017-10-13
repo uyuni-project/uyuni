@@ -54,6 +54,7 @@ CREATE TABLE rhnServer
     channels_changed    timestamp with local time zone,
     cobbler_id          VARCHAR2(64),
     machine_id          VARCHAR2(256),
+    hostname            VARCHAR2(128),
     created             timestamp with local time zone
                             DEFAULT (current_timestamp) NOT NULL,
     modified            timestamp with local time zone
@@ -82,4 +83,3 @@ CREATE INDEX rhn_server_creator_idx
     NOLOGGING;
 
 CREATE SEQUENCE rhn_server_id_seq START WITH 1000010000 ORDER;
-
