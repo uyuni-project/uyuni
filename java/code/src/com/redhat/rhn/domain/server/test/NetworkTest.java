@@ -28,7 +28,6 @@ import java.util.Date;
 
 /**
  * NetworkTest
- * @version $Rev$
  */
 public class NetworkTest extends RhnBaseTestCase {
 
