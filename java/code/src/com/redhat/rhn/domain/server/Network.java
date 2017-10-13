@@ -20,8 +20,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * Network
- * @version $Rev$
+ * POJO for a rhnServerNetwork row.
  */
 public class Network extends BaseDomainHelper {
 
