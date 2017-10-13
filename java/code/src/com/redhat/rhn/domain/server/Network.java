@@ -26,25 +26,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class Network extends BaseDomainHelper {
 
     private Long id;
-    private String hostname;
     private String ipaddr;
     private String ip6addr;
     private Server server;
-
-
-    /**
-     * @return Returns the hostname.
-     */
-    public String getHostname() {
-        return hostname;
-    }
-
-    /**
-     * @param h The hostname to set.
-     */
-    public void setHostname(String h) {
-        this.hostname = h;
-    }
 
     /**
      * @return Returns the id.
@@ -111,7 +95,6 @@ public class Network extends BaseDomainHelper {
         }
         Network castOther = (Network) other;
         return new EqualsBuilder().append(id, castOther.id)
-                                  .append(hostname, castOther.hostname)
                                   .append(ipaddr, castOther.ipaddr)
                                   .append(ip6addr, castOther.ip6addr)
                                   .isEquals();
@@ -122,7 +105,6 @@ public class Network extends BaseDomainHelper {
      */
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(hostname)
                                     .append(ipaddr)
                                     .append(ip6addr)
                                     .toHashCode();
