@@ -22,7 +22,6 @@ CREATE TABLE rhnServerNetwork
     server_id  NUMBER NOT NULL
                    CONSTRAINT rhn_servernetwork_sid_fk
                        REFERENCES rhnServer (id),
-    hostname   VARCHAR2(128),
     ipaddr     VARCHAR(16),
     ip6addr    VARCHAR2(45),
     created    timestamp with local time zone
@@ -39,4 +38,3 @@ CREATE INDEX rhn_servernetwork_sid_id_idx
     NOLOGGING;
 
 CREATE SEQUENCE rhn_server_net_id_seq;
-
