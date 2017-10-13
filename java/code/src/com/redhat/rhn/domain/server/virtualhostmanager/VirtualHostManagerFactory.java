@@ -264,7 +264,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         if (StringUtils.isNotBlank(parameters.get(CONFIG_USER))) {
             virtualHostManager.getCredentials().setUsername(parameters.get(CONFIG_USER));
         }
-        virtualHostManager.getConfigs().forEach(cfg -> removeObject(cfg));
+
         virtualHostManager.getConfigs().clear();
         virtualHostManager.getConfigs().addAll(
                 createVirtualHostManagerConfigs(virtualHostManager, parameters));
