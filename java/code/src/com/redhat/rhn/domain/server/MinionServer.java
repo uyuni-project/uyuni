@@ -93,19 +93,24 @@ public class MinionServer extends Server {
     /**
      * Return <code>true</code> if OS on this system supports Containerization,
      * <code>false</code> otherwise.
+     * <p>
+     * Note: For SLES, we are only checking if it's not 10 or 11.
+     * Older than SLES 10 are not being checked.
+     * </p>
+     *
      * @return <code>true</code> if OS supports Containerization
      */
     @Override
     public boolean doesOsSupportsContainerization() {
-        return !isSLES11OrOlder();
+        return !isSLES11Or10();
     }
 
     /**
      * @return true if the installer type is of SLES 11 or 10
      */
-    private boolean isSLES11OrOlder() {
+    private boolean isSLES11Or10() {
         return ServerConstants.SLES.equals(getOs()) &&
-               (getRelease().startsWith("10") || getRelease().startsWith("11"));
+               (getRelease().startsWith("11") || getRelease().startsWith("10"));
     }
 
     /**
