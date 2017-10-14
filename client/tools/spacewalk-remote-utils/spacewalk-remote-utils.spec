@@ -1,10 +1,9 @@
-%if 0%{?rhel} && 0%{?rhel} < 6
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
+%if 0%{?fedora} || 0%{?suse_version > 1320}
+%global build_py3   1
 %endif
 
 Name:        spacewalk-remote-utils
-Version:     2.8.2
+Version:     2.8.3
 Release:     1%{?dist}
 Summary:     Utilities to interact with a Spacewalk server remotely.
 
@@ -15,18 +14,14 @@ Source:      https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{ver
 BuildArch:   noarch
 BuildRoot:   %{_tmppath}/%{name}-%{version}-build
 
-BuildRequires: python-devel
-%if 0%{?fedora} >= 23
+%if 0%{?build_py}
+BuildRequires: python3-devel
 Requires: python3-rhnlib
 %else
-Requires: rhnlib >= 2.5.74
+BuildRequires: python-devel
+Requires: rhnlib >= 2.8.4
 %endif
-
 BuildRequires: docbook-utils
-%if 0%{?suse_version}
-# provide directories for filelist check in OBS
-BuildRequires: rhn-client-tools
-%endif
 
 %description
 Utilities to interact with a Spacewalk server remotely over XMLRPC.
@@ -36,7 +31,7 @@ Utilities to interact with a Spacewalk server remotely over XMLRPC.
 
 %build
 docbook2man ./spacewalk-create-channel/doc/spacewalk-create-channel.sgml -o ./spacewalk-create-channel/doc/
-%if 0%{?fedora} >= 23
+%if 0%{?build_py3}
     sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' ./spacewalk-create-channel/spacewalk-create-channel
     sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' ./spacewalk-add-providers/spacewalk-add-providers
 %endif
@@ -61,16 +56,17 @@ docbook2man ./spacewalk-create-channel/doc/spacewalk-create-channel.sgml -o ./sp
 %defattr(-,root,root,-)
 %{_bindir}/spacewalk-add-providers
 %{_bindir}/spacewalk-create-channel
-#%{python_sitelib}/spacecmd/
 %{_datadir}/rhn/channel-data/
 %if 0%{?suse_version}
 %dir %{_datadir}/rhn
 %endif
-
 %doc spacewalk-create-channel/doc/README spacewalk-create-channel/doc/COPYING
 %doc %{_mandir}/man1/spacewalk-create-channel.1.gz
 
 %changelog
+* Tue Oct 10 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
+- make python2/3 defs consistent with other specs
+
 * Thu Sep 07 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
 - removed unnecessary BuildRoot tag
 

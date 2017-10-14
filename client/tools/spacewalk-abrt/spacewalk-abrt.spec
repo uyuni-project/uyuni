@@ -1,5 +1,12 @@
+%if 0%{?fedora}
+%global build_py3   1
+%global default_py3 1
+%endif
+
+%define pythonX %{?default_py3: python3}%{!?default_py3: python2}
+
 Name:           spacewalk-abrt
-Version:        2.8.1
+Version:        2.8.2
 Release:        1%{?dist}
 Summary:        ABRT plug-in for rhn-check
 
@@ -12,26 +19,48 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  gettext
-BuildRequires:  python
+Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Requires:       abrt
 Requires:       abrt-cli
-Requires:       rhn-client-tools
-Requires:       rhn-check
 %description
 spacewalk-abrt - rhn-check plug-in for collecting information about crashes handled by ABRT.
+
+%package -n python2-%{name}
+Summary:        ABRT plug-in for rhn-check
+BuildRequires:  python
+Requires:       python2-rhn-client-tools
+Requires:       python2-rhn-check
+%description -n python2-%{name}
+Python 2 specific files for %{name}.
+
+%if 0%{?build_py3}
+%package -n python3-%{name}
+Summary:        ABRT plug-in for rhn-check
+BuildRequires:  python3-rpm-macros
+Requires:       python3-rhn-client-tools
+Requires:       python3-rhn-check
+%description -n python3-%{name}
+Python 3 specific files for %{name}.
+%endif
 
 %prep
 %setup -q
 
 %build
 make -f Makefile.spacewalk-abrt
-%if 0%{?fedora} >= 23
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/bin/spacewalk-abrt
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make -f Makefile.spacewalk-abrt install PREFIX=$RPM_BUILD_ROOT
+make -f Makefile.spacewalk-abrt install PREFIX=$RPM_BUILD_ROOT \
+                PYTHON_PATH=%{python_sitelib} PYTHON_VERSION=%{python_version}
+%if 0%{?build_py3}
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/bin/spacewalk-abrt
+make -f Makefile.spacewalk-abrt install PREFIX=$RPM_BUILD_ROOT \
+                PYTHON_PATH=%{python3_sitelib} PYTHON_VERSION=%{python3_version}
+%endif
+
+%define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
+ln -s spacewalk-abrt%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/spacewalk-abrt
 
 %find_lang %{name}
 
@@ -52,10 +81,25 @@ service abrtd restart ||:
 %config  /etc/sysconfig/rhn/clientCaps.d/abrt
 %config  /etc/libreport/events.d/spacewalk.conf
 %{_bindir}/spacewalk-abrt
-%{_datadir}/rhn/spacewalk_abrt/*
 %{_mandir}/man8/*
 
+%files -n python2-%{name}
+%{_bindir}/spacewalk-abrt-%{python_version}
+%{python_sitelib}/spacewalk_abrt/
+
+%if 0%{?build_py3}
+%files -n python3-%{name}
+%{_bindir}/spacewalk-abrt-%{python3_version}
+%{python3_sitelib}/spacewalk_abrt/
+%endif
+
 %changelog
+* Mon Oct 09 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
+- use standard rpmbuild bytecompile
+- modules are now in standard sitelib path
+- install files into python_sitelib/python3_sitelib
+- split spacewalk-abrt into python2/python3 specific packages
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
 - purged changelog entries for Spacewalk 2.0 and older
 - Bumping package versions for 2.8.

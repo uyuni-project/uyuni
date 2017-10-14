@@ -1,12 +1,16 @@
 # package renaming fun :(
-%define rhn_client_tools spacewalk-client-tools
-%define rhn_setup	 spacewalk-client-setup
 %define rhn_check	 spacewalk-check
-%define rhnsd		 spacewalksd
 #
+%if 0%{?fedora} || 0%{?suse_version > 1320}
+%global build_py3   1
+%global default_py3 1
+%endif
+
+%define pythonX %{?default_py3: python3}%{!?default_py3: python2}
+
 Summary: Support package for spacewalk koan interaction
 Name: spacewalk-koan
-Version: 2.8.1
+Version: 2.8.2
 Release: 1%{?dist}
 Group: System Environment/Kernel
 License: GPLv2
@@ -15,14 +19,9 @@ Source1: %{name}-rpmlintrc
 URL:            https://github.com/spacewalkproject/spacewalk
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildArch:      noarch
-BuildRequires:  python
-Requires:       python >= 1.5
+Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Requires:       koan >= 1.4.3
 Requires:       xz
-%if 0%{?suse_version}
-# provide directories for filelist check in OBS
-BuildRequires: rhn-client-tools
-%endif
 %if 0%{?suse_version} && 0%{?suse_version} >= 1110 || 0%{?rhel}
 Requires:       rhn-virtualization-common
 Requires:       rhn-virtualization-host
@@ -38,6 +37,23 @@ Requires: %{rhn_check}
 %description
 Support package for spacewalk koan interaction.
 
+%package -n python2-%{name}
+Summary: Support package for spacewalk koan interaction
+BuildRequires:  python
+Requires:       python
+%description -n python2-%{name}
+Python 2 specific files for %{name}.
+
+%if 0%{?build_py3}
+%package -n python3-%{name}
+Summary: Support package for spacewalk koan interaction
+BuildRequires:  python3
+BuildRequires:  python3-rpm-macros
+Requires:       python3
+%description -n python3-%{name}
+Python 3 specific files for %{name}.
+%endif
+
 %prep
 %setup -q
 
@@ -46,8 +62,13 @@ make -f Makefile.spacewalk-koan all
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{_datadir}/rhn/ \
+make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python_sitelib} \
     MANDIR=%{_mandir}
+
+%if 0%{?build_py3}
+make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} \
+    MANDIR=%{_mandir}
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -57,10 +78,22 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING
 %config(noreplace)  %{_sysconfdir}/sysconfig/rhn/clientCaps.d/kickstart
 %{_sbindir}/*
-%{_datadir}/rhn/spacewalkkoan/
-%{_datadir}/rhn/actions/
+
+%files -n python2-%{name}
+%{python_sitelib}/spacewalkkoan/
+%{python_sitelib}/rhn/actions/
+
+%if 0%{?build_py3}
+%files -n python3-%{name}
+%{python3_sitelib}/spacewalkkoan/
+%{python3_sitelib}/rhn/actions/
+%endif
 
 %changelog
+* Tue Oct 10 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
+- install files into python_sitelib/python3_sitelib
+- split spacewalk-koan into python2/python3 specific packages
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
 - purged changelog entries for Spacewalk 2.0 and older
 - use standard brp-python-bytecompile
