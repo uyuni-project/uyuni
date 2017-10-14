@@ -34,6 +34,15 @@ BuildRequires:  fdupes
 %description
 susemanager-schema is the SQL schema for the SUSE Manager server.
 
+%package sanity
+Summary:  Schema source sanity check for Spacewalk database scripts.
+Group:    Applications/Internet
+
+Requires:  perl(Digest::SHA)
+
+%description sanity
+Provides schema-source-sanity-check.pl script for external usage.
+
 %prep
 
 %setup -q
@@ -63,15 +72,14 @@ install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-schema-upgrade.1 $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-sql.1 $RPM_BUILD_ROOT%{_mandir}/man1
-%fdupes -s $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 
 %if 0%{?suse_version}
-
 mkdir -p $RPM_BUILD_ROOT/usr/share/susemanager/
 install -m 0644 update-messages.txt $RPM_BUILD_ROOT/usr/share/susemanager/
-
 %fdupes %{buildroot}/%{rhnroot}
 %endif
+
+install -m 755 schema-source-sanity-check.pl $RPM_BUILD_ROOT%{_bindir}/schema-source-sanity-check.pl
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -100,8 +108,11 @@ fi
 %dir /usr/share/susemanager
 /usr/share/susemanager/update-messages.txt
 %ghost /var/adm/update-messages/%{name}-%{version}-%{release}
-%dir %{rhnroot}
 %endif
+
+%files sanity
+%defattr(-,root,root)
+%attr(755,root,root) %{_bindir}/schema-source-sanity-check.pl
 
 %changelog
 * Fri Feb 24 2017 Jan Dobes 2.7.9-1
