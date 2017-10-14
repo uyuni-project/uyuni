@@ -1,5 +1,9 @@
+%if 0%{?fedora} || 0%{?suse_version} > 1320
+%global build_py3   1
+%endif
+
 Name:		spacewalk-client-cert
-Version:	2.8.0
+Version:	2.8.1
 Release:	1%{?dist}
 Summary:	Package allowing manipulation with Spacewalk client certificates
 
@@ -10,9 +14,15 @@ Source0:	https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version
 Source1:        %{name}-rpmlintrc
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
+%if 0%{?build_py3}
+BuildRequires:  python3-devel
+Requires:       python3-rhn-client-tools
+Requires:       python3-rhn-setup
+%else
 BuildRequires:  python-devel
-Requires:       rhn-client-tools
-Requires:       rhn-setup
+Requires:       python2-rhn-client-tools
+Requires:       python2-rhn-setup
+%endif
 %description
 spacewalk-client-cert contains client side functionality allowing manipulation
 with Spacewalk client certificates (/etc/sysconfig/rhn/systemid)
@@ -27,7 +37,9 @@ make -f Makefile.spacewalk-client-cert
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make -f Makefile.spacewalk-client-cert install PREFIX=$RPM_BUILD_ROOT
+%global pypath %{?build_py3:%{python3_sitelib}}%{!?build_py3:%{python_sitelib}}
+make -f Makefile.spacewalk-client-cert install PREFIX=$RPM_BUILD_ROOT \
+        PYTHONPATH=%{pypath}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -37,17 +49,20 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/sysconfig/rhn
 %dir /etc/sysconfig/rhn/clientCaps.d
 %config  /etc/sysconfig/rhn/clientCaps.d/client-cert
-%dir /usr/share/rhn
-%dir /usr/share/rhn/actions
-%{_datadir}/rhn/actions/clientcert.*
+%{pypath}/rhn/actions/*
+
 %if 0%{?suse_version}
 %dir /etc/sysconfig/rhn
 %dir /etc/sysconfig/rhn/clientCaps.d
-%dir %{_datadir}/rhn
-%dir %{_datadir}/rhn/actions
+%dir %{pypath}/rhn
+%dir %{pypath}/rhn/actions
 %endif
 
 %changelog
+* Tue Oct 10 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
+- install files into python_sitelib/python3_sitelib
+- Bumping package versions for 2.8.
+
 * Mon Jul 17 2017 Jan Dobes 2.7.1-1
 - Updated links to github in spec files
 - Migrating Fedorahosted to GitHub
