@@ -18,7 +18,9 @@ Release:       1%{?dist}
 Source0:       https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch:     noarch
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
+BuildArch:      noarch
+%endif
 Requires:      %{pythonX}-%{name} = %{version}-%{release}
 BuildRequires: docbook-utils, gettext
 %if 0%{?pylint_check}
