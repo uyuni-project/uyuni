@@ -74,8 +74,6 @@ service abrtd restart ||:
 %defattr(-,root,root)
 %dir /etc/sysconfig/rhn/
 %dir /etc/sysconfig/rhn/clientCaps.d
-%dir %{_datadir}/rhn
-%dir %{_datadir}/rhn/spacewalk_abrt
 %dir /etc/libreport
 %dir /etc/libreport/events.d
 %config  /etc/sysconfig/rhn/clientCaps.d/abrt
