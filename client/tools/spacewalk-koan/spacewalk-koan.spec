@@ -76,15 +76,19 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc COPYING
+%dir %{_sysconfdir}/sysconfig/rhn
+%dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
 %config(noreplace)  %{_sysconfdir}/sysconfig/rhn/clientCaps.d/kickstart
 %{_sbindir}/*
 
 %files -n python2-%{name}
+%dir %{python_sitelib}/rhn
 %{python_sitelib}/spacewalkkoan/
 %{python_sitelib}/rhn/actions/
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
+%dir %{python3_sitelib}/rhn
 %{python3_sitelib}/spacewalkkoan/
 %{python3_sitelib}/rhn/actions/
 %endif
