@@ -18,7 +18,9 @@ Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version
 Source1: %{name}-rpmlintrc
 URL:            https://github.com/spacewalkproject/spacewalk
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
+%endif
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Requires:       koan >= 1.4.3
 Requires:       xz
@@ -82,12 +84,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_sbindir}/*
 
 %files -n python2-%{name}
+%defattr(-,root,root,-)
 %dir %{python_sitelib}/rhn
 %{python_sitelib}/spacewalkkoan/
 %{python_sitelib}/rhn/actions/
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
+%defattr(-,root,root,-)
 %dir %{python3_sitelib}/rhn
 %{python3_sitelib}/spacewalkkoan/
 %{python3_sitelib}/rhn/actions/
