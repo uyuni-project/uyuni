@@ -37,7 +37,6 @@
     <c:otherwise>
         <input type="hidden" name="saltsshcleanup" value="FORCE_DELETE"/>
         <html:submit styleClass="btn btn-danger" property="dispatch">
-        <html:submit styleClass="btn btn-danger" property="dispatch">
             <bean:message key="ssm.delete.systems.confirmbutton"/>
         </html:submit>
     </c:otherwise>
