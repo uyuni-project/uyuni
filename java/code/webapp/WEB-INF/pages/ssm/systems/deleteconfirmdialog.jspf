@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <c:choose>
     <c:when test="${sshMinionsPresent}">
-        <div class="modal fade text-left" role="dialog" aria-labelledby="addPinPopUpLabel" id="confirmDeleteDialog" >
+        <div class="modal fade text-left" role="dialog" aria-labelledby="addPinPopUpLabel" id="confirmDeleteDialog">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -16,7 +16,7 @@
                 <div class="modal-body">
                     <p><bean:message key="ssm.delete.systems.saltssh.cleanup"/></p>
                     <p><bean:message key="ssm.delete.systems.saltssh.cleanup.type"/>
-                    <select name="saltsshcleanup" id="saltsshcleanup">
+                    <select id="saltsshcleanup" name="saltsshcleanup" class="form-control">
                         <option value="FORCE_DELETE" selected><bean:message key="ssm.delete.systems.saltssh.cleanup.force_delete"/></option>
                         <option value="NO_CLEANUP"><bean:message key="ssm.delete.systems.saltssh.cleanup.no_cleanup"/></option>
                         <option value="FAIL_ON_CLEANUP_ERR"><bean:message key="ssm.delete.systems.saltssh.cleanup.skip_on_err"/></option>
@@ -24,8 +24,11 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <input class="btn btn-danger" type="submit" name="dispatch"
+                    <input id="btn-dispatch-dialog" class="btn btn-danger" type="submit" name="dispatch"
                         value="${rhn:localize('ssm.delete.systems.confirmbutton')}"/>
+                    <button id="btn-cancel-dialog" class="btn btn-default" type="button" onclick="$('#confirmDeleteDialog').modal('hide')">
+                        <bean:message key="ssm.delete.systems.cancel"/>
+                    </button>
                 </div>
               </div>
             </div>
