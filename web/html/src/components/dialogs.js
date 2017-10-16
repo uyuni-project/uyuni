@@ -106,14 +106,13 @@ function DeleteDialog(props) {
     </div>;
 
     return (
-        <PopUp
-            id={props.id}
-            className={props.className}
-            content={props.content}
-            title={props.title}
-            footer={buttons}
-            onClosePopUp={() => props.onClosePopUp && props.onClosePopUp(props.item)}
-        />
+        <Dialog
+          id={props.id}
+          className={props.className}
+          content={props.content}
+          title={props.title}
+          buttons={buttons}
+          />
     );
 }
 
