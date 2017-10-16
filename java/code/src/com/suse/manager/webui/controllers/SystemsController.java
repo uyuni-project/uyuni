@@ -29,6 +29,7 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
@@ -68,7 +69,7 @@ public class SystemsController {
             sid = Long.parseLong(sidStr);
         }
         catch (NumberFormatException e) {
-            return json(response, 400, JsonResult.success());
+            return json(response, HttpStatus.SC_BAD_REQUEST, JsonResult.success());
         }
         Server server = ServerFactory.lookupById(sid);
 
@@ -78,7 +79,7 @@ public class SystemsController {
         ).anyMatch(cm -> server.getContactMethod().equals(cm));
 
         if (server.asMinionServer().isPresent() && sshPush) {
-            if (!"true".equalsIgnoreCase(noclean)) {
+            if (!Boolean.parseBoolean(noclean)) {
                 Optional<List<String>> cleanupErr =
                         SaltService.INSTANCE.
                                 cleanupSSHMinion(server.asMinionServer().get(), 300);
