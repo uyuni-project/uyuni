@@ -134,9 +134,7 @@ make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir
                 $RPM_BUILD_ROOT/%{cron_dir}/rhn-virtualization.cron
 %endif
 
-%if 0%{?fedora} || (0%{?rhel} && 0%{?rhel} > 5)
 find $RPM_BUILD_ROOT -name "localvdsm*" -exec rm -f '{}' ';'
-%endif
 
 %if 0%{?suse_version}
 rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
@@ -243,9 +241,6 @@ fi
 %{python_sitelib}/virtualization/support.py*
 %{python_sitelib}/rhn/actions/virt.py*
 %{python_sitelib}/rhn/actions/image.py*
-%if 0%{?suse_version} || (0%{?rhel} && 0%{?rhel} < 6)
-%{python_sitelib}/virtualization/localvdsm.py*
-%endif
 
 %if 0%{?build_py3}
 %files -n python3-%{name}-host
