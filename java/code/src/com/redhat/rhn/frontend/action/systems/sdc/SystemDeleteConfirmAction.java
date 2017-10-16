@@ -32,6 +32,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -62,6 +63,10 @@ public class SystemDeleteConfirmAction extends RhnAction {
 
         request.setAttribute("system", server);
         request.setAttribute("sid", sid);
+        request.setAttribute("issaltsshpush",
+                ContactMethodUtil.isSSHPushContactMethod(server.getContactMethod()) &&
+                server.asMinionServer().isPresent()
+        );
 
         params.put(RequestContext.SID, request.getParameter(RequestContext.SID));
         forward = strutsDelegate.forwardParams(
