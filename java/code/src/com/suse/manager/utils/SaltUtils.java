@@ -82,6 +82,8 @@ import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
+import com.suse.salt.netapi.errors.JsonParsingError;
+import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Change;
 import com.suse.salt.netapi.results.CmdExecCodeAll;
 import com.suse.salt.netapi.results.ModuleRun;
@@ -1341,5 +1343,41 @@ public class SaltUtils {
         UUID uuidSwap = new UUID(target.getLong(), target.getLong());
         return uuidSwap.toString().replaceAll("-", "");
     }
+
+    /**
+     * Decode the std message from the whole message
+     *
+     * @param message the message Object
+     * @param key the json key of the message to decode (e.g.: sdterr, stdout)
+     * @return the String decoded if it exists
+     */
+    public static String decodeStdMessage(Object message, String key) {
+        if (message instanceof JsonParsingError) {
+            JsonElement json = ((JsonParsingError)message).getJson();
+            if (json.isJsonObject() && json.getAsJsonObject().has(key) &&
+                    json.getAsJsonObject().get(key).isJsonPrimitive() &&
+                    json.getAsJsonObject().get(key).getAsJsonPrimitive().isString()) {
+                return json.getAsJsonObject()
+                        .get(key).getAsJsonPrimitive().getAsString();
+            }
+        }
+
+        return message.toString();
+    }
+
+    /**
+     * Decode a {@link SaltError} to a string error message.
+     *
+     * @param saltErr the Salt err
+     * @return the error as a string
+     */
+    public static String decodeSaltErr(SaltError saltErr) {
+        String errorMessage = SaltUtils.decodeStdMessage(saltErr, "stderr");
+        String outMessage = errorMessage.isEmpty() ?
+                SaltUtils.decodeStdMessage(saltErr, "stdout") : errorMessage;
+        return outMessage.isEmpty() ?
+                saltErr.toString() : outMessage;
+    }
+
 
 }
