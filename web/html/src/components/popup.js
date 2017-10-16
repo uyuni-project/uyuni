@@ -13,13 +13,12 @@ const PopUp = React.createClass({
     },
 
   componentDidMount: function() {
-    $("#" + this.props.id).modal();
     $("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
   },
 
   render: function() {
     return (
-      <div className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="addPinPopUpLabel" id={this.props.id} data-show={this.props.show ? "true" : "false"} >
+      <div className="modal fade" tabIndex="-1" role="dialog" aria-labelledby="addPinPopUpLabel" id={this.props.id}>
         <div className={"modal-dialog " + (this.props.className ? this.props.className : "")}>
           <div className="modal-content">
             <div className="modal-header">
