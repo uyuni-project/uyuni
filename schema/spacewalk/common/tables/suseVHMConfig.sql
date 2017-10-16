@@ -18,7 +18,9 @@ CREATE TABLE suseVHMConfig
                     REFERENCES suseVirtualHostManager (id)
                     ON DELETE CASCADE,
     parameter   VARCHAR2(1024) NOT NULL,
-    value       VARCHAR2(1024)
+    value       VARCHAR2(1024),
+    CONSTRAINT suse_vhmc_id_para_uq UNIQUE (virtual_host_manager_id, parameter)
+            DEFERRABLE INITIALLY DEFERRED
 )
 ENABLE ROW MOVEMENT
 ;
