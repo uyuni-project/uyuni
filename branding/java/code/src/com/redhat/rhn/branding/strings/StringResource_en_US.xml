@@ -2823,22 +2823,30 @@ You may grant provisioning entitlements _here_.
         </context-group>
       </trans-unit>
 
+      <trans-unit id="delete_confirm.jsp.summary.sshpush">
+          <source>For &lt;strong&gt;ssh-push&lt;/strong&gt; minions SUSE Manager will also cleanup any specific configuration installed on the minion.
+              This might take a few extra seconds.</source>
+      </trans-unit>
       <trans-unit id="ssm.delete.systems.saltssh.cleanup">
           <source>The selected profiles include Salt ssh-push systems. SUSE Manager can try to remove the specific configuration from the Salt ssh-push systems.
-            This requires connecting to these systems and executing the cleanup. If a system is not reachable it will result in an error.</source>
+            In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.saltssh.cleanup.type">
-          <source>Please chose how to handle SSH minions cleanup errors:</source>
+          <source>Please chose how to handle SSH minions cleanup and delete:</source>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.saltssh.cleanup.no_cleanup">
-          <source>Remove systems without cleanup</source>
+          <source>Delete systems without cleanup</source>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.saltssh.cleanup.force_delete">
-          <source>Clean up and remove systems in case of errors</source>
+          <source>Clean up and delete systems even in case of errors</source>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.saltssh.cleanup.skip_on_err">
-          <source>Don't delete systems where cleaning up failed</source>
+          <source>Only delete systems if cleanup is successful</source>
       </trans-unit>
+      <trans-unit id="ssm.delete.systems.cancel">
+          <source>Cancel</source>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>
