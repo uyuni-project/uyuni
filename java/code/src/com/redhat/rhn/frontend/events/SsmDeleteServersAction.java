@@ -48,7 +48,7 @@ public class SsmDeleteServersAction extends AbstractDatabaseAction {
 
         SsmOperationManager.associateServersWithOperation(operationId,
                                                         user.getId(), sids);
-
+        HibernateFactory.commitTransaction();
         try {
             for (Long sid : sids) {
                 try {
