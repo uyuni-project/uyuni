@@ -9,7 +9,9 @@
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
     <h2><bean:message key="delete_confirm.jsp.header"/></h2>
     <bean:message key="delete_confirm.jsp.summary" arg0="${sid}" />
-
+    <c:if test="${issaltsshpush}">
+        <bean:message key="delete_confirm.jsp.summary.sshpush"/>
+    </c:if>
     <hr/>
 
     <div id="delete_system_button"></div>
