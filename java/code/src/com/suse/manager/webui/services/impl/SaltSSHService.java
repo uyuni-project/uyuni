@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.SaltRoster;
@@ -673,13 +674,8 @@ public class SaltSSHService {
             return future.handle((applyResult, err) -> {
                 if (applyResult != null) {
                     return applyResult.fold((saltErr) ->
-                                    Optional.of(singletonList(
-                                            saltErr.fold(
-                                                    Object::toString,
-                                                    Object::toString,
-                                                    Object::toString,
-                                                    Object::toString
-                                            ))),
+                            Optional.of(singletonList(
+                                        SaltUtils.decodeSaltErr(saltErr))),
                             (saltRes) -> saltRes.values().stream()
                                     .filter(value -> !value.isResult())
                                     .map(value -> value.getComment())
