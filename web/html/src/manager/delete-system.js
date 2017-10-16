@@ -58,17 +58,30 @@ class DeleteSystem extends React.Component {
   }
 
   render() {
+    const buttons = <span>
+            <AsyncButton
+                id={"btn-delete-confirm-" + this.props.serverId}
+                name={t("Delete Profile Without Cleanup") }
+                title={t("Delete Profile Without Cleanup") }
+                icon="trash"
+                defaultType={this.props.buttonClass}
+                action={() => this.handleDelete(true)}
+            />
+            <Button
+                className="btn-default"
+                text={t("Cancel")}
+                title={t("Cancel")}
+                icon="fa-close"
+                handler={() => {
+                    $("#delete-errors-" + this.props.serverId).modal('hide');
+                }}
+            />
+    </span>
     return (<span>
       <Dialog id={"delete-errors-" + this.props.serverId}
-        title={t("An error occured during delete")}
+        title={t("An error occured during cleanup")}
         content={this.state.messages.length > 0 && <Messages items={this.state.messages}/>}
-        buttons={<AsyncButton
-                  id={"btn-delete-confirm-" + this.props.serverId}
-                  name={t("Delete Profile Without Cleanup") }
-                  title={t("Delete Profile Without Cleanup") }
-                  icon="trash"
-                  action={() => this.handleDelete(true)}
-              />}
+        buttons={buttons}
       />
       <AsyncButton id={"btn-delete-" + this.props.serverId}
         icon="trash"
