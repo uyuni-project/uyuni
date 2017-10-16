@@ -415,7 +415,8 @@ public class SystemManager extends BaseManager {
 
     /**
      * Delete a server and in case of Salt ssh-push minions remove SUSE Manager
-     * specific configuration.
+     * specific configuration. When removing ssh-push minions the default
+     * timeout for the cleanup operation is set to 5 minutes.
      *
      * @param user the user
      * @param sid the server id
