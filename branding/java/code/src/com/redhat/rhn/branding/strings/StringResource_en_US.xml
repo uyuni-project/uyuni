@@ -2825,16 +2825,16 @@ You may grant provisioning entitlements _here_.
 
       <trans-unit id="ssm.delete.systems.saltssh.cleanup">
           <source>The selected profiles include Salt ssh-push systems. SUSE Manager can try to remove the specific configuration from the Salt ssh-push systems.
-            This requires connecting to these systems and executing the cleanup. If a system is not reachable if will result in an error.</source>
+            This requires connecting to these systems and executing the cleanup. If a system is not reachable it will result in an error.</source>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.saltssh.cleanup.type">
           <source>Please chose how to handle SSH minions cleanup errors:</source>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.saltssh.cleanup.no_cleanup">
-          <source>No cleanup, just remove the system</source>
+          <source>Remove systems without cleanup</source>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.saltssh.cleanup.force_delete">
-          <source>Try cleaning up but remove systems in case of errors</source>
+          <source>Clean up and remove systems in case of errors</source>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.saltssh.cleanup.skip_on_err">
           <source>Don't delete systems where cleaning up failed</source>
