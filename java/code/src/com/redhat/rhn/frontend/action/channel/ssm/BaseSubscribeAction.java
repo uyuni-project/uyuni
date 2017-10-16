@@ -92,7 +92,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
     @Override
     protected Map<String, String> getKeyMethodMap() {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<String, String>();
         map.put("basesub.jsp.confirmSubscriptions", "confirmUpdateBaseChannels");
         map.put("basesub.jsp.confirm.alter", "changeChannels");
         map.put("basesub.jsp.confirm.cancel", "unspecified");
@@ -164,9 +164,9 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         User user = rctx.getCurrentUser();
 
         List<ChildChannelPreservationDto> unmatched =
-            new LinkedList<>();
+            new LinkedList<ChildChannelPreservationDto>();
         List<ChildChannelPreservationDto> matched =
-            new LinkedList<>();
+            new LinkedList<ChildChannelPreservationDto>();
 
         Map<Long, Long> changedChannels = copyChangedChannels(request);
 
@@ -396,8 +396,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             HttpServletRequest request, HttpServletResponse response) {
         log.debug("changeChannels()");
 
-        Map<Long, List<Long>> successes = new HashMap<>();
-        Map<Long, List<Long>> skipped = new HashMap<>();
+        Map<Long, List<Long>> successes = new HashMap<Long, List<Long>>();
+        Map<Long, List<Long>> skipped = new HashMap<Long, List<Long>>();
 
 
         RequestContext rctx = new RequestContext(request);
@@ -415,7 +415,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         assert oldChannelIds.length == newChannelIds.length;
 
         // Map<Channel-Id, List<Server-Id>> - cid == -1 => system-best-guess-default
-        Map<Long, List<Long>> requestedChanges = new HashMap<>();
+        Map<Long, List<Long>> requestedChanges = new HashMap<Long, List<Long>>();
 
         for (int i = 0; i < oldChannelIds.length; i++) {
             Long oldChanId = Long.parseLong(oldChannelIds[i]);
@@ -470,8 +470,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             List<EssentialChannelDto> compatibles = ChannelManager
                     .listCompatibleBaseChannelsForChannel(user, c);
             log.debug("Sorting channels: " + compatibles.size());
-            List<EssentialChannelDto> rhn = new ArrayList<>();
-            List<EssentialChannelDto> custom = new ArrayList<>();
+            List<EssentialChannelDto> rhn = new ArrayList<EssentialChannelDto>();
+            List<EssentialChannelDto> custom = new ArrayList<EssentialChannelDto>();
             for (EssentialChannelDto ecd : compatibles) {
                 log.debug("   " + ecd.getName());
                 if (ecd.isCustom()) {
@@ -517,13 +517,13 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             // ...create the "(None)" row
             rslt = createNoneRow(noBase);
 
-            List<EssentialChannelDto> customChs = new ArrayList<>();
+            List<EssentialChannelDto> customChs = new ArrayList<EssentialChannelDto>();
             for (Channel c : ChannelFactory.listCustomBaseChannelsForSSMNoBase(user)) {
                 customChs.add(new EssentialChannelDto(c));
             }
             rslt.setAllowedCustomChannels(customChs);
 
-            List<EssentialChannelDto> nullOrgChs = new ArrayList<>();
+            List<EssentialChannelDto> nullOrgChs = new ArrayList<EssentialChannelDto>();
             for (Channel c :
                         ChannelFactory.listCompatibleBasesForSSMNoBaseInNullOrg(user)) {
                 nullOrgChs.add(new EssentialChannelDto(c));
@@ -535,7 +535,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
     // List all the servers in the current System Set with the specified Base Channel
     protected List<Long> serversInSSMWithBase(User u, Long cid) {
-        List<Long> servers = new ArrayList<>();
+        List<Long> servers = new ArrayList<Long>();
         DataResult<EssentialServerDto> dr = null;
         if (cid == -1L) {
             dr = SystemManager.systemsWithoutBaseChannelsInSet(u);
@@ -559,7 +559,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
      */
     private Map<Long, Long> copyChangedChannels(HttpServletRequest request) {
         Enumeration<String> names = request.getParameterNames();
-        Map<Long, Long> oldToNewMap = new HashMap<>();
+        Map<Long, Long> oldToNewMap = new HashMap<Long, Long>();
         StringBuilder idsBuf = new StringBuilder();
         StringBuilder valuesBuf = new StringBuilder();
 
@@ -589,8 +589,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         successes.clear();
         skipped.clear();
-        List<ChannelActionDAO> actions = new ArrayList<>();
-        Map<Long, Channel> channelMap = new HashMap<>();
+        List<ChannelActionDAO> actions = new ArrayList<ChannelActionDAO>();
+        Map<Long, Channel> channelMap = new HashMap<Long, Channel>();
 
         for (Long toId : chgs.keySet()) {
             successes.put(toId, new ArrayList<Long>());
@@ -646,7 +646,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         Long operationId = SsmOperationManager.createOperation(u,
                 "ssm.base.subscription.operation.label", null);
-        List<Long> sids = new ArrayList<>();
+        List<Long> sids = new ArrayList<Long>();
         for (Long cid : successes.keySet()) {
             sids.addAll(successes.get(cid));
         }
