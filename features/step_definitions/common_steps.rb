@@ -483,7 +483,12 @@ Given(/^I update the profile of this client$/) do
 end
 
 When(/^I register using "([^"]*)" key$/) do |arg1|
-  regurl = "http://#{$server_ip}/XMLRPC"
+  # register to the proxy, or if none, to the server
+  regurl = if $proxy.nil?
+             "http://#{$server_ip}/XMLRPC"
+           else
+             "http://#{$proxy_ip}/XMLRPC"
+           end
   command = "rhnreg_ks --force --serverUrl=#{regurl} --activationkey=#{arg1}"
   $client.run(command, true, 500, 'root')
 end
