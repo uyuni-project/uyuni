@@ -85,6 +85,35 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         assertTrue(virtualHostManager.getConfigs().isEmpty());
     }
 
+    public void testUpdateVHM() throws Exception {
+        Map<String, String> config = new HashMap<>();
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
+        config.put("param1", "oldparam1");
+
+        createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
+        VirtualHostManager vhm = factory.lookupByLabel("mylabel");
+
+        Map<String, String> updConfig = new HashMap<>();
+        updConfig.put("username", "TheUpdatedFlashGordon");
+        updConfig.put("param1", "newparam1");
+        updConfig.put("param2", "newparam2");
+        VirtualHostManagerFactory.getInstance().updateVirtualHostManager(vhm, "mynewlabel",
+                updConfig);
+
+        vhm = factory.lookupByLabel("mynewlabel");
+        assertNotNull(vhm);
+        assertEquals("TheUpdatedFlashGordon", vhm.getCredentials().getUsername());
+
+        assertEquals(2, vhm.getConfigs().size());
+        assertTrue(vhm.getConfigs().stream()
+                .anyMatch(c -> "param1".equals(c.getParameter()) &&
+                        "newparam1".equals(c.getValue())));
+        assertTrue(vhm.getConfigs().stream()
+                .anyMatch(c -> "param2".equals(c.getParameter()) &&
+                        "newparam2".equals(c.getValue())));
+    }
+
     /**
      * Tests creating and retrieving a VirtualHostManager with config.
      * @throws Exception if anything goes wrong
