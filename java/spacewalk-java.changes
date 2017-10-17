@@ -1,3 +1,9 @@
+-------------------------------------------------------------------
+Tue Oct 17 12:38:13 CEST 2017 - jgonzalez@suse.com
+
+- version 2.5.59.18-1
+- Disallow entering multiple identical mirror credentials (bsc#971785)
+- Fixes ise error with invalid custom key id (bsc#1048294)
 - Skip the server if no channel can be guessed (bsc#1040420)
 - Keep the the GPG Check value if validation fails (bsc#1061548)
 - Make systems in system group list selectable by the group admins (bsc#1021432)
