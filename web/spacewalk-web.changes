@@ -1,3 +1,4 @@
+- Disallow entering multiple identical mirror credentials (bsc#971785)
 - Fix runtime data display in Images page (bsc#1062972)
 - add delete button to img-overview page (bsc#1061245)
 - Update wording for image profiles in image build page (bsc#1058323)

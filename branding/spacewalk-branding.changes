@@ -1,3 +1,5 @@
+- Disallow entering multiple identical mirror credentials (bsc#971785)
+
 -------------------------------------------------------------------
 Thu Sep 14 11:38:02 CEST 2017 - mc@suse.de
 
