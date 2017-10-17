@@ -1,4 +1,7 @@
+-------------------------------------------------------------------
+Tue Oct 17 12:36:22 CEST 2017 - jgonzalez@suse.com
 
+- version 2.5.1.11-1
 - do not use registration keys from last autoinstallation
   (bsc#1057599)
 
