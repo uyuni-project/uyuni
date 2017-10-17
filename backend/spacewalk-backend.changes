@@ -1,4 +1,7 @@
+-------------------------------------------------------------------
+Tue Oct 17 12:00:09 CEST 2017 - jgonzalez@suse.com
 
+- version 2.5.24.14-1
 - add hostname to duplicate machine_id email (bsc#1055292)
 - fix link to manual and the described procedure
 - Fix SP migration for traditional clients which were registered
