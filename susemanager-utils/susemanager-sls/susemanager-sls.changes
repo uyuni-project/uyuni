@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Oct 17 13:06:06 CEST 2017 - jgonzalez@suse.com
+
+- version 0.1.24-1
 - Targeting patches instead of packages for non Zypper patch
   installation (bsc#1038862)
 - Support xccdf 1.2 namespace in openscap result file (bsc#1059319)
