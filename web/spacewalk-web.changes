@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct 17 12:47:36 CEST 2017 - jgonzalez@suse.com
+
+- version 2.5.7.19-1
+- Disallow entering multiple identical mirror credentials (bsc#971785) 
+
+-------------------------------------------------------------------
 Wed Aug 30 16:06:50 CEST 2017 - fkobzik@suse.de
 
 - version 2.5.7.18-1
