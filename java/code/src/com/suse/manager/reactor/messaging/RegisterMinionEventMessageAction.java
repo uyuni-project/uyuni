@@ -513,6 +513,18 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
         // Salt systems can be audited
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
+
+        //Capabilities to enable configuration management for minions
+        SystemManager.giveCapability(server.getId(),
+                SystemManager.CAP_CONFIGFILES_BASE64_ENC, 1L);
+        SystemManager.giveCapability(server.getId(),
+                SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
+        SystemManager.giveCapability(server.getId(),
+                SystemManager.CAP_CONFIGFILES_MTIME_UPLOAD, 1L);
+        SystemManager.giveCapability(server.getId(),
+                SystemManager.CAP_CONFIGFILES_DIFF, 1L);
+        SystemManager.giveCapability(server.getId(),
+                SystemManager.CAP_CONFIGFILES_UPLOAD, 1L);
     }
 
     private ContactMethod getContactMethod(Optional<ActivationKey> activationKey,
