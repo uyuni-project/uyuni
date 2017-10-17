@@ -1,32 +1,28 @@
 ### Static run
 
-#### Take care : 
+#### Running the testsuite without sumaform
  
-if you want to run the testsuite without sumaform, you have to create/configure the machine manually, or in alternative
-using the salt-states.
+If you want to run the testsuite without sumaform, you have to create and configure the machine manually, or with the help of Salt states.
 
-Best solution is to use sumaform, so every time you have a clean-fresh testing env.
+Best solution is to use sumaform, so every time you have a clean and fresh testing environment.
+With a static setup, if you break your testing machines, or if you have any trouble, you are on your own.
 
-For the static setup, if you break your testing-machines, you have any troubles, you are on your own, with the static setup.
+Set up the following environment variables:
 
-Once you have the machines configured, you can run the rake and tests.
+* TESTHOST the SUSE Manager server you are testing against
+* CLIENT the traditional client
+* MINION the Salt minion
+* SSHMINION the SSH-managed Salt minion
+* CENTOSMINION the CentOS Salt minion
 
-Setup the following environment variables.
-
-* TESTHOST environment variable can be passed to change the default server you are testing against.
-* CLIENT env variable test client
-* MINION env variable test client/salt
-* SSHMINION env variable test salt ssh-managed
-* CENTOSMINION env variable test salt centos family os
-* BROWSER (default `phantomjs` environment variable can be passed to change the default browser: `chrome`, `htmlunit`, `chrome`, `firefox`.
-
-To run all standard tests call, from the control-node.
+Once you have the machines configured, you can run the testsuite.
+To run all standard tests, from the controller:
 
 ```console
+export TESTHOST="${PREFIX}suma3pg.tf.local"
+export CLIENT="${PREFIX}clisles12sp3.tf.local"
+export MINION="${PREFIX}minsles12sp3.tf.local"
+export SSHMINION="${PREFIX}minsles12sp3ssh.tf.local"
 export CENTOSMINION="${PREFIX}mincentos7.tf.local"
-export MINION="${PREFIX}minsles12sp1.tf.local"
-export TESTHOST=${PREFIX}suma3pg.tf.local
-export CLIENT=${PREFIX}clisles12sp1.tf.local
-export BROWSER=phantomjs
-rake
+run-testsuite
 ```
