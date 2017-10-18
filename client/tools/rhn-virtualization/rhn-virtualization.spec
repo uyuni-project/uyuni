@@ -228,6 +228,8 @@ fi
 
 %files -n python2-%{name}-host
 %defattr(-,root,root,-)
+%dir %{python_sitelib}/rhn
+%dir %{python_sitelib}/rhn/actions
 %{python_sitelib}/virtualization/domain_config.py*
 %{python_sitelib}/virtualization/domain_control.py*
 %{python_sitelib}/virtualization/domain_directory.py*
@@ -245,6 +247,9 @@ fi
 %if 0%{?build_py3}
 %files -n python3-%{name}-host
 %defattr(-,root,root,-)
+%dir %{python3_sitelib}/rhn
+%dir %{python3_sitelib}/rhn/actions
+%dir %{python3_sitelib}/rhn/actions/__pycache__
 %{python3_sitelib}/virtualization/domain_config.py*
 %{python3_sitelib}/virtualization/domain_control.py*
 %{python3_sitelib}/virtualization/domain_directory.py*
