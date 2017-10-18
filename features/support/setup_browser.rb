@@ -12,7 +12,7 @@ require 'simplecov'
 require 'capybara/poltergeist'
 require 'minitest/unit'
 
-# FIXME: this 2 variable why, for what are the set?
+# FIXME: these 2 variables why, for what are they set?
 ENV['LANG'] = 'en_US.UTF-8'
 ENV['IGNORECERT'] = '1'
 
@@ -29,6 +29,7 @@ def enable_assertions
   # include assertion globally
   World(MiniTest::Assertions)
 end
+
 # this class is for phantomjs initialization
 class PhantomjsInit
   attr_reader :options
@@ -64,7 +65,13 @@ Capybara.app_host = "https://#{server}"
 Capybara.run_server = false
 # At moment we have only phantomjs
 
-# screenshots
+# always restart before each feature,
+# so we spare RAM and avoid RAM issues
+Before do
+  restart_driver
+end
+
+# embed a screenshot after each failed scenario
 After do |scenario|
   if scenario.failed?
     encoded_img = page.driver.render_base64(:png, full: true)
@@ -72,11 +79,5 @@ After do |scenario|
   end
 end
 
-# restart always before each feature, we spare ram and
-# avoid ram issues!
-Before do
-  restart_driver
-end
-
-# with this we can use in steps minitest assertions
+# enable minitest assertions in steps
 enable_assertions
