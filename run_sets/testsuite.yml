@@ -4,11 +4,11 @@
 # feature files in docs/Guidelines.md in "Rules for features" chapter,
 # as well as guidelines about idempotency in "Idempotency" chapter.
 
-## Core feature BEGIN ###
+## Core features BEGIN ###
 
 # IMMUTABLE ORDER
---- # initialize suse-manager server
-- features/core_setup_user_and_proxy.feature
+--- # initialize SUSE Manager server
+- features/core_first_settings.feature
 - features/core_srv_channels_add.feature
 - features/core_srv_push_package.feature
 - features/core_srv_create_repository.feature
@@ -23,12 +23,12 @@
 - features/core_centos_tradclient.feature
 - features/core_centos_salt.feature
 - features/core_centos_salt_ssh.feature
-# these features sync real channels (last core feature)
+# these features sync real channels (last core features)
 - features/core_srv_sync_channels.feature
 - features/core_srv_setup_wizard.feature
-## CORE feature end ###
+## CORE features end ###
 
-# SECONDARY FEATURE:
+# SECONDARY FEATURES:
 
 # **** IDEMPOTENT ******
 - features/min_bootstrap_xmlrpc.feature
@@ -55,7 +55,7 @@
 - features/min_salt_states_catalog.feature
 - features/srv_salt_download_endpoint.feature
 - features/srv_virtual_host_manager.feature
-- features/trad_baremetal_discovery.feature 
+- features/trad_baremetal_discovery.feature
 - features/trad_action_chain.feature
 - features/min_salt_formulas.feature
 - features/srv_docker_advanced_test.feature
@@ -85,7 +85,7 @@
 - features/srv_spacewalk_repo_sync.feature
 - features/srv_patches_page.feature
 - features/min_salt_reboot_test.feature
-# Post run feature (non idempotent)  
-# Debug suse-manager server is non idempotent
-# because it gather files and perfoms log checks 
+# Post run feature (non idempotent)
+# Debug SUSE Manager server is non idempotent
+# because it gather files and perfoms log checks
 - features/srv_susemanager_debug.feature

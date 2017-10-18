@@ -1,10 +1,14 @@
-## Core feature BEGIN ###
-# Prefix
-# core_type_topic
+# This file describes the order of features on the reference hosts.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Core features BEGIN ###
 
 # IMMUTABLE ORDER
---- # initialize suse-manager server
-- features/core_setup_user_and_proxy.feature
+--- # initialize SUSE Manager server
+- features/core_first_settings.feature
 - features/core_srv_channels_add.feature
 - features/core_srv_push_package.feature
 - features/core_srv_create_repository.feature
@@ -19,40 +23,12 @@
 - features/core_centos_tradclient.feature
 - features/core_centos_salt.feature
 - features/core_centos_salt_ssh.feature
-# these features sync real channels (last core feature)
+# these features sync real channels (last core features)
 - features/core_srv_sync_channels.feature
 - features/core_srv_setup_wizard.feature
-## CORE feature end ###
+## CORE features end ###
 
-# SECONDARY FEATURE:
-
-# Prefix
-# TYPE_TOPIC
-
-# PREFIX:
-
-# 1) TYPE (mandatory and UNIQUE)
-# - srv (feature testing server side)
-# - min (feature testing minions sles) (not ssh)
-# - centos (feature testing centos/rhes)
-# - trad (feature testing tradional client)
-# - allcli (feature testing all clients trad + minion(centos/sles)
-
-
-# 2) TOPIC (for salt/docker mandatory)
-# - salt (feature concering salt)
-# - docker
-# - .. 
-# - feature specific name xmlrpc_user (etc.)
-
-# EXAMPLES
-# * TYPE_TOPIC
-
-# * srv_reboot_server.feature 
-# * srv_salt_ping.feature
-# * srv_salt_service.feature
-# * min_salt_bootstrap.feature
-# * min_ping.feature 
+# SECONDARY FEATURES:
 
 # **** IDEMPOTENT ******
 - features/trad_need_reboot.feature
@@ -78,7 +54,7 @@
 - features/min_salt_states_catalog.feature
 - features/srv_salt_download_endpoint.feature
 - features/srv_virtual_host_manager.feature
-- features/trad_baremetal_discovery.feature 
+- features/trad_baremetal_discovery.feature
 - features/trad_action_chain.feature
 - features/min_salt_formulas.feature
 - features/srv_docker_advanced_test.feature
@@ -107,7 +83,7 @@
 - features/trad_config_channel.feature
 - features/min_salt_pkgset_beacon.feature
 - features/srv_patches_page.feature
-# Post run feature (non idempotent)  
-# Debug suse-manager server is non idempotent
-# because it gather files and perfoms log checks 
+# Post run feature (non idempotent)
+# Debug SUSE Manager server is non idempotent
+# because it gather files and perfoms log checks
 - features/srv_susemanager_debug.feature
