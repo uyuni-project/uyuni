@@ -53,7 +53,7 @@ public class MenuTree {
         adminRoles.put("activationKey", checkAcl(user, "user_role(activation_key_admin)"));
         adminRoles.put("image", checkAcl(user, "user_role(image_admin)"));
 
-        List<MenuItem> nodes = new LinkedList<>();
+        MenuItemList nodes = new MenuItemList();
 
         if (checkAcl(user, "user_authenticated()")) {
             // Home
@@ -569,5 +569,16 @@ public class MenuTree {
      */
     public static String getJsonMenu(PageContext pageContext) {
         return new GsonBuilder().create().toJson(getMenuTree(pageContext));
+    }
+
+    /**
+     * Special implementation of a LinkedList that adds only visible MenuItems.
+     */
+    public static class MenuItemList extends LinkedList<MenuItem> {
+
+        @Override
+        public boolean add(MenuItem e) {
+            return e.getIsVisible() ? super.add(e) : false;
+        }
     }
 }
