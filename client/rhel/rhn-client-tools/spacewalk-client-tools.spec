@@ -95,12 +95,17 @@ Requires: pygobject2
 Requires: libgudev
 Requires: python-hwdata
 %else
-%if 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
+%if 0%{?suse_version} >= 1140
+Requires: python-pyudev
+Requires: python-hwdata
+%else
+%if 0%{?rhel} > 5
 Requires: python-gudev
 Requires: python-hwdata
 %else
 Requires: hal >= 0.5.8.1-52
-%endif # 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
+%endif # 0%{?rhel} > 5
+%endif # 0%{?suse_version} >= 1140
 %endif # 0%{?fedora}
 
 %if 0%{?rhel} == 5
@@ -139,7 +144,7 @@ Requires: %{name} = %{version}-%{release}
 Requires: python3-dbus-python
 Requires: libgudev-1_0-0
 Requires: python3-newt
-Requires: python3-gobject2
+Requires: python3-pyudev
 %else
 Requires: python3-dbus
 Requires: libgudev
@@ -350,6 +355,7 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/rhn/actions/errata.py*
 rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_hal.*
 %else
 rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_gudev.*
+rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_udev.*
 %endif
 
 %if 0%{?rhel} == 5
