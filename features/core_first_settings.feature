@@ -1,10 +1,10 @@
 # Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Create initial users
-  In order to run the tests
+Feature: Very first settings
+  In order to use the product
   As the admin user
-  I need to create the admin and a testing users
+  I want to create the organisation, the first users and set the HTTP proxy
 
   Scenario: Create admin user and first organization
     Given I access the host the first time
