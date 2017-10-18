@@ -435,6 +435,15 @@ popd
 rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py*
 rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py*
 
+%if 0%{?default_py3}
+rm -f $RPM_BUILD_ROOT%{python3rhnroot}/__init__.py*
+rm -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__init__.py*
+
+%py3_compile %{buildroot}/%{python3rhnroot}
+%py3_compile -O %{buildroot}/%{python3rhnroot}
+%endif
+
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -740,7 +749,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %defattr(-,root,root)
 %doc LICENSE
 %dir %{python3rhnroot}
-%dir %{python3rhnroot}/__pycache__
+#%dir %{python3rhnroot}/__pycache__
 %dir %{python3rhnroot}/common
 %dir %{python3rhnroot}/common/__pycache__
 %{python3rhnroot}/common/checksum.py
@@ -752,9 +761,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{python3rhnroot}/common/rhn_rpm.py
 %{python3rhnroot}/common/stringutils.py
 %{python3rhnroot}/common/rhnLib.py*
-%{python3rhnroot}/__init__.py
-%{python3rhnroot}/common/__init__.py
-%{python3rhnroot}/__pycache__/__init__.*
+#%{python3rhnroot}/__init__.py
+#%{python3rhnroot}/common/__init__.py
+#%{python3rhnroot}/__pycache__/__init__.*
 %{python3rhnroot}/common/__pycache__/*
 %endif
 
