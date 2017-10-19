@@ -20,43 +20,28 @@ begin
                or (evr1.epoch is NULL and evr2.epoch is NULL))
               and evr1.id != evr2.id
               and evr1.id = original.id loop
-      update rhnactionpackage set evr_id = original.id where evr_id =
-duplicate.id;
-      update rhnactionpackageremovalfailure set evr_id = original.id where
-evr_id = duplicate.id;
-      update rhnchannelnewestpackage set evr_id = original.id where evr_id =
-duplicate.id;
+      update rhnactionpackage set evr_id = original.id where evr_id = duplicate.id;
+      update rhnactionpackageremovalfailure set evr_id = original.id where evr_id = duplicate.id;
+      update rhnchannelnewestpackage set evr_id = original.id where evr_id = duplicate.id;
       update rhnpackage set evr_id = original.id where evr_id = duplicate.id;
       select id into nevra_orig from rhnpackagenevra where evr_id = original.id;
       for nevra_dup in select id
                 from rhnpackagenevra
                where evr_id = duplicate.id loop
-        update rhnsnapshotpackage set nevra_id = nevra_orig.id where nevra_id =
-nevra_dup.id;
-        update rhnsolarispatchedpackage set package_nevra_id = nevra_orig.id
-where package_nevra_id = nevra_dup.id;
-        update rhnsolarispatchpackages set package_nevra_id = nevra_orig.id
-where package_nevra_id = nevra_dup.id;
+        update rhnsnapshotpackage set nevra_id = nevra_orig.id where nevra_id = nevra_dup.id;
+        update rhnsolarispatchedpackage set package_nevra_id = nevra_orig.id where package_nevra_id = nevra_dup.id;
+        update rhnsolarispatchpackages set package_nevra_id = nevra_orig.id where package_nevra_id = nevra_dup.id;
       end loop;
       delete from rhnpackagenevra where evr_id = duplicate.id;
-      update rhnproxyinfo set proxy_evr_id = original.id where proxy_evr_id =
-duplicate.id;
-      update rhnserveractionverifymissing set package_evr_id = original.id where
-package_evr_id = duplicate.id;
-      update rhnserveractionverifyresult set package_evr_id = original.id where
-package_evr_id = duplicate.id;
-      update rhnsatelliteinfo set evr_id = original.id where evr_id =
-duplicate.id;
-      update rhnservercrash set package_evr_id = original.id where
-package_evr_id = duplicate.id;
-      update rhnserverprofilepackage set evr_id = original.id where evr_id =
-duplicate.id;
-      update rhntransactionpackage set evr_id = original.id where evr_id =
-duplicate.id;
-      update rhnversioninfo set evr_id = original.id where evr_id =
-duplicate.id;
-      update rhnserverpackage set evr_id = original.id where evr_id =
-duplicate.id;
+      update rhnproxyinfo set proxy_evr_id = original.id where proxy_evr_id = duplicate.id;
+      update rhnserveractionverifymissing set package_evr_id = original.id where package_evr_id = duplicate.id;
+      update rhnserveractionverifyresult set package_evr_id = original.id where package_evr_id = duplicate.id;
+      update rhnsatelliteinfo set evr_id = original.id where evr_id = duplicate.id;
+      update rhnservercrash set package_evr_id = original.id where package_evr_id = duplicate.id;
+      update rhnserverprofilepackage set evr_id = original.id where evr_id = duplicate.id;
+      update rhntransactionpackage set evr_id = original.id where evr_id = duplicate.id;
+      update rhnversioninfo set evr_id = original.id where evr_id = duplicate.id;
+      update rhnserverpackage set evr_id = original.id where evr_id = duplicate.id;
       delete from rhnpackageevr where id = duplicate.id;
     end loop;
   end loop;

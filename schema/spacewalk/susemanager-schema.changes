@@ -2,6 +2,7 @@
 - enablement of the package profile feature for minions
 - re-create unique index on minion_id (bsc#1059568, bsc#1056358)
 - increase max length of hardware address to 32 byte (bsc#989991)
+- add unique index for evr and migration removing duplicates (bsc#1058110)
 
 -------------------------------------------------------------------
 Thu Sep 14 17:36:43 CEST 2017 - mc@suse.de
