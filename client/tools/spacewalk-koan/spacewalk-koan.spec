@@ -24,8 +24,8 @@ BuildArch:      noarch
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Requires:       koan >= 1.4.3
 Requires:       xz
-%if 0%{?suse_version} && 0%{?suse_version} >= 1110 || 0%{?rhel}
-Requires:       rhn-virtualization-common
+%if 0%{?suse_version} >= 1110 || 0%{?rhel} || 0%{?fedora}
+Requires:       %{pythonX}-rhn-virtualization-common
 Requires:       rhn-virtualization-host
 %endif
 
@@ -43,6 +43,8 @@ Support package for spacewalk koan interaction.
 Summary: Support package for spacewalk koan interaction
 BuildRequires:  python
 Requires:       python
+Requires:       %{name} = %{version}-%{release}
+
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
 
@@ -52,6 +54,8 @@ Summary: Support package for spacewalk koan interaction
 BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
 Requires:       python3
+Requires:       %{name} = %{version}-%{release}
+
 %description -n python3-%{name}
 Python 3 specific files for %{name}.
 %endif
