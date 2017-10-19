@@ -307,12 +307,18 @@ When(/^I register this client for SSH push via tunnel$/) do
   $server.run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
   # Generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  expect_file = ExpectFileGenerator.new($client_ip, bootstrap)
-  step 'I copy to server "' + expect_file.path + '"'
-  filename = expect_file.filename
+  script = "spawn spacewalk-ssh-push-init --client #{$client_ip} --register #{bootstrap} --tunnel\n" \
+           "while {1} {\n" \
+           "  expect {\n" \
+           "    eof                                                        {break}\n" \
+           "    \"Are you sure you want to continue connecting (yes/no)?\" {send \"yes\r\"}\n" \
+           "    \"Password:\"                                              {send \"linux\r\"}\n" \
+           "}\n"
+  path = generate_temp_file('push-registration.expect', script)
+  step 'I copy to server "' + path + '"'
   # Perform the registration
-  command = "expect #{filename}"
-  $server.run(command, true, 600, 'root')
+  filename = File.basename(path)
+  $server.run("expect #{filename}", true, 600, 'root')
   # Restore files from backups
   $server.run('mv /etc/hosts.BACKUP /etc/hosts')
   $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
