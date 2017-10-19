@@ -104,7 +104,11 @@ Python 2 files for %{name}-host.
 %package -n python3-%{name}-host
 Summary: RHN/Spacewalk Virtualization support specific to the Host system
 Requires: %{name}-host = %{version}-%{release}
+%if 0%{?suse_version}
+Requires: python3-libvirt-python
+%else
 Requires: libvirt-python3
+%endif
 Requires: python3-%{name}-common = %{version}-%{release}
 Requires: python3-pycurl
 %description -n python3-%{name}-host
