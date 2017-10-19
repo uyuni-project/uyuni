@@ -1,6 +1,5 @@
-# Common pathnames and programs for the spacewalk project
+# Common pathnames and programs for the Spacewalk project
 #
-# $Id$
 
 # if not defined, definit as a noop
 TOP		?= .
@@ -9,7 +8,7 @@ TOP		?= .
 ROOT		?= /usr/share/rhn
 export ROOT
 
-SPACEWALK_ROOT	?= $(shell python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")/
+SPACEWALK_ROOT	?= $(shell python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")/spacewalk
 export SPACEWALK_ROOT
 
 PREFIX		?=
@@ -29,18 +28,15 @@ INSTALL_DIR	= $(INSTALL) -m 755 -d
 
 # This is for the subdir part
 PYFILES		= $(addsuffix .py,$(FILES))
-PYCFILES	= $(addsuffix .pyc,$(FILES))
-PYOFILES	= $(addsuffix .pyo,$(FILES))
 
 SPACEWALK_PYFILES		= $(addsuffix .py,$(SPACEWALK_FILES))
-SPACEWALK_PYCFILES	= $(addsuffix .pyc,$(SPACEWALK_FILES))
 SPACEWALK_DEST	?= $(SPACEWALK_ROOT)/$(SUBDIR)
 
 # what do we need to install and where
-INSTALL_FILES	+= $(PYFILES) $(PYCFILES)
+INSTALL_FILES	+= $(PYFILES)
 INSTALL_DEST	?= $(ROOT)/$(SUBDIR)
 
-SPACEWALK_INSTALL_FILES	+= $(SPACEWALK_PYFILES) $(SPACEWALK_PYCFILES)
+SPACEWALK_INSTALL_FILES	+= $(SPACEWALK_PYFILES)
 
 DIRS		+= $(addprefix $(PREFIX), \
 			$(sort $(EXTRA_DIRS)) $(INSTALL_DEST) $(SPACEWALK_ROOT) $(SPACEWALK_DEST))
@@ -50,7 +46,8 @@ all :: $(INSTALL_FILES)
 install :: all $(DIRS) $(INSTALL_FILES) $(SPACEWALK_INSTALL_FILES)
 	@$(foreach f,$(INSTALL_FILES), \
 		$(INSTALL_DATA) $(f) $(PREFIX)$(INSTALL_DEST)/$(f) ; )
-	python -c "import sys, os, compileall; br='$(PREFIX)'; compileall.compile_dir(sys.argv[1], ddir=br and (sys.argv[1][len(os.path.abspath(br)):]+'/') or None)" $(PREFIX)$(INSTALL_DEST)
+	@$(foreach f,$(SPACEWALK_INSTALL_FILES), \
+		$(INSTALL_DATA) $(f) $(PREFIX)$(SPACEWALK_DEST)/$(f) ; )
 
 $(DIRS):
 	$(INSTALL_DIR) $@
@@ -60,12 +57,6 @@ clean ::
 	@rm -fv .\#*
 	@rm -fv core
 
-# default compile rules
-%.pyc : %.py
-	python -c "import compileall; compileall.compile_dir('$(CURDIR)')"
-%.pyo : %.py
-	python -OO -c "import compileall; compileall.compile_dir('$(CURDIR)')"
-
 # useful macro
 descend-subdirs = @$(foreach d,$(SUBDIRS), $(MAKE) -C $(d) $@ || exit 1; )
 
@@ -73,24 +64,4 @@ descend-subdirs = @$(foreach d,$(SUBDIRS), $(MAKE) -C $(d) $@ || exit 1; )
 all install clean:: $(SUBDIRS)
 	$(descend-subdirs)
 
-
-# extra toy targets
-# Python checker support
-PYTHONPATH      = $(TOP)
-PYCHECKER       = pychecker
-PYCHECKEROPTS   = --maxreturns 10 --maxbranches 15
-DBCHECKER       = db-checker.py
-DBCHECKEROPTS   =
-DB              = user/pass@instance
-
-pychecker :: $(PYFILES)
-	@PYTHONPATH=$(PYTHONPATH) $(PYCHECKER) $(PYCHECKEROPTS) $(PYFILES) || :
-	$(descend-subdirs)
-
-db-checker :: $(PYFILES)
-	@PYTHONPATH=$(PYTHONPATH) $(TOP)/$(DBCHECKER) $(DBCHECKEROPTS) --db $(DB) $(PYFILES) || :
-	$(descend-subdirs)
-
-graphviz :: 
-	@PYTHONPATH=$(PYTHONPATH) $(PYCHECKER) -Z $(PYCHECKEROPTS) $(PYFILES) || exit 0
 
