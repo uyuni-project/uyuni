@@ -12,44 +12,102 @@ alter table qrtz_fired_triggers drop column is_volatile;
 --
 -- add new columns that replace the 'is_stateful' column
 --
-alter table qrtz_job_details add column is_nonconcurrent bool;
-alter table qrtz_job_details add column is_update_data bool;
+alter table qrtz_job_details add (is_nonconcurrent CHAR(1) DEFAULT ('N') NOT NULL);
+alter table qrtz_job_details add (is_update_data CHAR(1) DEFAULT ('N') NOT NULL);
 update qrtz_job_details set is_nonconcurrent = is_stateful;
 update qrtz_job_details set is_update_data = is_stateful;
 alter table qrtz_job_details drop column is_stateful;
-alter table qrtz_fired_triggers add column is_nonconcurrent bool;
+alter table qrtz_fired_triggers add (is_nonconcurrent CHAR(1) DEFAULT ('N') NOT NULL);
 update qrtz_fired_triggers set is_nonconcurrent = is_stateful;
 alter table qrtz_fired_triggers drop column is_stateful;
 --
 -- add new 'sched_name' column to all tables --- replace "TestScheduler" with your scheduler's configured name
 --
-alter table qrtz_blob_triggers add column sched_name varchar(120) not null DEFAULT 'TestScheduler';
-alter table qrtz_calendars add column sched_name varchar(120) not null DEFAULT 'TestScheduler';
-alter table qrtz_cron_triggers add column sched_name varchar(120) not null DEFAULT 'TestScheduler';
-alter table qrtz_fired_triggers add column sched_name varchar(120) not null DEFAULT 'TestScheduler';
-alter table qrtz_job_details add column sched_name varchar(120) not null DEFAULT 'TestScheduler';
-alter table qrtz_locks add column sched_name varchar(120) not null DEFAULT 'TestScheduler';
-alter table qrtz_paused_trigger_grps add column sched_name varchar(120) not null DEFAULT 'TestScheduler';
-alter table qrtz_scheduler_state add column sched_name varchar(120) not null DEFAULT 'TestScheduler';
-alter table qrtz_simple_triggers add column sched_name varchar(120) not null DEFAULT 'TestScheduler';
-alter table qrtz_triggers add column sched_name varchar(120) not null DEFAULT 'TestScheduler';
+alter table qrtz_blob_triggers add (sched_name varchar(120) DEFAULT 'TestScheduler' not null);
+alter table qrtz_calendars add (sched_name varchar(120) DEFAULT 'TestScheduler' not null);
+alter table qrtz_cron_triggers add (sched_name varchar(120) DEFAULT 'TestScheduler' not null);
+alter table qrtz_fired_triggers add (sched_name varchar(120) DEFAULT 'TestScheduler' not null );
+alter table qrtz_job_details add (sched_name varchar(120) DEFAULT 'TestScheduler' not null);
+alter table qrtz_locks add (sched_name varchar(120) DEFAULT 'TestScheduler' not null);
+alter table qrtz_paused_trigger_grps add (sched_name varchar(120) DEFAULT 'TestScheduler' not null);
+alter table qrtz_scheduler_state add (sched_name varchar(120) DEFAULT 'TestScheduler' not null);
+alter table qrtz_simple_triggers add (sched_name varchar(120) DEFAULT 'TestScheduler' not null);
+alter table qrtz_triggers add (sched_name varchar(120) DEFAULT 'TestScheduler' not null);
 --
 -- add new 'sched_time' column to qrtz_fired_triggers
 --
-alter table qrtz_fired_triggers add column sched_time BIGINT(13) NOT NULL;
+alter table qrtz_fired_triggers add (sched_time NUMBER(13) NOT NULL);
 --
 -- drop all primary and foreign key constraints, so that we can define new ones
 --
-alter table qrtz_triggers drop constraint qrtz_triggers_job_name_fkey;
-alter table qrtz_blob_triggers drop constraint qrtz_blob_triggers_pkey;
-alter table qrtz_blob_triggers drop constraint qrtz_blob_triggers_trigger_name_fkey;
-alter table qrtz_simple_triggers drop constraint qrtz_simple_triggers_pkey;
-alter table qrtz_simple_triggers drop constraint qrtz_simple_triggers_trigger_name_fkey;
-alter table qrtz_cron_triggers drop constraint qrtz_cron_triggers_pkey;
-alter table qrtz_cron_triggers drop constraint qrtz_cron_triggers_trigger_name_fkey;
-alter table qrtz_job_details drop constraint qrtz_job_details_pkey;
+begin
+    for r in ( select table_name, constraint_name
+               from user_constraints
+               where constraint_type = 'R' and table_name = 'QRTZ_TRIGGERS' )
+    loop
+        execute immediate 'alter table '||r.table_name
+                          ||' drop constraint '||r.constraint_name;
+    end loop;
+end loop;
+/
+
+begin
+    for r in ( select table_name, constraint_name
+               from user_constraints
+               where constraint_type IN ('P', 'R') and table_name = 'QRTZ_BLOB_TRIGGERS' )
+    loop
+        execute immediate 'alter table '||r.table_name
+                          ||' drop constraint '||r.constraint_name;
+    end loop;
+end loop;
+/
+
+begin
+    for r in ( select table_name, constraint_name
+               from user_constraints
+               where constraint_type IN ('P', 'R') and table_name = 'QRTZ_SIMPLE_TRIGGERS' )
+    loop
+        execute immediate 'alter table '||r.table_name
+                          ||' drop constraint '||r.constraint_name;
+    end loop;
+end loop;
+/
+
+begin
+    for r in ( select table_name, constraint_name
+               from user_constraints
+               where constraint_type IN ('P', 'R') and table_name = 'QRTZ_CRON_TRIGGERS' )
+    loop
+        execute immediate 'alter table '||r.table_name
+                          ||' drop constraint '||r.constraint_name;
+    end loop;
+end loop;
+/
+
+begin
+    for r in ( select table_name, constraint_name
+               from user_constraints
+               where constraint_type = 'P' and table_name = 'QRTZ_JOB_DETAILS' )
+    loop
+        execute immediate 'alter table '||r.table_name
+                          ||' drop constraint '||r.constraint_name;
+    end loop;
+end loop;
+/
+
 alter table qrtz_job_details add primary key (sched_name, job_name, job_group);
-alter table qrtz_triggers drop constraint qrtz_triggers_pkey;
+
+begin
+    for r in ( select table_name, constraint_name
+               from user_constraints
+               where constraint_type = 'P' and table_name = 'QRTZ_TRIGGERS' )
+    loop
+        execute immediate 'alter table '||r.table_name
+                          ||' drop constraint '||r.constraint_name;
+    end loop;
+end loop;
+/
+
 --
 -- add all primary and foreign key constraints, based on new columns
 --
@@ -61,15 +119,69 @@ alter table qrtz_cron_triggers add primary key (sched_name, trigger_name, trigge
 alter table qrtz_cron_triggers add foreign key (sched_name, trigger_name, trigger_group) references qrtz_triggers(sched_name, trigger_name, trigger_group);
 alter table qrtz_simple_triggers add primary key (sched_name, trigger_name, trigger_group);
 alter table qrtz_simple_triggers add foreign key (sched_name, trigger_name, trigger_group) references qrtz_triggers(sched_name, trigger_name, trigger_group);
-alter table qrtz_fired_triggers drop constraint qrtz_fired_triggers_pkey;
+
+begin
+    for r in ( select table_name, constraint_name
+               from user_constraints
+               where constraint_type = 'P' and table_name = 'QRTZ_FIRED_TRIGGERS' )
+    loop
+        execute immediate 'alter table '||r.table_name
+                          ||' drop constraint '||r.constraint_name;
+    end loop;
+end loop;
+/
+
 alter table qrtz_fired_triggers add primary key (sched_name, entry_id);
-alter table qrtz_calendars drop constraint qrtz_calendars_pkey;
+
+begin
+    for r in ( select table_name, constraint_name
+               from user_constraints
+               where constraint_type = 'P' and table_name = 'QRTZ_CALENDARS' )
+    loop
+        execute immediate 'alter table '||r.table_name
+                          ||' drop constraint '||r.constraint_name;
+    end loop;
+end loop;
+/
+
 alter table qrtz_calendars add primary key (sched_name, calendar_name);
-alter table qrtz_locks drop constraint qrtz_locks_pkey;
+
+begin
+    for r in ( select table_name, constraint_name
+               from user_constraints
+               where constraint_type = 'P' and table_name = 'QRTZ_LOCKS' )
+    loop
+        execute immediate 'alter table '||r.table_name
+                          ||' drop constraint '||r.constraint_name;
+    end loop;
+end loop;
+/
 alter table qrtz_locks add primary key (sched_name, lock_name);
-alter table qrtz_paused_trigger_grps drop constraint qrtz_paused_trigger_grps_pkey;
+
+begin
+    for r in ( select table_name, constraint_name
+               from user_constraints
+               where constraint_type = 'P' and table_name = 'QRTZ_PAUSED_TRIGGER_GRPS' )
+    loop
+        execute immediate 'alter table '||r.table_name
+                          ||' drop constraint '||r.constraint_name;
+    end loop;
+end loop;
+/
+
 alter table qrtz_paused_trigger_grps add primary key (sched_name, trigger_group);
-alter table qrtz_scheduler_state drop constraint qrtz_scheduler_state_pkey;
+
+begin
+    for r in ( select table_name, constraint_name
+               from user_constraints
+               where constraint_type = 'P' and table_name = 'QRTZ_SCHEDULER_STATE' )
+    loop
+        execute immediate 'alter table '||r.table_name
+                          ||' drop constraint '||r.constraint_name;
+    end loop;
+end loop;
+/
+
 alter table qrtz_scheduler_state add primary key (sched_name, instance_name);
 --
 -- add new simprop_triggers table
@@ -82,14 +194,14 @@ CREATE TABLE qrtz_simprop_triggers
     STR_PROP_1 VARCHAR(512) NULL,
     STR_PROP_2 VARCHAR(512) NULL,
     STR_PROP_3 VARCHAR(512) NULL,
-    INT_PROP_1 INT NULL,
-    INT_PROP_2 INT NULL,
-    LONG_PROP_1 BIGINT NULL,
-    LONG_PROP_2 BIGINT NULL,
-    DEC_PROP_1 NUMERIC(13,4) NULL,
-    DEC_PROP_2 NUMERIC(13,4) NULL,
-    BOOL_PROP_1 BOOL NULL,
-    BOOL_PROP_2 BOOL NULL,
+    INT_PROP_1 NUMBER(12) NULL,
+    INT_PROP_2 NUMBER(12) NULL,
+    LONG_PROP_1 NUMBER(12) NULL,
+    LONG_PROP_2 NUMBER(12) NULL,
+    DEC_PROP_1 NUMBER(13,4) NULL,
+    DEC_PROP_2 NUMBER(13,4) NULL,
+    BOOL_PROP_1 CHAR(1) DEFAULT ('N') NULL,
+    BOOL_PROP_2 CHAR(1) DEFAULT ('N') NULL,
     PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
     FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
     REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
@@ -98,26 +210,26 @@ CREATE TABLE qrtz_simprop_triggers
 -- create indexes for faster queries
 --
 
-drop index if exists idx_qrtz_j_req_recovery;
-drop index if exists idx_qrtz_j_grp;
-drop index if exists idx_qrtz_t_j;
-drop index if exists idx_qrtz_t_jg;
-drop index if exists idx_qrtz_t_c;
-drop index if exists idx_qrtz_t_g;
-drop index if exists idx_qrtz_t_state;
-drop index if exists idx_qrtz_t_n_state;
-drop index if exists idx_qrtz_t_n_g_state;
-drop index if exists idx_qrtz_t_next_fire_time;
-drop index if exists idx_qrtz_t_nft_st;
-drop index if exists idx_qrtz_t_nft_misfire;
-drop index if exists idx_qrtz_t_nft_st_misfire;
-drop index if exists idx_qrtz_t_nft_st_misfire_grp;
-drop index if exists idx_qrtz_ft_trig_inst_name;
-drop index if exists idx_qrtz_ft_inst_job_req_rcvry;
-drop index if exists idx_qrtz_ft_j_g;
-drop index if exists idx_qrtz_ft_jg;
-drop index if exists idx_qrtz_ft_t_g;
-drop index if exists idx_qrtz_ft_tg;
+drop index idx_qrtz_j_req_recovery;
+drop index idx_qrtz_j_grp;
+drop index idx_qrtz_t_j;
+drop index idx_qrtz_t_jg;
+drop index idx_qrtz_t_c;
+drop index idx_qrtz_t_g;
+drop index idx_qrtz_t_state;
+drop index idx_qrtz_t_n_state;
+drop index idx_qrtz_t_n_g_state;
+drop index idx_qrtz_t_next_fire_time;
+drop index idx_qrtz_t_nft_st;
+drop index idx_qrtz_t_nft_misfire;
+drop index idx_qrtz_t_nft_st_misfire;
+drop index idx_qrtz_t_nft_st_misfire_grp;
+drop index idx_qrtz_ft_trig_inst_name;
+drop index idx_qrtz_ft_inst_job_req_rcvry;
+drop index idx_qrtz_ft_j_g;
+drop index idx_qrtz_ft_jg;
+drop index idx_qrtz_ft_t_g;
+drop index idx_qrtz_ft_tg;
 create index idx_qrtz_j_req_recovery on qrtz_job_details(SCHED_NAME,REQUESTS_RECOVERY);
 create index idx_qrtz_j_grp on qrtz_job_details(SCHED_NAME,JOB_GROUP);
 create index idx_qrtz_t_j on qrtz_triggers(SCHED_NAME,JOB_NAME,JOB_GROUP);
