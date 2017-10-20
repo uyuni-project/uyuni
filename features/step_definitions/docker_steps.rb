@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Suse Linux
+# Copyright (c) 2017 SUSE Linux
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
