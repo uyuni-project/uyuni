@@ -14,7 +14,7 @@ Source:      https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{ver
 BuildArch:   noarch
 BuildRoot:   %{_tmppath}/%{name}-%{version}-build
 
-%if 0%{?build_py}
+%if 0%{?build_py3}
 BuildRequires: python3-devel
 Requires: python3-rhnlib
 %else
