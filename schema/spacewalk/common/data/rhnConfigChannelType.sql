@@ -28,4 +28,8 @@ insert into rhnConfigChannelType(id, label, name, priority) values (
 	sequence_nextval('rhn_confchantype_id_seq'), 'server_import',
 	'Files imported from the server', 2);
 
+insert into rhnConfigChannelType(id, label, name, priority) values (
+	sequence_nextval('rhn_confchantype_id_seq'), 'state',
+	'Configuration channel based on SALT state', 1);
+
 commit;
