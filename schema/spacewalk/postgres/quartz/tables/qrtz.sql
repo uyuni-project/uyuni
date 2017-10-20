@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 feb81d92fe9de332b986c408e56c5580f134a05f
+-- oracle equivalent source sha1 4ade6e94a9997ddc1fd0ac96a72551aebb8e0c16
 -- retrieved from ./1283419612/063a73ab8941f6ebc7b009727444682db3e3994f/schema/spacewalk/oracle/quartz/tables/qrtz.sql
 -- Thanks to Patrick Lightbody for submitting this...
 --
