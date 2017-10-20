@@ -21,7 +21,7 @@ Given(/^salt-minion is configured on "(.*?)"$/) do |minion|
   step %(I start salt-minion on "#{minion}")
 end
 
-Given(/^the salt-master can reach "(.*?)"$/) do |minion|
+Given(/^the Salt master can reach "(.*?)"$/) do |minion|
   node = get_target(minion)
   begin
     start = Time.now
@@ -236,7 +236,7 @@ Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
   assert_match(/\*:#{port}/, $output)
 end
 
-Then(/^the system should have a Base channel set$/) do
+Then(/^the system should have a base channel set$/) do
   step %(I should not see a "This system has no Base Software Channel. You can select a Base Channel from the list below." text)
 end
 

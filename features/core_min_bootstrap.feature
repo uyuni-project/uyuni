@@ -22,7 +22,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      Given I am authorized
      When I go to the minion onboarding page
      Then I should see a "accepted" text
-     And the salt-master can reach "sle-minion"
+     And the Salt master can reach "sle-minion"
      When I navigate to "rhn/systems/Overview.do" page
      And I wait until I see the name of "sle-minion", refreshing the page
      And I wait until onboarding is completed for "sle-minion"
@@ -85,7 +85,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      Given I am authorized
      When I go to the minion onboarding page
      Then I should see a "accepted" text
-     And the salt-master can reach "sle-minion"
+     And the Salt master can reach "sle-minion"
      And I wait for "orion-dummy" to be installed on this "sle-minion"
      And I wait for "perseus-dummy" to be installed on this "sle-minion"
      And I remove pkg "orion-dummy" on this "sle-minion"
@@ -175,7 +175,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      Given I am authorized
      And I go to the minion onboarding page
      Then I should see a "accepted" text
-     And the salt-master can reach "sle-minion"
+     And the Salt master can reach "sle-minion"
      And I navigate to "rhn/systems/Overview.do" page
      And I wait until I see the name of "sle-minion", refreshing the page
      And I wait until onboarding is completed for "sle-minion"

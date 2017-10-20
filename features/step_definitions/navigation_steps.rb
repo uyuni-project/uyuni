@@ -288,7 +288,7 @@ Then(/^I should be logged in$/) do
   raise unless page.has_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
-Then(/^I am logged-in$/) do
+Then(/^I am logged in$/) do
   raise unless page.find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
   raise unless page.has_content?('You have just created your first SUSE Manager user. To finalize your installation please use the Setup Wizard')
 end
@@ -603,7 +603,7 @@ end
 #
 # Test if an option is selected
 #
-Then(/^Option "([^"]*)" is selected as "([^"]*)"$/) do |arg1, arg2|
+Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |arg1, arg2|
   raise unless has_select?(arg2, selected: arg1)
 end
 

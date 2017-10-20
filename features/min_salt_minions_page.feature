@@ -52,7 +52,7 @@ Feature: Management of minion keys
   Scenario: The minion communicates with the Salt master
     # It takes a while before we can get the grains and registration is done
     Given I am authorized as "testing" with password "testing"
-    And the salt-master can reach "sle-minion"
+    And the Salt master can reach "sle-minion"
     When I get OS information of "sle-minion" from the Master
     Then it should contain a "SLES" text
 
