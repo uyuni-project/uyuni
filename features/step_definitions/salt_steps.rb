@@ -217,10 +217,6 @@ When(/^I delete all keys in the Salt master$/) do
   $server.run('salt-key -y -D')
 end
 
-When(/^I accept all Salt unaccepted keys$/) do
-  $server.run('salt-key -y -A')
-end
-
 When(/^I get OS information of "(.*?)" from the Master$/) do |minion|
   node = get_target(minion)
   $output, _code = $server.run("salt #{node.full_hostname} grains.get osfullname")
@@ -258,19 +254,6 @@ Given(/^"(.*?)" is registered in Spacewalk$/) do |host|
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
   assert_includes(@rpc.list_systems.map { |s| s['name'] }, node.full_hostname)
-end
-
-Then(/^all local repositories are disabled$/) do
-  Nokogiri::XML(`zypper -x lr`)
-          .xpath('//repo-list')
-          .children
-          .select { |node| node.is_a?(Nokogiri::XML::Element) }
-          .select { |element| element.name == 'repo' }
-          .reject { |repo| repo[:alias].include?('susemanager:') }
-          .map do |repo|
-    assert_equal('0', repo[:enabled],
-                 "repo #{repo[:alias]} should be disabled")
-  end
 end
 
 When(/^I enter as remote command a script to watch a picked-up test file$/) do
