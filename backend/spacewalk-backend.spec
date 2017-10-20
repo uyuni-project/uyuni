@@ -264,7 +264,11 @@ Group: Applications/Internet
 BuildRequires: python2-devel
 BuildRequires: python3-devel
 Conflicts: %{name} < 1.7.0
+%if 0%{?suse_version}
+Requires: python3-base
+%else
 Requires: python3-libs
+%endif
 Requires: python3-spacewalk-usix
 
 %description -n python3-%{name}-libs
