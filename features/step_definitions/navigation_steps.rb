@@ -293,26 +293,9 @@ Then(/^I am logged-in$/) do
   raise unless page.has_content?('You have just created your first SUSE Manager user. To finalize your installation please use the Setup Wizard')
 end
 
-When(/^I go to the admin configuration page$/) do
-  find_link('Admin').click
-  find_link('SUSE Manager Configuration').click
-end
-
-When(/^I go to the configuration page$/) do
-  find_link('Configuration').click
-end
-
 Given(/^I am on the patches page$/) do
   step %(I am authorized)
   visit("https://#{$server.full_hostname}/rhn/errata/RelevantErrata.do")
-end
-
-Given(/^I am on the "([^"]*)" patches Details page$/) do |arg1|
-  steps %(
-    Given I am on the patches page
-    And I follow "All" in the left menu
-    And I follow "#{arg1}"
-    )
 end
 
 Then(/^I should see an update in the list$/) do
@@ -429,10 +412,6 @@ Then(/^I should see "([^"]*)" in the textarea$/) do |arg1|
   within('textarea') do
     raise unless page.has_content?(arg1)
   end
-end
-
-Then(/^I should see "([^"]*)" loaded in the textarea$/) do |arg1|
-  raise unless first('textarea').value.include?(arg1)
 end
 
 #
@@ -621,9 +600,6 @@ Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
   end
 end
 
-Then(/^I should see (\d+) "([^"]*)" links$/) do |count, text|
-  page.all('a', text: text, count: count)
-end
 #
 # Test if an option is selected
 #
@@ -700,16 +676,6 @@ When(/^I check "([^"]*)" in the list$/) do |arg1|
     end
     row.first(:xpath, './/input[@type="checkbox"]').set(true)
   end
-end
-
-When(/^I check checkbox with title "([^"]*)" in the list$/) do |arg1|
-  row = first(:xpath, "//tr[.//i[@title='#{arg1}']]")
-  if row.nil?
-    sleep 3
-    $stderr.puts 'ERROR - try again'
-    row = first(:xpath, "//tr[.//i[@title='#{arg1}']]")
-  end
-  row.first(:xpath, './/input[@type="checkbox"]').set(true)
 end
 
 When(/^I uncheck "([^"]*)" in the list$/) do |arg1|
