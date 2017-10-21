@@ -86,7 +86,7 @@ public class ClientCertificate {
      * Add a member to the certificate.
      * @param member Member to be added.
      */
-    private void addMember(Member member) {
+    public void addMember(Member member) {
         members.add(member);
         byName.put(member.getName(), member.getValues());
     }
