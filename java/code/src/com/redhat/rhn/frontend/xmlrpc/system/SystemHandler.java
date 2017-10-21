@@ -245,7 +245,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.returntype string
      */
     public String obtainReactivationKey(String clientCert)
-            throws FaultException {
+            throws FaultException, MethodInvalidParamException {
         Server server = validateClientCertificate(clientCert);
         return getReactivationKey(server.getOrg().getActiveOrgAdmins().get(0), server);
     }
