@@ -126,11 +126,11 @@ public class ConfigDefaults {
     private static final String COBBLER_NAME_SEPARATOR = "cobbler.name.separator";
     public static final String POWER_MANAGEMENT_TYPES = "java.power_management.types";
 
-    public static final String COBBLER_BOOTSTRAP_KERNEL = "java.cobbler_bootstrap.kernel";
-    public static final String COBBLER_BOOTSTRAP_INITRD = "java.cobbler_bootstrap.initrd";
-    public static final String COBBLER_BOOTSTRAP_BREED = "java.cobbler_bootstrap.breed";
-    public static final String COBBLER_BOOTSTRAP_ARCH = "java.cobbler_bootstrap.arch";
-    public static final String COBBLER_BOOTSTRAP_EXTRA_KERNEL_OPTIONS =
+    private static final String COBBLER_BOOTSTRAP_KERNEL = "java.cobbler_bootstrap.kernel";
+    private static final String COBBLER_BOOTSTRAP_INITRD = "java.cobbler_bootstrap.initrd";
+    private static final String COBBLER_BOOTSTRAP_BREED = "java.cobbler_bootstrap.breed";
+    private static final String COBBLER_BOOTSTRAP_ARCH = "java.cobbler_bootstrap.arch";
+    private static final String COBBLER_BOOTSTRAP_EXTRA_KERNEL_OPTIONS =
         "java.cobbler_bootstrap.extra_kernel_options";
 
     private static final String KVM_VIRT_PATH_DIR = "kickstart.virt_storage_path_kvm";
