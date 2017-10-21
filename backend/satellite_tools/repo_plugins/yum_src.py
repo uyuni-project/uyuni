@@ -333,9 +333,10 @@ class ContentSource(object):
 
         if not filters:
             # if there's no include/exclude filter on command line or in database
-            for filter_conf in self.repo.includepkgs:
+            # check repository config file
+            for p in self.repo.includepkgs:
                 filters.append(('+', [p]))
-            for filter_conf in self.repo.exclude:
+            for p in self.repo.exclude:
                 filters.append(('-', [p]))
 
         if filters:
@@ -393,15 +394,16 @@ class ContentSource(object):
         for filter_item in filters:
             sense, pkg_list = filter_item
             if sense == '+':
-                if not exclude_only:
-                    # include
-                    exactmatch, matched, _unmatched = yum.packages.parsePackages(
-                        excluded, pkg_list)
-                    allmatched = yum.misc.unique(exactmatch + matched)
-                    selected = yum.misc.unique(selected + allmatched)
-                    for pkg in allmatched:
-                        if pkg in excluded:
-                            excluded.remove(pkg)
+                if exclude_only:
+                    continue
+                # include
+                exactmatch, matched, _unmatched = yum.packages.parsePackages(
+                    excluded, pkg_list)
+                allmatched = yum.misc.unique(exactmatch + matched)
+                selected = yum.misc.unique(selected + allmatched)
+                for pkg in allmatched:
+                    if pkg in excluded:
+                        excluded.remove(pkg)
             elif sense == '-':
                 # exclude
                 exactmatch, matched, _unmatched = yum.packages.parsePackages(
@@ -412,7 +414,7 @@ class ContentSource(object):
                         selected.remove(pkg)
                 excluded = yum.misc.unique(excluded + allmatched)
             else:
-                raise UpdateNoticeException
+                raise UpdateNoticeException("Invalid filter sense: '%s'" % sense)
         return selected
 
     def _get_package_dependencies(self, sack, packages):

@@ -299,8 +299,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("cfid", file.getId());
         params.put("crid", current.getId());
         params.put("user_id", user.getId());
-        DataResult dr = makeDataResult(params, new HashMap(), pc, m);
-        return dr;
+        return makeDataResult(params, new HashMap(), pc, m);
     }
 
     /**
@@ -321,8 +320,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("cfid", current.getId());
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
-        DataResult dr = makeDataResult(params, new HashMap(), pc, m);
-        return dr;
+        return makeDataResult(params, new HashMap(), pc, m);
     }
 
     /**
@@ -337,8 +335,7 @@ public class ConfigurationManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
-        DataResult dr = makeDataResult(params, new HashMap(), pc, m);
-        return dr;
+        return makeDataResult(params, new HashMap(), pc, m);
     }
 
     /**
@@ -354,8 +351,7 @@ public class ConfigurationManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("ccid", channel.getId());
-        DataResult dr = makeDataResult(params, new HashMap(), pc, m);
-        return dr;
+        return makeDataResult(params, new HashMap(), pc, m);
     }
 
 
@@ -372,8 +368,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("user_id", user.getId());
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("cfnid", cfnid);
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -392,8 +387,7 @@ public class ConfigurationManager extends BaseManager {
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("cfnid", cfnid);
         elabParams.put("label", chnlType.getLabel());
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
     /**
      * Lists the file names of all files subscribed to by systems in the
@@ -408,8 +402,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("user_id", user.getId());
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("user_id", user.getId());
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -429,8 +422,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("system_set_label", RhnSetDecl.SYSTEMS.getLabel());
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("cfnid", cfnid);
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -450,8 +442,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("system_set_label", RhnSetDecl.SYSTEMS.getLabel());
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("ccid", ccid);
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -472,8 +463,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("name_set_label", RhnSetDecl.CONFIG_FILE_NAMES.getLabel());
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("sid", server.getId());
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -495,8 +485,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("name_set_label", setLabel);
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("sid", server.getId());
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -534,8 +523,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("sid", server.getId());
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("sid", server.getId());
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -567,8 +555,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("sid", server.getId());
         Map<String, Object> elabParams = new HashMap<String, Object>();
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -590,8 +577,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("ccid", channel.getId());
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("sid", server.getId());
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -612,8 +598,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("channel_set_label", RhnSetDecl.CONFIG_CHANNELS.getLabel());
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("sid", server.getId());
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -635,8 +620,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("feature", feature);
 
         Map<String, Object> elabParams = new HashMap<String, Object>();
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -773,8 +757,7 @@ public class ConfigurationManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("set", set);
-        DataResult dr = makeDataResult(params, new HashMap(), pc, m);
-        return dr;
+        return makeDataResult(params, new HashMap(), pc, m);
     }
 
     /**
@@ -869,8 +852,7 @@ public class ConfigurationManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         Map<String, Object> elabParams = new HashMap<String, Object>();
-        DataResult dr = makeDataResult(params, elabParams, pc, m);
-        return dr;
+        return makeDataResult(params, elabParams, pc, m);
     }
 
     /**
@@ -996,8 +978,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("ccid", channel.getId());
         params.put("user_id", user.getId());
         SelectMode m = ModeFactory.getMode("config_queries", "systems_subscribed_by_date");
-        DataResult dr = m.execute(params);
-        return dr;
+        return m.execute(params);
     }
 
     /**
@@ -1016,8 +997,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("ccid", channel.getId());
         params.put("user_id", user.getId());
         SelectMode m = ModeFactory.getMode("config_queries", "files_by_date");
-        DataResult dr = m.execute(params);
-        return dr;
+        return m.execute(params);
     }
 
     /**
@@ -1044,8 +1024,7 @@ public class ConfigurationManager extends BaseManager {
         else {
             throw new IllegalStateException("Unknown database platform");
         }
-        DataResult dr = m.execute(params);
-        return dr;
+        return m.execute(params);
     }
 
     /**
@@ -1082,8 +1061,7 @@ public class ConfigurationManager extends BaseManager {
         else {
             throw new IllegalStateException("Unknown database platform");
         }
-        DataResult dr = m.execute(params);
-        return dr;
+        return m.execute(params);
     }
 
     /**
@@ -1164,8 +1142,7 @@ public class ConfigurationManager extends BaseManager {
         else {
             m = ModeFactory.getMode("config_queries", "latest_files_in_namespace");
         }
-        DataResult<ConfigFileDto> dr = makeDataResult(params, new HashMap(), pc, m);
-        return dr;
+        return (DataResult<ConfigFileDto>) makeDataResult(params, new HashMap(), pc, m);
     }
 
     /**
@@ -1181,8 +1158,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("cfid", file.getId());
         params.put("user_id", user.getId());
         SelectMode m = ModeFactory.getMode("config_queries", "configfile_revisions");
-        DataResult dr = makeDataResult(params, new HashMap(), pc, m);
-        return dr;
+        return makeDataResult(params, new HashMap(), pc, m);
     }
 
     /**
@@ -1198,8 +1174,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("ccid", channel.getId());
         params.put("user_id", user.getId());
         SelectMode m = ModeFactory.getMode("config_queries", "systems_subscribed_by_date");
-        DataResult dr = makeDataResult(params, new HashMap(), pc, m);
-        return dr;
+        return makeDataResult(params, new HashMap(), pc, m);
     }
 
     /**
@@ -1264,8 +1239,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("user_id", user.getId());
         SelectMode m = ModeFactory.getMode("config_queries",
                 "managed_systems_not_in_channel");
-        DataResult dr = makeDataResult(params, new HashMap(), pc, m);
-        return dr;
+        return makeDataResult(params, new HashMap(), pc, m);
     }
 
     private Long getNumSystemsWithFiles(User user) {
@@ -1476,8 +1450,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("user_id", usr.getId());
         SelectMode m = ModeFactory
                 .getMode("config_queries", "successful_deploys_for");
-        DataResult dr = m.execute(params);
-        return dr;
+        return m.execute(params);
     }
 
     /**

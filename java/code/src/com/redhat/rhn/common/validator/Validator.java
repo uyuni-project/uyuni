@@ -56,7 +56,7 @@ public class Validator {
     /**
      * <p>
      * This constructor is private so that the class cannot be instantiated
-     * directly, but instead only through <code>{@link #getInstance()}</code>.
+     * directly, but instead only through <code>{@link #getInstance(URL schemaURL)}</code>.
      * </p>
      *
      * @param schemaURLIn <code>URL</code> to parse the schema at.
@@ -237,18 +237,11 @@ public class Validator {
             }
         }
 
-        else if (dataType.equals("java.lang.Boolean")) {
-            if ((data.equalsIgnoreCase("true")) ||
-                (data.equalsIgnoreCase("false")) ||
-                (data.equalsIgnoreCase("yes")) ||
-                (data.equalsIgnoreCase("no"))) {
-                // empty
-                // validationMessage = null;
-            }
-            else {
+        else if (dataType.equals("java.lang.Boolean") &&
+                !((data.equalsIgnoreCase("true")) || (data.equalsIgnoreCase("false")) ||
+                (data.equalsIgnoreCase("yes")) || (data.equalsIgnoreCase("no")))) {
                 validationMessage = new ValidatorError("errors.invalid", identifier);
             }
-        }
 
         return validationMessage;
     }

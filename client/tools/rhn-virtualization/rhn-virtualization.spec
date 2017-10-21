@@ -17,7 +17,7 @@
 
 Name:           rhn-virtualization
 Summary:        Spacewalk action support for virualization
-Version:        5.4.63
+Version:        5.4.64
 Release:        1%{?dist}
 
 Group:          System Environment/Base
@@ -283,6 +283,10 @@ fi
 %endif
 
 %changelog
+* Wed Oct 18 2017 Jan Dobes 5.4.64-1
+- rhn-virtualization - removing usage of string module not available in Python
+  3
+
 * Fri Oct 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.63-1
 - virt modules (and deps) are now in standard python path
 

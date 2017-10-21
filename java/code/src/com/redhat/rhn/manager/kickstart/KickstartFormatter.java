@@ -210,10 +210,7 @@ public class KickstartFormatter {
     }
 
     private void addLogEnd(StringBuilder buff, String logFile, String interpreter) {
-        if (ksdata.isRhel6OrGreater()) {
-            //nothing
-        }
-        else if (isBashInterpreter(interpreter)) {
+        if (!ksdata.isRhel6OrGreater() && isBashInterpreter(interpreter)) {
             buff.append(") >> " + logFile + " 2>&1" + NEWLINE);
         }
     }
@@ -588,8 +585,8 @@ public class KickstartFormatter {
           buf.append("openssh-server" + NEWLINE);
         }
 
-        // packages necessary for RHEL 7
-        if (this.ksdata.isRhel7()) {
+        // packages necessary for RHEL 7 and Fedora
+        if (this.ksdata.isRhel7() || this.ksdata.isFedora()) {
             buf.append("perl" + NEWLINE);
             buf.append("wget" + NEWLINE);
             buf.append("rhn-setup" + NEWLINE);
@@ -600,7 +597,7 @@ public class KickstartFormatter {
     }
 
     /**
-     * @param scrupts the kickstart scripts we want to render
+     * @param scripts the kickstart scripts we want to render
      * @return rendered script(s)
      */
     private String renderScripts(List<KickstartScript> scripts) {

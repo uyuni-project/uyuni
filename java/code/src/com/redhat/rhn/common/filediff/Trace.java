@@ -86,10 +86,7 @@ public class Trace {
      * @return whether this trace has terminated.
      */
     public boolean isDone() {
-        if (currentLineOld == -1 && currentLineNew == -1) {
-            return true;
-        }
-        return false;
+        return currentLineOld == -1 && currentLineNew == -1;
     }
 
     /**
@@ -105,8 +102,7 @@ public class Trace {
         if (edit != null && edit.getType() == Edit.ADD) {
             copy = edit.copy();
         }
-        Trace newTrace = new Trace(currentLineOld, currentLineNew, copy, matches, next);
-        next = newTrace;
+        next = new Trace(currentLineOld, currentLineNew, copy, matches, next);
         makeAdd();
     }
 

@@ -497,8 +497,7 @@ public class ServerSnapshot extends BaseDomainHelper {
             pm.updateActionStatus();
             pkgsMeta.add(pm);
         }
-        DataResult<PackageMetadata> ret = new DataResult<PackageMetadata>(pkgsMeta);
-        return ret;
+        return new DataResult<PackageMetadata>(pkgsMeta);
     }
 
     /**

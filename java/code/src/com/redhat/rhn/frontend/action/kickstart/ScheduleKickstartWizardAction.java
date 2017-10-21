@@ -450,8 +450,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
 
         }
 
-        ActionForward retval = mapping.findForward("first");
-        return retval;
+        return mapping.findForward("first");
     }
 
     /**
@@ -912,15 +911,10 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                     containsClearpartCommand = true;
                     break;
                 }
-                continue;
         }
 
         String diskOption = form.getString(DESTROY_DISKS);
-        if (!containsClearpartCommand || (diskOption != null &&
-            diskOption.equals("true"))) {
-             return false;
-        }
-        return true;
+        return containsClearpartCommand && (diskOption == null || !diskOption.equals("true"));
     }
 
     private void checkForKickstart(DynaActionForm form,

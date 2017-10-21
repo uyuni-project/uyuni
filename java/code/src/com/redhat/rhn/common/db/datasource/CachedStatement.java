@@ -876,9 +876,7 @@ public class CachedStatement implements Serializable {
         if (obj instanceof Map) {
             return ((Map<String, Object>) obj).get(key);
         }
-        Object keyData =
-                MethodUtil.callMethod(obj, StringUtil.beanify("get " + key), new Object[0]);
-        return keyData;
+        return MethodUtil.callMethod(obj, StringUtil.beanify("get " + key), new Object[0]);
     }
 
     @SuppressWarnings("unchecked")
