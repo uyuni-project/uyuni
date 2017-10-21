@@ -38,11 +38,14 @@ EXTRA_DIRS = $(MANDIR)/man$(MANSECT) $(BINDIR) $(PUB_BOOTSTRAP_DIR) $(SBINDIR)
 # now include some Macros
 include Makefile.defs
 
-BINFILES = rhn-sudo-ssl-tool spacewalk-push-register spacewalk-ssh-push-init
+SBINFILES = spacewalk-push-register spacewalk-ssh-push-init
+BINFILES = rhn-sudo-ssl-tool
 PYBINFILES = rhn-ssl-tool rhn-bootstrap
 
-install :: $(BINFILES) $(PYBINFILES) $(MANS) $(PREFIX)/$(MANDIR)
+install :: $(SBINFILES) $(BINFILES) $(PYBINFILES) $(MANS) $(PREFIX)/$(MANDIR)
 	$(INSTALL_DATA) $(MANS) $(PREFIX)$(MANDIR)/man$(MANSECT)
+	$(foreach f,$(SBINFILES), \
+		$(INSTALL_BIN) $(f) $(PREFIX)$(SBINDIR)/$(f) ; )
 	$(foreach f,$(BINFILES), \
 		$(INSTALL_BIN) $(f) $(PREFIX)$(BINDIR)/$(f) ; )
 	$(foreach f,$(PYBINFILES), \
