@@ -130,8 +130,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{rhnroot}/certs/gen-rpm.sh
 %attr(755,root,root) %{rhnroot}/certs/update-ca-cert-trust.sh
 %attr(755,root,root) %{_bindir}/rhn-sudo-ssl-tool
-%attr(755,root,root) %{_bindir}/rhn-ssl-tool
-%attr(755,root,root) %{_bindir}/rhn-bootstrap
+%{_bindir}/rhn-ssl-tool
+%attr(755,root,root) %{_bindir}/rhn-ssl-tool-*
+%{_bindir}/rhn-bootstrap
+%attr(755,root,root) %{_bindir}/rhn-bootstrap-*
 %attr(755,root,root) %{_sbindir}/spacewalk-push-register
 %attr(755,root,root) %{_sbindir}/spacewalk-ssh-push-init
 %doc %{_mandir}/man1/rhn-*.1*
