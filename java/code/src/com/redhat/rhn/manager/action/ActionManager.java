@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.action;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -929,7 +928,7 @@ public class ActionManager extends BaseManager {
         if (pc != null) {
             return makeDataResult(params, params, pc, m);
         }
-        Integer limit = new Config().getInt(ConfigDefaults.ACTIONS_DISPLAY_LIMIT);
+        int limit = ConfigDefaults.get().getActionsDisplayLimit();
         if (limit > 0) {
             m.setMaxRows(limit);
         }
@@ -1229,7 +1228,7 @@ public class ActionManager extends BaseManager {
                 params.put("v", pm.getSystem().getVersion());
                 params.put("r", pm.getSystem().getRelease());
                 String epoch = pm.getSystem().getEpoch();
-                params.put("e", epoch == "" ? null : epoch);
+                params.put("e", epoch.equals("") ? null : epoch);
                 params.put("a", pm.getSystem().getArch() != null ?
                         pm.getSystem().getArch() : "");
                 m.executeUpdate(params);
@@ -1247,7 +1246,7 @@ public class ActionManager extends BaseManager {
                 params.put("v", pm.getOther().getVersion());
                 params.put("r", pm.getOther().getRelease());
                 String epoch = pm.getOther().getEpoch();
-                params.put("e", epoch == "" ? null : epoch);
+                params.put("e", epoch.equals("") ? null : epoch);
                 params.put("a", pm.getOther().getArch() != null ?
                         pm.getOther().getArch() : "");
                 m.executeUpdate(params);
@@ -1271,7 +1270,7 @@ public class ActionManager extends BaseManager {
                     params.put("v", pm.getSystem().getVersion());
                     params.put("r", pm.getSystem().getRelease());
                     epoch = pm.getSystem().getEpoch();
-                    params.put("e", epoch == "" ? null : epoch);
+                    params.put("e", epoch.equals("") ? null : epoch);
                     params.put("a", pm.getSystem().getArch() != null ?
                             pm.getOther().getArch() : "");
                     m.executeUpdate(params);
@@ -1282,7 +1281,7 @@ public class ActionManager extends BaseManager {
                 params.put("v", pm.getOther().getVersion());
                 params.put("r", pm.getOther().getRelease());
                 epoch = pm.getOther().getEpoch();
-                params.put("e", epoch == "" ? null : epoch);
+                params.put("e", epoch.equals("") ? null : epoch);
                 params.put("a", pm.getOther().getArch() != null ?
                         pm.getOther().getArch() : "");
                 m.executeUpdate(params);

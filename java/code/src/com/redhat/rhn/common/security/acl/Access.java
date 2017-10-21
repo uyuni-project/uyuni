@@ -353,8 +353,7 @@ public class Access extends BaseHandler {
      * @return true if the system is a satellite and has any users.
      */
     public boolean aclNeedFirstUser(Object ctx, String[] p) {
-        boolean flag = !(UserFactory.satelliteHasUsers());
-        return flag;
+        return !(UserFactory.satelliteHasUsers());
     }
 
     /**
@@ -452,9 +451,6 @@ public class Access extends BaseHandler {
         Map map = (Map)ctx;
         Long eid = getAsLong(map.get("eid"));
         Errata e = ErrataFactory.lookupById(eid);
-        if (e == null || e.getOrg() == null) {
-            return false;
-        }
-        return true;
+        return e != null && e.getOrg() != null;
     }
 }

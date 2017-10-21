@@ -24,7 +24,7 @@ Name: osad
 Summary: Open Source Architecture Daemon
 Group:   System Environment/Daemons
 License: GPLv2
-Version: 5.11.95
+Version: 5.11.97
 Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -230,6 +230,9 @@ make -f Makefile.osad all PYTHONPATH=%{python_sitelib}
 %{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
 %if 0%{?fedora} || 0%{?rhel} >= 7
 cat osa-dispatcher-selinux/%{modulename}.te.fedora17 >> osa-dispatcher-selinux/%{modulename}.te
+%endif
+%if 0%{?fedora} >= 26
+cat osa-dispatcher-selinux/%{modulename}.te.fedora26 >> osa-dispatcher-selinux/%{modulename}.te
 %endif
 for selinuxvariant in %{selinux_variants}
 do
@@ -583,6 +586,12 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Fri Oct 20 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.97-1
+- use sssd macros only on Fedora 26
+
+* Wed Oct 18 2017 Michael Mraka <michael.mraka@redhat.com> 5.11.96-1
+- 1501866 - osa-dispatcher is now link to actual executable
+
 * Mon Oct 09 2017 Tomas Kasparek <tkasparek@redhat.com> 5.11.95-1
 - 1451770 - simplify expression using format_exc
 

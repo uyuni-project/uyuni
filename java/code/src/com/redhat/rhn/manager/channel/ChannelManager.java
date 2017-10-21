@@ -1618,9 +1618,8 @@ public class ChannelManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
         params.put("set_label", RhnSetDecl.SYSTEMS.getLabel());
-        DataResult dr = makeDataResult(params, params, lc, m);
 
-        return dr;
+        return makeDataResult(params, params, lc, m);
     }
 
     /**
