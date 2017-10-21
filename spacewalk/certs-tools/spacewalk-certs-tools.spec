@@ -116,8 +116,12 @@ ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
 ln -s spacewalk-push-register $RPM_BUILD_ROOT/%{_sbindir}/mgr-push-register
 ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 
-%py_compile %{buildroot}/%{rhnroot}
-%py_compile -O %{buildroot}/%{rhnroot}
+%py_compile %{buildroot}/%{python_sitelib}
+%py_compile -O %{buildroot}/%{python_sitelib}
+%if 0%{?build_py3}
+%py3_compile %{buildroot}/%{python3_sitelib}
+%py3_compile -O %{buildroot}/%{python3_sitelib}
+%endif
 
 %endif
 
@@ -126,6 +130,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%dir %{rhnroot}/certs
 %attr(755,root,root) %{rhnroot}/certs/sign.sh
 %attr(755,root,root) %{rhnroot}/certs/gen-rpm.sh
 %attr(755,root,root) %{rhnroot}/certs/update-ca-cert-trust.sh
