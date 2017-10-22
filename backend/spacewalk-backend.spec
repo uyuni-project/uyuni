@@ -9,7 +9,7 @@
 %if 0%{?fedora} >= 23 || 0%{?suse_version} > 1320
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %global python3rhnroot %{python3_sitelib}/spacewalk
-%global default_py3 1
+%global build_py3 1
 %endif
 
 %if (0%{?fedora} && 0%{?fedora} < 26) || 0%{?rhel} >= 7
@@ -66,7 +66,7 @@ BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
 BuildRequires: spacewalk-usix
 %if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} > 1310
-%if 0%{?default_py3}
+%if 0%{?build_py3}
 BuildRequires:  python3-rhn-client-tools
 BuildRequires:  python3-gzipstream
 %else
@@ -256,7 +256,7 @@ Requires: spacewalk-usix
 %description libs
 Libraries required by both Spacewalk server and Spacewalk client tools.
 
-%if 0%{?default_py3}
+%if 0%{?build_py3}
 
 %package -n python3-%{name}-libs
 Summary: Spacewalk client tools libraries for python3
@@ -396,7 +396,7 @@ install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd}
 
-%if 0%{?default_py3}
+%if 0%{?build_py3}
 install -d $RPM_BUILD_ROOT%{python3rhnroot}/common
 cp $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py \
     $RPM_BUILD_ROOT%{python3rhnroot}/
@@ -439,7 +439,7 @@ popd
 rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py*
 rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py*
 
-%if 0%{?default_py3}
+%if 0%{?build_py3}
 rm -f $RPM_BUILD_ROOT%{python3rhnroot}/__init__.py*
 rm -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__init__.py*
 
@@ -748,7 +748,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 #%{pythonrhnroot}/__init__.py*
 #%{pythonrhnroot}/common/__init__.py*
 
-%if 0%{?default_py3}
+%if 0%{?build_py3}
 %files -n python3-%{name}-libs
 %defattr(-,root,root)
 %doc LICENSE
