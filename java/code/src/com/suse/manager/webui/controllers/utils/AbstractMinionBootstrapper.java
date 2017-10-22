@@ -105,11 +105,7 @@ public abstract class AbstractMinionBootstrapper {
             Map<String, Object> pillarData = createPillarData(user, params, contactMethod);
             return saltService.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
-                        String errorMessage = SaltUtils.decodeStdMessage(error, "stderr");
-                        String outMessage = errorMessage.isEmpty() ?
-                                SaltUtils.decodeStdMessage(error, "stdout") : errorMessage;
-                        String responseMessage = outMessage.isEmpty() ?
-                                error.toString() : outMessage;
+                        String responseMessage = SaltUtils.decodeSaltErr(error);
                         LOG.error("Error during bootstrap: " + responseMessage);
                         return new BootstrapResult(false, Optional.of(contactMethod),
                                 responseMessage);

@@ -1351,18 +1351,25 @@ public class SaltUtils {
      * @param key the json key of the message to decode (e.g.: sdterr, stdout)
      * @return the String decoded if it exists
      */
-    public static String decodeStdMessage(Object message, String key) {
+    public static Optional<String> decodeStdMessage(Object message, String key) {
         if (message instanceof JsonParsingError) {
             JsonElement json = ((JsonParsingError)message).getJson();
-            if (json.isJsonObject() && json.getAsJsonObject().has(key) &&
-                    json.getAsJsonObject().get(key).isJsonPrimitive() &&
+            if (json.isJsonObject() && json.getAsJsonObject().has(key)) {
+                if (json.getAsJsonObject().get(key).isJsonPrimitive() &&
                     json.getAsJsonObject().get(key).getAsJsonPrimitive().isString()) {
-                return json.getAsJsonObject()
-                        .get(key).getAsJsonPrimitive().getAsString();
+                    return Optional.of(json.getAsJsonObject()
+                            .get(key).getAsJsonPrimitive().getAsString());
+                }
+                else if (json.getAsJsonObject().get(key).isJsonArray()) {
+                    StringBuilder msg = new StringBuilder();
+                    json.getAsJsonObject().get(key).getAsJsonArray()
+                            .forEach(elem -> msg.append(elem.getAsString()));
+                    return Optional.of(msg.toString());
+                }
             }
         }
 
-        return message.toString();
+        return Optional.empty();
     }
 
     /**
@@ -1372,12 +1379,12 @@ public class SaltUtils {
      * @return the error as a string
      */
     public static String decodeSaltErr(SaltError saltErr) {
-        String errorMessage = SaltUtils.decodeStdMessage(saltErr, "stderr");
-        String outMessage = errorMessage.isEmpty() ?
+        Optional<String> errorMessage = SaltUtils.decodeStdMessage(saltErr, "stderr");
+        Optional<String> outMessage = !errorMessage.isPresent() ?
                 SaltUtils.decodeStdMessage(saltErr, "stdout") : errorMessage;
-        return outMessage.isEmpty() ?
-                saltErr.toString() : outMessage;
+        Optional<String> returnMessage = !outMessage.isPresent() ?
+                SaltUtils.decodeStdMessage(saltErr, "return") : outMessage;
+        return returnMessage.orElseGet(() -> saltErr.toString());
     }
-
 
 }
