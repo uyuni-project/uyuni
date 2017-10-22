@@ -443,8 +443,9 @@ rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py*
 rm -f $RPM_BUILD_ROOT%{python3rhnroot}/__init__.py*
 rm -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__init__.py*
 
-%py3_compile %{buildroot}/%{python3rhnroot}
+%if 0%{?suse_version}
 %py3_compile -O %{buildroot}/%{python3rhnroot}
+%endif
 %endif
 
 
