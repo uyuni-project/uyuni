@@ -191,10 +191,8 @@ done
 ln -s rhncfg-manager $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-manager
 ln -s rhncfg-client $RPM_BUILD_ROOT/%{_bindir}/mgrcfg-client
 ln -s rhn-actions-control $RPM_BUILD_ROOT/%{_bindir}/mgr-actions-control
-%py_compile %{buildroot}/%{python_sitelib}
 %py_compile -O %{buildroot}/%{python_sitelib}
 %if 0%{?build_py3}
-%py3_compile %{buildroot}/%{python3_sitelib}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 %endif

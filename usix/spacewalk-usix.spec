@@ -66,10 +66,8 @@ cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{python3rhnroo
 %endif
 
 %if 0%{?suse_version} > 1140
-%py_compile %{buildroot}/%{pythonrhnroot}
 %py_compile -O %{buildroot}/%{pythonrhnroot}
 %if 0%{?suse_version} > 1320
-%py3_compile %{buildroot}/%{python3rhnroot}
 %py3_compile -O %{buildroot}/%{python3rhnroot}
 %endif
 %endif

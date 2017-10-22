@@ -300,10 +300,8 @@ touch %{buildroot}%{_var}/log/osad
 touch %{buildroot}%{_var}/log/rhn/osa-dispatcher.log
 
 %if 0%{?suse_version}
-%py_compile %{buildroot}/%{python_sitelib}
 %py_compile -O %{buildroot}/%{python_sitelib}
 %if 0%{?build_py3}
-%py3_compile %{buildroot}/%{python3_sitelib}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 %endif
