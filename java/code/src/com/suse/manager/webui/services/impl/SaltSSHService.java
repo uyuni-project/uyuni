@@ -51,6 +51,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -264,15 +265,21 @@ public class SaltSSHService {
         if (CollectionUtils.isEmpty(serverPaths) && !lastProxy.isPresent()) {
             return Collections.emptyList();
         }
-        List<ServerPath> proxyPath = serverPaths == null ?
-                new ArrayList<>() : new ArrayList<>(serverPaths);
-        Collections.sort(proxyPath, (p1, p2) ->
-            -ObjectUtils.compare(p1.getPosition(), p2.getPosition()));
+        List<ServerPath> proxyPath = sortServerPaths(serverPaths);
         List<String> hostnamePath = new ArrayList<>();
         hostnamePath.addAll(proxyPath.stream().map(p -> p.getHostname())
                 .collect(Collectors.toList()));
         lastProxy.ifPresent(p -> hostnamePath.add(p));
         return hostnamePath;
+    }
+
+    private static List<ServerPath> sortServerPaths(Set<ServerPath> serverPaths) {
+        List<ServerPath> proxyPath = Optional.ofNullable(serverPaths)
+                .map(p -> new ArrayList<>(p))
+                .orElseGet(ArrayList<ServerPath>::new);
+        Collections.sort(proxyPath, (p1, p2) ->
+                -ObjectUtils.compare(p1.getPosition(), p2.getPosition()));
+        return proxyPath;
     }
 
     /**
@@ -613,6 +620,21 @@ public class SaltSSHService {
     }
 
     /**
+     * Get the cached ssh public key used for ssh-push from the given proxy
+     * or retrieve it from the proxy if not cached.
+     * @param proxyId id of the proxy
+     * @return the content of the public key
+     */
+    public static Optional<String> getOrRetrieveSSHPushProxyPubKey(long proxyId) {
+        Server proxy = ServerFactory.lookupById(proxyId);
+        String keyFile = proxy.getHostname() + ".pub";
+        if (Files.exists(Paths.get(SSH_KEY_DIR, keyFile))) {
+            return Optional.of(keyFile);
+        }
+        return retrieveSSHPushProxyPubKey(proxyId);
+    }
+
+    /**
      * Retrieve the public key used for ssh-push from the given proxy.
      * @param proxyId id of the proxy
      * @return the content of the public key
@@ -659,11 +681,22 @@ public class SaltSSHService {
     public Optional<List<String>> cleanupSSHMinion(MinionServer minion, int timeout) {
         CompletableFuture timeoutAfter = SaltService.INSTANCE.failAfter(timeout);
         try {
+            Map<String, Object> pillarData = new HashMap<>();
+            if (!minion.getServerPaths().isEmpty()) {
+                List<ServerPath> paths = sortServerPaths(minion.getServerPaths());
+                ServerPath last = paths.get(paths.size() - 1);
+                SaltSSHService.getOrRetrieveSSHPushProxyPubKey(
+                        last.getId().getProxyServer().getId())
+                        .ifPresent(key ->
+                                pillarData.put("proxy_pub_key", key));
+            }
             Map<String, CompletionStage<Result<Map<String, State.ApplyResult>>>> res =
                     callAsyncSSH(
-                            State.apply("ssh_cleanup"),
+                            State.apply(
+                                    Collections.singletonList("ssh_cleanup"),
+                                    Optional.of(pillarData),
+                                    Optional.empty()),
                             new MinionList(minion.getMinionId()), timeoutAfter);
-
             CompletionStage<Result<Map<String, State.ApplyResult>>> future =
                     res.get(minion.getMinionId());
             if (future == null) {
