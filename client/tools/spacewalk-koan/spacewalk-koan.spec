@@ -24,11 +24,6 @@ BuildArch:      noarch
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Requires:       koan
 Requires:       xz
-%if 0%{?suse_version} >= 1110 || 0%{?rhel} || 0%{?fedora}
-Requires:       %{pythonX}-rhn-virtualization-common
-Requires:       rhn-virtualization-host
-%endif
-
 Conflicts: rhn-kickstart
 Conflicts: rhn-kickstart-common
 Conflicts: rhn-kickstart-virtualization
