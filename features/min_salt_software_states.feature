@@ -37,7 +37,7 @@ Feature: Salt states
     Then I should see a "1 Changes" text
     And I click save
     And I click apply
-    And "milkyway-dummy" is not installed 
+    And "milkyway-dummy" is not installed on "sle-minion"
 
   Scenario: Install a package through the UI
     Given I am on the Systems overview page of this "sle-minion"
@@ -46,7 +46,7 @@ Feature: Salt states
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "milkyway-dummy" text
-    And "milkyway-dummy" is not installed
+    And "milkyway-dummy" is not installed on "sle-minion"
     And I change the state of "milkyway-dummy" to "Installed" and ""
     Then I should see a "1 Changes" text
     And I click save

@@ -139,7 +139,7 @@ When(/^I wait until no Salt job is running on "(.*?)"$/) do |minion|
   end
 end
 
-When(/^we wait till Salt master sees "(.*?)" as "(.*?)"$/) do |minion, key_type|
+When(/^I wait until Salt master sees "(.*?)" as "(.*?)"$/) do |minion, key_type|
   steps %(
     When I list "#{key_type}" keys at Salt Master
     Then the list of the "#{key_type}" keys should contain "#{minion}" hostname
@@ -161,7 +161,7 @@ Given(/^"(.*?)" key is "(.*?)"$/) do |minion, key_type|
     end
     steps %(
       And I restart salt-minion on "#{minion}"
-      And we wait till Salt master sees "#{minion}" as "#{key_type}"
+      And I wait until Salt master sees "#{minion}" as "#{key_type}"
         )
   end
 end
@@ -594,12 +594,6 @@ When(/^I go to the bootstrapping page$/) do
     )
 end
 
-When(/^I should see this hostname as text$/) do
-  within('#spacewalk-content') do
-    raise unless page.has_content?($minion.hostname)
-  end
-end
-
 When(/^I refresh page until see "(.*?)" hostname as text$/) do |minion|
   node = get_target(minion)
   within('#spacewalk-content') do
@@ -614,11 +608,6 @@ When(/^I should see a "(.*)" text in the content area$/) do |txt|
     raise unless page.has_content?(txt)
   end
 end
-
-# Copyright (c) 2016 SUSE LLC
-# Licensed under the terms of the MIT license.
-
-require 'timeout'
 
 When(/^I list packages with "(.*?)"$/) do |str|
   find('input#package-search').set(str)
@@ -635,13 +624,14 @@ When(/^I change the state of "([^"]*)" to "([^"]*)" and "([^"]*)"$/) do |pkg, st
   end
 end
 
-Then(/^"([^"]*)" is not installed$/) do |package|
+Then(/^"([^"]*)" is not installed on "([^"]*)"$/) do |package, host|
+  node = get_target(host)
   uninstalled = false
   output = ''
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        output, code = $minion.run("rpm -q #{package}", false)
+        output, code = node.run("rpm -q #{package}", false)
         if code.nonzero?
           uninstalled = true
           break
