@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.state;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -205,6 +206,19 @@ public class StateFactory extends HibernateFactory {
         return filterDeleted(revision);
     }
 
+    /**
+     * Lookup the latest set of {@link ConfigChannel} objects for a given server.
+     *
+     * @param server the server
+     * @return the latest config channels for this server
+     */
+    public static Optional<Set<ConfigChannel>> latestConfigChannels(Server server) {
+        Optional<ServerStateRevision> revision = latestRevision(
+                ServerStateRevision.class, "server", server);
+        return Optional
+                .ofNullable(revision.map(StateRevision::getConfigChannels).orElse(null));
+    }
+
     private static Optional<Set<CustomState>> filterDeleted(
             Optional<? extends StateRevision> revision) {
         return revision.map(
@@ -284,7 +298,7 @@ public class StateFactory extends HibernateFactory {
      */
     public static StateRevisionsUsage latestStateRevisionsByCustomState(
             long orgIdIn, String stateNameIn) {
-        List<Object[]> idList = getSession().getNamedQuery("StateRevision.findStateUsage")
+        List<Long[]> idList = getSession().getNamedQuery("StateRevision.findStateUsage")
                 .setLong("orgId", orgIdIn)
                 .setString("stateName", stateNameIn)
                 .list();
@@ -294,18 +308,52 @@ public class StateFactory extends HibernateFactory {
             Long stateId = (Long)ids[0];
 
             if (ids[1] != null) {
-                ServerStateRevision rev = (ServerStateRevision)getSession()
-                        .get(ServerStateRevision.class, stateId);
+                ServerStateRevision rev =
+                        getSession().get(ServerStateRevision.class, stateId);
                 usage.getServerStateRevisions().add(rev);
             }
             else if (ids[2] != null) {
-                ServerGroupStateRevision rev = (ServerGroupStateRevision)getSession()
-                        .get(ServerGroupStateRevision.class, stateId);
+                ServerGroupStateRevision rev =
+                        getSession().get(ServerGroupStateRevision.class, stateId);
                 usage.getServerGroupStateRevisions().add(rev);
             }
             else if (ids[3] != null) {
-                OrgStateRevision rev = (OrgStateRevision)getSession()
-                        .get(OrgStateRevision.class, stateId);
+                OrgStateRevision rev = getSession().get(OrgStateRevision.class, stateId);
+                usage.getOrgStateRevisions().add(rev);
+            }
+        }
+        return usage;
+    }
+
+    /**
+     * Find latest state revisions where a config channel is used.
+     * @param configChannelIn the config channel
+     * @return a {@link StateRevisionsUsage} bean holding the latest
+     * server/group/org revisions where the given config channel is used
+     */
+    public static StateRevisionsUsage latestStateRevisionsByConfigChannel(
+            ConfigChannel configChannelIn) {
+        List<Long[]> idList = getSession().getNamedQuery("StateRevision.findChannelUsage")
+                .setParameter("orgId", configChannelIn.getOrgId())
+                .setParameter("channelId", configChannelIn.getId())
+                .list();
+
+        StateRevisionsUsage usage = new StateRevisionsUsage();
+        for (Object[] ids : idList) {
+            Long stateId = (Long)ids[0];
+
+            if (ids[1] != null) {
+                ServerStateRevision rev =
+                        getSession().get(ServerStateRevision.class, stateId);
+                usage.getServerStateRevisions().add(rev);
+            }
+            else if (ids[2] != null) {
+                ServerGroupStateRevision rev =
+                        getSession().get(ServerGroupStateRevision.class, stateId);
+                usage.getServerGroupStateRevisions().add(rev);
+            }
+            else if (ids[3] != null) {
+                OrgStateRevision rev = getSession().get(OrgStateRevision.class, stateId);
                 usage.getOrgStateRevisions().add(rev);
             }
         }
