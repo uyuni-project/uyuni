@@ -54,8 +54,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -77,7 +77,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
-public class ConfigurationManagerTest extends RhnBaseTestCase {
+public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
     private User user;
     private PageControl pc;
@@ -90,7 +90,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
     }};
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         //Create a user and an org
         user = UserTestUtils.findNewUser("testyman", "orgman");
@@ -102,7 +102,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
     }
 
     @Override
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         user = null;
         pc = null;
         cm = null;
