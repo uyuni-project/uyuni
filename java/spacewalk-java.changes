@@ -39,6 +39,7 @@
 - ensure correct ordering of patches (bsc#1059801)
 - Set the creator user for minions correctly in case it is known (bsc#1058862)
 - Fix minor UI issues on overview page (bsc#1063590)
+- Hide invisible first level menu items (bsc#1063822)
 
 -------------------------------------------------------------------
 Mon Jun 12 09:07:20 CEST 2017 - mc@suse.de
