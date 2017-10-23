@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.state.test;
 
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -29,6 +30,7 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.ArrayList;
@@ -467,6 +469,127 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         }
         assertContains(sstate.get().getCustomStates(), state1);
         assertContains(sstate.get().getCustomStates(), state2);
+    }
+
+    public void testLatestConfigChannels() throws Exception {
+        // Create revision 1
+        Server server = ServerFactoryTest.createTestServer(user);
+
+        ServerStateRevision serverRevision = new ServerStateRevision();
+        serverRevision.setServer(server);
+        serverRevision.setCreator(user);
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Test Channel 1", "test-channel-1");
+        serverRevision.getConfigChannels().add(channel);
+        StateFactory.save(serverRevision);
+
+        // Create revision 2
+        serverRevision = new ServerStateRevision();
+        serverRevision.setServer(server);
+        serverRevision.setCreator(user);
+        channel = ConfigTestUtils.createConfigChannel(user.getOrg(), "Test Channel 2",
+                "test-channel-2");
+        serverRevision.getConfigChannels().add(channel);
+        channel = ConfigTestUtils.createConfigChannel(user.getOrg(), "Test Channel 3",
+                "test-channel-3");
+        serverRevision.getConfigChannels().add(channel);
+        StateFactory.save(serverRevision);
+
+        // Assert
+        Optional<Set<ConfigChannel>> latestChannels =
+                StateFactory.latestConfigChannels(server);
+
+        assertTrue(latestChannels.isPresent());
+        assertEquals(2, latestChannels.get().size());
+        assertTrue(latestChannels.get().stream()
+                .noneMatch(s -> "test-channel-1".equals(s.getLabel())));
+        assertTrue(latestChannels.get().stream()
+                .anyMatch(s -> "test-channel-2".equals(s.getLabel())));
+        assertTrue(latestChannels.get().stream()
+                .anyMatch(s -> "test-channel-3".equals(s.getLabel())));
+    }
+
+    public void testLatestStateRevisionsByConfigChannel() throws Exception {
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Test Channel 1", "test-channel-1");
+
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Test Channel 2", "test-channel-2");
+
+        // Server usage
+        Server srv = ServerFactoryTest.createTestServer(user);
+        ServerStateRevision srvRevision = new ServerStateRevision();
+        srvRevision.setServer(srv);
+        srvRevision.setCreator(user);
+        srvRevision.getConfigChannels().add(channel1);
+
+        OrgStateRevision org1Revision = new OrgStateRevision();
+        org1Revision.setOrg(user.getOrg());
+        org1Revision.setCreator(user);
+        org1Revision.getConfigChannels().add(channel2);
+
+        StateFactory.save(org1Revision);
+        StateFactory.save(srvRevision);
+        clearFlush();
+
+        StateFactory.StateRevisionsUsage usage =
+                StateFactory.latestStateRevisionsByConfigChannel(channel1);
+        assertEquals(1, usage.getServerStateRevisions().size());
+        assertEquals(0, usage.getOrgStateRevisions().size());
+        assertEquals(0, usage.getServerGroupStateRevisions().size());
+        assertTrue(usage.getServerStateRevisions().stream()
+                .anyMatch(r -> srvRevision.getId() == r.getId()));
+
+        // Org usage
+        OrgStateRevision org2Revision = new OrgStateRevision();
+        org2Revision.setOrg(user.getOrg());
+        org2Revision.setCreator(user);
+        org2Revision.getConfigChannels().add(channel1);
+        org2Revision.getConfigChannels().add(channel2);
+        StateFactory.save(org2Revision);
+        clearFlush();
+
+        usage = StateFactory.latestStateRevisionsByConfigChannel(channel1);
+        assertEquals(1, usage.getServerStateRevisions().size());
+        assertEquals(0, usage.getServerGroupStateRevisions().size());
+        assertEquals(1, usage.getOrgStateRevisions().size());
+        assertTrue(usage.getServerStateRevisions().stream()
+                .anyMatch(r -> srvRevision.getId() == r.getId()));
+        assertTrue(usage.getOrgStateRevisions().stream()
+                .anyMatch(r -> org2Revision.getId() == r.getId()));
+
+        // Server group usage
+        ManagedServerGroup grp1 =
+                ServerGroupFactory.create("test-group-1", "Test Group 1", user.getOrg());
+        ServerGroupStateRevision grp1Revision = new ServerGroupStateRevision();
+        grp1Revision.setGroup(grp1);
+        grp1Revision.setCreator(user);
+        grp1Revision.getConfigChannels().add(channel1);
+
+        ManagedServerGroup grp2 =
+                ServerGroupFactory.create("test-group-2", "Test Group 2", user.getOrg());
+        ServerGroupStateRevision grp2Revision = new ServerGroupStateRevision();
+        grp2Revision.setGroup(grp2);
+        grp2Revision.setCreator(user);
+        grp2Revision.getConfigChannels().add(channel1);
+
+        StateFactory.save(grp1Revision);
+        StateFactory.save(grp2Revision);
+        clearFlush();
+
+        usage = StateFactory
+                .latestStateRevisionsByConfigChannel(channel1);
+        assertEquals(1, usage.getServerStateRevisions().size());
+        assertEquals(2, usage.getServerGroupStateRevisions().size());
+        assertEquals(1, usage.getOrgStateRevisions().size());
+        assertTrue(usage.getServerStateRevisions().stream()
+                .anyMatch(r -> srvRevision.getId() == r.getId()));
+        assertTrue(usage.getOrgStateRevisions().stream()
+                .anyMatch(r -> org2Revision.getId() == r.getId()));
+        assertTrue(usage.getServerGroupStateRevisions().stream()
+                .anyMatch(r -> grp1Revision.getId() == r.getId()));
+        assertTrue(usage.getServerGroupStateRevisions().stream()
+                .anyMatch(r -> grp2Revision.getId() == r.getId()));
     }
 
     private void clearFlush() {
