@@ -75,13 +75,6 @@ public enum SaltCustomStateStorageManager {
     }
 
     /**
-     * @return the encoding used to write .sls files.
-     */
-    public String getEncoding() {
-        return encoding;
-    }
-
-    /**
      * Store the .sls file on disk with the given name and content.
      * @param orgId the organization id to which this SLS files belongs to
      * @param name the name of the file
