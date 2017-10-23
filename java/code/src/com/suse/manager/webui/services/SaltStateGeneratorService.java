@@ -408,7 +408,7 @@ public enum SaltStateGeneratorService {
      * @param name custom state name
      */
     public void regenerateCustomStates(long orgId, String name) {
-        StateFactory.CustomStateRevisionsUsage usage = StateFactory
+        StateFactory.StateRevisionsUsage usage = StateFactory
                 .latestStateRevisionsByCustomState(orgId, name);
         regenerateCustomStates(usage);
     }
@@ -418,7 +418,7 @@ public enum SaltStateGeneratorService {
      * the given usages.
      * @param usage custom states usages
      */
-    public void regenerateCustomStates(StateFactory.CustomStateRevisionsUsage usage) {
+    public void regenerateCustomStates(StateFactory.StateRevisionsUsage usage) {
         usage.getServerStateRevisions().forEach(rev ->
                 generateServerCustomState(rev)
         );
