@@ -296,4 +296,13 @@ public class ConfigChannelSaltManager {
                         channelLabel).toFile();
     }
 
+    /**
+     * Get the name of the salt state corresponding to the given channel.
+     *
+     * @param channel the channel
+     * @return the name of the channel salt state
+     */
+    public String getChannelStateName(ConfigChannel channel) {
+        return getOrgNamespace(channel.getOrgId()) + "." + channel.getLabel();
+    }
 }
