@@ -13,7 +13,7 @@ Feature: XML-RPC image namespace for containers
   Scenario: Apply the highstate to ensure container build host is ready
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "[Container Build Host]" text
-    And I enable Suse container repository, but not for SLES11 systems
+    And I enable SUSE container repository, but not for SLES11 systems
     And I enable SLES pool and update repository on "sle-minion", but not for SLES11
 
   Scenario: Test image.store namespace
@@ -46,6 +46,6 @@ Feature: XML-RPC image namespace for containers
     And I follow "arancio"
     And I follow "Delete Key"
     And I click on "Delete Key"
-    And I disable Suse container repository, but not for SLES11 systems
+    And I disable SUSE container repository, but not for SLES11 systems
     And I disable SLES pool and update repository on "sle-minion"
     And I run "zypper -n --gpg-auto-import-keys ref" on "sle-minion"
