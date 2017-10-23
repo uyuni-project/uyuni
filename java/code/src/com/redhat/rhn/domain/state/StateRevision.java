@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.state;
 
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -34,6 +35,7 @@ public class StateRevision {
     private User creator;
     private Set<PackageState> packageStates = new HashSet<>();
     private Set<CustomState> customStates = new HashSet<>();
+    private Set<ConfigChannel> configChannels = new HashSet<>();
 
     /**
      * @return the id
@@ -110,6 +112,20 @@ public class StateRevision {
      */
     public void setCustomStates(Set<CustomState> customStatesIn) {
         this.customStates = customStatesIn;
+    }
+
+    /**
+     * @return the config channels assigned to this server
+     */
+    public Set<ConfigChannel> getConfigChannels() {
+        return configChannels;
+    }
+
+    /**
+     * @param configChannelsIn the config channels to assign to this server
+     */
+    public void setConfigChannels(Set<ConfigChannel> configChannelsIn) {
+        this.configChannels = configChannelsIn;
     }
 
     /**
