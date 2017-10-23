@@ -36,6 +36,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static java.util.Optional.ofNullable;
+
 /**
  * DetailsAction backs the page for managing config-channel details
  * @version $Rev: 1 $
@@ -67,8 +69,10 @@ public class ChannelOverviewAction extends RhnAction {
             try {
                 helper.validate(daForm);
                 if (cc != null) {
+                    String channelOldLabel = cc.getLabel();
                     helper.update(cc, daForm);
-                    helper.save(cc);
+                    ConfigurationManager.getInstance().save(cc,
+                            ofNullable(channelOldLabel));
                     setupForm(request, cc, daForm, params);
                     return getStrutsDelegate().forwardParams(
                             mapping.findForward("success"), params);

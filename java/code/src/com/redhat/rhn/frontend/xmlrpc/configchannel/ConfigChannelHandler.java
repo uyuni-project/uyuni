@@ -51,6 +51,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static java.util.Optional.empty;
+
 /**
  * ConfigHandler
  * @xmlrpc.namespace configchannel
@@ -86,7 +88,7 @@ public class ConfigChannelHandler extends BaseHandler {
             helper.validate(label, name, description);
             ConfigChannel cc = helper.create(loggedInUser);
             helper.update(cc, name, label, description);
-            helper.save(cc);
+            ConfigurationManager.getInstance().save(cc, empty());
             return cc;
         }
         catch (ValidatorException ve) {
@@ -293,7 +295,8 @@ public class ConfigChannelHandler extends BaseHandler {
             helper.validate(label, name, description);
             cc.setName(name);
             cc.setDescription(description);
-            helper.save(cc);
+            // we don't update label here
+            ConfigurationManager.getInstance().save(cc, empty());
             return cc;
         }
         catch (ValidatorException ve) {
