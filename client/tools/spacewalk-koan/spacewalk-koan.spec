@@ -22,7 +22,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildArch:      noarch
 %endif
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
-Requires:       koan20
+Requires:       koan
 Requires:       xz
 %if 0%{?suse_version} >= 1110 || 0%{?rhel} || 0%{?fedora}
 Requires:       %{pythonX}-rhn-virtualization-common
