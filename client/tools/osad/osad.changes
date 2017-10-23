@@ -1,3 +1,6 @@
+- Fixed TypeError for force flag in setup_config that could happen
+  when jabberd restart was needed. (bsc#1064393)
+
 -------------------------------------------------------------------
 Tue May 23 07:57:05 CEST 2017 - mc@suse.de
 
