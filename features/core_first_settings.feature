@@ -19,7 +19,7 @@ Feature: Very first settings
     And I enter "Admin" as "lastName"
     And I enter "galaxy-noise@suse.de" as "email"
     And I click on "Create Organization"
-    Then I am logged-in
+    Then I am logged in
 
   Scenario: Create testing username
     Given I am authorized as "admin" with password "admin"
@@ -57,28 +57,28 @@ Feature: Very first settings
     When I wait for mgr-sync refresh is finished
 
   Scenario: Check services which should run
-    Then Service "atftpd" is enabled on the Server
-    And Service "atftpd" is running on the Server
-    And Service "auditlog-keeper" is enabled on the Server
-    And Service "auditlog-keeper" is running on the Server
-    And Service "cobblerd" is enabled on the Server
-    And Service "cobblerd" is running on the Server
-    And Service "jabberd" is enabled on the Server
-    And Service "jabberd" is running on the Server
-    And Service "osa-dispatcher" is enabled on the Server
-    And Service "osa-dispatcher" is running on the Server
-    And Service "rhn-search" is enabled on the Server
-    And Service "rhn-search" is running on the Server
-    And Service "salt-api" is enabled on the Server
-    And Service "salt-api" is running on the Server
-    And Service "salt-master" is enabled on the Server
-    And Service "salt-master" is running on the Server
-    And Service "taskomatic" is enabled on the Server
-    And Service "taskomatic" is running on the Server
-    And Service "apache2" is enabled on the Server
-    And Service "apache2" is running on the Server
-    And Service "tomcat" is enabled on the Server
-    And Service "tomcat" is running on the Server
+    Then service "atftpd" is enabled on the server
+    And service "atftpd" is running on the server
+    And service "auditlog-keeper" is enabled on the server
+    And service "auditlog-keeper" is running on the server
+    And service "cobblerd" is enabled on the server
+    And service "cobblerd" is running on the server
+    And service "jabberd" is enabled on the server
+    And service "jabberd" is running on the server
+    And service "osa-dispatcher" is enabled on the server
+    And service "osa-dispatcher" is running on the server
+    And service "rhn-search" is enabled on the server
+    And service "rhn-search" is running on the server
+    And service "salt-api" is enabled on the server
+    And service "salt-api" is running on the server
+    And service "salt-master" is enabled on the server
+    And service "salt-master" is running on the server
+    And service "taskomatic" is enabled on the server
+    And service "taskomatic" is running on the server
+    And service "apache2" is enabled on the server
+    And service "apache2" is running on the server
+    And service "tomcat" is enabled on the server
+    And service "tomcat" is running on the server
 
   Scenario: Setup HTTP proxy
     When I am authorized as "admin" with password "admin"

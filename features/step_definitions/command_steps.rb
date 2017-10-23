@@ -95,12 +95,12 @@ When(/^I copy to server "([^"]*)"$/) do |arg1|
   raise "Execute command failed: #{$ERROR_INFO}: #{$command_output}" unless $CHILD_STATUS.success?
 end
 
-Then(/^the pxe-default-profile should be enabled$/) do
+Then(/^the PXE default profile should be enabled$/) do
   sleep(1)
   step %(file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT pxe-default-profile")
 end
 
-Then(/^the pxe-default-profile should be disabled$/) do
+Then(/^the PXE default profile should be disabled$/) do
   sleep(1)
   step %(file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local")
 end
@@ -157,13 +157,13 @@ Then(/^I should see "(.*?)" in the output$/) do |arg1|
   assert_includes(@command_output, arg1)
 end
 
-Then(/^Service "([^"]*)" is enabled on the Server$/) do |service|
+Then(/^service "([^"]*)" is enabled on the server$/) do |service|
   output = sshcmd("systemctl is-enabled '#{service}'", ignore_err: true)[:stdout]
   output.chomp!
   raise if output != 'enabled'
 end
 
-Then(/^Service "([^"]*)" is running on the Server$/) do |service|
+Then(/^service "([^"]*)" is running on the server$/) do |service|
   output = sshcmd("systemctl is-active '#{service}'", ignore_err: true)[:stdout]
   output.chomp!
   raise if output != 'active'

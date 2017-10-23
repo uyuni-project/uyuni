@@ -50,7 +50,7 @@ Feature: Manage users
     And I should see a "Preferences" link in the content area
     And I should see a "Addresses" link
     And I should see a "user1" text
-    And Option "Mr." is selected as "prefix"
+    And option "Mr." is selected as "prefix"
     And I should see "Test" in field "firstNames"
     And I should see "User" in field "lastName"
     And I should see a "galaxy-noise@suse.de" link
