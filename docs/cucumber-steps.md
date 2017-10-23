@@ -77,7 +77,7 @@ please grep in the source code.
   Then I should be logged in
 ```
 
-To check for the initial log in, prefer ```Then I am logged-in```.
+To check for the initial log in, prefer ```Then I am logged in```.
 
 * Sign out
 
@@ -182,7 +182,7 @@ To check for the initial log in, prefer ```Then I am logged-in```.
 * Go to Users => Users list => Active
 
 ```cucumber
-  When I am on the active Users page
+  When I am on the Active Users page
 ```
 
 * Go to details of a given client
@@ -326,7 +326,7 @@ The check box can be identified by name, id or label text.
 * Make sure an item in a selection box is selected
 
 ```cucumber
-  Then Option "Mr." is selected as "prefix"
+  Then option "Mr." is selected as "prefix"
 ```
 
 
@@ -474,7 +474,7 @@ The check box can be identified by name, id or label text.
 * Check for base channel (with User Interface)
 
 ```cucumber
-  Then the system should have a Base channel set
+  Then the system should have a base channel set
 ```
 
 * Download a package from a channel
@@ -517,7 +517,7 @@ The check box can be identified by name, id or label text.
 * Test is Salt is working with ```test.ping```
 
 ```cucumber
-  Then the salt-master can reach "sle-minion"
+  Then the Salt master can reach "sle-minion"
 ```
 
 * Salt keys

@@ -23,7 +23,7 @@ Feature: Salt states
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    Then the system should have a Base channel set
+    Then the system should have a base channel set
 
   Scenario: Remove a package through the UI
     Given I am on the Systems overview page of this "sle-minion"

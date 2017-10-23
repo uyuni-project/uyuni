@@ -21,7 +21,7 @@ Feature: Bare metal discovery
     And I should see a "Enable adding to this organization" button
     When I click on "Enable adding to this organization"
     Then I should see a "Automatic bare-metal system discovery has been successfully enabled" text
-    And the pxe-default-profile should be enabled
+    And the PXE default profile should be enabled
 
   Scenario: Register a client for bare metal discovery
     When I register using "1-spacewalk-bootstrap-activation-key" key
@@ -116,7 +116,7 @@ Feature: Bare metal discovery
     And I should see a "Disable adding to this organization" button
     When I click on "Disable adding to this organization"
     Then I should see a "Automatic bare-metal system discovery has been successfully disabled" text
-    And the pxe-default-profile should be disabled
+    And the PXE default profile should be disabled
   
   Scenario: Cleanup: register a traditional client after bare metal tests
     When I register using "1-SUSE-DEV-x86_64" key
