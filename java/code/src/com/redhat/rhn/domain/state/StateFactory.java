@@ -52,7 +52,7 @@ public class StateFactory extends HibernateFactory {
     /**
      * Holds the result of {@link StateFactory#latestStateRevisionsByCustomState}.
      */
-    public static class CustomStateRevisionsUsage {
+    public static class StateRevisionsUsage {
         private List<ServerStateRevision> serverStateRevisions = new LinkedList<>();
         private List<ServerGroupStateRevision> serverGroupStateRevisions
                 = new LinkedList<>();
@@ -61,7 +61,7 @@ public class StateFactory extends HibernateFactory {
         /**
          * No arg constructor.
          */
-        public CustomStateRevisionsUsage() { }
+        public StateRevisionsUsage() { }
 
         /**
          * @return the server state revisions
@@ -279,17 +279,17 @@ public class StateFactory extends HibernateFactory {
      * Find latest state revisions where a custom state is used.
      * @param orgIdIn the org of the custom state
      * @param stateNameIn the name of the custom state
-     * @return a {@link CustomStateRevisionsUsage} bean holding the latest
+     * @return a {@link StateRevisionsUsage} bean holding the latest
      * server/group/org revisions where the given custom state is used
      */
-    public static CustomStateRevisionsUsage latestStateRevisionsByCustomState(
+    public static StateRevisionsUsage latestStateRevisionsByCustomState(
             long orgIdIn, String stateNameIn) {
         List<Object[]> idList = getSession().getNamedQuery("StateRevision.findStateUsage")
                 .setLong("orgId", orgIdIn)
                 .setString("stateName", stateNameIn)
                 .list();
 
-        CustomStateRevisionsUsage usage = new CustomStateRevisionsUsage();
+        StateRevisionsUsage usage = new StateRevisionsUsage();
         for (Object[] ids : idList) {
             Long stateId = (Long)ids[0];
 

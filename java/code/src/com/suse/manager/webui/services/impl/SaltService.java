@@ -782,7 +782,7 @@ public class SaltService {
      */
     public void deleteCustomState(long orgId, String name) {
         try {
-            StateFactory.CustomStateRevisionsUsage usage = StateFactory
+            StateFactory.StateRevisionsUsage usage = StateFactory
                     .latestStateRevisionsByCustomState(orgId, name);
             customSaltStorageManager.deleteState(orgId, name);
             SaltStateGeneratorService.INSTANCE.regenerateCustomStates(usage);

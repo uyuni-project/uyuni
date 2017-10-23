@@ -344,7 +344,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         StateFactory.save(server1Revision);
         clearFlush();
 
-        StateFactory.CustomStateRevisionsUsage usage = StateFactory
+        StateFactory.StateRevisionsUsage usage = StateFactory
                 .latestStateRevisionsByCustomState(user.getOrg().getId(), state1.getStateName());
         assertEquals(0, usage.getOrgStateRevisions().size());
         assertEquals(0, usage.getServerGroupStateRevisions().size());
