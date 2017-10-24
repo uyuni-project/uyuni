@@ -1,7 +1,7 @@
 enable_ca_store:
   cmd.run:
     - name: /usr/bin/update-ca-trust enable
-    - user: root
+    - runas: root
     - unless: "/usr/bin/update-ca-trust check | grep \"PEM/JAVA Status: ENABLED\""
 
 /etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT:
@@ -12,8 +12,8 @@ enable_ca_store:
       - cmd: enable_ca_store
 
 update-ca-certificates:
-  cmd.wait:
+  cmd.run:
     - name: /usr/bin/update-ca-trust extract
-    - user: root
-    - watch:
+    - runas: root
+    - onchanges:
       - file: /etc/pki/ca-trust/source/anchors/RHN-ORG-TRUSTED-SSL-CERT

@@ -50,13 +50,13 @@ trust_suse_manager_tools_gpg_key:
     - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res7tools:file') }}
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res7tools:name') }}
 {%- endif %}
-    - user: root
+    - runas: root
 
 trust_res_gpg_key:
   cmd.run:
     - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res:file') }}
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res:name') }}
-    - user: root
+    - runas: root
 {%- endif %}
 
 salt-minion-package:
