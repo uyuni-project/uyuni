@@ -39,13 +39,16 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         ConfigChannelSaltManager manager = ConfigChannelSaltManager.getInstance();
 
         ConfigFile file = channel.getConfigFiles().first();
-        String expected = "mgr-cfg-state-"
-                + file.getConfigChannel().getId() + "-" + file.getId() + ":\n" +
+        String expected = "mgr-cfg-state-" +
+                file.getConfigChannel().getId() + "-" + file.getId() + ":\n" +
                 "    file.managed:\n" +
                 "    -   name: " + file.getConfigFileName().getPath() + "\n" +
                 "    -   source:\n" +
                 "        - salt://" + manager.getOrgNamespace(channel.getOrgId()) + "/" +
-                file.getConfigFileName().getPath() + "\n";
+                file.getConfigFileName().getPath() + "\n" +
+                "    -   user: chuck\n" +
+                "    -   group: nobody\n" +
+                "    -   mode: 700\n";
 
         assertEquals(expected, manager.configChannelInitSLSContent(fromDb));
     }
@@ -67,7 +70,10 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
                 file.getConfigChannel().getId() + "-" + file.getId() + ":\n" +
                 "    file.directory:\n" +
                 "    -   name: " + file.getConfigFileName().getPath() + "\n" +
-                "    -   makedirs: true\n";
+                "    -   makedirs: true\n" +
+                "    -   user: chuck\n" +
+                "    -   group: nobody\n" +
+                "    -   mode: 700\n";
 
         assertEquals(expected, manager.configChannelInitSLSContent(fromDb));
     }
@@ -89,7 +95,10 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
                 file.getConfigChannel().getId() + "-" + file.getId() + ":\n" +
                 "    file.symlink:\n" +
                 "    -   name: " + file.getConfigFileName().getPath() + "\n" +
-                "    -   target: /tmp/symlink_tgt\n";
+                "    -   target: /tmp/symlink_tgt\n" +
+                "    -   user: chuck\n" +
+                "    -   group: nobody\n" +
+                "    -   mode: 700\n";
 
         assertEquals(expected, manager.configChannelInitSLSContent(fromDb));
     }

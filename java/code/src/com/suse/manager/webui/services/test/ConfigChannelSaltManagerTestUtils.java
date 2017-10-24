@@ -57,6 +57,7 @@ public class ConfigChannelSaltManagerTestUtils {
         ConfigContent configContent = ConfigTestUtils.createConfigContent(10L, false);
         configContent.setContents(StringUtils.getUTF8Bytes("aoeuaoeuao"));
         configRevision.setConfigContent(configContent);
+        changeConfigInfo(configRevision.getConfigInfo());
         return configRevision;
     }
 
@@ -66,7 +67,9 @@ public class ConfigChannelSaltManagerTestUtils {
      */
     public static void addDirToChannel(ConfigChannel channel) {
         ConfigFile fl = ConfigTestUtils.createConfigFile(channel);
-        ConfigTestUtils.createConfigRevision(fl, ConfigFileType.dir());
+        ConfigRevision configRevision =
+                ConfigTestUtils.createConfigRevision(fl, ConfigFileType.dir());
+        changeConfigInfo(configRevision.getConfigInfo());
     }
 
     /**
@@ -80,6 +83,13 @@ public class ConfigChannelSaltManagerTestUtils {
         ConfigInfo configInfo = ConfigTestUtils.createConfigInfo();
         configInfo.setTargetFileName(
                 ConfigurationFactory.lookupOrInsertConfigFileName("/tmp/symlink_tgt"));
+        changeConfigInfo(configInfo);
         configRevision.setConfigInfo(configInfo);
+    }
+
+    private static void changeConfigInfo(ConfigInfo configInfo) {
+        configInfo.setUsername("chuck");
+        configInfo.setGroupname("nobody");
+        configInfo.setFilemode(700L); // only Chuck has access
     }
 }

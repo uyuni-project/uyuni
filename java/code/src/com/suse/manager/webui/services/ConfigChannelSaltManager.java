@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
+import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.utils.Opt;
@@ -230,6 +231,7 @@ public class ConfigChannelSaltManager {
         List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
         fileParams.add(singletonMap("source", singletonList(saltUri)));
+        fileParams.addAll(getModeParams(f.getLatestConfigRevision().getConfigInfo()));
 
         return singletonMap(
                 getFileStateName(f),
@@ -241,23 +243,33 @@ public class ConfigChannelSaltManager {
         List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
         fileParams.add(singletonMap("makedirs", true));
+        fileParams.addAll(getModeParams(f.getLatestConfigRevision().getConfigInfo()));
 
         return singletonMap(
                 getFileStateName(f),
                 singletonMap("file.directory", fileParams));
     }
 
-    private Map<String, Map<String, List<Map<String, String>>>> symlinkState(ConfigFile f) {
-        List<Map<String, String>> fileParams = new LinkedList<>();
+    private Map<String, Map<String, List<Map<String, Object>>>> symlinkState(ConfigFile f) {
+        List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
         fileParams.add(singletonMap("target", f.getLatestConfigRevision().getConfigInfo()
                 .getTargetFileName().getPath()));
+        fileParams.addAll(getModeParams(f.getLatestConfigRevision().getConfigInfo()));
 
         return singletonMap(
                 getFileStateName(f),
                 singletonMap(
                         "file.symlink",
                         fileParams));
+    }
+
+    private List<Map<String, Object>> getModeParams(ConfigInfo configInfo) {
+        List<Map<String, Object>> modeParams = new LinkedList<>();
+        modeParams.add(singletonMap("user", configInfo.getUsername()));
+        modeParams.add(singletonMap("group", configInfo.getGroupname()));
+        modeParams.add(singletonMap("mode", configInfo.getFilemode()));
+        return modeParams;
     }
 
     private void assertStateInOrgDir(File orgDir, File stateFile) throws IOException {
