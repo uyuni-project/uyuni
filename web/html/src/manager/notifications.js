@@ -73,7 +73,12 @@ const Notifications = React.createClass({
 
   render: function() {
     return (
-      <div onClick={this.onClick}><i className="fa fa-envelope"></i>{this.state.messages.length}</div>
+        <div onClick={this.onClick}>
+          <i className="fa fa-bell"></i>
+          <div id="notification-counter">
+            {this.state.messages.length}
+          </div>
+        </div>
     );
   }
 });
