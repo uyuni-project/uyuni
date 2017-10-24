@@ -189,11 +189,11 @@ class RegisterKsCli(rhncli.RhnCli):
                 ipaddr = hw.get('ipaddr')
                 ip6addr = hw.get('ipaddr6')
                 
-	# bnc#700218: Don't let 'unknown' hostname escape.
-	if hostname and hostname == 'unknown':
-	    hostname = gethostname()
-	    if hostname == 'unknown' or hostname == 'localhost' or hostname == 'localhost.localdomain':
-		hostname == None
+        # bnc#700218: Don't let 'unknown' hostname escape.
+        if hostname and hostname == 'unknown':
+            hostname = gethostname()
+            if hostname == 'unknown' or hostname == 'localhost' or hostname == 'localhost.localdomain':
+                hostname == None
 
         if hostname:
             profileName = idn_puny_to_unicode(hostname)
