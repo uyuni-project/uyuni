@@ -82,6 +82,8 @@ import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
+import com.suse.salt.netapi.errors.JsonParsingError;
+import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Change;
 import com.suse.salt.netapi.results.CmdExecCodeAll;
 import com.suse.salt.netapi.results.ModuleRun;
@@ -1340,6 +1342,49 @@ public class SaltUtils {
 
         UUID uuidSwap = new UUID(target.getLong(), target.getLong());
         return uuidSwap.toString().replaceAll("-", "");
+    }
+
+    /**
+     * Decode the std message from the whole message
+     *
+     * @param message the message Object
+     * @param key the json key of the message to decode (e.g.: sdterr, stdout)
+     * @return the String decoded if it exists
+     */
+    public static Optional<String> decodeStdMessage(Object message, String key) {
+        if (message instanceof JsonParsingError) {
+            JsonElement json = ((JsonParsingError)message).getJson();
+            if (json.isJsonObject() && json.getAsJsonObject().has(key)) {
+                if (json.getAsJsonObject().get(key).isJsonPrimitive() &&
+                    json.getAsJsonObject().get(key).getAsJsonPrimitive().isString()) {
+                    return Optional.of(json.getAsJsonObject()
+                            .get(key).getAsJsonPrimitive().getAsString());
+                }
+                else if (json.getAsJsonObject().get(key).isJsonArray()) {
+                    StringBuilder msg = new StringBuilder();
+                    json.getAsJsonObject().get(key).getAsJsonArray()
+                            .forEach(elem -> msg.append(elem.getAsString()));
+                    return Optional.of(msg.toString());
+                }
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    /**
+     * Decode a {@link SaltError} to a string error message.
+     *
+     * @param saltErr the Salt err
+     * @return the error as a string
+     */
+    public static String decodeSaltErr(SaltError saltErr) {
+        Optional<String> errorMessage = SaltUtils.decodeStdMessage(saltErr, "stderr");
+        Optional<String> outMessage = !errorMessage.isPresent() ?
+                SaltUtils.decodeStdMessage(saltErr, "stdout") : errorMessage;
+        Optional<String> returnMessage = !outMessage.isPresent() ?
+                SaltUtils.decodeStdMessage(saltErr, "return") : outMessage;
+        return returnMessage.orElseGet(() -> saltErr.toString());
     }
 
 }

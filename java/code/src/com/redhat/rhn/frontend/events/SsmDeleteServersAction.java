@@ -48,11 +48,14 @@ public class SsmDeleteServersAction extends AbstractDatabaseAction {
 
         SsmOperationManager.associateServersWithOperation(operationId,
                                                         user.getId(), sids);
-
+        HibernateFactory.commitTransaction();
         try {
             for (Long sid : sids) {
                 try {
-                    SystemManager.deleteServer(user, sid);
+                    SystemManager.deleteServerAndCleanup(user,
+                            sid,
+                            event.getServerCleanupType()
+                    );
                     // commit after each deletion to prevent deadlocks with
                     // system registration
                     HibernateFactory.commitTransaction();
