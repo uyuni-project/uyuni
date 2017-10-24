@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Aug 08 09:32:23 CEST 2017 - fkobzik@suse.de
+
+- version 5.11.80.3-1
+- reduce maximal size of osad log before rotating
+- perform osad restart in posttrans (bsc#1039913)
+
+-------------------------------------------------------------------
 Tue May 23 07:57:05 CEST 2017 - mc@suse.de
 
 - version 5.11.80.2-1
