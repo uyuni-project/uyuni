@@ -39,11 +39,13 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         ConfigChannelSaltManager manager = ConfigChannelSaltManager.getInstance();
 
         ConfigFile file = channel.getConfigFiles().first();
-        String expected = file.getConfigFileName().getPath() + ":\n" +
+        String expected = "mgr-cfg-state-"
+                + file.getConfigChannel().getId() + "-" + file.getId() + ":\n" +
                 "    file.managed:\n" +
+                "    -   name: " + file.getConfigFileName().getPath() + "\n" +
                 "    -   source:\n" +
-                "        - salt://" + manager.getOrgNamespace(channel.getOrgId()) + "/"
-                + file.getConfigFileName().getPath() + "\n";
+                "        - salt://" + manager.getOrgNamespace(channel.getOrgId()) + "/" +
+                file.getConfigFileName().getPath() + "\n";
 
         assertEquals(expected, manager.configChannelInitSLSContent(fromDb));
     }
@@ -61,9 +63,11 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         ConfigChannelSaltManager manager = ConfigChannelSaltManager.getInstance();
 
         ConfigFile file = channel.getConfigFiles().first();
-        String expected = file.getConfigFileName().getPath() + ":\n"
-                + "    file.directory:\n"
-                + "    -   makedirs: true\n";
+        String expected = "mgr-cfg-state-" +
+                file.getConfigChannel().getId() + "-" + file.getId() + ":\n" +
+                "    file.directory:\n" +
+                "    -   name: " + file.getConfigFileName().getPath() + "\n" +
+                "    -   makedirs: true\n";
 
         assertEquals(expected, manager.configChannelInitSLSContent(fromDb));
     }
@@ -81,9 +85,11 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         ConfigChannelSaltManager manager = ConfigChannelSaltManager.getInstance();
 
         ConfigFile file = channel.getConfigFiles().first();
-        String expected = file.getConfigFileName().getPath() + ":\n"
-                + "    file.symlink:\n"
-                + "    -   target: /tmp/symlink_tgt\n";
+        String expected = "mgr-cfg-state-" +
+                file.getConfigChannel().getId() + "-" + file.getId() + ":\n" +
+                "    file.symlink:\n" +
+                "    -   name: " + file.getConfigFileName().getPath() + "\n" +
+                "    -   target: /tmp/symlink_tgt\n";
 
         assertEquals(expected, manager.configChannelInitSLSContent(fromDb));
     }

@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -221,40 +222,42 @@ public class ConfigChannelSaltManager {
         return builder.toString();
     }
 
-    private Map<String, Map<String, List<Map<String, List<String>>>>> fileState(
-            ConfigFile f) {
+    private Map<String, Map<String, List<Map<String, Object>>>> fileState(ConfigFile f) {
         String saltUri = "salt://" + Paths.get(
                 getOrgNamespace(f.getConfigChannel().getOrgId()),
                 f.getConfigFileName().getPath());
+
+        List<Map<String, Object>> fileParams = new LinkedList<>();
+        fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
+        fileParams.add(singletonMap("source", singletonList(saltUri)));
+
         return singletonMap(
-                f.getConfigFileName().getPath(),
-                singletonMap(
-                        "file.managed",
-                        singletonList(singletonMap(
-                                "source",
-                                singletonList(saltUri)))));
+                getFileStateName(f),
+                singletonMap("file.managed", fileParams));
     }
 
-    private Map<String, Map<String, List<Map<String, Boolean>>>> directoryState(
+    private Map<String, Map<String, List<Map<String, Object>>>> directoryState(
             ConfigFile f) {
+        List<Map<String, Object>> fileParams = new LinkedList<>();
+        fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
+        fileParams.add(singletonMap("makedirs", true));
+
         return singletonMap(
-                f.getConfigFileName().getPath(),
-                singletonMap(
-                        "file.directory",
-                        singletonList(singletonMap(
-                                "makedirs",
-                                true))));
+                getFileStateName(f),
+                singletonMap("file.directory", fileParams));
     }
 
     private Map<String, Map<String, List<Map<String, String>>>> symlinkState(ConfigFile f) {
+        List<Map<String, String>> fileParams = new LinkedList<>();
+        fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
+        fileParams.add(singletonMap("target", f.getLatestConfigRevision().getConfigInfo()
+                .getTargetFileName().getPath()));
+
         return singletonMap(
-                f.getConfigFileName().getPath(),
+                getFileStateName(f),
                 singletonMap(
                         "file.symlink",
-                        singletonList(singletonMap(
-                                "target",
-                                f.getLatestConfigRevision().getConfigInfo()
-                                        .getTargetFileName().getPath()))));
+                        fileParams));
     }
 
     private void assertStateInOrgDir(File orgDir, File stateFile) throws IOException {
@@ -304,5 +307,15 @@ public class ConfigChannelSaltManager {
      */
     public String getChannelStateName(ConfigChannel channel) {
         return getOrgNamespace(channel.getOrgId()) + "." + channel.getLabel();
+    }
+
+    /**
+     * Get the unique state name for a configuration file.
+     *
+     * @param file config file
+     * @return the unique state name
+     */
+    private static String getFileStateName(ConfigFile file) {
+        return "mgr-cfg-state-" + file.getConfigChannel().getId() + "-" + file.getId();
     }
 }
