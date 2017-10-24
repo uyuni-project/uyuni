@@ -256,7 +256,6 @@ public class ConfigChannelSaltManager {
         fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
         fileParams.add(singletonMap("target", f.getLatestConfigRevision().getConfigInfo()
                 .getTargetFileName().getPath()));
-        fileParams.addAll(getModeParams(f.getLatestConfigRevision().getConfigInfo()));
 
         return singletonMap(
                 getFileStateName(f),
