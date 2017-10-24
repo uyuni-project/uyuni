@@ -96,10 +96,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
                 file.getConfigChannel().getId() + "-" + file.getId() + ":\n" +
                 "    file.symlink:\n" +
                 "    -   name: " + file.getConfigFileName().getPath() + "\n" +
-                "    -   target: /tmp/symlink_tgt\n" +
-                "    -   user: chuck\n" +
-                "    -   group: nobody\n" +
-                "    -   mode: 700\n";
+                "    -   target: /tmp/symlink_tgt\n";
 
         assertEquals(expected, manager.configChannelInitSLSContent(fromDb));
     }
