@@ -69,7 +69,7 @@ CREATE OR REPLACE FUNCTION get_user_chan_access(config_channel_id_in IN NUMERIC,
          WHERE CC.id = config_channel_id_in
            AND CCT.id = CC.confchan_type_id;
 
-        IF (rhn_user.check_role_implied(user_id_in, 'config_admin') = 1) AND (global_channel = 'normal')
+        IF (rhn_user.check_role_implied(user_id_in, 'config_admin') = 1) AND (global_channel IN ('normal', 'state'))
         THEN
             RETURN 1;
         END IF;
