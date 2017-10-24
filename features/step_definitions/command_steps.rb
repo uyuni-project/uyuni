@@ -313,6 +313,7 @@ When(/^I register this client for SSH push via tunnel$/) do
            "    eof                                                        {break}\n" \
            "    \"Are you sure you want to continue connecting (yes/no)?\" {send \"yes\r\"}\n" \
            "    \"Password:\"                                              {send \"linux\r\"}\n" \
+           "  }\n" \
            "}\n"
   path = generate_temp_file('push-registration.expect', script)
   step 'I copy to server "' + path + '"'
