@@ -40,7 +40,7 @@ public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
     }
 
     protected String getLabel() {
-        return ConfigChannelType.global().getLabel();
+        return ConfigChannelType.normal().getLabel();
     }
 
     protected String getType() {

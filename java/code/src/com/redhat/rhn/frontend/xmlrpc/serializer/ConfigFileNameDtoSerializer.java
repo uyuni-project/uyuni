@@ -70,7 +70,7 @@ public class ConfigFileNameDtoSerializer extends RhnXmlRpcCustomSerializer {
         ConfigChannelType type =
             ConfigChannelType.lookup(dto.getConfigChannelType());
         helper.add("channel_type", type);
-        if (type.equals(ConfigChannelType.global())) {
+        if (type.equals(ConfigChannelType.normal())) {
             helper.add("channel_label", dto.getConfigChannelLabel());
         }
         helper.add("last_modified", dto.getLastModifiedDate());

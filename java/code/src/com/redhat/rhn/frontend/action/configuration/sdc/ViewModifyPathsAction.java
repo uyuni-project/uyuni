@@ -255,9 +255,13 @@ public class ViewModifyPathsAction extends RhnAction implements Listable {
      */
     private ConfigChannelType getType(String channelType) {
 
-        if (ConfigChannelType.global().getLabel().
+        if (ConfigChannelType.normal().getLabel().
                                                     equals(channelType)) {
-            return ConfigChannelType.global();
+            return ConfigChannelType.normal();
+        }
+        else if (ConfigChannelType.state().getLabel().
+                equals(channelType)) {
+            return ConfigChannelType.state();
         }
         else if (ConfigChannelType.local().getLabel().
                                                         equals(channelType)) {

@@ -71,7 +71,7 @@ public class LocalRevisionDeployAction extends RhnAction {
 
         ConfigRevision cr = ConfigActionHelper.findRevision(request);
 
-        if (ConfigChannelType.global().equals(
+        if (ConfigChannelType.normal().equals(
                 cr.getConfigFile().getConfigChannel().getConfigChannelType())) {
             return getStrutsDelegate().forwardParams(mapping.findForward("global"),
                     params);

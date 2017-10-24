@@ -36,7 +36,7 @@ public class ConfigChannelTypeSerializerTest  extends TestCase {
 
         Writer output = new StringWriter();
 
-        ConfigChannelType normal = ConfigChannelType.global();
+        ConfigChannelType normal = ConfigChannelType.normal();
         ccts.serialize(normal, output, new XmlRpcSerializer());
         String expected = "<struct><member><name>id</name>" +
                           "<value><i4>" + normal.getId() + "</i4></value></member>\n" +

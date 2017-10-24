@@ -123,7 +123,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Create a global channel
         ConfigChannel global = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         // Susbscribe system to global
         srv1.subscribeConfigChannel(global, user);
         ServerFactory.save(srv1);
@@ -215,7 +215,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Channel of interest - has rev-1 of aFile
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigFile theFile = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo1");
         ConfigTestUtils.createConfigRevision(theFile);
@@ -243,7 +243,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Channel of interest - has rev-1 of aFile
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigFile theFile = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo");
         ConfigTestUtils.createConfigRevision(theFile);
@@ -251,7 +251,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Other global channel 1 - has rev-2 of aFile
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigFile aFile = gcc2.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo");
         ConfigTestUtils.createConfigRevision(aFile);
@@ -259,7 +259,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Other global channel 2 - has rev-3 of aFile
         ConfigChannel gcc3 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         aFile = gcc3.createConfigFile(ConfigFileState.normal(),
             "/etc/foo");
         ConfigTestUtils.createConfigRevision(aFile);
@@ -629,7 +629,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Create a global channel
         ConfigChannel global = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         // Susbscribe system to global
         srv1.subscribeConfigChannel(global, user);
 
@@ -822,9 +822,9 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     public void testListSystemInfoForChannel() throws Exception {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
 
         //Create a local config channel and a server it belongs to
         ConfigChannel lcc = ConfigTestUtils.createConfigChannel(user.getOrg(),
@@ -930,9 +930,9 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
 
         Long ver = new Long(2);
 
@@ -1004,9 +1004,9 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
 
         Long ver = new Long(2);
 
@@ -1071,9 +1071,9 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
 
         Long ver = new Long(2);
 
@@ -1148,9 +1148,9 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
         srv1.subscribeConfigChannel(gcc1, user);
         srv1.subscribeConfigChannel(gcc2, user);
@@ -1194,7 +1194,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         List globalViewResults = cm.listManagedPathsFor(srv1,
                                      user,
-                                     ConfigChannelType.global());
+                                     ConfigChannelType.normal());
         assertEquals(2, globalViewResults.size());
 
         Iterator itr =  globalViewResults.iterator();
@@ -1224,7 +1224,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
 
         globalViewResults = cm.listManagedPathsFor(srv1, user,
-                               ConfigChannelType.global());
+                               ConfigChannelType.normal());
         assertEquals(2, globalViewResults.size());
 
         itr =  globalViewResults.iterator();
@@ -1233,7 +1233,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertEquals(dto.getConfigRevision(), rev1.getRevision());
         assertNull(dto.getLocalRevision());
         assertNull(dto.getLocalRevisionId());
-        assertEquals(ConfigChannelType.global().getLabel(),
+        assertEquals(ConfigChannelType.normal().getLabel(),
                 dto.getConfigChannelType());
 
         dto = (ConfigFileNameDto) itr.next();
@@ -1322,7 +1322,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     public void testCopyFile() throws Exception {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
 
         /**
          * Giving the user access to this channel
@@ -1336,7 +1336,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(gcc1);
 
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                                  ConfigChannelType.global());
+                                  ConfigChannelType.normal());
 
         try {
             /**
@@ -1413,7 +1413,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Create a global config-channel - we should NOT have access
         cc = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         assertNotNull(cc);
         assertFalse(cm.accessToChannel(user.getId(), cc.getId()));
 
@@ -1424,7 +1424,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         // Create a second global channel - we should NOT have access
         cc = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         assertNotNull(cc);
         assertFalse(cm.accessToChannel(user.getId(), cc.getId()));
 
