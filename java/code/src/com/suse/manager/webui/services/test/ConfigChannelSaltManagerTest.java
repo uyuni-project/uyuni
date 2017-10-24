@@ -45,6 +45,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
                 "    -   name: " + file.getConfigFileName().getPath() + "\n" +
                 "    -   source:\n" +
                 "        - salt://" + manager.getOrgNamespace(channel.getOrgId()) + "/" +
+                file.getConfigChannel().getLabel() + "/" +
                 file.getConfigFileName().getPath() + "\n" +
                 "    -   user: chuck\n" +
                 "    -   group: nobody\n" +

@@ -226,6 +226,7 @@ public class ConfigChannelSaltManager {
     private Map<String, Map<String, List<Map<String, Object>>>> fileState(ConfigFile f) {
         String saltUri = "salt://" + Paths.get(
                 getOrgNamespace(f.getConfigChannel().getOrgId()),
+                f.getConfigChannel().getLabel(),
                 f.getConfigFileName().getPath());
 
         List<Map<String, Object>> fileParams = new LinkedList<>();
