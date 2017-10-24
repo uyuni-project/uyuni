@@ -37,9 +37,10 @@ import com.redhat.rhn.testing.TestUtils;
 public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
     public void testLookupConfigChannelType() throws Exception {
-        assertNotNull(ConfigChannelType.global());
+        assertNotNull(ConfigChannelType.normal());
         assertNotNull(ConfigChannelType.sandbox());
         assertNotNull(ConfigChannelType.local());
+        assertNotNull(ConfigChannelType.state());
     }
 
     public void testLookupConfigFileType() throws Exception {
@@ -59,7 +60,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     public void testSaveNewConfigChannel() {
         String label = "testlabel";
         ConfigChannel channel = ConfigurationFactory.saveNewConfigChannel(user.getOrg(),
-                ConfigChannelType.global(), "testname",
+                ConfigChannelType.normal(), "testname",
                 label, "testdescription");
         assertNotNull(channel.getId());
 
@@ -77,7 +78,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         //now look up the new way
         ConfigChannel channel3 =
             ConfigurationFactory.lookupConfigChannelByLabel(label, user.getOrg(),
-                                    ConfigChannelType.global()
+                                    ConfigChannelType.normal()
                                     );
         assertEquals(channel2, channel3);
 

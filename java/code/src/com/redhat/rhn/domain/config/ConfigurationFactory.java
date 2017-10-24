@@ -951,8 +951,11 @@ public class ConfigurationFactory extends HibernateFactory {
             throw new IllegalArgumentException("Error: channel type cannot be null");
         }
 
-        if (ConfigChannelType.global().getLabel().equals(type)) {
-            return channel; //for global channels, there name is the channel name.
+        if (ConfigChannelType.normal().getLabel().equals(type)) {
+            return channel;
+        }
+        if (ConfigChannelType.state().getLabel().equals(type)) {
+            return channel;
         }
         else if (ConfigChannelType.local().getLabel().equals(type)) {
             return LocalizationService.getInstance()
