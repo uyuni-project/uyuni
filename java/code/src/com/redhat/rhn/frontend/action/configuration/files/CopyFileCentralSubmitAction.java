@@ -52,7 +52,7 @@ public class CopyFileCentralSubmitAction extends BaseCopyFileSubmitAction {
     }
 
     protected String getLabel() {
-        return ConfigChannelType.global().getLabel();
+        return ConfigChannelType.normal().getLabel();
     }
 
     protected ConfigChannel getChannelFromElement(User usr, Long anId) {
