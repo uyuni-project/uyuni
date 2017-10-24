@@ -18,7 +18,6 @@ package com.suse.manager.webui.services.test;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
-import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -126,11 +125,11 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
      */
     private static void initSlsAssertions(File initSlsFile, String ... contentChunks)
             throws IOException {
-        Assert.assertTrue(initSlsFile.exists());
-        Assert.assertTrue(initSlsFile.isFile());
+        assertTrue(initSlsFile.exists());
+        assertTrue(initSlsFile.isFile());
         String initSlsContents = FileUtils.readFileToString(initSlsFile);
         for (String contentChunk : contentChunks) {
-            Assert.assertTrue(initSlsContents.contains(contentChunk));
+            assertContains(initSlsContents, contentChunk);
         }
     }
 }
