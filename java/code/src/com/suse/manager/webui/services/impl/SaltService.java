@@ -1141,4 +1141,15 @@ public class SaltService {
         );
     }
 
+    /**
+     * Remove SUSE Manager specific configuration from a Salt ssh minion.
+     *
+     * @param minion the minion.
+     * @param timeout operation timeout
+     * @return list of error messages or empty if no error
+     */
+    public Optional<List<String>> cleanupSSHMinion(MinionServer minion,
+                                                   int timeout) {
+        return saltSSHService.cleanupSSHMinion(minion, timeout);
+    }
 }

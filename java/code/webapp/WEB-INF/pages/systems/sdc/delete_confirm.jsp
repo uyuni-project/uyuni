@@ -9,22 +9,19 @@
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
     <h2><bean:message key="delete_confirm.jsp.header"/></h2>
     <bean:message key="delete_confirm.jsp.summary" arg0="${sid}" />
-
+    <c:if test="${issaltsshpush}">
+        <bean:message key="delete_confirm.jsp.summary.sshpush"/>
+    </c:if>
     <hr/>
 
-    <html:form method="post" action="/systems/details/DeleteConfirm.do?sid=${sid}">
-      <rhn:csrf />
-      <html:hidden property="submitted" value="true"/>
-        <div class="form-horizontal">
-            <div class="form-group">
-                <div class="col-md-12">
-                    <html:submit property="button" styleClass="btn btn-danger">
-                        <bean:message key="delete_confirm.jsp.button"/>
-                    </html:submit>
-                </div>
-            </div>
-        </div>
-    </html:form>
+    <div id="delete_system_button"></div>
+    <script>
+        var csrfToken="<%= com.redhat.rhn.common.security.CSRFTokenValidator.getToken(session) %>";
 
+        function getServerIdToDelete(){
+            return ${sid};
+        }
+    </script>
+    <script src="/javascript/manager/delete-system-confirm.bundle.js" type="text/javascript"></script>
 </body>
 </html:html>
