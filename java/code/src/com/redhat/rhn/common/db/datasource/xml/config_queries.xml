@@ -735,7 +735,7 @@ SELECT  count(CC.id) AS count
   FROM  rhnConfigChannel CC, rhnConfigChannelType CCT
  WHERE  CC.org_id = :org_id
    AND  CC.confchan_type_id = CCT.id
-   AND  CCT.label = 'normal'
+   AND  CCT.label IN( 'normal', 'state')
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
   </query>
 </mode>
@@ -758,7 +758,7 @@ SELECT  count(CF.id) AS count
   FROM  rhnConfigFile CF, rhnConfigChannel CC, rhnConfigChannelType CCT
  WHERE  CC.org_id = :org_id
    AND  CC.confchan_type_id = CCT.id
-   AND  CCT.label != 'normal'
+   AND  CCT.label NOT IN ( 'normal', 'state')
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
    AND  CC.id = CF.config_channel_id
   </query>
@@ -1412,7 +1412,7 @@ SELECT CC.id,
        rhnConfigChannel CC
  WHERE CC.org_id = :org_id
    AND CC.confchan_type_id = CCT.id
-   AND CCT.label IN ('normal')
+   AND CCT.label IN ('normal', 'state')
    AND rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
    AND EXISTS ( SELECT 1
                   FROM rhnSet ST, rhnServerConfigChannel SCC
@@ -1880,7 +1880,7 @@ SELECT  CC.id, CC.name, SCC.position
    AND  USP.user_id = :user_id
    AND  SCC.config_channel_id = CC.id
    AND  CC.confchan_type_id = CCT.id
-   AND  CCT.label = 'normal'
+   AND  CCT.label IN ('normal', 'state')
 ORDER BY SCC.position ASC
   </query>
   <elaborator params="sid">
@@ -1951,7 +1951,7 @@ SELECT CC.id, CC.name, CC.label, CCT.label as type,
           INNER JOIN rhnConfigChannel CC ON CC.confchan_type_id = CCT.id
           INNER JOIN rhnRegTokenConfigChannels tcc On CC.id = tcc.CONFIG_CHANNEL_ID
  WHERE CC.org_id = :org_id
-   AND CCT.label IN ('normal')
+   AND CCT.label IN ('normal', 'state')
    AND tcc.token_id = :tid
 ORDER BY tcc.position
   </query>
@@ -1967,7 +1967,7 @@ SELECT CC.id, CC.name, CC.label, CCT.label as type,
   FROM rhnConfigChannelType CCT
           INNER JOIN rhnConfigChannel CC ON CC.confchan_type_id = CCT.id
  WHERE CC.org_id = :org_id
-   AND CCT.label IN ('normal')
+   AND CCT.label IN ('normal', 'state')
    AND NOT EXISTS (select 1 from rhnRegTokenConfigChannels tcc where
                                         CC.id = tcc.CONFIG_CHANNEL_ID AND tcc.token_id = :tid)
  order by cc.name
@@ -1981,7 +1981,7 @@ SELECT CC.id, CC.name, CC.label, CCT.label as type
   FROM rhnConfigChannelType CCT
           INNER JOIN rhnConfigChannel CC ON CC.confchan_type_id = CCT.id
  WHERE CC.org_id = :org_id
-   AND CCT.label IN ('normal')
+   AND CCT.label IN ('normal', 'state')
    AND rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
 ORDER BY UPPER(CC.name)
   </query>
@@ -2054,7 +2054,7 @@ SELECT CC.id,
   FROM rhnConfigChannelType CCT
         INNER JOIN rhnConfigChannel CC ON CC.confchan_type_id = CCT.id
    WHERE CC.org_id = :org_id
-   AND CCT.label IN ('normal')
+   AND CCT.label IN ('normal', 'state')
    AND NOT EXISTS (select 1 from rhnServerConfigChannel SCC where SCC.server_id =:sid and SCC.config_channel_id = CC.id)
    AND rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
 ORDER BY UPPER(CC.name)
@@ -2120,7 +2120,7 @@ SELECT  CC.id, CC.name
     ON  CC.id = SSMCHannels.config_channel_id
  WHERE  CC.org_id = :org_id
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
-   AND  CCT.label = 'normal'
+   AND  CCT.label IN ('normal', 'state')
    AND  COALESCE(SSMCHannels.server_cnt, 0) &lt; (SELECT count(*)
                                                     FROM rhnSet
                                                    WHERE label = 'system_list'
@@ -2155,7 +2155,7 @@ SELECT  CC.id, CC.name
     ON  CC.id = SSMCHannels.config_channel_id
  WHERE  CC.org_id = :org_id
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
-   AND  CCT.label = 'normal'
+   AND  CCT.label IN ('normal', 'state')
    AND  SSMCHannels.config_channel_id is not NULL
 ORDER BY UPPER(CC.name)
   </query>
@@ -2171,7 +2171,7 @@ SELECT  CC.id, CC.name
    AND  ST.element = CC.id
    AND  CC.confchan_type_id = CCT.id
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
-   AND  CCT.label = 'normal'
+   AND  CCT.label IN ('normal', 'state')
 ORDER BY ST.element_two
   </query>
   <elaborator name="ssm_channel_elab" />
@@ -2212,7 +2212,7 @@ SELECT  CC.id,
  WHERE  CC.id IN (%s)
 </query>
 
-<!-- Find all config-channels of a given type (normal, local, sandbox OTHER THAN a specified one -->
+<!-- Find all config-channels of a given type (normal, local, sandbox, state OTHER THAN a specified one -->
 <query name ="find_other_channels" params="org_id, ccid, type, user_id" class="com.redhat.rhn.frontend.dto.ConfigChannelDto">
   SELECT  DISTINCT CC.id, CC.label, CC.name, CCT.label AS type
     FROM  rhnConfigChannel CC, rhnConfigChannelType CCT
