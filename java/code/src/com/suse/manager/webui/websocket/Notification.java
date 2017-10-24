@@ -27,7 +27,8 @@ import javax.websocket.EndpointConfig;
 import javax.websocket.server.ServerEndpoint;
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.GregorianCalendar;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Websocket endpoint for showing notifications real-time in web UI.
@@ -39,7 +40,7 @@ public class Notification {
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(Notification.class);
 
-    private Session wsSession = null;
+    private static List<Session> wsSessions = new LinkedList<>();
 
     /**
      * Callback executed when the websocket is opened.
@@ -58,16 +59,17 @@ public class Notification {
             }
         }
         LOG.debug("Hooked a new websocket session {id = " + session.getId() + "}");
-        wsSession = session;
+        wsSessions.add(session);
     }
 
     /**
      * Callback executed when the websocket is closed.
+     * @param sessios the closed websocket {@link Session}
      */
     @OnClose
     public void onClose(Session session) {
         LOG.debug("Closing web socket session");
-        wsSession = null;
+        wsSessions.remove(session);
     }
 
     /**
@@ -78,7 +80,10 @@ public class Notification {
     @OnMessage
     public void onMessage(Session session, String messageBody) {
         try {
-            sendMessage(session, messageBody);
+            // notify all attached sessions
+            for (Session s : wsSessions) {
+                sendMessage(s, messageBody);
+            }
         }
         catch (Exception e) {
             String message = "Error receiving a notification message";
@@ -94,7 +99,7 @@ public class Notification {
      * Must be synchronized. Sending messages concurrently from separate threads
      * will result in IllegalStateException.
      */
-    private void sendMessage(Session session, String message) {
+    public static void sendMessage(Session session, String message) {
         synchronized (session) {
             try {
                 if (session.isOpen()) {
@@ -102,12 +107,22 @@ public class Notification {
                 }
                 else {
                     LOG.debug("Could not send websocket message. Session is closed.");
-                    wsSession = null;
+                    wsSessions.remove(session);
                 }
             }
             catch (IOException e) {
                 LOG.error("Error sending websocket message", e);
             }
+        }
+    }
+
+    /**
+     * A static method to notify all {@link Session}s attached to websocket from the outside
+     * @param message
+     */
+    public static void notifyAll(String message) {
+        for (Session s : wsSessions) {
+            sendMessage(s, message);
         }
     }
 
@@ -118,7 +133,7 @@ public class Notification {
      */
     @OnError
     public void onError(Session session, Throwable err) {
-        wsSession = null;
+        wsSessions.remove(session);
         if (err instanceof EOFException) {
             LOG.debug("The client aborted the connection.", err);
         }
