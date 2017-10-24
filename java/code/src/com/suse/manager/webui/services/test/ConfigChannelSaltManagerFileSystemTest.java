@@ -75,15 +75,16 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
 
         manager.generateConfigChannelFiles(channel);
 
+        String configFilePath = channel.getConfigFiles().first().getConfigFileName().getPath();
         File generatedFile = getGeneratedFile(channel,
-                channel.getConfigFiles().first().getConfigFileName().getPath());
+                configFilePath);
         // for configuration directories we don't generate anything except state in init.sls
         assertFalse(generatedFile.exists());
 
         File initSlsFile = getGeneratedFile(channel, "init.sls");
         initSlsAssertions(initSlsFile,
                 "file.directory",
-                generatedFile.getName());
+                configFilePath);
     }
 
     /**
