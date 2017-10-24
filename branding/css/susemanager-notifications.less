@@ -1,7 +1,24 @@
 #notifications {
   display: inline-block;
-  border-radius: 30px;
-  padding: 5px;
-  font-size: 1.2em;
+  padding: 1px 5px;
+  font-size: 1.3em;
   color: @spacewalk-gray-light;
+  margin-left: 10px;
+  vertical-align: middle;
+  position: relative;
+
+  #notification-counter {
+    background-color: @spacewalk-orange-light;
+    text-align: center;
+    position: absolute;
+    left: 15px;
+    top: -1px;
+    color: #333;
+    font-size: 0.8em;
+    min-width: 20px;
+    height: 20px;
+    padding: 0px 2px;
+    border-radius: 10px;
+    border: 1px solid #333;
+  }
 }
