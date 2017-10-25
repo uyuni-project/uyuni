@@ -136,8 +136,10 @@ public class ConfigChannelSaltManager {
             Optional<String> oldChannelLabel) throws IOException {
         // TODO synchronize at file level not on the class instance
         if (!ConfigChannelType.NORMAL.equals(channel.getConfigChannelType().getLabel())) {
-            throw new IllegalArgumentException("Only 'normal' configuration channels are " +
-                    "supported");
+            LOG.debug("Trying to generate salt files for incompatible channel type " +
+                    "(channel: " + channel + "). Skipping. (Only 'normal' configuration " +
+                    "channels are supported.)");
+            return;
         }
         File channelDir = Paths.get(baseDirPath).resolve(getChannelRelativePath(channel))
                 .toFile();
