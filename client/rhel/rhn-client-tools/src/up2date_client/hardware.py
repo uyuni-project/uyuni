@@ -22,7 +22,7 @@ import os
 import sys
 from up2date_client import config
 from up2date_client import rhnserver
-from up2dateUtils import getMachineId
+from up2date_client.up2dateUtils import getMachineId
 
 from rhn.i18n import ustr
 

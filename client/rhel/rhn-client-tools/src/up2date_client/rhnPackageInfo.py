@@ -5,7 +5,10 @@
 
 import os
 import tempfile
-import ConfigParser
+try:
+    import ConfigParser
+except ImportError:
+    import configparser
 from up2date_client import up2dateAuth
 from up2date_client import up2dateLog
 from up2date_client import rhnserver
