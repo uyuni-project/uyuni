@@ -1,3 +1,4 @@
+- improve text for system types page (bsc#1057084)
 - Disallow entering multiple identical mirror credentials (bsc#971785)
 
 -------------------------------------------------------------------
