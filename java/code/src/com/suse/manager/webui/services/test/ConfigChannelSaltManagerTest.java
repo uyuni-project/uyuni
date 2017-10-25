@@ -39,12 +39,12 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         ConfigChannelSaltManager manager = ConfigChannelSaltManager.getInstance();
 
         ConfigFile file = channel.getConfigFiles().first();
-        String expected = "mgr-cfg-state-" +
-                file.getConfigChannel().getId() + "-" + file.getId() + ":\n" +
+        String expected =  manager.getFileStateName(file)  + ":\n" +
                 "    file.managed:\n" +
                 "    -   name: " + file.getConfigFileName().getPath() + "\n" +
                 "    -   source:\n" +
                 "        - salt://" + manager.getOrgNamespace(channel.getOrgId()) + "/" +
+                file.getConfigChannel().getConfigChannelType().getLabel() + "/" +
                 file.getConfigChannel().getLabel() + "/" +
                 file.getConfigFileName().getPath() + "\n" +
                 "    -   user: chuck\n" +
@@ -67,8 +67,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         ConfigChannelSaltManager manager = ConfigChannelSaltManager.getInstance();
 
         ConfigFile file = channel.getConfigFiles().first();
-        String expected = "mgr-cfg-state-" +
-                file.getConfigChannel().getId() + "-" + file.getId() + ":\n" +
+        String expected =  manager.getFileStateName(file)  + ":\n" +
                 "    file.directory:\n" +
                 "    -   name: " + file.getConfigFileName().getPath() + "\n" +
                 "    -   makedirs: true\n" +
@@ -92,8 +91,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         ConfigChannelSaltManager manager = ConfigChannelSaltManager.getInstance();
 
         ConfigFile file = channel.getConfigFiles().first();
-        String expected = "mgr-cfg-state-" +
-                file.getConfigChannel().getId() + "-" + file.getId() + ":\n" +
+        String expected =  manager.getFileStateName(file)  + ":\n" +
                 "    file.symlink:\n" +
                 "    -   name: " + file.getConfigFileName().getPath() + "\n" +
                 "    -   target: /tmp/symlink_tgt\n";
