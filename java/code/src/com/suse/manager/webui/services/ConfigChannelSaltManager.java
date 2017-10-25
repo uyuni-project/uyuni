@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
@@ -82,7 +83,7 @@ public class ConfigChannelSaltManager {
      * @param channel - the config channel
      * @throws IOException in case of an IO error
      */
-    public synchronized void generateConfigChannelFiles(ConfigChannel channel) {
+    public void generateConfigChannelFiles(ConfigChannel channel) {
         generateConfigChannelFiles(channel, empty());
     }
 
@@ -107,9 +108,10 @@ public class ConfigChannelSaltManager {
                     channel + " (old channel label: " +
                     oldChannelLabel.orElse("<empty>") + "). " +
                     "Removing files from disk.", e);
-            removeConfigChannelFiles(channel.getOrgId(), channel.getLabel());
-            oldChannelLabel.ifPresent(oldLabel ->
-                    removeConfigChannelFiles(channel.getOrgId(), oldLabel));
+            removeConfigChannelFiles(channel.getOrgId(), channel.getConfigChannelType(),
+                    channel.getLabel());
+            oldChannelLabel.ifPresent(oldLabel -> removeConfigChannelFiles(
+                    channel.getOrgId(), channel.getConfigChannelType(), oldLabel));
         }
     }
 
@@ -119,7 +121,8 @@ public class ConfigChannelSaltManager {
      * @param channel the channel
      */
     public synchronized void removeConfigChannelFiles(ConfigChannel channel) {
-        removeConfigChannelFiles(channel.getOrgId(), channel.getLabel());
+        removeConfigChannelFiles(channel.getOrgId(), channel.getConfigChannelType(),
+                channel.getLabel());
     }
 
     /**
@@ -136,7 +139,8 @@ public class ConfigChannelSaltManager {
             throw new IllegalArgumentException("Only 'normal' configuration channels are " +
                     "supported");
         }
-        File channelDir = getChannelDirectory(channel.getOrgId(), channel.getLabel());
+        File channelDir = Paths.get(baseDirPath).resolve(getChannelRelativePath(channel))
+                .toFile();
         if (channelDir.exists()) {
             FileUtils.cleanDirectory(channelDir);
         }
@@ -155,7 +159,8 @@ public class ConfigChannelSaltManager {
         if (Opt.fold(oldChannelLabel,
                 () -> false,
                 label -> !label.equals(channel.getLabel()))) {
-            removeConfigChannelFiles(channel.getOrgId(), oldChannelLabel.get());
+            removeConfigChannelFiles(channel.getOrgId(), channel.getConfigChannelType(),
+                    oldChannelLabel.get());
         }
     }
 
@@ -180,11 +185,14 @@ public class ConfigChannelSaltManager {
                 encoding);
     }
 
-    private void removeConfigChannelFiles(Long orgId, String channelLabel) {
+    private void removeConfigChannelFiles(Long orgId, ConfigChannelType channelType,
+            String channelLabel) {
         LOG.trace("Deleting unused file structure for configuration channel: " +
                 channelLabel);
         try {
-            FileUtils.deleteDirectory(getChannelDirectory(orgId, channelLabel));
+            File channelDirectory = Paths.get(baseDirPath).resolve(
+                    getChannelRelativePath(orgId, channelType, channelLabel)).toFile();
+            FileUtils.deleteDirectory(channelDirectory);
         }
         catch (IOException e) {
             LOG.error("Error when deleting salt file structure for channel: " +
@@ -224,10 +232,12 @@ public class ConfigChannelSaltManager {
     }
 
     private Map<String, Map<String, List<Map<String, Object>>>> fileState(ConfigFile f) {
-        String saltUri = "salt://" + Paths.get(
-                getOrgNamespace(f.getConfigChannel().getOrgId()),
-                f.getConfigChannel().getLabel(),
-                f.getConfigFileName().getPath());
+        Path filePath = Paths.get(f.getConfigFileName().getPath());
+        if (filePath.getRoot() != null) {
+            filePath = filePath.getRoot().relativize(filePath);
+        }
+        String saltUri = "salt://" + getChannelRelativePath(f.getConfigChannel())
+                .resolve(filePath);
 
         List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
@@ -299,16 +309,37 @@ public class ConfigChannelSaltManager {
     }
 
     /**
-     * Get the directory where the files corresponding to a channel will reside.
+     * Get the channel relative path which consists of:
+     * - organization namespace directory
+     * - label of the channel type
+     * - label of the channel
      *
-     * @param orgId the organization id
-     * @param channelLabel the channel label
-     * @return the Salt namespace of the channel
+     * @param channel the channel
+     * @return the channel relative path
      */
-    private File getChannelDirectory(Long orgId, String channelLabel) {
-        return Paths.get(this.baseDirPath,
-                        getOrgNamespace(orgId),
-                        channelLabel).toFile();
+    private Path getChannelRelativePath(ConfigChannel channel) {
+        return getChannelRelativePath(
+                channel.getOrgId(),
+                channel.getConfigChannelType(),
+                channel.getLabel());
+    }
+
+    /**
+     * Get the channel relative path which consists of:
+     * - organization namespace directory
+     * - label of the channel type
+     * - label of the channel
+     *
+     * @param orgId the channel organization id
+     * @param channelType the channel type
+     * @param channelLabel the channel label
+     * @return the channel relative path
+     */
+    private Path getChannelRelativePath(Long orgId, ConfigChannelType channelType,
+            String channelLabel) {
+        return Paths.get((getOrgNamespace(orgId)))
+                .resolve(channelType.getLabel())
+                .resolve(channelLabel);
     }
 
     /**
@@ -318,16 +349,20 @@ public class ConfigChannelSaltManager {
      * @return the name of the channel salt state
      */
     public String getChannelStateName(ConfigChannel channel) {
-        return getOrgNamespace(channel.getOrgId()) + "." + channel.getLabel();
+        return getOrgNamespace(channel.getOrgId()) + "." +
+                channel.getConfigChannelType().getLabel() + "." +
+                channel.getLabel();
     }
 
     /**
      * Get the unique state name for a configuration file.
+     * Public for testing purposes.
      *
      * @param file config file
      * @return the unique state name
      */
-    private static String getFileStateName(ConfigFile file) {
-        return "mgr-cfg-state-" + file.getConfigChannel().getId() + "-" + file.getId();
+    public String getFileStateName(ConfigFile file) {
+        return getChannelStateName(file.getConfigChannel()) + "." +
+                file.getConfigFileName().getPath();
     }
 }
