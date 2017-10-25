@@ -62,9 +62,9 @@ if __name__ == '__main__':
         Option('-y', '--yes', action='store_true',
                help='answer yes for all questions'),
         Option('-q', '--quiet', action='store_true',
-               help='print(only error messages'),)
+               help='print only error messages'),
         Option('-d', '--debug', action='count',
-               help='print(debug messages (can be passed multiple times)'),)
+               help='print debug messages (can be passed multiple times)'),
     ]
 
     usage = 'usage: %prog [options] [command]'
