@@ -72,13 +72,12 @@
         </rhn-require>
     </rhn-tab>
 
-    <rhn-require acl="all_systems_in_set_have_feature(ftr_kickstart)">
-      <rhn-tab name="Provisioning" url="/rhn/systems/ssm/kickstart/KickstartableSystems.do"
-              acl="all_systems_in_set_have_feature(ftr_kickstart)">
-          <rhn-tab name="Kickstart" url="/rhn/systems/ssm/kickstart/KickstartableSystems.do" >
-              <rhn-tab-url>/rhn/systems/ssm/kickstart/ScheduleByProfile.do</rhn-tab-url>
-              <rhn-tab-url>/rhn/systems/ssm/kickstart/ScheduleByIp.do</rhn-tab-url>
-          </rhn-tab>
+    <rhn-tab name="Provisioning" url="/rhn/systems/ssm/kickstart/KickstartableSystems.do"
+            acl="all_systems_in_set_have_feature(ftr_kickstart)">
+        <rhn-tab name="Kickstart" url="/rhn/systems/ssm/kickstart/KickstartableSystems.do" >
+            <rhn-tab-url>/rhn/systems/ssm/kickstart/ScheduleByProfile.do</rhn-tab-url>
+            <rhn-tab-url>/rhn/systems/ssm/kickstart/ScheduleByIp.do</rhn-tab-url>
+        </rhn-tab>
 
         <rhn-require acl="all_systems_in_set_have_feature(ftr_tag_system)">
             <rhn-tab name="Tag Systems" url="/rhn/systems/ssm/provisioning/TagSystems.do"/>
@@ -98,26 +97,23 @@
                 <rhn-tab-url>/rhn/systems/ssm/provisioning/PowerManagementOperations.do</rhn-tab-url>
             </rhn-tab>
         </rhn-require>
-      </rhn-tab>
-    </rhn-require>
+    </rhn-tab>
 
 <!--
   FIX: Temporary decouple "ftr_power_management" from "ftr_kickstart" for Salt minions.
   This should be removed as soon as "ftr_kickstart" is implemented for minions.
 -->
-    <rhn-require acl="not all_systems_in_set_have_feature(ftr_kickstart); any_system_with_salt_entitlement()">
-      <rhn-tab name="Provisioning" url="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"
-              acl="all_systems_in_set_have_feature(ftr_power_management)">
-          <rhn-require acl="all_systems_in_set_have_feature(ftr_power_management)">
-              <rhn-tab name="Power Management Configuration" url="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do">
-                  <rhn-tab-url>/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do</rhn-tab-url>
-              </rhn-tab>
-              <rhn-tab name="Power Management Operations" url="/rhn/systems/ssm/provisioning/PowerManagementOperations.do">
-                  <rhn-tab-url>/rhn/systems/ssm/provisioning/PowerManagementOperations.do</rhn-tab-url>
-              </rhn-tab>
-          </rhn-require>
-      </rhn-tab>
-    </rhn-require>
+    <rhn-tab name="Provisioning" url="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"
+            acl="all_systems_in_set_have_feature(ftr_power_management); not all_systems_in_set_have_feature(ftr_kickstart); any_system_with_salt_entitlement()">
+        <rhn-require acl="all_systems_in_set_have_feature(ftr_power_management)">
+            <rhn-tab name="Power Management Configuration" url="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do">
+                <rhn-tab-url>/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do</rhn-tab-url>
+            </rhn-tab>
+            <rhn-tab name="Power Management Operations" url="/rhn/systems/ssm/provisioning/PowerManagementOperations.do">
+                <rhn-tab-url>/rhn/systems/ssm/provisioning/PowerManagementOperations.do</rhn-tab-url>
+            </rhn-tab>
+        </rhn-require>
+    </rhn-tab>
 <!-- ENDFIX -->
 
     <rhn-tab name="Audit" acl="all_systems_in_set_have_feature(ftr_system_audit)">
