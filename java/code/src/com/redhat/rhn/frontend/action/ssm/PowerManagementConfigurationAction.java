@@ -122,6 +122,7 @@ public class PowerManagementConfigurationAction extends RhnAction implements Lis
                 {
                     add(EntitlementManager.BOOTSTRAP_ENTITLED);
                     add(EntitlementManager.ENTERPRISE_ENTITLED);
+                    add(EntitlementManager.SALT_ENTITLED);
                 }
             });
     }
