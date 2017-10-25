@@ -84,6 +84,7 @@ Provides: python2-rhn-client-tools = %{version}-%{release}
 Obsoletes: python2-rhn-client-tools < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: rpm-python
+Requires: spacewalk-usix
 %ifnarch s390 s390x
 Requires: python-dmidecode
 %endif
@@ -151,6 +152,7 @@ Requires: libgudev
 Requires: newt-python3
 Requires: python3-gobject-base
 %endif
+Requires: python3-spacewalk-usix
 Requires: python3-rpm
 Requires: python3-dmidecode
 Requires: python3-netifaces
