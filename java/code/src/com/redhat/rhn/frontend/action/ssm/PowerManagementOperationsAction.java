@@ -134,6 +134,7 @@ public class PowerManagementOperationsAction extends RhnAction implements
                 {
                     add(EntitlementManager.BOOTSTRAP_ENTITLED);
                     add(EntitlementManager.ENTERPRISE_ENTITLED);
+                    add(EntitlementManager.SALT_ENTITLED);
                 }
             });
     }
