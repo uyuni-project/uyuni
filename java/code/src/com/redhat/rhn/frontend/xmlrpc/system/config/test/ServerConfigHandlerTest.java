@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.system.config.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -203,6 +204,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                         admin, server.getId().intValue(),
                         path, isDir, data, commitToLocal);
 
+            server = (Server) HibernateFactory.reload(server);
             ConfigChannel cc = commitToLocal ? server.getLocalOverride() :
                                                      server.getSandboxOverride();
             assertRev(rev, path, contents, group, owner, perms, isDir, cc, start, end,
@@ -223,6 +225,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         data.put(ConfigRevisionSerializer.SELINUX_CTX, selinuxCtx);
         ConfigRevision rev = handler.createOrUpdateSymlink(admin,
                     server.getId().intValue(), path, data, commitToLocal);
+        server = (Server) HibernateFactory.reload(server);
         ConfigChannel cc = commitToLocal ? server.getLocalOverride() :
             server.getSandboxOverride();
 
