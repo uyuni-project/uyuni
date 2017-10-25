@@ -229,6 +229,12 @@
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Australia/Adelaide">
+        <source>Australia Adelaide</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Asia/Jakarta">
         <source>(GMT+0700) Thailand</source>
         <context-group name="ctx">
