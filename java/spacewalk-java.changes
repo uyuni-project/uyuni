@@ -1,3 +1,4 @@
+- fix alignment of systemtype counts text (bsc#1057084)
 - Enable 'Power Management' features on Salt minions.
 - Remove SUSE Manager specific configuration from Salt ssh minion when deleting system from SUSE Manager (bsc#1986)
 - Fix editing of vhm config params (bsc#1063185)
