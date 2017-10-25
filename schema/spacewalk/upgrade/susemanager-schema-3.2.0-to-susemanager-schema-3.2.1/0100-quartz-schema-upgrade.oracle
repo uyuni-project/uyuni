@@ -111,14 +111,14 @@ end loop;
 --
 -- add all primary and foreign key constraints, based on new columns
 --
-alter table qrtz_triggers add primary key (sched_name, trigger_name, trigger_group);
-alter table qrtz_triggers add foreign key (sched_name, job_name, job_group) references qrtz_job_details(sched_name, job_name, job_group);
-alter table qrtz_blob_triggers add primary key (sched_name, trigger_name, trigger_group);
-alter table qrtz_blob_triggers add foreign key (sched_name, trigger_name, trigger_group) references qrtz_triggers(sched_name, trigger_name, trigger_group);
-alter table qrtz_cron_triggers add primary key (sched_name, trigger_name, trigger_group);
-alter table qrtz_cron_triggers add foreign key (sched_name, trigger_name, trigger_group) references qrtz_triggers(sched_name, trigger_name, trigger_group);
-alter table qrtz_simple_triggers add primary key (sched_name, trigger_name, trigger_group);
-alter table qrtz_simple_triggers add foreign key (sched_name, trigger_name, trigger_group) references qrtz_triggers(sched_name, trigger_name, trigger_group);
+alter table qrtz_triggers add CONSTRAINT qrtz_triggers_pkey primary key (sched_name, trigger_name, trigger_group);
+alter table qrtz_triggers add CONSTRAINT qrtz_triggers_fkey foreign key (sched_name, job_name, job_group) references qrtz_job_details(sched_name, job_name, job_group);
+alter table qrtz_blob_triggers add CONSTRAINT qrtz_blob_triggers_pkey primary key (sched_name, trigger_name, trigger_group);
+alter table qrtz_blob_triggers add CONSTRAINT qrtz_blob_triggers_fkey foreign key (sched_name, trigger_name, trigger_group) references qrtz_triggers(sched_name, trigger_name, trigger_group);
+alter table qrtz_cron_triggers add CONSTRAINT qrtz_cron_triggers_pkey primary key (sched_name, trigger_name, trigger_group);
+alter table qrtz_cron_triggers add CONSTRAINT qrtz_cron_triggers_fkey foreign key (sched_name, trigger_name, trigger_group) references qrtz_triggers(sched_name, trigger_name, trigger_group);
+alter table qrtz_simple_triggers add CONSTRAINT qrtz_simple_triggers_pkey primary key (sched_name, trigger_name, trigger_group);
+alter table qrtz_simple_triggers add CONSTRAINT qrtz_simple_triggers_fkey foreign key (sched_name, trigger_name, trigger_group) references qrtz_triggers(sched_name, trigger_name, trigger_group);
 
 begin
     for r in ( select table_name, constraint_name
@@ -131,7 +131,7 @@ begin
 end loop;
 /
 
-alter table qrtz_fired_triggers add primary key (sched_name, entry_id);
+alter table qrtz_fired_triggers add CONSTRAINT qrtz_fired_triggers_pkey primary key (sched_name, entry_id);
 
 begin
     for r in ( select table_name, constraint_name
@@ -144,7 +144,7 @@ begin
 end loop;
 /
 
-alter table qrtz_calendars add primary key (sched_name, calendar_name);
+alter table qrtz_calendars add CONSTRAINT qrtz_calendars_pkey primary key (sched_name, calendar_name);
 
 begin
     for r in ( select table_name, constraint_name
@@ -156,7 +156,7 @@ begin
     end loop;
 end loop;
 /
-alter table qrtz_locks add primary key (sched_name, lock_name);
+alter table qrtz_locks add CONSTRAINT qrtz_locks_pkey primary key (sched_name, lock_name);
 
 begin
     for r in ( select table_name, constraint_name
@@ -169,7 +169,7 @@ begin
 end loop;
 /
 
-alter table qrtz_paused_trigger_grps add primary key (sched_name, trigger_group);
+alter table qrtz_paused_trigger_grps add CONSTRAINT qrtz_paused_trigger_grps_pkey primary key (sched_name, trigger_group);
 
 begin
     for r in ( select table_name, constraint_name
@@ -182,7 +182,7 @@ begin
 end loop;
 /
 
-alter table qrtz_scheduler_state add primary key (sched_name, instance_name);
+alter table qrtz_scheduler_state add CONSTRAINT qrtz_scheduler_state_pkey primary key (sched_name, instance_name);
 --
 -- add new simprop_triggers table
 --
@@ -202,8 +202,8 @@ CREATE TABLE qrtz_simprop_triggers
     DEC_PROP_2 NUMBER(13,4) NULL,
     BOOL_PROP_1 CHAR(1) DEFAULT ('N') NULL,
     BOOL_PROP_2 CHAR(1) DEFAULT ('N') NULL,
-    PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
-    FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+    CONSTRAINT qrtz_simprop_triggers_pkey PRIMARY KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
+    CONSTRAINT qrtz_simprop_triggers_fkey FOREIGN KEY (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
     REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
 );
 --
