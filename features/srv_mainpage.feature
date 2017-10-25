@@ -49,8 +49,24 @@ Feature: Main landing page options and preferences
     And I should see a "Preferences" link
     And I should see a Sign Out link
 
-  Scenario: Main menu
+  Scenario: Main menu as regular user
     Given I am authorized
+    Then I should see a "Home" link
+    And I should see a "Systems" link
+    And I should see a "Salt" link
+    And I should see a "Images" link
+    And I should see a "Patches" link
+    And I should see a "Software" link
+    And I should see a "Audit" link
+    And I should see a "Configuration" link
+    And I should see a "Schedule" link
+    And I should see a "Users" link
+    And I should not see a "Admin" link
+    And I should see a "Help" link
+    And I should see a "External Links" link
+
+  Scenario: Main menu as administrator
+    Given I am authorized as "admin" with password "admin"
     Then I should see a "Home" link
     And I should see a "Systems" link
     And I should see a "Salt" link
