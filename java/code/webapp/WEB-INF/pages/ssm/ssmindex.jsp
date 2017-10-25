@@ -128,6 +128,24 @@
                 </div>
             </li>
         </rhn:require>
+        <rhn:require acl="not all_systems_in_set_have_feature(ftr_kickstart); any_system_with_salt_entitlement()">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-2">
+                      <rhn:icon type="header-kickstart" title="ssm.overview.provisioning" />
+                        <bean:message key="ssm.overview.provisioning"/>
+                    </div>
+                    <div class="col-sm-10">
+                        <ul class="list-unstyled">
+                            <rhn:require acl="all_systems_in_set_have_feature(ftr_power_management)">
+                                <li><bean:message key="ssm.overview.provisioning.powermanagement.configure"/></li>
+                                <li><bean:message key="ssm.overview.provisioning.powermanagement.operations"/></li>
+                            </rhn:require>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </rhn:require>
         <li class="list-group-item">
             <div class="row">
                 <div class="col-sm-2">
