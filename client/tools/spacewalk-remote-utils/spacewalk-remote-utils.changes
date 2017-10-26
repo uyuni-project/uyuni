@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Oct 26 16:52:38 CEST 2017 - mc@suse.de
+
+- version 2.8.3.1-1
+- update spacewalk-remote-utils with RHEL 7.4 channel definitions
+- make python2/3 defs consistent with other specs
+- build with python3 if needed
+
+-------------------------------------------------------------------
 Wed May 03 16:33:41 CEST 2017 - michele.bologna@suse.com
 
 - version 2.7.4.1-1
