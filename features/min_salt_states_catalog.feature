@@ -40,7 +40,7 @@ Feature: Salt states catalog
     Then I should see a "1 Changes" text
     And I click on the css "button#save-btn"
     And I click on the css "button#apply-btn"
-    Then "/root/foobar" exists on the filesystem of "sle-minion"
+    Then file "/root/foobar" exists on "sle-minion"
 
   Scenario: Cleanup: remove the state and the file
     Given I am authorized as "testing" with password "testing"
