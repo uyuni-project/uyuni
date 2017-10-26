@@ -999,6 +999,25 @@ public class ConfigurationManager extends BaseManager {
     }
 
     /**
+     * Return the number of SLS files in this config-channel
+     * @param user user making the request
+     * @param channel channel of interest
+     * @return number of sls files in this channel
+     */
+    public int getSlsCount(User user, ConfigChannel channel)  {
+        if (!accessToChannel(user.getId(), channel.getId())) {
+            throw new IllegalArgumentException(
+                    "User [" + user.getId() +
+                            "] has no access to channel [" + channel.getId() + "]");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("ccid", channel.getId());
+        params.put("filetype", "sls");
+        params.put("user_id", user.getId());
+        return doCountFiles(params);
+    }
+
+    /**
      * List systems subscribed to this channel, sorted by date-modified (descending)
      * @param user user making the request
      * @param channel channel of interest
@@ -1117,6 +1136,7 @@ public class ConfigurationManager extends BaseManager {
         summary.setNumDirs(getDirCount(user, channel));
         summary.setNumFiles(getFileCount(user, channel));
         summary.setNumSymlinks(getSymlinkCount(user, channel));
+        summary.setNumSls(getSlsCount(user, channel));
 
         DataResult dr = getFileInfo(user, channel);
         if (dr != null && dr.size() > 0) {
@@ -1725,7 +1745,7 @@ public class ConfigurationManager extends BaseManager {
     private ConfigFileCount processCountedFilePathQueries(String query, Map params) {
         SelectMode m = ModeFactory.getMode("config_queries", query);
         List results = m.execute(params);
-        long files = 0, dirs = 0, symlinks = 0;
+        long files = 0, slsFiles = 0, dirs = 0, symlinks = 0;
 
         for (Iterator itr = results.iterator(); itr.hasNext();) {
             Map map = (Map)itr.next();
@@ -1735,6 +1755,9 @@ public class ConfigurationManager extends BaseManager {
             if (ConfigFileType.file().getLabel().equals(fileType)) {
                 files = count.longValue();
             }
+            else if (ConfigFileType.sls().getLabel().equals(fileType)) {
+                slsFiles = count.longValue();
+            }
             else if (ConfigFileType.symlink().getLabel().equals(fileType)) {
                 symlinks = count.longValue();
             }
@@ -1743,7 +1766,7 @@ public class ConfigurationManager extends BaseManager {
             }
         }
 
-        return ConfigFileCount.create(files, dirs, symlinks);
+        return ConfigFileCount.create(files, slsFiles,  dirs, symlinks);
     }
 
     /**
@@ -1809,6 +1832,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("user_id", user.getId());
         List pathList = m.execute(params);
         Set files = new HashSet();
+        Set slsfiles = new HashSet();
         Set dirs = new HashSet();
         Set symlinks = new HashSet();
         for (Iterator itr = pathList.iterator(); itr.hasNext();) {
@@ -1820,6 +1844,11 @@ public class ConfigurationManager extends BaseManager {
                     files.add(path);
                 }
             }
+            if (ConfigFileType.sls().getLabel().equals(fileType)) {
+                if (!dirs.contains(path) && !symlinks.contains(path)) {
+                     slsfiles.add(path);
+                }
+            }
             else if (ConfigFileType.symlink().getLabel().equals(fileType)) {
                 if (!dirs.contains(path) && !files.contains(path)) {
                     symlinks.add(path);
@@ -1829,7 +1858,8 @@ public class ConfigurationManager extends BaseManager {
                 dirs.add(path);
             }
         }
-        return ConfigFileCount.create(files.size(), dirs.size(), symlinks.size());
+        return ConfigFileCount.create(files.size(), slsfiles.size(), dirs.size(),
+                symlinks.size());
     }
 
 

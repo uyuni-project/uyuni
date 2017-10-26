@@ -2025,6 +2025,14 @@ SELECT CC.id AS ID,
                 AND CF.latest_config_revision_id IS NOT NULL
                 AND CFT.LABEL = 'file')
               AS files_only_count,
+             (SELECT COUNT(CF.id)
+               FROM rhnConfigFile CF
+               INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
+               INNER JOIN rhnConfigFileType CFT ON CFT.ID = CR.CONFIG_FILE_TYPE_ID
+            WHERE CF.config_channel_id = CC.id
+               AND CF.latest_config_revision_id IS NOT NULL
+               AND CFT.LABEL = 'sls')
+            AS sls_only_count,
             (SELECT COUNT(CF.id)
                FROM rhnConfigFile CF
                INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id

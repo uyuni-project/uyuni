@@ -19,6 +19,7 @@
             <rhn:csrf />
             <html:hidden property="creating" value="true"/>
             <html:hidden property="submitted" value="true"/>
+             <html:hidden property="type" value="${param.type}"/>
             <%@ include file="/WEB-INF/pages/common/fragments/configuration/channel/propertybody.jspf"%>
         </html:form>
     </body>

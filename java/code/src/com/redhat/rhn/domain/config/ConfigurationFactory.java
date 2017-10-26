@@ -215,7 +215,7 @@ public class ConfigurationFactory extends HibernateFactory {
                             "create_new_config_revision");
 
 
-        if (revision.isFile()) {
+        if (revision.isFile() || revision.isSls()) {
             //We need to save the content first so that we have an id for
             // the stored procedure.
             singleton.saveObject(revision.getConfigContent());
@@ -229,7 +229,7 @@ public class ConfigurationFactory extends HibernateFactory {
 
         inParams.put("revision_in", revision.getRevision());
         inParams.put("config_file_id_in", revision.getConfigFile().getId());
-        if (revision.isFile()) {
+        if (revision.isFile() || revision.isSls()) {
             inParams.put("config_content_id_in", revision.getConfigContent().getId());
         }
         else {
