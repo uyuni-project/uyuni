@@ -93,6 +93,7 @@ Style/GlobalVars:
     - 'features/step_definitions/smdba_steps.rb'
     - 'features/step_definitions/xmlrpc_common.rb'
     - 'features/support/client_stack.rb'
+    - 'features/support/setup_browser.rb'
     - 'features/support/twopence_init.rb'
 
 # Offense count: 1

@@ -1,4 +1,5 @@
-# Copyright (c) 2014-16 SUSE # Licensed under the terms of the MIT license.
+# Copyright (c) 2014-17 SUSE
+# Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
 require 'timeout'
@@ -36,8 +37,9 @@ When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
   $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1}")[:stdout]
 end
 
-When(/^I fetch "([^"]*)" from server$/) do |arg1|
-  $client.run("wget http://#{$server_ip}/#{arg1}", true, 500, 'root')
+When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, target|
+  node = get_target(target)
+  node.run("wget http://#{$server_ip}/#{file}", true, 500, 'root')
 end
 
 When(/^file "([^"]*)" exists on server$/) do |arg1|
@@ -80,19 +82,19 @@ end
 
 Then(/^I execute spacewalk-debug on the server$/) do
   $server.run('spacewalk-debug')
-  step %(I copy "/tmp/spacewalk-debug.tar.bz2")
+  step %(I copy "/tmp/spacewalk-debug.tar.bz2" from "server")
 end
 
-When(/^I copy "([^"]*)"$/) do |arg1|
-  user = 'root@'
-  $command_output = `echo | scp -o StrictHostKeyChecking=no #{user}$TESTHOST:#{arg1} . 2>&1`
-  raise "Execute command failed: #{$ERROR_INFO}: #{$command_output}" unless $CHILD_STATUS.success?
+When(/^I copy "([^"]*)" from "([^"]*)"$/) do |file, target|
+  node = get_target(target)
+  rc = file_extract(node, file, File.basename(file))
+  raise 'File extraction failed' unless rc.zero?
 end
 
-When(/^I copy to server "([^"]*)"$/) do |arg1|
-  user = 'root@'
-  $command_output = `echo | scp -o StrictHostKeyChecking=no #{arg1} #{user}$TESTHOST: 2>&1`
-  raise "Execute command failed: #{$ERROR_INFO}: #{$command_output}" unless $CHILD_STATUS.success?
+When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, target|
+  node = get_target(target)
+  rc = file_inject(node, file, File.basename(file))
+  raise 'File injection failed' unless rc.zero?
 end
 
 Then(/^the PXE default profile should be enabled$/) do
@@ -302,10 +304,10 @@ And(/I create dockerized minions$/) do
 end
 
 When(/^I register this client for SSH push via tunnel$/) do
-  # Create backups of /etc/hosts and up2date config
+  # create backups of /etc/hosts and up2date config
   $server.run('cp /etc/hosts /etc/hosts.BACKUP')
   $server.run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
-  # Generate expect file
+  # generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
   script = "spawn spacewalk-ssh-push-init --client #{$client_ip} --register #{bootstrap} --tunnel\n" \
            "while {1} {\n" \
@@ -316,11 +318,12 @@ When(/^I register this client for SSH push via tunnel$/) do
            "  }\n" \
            "}\n"
   path = generate_temp_file('push-registration.expect', script)
-  step 'I copy to server "' + path + '"'
-  # Perform the registration
+  step 'I copy "' + path + '" to "server"'
+  `rm #{path}`
+  # perform the registration
   filename = File.basename(path)
   $server.run("expect #{filename}", true, 600, 'root')
-  # Restore files from backups
+  # restore files from backups
   $server.run('mv /etc/hosts.BACKUP /etc/hosts')
   $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
 end
@@ -358,6 +361,46 @@ And(/^I create the "([^"]*)" bootstrap-repo for "([^"]*)" on the server$/) do |a
   sle11 = "#{os_version[0, 2]}-SP#{os_version[-1]}"
   cmd = "mgr-create-bootstrap-repo -c SLE-#{os_version}-#{arch}" if os_version.include? '12'
   cmd = "mgr-create-bootstrap-repo -c SLE-#{sle11}-#{arch}" if os_version.include? '11'
-  puts 'Creating the boostrap-repo on the server: ' + cmd
+  puts 'Creating the boostrap repository on the server: ' + cmd
   $server.run(cmd, false)
+end
+
+When(/^I copy server\'s keys to the proxy$/) do
+  ['RHN-ORG-PRIVATE-SSL-KEY', 'RHN-ORG-TRUSTED-SSL-CERT', 'rhn-ca-openssl.cnf'].each do |file|
+    rc = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
+    raise 'File extraction failed' unless rc.zero?
+    $proxy.run('mkdir -p /root/ssl-build')
+    rc = file_inject($proxy, '/tmp/' + file, '/root/ssl-build/' + file)
+    raise 'File injection failed' unless rc.zero?
+  end
+end
+
+When(/^I configure the proxy$/) do
+  # prepare the settings file
+  settings = "RHN_PARENT=#{$server_ip}\n" \
+             "HTTP_PROXY=''\n" \
+             "VERSION=''\n" \
+             "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
+             "USE_SSL=y\n" \
+             "USE_EXISTING_CERTS=n\n" \
+             "INSTALL_MONITORING=n\n" \
+             "SSL_PASSWORD=spacewalk\n" \
+             "SSL_ORG=SUSE\n" \
+             "SSL_ORGUNIT=SUSE\n" \
+             "SSL_COMMON=#{$proxy_ip}\n" \
+             "SSL_CITY=Nuremberg\n" \
+             "SSL_STATE=Bayern\n" \
+             "SSL_COUNTRY=DE\n" \
+             "SSL_EMAIL=galaxy-noise@suse.de\n" \
+             "SSL_CNAME_ASK=''\n" \
+             "POPULATE_CONFIG_CHANNEL=y\n" \
+             "RHN_USER=admin\n" \
+             "ACTIVATE_SLP=y\n"
+  path = generate_temp_file('config-answers.txt', settings)
+  step 'I copy "' + path + '" to "proxy"'
+  `rm #{path}`
+  # perform the configuration
+  filename = File.basename(path)
+  cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
+  $proxy.run(cmd, true, 600, 'root')
 end

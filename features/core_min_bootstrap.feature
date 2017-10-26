@@ -15,6 +15,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
+     And I select the hostname of the proxy from "proxies"
      And I click on "Bootstrap"
      Then I wait until I see "Successfully bootstrapped host! " text
 
@@ -75,6 +76,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I enter "root" as "user"
      And I enter "linux" as "password"
      And I select "1-MINION-TEST" from "activationKeys"
+     And I select the hostname of the proxy from "proxies"
      And I click on "Bootstrap"
      Then I wait until I see "Successfully bootstrapped host! " text
      And I navigate to "rhn/systems/Overview.do" page
@@ -91,9 +93,23 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I remove pkg "orion-dummy" on this "sle-minion"
      And I remove pkg "perseus-dummy" on this "sle-minion"
 
-  Scenario: Check system ID of second bootstrapped minion after deletion of first
+  Scenario: Check system ID of second bootstrapped minion
     Given I am on the Systems overview page of this "sle-minion"
     Then I run spacecmd listevents for "sle-minion"
+
+@proxy
+  Scenario: Check connection from minion to proxy
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Details" in the content area
+    And I follow "Connection" in the content area
+    Then I should see "proxy" hostname
+
+@proxy
+  Scenario: Check registration on proxy of minion
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Details" in the content area
+    And I follow "Proxy" in the content area
+    Then I should see "sle-minion" hostname
 
   Scenario: Verify that minion bootstrapped with activation key
      Given I am on the Systems overview page of this "sle-minion"
@@ -168,6 +184,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
+     And I select the hostname of the proxy from "proxies"
      And I click on "Bootstrap"
      Then I wait until I see "Successfully bootstrapped host! " text
 
