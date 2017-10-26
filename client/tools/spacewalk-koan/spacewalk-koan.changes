@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Oct 26 16:59:02 CEST 2017 - mc@suse.de
+
+- version 2.8.4.1-1
+- split spacewalk-koan into python2/python3 specific packages
+- replace koan20 with koan
+- remove dependency to rhn-virtualization
+
+-------------------------------------------------------------------
 Mon Mar 06 16:41:25 CET 2017 - mc@suse.de
 
 - version 2.7.0.2-1
