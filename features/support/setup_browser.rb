@@ -7,14 +7,15 @@ require 'tmpdir'
 require 'base64'
 require 'capybara'
 require 'capybara/cucumber'
-require File.join(File.dirname(__FILE__), 'cobbler_test')
+require_relative 'cobbler_test'
 require 'simplecov'
 require 'capybara/poltergeist'
 require 'minitest/unit'
+# FIXME: is the cobbler_test.rb inclusion really needed?
 
-# FIXME: these 2 variables why, for what are they set?
 ENV['LANG'] = 'en_US.UTF-8'
 ENV['IGNORECERT'] = '1'
+# FIXME: these 2 variables why, for what are they set?
 
 ## codecoverage gem
 SimpleCov.start
@@ -69,6 +70,11 @@ Capybara.run_server = false
 # so we spare RAM and avoid RAM issues
 Before do
   restart_driver
+end
+
+# do proxy tests only when we have a proxy
+Before('@proxy') do |scenario|
+  scenario.skip_invoke! unless $proxy
 end
 
 # embed a screenshot after each failed scenario

@@ -9,11 +9,12 @@ With a static setup, if you break your testing machines, or if you have any trou
 
 Set up the following environment variables:
 
-* TESTHOST the SUSE Manager server you are testing against
-* CLIENT the traditional client
-* MINION the Salt minion
-* SSHMINION the SSH-managed Salt minion
-* CENTOSMINION the CentOS Salt minion
+* `TESTHOST` the SUSE Manager server you are testing against
+* `PROXY` the SUSE Manager proxy (don't declare this variable if there is no proxy)
+* `CLIENT` the traditional client
+* `MINION` the Salt minion
+* `SSHMINION` the SSH-managed Salt minion
+* `CENTOSMINION` the CentOS Salt minion
 
 Once you have the machines configured, you can run the testsuite.
 To run all standard tests, from the controller:

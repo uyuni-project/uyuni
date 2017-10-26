@@ -691,9 +691,14 @@ Then(/^I enter remote ssh-minion hostname as "(.*?)"$/) do |hostname|
 end
 
 # minion bootstrap steps
-And(/^I enter the hostname of "([^"]*)" as hostname$/) do |minion|
-  node = get_target(minion)
+When(/^I enter the hostname of "([^"]*)" as hostname$/) do |host|
+  node = get_target(host)
   step %(I enter "#{node.full_hostname}" as "hostname")
+end
+
+When(/^I select the hostname of the proxy from "([^"]*)"$/) do |proxy|
+  next if $proxy.nil?
+  step %(I select "#{$proxy.full_hostname}" from "#{proxy}")
 end
 
 Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
