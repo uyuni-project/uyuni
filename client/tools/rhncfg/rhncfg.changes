@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Oct 26 17:14:23 CEST 2017 - mc@suse.de
+
+- version 5.10.116.1-1
+- move files into proper python2/python3 subpackages
+- store output in the action file so partial output can arrive to server
+- print different message if file does not exist
+- print a name of file which does not exist during diff
+- tell user which file differs
+- add password config option to rhncfg-manager
+- execute remote commands in clean environment
+
+-------------------------------------------------------------------
 Tue May 23 07:55:23 CEST 2017 - mc@suse.de
 
 - version 5.10.103.2-1
@@ -9,6 +21,7 @@ Tue May 23 07:55:23 CEST 2017 - mc@suse.de
 Wed May 03 16:43:52 CEST 2017 - michele.bologna@suse.com
 
 - version 5.10.103.1-1
+
 -------------------------------------------------------------------
 Fri Mar 31 10:00:10 CEST 2017 - mc@suse.de
 
