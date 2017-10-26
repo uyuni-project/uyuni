@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Oct 26 16:46:59 CEST 2017 - mc@suse.de
+
+- version 2.8.6.1-1
+- split files into proper python2/python3 subpackages
+- fix syntax for python 3
+- Add epoch information for deb packages
+- fix rhn-profile sync on Fedora 26 fix ipv6 network mask calculation
+- use new pyudev module to get udev information
+- remove dependency on libgnome
+
+-------------------------------------------------------------------
 Wed May 03 16:11:51 CEST 2017 - michele.bologna@suse.com
 
 - version 2.7.6.2-1
