@@ -17,7 +17,7 @@
 
 Name:           rhn-virtualization
 Summary:        Spacewalk action support for virualization
-Version:        5.4.64
+Version:        5.4.64.1
 Release:        1%{?dist}
 
 Group:          System Environment/Base
