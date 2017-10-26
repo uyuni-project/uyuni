@@ -243,6 +243,7 @@ public class ConfigChannelSaltManager {
         List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
         fileParams.add(singletonMap("source", singletonList(saltUri)));
+        fileParams.add(singletonMap("makedirs", true));
         fileParams.addAll(getModeParams(f.getLatestConfigRevision().getConfigInfo()));
 
         return singletonMap(
@@ -267,6 +268,7 @@ public class ConfigChannelSaltManager {
         fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
         fileParams.add(singletonMap("target", f.getLatestConfigRevision().getConfigInfo()
                 .getTargetFileName().getPath()));
+        fileParams.add(singletonMap("makedirs", true));
 
         return singletonMap(
                 getFileStateName(f),
