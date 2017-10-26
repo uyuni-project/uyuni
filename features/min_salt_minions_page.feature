@@ -33,7 +33,7 @@ Feature: Management of minion keys
     And "sle-minion" key is "unaccepted"
     And I go to the minion onboarding page
     And I reject "sle-minion" from the Pending section
-    And we wait till Salt master sees "sle-minion" as "rejected"
+    And I wait until Salt master sees "sle-minion" as "rejected"
     Then I should see a "rejected" text
     And I delete "sle-minion" from the Rejected section
     Then I should not see "sle-minion" as a Minion anywhere
@@ -45,7 +45,7 @@ Feature: Management of minion keys
     And I go to the minion onboarding page
     Then I should see a "pending" text
     When I accept "sle-minion" key
-    And we wait till Salt master sees "sle-minion" as "accepted"
+    And I wait until Salt master sees "sle-minion" as "accepted"
     # Registration takes a while
     And I wait until onboarding is completed for "sle-minion"
 
