@@ -8,7 +8,7 @@ const Notifications = React.createClass({
 
   getInitialState: function () {
     return {
-      messages: [],
+      unreadMessagesLength: 0,
       websocket: null
     }
   },
@@ -51,9 +51,7 @@ const Notifications = React.createClass({
     };
     ws.onmessage = (e) => {
         console.log('Websocket message=' + e.data);
-        var messagesList = this.state.messages;
-        messagesList.push(e.data);
-        this.setState({messages: messagesList})
+        this.setState({unreadMessagesLength: e.data})
     };
     window.addEventListener("beforeunload", this.onBeforeUnload)
 
@@ -76,7 +74,7 @@ const Notifications = React.createClass({
         <div onClick={this.onClick}>
           <i className="fa fa-bell"></i>
           <div id="notification-counter">
-            {this.state.messages.length}
+            {this.state.unreadMessagesLength}
           </div>
         </div>
     );
