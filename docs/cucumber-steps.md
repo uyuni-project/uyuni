@@ -400,7 +400,7 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I fetch "pub/bootstrap/bootstrap-test.sh" to "sle-client"
   When I remove "/root/foobar" from "sle-minion"
-  Then "/root/foobar" exists on the filesystem of "sle-minion"
+  Then file "/root/foobar" exists on "sle-minion"
   Then file "/srv/tftpboot/pxelinux.cfg/default" exists on server
   Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value"
   When I get the contents of the remote file "/etc/salt/master.d/susemanager.conf"
@@ -526,7 +526,7 @@ The check box can be identified by name, id or label text.
   When I accept "sle-minion" key
   When I reject "sle-minion" from the Pending section
   When I delete "sle-minion" from the Rejected section
-  When we wait till Salt master sees "sle-minion" as "rejected"
+  When I wait until Salt master sees "sle-minion" as "rejected"
   When I wait until onboarding is completed for "ceos-minion"
   When I wait until salt-key "mincentos" is deleted
   Then the list of the "all" keys should contain "sle-minion" hostname
