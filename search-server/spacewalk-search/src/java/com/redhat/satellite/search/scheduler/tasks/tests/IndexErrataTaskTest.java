@@ -14,6 +14,10 @@
  */
 package com.redhat.satellite.search.scheduler.tasks.tests;
 
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+
 import com.redhat.satellite.search.config.Configuration;
 import com.redhat.satellite.search.db.DatabaseManager;
 import com.redhat.satellite.search.db.WriteQuery;
@@ -23,23 +27,23 @@ import com.redhat.satellite.search.scheduler.tasks.IndexErrataTask;
 import com.redhat.satellite.search.tests.BaseTestCase;
 import com.redhat.satellite.search.tests.TestUtil;
 
+import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
+import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
+import org.quartz.Trigger.CompletedExecutionInstruction;
 import org.quartz.TriggerListener;
 import org.quartz.impl.StdSchedulerFactory;
-
-import org.apache.log4j.Logger;
+import org.quartz.impl.triggers.AbstractTrigger;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 
 /**
  * IndexErrataTaskTest
@@ -49,6 +53,7 @@ public class IndexErrataTaskTest extends BaseTestCase {
     private static Logger log = Logger.getLogger(IndexErrataTaskTest.class);
     private Scheduler scheduler;
 
+    @Override
     public void tearDown() throws Exception {
         DatabaseManager databaseManager = (DatabaseManager)
             container.getComponentInstanceOfType(DatabaseManager.class);
@@ -79,24 +84,24 @@ public class IndexErrataTaskTest extends BaseTestCase {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-        Trigger trigger = new SimpleTrigger("index",
-                                            "default",
-                                            "index",
-                                            "default",
-                                            new Date(),
-                                            null,
-                                            0,
-                                            100);
-        trigger.setMisfireInstruction(
-                SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
-        JobDetail detail = new JobDetail("index", "default", IndexErrataTask.class);
+        AbstractTrigger<SimpleTrigger> trigger = (AbstractTrigger) newTrigger().withIdentity("index", "default")
+                          .forJob("index", "default")
+                          .startAt(new Date())
+                          .endAt(null)
+                          .withSchedule(simpleSchedule()
+                                  .withRepeatCount(0)
+                                  .withIntervalInMilliseconds(100))
+                          .build();
+        trigger.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT);
+        JobBuilder detail = newJob(IndexErrataTask.class)
+                .withIdentity("index", "default");
         JobDataMap jobData = new JobDataMap();
         jobData.put("indexManager", indexManager);
         jobData.put("databaseManager", databaseManager);
-        detail.setJobDataMap(jobData);
+        detail.usingJobData(jobData);
         try {
-            scheduler.addTriggerListener(new TestTrigger());
-            scheduler.scheduleJob(detail, trigger);
+            scheduler.getListenerManager().addTriggerListener(new TestTrigger());
+            scheduler.scheduleJob(detail.build(), trigger);
         }
         catch (SchedulerException e1) {
             // TODO Auto-generated catch block
@@ -149,6 +154,7 @@ public class IndexErrataTaskTest extends BaseTestCase {
         /**
          * {@inheritDoc}
          */
+        @Override
         public String getName() {
             return "test trigger";
         }
@@ -163,6 +169,7 @@ public class IndexErrataTaskTest extends BaseTestCase {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void triggerFired(Trigger trigger, JobExecutionContext context) {
             System.out.println("**************************** fired");
         }
@@ -170,6 +177,7 @@ public class IndexErrataTaskTest extends BaseTestCase {
         /**
          * {@inheritDoc}
          */
+        @Override
         public void triggerMisfired(Trigger trigger) {
             System.out.println("**************************** misfire");
         }
@@ -177,8 +185,14 @@ public class IndexErrataTaskTest extends BaseTestCase {
         /**
          * {@inheritDoc}
          */
+        @Override
         public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context) {
             return false;
+        }
+
+        @Override
+        public void triggerComplete(Trigger arg0, JobExecutionContext arg1,
+                CompletedExecutionInstruction arg2) {
         }
 
     }
