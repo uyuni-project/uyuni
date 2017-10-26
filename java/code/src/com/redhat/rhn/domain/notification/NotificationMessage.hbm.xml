@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.redhat.rhn.domain.notification.NotificationMessage"
+         table="SUSENOTIFICATIONMESSAGE">
+    <id name="id" column="id" type="long">
+      <generator class="sequence">
+        <param name="sequence">suse_notification_message_id_seq</param>
+      </generator>
+    </id>
+    <property name="description" column="description" type="string" />
+    <property name="read" column="read" type="boolean"/>
+    <property name="created" column="created" type="timestamp" insert="false" update="false"/>
+    <property name="modified" column="modified" type="timestamp" insert="false" update="false"/>
+  </class>
+  
+  <query name="NotificationMessage.listNotificationMessage">
+      <![CDATA[ select nm from com.redhat.rhn.domain.notification.NotificationMessage as nm]]>
+  </query>
+  <query name="NotificationMessage.listNotReadNotificationMessage">
+      <![CDATA[ select nm from com.redhat.rhn.domain.notification.NotificationMessage as nm where nm.read != true]]>
+  </query>
+</hibernate-mapping>
