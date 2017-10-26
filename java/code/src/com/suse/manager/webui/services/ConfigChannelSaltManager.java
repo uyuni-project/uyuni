@@ -216,7 +216,6 @@ public class ConfigChannelSaltManager {
         ofNullable(channel.getConfigFiles()).orElse(emptySortedSet()).stream()
                 .filter(f -> f.getConfigFileState().getLabel().equals(NORMAL))
                 .map(f -> {
-                    // todo handle permissions
                     switch (f.getLatestConfigRevision().getConfigFileType().getLabel()) {
                         case ConfigFileType.FILE:
                             return fileState(f);

@@ -83,12 +83,6 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         initSlsAssertions(newInitSls);
     }
 
-    // todo
-    // CRUD channel
-    // CRUD file
-    // CRUD revision
-    // file crud + copy from other channel
-    // change file (revision) type
     public void testRemoveFile() throws Exception {
         ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
         ConfigRevision configRevision =
