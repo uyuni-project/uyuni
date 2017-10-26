@@ -40,6 +40,7 @@ import org.quartz.Trigger.CompletedExecutionInstruction;
 import org.quartz.TriggerListener;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.triggers.AbstractTrigger;
+import org.quartz.spi.MutableTrigger;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -85,7 +86,7 @@ public class IndexSystemsTaskTest extends BaseTestCase {
             e1.printStackTrace();
         }
 
-        AbstractTrigger trigger = (AbstractTrigger) newTrigger()
+        SimpleTrigger trigger = newTrigger()
                 .withIdentity("index", "default")
                 .forJob("index", "default")
                 .startAt(new Date())
@@ -94,7 +95,16 @@ public class IndexSystemsTaskTest extends BaseTestCase {
                         .withRepeatCount(0)
                         .withIntervalInMilliseconds(100))
                 .build();
-        trigger.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
+
+        MutableTrigger mtrigger = null;
+
+        if (trigger instanceof MutableTrigger) {
+            mtrigger = (MutableTrigger) trigger;
+            mtrigger.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT);
+        }
+        else {
+            log.error("Cannot set MisfireInstruction since trigger is not instance of MutableTrigger: " + trigger);
+        }
 
         JobBuilder detail = newJob(IndexSystemsTask.class)
                 .withIdentity("index", "default");
@@ -104,7 +114,12 @@ public class IndexSystemsTaskTest extends BaseTestCase {
         detail.usingJobData(jobData);
         try {
             scheduler.getListenerManager().addTriggerListener(new TestTrigger());
-            scheduler.scheduleJob(detail.build(), trigger);
+            if (trigger instanceof MutableTrigger) {
+                scheduler.scheduleJob(detail.build(), mtrigger);
+            }
+            else {
+                scheduler.scheduleJob(detail.build(), trigger);
+            }
         }
         catch (SchedulerException e1) {
             // TODO Auto-generated catch block

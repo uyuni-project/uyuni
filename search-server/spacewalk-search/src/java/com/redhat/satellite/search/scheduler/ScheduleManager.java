@@ -40,7 +40,7 @@ import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.triggers.AbstractTrigger;
+import org.quartz.spi.MutableTrigger;
 
 import java.util.Date;
 
@@ -90,7 +90,7 @@ public class ScheduleManager implements Startable {
     private Trigger createTrigger(String name, String group, int mode,
             long interval) {
 
-        AbstractTrigger<SimpleTrigger> trigger = (AbstractTrigger) newTrigger()
+        SimpleTrigger trigger = newTrigger()
                 .withIdentity(name, "default")
                 .forJob(name, group)
                 .startAt(new Date())
@@ -99,7 +99,14 @@ public class ScheduleManager implements Startable {
                         .withRepeatCount(mode)
                         .withIntervalInMilliseconds(interval))
                 .build();
-        trigger.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT);
+        if (trigger instanceof MutableTrigger) {
+            MutableTrigger mtrigger = (MutableTrigger) trigger;
+            mtrigger.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT);
+            return mtrigger;
+        }
+        else {
+            log.error("Cannot set MisfireInstruction since trigger is not instance of MutableTrigger: " + trigger);
+        }
         return trigger;
     }
 
