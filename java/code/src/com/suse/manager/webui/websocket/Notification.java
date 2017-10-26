@@ -15,6 +15,7 @@
 package com.suse.manager.webui.websocket;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.notification.NotificationMessageFactory;
 
 import org.apache.log4j.Logger;
 
@@ -60,6 +61,9 @@ public class Notification {
         }
         LOG.debug("Hooked a new websocket session {id = " + session.getId() + "}");
         wsSessions.add(session);
+
+        // update the notification counter to the unread messages
+        sendMessage(session, NotificationMessageFactory.unreadMessagesSizeToString());
     }
 
     /**
