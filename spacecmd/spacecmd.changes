@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Oct 26 17:00:51 CEST 2017 - mc@suse.de
+
+- version 2.8.9.1-1
+- fix build with python 3
+- show list of arches for channel
+- allow softwarechannel_setsyncschedule to disable schedule
+- add softwarechannel_setsyncschedule --latest
+- in case of system named by id, let id take precedence
+- Make spacecmd prompt for password when overriding config file user
+- show less output of common packages in selected channels
+- adding softwarechannel_listmanageablechannels
+
+-------------------------------------------------------------------
 Wed Aug 30 16:05:32 CEST 2017 - mc@suse.de
 
 - version 2.7.8.7-1
