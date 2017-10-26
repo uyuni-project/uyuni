@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.server.Server;
 public class ChannelSummary {
 
     private int numFiles;
+    private int numSLS;
     private int numDirs;
     private int numSymlinks;
     private int numSystems;
@@ -126,6 +127,23 @@ public class ChannelSummary {
     public void setNumFiles(int files) {
         this.numFiles = files;
     }
+
+    /**
+     * How many sls are contained in this channel?
+     * @return number of sls controlled by this channel
+     */
+    public int getNumSls() {
+        return numSLS;
+    }
+
+    /**
+     * Set num of sls files in the specified channel
+     * @param slsFiles how many sls files are contained in the channel
+     */
+    public void setNumSls(int slsFiles) {
+        this.numSLS = slsFiles;
+    }
+
 
     /**
      * How many symlinks are contained in this channel?

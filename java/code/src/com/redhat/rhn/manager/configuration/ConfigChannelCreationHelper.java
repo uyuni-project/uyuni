@@ -139,6 +139,19 @@ public class ConfigChannelCreationHelper {
         cc.setConfigChannelType(t);
         return cc;
     }
+
+    /**
+     * Creates a new config channel of specific type
+     * @param user needed for authentication.
+     * @param type type of the channel.
+     * @return the created channel
+     */
+    public ConfigChannel create(User user, ConfigChannelType type) {
+        ConfigChannel cc = ConfigurationFactory.newConfigChannel();
+        cc.setOrg(user.getOrg());
+        cc.setConfigChannelType(type);
+        return cc;
+    }
     /**
      * populates the config channel readinng the fields from a
      * dyna action form
