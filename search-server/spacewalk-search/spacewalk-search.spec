@@ -49,6 +49,7 @@ BuildRequires: quartz >= 2.0
 BuildRequires: redstone-xmlrpc
 #BuildRequires: picocontainer
 BuildRequires: tanukiwrapper
+BuildRequires: slf4j
 BuildRequires: simple-core
 %if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1315
 Requires: apache-commons-cli
