@@ -112,7 +112,6 @@ Requires: spacewalk-java-oracle
 Requires: perl(DBD::Oracle)
 Requires: cx_Oracle
 Requires: spacewalk-backend-sql-oracle
-Requires: quartz-oracle
 %if 0%{?rhel} || 0%{?fedora}
 Requires: oracle-instantclient-selinux
 Requires: oracle-instantclient-sqlplus-selinux
