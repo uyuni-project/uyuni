@@ -33,6 +33,7 @@ import com.suse.manager.webui.controllers.FormulaController;
 import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
+import com.suse.manager.webui.controllers.NotificationMessageController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.SaltSSHController;
@@ -262,6 +263,11 @@ public class Router implements SparkApplication {
                 withOrgAdmin(VisualizationController::systemsWithManagedGroupsData));
 
         get("/manager/download/saltssh/pubkey", SaltSSHController::getPubKey);
+
+
+        // NotificationMessages
+        get("/manager/notification-messages", withUser(NotificationMessageController::getList), jade);
+        get("/manager/notification-messages/data", withUser(NotificationMessageController::data));
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {
