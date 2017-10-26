@@ -185,7 +185,7 @@ Then(/^the command should fail$/) do
   raise 'Previous command must fail, but has NOT failed!' if $fail_code.zero?
 end
 
-When(/^"(.*)" exists on the filesystem of "(.*)"$/) do |file, host|
+When(/^file "(.*)" exists on "(.*)"$/) do |file, host|
   node = get_target(host)
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
