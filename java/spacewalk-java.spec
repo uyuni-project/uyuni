@@ -430,7 +430,7 @@ Requires: jakarta-taglibs-standard
 Requires: concurrent
 Requires: jcommon
 Requires: log4j
-Requires: quartz < 2.0
+Requires: quartz
 Requires: simple-core
 Requires: spacewalk-java-config
 Requires: spacewalk-java-jdbc
@@ -5542,4 +5542,3 @@ fi
 * Thu Jul 18 2013 Grant Gainey 2.1.1-1
 - JUnit fixes
 - Bumping package versions for 2.1.
-
