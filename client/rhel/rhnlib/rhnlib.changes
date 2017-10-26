@@ -1,7 +1,16 @@
 -------------------------------------------------------------------
+Thu Oct 26 16:44:28 CEST 2017 - mc@suse.de
+
+- version 2.8.4.1-1
+- build python3 package
+- check a state of handshake before shutdown SSL connection
+- Python's OpenSSL.SSL.Connection method for getting state was renamed.
+
+-------------------------------------------------------------------
 Wed May 03 16:38:11 CEST 2017 - michele.bologna@suse.com
 
 - version 2.7.2.1-1
+
 -------------------------------------------------------------------
 Fri Mar 31 09:33:33 CEST 2017 - mc@suse.de
 
