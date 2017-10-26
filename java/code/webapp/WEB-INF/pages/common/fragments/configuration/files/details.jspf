@@ -97,6 +97,9 @@
                 </label>
                 <div class="col-md-3">
                     <c:choose>
+                        <c:when test="${revision.sls}">
+                           <bean:message key="filedetails.details.jspf.sls" />
+                        </c:when>
                         <c:when test="${revision.directory}">
                             <bean:message key="filedetails.details.jspf.directory" />
                         </c:when>

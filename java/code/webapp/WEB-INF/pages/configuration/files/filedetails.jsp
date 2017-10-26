@@ -25,7 +25,7 @@
               <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/properties.jspf"%>
             </div>
         </div>
-        <c:if test="${revision.file}">
+        <c:if test="${revision.file || revision.sls}">
           <div class="row-0">
               <div class="col-md-12">
                 <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/add_details.jspf"%>

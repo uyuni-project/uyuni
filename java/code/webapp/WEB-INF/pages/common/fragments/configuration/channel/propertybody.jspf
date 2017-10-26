@@ -1,3 +1,4 @@
+<%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
 <div class="form-group">
     <label class="col-lg-3 control-label">
         <bean:message key="channelOverview.jsp.name-edit" />
@@ -22,6 +23,16 @@
         <html:textarea property="cofDescription" rows="4" styleClass="form-control" cols="40"></html:textarea>
     </div>
 </div>
+<c:if test="${param.type == 'state'}">
+    <div class="form-group">
+        <label class="col-lg-3 control-label">
+        <bean:message key="channelOverview.jsp.sls-edit" />
+        </label>
+        <div class="col-lg-6">
+           <html:textarea styleClass="form-control" property="contents" rows="20" cols="80" styleId="contents"/><br />
+        </div>
+    </div>
+</c:if>
 <div class="form-group">
     <div class="col-lg-offset-3 col-lg-6">
     <html:submit styleClass="btn btn-success">

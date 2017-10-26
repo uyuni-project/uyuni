@@ -831,6 +831,7 @@
       <form-property name="cofName"        type="java.lang.String"/>
       <form-property name="cofLabel"       type="java.lang.String"/>
       <form-property name="cofDescription" type="java.lang.String"/>
+      <form-property name="contents" type="java.lang.String"/>
       <form-property name="editing"        type="java.lang.Boolean"/>
       <form-property name="creating"       type="java.lang.Boolean"/>
       <form-property name="submitted"      type="java.lang.Boolean"/>
@@ -6880,7 +6881,7 @@
         type="com.redhat.rhn.frontend.action.configuration.channel.ChannelSystemsListSetup"
         name="submittedForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="config_channel_type(normal);"/>
+        <set-property property="acls" value="config_channel_type(normal) or config_channel_type(state);"/>
         <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
             path="/WEB-INF/pages/configuration/channel/channelsystems.jsp"/>
@@ -6908,7 +6909,7 @@
         type="com.redhat.rhn.frontend.action.configuration.channel.TargetSystemsListSetup"
         name="submittedForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="config_channel_type(normal);user_role(config_admin);"/>
+        <set-property property="acls" value="config_channel_type(normal) or config_channel_type(state);user_role(config_admin);"/>
         <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
               path="/WEB-INF/pages/configuration/channel/targetsystems.jsp"/>

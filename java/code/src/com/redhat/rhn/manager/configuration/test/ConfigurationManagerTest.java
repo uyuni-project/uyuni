@@ -83,7 +83,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     private PageControl pc;
     private ConfigurationManager cm;
     private static final ConfigFileCount EXPECTED_COUNT =
-                                    ConfigFileCount.create(3, 1, 0);
+                                    ConfigFileCount.create(3, 0, 1, 0);
 
     private static final Mockery CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
@@ -687,7 +687,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         actual = cm.countCentrallyManagedPaths(s, user);
 
         ConfigFileCount expected = ConfigFileCount.create(
-                                                EXPECTED_COUNT.getFiles() + 1,
+                                                EXPECTED_COUNT.getFiles() + 1,0,
                                                 EXPECTED_COUNT.getDirectories(), 0);
         assertEquals(expected, actual);
     }
@@ -739,7 +739,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ServerFactory.save(s);
         actual = cm.countCentrallyDeployablePaths(s, user);
         ConfigFileCount expected = ConfigFileCount.create(
-                                            EXPECTED_COUNT.getFiles() - 1,
+                                            EXPECTED_COUNT.getFiles() - 1,0,
                                             EXPECTED_COUNT.getDirectories(), 0);
 
         assertEquals(expected, actual);

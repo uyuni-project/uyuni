@@ -51,6 +51,7 @@ public class ConfigFileType implements Serializable {
     public static final String FILE = "file";
     public static final String DIR = "directory";
     public static final String SYMLINK = "symlink";
+    public static final String SLS = "sls";
     private static final Map POSSIBLE_TYPES = new TreeMap(String.
                                                     CASE_INSENSITIVE_ORDER);
 
@@ -78,6 +79,14 @@ public class ConfigFileType implements Serializable {
     }
 
     /**
+     *
+     * @return file config SLS type
+     */
+    public static ConfigFileType sls() {
+        return lookup(SLS);
+    }
+
+    /**
      * Given a file type label it returns the associated
      * file type object
      * @param type the file type label
@@ -87,6 +96,8 @@ public class ConfigFileType implements Serializable {
         if (POSSIBLE_TYPES.isEmpty()) {
             ConfigFileType file = ConfigurationFactory.
                                     lookupConfigFileTypeByLabel(FILE);
+            ConfigFileType sls = ConfigurationFactory.
+                    lookupConfigFileTypeByLabel(SLS);
             ConfigFileType dir = ConfigurationFactory.
                             lookupConfigFileTypeByLabel(DIR);
             ConfigFileType symlink = ConfigurationFactory.
@@ -98,6 +109,8 @@ public class ConfigFileType implements Serializable {
             POSSIBLE_TYPES.put(FILE, file);
 
             POSSIBLE_TYPES.put(SYMLINK, symlink);
+
+            POSSIBLE_TYPES.put(SLS, sls);
         }
 
         if (!POSSIBLE_TYPES.containsKey(type)) {

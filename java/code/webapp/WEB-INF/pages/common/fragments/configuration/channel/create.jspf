@@ -32,18 +32,20 @@
                         <bean:message key="addfiles.jsp.type.text" />
                     </label>
                 </div>
-                <div class="checkbox">
-                    <label>
-                        <html:radio property="filetype" value="directory" styleId="dir_radio" />
-                        <bean:message key="addfiles.jsp.type.directory" />
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <html:radio property="filetype" value="symlink" styleId="symlink_radio" />
-                        <bean:message key="addfiles.jsp.type.symlink" />
-                    </label>
-                </div>
+                <c:if test="${not channel.isStateChannel()}">
+                    <div class="checkbox">
+                        <label>
+                            <html:radio property="filetype" value="directory" styleId="dir_radio" />
+                            <bean:message key="addfiles.jsp.type.directory" />
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <html:radio property="filetype" value="symlink" styleId="symlink_radio" />
+                            <bean:message key="addfiles.jsp.type.symlink" />
+                        </label>
+                    </div>
+                </c:if>
             </div>
         </div>
         <script type="text/javascript">

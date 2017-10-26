@@ -180,6 +180,14 @@ public class ConfigRevision extends BaseDomainHelper {
     }
 
     /**
+     * Is this revision a sls?
+     * @return true if file-type is 'sls'
+     */
+    public boolean isSls() {
+        return (configFileType != null && configFileType.getLabel().equals("sls"));
+    }
+
+    /**
      * Is this revision a directory?
      * @return true if file-type is 'directory'
      */
