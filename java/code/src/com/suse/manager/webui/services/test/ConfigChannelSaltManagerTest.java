@@ -47,6 +47,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
                 file.getConfigChannel().getConfigChannelType().getLabel() + "/" +
                 file.getConfigChannel().getLabel() + "/" +
                 file.getConfigFileName().getPath() + "\n" +
+                "    -   makedirs: true\n" +
                 "    -   user: chuck\n" +
                 "    -   group: nobody\n" +
                 "    -   mode: 700\n";
@@ -94,7 +95,8 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         String expected =  manager.getFileStateName(file)  + ":\n" +
                 "    file.symlink:\n" +
                 "    -   name: " + file.getConfigFileName().getPath() + "\n" +
-                "    -   target: /tmp/symlink_tgt\n";
+                "    -   target: /tmp/symlink_tgt\n" +
+                "    -   makedirs: true\n";
 
         assertEquals(expected, manager.configChannelInitSLSContent(fromDb));
     }
