@@ -353,7 +353,9 @@ def check_cert(cert_path):
     if cert_path is None:
         raise InvalidCertError("Cannot pass None as a certificate path")
     try:
-        cert = open(cert_path).read()
+        c = open(cert_path)
+        cert = c.read()
+        c.close()
     except IOError:
         raise_with_tb(InvalidCertError("Unable to read file", cert_path), sys.exc_info()[2])
     try:
