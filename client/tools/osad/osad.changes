@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Thu Oct 26 16:42:22 CEST 2017 - mc@suse.de
+
+- version 5.11.97.1-1
+- splitinto python2/python3 specific packages
 - Fixed TypeError for force flag in setup_config that could happen
   when jabberd restart was needed. (bsc#1064393)
 
