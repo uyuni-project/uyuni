@@ -30,6 +30,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Websocket endpoint for showing notifications real-time in web UI.
@@ -125,8 +126,17 @@ public class Notification {
      * @param message
      */
     public static void notifyAll(String message) {
-        for (Session s : wsSessions) {
-            sendMessage(s, message);
+        // notify all open WebSocket sessions
+        wsSessions = wsSessions.stream().filter(ws -> ws.isOpen()).collect(Collectors.toList());
+        LOG.info("Notifying " + wsSessions.size() + " websocket sessions");
+
+        for (Session ws : wsSessions) {
+            try {
+                ws.getBasicRemote().sendText(message);
+            }
+            catch (IOException e) {
+                LOG.error("Error sending message to websocket { id : " + ws.getId() + "}", e);
+            }
         }
     }
 

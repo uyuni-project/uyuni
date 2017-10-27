@@ -66,8 +66,7 @@ public class NotificationMessageFactory extends HibernateFactory {
         notificationMessage.setModified(new Date());
         singleton.saveObject(notificationMessage);
 
-        // as soon as a message is stored --> notify all attached sessions via websocket
-        Notification.notifyAll(unreadMessagesSizeToString());
+        fireNotificationUpdate();
     }
 
     /**
@@ -79,8 +78,7 @@ public class NotificationMessageFactory extends HibernateFactory {
         notificationMessage.setModified(new Date());
         singleton.saveObject(notificationMessage);
 
-        // as soon as a message is stored --> notify all attached sessions via websocket
-        Notification.notifyAll(unreadMessagesSizeToString());
+        fireNotificationUpdate();
     }
 
     /**
@@ -89,6 +87,8 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static void removeNotificationMessage(NotificationMessage notificationMessage) {
         singleton.removeObject(notificationMessage);
+
+        fireNotificationUpdate();
     }
 
     /**
@@ -121,6 +121,14 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static String unreadMessagesSizeToString() {
         return String.valueOf(unreadMessagesSize());
+    }
+
+    /**
+     * As soon as a NotificationMessage is stored, updated, removed
+     * this will fire an update to notify all attached websocket sessions.
+     */
+    private static void fireNotificationUpdate() {
+        Notification.notifyAll(unreadMessagesSizeToString());
     }
 
     @Override
