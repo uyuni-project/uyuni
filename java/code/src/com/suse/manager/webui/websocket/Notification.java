@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.websocket;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.NotificationMessageFactory;
 
 import org.apache.log4j.Logger;
@@ -33,8 +32,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Websocket endpoint for showing notifications real-time in web UI.
- * NOTE: there's an endpoint instance for each websocket session
+ * WebSocket EndPoint for showing notifications real-time in web UI.
+ * NOTE: there's an EndPoint instance for each websocket session
  */
 @ServerEndpoint(value = "/websocket/notifications")
 public class Notification {
@@ -45,9 +44,9 @@ public class Notification {
     private static List<Session> wsSessions = new LinkedList<>();
 
     /**
-     * Callback executed when the websocket is opened.
-     * @param session the websocket session
-     * @param config the endpoint config
+     * Callback executed when the WebSocket is opened.
+     * @param session the WebSocket session
+     * @param config the EndPoint config
      */
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
@@ -60,7 +59,7 @@ public class Notification {
                 LOG.debug("Error closing web socket session", e);
             }
         }
-        LOG.debug("Hooked a new websocket session {id = " + session.getId() + "}");
+        LOG.debug(String.format("Hooked a new websocket session [id:{0}]", session.getId()));
         wsSessions.add(session);
 
         // update the notification counter to the unread messages
@@ -68,8 +67,8 @@ public class Notification {
     }
 
     /**
-     * Callback executed when the websocket is closed.
-     * @param sessios the closed websocket {@link Session}
+     * Callback executed when the WebSocket is closed.
+     * @param sessios the closed WebSocket {@link Session}
      */
     @OnClose
     public void onClose(Session session) {
@@ -79,22 +78,13 @@ public class Notification {
 
     /**
      * Callback executed when a message is received.
-     * @param session the websocket session
+     * @param session the WebSocket session
      * @param messageBody the message as string
      */
     @OnMessage
     public void onMessage(Session session, String messageBody) {
-        try {
-            // notify all attached sessions
-            for (Session s : wsSessions) {
-                sendMessage(s, messageBody);
-            }
-        }
-        catch (Exception e) {
-            String message = "Error receiving a notification message";
-            LOG.error(message, e);
-            sendMessage(session, message);
-        }
+        LOG.debug(String.format("Received [message:{0}] from session [id:{1}].", messageBody, session.getId()));
+        notifyAll(messageBody);
     }
 
     /**
@@ -108,7 +98,8 @@ public class Notification {
                     session.getBasicRemote().sendText(message);
                 }
                 else {
-                    LOG.debug("Could not send websocket message. Session is closed.");
+                    LOG.debug(String.format("Could not send websocket message. Session [id:{0}] is closed.",
+                            session.getId()));
                     wsSessions.remove(session);
                 }
             }
@@ -119,20 +110,20 @@ public class Notification {
     }
 
     /**
-     * A static method to notify all {@link Session}s attached to websocket from the outside
+     * A static method to notify all {@link Session}s attached to WebSocket from the outside
      * @param message
      */
     public static void notifyAll(String message) {
         // notify all open WebSocket sessions
         wsSessions = wsSessions.stream().filter(ws -> ws.isOpen()).collect(Collectors.toList());
-        LOG.info("Notifying " + wsSessions.size() + " websocket sessions");
+        LOG.info(String.format("Notifying {0} websocket sessions", wsSessions.size()));
 
         for (Session ws : wsSessions) {
             try {
                 ws.getBasicRemote().sendText(message);
             }
             catch (IOException e) {
-                LOG.error("Error sending message to websocket { id : " + ws.getId() + "}", e);
+                LOG.error(String.format("Error sending message to websocket [id:{0}]", ws.getId()), e);
             }
         }
     }
