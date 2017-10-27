@@ -60,7 +60,7 @@ public class Notification {
             }
         }
         LOG.debug(String.format("Hooked a new websocket session [id:{0}]", session.getId()));
-        wsSessions.add(session);
+        handshakeSession(session);
 
         // update the notification counter to the unread messages
         sendMessage(session, NotificationMessageFactory.unreadMessagesSizeToString());
@@ -73,7 +73,7 @@ public class Notification {
     @OnClose
     public void onClose(Session session) {
         LOG.debug("Closing web socket session");
-        wsSessions.remove(session);
+        handbreakSession(session);
     }
 
     /**
@@ -94,7 +94,7 @@ public class Notification {
      */
     @OnError
     public void onError(Session session, Throwable err) {
-        wsSessions.remove(session);
+        handbreakSession(session);
         if (err instanceof EOFException) {
             LOG.debug("The client aborted the connection.", err);
         }
@@ -120,7 +120,7 @@ public class Notification {
                 else {
                     LOG.debug(String.format("Could not send websocket message. Session [id:{0}] is closed.",
                             session.getId()));
-                    wsSessions.remove(session);
+                    handbreakSession(session);
                 }
             }
             catch (IOException e) {
@@ -131,20 +131,53 @@ public class Notification {
 
     /**
      * A static method to notify all {@link Session}s attached to WebSocket from the outside
+     * Must be synchronized. Sending messages concurrently from separate threads
+     * will result in IllegalStateException.
      * @param message
      */
     public static void notifyAll(String message) {
         // notify all open WebSocket sessions
-        wsSessions = wsSessions.stream().filter(ws -> ws.isOpen()).collect(Collectors.toList());
+        refreshOpenSessions();
         LOG.info(String.format("Notifying {0} websocket sessions", wsSessions.size()));
 
-        for (Session ws : wsSessions) {
-            try {
-                ws.getBasicRemote().sendText(message);
+        synchronized (wsSessions) {
+            for (Session ws : wsSessions) {
+                try {
+                    ws.getBasicRemote().sendText(message);
+                }
+                catch (IOException e) {
+                    LOG.error(String.format("Error sending message to websocket [id:{0}]", ws.getId()), e);
+                }
             }
-            catch (IOException e) {
-                LOG.error(String.format("Error sending message to websocket [id:{0}]", ws.getId()), e);
-            }
+        }
+    }
+
+    /**
+     * Add a new WebSocket Session to the collection
+     * @param session the session to add
+     */
+    private static void handshakeSession(Session session) {
+        synchronized (wsSessions) {
+            wsSessions.add(session);
+        }
+    }
+
+    /**
+     * Remove a WebSocket Session from the collection
+     * @param session the session to remove
+     */
+    private static void handbreakSession(Session session) {
+        synchronized (wsSessions) {
+            wsSessions.remove(session);
+        }
+    }
+
+    /**
+     * Keep only open WebSocket Session
+     */
+    private static void refreshOpenSessions() {
+        synchronized (wsSessions) {
+            wsSessions = wsSessions.stream().filter(ws -> ws.isOpen()).collect(Collectors.toList());
         }
     }
 }
