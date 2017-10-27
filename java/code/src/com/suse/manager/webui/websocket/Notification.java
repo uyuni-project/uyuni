@@ -88,6 +88,26 @@ public class Notification {
     }
 
     /**
+     * Callback executed an error occurs.
+     * @param session the websocket session
+     * @param err the err that occurred
+     */
+    @OnError
+    public void onError(Session session, Throwable err) {
+        wsSessions.remove(session);
+        if (err instanceof EOFException) {
+            LOG.debug("The client aborted the connection.", err);
+        }
+        else if (err.getMessage().startsWith("Unexpected error [32]")) {
+            // [32] "Broken pipe" is caught when the client side breaks the connection.
+            LOG.debug("The client broke the connection.", err);
+        }
+        else {
+            LOG.error("Websocket endpoint error", err);
+        }
+    }
+
+    /**
      * Must be synchronized. Sending messages concurrently from separate threads
      * will result in IllegalStateException.
      */
@@ -125,26 +145,6 @@ public class Notification {
             catch (IOException e) {
                 LOG.error(String.format("Error sending message to websocket [id:{0}]", ws.getId()), e);
             }
-        }
-    }
-
-    /**
-     * Callback executed an error occurs.
-     * @param session the websocket session
-     * @param err the err that occurred
-     */
-    @OnError
-    public void onError(Session session, Throwable err) {
-        wsSessions.remove(session);
-        if (err instanceof EOFException) {
-            LOG.debug("The client aborted the connection.", err);
-        }
-        else if (err.getMessage().startsWith("Unexpected error [32]")) {
-            // [32] "Broken pipe" is caught when the client side breaks the connection.
-            LOG.debug("The client broke the connection.", err);
-        }
-        else {
-            LOG.error("Websocket endpoint error", err);
         }
     }
 }
