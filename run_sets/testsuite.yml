@@ -86,7 +86,12 @@
 - features/srv_spacewalk_repo_sync.feature
 - features/srv_patches_page.feature
 - features/min_salt_reboot_test.feature
+
+# This need rework before activation
+# - features/trad_migrate_to_minion.feature
+
 # Post run feature (non idempotent)
 # Debug SUSE Manager server is non idempotent
 # because it gather files and perfoms log checks
+#  Don't add any feature here !
 - features/srv_susemanager_debug.feature
