@@ -95,9 +95,6 @@ public class Notification {
             LOG.error(message, e);
             sendMessage(session, message);
         }
-        finally {
-            HibernateFactory.closeSession();
-        }
     }
 
     /**
