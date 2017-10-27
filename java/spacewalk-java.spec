@@ -482,7 +482,7 @@ BuildRequires: jakarta-commons-dbcp
 BuildRequires: jakarta-commons-pool
 %endif # 0%{?suse_version}
 %endif # 0%{?fedora} || 0%{?rhel} >= 7
-Conflicts: quartz >= 2.0
+Conflicts: quartz < 2.0
 Obsoletes: taskomatic < 5.3.0
 Obsoletes: taskomatic-sat < 5.3.0
 Provides: taskomatic = %{version}-%{release}
