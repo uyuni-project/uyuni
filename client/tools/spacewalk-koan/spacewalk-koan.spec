@@ -10,7 +10,7 @@
 
 Summary: Support package for spacewalk koan interaction
 Name: spacewalk-koan
-Version: 2.8.4.1
+Version: 2.8.5
 Release: 1%{?dist}
 Group: System Environment/Kernel
 License: GPLv2
@@ -78,6 +78,7 @@ make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_si
 %endif
 %endif
 
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -94,6 +95,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{python_sitelib}/rhn
 %{python_sitelib}/spacewalkkoan/
 %{python_sitelib}/rhn/actions/
+%if 0%{?suse_version}
+%dir %{python_sitelib}/rhn
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
@@ -101,9 +105,16 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{python3_sitelib}/rhn
 %{python3_sitelib}/spacewalkkoan/
 %{python3_sitelib}/rhn/actions/
+%if 0%{?suse_version}
+%dir %{python3_sitelib}/rhn
+%endif
 %endif
 
 %changelog
+* Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.5-1
+- spacewalk-koan: add missing directories to filelist on SUSE and build py3 on
+  Tumbleweed
+
 * Wed Oct 18 2017 Jan Dobes 2.8.4-1
 - spacewalk-koan - removing usage of string module not available in Python 3
 

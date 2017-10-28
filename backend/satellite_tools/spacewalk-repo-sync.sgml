@@ -34,6 +34,11 @@ Syncs the content from yum repos into SUSE Manager channels.
     <cmdsynopsis>
         <arg>-l</arg>
 	<arg>--list</arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+        <arg>-s</arg>
+        <arg>--show-packages</arg>
+    </cmdsynopsis>
     <cmdsynopsis>
         <arg>-u <replaceable>URL</replaceable></arg>
 	<arg>--url=<replaceable>URL</replaceable></arg>
@@ -153,6 +158,12 @@ Syncs the content from yum repos into SUSE Manager channels.
         </listitem>
     </varlistentry>
     <varlistentry>
+        <term>-s, --show-packages</term>
+        <listitem>
+            <para>List all packages in a specified channel.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
         <term>-g <replaceable>CONFIG</replaceable>, --config=<replaceable>CONFIG</replaceable></term>
         <listitem>
             <para>Configuration file where more than one channel can be specified for synchronization. See section Examples.</para>
@@ -185,13 +196,13 @@ Syncs the content from yum repos into SUSE Manager channels.
     <varlistentry>
         <term>-i <replaceable>FILTERS</replaceable>, --include <replaceable>FILTERS</replaceable></term>
         <listitem>
-            <para>Comma or space separated list of included packages.</para>
+            <para>Comma or space separated list of included packages or package groups.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
         <term>-e <replaceable>FILTERS</replaceable>, --exclude <replaceable>FILTERS</replaceable></term>
         <listitem>
-            <para>Comma or space separated list of excluded packages.</para>
+            <para>Comma or space separated list of excluded packages or package groups.</para>
         </listitem>
     </varlistentry>
     <varlistentry>

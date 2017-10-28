@@ -38,7 +38,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.15.1
+Version: 2.8.22
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -265,7 +265,7 @@ BuildRequires: python2-devel
 BuildRequires: python3-devel
 Conflicts: %{name} < 1.7.0
 %if 0%{?suse_version}
-Requires: python3-base
+Requires:       python3-base
 %else
 Requires: python3-libs
 %endif
@@ -433,6 +433,10 @@ sed -i 's/#DOCUMENTROOT#/\/srv\/www\/htdocs/' $RPM_BUILD_ROOT%{rhnconfigdefaults
 pushd $RPM_BUILD_ROOT
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
+
+%if 0%{?build_py3}
+%py3_compile -O %{buildroot}/%{python3rhnroot}
+%endif
 %endif
 
 # prevent file conflict with spacewalk-usix
@@ -769,7 +773,12 @@ rm -f %{rhnconf}/rhnSecret.py*
 #%{python3rhnroot}/__init__.py
 #%{python3rhnroot}/common/__init__.py
 #%{python3rhnroot}/__pycache__/__init__.*
-%{python3rhnroot}/common/__pycache__/*
+%{python3rhnroot}/common/__pycache__
+%if 0%{?suse_version}
+%dir %{python3rhnroot}
+%dir %{python3rhnroot}/common
+%dir %{python3rhnroot}/__pycache__
+%endif
 %endif
 
 %files config-files-common
@@ -914,8 +923,38 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/cdnsync
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-cdn
 %{_mandir}/man8/cdn-sync.8*
+%if 0%{?suse_version}
+%dir %{pythonrhnroot}/cdn_tools
+%endif
 
 %changelog
+* Fri Oct 27 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.22-1
+- convert only bytes
+
+* Wed Oct 25 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.21-1
+- pylint fixes
+
+* Wed Oct 25 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.20-1
+- make rhn_rpm python3 compatible
+- open checksummed files in binary mode
+
+* Wed Oct 25 2017 Jan Dobes <jdobes@redhat.com> 2.8.19-1
+- mention package groups in help
+- detect and parse package groups in filters
+- split only using comma then strip
+
+* Tue Oct 24 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.18-1
+- add new spacewalk-repo-sync command line option to synopsis of man-page
+
+* Tue Oct 24 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.17-1
+- add new parameter '--show-packages' for spacewalk-repo-sync.
+
+* Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.16-1
+- spacewalk-backend: fix package name on SUSE and build py3 on Tumbleweed
+- fixing previous commit
+- improve comment
+- join two ifs
+
 * Mon Oct 16 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.15-1
 - fix the inconsistency in spacewalk-repo-sync documentation.
 
