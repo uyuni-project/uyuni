@@ -525,33 +525,33 @@ class RepoSync(object):
                                               client_cert_file=client_cert_file,
                                               client_key_file=client_key_file)
 
-                if self.show_packages_only:
-                    self.show_packages(plugin, repo_id)
-                else:
-                    if update_repodata:
-                        plugin.clear_cache()
+                    if self.show_packages_only:
+                        self.show_packages(plugin, repo_id)
+                    else:
+                        if update_repodata:
+                            plugin.clear_cache()
 
-                    # update the checksum type of channels with org_id NULL
-                    # this fetch also the normal xml primary file
-                    self.updateChannelChecksumType(plugin.get_md_checksum_type())
+                        # update the checksum type of channels with org_id NULL
+                        # this fetch also the normal xml primary file
+                        self.updateChannelChecksumType(plugin.get_md_checksum_type())
 
-                    if not self.no_packages:
-                        ret = self.import_packages(plugin, data['id'], url)
-                        failed_packages += ret
-                        self.import_groups(plugin)
+                        if not self.no_packages:
+                            ret = self.import_packages(plugin, data['id'], url)
+                            failed_packages += ret
+                            self.import_groups(plugin)
 
-                    if not self.no_errata:
-                        self.import_updates(plugin)
+                        if not self.no_errata:
+                            self.import_updates(plugin)
 
-                    # only for repos obtained from the DB
-                    if self.sync_kickstart and data['repo_label']:
-                        try:
-                            self.import_kickstart(plugin, data['repo_label'])
-                        except:
-                            rhnSQL.rollback()
-                            raise
-                    self.import_products(plugin)
-                    self.import_susedata(plugin)
+                        # only for repos obtained from the DB
+                        if self.sync_kickstart and data['repo_label']:
+                            try:
+                                self.import_kickstart(plugin, data['repo_label'])
+                            except:
+                                rhnSQL.rollback()
+                                raise
+                        self.import_products(plugin)
+                        self.import_susedata(plugin)
 
                 except rhnSQL.SQLError, e:
                     log(0, "SQLError: %s" % e)
