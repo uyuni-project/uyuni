@@ -29,18 +29,17 @@
 ## language imports
 import sys
 import os
-import string
 
 
 # management decisions lead to funny code
-sys.argv[0] = os.path.join(os.path.dirname(sys.argv[0]), string.replace(os.path.basename(sys.argv[0]), 'mgr', 'rhn'))
-mod_name = string.replace(os.path.basename(sys.argv[0]), '-', '_')
+sys.argv[0] = os.path.join(os.path.dirname(sys.argv[0]), os.path.basename(sys.argv[0]).replace('mgr', 'rhn'))
+mod_name = os.path.basename(sys.argv[0]).replace('-', '_')
 try:
     mod = __import__("certs." + mod_name)
 except KeyboardInterrupt:
     sys.stderr.write("\nUser interrupted process.\n")
     sys.exit(0)
-except ImportError, e:
+except ImportError as e:
     sys.stderr.write("Unable to load module %s\n" % mod_name)
     sys.stderr.write(str(e) + "\n")
     sys.exit(1)

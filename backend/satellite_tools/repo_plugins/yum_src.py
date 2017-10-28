@@ -32,6 +32,7 @@ from urlgrabber.grabber import URLGrabber, URLGrabError, default_grabber
 from rpmUtils.transaction import initReadOnlyTransaction
 import yum
 from yum.Errors import RepoMDError
+from yum.comps import Comps
 from yum.config import ConfigParser
 from yum.packageSack import ListPackageSack
 from yum.update_md import UpdateMetadata, UpdateNoticeException, UpdateNotice
@@ -303,14 +304,33 @@ class ContentSource(object):
                 pass
         return len(self.repo.getPackageSack().returnPackages())
 
-    def raw_list_packages(self):
+    def raw_list_packages(self, filters=None):
         for dummy_index in range(3):
             try:
                 self.repo.getPackageSack().populate(self.repo, 'metadata', None, 0)
                 break
             except YumErrors.RepoError:
                 pass
-        return self.repo.getPackageSack().returnPackages()
+
+        rawpkglist = self.repo.getPackageSack().returnPackages()
+
+        if not filters:
+            filters = []
+            # if there's no include/exclude filter on command line or in database
+            for p in self.repo.includepkgs:
+                filters.append(('+', [p]))
+            for p in self.repo.exclude:
+                filters.append(('-', [p]))
+
+        if filters:
+            rawpkglist = self._filter_packages(rawpkglist, filters)
+            rawpkglist = self._get_package_dependencies(self.repo.getPackageSack(), rawpkglist)
+
+            # do not pull in dependencies if they're explicitly excluded
+            rawpkglist = self._filter_packages(rawpkglist, filters, True)
+            self.num_excluded = self.num_packages - len(rawpkglist)
+
+        return rawpkglist
 
     def list_packages(self, filters, latest):
         """ list packages"""
@@ -338,6 +358,8 @@ class ContentSource(object):
                 filters.append(('+', [p]))
             for p in self.repo.exclude:
                 filters.append(('-', [p]))
+
+        filters = self._expand_package_groups(filters)
 
         if filters:
             pkglist = self._filter_packages(pkglist, filters)
@@ -372,6 +394,61 @@ class ContentSource(object):
             return 0
         else:
             return -1
+
+    @staticmethod
+    def _find_comps_type(comps_type, environments, groups, name):
+        # Finds environment or regular group by name or label
+        found = None
+        if comps_type == "environment":
+            for e in environments:
+                if e.environmentid == name or e.name == name:
+                    found = e
+                    break
+        elif comps_type == "group":
+            for g in groups:
+                if g.groupid == name or g.name == name:
+                    found = g
+                    break
+        return found
+
+    def _expand_comps_type(self, comps_type, environments, groups, filters):
+        new_filters = []
+        # Rebuild filter list
+        for sense, pkg_list in filters:
+            new_pkg_list = []
+            for pkg in pkg_list:
+                # Package group id
+                if pkg and pkg[0] == '@':
+                    group_name = pkg[1:].strip()
+                    found = self._find_comps_type(comps_type, environments, groups, group_name)
+                    if found and comps_type == "environment":
+                        # Save expanded groups to the package list
+                        new_pkg_list.extend(['@' + grp for grp in found.allgroups])
+                    elif found and comps_type == "group":
+                        # Replace with package list, simplified to not evaluate if packages are default, optional etc.
+                        new_pkg_list.extend(found.packages)
+                    else:
+                        # Invalid group, save group id back
+                        new_pkg_list.append(pkg)
+                else:
+                    # Regular package
+                    new_pkg_list.append(pkg)
+            if new_pkg_list:
+                new_filters.append((sense, new_pkg_list))
+        return new_filters
+
+    def _expand_package_groups(self, filters):
+        groups_file = self.get_groups()
+        if not groups_file:
+            return filters
+        comps = Comps()
+        comps.add(groups_file)
+        groups = comps.get_groups()
+        environments = comps.get_environments()
+        # First expand environment groups, then regular groups
+        filters = self._expand_comps_type("environment", environments, groups, filters)
+        filters = self._expand_comps_type("group", environments, groups, filters)
+        return filters
 
     @staticmethod
     def _filter_packages(packages, filters, exclude_only=False):

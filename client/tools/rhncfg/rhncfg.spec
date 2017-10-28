@@ -16,7 +16,7 @@
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name: rhncfg
-Version: 5.10.116.1
+Version: 5.10.117
 Release: 1%{?dist}
 Summary: Spacewalk Configuration Client Libraries
 Group:   Applications/System
@@ -280,6 +280,9 @@ fi
 %dir %{python_sitelib}/rhn
 %{python_sitelib}/rhn/actions
 %{_bindir}/rhn-actions-control-%{python_version}
+%if 0%{?suse_version}
+%dir %{python_sitelib}/rhn
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-%{name}-actions
@@ -287,9 +290,16 @@ fi
 %dir %{python3_sitelib}/rhn
 %{python3_sitelib}/rhn/actions
 %{_bindir}/rhn-actions-control-%{python3_version}
+%if 0%{?suse_version}
+%dir %{python3_sitelib}/rhn
+%endif
 %endif
 
 %changelog
+* Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 5.10.117-1
+- rhncfg: add missing dirs to filelist for SUSE and enable py3 build on
+  Tumbleweed
+
 * Wed Oct 18 2017 Jan Dobes 5.10.116-1
 - rhncfg - unused string import
 

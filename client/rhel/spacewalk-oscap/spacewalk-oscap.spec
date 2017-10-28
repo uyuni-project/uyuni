@@ -6,7 +6,7 @@
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:		spacewalk-oscap
-Version:	2.8.3.1
+Version:	2.8.4
 Release:	1%{?dist}
 Summary:	OpenSCAP plug-in for rhn-check
 
@@ -78,6 +78,7 @@ make -f Makefile.spacewalk-oscap install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{pyt
 %endif
 %endif
 
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -98,19 +99,27 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %dir %{python_sitelib}/rhn/actions
 %{python_sitelib}/rhn/actions/scap.*
+%if 0%{?suse_version}
+%dir %{python_sitelib}/rhn/actions
+%endif
 
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
 %defattr(-,root,root)
-%dir %{python3_sitelib}/rhn/actions
-%dir %{python3_sitelib}/rhn/actions/__pycache__
 %{python3_sitelib}/rhn/actions/scap.*
 %{python3_sitelib}/rhn/actions/__pycache__/scap.*
-
+%if 0%{?suse_version}
+%dir %{python3_sitelib}/rhn/actions
+%dir %{python3_sitelib}/rhn/actions/__pycache__
+%endif
 %endif
 
 %changelog
+* Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.4-1
+- spacewalk-oscap: add missing directories to filelist and enable py3 build for
+  Tumbleweed
+
 * Fri Sep 29 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
 - require new version of rhn-client-tools and rhnlib
 - move client actions to rhn namespace
