@@ -4,7 +4,6 @@
 
 %if 0%{?fedora} || 0%{?suse_version} > 1320
 %global build_py3   1
-%global default_py3 1
 %endif
 
 Summary: Streaming zlib (gzip) support for python
@@ -46,8 +45,6 @@ Obsoletes: python-gzipstream < %{version}-%{release}
 %package -n python3-gzipstream
 Summary:        %summary
 Group:          Development/Languages/Python
-Provides:       python-gzipstream = %{version}-%{release}
-Obsoletes:      python-gzipstream < %{version}-%{release}
 BuildRequires:  python3-devel
 
 %description -n python3-gzipstream %_description
