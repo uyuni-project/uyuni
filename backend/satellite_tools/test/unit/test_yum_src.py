@@ -33,6 +33,7 @@ class YumSrcTest(unittest.TestCase):
 
         real_setup_repo = yum_src.ContentSource.setup_repo
         yum_src.ContentSource.initgpgdir = Mock()
+        yum_src.ContentSource.get_groups = Mock(return_value=None)
 
         # don't read configs
         mock.patch('spacewalk.common.suseLib.initCFG').start()
