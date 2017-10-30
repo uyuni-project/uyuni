@@ -77,6 +77,11 @@ public class DownloadController {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
 
+        if (filename.endsWith(".asc") || filename.endsWith(".key")) {
+            halt(HttpStatus.SC_NOT_FOUND,
+                    String.format("Key or signature file not provided: %s", filename));
+        }
+
         String token = getTokenFromRequest(request);
         validateToken(token, channelLabel, filename);
 
