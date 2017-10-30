@@ -1,13 +1,5 @@
 # SUSE Manager automated test suite
 
-* `master`
-[![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=master)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
-* `manager31`
-[![Build Status Manager31 branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=manager31)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
-* `manager30`
-[![Build Status Manager30 branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=manager30)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
-
-
 # Introduction
 
 This is the automated testsuite for [SUSE Manager](https://www.suse.com/products/suse-manager/).
@@ -37,7 +29,6 @@ The **secondary features** can be run any number of times, and the order is not 
 
 If you decide to test with a proxy, look at the [proxy instructions](docs/proxy.md).
 
-
 # Contributing
 
 ## Procedure
@@ -55,17 +46,13 @@ Check the [code coverage results](docs/codecoverage.md) after you have run the t
 
 There are also hints about how to [debug the testsuite](docs/Debug.md) and about [Pitfalls in writing the testsuite](docs/Pitfalls-test.md).
 
-
 # Branches used
 
 * Development (to be run against a HEAD version of SUSE Manager):
 
-  * [`master`](https://github.com/SUSE/spacewalk-testsuite-base)
+  * [`Manager`](https://github.com/SUSE/spacewalk-testsuite-base)
 
 * Release (to be run against a nightly or released *tagged* version of SUSE Manager):
 
-  * [`manager30`](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager30)
-  * [`manager31`](https://github.com/SUSE/spacewalk-testsuite-base/tree/manager31)
-
-All other branches are considered legacy (not under development anymore): `Manager 2.1`, `manager21-longterm`, `Manager 17`, `Manager 12`.
-
+  * [`Manager-3.1`](https://github.com/SUSE/spacewalk/tree/manager31)
+  * [`Manager-3.0`](https://github.com/SUSE/spacewalk/tree/manager30)
