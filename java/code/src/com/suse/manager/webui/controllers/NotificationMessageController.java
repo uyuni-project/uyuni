@@ -15,15 +15,16 @@
 package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.security.CSRFTokenValidator;
+import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.NotificationMessageFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -64,6 +65,31 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String data(Request request, Response response, User user) {
+        Object data = NotificationMessageFactory.listNotificationMessage();
+
+        response.type("application/json");
+        return GSON.toJson(data);
+    }
+
+    /**
+     * Update the read status of the message
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON result of the API call
+     */
+    public static String updateMessageStatus(Request request, Response response, User user) {
+        Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
+        Long messageId = Double.valueOf(map.get("messageId").toString()).longValue();
+        boolean isRead = (boolean) map.get("isRead");
+
+        Optional<NotificationMessage> nm = NotificationMessageFactory.lookupById(messageId);
+
+        if (nm.isPresent()) {
+            NotificationMessageFactory.updateNotificationMessageStatus(nm.get(), isRead);
+        }
+
         Object data = NotificationMessageFactory.listNotificationMessage();
 
         response.type("application/json");

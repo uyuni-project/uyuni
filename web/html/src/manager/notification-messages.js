@@ -69,14 +69,35 @@ const NotificationMessages = React.createClass({
       return true;
   },
 
-  decodeStatus: function(status) {
+  decodeStatus: function(messageId, status) {
     var cell;
     switch(status) {
-      case true: cell = <div><i className="fa fa-eye"></i>{t(' read')}</div>; break;
-      case false: cell = <div className="text-info"><i className="fa fa-envelope"></i>{t(' not read')}</div>; break;
+      case true: cell = <a href="#" title={t('read')} onClick={() => this.updateReadStatus(messageId, false)}><i className="fa fa-check-square-o"></i></a>; break;
+      case false: cell = <a href="#" title={t('not read')} onClick={() => this.updateReadStatus(messageId, true)}><i className="fa fa-square-o"></i></a>; break;
       default: cell = null;
     }
     return cell;
+  },
+
+  updateReadStatus: function(messageId, isRead) {
+    var currentObject = this;
+    var messageData = {};
+    messageData.messageId = messageId;
+    messageData.isRead = isRead;
+    Network.post("/rhn/manager/notification-messages/update-message-status", JSON.stringify(messageData), "application/json").promise
+    .then(data => {
+      currentObject.setState({
+        serverData: data,
+        error: null,
+      });
+    })
+    .catch(response => {
+      currentObject.setState({
+        error: response.status == 401 ? "authentication" :
+          response.status >= 500 ? "general" :
+          null
+      });
+    });
   },
 
   buildRows: function(jobs) {
@@ -144,7 +165,7 @@ const NotificationMessages = React.createClass({
                 columnKey="read"
                 comparator={this.sortByStatus}
                 header={t("Read")}
-                cell={ (row) => this.decodeStatus(row["read"]) }
+                cell={ (row) => this.decodeStatus(row["id"], row["read"]) }
               />
             </Table>
           </div>

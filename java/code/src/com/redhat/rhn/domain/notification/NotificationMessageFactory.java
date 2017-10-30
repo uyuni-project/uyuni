@@ -22,7 +22,10 @@ import com.suse.manager.webui.websocket.Notification;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * NotificationMessageFactory
@@ -72,10 +75,11 @@ public class NotificationMessageFactory extends HibernateFactory {
     /**
      * Update {@link NotificationMessage} to the database, set it as read.
      * @param notificationMessage notificationMessage
+     * @param isRead flag status to set if the message is read or not
      */
-    public static void updateNotificationMessageAsRead(NotificationMessage notificationMessage) {
-        notificationMessage.setRead(true);
-        notificationMessage.setModified(new Date());
+    public static void updateNotificationMessageStatus(NotificationMessage notificationMessage, boolean isRead) {
+        notificationMessage.setRead(isRead);
+//        notificationMessage.setModified((new Date()).getTime());
         singleton.saveObject(notificationMessage);
 
         fireNotificationUpdate();
@@ -105,6 +109,13 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static List<NotificationMessage> listNotReadNotificationMessage() {
         return singleton.listObjectsByNamedQuery("NotificationMessage.listNotReadNotificationMessage", null);
+    }
+
+    public static Optional<NotificationMessage> lookupById(Long messageId) {
+        Map qryParams = new HashMap();
+        qryParams.put("message_id", messageId);
+        return Optional.ofNullable(
+                (NotificationMessage) singleton.lookupObjectByNamedQuery("NotificationMessage.lookupById", qryParams));
     }
 
     /**
