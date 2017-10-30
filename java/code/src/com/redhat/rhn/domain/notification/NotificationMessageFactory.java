@@ -66,7 +66,6 @@ public class NotificationMessageFactory extends HibernateFactory {
      * @param notificationMessage notificationMessage
      */
     public static void storeNotificationMessage(NotificationMessage notificationMessage) {
-        notificationMessage.setModified(new Date());
         singleton.saveObject(notificationMessage);
 
         fireNotificationUpdate();
@@ -79,7 +78,6 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static void updateNotificationMessageStatus(NotificationMessage notificationMessage, boolean isRead) {
         notificationMessage.setRead(isRead);
-//        notificationMessage.setModified((new Date()).getTime());
         singleton.saveObject(notificationMessage);
 
         fireNotificationUpdate();
