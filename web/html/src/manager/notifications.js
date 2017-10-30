@@ -63,20 +63,15 @@ const Notifications = React.createClass({
   componentWillUnmount: function() {
     window.removeEventListener("beforeunload", this.onBeforeUnload)
   },
-  
-  // tester function: click on the widget to test the send/receive of a message via websocket
-  onClick: function() {
-    this.state.websocket.send('ping');
-  },
 
   render: function() {
     return (
-        <div onClick={this.onClick}>
+        <a href="/rhn/manager/notification-messages">
           <i className="fa fa-bell"></i>
           <div id="notification-counter">
             {this.state.unreadMessagesLength}
           </div>
-        </div>
+        </a>
     );
   }
 });
