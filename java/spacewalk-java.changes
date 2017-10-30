@@ -1,4 +1,5 @@
 - Enable 'Power Management' features on Salt minions.
+- Fail gracefully when GPG files are requested (bsc#1065676)
 
 -------------------------------------------------------------------
 Tue Oct 17 12:38:13 CEST 2017 - jgonzalez@suse.com
