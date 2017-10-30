@@ -22,4 +22,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
   <query name="NotificationMessage.listNotReadNotificationMessage">
       <![CDATA[ select nm from com.redhat.rhn.domain.notification.NotificationMessage as nm where nm.read != true]]>
   </query>
+  <query name="NotificationMessage.lookupById">
+      <![CDATA[ select nm from com.redhat.rhn.domain.notification.NotificationMessage as nm where nm.id = :message_id]]>
+  </query>
 </hibernate-mapping>
