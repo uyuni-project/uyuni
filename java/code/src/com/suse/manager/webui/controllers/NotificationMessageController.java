@@ -15,11 +15,11 @@
 package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.security.CSRFTokenValidator;
+import com.redhat.rhn.domain.notification.NotificationMessageFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.suse.manager.webui.services.NotificationMessageCollector;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -64,7 +64,7 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String data(Request request, Response response, User user) {
-        Object data = new NotificationMessageCollector().getData(user);
+        Object data = NotificationMessageFactory.listNotificationMessage();
 
         response.type("application/json");
         return GSON.toJson(data);
