@@ -1,11 +1,4 @@
-
-# Spacewalk Testsuite
-
-Master
-[![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=master)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
-Manager 30
-[![Build Status Master branch](https://travis-ci.org/SUSE/spacewalk-testsuite-base.svg?branch=manager30)](https://travis-ci.org/SUSE/spacewalk-testsuite-base)
-
+# Spacewalk Testsuite for Suse-Manager 3.0
 
 ## Introduction
 
@@ -68,7 +61,3 @@ Add a file into `run_sets/$name.yml` and then execute `rake cucumber:$name`.
 ## License
 
 * The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file included in the distribution.
-
-
-
-
