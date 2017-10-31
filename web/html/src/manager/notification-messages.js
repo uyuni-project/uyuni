@@ -55,13 +55,6 @@ const NotificationMessages = React.createClass({
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   },
 
-  sortByNumber: function(aRaw, bRaw, columnKey, sortDirection) {
-    var a = aRaw[columnKey];
-    var b = bRaw[columnKey];
-    var result = a > b ? 1 : (a < b ? -1 : 0);
-    return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
-  },
-
   searchData: function(datum, criteria) {
       if (criteria) {
         return datum.description.toLowerCase().includes(criteria.toLowerCase());
@@ -137,12 +130,6 @@ const NotificationMessages = React.createClass({
                       criteria={""}
                       placeholder={t("Filter by description")} />
               }>
-              <Column
-                columnKey="id"
-                comparator={Utils.sortByNumber}
-                header={t("Id")}
-                cell={ (row) => row["id"] }
-              />
               <Column
                 columnKey="description"
                 comparator={Utils.sortByText}
