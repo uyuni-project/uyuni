@@ -27,8 +27,8 @@ import javax.websocket.EndpointConfig;
 import javax.websocket.server.ServerEndpoint;
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -41,7 +41,7 @@ public class Notification {
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(Notification.class);
 
-    private static List<Session> wsSessions = new LinkedList<>();
+    private static Set<Session> wsSessions = new HashSet<>();
 
     /**
      * Callback executed when the WebSocket is opened.
@@ -177,7 +177,7 @@ public class Notification {
      */
     private static void refreshOpenSessions() {
         synchronized (wsSessions) {
-            wsSessions = wsSessions.stream().filter(ws -> ws.isOpen()).collect(Collectors.toList());
+            wsSessions = wsSessions.stream().filter(ws -> ws.isOpen()).collect(Collectors.toSet());
         }
     }
 }
