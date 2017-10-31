@@ -65,7 +65,7 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String data(Request request, Response response, User user) {
-        Object data = NotificationMessageFactory.listNotificationMessage();
+        Object data = NotificationMessageFactory.listAllNotificationMessage();
 
         response.type("application/json");
         return GSON.toJson(data);
@@ -90,7 +90,7 @@ public class NotificationMessageController {
             NotificationMessageFactory.updateNotificationMessageStatus(nm.get(), isRead);
         }
 
-        Object data = NotificationMessageFactory.listNotificationMessage();
+        Object data = NotificationMessageFactory.listAllNotificationMessage();
 
         response.type("application/json");
         return GSON.toJson(data);
