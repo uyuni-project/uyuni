@@ -16,7 +16,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <property name="modified" column="modified" type="timestamp" insert="false" update="false"/>
   </class>
   
-  <query name="NotificationMessage.listNotificationMessage">
+  <query name="NotificationMessage.listAllNotificationMessage">
       <![CDATA[ select nm from com.redhat.rhn.domain.notification.NotificationMessage as nm]]>
   </query>
   <query name="NotificationMessage.listNotReadNotificationMessage">

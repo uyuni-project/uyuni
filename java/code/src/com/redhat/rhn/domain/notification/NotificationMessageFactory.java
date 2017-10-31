@@ -96,8 +96,8 @@ public class NotificationMessageFactory extends HibernateFactory {
      * Lookup all NotificationMessages .
      * @return List of notification messages.
      */
-    public static List<NotificationMessage> listNotificationMessage() {
-        return singleton.listObjectsByNamedQuery("NotificationMessage.listNotificationMessage", null);
+    public static List<NotificationMessage> listAllNotificationMessage() {
+        return singleton.listObjectsByNamedQuery("NotificationMessage.listAllNotificationMessage", null);
     }
 
     /**
