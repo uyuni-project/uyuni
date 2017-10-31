@@ -64,7 +64,22 @@ public class NotificationMessageController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String data(Request request, Response response, User user) {
+    public static String dataNotRead(Request request, Response response, User user) {
+        Object data = NotificationMessageFactory.listNotReadNotificationMessage();
+
+        response.type("application/json");
+        return GSON.toJson(data);
+    }
+
+    /**
+     * Returns JSON data from messages
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON result of the API call
+     */
+    public static String dataAll(Request request, Response response, User user) {
         Object data = NotificationMessageFactory.listAllNotificationMessage();
 
         response.type("application/json");
@@ -90,7 +105,7 @@ public class NotificationMessageController {
             NotificationMessageFactory.updateNotificationMessageStatus(nm.get(), isRead);
         }
 
-        Object data = NotificationMessageFactory.listAllNotificationMessage();
+        Object data = NotificationMessageFactory.listNotReadNotificationMessage();
 
         response.type("application/json");
         return GSON.toJson(data);

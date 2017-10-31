@@ -24,7 +24,7 @@ const NotificationMessages = React.createClass({
 
   refreshServerData: function() {
     var currentObject = this;
-    Network.get("/rhn/manager/notification-messages/data", "application/json").promise
+    Network.get("/rhn/manager/notification-messages/data-not-read", "application/json").promise
       .then(data => {
         currentObject.setState({
           serverData: data,
