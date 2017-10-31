@@ -19,7 +19,7 @@ const NotificationMessages = React.createClass({
 
   componentWillMount: function() {
     this.refreshServerData();
-    // setInterval(this.refreshServerData, this.props.refreshInterval);
+    setInterval(this.refreshServerData, this.props.refreshInterval);
   },
 
   refreshServerData: function() {
