@@ -68,9 +68,12 @@ const Notifications = React.createClass({
     return (
         <a href="/rhn/manager/notification-messages">
           <i className="fa fa-bell"></i>
-          <div id="notification-counter">
-            {this.state.unreadMessagesLength}
-          </div>
+          {
+            this.state.unreadMessagesLength > 0 ?
+            <div id="notification-counter">
+              {this.state.unreadMessagesLength}
+            </div> : null
+          }
         </a>
     );
   }
