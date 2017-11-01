@@ -11,7 +11,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
       </generator>
     </id>
     <property name="description" column="description" type="string" />
-    <property name="read" column="read" type="boolean"/>
+    <property name="isRead" column="isRead" type="boolean"/>
     <property name="created" column="created" type="timestamp" insert="false" update="false"/>
     <property name="modified" column="modified" type="timestamp" insert="false" update="false"/>
   </class>
@@ -20,7 +20,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
       <![CDATA[ select nm from com.redhat.rhn.domain.notification.NotificationMessage as nm]]>
   </query>
   <query name="NotificationMessage.listNotReadNotificationMessage">
-      <![CDATA[ select nm from com.redhat.rhn.domain.notification.NotificationMessage as nm where nm.read != true]]>
+      <![CDATA[ select nm from com.redhat.rhn.domain.notification.NotificationMessage as nm where nm.isRead != true]]>
   </query>
   <query name="NotificationMessage.lookupById">
       <![CDATA[ select nm from com.redhat.rhn.domain.notification.NotificationMessage as nm where nm.id = :message_id]]>

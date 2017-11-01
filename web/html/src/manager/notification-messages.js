@@ -143,10 +143,10 @@ const NotificationMessages = React.createClass({
                 cell={ (row) => row["created"] == null ? "" : moment(row["created"]).format("DD/MM/YYYY HH:mm:ss") }
               />
               <Column
-                columnKey="read"
+                columnKey="isRead"
                 comparator={this.sortByStatus}
-                header={t("Read")}
-                cell={ (row) => this.decodeStatus(row["id"], row["read"]) }
+                header={t("Is read")}
+                cell={ (row) => this.decodeStatus(row["id"], row["isRead"]) }
               />
             </Table>
           </div>
