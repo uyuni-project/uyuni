@@ -13,7 +13,7 @@ public class NotificationMessage {
 
     private Long id;
     private String description;
-    private boolean read;
+    private boolean isRead;
     private Date created;
     private Date modified;
 
@@ -27,11 +27,11 @@ public class NotificationMessage {
      * Default constructor for a NotificationMessage
      *
      * @param descriptionIn the description of the message
-     * @param readIn if the message is already read or not
+     * @param isReadIn if the message is already read or not
      */
-    public NotificationMessage(String descriptionIn, boolean readIn) {
+    public NotificationMessage(String descriptionIn, boolean isReadIn) {
         this.description = descriptionIn;
-        this.read = readIn;
+        this.isRead = isReadIn;
     }
 
     /**
@@ -65,15 +65,15 @@ public class NotificationMessage {
     /**
      * @return Returns the read.
      */
-    public boolean isRead() {
-        return read;
+    public boolean getIsRead() {
+        return isRead;
     }
 
     /**
-     * @param readIn The read to set.
+     * @param isReadIn The read to set.
      */
-    public void setRead(boolean readIn) {
-        this.read = readIn;
+    public void setIsRead(boolean isReadIn) {
+        this.isRead = isReadIn;
     }
 
     /**
@@ -116,7 +116,7 @@ public class NotificationMessage {
         return new EqualsBuilder()
             .append(getDescription(), otherNotificationMessage.getDescription())
             .append(getCreated(), otherNotificationMessage.getCreated())
-            .append(isRead(), otherNotificationMessage.isRead())
+            .append(getIsRead(), otherNotificationMessage.getIsRead())
             .isEquals();
     }
 
@@ -140,7 +140,7 @@ public class NotificationMessage {
             .append("id", getId())
             .append("description", getDescription())
             .append("created", getCreated())
-            .append("read", isRead())
+            .append("isRead", getIsRead())
             .toString();
     }
 }

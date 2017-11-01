@@ -76,7 +76,7 @@ public class NotificationMessageFactory extends HibernateFactory {
      * @param isRead flag status to set if the message is read or not
      */
     public static void updateNotificationMessageStatus(NotificationMessage notificationMessage, boolean isRead) {
-        notificationMessage.setRead(isRead);
+        notificationMessage.setIsRead(isRead);
         singleton.saveObject(notificationMessage);
 
         fireNotificationUpdate();
