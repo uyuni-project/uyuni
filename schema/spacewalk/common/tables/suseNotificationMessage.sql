@@ -6,7 +6,7 @@ CREATE TABLE public.susenotificationmessage
 (
   id numeric NOT NULL,
   description character varying(256) NOT NULL,
-  read boolean NOT NULL DEFAULT false,
+  isRead boolean NOT NULL DEFAULT false,
   created timestamp with time zone NOT NULL DEFAULT now(),
   modified timestamp with time zone NOT NULL DEFAULT now(),
   CONSTRAINT suse_notifmess_pk PRIMARY KEY (id)
