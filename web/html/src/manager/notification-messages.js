@@ -93,8 +93,8 @@ const NotificationMessages = React.createClass({
     });
   },
 
-  buildRows: function(jobs) {
-    return Object.keys(jobs).map((id) => jobs[id]);
+  buildRows: function(message) {
+    return Object.keys(message).map((id) => message[id]);
   },
 
   render: function() {
