@@ -105,8 +105,8 @@ public class NotificationMessageController {
             NotificationMessageFactory.updateNotificationMessageStatus(nm.get(), isRead);
         }
 
-        Object data = NotificationMessageFactory.listNotReadNotificationMessage();
-
+        Map<String, String> data = new HashMap<>();
+        data.put("message", "Message status updated");
         response.type("application/json");
         return GSON.toJson(data);
     }
