@@ -13,7 +13,7 @@
 %endif
 
 Name:           spacewalk
-Version:        2.5.0.6
+Version:        2.5.0.7
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://fedorahosted.org/spacewalk

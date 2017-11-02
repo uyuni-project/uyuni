@@ -1,5 +1,5 @@
 Name:		spacewalk-oscap
-Version:	2.5.1.1
+Version:	2.5.1.2
 Release:	1%{?dist}
 Summary:	OpenSCAP plug-in for rhn-check
 

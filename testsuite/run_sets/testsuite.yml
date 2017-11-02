@@ -1,0 +1,104 @@
+--- # List of features for a full test run
+- features/init_user_create.feature
+- features/setup_proxy.feature
+- features/running.feature
+- features/login.feature
+- features/mainpage.feature
+- features/channels_add.feature
+- features/push_package.feature
+- features/create_repository.feature
+- features/systemspage.feature
+- features/create_activationkey.feature
+- features/users.feature
+- features/users-createnewuser.feature
+- features/users-userdetails.feature
+- features/credentials.feature
+- features/csv-separator.feature
+- features/create_config_channel.feature
+- features/register_client.feature
+- features/test_config_channel.feature
+- features/action_chain.feature
+- features/xmlrpc_actionchain.feature
+- features/system_configuration.feature
+- features/custom_system_info.feature
+- features/create_group.feature
+- features/add_sys_of_group_to_SSM.feature
+- features/configuration.feature
+- features/add_system_to_conf.feature
+- features/check_errata-npn.feature
+- features/cve_audit.feature
+- features/xmlrpc_cve_audit.feature
+- features/delete_system_from_conf.feature
+- features/spacewalk-channel.feature
+- features/mgr-bootstrap.feature
+- features/channels.feature
+- features/weak_deps.feature
+- features/metadata_check.feature
+- features/regressions.feature
+- features/check_support_data.feature
+- features/check_registration.feature
+- features/sp_migration.feature
+- features/erratapage.feature
+- features/lock_packages_on_client.feature
+- features/install_package.feature
+- features/install_errata-npn.feature
+- features/clone_channel-npn.feature
+- features/openscap_audit.feature
+- features/spacewalk_repo_sync.feature
+- features/scc-sync-channels.feature
+- features/systemspage2.feature
+- features/xmlrpc_system.feature
+- features/nagios.feature
+- features/systems_needing_reboot.feature
+- features/test_reboot.feature
+- features/powermanagement-test.feature
+- features/CVE-ID-new-syntax.feature
+- features/datepicker.feature
+# - features/migrate_client_to_minion.feature. Need to be tested with whole suite
+- features/delete_system_profile.feature
+- features/bare-metal-test.feature
+- features/compare_channel.feature
+- features/ssh_push.feature
+- features/delete_config_channel.feature
+- features/users-deleteuser1.feature
+- features/xmlrpc_api.feature
+- features/xmlrpc_activationkey.feature
+- features/xmlrpc_channel.feature
+#  - features/xmlrpc_VHM.feature
+- features/check_VHM.feature
+- features/setup_wizard.feature
+- features/security.feature
+
+#### Salt related features   ###
+
+- features/salt.feature
+- features/salt_minions_page.feature
+- features/salt_download_endpoint.feature
+- features/salt_software_states.feature
+- features/salt_pkgset_beacon.feature
+- features/salt_minion_details.feature
+- features/minion_bootstrap.feature
+- features/salt_remote_cmds.feature
+# this feature need another vm/client - features/salt_ssh.feature
+- features/salt_install_package.feature
+- features/salt_states_catalog.feature
+- features/salt_formulas.feature
+
+# Regression test
+- features/salt_regression_topsls.feature
+
+### Salt-ssh managed feature ##
+- features/salt_ssh.feature
+
+## Centos salt
+
+- features/minion_centos_bootstrap.feature
+- features/centos_salt_remote_cmds.feature
+# end-tests
+- features/spacewalk-errors.feature
+- features/spacewalk-debug.feature
+
+## smdba and change password feature always put them at the end of the testsuite.
+## if they fails, they break the whole testsuite.
+- features/smdba.feature
+- features/change_password.feature

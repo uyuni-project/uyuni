@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -1455,12 +1456,10 @@ public class ChannelManager extends BaseManager {
      * SHOULD be
      * @param usr User asking the question
      * @param sid Server id of interest
-     * @return Channel id
+     * @return Channel
      */
-    public static Long guessServerBase(User usr, Long sid) {
-        Channel c = guessServerBase(usr, ServerFactory.lookupById(sid));
-
-        return c.getId();
+    public static Optional<Channel> guessServerBaseChannel(User usr, Long sid) {
+        return guessServerBaseChannel(usr, ServerFactory.lookupById(sid));
     }
 
     /**
@@ -1470,7 +1469,7 @@ public class ChannelManager extends BaseManager {
      * @param s Server of interest
      * @return Channel that could serve as a base-channel for the Server
      */
-    public static Channel guessServerBase(User usr, Server s) {
+    public static Optional<Channel> guessServerBaseChannel(User usr, Server s) {
         // Figure out what this server's base OUGHT to be
         CallableMode sbm = ModeFactory.getCallableMode(
                 "Channel_queries", "guess_server_base");
@@ -1493,7 +1492,7 @@ public class ChannelManager extends BaseManager {
                 c = ChannelFactory.lookupByIdAndUser(dr.get(0).getId(), usr);
             }
         }
-        return c;
+        return Optional.ofNullable(c);
     }
 
     /**

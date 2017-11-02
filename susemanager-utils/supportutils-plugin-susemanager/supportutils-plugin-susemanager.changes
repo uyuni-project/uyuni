@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Oct 17 12:49:01 CEST 2017 - jgonzalez@suse.com
+
+- version 3.0.5-1
 - use correct function validate_rpm for supportconfig (bsc#1062094)
 
 -------------------------------------------------------------------

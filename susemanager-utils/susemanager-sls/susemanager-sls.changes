@@ -1,7 +1,15 @@
+- Fix deprecated SLS files to avoid deprecation warnings during highstate (bsc#1041993)
+
+-------------------------------------------------------------------
+Tue Oct 17 13:06:06 CEST 2017 - jgonzalez@suse.com
+
+- version 0.1.24-1
 - Targeting patches instead of packages for non Zypper patch
   installation (bsc#1038862)
 - Support xccdf 1.2 namespace in openscap result file (bsc#1059319)
 - fix create empty top.sls with no-op (bsc#1053038)
+- Enabling certificate deployment for Leap 42.3 clients which is
+  needed for bootstrapping
 
 -------------------------------------------------------------------
 Fri Jul 21 12:03:58 CEST 2017 - mc@suse.de
@@ -237,4 +245,3 @@ Tue Nov 17 09:35:38 CET 2015 - jrenner@suse.com
 
 - version 0.1.1-1
 - Initial package release
-

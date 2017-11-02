@@ -387,7 +387,7 @@ DATA = {
                         },
     'SLES4SAP-12-x86_64' : {
                           'PDID' : 1319, 'PKGLIST' : PKGLIST12 + ENHANCE12,
-                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/1/bootstrap/'
                         },
     'SLE-12-SP1-ppc64le' : {
                           'PDID' : 1334, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
@@ -403,11 +403,11 @@ DATA = {
                         },
     'SLES4SAP-12-SP1-ppc64le' : {
                           'PDID' : 1437, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
-                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/0/1/bootstrap/'
                         },
     'SLES4SAP-12-SP1-x86_64' : {
                           'PDID' : 1346, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
-                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/0/1/bootstrap/'
                         },
     'RES6-x86_64' : {
                           'PDID' : 1138, 'PKGLIST' : RES6,

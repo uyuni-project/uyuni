@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Oct 17 12:01:39 CEST 2017 - jgonzalez@suse.com
+
+- version 2.5.2.15-1
+- Disallow entering multiple identical mirror credentials (bsc#971785)
+- fixes ise error with invalid custom key id (bsc#1048294) 
+
+-------------------------------------------------------------------
 Wed Aug 30 15:54:32 CEST 2017 - fkobzik@suse.de
 
 - version 2.5.2.14-1

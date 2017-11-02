@@ -22,8 +22,7 @@ After:
 ## Tests written? 
 (If this section if not relevant explain why)
 - [ ] Unit
-- [ ] Spacewalk-testsuite
-  - https://github.com/SUSE/spacewalk-testsuite-base/pull/<NUMBER>
+- [ ] Spacewalk-testsuite (`spacewalk/testsuite`)
 
 ## Documentation
 (Remove this section if not relevant, ie. no user visible change)

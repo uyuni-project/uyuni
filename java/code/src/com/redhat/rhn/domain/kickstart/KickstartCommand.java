@@ -145,6 +145,7 @@ public class KickstartCommand implements Comparable {
         cloned.setArguments(this.getArguments());
         cloned.setCommandName(this.getCommandName());
         cloned.setKickstartData(ksDataIn);
+        cloned.setCustomPosition(this.getCustomPosition());
         Date now = new Date();
         cloned.setCreated(now);
         cloned.setModified(now);
