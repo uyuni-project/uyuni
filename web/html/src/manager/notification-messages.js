@@ -8,6 +8,42 @@ const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
 
+const CheckRead = React.createClass({
+  getInitialState: function() {
+    return {
+      messageId: this.props.messageId,
+      readState: this.props.isRead
+    }
+  },
+
+  updateReadStatus: function() {
+    var currentObject = this;
+    var messageData = {};
+    messageData.messageId = this.state.messageId;
+    messageData.isRead = !this.state.readState;
+    Network.post("/rhn/manager/notification-messages/update-message-status", JSON.stringify(messageData), "application/json").promise
+    .then(data => {
+        console.log(data.message);
+        this.setState({readState : !this.state.readState})
+    })
+    .catch(response => {
+      currentObject.setState({
+        error: response.status == 401 ? "authentication" :
+          response.status >= 500 ? "general" :
+          null
+      });
+    });
+  },
+
+  render: function() {
+    return (
+      <div className="col-md-6">
+        <input type="checkbox" onClick={this.updateReadStatus} />
+      </div>
+    );
+  }
+});
+
 const NotificationMessages = React.createClass({
 
   getInitialState: function() {
@@ -60,37 +96,6 @@ const NotificationMessages = React.createClass({
         return datum.description.toLowerCase().includes(criteria.toLowerCase());
       }
       return true;
-  },
-
-  decodeStatus: function(messageId, status) {
-    var cell;
-    switch(status) {
-      case true: cell = <a href="#" title={t('read')} onClick={() => this.updateReadStatus(messageId, false)}><i className="fa fa-check-square-o"></i></a>; break;
-      case false: cell = <a href="#" title={t('not read')} onClick={() => this.updateReadStatus(messageId, true)}><i className="fa fa-square-o"></i></a>; break;
-      default: cell = null;
-    }
-    return cell;
-  },
-
-  updateReadStatus: function(messageId, isRead) {
-    var currentObject = this;
-    var messageData = {};
-    messageData.messageId = messageId;
-    messageData.isRead = isRead;
-    Network.post("/rhn/manager/notification-messages/update-message-status", JSON.stringify(messageData), "application/json").promise
-    .then(data => {
-      currentObject.setState({
-        serverData: data,
-        error: null,
-      });
-    })
-    .catch(response => {
-      currentObject.setState({
-        error: response.status == 401 ? "authentication" :
-          response.status >= 500 ? "general" :
-          null
-      });
-    });
   },
 
   buildRows: function(message) {
@@ -146,7 +151,7 @@ const NotificationMessages = React.createClass({
                 columnKey="isRead"
                 comparator={this.sortByStatus}
                 header={t("Is read")}
-                cell={ (row) => this.decodeStatus(row["id"], row["isRead"]) }
+                cell={ (row) => <CheckRead messageId={row['id']} isRead={row['isRead']} />}
               />
             </Table>
           </div>
