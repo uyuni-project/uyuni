@@ -170,11 +170,13 @@ public class ActionFactory extends HibernateFactory {
         Set<Server> involvedMinions = MinionServerFactory
                     .lookupByIds(new ArrayList<>(set.getElementValues()))
                     .collect(toSet());
+        Set<Server> involvedSystems = ServerFactory.lookupByIds(
+                new ArrayList<>(set.getElementValues())).stream().collect(toSet());
         Action action = ActionFactory.lookupById(actionId);
 
         TASKOMATIC_API.deleteScheduledAction(action, involvedMinions);
 
-        return involvedMinions.stream().map(Server::getId).mapToInt(sid -> {
+        return involvedSystems.stream().map(Server::getId).mapToInt(sid -> {
             try {
                 removeActionForSystem(actionId, sid);
                 return 0;
