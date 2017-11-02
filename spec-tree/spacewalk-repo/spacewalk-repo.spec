@@ -1,7 +1,7 @@
 Summary: Spacewalk packages yum repository configuration
 Name: spacewalk-repo
 Version: 2.8
-Release: 7%{?dist}
+Release: 9%{?dist}
 License: GPLv2
 Group: System Environment/Base
 # This src.rpm is cannonical upstream
@@ -9,9 +9,9 @@ Group: System Environment/Base
 # git clone https://github.com/spacewalkproject/spacewalk.git
 # cd spec-tree/spacewalk-repo
 # make test-srpm
+Source0:   %{name}-%{version}.tar.gz
 URL:          https://github.com/spacewalkproject/spacewalk
 BuildArch: noarch
-
 %description
 This package contains the Spacewalk repository configuration for yum.
 
@@ -23,7 +23,7 @@ Group: System Environment/Base
 This package contains the Spacewalk repository configuration for yum.
 
 %prep
-mkdir -p $RPM_BUILD_ROOT
+%setup -q
 
 %build
 
@@ -40,7 +40,7 @@ cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk.repo <<REPO
 [spacewalk]
 name=Spacewalk
 baseurl=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/spacewalk-%{version}/%{reposubdir}-\$basearch/
-gpgkey=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/spacewalk-%{version}/pubkey.gpg
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-%{version}
 enabled=1
 gpgcheck=1
 REPO
@@ -49,7 +49,7 @@ cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk-client.repo <<REPO
 [spacewalk-client]
 name=Spacewalk Client Tools
 baseurl=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/spacewalk-%{version}-client/%{reposubdir}-\$basearch/
-gpgkey=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/spacewalk-%{version}-client/pubkey.gpg
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-%{version}-client
 enabled=1
 gpgcheck=1
 REPO
@@ -58,7 +58,7 @@ cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk-nightly.repo <<REPO
 [spacewalk-nightly]
 name=Spacewalk nightly
 baseurl=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/nightly/%{reposubdir}-\$basearch/
-gpgkey=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/nightly/pubkey.gpg
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-nightly
 enabled=0
 gpgcheck=1
 REPO
@@ -67,7 +67,7 @@ cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk-client-nightly.repo <<
 [spacewalk-client-nightly]
 name=Spacewalk Client Tools nightly
 baseurl=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/nightly-client/%{reposubdir}-\$basearch/
-gpgkey=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/nightly-client/pubkey.gpg
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-nightly-client
 enabled=0
 gpgcheck=1
 REPO
@@ -79,7 +79,7 @@ REPO
 [group_spacewalkproject-java-packages]
 name=Copr repo for java-packages owned by @spacewalkproject
 baseurl=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/java-packages/epel-7-x86_64/
-gpgkey=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/java-packages/pubkey.gpg
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-java-packages
 gpgcheck=1
 repo_gpgcheck=0
 enabled=1
@@ -92,7 +92,7 @@ REPO
 [group_spacewalkproject-epel6-addons]
 name=Copr repo for epel6-addons owned by @spacewalkproject
 baseurl=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/epel6-addons/epel-6-x86_64/
-gpgkey=https://copr-be.cloud.fedoraproject.org/results/@spacewalkproject/epel6-addons/pubkey.gpg
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-epel6-addons
 gpgcheck=1
 repo_gpgcheck=0
 enabled=1
@@ -102,6 +102,12 @@ REPO
 
 %endif
 
+# install gpg keys
+install -d 755 $RPM_BUILD_ROOT%{_sysconfdir}/pki/rpm-gpg
+grep -h ^gpgkey= $RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/*.repo \
+    | while read i ; do 
+        install -m 755 $(basename "$i") $RPM_BUILD_ROOT%{_sysconfdir}/pki/rpm-gpg/
+    done
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -111,16 +117,31 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/yum.repos.d
 %config(noreplace) %{_sysconfdir}/yum.repos.d/spacewalk.repo
 %config(noreplace) %{_sysconfdir}/yum.repos.d/spacewalk-nightly.repo
+%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-%{version}
+%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-nightly
 %if 0%{?rhel}
 %config(noreplace) %{_sysconfdir}/yum.repos.d/spacewalk-java.repo
+%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-java-packages
+%if 0%{?rhel} == 6
+%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-epel6-addons
+%endif
 %endif
 
 %files -n spacewalk-client-repo
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/yum.repos.d/spacewalk-client.repo
 %config(noreplace) %{_sysconfdir}/yum.repos.d/spacewalk-client-nightly.repo
+%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-%{version}-client
+%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-nightly-client
 
 %changelog
+* Fri Oct 20 2017 Michael Mraka <michael.mraka@redhat.com> 2.8-9
+- epel6-addons key is only on RHEL6
+
+* Thu Oct 19 2017 Michael Mraka <michael.mraka@redhat.com> 2.8-8
+- added gpg keys
+- distribute gpg keys with repo definitions
+
 * Mon Sep 25 2017 Michael Mraka <michael.mraka@redhat.com> 2.8-7
 - epel-addons should be added to spacewalk-java.repo
 

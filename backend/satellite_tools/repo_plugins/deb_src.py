@@ -165,8 +165,8 @@ class DebRepo(object):
 
 class ContentSource(object):
 
-    def __init__(self, url, name, org=1, channel_label="", ca_cert_file=None, client_cert_file=None,
-                 client_key_file=None):
+    def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None, org="1", channel_label="", 
+                 no_mirrors=False, ca_cert_file=None, client_cert_file=None, client_key_file=None): 
         # pylint: disable=W0613
         self.url = url
         self.name = name
@@ -180,12 +180,24 @@ class ContentSource(object):
         self.proxy_addr = CFG.http_proxy
         self.proxy_user = CFG.http_proxy_username
         self.proxy_pass = CFG.http_proxy_password
+        self.authtoken = None
 
         self.repo = DebRepo(url, os.path.join(CACHE_DIR, self.org, name),
                             os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'))
 
         self.num_packages = 0
         self.num_excluded = 0
+
+    def get_md_checksum_type(self):
+        return None
+
+    def get_products(self):
+        # No products
+        return []
+
+    def get_susedata(self):
+        # No susedata
+        return []
 
     def list_packages(self, filters, latest):
         """ list packages"""
@@ -290,7 +302,7 @@ class ContentSource(object):
     @staticmethod
     def get_updates():
         # There isn't any update info in the repository
-        return []
+        return ('', [])
 
     @staticmethod
     def get_groups():
@@ -305,6 +317,7 @@ class ContentSource(object):
         if not os.path.exists(target_dir):
             os.makedirs(target_dir, int('0755', 8))
 
+        params['authtoken'] = self.authtoken
         params['urls'] = self.repo.urls
         params['relative_path'] = relative_path
         params['target_file'] = target_file

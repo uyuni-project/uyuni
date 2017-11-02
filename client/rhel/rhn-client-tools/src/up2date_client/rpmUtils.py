@@ -20,6 +20,8 @@ from rhn.i18n import sstr
 from up2date_client import transaction
 from up2date_client import up2dateLog
 
+from spacewalk.common.usix import StringType, UnicodeType
+
 import gettext
 t = gettext.translation('rhn-client-tools', fallback=True)
 # Python 3 translations don't have a ugettext method
@@ -187,8 +189,12 @@ def setDebugVerbosity():
 
 def is_utf8(text):
     """Returns true if text is a valid UTF-8 string, False otherwise."""
-    try:
-        text.decode('utf-8')
-    except UnicodeError:
-        return False
-    return True
+    if isinstance(text, UnicodeType):
+        return True
+    elif isinstance(text, StringType):
+        try:
+            text.decode('utf-8')
+            return True
+        except UnicodeError:
+            return False
+    return False

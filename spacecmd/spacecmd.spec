@@ -7,8 +7,13 @@
 %{!?pylint_check: %global pylint_check 1}
 %endif
 
+%if 0%{?fedora} || 0%{?suse_version} > 1320
+%global build_py3   1
+%global python_sitelib %{python3_sitelib}
+%endif
+
 Name:        spacecmd
-Version:     2.8.8
+Version:     2.8.10
 Release:     1%{?dist}
 Summary:     Command-line interface to Spacewalk and Red Hat Satellite servers
 
@@ -24,10 +29,23 @@ BuildArch:   noarch
 %if 0%{?pylint_check}
 BuildRequires: spacewalk-pylint
 %endif
+%if 0%{?build_py3}
+BuildRequires: python3
+BuildRequires: python3-devel
+BuildRequires: python3-simplejson
+BuildRequires: python3-rpm
+Requires:      python3
+%else
 BuildRequires: python
 BuildRequires: python-devel
 BuildRequires: python-simplejson
 BuildRequires: rpm-python
+Requires:      python
+%if 0%{?suse_version}
+BuildRequires: python-xml
+Requires:      python-xml
+%endif
+%endif
 %if 0%{?rhel} == 5
 BuildRequires: python-json
 %endif
@@ -35,14 +53,8 @@ BuildRequires: python-json
 %if 0%{?rhel} == 5
 Requires:    python-simplejson
 %endif
-Requires:    python
 Requires:    file
 
-%if 0%{?suse_version}
-BuildRequires: python-xml
-Requires:      python-xml
-Requires:      python-simplejson
-%endif
 
 %description
 spacecmd is a command-line interface to Spacewalk and Red Hat Satellite servers
@@ -57,6 +69,10 @@ spacecmd is a command-line interface to Spacewalk and Red Hat Satellite servers
 %{__rm} -rf %{buildroot}
 
 %{__mkdir_p} %{buildroot}/%{_bindir}
+
+%if 0%{?build_py3}
+    sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' ./src/bin/spacecmd
+%endif
 %{__install} -p -m0755 src/bin/spacecmd %{buildroot}/%{_bindir}/
 
 %{__mkdir_p} %{buildroot}/%{_sysconfdir}
@@ -73,6 +89,12 @@ touch %{buildroot}/%{_sysconfdir}/spacecmd.conf
 
 touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 %{__chmod} 0644 %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
+
+%if 0%{?build_py3}
+%py3_compile -O %{buildroot}/%{python_sitelib}
+%else
+%py_compile -O %{buildroot}/%{python_sitelib}
+%endif
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -94,6 +116,12 @@ PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 %doc %{_mandir}/man1/spacecmd.1.gz
 
 %changelog
+* Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.10-1
+- pylint - fix intendation
+
+* Fri Oct 20 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.9-1
+- show list of arches for channel
+
 * Mon Oct 09 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.8-1
 - 1497216 - fix pylint
 

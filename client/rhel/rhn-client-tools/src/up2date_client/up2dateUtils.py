@@ -11,7 +11,7 @@ import gettext
 from up2date_client import up2dateErrors
 from up2date_client import config
 from up2date_client.pkgplatform import getPlatform
-from rhn.i18n import sstr
+from rhn.i18n import sstr, bstr
 
 t = gettext.translation('rhn-client-tools', fallback=True)
 # Python 3 translations don't have a ugettext method
@@ -65,7 +65,7 @@ else:
                 if os.path.exists(baseproduct):
                     bp = os.path.abspath(os.path.join(os.path.dirname(baseproduct), os.readlink(baseproduct)))
                     for h in ts.dbMatch('Providename', "product()"):
-                        if bp in h['filenames']:
+                        if bstr(bp) in h['filenames']:
                             osVersionRelease = (sstr(h['name']), sstr(h['version']), sstr(h['release']))
                             # zypper requires a exclusive lock on the rpmdb. So we need
                             # to close it here.
@@ -76,7 +76,7 @@ else:
                     # package which also has /etc/SuSE-release file
                     for h in ts.dbMatch('Providename', "distribution-release"):
                         osVersionRelease = (sstr(h['name']), sstr(h['version']), sstr(h['release']))
-                        if '/etc/SuSE-release' in h['filenames']:
+                        if bstr('/etc/SuSE-release') in h['filenames']:
                             # zypper requires a exclusive lock on the rpmdb. So we need
                             # to close it here.
                             ts.ts.closeDB()

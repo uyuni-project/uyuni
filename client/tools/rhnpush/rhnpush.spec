@@ -13,7 +13,7 @@ Summary:       Package uploader for the Spacewalk
 Group:         Applications/System
 License:       GPLv2
 URL:           https://github.com/spacewalkproject/spacewalk
-Version:       5.5.108
+Version:       5.5.108.1
 Release:       1%{?dist}
 Source0:       https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
@@ -51,7 +51,11 @@ Python 2 specific files for rhnpush.
 %package -n python3-%{name}
 Summary: Package uploader for the Spacewalk or Red Hat Satellite Server
 Requires: %{name} = %{version}-%{release}
+%if 0%{?suse_version}
+Requires: python3-rpm
+%else
 Requires: rpm-python3
+%endif
 Requires: python3-rhnlib >= 2.8.3
 Requires: python3-rhn-client-tools
 Requires: python3-spacewalk-backend-libs

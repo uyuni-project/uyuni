@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import static org.quartz.TriggerKey.triggerKey;
 
 
 /**
@@ -189,8 +190,8 @@ public class TaskoXmlRpcHandler {
         throws NoSuchBunchTaskException, InvalidParamException, SchedulerException {
         TaskoBunch bunch = checkBunchName(orgId, bunchName);
         if (!TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel).isEmpty() ||
-                (SchedulerKernel.getScheduler().getTrigger(jobLabel,
-                        TaskoQuartzHelper.getGroupName(orgId)) != null)) {
+                (SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel,
+                        TaskoQuartzHelper.getGroupName(orgId))) != null)) {
             throw new InvalidParamException("jobLabel already in use");
         }
         return bunch;
@@ -210,8 +211,8 @@ public class TaskoXmlRpcHandler {
             TaskoFactory.listActiveSchedulesByOrgAndLabel(orgId, jobLabel);
         Trigger trigger;
         try {
-            trigger = SchedulerKernel.getScheduler().getTrigger(jobLabel,
-                    TaskoQuartzHelper.getGroupName(orgId));
+            trigger = SchedulerKernel.getScheduler().getTrigger(triggerKey(jobLabel,
+                    TaskoQuartzHelper.getGroupName(orgId)));
         }
         catch (SchedulerException e) {
             trigger = null;
@@ -362,10 +363,11 @@ public class TaskoXmlRpcHandler {
         throws SchedulerException {
         String jobLabel = "single-" + bunchName + "-";
         Integer count = 0;
-        while (!TaskoFactory.listSchedulesByOrgAndLabel(orgId,
-                jobLabel + count.toString()).isEmpty() ||
-                (SchedulerKernel.getScheduler().getTrigger(jobLabel + count.toString(),
-                        TaskoQuartzHelper.getGroupName(orgId)) != null)) {
+        while (!TaskoFactory.listSchedulesByOrgAndLabel(orgId, jobLabel + count.toString())
+                .isEmpty() ||
+                (SchedulerKernel.getScheduler()
+                        .getTrigger(triggerKey(jobLabel + count.toString(),
+                                TaskoQuartzHelper.getGroupName(orgId))) != null)) {
             count++;
         }
         return jobLabel + count.toString();

@@ -51,7 +51,9 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.profile.DuplicateProfileNameException;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
@@ -1439,7 +1441,8 @@ public class SystemHandler extends BaseHandler {
 
         // Fire the request off asynchronously
         SsmDeleteServersEvent event =
-                new SsmDeleteServersEvent(loggedInUser, deletion);
+                new SsmDeleteServersEvent(loggedInUser, deletion,
+                        SystemManager.ServerCleanupType.FORCE_DELETE);
         MessageQueue.publish(event);
 
         // If we skipped any systems, create an error message and throw a FaultException
@@ -1472,8 +1475,10 @@ public class SystemHandler extends BaseHandler {
 
     public int deleteSystem(String clientCert) throws FaultException {
         Server server = validateClientCertificate(clientCert);
-        SystemManager.deleteServer(server.getOrg().getActiveOrgAdmins().get(0),
-                server.getId());
+        SystemManager.deleteServerAndCleanup(server.getOrg().getActiveOrgAdmins().get(0),
+                server.getId(),
+                SystemManager.ServerCleanupType.FORCE_DELETE
+                );
         return 1;
     }
 
@@ -1493,8 +1498,10 @@ public class SystemHandler extends BaseHandler {
             throws FaultException {
 
         Server server = lookupServer(loggedInUser, serverId);
-
-        SystemManager.deleteServer(loggedInUser, server.getId());
+        SystemManager.deleteServerAndCleanup(loggedInUser,
+                server.getId(),
+                SystemManager.ServerCleanupType.FORCE_DELETE
+        );
         return 1;
     }
 
@@ -3172,7 +3179,7 @@ public class SystemHandler extends BaseHandler {
     /**
      * Private helper method to build a list of maps in the format the ActionManager wants.
      *
-     * @param loggedInUser The current user
+     * @param user The current user
      * @param packageIds List of package IDs to install (as Integers)
      * @return list of maps with packages metadata in format ActionManager wants
      */
@@ -3198,7 +3205,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         if (packageMaps.isEmpty()) {
-            throw new InvalidParameterException("No packages to install.");
+            throw new InvalidParameterException("No packages to install/remove.");
         }
 
         return packageMaps;
@@ -3207,12 +3214,12 @@ public class SystemHandler extends BaseHandler {
     /**
      * Private helper method to build a list of maps in the format the ActionManager wants.
      *
-     * @param loggedInUser The current user
+     * @param user The current user
      * @param packageNevraList array of dictionaries with package nevra
      * @return list of maps with packages metadata in format ActionManager wants
      */
     private List<Map<String, Long>> packageNevrasToMaps(User user,
-            List<Map<String, String>> packageNevraList) {
+            List<Map<String, String>> packageNevraList, Boolean lookupNevra) {
 
         List<Map<String, Long>> packageMaps = new LinkedList<Map<String, Long>>();
 
@@ -3236,19 +3243,27 @@ public class SystemHandler extends BaseHandler {
                     packageNevra.get("package_release"), epoch, arch);
 
             if (pl == null || pl.size() == 0) {
-                throw new InvalidPackageException(packageNevra.get("package_name"));
+                PackageName pkgName =  PackageFactory.lookupPackageName(packageNevra.get("package_name"));
+                if (pkgName == null || !lookupNevra) {
+                    throw new InvalidPackageException(packageNevra.get("package_name"));
+                }
+                pkgMap.put("name_id", pkgName.getId());
+                pkgMap.put("evr_id", PackageEvrFactory.lookupOrCreatePackageEvr(epoch,
+                        packageNevra.get("package_version"), packageNevra.get("package_release")).getId());
+                pkgMap.put("arch_id", arch.getId());
             }
-
             // in case if we have more than one package with
             // the same nevra we pick up the first one
-            pkgMap.put("name_id", pl.get(0).getPackageName().getId());
-            pkgMap.put("evr_id", pl.get(0).getPackageEvr().getId());
-            pkgMap.put("arch_id", pl.get(0).getPackageArch().getId());
+            else {
+                pkgMap.put("name_id", pl.get(0).getPackageName().getId());
+                pkgMap.put("evr_id", pl.get(0).getPackageEvr().getId());
+                pkgMap.put("arch_id", pl.get(0).getPackageArch().getId());
+            }
             packageMaps.add(pkgMap);
         }
 
         if (packageMaps.isEmpty()) {
-            throw new InvalidParameterException("No packages to install.");
+            throw new InvalidParameterException("No packages to install/remove.");
         }
         return packageMaps;
     }
@@ -3334,7 +3349,7 @@ public class SystemHandler extends BaseHandler {
             List<Map<String, String>> packageNevraList, Date earliestOccurrence) {
 
         return schedulePackagesAction(loggedInUser, sids,
-                packageNevrasToMaps(loggedInUser, packageNevraList), earliestOccurrence,
+                packageNevrasToMaps(loggedInUser, packageNevraList, false), earliestOccurrence,
                 ActionFactory.TYPE_PACKAGES_UPDATE);
     }
 
@@ -3370,7 +3385,7 @@ public class SystemHandler extends BaseHandler {
         sids.add(sid);
 
         return schedulePackagesAction(loggedInUser, sids,
-                packageNevrasToMaps(loggedInUser, packageNevraList), earliestOccurrence,
+                packageNevrasToMaps(loggedInUser, packageNevraList, false), earliestOccurrence,
                 ActionFactory.TYPE_PACKAGES_UPDATE)[0];
     }
 
@@ -3455,7 +3470,7 @@ public class SystemHandler extends BaseHandler {
             List<Map<String, String>> packageNevraList, Date earliestOccurrence) {
 
         return schedulePackagesAction(loggedInUser, sids,
-                packageNevrasToMaps(loggedInUser, packageNevraList), earliestOccurrence,
+                packageNevrasToMaps(loggedInUser, packageNevraList, true), earliestOccurrence,
                 ActionFactory.TYPE_PACKAGES_REMOVE);
     }
 
@@ -3491,7 +3506,7 @@ public class SystemHandler extends BaseHandler {
         sids.add(sid);
 
         return schedulePackagesAction(loggedInUser, sids,
-                packageNevrasToMaps(loggedInUser, packageNevraList), earliestOccurrence,
+                packageNevrasToMaps(loggedInUser, packageNevraList, true), earliestOccurrence,
                 ActionFactory.TYPE_PACKAGES_REMOVE)[0].intValue();
     }
 
@@ -5126,8 +5141,7 @@ public class SystemHandler extends BaseHandler {
      */
     private SystemRecord getSystemRecordFromClientCert(String clientcert) {
         Server server = validateClientCertificate(clientcert);
-        SystemRecord rec = server.getCobblerObject(null);
-        return rec;
+        return server.getCobblerObject(null);
     }
 
     /**

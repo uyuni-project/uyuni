@@ -366,11 +366,7 @@ public class KickstartHelper {
         }
         //I tried to make this readable while still maintaining all the boolean
         //shortcutting. Here is the one liner boolean:
-        if (hasUpdates(ksdata) && hasFresh(ksdata) &&
-                (!checkAutoKickstart || hasKickstartPackage(ksdata, user))) {
-            return true;
-        }
-        return false;
+        return hasUpdates(ksdata) && hasFresh(ksdata) && (!checkAutoKickstart || hasKickstartPackage(ksdata, user));
     }
 
     private boolean hasUpdates(KickstartData ksdata) {

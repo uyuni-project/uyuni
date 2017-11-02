@@ -1,5 +1,7 @@
+- Enable 'Power Management' features on Salt minions.
 - enablement of the package profile feature for minions
 - increase max length of hardware address to 32 byte (bsc#989991)
+- Update to Quartz 2.3.0 (bsc#1049431)
 
 -------------------------------------------------------------------
 Mon Jun 12 09:13:09 CEST 2017 - mc@suse.de

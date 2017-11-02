@@ -18,6 +18,7 @@ import java.util.List;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * Event fired to carry the information necessary to perform subscription changes
@@ -30,15 +31,18 @@ public class SsmDeleteServersEvent implements EventMessage {
 
     private Long userId;
     private List<Long> sids;
-
+    private SystemManager.ServerCleanupType serverCleanupType;
     /**
      * Creates a new SSM server delete event to fire across the message bus.
      *
      * @param userIn    user making the changes; cannot be <code>null</code>
      * @param sidsIn server ids to delete; cannot be <code>null</code>
+     * @param serverCleanupTypeIn how to clean up the system (if needed)
      */
     public SsmDeleteServersEvent(User userIn,
-                                              List<Long> sidsIn) {
+                                 List<Long> sidsIn,
+                                 SystemManager.ServerCleanupType serverCleanupTypeIn
+    ) {
         if (userIn == null) {
             throw new IllegalArgumentException("user cannot be null");
         }
@@ -49,6 +53,7 @@ public class SsmDeleteServersEvent implements EventMessage {
 
         this.userId = userIn.getId();
         this.sids = sidsIn;
+        this.serverCleanupType = serverCleanupTypeIn;
     }
 
     /**
@@ -68,6 +73,13 @@ public class SsmDeleteServersEvent implements EventMessage {
     /** {@inheritDoc} */
     public String toText() {
         return toString();
+    }
+
+    /**
+     * @return how to clean up the system (if needed)
+     */
+    public SystemManager.ServerCleanupType getServerCleanupType() {
+        return serverCleanupType;
     }
 
     /** {@inheritDoc} */

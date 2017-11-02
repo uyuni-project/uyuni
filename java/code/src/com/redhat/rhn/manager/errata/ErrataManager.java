@@ -287,8 +287,7 @@ public class ErrataManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("user_id", user.getId());
-        DataResult result = makeDataResult(params, elabParams, null, m);
-        return result;
+        return makeDataResult(params, elabParams, null, m);
     }
 
     /**
@@ -304,8 +303,7 @@ public class ErrataManager extends BaseManager {
         params.put("type", type);
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("user_id", user.getId());
-        DataResult result = makeDataResult(params, elabParams, null, m);
-        return result;
+        return makeDataResult(params, elabParams, null, m);
     }
 
     /**
@@ -321,8 +319,7 @@ public class ErrataManager extends BaseManager {
         params.put("type", ErrataFactory.ERRATA_TYPE_SECURITY);
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("user_id", user.getId());
-        DataResult result = makeDataResult(params, elabParams, null, m);
-        return result;
+        return makeDataResult(params, elabParams, null, m);
     }
 
     /**
@@ -334,8 +331,7 @@ public class ErrataManager extends BaseManager {
         SelectMode m = ModeFactory.getMode("Errata_queries", "channel_errata_for_list");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("cid", cid);
-        DataResult dr = m.execute(params);
-        return dr;
+        return m.execute(params);
     }
 
 
@@ -884,8 +880,7 @@ public class ErrataManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("eid", eid);
         params.put("org_id", user.getOrg().getId());
-        DataResult dr = m.execute(params);
-        return dr;
+        return m.execute(params);
     }
 
     /**
@@ -898,8 +893,7 @@ public class ErrataManager extends BaseManager {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("eid", eid);
-        DataResult dr = m.execute(params);
-        return dr;
+        return m.execute(params);
     }
 
     /**
@@ -912,8 +906,7 @@ public class ErrataManager extends BaseManager {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("eid", eid);
-        DataResult dr = m.execute(params);
-        return dr;
+        return m.execute(params);
     }
 
     /**
@@ -926,8 +919,7 @@ public class ErrataManager extends BaseManager {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("eid", eid);
-        DataResult dr = m.execute(params);
-        return dr;
+        return m.execute(params);
     }
 
     /**
@@ -985,10 +977,7 @@ public class ErrataManager extends BaseManager {
         }
         //If the errata we found is the same as the one we are checking for,
         //then we don't care. return false.
-        if (e.getId().equals(eid)) {
-            return true;
-        }
-        return false;
+        return e.getId().equals(eid);
     }
 
     /**

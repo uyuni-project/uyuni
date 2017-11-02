@@ -17,7 +17,7 @@
 
 Name:           rhn-virtualization
 Summary:        Spacewalk action support for virualization
-Version:        5.4.63
+Version:        5.4.65
 Release:        1%{?dist}
 
 Group:          System Environment/Base
@@ -104,7 +104,11 @@ Python 2 files for %{name}-host.
 %package -n python3-%{name}-host
 Summary: RHN/Spacewalk Virtualization support specific to the Host system
 Requires: %{name}-host = %{version}-%{release}
+%if 0%{?suse_version}
+Requires: python3-libvirt-python
+%else
 Requires: libvirt-python3
+%endif
 Requires: python3-%{name}-common = %{version}-%{release}
 Requires: python3-pycurl
 %description -n python3-%{name}-host
@@ -141,19 +145,25 @@ rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
 %endif
 
 %if 0%{?suse_version}
-%py_compile %{buildroot}/%{python_sitelib}
 %py_compile -O %{buildroot}/%{python_sitelib}
 %if 0%{?build_py3}
-%py3_compile %{buildroot}/%{python3_sitelib}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 %endif
+
+%if 0%{?suse_version}
+rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
+%py_compile -O %{buildroot}/%{python_sitelib}
+%if 0%{?build_py3}
+%py3_compile -O %{buildroot}/%{python3_sitelib}
+%endif
+%endif
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %if 0%{?suse_version}
-
 %post host
 if [ -d /proc/xen ]; then
     # xen kernel is running
@@ -162,6 +172,7 @@ if [ -d /proc/xen ]; then
 fi
 
 %else
+
 %post host
 /sbin/chkconfig --add rhn-virtualization-host
 /sbin/service crond condrestart
@@ -190,6 +201,9 @@ fi
 %{python_sitelib}/virtualization/notification.py*
 %{python_sitelib}/virtualization/util.py*
 %doc LICENSE
+%if 0%{?suse_version}
+%dir %{python_sitelib}/virtualization
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-%{name}-common
@@ -209,17 +223,21 @@ fi
 %{python3_sitelib}/virtualization/__pycache__/errors.*
 %{python3_sitelib}/virtualization/__pycache__/notification.*
 %{python3_sitelib}/virtualization/__pycache__/util.*
+%if 0%{?suse_version}
+%dir %{python3_sitelib}/virtualization
+%endif
 %endif
 
 %files host
 %defattr(-,root,root,-)
 %if 0%{?suse_version}
 %dir %{rhn_conf_dir}
+%else
+%{_initrddir}/rhn-virtualization-host
 %endif
 %dir %{rhn_conf_dir}/virt
 %dir %{rhn_conf_dir}/virt/auto
 %if ! 0%{?suse_version}
-%{_initrddir}/rhn-virtualization-host
 %endif
 %config(noreplace) %attr(644,root,root) %{cron_dir}/rhn-virtualization.cron
 %{rhn_conf_dir}/studio-*-template.xml
@@ -228,6 +246,8 @@ fi
 
 %files -n python2-%{name}-host
 %defattr(-,root,root,-)
+%dir %{python_sitelib}/rhn
+%dir %{python_sitelib}/rhn/actions
 %{python_sitelib}/virtualization/domain_config.py*
 %{python_sitelib}/virtualization/domain_control.py*
 %{python_sitelib}/virtualization/domain_directory.py*
@@ -241,10 +261,17 @@ fi
 %{python_sitelib}/virtualization/support.py*
 %{python_sitelib}/rhn/actions/virt.py*
 %{python_sitelib}/rhn/actions/image.py*
+%if 0%{?suse_version}
+%dir %{python_sitelib}/rhn
+%dir %{python_sitelib}/rhn/actions
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-%{name}-host
 %defattr(-,root,root,-)
+%dir %{python3_sitelib}/rhn
+%dir %{python3_sitelib}/rhn/actions
+%dir %{python3_sitelib}/rhn/actions/__pycache__
 %{python3_sitelib}/virtualization/domain_config.py*
 %{python3_sitelib}/virtualization/domain_control.py*
 %{python3_sitelib}/virtualization/domain_directory.py*
@@ -271,9 +298,23 @@ fi
 %{python3_sitelib}/virtualization/__pycache__/support.*
 %{python3_sitelib}/rhn/actions/__pycache__/virt.*
 %{python3_sitelib}/rhn/actions/__pycache__/image.*
+%if 0%{?suse_version}
+%dir %{python3_sitelib}/rhn
+%dir %{python3_sitelib}/rhn/actions
+%dir %{python3_sitelib}/rhn/actions/__pycache__
+%endif
 %endif
 
 %changelog
+* Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.65-1
+- rhn-virtualization: do not install sys-v init script on SUSE
+- rhn-virtualization: add missing dirs to filelist for SUSE and enable build
+  for Tumbleweed
+
+* Wed Oct 18 2017 Jan Dobes 5.4.64-1
+- rhn-virtualization - removing usage of string module not available in Python
+  3
+
 * Fri Oct 06 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.63-1
 - virt modules (and deps) are now in standard python path
 

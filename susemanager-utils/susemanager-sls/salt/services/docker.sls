@@ -3,7 +3,11 @@ mgr_install_docker:
   pkg.installed:
     - pkgs:
       - docker: '>=1.9.0'
+{%- if grains['pythonversion'][0] == 3 %}
+      - python3-docker: '>=1.6.0'
+{%- else %}
       - python-docker-py: '>=1.6.0'
+{%- endif %}
 
 mgr_docker_service:
   service.running:

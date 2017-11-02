@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.SaltRoster;
@@ -50,6 +51,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,11 +61,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.singletonList;
 
 /**
  * Code for calling salt-ssh functions.
@@ -259,15 +265,21 @@ public class SaltSSHService {
         if (CollectionUtils.isEmpty(serverPaths) && !lastProxy.isPresent()) {
             return Collections.emptyList();
         }
-        List<ServerPath> proxyPath = serverPaths == null ?
-                new ArrayList<>() : new ArrayList<>(serverPaths);
-        Collections.sort(proxyPath, (p1, p2) ->
-            -ObjectUtils.compare(p1.getPosition(), p2.getPosition()));
+        List<ServerPath> proxyPath = sortServerPaths(serverPaths);
         List<String> hostnamePath = new ArrayList<>();
         hostnamePath.addAll(proxyPath.stream().map(p -> p.getHostname())
                 .collect(Collectors.toList()));
         lastProxy.ifPresent(p -> hostnamePath.add(p));
         return hostnamePath;
+    }
+
+    private static List<ServerPath> sortServerPaths(Set<ServerPath> serverPaths) {
+        List<ServerPath> proxyPath = Optional.ofNullable(serverPaths)
+                .map(p -> new ArrayList<>(p))
+                .orElseGet(ArrayList<ServerPath>::new);
+        Collections.sort(proxyPath, (p1, p2) ->
+                -ObjectUtils.compare(p1.getPosition(), p2.getPosition()));
+        return proxyPath;
     }
 
     /**
@@ -608,6 +620,21 @@ public class SaltSSHService {
     }
 
     /**
+     * Get the cached ssh public key used for ssh-push from the given proxy
+     * or retrieve it from the proxy if not cached.
+     * @param proxyId id of the proxy
+     * @return the content of the public key
+     */
+    public static Optional<String> getOrRetrieveSSHPushProxyPubKey(long proxyId) {
+        Server proxy = ServerFactory.lookupById(proxyId);
+        String keyFile = proxy.getHostname() + ".pub";
+        if (Files.exists(Paths.get(SSH_KEY_DIR, keyFile))) {
+            return Optional.of(keyFile);
+        }
+        return retrieveSSHPushProxyPubKey(proxyId);
+    }
+
+    /**
      * Retrieve the public key used for ssh-push from the given proxy.
      * @param proxyId id of the proxy
      * @return the content of the public key
@@ -642,5 +669,69 @@ public class SaltSSHService {
             LOG.error(msg);
             throw new RuntimeException(msg);
         }
+    }
+
+    /**
+     * Remove SUSE Manager specific configuration from a Salt ssh minion.
+     *
+     * @param minion the minion.
+     * @param timeout operation timeout
+     * @return list of error messages or empty if no error
+     */
+    public Optional<List<String>> cleanupSSHMinion(MinionServer minion, int timeout) {
+        CompletableFuture timeoutAfter = SaltService.INSTANCE.failAfter(timeout);
+        try {
+            Map<String, Object> pillarData = new HashMap<>();
+            if (!minion.getServerPaths().isEmpty()) {
+                List<ServerPath> paths = sortServerPaths(minion.getServerPaths());
+                ServerPath last = paths.get(paths.size() - 1);
+                SaltSSHService.getOrRetrieveSSHPushProxyPubKey(
+                        last.getId().getProxyServer().getId())
+                        .ifPresent(key ->
+                                pillarData.put("proxy_pub_key", key));
+            }
+            Map<String, CompletionStage<Result<Map<String, State.ApplyResult>>>> res =
+                    callAsyncSSH(
+                            State.apply(
+                                    Collections.singletonList("ssh_cleanup"),
+                                    Optional.of(pillarData),
+                                    Optional.empty()),
+                            new MinionList(minion.getMinionId()), timeoutAfter);
+            CompletionStage<Result<Map<String, State.ApplyResult>>> future =
+                    res.get(minion.getMinionId());
+            if (future == null) {
+                return Optional.of(
+                        singletonList("apply_result_missing"));
+            }
+
+            return future.handle((applyResult, err) -> {
+                if (applyResult != null) {
+                    return applyResult.fold((saltErr) ->
+                            Optional.of(singletonList(
+                                        SaltUtils.decodeSaltErr(saltErr))),
+                            (saltRes) -> saltRes.values().stream()
+                                    .filter(value -> !value.isResult())
+                                    .map(value -> value.getComment())
+                                    .collect(Collectors
+                                            .collectingAndThen(Collectors.toList(),
+                                                    (list) -> list.isEmpty() ?
+                                                            Optional.<List<String>>empty() :
+                                                            Optional.of(list)))
+                    );
+                }
+                else if (err instanceof TimeoutException) {
+                    return Optional.of(singletonList("minion_unreachable"));
+                }
+                else {
+                    return Optional.of(singletonList(err.getMessage()));
+                }
+            }).toCompletableFuture().get();
+
+        }
+        catch (InterruptedException | ExecutionException e) {
+            LOG.error("Error applying state ssh_cleanup", e);
+            return Optional.of(singletonList(e.getMessage()));
+        }
+
     }
 }

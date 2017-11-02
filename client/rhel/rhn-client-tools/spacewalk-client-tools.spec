@@ -22,7 +22,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.8.6
+Version: 2.8.10
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
@@ -84,6 +84,7 @@ Provides: python2-rhn-client-tools = %{version}-%{release}
 Obsoletes: python2-rhn-client-tools < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Requires: rpm-python
+Requires: spacewalk-usix
 %ifnarch s390 s390x
 Requires: python-dmidecode
 %endif
@@ -95,12 +96,17 @@ Requires: pygobject2
 Requires: libgudev
 Requires: python-hwdata
 %else
-%if 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
+%if 0%{?suse_version} >= 1140
+Requires: python-pyudev
+Requires: python-hwdata
+%else
+%if 0%{?rhel} > 5
 Requires: python-gudev
 Requires: python-hwdata
 %else
 Requires: hal >= 0.5.8.1-52
-%endif # 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
+%endif # 0%{?rhel} > 5
+%endif # 0%{?suse_version} >= 1140
 %endif # 0%{?fedora}
 
 %if 0%{?rhel} == 5
@@ -139,13 +145,14 @@ Requires: %{name} = %{version}-%{release}
 Requires: python3-dbus-python
 Requires: libgudev-1_0-0
 Requires: python3-newt
-Requires: python3-gobject2
+Requires: python3-pyudev
 %else
 Requires: python3-dbus
 Requires: libgudev
 Requires: newt-python3
 Requires: python3-gobject-base
 %endif
+Requires: python3-spacewalk-usix
 Requires: python3-rpm
 Requires: python3-dmidecode
 Requires: python3-netifaces
@@ -281,11 +288,10 @@ Requires: spacewalk-client-setup-gnome = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: python-gnome python-gtk
 %else
-Requires: pygtk2 pygtk2-libglade gnome-python2 gnome-python2-canvas
+Requires: pygtk2 pygtk2-libglade
 Requires: usermode-gtk
 %endif
 %if 0%{?fedora} || 0%{?rhel} > 5
-Requires: gnome-python2-gnome gnome-python2-bonobo
 Requires: liberation-sans-fonts
 %endif
 
@@ -299,11 +305,10 @@ Requires: spacewalk-client-setup-gnome = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: python-gnome python-gtk
 %else
-Requires: pygtk2 pygtk2-libglade gnome-python2 gnome-python2-canvas
+Requires: pygtk2 pygtk2-libglade
 Requires: usermode-gtk
 %endif
 %if 0%{?fedora} || 0%{?rhel} > 5
-Requires: gnome-python2-gnome gnome-python2-bonobo
 Requires: liberation-sans-fonts
 %endif
 
@@ -350,6 +355,7 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/rhn/actions/errata.py*
 rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_hal.*
 %else
 rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_gudev.*
+rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_udev.*
 %endif
 
 %if 0%{?rhel} == 5
@@ -433,10 +439,8 @@ rm -f $RPM_BUILD_ROOT/%{python3_sitelib}/up2date_client/gui.*
 %endif
 
 %if 0%{?suse_version}
-%py_compile %{buildroot}/%{python_sitelib}
 %py_compile -O %{buildroot}/%{python_sitelib}
 %if 0%{?build_py3}
-%py3_compile %{buildroot}/%{python3_sitelib}
 %py3_compile -O %{buildroot}/%{python3_sitelib}
 %endif
 %endif

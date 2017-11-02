@@ -5,13 +5,13 @@
 
 salt://certs/update-multi-cert.sh:
   cmd.wait_script:
-    - user: root
+    - runas: root
     - watch:
         - file: /etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem
 
 c_rehash:
-  cmd.wait:
+  cmd.run:
     - name: /usr/bin/c_rehash
-    - user: root
-    - watch:
+    - runas: root
+    - onchanges:
       - file: /etc/ssl/certs/*

@@ -139,12 +139,11 @@ public class SystemManagerTest extends RhnBaseTestCase {
      */
     private Integer numberOfSnapshots(Long sid) {
         Session session = HibernateFactory.getSession();
-        Integer count = (Integer) session.createSQLQuery("Select count(*) as cnt " +
+        return (Integer) session.createSQLQuery("Select count(*) as cnt " +
                                                          "  from rhnSnapshot " +
                                                          " where server_id = " + sid)
                                          .addScalar("cnt", IntegerType.INSTANCE)
                                          .uniqueResult();
-        return count;
     }
 
     public void testDeleteServer() throws Exception {

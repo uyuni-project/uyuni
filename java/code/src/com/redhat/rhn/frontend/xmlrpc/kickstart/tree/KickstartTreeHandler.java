@@ -80,11 +80,8 @@ public class KickstartTreeHandler extends BaseHandler {
             String channelLabel) {
         ensureConfigAdmin(loggedInUser);
 
-        List<KickstartableTree> ksTrees = KickstartFactory
-                .lookupKickstartableTrees(
-                        getChannel(channelLabel, loggedInUser).getId(),
-                            loggedInUser.getOrg());
-        return ksTrees;
+        return KickstartFactory.lookupKickstartableTrees(getChannel(channelLabel, loggedInUser).getId(),
+                loggedInUser.getOrg());
     }
 
     /**

@@ -1,8 +1,40 @@
+-------------------------------------------------------------------
+Thu Oct 26 17:12:49 CEST 2017 - mc@suse.de
+
+- version 2.8.15.1-1
+- build python3 subpackage for -libs package
+- fix issues with syncing deb repos (bsc#1050433)
 - honor MAX_LOG_AGE for (renamed) cobbler/tasks logs file
   in spacewalk-debug (bsc#1025201)
+- add hostname to duplicate machine_id email (bsc#1055292)
+- fix link to manual and the described procedure
+- don't crash when token is set to 'fake' (bsc#1060022)
+
+-------------------------------------------------------------------
+Thu Sep 14 11:40:39 CEST 2017 - mc@suse.de
+
+- version 2.7.73.9-1
 - Fix SP migration for traditional clients which were registered
   by a currently disabled user (bsc#1057126)
-- don't crash when token is set to 'fake' (bsc#1060022)
+
+-------------------------------------------------------------------
+Wed Aug 30 16:03:25 CEST 2017 - mc@suse.de
+
+- version 2.7.73.8-1
+- increase rpclib timeout to 10 minutes (bsc#1026930)
+
+-------------------------------------------------------------------
+Wed Aug 09 12:11:50 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.73.7-1
+- disable pylint check during build also for RHEL7
+
+-------------------------------------------------------------------
+Tue Aug 08 11:07:41 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.73.6-1
+- make master_label static to keep its value when retrying (bsc#1038321)
+- adapt for the new gpgcheck flag for the channels
 
 -------------------------------------------------------------------
 Mon Jun 12 09:11:59 CEST 2017 - mc@suse.de
