@@ -206,8 +206,7 @@ public class RequestContext {
     // TODO Write unit tests for getUserFromUIDParameter()
     public User getUserFromUIDParameter() {
         Long uid = getParamAsLong(USER_ID);
-        User user = UserManager.lookupUser(getCurrentUser(), uid);
-        return user;
+        return UserManager.lookupUser(getCurrentUser(), uid);
     }
 
     /**
@@ -222,7 +221,7 @@ public class RequestContext {
      * the request can be found
      */
     public Errata lookupErratum()
-    throws BadParameterException, IllegalArgumentException {
+    throws IllegalArgumentException {
         Long errataId = getRequiredParam(ERRATA_ID);
         Errata retval = ErrataManager.lookupErrata(errataId, getCurrentUser());
         assertObjectFound(retval, errataId, ERRATA_ID, "erratum");
@@ -242,7 +241,7 @@ public class RequestContext {
      */
     // TODO Write unit tests for lookupServer()
     public Server lookupServer()
-    throws BadParameterException, IllegalArgumentException {
+    throws IllegalArgumentException {
         Long serverId = getRequiredParam(SID);
         Server retval = SystemManager.lookupByIdAndUser(serverId,
                 getCurrentUser());
@@ -264,7 +263,7 @@ public class RequestContext {
      */
     // TODO Write unit tests for lookupServer()
     public Server lookupAndBindServer()
-    throws BadParameterException, IllegalArgumentException {
+    throws IllegalArgumentException {
         if (request.getAttribute(SYSTEM) == null) {
             request.setAttribute(SYSTEM, lookupServer());
         }

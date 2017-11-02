@@ -42,7 +42,8 @@
     <rl:decorator name="SelectableDecorator" />
     <rl:selectablecolumn value="${current.selectionKey}"
       selected="${current.selected}"
-      disabled="${not current.selectable}"/>
+      disabled="${not current.selectable}"
+      hideDisabled="true"/>
     <rl:column headerkey="system.event.history.type">
       <c:choose>
         <c:when test="${current.historyType == 'event-type-package'}">

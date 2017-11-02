@@ -2473,7 +2473,7 @@ tree will not be usable for autoinstalling.
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
         <trans-unit id="systementitlements.jsp.entitlement_counts_message">
-          <source>{0} system type(s).</source>
+          <source>{0} system(s).</source>
         </trans-unit>
       </group>
       <trans-unit id="systementitlements.jsp.base_entitlements">
@@ -2847,6 +2847,31 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+
+      <trans-unit id="delete_confirm.jsp.summary.sshpush">
+          <source>For &lt;strong&gt;ssh-push&lt;/strong&gt; minions SUSE Manager will also cleanup any specific configuration installed on the minion.
+              This might take a few extra seconds.</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.saltssh.cleanup">
+          <source>The selected profiles include Salt ssh-push systems. SUSE Manager can try to remove the specific configuration from the Salt ssh-push systems.
+            In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.saltssh.cleanup.type">
+          <source>Please chose how to handle SSH minions cleanup and delete:</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.saltssh.cleanup.no_cleanup">
+          <source>Delete systems without cleanup</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.saltssh.cleanup.force_delete">
+          <source>Clean up and delete systems even in case of errors</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.saltssh.cleanup.skip_on_err">
+          <source>Only delete systems if cleanup is successful</source>
+      </trans-unit>
+      <trans-unit id="ssm.delete.systems.cancel">
+          <source>Cancel</source>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

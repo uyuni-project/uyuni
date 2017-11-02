@@ -6,9 +6,10 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %endif
 
-%if 0%{?fedora} >= 23
+%if 0%{?fedora} >= 23 || 0%{?suse_version} > 1320
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %global python3rhnroot %{python3_sitelib}/spacewalk
+%global build_py3 1
 %endif
 
 %if (0%{?fedora} && 0%{?fedora} < 26) || 0%{?rhel} >= 7
@@ -37,7 +38,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.14
+Version: 2.8.22
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -65,12 +66,17 @@ BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
 BuildRequires: spacewalk-usix
 %if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} > 1310
+%if 0%{?build_py3}
+BuildRequires:  python3-rhn-client-tools
+BuildRequires:  python3-gzipstream
+%else
+BuildRequires:  python2-rhn-client-tools
+BuildRequires:  python2-gzipstream
+%endif
 BuildRequires: rhnlib >= 2.5.74
-BuildRequires: python2-rhn-client-tools
 BuildRequires: rpm-python
 #BuildRequires: python-crypto
 BuildRequires: python-debian
-BuildRequires: python2-gzipstream
 BuildRequires: yum
 BuildRequires: %{m2crypto}
 %endif
@@ -250,15 +256,19 @@ Requires: spacewalk-usix
 %description libs
 Libraries required by both Spacewalk server and Spacewalk client tools.
 
-%if 0%{?fedora} >= 23
+%if 0%{?build_py3}
 
 %package -n python3-%{name}-libs
-Summary: Spacewalk client tools libraries for Fedora 23
+Summary: Spacewalk client tools libraries for python3
 Group: Applications/Internet
 BuildRequires: python2-devel
 BuildRequires: python3-devel
 Conflicts: %{name} < 1.7.0
+%if 0%{?suse_version}
+Requires:       python3-base
+%else
 Requires: python3-libs
+%endif
 Requires: python3-spacewalk-usix
 
 %description -n python3-%{name}-libs
@@ -386,7 +396,7 @@ install -d $RPM_BUILD_ROOT%{pythonrhnroot}
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd}
 
-%if 0%{?fedora} && 0%{?fedora} >= 23
+%if 0%{?build_py3}
 install -d $RPM_BUILD_ROOT%{python3rhnroot}/common
 cp $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py \
     $RPM_BUILD_ROOT%{python3rhnroot}/
@@ -423,11 +433,25 @@ sed -i 's/#DOCUMENTROOT#/\/srv\/www\/htdocs/' $RPM_BUILD_ROOT%{rhnconfigdefaults
 pushd $RPM_BUILD_ROOT
 find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
+
+%if 0%{?build_py3}
+%py3_compile -O %{buildroot}/%{python3rhnroot}
+%endif
 %endif
 
 # prevent file conflict with spacewalk-usix
 rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py*
 rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py*
+
+%if 0%{?build_py3}
+rm -f $RPM_BUILD_ROOT%{python3rhnroot}/__init__.py*
+rm -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__init__.py*
+
+%if 0%{?suse_version}
+%py3_compile -O %{buildroot}/%{python3rhnroot}
+%endif
+%endif
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -729,9 +753,14 @@ rm -f %{rhnconf}/rhnSecret.py*
 #%{pythonrhnroot}/__init__.py*
 #%{pythonrhnroot}/common/__init__.py*
 
-%if 0%{?fedora} && 0%{?fedora} >= 23
+%if 0%{?build_py3}
 %files -n python3-%{name}-libs
+%defattr(-,root,root)
 %doc LICENSE
+%dir %{python3rhnroot}
+#%dir %{python3rhnroot}/__pycache__
+%dir %{python3rhnroot}/common
+%dir %{python3rhnroot}/common/__pycache__
 %{python3rhnroot}/common/checksum.py
 %{python3rhnroot}/common/cli.py
 %{python3rhnroot}/common/fileutils.py
@@ -741,10 +770,15 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{python3rhnroot}/common/rhn_rpm.py
 %{python3rhnroot}/common/stringutils.py
 %{python3rhnroot}/common/rhnLib.py*
-%{python3rhnroot}/__init__.py
-%{python3rhnroot}/common/__init__.py
-%{python3rhnroot}/__pycache__/__init__.*
-%{python3rhnroot}/common/__pycache__/*
+#%{python3rhnroot}/__init__.py
+#%{python3rhnroot}/common/__init__.py
+#%{python3rhnroot}/__pycache__/__init__.*
+%{python3rhnroot}/common/__pycache__
+%if 0%{?suse_version}
+%dir %{python3rhnroot}
+%dir %{python3rhnroot}/common
+%dir %{python3rhnroot}/__pycache__
+%endif
 %endif
 
 %files config-files-common
@@ -889,8 +923,41 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,%{apache_group}) %dir %{_var}/log/rhn/cdnsync
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-cdn
 %{_mandir}/man8/cdn-sync.8*
+%if 0%{?suse_version}
+%dir %{pythonrhnroot}/cdn_tools
+%endif
 
 %changelog
+* Fri Oct 27 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.22-1
+- convert only bytes
+
+* Wed Oct 25 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.21-1
+- pylint fixes
+
+* Wed Oct 25 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.20-1
+- make rhn_rpm python3 compatible
+- open checksummed files in binary mode
+
+* Wed Oct 25 2017 Jan Dobes <jdobes@redhat.com> 2.8.19-1
+- mention package groups in help
+- detect and parse package groups in filters
+- split only using comma then strip
+
+* Tue Oct 24 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.18-1
+- add new spacewalk-repo-sync command line option to synopsis of man-page
+
+* Tue Oct 24 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.17-1
+- add new parameter '--show-packages' for spacewalk-repo-sync.
+
+* Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.16-1
+- spacewalk-backend: fix package name on SUSE and build py3 on Tumbleweed
+- fixing previous commit
+- improve comment
+- join two ifs
+
+* Mon Oct 16 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.15-1
+- fix the inconsistency in spacewalk-repo-sync documentation.
+
 * Thu Oct 12 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.14-1
 - 1455139 - fix processing '--parent' option.
 

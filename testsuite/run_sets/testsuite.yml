@@ -1,0 +1,97 @@
+# This file describes the order of features in a normal testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Core features BEGIN ###
+
+# IMMUTABLE ORDER
+--- # initialize SUSE Manager server
+- features/core_first_settings.feature
+- features/core_srv_channels_add.feature
+- features/core_srv_push_package.feature
+- features/core_srv_create_repository.feature
+- features/core_srv_systemspage.feature
+- features/core_srv_users.feature
+- features/core_srv_credentials.feature
+- features/core_srv_create_activationkey.feature
+- features/core_proxy.feature
+- features/core_trad_register_client.feature
+- features/core_min_bootstrap.feature
+- features/core_min_docker_build_image.feature
+- features/core_min_salt_ssh.feature
+- features/core_centos_tradclient.feature
+- features/core_centos_salt.feature
+- features/core_centos_salt_ssh.feature
+# these features sync real channels (last core features)
+- features/core_srv_sync_channels.feature
+- features/core_srv_setup_wizard.feature
+## CORE features end ###
+
+# SECONDARY FEATURES:
+
+# **** IDEMPOTENT ******
+- features/min_bootstrap_xmlrpc.feature
+- features/min_ssh_bootstrap_xmlrpc.feature
+- features/trad_need_reboot.feature
+- features/trad_ssh_push.feature
+- features/trad_reboot.feature
+- features/srv_change_password.feature
+- features/min_salt_software_states.feature
+- features/trad_metadata_check.feature
+- features/srv_clone_channel_npn.feature
+- features/trad_cve_id_new_syntax.feature
+- features/trad_weak_deps.feature
+- features/srv_nagios.feature
+- features/srv_cve_audit.feature
+- features/min_salt_install_with_staging.feature
+- features/srv_xmlrpc_activationkey.feature
+- features/allcli_overview_systems_details.feature
+- features/min_salt_reboot_test.feature
+- features/min_docker_xmlrpc.feature
+- features/srv_distro_cobbler.feature
+- features/srv_mainpage.feature
+- features/srv_xmlrpc_user.feature
+- features/srv_smdba.feature
+- features/min_salt_states_catalog.feature
+- features/srv_salt_download_endpoint.feature
+- features/srv_virtual_host_manager.feature
+- features/trad_baremetal_discovery.feature
+- features/trad_action_chain.feature
+- features/min_salt_formulas.feature
+- features/srv_docker_advanced_test.feature
+- features/srv_docker_cve_audit.feature
+- features/min_salt_install_package.feature
+- features/srv_powermanagement.feature
+- features/srv_datepicker.feature
+- features/trad_openscap_audit.feature
+- features/srv_create_group.feature
+- features/min_salt_openscap_audit.feature
+- features/srv_custom_system_info.feature
+- features/srv_security.feature
+- features/trad_inst_package_and_patch.feature
+- features/trad_check_patches_install.feature
+- features/trad_mgr_bootstrap.feature
+- features/trad_sp_migration.feature
+- features/srv_salt.feature
+- features/trad_lock_packages.feature
+- features/srv_check_channels_page.feature
+- features/min_salt_minion_details.feature
+- features/trad_check_registration.feature
+- features/min_salt_minions_page.feature
+- features/srv_xmlrpc_channel.feature
+- features/trad_config_channel.feature
+- features/min_salt_pkgset_beacon.feature
+- features/srv_patches_page.feature
+- features/srv_spacewalk_repo_sync.feature
+- features/srv_spacewalk_channel.feature
+
+# This need rework before activation
+# - features/trad_migrate_to_minion.feature
+
+# Post run feature (non idempotent)
+# Debug SUSE Manager server is non idempotent
+# because it gather files and perfoms log checks
+# Don't add any additional feature here.
+- features/srv_susemanager_debug.feature

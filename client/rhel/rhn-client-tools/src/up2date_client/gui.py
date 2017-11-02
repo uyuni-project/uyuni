@@ -15,11 +15,6 @@ import gtk.glade
 
 gtk.glade.bindtextdomain("rhn-client-tools", "/usr/share/locale")
 
-# We have to import gnome.ui before using glade for our GnomeUi widgets.
-# ie the druid. Get rid of these widgets, and we won't need this import.
-# see http://www.async.com.br/faq/pygtk/index.py?req=show&file=faq22.005.htp
-import gnome.ui
-
 import signal
 
 try: # python2
@@ -54,25 +49,9 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         gladeFile = "/usr/share/rhn/up2date_client/gui.glade"
         self.xml = gtk.glade.XML(gladeFile, "mainWin", domain="rhn-client-tools")
         self.xml.signal_autoconnect (
-            { "onDruidCancel" : self.onDruidCancel,
-              "onStartPagePrepare" : self.onStartPagePrepare,
-              "onStartPageNext" : self.onStartPageNext,
-              "onChooseServerPagePrepare" : self.onChooseServerPagePrepare,
-              "onChooseServerPageNext" : self.onChooseServerPageNext,
-              "onLoginPagePrepare" : self.onLoginPagePrepare,
-              "onLoginPageNext" : self.onLoginPageNext,
-              "onChooseChannelPageNext" : self.onChooseChannelPageNext,
-              "onChooseChannelPageBack" : self.onChooseChannelPageBack,
-              "onChooseChannelPagePrepare" : self.onChooseChannelPagePrepare,
-              "onCreateProfilePagePrepare" : self.onCreateProfilePagePrepare,
-              "onCreateProfilePageNext" : self.onCreateProfilePageNext,
-              "onCreateProfilePageBack" : self.onCreateProfilePageBack,
-              "onReviewSubscriptionPagePrepare" : self.onReviewSubscriptionPagePrepare,
-              "onReviewSubscriptionPageNext" : self.onReviewSubscriptionPageNext,
-              "onProvideCertificatePageBack" : self.onProvideCertificatePageBack,
-              "onProvideCertificatePageNext" : self.onProvideCertificatePageNext,
-              "onFinishPagePrepare" : self.onFinishPagePrepare,
-              "onFinishPageFinish" : self.onFinishPageFinish,
+            { "onMainWinCancel" : self.onMainWinCancel,
+              "onMainWinPrepare" : self.onMainWinPrepare,
+              "onMainWinApply" : self.onMainWinApply,
         } )
 
         rhnregGui.StartPage.__init__(self)
@@ -97,6 +76,7 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         contents = self.chooseChannelPageVbox()
         container = self.xml.get_widget("chooseChannelPageVbox")
         container.pack_start(contents, True)
+        self.chooseChannelPageVbox = container
         contents = self.createProfilePageVbox()
         container = self.xml.get_widget("createProfilePageVbox")
         container.pack_start(contents, True)
@@ -106,6 +86,7 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         contents = self.provideCertificatePageVbox()
         container = self.xml.get_widget("provideCertificatePageVbox")
         container.pack_start(contents, True)
+        self.provideCertificatePageVbox = container
         contents = self.finishPageVbox()
         container = self.xml.get_widget("finishPageVbox")
         container.pack_start(contents, True)
@@ -116,22 +97,24 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         self.already_registered_already_shown = False
         self.rhsm_already_registered_already_shown = False
 
-        self.druid = self.xml.get_widget("druid")
+#        self.druid = self.xml.get_widget("druid")
         self.mainWin = self.xml.get_widget("mainWin")
         self.mainWin.connect("delete-event", gtk.main_quit)
         self.mainWin.connect("hide", gtk.main_quit)
+        self.mainWin.connect("close", gtk.main_quit)
 
-        # It's better to get widgets in advance so bugs don't hide in get_widget
-        # calls that only get executed periodically.
-        self.startPage = self.xml.get_widget("startPage")
-        self.chooseServerPage = self.xml.get_widget("chooseServerPage")
-        self.provideCertificatePage = self.xml.get_widget("provideCertificatePage")
-        self.loginPage = self.xml.get_widget("loginPage")
-        self.chooseChannelPage = self.xml.get_widget("chooseChannelPage")
-        self.createProfilePage = self.xml.get_widget("createProfilePage")
-        self.reviewSubscriptionPage = \
-            self.xml.get_widget("reviewSubscriptionPage")
-        self.finishPage = self.xml.get_widget("finishPage")
+#        # It's better to get widgets in advance so bugs don't hide in get_widget
+#        # calls that only get executed periodically.
+#        self.startPage = self.xml.get_widget("startPage")
+#        self.chooseServerPage = self.xml.get_widget("chooseServerPage")
+#        self.provideCertificatePage = self.xml.get_widget("provideCertificatePage")
+#        self.loginPage = self.xml.get_widget("loginPage")
+#        self.chooseChannelPage = self.xml.get_widget("chooseChannelPage")
+#        self.createProfilePage = self.xml.get_widget("createProfilePage")
+#        self.reviewSubscriptionPage = \
+#            self.xml.get_widget("reviewSubscriptionPage")
+#        self.finishPage = self.xml.get_widget("finishPage")
+        self.pages = {page.name: n  for n, page in enumerate(self.mainWin.get_children())}
 
         # Set up cursor changing functions. Overriding functions that aren't in
         # classes like this could be called a hack, but I think it's the best
@@ -154,13 +137,12 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         self.onStartPagePrepare(None, None, manualPrepare=True)
 
 
-    def onDruidCancel(self, dummy):
+    def onMainWinCancel(self, mainWin):
         dialog = rhnregGui.ConfirmQuitDialog()
         if dialog.rc == 1:
-            self.druid.set_page(self.finishPage)
+            self.mainWin.set_current_page(self.pages['finishPageVbox'])
         else:
             return True
-
 
     def fatalError(self, error, wrap=1):
         rhnregGui.setArrowCursor()
@@ -174,11 +156,36 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         gtk.main_quit()
         sys.exit(1)
 
+    def nextPage(self, vbox):
+        # go one page before desired one and 'forward' will move us where we want
+        self.mainWin.set_current_page(self.pages[vbox]-1)
 
-    def onStartPagePrepare(self, page, dummy, manualPrepare=False):
-        if not manualPrepare:
-            self.startPage.emit_stop_by_name("prepare")
-        self.druid.set_buttons_sensitive(False, True, True, False)
+    def onMainWinPrepare(self, mainWin, vbox):
+        prepare_func = {
+              "startPageVbox": self.onStartPagePrepare,
+              "chooseServerPageVbox" : self.onChooseServerPagePrepare,
+              "loginPageVbox" : self.onLoginPagePrepare,
+              "chooseChannelPageVbox" : self.onChooseChannelPagePrepare,
+              "createProfilePageVbox" : self.onCreateProfilePagePrepare,
+              "reviewSubscriptionPageVbox" : self.onReviewSubscriptionPagePrepare,
+              "finishPageVbox" : self.onFinishPagePrepare,
+        }
+        if vbox.name in prepare_func:
+            prepare_func[vbox.name](mainWin, vbox)
+
+    def onMainWinApply(self, mainWin):
+       forward_func = {
+              "chooseServerPageVbox" : self.onChooseServerPageNext,
+              "loginPageVbox" : self.onLoginPageNext,
+              "chooseChannelPageVbox" : self.onChooseChannelPageNext,
+              "createProfilePageVbox" : self.onCreateProfilePageNext,
+              "provideCertificatePageVbox" : self.onProvideCertificatePageNext,
+       }
+       currentVbox = mainWin.get_nth_page(mainWin.get_current_page())
+       if currentVbox.name in forward_func:
+           forward_func[currentVbox.name](mainWin, None)
+
+    def onStartPagePrepare(self, mainWin, vbox, manualPrepare=False):
         if rhnreg.rhsm_registered() and not self.rhsm_already_registered_already_shown:
             # Dialog constructor returns when dialog closes
             dialog = rhnregGui.AlreadyRegisteredSubscriptionManagerDialog()
@@ -192,28 +199,22 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
                 sys.exit(0)
             self.already_registered_already_shown = True
 
-    def onStartPageNext(self, page, dummy):
-        self.druid.set_buttons_sensitive(True, True, True, False)
-
-
-    def onChooseServerPagePrepare(self, page, dummy):
-        self.chooseServerPage.emit_stop_by_name("prepare")
+    def onChooseServerPagePrepare(self, mainWin, vbox):
         self.chooseServerPagePrepare()
 
     def onChooseServerPageNext(self, page, dummy):
         try:
             ret = self.chooseServerPageApply()
-            if ret is False: # Everything is ok
-                self.druid.set_page(self.loginPage)
+            if ret: # something went wrong
+                self.nextPage('chooseServerPageVbox')
+                return
+            self.provideCertificatePageVbox.set_visible(False)
+            self.nextPage('loginPageVbox')
         except (up2dateErrors.SSLCertificateVerifyFailedError,\
                 up2dateErrors.SSLCertificateFileNotFound):
             self.setUrlInWidget()
-            self.druid.set_page(self.provideCertificatePage)
-        return True
 
-
-    def onLoginPagePrepare(self, page, dummy):
-        self.loginPage.emit_stop_by_name("prepare")
+    def onLoginPagePrepare(self, mainWin, vbox):
         self.loginXml.get_widget("loginUserEntry").grab_focus()
         self.loginPagePrepare()
 
@@ -223,29 +224,23 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         """
         ret = self.loginPageVerify()
         if ret:
-            return ret
+            self.nextPage('loginPageVbox')
+            return
 
         ret = self.loginPageApply()
         if ret:
-            return ret
+            self.nextPage('loginPageVbox')
+            return
 
         self.goToPageAfterLogin()
-        return True
 
 
     def goToPageAfterLogin(self):
         """This function is used by the create new account dialog so it doesn't
         need to have any knowledge of the screen mechanism or order.
         """
-        if rhnregGui.ChooseChannelPage.chooseChannelShouldBeShown(self):
-            self.druid.set_page(self.chooseChannelPage)
-        else:
-            self.druid.set_page(self.createProfilePage)
-
-
-    def onChooseChannelPageBack(self, page, dummy):
-        self.druid.set_page(self.loginPage)
-        return True
+        if not rhnregGui.ChooseChannelPage.chooseChannelShouldBeShown(self):
+            self.chooseChannelPageVbox.set_visible(False)
 
     def onChooseChannelPageNext(self, page, dummy):
         self.chooseChannelPageApply()
@@ -253,19 +248,13 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
            self.chose_default_channel is False:
             dialog = rhnregGui.ConfirmAllUpdatesDialog()
             if dialog.rc == 0:
-                self.druid.set_page(self.chooseChannelPage)
-                return True
-        else:
-            self.druid.set_page(self.createProfilePage)
-            return True
+                self.nextPage('chooseChannelPageVbox')
 
-    def onChooseChannelPagePrepare(self, page, dummy):
+    def onChooseChannelPagePrepare(self, mainWin, vbox):
         self.chooseChannelPagePrepare()
-        self.chooseChannelPage.emit_stop_by_name("prepare")
 
-    def onCreateProfilePagePrepare(self, page, dummy):
+    def onCreateProfilePagePrepare(self, mainWin, vbox):
         self.createProfilePagePrepare()
-        self.createProfilePage.emit_stop_by_name("prepare")
 
     def onCreateProfilePageNext(self, page, dummy):
         ret = self.createProfilePageVerify()
@@ -275,59 +264,33 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         if ret:
             return ret
 
-    def onCreateProfilePageBack(self, page, dummy):
-        if rhnregGui.ChooseChannelPage.chooseChannelShouldBeShown(self):
-            self.druid.set_page(self.chooseChannelPage)
-        else:
-            self.druid.set_page(self.chooseServerPage)
-        return True
-
-    def onReviewSubscriptionPagePrepare(self, page, dummy):
+    def onReviewSubscriptionPagePrepare(self, mainWin, vbox):
         self.reviewSubscriptionPagePrepare()
-        self.druid.set_buttons_sensitive(False, True, False, False)
-        self.reviewSubscriptionPage.emit_stop_by_name("prepare")
-
-    def onReviewSubscriptionPageNext(self, page, dummy):
-        self.druid.set_page(self.finishPage)
-        return True
-
-
-    def onProvideCertificatePageBack(self, page=None, dummy=None):
-        self.druid.set_page(self.chooseServerPage)
-        return True
 
     def onProvideCertificatePageNext(self, page=None, dummy=None):
         status = self.provideCertificatePageApply()
         if status == 0:
-            self.druid.set_page(self.loginPage)
+            pass
         elif status == 1:
-            self.druid.set_page(self.finishPage)
+            self.nextPage('finishPageVbox')
         elif status == 3:
-            self.druid.set_page(self.chooseServerPage)
+            self.nextPage('chooseServerPageVbox')
         else:
             assert status == 2
-            pass
-        return True
+            self.nextPage('provideCertificatePageVbox')
+        return
 
 
-    def onFinishPagePrepare(self, page=None, dummy=None):
-        self.druid.set_buttons_sensitive(False, False, False, False)
-        self.druid.set_show_finish(True)
-        # Stopping the signal is needed to make the druid buttons change the way
-        # I want. I have no idea why.
-        self.finishPage.emit_stop_by_name("prepare")
+    def onFinishPagePrepare(self, mainWin, vbox):
         if rhnregGui.hasBaseChannelAndUpdates():
-            self.druid.finish.set_label(_("_Finish"))
+#            self.druid.finish.set_label(_("_Finish"))
             title = _("Finish setting up software updates")
         else:
-            self.druid.finish.set_label(_("_Exit"))
+#            self.druid.finish.set_label(_("_Exit"))
             title = _("Software updates setup unsuccessful")
         self.finishPagePrepare()
         self.mainWin.set_title(title)
-        self.finishPage.set_title(title)
-
-    def onFinishPageFinish(self, page, dummy=None):
-        gtk.main_quit()
+        self.mainWin.set_page_title(vbox, title)
 
 
 def rootWarning():

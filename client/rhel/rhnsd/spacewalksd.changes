@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Oct 26 16:57:12 CEST 2017 - mc@suse.de
+
+- version 5.0.33.1-1
+- close and reopen syslog when redirecting child output
+- no insserv on available in newer distributions
+
+-------------------------------------------------------------------
+Tue Aug 08 11:38:37 CEST 2017 - fkobzik@suse.de
+
+- version 5.0.26.3-1
+- Fix permissions of PID files in spacewalksd (bsc#1049936)
+
+-------------------------------------------------------------------
 Tue May 23 08:45:05 CEST 2017 - mc@suse.de
 
 - version 5.0.26.2-1

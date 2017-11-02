@@ -217,7 +217,7 @@ def set_filter_opt(option, opt_str, value, parser):
         f_type = '+'
     else:
         f_type = '-'
-    parser.values.filters.append((f_type, re.split(r'[,\s]+', value)))
+    parser.values.filters.append((f_type, [v.strip() for v in value.split(',') if v.strip()]))
 
 
 def getChannelRepo():
@@ -350,7 +350,7 @@ class RepoSync(object):
                  filters=None, no_errata=False, sync_kickstart=False, latest=False,
                  metadata_only=False, strict=0, excluded_urls=None, no_packages=False,
                  log_dir="reposync", log_level=None, force_kickstart=False, force_all_errata=False,
-                 check_ssl_dates=False, force_null_org_content=False,
+                 check_ssl_dates=False, force_null_org_content=False, show_packages_only=False,
                  noninteractive=False, deep_verify=False):
         self.regen = False
         self.fail = fail
@@ -368,6 +368,7 @@ class RepoSync(object):
         self.error_messages = []
         self.available_packages = {}
         self.ks_install_type = None
+        self.show_packages_only = show_packages_only
 
         initCFG('server.susemanager')
         rhnSQL.initDB()
@@ -524,30 +525,33 @@ class RepoSync(object):
                                               client_cert_file=client_cert_file,
                                               client_key_file=client_key_file)
 
-                    if update_repodata:
-                        plugin.clear_cache()
+                    if self.show_packages_only:
+                        self.show_packages(plugin, repo_id)
+                    else:
+                        if update_repodata:
+                            plugin.clear_cache()
 
-                    # update the checksum type of channels with org_id NULL
-                    # this fetch also the normal xml primary file
-                    self.updateChannelChecksumType(plugin.get_md_checksum_type())
+                        # update the checksum type of channels with org_id NULL
+                        # this fetch also the normal xml primary file
+                        self.updateChannelChecksumType(plugin.get_md_checksum_type())
 
-                    if not self.no_packages:
-                        ret = self.import_packages(plugin, data['id'], url)
-                        failed_packages += ret
-                        self.import_groups(plugin)
+                        if not self.no_packages:
+                            ret = self.import_packages(plugin, data['id'], url)
+                            failed_packages += ret
+                            self.import_groups(plugin)
 
-                    if not self.no_errata:
-                        self.import_updates(plugin)
+                        if not self.no_errata:
+                            self.import_updates(plugin)
 
-                    # only for repos obtained from the DB
-                    if self.sync_kickstart and data['repo_label']:
-                        try:
-                            self.import_kickstart(plugin, url, data['repo_label'])
-                        except:
-                            rhnSQL.rollback()
-                            raise
-                    self.import_products(plugin)
-                    self.import_susedata(plugin)
+                        # only for repos obtained from the DB
+                        if self.sync_kickstart and data['repo_label']:
+                            try:
+                                self.import_kickstart(plugin, data['repo_label'])
+                            except:
+                                rhnSQL.rollback()
+                                raise
+                        self.import_products(plugin)
+                        self.import_susedata(plugin)
 
                 except rhnSQL.SQLError, e:
                     log(0, "SQLError: %s" % e)
@@ -844,7 +848,7 @@ class RepoSync(object):
                      order by sort_order """)
             h.execute(source_id=source_id)
             filter_data = h.fetchall_dict() or []
-            filters = [(row['flag'], re.split(r'[,\s]+', row['filter']))
+            filters = [(row['flag'], [v.strip() for v in row['filter'].split(',') if v.strip()])
                        for row in filter_data]
         else:
             filters = self.filters
@@ -1095,6 +1099,63 @@ class RepoSync(object):
             self.regen = True
         self._normalize_orphan_vendor_packages()
         return failed_packages
+
+    def show_packages(self, plug, source_id):
+
+        if (not self.filters) and source_id:
+            h = rhnSQL.prepare("""
+                    select flag, filter
+                      from rhnContentSourceFilter
+                     where source_id = :source_id
+                     order by sort_order """)
+            h.execute(source_id=source_id)
+            filter_data = h.fetchall_dict() or []
+            filters = [(row['flag'], re.split(r'[,\s]+', row['filter']))
+                       for row in filter_data]
+        else:
+            filters = self.filters
+
+        packages = plug.raw_list_packages(filters)
+
+        num_passed = len(packages)
+        log(0, "    Packages in repo:             %5d" % plug.num_packages)
+        if plug.num_excluded:
+            log(0, "    Packages passed filter rules: %5d" % num_passed)
+
+        log(0, "    Package marked with '+' will be downloaded next channel synchronization")
+        log(0, "    Package marked with '.' is already presented on filesystem")
+
+        channel_id = int(self.channel['id'])
+
+        for pack in packages:
+
+            db_pack = rhnPackage.get_info_for_package(
+                [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
+                channel_id, self.org_id)
+
+            pack_status = " + "  # need to be downloaded by default
+            pack_full_name = "%-60s\t" % (pack.name + "-" + pack.version + "-" + pack.release + "." +
+                                          pack.arch + ".rpm")
+            pack_size = "%11d bytes\t" % pack.packagesize
+
+            if pack.checksum_type == 'sha512':
+                pack_hash_info = "%-140s" % (pack.checksum_type + ' ' + pack.checksum)
+            else:
+                pack_hash_info = "%-80s " % (pack.checksum_type + ' ' + pack.checksum)
+
+            # Package exists in DB
+            if db_pack:
+                # Path in filesystem is defined
+                if db_pack['path']:
+                    pack.path = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
+                else:
+                    pack.path = ""
+
+                if self.match_package_checksum(db_pack['path'], pack.path, pack.checksum_type, pack.checksum):
+                    # package is already on disk
+                    pack_status = ' . '
+
+            log(0, "    " + pack_status + pack_full_name + pack_size + pack_hash_info)
 
     def _normalize_orphan_vendor_packages(self):
         # Sometimes reposync disassociates vendor packages (org_id = 0) from
@@ -2029,6 +2090,9 @@ class RepoSync(object):
         check, if the checksum_type of the channel matches the one of the repo
         if not, change the type of the channel
         """
+        if repo_checksum_type is None:
+            return
+
         if self.channel['org_id']:
             # custom channels are user managed.
             # Do not autochange this

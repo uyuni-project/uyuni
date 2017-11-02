@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.26
+Version: 2.8.31
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -430,7 +430,7 @@ Requires: jakarta-taglibs-standard
 Requires: concurrent
 Requires: jcommon
 Requires: log4j
-Requires: quartz < 2.0
+Requires: quartz
 Requires: simple-core
 Requires: spacewalk-java-config
 Requires: spacewalk-java-jdbc
@@ -482,7 +482,7 @@ BuildRequires: jakarta-commons-dbcp
 BuildRequires: jakarta-commons-pool
 %endif # 0%{?suse_version}
 %endif # 0%{?fedora} || 0%{?rhel} >= 7
-Conflicts: quartz >= 2.0
+Conflicts: quartz < 2.0
 Obsoletes: taskomatic < 5.3.0
 Obsoletes: taskomatic-sat < 5.3.0
 Provides: taskomatic = %{version}-%{release}
@@ -1032,6 +1032,50 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Fri Oct 27 2017 Jan Dobes <jdobes@redhat.com> 2.8.31-1
+- reverting condition
+
+* Thu Oct 26 2017 Jan Dobes <jdobes@redhat.com> 2.8.30-1
+- 1492572 - display action without prerequisites first
+- 1492572 - hide select box when it's disabled
+- 1492572 - action is selectable if it's without prerequisites
+
+* Tue Oct 17 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.29-1
+- remove no longer needed imports
+- use inline variables when possible
+- return as last statement in void function is pointless
+- continue doesn't make sense as last command in loop
+- don't use ternary operator where it's not necessary
+- .equals already returns boolean value
+- simplify if (true) { return true; } else { return false; } expressions
+- use .equals instead of ==
+- get rid of empty if blocks
+- fix javadoc comment with correct method signature
+- call methods from ConfigDefaults to ensure default value is used instead of 0
+- ConfigDefaults - simplify return statement
+- ConfigDefaults - make publically not used attributes private
+- Config - use foreach loop where it makes sense
+- Config - make publically not used attributes private
+- ClientCertificate - use foreach loop
+- ClientCertificate - make not publically used methods/attributes private
+- super() class exception is already thrown
+- simplify if (true) { return true; } else { return false; } expressions
+- return is not needed in void functions
+- expression can be written without ternary operator
+
+* Mon Oct 16 2017 Jan Dobes 2.8.28-1
+- do not forcibly include @ Base pkg group into package list
+- remove unused variable
+- making snippets compatible with Python 3
+- these packages are necessary on Fedora too
+- fixing typo
+
+* Mon Oct 16 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.27-1
+- 1445254 - fix error message
+- 1445254 - support removal of packages which are not in database via API
+- bring LineLength max to 120 to be on par with max-line-length in pylint
+- use correct argument name in javadoc
+
 * Thu Oct 12 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.26-1
 - 1460960 - set correct ListTagHelper.PARENT_URL attribute for ProxyClients
   page.
@@ -5506,4 +5550,3 @@ fi
 * Thu Jul 18 2013 Grant Gainey 2.1.1-1
 - JUnit fixes
 - Bumping package versions for 2.1.
-

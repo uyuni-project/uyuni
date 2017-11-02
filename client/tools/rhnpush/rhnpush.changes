@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Oct 26 17:16:51 CEST 2017 - mc@suse.de
+
+- version 5.5.108.1-1
+- move rhnpush files into proper python2/python3 subpackages
+
+-------------------------------------------------------------------
+Wed Aug 09 12:11:07 CEST 2017 - fkobzik@suse.de
+
+- version 5.5.104.3-1
+- disable pylint check during build also for RHEL7
+
+-------------------------------------------------------------------
 Mon May 29 15:40:35 CEST 2017 - mc@suse.de
 
 - version 5.5.104.2-1

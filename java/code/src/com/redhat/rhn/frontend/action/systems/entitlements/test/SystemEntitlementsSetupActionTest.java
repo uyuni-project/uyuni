@@ -63,7 +63,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         Map baseEntitlementCounts = (Map) request
                 .getAttribute(SystemEntitlementsSetupAction.BASE_ENTITLEMENT_COUNTS);
 
-        assertEquals("1 system type(s).",
+        assertEquals("1 system(s).",
                 baseEntitlementCounts.get(EntitlementManager.MANAGEMENT.getLabel()));
     }
 
@@ -88,7 +88,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         Map<String, String> addonEntitlementCounts = (Map<String, String>) request
                 .getAttribute(SystemEntitlementsSetupAction.ADDON_ENTITLEMENT_COUNTS);
 
-        assertEquals("1 system type(s).",
+        assertEquals("1 system(s).",
                 addonEntitlementCounts.get(EntitlementManager.VIRTUALIZATION.getLabel()));
     }
 
@@ -108,7 +108,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         Map<String, String> addonEntitlementCounts = (Map<String, String>) request
                 .getAttribute(SystemEntitlementsSetupAction.ADDON_ENTITLEMENT_COUNTS);
 
-        assertEquals("1 system type(s).",
+        assertEquals("1 system(s).",
                 addonEntitlementCounts.get(EntitlementManager.CONTAINER_BUILD_HOST.getLabel()));
     }
 

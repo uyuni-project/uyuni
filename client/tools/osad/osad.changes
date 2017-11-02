@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Thu Oct 26 16:42:22 CEST 2017 - mc@suse.de
+
+- version 5.11.97.1-1
+- splitinto python2/python3 specific packages
+- Fixed TypeError for force flag in setup_config that could happen
+  when jabberd restart was needed. (bsc#1064393)
+
+-------------------------------------------------------------------
+Tue Aug 08 09:32:23 CEST 2017 - fkobzik@suse.de
+
+- version 5.11.80.3-1
+- reduce maximal size of osad log before rotating
+- perform osad restart in posttrans (bsc#1039913)
+
+-------------------------------------------------------------------
 Tue May 23 07:57:05 CEST 2017 - mc@suse.de
 
 - version 5.11.80.2-1

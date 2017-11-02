@@ -15,28 +15,32 @@
 
 package com.redhat.satellite.search.scheduler;
 
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+
 import com.redhat.satellite.search.config.Configuration;
 import com.redhat.satellite.search.db.DatabaseManager;
-import com.redhat.satellite.search.index.builder.BuilderFactory;
 import com.redhat.satellite.search.index.IndexManager;
+import com.redhat.satellite.search.index.builder.BuilderFactory;
 import com.redhat.satellite.search.scheduler.tasks.IndexErrataTask;
-import com.redhat.satellite.search.scheduler.tasks.IndexPackagesTask;
-import com.redhat.satellite.search.scheduler.tasks.IndexSnapshotTagsTask;
-import com.redhat.satellite.search.scheduler.tasks.IndexServerCustomInfoTask;
-import com.redhat.satellite.search.scheduler.tasks.IndexSystemsTask;
 import com.redhat.satellite.search.scheduler.tasks.IndexHardwareDevicesTask;
+import com.redhat.satellite.search.scheduler.tasks.IndexPackagesTask;
+import com.redhat.satellite.search.scheduler.tasks.IndexServerCustomInfoTask;
+import com.redhat.satellite.search.scheduler.tasks.IndexSnapshotTagsTask;
+import com.redhat.satellite.search.scheduler.tasks.IndexSystemsTask;
 import com.redhat.satellite.search.scheduler.tasks.IndexXccdfIdentTask;
 
 import org.apache.log4j.Logger;
-
 import org.picocontainer.Startable;
+import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.spi.MutableTrigger;
 
 import java.util.Date;
 
@@ -70,28 +74,46 @@ public class ScheduleManager implements Startable {
         }
     }
 
+
     private void scheduleJob(Scheduler sched, String name,
             int mode, long interval, Class task, JobDataMap data)
         throws SchedulerException {
 
         Trigger t = createTrigger(name, updateIndexGroupName, mode, interval);
-        JobDetail d = new JobDetail(name, updateIndexGroupName, task);
-        d.setJobDataMap(data);
-        sched.scheduleJob(d, t);
+
+        JobBuilder d = newJob(task).withIdentity(name, updateIndexGroupName);
+        d.usingJobData(data);
+
+        sched.scheduleJob(d.build(), t);
     }
 
     private Trigger createTrigger(String name, String group, int mode,
             long interval) {
-        Trigger trigger = new SimpleTrigger(name, "default", name, group,
-                new Date(), null, mode, interval);
-        trigger.setMisfireInstruction(
-                SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT);
+
+        SimpleTrigger trigger = newTrigger()
+                .withIdentity(name, "default")
+                .forJob(name, group)
+                .startAt(new Date())
+                .endAt(null)
+                .withSchedule(simpleSchedule()
+                        .withRepeatCount(mode)
+                        .withIntervalInMilliseconds(interval))
+                .build();
+        if (trigger instanceof MutableTrigger) {
+            MutableTrigger mtrigger = (MutableTrigger) trigger;
+            mtrigger.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT);
+            return mtrigger;
+        }
+        else {
+            log.error("Cannot set MisfireInstruction since trigger is not instance of MutableTrigger: " + trigger);
+        }
         return trigger;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void start() {
         try {
             Configuration config = new Configuration();
@@ -147,6 +169,7 @@ public class ScheduleManager implements Startable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void stop() {
         try {
             scheduler.shutdown();
@@ -189,10 +212,11 @@ public class ScheduleManager implements Startable {
             return false;
         }
         // Define a Trigger that will fire "now" and associate it with the existing job
-        Trigger trigger = new SimpleTrigger("immediateTrigger-" + indexName,
-                "group1", new Date());
-        trigger.setJobName(indexName);
-        trigger.setJobGroup(updateIndexGroupName);
+        Trigger trigger = newTrigger()
+                .withIdentity("immediateTrigger-" + indexName, "group1")
+                .startAt(new Date())
+                .forJob(indexName, updateIndexGroupName)
+                .build();
         try {
             // Schedule the trigger
             log.info("Scheduling trigger: " + trigger);

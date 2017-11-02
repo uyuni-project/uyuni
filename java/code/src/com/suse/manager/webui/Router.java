@@ -39,6 +39,7 @@ import com.suse.manager.webui.controllers.SaltSSHController;
 import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
+import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.VisualizationController;
@@ -113,6 +114,8 @@ public class Router implements SparkApplication {
                 withCsrfToken(withUser(MinionController::serverGroupHighstate)), jade);
         get("/manager/systems/ssm/highstate",
                 withCsrfToken(withUser(MinionController::ssmHighstate)), jade);
+
+        post("/manager/api/systems/:sid/delete", withOrgAdmin(SystemsController::delete));
 
         // States API
         post("/manager/api/states/apply", withUser(StatesAPI::apply));

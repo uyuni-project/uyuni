@@ -47,8 +47,7 @@ public class CredentialsFactory extends HibernateFactory {
      * @return new empty credentials
      */
     public static Credentials createCredentials() {
-        Credentials creds = new Credentials();
-        return creds;
+        return new Credentials();
     }
 
     /**

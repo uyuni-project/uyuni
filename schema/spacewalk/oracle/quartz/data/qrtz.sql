@@ -8,8 +8,8 @@
 -- runing in dedicated mode, so only consider the above as a hint ;-)
 --
 
-INSERT INTO qrtz_locks values('TRIGGER_ACCESS');
-INSERT INTO qrtz_locks values('JOB_ACCESS');
-INSERT INTO qrtz_locks values('CALENDAR_ACCESS');
-INSERT INTO qrtz_locks values('STATE_ACCESS');
-INSERT INTO qrtz_locks values('MISFIRE_ACCESS');
+INSERT INTO qrtz_locks values('TRIGGER_ACCESS', default);
+INSERT INTO qrtz_locks values('JOB_ACCESS', default);
+INSERT INTO qrtz_locks values('CALENDAR_ACCESS', default);
+INSERT INTO qrtz_locks values('STATE_ACCESS', default);
+INSERT INTO qrtz_locks values('MISFIRE_ACCESS', default);

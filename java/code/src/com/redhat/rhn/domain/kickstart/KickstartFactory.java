@@ -845,11 +845,8 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartSessionState lookupSessionStateByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        KickstartSessionState retval = (KickstartSessionState) session
-                .getNamedQuery("KickstartSessionState.findByLabel")
-                .setString("label", label)
-                .uniqueResult();
-        return retval;
+        return (KickstartSessionState) session.getNamedQuery("KickstartSessionState.findByLabel")
+                .setString("label", label).uniqueResult();
     }
 
     /**
@@ -885,11 +882,8 @@ public class KickstartFactory extends HibernateFactory {
 
     private static KickstartTreeType lookupKickstartTreeTypeByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        KickstartTreeType retval = (KickstartTreeType) session
-                .getNamedQuery("KickstartTreeType.findByLabel")
-                .setString("label", label)
-                .uniqueResult();
-        return retval;
+        return (KickstartTreeType) session.getNamedQuery("KickstartTreeType.findByLabel")
+                .setString("label", label).uniqueResult();
     }
 
     /**
@@ -942,11 +936,8 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartInstallType lookupKickstartInstallTypeByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        KickstartInstallType retval = (KickstartInstallType) session
-                .getNamedQuery("KickstartInstallType.findByLabel")
-                .setString("label", label)
-                .uniqueResult();
-        return retval;
+        return (KickstartInstallType) session.getNamedQuery("KickstartInstallType.findByLabel")
+                .setString("label", label).uniqueResult();
     }
 
     /**
@@ -1059,11 +1050,8 @@ public class KickstartFactory extends HibernateFactory {
     public static KickstartVirtualizationType
     lookupKickstartVirtualizationTypeByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        KickstartVirtualizationType retval = (KickstartVirtualizationType) session
-                .getNamedQuery("KickstartVirtualizationType.findByLabel")
-                .setString("label", label)
-                .uniqueResult();
-        return retval;
+        return (KickstartVirtualizationType) session.getNamedQuery("KickstartVirtualizationType.findByLabel")
+                .setString("label", label).uniqueResult();
     }
 
     /**

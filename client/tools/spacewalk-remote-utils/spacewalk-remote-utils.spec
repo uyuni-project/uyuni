@@ -1,9 +1,9 @@
-%if 0%{?fedora} || 0%{?suse_version > 1320}
+%if 0%{?fedora} || 0%{?suse_version} > 1320
 %global build_py3   1
 %endif
 
 Name:        spacewalk-remote-utils
-Version:     2.8.3
+Version:     2.8.3.1
 Release:     1%{?dist}
 Summary:     Utilities to interact with a Spacewalk server remotely.
 
@@ -14,7 +14,7 @@ Source:      https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{ver
 BuildArch:   noarch
 BuildRoot:   %{_tmppath}/%{name}-%{version}-build
 
-%if 0%{?build_py}
+%if 0%{?build_py3}
 BuildRequires: python3-devel
 Requires: python3-rhnlib
 %else

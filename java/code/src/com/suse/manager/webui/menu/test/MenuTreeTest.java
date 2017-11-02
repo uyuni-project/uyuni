@@ -17,8 +17,8 @@ package com.suse.manager.webui.menu.test;
 
 import com.suse.manager.webui.menu.MenuItem;
 import com.suse.manager.webui.menu.MenuTree;
+import com.suse.manager.webui.menu.MenuTree.MenuItemList;
 
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -31,7 +31,7 @@ public class MenuTreeTest extends TestCase {
         String url = "/rhn/account/UserDetails.do";
 
         // the menu tree
-        List<MenuItem> nodes = new LinkedList<>();
+        MenuItemList nodes = new MenuItemList();
         nodes.add(new MenuItem("Home")
                 .addChild(new MenuItem("Overview")
                     .withPrimaryUrl("/rhn/YourRhn.do"))
@@ -53,7 +53,7 @@ public class MenuTreeTest extends TestCase {
         String url = "/rhn/errata/manage/Create.do";
 
         // the menu tree
-        List<MenuItem> nodes = new LinkedList<>();
+        MenuItemList nodes = new MenuItemList();
         nodes.add(new MenuItem("Patches")
                 .addChild(new MenuItem("Patches")
                     .withPrimaryUrl("/rhn/errata/RelevantErrata.do")
@@ -92,6 +92,25 @@ public class MenuTreeTest extends TestCase {
         Integer lastIndex = bestActiveDir.size()-1;
         assertTrue(bestActiveDir.get(lastIndex).getDirectories().get(0)
                 .equalsIgnoreCase("/rhn/errata/manage"));
+    }
+
+    /**
+     * Test the correct functionality of {@link MenuItemList} regarding visibility.
+     */
+    public void testVisibility() {
+        MenuItem home = new MenuItem("Home");
+        MenuItem systems = new MenuItem("Systems").withVisibility(true);
+        MenuItem admin = new MenuItem("Admin").withVisibility(false);
+
+        MenuItemList nodes = new MenuItemList();
+        nodes.add(home);
+        nodes.add(systems);
+        nodes.add(admin);
+
+        assertEquals(2, nodes.size());
+        assertTrue(nodes.contains(home));
+        assertTrue(nodes.contains(systems));
+        assertFalse(nodes.contains(admin));
     }
 }
 

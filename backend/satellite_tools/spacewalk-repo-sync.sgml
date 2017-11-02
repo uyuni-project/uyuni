@@ -34,6 +34,11 @@ Syncs the content from yum repos into SUSE Manager channels.
     <cmdsynopsis>
         <arg>-l</arg>
 	<arg>--list</arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+        <arg>-s</arg>
+        <arg>--show-packages</arg>
+    </cmdsynopsis>
     <cmdsynopsis>
         <arg>-u <replaceable>URL</replaceable></arg>
 	<arg>--url=<replaceable>URL</replaceable></arg>
@@ -137,7 +142,7 @@ Syncs the content from yum repos into SUSE Manager channels.
     <varlistentry>
         <term>-p <replaceable>CHANNEL</replaceable>, --parent-channel=<replaceable>CHANNEL</replaceable></term>
         <listitem>
-            <para>Synchronize the parent channel and all its child channels. All must have repositories already assigned via WebUI or API.</para>
+            <para>Synchronize the parent channel and all its child channels.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -150,6 +155,12 @@ Syncs the content from yum repos into SUSE Manager channels.
         <term>-l, --list</term>
         <listitem>
             <para>List the custom channels with the associated repositories.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>-s, --show-packages</term>
+        <listitem>
+            <para>List all packages in a specified channel.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -185,13 +196,13 @@ Syncs the content from yum repos into SUSE Manager channels.
     <varlistentry>
         <term>-i <replaceable>FILTERS</replaceable>, --include <replaceable>FILTERS</replaceable></term>
         <listitem>
-            <para>Comma or space separated list of included packages.</para>
+            <para>Comma or space separated list of included packages or package groups.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
         <term>-e <replaceable>FILTERS</replaceable>, --exclude <replaceable>FILTERS</replaceable></term>
         <listitem>
-            <para>Comma or space separated list of excluded packages.</para>
+            <para>Comma or space separated list of excluded packages or package groups.</para>
         </listitem>
     </varlistentry>
     <varlistentry>

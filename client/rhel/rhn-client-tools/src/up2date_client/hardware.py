@@ -22,7 +22,7 @@ import os
 import sys
 from up2date_client import config
 from up2date_client import rhnserver
-from up2dateUtils import getMachineId
+from up2date_client.up2dateUtils import getMachineId
 
 from rhn.i18n import ustr
 
@@ -65,12 +65,16 @@ else:
 
 from up2date_client import up2dateLog
 
-try: # F13 and EL6
-    from up2date_client.hardware_gudev import get_devices, get_computer_info
+try:
+    from up2date_client.hardware_udev import get_devices, get_computer_info
     using_gudev = 1
 except ImportError:
-    from up2date_client.hardware_hal import check_hal_dbus_status, get_hal_computer, read_hal
-    using_gudev = 0
+    try: # F13 and EL6
+        from up2date_client.hardware_gudev import get_devices, get_computer_info
+        using_gudev = 1
+    except ImportError:
+        from up2date_client.hardware_hal import check_hal_dbus_status, get_hal_computer, read_hal
+        using_gudev = 0
 
 # Some systems don't have the _locale module installed
 try:

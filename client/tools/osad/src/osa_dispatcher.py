@@ -93,7 +93,7 @@ class Runner(jabber_lib.Runner):
         chars = string.ascii_letters + string.digits
         return "".join(choice(chars) for x in range(length))
 
-    def setup_config(self, config):
+    def setup_config(self, config, force=0):
         # Figure out the log level
         debug_level = self.options.verbose
         if debug_level is None:

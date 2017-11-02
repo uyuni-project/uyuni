@@ -15,9 +15,16 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%if 0%{?fedora} || 0%{?suse_version} > 1320
+%global build_py3   1
+%global default_py3 1
+%endif
+
+%define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:           suseRegisterInfo
-Version:        3.1.1
+Version:        3.2.1
 Release:        1%{?dist}
 Summary:        Tool to get informations from the local system
 License:        GPL-2.0
@@ -25,19 +32,42 @@ Group:          Productivity/Other
 Url:            http://www.suse.com
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-#BuildArch:      noarch
-BuildRequires:  python-devel
-
+%if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
+BuildArch:      noarch
+%endif
+Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Requires:       perl
-Requires:       python
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires:       e2fsprogs
 %endif
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 %description
 This tool read data from the local system required
 for a registration
+
+%package -n python2-%{name}
+Summary:        Python 2 specific files for %{name}
+Group:          Productivity/Other
+Requires:       %{name} = %{version}-%{release}
+Requires:       python
+BuildRequires:  python-devel
+
+%description -n python2-%{name}
+Python 2 specific files for %{name}.
+
+%if 0%{?build_py3}
+%package -n python3-%{name}
+Summary:        Python 3 specific files for %{name}
+Group:          Productivity/Other
+Requires:       %{name} = %{version}-%{release}
+Requires:       python3
+BuildRequires:  python3-devel
+
+%description -n python3-%{name}
+Python 2 specific files for %{name}.
+
+%endif
+
 
 %prep
 %setup -q
@@ -45,13 +75,19 @@ for a registration
 %build
 
 %install
-make -C suseRegister install PREFIX=$RPM_BUILD_ROOT
 mkdir -p %{buildroot}/usr/lib/suseRegister/bin/
 install -m 0755 suseRegister/parse_release_info %{buildroot}/usr/lib/suseRegister/bin/parse_release_info
+make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python_sitelib}
+
+%if 0%{?build_py3}
+make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python3_sitelib}
+%endif
 
 %if 0%{?suse_version}
-%py_compile %{buildroot}/
-%py_compile -O %{buildroot}/
+%py_compile -O %{buildroot}/%{python_sitelib}
+%if 0%{?build_py3}
+%py3_compile -O %{buildroot}/%{python3_sitelib}
+%endif
 %endif
 
 %clean
@@ -62,6 +98,18 @@ rm -rf %{buildroot}
 %dir /usr/lib/suseRegister
 %dir /usr/lib/suseRegister/bin
 /usr/lib/suseRegister/bin/parse_release_info
+
+%files -n python2-%{name}
+%defattr(-,root,root)
 %{python_sitelib}/suseRegister
+
+
+%if 0%{?build_py3}
+%files -n python3-%{name}
+%defattr(-,root,root)
+%{python3_sitelib}/suseRegister
+
+%endif
+
 
 %changelog

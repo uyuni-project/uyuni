@@ -29,8 +29,7 @@ Requires: objectweb-asm
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires: mchange-commons
 %endif
-Requires: quartz < 2.0
-Conflicts: quartz >= 2.0
+Requires: quartz >= 2.0
 Requires: redstone-xmlrpc
 #Requires: picocontainer
 Requires: tanukiwrapper
@@ -46,10 +45,11 @@ BuildRequires: java-devel-ibm >= 1.8.0
 BuildRequires: javapackages-tools
 #BuildRequires: lucene
 BuildRequires: objectweb-asm
-BuildRequires: quartz < 2.0
+BuildRequires: quartz >= 2.0
 BuildRequires: redstone-xmlrpc
 #BuildRequires: picocontainer
 BuildRequires: tanukiwrapper
+BuildRequires: slf4j
 BuildRequires: simple-core
 %if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1315
 Requires: apache-commons-cli

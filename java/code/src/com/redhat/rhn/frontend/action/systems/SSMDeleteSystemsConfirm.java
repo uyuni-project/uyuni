@@ -16,6 +16,8 @@ package com.redhat.rhn.frontend.action.systems;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -26,6 +28,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -60,6 +63,13 @@ public class SSMDeleteSystemsConfirm extends RhnAction implements Listable {
         helper.setDataSetName(RequestContext.PAGE_LIST);
         helper.execute();
 
+        boolean sshMinionsPresent = ((List<SystemOverview>)helper.getDataSet()).stream()
+                .map(overview -> ServerFactory.lookupById(overview.getId()))
+                .filter(server -> ContactMethodUtil
+                        .isSSHPushContactMethod(server.getContactMethod()))
+                .count() > 0;
+        request.setAttribute("sshMinionsPresent", sshMinionsPresent);
+
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
@@ -67,11 +77,18 @@ public class SSMDeleteSystemsConfirm extends RhnAction implements Listable {
             ActionMapping mapping) {
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(context.getCurrentUser());
-
+        String saltSshCleanup = context.getRequiredParamAsString("saltsshcleanup");
         // Fire the request off asynchronously
         SsmDeleteServersEvent event =
             new SsmDeleteServersEvent(context.getCurrentUser(),
-                            new ArrayList<Long>(set.getElementValues()));
+                            new ArrayList<Long>(set.getElementValues()),
+                    SystemManager.ServerCleanupType
+                            .fromString(saltSshCleanup)
+                            .orElseThrow(() ->
+                                    new IllegalArgumentException(
+                                            "Invalid server cleanup type value: " +
+                                                    saltSshCleanup))
+                    );
         MessageQueue.publish(event);
         set.clear();
         RhnSetManager.store(set);

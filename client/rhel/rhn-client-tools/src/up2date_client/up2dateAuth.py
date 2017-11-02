@@ -16,7 +16,7 @@ from up2date_client import rhnserver
 from up2date_client import up2dateErrors
 from up2date_client import up2dateLog
 from up2date_client import up2dateUtils
-from up2dateUtils import getMachineId
+from up2date_client.up2dateUtils import getMachineId
 
 loginInfo = None
 pcklAuthFileName = "/var/spool/up2date/loginAuth.pkl"

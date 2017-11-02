@@ -96,7 +96,7 @@
             <c:forEach items="${baseEntitlementCounts}" var="ent">
               <tr>
                 <td><bean:message key="${ent.key}"/>:</td>
-                <td>${ent.value}</td>
+                <td class="text-right">${ent.value}</td>
               </tr>
             </c:forEach>
           </table>
@@ -111,7 +111,7 @@
             <c:forEach items="${addOnEntitlementCounts}" var="ent">
               <tr>
                 <td><bean:message key="${ent.key}"/>:</td>
-                <td>${ent.value}</td>
+                <td class="text-right">${ent.value}</td>
               </tr>
             </c:forEach>
           </table>

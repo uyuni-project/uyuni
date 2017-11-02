@@ -72,6 +72,8 @@ def main():
     parser = OptionParser()
     parser.add_option('-l', '--list', action='store_true', dest='list',
                       help='List the custom channels with the assosiated repositories.')
+    parser.add_option('-s', '--show-packages', action='store_true', dest='show_packages',
+                      help='List all packages in a specified channel.')
     parser.add_option('-u', '--url', action='append', dest='url',
                       default=[], help='The url of the repository. Can be used multiple times.')
     parser.add_option('-c', '--channel', action='append',
@@ -79,7 +81,7 @@ def main():
                       help='The label of the channel to sync packages to. Can be used multiple times.')
     parser.add_option('-p', '--parent-channel', action='append',
                       dest='parent_label', default=[],
-                      help='The label of the channel to sync packages to')
+                      help='Synchronize the parent channel and all its child channels.')
     parser.add_option('-d', '--dry-run', action='store_true',
                       dest='dry_run',
                       help='Test run. No sync takes place.')
@@ -99,11 +101,11 @@ def main():
     parser.add_option('-i', '--include', action='callback',
                       callback=reposync.set_filter_opt, type='str', nargs=1,
                       dest='filters', default=[],
-                      help="Comma or space separated list of included packages.")
+                      help="Comma or space separated list of included packages or package groups.")
     parser.add_option('-e', '--exclude', action='callback',
                       callback=reposync.set_filter_opt,
                       type='str', nargs=1, dest='filters', default=[],
-                      help="Comma or space separated list of excluded packages")
+                      help="Comma or space separated list of excluded packages or package groups.")
     parser.add_option('', '--email', action="store_true", help="e-mail a report of what was synced/imported")
     parser.add_option('', '--traceback-mail', action="store",
                       help="alternative email address(es) for sync output (--email option)")
@@ -253,7 +255,7 @@ def main():
                       sync_kickstart=options.sync_kickstart,
                       latest=options.latest,
                       log_level=options.verbose,
-                      force_all_errata=options.force_all_errata)
+                      force_all_errata=options.force_all_errata, show_packages_only=options.show_packages)
         if options.batch_size:
             sync.set_import_batch_size(options.batch_size)
         elapsed_time, channel_ret_code = sync.sync()

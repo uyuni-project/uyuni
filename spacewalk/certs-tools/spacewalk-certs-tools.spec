@@ -14,26 +14,30 @@
 %endif
 %global rhnroot %{_datadir}/rhn
 
+%if 0%{?fedora}
+%global build_py3   1
+%global default_py3 1
+%endif
+
+%define pythonX %{?default_py3: python3}%{!?default_py3: python2}
+
 Name: spacewalk-certs-tools
 Summary: Spacewalk SSL Key/Cert Tool
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.1
+Version: 2.8.4
 Release: 1%{?dist}
 URL:      https://github.com/spacewalkproject/spacewalk
 Source0:  https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
+Requires: %{pythonX}-%{name} = %{version}-%{release}
 Requires: openssl rpm-build spacewalk-base-minimal-config
 %if 0%{?suse_version} || 0%{?rhel} >= 5
 Requires: %{rhn_client_tools}
 %endif
 Requires: tar
-Requires: spacewalk-backend-libs >= 0.8.28
 Requires: sudo
-%if 0%{?rhel} && 0%{?rhel} <= 5
-Requires: python-hashlib
-%endif
 BuildRequires: docbook-utils
 %if 0%{?suse_version}
 BuildRequires: filesystem
@@ -49,6 +53,31 @@ Provides:  rhns-certs-tools = 5.3.0
 %description
 This package contains tools to generate the SSL certificates required by
 Spacewalk.
+
+%package -n python2-%{name}
+Summary: Spacewalk SSL Key/Cert Tool
+Requires: %{name} = %{version}-%{release}
+Requires: python2-rhn-client-tools
+Requires: spacewalk-backend-libs >= 0.8.28
+%if 0%{?rhel} && 0%{?rhel} <= 5
+Requires: python-hashlib
+%endif
+
+%description -n python2-%{name}
+Python 2 specific files for %{name}.
+
+%if 0%{?build_py3}
+%package -n python3-%{name}
+Summary: Spacewalk SSL Key/Cert Tool
+Requires: %{name} = %{version}-%{release}
+Requires: python3-rhn-client-tools
+Requires: python3-spacewalk-backend-libs
+BuildRequires: python3-rpm-macros
+BuildRequires: python3
+
+%description -n python3-%{name}
+Python 3 specific files for %{name}.
+%endif
 
 %prep
 %setup -q
@@ -68,8 +97,18 @@ sed -i 's|etc/httpd/conf|etc/apache2|g' ssl-howto.txt
 rm -rf $RPM_BUILD_ROOT
 install -d -m 755 $RPM_BUILD_ROOT/%{rhnroot}/certs
 make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
+    PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version} \
     MANDIR=%{_mandir} PUB_BOOTSTRAP_DIR=%{pub_bootstrap_dir}
-chmod 755 $RPM_BUILD_ROOT/%{rhnroot}/certs/{rhn_ssl_tool.py,client_config_update.py,rhn_bootstrap.py}
+%if 0%{?build_py3}
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' rhn-ssl-tool rhn-bootstrap
+make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
+    PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
+    MANDIR=%{_mandir} PUB_BOOTSTRAP_DIR=%{pub_bootstrap_dir}
+%endif
+
+%define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
+ln -s rhn-ssl-tool%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhn-ssl-tool
+ln -s rhn-bootstrap%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhn-bootstrap
 
 %if 0%{?suse_version}
 ln -s rhn-bootstrap $RPM_BUILD_ROOT/%{_bindir}/mgr-bootstrap
@@ -78,9 +117,10 @@ ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
 ln -s spacewalk-push-register $RPM_BUILD_ROOT/%{_sbindir}/mgr-push-register
 ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 
-%py_compile %{buildroot}/%{rhnroot}
-%py_compile -O %{buildroot}/%{rhnroot}
-
+%py_compile -O %{buildroot}/%{python_sitelib}
+%if 0%{?build_py3}
+%py3_compile -O %{buildroot}/%{python3_sitelib}
+%endif
 %endif
 
 %clean
@@ -89,13 +129,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %dir %{rhnroot}/certs
-%{rhnroot}/certs/*.py*
 %attr(755,root,root) %{rhnroot}/certs/sign.sh
 %attr(755,root,root) %{rhnroot}/certs/gen-rpm.sh
 %attr(755,root,root) %{rhnroot}/certs/update-ca-cert-trust.sh
 %attr(755,root,root) %{_bindir}/rhn-sudo-ssl-tool
-%attr(755,root,root) %{_bindir}/rhn-ssl-tool
-%attr(755,root,root) %{_bindir}/rhn-bootstrap
+%{_bindir}/rhn-ssl-tool
+%{_bindir}/rhn-bootstrap
 %attr(755,root,root) %{_sbindir}/spacewalk-push-register
 %attr(755,root,root) %{_sbindir}/spacewalk-ssh-push-init
 %doc %{_mandir}/man1/rhn-*.1*
@@ -113,7 +152,30 @@ rm -rf $RPM_BUILD_ROOT
 %{_sbindir}/mgr-ssh-push-init
 %endif
 
+%files -n python2-%{name}
+%{python_sitelib}/certs
+%attr(755,root,root) %{_bindir}/rhn-ssl-tool-%{python_version}
+%attr(755,root,root) %{_bindir}/rhn-bootstrap-%{python_version}
+
+%if 0%{?build_py3}
+%files -n python3-%{name}
+%{python3_sitelib}/certs
+%attr(755,root,root) %{_bindir}/rhn-ssl-tool-%{python3_version}
+%attr(755,root,root) %{_bindir}/rhn-bootstrap-%{python3_version}
+%endif
+
 %changelog
+* Fri Oct 27 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.4-1
+- python3 is missing in buildroot on Fedora 25
+
+* Wed Oct 25 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
+- python3 compatibility fixes
+
+* Fri Oct 20 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
+- made code python3 compatible
+- install files into python_sitelib/python3_sitelib
+- splitted spacewalk-certs-tools into python2/python3 specific packages
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
 - purged changelog entries for Spacewalk 2.0 and older
 - use standard brp-python-bytecompile
