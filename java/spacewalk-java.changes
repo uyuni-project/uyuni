@@ -1,3 +1,6 @@
+- fix alignment of systemtype counts text (bsc#1057084)
+- Enable 'Power Management' features on Salt minions.
+- Fix editing of vhm config params (bsc#1063185)
 - Skip the server if no channel can be guessed (bsc#1040420)
 - Added a method to check if OS on machine supports containerization or not(bsc#1052728)
 - 'Cancel Autoinstallation' link has been changed to look like button to make it more visible (bsc#1035955)
@@ -29,6 +32,7 @@
 - increase max length of hardware address to 32 byte (bsc#989991)
 - Set the creator user for minions correctly in case it is known (bsc#1058862)
 - Fix minor UI issues on overview page (bsc#1063590)
+- Hide invisible first level menu items (bsc#1063822)
 
 -------------------------------------------------------------------
 Thu Sep 14 11:32:37 CEST 2017 - mc@suse.de

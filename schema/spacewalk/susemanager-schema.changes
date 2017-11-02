@@ -1,3 +1,4 @@
+- Enable 'Power Management' features on Salt minions.
 - enablement of the package profile feature for minions
 - re-create unique index on minion_id (bsc#1059568, bsc#1056358)
 - increase max length of hardware address to 32 byte (bsc#989991)

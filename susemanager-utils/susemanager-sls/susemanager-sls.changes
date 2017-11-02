@@ -1,3 +1,4 @@
+- Fix deprecated SLS files to avoid deprecation warnings during highstate (bsc#1041993)
 - Support xccdf 1.2 namespace in openscap result file (bsc#1059319)
 - ensure correct ordering of patches (bsc#1059801)
 - fix create empty top.sls with no-op (bsc#1053038)
