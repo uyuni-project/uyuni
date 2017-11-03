@@ -35,6 +35,7 @@
 - Fix minor UI issues on overview page (bsc#1063590)
 - Hide invisible first level menu items (bsc#1063822)
 - Fail gracefully when GPG files are requested (bsc#1065676)
+- fix unscheduling actions for traditional systems (bsc#1065216)
 
 -------------------------------------------------------------------
 Thu Sep 14 11:32:37 CEST 2017 - mc@suse.de

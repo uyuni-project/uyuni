@@ -30,6 +30,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
+import com.suse.manager.webui.utils.MinionServerUtils;
+
 import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
@@ -538,7 +540,9 @@ public class TaskomaticApi {
         throws TaskomaticApiException {
 
         Set<Server> minionServers = action.getServerActions().stream()
-                .map(ServerAction::getServer).collect(toSet());
+                .map(ServerAction::getServer)
+                .filter(s -> MinionServerUtils.isMinionServer(s))
+                .collect(toSet());
 
         String jobLabel = MINION_ACTION_JOB_PREFIX + action.getId();
 
