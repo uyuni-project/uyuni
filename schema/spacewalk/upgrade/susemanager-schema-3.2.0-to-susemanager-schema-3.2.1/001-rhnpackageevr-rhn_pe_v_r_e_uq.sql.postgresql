@@ -7,6 +7,7 @@ declare original record;
 declare duplicate record;
 declare nevra_orig record;
 declare nevra_dup record;
+declare snapshotitem record;
 begin
   for original in select min(id) as id
           from rhnpackageevr
@@ -28,7 +29,15 @@ begin
       for nevra_dup in select id
                 from rhnpackagenevra
                where evr_id = duplicate.id loop
-        update rhnsnapshotpackage set nevra_id = nevra_orig.id where nevra_id = nevra_dup.id;
+        for snapshotitem in select snapshot_id
+                              from rhnsnapshotpackage
+                             where nevra_id = nevra_dup.id loop
+          begin
+            update rhnsnapshotpackage set nevra_id = nevra_orig.id where nevra_id = nevra_dup.id and snapshot_id = snapshotitem.snapshot_id;
+          exception when unique_violation then
+            delete from rhnsnapshotpackage where nevra_id = nevra_dup.id and snapshot_id = snapshotitem.snapshot_id;
+          end;
+        end loop;
       end loop;
       delete from rhnpackagenevra where evr_id = duplicate.id;
       update rhnproxyinfo set proxy_evr_id = original.id where proxy_evr_id = duplicate.id;
