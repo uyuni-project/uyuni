@@ -12,6 +12,7 @@
     "virtual_count": null,
     "product_classes": ["SLES"],
     "systems": [{ "id": 1, "login": "login1" }],
-    "product_ids": [ 12, 13, 14 ]
+    "product_ids": [ 12, 13, 14 ],
+    "skus": ["SKU1", "SKU2"]
   }
 ]

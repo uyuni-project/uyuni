@@ -681,6 +681,7 @@ public class ContentSyncManager {
             List<SCCSubscription> subscriptions = scc.listSubscriptions();
             refreshSubscriptionCache(subscriptions, credentials);
             refreshOrderItemCache(credentials);
+            generateOEMOrderItems(subscriptions, credentials);
             return subscriptions;
         }
         catch (URISyntaxException e) {
@@ -737,22 +738,38 @@ public class ContentSyncManager {
     }
 
     /**
-     * Deletes all order items stored in the database, fetch the new once
-     * and inserts them into the database
-     * @throws ContentSyncException  in case of an error
+     * Generates OrderItems for OEM subscriptions.
+     *
+     * @param subscriptions the subscriptions
+     * @param credentials the credentials
      */
-    public void refreshOrderItemCache() throws ContentSyncException {
-        // FIXME: currently unused
-        List<Credentials> credentials = filterCredentials();
-        try {
-            // Query subscriptions for all mirror credentials
-            for (Credentials creds : credentials) {
-                refreshOrderItemCache(creds);
-            }
-        }
-        catch (SCCClientException e) {
-            throw new ContentSyncException(e);
-        }
+    private void generateOEMOrderItems(List<SCCSubscription> subscriptions,
+            Credentials credentials) {
+        subscriptions.stream()
+                .filter(sub -> "oem".equals(sub.getType()))
+                .forEach(sub -> {
+                    if (sub.getSkus().size() == 1) {
+                        log.debug("Generating order item for OEM subscription " +
+                                sub.getName() + ", SCC ID: " + sub.getId());
+                        SCCOrderItem oemOrder = new SCCOrderItem();
+                        long subscriptionSccId = Integer.valueOf(sub.getId()).longValue();
+                        // HACK: use inverted subscription id as new the order item id
+                        oemOrder.setSccId(-subscriptionSccId);
+                        oemOrder.setQuantity(sub.getSystemLimit().longValue());
+                        oemOrder.setCredentials(credentials);
+                        oemOrder.setStartDate(sub.getStartsAt());
+                        oemOrder.setEndDate(sub.getExpiresAt());
+                        oemOrder.setSku(sub.getSkus().get(0));
+                        oemOrder.setSubscriptionId(subscriptionSccId);
+                        SCCCachingFactory.saveOrderItem(oemOrder);
+                    }
+                    else {
+                        log.warn("Subscription " + sub.getName() + ", SCC ID: " +
+                                sub.getId() + " does not have a single SKU. " +
+                                "Not generating Order Item for it."
+                        );
+                    }
+                });
     }
 
     /**
