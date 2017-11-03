@@ -1,4 +1,5 @@
-fix description for HA channel (bsc#1063588)
+- fix description for HA channel (bsc#1063588)
+- Add support for CAASP (bsc#1052283)
 
 -------------------------------------------------------------------
 Wed Aug 30 16:12:33 CEST 2017 - fkobzik@suse.de
