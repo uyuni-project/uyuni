@@ -25,13 +25,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-import com.redhat.rhn.FaultException;
-import com.redhat.rhn.common.validator.ValidatorException;
-import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigChannelType;
-import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.manager.configuration.ConfigChannelCreationHelper;
-import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.suse.manager.webui.services.StaleSaltStateException;
 import com.suse.manager.webui.services.SaltStateExistsException;
 import com.suse.manager.webui.utils.SaltFileUtils;
