@@ -131,17 +131,15 @@ public class ChannelOverviewAction extends RhnAction {
      * @param channel the channel to be affected
      * @param form the form to be filled in
      */
-    protected void createInitSlsFile(ConfigChannel channel, HttpServletRequest request,
-                                                                    DynaActionForm form) {
+    public void createInitSlsFile(ConfigChannel channel,
+                                     HttpServletRequest request, DynaActionForm form) {
         if (channel.isStateChannel()) {
             channel = (ConfigChannel) HibernateFactory.reload(channel);
             ConfigFileData data = new SLSFileData(StringUtil.webToLinux(
-                                            form.getString(ConfigFileForm.REV_CONTENTS)));
+                                    form.getString(ConfigFileForm.REV_CONTENTS)));
             try {
-
                 RequestContext ctx = new RequestContext(request);
                 ConfigFileBuilder.getInstance().create(data, ctx.getCurrentUser(), channel);
-
             }
             catch (ValidatorException ve) {
                 getStrutsDelegate().saveMessages(request, ve.getResult());
@@ -149,8 +147,6 @@ public class ChannelOverviewAction extends RhnAction {
             catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 

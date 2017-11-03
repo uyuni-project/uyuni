@@ -307,6 +307,26 @@ public abstract class ConfigActionHelper {
             return service.getMessage(key);
         }
 
+        /* now we know there is at least one file/dir/symlink/sls
+         * so all we need to do is make all NONEs into PLURALs
+         */
+        if (includeEmptyFilesAndDirs) {
+            if (fileSuffix == NONE) {
+                fileSuffix = PLURAL;
+            }
+            if (symlinkSuffix == NONE) {
+                symlinkSuffix = PLURAL;
+            }
+            if (dirSuffix == NONE) {
+                dirSuffix = PLURAL;
+            }
+            if (slsSuffix == NONE) {
+                slsSuffix = PLURAL;
+            }
+            key = "config." + "files_" + fileSuffix + "_dirs_" + dirSuffix +
+                    "_symlinks_" + symlinkSuffix + "_sls_" + slsSuffix + "";
+        }
+
         String message = service.getMessage(key, new Object[] {
             String.valueOf(fileCount),
             String.valueOf(dirCount),

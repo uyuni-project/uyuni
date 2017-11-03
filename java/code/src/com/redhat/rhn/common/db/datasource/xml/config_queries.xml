@@ -1900,6 +1900,15 @@ SELECT  CC.id, CC.label,
                INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
                INNER JOIN rhnConfigFileType CFT ON CFT.ID = CR.CONFIG_FILE_TYPE_ID
               WHERE CF.config_channel_id = CC.id
+               AND CF.latest_config_revision_id IS NOT NULL
+               AND CFT.LABEL = 'sls'
+            ), 0) AS sls_only_count,
+       COALESCE( (
+             SELECT COUNT(CF.id)
+               FROM rhnConfigFile CF
+               INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
+               INNER JOIN rhnConfigFileType CFT ON CFT.ID = CR.CONFIG_FILE_TYPE_ID
+              WHERE CF.config_channel_id = CC.id
                 AND CF.latest_config_revision_id IS NOT NULL
                 AND CFT.LABEL = 'symlink'
             ), 0) AS symlinks_only_count,
@@ -2029,10 +2038,10 @@ SELECT CC.id AS ID,
                FROM rhnConfigFile CF
                INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
                INNER JOIN rhnConfigFileType CFT ON CFT.ID = CR.CONFIG_FILE_TYPE_ID
-            WHERE CF.config_channel_id = CC.id
-               AND CF.latest_config_revision_id IS NOT NULL
-               AND CFT.LABEL = 'sls')
-            AS sls_only_count,
+              WHERE CF.config_channel_id = CC.id
+                AND CF.latest_config_revision_id IS NOT NULL
+                AND CFT.LABEL = 'sls')
+              AS sls_only_count,
             (SELECT COUNT(CF.id)
                FROM rhnConfigFile CF
                INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
@@ -2082,6 +2091,15 @@ SELECT  CC.id,
                 AND CF.latest_config_revision_id IS NOT NULL
                 AND CFT.LABEL = 'file'
             ), 0) AS files_only_count,
+        COALESCE( (
+            SELECT COUNT(CF.id)
+            FROM rhnConfigFile CF
+            INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
+            INNER JOIN rhnConfigFileType CFT ON CFT.ID = CR.CONFIG_FILE_TYPE_ID
+            WHERE CF.config_channel_id = CC.id
+            AND CF.latest_config_revision_id IS NOT NULL
+            AND CFT.LABEL = 'sls'
+            ), 0) AS sls_only_count,
         COALESCE( (
              SELECT COUNT(CF.id)
                FROM rhnConfigFile CF
@@ -2196,6 +2214,15 @@ SELECT  CC.id,
                 AND CF.latest_config_revision_id IS NOT NULL
                 AND CFT.LABEL = 'file'
             ), 0) AS files_only_count,
+        COALESCE( (
+              SELECT COUNT(CF.id)
+                FROM rhnConfigFile CF
+                INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
+                INNER JOIN rhnConfigFileType CFT ON CFT.ID = CR.CONFIG_FILE_TYPE_ID
+              WHERE CF.config_channel_id = CC.id
+                AND CF.latest_config_revision_id IS NOT NULL
+                AND CFT.LABEL = 'sls'
+            ), 0) AS sls_only_count,
         COALESCE( (
              SELECT COUNT(CF.id)
                FROM rhnConfigFile CF
