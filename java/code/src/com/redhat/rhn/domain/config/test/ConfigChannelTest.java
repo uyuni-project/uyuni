@@ -33,6 +33,8 @@ public class ConfigChannelTest extends RhnBaseTestCase {
         assertTrue(cc.isNormalChannel());
         cc.setConfigChannelType(ConfigChannelType.sandbox());
         assertTrue(cc.isSandboxChannel());
+        cc.setConfigChannelType(ConfigChannelType.state());
+        assertTrue(cc.isStateChannel());
     }
 }
 
