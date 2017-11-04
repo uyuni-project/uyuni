@@ -38,7 +38,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.22
+Version: 2.8.25
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -928,6 +928,17 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 
 %changelog
+* Fri Nov 03 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.25-1
+- yum ContentSource() should set number of packages during raw listing.
+
+* Fri Nov 03 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.24-1
+- convert release to long while checking which is older or newer
+- Do not import ignored errata
+
+* Tue Oct 31 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.23-1
+- process comps file before package import
+- yum on RHEL6 has no idea about environments
+
 * Fri Oct 27 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.22-1
 - convert only bytes
 

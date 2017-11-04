@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.31
+Version: 2.8.34
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -1032,6 +1032,16 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Wed Nov 01 2017 Jan Dobes 2.8.34-1
+- 1457226 - remove link to third party page
+
+* Wed Nov 01 2017 Jan Dobes 2.8.33-1
+- 1507491 - make sure distribution is updated in generated kickstart file
+
+* Wed Nov 01 2017 Jiri Dostal <jdostal@redhat.com> 2.8.32-1
+- 1471120 - Advanced search for systems with installed packages is not working
+  correctly for java packages
+
 * Fri Oct 27 2017 Jan Dobes <jdobes@redhat.com> 2.8.31-1
 - reverting condition
 

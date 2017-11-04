@@ -208,6 +208,7 @@ class ContentSource(object):
         #    if '?' not in url:
         #        real_urls.append(url)
         #self.repo.urls = real_urls
+        self.groupsfile = None
 
     def __del__(self):
         # close log files for yum plugin
@@ -313,6 +314,7 @@ class ContentSource(object):
                 pass
 
         rawpkglist = self.repo.getPackageSack().returnPackages()
+        self.num_packages = len(rawpkglist)
 
         if not filters:
             filters = []
@@ -438,15 +440,18 @@ class ContentSource(object):
         return new_filters
 
     def _expand_package_groups(self, filters):
-        groups_file = self.get_groups()
-        if not groups_file:
+        if not self.groupsfile:
             return filters
         comps = Comps()
-        comps.add(groups_file)
+        comps.add(self.groupsfile)
         groups = comps.get_groups()
-        environments = comps.get_environments()
-        # First expand environment groups, then regular groups
-        filters = self._expand_comps_type("environment", environments, groups, filters)
+
+        if hasattr(comps, 'get_environments'):
+            # First expand environment groups, then regular groups
+            environments = comps.get_environments()
+            filters = self._expand_comps_type("environment", environments, groups, filters)
+        else:
+            environments = []
         filters = self._expand_comps_type("group", environments, groups, filters)
         return filters
 
