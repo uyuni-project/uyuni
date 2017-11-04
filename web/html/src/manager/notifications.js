@@ -8,8 +8,9 @@ const Notifications = React.createClass({
 
   getInitialState: function () {
     return {
-      unreadMessagesLength: 0,
-      websocket: null
+      unreadMessagesLength: null,
+      websocket: null,
+      classStyle: ''
     }
   },
 
@@ -64,13 +65,22 @@ const Notifications = React.createClass({
     window.removeEventListener("beforeunload", this.onBeforeUnload)
   },
 
+  componentDidUpdate: function(prevProps, prevState) {
+    if (prevState.unreadMessagesLength && prevState.unreadMessagesLength != this.state.unreadMessagesLength) {
+      $('#notification-counter').addClass('highlight-updated-value');
+      setTimeout(function() {
+        $('#notification-counter').removeClass('highlight-updated-value');
+      }, 1000);
+    }
+  },
+
   render: function() {
     return (
         <a href="/rhn/manager/notification-messages">
           <i className="fa fa-bell"></i>
           {
             this.state.unreadMessagesLength > 0 ?
-            <div id="notification-counter">
+            <div id="notification-counter" className={this.state.classStyle}>
               {this.state.unreadMessagesLength}
             </div> : null
           }
