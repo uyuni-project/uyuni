@@ -64,7 +64,7 @@ public class NotificationMessageFactory extends HibernateFactory {
      * Store {@link NotificationMessage} to the database.
      * @param notificationMessage notificationMessage
      */
-    public static void storeNotificationMessage(NotificationMessage notificationMessage) {
+    public static void store(NotificationMessage notificationMessage) {
         singleton.saveObject(notificationMessage);
 
         fireNotificationUpdate();
@@ -75,7 +75,7 @@ public class NotificationMessageFactory extends HibernateFactory {
      * @param notificationMessage notificationMessage
      * @param isRead flag status to set if the message is read or not
      */
-    public static void updateNotificationMessageStatus(NotificationMessage notificationMessage, boolean isRead) {
+    public static void updateStatus(NotificationMessage notificationMessage, boolean isRead) {
         notificationMessage.setIsRead(isRead);
         singleton.saveObject(notificationMessage);
 
@@ -86,7 +86,7 @@ public class NotificationMessageFactory extends HibernateFactory {
      * Delete {@link NotificationMessage} from the database.
      * @param notificationMessage notificationMessage
      */
-    public static void removeNotificationMessage(NotificationMessage notificationMessage) {
+    public static void remove(NotificationMessage notificationMessage) {
         singleton.removeObject(notificationMessage);
 
         fireNotificationUpdate();
@@ -96,16 +96,16 @@ public class NotificationMessageFactory extends HibernateFactory {
      * Lookup all NotificationMessages .
      * @return List of notification messages.
      */
-    public static List<NotificationMessage> listAllNotificationMessage() {
+    public static List<NotificationMessage> listAll() {
         return singleton.listObjectsByNamedQuery("NotificationMessage.listAllNotificationMessage", null);
     }
 
     /**
-     * Lookup not read NotificationMessages .
+     * Lookup unread NotificationMessages .
      * @return List of not yet read notification messages.
      */
-    public static List<NotificationMessage> listNotReadNotificationMessage() {
-        return singleton.listObjectsByNamedQuery("NotificationMessage.listNotReadNotificationMessage", null);
+    public static List<NotificationMessage> listUnread() {
+        return singleton.listObjectsByNamedQuery("NotificationMessage.listUnreadNotificationMessage", null);
     }
 
     public static Optional<NotificationMessage> lookupById(Long messageId) {
@@ -120,7 +120,7 @@ public class NotificationMessageFactory extends HibernateFactory {
      * @return the unread messages size count
      */
     public static int unreadMessagesSize() {
-        return listNotReadNotificationMessage().size();
+        return listUnread().size();
     }
 
     /**

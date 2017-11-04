@@ -19,7 +19,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
   <query name="NotificationMessage.listAllNotificationMessage">
       <![CDATA[ select nm from com.redhat.rhn.domain.notification.NotificationMessage as nm]]>
   </query>
-  <query name="NotificationMessage.listNotReadNotificationMessage">
+  <query name="NotificationMessage.listUnreadNotificationMessage">
       <![CDATA[ select nm from com.redhat.rhn.domain.notification.NotificationMessage as nm where nm.isRead != true]]>
   </query>
   <query name="NotificationMessage.lookupById">
