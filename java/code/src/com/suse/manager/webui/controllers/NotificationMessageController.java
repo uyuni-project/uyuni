@@ -64,8 +64,8 @@ public class NotificationMessageController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String dataNotRead(Request request, Response response, User user) {
-        Object data = NotificationMessageFactory.listNotReadNotificationMessage();
+    public static String dataUnread(Request request, Response response, User user) {
+        Object data = NotificationMessageFactory.listUnread();
 
         response.type("application/json");
         return GSON.toJson(data);
@@ -80,7 +80,7 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String dataAll(Request request, Response response, User user) {
-        Object data = NotificationMessageFactory.listAllNotificationMessage();
+        Object data = NotificationMessageFactory.listAll();
 
         response.type("application/json");
         return GSON.toJson(data);
@@ -102,7 +102,7 @@ public class NotificationMessageController {
         Optional<NotificationMessage> nm = NotificationMessageFactory.lookupById(messageId);
 
         if (nm.isPresent()) {
-            NotificationMessageFactory.updateNotificationMessageStatus(nm.get(), isRead);
+            NotificationMessageFactory.updateStatus(nm.get(), isRead);
         }
 
         Map<String, String> data = new HashMap<>();
