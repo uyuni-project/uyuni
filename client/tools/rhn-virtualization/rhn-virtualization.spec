@@ -17,7 +17,7 @@
 
 Name:           rhn-virtualization
 Summary:        Spacewalk action support for virualization
-Version:        5.4.65
+Version:        5.4.69
 Release:        1%{?dist}
 
 Group:          System Environment/Base
@@ -306,6 +306,18 @@ fi
 %endif
 
 %changelog
+* Fri Nov 03 2017 Jan Dobes 5.4.69-1
+- simplify status check
+
+* Fri Nov 03 2017 Jan Dobes 5.4.68-1
+- open cache file in binary mode
+
+* Fri Nov 03 2017 Jan Dobes 5.4.67-1
+- fixing traceback from poller.py on Python 3
+
+* Thu Nov 02 2017 Jan Dobes 5.4.66-1
+- fixing a bytes-like object is required, not 'str'
+
 * Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.65-1
 - rhn-virtualization: do not install sys-v init script on SUSE
 - rhn-virtualization: add missing dirs to filelist for SUSE and enable build
