@@ -15,9 +15,6 @@
   <body onload="<decorator:getProperty property="body.onload" />">
     <header class="navbar-pf">
       <jsp:include page="/WEB-INF/includes/header.jsp" />
-      <div id="notifications">
-        <script src='/javascript/manager/notifications.bundle.js'></script>
-      </div>
     </header>
     <div class="spacewalk-main-column-layout">
       <aside id="spacewalk-aside" class="navbar-collapse in">

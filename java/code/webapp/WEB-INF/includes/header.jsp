@@ -52,6 +52,9 @@
     </li>
   </ul>
   <ul class="nav navbar-nav navbar-primary">
+    <li id="notifications">
+      <script src='/javascript/manager/notifications.bundle.js'></script>
+    </li>
     <c:if test="${requestScope.legends != null}">
       <li class="legend">
         <a href="#" class="toggle-box" data-toggle="collapse" data-target="#legend-box">
