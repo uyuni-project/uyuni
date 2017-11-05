@@ -7,6 +7,14 @@ const {Table, Column, SearchField, Highlight} = require("../components/table");
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
+const Buttons = require("../components/buttons");
+const AsyncButton = Buttons.AsyncButton;
+const Panels = require("../components/panel");
+const Panel = Panels.Panel;
+
+function reloadData() {
+  return Network.get("/rhn/manager/notification-messages/data-unread", "application/json").promise;
+}
 
 const CheckRead = React.createClass({
   getInitialState: function() {
@@ -59,7 +67,7 @@ const NotificationMessages = React.createClass({
 
   refreshServerData: function() {
     var currentObject = this;
-    Network.get("/rhn/manager/notification-messages/data-unread", "application/json").promise
+    reloadData()
       .then(data => {
         currentObject.setState({
           serverData: data,
@@ -103,24 +111,14 @@ const NotificationMessages = React.createClass({
 
   render: function() {
     const data = this.state.serverData;
-    const title =
-      <div className="spacewalk-toolbar-h1">
-        <h1>
-          <i className="fa fa-envelope"></i>
-          {t('Notification Messages')}
-          {/* <a href="/rhn/help/reference/en-US/ref.webui.admin.status.jsp"
-              target="_blank"><i className="fa fa-question-circle spacewalk-help-link"></i>
-          </a> */}
-        </h1>
-        <button className="btn btn-default align-right" onClick={this.refreshServerData}>{t('Refresh')}</button>
-      </div>
-    ;
-    
+    const panelButtons = <div className="pull-right btn-group">
+      <AsyncButton id="reload" icon="refresh" name="Refresh" text action={this.refreshServerData} />
+    </div>;
+
     if (data != null) {
       if (Object.keys(data).length > 0) {
         return  (
-          <div key="notification-messages-content">
-            {title}
+          <Panel title={t("Notification Messages")} icon="fa-envelope" button={ panelButtons }>
             <ErrorMessage error={this.state.error} />
             <p>{t('The server has collected the following notification messages.')}</p>
             <Table
@@ -153,23 +151,23 @@ const NotificationMessages = React.createClass({
                 cell={ (row) => <CheckRead messageId={row['id']} isRead={row['isRead']} />}
               />
             </Table>
-          </div>
+          </Panel>
         );
       }
       else {
         return (
-          <div key="notification-messages-no-content">
-            {title}
+          <Panel title={t("Notification Messages")} icon="fa-envelope" button={ panelButtons }>
+            <ErrorMessage error={this.state.error} />
             <p>{t('There are no notification messages.')}</p>
-          </div>
+          </Panel>
         );
       }
     }
     else {
       return (
-        <div key="notification-messages-content">
-          {title}
-        </div>
+        <Panel title={t("Notification Messages")} icon="fa-envelope" button={ panelButtons }>
+          <ErrorMessage error={this.state.error} />
+        </Panel>
       );
     }
   }
