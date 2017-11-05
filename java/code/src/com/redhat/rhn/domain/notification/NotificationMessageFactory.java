@@ -20,6 +20,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.suse.manager.webui.websocket.Notification;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,15 +49,32 @@ public class NotificationMessageFactory extends HibernateFactory {
     }
 
     /**
-     * Create new empty {@link NotificationMessage}.
+     * Create new {@link NotificationMessage}.
+     *
+     * @param typeIn the type of the message
      * @param descriptionIn the text message
      * @param readIn if the message is read
      * @return new empty notificationMessage
      */
     public static NotificationMessage createNotificationMessage(
-            String descriptionIn, boolean readIn) {
+            NotificationMessageType typeIn, String descriptionIn, boolean readIn) {
         NotificationMessage notificationMessage =
-                new NotificationMessage(descriptionIn, readIn);
+                new NotificationMessage(typeIn, descriptionIn, readIn);
+        return notificationMessage;
+    }
+
+    /**
+     * Create new {@link NotificationMessage}.
+     *
+     * @param typeIn the label type of the message
+     * @param descriptionIn the text message
+     * @param readIn if the message is read
+     * @return new empty notificationMessage
+     */
+    public static NotificationMessage createNotificationMessage(
+            String typeIn, String descriptionIn, boolean readIn) {
+        NotificationMessage notificationMessage =
+                new NotificationMessage(typeIn, descriptionIn, readIn);
         return notificationMessage;
     }
 
@@ -109,7 +127,7 @@ public class NotificationMessageFactory extends HibernateFactory {
     }
 
     public static Optional<NotificationMessage> lookupById(Long messageId) {
-        Map qryParams = new HashMap();
+        Map<String, Long> qryParams = new HashMap<>();
         qryParams.put("message_id", messageId);
         return Optional.ofNullable(
                 (NotificationMessage) singleton.lookupObjectByNamedQuery("NotificationMessage.lookupById", qryParams));
@@ -137,6 +155,36 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     private static void fireNotificationUpdate() {
         Notification.notifyAll(unreadMessagesSizeToString());
+    }
+
+    /**
+     * Used to look up NotificationMessageType.
+     *
+     * @param id The unique id of the type.
+     * @return A sought for NotificationMessageType or null
+     */
+    static Optional<NotificationMessageType> lookupNotificationMessageTypeById(Long id) {
+        Session session = HibernateFactory.getSession();
+        return session.getNamedQuery("NotificationMessageType.lookupById")
+                .setParameter("type_id", id)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * Used to look up NotificationMessageType.
+     *
+     * @param label The unique label of the type.
+     * @return A sought for NotificationMessageType or null
+     */
+    static NotificationMessageType lookupNotificationMessageTypeByLabel(String label) {
+        Session session = HibernateFactory.getSession();
+        return (NotificationMessageType) session.getNamedQuery("NotificationMessageType.lookupByLabel")
+                .setParameter("type_label", label)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     @Override
