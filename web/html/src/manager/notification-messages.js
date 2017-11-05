@@ -55,7 +55,6 @@ const NotificationMessages = React.createClass({
 
   componentWillMount: function() {
     this.refreshServerData();
-    setInterval(this.refreshServerData, this.props.refreshInterval);
   },
 
   refreshServerData: function() {
@@ -113,6 +112,7 @@ const NotificationMessages = React.createClass({
               target="_blank"><i className="fa fa-question-circle spacewalk-help-link"></i>
           </a> */}
         </h1>
+        <button className="btn btn-default align-right" onClick={this.refreshServerData}>{t('Refresh')}</button>
       </div>
     ;
     
@@ -123,7 +123,6 @@ const NotificationMessages = React.createClass({
             {title}
             <ErrorMessage error={this.state.error} />
             <p>{t('The server has collected the following notification messages.')}</p>
-            <p>{t('Data are refreshed every ')}{this.props.refreshInterval/1000}{t(' seconds')}.</p>
             <Table
               data={this.buildRows(data)}
               identifier={(row) => row["id"]}
@@ -186,6 +185,6 @@ const ErrorMessage = (props) => <MessageContainer items={
 ;
 
 ReactDOM.render(
-  <NotificationMessages refreshInterval={60 * 1000} />,
+  <NotificationMessages />,
   document.getElementById("notification-messages")
 );
