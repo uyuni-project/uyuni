@@ -14,6 +14,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <property name="isRead" column="isRead" type="boolean"/>
     <property name="created" column="created" type="timestamp" insert="false" update="false"/>
     <property name="modified" column="modified" type="timestamp" insert="false" update="false"/>
+    <many-to-one name="notificationMessageType" column="notifmess_type_id"
+            class="com.redhat.rhn.domain.notification.NotificationMessageType" />
   </class>
   
   <query name="NotificationMessage.listAllNotificationMessage">

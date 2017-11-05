@@ -1,5 +1,7 @@
 package com.redhat.rhn.domain.notification;
 
+import com.redhat.rhn.domain.notification.NotificationMessageType;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -12,6 +14,7 @@ import java.util.Date;
 public class NotificationMessage {
 
     private Long id;
+    private NotificationMessageType notificationMessageType;
     private String description;
     private boolean isRead;
     private Date created;
@@ -26,10 +29,25 @@ public class NotificationMessage {
     /**
      * Default constructor for a NotificationMessage
      *
+     * @param typeIn the type of the message
      * @param descriptionIn the description of the message
      * @param isReadIn if the message is already read or not
      */
-    public NotificationMessage(String descriptionIn, boolean isReadIn) {
+    public NotificationMessage(NotificationMessageType typeIn, String descriptionIn, boolean isReadIn) {
+        this.notificationMessageType = typeIn;
+        this.description = descriptionIn;
+        this.isRead = isReadIn;
+    }
+
+    /**
+     * Default constructor for a NotificationMessage
+     *
+     * @param typeIn the label type of the message
+     * @param descriptionIn the description of the message
+     * @param isReadIn if the message is already read or not
+     */
+    public NotificationMessage(String typeIn, String descriptionIn, boolean isReadIn) {
+        this.notificationMessageType = NotificationMessageType.lookup(typeIn);
         this.description = descriptionIn;
         this.isRead = isReadIn;
     }
@@ -102,6 +120,20 @@ public class NotificationMessage {
      */
     public void setModified(Date modifiedIn) {
         this.modified= modifiedIn;
+    }
+
+    /**
+     * @return Returns the notificationMessageType.
+     */
+    public NotificationMessageType getNotificationMessageType() {
+        return notificationMessageType;
+    }
+
+    /**
+     * @param notificationMessageTypeIn The notificationMessageTypeto set.
+     */
+    public void setNotificationMessageType(NotificationMessageType notificationMessageTypeIn) {
+        this.notificationMessageType= notificationMessageTypeIn;
     }
 
     /**
