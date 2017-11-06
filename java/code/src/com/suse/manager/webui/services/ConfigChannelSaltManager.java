@@ -174,8 +174,8 @@ public class ConfigChannelSaltManager {
             return;
         }
         File fileOnDisk = new File(channelDir, file.getConfigFileName().getPath());
-        fileOnDisk.getParentFile().mkdirs();
         assertStateInOrgDir(channelDir, fileOnDisk);
+        fileOnDisk.getParentFile().mkdirs();
         LOG.trace("Generating configuration file: " + file.getConfigFileName().getPath());
         FileUtils.writeStringToFile(fileOnDisk,
                 latestRev.getConfigContent().getContentsString(),
