@@ -156,9 +156,7 @@ public class ConfigChannelSaltManager {
         }
 
         File stateFile = new File(channelDir, defaultExtension("init.sls"));
-        assertStateInOrgDir(channelDir, stateFile);
-        FileUtils.writeStringToFile(stateFile, configChannelInitSLSContent(channel),
-                encoding);
+        writeContent(configChannelInitSLSContent(channel), channelDir, stateFile);
     }
 
     /**
@@ -173,13 +171,28 @@ public class ConfigChannelSaltManager {
             // we only generate files, no symlinks/directories
             return;
         }
-        File fileOnDisk = new File(channelDir, file.getConfigFileName().getPath());
-        assertStateInOrgDir(channelDir, fileOnDisk);
-        fileOnDisk.getParentFile().mkdirs();
         LOG.trace("Generating configuration file: " + file.getConfigFileName().getPath());
-        FileUtils.writeStringToFile(fileOnDisk,
-                latestRev.getConfigContent().getContentsString(),
-                encoding);
+        File fileOnDisk = new File(channelDir, file.getConfigFileName().getPath());
+        writeContent(latestRev.getConfigContent().getContentsString(), channelDir,
+                fileOnDisk);
+    }
+
+    /**
+     * Checks that the outFile is inside the channel directory and writes the contents to
+     * it.
+     *
+     * @param content string to be written
+     * @param channelDir the channel directory
+     * @param outFile the output file
+     * @throws IllegalArgumentException if there is an attempt to write file outside channel
+     * directory
+     * @throws IOException if there is an error when writing on the disk
+     */
+    private void writeContent(String content, File channelDir, File outFile)
+            throws IOException {
+        assertStateInOrgDir(channelDir, outFile);
+        outFile.getParentFile().mkdirs();
+        FileUtils.writeStringToFile(outFile, content, encoding);
     }
 
     private void removeConfigChannelFiles(Long orgId, ConfigChannelType channelType,
