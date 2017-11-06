@@ -15,11 +15,20 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.user.User;
+
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.StateRevisionService;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -88,6 +97,46 @@ public class MinionServer extends Server {
      */
     public void setKernelLiveVersion(String kernelLiveVersionIn) {
         this.kernelLiveVersion = kernelLiveVersionIn;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void subscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        super.subscribeConfigChannels(configChannelList, user);
+        ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
+                .cloneLatest(this, user, true, true);
+        newServerRevision.getConfigChannels().addAll(configChannelList);
+        SaltStateGeneratorService.INSTANCE.generateServerCustomState(newServerRevision);
+        StateFactory.save(newServerRevision);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public int unsubscribeConfigChannels(List<ConfigChannel> configChannelList,
+            User user) {
+        ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
+                .cloneLatest(this, user, true, true);
+        newServerRevision.getConfigChannels().removeAll(configChannelList);
+        SaltStateGeneratorService.INSTANCE.generateServerCustomState(newServerRevision);
+        StateFactory.save(newServerRevision);
+        return super.unsubscribeConfigChannels(configChannelList, user);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void setConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        super.setConfigChannels(configChannelList, user);
+        ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
+                .cloneLatest(this, user, true, false);
+        newServerRevision.getConfigChannels().addAll(configChannelList);
+        SaltStateGeneratorService.INSTANCE.generateServerCustomState(newServerRevision);
+        StateFactory.save(newServerRevision);
     }
 
     /**

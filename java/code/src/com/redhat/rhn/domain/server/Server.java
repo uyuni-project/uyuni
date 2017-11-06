@@ -341,29 +341,56 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * subscribes a channel to a system, giving it the
-     * highest value for the  position (or the lowest priority)
-     * @param cc The config channel to subscribe to
+     * Subscribes a channel to a system, appending it to the last position with the
+     * least priority.
+     * @param configChannel The config channel to subscribe to
+     * @param user The user doing the action
      */
-    public void subscribe(ConfigChannel cc) {
-        configListProc.add(getConfigChannels(), cc);
-    }
-    /**
-     * subscribes a channel to a system at the given position
-     * @param cc the channel to subscribe
-     * @param position the positon/ranking of the channel in the system list,
-     *                  must be > 0
-     */
-    public void subscribeAt(ConfigChannel cc, int position) {
-        configListProc.add(getConfigChannels(), cc, position);
+    public final void subscribeConfigChannel(ConfigChannel configChannel, User user) {
+        this.subscribeConfigChannels(Collections.singletonList(configChannel), user);
     }
 
     /**
-     * @param cc the ConfigChannel to unsubscribe
-     * @return returns true if the remove operation succeeded
+     * Subscribes channels to a system, appending them to the last position with the
+     * least priority in the order provided
+     * @param configChannelList A {@link List} of the config channels to subscribe
+     * to
+     * @param user The user doing the action
      */
-    public boolean unsubscribe(ConfigChannel cc) {
-        return configListProc.remove(getConfigChannels(), cc);
+    public void subscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        configChannelList.forEach(cc -> configListProc.add(getConfigChannels(), cc));
+    }
+
+    /**
+     * Unsubscribes the system from the channel
+     * @param configChannel The config channel to unsubscribe
+     * @param user The user doing the action
+     * @return returns true if the remove operation succeeded for every channel
+     */
+    public final boolean unsubscribeConfigChannel(ConfigChannel configChannel, User user) {
+        return this.unsubscribeConfigChannels(Collections.singletonList(configChannel),
+                user) == 1L;
+    }
+
+    /**
+     * Unsubscribes the system from a list of channels
+     * @param configChannelList A {@link List} of config channels to unsubscribe
+     * @param user The user doing the action
+     * @return returns the number of successful operations
+     */
+    public int unsubscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        return (int) configChannelList.stream()
+                .filter(cc -> configListProc.remove(getConfigChannels(), cc)).count();
+    }
+
+    /**
+     * subscribes channels to a system, removing all previous channel subscriptions
+     * @param configChannelList A {@link List} of the config channels to subscribe
+     * to
+     * @param user The user doing the action
+     */
+    public void setConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        configListProc.replace(getConfigChannels(), configChannelList);
     }
 
     /**

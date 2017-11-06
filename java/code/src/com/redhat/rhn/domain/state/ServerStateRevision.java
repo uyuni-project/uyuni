@@ -28,6 +28,20 @@ public class ServerStateRevision extends StateRevision {
     private Server server;
 
     /**
+     * Instantiates a new Server state revision.
+     */
+    public ServerStateRevision() { }
+
+    /**
+     * Instantiates a new Server state revision.
+     *
+     * @param serverIn the server
+     */
+    public ServerStateRevision(Server serverIn) {
+        this.setServer(serverIn);
+    }
+
+    /**
      * @return the server
      */
     public Server getServer() {
