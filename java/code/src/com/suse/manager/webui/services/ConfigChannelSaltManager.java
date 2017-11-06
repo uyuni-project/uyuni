@@ -98,7 +98,7 @@ public class ConfigChannelSaltManager {
             LOG.debug("Generating file structure for configuration channel: " +
                     channel.getLabel() + " (old channel label: " +
                     oldChannelLabel.orElse("<empty>") + ").");
-            doGenerateConfigChannelFiles(channel, oldChannelLabel);
+            doGenerateConfigChannelFiles(channel);
         }
         catch (IOException e) {
             LOG.error("Error when handling salt file structure for channel: " +
@@ -107,8 +107,16 @@ public class ConfigChannelSaltManager {
                     "Removing files from disk.", e);
             removeConfigChannelFiles(channel.getOrgId(), channel.getConfigChannelType(),
                     channel.getLabel());
-            oldChannelLabel.ifPresent(oldLabel -> removeConfigChannelFiles(
-                    channel.getOrgId(), channel.getConfigChannelType(), oldLabel));
+        }
+        finally {
+            // channel has been renamed - trash the file structure associated with the old
+            // label
+            if (Opt.fold(oldChannelLabel,
+                    () -> false,
+                    label -> !label.equals(channel.getLabel()))) {
+                removeConfigChannelFiles(channel.getOrgId(), channel.getConfigChannelType(),
+                        oldChannelLabel.get());
+            }
         }
     }
 
@@ -126,11 +134,9 @@ public class ConfigChannelSaltManager {
      * Perform actual disk actions to reflect the configuration channel state on the disk.
      *
      * @param channel - the config channel
-     * @param oldChannelLabel - the old label of the channel
      * @throws IOException in case of an IO error
      */
-    private void doGenerateConfigChannelFiles(ConfigChannel channel,
-            Optional<String> oldChannelLabel) throws IOException {
+    private void doGenerateConfigChannelFiles(ConfigChannel channel) throws IOException {
         // TODO synchronize at file level not on the class instance
         if (!ConfigChannelType.NORMAL.equals(channel.getConfigChannelType().getLabel())) {
             LOG.debug("Trying to generate salt files for incompatible channel type " +
@@ -153,14 +159,6 @@ public class ConfigChannelSaltManager {
         assertStateInOrgDir(channelDir, stateFile);
         FileUtils.writeStringToFile(stateFile, configChannelInitSLSContent(channel),
                 encoding);
-
-        // channel has been renamed - trash the file structure associated with the old label
-        if (Opt.fold(oldChannelLabel,
-                () -> false,
-                label -> !label.equals(channel.getLabel()))) {
-            removeConfigChannelFiles(channel.getOrgId(), channel.getConfigChannelType(),
-                    oldChannelLabel.get());
-        }
     }
 
     /**
