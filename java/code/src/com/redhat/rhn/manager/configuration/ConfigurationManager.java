@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ConfigChannelDto;
@@ -58,6 +59,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
+
 import org.apache.log4j.Logger;
 
 import java.io.InputStream;
@@ -120,6 +123,10 @@ public class ConfigurationManager extends BaseManager {
         ConfigurationFactory.commit(cc);
         ConfigChannelSaltManager.getInstance()
                 .generateConfigChannelFiles(cc, channelOldLabel);
+
+        if (!channelOldLabel.filter(ol -> cc.getLabel().equals(ol)).isPresent()) {
+            SaltStateGeneratorService.INSTANCE.regenerateConfigStates(cc);
+        }
     }
 
     /**
@@ -1329,7 +1336,10 @@ public class ConfigurationManager extends BaseManager {
         }
         //remove the channel
         ConfigChannelSaltManager.getInstance().removeConfigChannelFiles(channel);
+        StateFactory.StateRevisionsUsage usage =
+                StateFactory.latestStateRevisionsByConfigChannel(channel);
         ConfigurationFactory.removeConfigChannel(channel);
+        SaltStateGeneratorService.INSTANCE.regenerateCustomStates(usage);
     }
 
     /**

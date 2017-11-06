@@ -67,12 +67,16 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         ConfigChannel channel4 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Channel 4", "cfg-channel-4");
 
-        server1.subscribe(channel1);
-        server1.subscribe(channel2);
+        List<ConfigChannel> srv1Channels = new ArrayList<>();
+        srv1Channels.add(channel1);
+        srv1Channels.add(channel2);
 
-        server2.subscribe(channel3);
-        server2.subscribe(channel2);
+        List<ConfigChannel> srv2Channels = new ArrayList<>();
+        srv2Channels.add(channel3);
+        srv2Channels.add(channel2);
 
+        server1.subscribeConfigChannels(srv1Channels, user);
+        server2.subscribeConfigChannels(srv2Channels, user);
         ServerFactory.save(server1);
         ServerFactory.save(server2);
         ServerFactory.save(server3);
@@ -161,12 +165,16 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         ConfigChannel channel4 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Channel 4", "cfg-channel-4");
 
-        server1.subscribe(channel1);
-        server1.subscribe(channel2);
+        List<ConfigChannel> srv1Channels = new ArrayList<>();
+        srv1Channels.add(channel1);
+        srv1Channels.add(channel2);
 
-        server2.subscribe(channel3);
-        server2.subscribe(channel2);
+        List<ConfigChannel> srv2Channels = new ArrayList<>();
+        srv2Channels.add(channel3);
+        srv2Channels.add(channel2);
 
+        server1.subscribeConfigChannels(srv1Channels, user);
+        server2.subscribeConfigChannels(srv2Channels, user);
         ServerFactory.save(server1);
         ServerFactory.save(server2);
         ServerFactory.save(server3);
@@ -255,12 +263,16 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         ConfigChannel channel4 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Channel 4", "cfg-channel-4");
 
-        server1.subscribe(channel1);
-        server1.subscribe(channel2);
+        List<ConfigChannel> srv1Channels = new ArrayList<>();
+        srv1Channels.add(channel1);
+        srv1Channels.add(channel2);
 
-        server2.subscribe(channel3);
-        server2.subscribe(channel2);
+        List<ConfigChannel> srv2Channels = new ArrayList<>();
+        srv2Channels.add(channel3);
+        srv2Channels.add(channel2);
 
+        server1.subscribeConfigChannels(srv1Channels, user);
+        server2.subscribeConfigChannels(srv2Channels, user);
         ServerFactory.save(server1);
         ServerFactory.save(server2);
         ServerFactory.save(server3);

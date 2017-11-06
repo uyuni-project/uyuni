@@ -49,7 +49,7 @@ public class FileListSetupActionTest extends RhnMockStrutsTestCase {
         ConfigTestUtils.createConfigRevision(file3);
 
         //we have to subscribe the server to the global channel.
-        server.subscribe(file2.getConfigChannel());
+        server.subscribeConfigChannel(file2.getConfigChannel(), user);
         SystemManager.storeServer(server);
 
         //test the action
