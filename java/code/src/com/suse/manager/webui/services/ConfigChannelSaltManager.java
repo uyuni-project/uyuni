@@ -45,9 +45,6 @@ import static java.util.Optional.ofNullable;
 
 /**
  * Singleton class, renders salt files corresponding to a configuration channel on the disk.
- *
- * todo extract common parts with this and SaltConfigurationStateStorageManager into some
- * helper
  */
 public class ConfigChannelSaltManager {
 
