@@ -1,5 +1,8 @@
 -- oracle equivalent source sha1 b14267384bc104605623a41b755e68e0103b5aa8
 
+drop index if exists rhn_pe_v_r_e_uq;
+drop index if exists rhn_pe_v_r_uq;
+
 create or replace function fix_rhn_pe_v_r_e_uq()
 returns void as
 $$
@@ -69,9 +72,6 @@ create trigger
 rhn_pack_evr_no_updel_trig
 before update or delete on rhnpackageevr
 execute procedure no_operation_trig_fun();
-
-drop index if exists rhn_pe_v_r_e_uq;
-drop index if exists rhn_pe_v_r_uq;
 
 create unique index rhn_pe_v_r_e_uq
     on rhnpackageevr (version, release, epoch)
