@@ -23,6 +23,7 @@ begin
               and evr1.id = original.id loop
       update rhnactionpackage set evr_id = original.id where evr_id = duplicate.id;
       update rhnactionpackageremovalfailure set evr_id = original.id where evr_id = duplicate.id;
+      update rhnLockedPackages set evr_id = original.id where evr_id = duplicate.id;
       update rhnchannelnewestpackage set evr_id = original.id where evr_id = duplicate.id;
       update rhnpackage set evr_id = original.id where evr_id = duplicate.id;
       select id into nevra_orig from rhnpackagenevra where evr_id = original.id;
@@ -49,6 +50,8 @@ begin
       update rhntransactionpackage set evr_id = original.id where evr_id = duplicate.id;
       update rhnversioninfo set evr_id = original.id where evr_id = duplicate.id;
       update rhnserverpackage set evr_id = original.id where evr_id = duplicate.id;
+      update suseImageInfoPackage set evr_id = original.id where evr_id = duplicate.id;
+      update susePackageState set evr_id = original.id where evr_id = duplicate.id;
       update suseproductfile set evr_id = original.id where evr_id = duplicate.id;
       delete from rhnpackageevr where id = duplicate.id;
     end loop;
