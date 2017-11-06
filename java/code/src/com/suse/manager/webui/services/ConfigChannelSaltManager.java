@@ -303,7 +303,7 @@ public class ConfigChannelSaltManager {
      * @return the Salt namespace
      */
     public String getOrgNamespace(long orgId) {
-        return "manager_configuration_org_" + orgId;
+        return "mgr_cfg_org_" + orgId;
     }
 
     /**
