@@ -833,7 +833,9 @@ public class SaltService {
      * @param orgId the organization id
      * @param states the states names
      * @return a set of names that included the organization namespace
+     * @deprecated Will be removed when the state config channels are fully implemented
      */
+    @Deprecated
     public Set<String> resolveOrgStates(long orgId, Set<String> states) {
         return states.stream().map(state -> customSaltStorageManager
                 .getOrgNamespace(orgId) + "." + state)

@@ -61,14 +61,15 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                 ConfigChannelType.global());
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
                 ConfigChannelType.global());
+        List<ConfigChannel> gccList = new ArrayList<>();
+        gccList.add(gcc1);
+        gccList.add(gcc2);
 
-        Long ver = new Long(2);
+        Long ver = 2L;
 
         // gcc1 only
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
-
-        srv1.subscribe(gcc1);
-        srv1.subscribe(gcc2);
+        srv1.subscribeConfigChannels(gccList, regular);
 
         ServerFactory.save(srv1);
 
@@ -179,6 +180,13 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                                                         channelLabels.size()), false));
         actual = handler.listChannels(regular, srv1.getId().intValue());
         assertEquals(channels, actual);
+
+        // Test removing nonexisting channels
+        handler.removeChannels(admin, serverIds, channelLabels.subList(0, 1));
+        assertEquals(0, handler.removeChannels(admin, serverIds, channelLabels));
+
+        // The other channel is removed even though the result is 0
+        assertEquals(0, handler.listChannels(admin, srv1.getId().intValue()).size());
     }
 
 

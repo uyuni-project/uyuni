@@ -53,7 +53,7 @@ public class UnsubscribeActionTest extends RhnMockStrutsTestCase {
         ServerFactory.addServerToGroup(server, group);
 
         //subscribe to the channel
-        server.subscribe(channel);
+        server.subscribeConfigChannel(channel, user);
         ServerFactory.save(server);
 
         //add the server to the system list and save.

@@ -120,7 +120,7 @@ public class ChannelListUnsubscribeSubmitAction extends
         ConfigChannel cc = cm.lookupConfigChannel(userIn, elementIn.getElement());
 
         int numOfChannels = server.getConfigChannels().size();
-        server.unsubscribe(cc);
+        server.unsubscribeConfigChannel(cc, userIn);
 
         // bz 444517 - Create a snapshot to capture this change
         String message =

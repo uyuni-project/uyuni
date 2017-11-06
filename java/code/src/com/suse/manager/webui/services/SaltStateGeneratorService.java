@@ -25,6 +25,7 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -42,7 +43,6 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SaltCustomState;
 import com.suse.manager.webui.utils.SaltPillar;
 
@@ -56,8 +56,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -333,20 +333,30 @@ public enum SaltStateGeneratorService {
 
     private void generateCustomStates(long orgId, StateRevision stateRevision,
                                       String fileName, Path statePath) {
-        Set<String> stateNames = stateRevision.getCustomStates()
-                .stream()
-                .filter(s-> !s.isDeleted()) // skip deleted states
-                .map(s -> s.getStateName())
-                .collect(Collectors.toSet());
+        ConfigChannelSaltManager confChannelSaltManager =
+                ConfigChannelSaltManager.getInstance();
 
-        generateCustomStateAssignmentFile(orgId, fileName, stateNames, statePath);
+        // Custom states
+        // TODO: Remove this part when state channels are implemented
+        Stream<String> stateNames = stateRevision.getCustomStates()
+                .stream()
+                .filter(s -> !s.isDeleted()) // skip deleted states
+                .map(s -> SaltCustomStateStorageManager.INSTANCE.getOrgNamespace(orgId) +
+                        "." + s.getStateName());
+
+        // Config channels
+        // TODO: Move getChannelStateName call into generateCustomStateAssignmentFile when
+        //       state channels are implemented
+        Stream<String> cfgStateNames = stateRevision.getConfigChannels().stream()
+                .map(confChannelSaltManager::getChannelStateName);
+
+        generateCustomStateAssignmentFile(orgId, fileName,
+                Stream.concat(stateNames, cfgStateNames).collect(Collectors.toSet()),
+                statePath);
     }
 
     private void generateCustomStateAssignmentFile(long orgId, String fileName,
         Set<String> stateNames, Path statePath) {
-        stateNames = SaltService.INSTANCE.resolveOrgStates(
-                orgId, stateNames);
-
         Path baseDir = statePath.resolve(SALT_CUSTOM_STATES_DIR);
         try {
             Files.createDirectories(baseDir);
@@ -410,6 +420,17 @@ public enum SaltStateGeneratorService {
     public void regenerateCustomStates(long orgId, String name) {
         StateFactory.StateRevisionsUsage usage = StateFactory
                 .latestStateRevisionsByCustomState(orgId, name);
+        regenerateCustomStates(usage);
+    }
+
+    /**
+     * Regenerate config channel assignments for org, group and severs where
+     * the given state is used.
+     * @param configChannelIn the config channel
+     */
+    public void regenerateConfigStates(ConfigChannel configChannelIn) {
+        StateFactory.StateRevisionsUsage usage = StateFactory
+                .latestStateRevisionsByConfigChannel(configChannelIn);
         regenerateCustomStates(usage);
     }
 

@@ -46,7 +46,7 @@ public class ConfigListActionTest extends RhnMockStrutsTestCase {
         //create a server and add it to the enterprise entitled group for server grouping
         Server server = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        server.subscribe(revision.getConfigFile().getConfigChannel());
+        server.subscribeConfigChannel(revision.getConfigFile().getConfigChannel(), user);
         ServerFactory.save(server);
 
         //add the server to the system list and save.

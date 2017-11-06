@@ -46,6 +46,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -406,24 +407,17 @@ public class ServerSnapshot extends BaseDomainHelper {
     public boolean rollbackConfigFiles(User user) throws TaskomaticApiException {
         boolean deployed = false;
         // current config_channels
-        Set<ConfigChannel> ccs = new HashSet<ConfigChannel>(
-                                                this.server.getConfigChannels());
-        if (ccs != null) {
-            for (ConfigChannel cc : ccs) {
-                if (cc.isGlobalChannel()) {
-                    this.server.unsubscribe(cc);
-                }
-            }
-        }
+        Set<ConfigChannel> ccs = new HashSet<>(this.server.getConfigChannels());
+        this.server.unsubscribeConfigChannels(ccs.stream()
+                .filter(ConfigChannel::isGlobalChannel).collect(Collectors.toList()), user);
+
         // get the config_channels recorded from the snapshot
         ccs = getConfigChannels();
         // tie config_channel list to server
         if (ccs != null) {
-            for (ConfigChannel cc : ccs) {
-                if (cc.isGlobalChannel()) {
-                    this.server.subscribe(cc);
-                }
-            }
+            this.server.subscribeConfigChannels(ccs.stream()
+                    .filter(ConfigChannel::isGlobalChannel).collect(Collectors.toList()),
+                    user);
         }
         // deploy the particular config files
         Set<ConfigRevision> revs = getConfigRevisions();
