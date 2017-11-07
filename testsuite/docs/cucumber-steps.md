@@ -462,7 +462,7 @@ The check box can be identified by name, id or label text.
 * Register (with ```rhnreg_ks```)
 
 ```cucumber
-  When I register the centos7 as tradclient
+  When I register "ceos-minion" as traditional client
 ```
 
 * Test registration (with XML-RPC)

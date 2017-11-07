@@ -18,7 +18,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
      And  I run "yum repolist" on "ceos-minion"
      And  I run "yum install -y --nogpgcheck rhn-client-tools rhn-check rhn-setup rhnsd hwdata m2crypto wget osad rhncfg-actions" on "ceos-minion"
      And  I run "yum install -y --nogpgcheck spacewalk-oscap scap-security-guide" on "ceos-minion"
-     And  I register the centos7 as tradclient
+     And  I register "ceos-minion" as traditional client
      And  I run "rhn-actions-control --enable-all" on "ceos-minion"
 
   Scenario: Schedule an OpenSCAP audit job for the CentOS traditional client

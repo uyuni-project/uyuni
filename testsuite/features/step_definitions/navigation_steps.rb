@@ -249,7 +249,6 @@ end
 Given(/^I am on the active Users page$/) do
   steps %(
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
     And I follow "Users"
     And I follow "User List"
     And I follow "Active"
