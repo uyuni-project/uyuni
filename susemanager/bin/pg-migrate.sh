@@ -68,7 +68,7 @@ su - postgres -c "pg_upgrade --old-bindir=/usr/lib/postgresql94/bin --new-bindir
 if [ $? -eq 0 ]; then
     echo "`date +"%H:%M:%S"`   Successfully upgraded database to postgresql 9.6."
 else
-    echo "`date +"%H:%M:%S"`   Initialization of new postgresql 9.6 database failed!"
+    echo "`date +"%H:%M:%S"`   Upgrading database to version 9.6 failed!"
     echo "`date +"%H:%M:%S"`   Trying to restore previous state..."
     mv /var/lib/pgsql/data /var/lib/pgsql/data-new-failed
     mv /var/lib/pgsql/data-pg94 /var/lib/pgsql/data
