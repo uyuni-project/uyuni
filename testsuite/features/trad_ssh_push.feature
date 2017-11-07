@@ -68,7 +68,7 @@ Feature: Register a traditional system to be managed via SSH push
     Given I am on the Systems page
     And I run "sed -i '/127.0.1.1/d' /etc/hosts" on "sle-client"
     And I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh" on "server"
-    And I remove server hostname from hosts trad-client
+    And I remove server hostname from hosts file on "sle-client"
  
   Scenario: Cleanup: register a traditional client after SSH push tests
     When I register using "1-SUSE-DEV-x86_64" key
