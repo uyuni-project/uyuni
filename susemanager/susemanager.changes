@@ -1,5 +1,6 @@
 - Fixed bootstrap repository path for SLES4SAP version 12 and 12.1 (bsc#1062936)
 - ensure postgres db template uses unicode (bsc#1062476)
+- fix error message for database upgrade failure
 -------------------------------------------------------------------
 Thu Sep 14 11:29:42 CEST 2017 - mc@suse.de
 
@@ -19,6 +20,7 @@ Tue Aug 08 11:41:57 CEST 2017 - fkobzik@suse.de
 - Assert correct java version (bsc#1049575)
 - Create bootstrap repo for SLES for SAP 11 SP1 (bsc#1049471)
 - Adjust the bootstrap repo with SLE 12 SP3 repos
+- Fixed bootstrap repository path for SLES4SAP version 12 and 12.1 (bsc#1062936)
 
 -------------------------------------------------------------------
 Mon May 29 15:41:25 CEST 2017 - mc@suse.de
