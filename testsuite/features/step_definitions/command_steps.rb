@@ -233,15 +233,15 @@ end
 
 And(/^I register "([^*]*)" as traditional client$/) do |client|
   node = get_target(client)
-  cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
-  wget = 'wget --no-check-certificate -O'
-  register = 'rhnreg_ks --username=admin --password=admin --force \\' \
-              "--serverUrl=https://#{$server_ip}/XMLRPC \\" \
-              '--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT \\' \
-              '--activationkey=1-MINION-TEST'
-
-  node.run("#{wget} #{cert_path} http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT", true, 500)
-  node.run(register)
+  command = 'wget --no-check-certificate ' \
+            '-O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
+            "http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
+  node.run(command, true, 500)
+  command = 'rhnreg_ks --username=admin --password=admin --force ' \
+            "--serverUrl=#{registration_url} " \
+            '--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
+            '--activationkey=1-MINION-TEST'
+  node.run(command)
 end
 
 When(/^I wait for the openSCAP audit to finish$/) do
