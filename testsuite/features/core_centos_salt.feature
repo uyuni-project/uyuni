@@ -16,11 +16,26 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
      And I enter "22" as "port"
      And I enter "root" as "user"
      And I enter "linux" as "password"
+     And I select the hostname of the proxy from "proxies"
      And I click on "Bootstrap"
      And I wait until I see "Successfully bootstrapped host! " text
      And I navigate to "rhn/systems/Overview.do" page
      And I wait until I see the name of "ceos-minion", refreshing the page
      And I wait until onboarding is completed for "ceos-minion"
+
+@proxy
+  Scenario: Check connection from CentOS minion to proxy
+    Given I am on the Systems overview page of this "ceos-minion"
+    When I follow "Details" in the content area
+    And I follow "Connection" in the content area
+    Then I should see "proxy" hostname
+
+@proxy
+  Scenario: Check registration on proxy of CentOS minion
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Details" in the content area
+    And I follow "Proxy" in the content area
+    Then I should see "ceos-minion" hostname
 
   Scenario: Schedule an OpenSCAP audit job for the CentOS minion
     Given I am on the Systems overview page of this "ceos-minion"
