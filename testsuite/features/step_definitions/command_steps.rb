@@ -231,7 +231,8 @@ When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
   $minion.run('sysctl net.ipv6.conf.all.forwarding=1')
 end
 
-And(/^I register the centos7 as tradclient$/) do
+And(/^I register "([^*]*)" as traditional client$/) do |client|
+  node = get_target(client)
   cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
   wget = 'wget --no-check-certificate -O'
   register = 'rhnreg_ks --username=admin --password=admin --force \\' \
@@ -239,8 +240,8 @@ And(/^I register the centos7 as tradclient$/) do
               '--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT \\' \
               '--activationkey=1-MINION-TEST'
 
-  $ceos_minion.run("#{wget} #{cert_path} http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT", true, 500)
-  $ceos_minion.run(register)
+  node.run("#{wget} #{cert_path} http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT", true, 500)
+  node.run(register)
 end
 
 When(/^I wait for the openSCAP audit to finish$/) do
@@ -267,9 +268,8 @@ end
 
 $space = 'spacecmd -u admin -p admin '
 And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
-  host = $ssh_minion.full_hostname if target == 'ssh-minion'
-  host = $ceos_minion.full_hostname if target == 'ceos-minion'
-  cmd = "#{$space} system_listevents #{host} | head -n5"
+  host = get_target(target)
+  cmd = "#{$space} system_listevents #{host.full_hostname} | head -n5"
   $server.run("#{$space} clear_caches")
   out, _code = $server.run(cmd)
   raise "#{out} should contain #{status}" unless out.include? status
