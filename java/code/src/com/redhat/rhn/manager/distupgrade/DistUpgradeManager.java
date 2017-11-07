@@ -284,6 +284,15 @@ public class DistUpgradeManager extends BaseManager {
                 if (intersection.isEmpty() &&
                         !product.getExtensionOf().contains(combination.getBaseProduct())) {
                     result.remove(combination);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Remove incompatible target: " +
+                                combination.toString());
+                        logger.debug("Base product of '" + product.getFriendlyName() +
+                                "': " + combination.getBaseProduct().getFriendlyName());
+                        product.getExtensionOf().forEach(base ->
+                            logger.debug("Possible bases: " + base.getFriendlyName()));
+                        logger.debug("--------------------------");
+                    }
                 }
             }
         }
@@ -300,6 +309,8 @@ public class DistUpgradeManager extends BaseManager {
             if (baseChannel == null) {
                 // No base channel found
                 target.addMissingChannel(target.getBaseProduct().getFriendlyName());
+                logger.debug("Missing Base Channels for " +
+                        target.getBaseProduct().getFriendlyName());
             }
             else {
                 // Check for addon product channels only if base channel is synced
@@ -347,6 +358,7 @@ public class DistUpgradeManager extends BaseManager {
 
         final List<SUSEProductSet> result = new LinkedList<>();
         if (installedProducts == null) {
+            logger.warn("No products installed on this system");
             return result;
         }
 
@@ -363,6 +375,11 @@ public class DistUpgradeManager extends BaseManager {
                 baseProduct.getUpgrades().size() + 1);
         baseSuccessors.add(baseProduct);
         baseSuccessors.addAll(baseProduct.getUpgrades());
+        if (logger.isDebugEnabled()) {
+            logger.debug("Found '" + baseSuccessors.size() +
+                    "' successors for the base product.");
+            baseSuccessors.stream().forEach(bp -> logger.debug(bp.getFriendlyName()));
+        }
 
         // extension_successors = installed_extensions.map {|e| [e] + e.successors }
         final List<List<SUSEProduct>> extensionSuccessors =
@@ -372,6 +389,13 @@ public class DistUpgradeManager extends BaseManager {
             s.add(e);
             s.addAll(e.getUpgrades());
             extensionSuccessors.add(s);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Extension: " + e.getFriendlyName());
+                e.getUpgrades().forEach(ex -> {
+                    logger.debug("Extension successor: " + ex.getFriendlyName());
+                });
+                logger.debug("-----------------------");
+            }
         }
 
         final List<SUSEProduct> currentCombination =
@@ -393,9 +417,12 @@ public class DistUpgradeManager extends BaseManager {
                 SUSEProduct base = combination.get(0);
                 if (base.getSuseProductChannels().isEmpty()) {
                     // No Product Channels means, no subscription to access the channels
+                    logger.debug("No SUSE Product Channels for " + base.getFriendlyName() +
+                            ". Skipping");
                     continue;
                 }
                 if (combination.size() == 1) {
+                    logger.debug("Found Target: " + base.getFriendlyName());
                     result.add(new SUSEProductSet(base, Collections.emptyList()));
                 }
                 else {
@@ -404,8 +431,18 @@ public class DistUpgradeManager extends BaseManager {
                     //No Product Channels means, no subscription to access the channels
                     if (addonProducts.stream()
                             .anyMatch(ap -> ap.getSuseProductChannels().isEmpty())) {
+                        if (logger.isDebugEnabled()) {
+                            addonProducts.stream()
+                            .filter(ap -> ap.getSuseProductChannels().isEmpty())
+                            .forEach(ap -> logger.debug("No SUSE Product Channels for " +
+                                    ap.getFriendlyName() + ". Skipping " +
+                                    base.getFriendlyName()));
+                        }
                         continue;
                     }
+                    logger.debug("Found Target: " + base.getFriendlyName());
+                    addonProducts.forEach(ext -> logger.debug("   - " +
+                            ext.getFriendlyName()));
                     result.add(new SUSEProductSet(base, addonProducts));
                 }
             }
