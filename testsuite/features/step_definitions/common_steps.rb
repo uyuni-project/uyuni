@@ -483,14 +483,8 @@ Given(/^I update the profile of this client$/) do
   $client.run('rhn-profile-sync', true, 500, 'root')
 end
 
-When(/^I register using "([^"]*)" key$/) do |arg1|
-  # register to the proxy, or if none, to the server
-  regurl = if $proxy.nil?
-             "http://#{$server_ip}/XMLRPC"
-           else
-             "http://#{$proxy_ip}/XMLRPC"
-           end
-  command = "rhnreg_ks --force --serverUrl=#{regurl} --activationkey=#{arg1}"
+When(/^I register using "([^"]*)" key$/) do |key|
+  command = "rhnreg_ks --force --serverUrl=#{registration_url} --activationkey=#{key}"
   $client.run(command, true, 500, 'root')
 end
 

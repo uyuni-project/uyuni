@@ -54,6 +54,7 @@ def get_target(host)
     'ssh-minion' => $ssh_minion,
     'sle-minion' => $minion,
     'sle-client' => $client,
+    'ceos-traditional-client' => $ceos_minion,
     'sle-migrated-minion' => $client
   }
   node = nodes_map[host]
