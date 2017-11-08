@@ -46,6 +46,18 @@ public class ConfigAclHandler extends BaseHandler {
     }
 
     /**
+     * Tell whether a file is of type sls.
+     * @param ctx Our current context, containing a crid or cfid.
+     * @param params The parameters containing a config revision id or nothing.
+     * @return whether the found revision is a file.
+     */
+    public boolean aclIsSls(Object ctx, String[] params) {
+        ConfigRevision revision = getRevision((Map) ctx, params);
+        //return whether or not this errata is published
+        return revision.isSls();
+    }
+
+    /**
      * Tell whether the logged in user can edit the give channel.
      * @param ctx Our current context, containing the user
      * @param params The parameters containing a config channel id.

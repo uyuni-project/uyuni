@@ -33,6 +33,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 import com.redhat.rhn.manager.configuration.file.SLSFileData;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -55,6 +56,8 @@ public class ChannelOverviewAction extends RhnAction {
     public static final String CHANNEL_SUMMARY = "summary";
     /** Are we editing? */
     public static final String CHANNEL_EDITING = "editing";
+    /* Logger for this class */
+    private static final Logger LOG = Logger.getLogger(ChannelOverviewAction.class);
 
 
     /** {@inheritDoc} */
@@ -131,7 +134,7 @@ public class ChannelOverviewAction extends RhnAction {
      * @param channel the channel to be affected
      * @param form the form to be filled in
      */
-    public void createInitSlsFile(ConfigChannel channel,
+    private void createInitSlsFile(ConfigChannel channel,
                                      HttpServletRequest request, DynaActionForm form) {
         if (channel.isStateChannel()) {
             channel = (ConfigChannel) HibernateFactory.reload(channel);
@@ -145,7 +148,7 @@ public class ChannelOverviewAction extends RhnAction {
                 getStrutsDelegate().saveMessages(request, ve.getResult());
             }
             catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("Error creating init.sls file ", e);
             }
         }
     }
