@@ -15,3 +15,13 @@ def generate_temp_file(name, content)
     return file.path
   end
 end
+
+# get registration URL
+# the URL depends on whether we use a proxy or not
+def registration_url
+  if $proxy.nil?
+    "https://#{$server_ip}/XMLRPC"
+  else
+    "https://#{$proxy_ip}/XMLRPC"
+  end
+end
