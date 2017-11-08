@@ -353,7 +353,9 @@ class Registration(rhnHandler):
                 newserv.add_package(package)
         # add the hardware profile
         if 'hardware_profile' in data:
-            for hw in data['hardware_profile']:
+            for hw in data['hardware_profile'][:]:
+                if hw['class'] == 'NETINFO':
+                    self.extract_and_save_hostname(server, hw)
                 newserv.add_hardware(hw)
         # fill in the other details from the data dictionary
         if profile_name is not None and not \
@@ -1013,10 +1015,19 @@ class Registration(rhnHandler):
                     packagesV2.append(p)
         return packagesV2
 
+    def extract_and_save_hostname(self, server, hardware):
+        if 'hostname' in hardware.keys():
+            hostname = hardware['hostname']
+            del hardware['hostname']
+            server.server['hostname'] = hostname
+            server.save()
+
     def __add_hw_profile_no_auth(self, server, hwlist):
         """ Insert a new profile for the server, but do not authenticate """
         log_debug(1, server.getid(), "items: %d" % len(hwlist))
-        for hardware in hwlist:
+        for hardware in hwlist[:]:
+            if hardware['class'] == 'NETINFO':
+                self.extract_and_save_hostname(server, hardware)
             server.add_hardware(hardware)
         # XXX: check return code
         server.save_hardware()
