@@ -4,6 +4,34 @@
 #
 # Test the current path of the URL
 #
+
+Given(/^I am on the Systems overview page of "(.*?)"$/) do |minion|
+  steps %(
+    Given I am on the Systems page
+    And I follow "Systems" in the left menu
+    And I follow "#{minion}" link
+    )
+end
+
+When(/^I follow "(.*?)" link$/) do |host|
+  node = get_target(host)
+  step %(I follow "#{node.hostname}")
+end
+
+When(/^I should see a "(.*)" text in the content area$/) do |txt|
+  within('#spacewalk-content') do
+    raise unless page.has_content?(txt)
+  end
+end
+
+When(/^I click on "([^"]+)" for "([^"]+)"$/) do |link, item|
+  within(:xpath, '//section') do
+    within(:xpath, "//table/tbody/tr[.//a[contains(.,'#{item}')]]") do
+      find_link(link).click
+    end
+  end
+end
+
 Then(/^the current path is "([^"]*)"$/) do |arg1|
   raise unless current_path == arg1
 end
@@ -653,11 +681,6 @@ Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
     raise unless page.find("textarea##{arg1}", visible: false)
     raise unless page.has_css?("##{arg1}-editor")
   end
-end
-
-Then(/^"([^"]*)" is installed on "([^"]*)"$/) do |package, target|
-  node = get_target(target)
-  node.run("rpm -q #{package}")
 end
 
 Then(/^I should see a Sign Out link$/) do
