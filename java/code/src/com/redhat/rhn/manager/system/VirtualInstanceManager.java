@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.manager.BaseManager;
 
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
 import java.util.LinkedList;
@@ -95,6 +96,7 @@ public class VirtualInstanceManager extends BaseManager {
             int vCpus = info.getGuestProperties().getVcpus();
             long memory = info.getGuestProperties().getMemorySize();
 
+            uuid = fixUuidIfSwappedUuidExists(uuid);
             uuidsToRemove.remove(uuid);
             VirtualInstanceType type = vinst.getVirtualInstanceType(
                     info.getGuestProperties().getVirtType());
@@ -151,6 +153,8 @@ public class VirtualInstanceManager extends BaseManager {
                 vmEntry -> {
                     String name = vmEntry.getKey();
                     String guid = vmEntry.getValue().replaceAll("-", "");
+
+                    guid = fixUuidIfSwappedUuidExists(guid);
                     uuidsToRemove.remove(guid);
                     List<VirtualInstance> virtualInstances =
                             vinst.lookupVirtualInstanceByUuid(guid);
@@ -288,5 +292,25 @@ public class VirtualInstanceManager extends BaseManager {
             addGuestVirtualInstance(virtualInstance.getUuid(), name,
                     virtualInstance.getType(), state, host, guest, vCpus, memory);
         }
+    }
+
+    /**
+     * Return swapped uuid in case it already exists in a virtual instance.
+     *
+     * @param uuid - virtual instance uuid
+     * @return Returns same uuid or swapped version if it exists as virtual instance
+     */
+    public static String fixUuidIfSwappedUuidExists(String uuid) {
+        // The uuid value for the VM might not be read properly as little endian,
+        // so we always try to match it with the possible swapped version in case
+        // it already exists in the database.
+        String virtUuidSwapped = SaltUtils.uuidToLittleEndian(uuid);
+        if (!VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid(virtUuidSwapped).isEmpty()) {
+            log.warn("Detected swapped UUID for a virtual instance: Coercing [" +
+                    uuid + "] -> [" + virtUuidSwapped + "]");
+            return virtUuidSwapped;
+        }
+        return uuid;
     }
 }
