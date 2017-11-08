@@ -4,6 +4,11 @@
 require 'xmlrpc/client'
 require 'timeout'
 
+Then(/^"([^"]*)" is installed on "([^"]*)"$/) do |package, target|
+  node = get_target(target)
+  node.run("rpm -q #{package}")
+end
+
 Then(/^I apply highstate on "(.*?)"$/) do |minion|
   node = get_target(minion)
   cmd = "salt '#{node.full_hostname}' state.highstate"
@@ -213,14 +218,6 @@ end
 
 When(/^I call spacewalk\-repo\-sync for channel "(.*?)" with a custom url "(.*?)"$/) do |arg1, arg2|
   @command_output = sshcmd("spacewalk-repo-sync -c #{arg1} -u #{arg2}")[:stdout]
-end
-
-When(/^I click on "([^"]+)" for "([^"]+)"$/) do |arg1, arg2|
-  within(:xpath, '//section') do
-    within(:xpath, "//table/tbody/tr[.//a[contains(.,'#{arg2}')]]") do
-      find_link(arg1).click
-    end
-  end
 end
 
 When(/^I disable IPv6 forwarding on all interfaces of the SLE minion$/) do

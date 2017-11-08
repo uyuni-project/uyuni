@@ -45,19 +45,6 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
   end
 end
 
-Given(/^I am on the Systems overview page of "(.*?)"$/) do |minion|
-  steps %(
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
-    And I follow "#{minion}" link
-    )
-end
-
-When(/^I follow "(.*?)" link$/) do |host|
-  node = get_target(host)
-  step %(I follow "#{node.hostname}")
-end
-
 When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
   $output, _code = $server.run("cat #{filename}")
 end
@@ -574,12 +561,6 @@ When(/^I refresh page until see "(.*?)" hostname as text$/) do |minion|
     steps %(
      And I try to reload page until contains "#{node.hostname}" text
       )
-  end
-end
-
-When(/^I should see a "(.*)" text in the content area$/) do |txt|
-  within('#spacewalk-content') do
-    raise unless page.has_content?(txt)
   end
 end
 
