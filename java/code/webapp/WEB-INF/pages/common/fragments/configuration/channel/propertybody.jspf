@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
+<%@ include file="/WEB-INF/pages/common/fragments/editareaYaml.jspf" %>
 <div class="form-group">
     <label class="col-lg-3 control-label">
         <bean:message key="channelOverview.jsp.name-edit" />
