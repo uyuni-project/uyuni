@@ -24,11 +24,26 @@ Feature: Be able to bootstrap a SSH-managed CentOS minion and do some basic oper
     When I check "manageWithSSH"
     And I enter the hostname of "ceos-minion" as hostname
     And I enter "linux" as "password"
+    And I select the hostname of the proxy from "proxies"
     And I click on "Bootstrap"
     Then I wait until I see "Successfully bootstrapped host! " text
     And I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "ceos-minion", refreshing the page
     And I wait until onboarding is completed for "ceos-minion"
+
+@proxy
+  Scenario: Check connection from SSH-managed CentOS minion to proxy
+    Given I am on the Systems overview page of this "ceos-minion"
+    When I follow "Details" in the content area
+    And I follow "Connection" in the content area
+    Then I should see "proxy" hostname
+
+@proxy
+  Scenario: Check registration on proxy of SSH-managed CentOS minion
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Details" in the content area
+    And I follow "Proxy" in the content area
+    Then I should see "ceos-minion" hostname
 
   Scenario: Subscribe the SSH-managed CentOS minion to a base channel for testing
     Given I am on the Systems overview page of this "ceos-minion"
