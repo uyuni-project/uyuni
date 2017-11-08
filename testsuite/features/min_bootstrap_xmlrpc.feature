@@ -9,7 +9,7 @@ Feature: Register a Salt minion via XML-RPC API
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
     Then I should see a "has been deleted" text
-    And I cleanup minion: "sle-minion"
+    And I cleanup minion "sle-minion"
 
   Scenario: Bootstrap a SLES minion via XML-RPC
     Given I am logged in via XML-RPC system as user "admin" and password "admin"

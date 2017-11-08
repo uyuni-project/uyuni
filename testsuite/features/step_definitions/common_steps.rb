@@ -405,8 +405,9 @@ Then(/^on this client the file "([^"]*)" should have the content "([^"]*)"$/) do
   $client.run("grep #{content} #{filename}")
 end
 
-Then(/^I remove server hostname from hosts trad-client$/) do
-  $client.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
+Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |client|
+  node = get_target(client)
+  node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 
 And(/^I remove kickstart profiles and distros$/) do

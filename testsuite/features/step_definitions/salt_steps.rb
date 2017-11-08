@@ -117,15 +117,7 @@ Then(/^the list of the "(.*?)" keys should contain "(.*?)" hostname$/) do |key_t
 end
 
 When(/^I wait until no Salt job is running on "(.*?)"$/) do |minion|
-  if minion == 'sle-minion'
-    target = $minion
-  elsif minion == 'ceos-minion'
-    target = $ceos
-  elsif minion == 'sle-migrated-minion'
-    target = $client
-  else
-    raise 'no valid name of minion given! '
-  end
+  target = get_target(minion)
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
@@ -457,13 +449,7 @@ When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
-  if minion == 'sle-minion'
-    target = $minion
-  elsif minion == 'ceos-minion'
-    target = $ceos_minion
-  else
-    raise 'Invalid target'
-  end
+  target = get_target(minion)  
   output, _code = target.run('date +%Z')
   result = output.strip
   result = 'CET' if result == 'CEST'
@@ -471,25 +457,13 @@ Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
 end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
-  if minion == 'sle-minion'
-    target = $minion
-  elsif minion == 'ceos-minion'
-    target = $ceos_minion
-  else
-    raise 'Invalid target'
-  end
+  target = get_target(minion)
   output, _code = target.run('cat /etc/vconsole.conf')
   raise unless output.strip == "KEYMAP=#{keymap}"
 end
 
 Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
-  if minion == 'sle-minion'
-    target = $minion
-  elsif minion == 'ceos-minion'
-    target = $ceos_minion
-  else
-    raise 'Invalid target'
-  end
+  target = get_target(minion) 
   output, _code = target.run("grep 'RC_LANG=' /etc/sysconfig/language")
   raise unless output.strip == "RC_LANG=\"#{language}\""
 end
@@ -697,7 +671,7 @@ Then(/^I run spacecmd listevents for "([^"]*)"$/) do |host|
   $server.run("spacecmd -u admin -p admin system_listevents #{node.full_hostname}")
 end
 
-And(/^I cleanup minion: "([^"]*)"$/) do |target|
+And(/^I cleanup minion "([^"]*)"$/) do |target|
   if target == 'sle-minion'
     $minion.run('rcsalt-minion stop')
     $minion.run('rm -Rf /var/cache/salt/minion')
