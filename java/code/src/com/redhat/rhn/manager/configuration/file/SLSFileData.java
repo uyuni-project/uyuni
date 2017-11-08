@@ -33,12 +33,6 @@ public class SLSFileData extends ConfigFileData {
     private String contents;
 
     /**
-    *
-    */
-    public SLSFileData() {
-        super();
-    }
-    /**
      *
      * @param data the contents to set
      */

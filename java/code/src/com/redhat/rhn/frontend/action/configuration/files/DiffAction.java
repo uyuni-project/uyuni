@@ -64,8 +64,10 @@ public class DiffAction extends RhnAction {
             .lookupConfigRevision(user, ocrid);
 
         //Only do the diff if both files are text files.
-        if (revision.isFile() && !revision.getConfigContent().isBinary() &&
-                other.isFile() && !other.getConfigContent().isBinary()) {
+        if ((revision.isSls() || revision.isFile())     &&
+                !revision.getConfigContent().isBinary() &&
+                (other.isSls()  || other.isFile())      &&
+                !other.getConfigContent().isBinary()) {
             request.setAttribute("showdiff", "true");
             request.setAttribute("diff",
                     performFileDiff(revision, other, view.equals("changed")));
