@@ -25,6 +25,7 @@ function help() {
     echo "Usage: flush_database [-h] [-f]"
     echo "Options:"
     echo "    -f     force re-create database"
+    echo "    -s     do not start Jabber daemon"
     echo "    -h     this message"
 }
 
@@ -37,10 +38,14 @@ function cry() {
 }
 
 FLUSH=0
-while getopts ":fh" OPT; do
+START_DAEMON=1
+while getopts ":fsh" OPT; do
     case $OPT in
 	f)
 	    FLUSH=1
+	    ;;
+	s)
+	    START_DAEMON=0
 	    ;;
 	\?)
 	    cry "invalid option: -$OPTARG"
@@ -93,8 +98,16 @@ if [ -s ${DB_FILE[1]} ]; then
 fi
 
 # Create the database
+rcjabberd stop
+echo "Daemon stopped"
+
 $SQLITE ${DB_FILE[1]} < $STP_QUERY 2>&1>/dev/null
 chown jabber:jabber ${DB_FILE[1]}
 chmod 640 ${DB_FILE[1]}
+
+if [ $START_DAEMON -eq 1 ]; then
+    rcjabberd start
+    echo "Daemon started"
+fi
 
 echo "Database has been created at ${DB_FILE[1]}"
