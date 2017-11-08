@@ -624,7 +624,7 @@ SELECT CF.id, CFN.path
  WHERE CC.org_id = :org_id
    AND CF.config_channel_id = CC.id
    AND CC.confchan_type_id = CCT.id
-   AND CCT.label = 'normal'
+   AND CCT.label IN('normal','state')
    AND rhn_config_channel.get_user_file_access(CF.id, :user_id) = 1
    AND CF.config_file_name_id = CFN.id
 ORDER BY UPPER(CFN.path)
