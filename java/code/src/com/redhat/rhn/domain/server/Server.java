@@ -1056,7 +1056,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Returns the primary hostname for this server
      */
     public String getDecodedHostname() {
-        String hostname = getHostname();
         return (hostname == null) ? null : IDN.toUnicode(hostname);
     }
 
@@ -1067,8 +1066,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public List<String> getDecodedCnames() {
         List<String> result = new ArrayList<String>();
-        for (String hostname : getCnames()) {
-            result.add(IDN.toUnicode(hostname));
+        for (String host : getCnames()) {
+            result.add(IDN.toUnicode(host));
         }
         return result;
     }
