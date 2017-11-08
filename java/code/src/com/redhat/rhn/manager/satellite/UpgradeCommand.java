@@ -39,7 +39,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
 
     public static final String UPGRADE_TASK_NAME = "upgrade_satellite_";
     public static final String UPGRADE_KS_PROFILES =
-        UPGRADE_TASK_NAME + "kickstart_profiles";
+            UPGRADE_TASK_NAME + "kickstart_profiles";
+    public static final String UPGRADE_CUSTOM_STATES =
+            UPGRADE_TASK_NAME + "custom_states";
 
     /**
      * Constructor
@@ -78,10 +80,16 @@ public class UpgradeCommand extends BaseTransactionCommand {
             // Use WARN because we want this logged.
             if (t != null) {
                 log.warn("got upgrade task: " + t.getName());
-                if (t.getName().equals(UPGRADE_KS_PROFILES)) {
-                    processKickstartProfiles();
-                    TaskFactory.remove(t);
+                switch(t.getName()) {
+                    case UPGRADE_KS_PROFILES:
+                        processKickstartProfiles();
+                        break;
+                    case UPGRADE_CUSTOM_STATES:
+                        System.out.println("not implemented yet...");
+                        break;
                 }
+                // always run this
+                TaskFactory.remove(t);
             }
         }
     }
