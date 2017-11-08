@@ -1,8 +1,0 @@
-#!/bin/sh
-DB_FILE=/var/lib/jabberd/db/sqlite.db
-if [ ! -s "$DB_FILE" ]; then
-  /usr/bin/sqlite3 "$DB_FILE" < /usr/share/doc/packages/jabberd/db-setup.sqlite
-  chown jabber:jabber "$DB_FILE"
-  chmod 640 "$DB_FILE"
-fi
-
