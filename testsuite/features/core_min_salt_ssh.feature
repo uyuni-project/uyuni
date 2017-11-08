@@ -14,11 +14,26 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I check "manageWithSSH"
     And I enter remote ssh-minion hostname as "hostname"
     And I enter "linux" as "password"
+    And I select the hostname of the proxy from "proxies"
     And I click on "Bootstrap"
     Then I wait until I see "Successfully bootstrapped host! " text
     And I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "ssh-minion", refreshing the page
     And I wait until onboarding is completed for "ssh-minion"
+
+@proxy
+  Scenario: Check connection from SSH minion to proxy
+    Given I am on the Systems overview page of this "ssh-minion"
+    When I follow "Details" in the content area
+    And I follow "Connection" in the content area
+    Then I should see "proxy" hostname
+
+@proxy
+  Scenario: Check registration on proxy of SSH minion
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Details" in the content area
+    And I follow "Proxy" in the content area
+    Then I should see "ssh-minion" hostname
 
   Scenario: Subscribe the SSH-managed SLES minion to a base channel for testing
     Given I am authorized as "testing" with password "testing"
