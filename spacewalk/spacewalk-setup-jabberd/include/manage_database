@@ -22,7 +22,7 @@ XML
 # Display help
 #
 function help() {
-    echo "Usage: flush_database [-h] [-f]"
+    echo "Usage: flush_database [-h] [-f] [-s]"
     echo "Options:"
     echo "    -f     force re-create database"
     echo "    -s     do not start Jabber daemon"
