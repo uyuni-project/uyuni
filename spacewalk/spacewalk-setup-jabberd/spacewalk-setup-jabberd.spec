@@ -71,7 +71,7 @@ rm -rf %{buildroot}
 %{_sysconfdir}/pki/spacewalk
 
 %post
-/usr/share/spacewalk/setup/jabberd/manage_database -f >/dev/null
+/usr/share/spacewalk/setup/jabberd/manage_database -fs >/dev/null
 
 %changelog
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
