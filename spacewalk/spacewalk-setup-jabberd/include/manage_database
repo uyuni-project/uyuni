@@ -77,6 +77,10 @@ if [ "${DB_FILE[0]}" != "sqlite" ]; then
     cry "not configured for SQLite"
 fi
 
+# Is directory of the db already there? (custom might be not)
+DB_DIR=$(dirname ${DB_FILE[1]})
+[[ ! -d $DB_DIR ]] && { mkdir -p $DB_DIR; }
+
 # Force flushing?
 if [ $FLUSH -eq 1 ]; then
     echo "Explicitly flushing database"
