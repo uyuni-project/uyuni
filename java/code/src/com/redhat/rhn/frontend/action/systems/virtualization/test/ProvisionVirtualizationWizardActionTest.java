@@ -61,6 +61,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/virtualization/ProvisionVirtualizationWizard");
@@ -101,7 +102,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
 
         ActivationKey key = ActivationKeyFactory.createNewKey(user, "some key");
         ActivationKeyFactory.save(key);
-        key = (ActivationKey) TestUtils.reload(key);
+        key = TestUtils.reload(key);
         Token t = TokenFactory.lookupById(key.getId());
         Set tokens = new HashSet();
         tokens.add(t);
