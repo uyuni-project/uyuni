@@ -100,4 +100,24 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
 
         assertEquals(expected, manager.configChannelInitSLSContent(fromDb));
     }
+
+    /**
+     * Tests getting the salt URI for a file
+     *
+     * @throws  java.lang.Exception if anything goes wrong
+     */
+    public void testGetSaltUriForConfigFile() throws Exception {
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigFile file = ConfigChannelSaltManagerTestUtils
+                .addFileToChannel(channel)
+                .getConfigFile();
+
+        String saltUri = ConfigChannelSaltManager.getInstance().getSaltUriForConfigFile(file);
+
+        String expectedUri = "salt://" +
+                "mgr_cfg_org_" + channel.getOrgId() +
+                "/normal/" + channel.getLabel() +
+                "/" + file.getConfigFileName().getPath();
+        assertEquals(expectedUri, saltUri);
+    }
 }
