@@ -419,6 +419,47 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests the situation when the virtual host gatherer reports a VM but we already have
+     * a guest VirtualInstances with a swapped VM UUID in the database.
+     *
+     * In this corner case we want the VirtualHostManagerProcessor to update all
+     * VirtualInstances and prevent from creating a duplicates with the swapped guest "uuid".
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testSwappedUuidInDb() throws Exception {
+        String guestUuid = "420ea57f7035ee1de2c1e23fe29f5ca7";
+        String swappedUuid = "7fa50e4235701deee2c1e23fe29f5ca7";
+        // create a GUEST virt. instances with a swapped uuid
+        createRegisteredGuestWithHost(swappedUuid);
+
+        String newVmName = "new name";
+        Map<String, JSONHost> data = createHostData("existing_host_id",
+                pairsToMap(newVmName, guestUuid));
+
+        // do the mapping
+        new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
+
+        Server newHost = ServerFactory
+                .lookupForeignSystemByDigitalServerId("101-existing_host_id");
+
+        // No virtual instance created for guestUuid as there is already an instance with swappedUuid
+        List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid(guestUuid);
+        assertTrue(virtualInstances.isEmpty());
+
+        // verify that only one VirtualInstance is created and belong to the same host server
+        virtualInstances = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid(swappedUuid);
+        assertEquals(1, virtualInstances.size());
+        virtualInstances.stream()
+                .forEach(vi -> {
+                    assertEquals(newVmName, vi.getName());
+                    assertEquals(newHost, vi.getHostSystem());
+                });
+    }
+
+    /**
      * Test scenario when gatherer reports a guest under a host and this host is then
      * renamed. Then a new host with the original name is created and
      * VirtualHostManagerProcessor is run again on the same gatherer data. We check that the
