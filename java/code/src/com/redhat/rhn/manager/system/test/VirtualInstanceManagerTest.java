@@ -202,4 +202,44 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         assertEquals("420ea57f7035ee1de2c1e23fe29f5ca7", guest.getUuid());
         assertEquals(STATE_CRASHED, guest.getState().getLabel());
     }
+
+    public void testSwappedUuidPlanExec() throws Exception {
+
+        Long id = server.getId();
+        List<VmInfo> plan = new LinkedList<>();
+
+        plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
+                new GuestProperties(2048, "vm1", STATE_RUNNING, "38a4e1c14d8e440780b3b59745ba9ce5", 2, VIRTTYPE_PARA)));
+        plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
+                new GuestProperties(1024, "vm3", STATE_RUNNING, "420ea57f7035ee1de2c1e23fe29f5ca7", 1, VIRTTYPE_PARA)));
+
+        VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
+
+        Server test = SystemManager.lookupByIdAndUser(id, user);
+        assertNotNull(test);
+        assertEquals(2, test.getGuests().size());
+
+        plan = new LinkedList<>();
+        plan.add(new VmInfo(1479479799, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
+                new GuestProperties(1024, "vm3", STATE_CRASHED, "7fa50e4235701deee2c1e23fe29f5ca7", 1, VIRTTYPE_PARA)));
+
+        VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
+
+        test = SystemManager.lookupByIdAndUser(id, user);
+        assertNotNull(test);
+        assertEquals(2, test.getGuests().size());
+
+        for (VirtualInstance guest : test.getGuests()) {
+            if (guest.getName().equals("vm1")) {
+                assertEquals("38a4e1c14d8e440780b3b59745ba9ce5", guest.getUuid());
+            }
+            else if (guest.getName().equals("vm3")) {
+                assertEquals("420ea57f7035ee1de2c1e23fe29f5ca7", guest.getUuid());
+                assertEquals(STATE_CRASHED, guest.getState().getLabel());
+            }
+            else {
+                assertTrue(false);
+            }
+        }
+    }
 }
