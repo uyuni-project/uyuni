@@ -1,6 +1,7 @@
 - Fixed bootstrap repository path for SLES4SAP version 12 and 12.1 (bsc#1062936)
 - ensure postgres db template uses unicode (bsc#1062476)
 - fix error message for database upgrade failure
+- check for sufficient diskspace in /var/lib/pgsql
 -------------------------------------------------------------------
 Thu Sep 14 11:29:42 CEST 2017 - mc@suse.de
 
