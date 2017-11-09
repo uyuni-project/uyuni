@@ -60,6 +60,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/kickstart/ScheduleWizard");
@@ -102,6 +103,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         Server proxy = ServerFactoryTest.createTestServer(user, true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 ServerFactoryTest.TYPE_SERVER_PROXY);
+        proxy.setHostname("proxy");
         proxy.addNetwork(NetworkTest.createNetworkInstance());
         ServerFactory.save(proxy);
         TestUtils.flushAndEvict(proxy);
@@ -138,7 +140,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
 
         ActivationKey key = ActivationKeyFactory.createNewKey(user, "some key");
         ActivationKeyFactory.save(key);
-        key = (ActivationKey) TestUtils.reload(key);
+        key = TestUtils.reload(key);
         Token t = TokenFactory.lookupById(key.getId());
         Set tokens = new HashSet();
         tokens.add(t);
