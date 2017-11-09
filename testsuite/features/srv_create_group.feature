@@ -29,7 +29,7 @@ Feature: Create a group
     Given I am on the groups page
     When I follow "newgroup"
     And I follow "Target Systems"
-    And I check this client
+    And I check the "sle-client" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to newgroup server group." text
 
