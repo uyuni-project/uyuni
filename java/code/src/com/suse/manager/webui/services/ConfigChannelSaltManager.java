@@ -241,22 +241,30 @@ public class ConfigChannelSaltManager {
     }
 
     private Map<String, Map<String, List<Map<String, Object>>>> fileState(ConfigFile f) {
-        Path filePath = Paths.get(f.getConfigFileName().getPath());
-        if (filePath.getRoot() != null) {
-            filePath = filePath.getRoot().relativize(filePath);
-        }
-        String saltUri = "salt://" + getChannelRelativePath(f.getConfigChannel())
-                .resolve(filePath);
-
         List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
-        fileParams.add(singletonMap("source", singletonList(saltUri)));
+        fileParams.add(singletonMap("source", singletonList(getSaltUriForConfigFile(f))));
         fileParams.add(singletonMap("makedirs", true));
         fileParams.addAll(getModeParams(f.getLatestConfigRevision().getConfigInfo()));
 
         return singletonMap(
                 getFileStateName(f),
                 singletonMap("file.managed", fileParams));
+    }
+
+    /**
+     * Gets the salt URI for given file.
+     *
+     * @param file the file
+     * @return the salt uri for the file (starting with salt://)
+     */
+    public String getSaltUriForConfigFile(ConfigFile file) {
+        Path filePath = Paths.get(file.getConfigFileName().getPath());
+        if (filePath.getRoot() != null) {
+            filePath = filePath.getRoot().relativize(filePath);
+        }
+        return "salt://" + getChannelRelativePath(file.getConfigChannel())
+                .resolve(filePath);
     }
 
     private Map<String, Map<String, List<Map<String, Object>>>> directoryState(
