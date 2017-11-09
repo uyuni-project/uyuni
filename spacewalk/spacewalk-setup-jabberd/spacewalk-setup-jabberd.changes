@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Nov  9 09:22:08 UTC 2017 - bmaryniuk@suse.com
+
+- Feat: improve sqlite database management script
+
+-------------------------------------------------------------------
 Tue Mar 07 15:14:42 CET 2017 - mc@suse.de
 
 - version 2.7.0.2-1
