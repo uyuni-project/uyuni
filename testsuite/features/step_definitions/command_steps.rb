@@ -326,9 +326,16 @@ When(/^I register this client for SSH push via tunnel$/) do
 end
 # zypper
 
-And(/^I remove pkg "([^"]*)" on this "(.*?)"$/) do |pkg, host|
+When(/^I remove package "([^"]*)" from this "(.*?)"$/) do |package, host|
   node = get_target(host)
-  node.run("zypper -n rm #{pkg}")
+  if file_exists?(node, '/usr/bin/zypper')
+    cmd = "zypper --non-interactive remove -y #{package}"
+  elsif file_exists?(node, '/usr/bin/yum')
+    cmd = "yum -y remove #{package}"
+  else
+    raise 'not found: zypper or yum'
+  end
+  node.run(cmd)
 end
 
 Given(/^I enable repository "(.*?)" on this "(.*?)"$/) do |repo, host|
@@ -341,9 +348,16 @@ Then(/^I disable repository "(.*?)" on this "(.*?)"$/) do |repo, host|
   node.run("zypper mr --disable #{repo}")
 end
 
-Then(/^I install pkg "(.*?)" on this "(.*?)"$/) do |pkg, host|
+When(/^I install package "(.*?)" on this "(.*?)"$/) do |package, host|
   node = get_target(host)
-  node.run("zypper in -y #{pkg}")
+  if file_exists?(node, '/usr/bin/zypper')
+    cmd = "zypper --non-interactive install -y #{package}"
+  elsif file_exists?(node, '/usr/bin/yum')
+    cmd = "yum -y install #{package}"
+  else
+    raise 'not found: zypper or yum'
+  end
+  node.run(cmd)
 end
 
 And(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|

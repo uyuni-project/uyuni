@@ -122,7 +122,7 @@ Feature: Action chaining
     And I follow "Action Chain Channel"
     And I follow "Deploy Files" in the content area
     And I click on "Deploy All Files"
-    And I check this client
+    And I check the "sle-client" client
     And I click on "Confirm & Deploy to Selected Systems"
     And I check radio button "schedule-by-action-chain"
     And I click on "Deploy Files to Selected Systems"
@@ -229,7 +229,7 @@ Feature: Action chaining
     And I follow "Configuration Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Systems" in the content area
-    And I check this client
+    And I check the "sle-client" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
