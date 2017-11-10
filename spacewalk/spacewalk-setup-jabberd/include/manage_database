@@ -1,0 +1,113 @@
+#!/bin/bash
+
+XSLPROC="xsltproc"
+SQLITE="sqlite3"
+STP_QUERY="/usr/share/doc/packages/jabberd/db-setup.sqlite"
+
+# How to parse sm.xml config
+read -r -d '' SM_PARSE <<XML
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="text" omit-xml-declaration="yes" indent="no"/>
+<xsl:template match="/">
+  <xsl:value-of select="sm/storage/driver"/>
+  <xsl:text> </xsl:text>
+  <xsl:value-of select="sm/storage/sqlite/dbname"/>
+  <xsl:text>&#xa;</xsl:text>
+</xsl:template>
+</xsl:stylesheet>
+XML
+
+#
+# Display help
+#
+function help() {
+    echo "Usage: flush_database [-h] [-f] [-s]"
+    echo "Options:"
+    echo "    -f     force re-create database"
+    echo "    -s     do not start Jabber daemon"
+    echo "    -h     this message"
+}
+
+#
+# Say error to STDERR and bail out
+#
+function cry() {
+    echo "Error: $1" >&2
+    exit 1
+}
+
+FLUSH=0
+START_DAEMON=1
+while getopts ":fsh" OPT; do
+    case $OPT in
+	f)
+	    FLUSH=1
+	    ;;
+	s)
+	    START_DAEMON=0
+	    ;;
+	\?)
+	    cry "invalid option: -$OPTARG"
+	    ;;
+	h)
+	    help;
+	    exit 1
+	    ;;
+    esac
+done
+
+# Check: user is root
+if [ "$(whoami)" != "root" ]; then
+    cry "user must be root"
+fi
+
+# Check: required software is around
+for cmd in "$XSLPROC" "$SQLITE"; do
+    if [[ -z $(which $cmd 2>/dev/null) ]]; then
+	cry "command '$cmd' is missing"
+    fi
+done
+
+# Check: setup query present
+if [ ! -f $STP_QUERY ]; then
+    cry "database setup query missing ($STP_QUERY)"
+fi
+
+# Get the configuration of jabberd
+IFS=' ' read -r -a DB_FILE <<< $(echo $SM_PARSE | $XSLPROC - /etc/jabberd/sm.xml)
+
+# Is it SQLite at all?
+if [ "${DB_FILE[0]}" != "sqlite" ]; then
+    cry "not configured for SQLite"
+fi
+
+# Is directory of the db already there? (custom might be not)
+DB_DIR=$(dirname ${DB_FILE[1]})
+[[ ! -d $DB_DIR ]] && { mkdir -p $DB_DIR; }
+
+# Force flushing?
+if [ $FLUSH -eq 1 ]; then
+    echo "Explicitly flushing database"
+    rm ${DB_FILE[1]}
+fi
+
+# Need to create db?
+if [ -s ${DB_FILE[1]} ]; then
+    cry "database already exists (${DB_FILE[1]})"
+fi
+
+# Create the database
+rcjabberd stop
+echo "Daemon stopped"
+
+$SQLITE ${DB_FILE[1]} < $STP_QUERY 2>&1>/dev/null
+chown jabber:jabber ${DB_FILE[1]}
+chmod 640 ${DB_FILE[1]}
+
+if [ $START_DAEMON -eq 1 ]; then
+    rcjabberd start
+    echo "Daemon started"
+fi
+
+echo "Database has been created at ${DB_FILE[1]}"
