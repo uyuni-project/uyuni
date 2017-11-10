@@ -35,7 +35,7 @@ public class JSONNotificationMessage {
      */
     public JSONNotificationMessage(NotificationMessage nm) {
         this.id = nm.getId();
-        this.type = nm.getNotificationMessageType().getName();
+        this.type = nm.getNotificationMessageType().getLabel();
         this.priority = nm.getNotificationMessageType().getPriority();
         this.description = nm.getDescription();
         this.isRead = nm.getIsRead();

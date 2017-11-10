@@ -133,6 +133,18 @@ const NotificationMessages = React.createClass({
                       placeholder={t("Filter by description")} />
               }>
               <Column
+                columnKey="type"
+                comparator={Utils.sortByText}
+                header={t("Type")}
+                cell={ (row) => row["type"] }
+              />
+              <Column
+                columnKey="priority"
+                comparator={Utils.sortByNumber}
+                header={t("Priority")}
+                cell={ (row) => row["priority"] }
+              />
+              <Column
                 columnKey="description"
                 comparator={Utils.sortByText}
                 header={t("Description")}
