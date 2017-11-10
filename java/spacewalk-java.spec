@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.34
+Version: 2.8.38
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -1032,6 +1032,25 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Thu Nov 09 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.38-1
+- 1511347 - improve SQL query for selecting uncloned Errata.
+
+* Wed Nov 08 2017 Jan Dobes 2.8.37-1
+- there is no virtEntitlement required
+- don't display info about guests on virtual host if it's not accessible (in
+  different org)
+- System_queries: virtual_servers query formatted for clarity
+- Virtual Systems list: if a host is in a different Org, only list its name (no
+  link)
+- Virtual Systems list: show virtual hosts from different Orgs
+
+* Wed Nov 08 2017 Jan Dobes 2.8.36-1
+- Revert "1461705 - enable checkboxes for systems are in SSM"
+
+* Tue Nov 07 2017 Jan Dobes 2.8.35-1
+- 1510511 - update debuginfo unavailable message
+- 1510511 - display known debugsource package
+
 * Wed Nov 01 2017 Jan Dobes 2.8.34-1
 - 1457226 - remove link to third party page
 

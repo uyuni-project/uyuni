@@ -8,7 +8,7 @@
 
 Summary: Streaming zlib (gzip) support for python
 Name: python-gzipstream
-Version: 2.8.3.1
+Version: 2.8.4
 Release: 1%{?dist}
 URL:        https://github.com/spacewalkproject/spacewalk/wiki/Projects_python-gzipstream
 Source0:    https://github.com/spacewalkproject/spacewalk/archive/python-gzipstream-%{version}.tar.gz
@@ -54,7 +54,7 @@ BuildRequires:  python3-devel
 %prep
 %setup -q
 mkdir ../py3
-cp -a * ../py3
+cp -a . ../py3
 
 %build
 %{__python} setup.py build
@@ -88,7 +88,20 @@ cd ../py3
 
 %endif
 
+%if 0%{?build_py3}
+%files -n python3-gzipstream
+%defattr(-,root,root)
+%{python3_sitelib}/*
+%doc html LICENSE
+
+%endif
+
 %changelog
+* Wed Nov 08 2017 Jan Dobes 2.8.4-1
+- raise exception instead of returning
+- fix syntax for python3
+- build python3 subpackage
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
 - purged changelog entries for Spacewalk 2.0 and older
 

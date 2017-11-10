@@ -317,8 +317,8 @@ class VirtualizationEventHandler:
         # will never have one.  Instead, a host should be identified by its
         # sysid only.
         #
-        # When IdentityType.GUEST we have 2 states to worry about (we don't
-        # care about cross-org issues):
+        # When IdentityType.GUEST, need to worry about cross-org issues...
+        # 2 states to worry about:
         # - no prior entry in the VI table; we return nothing, insert happens
         # - prior entry, we return that one, update happens
         if identity == IdentityType.HOST:
@@ -506,8 +506,8 @@ class VirtualizationEventHandler:
             WHERE
                 (rvi.uuid = :uuid or
                  (:uuid is null and
-                  rvi.uuid is null and
-                  rvi.host_system_id = :host_id)) and
+                  rvi.uuid is null)) and
+                rvi.host_system_id = :host_id and
                 rvi.id = rvii.instance_id and
                 rvit.id = rvii.instance_type and
                 rvis.id = rvii.state
