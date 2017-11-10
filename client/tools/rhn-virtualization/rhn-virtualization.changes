@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Nov 10 16:26:59 CET 2017 - mc@suse.de
+
+- version 5.4.69.1-1
+- simplify status check
+- open cache file in binary mode
+- fixing traceback from poller.py on Python 3
+- fixing a bytes-like object is required, not 'str'
+
+-------------------------------------------------------------------
 Thu Oct 26 17:17:59 CEST 2017 - mc@suse.de
 
 - version 5.4.64.1-1
