@@ -121,5 +121,5 @@ Feature: Lock packages on traditional client
     And package "orion-dummy-1.1-1.1" is reported as unlocked
 
   Scenario: Cleanup: remove packages after testing locks
-    Then I remove pkg "orion-dummy" on this "sle-client"
-    And I remove pkg "milkyway-dummy" on this "sle-client"
+    Then I remove package "orion-dummy" from this "sle-client"
+    And I remove package "milkyway-dummy" from this "sle-client"
