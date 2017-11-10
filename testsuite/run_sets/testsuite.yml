@@ -34,6 +34,7 @@
 # **** IDEMPOTENT ******
 - features/min_bootstrap_xmlrpc.feature
 - features/min_ssh_bootstrap_xmlrpc.feature
+- features/trad_migrate_to_minion.feature
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
 - features/trad_reboot.feature
@@ -86,9 +87,6 @@
 - features/srv_patches_page.feature
 - features/srv_spacewalk_repo_sync.feature
 - features/srv_spacewalk_channel.feature
-
-# This need rework before activation
-# - features/trad_migrate_to_minion.feature
 
 # Post run feature (non idempotent)
 # Debug SUSE Manager server is non idempotent
