@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Nov 10 16:34:18 CET 2017 - mc@suse.de
+
+- version 2.8.10.1-1
+- python3 fix for searching file in rpm
+- Make is_utf8 method python3 compatible
+- platform module behave different with python3
+- device.sys_path is attribute not function
+- make getting device properties compatible with older versions
+  of pyudev
+
+-------------------------------------------------------------------
 Thu Oct 26 16:46:59 CEST 2017 - mc@suse.de
 
 - version 2.8.6.1-1
