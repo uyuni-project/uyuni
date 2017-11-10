@@ -25,6 +25,7 @@ Requires:       perl
 %if 0%{?suse_version}
 Requires:       jabberd-sqlite
 %endif
+Requires:       libxslt-tools
 
 %description
 Script, which sets up Jabberd for Spacewalk. Used during installation of
