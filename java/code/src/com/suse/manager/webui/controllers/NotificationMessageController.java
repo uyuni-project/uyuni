@@ -21,10 +21,14 @@ import com.redhat.rhn.domain.user.User;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.manager.webui.utils.gson.JSONNotificationMessage;
+
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -65,7 +69,7 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String dataUnread(Request request, Response response, User user) {
-        Object data = NotificationMessageFactory.listUnread();
+        Object data = getJSONNotificationMessages(NotificationMessageFactory.listUnread());
 
         response.type("application/json");
         return GSON.toJson(data);
@@ -80,7 +84,7 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String dataAll(Request request, Response response, User user) {
-        Object data = NotificationMessageFactory.listAll();
+        Object data = getJSONNotificationMessages(NotificationMessageFactory.listAll());
 
         response.type("application/json");
         return GSON.toJson(data);
@@ -109,5 +113,17 @@ public class NotificationMessageController {
         data.put("message", "Message status updated");
         response.type("application/json");
         return GSON.toJson(data);
+    }
+
+    /**
+     * Convert a list of {@link NotificationMessage} to a {@link JSONNotificationMessage}
+     *
+     * @param list of NotificationMessages
+     * @return a list of JSONNotificationMessages
+     */
+    public static List<JSONNotificationMessage> getJSONNotificationMessages(List<NotificationMessage> list) {
+        return list.stream()
+                .map(nm -> new JSONNotificationMessage(nm))
+                .collect(Collectors.toList());
     }
 }
