@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Fri Nov 10 16:30:32 CET 2017 - mc@suse.de
+
+- version 2.8.27.1-1
+- Change the virtualization backend not to duplicate data in case
+  host and guests are in different organizations
+- fix joining strings
+- yum ContentSource() should set number of packages during raw listing.
+- convert release to long while checking which is older or newer
+- Do not import ignored errata
+- process comps file before package import
+- yum on RHEL6 has no idea about environments
+- make rhn_rpm python3 compatible
+- open checksummed files in binary mode
+- mention package groups in help
+- detect and parse package groups in filters
+- add new spacewalk-repo-sync command line option to synopsis of man-page
+- add new parameter '--show-packages' for spacewalk-repo-sync.
+
+
+-------------------------------------------------------------------
 Thu Oct 26 17:12:49 CEST 2017 - mc@suse.de
 
 - version 2.8.15.1-1
