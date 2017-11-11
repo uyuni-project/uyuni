@@ -36,6 +36,7 @@
 - Hide invisible first level menu items (bsc#1063822)
 - Fail gracefully when GPG files are requested (bsc#1065676)
 - fix unscheduling actions for traditional systems (bsc#1065216)
+- add logging messages for SP migration (bsc#1066819, bsc#1066404)
 
 -------------------------------------------------------------------
 Thu Sep 14 11:32:37 CEST 2017 - mc@suse.de
