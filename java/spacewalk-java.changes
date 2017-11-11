@@ -31,6 +31,7 @@ Tue Oct 17 12:38:13 CEST 2017 - jgonzalez@suse.com
 - fix cloning Kickstart Profiles with Custom Options (bsc#1061576)
 - checkin the foreign host if a s390 minion finished a job (bsc#971916)
 - increase max length of hardware address to 32 byte (bsc#989991)
+- add logging messages for SP migration (bsc#1066819, bsc#1066404)
 - Adapt Salt runner and wheel calls to the new
   error handling introduced in salt-netapi-client-0.12.0
 - change log level and event history for duplicate machine id  (bsc#1041489)
