@@ -66,7 +66,7 @@ const Notifications = React.createClass({
   },
 
   componentDidUpdate: function(prevProps, prevState) {
-    if (prevState.unreadMessagesLength && prevState.unreadMessagesLength != this.state.unreadMessagesLength) {
+    if (prevState.unreadMessagesLength && this.state.unreadMessagesLength > prevState.unreadMessagesLength) {
       $('#notification-counter').addClass('highlight-updated-value');
       setTimeout(function() {
         $('#notification-counter').removeClass('highlight-updated-value');
