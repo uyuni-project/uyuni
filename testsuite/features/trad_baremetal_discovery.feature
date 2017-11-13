@@ -80,7 +80,7 @@ Feature: Bare metal discovery
 
   Scenario: Check SSM with bare metal system
     Given I am on the Systems page
-    When I check this client
+    When I check the "sle-client" client
     And I wait for "30" seconds
     Then I am on System Set Manager Overview
   

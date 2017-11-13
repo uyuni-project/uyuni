@@ -25,7 +25,7 @@ Feature: System package list is updated if packages are manually installed or re
     And I enter "milkyway-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter"
     And I should see a "milkyway-dummy" text
-    Then I manually remove the "milkyway-dummy" package in the minion
+    Then I remove package "milkyway-dummy" from this "sle-minion"
     And I click on the css "button.spacewalk-button-filter" until page does not contain "milkyway-dummy" text
 
   Scenario: Install manually a package on a minion
@@ -36,7 +36,7 @@ Feature: System package list is updated if packages are manually installed or re
     And I enter "milkyway-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter"
     And I should not see a "milkyway-dummy" text
-    Then I manually install the "milkyway-dummy" package in the minion
+    Then I install package "milkyway-dummy" on this "sle-minion"
     And I click on the css "button.spacewalk-button-filter" until page does not contain "milkyway-dummy" text
 
   Scenario: Cleanup: remove milkyway-dummy packages from SLES minion

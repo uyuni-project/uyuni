@@ -27,7 +27,11 @@ Feature: Install a package on the minion with staging enabled
     And I reload the page until it does contain a "FINISHED" text in the table first row
 
   Scenario: Enable content staging
-    Given I am in the organization configuration page
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Admin"
+    And I follow "Organizations"
+    And I follow first "SUSE Test"
+    And I follow first "Configuration"
     And I check "staging_content_enabled"
     And I click on "Update Organization"
     Then I should see a "was successfully updated." text
@@ -44,13 +48,13 @@ Feature: Install a package on the minion with staging enabled
     Then I should see a "1 package install has been scheduled for" text
     And I wait until the package "orion-dummy-1.1-1.1.x86_64" has been cached on this "sle-minion"
     And I wait for "orion-dummy-1.1-1.1" to be installed on this "sle-minion"
-    Then I remove pkg "orion-dummy-1.1-1.1" on this "sle-minion"
+    Then I remove package "orion-dummy-1.1-1.1" from this "sle-minion"
 
   Scenario: Install patch in the future and check for staging
     Given I am on the Systems overview page of this "sle-minion"
-    And I remove pkg "virgo-dummy" on this "sle-minion"
+    And I remove package "virgo-dummy" from this "sle-minion"
     And I enable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
-    And I install pkg "virgo-dummy-1.0-1.1" on this "sle-minion"
+    And I install package "virgo-dummy-1.0-1.1" on this "sle-minion"
     And I wait for "30" seconds
     And I follow "Software" in the content area
     And I click on "Update Package List"
