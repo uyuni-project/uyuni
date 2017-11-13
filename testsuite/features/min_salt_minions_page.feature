@@ -36,7 +36,7 @@ Feature: Management of minion keys
     And I wait until Salt master sees "sle-minion" as "rejected"
     Then I should see a "rejected" text
     And I delete "sle-minion" from the Rejected section
-    Then I should not see "sle-minion" as a Minion anywhere
+    Then I should not see "sle-minion" hostname
 
   Scenario: Accepted minion shows up as a registered system
     Given I am authorized as "testing" with password "testing"

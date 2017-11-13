@@ -270,10 +270,6 @@ Given(/^I am on the groups page$/) do
     )
 end
 
-When(/^I check this client$/) do
-  step %(I check "#{$client.full_hostname}" in the list)
-end
-
 Given(/^I am on the active Users page$/) do
   steps %(
     Given I am authorized as "admin" with password "admin"
@@ -397,16 +393,6 @@ Then(/^I try to reload page until it does not contain "([^"]*)" text$/) do |arg1
     raise "'#{arg1}' is still found after wait and reload page"
   end
   raise if found
-end
-
-Given(/^I am in the organization configuration page$/) do
-  steps %(
-    When I am authorized as "admin" with password "admin"
-    And I follow "Admin"
-    And I follow "Organizations"
-    And I follow first "SUSE Test"
-    And I follow first "Configuration"
-  )
 end
 
 Then(/^I should see something$/) do

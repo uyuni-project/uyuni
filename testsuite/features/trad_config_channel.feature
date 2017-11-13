@@ -327,7 +327,7 @@ Feature: Configuration channel basic functions
     And I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"
     And I follow "Systems" in the content area
-    And I check this client
+    And I check the "sle-client" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 

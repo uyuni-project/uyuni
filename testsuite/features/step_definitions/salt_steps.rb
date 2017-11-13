@@ -312,28 +312,6 @@ Then(/^I should see "([^"]*)" in the command output for "(.*)"$/) do |text, mini
   end
 end
 
-Then(/^I manually install the "([^"]*)" package in the minion$/) do |package|
-  if file_exists?($minion, '/usr/bin/zypper')
-    cmd = "zypper --non-interactive install -y #{package}"
-  elsif file_exists?($minion, '/usr/bin/yum')
-    cmd = "yum -y install #{package}"
-  else
-    raise 'not found: zypper or yum'
-  end
-  $minion.run(cmd, false)
-end
-
-Then(/^I manually remove the "([^"]*)" package in the minion$/) do |package|
-  if file_exists?($minion, '/usr/bin/zypper')
-    cmd = "zypper --non-interactive remove -y #{package}"
-  elsif file_exists?($minion, '/usr/bin/yum')
-    cmd = "yum -y remove #{package}"
-  else
-    raise 'not found: zypper or yum'
-  end
-  $minion.run(cmd, false)
-end
-
 Then(/^I click on the css "(.*)" until page does not contain "([^"]*)" text$/) do |css, text|
   not_found = false
   begin
@@ -507,12 +485,6 @@ end
 
 Then(/^the download should get no error$/) do
   assert_nil(@download_error)
-end
-
-# Verify content
-Then(/^I should not see "(.*?)" as a Minion anywhere$/) do |minion|
-  node = get_target(minion)
-  step %(I should not see a "#{node.hostname}" text)
 end
 
 # Perform actions
