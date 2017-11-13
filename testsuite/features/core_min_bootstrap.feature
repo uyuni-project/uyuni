@@ -90,8 +90,8 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And the Salt master can reach "sle-minion"
      And I wait for "orion-dummy" to be installed on this "sle-minion"
      And I wait for "perseus-dummy" to be installed on this "sle-minion"
-     And I remove pkg "orion-dummy" on this "sle-minion"
-     And I remove pkg "perseus-dummy" on this "sle-minion"
+     And I remove package "orion-dummy" from this "sle-minion"
+     And I remove package "perseus-dummy" from this "sle-minion"
 
   Scenario: Check system ID of second bootstrapped minion
     Given I am on the Systems overview page of this "sle-minion"

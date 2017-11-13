@@ -376,16 +376,12 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I enable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
   When I disable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
-  When I install pkg "virgo-dummy-1.0-1.1" on this "sle-minion"
-  When I manually install the "milkyway-dummy" package in the minion
-  When I remove pkg "orion-dummy" on this "sle-minion"
-  When I manually remove the "milkyway-dummy" package in the minion
+  When I install package "virgo-dummy-1.0-1.1" on this "sle-minion"
+  When I remove package "orion-dummy" from this "sle-minion"
   When I wait for "virgo-dummy-1.0" to be installed on this "sle-minion"
   Then "man" is installed on "sle-client"
   Then "milkyway-dummy" is not installed
 ```
-
-(some of these will get unified)
 
 * Services
 
