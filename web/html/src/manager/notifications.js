@@ -15,9 +15,10 @@ const Notifications = React.createClass({
   },
 
   onBeforeUnload: function(e) {
-      this.setState({
-          pageUnloading: true
-      });
+    this.state.websocket.close();
+    this.setState({
+      pageUnloading: true
+    });
   },
 
   componentDidMount: function() {
@@ -29,8 +30,6 @@ const Notifications = React.createClass({
     var ws = new WebSocket(url);
     ws.onopen = () => {
         console.log('Websocket onOpen');
-      this.setState({
-      });
     };
     ws.onclose = (e) => {
         console.log('Websocket onClose');
