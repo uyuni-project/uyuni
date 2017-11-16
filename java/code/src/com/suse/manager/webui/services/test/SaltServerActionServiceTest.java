@@ -21,12 +21,14 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -49,6 +51,7 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.utils.SaltUtils;
@@ -179,6 +182,30 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(result.size(), 3);
     }
 
+    public void testVirtACtions() throws Exception {
+        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(user, 1, true);
+        List<MinionServer> minions = Arrays.asList(minionHost);
+
+        List<ActionType> actionTypes = Arrays.asList(ActionFactory.TYPE_VIRTUALIZATION_DELETE,
+                                                     ActionFactory.TYPE_VIRTUALIZATION_REBOOT,
+                                                     ActionFactory.TYPE_VIRTUALIZATION_RESUME,
+                                                     ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
+                                                     ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
+                                                     ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN,
+                                                     ActionFactory.TYPE_VIRTUALIZATION_START,
+                                                     ActionFactory.TYPE_VIRTUALIZATION_SUSPEND);
+
+        for (ActionType type : actionTypes) {
+            Action action = ActionFactoryTest.createAction(user, type);
+            BaseVirtualizationAction va = (BaseVirtualizationAction)action;
+            va.setUuid(minionHost.getGuests().iterator().next().getUuid());
+            ActionFactory.addServerToAction(minionHost, action);
+
+            Map<LocalCall<?>, List<MinionServer>> result = SaltServerActionService.INSTANCE.callsForAction(action, minions);
+            assertEquals(1, result.size());
+        }
+    }
+
     public void testExecuteActionChain() throws Exception {
         SaltUtils.INSTANCE.setScriptsDir(Files.createTempDirectory("actionscripts"));
 
@@ -254,6 +281,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionChainExecution(with(any(ActionChain.class)));
             allowing(saltServiceMock).callAsync(with(any(LocalCall.class)), with(any(Target.class)));
             will(returnValue(new LocalAsyncResult() {
+                @Override
                 public List<String> getMinions() {
                     return Collections.emptyList(); // results are not important for this test
                 }
