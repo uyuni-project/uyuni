@@ -229,6 +229,32 @@ public class ConfigurationManager extends BaseManager {
     }
 
     /**
+     * This query lists only the the global channels
+     * of type 'Normal' a user can see along with info on whether the
+     * channels are subscribed to a given server
+     * Basically used in SDC Subscribe Channels page
+     * @param server the server to check the channels
+     *                                      subscriptions on
+     * @param user The user looking at channels.
+     * @param pc A page control for this user.
+     * @return A list of the channels in DTO format.
+     */
+    public DataResult<ConfigChannelDto>
+    listNormalChannelsForSystemSubscriptions(Server server,
+                                             User user,
+                                             PageControl pc) {
+        SelectMode m = ModeFactory.getMode("config_queries",
+                "normal_config_channels_for_system_subscriptions");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user.getId());
+        params.put("org_id", user.getOrg().getId());
+        params.put("sid", server.getId());
+        Map<String, Object> elabParams = new HashMap<String, Object>();
+        elabParams.put("user_id", user.getId());
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
      * Lists all configuration managed systems along with counts for how many
      * files and channels they are managed by.
      * @param user The user requesting to view managed systems
@@ -1315,12 +1341,19 @@ public class ConfigurationManager extends BaseManager {
      */
     public DataResult listSystemsNotInChannel(User user, ConfigChannel channel,
             PageControl pc) {
+        SelectMode mode = null;
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("ccid", channel.getId());
         params.put("user_id", user.getId());
-        SelectMode m = ModeFactory.getMode("config_queries",
-                "managed_systems_not_in_channel");
-        DataResult dr = makeDataResult(params, new HashMap(), pc, m);
+        if (channel.isStateChannel()) {
+            mode = ModeFactory.getMode("config_queries",
+                    "managed_minions_not_in_channel");
+        }
+        else {
+            mode = ModeFactory.getMode("config_queries",
+                    "managed_systems_not_in_channel");
+        }
+        DataResult dr = makeDataResult(params, new HashMap(), pc, mode);
         return dr;
     }
 
