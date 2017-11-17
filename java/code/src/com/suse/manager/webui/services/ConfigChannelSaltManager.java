@@ -104,8 +104,7 @@ public class ConfigChannelSaltManager {
                     channel + " (old channel label: " +
                     oldChannelLabel.orElse("<empty>") + "). " +
                     "Removing files from disk.", e);
-            removeConfigChannelFiles(channel.getOrgId(), channel.getConfigChannelType(),
-                    channel.getLabel());
+            removeConfigChannelFiles(channel.getOrgId(), channel.getLabel());
         }
         finally {
             // channel has been renamed - trash the file structure associated with the old
@@ -113,8 +112,7 @@ public class ConfigChannelSaltManager {
             if (Opt.fold(oldChannelLabel,
                     () -> false,
                     label -> !label.equals(channel.getLabel()))) {
-                removeConfigChannelFiles(channel.getOrgId(), channel.getConfigChannelType(),
-                        oldChannelLabel.get());
+                removeConfigChannelFiles(channel.getOrgId(), oldChannelLabel.get());
             }
         }
     }
@@ -125,8 +123,7 @@ public class ConfigChannelSaltManager {
      * @param channel the channel
      */
     public synchronized void removeConfigChannelFiles(ConfigChannel channel) {
-        removeConfigChannelFiles(channel.getOrgId(), channel.getConfigChannelType(),
-                channel.getLabel());
+        removeConfigChannelFiles(channel.getOrgId(), channel.getLabel());
     }
 
     /**
@@ -194,8 +191,7 @@ public class ConfigChannelSaltManager {
         FileUtils.writeStringToFile(outFile, content, encoding);
     }
 
-    private void removeConfigChannelFiles(Long orgId, ConfigChannelType channelType,
-            String channelLabel) {
+    private void removeConfigChannelFiles(Long orgId, String channelLabel) {
         LOG.trace("Deleting unused file structure for configuration channel: " +
                 channelLabel);
         try {
