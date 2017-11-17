@@ -200,7 +200,7 @@ public class ConfigChannelSaltManager {
                 channelLabel);
         try {
             File channelDirectory = Paths.get(baseDirPath).resolve(
-                    getChannelRelativePath(orgId, channelType, channelLabel)).toFile();
+                    getChannelRelativePath(orgId, channelLabel)).toFile();
             FileUtils.deleteDirectory(channelDirectory);
         }
         catch (IOException e) {
@@ -369,7 +369,6 @@ public class ConfigChannelSaltManager {
     private Path getChannelRelativePath(ConfigChannel channel) {
         return getChannelRelativePath(
                 channel.getOrgId(),
-                channel.getConfigChannelType(),
                 channel.getLabel());
     }
 
@@ -380,14 +379,11 @@ public class ConfigChannelSaltManager {
      * - label of the channel
      *
      * @param orgId the channel organization id
-     * @param channelType the channel type
      * @param channelLabel the channel label
      * @return the channel relative path
      */
-    private Path getChannelRelativePath(Long orgId, ConfigChannelType channelType,
-            String channelLabel) {
+    private Path getChannelRelativePath(Long orgId, String channelLabel) {
         return Paths.get((getOrgNamespace(orgId)))
-                .resolve(channelType.getLabel())
                 .resolve(channelLabel);
     }
 
@@ -399,7 +395,6 @@ public class ConfigChannelSaltManager {
      */
     public String getChannelStateName(ConfigChannel channel) {
         return getOrgNamespace(channel.getOrgId()) + "." +
-                channel.getConfigChannelType().getLabel() + "." +
                 channel.getLabel();
     }
 
