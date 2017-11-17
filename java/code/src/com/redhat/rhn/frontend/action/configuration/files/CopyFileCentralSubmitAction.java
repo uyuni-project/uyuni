@@ -41,7 +41,8 @@ public class CopyFileCentralSubmitAction extends BaseCopyFileSubmitAction {
                                        HttpServletRequest requestIn) {
         ConfigFile file = ConfigActionHelper.getFile(requestIn);
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        return cm.listChannelsForFileCopy(userIn, file, getLabel(), null);
+        String channelTypeLabel = file.getConfigChannel().getConfigChannelType().getLabel();
+        return cm.listChannelsForFileCopy(userIn, file, channelTypeLabel, null);
     }
 
     /**

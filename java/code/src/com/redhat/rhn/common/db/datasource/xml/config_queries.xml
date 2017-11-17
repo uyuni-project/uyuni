@@ -1868,6 +1868,27 @@ SELECT  DISTINCT S.id,
 ORDER BY UPPER(COALESCE(X.name, '(none)'))
         </query>
 </mode>
+    <!-- List all minions that the user has access to, that are -not- already subscribed to the channel-->
+<mode name="managed_minions_not_in_channel" class="com.redhat.rhn.frontend.dto.ConfigSystemDto">
+        <query params="ccid,user_id">
+        SELECT * FROM (
+          SELECT  DISTINCT S.id,
+            S.name
+         FROM  rhnServer S
+            inner join rhnUserServerPerms USP on S.id = USP.server_id
+            inner join suseMinionInfo SMI on S.id = SMI.server_id
+         WHERE  rhn_config_channel.get_user_chan_access(:ccid, :user_id) = 1
+            AND  USP.user_id = :user_id
+            AND  NOT EXISTS(
+               SELECT 1
+               FROM rhnServerConfigChannel SCC
+               WHERE SCC.server_id = S.id
+               AND SCC.config_channel_id =:ccid
+              )
+         ) X
+         ORDER BY UPPER(COALESCE(X.name, '(none)'))
+        </query>
+</mode>
 
 <!-- list all the global config channels for a system.  Used in sdc. -->
 <mode name="config_channels_for_system" class="com.redhat.rhn.frontend.dto.ConfigChannelDto">
@@ -2079,6 +2100,25 @@ ORDER BY UPPER(CC.name)
   <elaborator name="elaborator_config_channel_system_count" params="user_id"/>
   <elaborator name="elaborator_config_channel_file_dir_count"/>
 </mode>
+
+<mode name="normal_config_channels_for_system_subscriptions"
+          class="com.redhat.rhn.frontend.dto.ConfigChannelDto">
+    <query params="org_id, user_id, sid">
+     SELECT CC.id,
+            CC.name,
+            CC.label
+     FROM rhnConfigChannelType CCT
+            INNER JOIN rhnConfigChannel CC ON CC.confchan_type_id = CCT.id
+     WHERE CC.org_id = :org_id
+     AND CCT.label IN ('normal')
+     AND NOT EXISTS (select 1 from rhnServerConfigChannel SCC where SCC.server_id =:sid and SCC.config_channel_id = CC.id)
+     AND rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
+     ORDER BY UPPER(CC.name)
+      </query>
+      <elaborator name="elaborator_config_channel_system_count" params="user_id"/>
+      <elaborator name="elaborator_config_channel_file_dir_count"/>
+</mode>
+
 
 <query name="ssm_channel_elab" params="system_set_label, user_id">
 SELECT  CC.id,
