@@ -124,7 +124,6 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
     private File getGeneratedFile(ConfigChannel channel, String filePathInChannel) {
         return Paths.get(tmpSaltRoot.toAbsolutePath().toString(),
                 manager.getOrgNamespace(channel.getOrgId()),
-                channel.getConfigChannelType().getLabel(),
                 channel.getLabel(),
                 filePathInChannel)
                 .toFile();

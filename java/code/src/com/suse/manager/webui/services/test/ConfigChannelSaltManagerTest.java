@@ -43,7 +43,6 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
                 "    file.managed:\n" +
                 "    -   name: " + file.getConfigFileName().getPath() + "\n" +
                 "    -   source: salt://" + manager.getOrgNamespace(channel.getOrgId()) + "/" +
-                file.getConfigChannel().getConfigChannelType().getLabel() + "/" +
                 file.getConfigChannel().getLabel() + "/" +
                 file.getConfigFileName().getPath() + "\n" +
                 "    -   makedirs: true\n" +
@@ -115,7 +114,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
 
         String expectedUri = "salt://" +
                 "mgr_cfg_org_" + channel.getOrgId() +
-                "/normal/" + channel.getLabel() +
+                "/" + channel.getLabel() +
                 "/" + file.getConfigFileName().getPath();
         assertEquals(expectedUri, saltUri);
     }
