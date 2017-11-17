@@ -36,10 +36,7 @@ public class CopyFileCentralAction  extends BaseCopyConfigFileAction {
         User user = rctxIn.getCurrentUser();
         ConfigFile file = ConfigActionHelper.getFile(rctxIn.getRequest());
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        String channelTypeLabel = getLabel();
-        if (file.getLatestConfigRevision().isSls()) {
-            channelTypeLabel = ConfigChannelType.state().getLabel();
-        }
+        String channelTypeLabel = file.getConfigChannel().getConfigChannelType().getLabel();
         return cm.listChannelsForFileCopy(user, file, channelTypeLabel, pcIn);
     }
 
