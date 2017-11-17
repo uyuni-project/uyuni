@@ -54,6 +54,7 @@
 - Update to Quartz 2.3.0 (bsc#1049431)
 - Fail gracefully when GPG files are requested (bsc#1065676)
 - Improve messaging for "Compare Packages" (bsc#1065844)
+- rhnServerNetwork refactoring (bsc#1063419)
 
 -------------------------------------------------------------------
 Mon Jun 12 09:07:20 CEST 2017 - mc@suse.de

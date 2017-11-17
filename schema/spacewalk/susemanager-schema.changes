@@ -2,6 +2,7 @@
 - enablement of the package profile feature for minions
 - increase max length of hardware address to 32 byte (bsc#989991)
 - Update to Quartz 2.3.0 (bsc#1049431)
+- rhnServerNetwork refactoring (bsc#1063419)
 
 -------------------------------------------------------------------
 Mon Jun 12 09:13:09 CEST 2017 - mc@suse.de
@@ -843,13 +844,13 @@ Wed Mar 16 10:52:10 CET 2011 - ug@suse.de
 -------------------------------------------------------------------
 Thu Mar 10 17:04:04 CET 2011 - ug@suse.de
 
-- Registration of REHL4 clients fails due to incomplete 
+- Registration of REHL4 clients fails due to incomplete
   database table (bnc#678110)
 
 -------------------------------------------------------------------
 Thu Feb 17 13:13:27 CET 2011 - mc@suse.de
 
-- fix copyright 
+- fix copyright
 - fix checksums
 
 -------------------------------------------------------------------
@@ -876,7 +877,7 @@ Mon Jan 17 16:30:10 CET 2011 - mc@suse.de
 -------------------------------------------------------------------
 Mon Jan 17 12:25:25 CET 2011 - mc@suse.de
 
-- change suseServer ostarget to a foreign key to suseOSTarget(id) 
+- change suseServer ostarget to a foreign key to suseOSTarget(id)
 - fix data for suseOSTarget
 
 -------------------------------------------------------------------
@@ -887,12 +888,12 @@ Wed Jan 12 17:23:13 CET 2011 - mc@suse.de
 -------------------------------------------------------------------
 Wed Jan 12 10:37:28 CET 2011 - mc@suse.de
 
-- add RES GPG Key to DB 
+- add RES GPG Key to DB
 
 -------------------------------------------------------------------
 Tue Jan 11 18:04:58 CET 2011 - mc@suse.de
 
-- add SUSE and Novell GPG Keys to DB 
+- add SUSE and Novell GPG Keys to DB
 
 -------------------------------------------------------------------
 Wed Sep 15 12:22:26 CEST 2010 - mantel@suse.de
