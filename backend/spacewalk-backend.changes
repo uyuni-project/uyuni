@@ -1,3 +1,5 @@
+- rhnServerNetwork refactoring (bsc#1063419)
+
 -------------------------------------------------------------------
 Tue Oct 17 12:00:09 CEST 2017 - jgonzalez@suse.com
 
@@ -40,7 +42,7 @@ Tue May 23 11:55:59 CEST 2017 - mc@suse.de
 -------------------------------------------------------------------
 Thu May  4 10:23:23 UTC 2017 - can.bulut.bayburt@suse.com
 
--  Non admin or disabled user cannot make changes to a system anymore 
+-  Non admin or disabled user cannot make changes to a system anymore
    using spacewalk-channel (CVE-2017-7470) (bsc#1026633)
 
 -------------------------------------------------------------------
@@ -814,7 +816,7 @@ Wed May 09 13:41:34 CEST 2012 - mc@suse.de
 
 - version 1.7.38.7-1
 - define python macros
-- No need to be autonomous when inserting to rhnArchType, 
+- No need to be autonomous when inserting to rhnArchType,
   only satellite-sync does it.
 
 -------------------------------------------------------------------
@@ -926,7 +928,7 @@ Thu Mar 15 17:14:40 CET 2012 - jrenner@suse.de
 -------------------------------------------------------------------
 Mon Mar  5 12:42:12 CET 2012 - mc@suse.de
 
-- add suseLib.accessible() doing a HEAD request to test 
+- add suseLib.accessible() doing a HEAD request to test
   if a URL is accessible
 
 -------------------------------------------------------------------
@@ -1256,7 +1258,7 @@ Wed Feb 23 16:46:50 CET 2011 - ug@suse.de
 -------------------------------------------------------------------
 Fri Feb 18 15:51:45 CET 2011 - mc@suse.de
 
-- fix extract keyid from RPM header 
+- fix extract keyid from RPM header
 
 -------------------------------------------------------------------
 Thu Feb 17 16:02:25 CET 2011 - mc@suse.de
@@ -1282,7 +1284,7 @@ Mon Feb 14 17:22:39 CET 2011 - mc@suse.de
 -------------------------------------------------------------------
 Sat Feb 12 16:54:53 CET 2011 - mc@suse.de
 
-- send Mail if repo-sync failed 
+- send Mail if repo-sync failed
 
 -------------------------------------------------------------------
 Fri Feb 11 17:54:06 CET 2011 - jkupec@suse.cz
@@ -1293,7 +1295,7 @@ Fri Feb 11 17:54:06 CET 2011 - jkupec@suse.cz
 Fri Feb 11 11:47:57 CET 2011 - mc@suse.de
 
 - catch exception primary not available and print nice message
-  (bnc#671225) 
+  (bnc#671225)
 
 -------------------------------------------------------------------
 Thu Feb 10 18:15:23 CET 2011 - mc@suse.de
@@ -1309,7 +1311,7 @@ Wed Feb  9 13:46:12 CET 2011 - jkupec@suse.cz
 -------------------------------------------------------------------
 Wed Feb  9 11:36:28 CET 2011 - mc@suse.de
 
-- fix typo in sql statement 
+- fix typo in sql statement
 
 -------------------------------------------------------------------
 Wed Feb  9 10:51:13 CET 2011 - mantel@suse.de
@@ -1329,23 +1331,23 @@ Tue Feb  8 15:58:22 CET 2011 - mc@suse.de
 -------------------------------------------------------------------
 Tue Feb  1 13:26:06 CET 2011 - mc@suse.de
 
-- fix building on RH 
+- fix building on RH
 
 -------------------------------------------------------------------
 Mon Jan 31 18:14:57 CET 2011 - mc@suse.de
 
-- call yum update_md with the option to get all updateinfos 
+- call yum update_md with the option to get all updateinfos
   and not only the newest (bnc#668333)
 
 -------------------------------------------------------------------
 Sun Jan 30 15:26:01 CET 2011 - mc@suse.de
 
-- backport upstrem fixes 
+- backport upstrem fixes
 
 -------------------------------------------------------------------
 Tue Jan 25 16:19:49 CET 2011 - mc@suse.de
 
-- fix checksum handling.  
+- fix checksum handling.
 
 -------------------------------------------------------------------
 Sat Jan 22 12:37:48 CET 2011 - mc@suse.de
@@ -1355,13 +1357,13 @@ Sat Jan 22 12:37:48 CET 2011 - mc@suse.de
 -------------------------------------------------------------------
 Mon Jan 17 12:25:39 CET 2011 - mc@suse.de
 
-- change suseServer ostarget to a foreign key to suseOSTarget(id) 
+- change suseServer ostarget to a foreign key to suseOSTarget(id)
 
 -------------------------------------------------------------------
 Thu Jan 13 13:19:00 CET 2011 - mc@suse.de
 
 - Sending and receiving suse product profile data during
-  client registration. 
+  client registration.
 - subscribe channels according to submitted suse product data
 
 -------------------------------------------------------------------
@@ -1369,14 +1371,14 @@ Tue Jan 11 16:46:43 CET 2011 - mc@suse.de
 
 - reposync: search for credentials and add them to the URL
 - fix signature handling
-- reposync: find checksums for packages in channels with 
-  org_id null 
+- reposync: find checksums for packages in channels with
+  org_id null
 
 -------------------------------------------------------------------
 Wed Dec 15 17:22:47 CET 2010 - mc@suse.de
 
 - fix KeyError while syncing repos (bnc#657064)
-- skip patch instead of abort if no checksum for a package 
+- skip patch instead of abort if no checksum for a package
   was found
 
 -------------------------------------------------------------------

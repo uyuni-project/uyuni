@@ -4,6 +4,7 @@
 - Enable 'Power Management' features on Salt minions.
 - Fail gracefully when GPG files are requested (bsc#1065676)
 - Improve messaging for "Compare Packages" (bsc#1065844)
+- rhnServerNetwork refactoring (bsc#1063419)
 
 -------------------------------------------------------------------
 Tue Oct 17 12:38:13 CEST 2017 - jgonzalez@suse.com
@@ -1646,7 +1647,7 @@ Mon Jan 13 09:54:49 CET 2014 - mc@suse.de
 - require susemanager-frontend-libs for SUSE only
 - add new reboot action handling for ssh-push (FATE#312591)
 - Implement task to invalidate reboot actions (FATE#312591)
-- Make the packages require the frontend-libs 
+- Make the packages require the frontend-libs
 - return server action message within schedule.listInProgressSystems
   and schedule.listCompletedSystems API calls
 - fixed icon name
@@ -1927,7 +1928,7 @@ Thu Nov 22 15:43:51 CET 2012 - jrenner@suse.de
 - new sles_register_script snippet with autoyast script elements (bnc#780269)
 - Fix errors with unrequired field 'Prefix' (bnc#783646)
 - prevent NPE, when accessing probe suite systems with no system associated
-- do not allow creating kickstart profiles that differ from existing ones 
+- do not allow creating kickstart profiles that differ from existing ones
   just by case
 - enhancing kickstart file sync with cobbler
 - prevent Page Request Error when at pagination
@@ -1938,7 +1939,7 @@ Thu Nov 22 15:43:51 CET 2012 - jrenner@suse.de
 - Fix quartz trigger initialization repeat count (bnc#788026)
 - SP migration web UI (FATE#312431, FATE#312312)
 - Remove markup from kickstart.jsp.error.template_generation (bnc#787879)
-- fix system.listLatestUpgradablePackages API to list upgradable packages 
+- fix system.listLatestUpgradablePackages API to list upgradable packages
   from server channels only
 - Kickstarting RHEL systems with RES (expanded support) repos fails
   (bnc#786367)
@@ -2322,7 +2323,7 @@ Tue Mar  6 17:21:44 CET 2012 - jrenner@suse.de
 -------------------------------------------------------------------
 Wed Feb  1 11:22:37 CET 2012 - ug@suse.de
 
-- backported better installation server detection code 
+- backported better installation server detection code
   from master
 
 -------------------------------------------------------------------
@@ -2358,7 +2359,7 @@ Wed Dec  7 11:07:07 CET 2011 - ug@suse.de
 -------------------------------------------------------------------
 Thu Dec  1 13:41:19 CET 2011 - ug@suse.de
 
-- fix display of XML snippets in the web ui 
+- fix display of XML snippets in the web ui
   (bnc#731304)
 
 -------------------------------------------------------------------
@@ -2561,7 +2562,7 @@ Tue Jun 21 13:57:03 CEST 2011 - ug@suse.de
 Tue Jun 21 13:27:43 CEST 2011 - ug@suse.de
 
 - track RPM installation during virtual machine setup by
-  using session install=.... parameter 
+  using session install=.... parameter
   part of the fix for bnc#659093 and Fate#312372
 
 -------------------------------------------------------------------
@@ -2578,7 +2579,7 @@ Tue Jun 14 17:31:53 CEST 2011 - ug@suse.de
 -------------------------------------------------------------------
 Tue Jun 14 11:03:00 CEST 2011 - ug@suse.de
 
-- settings the correct architecture in cobbler, needed by virt. 
+- settings the correct architecture in cobbler, needed by virt.
   SUSE installations (fate#312397 and bnc#682665)
 
 -------------------------------------------------------------------
@@ -2752,7 +2753,7 @@ Mon Feb 21 11:21:50 CET 2011 - ug@suse.de
 -------------------------------------------------------------------
 Fri Feb 18 16:46:10 CET 2011 - mc@suse.de
 
-- remove use of java-devel at runtime (bnc#673323) 
+- remove use of java-devel at runtime (bnc#673323)
 
 -------------------------------------------------------------------
 Fri Feb 18 13:25:25 CET 2011 - jrenner@suse.de
@@ -2778,7 +2779,7 @@ Wed Feb 16 15:28:54 CET 2011 - jrenner@suse.de
 -------------------------------------------------------------------
 Wed Feb 16 15:07:10 CET 2011 - mc@suse.de
 
-- fix link to help page (bnc#672094) 
+- fix link to help page (bnc#672094)
 
 -------------------------------------------------------------------
 Wed Feb 16 09:56:58 CET 2011 - jrenner@suse.de
@@ -2820,7 +2821,7 @@ Fri Feb 11 15:56:18 CET 2011 - jrenner@suse.de
 Fri Feb 11 13:37:20 CET 2011 - jrenner@suse.de
 
 - add quick start to help index and navigation
- 
+
 -------------------------------------------------------------------
 Thu Feb 10 10:05:12 CET 2011 - jrenner@suse.de
 
@@ -2838,7 +2839,7 @@ Wed Feb  9 12:10:22 CET 2011 - jrenner@suse.de
 Tue Feb  8 18:53:19 CET 2011 - mc@suse.de
 
 - Use LocalePreferences page but comment out language settings
-  (bnc#670042) 
+  (bnc#670042)
 
 -------------------------------------------------------------------
 Tue Feb  8 15:59:05 CET 2011 - mc@suse.de
@@ -2859,13 +2860,13 @@ Mon Feb  7 17:47:52 CET 2011 - jrenner@suse.de
 -------------------------------------------------------------------
 Mon Feb  7 15:49:32 CET 2011 - mc@suse.de
 
-- add rc link (bnc#669894) 
+- add rc link (bnc#669894)
 
 -------------------------------------------------------------------
 Mon Feb  7 13:50:09 CET 2011 - mc@suse.de
 
 - remove channel version filter in add novell patches
-  (bnc#669799) 
+  (bnc#669799)
 
 -------------------------------------------------------------------
 Thu Feb  3 17:05:35 CET 2011 - jrenner@suse.de
@@ -2905,7 +2906,7 @@ Thu Jan 27 16:36:43 CET 2011 - jrenner@suse.de
 -------------------------------------------------------------------
 Thu Jan 27 16:28:52 CET 2011 - mc@suse.de
 
-- fix subscribe to SUSE base channel via SSM (bnc#665833) 
+- fix subscribe to SUSE base channel via SSM (bnc#665833)
 
 -------------------------------------------------------------------
 Thu Jan 27 13:23:35 CET 2011 - mc@suse.de
@@ -2947,7 +2948,7 @@ Tue Jan 18 15:59:38 CET 2011 - jrenner@suse.de
 -------------------------------------------------------------------
 Mon Jan 17 16:29:55 CET 2011 - mc@suse.de
 
-- rename sm-register to mgr-register 
+- rename sm-register to mgr-register
 
 -------------------------------------------------------------------
 Fri Jan 14 17:21:35 CET 2011 - mc@suse.de
@@ -2961,7 +2962,7 @@ Tue Jan 11 17:20:19 CET 2011 - mc@suse.de
 
 - fix Requires
 - add copyright page
-- some style fixes 
+- some style fixes
 
 -------------------------------------------------------------------
 Wed Sep 15 09:29:38 CEST 2010 - mantel@suse.de
