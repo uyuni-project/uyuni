@@ -52,10 +52,10 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Rev$
  */
 public class SubscribeConfirm extends RhnAction {
-    private static final String REPLACE = "replace";
-    private static final String LOWEST = "lowest";
-    private static final String HIGHEST = "highest";
-    private static final String POSITION = "position";
+    public static final String REPLACE = "replace";
+    public static final String LOWEST = "lowest";
+    public static final String HIGHEST = "highest";
+    public static final String POSITION = "position";
 
     /**
      * Set up the page.
