@@ -90,7 +90,7 @@ Feature: Migrate a traditional client into a Salt minion
     When I enable repository "SLE-Manager-Tools-SLE-12-x86_64-Pool" on this "sle-migrated-minion"
     And I enable repository "SLE-Manager-Tools-SLE-12-x86_64-Update" on this "sle-migrated-minion"
     And I disable repository "susemanager:test-channel-x86_64" on this "sle-migrated-minion"
-    And I install "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-migrated-minion"
+    And I install package "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-migrated-minion"
     And I register using "1-SUSE-DEV-x86_64" key
 
   Scenario: Cleanup: Check that this is again a traditional client
