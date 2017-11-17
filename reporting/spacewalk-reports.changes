@@ -1,6 +1,7 @@
 
 - add machine_id and minion_id to system-profiles and inventory
   report (bsc#1054902)
+- rhnServerNetwork refactoring (bsc#1063419)
 
 -------------------------------------------------------------------
 Wed May 03 16:10:07 CEST 2017 - michele.bologna@suse.com

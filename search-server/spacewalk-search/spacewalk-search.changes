@@ -1,4 +1,5 @@
 - Updated to use Quartz 2.3.0 API (bsc#1049431)
+- rhnServerNetwork refactoring (bsc#1063419)
 
 -------------------------------------------------------------------
 Wed May 03 16:42:51 CEST 2017 - michele.bologna@suse.com
@@ -222,12 +223,12 @@ Wed Mar 21 16:25:56 CET 2012 - mc@suse.de
 -------------------------------------------------------------------
 Mon Feb  7 15:59:56 CET 2011 - mc@suse.de
 
-- add rc link (bnc#669894) 
+- add rc link (bnc#669894)
 
 -------------------------------------------------------------------
 Tue Jan 11 17:37:24 CET 2011 - mc@suse.de
 
-- fix requires 
+- fix requires
 
 -------------------------------------------------------------------
 Wed Sep 15 09:58:01 CEST 2010 - mantel@suse.de
