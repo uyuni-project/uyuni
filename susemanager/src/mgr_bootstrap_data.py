@@ -466,6 +466,9 @@ DATA = {
                           'PDID' : 1426, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/3/bootstrap/'
                         },
-
+    'OES2018-x86_64' : {
+                          'PDID' : 45, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
+                       },
 }
 
