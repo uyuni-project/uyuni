@@ -1,3 +1,4 @@
+- Support Open Enterprise Server 2018 (bsc#1060182)
 - Fixed bootstrap repository path for SLES4SAP version 12 and 12.1 (bsc#1062936)
 - fix error message for database upgrade failure
 - check for sufficient diskspace in /var/lib/pgsql
