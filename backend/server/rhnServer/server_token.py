@@ -284,6 +284,15 @@ _query_product_packages = rhnSQL.Statement("""
                     AND SP.name_id = latest.name_id
                     AND (SP.package_arch_id = latest.arch_id OR SP.package_arch_id IS NULL)
           )
+          and NOT EXISTS (
+                 select 1
+                   FROM rhnServerPackage SP
+                   JOIN rhnPackage p_p ON SP.name_id = p_p.name_id and SP.evr_id = p_p.evr_id and SP.package_arch_id = p_p.package_arch_id
+                   JOIN rhnPackageProvides p_pv on p_p.id = p_pv.package_id
+                   JOIN rhnPackageCapability p_c on p_pv.capability_id = p_c.id
+                  WHERE SP.server_id = :server_id
+                    and p_c.name = pn.name
+              )
         ) X
         JOIN rhnPackage rp ON rp.name_id = X.name_id
              AND rp.evr_id = X.evr_id
