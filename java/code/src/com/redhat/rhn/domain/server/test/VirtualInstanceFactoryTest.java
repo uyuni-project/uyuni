@@ -75,7 +75,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     }
 
     /**
-     * @param name
+     * @param name the name
      */
     public VirtualInstanceFactoryTest(String name) {
         super(name);
@@ -147,7 +147,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         assertEquals(guest.getNumberOfCPUs(), retrievedGuest.getNumberOfCPUs());
     }
 
-    /**
+    /*
      * Commeting out test for satellite.
     public void testFindGuestsWithNonVirtHostByOrg() throws Exception {
         Set expectedViews = new HashSet();

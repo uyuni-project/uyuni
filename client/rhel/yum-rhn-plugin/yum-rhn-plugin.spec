@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.8.3
+Version: 2.8.4
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,9 @@ fi
 
 
 %changelog
+* Thu Nov 16 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.4-1
+- removed settings for old RH build system
+
 * Fri Sep 29 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
 - require new version of rhn-client-tools
 - move client actions to rhn namespace

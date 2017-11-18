@@ -788,7 +788,7 @@ public class SystemManagerTest extends RhnBaseTestCase {
     /**
      * Note: This test tests multiple calls in SystemManager.
      *
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public void testErrataCountsForSystem() throws Exception {
 

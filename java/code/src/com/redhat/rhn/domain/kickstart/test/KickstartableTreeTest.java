@@ -151,7 +151,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * Helper method to lookup KickstartableTree by id
      * @param id Id to lookup
      * @return Returns the KickstartableTree
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     private KickstartableTree lookupById(Long id) throws Exception {
         Session session = HibernateFactory.getSession();
@@ -163,7 +163,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     /**
      * Creates KickstartableTree for testing purposes.
      * @return Returns a committed KickstartableTree
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public static KickstartableTree createTestKickstartableTree() throws Exception {
         User u = UserTestUtils.findNewUser("testUser", "testCreateTestKickstartableTree");
@@ -176,7 +176,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * Creates KickstartableTree for testing purposes.
      * @param treeChannel Channel this Tree uses.
      * @return Returns a committed KickstartableTree
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public static KickstartableTree
         createTestKickstartableTree(Channel treeChannel) throws Exception {
@@ -240,7 +240,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      * @param treeChannel channel to use for this tree.
      * @param installTypeLabel install type to use
      * @return the kickstartable tree
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public static KickstartableTree createTestKickstartableTree(
             Channel treeChannel, String installTypeLabel) throws Exception {

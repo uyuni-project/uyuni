@@ -98,9 +98,9 @@ public class BaseSetHelper {
 
 
     /**
-     * @param listName
-     * @param dataSet
-     * @return
+     * @param listName the name of the list
+     * @param dataSet the data set
+     * @return the filtered list
      */
     protected List getFilteredList(String listName, List dataSet) {
         List filterList = null;

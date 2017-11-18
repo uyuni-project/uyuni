@@ -249,7 +249,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Test editing a server group.
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public void testServerGroups() throws Exception {
         Long id = server.getId();
@@ -420,7 +420,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Test making two Servers.
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public void testTwoServers() throws Exception {
         Server s1 = createTestServer(user);
@@ -440,7 +440,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Test that server has a specific entitlement.
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public void aTestServerHasSpecificEntitlement() throws Exception {
         Server s = createTestServer(user);
@@ -450,7 +450,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Test that server does not have a specific entitlement.
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public void testServerDoesNotHaveSpecificEntitlement() throws Exception {
 
@@ -464,6 +464,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * Create a test Server and commit it to the DB.
      * @param owner the owner of this Server
      * @return Server that was created
+     * @throws Exception something bad happened
      */
     public static Server createTestServer(User owner) throws Exception {
         return createTestServer(owner, false);
@@ -517,6 +518,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * @param owner the owner of this Server
      * @param ensureOwnerAccess this flag will make sure the owner passed in has
      *                          access to the new server.
+     * @param stype the server type
+     * @param dateCreated the create date for the server
      * @return Server that was created
      */
     public static Server createUnentitledTestServer(User owner, boolean ensureOwnerAccess,
@@ -822,7 +825,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * @param ensureOwnerAccess if set to true, a Server Group will be created for that
      *          user and system
      * @return the created proxy server
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public static Server createTestProxyServer(User owner, boolean ensureOwnerAccess)
                 throws Exception {

@@ -252,7 +252,7 @@ public class IconTag extends TagSupport {
     }
 
     /** {@inheritDoc}
-     * @throws JspException
+     * @throws JspException JSP exception
      */
     public int doStartTag() throws JspException {
         if (!icons.containsKey(type)) {

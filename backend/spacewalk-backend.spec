@@ -12,7 +12,7 @@
 %global build_py3 1
 %endif
 
-%if (0%{?fedora} && 0%{?fedora} < 26) || 0%{?rhel} >= 7
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %{!?pylint_check: %global pylint_check 0}
 %endif
 
@@ -38,7 +38,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.27.1
+Version: 2.8.30
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -457,20 +457,21 @@ rm -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__init__.py*
 rm -rf $RPM_BUILD_ROOT
 
 %check
+cp %{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{pythonrhnroot}/common
 make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} test || :
 
 %if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn:/usr/share/rhn
-cp %{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{pythonrhnroot}/common
 spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
-rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py
 %endif
+
+rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py*
 
 if [ -x %py_libdir/py_compile.py ]; then
     pushd %{buildroot}
@@ -928,6 +929,23 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 
 %changelog
+* Tue Nov 14 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.30-1
+- 1494575 - use only version in channel release
+
+* Mon Nov 13 2017 Jan Dobes 2.8.29-1
+- copy usix before tests are executed
+
+* Mon Nov 13 2017 Jan Dobes 2.8.28-1
+- disable unsupported-assignment-operation in this block, this seems to be
+  false-positive error
+- rename variables to match method headers of parent classes (pylint arguments-
+  differ)
+- compare value instead of identity
+- move to setup_repo method and execute only when no_mirrors is False
+- these arguments differ intentionally
+- fixing len-as-condition pylint rule
+- re-enable pylint on Fedora
+
 * Wed Nov 08 2017 Jan Dobes 2.8.27-1
 - Change the virtualization backend not to duplicate data in case host and
   guests are in different organizations

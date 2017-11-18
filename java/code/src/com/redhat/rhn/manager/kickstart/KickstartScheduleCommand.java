@@ -638,8 +638,15 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         return null;
     }
 
+
     /**
      * This method is extracted out so we can override them in the subclass
+     * @param userIn the user
+     * @param serverIn the system
+     * @param ksdataIn the kickstart data
+     * @param mediaPath the media path
+     * @param tokenList the token list
+     * @return the CobblerSystemCreateCommand
      */
     protected CobblerSystemCreateCommand getCobblerSystemCreateCommand(User userIn,
             Server serverIn, KickstartData ksdataIn, String mediaPath, String tokenList) {
@@ -649,6 +656,10 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
     /**
      * This method is extracted out so we can override them in the subclass
+     * @param userIn the user
+     * @param serverIn the system
+     * @param cobblerProfileLabelIn the cobbler profile label
+     * @return the CobblerSystemCreateCommand
      */
     protected CobblerSystemCreateCommand getCobblerSystemCreateCommand(User userIn,
             Server serverIn, String cobblerProfileLabelIn) {
@@ -656,10 +667,6 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                 serverIn, cobblerProfileLabelIn);
     }
 
-
-    /**
-     *
-     */
     private void storeActivationKeyInfo() {
         // If the target system exists already, remove any existing activation keys
         // it might have associated with it.
@@ -708,7 +715,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     /**
      * @param firstAction The first Action in the session's action chain
      *
-     * return Returns the KickstartSession.
+     * @return Returns the KickstartSession.
      */
     protected KickstartSession setupKickstartSession(Action firstAction) {
         kickstartSession = new KickstartSession();

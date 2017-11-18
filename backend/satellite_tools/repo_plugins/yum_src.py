@@ -195,16 +195,6 @@ class ContentSource(object):
         self.num_packages = 0
         self.num_excluded = 0
         self.gpgkey_autotrust = None
-
-        # if self.url is metalink it will be expanded into
-        # real urls in self.repo.urls and also save this metalink
-        # in begin of the url list ("for repolist -v ... or anything else wants to know the baseurl")
-        # Remove it from the list, we don't need it to download content of repo
-        #
-        # SUSE: we use token auth in URLs which has also '?' in it. Therefor we remove this code
-        #
-        #real_urls = []
-        #for url in self.repo.urls:
         #    if '?' not in url:
         #        real_urls.append(url)
         #self.repo.urls = real_urls
@@ -277,6 +267,14 @@ class ContentSource(object):
                 warnings.restore()
                 raise
             warnings.restore()
+            # if self.url is metalink it will be expanded into
+            # real urls in repo.urls and also save this metalink
+            # in begin of the url list ("for repolist -v ... or anything else wants to know the baseurl")
+            # Remove it from the list, we don't need it to download content of repo
+            #
+            # SUSE uses tokens which have ? and this must stay
+            #
+            #repo.urls = [url for url in repo.urls if '?' not in url]
         for burl in repo.baseurl:
             (scheme, netloc, path, query, fragid) = urlparse.urlsplit(burl)
 	    if query:

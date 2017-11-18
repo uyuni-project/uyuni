@@ -609,7 +609,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
 
     /**
      *
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public void testAvailableChannels() throws Exception {
         // Create a system
