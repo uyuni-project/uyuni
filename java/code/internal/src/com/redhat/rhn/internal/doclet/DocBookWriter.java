@@ -64,6 +64,7 @@ public class DocBookWriter extends DocWriter {
         ret = ret.replaceAll("<i>", "");
         ret = ret.replaceAll("</i>", "");
         ret = ret.replaceAll("<br/>", "</para><para>");
+        ret = ret.replaceAll("<br>", "</para><para>");
         // Transform lists
         ret = ret.replaceAll("<ul>", "</para><itemizedlist>");
         ret = ret.replaceAll("</ul>", "</itemizedlist><para>");
