@@ -19,7 +19,9 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageCapability;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageProvides;
 import com.redhat.rhn.domain.rhnpackage.PackageSource;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
@@ -29,6 +31,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.PackageSearchAction;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ErrataTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.ArrayList;
@@ -123,6 +127,163 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        List<PackageSource> list = PackageFactory.lookupPackageSources(pack);
        assertTrue(list.size() > 0);
 
+   }
+
+   public void testFindMissingProductPackageOnServer() throws Exception {
+       Server testServer = ServerFactoryTest.createTestServer(user, true);
+
+       Channel channel = ChannelFactoryTest.createBaseChannel(user);
+       testServer.addChannel(channel);
+
+       Package testPackage = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+       PackageCapability productCap = PackageCapabilityTest.createTestCapability("product()");
+       PackageProvides provideProduct = new PackageProvides();
+       provideProduct.setCapability(productCap);
+       provideProduct.setPack(testPackage);
+       provideProduct.setSense(0L);
+       TestUtils.saveAndFlush(provideProduct);
+
+       ServerFactory.save(testServer);
+       testServer = (Server) reload(testServer);
+
+       List<Package> missing = PackageFactory.
+               findMissingProductPackagesOnServer(testServer.getId());
+
+       assertEquals(1, missing.size());
+       assertEquals(testPackage.getNameEvra() ,missing.get(0).getNameEvra());
+   }
+
+   public void testInstalledProductPackage() throws Exception {
+       Server testServer = ServerFactoryTest.createTestServer(user, true);
+
+       Channel channel = ChannelFactoryTest.createBaseChannel(user);
+       testServer.addChannel(channel);
+
+       Package testPackage = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+       PackageCapability productCap = PackageCapabilityTest.createTestCapability("product()");
+       PackageProvides provideProduct = new PackageProvides();
+       provideProduct.setCapability(productCap);
+       provideProduct.setPack(testPackage);
+       provideProduct.setSense(0L);
+       TestUtils.saveAndFlush(provideProduct);
+
+       InstalledPackage testInstPack = new InstalledPackage();
+       testInstPack.setArch(testPackage.getPackageArch());
+       testInstPack.setEvr(testPackage.getPackageEvr());
+       testInstPack.setName(testPackage.getPackageName());
+       testInstPack.setServer(testServer);
+       Set<InstalledPackage> serverPackages = testServer.getPackages();
+       serverPackages.add(testInstPack);
+
+       ServerFactory.save(testServer);
+       testServer = (Server) reload(testServer);
+
+       List<Package> missing = PackageFactory.
+               findMissingProductPackagesOnServer(testServer.getId());
+
+       assertEquals(0, missing.size());
+   }
+
+   public void testInstalledProductPackageProvidesOtherProduct() throws Exception {
+       Server testServer = ServerFactoryTest.createTestServer(user, true);
+
+       Channel channel = ChannelFactoryTest.createBaseChannel(user);
+       testServer.addChannel(channel);
+
+
+       Package testPackage1 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+       PackageCapability productCap = PackageCapabilityTest.createTestCapability("product()");
+
+       PackageProvides provideProduct = new PackageProvides();
+       provideProduct.setCapability(productCap);
+       provideProduct.setPack(testPackage1);
+       provideProduct.setSense(0L);
+
+       TestUtils.saveAndFlush(provideProduct);
+
+       Package testPackage2 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+
+       PackageProvides provideProduct2 = new PackageProvides();
+       provideProduct2.setCapability(productCap);
+       provideProduct2.setPack(testPackage2);
+       provideProduct2.setSense(0L);
+
+       PackageCapability pkg1Cap = PackageCapabilityTest.createTestCapability(
+               testPackage1.getPackageName().getName());
+
+       PackageProvides provideProduct3 = new PackageProvides();
+       provideProduct3.setCapability(pkg1Cap);
+       provideProduct3.setPack(testPackage2);
+       provideProduct3.setSense(0L);
+
+       TestUtils.saveAndFlush(provideProduct3);
+
+       InstalledPackage testInstPack = new InstalledPackage();
+       testInstPack.setArch(testPackage2.getPackageArch());
+       testInstPack.setEvr(testPackage2.getPackageEvr());
+       testInstPack.setName(testPackage2.getPackageName());
+       testInstPack.setServer(testServer);
+       Set<InstalledPackage> serverPackages = testServer.getPackages();
+       serverPackages.add(testInstPack);
+
+       ServerFactory.save(testServer);
+       testServer = (Server) reload(testServer);
+
+       List<Package> missing = PackageFactory.
+               findMissingProductPackagesOnServer(testServer.getId());
+
+       assertEquals(0, missing.size());
+   }
+
+   public void testInstalledProductPackageProvidesOtherProduct2() throws Exception {
+       Server testServer = ServerFactoryTest.createTestServer(user, true);
+
+       Channel channel = ChannelFactoryTest.createBaseChannel(user);
+       testServer.addChannel(channel);
+
+
+       Package testPackage1 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+       PackageCapability productCap = PackageCapabilityTest.createTestCapability("product()");
+
+       PackageProvides provideProduct = new PackageProvides();
+       provideProduct.setCapability(productCap);
+       provideProduct.setPack(testPackage1);
+       provideProduct.setSense(0L);
+       TestUtils.saveAndFlush(provideProduct);
+
+       Package testPackage2 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+
+       PackageProvides provideProduct2 = new PackageProvides();
+       provideProduct2.setCapability(productCap);
+       provideProduct2.setPack(testPackage2);
+       provideProduct2.setSense(0L);
+       TestUtils.saveAndFlush(provideProduct2);
+
+       PackageCapability pkg1Cap = PackageCapabilityTest.createTestCapability(
+               testPackage1.getPackageName().getName());
+
+       PackageProvides provideProduct3 = new PackageProvides();
+       provideProduct3.setCapability(pkg1Cap);
+       provideProduct3.setPack(testPackage2);
+       provideProduct3.setSense(0L);
+       TestUtils.saveAndFlush(provideProduct3);
+
+       InstalledPackage testInstPack = new InstalledPackage();
+       testInstPack.setArch(testPackage1.getPackageArch());
+       testInstPack.setEvr(testPackage1.getPackageEvr());
+       testInstPack.setName(testPackage1.getPackageName());
+       testInstPack.setServer(testServer);
+       Set<InstalledPackage> serverPackages = testServer.getPackages();
+       serverPackages.add(testInstPack);
+
+       ServerFactory.save(testServer);
+       testServer = (Server) reload(testServer);
+
+       List<Package> missing = PackageFactory.
+               findMissingProductPackagesOnServer(testServer.getId());
+
+       assertEquals(1, missing.size());
+       assertEquals(testPackage2.getNameEvra() ,missing.get(0).getNameEvra());
    }
 }
 
