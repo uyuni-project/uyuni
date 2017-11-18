@@ -44,6 +44,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 /**
  * Tests for {@link ActionChainFactory}.
+ * @author Silvio Moioli {@literal <smoioli@suse.de>}
  */
 public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 

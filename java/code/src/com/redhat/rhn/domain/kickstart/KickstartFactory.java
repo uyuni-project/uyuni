@@ -369,7 +369,6 @@ public class KickstartFactory extends HibernateFactory {
      * @param ksdata to associate with
      * @param nameIn of KickstartCommand
      * @return KickstartCommand created
-     * @throws Exception
      */
     public static KickstartCommand createKickstartCommand(KickstartData ksdata,
             String nameIn) {
@@ -841,7 +840,6 @@ public class KickstartFactory extends HibernateFactory {
      * Helper method to lookup KickstartSessionState by label
      * @param label Label to lookup
      * @return Returns the KickstartSessionState
-     * @throws Exception
      */
     public static KickstartSessionState lookupSessionStateByLabel(String label) {
         Session session = HibernateFactory.getSession();

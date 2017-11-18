@@ -26,6 +26,7 @@ public class SourceRpmTest extends RhnBaseTestCase {
     /**
      * Simple test to make sure we can create SourceRpms and
      * commit them to the db.
+     * @throws Exception something bad happened
      */
     public void testSourceRpm() {
         SourceRpm srpm = createTestSourceRpm();
@@ -37,6 +38,7 @@ public class SourceRpmTest extends RhnBaseTestCase {
     /**
      * Create a test SourceRpm.
      * @return Returns a commited SourceRpm object.
+     * @throws Exception something bad happened
      */
     public static SourceRpm createTestSourceRpm() {
         SourceRpm s = new SourceRpm();

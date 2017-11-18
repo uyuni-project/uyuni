@@ -4,7 +4,7 @@
 
 Name: spacewalk-proxy
 Summary: Spacewalk Proxy Server
-Version: 2.8.1
+Version: 2.8.2
 Release: 1%{?dist}
 Group:   Applications/Internet
 License: GPLv2
@@ -17,11 +17,11 @@ Requires: httpd
 %if 0%{?pylint_check}
 BuildRequires: spacewalk-pylint
 %endif
-%if 0%{?fedora} || 0%{?rhel} > 5
 BuildRequires: rhnpush >= 5.5.74
+# proxy isn't Python 3 yet
+BuildRequires: python2-rhnpush
 BuildRequires: spacewalk-backend-libs >= 1.7.24
 BuildRequires: spacewalk-backend >= 1.7.24
-%endif
 
 %define rhnroot %{_usr}/share/rhn
 %define destdir %{rhnroot}/proxy
@@ -161,6 +161,8 @@ Requires: spacewalk-backend >= 1.7.24
 Requires: rhnlib >= 2.5.56
 Requires: python
 Requires: rhnpush >= 5.5.74
+# proxy isn't Python 3 yet
+Requires: python2-rhnpush
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: python-devel
 Obsoletes: rhn_package_manager < 5.3.0
@@ -469,6 +471,10 @@ fi
 
 
 %changelog
+* Mon Nov 13 2017 Jan Dobes 2.8.2-1
+- proxy isn't Python 3 yet, still require Python 2 rhnpush
+- removing useless condition
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
 - purged changelog entries for Spacewalk 2.0 and older
 - use standard brp-python-bytecompile

@@ -81,7 +81,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
     /**
      * tests to see if we can allow multiple registers, unregisters
      * and publishers.
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public void testMultiThreadedPublishRegister() throws Exception {
         logger.debug("testMultiThreadedPublishRegister - start");
@@ -138,7 +138,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
     /**
      * This test seems to fail randomly every few days.  going to skip it
      *  for now
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public void skipTestDeRegister() throws Exception {
         logger.debug("testDeRegister - start");

@@ -45,7 +45,7 @@ public class TokenTest extends RhnBaseTestCase {
 
     /**
      * Simple test to check Token creation and the equals method.
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public void testEquals() throws Exception {
         Token token1 = createTestToken();
@@ -122,7 +122,7 @@ public class TokenTest extends RhnBaseTestCase {
     /**
      * Helper method to create a test Token
      * @return Returns a Token
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public static Token createTestToken() throws Exception {
         Token token = new Token();

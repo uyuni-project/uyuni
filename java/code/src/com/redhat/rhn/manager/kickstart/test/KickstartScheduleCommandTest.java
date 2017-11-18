@@ -113,7 +113,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
     /**
      * Big test to make sure we include x86_64 ks profiles if the
      * box has an i386 basechannel but seems to be 64bit hardware.
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public void testProfileArches() throws Exception {
         KickstartData x86ks = KickstartDataTest.
@@ -302,13 +302,10 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
 
     /**
      * Util method to schedule a Kickstart.
-     * @param activationType KickstartScheduleCommand.ACTIVATION_TYPE_KEY/EXISTING
-     * @param user who schedules
      * @param server to schedule against
      * @param ksdata to use
-     * @param profileType KickstartScheduleCommand.TARGET_PROFILE_TYPE_*
      * @return KickstartScheduleCommand used
-     * @throws Exception
+     * @throws Exception something bad happened
      */
     public static KickstartScheduleCommand scheduleAKickstart(Server server,
             KickstartData ksdata) throws Exception {
