@@ -39,7 +39,7 @@ Obsoletes: rhn-setup-gnome
 Requires: rpm >= 4.2.3-24_nonptl
 Requires: rpm-python
 Requires: gnupg
-Requires: sh-utils
+Requires: coreutils
 Requires: %{pythonX}-%{name} = %{version}-%{release}
 
 %if 0%{?suse_version}
