@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
@@ -34,6 +35,8 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.config.ConfigInfo;
+import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -50,6 +53,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionServerUtils;
+import com.suse.manager.webui.utils.salt.File;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -135,6 +139,9 @@ public enum SaltServerActionService {
         }
         else if (ActionFactory.TYPE_REBOOT.equals(actionType)) {
             return rebootAction(minions);
+        }
+        else if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(actionType)) {
+            return manageFile(minions, (ConfigAction)actionIn);
         }
         else if (ActionFactory.TYPE_SCRIPT_RUN.equals(actionType)) {
             ScriptAction scriptAction = (ScriptAction) actionIn;
@@ -377,6 +384,27 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(com.suse.salt.netapi.calls.modules.System
                 .reboot(Optional.of(3)), minions);
+        return ret;
+    }
+    private Map<LocalCall<?>, List<MinionServer>> manageFile(List<MinionServer> minions,
+                                                                   ConfigAction actionIn) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+
+        actionIn.getConfigRevisionActions().forEach(configRevisionAction-> {
+            ConfigRevision revision = configRevisionAction.getConfigRevision();
+            //String source = ConfigChannelSaltManager
+            //      .getSaltUriForConfigFile(revision.getConfigFile());
+            String source = "salt:/" + revision.getConfigFile()
+                    .getConfigFileName().getPath();
+            String name = revision.getConfigFile().getConfigFileName().getPath();
+            final ConfigInfo configInfo = revision.getConfigInfo();
+            String mode = configInfo.getFilemode().toString();
+            String user = configInfo.getUsername();
+            String group = configInfo.getGroupname();
+            LocalCall<File.Result> localCall = File.manageFile(name, source, mode,
+                    user, group);
+            ret.put(localCall, minions);
+        });
         return ret;
     }
 
