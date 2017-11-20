@@ -180,4 +180,26 @@ public class Notification {
             wsSessions = wsSessions.stream().filter(ws -> ws.isOpen()).collect(Collectors.toSet());
         }
     }
+
+    private static Thread notificationThread ; //notification publisher thread
+    static {
+        notificationThread = new Thread(){
+            @Override
+            public void run() {
+                while(true) {
+                    // if there are unread messages, notify it to all attached WebSocket sessions
+                    if (NotificationMessageFactory.unreadMessagesSize() > 0) {
+                        Notification.notifyAll(NotificationMessageFactory.unreadMessagesSizeToString());
+                    }
+                    try {
+                        // check every 1 second
+                        sleep(1000);
+                    }
+                    catch (InterruptedException e) {
+                    }
+                }
+            };
+        };
+        notificationThread.start();
+    }
 }
