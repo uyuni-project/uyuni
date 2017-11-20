@@ -17,8 +17,6 @@ package com.redhat.rhn.domain.notification;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import com.suse.manager.webui.websocket.Notification;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -84,8 +82,6 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static void store(NotificationMessage notificationMessage) {
         singleton.saveObject(notificationMessage);
-
-        fireNotificationUpdate();
     }
 
     /**
@@ -96,8 +92,6 @@ public class NotificationMessageFactory extends HibernateFactory {
     public static void updateStatus(NotificationMessage notificationMessage, boolean isRead) {
         notificationMessage.setIsRead(isRead);
         singleton.saveObject(notificationMessage);
-
-        fireNotificationUpdate();
     }
 
     /**
@@ -106,8 +100,6 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static void remove(NotificationMessage notificationMessage) {
         singleton.removeObject(notificationMessage);
-
-        fireNotificationUpdate();
     }
 
     /**
@@ -147,14 +139,6 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static String unreadMessagesSizeToString() {
         return String.valueOf(unreadMessagesSize());
-    }
-
-    /**
-     * As soon as a NotificationMessage is stored, updated, removed
-     * this will fire an update to notify all attached websocket sessions.
-     */
-    private static void fireNotificationUpdate() {
-        Notification.notifyAll(unreadMessagesSizeToString());
     }
 
     /**
