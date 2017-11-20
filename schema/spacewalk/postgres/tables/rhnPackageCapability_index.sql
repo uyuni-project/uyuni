@@ -1,5 +1,6 @@
+-- oracle equivalent source sha1 e8780ef427c5ee71a056b15d52a3a5bcfd4df75f
 --
--- Copyright (c) 2008 Red Hat, Inc.
+-- Copyright (c) 2017 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,21 +14,10 @@
 -- in this software or its documentation.
 --
 
+CREATE UNIQUE INDEX rhn_pkg_cap_name_version_uq
+    ON rhnPackageCapability (name, version)
+ where version is not null;
 
-CREATE TABLE rhnPackageEVR
-(
-    id       NUMBER NOT NULL
-                 CONSTRAINT rhn_pe_id_pk PRIMARY KEY,
-    epoch    VARCHAR2(16),
-    version  VARCHAR2(512) NOT NULL,
-    release  VARCHAR2(512) NOT NULL,
-    evr      EVR_T NOT NULL
-)
-ENABLE ROW MOVEMENT
-;
-
--- unique index definitions has been moved to
--- {oracle,postgres}/tables/rhnPackageEVR_index.sql
-
-CREATE SEQUENCE rhn_pkg_evr_seq;
-
+create unique index rhn_pkg_cap_name_uq
+    on rhnPackageCapability (name)
+ where version is null;
