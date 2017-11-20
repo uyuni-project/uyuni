@@ -1,4 +1,5 @@
 - Enable 'Power Management' features on Salt minions.
+- add unique index for evr and migration removing duplicates (bsc#1058110)
 
 -------------------------------------------------------------------
 Tue Oct 17 13:04:25 CEST 2017 - jgonzalez@suse.com
