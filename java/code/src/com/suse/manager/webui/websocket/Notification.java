@@ -50,20 +50,15 @@ public class Notification {
      */
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
-        if (session == null) {
-            try {
-                LOG.debug("No web sessionId available. Closing the web socket.");
-                session.close();
-            }
-            catch (IOException e) {
-                LOG.debug("Error closing web socket session", e);
-            }
-        }
-        LOG.debug(String.format("Hooked a new websocket session [id:{0}]", session.getId()));
-        handshakeSession(session);
+        if (session != null) {
+            LOG.debug(String.format("Hooked a new websocket session [id:%s]", session.getId()));
+            handshakeSession(session);
 
-        // update the notification counter to the unread messages
-        sendMessage(session, NotificationMessageFactory.unreadMessagesSizeToString());
+            // update the notification counter to the unread messages
+            sendMessage(session, NotificationMessageFactory.unreadMessagesSizeToString());
+        } else {
+           LOG.debug("No web sessionId available. Closing the web socket.");
+        }
     }
 
     /**
@@ -83,7 +78,7 @@ public class Notification {
      */
     @OnMessage
     public void onMessage(Session session, String messageBody) {
-        LOG.debug(String.format("Received [message:{0}] from session [id:{1}].", messageBody, session.getId()));
+        LOG.debug(String.format("Received [message:%s] from session [id:%s].", messageBody, session.getId()));
         notifyAll(messageBody);
     }
 
@@ -118,7 +113,7 @@ public class Notification {
                     session.getBasicRemote().sendText(message);
                 }
                 else {
-                    LOG.debug(String.format("Could not send websocket message. Session [id:{0}] is closed.",
+                    LOG.debug(String.format("Could not send websocket message. Session [id:%s] is closed.",
                             session.getId()));
                     handbreakSession(session);
                 }
@@ -138,7 +133,7 @@ public class Notification {
     public static void notifyAll(String message) {
         // notify all open WebSocket sessions
         refreshOpenSessions();
-        LOG.info(String.format("Notifying {0} websocket sessions", wsSessions.size()));
+        LOG.info(String.format("Notifying %s websocket sessions", wsSessions.size()));
 
         synchronized (wsSessions) {
             for (Session ws : wsSessions) {
@@ -146,7 +141,7 @@ public class Notification {
                     ws.getBasicRemote().sendText(message);
                 }
                 catch (IOException e) {
-                    LOG.error(String.format("Error sending message to websocket [id:{0}]", ws.getId()), e);
+                    LOG.error(String.format("Error sending message to websocket [id:%s]", ws.getId()), e);
                 }
             }
         }
