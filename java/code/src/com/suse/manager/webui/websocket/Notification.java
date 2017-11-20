@@ -176,27 +176,27 @@ public class Notification {
         }
     }
 
-    private static Thread notificationThread ; //notification publisher thread
-    private static int lastUnreadMessages = 0;
     static {
-        notificationThread = new Thread(){
+        Thread notificationThread = new Thread() {
             @Override
             public void run() {
-                while(true) {
+                while (true) {
+                    int lastUnreadMessages = 0;
                     int dbUnreadMessages = NotificationMessageFactory.unreadMessagesSize();
                     // if there are unread messages, notify it to all attached WebSocket sessions
-                    if ( dbUnreadMessages != lastUnreadMessages) {
+                    if (dbUnreadMessages != lastUnreadMessages) {
                         lastUnreadMessages = dbUnreadMessages;
                         Notification.notifyAll(String.valueOf(lastUnreadMessages));
                     }
                     try {
                         // check every 1 second
                         sleep(1000);
-                    }
-                    catch (InterruptedException e) {
+                    } catch (InterruptedException e) {
                     }
                 }
-            };
+            }
+
+            ;
         };
         notificationThread.start();
     }
