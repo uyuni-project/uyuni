@@ -18,13 +18,16 @@ if [ $# == 1 ]; then
         exit 1
     fi
 else
+    echo -n "`date +"%H:%M:%S"`   Checking diskspace... "
+
     FREESPACE=`df $DIR | awk '{v=$4} END {print v}'`
-    USEDSPACE=`df $DIR | awk '{v=$3} END {print v}'`
+    USEDSPACE=`du -s $DIR | awk '{v=$1} END {print v}'`
 
     # add 10 percent for safety
     NEEDSPACE=`expr $USEDSPACE + $USEDSPACE / 10`
 
     if [ $FREESPACE -lt $NEEDSPACE ]; then
+        echo "failed!"
         NEEDSPACE=`expr $NEEDSPACE / 1024 / 1024`
         FREESPACE=`expr $FREESPACE / 1024 / 1024`
 
@@ -37,6 +40,8 @@ else
         echo "`date +"%H:%M:%S"`   If you have a backup of the database, run \"$0 fast\""
         echo
         exit 1
+    else
+        echo "ok."
     fi
 fi
 
