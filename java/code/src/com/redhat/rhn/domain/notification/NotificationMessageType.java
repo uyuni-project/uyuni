@@ -26,7 +26,7 @@ import java.util.Optional;
 import java.util.TreeMap;
 
 /**
- * NotificationMessageType - Class representation of the table rhnNotificationMessageType.
+ * NotificationMessageType - Class representation of the table suseNotificationMessageType.
  * @version $Rev$
  */
 public class NotificationMessageType extends BaseDomainHelper {
