@@ -4,6 +4,8 @@
 - add hostname to duplicate machine_id email (bsc#1055292)
 - fix link to manual and the described procedure
 - don't crash when token is set to 'fake' (bsc#1060022)
+- when searching for not installed products exclude release packages
+  which are provided by others (bsc#1067509)
 
 -------------------------------------------------------------------
 Thu Sep 14 11:40:39 CEST 2017 - mc@suse.de
