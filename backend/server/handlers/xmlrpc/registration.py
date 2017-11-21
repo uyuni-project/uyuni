@@ -1029,6 +1029,7 @@ class Registration(rhnHandler):
             server.add_hardware(hardware)
         # XXX: check return code
         server.save_hardware()
+        server.save()
 
     def add_hw_profile(self, system_id, hwlist):
         """ Insert a new profile for the server """
