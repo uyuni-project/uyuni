@@ -14,40 +14,30 @@
  */
 package com.redhat.rhn.domain.notification;
 
-import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.config.ConfigChannelType;
-import com.redhat.rhn.domain.config.ConfigurationFactory;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
+import javax.persistence.*;
 
 /**
  * NotificationMessageType - Class representation of the table suseNotificationMessageType.
  * @version $Rev$
  */
-public class NotificationMessageType extends BaseDomainHelper {
+@Entity
+@Table(name = "susenotificationmessagetype")
+public class NotificationMessageType {
 
     private Long id;
     private String label;
     private String name;
     private Long priority;
 
-    public static final String INFO = "info";
-    public static final String WARNING = "warning";
-    public static final String ERROR = "error";
-
-    private static final Map POSSIBLE_TYPES = new TreeMap(String.CASE_INSENSITIVE_ORDER);
-
     /**
     *
     * @return the info message type object
     */
    public static NotificationMessageType info() {
-       return lookup(INFO);
+       return NotificationMessageFactory.lookupNotificationMessageTypeByLabel("info").get();
    }
 
    /**
@@ -55,7 +45,7 @@ public class NotificationMessageType extends BaseDomainHelper {
     * @return the warning message type object
    */
    public static NotificationMessageType warning() {
-       return lookup(WARNING);
+       return NotificationMessageFactory.lookupNotificationMessageTypeByLabel("warning").get();
    }
 
    /**
@@ -63,41 +53,17 @@ public class NotificationMessageType extends BaseDomainHelper {
     * @return the error message type object
    */
    public static NotificationMessageType error() {
-       return lookup(ERROR);
-   }
-
-   /**
-    * Given a label type label it returns the associated
-    * NotificationMessageType
-    * @param type the message type label
-    * @return the notification message type associated to the type label.
-    */
-    public static NotificationMessageType lookup(String type) {
-        if (POSSIBLE_TYPES.isEmpty()) {
-            NotificationMessageType info = NotificationMessageFactory.
-                            lookupNotificationMessageTypeByLabel(INFO);
-            NotificationMessageType warning = NotificationMessageFactory.
-                            lookupNotificationMessageTypeByLabel(WARNING);
-            NotificationMessageType error = NotificationMessageFactory.
-                            lookupNotificationMessageTypeByLabel(ERROR);
-            POSSIBLE_TYPES.put(INFO, info);
-            POSSIBLE_TYPES.put(warning, warning);
-            POSSIBLE_TYPES.put(ERROR, error);
-       }
-
-       if (!POSSIBLE_TYPES.containsKey(type)) {
-           String msg = "Invalid type [" + type + "] specified. " +
-           "Make sure you specify one of the following types " +
-               "in your expression " + POSSIBLE_TYPES.keySet();
-           throw new IllegalArgumentException(msg);
-       }
-       return (NotificationMessageType) POSSIBLE_TYPES.get(type);
+       return NotificationMessageFactory.lookupNotificationMessageTypeByLabel("error").get();
    }
 
     /**
      * Getter for id
      * @return Long to get
     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notifymsgtype_seq")
+    @SequenceGenerator(name = "notifymsgtype_seq",
+            sequenceName = "suse_notifymsg_type_id_seq", allocationSize = 1)
     public Long getId() {
         return this.id;
     }
@@ -114,6 +80,7 @@ public class NotificationMessageType extends BaseDomainHelper {
      * Getter for label
      * @return String to get
     */
+    @Column(name = "label")
     public String getLabel() {
         return this.label;
     }
@@ -130,6 +97,7 @@ public class NotificationMessageType extends BaseDomainHelper {
      * Getter for name
      * @return String to get
     */
+    @Column(name = "name")
     public String getName() {
         return this.name;
     }
@@ -146,6 +114,7 @@ public class NotificationMessageType extends BaseDomainHelper {
      * Getter for priority
      * @return Long to get
     */
+    @Column(name = "priority")
     public Long getPriority() {
         return this.priority;
     }

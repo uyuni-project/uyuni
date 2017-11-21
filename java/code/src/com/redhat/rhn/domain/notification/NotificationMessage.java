@@ -1,24 +1,23 @@
 package com.redhat.rhn.domain.notification;
 
-import com.redhat.rhn.domain.notification.NotificationMessageType;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Type;
 
-import java.util.Date;
+import javax.persistence.*;
 
 /**
  * A notification NotificationMessage Object.
  */
+@Entity
+@Table(name = "susenotificationmessage")
 public class NotificationMessage {
 
     private Long id;
     private NotificationMessageType notificationMessageType;
     private String description;
     private boolean isRead;
-    private Date created;
-    private Date modified;
 
     /**
      * Empty constructor
@@ -40,21 +39,13 @@ public class NotificationMessage {
     }
 
     /**
-     * Default constructor for a NotificationMessage
-     *
-     * @param typeIn the label type of the message
-     * @param descriptionIn the description of the message
-     * @param isReadIn if the message is already read or not
-     */
-    public NotificationMessage(String typeIn, String descriptionIn, boolean isReadIn) {
-        this.notificationMessageType = NotificationMessageType.lookup(typeIn);
-        this.description = descriptionIn;
-        this.isRead = isReadIn;
-    }
-
-    /**
      * @return Returns the id.
      */
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nmsg_seq")
+    @SequenceGenerator(name = "nmsg_seq", sequenceName = "suse_notification_message_id_seq",
+            allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -69,6 +60,7 @@ public class NotificationMessage {
     /**
      * @return Returns the description.
      */
+    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -83,6 +75,8 @@ public class NotificationMessage {
     /**
      * @return Returns the read.
      */
+    @Type(type = "yes_no")
+    @Column(name = "is_read")
     public boolean getIsRead() {
         return isRead;
     }
@@ -95,36 +89,10 @@ public class NotificationMessage {
     }
 
     /**
-     * @return Returns the created date.
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * @param createdIn The created date to set.
-     */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * @return Returns the modified date.
-     */
-    public Date getModified() {
-        return modified;
-    }
-
-    /**
-     * @param modifiedIn The modified date to set.
-     */
-    public void setModified(Date modifiedIn) {
-        this.modified= modifiedIn;
-    }
-
-    /**
      * @return Returns the notificationMessageType.
      */
+    @ManyToOne
+    @JoinColumn(name = "notifmess_type_id")
     public NotificationMessageType getNotificationMessageType() {
         return notificationMessageType;
     }
@@ -147,7 +115,6 @@ public class NotificationMessage {
         NotificationMessage otherNotificationMessage = (NotificationMessage) other;
         return new EqualsBuilder()
             .append(getDescription(), otherNotificationMessage.getDescription())
-            .append(getCreated(), otherNotificationMessage.getCreated())
             .append(getIsRead(), otherNotificationMessage.getIsRead())
             .isEquals();
     }
@@ -159,7 +126,6 @@ public class NotificationMessage {
     public int hashCode() {
         return new HashCodeBuilder()
             .append(getDescription())
-            .append(getCreated())
             .toHashCode();
     }
 
@@ -171,7 +137,6 @@ public class NotificationMessage {
         return new ToStringBuilder(this)
             .append("id", getId())
             .append("description", getDescription())
-            .append("created", getCreated())
             .append("isRead", getIsRead())
             .toString();
     }

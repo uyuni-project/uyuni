@@ -30,8 +30,6 @@ public class JSONNotificationMessage {
     /**
      * Default constructor for a JSONNotificationMessage
      *
-     * @param descriptionIn the description of the message
-     * @param isReadIn if the message is already read or not
      */
     public JSONNotificationMessage(NotificationMessage nm) {
         this.id = nm.getId();
@@ -39,8 +37,6 @@ public class JSONNotificationMessage {
         this.priority = nm.getNotificationMessageType().getPriority();
         this.description = nm.getDescription();
         this.isRead = nm.getIsRead();
-        this.created = nm.getCreated();
-        this.modified = nm.getModified();
     }
 
     /**
@@ -135,7 +131,7 @@ public class JSONNotificationMessage {
     }
 
     /**
-     * @param priorityIn The to set.
+     * @param typeIn type
      */
     public void setType(String typeIn) {
         this.type = typeIn;
