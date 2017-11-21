@@ -17,9 +17,14 @@ package com.redhat.rhn.domain.notification;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
+import com.redhat.rhn.domain.image.ImageInfo;
+import com.suse.manager.webui.websocket.Notification;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +47,7 @@ public class NotificationMessageFactory extends HibernateFactory {
      * @return new empty notificationMessage
      */
     public static NotificationMessage createNotificationMessage() {
-        NotificationMessage notificationMessage = new NotificationMessage();
-        return notificationMessage;
+        return new NotificationMessage();
     }
 
     /**
@@ -56,21 +60,6 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static NotificationMessage createNotificationMessage(
             NotificationMessageType typeIn, String descriptionIn, boolean readIn) {
-        NotificationMessage notificationMessage =
-                new NotificationMessage(typeIn, descriptionIn, readIn);
-        return notificationMessage;
-    }
-
-    /**
-     * Create new {@link NotificationMessage}.
-     *
-     * @param typeIn the label type of the message
-     * @param descriptionIn the text message
-     * @param readIn if the message is read
-     * @return new empty notificationMessage
-     */
-    public static NotificationMessage createNotificationMessage(
-            String typeIn, String descriptionIn, boolean readIn) {
         NotificationMessage notificationMessage =
                 new NotificationMessage(typeIn, descriptionIn, readIn);
         return notificationMessage;
@@ -102,12 +91,24 @@ public class NotificationMessageFactory extends HibernateFactory {
         singleton.removeObject(notificationMessage);
     }
 
+    public static List<NotificationMessage> listAll() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<NotificationMessage> criteria = builder.createQuery(NotificationMessage.class);
+        return getSession().createQuery(criteria).getResultList();
+    }
+
     /**
-     * Lookup all NotificationMessages .
+     * List notification messages by read status.
      * @return List of notification messages.
      */
-    public static List<NotificationMessage> listAll() {
-        return singleton.listObjectsByNamedQuery("NotificationMessage.listAllNotificationMessage", null);
+    public static List<NotificationMessage> byRead(boolean isRead) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<NotificationMessage> query = builder.createQuery(NotificationMessage.class);
+
+        Root<NotificationMessage> root = query.from(NotificationMessage.class);
+        query.where(builder.equal(root.get("isRead"), isRead));
+
+        return getSession().createQuery(query).list();
     }
 
     /**
@@ -115,14 +116,17 @@ public class NotificationMessageFactory extends HibernateFactory {
      * @return List of not yet read notification messages.
      */
     public static List<NotificationMessage> listUnread() {
-        return singleton.listObjectsByNamedQuery("NotificationMessage.listUnreadNotificationMessage", null);
+        return byRead(false);
     }
 
     public static Optional<NotificationMessage> lookupById(Long messageId) {
-        Map<String, Long> qryParams = new HashMap<>();
-        qryParams.put("message_id", messageId);
-        return Optional.ofNullable(
-                (NotificationMessage) singleton.lookupObjectByNamedQuery("NotificationMessage.lookupById", qryParams));
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<NotificationMessage> query = builder.createQuery(NotificationMessage.class);
+
+        Root<NotificationMessage> root = query.from(NotificationMessage.class);
+        query.where(builder.equal(root.get("id"), messageId));
+
+        return getSession().createQuery(query).uniqueResultOptional();
     }
 
     /**
@@ -144,31 +148,15 @@ public class NotificationMessageFactory extends HibernateFactory {
     /**
      * Used to look up NotificationMessageType.
      *
-     * @param id The unique id of the type.
-     * @return A sought for NotificationMessageType or null
-     */
-    static Optional<NotificationMessageType> lookupNotificationMessageTypeById(Long id) {
-        Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("NotificationMessageType.lookupById")
-                .setParameter("type_id", id)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResultOptional();
-    }
-
-    /**
-     * Used to look up NotificationMessageType.
-     *
      * @param label The unique label of the type.
      * @return A sought for NotificationMessageType or null
      */
-    static NotificationMessageType lookupNotificationMessageTypeByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return (NotificationMessageType) session.getNamedQuery("NotificationMessageType.lookupByLabel")
-                .setParameter("type_label", label)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
+    static Optional<NotificationMessageType> lookupNotificationMessageTypeByLabel(String label) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<NotificationMessageType> criteria = builder.createQuery(NotificationMessageType.class);
+        Root<NotificationMessageType> root = criteria.from(NotificationMessageType.class);
+        criteria.where(builder.equal(root.get("label"), label));
+        return getSession().createQuery(criteria).uniqueResultOptional();
     }
 
     @Override
