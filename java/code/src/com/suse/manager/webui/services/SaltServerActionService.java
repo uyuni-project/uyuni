@@ -98,8 +98,11 @@ public enum SaltServerActionService {
     private static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
     private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
+    private static final String CONFIG_DEPLOY_FILES = "configuration.deploy_files";
     private static final String PARAM_PKGS = "param_pkgs";
     private static final String PARAM_PATCHES = "param_patches";
+    private static final String PARAM_FILES = "param_files";
+
 
 
     /** SLS pillar parameter name for the list of update stack patch names. */
@@ -141,7 +144,7 @@ public enum SaltServerActionService {
             return rebootAction(minions);
         }
         else if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(actionType)) {
-            return manageFile(minions, (ConfigAction)actionIn);
+            return manageFiles(minions, (ConfigAction) actionIn);
         }
         else if (ActionFactory.TYPE_SCRIPT_RUN.equals(actionType)) {
             ScriptAction scriptAction = (ScriptAction) actionIn;
@@ -386,25 +389,40 @@ public enum SaltServerActionService {
                 .reboot(Optional.of(3)), minions);
         return ret;
     }
-    private Map<LocalCall<?>, List<MinionServer>> manageFile(List<MinionServer> minions,
-                                                                   ConfigAction actionIn) {
-        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
 
-        actionIn.getConfigRevisionActions().forEach(configRevisionAction-> {
-            ConfigRevision revision = configRevisionAction.getConfigRevision();
-            //String source = ConfigChannelSaltManager
-            //      .getSaltUriForConfigFile(revision.getConfigFile());
-            String source = "salt:/" + revision.getConfigFile()
-                    .getConfigFileName().getPath();
-            String name = revision.getConfigFile().getConfigFileName().getPath();
-            final ConfigInfo configInfo = revision.getConfigInfo();
-            String mode = configInfo.getFilemode().toString();
-            String user = configInfo.getUsername();
-            String group = configInfo.getGroupname();
-            LocalCall<File.Result> localCall = File.manageFile(name, source, mode,
-                    user, group);
-            ret.put(localCall, minions);
-        });
+    /**
+     * Manage files(files, directory, symlink) through state.apply
+     * @param minions target systems
+     * @param action action which has all the revisions
+     * @return
+     */
+    private Map<LocalCall<?>, List<MinionServer>> manageFiles(List<MinionServer> minions,
+                                                              ConfigAction action) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
+                .map(revAction -> revAction.getConfigRevision())
+                .map(revision -> {
+                    List<Map<String, Object>> fileParams = Collections.EMPTY_LIST;
+                    if (revision.isFile()) {
+                        fileParams = ConfigChannelSaltManager.getInstance()
+                                .getFileStateParams(revision.getConfigFile());
+                    }
+                    else if (revision.isDirectory()) {
+                        fileParams = ConfigChannelSaltManager.getInstance()
+                                .getDirectoryStateParams(revision.getConfigFile());
+                    }
+                    else if (revision.isSymlink()) {
+                        fileParams = ConfigChannelSaltManager.getInstance()
+                                .getSymLinkStateParams(revision.getConfigFile());
+                    }
+                    Map<String, Object> finalMap = new HashMap<>();
+                    finalMap.put("type", revision.getConfigFileType().getLabel());
+                    fileParams.stream().forEach(v -> finalMap.putAll(v));
+                    return finalMap;
+                }).collect(Collectors.toList());
+        ret.put(State.apply(Arrays.asList(CONFIG_DEPLOY_FILES),
+                Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
+                Optional.of(true)), minions);
         return ret;
     }
 
