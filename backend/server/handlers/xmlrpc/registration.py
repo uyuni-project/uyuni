@@ -1017,10 +1017,8 @@ class Registration(rhnHandler):
 
     def extract_and_save_hostname(self, server, hardware):
         if 'hostname' in hardware.keys():
-            hostname = hardware['hostname']
-            del hardware['hostname']
-            server.server['hostname'] = hostname
-            server.save()
+            server.server["hostname"] = hardware["hostname"]
+            del hardware["hostname"]
 
     def __add_hw_profile_no_auth(self, server, hwlist):
         """ Insert a new profile for the server, but do not authenticate """
