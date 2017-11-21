@@ -2,6 +2,7 @@
 - fix migration from SUSE Manager versions > 2.1 (bsc#1055306)
 - Fixed bootstrap repository path for SLES4SAP version 12 and 12.1 (bsc#1062936)
 - fix error message for database upgrade failure
+- check for sufficient diskspace in /var/lib/pgsql
 
 -------------------------------------------------------------------
 Mon May 29 15:41:25 CEST 2017 - mc@suse.de
