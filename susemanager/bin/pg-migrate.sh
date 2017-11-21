@@ -1,6 +1,7 @@
 #/!bin/bash
 
 FAST_UPGRADE=""
+DIR=/var/lib/pgsql
 
 if [ $# -gt 1 ]; then
     echo "`date +"%H:%M:%S"`   Usage: '$0' or '$0 fast'"
@@ -15,6 +16,32 @@ if [ $# == 1 ]; then
         echo "`date +"%H:%M:%S"`   Unknown option '$1'"
         echo "`date +"%H:%M:%S"`   Usage: '$0' or '$0 fast'"
         exit 1
+    fi
+else
+    echo -n "`date +"%H:%M:%S"`   Checking diskspace... "
+
+    FREESPACE=`df $DIR | awk '{v=$4} END {print v}'`
+    USEDSPACE=`du -s $DIR | awk '{v=$1} END {print v}'`
+
+    # add 10 percent for safety
+    NEEDSPACE=`expr $USEDSPACE + $USEDSPACE / 10`
+
+    if [ $FREESPACE -lt $NEEDSPACE ]; then
+        echo "failed!"
+        NEEDSPACE=`expr $NEEDSPACE / 1024 / 1024`
+        FREESPACE=`expr $FREESPACE / 1024 / 1024`
+
+        echo
+        echo "`date +"%H:%M:%S"`   Insufficient diskspace in $DIR ($NEEDSPACE GB needed, $FREESPACE GB available)!"
+        echo
+        echo "`date +"%H:%M:%S"`   A fast migration does not need this additional diskspace, because"
+        echo "`date +"%H:%M:%S"`   database files will be hardlinked instead of copied."
+        echo
+        echo "`date +"%H:%M:%S"`   If you have a backup of the database, run \"$0 fast\""
+        echo
+        exit 1
+    else
+        echo "ok."
     fi
 fi
 
