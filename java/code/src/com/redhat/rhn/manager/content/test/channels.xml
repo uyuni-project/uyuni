@@ -42,6 +42,21 @@
 			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR SDK for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-adv-toolchain-sap-sp1" name="IBM-DLPAR-Adv-Toolchain SAP-SP1" optional="N" parent="sle12-sp1-sap-pool-ppc64le" product_name="ibm-dlpar-sdk" product_version="12" source_url="http://ftp.unicamp.br/pub/linuxpatch/toolchain/at/suse/SLES_12/" summary="IBM DLPAR sdk for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR SDK for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-adv-toolchain-sap-sp2" name="IBM-DLPAR-Adv-Toolchain SAP-SP2" optional="N" parent="sle12-sp2-sap-pool-ppc64le" product_name="ibm-dlpar-sdk" product_version="12" source_url="http://ftp.unicamp.br/pub/linuxpatch/toolchain/at/suse/SLES_12/" summary="IBM DLPAR sdk for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR SDK for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-adv-toolchain-sap-sp3" name="IBM-DLPAR-Adv-Toolchain SAP-SP3" optional="N" parent="sle12-sp3-sap-pool-ppc64le" product_name="ibm-dlpar-sdk" product_version="12" source_url="http://ftp.unicamp.br/pub/linuxpatch/toolchain/at/suse/SLES_12/" summary="IBM DLPAR sdk for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="IBM DLPAR SDK for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-adv-toolchain-sp1" name="IBM-DLPAR-Adv-Toolchain SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="ibm-dlpar-sdk" product_version="12" source_url="http://ftp.unicamp.br/pub/linuxpatch/toolchain/at/suse/SLES_12/" summary="IBM DLPAR sdk for SLE 12 ppc64le" update_tag="">
 		<products>
 			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
@@ -62,6 +77,21 @@
 			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR SDK for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-sdk-sap-sp1" name="IBM-DLPAR-SDK SAP-SP1" optional="N" parent="sle12-sp1-sap-pool-ppc64le" product_name="ibm-dlpar-sdk" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/SDK/SLES/12/ppc64le/" summary="IBM DLPAR sdk for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR SDK for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-sdk-sap-sp2" name="IBM-DLPAR-SDK SAP-SP2" optional="N" parent="sle12-sp2-sap-pool-ppc64le" product_name="ibm-dlpar-sdk" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/SDK/SLES/12/ppc64le/" summary="IBM DLPAR sdk for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR SDK for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-sdk-sap-sp3" name="IBM-DLPAR-SDK SAP-SP3" optional="N" parent="sle12-sp3-sap-pool-ppc64le" product_name="ibm-dlpar-sdk" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/SDK/SLES/12/ppc64le/" summary="IBM DLPAR sdk for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="IBM DLPAR SDK for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-sdk-sp1" name="IBM-DLPAR-SDK SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="ibm-dlpar-sdk" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/SDK/SLES/12/ppc64le/" summary="IBM DLPAR sdk for SLE 12 ppc64le" update_tag="">
 		<products>
 			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
@@ -78,6 +108,21 @@
 		</products>
 	</channel>
 	<channel arch="ppc64le" description="IBM DLPAR Utils for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-utils" name="IBM-DLPAR-utils" optional="N" parent="sles12-pool-ppc64le" product_name="ibm-dlpar-utils" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/OSS/SLES/12/ppc64le/" summary="IBM DLPAR Utils for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-utils" version="12">1250</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR Utils for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-utils-sap-sp1" name="IBM-DLPAR-utils SAP-SP1" optional="N" parent="sle12-sp1-sap-pool-ppc64le" product_name="ibm-dlpar-utils" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/OSS/SLES/12/ppc64le/" summary="IBM DLPAR Utils for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-utils" version="12">1250</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR Utils for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-utils-sap-sp2" name="IBM-DLPAR-utils SAP-SP2" optional="N" parent="sle12-sp2-sap-pool-ppc64le" product_name="ibm-dlpar-utils" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/OSS/SLES/12/ppc64le/" summary="IBM DLPAR Utils for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-utils" version="12">1250</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR Utils for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-utils-sap-sp3" name="IBM-DLPAR-utils SAP-SP3" optional="N" parent="sle12-sp3-sap-pool-ppc64le" product_name="ibm-dlpar-utils" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/OSS/SLES/12/ppc64le/" summary="IBM DLPAR Utils for SLE 12 ppc64le" update_tag="">
 		<products>
 			<product_id name="ibm-dlpar-utils" version="12">1250</product_id>
 		</products>
