@@ -38,7 +38,6 @@ import java.util.Optional;
 import static com.redhat.rhn.domain.config.ConfigFileState.NORMAL;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 import static java.util.Collections.emptySortedSet;
-import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
@@ -240,16 +239,32 @@ public class ConfigChannelSaltManager {
         return builder.toString();
     }
 
-    private Map<String, Map<String, List<Map<String, Object>>>> fileState(ConfigFile f) {
-        List<Map<String, Object>> fileParams = new LinkedList<>();
-        fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
-        fileParams.add(singletonMap("source", singletonList(getSaltUriForConfigFile(f))));
-        fileParams.add(singletonMap("makedirs", true));
-        fileParams.addAll(getModeParams(f.getLatestConfigRevision().getConfigInfo()));
-
+    private Map<String, Map<String, List<Map<String, Object>>>> fileState(ConfigFile file) {
+        List<Map<String, Object>> fileParams = getFileStateParams(file);
         return singletonMap(
-                getFileStateName(f),
+                getFileStateName(file),
                 singletonMap("file.managed", fileParams));
+    }
+
+    /**
+     * Get the file params list for salt
+     * @param file file
+     * @return List of params map
+     */
+    public List<Map<String, Object>> getFileStateParams(ConfigFile file) {
+        Path filePath = Paths.get(file.getConfigFileName().getPath());
+        if (filePath.getRoot() != null) {
+            filePath = filePath.getRoot().relativize(filePath);
+        }
+
+        String saltUri = "salt://" + getChannelRelativePath(file.getConfigChannel())
+                .resolve(filePath);
+        List<Map<String, Object>> fileParams = new LinkedList<>();
+        fileParams.add(singletonMap("name", file.getConfigFileName().getPath()));
+        fileParams.add(singletonMap("source", getSaltUriForConfigFile(file)));
+        fileParams.add(singletonMap("makedirs", true));
+        fileParams.addAll(getModeParams(file.getLatestConfigRevision().getConfigInfo()));
+        return fileParams;
     }
 
     /**
@@ -269,28 +284,48 @@ public class ConfigChannelSaltManager {
 
     private Map<String, Map<String, List<Map<String, Object>>>> directoryState(
             ConfigFile f) {
-        List<Map<String, Object>> fileParams = new LinkedList<>();
-        fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
-        fileParams.add(singletonMap("makedirs", true));
-        fileParams.addAll(getModeParams(f.getLatestConfigRevision().getConfigInfo()));
+        List<Map<String, Object>> fileParams = getDirectoryStateParams(f);
 
         return singletonMap(
                 getFileStateName(f),
                 singletonMap("file.directory", fileParams));
     }
 
-    private Map<String, Map<String, List<Map<String, Object>>>> symlinkState(ConfigFile f) {
+    /**
+     * Get the directory params list for salt
+     * @param file file
+     * @return List of params map
+     */
+    public List<Map<String, Object>> getDirectoryStateParams(ConfigFile file) {
         List<Map<String, Object>> fileParams = new LinkedList<>();
-        fileParams.add(singletonMap("name", f.getConfigFileName().getPath()));
-        fileParams.add(singletonMap("target", f.getLatestConfigRevision().getConfigInfo()
-                .getTargetFileName().getPath()));
+        fileParams.add(singletonMap("name", file.getConfigFileName().getPath()));
         fileParams.add(singletonMap("makedirs", true));
+        fileParams.addAll(getModeParams(file.getLatestConfigRevision().getConfigInfo()));
+        return fileParams;
+    }
+
+    private Map<String, Map<String, List<Map<String, Object>>>> symlinkState(ConfigFile f) {
+        List<Map<String, Object>> fileParams = getSymLinkStateParams(f);
 
         return singletonMap(
                 getFileStateName(f),
                 singletonMap(
                         "file.symlink",
                         fileParams));
+    }
+
+    /**
+     * Get the symlink params list for salt
+     * @param file file
+     * @return List of params map
+     */
+    public List<Map<String, Object>> getSymLinkStateParams(ConfigFile file) {
+        List<Map<String, Object>> fileParams = new LinkedList<>();
+        fileParams.add(singletonMap("name", file.getConfigFileName().getPath()));
+        fileParams.add(singletonMap("target", file.getLatestConfigRevision().getConfigInfo()
+                .getTargetFileName().getPath()));
+        fileParams.add(singletonMap("makedirs", true));
+        return fileParams;
     }
 
     private List<Map<String, Object>> getModeParams(ConfigInfo configInfo) {

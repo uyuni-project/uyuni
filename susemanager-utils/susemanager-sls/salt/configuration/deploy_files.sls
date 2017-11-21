@@ -12,8 +12,7 @@ file_deploy_{{ loop.index }}:
     -   name: {{ file.name }}
     -   makedirs: True
 {% if file.type == 'file' %}
-    -   source:
-        - {{ file.source }}
+    -   source: {{ file.source }}
     -   user: {{ file.user }}
     -   group: {{ file.group }}
     -   mode: {{ file.mode }}
@@ -22,7 +21,7 @@ file_deploy_{{ loop.index }}:
     -   group: {{ file.group }}
     -   mode: {{ file.mode }}
 {% elif file.type == 'symlink' %}
-    -   target: {{ file.symlink_target }}
+    -   target: {{ file.target }}
 {% endif %}
 {%- endfor %}
 {% endif %}
