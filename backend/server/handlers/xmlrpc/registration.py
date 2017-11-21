@@ -354,7 +354,7 @@ class Registration(rhnHandler):
         if 'hardware_profile' in data:
             for hw in data['hardware_profile'][:]:
                 if hw['class'] == 'NETINFO':
-                    self.extract_and_save_hostname(server, hw)
+                    self.extract_and_save_hostname(newserv, hw)
                 newserv.add_hardware(hw)
         # fill in the other details from the data dictionary
         if profile_name is not None and not \
