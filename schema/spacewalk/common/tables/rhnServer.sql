@@ -82,4 +82,9 @@ CREATE INDEX rhn_server_creator_idx
     TABLESPACE [[2m_tbs]]
     NOLOGGING;
 
+CREATE INDEX rhn_server_id_hostname_idx
+    ON rhnServer (id, hostname)
+    TABLESPACE [[4m_tbs]]
+    NOLOGGING;
+
 CREATE SEQUENCE rhn_server_id_seq START WITH 1000010000 ORDER;
