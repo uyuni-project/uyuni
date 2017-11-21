@@ -13,7 +13,7 @@ Feature: Register a Salt minion via XML-RPC API
 
   Scenario: Bootstrap a SLES minion via XML-RPC
     Given I am logged in via XML-RPC system as user "admin" and password "admin"
-    When I call system.bootstrap() on host "sle-minion" and saltSSH "disabled", a new system should be bootstraped
+    When I call system.bootstrap() on host "sle-minion" and salt-ssh "disabled"
     And I logout from XML-RPC system namespace
 
   Scenario: Check new minion bootstrapped via XML-RPC in System Overview page
@@ -28,6 +28,13 @@ Feature: Register a Salt minion via XML-RPC API
   Scenario: Check contact method of this minion
     Given I am on the Systems overview page of this "sle-minion"
     Then I should see a "Default" text
+
+@proxy
+  Scenario: Check registration on proxy of minion bootstrapped via XML-RPC
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Details" in the content area
+    And I follow "Proxy" in the content area
+    Then I should see "sle-minion" hostname
 
   Scenario: Check spacecmd system ID of minion bootstrapped via XML-RPC
     Given I am on the Systems overview page of this "sle-minion"

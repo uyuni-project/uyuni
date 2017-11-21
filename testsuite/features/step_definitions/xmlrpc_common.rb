@@ -3,10 +3,8 @@ require 'json'
 require 'xmlrpc/client'
 require 'socket'
 
-rpctest = XMLRPCChannelTest.new(ENV['TESTHOST'])
-systest = XMLRPCSystemTest.new(ENV['TESTHOST'])
-servers = []
-rabbit = nil
+rpctest = XMLRPCChannelTest.new($proxy_ip ? $proxy_ip : $server_ip)
+systest = XMLRPCSystemTest.new($proxy_ip ? $proxy_ip : $server_ip)
 
 Given(/^I am logged in via XML\-RPC system as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   systest.login(luser, password)
@@ -16,11 +14,9 @@ When(/^I call system\.list_systems\(\), I should get a list of them$/) do
   # This also assumes the test is called *after* the regular test.
   servers = systest.list_systems
   assert(servers.!empty?, "Expect: 'number of system' > 0, but found only '#{servers.length}' servers")
-  rabbit = servers[0]
 end
 
-When(/^I call system\.bootstrap\(\) on host "(.*?)" and saltSSH "(.*?)", \
-a new system should be bootstraped$/) do |host, salt_ssh_enabled|
+When(/^I call system\.bootstrap\(\) on host "([^"]*)" and salt\-ssh "([^"]*)"$/) do |host, salt_ssh_enabled|
   salt_ssh = (salt_ssh_enabled == 'enabled')
   node = get_target(host)
   result = systest.bootstrap_system(node.full_hostname, '', salt_ssh)
