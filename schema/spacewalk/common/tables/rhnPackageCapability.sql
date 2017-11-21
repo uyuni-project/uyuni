@@ -29,9 +29,8 @@ CREATE TABLE rhnPackageCapability
 ENABLE ROW MOVEMENT
 ;
 
-CREATE UNIQUE INDEX rhn_pkg_cap_name_version_uq
-    ON rhnPackageCapability (name, version)
-    TABLESPACE [[32m_tbs]];
+-- unique index definitions has been moved to
+-- {oracle,postgres}/tables/rhnPackageCapability_index.sql
 
 CREATE SEQUENCE rhn_pkg_capability_id_seq;
 
