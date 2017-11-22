@@ -414,6 +414,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 // change base channel
                 minion.getChannels().clear();
 
+                // clear config channels
+                minion.setConfigChannels(Collections.emptyList(), minion.getCreator());
+
                 // clear previous capabilities
                 minion.getCapabilities().clear();
 
