@@ -240,10 +240,9 @@ public class ConfigChannelSaltManager {
     }
 
     private Map<String, Map<String, List<Map<String, Object>>>> fileState(ConfigFile file) {
-        List<Map<String, Object>> fileParams = getFileStateParams(file);
         return singletonMap(
                 getFileStateName(file),
-                singletonMap("file.managed", fileParams));
+                singletonMap("file.managed", getFileStateParams(file)));
     }
 
     /**
@@ -284,11 +283,9 @@ public class ConfigChannelSaltManager {
 
     private Map<String, Map<String, List<Map<String, Object>>>> directoryState(
             ConfigFile f) {
-        List<Map<String, Object>> fileParams = getDirectoryStateParams(f);
-
         return singletonMap(
                 getFileStateName(f),
-                singletonMap("file.directory", fileParams));
+                singletonMap("file.directory", getDirectoryStateParams(f)));
     }
 
     /**
@@ -305,13 +302,11 @@ public class ConfigChannelSaltManager {
     }
 
     private Map<String, Map<String, List<Map<String, Object>>>> symlinkState(ConfigFile f) {
-        List<Map<String, Object>> fileParams = getSymLinkStateParams(f);
-
         return singletonMap(
                 getFileStateName(f),
                 singletonMap(
                         "file.symlink",
-                        fileParams));
+                        getSymLinkStateParams(f)));
     }
 
     /**
