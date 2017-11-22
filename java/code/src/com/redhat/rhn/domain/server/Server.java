@@ -58,6 +58,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Stream;
 
 /**
  * Server - Class representation of the table rhnServer.
@@ -317,13 +318,47 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return configChannels;
     }
 
-    /**
-     * @return Returns the ServerConfigChannels mappings currently available
-     * to the server based on it's entitlements.
-     */
-    public List<ConfigChannel> getConfigChannels() {
+    protected List<ConfigChannel> getConfigChannels() {
         ensureConfigManageable();
-        return getConfigChannelsHibernate();
+        return configChannels;
+    }
+
+    /**
+     * Returns a stream of the ServerConfigChannels mappings currently available
+     * to the server based on it's entitlements.
+     *
+     * Any modifications to the config channel subscriptions must be made using the
+     * following methods:
+     *
+     *   {@link Server#subscribeConfigChannel(ConfigChannel, User)}
+     *   {@link Server#subscribeConfigChannels(List, User)}
+     *   {@link Server#unsubscribeConfigChannel(ConfigChannel, User)}
+     *   {@link Server#unsubscribeConfigChannels(List, User)}
+     *   {@link Server#setConfigChannels(List, User)}
+     *
+     * @return A stream of the ServerConfigChannels mappings
+     */
+    public Stream<ConfigChannel> getConfigChannelStream() {
+        return getConfigChannels().stream();
+    }
+
+    /**
+     * Returns a COPY list of the ServerConfigChannels mappings currently available
+     * to the server based on it's entitlements.
+     *
+     * Any modifications to the config channel subscriptions must be made using the
+     * following methods:
+     *
+     *   {@link Server#subscribeConfigChannel(ConfigChannel, User)}
+     *   {@link Server#subscribeConfigChannels(List, User)}
+     *   {@link Server#unsubscribeConfigChannel(ConfigChannel, User)}
+     *   {@link Server#unsubscribeConfigChannels(List, User)}
+     *   {@link Server#setConfigChannels(List, User)}
+     *
+     * @return A list of the ServerConfigChannels mappings
+     */
+    public List<ConfigChannel> getConfigChannelList() {
+        return new ArrayList<>(getConfigChannels());
     }
 
     /**
@@ -331,7 +366,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * the server.
      */
     public int getConfigChannelCount() {
-        return getConfigChannelsHibernate().size();
+        return getConfigChannels().size();
     }
 
     private void ensureConfigManageable() {
@@ -358,7 +393,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @param user The user doing the action
      */
     public void subscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
-        configChannelList.forEach(cc -> configListProc.add(getConfigChannels(), cc));
+        configChannelList
+                .forEach(cc -> configListProc.add(getConfigChannels(), cc));
     }
 
     /**

@@ -119,7 +119,7 @@ public class ChannelListUnsubscribeSubmitAction extends
         ConfigurationManager cm = ConfigurationManager.getInstance();
         ConfigChannel cc = cm.lookupConfigChannel(userIn, elementIn.getElement());
 
-        int numOfChannels = server.getConfigChannels().size();
+        int numOfChannels = server.getConfigChannelCount();
         server.unsubscribeConfigChannel(cc, userIn);
 
         // bz 444517 - Create a snapshot to capture this change
@@ -127,6 +127,6 @@ public class ChannelListUnsubscribeSubmitAction extends
             LocalizationService.getInstance().getMessage("snapshots.configchannel");
         SystemManager.snapshotServer(server, message);
 
-        return Boolean.valueOf(numOfChannels > server.getConfigChannels().size());
+        return numOfChannels > server.getConfigChannelCount();
     }
 }

@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -299,14 +300,11 @@ public class ServerConfigHandler extends BaseHandler {
             if (searchLocal) {
                 cf = cm.lookupConfigFile(loggedInUser,
                         server.getLocalOverride().getId(), path);
+
                 if (cf == null) {
-                    for (ConfigChannel cn : server.getConfigChannels()) {
-                        cf = cm.lookupConfigFile(loggedInUser, cn.getId(), path);
-                        if (cf != null) {
-                            revisions.add(cf.getLatestConfigRevision());
-                            break;
-                        }
-                    }
+                    cf = server.getConfigChannelStream()
+                            .map(cn -> cm.lookupConfigFile(loggedInUser, cn.getId(), path))
+                            .filter(Objects::nonNull).findFirst().orElse(null);
                 }
             }
             else {
@@ -432,7 +430,7 @@ public class ServerConfigHandler extends BaseHandler {
     public List<ConfigChannel> listChannels(User loggedInUser, Integer sid) {
         XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
         Server server = helper.lookupServer(loggedInUser, sid);
-        return server.getConfigChannels();
+        return server.getConfigChannelList();
     }
 
     /**
@@ -489,7 +487,7 @@ public class ServerConfigHandler extends BaseHandler {
                 // Add the existing subscriptions to the end so they will be resubscribed
                 // and their ranks will be overridden
                 channelsToAdd = Stream
-                        .concat(channels.stream(), server.getConfigChannels().stream())
+                        .concat(channels.stream(), server.getConfigChannelStream())
                         .collect(Collectors.toList());
             }
             else {

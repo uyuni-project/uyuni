@@ -389,7 +389,9 @@ public class ServerSnapshot extends BaseDomainHelper {
     public boolean rollbackConfigFiles(User user) throws TaskomaticApiException {
         boolean deployed = false;
         // current config_channels
-        Set<ConfigChannel> ccs = new HashSet<>(this.server.getConfigChannels());
+        Set<ConfigChannel> ccs =
+                this.server.getConfigChannelStream().collect(Collectors.toSet());
+
         this.server.unsubscribeConfigChannels(ccs.stream()
                 .filter(ConfigChannel::isGlobalChannel).collect(Collectors.toList()), user);
 

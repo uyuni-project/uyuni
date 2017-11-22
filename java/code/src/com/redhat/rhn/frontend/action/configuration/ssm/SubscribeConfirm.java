@@ -42,7 +42,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -179,9 +178,11 @@ public class SubscribeConfirm extends RhnAction {
                 .map(elm -> cm.lookupConfigChannel(user, elm.getElement()))
                 .collect(Collectors.toList());
 
+        List<ConfigChannel> existingChannels = server.getConfigChannelList();
+
         if (LOWEST.equals(position)) {
             // Subscribe the new channels in the end. No re-ordering needed.
-            channels.removeAll(server.getConfigChannels());
+            channels.removeAll(existingChannels);
             if (!channels.isEmpty()) {
                 server.subscribeConfigChannels(channels, user);
                 return true;
@@ -190,15 +191,11 @@ public class SubscribeConfirm extends RhnAction {
         else {
             // Previously subscribed channels to append in the end,
             // or nothing in case of REPLACE
-            Optional<List<ConfigChannel>> currChannelsOpt = HIGHEST.equals(position) ?
-                    Optional.ofNullable(server.getConfigChannels()) :
-                    Optional.empty();
-
             if (HIGHEST.equals(position)) {
-                channels.addAll(server.getConfigChannels());
+                channels.addAll(existingChannels);
             }
 
-            if (!channels.equals(server.getConfigChannels())) {
+            if (!channels.equals(existingChannels)) {
                 // Replace config channel subscriptions with the new list
                 server.setConfigChannels(channels, user);
                 return true;
