@@ -71,14 +71,19 @@ sql:
 		(select rvit.name from rhnVirtualInstance rvi inner join rhnVirtualInstanceInfo rvii on rvi.id = rvii.instance_id inner join rhnVirtualInstanceType rvit on rvii.instance_type = rvit.id where rvi.virtual_system_id = rhnServer.id) as virt_type
 	from rhnServer left outer join
 		(
-		select server_id, ipaddr, ip6addr
-		from rhnServerNetwork
+		select server_id, rsna4.address, rsna6.address
+		from rhnservernetinterface rsni
+		left join rhnServerNetAddress4 rsna4
+		on rsni.id = rsna4.interface_id
+		left join rhnServerNetAddress6 rsna6
+		on rsni.id = rsna6.interface_id
 		where id in (
 			select min(id)
-			from rhnServerNetwork
+			from rhnservernetinterface
+			where is_primary = 'Y'
 			group by server_id
 			)
-		) rhnServerNetwork on rhnServer.id = rhnServerNetwork.server_id
+		) rhnservernetwork on rhnServer.id = rhnServerNetwork.server_id
 		left outer join rhnServerChannel on rhnServer.id = rhnServerChannel.server_id
 		left outer join rhnChannel on rhnServerChannel.channel_id = rhnChannel.id
 		left outer join rhnVirtualInstance vi on vi.host_system_id = rhnServer.id and uuid is not null
