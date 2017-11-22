@@ -83,10 +83,11 @@ const NotificationMessages = React.createClass({
       });
   },
 
-  sortByDate: function(aRaw, bRaw, columnKey, sortDirection) {
-    var a = aRaw[columnKey] || "0000-01-01T00:00:00.000Z";
-    var b = bRaw[columnKey] || "0000-01-01T00:00:00.000Z";
-    var result = a.toLowerCase().localeCompare(b.toLowerCase());
+  sortBySeverity: function(aRaw, bRaw, columnKey, sortDirection) {
+    var statusValues = {'info': 0, 'warning': 1, 'error': 2};
+    var a = statusValues[aRaw[columnKey]];
+    var b = statusValues[bRaw[columnKey]];
+    var result = (a > b ? 1 : (a < b ? -1 : 0));
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   },
 
@@ -94,7 +95,7 @@ const NotificationMessages = React.createClass({
     var statusValues = {'true': 0, 'false': 1};
     var a = statusValues[aRaw[columnKey]];
     var b = statusValues[bRaw[columnKey]];
-    var result = (a > b ? 1 : (a < b ? -1 : 0)) || this.sortByDate(aRaw, bRaw, 'created', sortDirection);
+    var result = (a > b ? 1 : (a < b ? -1 : 0));
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   },
 
@@ -134,7 +135,7 @@ const NotificationMessages = React.createClass({
               }>
               <Column
                 columnKey="severity"
-                comparator={Utils.sortByText}
+                comparator={this.sortBySeverity}
                 header={t("Severity")}
                 cell={ (row) => row["severity"] }
               />
@@ -143,12 +144,6 @@ const NotificationMessages = React.createClass({
                 comparator={Utils.sortByText}
                 header={t("Description")}
                 cell={ (row) => row["description"] }
-              />
-              <Column
-                columnKey="created"
-                comparator={this.sortByDate}
-                header={t("Created")}
-                cell={ (row) => row["created"] == null ? "" : moment(row["created"]).format("DD/MM/YYYY HH:mm:ss") }
               />
               <Column
                 columnKey="isRead"
