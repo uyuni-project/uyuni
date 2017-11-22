@@ -1,3 +1,6 @@
+- search for product packages when installed packages are available
+  (bsc#1060182)
+
 -------------------------------------------------------------------
 Fri Nov 10 16:30:32 CET 2017 - mc@suse.de
 
