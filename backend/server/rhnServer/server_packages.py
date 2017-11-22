@@ -389,9 +389,8 @@ class Packages:
             pa_id = row['arch_id']
             package_names[(pn_id, pa_id)] = row['name']
 
-        ret = []
         if not package_names:
-            return ret
+            return None
 
         package_arch_ids = package_names.keys()
 
@@ -404,7 +403,7 @@ class Packages:
 
         rhnSQL.commit()
 
-        return ret
+        return action_id
 
 
 def update_errata_cache(server_id):
