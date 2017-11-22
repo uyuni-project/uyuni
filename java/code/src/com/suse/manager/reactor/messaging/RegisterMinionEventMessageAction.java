@@ -25,8 +25,8 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.NotificationMessage.NotificationMessageType;
 import com.redhat.rhn.domain.notification.NotificationMessageFactory;
-import com.redhat.rhn.domain.notification.NotificationMessageType;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -372,9 +372,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             LOG.error("Error registering minion id: " + minionId, t);
             handleTransactions(false);
             NotificationMessage notificationMessage = NotificationMessageFactory.createNotificationMessage(
-                    NotificationMessageType.error(),
-                    "Error registering minion with id: " + minionId + " " + t.getMessage(),
-                    false);
+                    NotificationMessageType.error,
+                    "Error registering minion with id: " + minionId + " " + t.getMessage());
             NotificationMessageFactory.store(notificationMessage);
         }
         finally {
