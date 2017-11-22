@@ -1,12 +1,9 @@
 package com.redhat.rhn.domain.notification;
 
-import com.redhat.rhn.common.hibernate.PostgreSQLEnumType;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.persistence.EnumType;
@@ -17,10 +14,6 @@ import javax.persistence.Enumerated;
  */
 @Entity
 @Table(name = "susenotificationmessage")
-@TypeDef(
-        name = "pgsql_enum",
-        typeClass = PostgreSQLEnumType.class
-    )
 public class NotificationMessage {
 
     private Long id;
@@ -98,7 +91,6 @@ public class NotificationMessage {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "notificationSeverity")
-    @Type( type = "pgsql_enum" )
     public NotificationMessageType getNotificationSeverity() {
         return notificationSeverity;
     }
