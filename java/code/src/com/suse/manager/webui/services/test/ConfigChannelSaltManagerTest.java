@@ -42,8 +42,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         String expected =  manager.getFileStateName(file)  + ":\n" +
                 "    file.managed:\n" +
                 "    -   name: " + file.getConfigFileName().getPath() + "\n" +
-                "    -   source:\n" +
-                "        - salt://" + manager.getOrgNamespace(channel.getOrgId()) + "/" +
+                "    -   source: salt://" + manager.getOrgNamespace(channel.getOrgId()) + "/" +
                 file.getConfigChannel().getConfigChannelType().getLabel() + "/" +
                 file.getConfigChannel().getLabel() + "/" +
                 file.getConfigFileName().getPath() + "\n" +
