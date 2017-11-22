@@ -735,7 +735,7 @@ SELECT  count(CC.id) AS count
   FROM  rhnConfigChannel CC, rhnConfigChannelType CCT
  WHERE  CC.org_id = :org_id
    AND  CC.confchan_type_id = CCT.id
-   AND  CCT.label IN( 'normal', 'state')
+   AND  CCT.label IN('normal', 'state')
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
   </query>
 </mode>
@@ -758,7 +758,7 @@ SELECT  count(CF.id) AS count
   FROM  rhnConfigFile CF, rhnConfigChannel CC, rhnConfigChannelType CCT
  WHERE  CC.org_id = :org_id
    AND  CC.confchan_type_id = CCT.id
-   AND  CCT.label NOT IN ( 'normal', 'state')
+   AND  CCT.label NOT IN ('normal', 'state')
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
    AND  CC.id = CF.config_channel_id
   </query>

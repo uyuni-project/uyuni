@@ -170,6 +170,7 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
         return ConfigChannelType.normal().equals(getConfigChannelType()) ||
                 ConfigChannelType.state().equals(getConfigChannelType());
     }
+
     /**
      * Is this a normal channel?
      * @return true if normal

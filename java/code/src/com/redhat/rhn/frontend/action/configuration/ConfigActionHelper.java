@@ -295,8 +295,8 @@ public abstract class ConfigActionHelper {
         int symlinkSuffix = getSuffix(symlinkCount);
 
         LocalizationService service  = LocalizationService.getInstance();
-        String key = "config." + "files_" + fileSuffix + "_dirs_" + dirSuffix +
-                "_symlinks_" + symlinkSuffix + "_sls_" + slsSuffix + "";
+        String key = "config." + "sls_" + slsSuffix + "_files_" + fileSuffix +
+                     "_dirs_" + dirSuffix + "_symlinks_" + symlinkSuffix;
 
         if (fileSuffix == NONE && dirSuffix == NONE &&
                 symlinkSuffix == NONE && slsSuffix == NONE) {
@@ -323,15 +323,15 @@ public abstract class ConfigActionHelper {
             if (slsSuffix == NONE) {
                 slsSuffix = PLURAL;
             }
-            key = "config." + "files_" + fileSuffix + "_dirs_" + dirSuffix +
-                    "_symlinks_" + symlinkSuffix + "_sls_" + slsSuffix + "";
+            key = "config." + "sls_" + slsSuffix + "_files_" + fileSuffix +
+                  "_dirs_" + dirSuffix + "_symlinks_" + symlinkSuffix;
         }
 
         String message = service.getMessage(key, new Object[] {
+            String.valueOf(slsCount),
             String.valueOf(fileCount),
             String.valueOf(dirCount),
             String.valueOf(symlinkCount),
-            String.valueOf(slsCount),
         });
         if (url != null) {
             HtmlTag a = new HtmlTag("a");
