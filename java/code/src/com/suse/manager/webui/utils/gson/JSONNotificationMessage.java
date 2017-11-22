@@ -14,8 +14,7 @@ import java.util.Date;
 public class JSONNotificationMessage {
 
     private Long id;
-    private String type;
-    private Long priority;
+    private String severity;
     private String description;
     private boolean isRead;
     private Date created;
@@ -33,8 +32,7 @@ public class JSONNotificationMessage {
      */
     public JSONNotificationMessage(NotificationMessage nm) {
         this.id = nm.getId();
-        this.type = nm.getNotificationMessageType().getLabel();
-        this.priority = nm.getNotificationMessageType().getPriority();
+        this.severity = nm.getNotificationSeverity().toString();
         this.description = nm.getDescription();
         this.isRead = nm.getIsRead();
     }
@@ -110,31 +108,17 @@ public class JSONNotificationMessage {
     }
 
     /**
-     * @return Returns the priority.
-     */
-    public Long getPriority() {
-        return priority;
-    }
-
-    /**
-     * @param priorityIn The priority to set.
-     */
-    public void setPriority(Long priorityIn) {
-        this.priority= priorityIn;
-    }
-
-    /**
-     * @return Returns the type.
+     * @return Returns the severity.
      */
     public String getType() {
-        return type;
+        return severity;
     }
 
     /**
-     * @param typeIn type
+     * @param severityIn The severity to set.
      */
-    public void setType(String typeIn) {
-        this.type = typeIn;
+    public void setSeverity(String severityIn) {
+        this.severity = severityIn;
     }
 
     /**
