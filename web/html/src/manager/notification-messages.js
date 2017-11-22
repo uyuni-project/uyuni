@@ -141,7 +141,7 @@ const NotificationMessages = React.createClass({
               data={this.buildRows(data)}
               identifier={(row) => row["id"]}
               cssClassFunction={(row) => row["status"] == true ? 'text-muted' : null }
-              initialSortColumnKey="created"
+              initialSortColumnKey="severity"
               initialSortDirection={-1}
               searchField={
                   <SearchField filter={this.searchData}
