@@ -413,10 +413,10 @@ public enum SaltServerActionService {
                         fileParams = ConfigChannelSaltManager.getInstance()
                                 .getSymLinkStateParams(revision.getConfigFile());
                     }
-                    Map<String, Object> finalMap = new HashMap<>();
-                    finalMap.put("type", revision.getConfigFileType().getLabel());
-                    fileParams.stream().forEach(v -> finalMap.putAll(v));
-                    return finalMap;
+                    Map<String, Object> stateParameters = new HashMap<>();
+                    stateParameters.put("type", revision.getConfigFileType().getLabel());
+                    fileParams.stream().forEach(v -> stateParameters.putAll(v));
+                    return stateParameters;
                 }).collect(Collectors.toList());
         ret.put(State.apply(Arrays.asList(CONFIG_DEPLOY_FILES),
                 Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
