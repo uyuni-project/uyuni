@@ -824,35 +824,16 @@ public class HardwareMapper {
             netIf.setPrimary("Y");
         });
 
-        // set the primary addresses on the network entity (if any)
-        primaryIPv4.ifPresent(network::setIpaddr);
-        primaryIPv6.ifPresent(network::setIp6addr);
-
         if (!primaryIPv4.isPresent()) {
             // If no primary IPv4 reported by Salt then set the network addr
             // to that of the primary interface (if any) or fallback to the first
             // non localhost interface with a IPv4 addr
-            network.setIpaddr(primaryNetIf
-                    .map(n -> n.getIpaddr())
-                    .orElseGet(() -> firstNetIf(server)
-                            .filter(n -> StringUtils.isNotBlank(n.getIpaddr()))
-                            .map(i -> i.getIpaddr())
-                            .orElse(null)));
         }
 
         if (!primaryIPv6.isPresent()) {
             // If no primary IPv6 reported by Salt then set the network addr
             // to that of the primary interface (if any) or fallback to the first
             // non localhost interface with a IPv6 addr
-            network.setIp6addr(primaryNetIf
-                    .flatMap(n -> n.getIPv6Addresses().stream().findFirst())
-                    .map(ipv6 -> ipv6.getAddress())
-                    .orElseGet(() -> firstNetIf(server)
-                            .filter(n -> !n.getIPv6Addresses().isEmpty())
-                            .flatMap(n -> n.getIPv6Addresses().stream().findFirst())
-                            .map(a -> a.getAddress())
-                            .orElse(null)
-                    ));
         }
     }
 

@@ -39,7 +39,6 @@ public class NetworkTest extends RhnBaseTestCase {
      */
     public static Network createNetworkInstance() {
         Network net = new Network();
-        net.setIpaddr(IP_ADDRESS);
         return net;
     }
 

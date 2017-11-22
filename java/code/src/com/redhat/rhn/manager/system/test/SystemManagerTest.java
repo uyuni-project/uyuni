@@ -423,7 +423,7 @@ public class SystemManagerTest extends RhnBaseTestCase {
         // Removal
         SystemManager.removeServerEntitlement(server.getId(),
                 EntitlementManager.VIRTUALIZATION);
-        server = (Server) reload(server);
+        server = reload(server);
         assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
     }
 
@@ -464,7 +464,7 @@ public class SystemManagerTest extends RhnBaseTestCase {
         ValidatorResult retval = SystemManager.entitleServer(server,
                 EntitlementManager.VIRTUALIZATION);
 
-        server = (Server) reload(server);
+        server = reload(server);
 
         String key = null;
         if (retval.getErrors().size() > 0) {
@@ -485,7 +485,7 @@ public class SystemManagerTest extends RhnBaseTestCase {
         SystemManager.removeServerEntitlement(server.getId(),
                 EntitlementManager.VIRTUALIZATION);
 
-        server = (Server) reload(server);
+        server = reload(server);
         assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
     }
@@ -659,7 +659,7 @@ public class SystemManagerTest extends RhnBaseTestCase {
         assertTrue(server.isProxy());
         server = SystemManager.deactivateProxy(server);
         ServerFactory.save(server);
-        server = (Server) reload(server);
+        server = reload(server);
         assertFalse(server.isProxy());
     }
 
@@ -789,7 +789,7 @@ public class SystemManagerTest extends RhnBaseTestCase {
         PackageEvr upgradedPackageEvr =
             PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2");
         upgradedPackageEvr =
-            (PackageEvr)TestUtils.saveAndReload(upgradedPackageEvr);
+            TestUtils.saveAndReload(upgradedPackageEvr);
 
         ServerTestUtils.populateServerErrataPackages(org, server,
             upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_SECURITY);
@@ -1082,7 +1082,6 @@ public class SystemManagerTest extends RhnBaseTestCase {
             Server s1 = ServerFactoryTest.createTestServer(user, true);
             s1.setHostname(name);
             Network net = new Network();
-            net.setIpaddr("192.168.1.1");
             net.setServer(s1);
             s1.addNetwork(net);
         }
