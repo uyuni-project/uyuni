@@ -22,8 +22,6 @@ CREATE TABLE rhnServerNetwork
     server_id  NUMBER NOT NULL
                    CONSTRAINT rhn_servernetwork_sid_fk
                        REFERENCES rhnServer (id),
-    ipaddr     VARCHAR(16),
-    ip6addr    VARCHAR2(45),
     created    timestamp with local time zone
                    DEFAULT (current_timestamp) NOT NULL,
     modified   timestamp with local time zone
