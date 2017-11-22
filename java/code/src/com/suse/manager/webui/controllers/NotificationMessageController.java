@@ -116,6 +116,24 @@ public class NotificationMessageController {
     }
 
     /**
+     * Mark all {@link NotificationMessage}s as read in one shot
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON result of the API call
+     */
+    public static String markAllAsRead(Request request, Response response, User user) {
+        for (NotificationMessage nm : NotificationMessageFactory.listUnread()) {
+            NotificationMessageFactory.updateStatus(nm, true);
+        }
+        Map<String, String> data = new HashMap<>();
+        data.put("message", "All messages marked as read succesfully");
+        response.type("application/json");
+        return GSON.toJson(data);
+    }
+
+    /**
      * Convert a list of {@link NotificationMessage} to a {@link JSONNotificationMessage}
      *
      * @param list of NotificationMessages
