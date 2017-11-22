@@ -836,10 +836,15 @@ class Registration(rhnHandler):
         server = self.auth_system(system_id)
         # log the entry
         log_debug(1, server.getid(), "packages: %d" % len(packages))
+        check_products = False
+        if len(server.get_packages()) == 0:
+            check_products = True
         for package in packages:
             server.add_package(package)
         # XXX: check return code
         server.save_packages()
+        if check_products:
+            server.install_missing_product_packages()
         return 0
 
     def delete_packages(self, system_id, packages):
