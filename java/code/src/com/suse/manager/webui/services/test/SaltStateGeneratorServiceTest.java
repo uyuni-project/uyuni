@@ -281,6 +281,10 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         serverRev.getCustomStates().add(deleted);
         serverRev.getConfigChannels().add(channel1);
         serverRev.getConfigChannels().add(channel2);
+        // Fix for server assignments
+        // TODO: Revisit after state channel implementation
+        minion.subscribeConfigChannel(channel1, user);
+        minion.subscribeConfigChannel(channel2, user);
 
         SaltStateGeneratorService.INSTANCE.generateServerCustomState(serverRev);
 
@@ -323,6 +327,12 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
         ServerStateRevision minion2Revision = new ServerStateRevision(minion2);
         minion2Revision.getConfigChannels().add(channel1);
+
+        // Fix for server assignments
+        // TODO: Revisit after state channel implementation
+        minion1.subscribeConfigChannel(channel1, user);
+        minion1.subscribeConfigChannel(channel2, user);
+        minion2.subscribeConfigChannel(channel1, user);
 
         StateFactory.save(minion1Revision);
         StateFactory.save(minion2Revision);

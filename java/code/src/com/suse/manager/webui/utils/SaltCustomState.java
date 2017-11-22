@@ -44,7 +44,6 @@ public class SaltCustomState implements SaltState {
     public Map<String, Object> getData() {
         Map<String, Object> state = new LinkedHashMap<>();
         List<String> included = new ArrayList<>(includedStates);
-        included.sort((s1, s2) -> s1.compareTo(s2));
         state.put("include", included);
         return state;
     }
