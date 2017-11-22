@@ -1270,7 +1270,7 @@ SELECT  DISTINCT ST.element AS ID
     DMI.bios_release as dmi_bios_release,
     DMI.asset as dmi_asset,
     S.hostname as hostname,
-    RSN.ipaddr as ipaddr,
+    RSNA4.address as ipaddr,
     SL.machine as machine,
     SL.rack as rack,
     SL.room as room,
@@ -1283,7 +1283,8 @@ SELECT  DISTINCT ST.element AS ID
     RR.ram as ram
     FROM  rhnServer S
     LEFT OUTER JOIN rhnRam RR on S.id = RR.server_id
-    LEFT OUTER JOIN rhnServerNetwork RSN ON S.id = RSN.server_id
+    LEFT OUTER JOIN rhnServerNetInterface RSNI on S.id = RSNI.server_id
+    LEFT OUTER JOIN rhnServerNetAddress4 RSNA4 on RSNI.id = RSNA4.interface_id
     LEFT OUTER JOIN rhnCPU CPU on S.id = CPU.server_id
     LEFT OUTER JOIN rhnServerLocation SL ON S.id = SL.server_id
     LEFT OUTER JOIN rhnServerDmi DMI ON S.id = DMI.server_id
