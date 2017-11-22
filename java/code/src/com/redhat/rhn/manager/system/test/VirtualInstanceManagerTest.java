@@ -53,9 +53,9 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         List<VmInfo> plan = new LinkedList<>();
 
         plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(2048, "vm1", STATE_RUNNING, "1234567890", 2, VIRTTYPE_PARA)));
+                new GuestProperties(2048, "vm1", STATE_RUNNING, "38a4e1c14d8e440780b3b59745ba9ce5", 2, VIRTTYPE_PARA)));
         plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(4096, "vm2", STATE_RUNNING, "2345678901", 4, VIRTTYPE_FULL)));
+                new GuestProperties(4096, "vm2", STATE_RUNNING, "a4f100d349954f50a24f80fec75e3f5d", 4, VIRTTYPE_FULL)));
 
         VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
 
@@ -70,9 +70,9 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         List<VmInfo> plan = new LinkedList<>();
 
         plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(2048, "vm1", STATE_RUNNING, "1234567890", 2, VIRTTYPE_PARA)));
+                new GuestProperties(2048, "vm1", STATE_RUNNING, "38a4e1c14d8e440780b3b59745ba9ce5", 2, VIRTTYPE_PARA)));
         plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(4096, "vm2", STATE_RUNNING, "2345678901", 4, VIRTTYPE_PARA)));
+                new GuestProperties(4096, "vm2", STATE_RUNNING, "a4f100d349954f50a24f80fec75e3f5d", 4, VIRTTYPE_PARA)));
 
         VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
 
@@ -83,7 +83,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         plan = new LinkedList<>();
 
         plan.add(new VmInfo(1479479699, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(1024, "vm3", STATE_RUNNING, "3456789012", 1, VIRTTYPE_PARA)));
+                new GuestProperties(1024, "vm3", STATE_RUNNING, "420ea57f7035ee1de2c1e23fe29f5ca7", 1, VIRTTYPE_PARA)));
 
         VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
 
@@ -98,9 +98,9 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         List<VmInfo> plan = new LinkedList<>();
 
         plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(2048, "vm1", STATE_RUNNING, "1234567890", 2, VIRTTYPE_PARA)));
+                new GuestProperties(2048, "vm1", STATE_RUNNING, "38a4e1c14d8e440780b3b59745ba9ce5", 2, VIRTTYPE_PARA)));
         plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(4096, "vm2", STATE_RUNNING, "2345678901", 4, VIRTTYPE_PARA)));
+                new GuestProperties(4096, "vm2", STATE_RUNNING, "a4f100d349954f50a24f80fec75e3f5d", 4, VIRTTYPE_PARA)));
 
         VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
 
@@ -111,9 +111,9 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         plan = new LinkedList<>();
 
         plan.add(new VmInfo(1479479699, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(2048, "vm1", STATE_PAUSED, "1234567890", 2, VIRTTYPE_PARA)));
+                new GuestProperties(2048, "vm1", STATE_PAUSED, "38a4e1c14d8e440780b3b59745ba9ce5", 2, VIRTTYPE_PARA)));
         plan.add(new VmInfo(1479479699, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(1024, "vmRename", STATE_STOPPED, "2345678901", 1, VIRTTYPE_PARA)));
+                new GuestProperties(1024, "vmRename", STATE_STOPPED, "a4f100d349954f50a24f80fec75e3f5d", 1, VIRTTYPE_PARA)));
 
         VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
 
@@ -142,9 +142,9 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         List<VmInfo> plan = new LinkedList<>();
 
         plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(2048, "vm1", STATE_RUNNING, "1234567890", 2, VIRTTYPE_PARA)));
+                new GuestProperties(2048, "vm1", STATE_RUNNING, "38a4e1c14d8e440780b3b59745ba9ce5", 2, VIRTTYPE_PARA)));
         plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(4096, "vm2", STATE_RUNNING, "2345678901", 4, VIRTTYPE_PARA)));
+                new GuestProperties(4096, "vm2", STATE_RUNNING, "a4f100d349954f50a24f80fec75e3f5d", 4, VIRTTYPE_PARA)));
 
         VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
 
@@ -155,7 +155,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         plan = new LinkedList<>();
 
         plan.add(new VmInfo(1479479699, EVENT_TYPE_REMOVED, TARGET_DOMAIN,
-                new GuestProperties(2048, "vm1", STATE_RUNNING, "1234567890", 2, VIRTTYPE_PARA)));
+                new GuestProperties(2048, "vm1", STATE_RUNNING, "38a4e1c14d8e440780b3b59745ba9ce5", 2, VIRTTYPE_PARA)));
 
         VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
 
@@ -165,7 +165,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
 
         VirtualInstance guest = test.getGuests().iterator().next();
         assertEquals("vm2", guest.getName());
-        assertEquals("2345678901", guest.getUuid());
+        assertEquals("a4f100d349954f50a24f80fec75e3f5d", guest.getUuid());
     }
 
     public void testRefreshPlanExec() throws Exception {
@@ -174,11 +174,11 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         List<VmInfo> plan = new LinkedList<>();
 
         plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(2048, "vm1", STATE_RUNNING, "1234567890", 2, VIRTTYPE_PARA)));
+                new GuestProperties(2048, "vm1", STATE_RUNNING, "38a4e1c14d8e440780b3b59745ba9ce5", 2, VIRTTYPE_PARA)));
         plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(4096, "vm2", STATE_RUNNING, "2345678901", 4, VIRTTYPE_PARA)));
+                new GuestProperties(4096, "vm2", STATE_RUNNING, "a4f100d349954f50a24f80fec75e3f5d", 4, VIRTTYPE_PARA)));
         plan.add(new VmInfo(1479479699, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(1024, "vm3", STATE_RUNNING, "3456789012", 1, VIRTTYPE_PARA)));
+                new GuestProperties(1024, "vm3", STATE_RUNNING, "420ea57f7035ee1de2c1e23fe29f5ca7", 1, VIRTTYPE_PARA)));
 
         VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
 
@@ -189,7 +189,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         plan = new LinkedList<>();
         plan.add(new VmInfo(1479479799, EVENT_TYPE_FULLREPORT, TARGET_DOMAIN, null));
         plan.add(new VmInfo(1479479799, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
-                new GuestProperties(1024, "vm3", STATE_CRASHED, "3456789012", 1, VIRTTYPE_PARA)));
+                new GuestProperties(1024, "vm3", STATE_CRASHED, "420ea57f7035ee1de2c1e23fe29f5ca7", 1, VIRTTYPE_PARA)));
 
         VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
 
@@ -199,7 +199,47 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
 
         VirtualInstance guest = test.getGuests().iterator().next();
         assertEquals("vm3", guest.getName());
-        assertEquals("3456789012", guest.getUuid());
+        assertEquals("420ea57f7035ee1de2c1e23fe29f5ca7", guest.getUuid());
         assertEquals(STATE_CRASHED, guest.getState().getLabel());
+    }
+
+    public void testSwappedUuidPlanExec() throws Exception {
+
+        Long id = server.getId();
+        List<VmInfo> plan = new LinkedList<>();
+
+        plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
+                new GuestProperties(2048, "vm1", STATE_RUNNING, "38a4e1c14d8e440780b3b59745ba9ce5", 2, VIRTTYPE_PARA)));
+        plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
+                new GuestProperties(1024, "vm3", STATE_RUNNING, "420ea57f7035ee1de2c1e23fe29f5ca7", 1, VIRTTYPE_PARA)));
+
+        VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
+
+        Server test = SystemManager.lookupByIdAndUser(id, user);
+        assertNotNull(test);
+        assertEquals(2, test.getGuests().size());
+
+        plan = new LinkedList<>();
+        plan.add(new VmInfo(1479479799, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
+                new GuestProperties(1024, "vm3", STATE_CRASHED, "7fa50e4235701deee2c1e23fe29f5ca7", 1, VIRTTYPE_PARA)));
+
+        VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
+
+        test = SystemManager.lookupByIdAndUser(id, user);
+        assertNotNull(test);
+        assertEquals(2, test.getGuests().size());
+
+        for (VirtualInstance guest : test.getGuests()) {
+            if (guest.getName().equals("vm1")) {
+                assertEquals("38a4e1c14d8e440780b3b59745ba9ce5", guest.getUuid());
+            }
+            else if (guest.getName().equals("vm3")) {
+                assertEquals("420ea57f7035ee1de2c1e23fe29f5ca7", guest.getUuid());
+                assertEquals(STATE_CRASHED, guest.getState().getLabel());
+            }
+            else {
+                assertTrue(false);
+            }
+        }
     }
 }
