@@ -678,7 +678,7 @@ public class ConfigChannelHandler extends BaseHandler {
          if (cf == null) {
              throw new NoSuchConfigFilePathException(path, channelLabel);
          }
-         revisions.add(cf.getLatestConfigRevision().getRevision());
+         revisions.add(cf.getLatestConfigRevision().getId());
 
          // schedule the action for the servers specified
          Set<Long> sids = new HashSet<Long>();
