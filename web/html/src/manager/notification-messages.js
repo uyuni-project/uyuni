@@ -7,8 +7,7 @@ const {Table, Column, SearchField, Highlight} = require("../components/table");
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
-const Buttons = require("../components/buttons");
-const AsyncButton = Buttons.AsyncButton;
+const {AsyncButton, Button} = require("../components/buttons");
 const Panels = require("../components/panel");
 const Panel = Panels.Panel;
 
@@ -83,6 +82,20 @@ const NotificationMessages = React.createClass({
       });
   },
 
+  readThemAll: function() {
+    Network.post("/rhn/manager/notification-messages/mark-all-as-read", null, "application/json").promise
+    .then(() => {
+      window.location.reload();
+    })
+    .catch(response => {
+      currentObject.setState({
+        error: response.status == 401 ? "authentication" :
+          response.status >= 500 ? "general" :
+          null
+      });
+    });
+  },
+
   sortBySeverity: function(aRaw, bRaw, columnKey, sortDirection) {
     var statusValues = {'info': 0, 'warning': 1, 'error': 2};
     var a = statusValues[aRaw[columnKey]];
@@ -114,6 +127,8 @@ const NotificationMessages = React.createClass({
     const data = this.state.serverData;
     const panelButtons = <div className="pull-right btn-group">
       <AsyncButton id="reload" icon="refresh" name="Refresh" text action={this.refreshServerData} />
+      <Button id="mark-all-as-read" icon="fa-check-circle" className='btn-default'
+          title={t('Mark all as read')} text={t('Mark all as read')} handler={this.readThemAll} />
     </div>;
 
     if (data != null) {
