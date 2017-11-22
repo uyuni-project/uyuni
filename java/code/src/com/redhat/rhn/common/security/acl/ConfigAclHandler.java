@@ -41,7 +41,6 @@ public class ConfigAclHandler extends BaseHandler {
      */
     public boolean aclIsFile(Object ctx, String[] params) {
         ConfigRevision revision = getRevision((Map) ctx, params);
-        //return whether or not this errata is published
         return revision.isFile();
     }
 
@@ -53,7 +52,6 @@ public class ConfigAclHandler extends BaseHandler {
      */
     public boolean aclIsSls(Object ctx, String[] params) {
         ConfigRevision revision = getRevision((Map) ctx, params);
-        //return whether or not this errata is published
         return revision.isSls();
     }
 

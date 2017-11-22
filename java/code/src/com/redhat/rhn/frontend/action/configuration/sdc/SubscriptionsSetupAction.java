@@ -23,7 +23,6 @@ import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.suse.manager.webui.utils.MinionServerUtils;
 
 /**
  * SubscriptionsSetupAction
@@ -56,12 +55,6 @@ public class SubscriptionsSetupAction extends BaseSetListAction {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         Server server = context.lookupAndBindServer();
         SdcHelper.ssmCheck(context.getRequest(), server.getId(), user);
-        if (MinionServerUtils.isMinionServer(server)) {
-            return cm.listGlobalChannelsForSystemSubscriptions(server, user, pc);
-        }
-        else {
-            return cm.listNormalChannelsForSystemSubscriptions(server, user, pc);
-        }
-
+        return cm.listChannelsForSystemSubscriptions(server, user, pc);
     }
 }

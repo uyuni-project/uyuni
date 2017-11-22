@@ -58,6 +58,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
@@ -200,6 +201,27 @@ public class ConfigurationManager extends BaseManager {
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("user_id", user.getId());
         return makeDataResult(params, elabParams, null, m);
+    }
+    /**
+     * This query lists  all the channels based on system type
+     * a user can see along with info on whether the
+     * channels are subscribed to a given server
+     * Basically used in SDC Subscribe Channels page
+     * @param server the server to check the channels
+     *                                      subscriptions on
+     * @param user The user looking at channels.
+     * @param pc A page control for this user.
+     * @return A list of the channels in DTO format.
+     */
+    public DataResult<ConfigChannelDto> listChannelsForSystemSubscriptions(Server server,
+                                                                          User user,
+                                                                          PageControl pc) {
+        if (MinionServerUtils.isMinionServer(server)) {
+            return listGlobalChannelsForSystemSubscriptions(server, user, pc);
+        }
+        else {
+            return listNormalChannelsForSystemSubscriptions(server, user, pc);
+        }
     }
 
     /**
