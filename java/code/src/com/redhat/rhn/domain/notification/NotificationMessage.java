@@ -1,23 +1,32 @@
 package com.redhat.rhn.domain.notification;
 
+import com.redhat.rhn.common.hibernate.PostgreSQLEnumType;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 /**
  * A notification NotificationMessage Object.
  */
 @Entity
 @Table(name = "susenotificationmessage")
+@TypeDef(
+        name = "pgsql_enum",
+        typeClass = PostgreSQLEnumType.class
+    )
 public class NotificationMessage {
 
     private Long id;
-    private NotificationMessageType notificationMessageType;
+    private NotificationMessageType notificationSeverity;
     private String description;
-    private boolean isRead;
+    private boolean isRead = false;
 
     /**
      * Empty constructor
@@ -28,14 +37,13 @@ public class NotificationMessage {
     /**
      * Default constructor for a NotificationMessage
      *
-     * @param typeIn the type of the message
+     * @param notificationSeverityIn the severity of the message
      * @param descriptionIn the description of the message
      * @param isReadIn if the message is already read or not
      */
-    public NotificationMessage(NotificationMessageType typeIn, String descriptionIn, boolean isReadIn) {
-        this.notificationMessageType = typeIn;
+    public NotificationMessage(NotificationMessageType notificationSeverityIn, String descriptionIn) {
+        this.notificationSeverity= notificationSeverityIn;
         this.description = descriptionIn;
-        this.isRead = isReadIn;
     }
 
     /**
@@ -88,20 +96,15 @@ public class NotificationMessage {
         this.isRead = isReadIn;
     }
 
-    /**
-     * @return Returns the notificationMessageType.
-     */
-    @ManyToOne
-    @JoinColumn(name = "notifmess_type_id")
-    public NotificationMessageType getNotificationMessageType() {
-        return notificationMessageType;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "notificationSeverity")
+    @Type( type = "pgsql_enum" )
+    public NotificationMessageType getNotificationSeverity() {
+        return notificationSeverity;
     }
 
-    /**
-     * @param notificationMessageTypeIn The notificationMessageTypeto set.
-     */
-    public void setNotificationMessageType(NotificationMessageType notificationMessageTypeIn) {
-        this.notificationMessageType= notificationMessageTypeIn;
+    public void setNotificationSeverity(NotificationMessageType notificationSeverityIn) {
+        this.notificationSeverity = notificationSeverityIn;
     }
 
     /**
@@ -139,5 +142,9 @@ public class NotificationMessage {
             .append("description", getDescription())
             .append("isRead", getIsRead())
             .toString();
+    }
+
+    public enum NotificationMessageType {
+        info, warning, error
     }
 }

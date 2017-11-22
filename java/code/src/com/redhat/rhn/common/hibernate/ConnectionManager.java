@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.notification.NotificationMessage;
-import com.redhat.rhn.domain.notification.NotificationMessageType;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -216,7 +215,6 @@ class ConnectionManager {
             config.addAnnotatedClass(ImageBuildHistory.class);
             config.addAnnotatedClass(ImageRepoDigest.class);
             config.addAnnotatedClass(VirtualHostManagerNodeInfo.class);
-            config.addAnnotatedClass(NotificationMessageType.class);
             config.addAnnotatedClass(NotificationMessage.class);
 
             // add empty varchar warning interceptor

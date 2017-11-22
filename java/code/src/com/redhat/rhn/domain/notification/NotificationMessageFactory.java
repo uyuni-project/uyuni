@@ -16,18 +16,14 @@
 package com.redhat.rhn.domain.notification;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.notification.NotificationMessage.NotificationMessageType;
 
-import com.redhat.rhn.domain.image.ImageInfo;
-import com.suse.manager.webui.websocket.Notification;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -53,15 +49,15 @@ public class NotificationMessageFactory extends HibernateFactory {
     /**
      * Create new {@link NotificationMessage}.
      *
-     * @param typeIn the type of the message
+     * @param severityIn the label type of the message
      * @param descriptionIn the text message
      * @param readIn if the message is read
      * @return new empty notificationMessage
      */
     public static NotificationMessage createNotificationMessage(
-            NotificationMessageType typeIn, String descriptionIn, boolean readIn) {
+            NotificationMessageType severityIn, String descriptionIn) {
         NotificationMessage notificationMessage =
-                new NotificationMessage(typeIn, descriptionIn, readIn);
+                new NotificationMessage(severityIn, descriptionIn);
         return notificationMessage;
     }
 
@@ -143,20 +139,6 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static String unreadMessagesSizeToString() {
         return String.valueOf(unreadMessagesSize());
-    }
-
-    /**
-     * Used to look up NotificationMessageType.
-     *
-     * @param label The unique label of the type.
-     * @return A sought for NotificationMessageType or null
-     */
-    static Optional<NotificationMessageType> lookupNotificationMessageTypeByLabel(String label) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<NotificationMessageType> criteria = builder.createQuery(NotificationMessageType.class);
-        Root<NotificationMessageType> root = criteria.from(NotificationMessageType.class);
-        criteria.where(builder.equal(root.get("label"), label));
-        return getSession().createQuery(criteria).uniqueResultOptional();
     }
 
     @Override
