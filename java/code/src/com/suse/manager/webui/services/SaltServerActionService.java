@@ -35,8 +35,6 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.config.ConfigInfo;
-import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -53,7 +51,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionServerUtils;
-import com.suse.manager.webui.utils.salt.File;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -144,7 +141,7 @@ public enum SaltServerActionService {
             return rebootAction(minions);
         }
         else if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(actionType)) {
-            return manageFiles(minions, (ConfigAction) actionIn);
+            return deployFiles(minions, (ConfigAction) actionIn);
         }
         else if (ActionFactory.TYPE_SCRIPT_RUN.equals(actionType)) {
             ScriptAction scriptAction = (ScriptAction) actionIn;
@@ -391,13 +388,14 @@ public enum SaltServerActionService {
     }
 
     /**
-     * Manage files(files, directory, symlink) through state.apply
+     * Deploy files(files, directory, symlink) through state.apply
+     *
      * @param minions target systems
      * @param action action which has all the revisions
-     * @return
+     * @return minions grouped by local call
      */
-    private Map<LocalCall<?>, List<MinionServer>> manageFiles(List<MinionServer> minions,
-                                                              ConfigAction action) {
+    private Map<LocalCall<?>, List<MinionServer>> deployFiles(List<MinionServer> minions,
+            ConfigAction action) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
                 .map(revAction -> revAction.getConfigRevision())
