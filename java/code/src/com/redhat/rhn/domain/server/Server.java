@@ -932,11 +932,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Returns the primary ip for this server
      */
     public String getIpAddress() {
-        Network n = findPrimaryNetwork();
-        if (n != null) {
-            log.debug("Found a Network: " + n.getIpaddr());
-            return n.getIpaddr();
-        }
         NetworkInterface ni = findPrimaryNetworkInterface();
         if (ni != null) {
             log.debug("Found a NetworkInterface: " + ni.getIpaddr());
@@ -950,10 +945,14 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Returns the primary ip for this server
      */
     public String getIp6Address() {
-        Network n = findPrimaryIpv6Network();
-        if (n != null) {
-            log.debug("Found a Network: " + n.getIp6addr());
-            return n.getIp6addr();
+        NetworkInterface ni = findPrimaryNetworkInterface();
+        if (ni != null) {
+            for (String ipv6address : ni.getGlobalIpv6Addresses()) {
+                log.debug("Found a NetworkInterface: " + ipv6address);
+                if (!ipv6address.equals("::1")) {
+                    return ipv6address;
+                }
+            }
         }
         return null;
     }
@@ -1060,7 +1059,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
             Iterator<Network> i = networks.iterator();
             while (i.hasNext()) {
                 Network n = i.next();
-                String addr = n.getIpaddr();
+                String addr = getIpAddress();
                 if (addr != null &&
                         !addr.equals("127.0.0.1")) {
                     log.debug("returning Network that is !localhost");
@@ -1078,7 +1077,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
             Iterator<Network> i = networks.iterator();
             while (i.hasNext()) {
                 Network n = i.next();
-                String addr = n.getIp6addr();
+                String addr = getIp6Address();
                 if (addr != null &&
                         !addr.equals("::1")) {
                     log.debug("returning Network that is !localhost");
@@ -2015,8 +2014,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
         primaryInterface.setPrimary("Y");
         if (networks.size() == 1) {
             Network n = networks.iterator().next();
-            n.setIpaddr(primaryInterface.getIpaddr());
-            n.setIp6addr(primaryInterface.getGlobalIpv6Addr());
         }
     }
 
