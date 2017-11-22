@@ -37,7 +37,7 @@ sql:
 	select rhnserver.org_id as org_id,
 		rhnxccdftestresult.server_id as system_id,
 		rhnserver.hostname as hostname,
-		trim(rhnservernetwork.ipaddr) as ip_address,
+		trim(rhnservernetaddress4.address) as ip_address,
 		rhnactionscap.action_id as event_id,
 		rhnxccdftestresult.id as testresult_id,
 		rhnxccdftestresult.identifier as name,
@@ -53,11 +53,12 @@ sql:
 		count(case label when 'informational' then 1 else null end) as informational,
 		count(case when label not in ('pass', 'fail', 'error', 'notselected', 'informational') then 1 else null end) as other
 	from rhnxccdftestresult, rhnactionscap, rhnxccdfbenchmark, rhnxccdfprofile,
-		rhnservernetwork, rhnserver, rhnxccdfruleresult, rhnxccdfruleresulttype
+		rhnservernetaddress4, rhnservernetinterface, rhnserver, rhnxccdfruleresult, rhnxccdfruleresulttype
 	where rhnxccdftestresult.action_scap_id = rhnactionscap.id
 		and rhnxccdftestresult.benchmark_id = rhnxccdfbenchmark.id
 		and rhnxccdftestresult.profile_id = rhnxccdfprofile.id
-		and rhnxccdftestresult.server_id = rhnservernetwork.server_id
+		and rhnxccdftestresult.server_id = rhnservernetinterface.server_id
+		and rhnservernetinterface.id = rhnservernetaddress4.interface_id
 		and rhnxccdftestresult.server_id = rhnserver.id
 		and rhnxccdfruleresult.testresult_id = rhnxccdftestresult.id
 		and rhnxccdfruleresult.result_id = rhnxccdfruleresulttype.id
