@@ -164,14 +164,14 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     public void testGuestVirtInstanceInserted() {
         Map<String, JSONHost> data = createHostData("esxi_host_1",
-                pairsToMap("myVM", "id_of_my_guest"));
+                pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         Server newHost = ServerFactory
                 .lookupForeignSystemByDigitalServerId("101-esxi_host_1");
         List<VirtualInstance> guestsFromDb = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("id_of_my_guest");
+                .lookupVirtualInstanceByUuid("42309db29d991a2f681f74f4c851f4bd");
         assertEquals(1, guestsFromDb.size());
 
         VirtualInstance guestFromDb = guestsFromDb.iterator().next();
@@ -181,7 +181,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         assertNotNull(guestFromDb);
         assertEquals(guestFromDb.getHostSystem(), newHost);
         assertNull(guestFromDb.getGuestSystem());
-        assertEquals("id_of_my_guest", guestFromDb.getUuid());
+        assertEquals("42309db29d991a2f681f74f4c851f4bd", guestFromDb.getUuid());
         assertEquals(Long.valueOf(1L), guestFromDb.getConfirmed());
         assertEquals("myVM", guestFromDb.getName());
         assertEquals(VirtualInstanceFactory.getInstance().getUnknownState(),
@@ -198,18 +198,18 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * @throws Exception - if anything goes wrong
      */
     public void testGuestVirtInstanceUpdated() throws Exception {
-        createRegisteredGuestWithForeignHost("id_of_my_guest", "101-existing_host_id");
+        createRegisteredGuestWithForeignHost("42309db29d991a2f681f74f4c851f4bd", "101-existing_host_id");
 
         // do the mapping
         Map<String, JSONHost> data = createHostData("existing_host_id",
-                pairsToMap("myVM", "id_of_my_guest"));
+                pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         // verify guest is linked to the 1st host
         Server host = ServerFactory
                 .lookupForeignSystemByDigitalServerId("101-existing_host_id");
         List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("id_of_my_guest");
+                .lookupVirtualInstanceByUuid("42309db29d991a2f681f74f4c851f4bd");
         assertEquals(1, virtualInstances.size());
         VirtualInstance guest = virtualInstances.iterator().next();
         assertContains(host.getGuests(), guest);
@@ -217,14 +217,14 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         // now our guest is reported by a different host
         data = createHostData("another_host_id",
-                pairsToMap("myVM", "id_of_my_guest"));
+                pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         // after processing, the virtual instance should be mapped to "another_host"
         Server anotherHost = ServerFactory
                 .lookupForeignSystemByDigitalServerId("101-another_host_id");
         virtualInstances = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("id_of_my_guest");
+                .lookupVirtualInstanceByUuid("42309db29d991a2f681f74f4c851f4bd");
         assertEquals(1, virtualInstances.size());
         guest = virtualInstances.iterator().next();
         assertContains(anotherHost.getGuests(), guest);
@@ -237,13 +237,13 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
     public void testGuestNameUpdated() {
         Map<String, JSONHost> data = createHostData("my-host-id",
-                pairsToMap("old name", "uuid"));
+                pairsToMap("old name", "38a4e1c14d8e440780b3b59745ba9ce5"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        data = createHostData("my-host-id", pairsToMap("new name", "uuid"));
+        data = createHostData("my-host-id", pairsToMap("new name", "38a4e1c14d8e440780b3b59745ba9ce5"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         VirtualInstance guest = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("uuid").iterator().next();
+                .lookupVirtualInstanceByUuid("38a4e1c14d8e440780b3b59745ba9ce5").iterator().next();
         assertEquals("new name", guest.getName());
     }
 
@@ -255,16 +255,16 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     public void testGuestStateSetToUnknown() throws Exception {
         VirtualInstance guest =
-                createRegisteredGuestWithForeignHost("guestid", "101-hostid");
+                createRegisteredGuestWithForeignHost("1d7d250e9fca4d3ebb04099fe9a3e129", "101-hostid");
         guest.setName("guestname");
         guest.setState(VirtualInstanceFactory.getInstance().getStoppedState());
 
         Map<String, JSONHost> data = createHostData("hostid",
-                pairsToMap("guestname", "guestid"));
+                pairsToMap("guestname", "1d7d250e9fca4d3ebb04099fe9a3e129"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         VirtualInstance dbGuest = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("guestid").iterator().next();
+                .lookupVirtualInstanceByUuid("1d7d250e9fca4d3ebb04099fe9a3e129").iterator().next();
         assertEquals(VirtualInstanceFactory.getInstance().getUnknownState(),
                 dbGuest.getState());
     }
@@ -279,7 +279,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     public void testUpdateAlreadyRegisteredGuest() throws Exception {
         // guest already registered by usual registration process
-        String vmUuid = TestUtils.randomString();
+        String vmUuid = "51283028dab94084b66117b5bf1d3661";
         VirtualInstance registeredGuest = new GuestBuilder(user)
                 .createGuest()
                 .withUuid(vmUuid)
@@ -320,7 +320,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     @SuppressWarnings("unchecked")
     public void testTwoVHMsSameVM() {
         Map<String, JSONHost> data = createHostData("esxi_host_id",
-                pairsToMap("myVM", "id_of_my_guest"));
+                pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
 
         VirtualHostManager virtualHostManager2 = new VirtualHostManager();
         virtualHostManager2.setId(102L);
@@ -332,7 +332,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         new VirtualHostManagerProcessor(virtualHostManager2, data).processMapping();
 
         List<VirtualInstance> guests = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("id_of_my_guest");
+                .lookupVirtualInstanceByUuid("42309db29d991a2f681f74f4c851f4bd");
         // the host created in the second mapping
         Server host = ServerFactory
             .lookupForeignSystemByDigitalServerId("102-esxi_host_id");
@@ -349,7 +349,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstanceType fullyVirtType =
                 VirtualInstanceFactory.getInstance().getFullyVirtType();
         Map<String, JSONHost> data = createHostData("esxi_host_id",
-                pairsToMap("myVM", "id_of_my_guest"));
+                pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
 
         // adjust virtualization type for the host in the data
         JSONHost host = data.entrySet().iterator().next().getValue();
@@ -364,7 +364,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         assertEquals(fullyVirtType, hostVirtInstance.getType());
 
         VirtualInstance guestFromDb = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("id_of_my_guest").iterator().next();
+                .lookupVirtualInstanceByUuid("42309db29d991a2f681f74f4c851f4bd").iterator().next();
         assertEquals(fullyVirtType, guestFromDb.getType());
     }
 
@@ -373,13 +373,13 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     public void testUuidNormalization() {
         Map<String, JSONHost> data = createHostData("foreign_system_id",
-                pairsToMap("my vm", "my-uuid"));
+                pairsToMap("my vm", "06b6-0065-9810-4186b513b33bd6190360"));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         VirtualInstanceFactory factory = VirtualInstanceFactory.getInstance();
-        assertTrue(factory.lookupVirtualInstanceByUuid("my-uuid").isEmpty());
-        assertNotEmpty(factory.lookupVirtualInstanceByUuid("myuuid"));
+        assertTrue(factory.lookupVirtualInstanceByUuid("06b6-0065-9810-4186b513b33bd6190360").isEmpty());
+        assertNotEmpty(factory.lookupVirtualInstanceByUuid("06b6006598104186b513b33bd6190360"));
     }
 
     /**
@@ -392,7 +392,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * @throws Exception - if anything goes wrong
      */
     public void testMultipleUuidInDb() throws Exception {
-        String guestUuid = "guestUuid";
+        String guestUuid = "00e0997d581a48ad8defc2c6769bedec";
         // create a GUEST virt. instances with same uuid
         createRegisteredGuestWithHost(guestUuid);
         createRegisteredGuestWithHost(guestUuid);
@@ -419,6 +419,47 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Tests the situation when the virtual host gatherer reports a VM but we already have
+     * a guest VirtualInstances with a swapped VM UUID in the database.
+     *
+     * In this corner case we want the VirtualHostManagerProcessor to update all
+     * VirtualInstances and prevent from creating a duplicates with the swapped guest "uuid".
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testSwappedUuidInDb() throws Exception {
+        String guestUuid = "420ea57f7035ee1de2c1e23fe29f5ca7";
+        String swappedUuid = "7fa50e4235701deee2c1e23fe29f5ca7";
+        // create a GUEST virt. instances with a swapped uuid
+        createRegisteredGuestWithHost(swappedUuid);
+
+        String newVmName = "new name";
+        Map<String, JSONHost> data = createHostData("existing_host_id",
+                pairsToMap(newVmName, guestUuid));
+
+        // do the mapping
+        new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
+
+        Server newHost = ServerFactory
+                .lookupForeignSystemByDigitalServerId("101-existing_host_id");
+
+        // No virtual instance created for guestUuid as there is already an instance with swappedUuid
+        List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid(guestUuid);
+        assertTrue(virtualInstances.isEmpty());
+
+        // verify that only one VirtualInstance is created and belong to the same host server
+        virtualInstances = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid(swappedUuid);
+        assertEquals(1, virtualInstances.size());
+        virtualInstances.stream()
+                .forEach(vi -> {
+                    assertEquals(newVmName, vi.getName());
+                    assertEquals(newHost, vi.getHostSystem());
+                });
+    }
+
+    /**
      * Test scenario when gatherer reports a guest under a host and this host is then
      * renamed. Then a new host with the original name is created and
      * VirtualHostManagerProcessor is run again on the same gatherer data. We check that the
@@ -426,7 +467,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     public void testRenameServer() {
         Map<String, JSONHost> data = createHostData("esxi_host_1_id",
-                pairsToMap("myVM", "id_of_my_guest"));
+                pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
@@ -437,12 +478,12 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         ServerFactory.save(host);
         HibernateFactory.getSession().clear();
 
-        data = createHostData("esxi_host_1_id", pairsToMap("renamed vm", "id_of_my_guest"));
+        data = createHostData("esxi_host_1_id", pairsToMap("renamed vm", "42309db29d991a2f681f74f4c851f4bd"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         // check that the guest is renamed and still belongs to the original server
         List<VirtualInstance> guests = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("id_of_my_guest");
+                .lookupVirtualInstanceByUuid("42309db29d991a2f681f74f4c851f4bd");
         assertEquals(1, guests.size());
         VirtualInstance guest = guests.iterator().next();
         assertEquals("renamed vm", guest.getName());
@@ -456,7 +497,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     public void testGuestRemoved() {
 
         JSONHost myHost = createMinimalHost("esx_host_1",
-                pairsToMap("vm1", "uuid1", "vm2", "uuid2"));
+                pairsToMap("vm1", "de5629cb8c5a4de485a8fc8d1b170412", "vm2", "6888aafa999048038bbb26afb9264db1"));
         Map<String, JSONHost> data = new HashMap<>();
         data.put(TestUtils.randomString(), myHost);
 
@@ -465,29 +506,29 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         Server newHost = ServerFactory
                 .lookupForeignSystemByDigitalServerId("101-esx_host_1");
         List<VirtualInstance> guestVM1 = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("uuid1");
+                .lookupVirtualInstanceByUuid("de5629cb8c5a4de485a8fc8d1b170412");
         assertEquals(1, guestVM1.size());
         assertEquals(guestVM1.get(0).getHostSystem(), newHost);
 
         List<VirtualInstance> guestVM2 = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("uuid2");
+                .lookupVirtualInstanceByUuid("6888aafa999048038bbb26afb9264db1");
         assertEquals(1, guestVM2.size());
         assertEquals(guestVM2.get(0).getHostSystem(), newHost);
 
         // vm2 was removed from this host
-        myHost.setVms(pairsToMap("vm1", "uuid1"));
+        myHost.setVms(pairsToMap("vm1", "de5629cb8c5a4de485a8fc8d1b170412"));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         newHost = ServerFactory
                 .lookupForeignSystemByDigitalServerId("101-esx_host_1");
         guestVM1 = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("uuid1");
+                .lookupVirtualInstanceByUuid("de5629cb8c5a4de485a8fc8d1b170412");
         assertEquals(1, guestVM1.size());
         assertEquals(guestVM1.get(0).getHostSystem(), newHost);
 
         guestVM2 = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("uuid2");
+                .lookupVirtualInstanceByUuid("6888aafa999048038bbb26afb9264db1");
         assertTrue(guestVM2.isEmpty());
     }
 

@@ -609,13 +609,27 @@ public class HardwareMapper {
         }
 
         if (type != null) {
+            List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
+                    .lookupVirtualInstanceByUuid(virtUuid);
+
             if (grains.getValueAsString("os_family").contentEquals("Suse") &&
                     grains.getValueAsString("osrelease").startsWith("11")) {
                 virtUuid = fixAndReturnSle11Uuid(virtUuid);
-            }
-
-            List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
+                // Fix the "uuid" for already wrong created virtual instances
+                for (VirtualInstance virtualInstance : virtualInstances) {
+                    LOG.warn("Detected wrong 'uuid' for virtual instance. Coercing: [" +
+                            virtualInstance.getUuid() + "] -> [" + virtUuid + "]");
+                    VirtualInstanceFactory.getInstance()
+                            .deleteVirtualInstanceOnly(virtualInstance);
+                    VirtualInstanceManager.addGuestVirtualInstance(
+                            virtUuid, virtualInstance.getName(), virtualInstance.getType(),
+                            virtualInstance.getState(), virtualInstance.getHostSystem(),
+                            virtualInstance.getGuestSystem());
+                    }
+                // Now collecting virtual instances with the correct uuid
+                virtualInstances = VirtualInstanceFactory.getInstance()
                     .lookupVirtualInstanceByUuid(virtUuid);
+            }
 
             if (virtualInstances.isEmpty()) {
                 VirtualInstanceManager.addGuestVirtualInstance(
