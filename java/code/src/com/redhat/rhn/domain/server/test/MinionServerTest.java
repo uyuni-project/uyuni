@@ -60,7 +60,7 @@ public class MinionServerTest extends BaseTestCaseWithUser {
 
         // Assert channel order
         channelList.add(0, channel1);
-        assertEquals(channelList, server.getConfigChannels());
+        assertEquals(channelList, server.getConfigChannelList());
 
         assertEquals(other, revision2.getCreator());
         assertEquals(3, revision2.getConfigChannels().size());

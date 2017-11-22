@@ -34,7 +34,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -143,12 +142,8 @@ public class RankChannelsAction extends BaseRankChannels {
     protected void populateWidgetLabels(LinkedHashSet labelValues,
                                             RequestContext context) {
         Server server = context.lookupAndBindServer();
-        for (Iterator<ConfigChannel> itr = server.getConfigChannels().iterator();
-             itr.hasNext();) {
-            ConfigChannel channel = itr.next();
-            labelValues.add(lv(channel.getName(),
-                                        channel.getId().toString()));
-        }
+        server.getConfigChannelStream()
+                .forEach(c -> labelValues.add(lv(c.getName(), c.getId().toString())));
     }
 
     @Override
