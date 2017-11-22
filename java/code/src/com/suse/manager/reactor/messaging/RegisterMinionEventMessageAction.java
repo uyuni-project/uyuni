@@ -24,6 +24,9 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.NotificationMessageFactory;
+import com.redhat.rhn.domain.notification.NotificationMessageType;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -318,6 +321,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 });
             });
 
+            if (true) {
+                throw new RuntimeException("I'm a bug!");
+            }
+
             // get hardware and network async
             triggerHardwareRefresh(server);
 
@@ -363,8 +370,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
-            // rethrow exception to force transaction rollback
-            throw new RuntimeException("Error registering minion " + minionId, t);
+            handleTransactions(false);
+            NotificationMessage notificationMessage = NotificationMessageFactory.createNotificationMessage(
+                    NotificationMessageType.error(),
+                    "Error registering minion with id: " + minionId + " " + t.getMessage(),
+                    false);
+            NotificationMessageFactory.store(notificationMessage);
         }
         finally {
             if (MinionPendingRegistrationService.containsMinion(minionId)) {
