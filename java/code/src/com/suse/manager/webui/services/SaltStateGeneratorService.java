@@ -346,9 +346,25 @@ public enum SaltStateGeneratorService {
 
         // Config channels
         // TODO: Move getChannelStateName call into generateCustomStateAssignmentFile when
-        //       state channels are implemented
-        Stream<String> cfgStateNames = stateRevision.getConfigChannels().stream()
-                .map(confChannelSaltManager::getChannelStateName);
+        // state channels are implemented (currently custom states use a different path
+        Stream<ConfigChannel> cfgStates;
+        if (stateRevision instanceof ServerStateRevision) {
+            // Fix for server assignment order. Unlike server group and org assignments,
+            // they have an ordering which must be preserved inside assignment file.
+            // THIS APPROACH ONLY WORKS IF THE SPECIFIED REVISION IS THE LATEST ONE.
+            //
+            // TODO: Revisit this when custom states and server group & org assignments
+            // are implemented
+            // (Add ranking data to suseStateRevisionConfigChannel?)
+
+            Server server = ((ServerStateRevision)stateRevision).getServer();
+            cfgStates = server.getConfigChannelStream();
+        }
+        else {
+            cfgStates = stateRevision.getConfigChannels().stream();
+        }
+        Stream<String> cfgStateNames =
+                cfgStates.map(confChannelSaltManager::getChannelStateName);
 
         generateCustomStateAssignmentFile(orgId, fileName,
                 Stream.concat(stateNames, cfgStateNames).collect(Collectors.toSet()),
