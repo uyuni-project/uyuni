@@ -1,4 +1,5 @@
 - Add support for CAASP (bsc#1052283)
+- remove Certification Module 12 from SP2 and SP3 (bsc#1066819)
 -------------------------------------------------------------------
 Mon May 29 15:39:42 CEST 2017 - mc@suse.de
 
