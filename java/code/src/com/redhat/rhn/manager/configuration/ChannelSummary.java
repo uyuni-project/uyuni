@@ -31,7 +31,7 @@ import com.redhat.rhn.domain.server.Server;
 public class ChannelSummary {
 
     private int numFiles;
-    private int numSLS;
+    private int numSls;
     private int numDirs;
     private int numSymlinks;
     private int numSystems;
@@ -133,7 +133,7 @@ public class ChannelSummary {
      * @return number of sls controlled by this channel
      */
     public int getNumSls() {
-        return numSLS;
+        return numSls;
     }
 
     /**
@@ -141,7 +141,7 @@ public class ChannelSummary {
      * @param slsFiles how many sls files are contained in the channel
      */
     public void setNumSls(int slsFiles) {
-        this.numSLS = slsFiles;
+        this.numSls = slsFiles;
     }
 
 
