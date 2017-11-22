@@ -405,16 +405,14 @@ class NetworkInformation(Device):
     table = "rhnServerNetwork"
 
     def __init__(self, dict=None):
-        fields = ["ipaddr", "ip6addr"]
+        fields = []
         mapping = {'class': None}
         Device.__init__(self, fields, dict, mapping)
-        self._autonull = ('ipaddr', 'ip6addr')
+        self._autonull = ()
         # use our own sequence
         self.sequence = "rhn_server_net_id_seq"
         # bugzilla: 129840 kudzu (rhpl) will sometimes pad octets
         # with leading zeros, causing confusion; clean those up
-        self.data['ipaddr'] = cleanse_ip_addr(self.data['ipaddr'])
-
 
 class NetIfaceInformation(Device):
     key_mapping = {
