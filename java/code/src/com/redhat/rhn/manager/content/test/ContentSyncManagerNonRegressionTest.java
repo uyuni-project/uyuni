@@ -34,15 +34,14 @@ import org.simpleframework.xml.core.Persister;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -128,33 +127,36 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             ).collect(Collectors.toList());
 
             Set<MgrSyncProductDto> checkedProducts = new LinkedHashSet<>();
-            for (String line : (List<String>) FileUtils.readLines(expectedProductsCSV)) {
-                Iterator<String> expected = Arrays.asList(line.split(",")).iterator();
-                String friendlyName = expected.next();
-                String version = expected.next();
-                String arch = expected.next();
-                boolean base = expected.next().equals("base");
-                SortedSet<String> channelLabels = new TreeSet<String>();
-                while (expected.hasNext()) {
-                    channelLabels.add(expected.next());
-                }
 
+            List<String> lines = (List<String>) FileUtils.readLines(expectedProductsCSV);
+            List<ExpectedProductDto> expectedProducts = lines.stream()
+                .map(l -> Arrays.asList(l.split(",")))
+                    .map(a -> new ExpectedProductDto(a.get(0), a.get(1), a.get(2),
+                            a.get(3).equals("base"), a.subList(4, a.size())))
+                    .collect(Collectors.toList());
+
+            Map<ExpectedProductDto, ExpectedProductDto> parents =
+                IntStream.range(0, expectedProducts.size())
+                .boxed()
+                .collect(Collectors.toMap(expectedProducts::get, i -> {
+                    for (int j = i; j >= 0; j--) {
+                        if (expectedProducts.get(j).isBase()) {
+                            return expectedProducts.get(j);
+                        }
+                    }
+                    return null;
+                }));
+
+            for (ExpectedProductDto ep : expectedProducts) {
                 Optional<MgrSyncProductDto> actual = products.stream()
                     .filter(p ->
-                        p.getFriendlyName().equals(friendlyName) &&
-                        p.getVersion().equals(version) &&
-                        p.getArch().equals(arch)
+                        p.getFriendlyName().equals(ep.getName()) &&
+                        p.getVersion().equals(ep.getVersion()) &&
+                        p.getArch().equals(ep.getArch()) &&
+                        parents.get(ep).getChannelLabels().contains(
+                                toChannelLabel(p.getBaseChannel()))
                     )
-                    .sorted((a, b) ->
-                        // if more than one matching product exist, pick the one with
-                        // most matching channels
-                        (int) b.getChannels().stream()
-                            .filter(c -> channelLabels.contains(toChannelLabel(c)))
-                            .count() -
-                        (int) a.getChannels().stream()
-                            .filter(c -> channelLabels.contains(toChannelLabel(c)))
-                            .count()
-                    ).findFirst();
+                    .findFirst();
 
                 if (actual.isPresent()) {
                     MgrSyncProductDto product = actual.get();
@@ -162,14 +164,14 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
                     boolean actualBase = product.getChannels().stream().anyMatch(c ->
                         c.getParent().equals(ContentSyncManager.BASE_CHANNEL));
-                    if (actualBase != base) {
+                    if (actualBase != ep.isBase()) {
                         failures.add("Product " + product.toString() + " should be " +
-                            (base ? "a base product" : "an extension product") +
+                            (ep.isBase() ? "a base product" : "an extension product") +
                             " but it's not");
                     }
 
                     List<XMLChannel> unexpectedChannels = product.getChannels().stream()
-                        .filter(c -> !channelLabels.contains(toChannelLabel(c)))
+                        .filter(c -> !ep.getChannelLabels().contains(toChannelLabel(c)))
                         .collect(Collectors.toList());
 
                     unexpectedChannels.forEach(c -> {
@@ -177,8 +179,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                                 " has unexpected channel " + toChannelLabel(c));
                     });
 
-                    List<String> missingChannels = channelLabels.stream().filter(label ->
-                        !product.getChannels().stream()
+                    List<String> missingChannels = ep.getChannelLabels().stream().filter(
+                        label -> !product.getChannels().stream()
                             .anyMatch(c -> toChannelLabel(c).equals(label))
                     ).collect(Collectors.toList());
 
@@ -188,9 +190,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     });
                 }
                 else {
-                    failures.add("Product was expected but not found: " +
-                            friendlyName + ", " + version + ", " +
-                            arch + ", " + channelLabels.first());
+                    failures.add("Product was expected but not found: " + ep +
+                            "(base channel in " + parents.get(ep).getChannelLabels() + ")");
                     failures.add(">>> Maybe you need to request a Beta Key?");
                 }
             }
