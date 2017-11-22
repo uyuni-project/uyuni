@@ -25,8 +25,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class Network extends BaseDomainHelper {
 
     private Long id;
-    private String ipaddr;
-    private String ip6addr;
     private Server server;
 
     /**
@@ -41,34 +39,6 @@ public class Network extends BaseDomainHelper {
      */
     public void setId(Long i) {
         this.id = i;
-    }
-
-    /**
-     * @return Returns the ipaddr.
-     */
-    public String getIpaddr() {
-        return ipaddr;
-    }
-
-    /**
-     * @param i The ipaddr to set.
-     */
-    public void setIpaddr(String i) {
-        this.ipaddr = i;
-    }
-
-    /**
-     * @return Returns the ip6addr.
-     */
-    public String getIp6addr() {
-        return ip6addr;
-    }
-
-    /**
-     * @param i The ip6addr to set.
-     */
-    public void setIp6addr(String i) {
-        this.ip6addr = i;
     }
 
     /**
@@ -88,24 +58,22 @@ public class Network extends BaseDomainHelper {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(final Object other) {
         if (!(other instanceof Network)) {
             return false;
         }
         Network castOther = (Network) other;
         return new EqualsBuilder().append(id, castOther.id)
-                                  .append(ipaddr, castOther.ipaddr)
-                                  .append(ip6addr, castOther.ip6addr)
                                   .isEquals();
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(id)
-                                    .append(ipaddr)
-                                    .append(ip6addr)
                                     .toHashCode();
     }
 }
