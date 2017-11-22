@@ -47,6 +47,7 @@ class Server(ServerWrapper):
         self.server = rhnSQL.Row("rhnServer", "id")
         self.server["release"] = ""
         self.server["os"] = "SUSE Linux"
+        self.addr = {}
         self.is_rpm_managed = 0
         self.set_arch(arch)
         # We only get this passed in when we create a new

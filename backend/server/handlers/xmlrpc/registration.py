@@ -356,7 +356,7 @@ class Registration(rhnHandler):
         if data.has_key('hardware_profile'):
             for hw in data['hardware_profile'][:]:
                 if hw['class'] == 'NETINFO':
-                    self.extract_and_save_hostname(newserv, hw)
+                    self.extract_and_save_netinfos(newserv, hw)
                 newserv.add_hardware(hw)
         # fill in the other details from the data dictionary
         if profile_name is not None and not \
@@ -1009,17 +1009,23 @@ class Registration(rhnHandler):
                     packagesV2.append(p)
         return packagesV2
 
-    def extract_and_save_hostname(self, server, hardware):
+    def extract_and_save_netinfos(self, server, hardware):
         if 'hostname' in hardware.keys():
             server.server["hostname"] = hardware["hostname"]
             del hardware["hostname"]
+        if 'ipaddr' in hardware.keys():
+            server.addr["ipaddr"] = hardware["ipaddr"]
+            del hardware["ipaddr"]
+        if 'ip6addr' in hardware.keys():
+            server.addr["ip6addr"] = hardware["ip6addr"]
+            del hardware["ip6addr"]
 
     def __add_hw_profile_no_auth(self, server, hwlist):
         """ Insert a new profile for the server, but do not authenticate """
         log_debug(1, server.getid(), "items: %d" % len(hwlist))
         for hardware in hwlist[:]:
             if hardware['class'] == 'NETINFO':
-                self.extract_and_save_hostname(server, hardware)
+                self.extract_and_save_netinfos(server, hardware)
             server.add_hardware(hardware)
         # XXX: check return code
         server.save_hardware()
@@ -1032,24 +1038,18 @@ class Registration(rhnHandler):
         self.__add_hw_profile_no_auth(server, hwlist)
         # set primary interface to the one that is used to reach the server
         sid = server.getid()
-        h = rhnSQL.prepare("""
-            select * from rhnServerNetwork where server_id = :server_id
-        """)
-        h.execute(server_id=sid)
-        row = h.fetchone_dict()
-        if row:
+        if server.addr["ipaddr"] or server.addr["ip6addr"]:
             primif = None
-            ipaddr=row['ipaddr']
-            ip6addr=row['ip6addr']
-            primif=None
+            ipaddr = server.addr["ipaddr"]
+            ip6addr = server.addr["ip6addr"]
             if ipaddr:
-                h = rhnSQL.prepare("""
-                    select interface_id from rhnServerNetAddress4 rsna4 left join rhnServerNetInterface rsni on rsna4.interface_id = rsni.id where address = :address and server_id = :server_id
-                """)
-                h.execute(address=ipaddr, server_id=sid)
-                row = h.fetchone_dict()
-                if row:
-                    primif=row['interface_id']
+                    h = rhnSQL.prepare("""
+                        select interface_id from rhnServerNetAddress4 rsna4 left join rhnServerNetInterface rsni on rsna4.interface_id = rsni.id where address = :address and server_id = :server_id
+                    """)
+                    h.execute(address=ipaddr, server_id=sid)
+                    row = h.fetchone_dict()
+                    if row:
+                        primif=row['interface_id']
             elif ip6addr:
                 h = rhnSQL.prepare("""
                     select interface_id from rhnServerNetAddress6 rsna6 left join rhnServerNetInterface rsni on rsna6.interface_id = rsni.id where address = :address and server_id = :server_id
