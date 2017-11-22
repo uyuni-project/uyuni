@@ -16,7 +16,7 @@
 package com.redhat.rhn.domain.notification;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.notification.NotificationMessage.NotificationMessageType;
+import com.redhat.rhn.domain.notification.NotificationMessage.NotificationMessageSeverity;
 
 import org.apache.log4j.Logger;
 
@@ -55,7 +55,7 @@ public class NotificationMessageFactory extends HibernateFactory {
      * @return new empty notificationMessage
      */
     public static NotificationMessage createNotificationMessage(
-            NotificationMessageType severityIn, String descriptionIn) {
+            NotificationMessageSeverity severityIn, String descriptionIn) {
         NotificationMessage notificationMessage =
                 new NotificationMessage(severityIn, descriptionIn);
         return notificationMessage;

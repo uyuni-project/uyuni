@@ -17,7 +17,7 @@ import javax.persistence.Enumerated;
 public class NotificationMessage {
 
     private Long id;
-    private NotificationMessageType notificationSeverity;
+    private NotificationMessageSeverity severity;
     private String description;
     private boolean isRead = false;
 
@@ -34,8 +34,8 @@ public class NotificationMessage {
      * @param descriptionIn the description of the message
      * @param isReadIn if the message is already read or not
      */
-    public NotificationMessage(NotificationMessageType notificationSeverityIn, String descriptionIn) {
-        this.notificationSeverity= notificationSeverityIn;
+    public NotificationMessage(NotificationMessageSeverity severityIn, String descriptionIn) {
+        this.severity= severityIn;
         this.description = descriptionIn;
     }
 
@@ -90,13 +90,13 @@ public class NotificationMessage {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "notificationSeverity")
-    public NotificationMessageType getNotificationSeverity() {
-        return notificationSeverity;
+    @Column(columnDefinition = "severity")
+    public NotificationMessageSeverity getSeverity() {
+        return severity;
     }
 
-    public void setNotificationSeverity(NotificationMessageType notificationSeverityIn) {
-        this.notificationSeverity = notificationSeverityIn;
+    public void setSeverity(NotificationMessageSeverity severityIn) {
+        this.severity = severityIn;
     }
 
     /**
@@ -136,7 +136,7 @@ public class NotificationMessage {
             .toString();
     }
 
-    public enum NotificationMessageType {
+    public enum NotificationMessageSeverity {
         info, warning, error
     }
 }

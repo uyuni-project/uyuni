@@ -32,7 +32,7 @@ public class JSONNotificationMessage {
      */
     public JSONNotificationMessage(NotificationMessage nm) {
         this.id = nm.getId();
-        this.severity = nm.getNotificationSeverity().toString();
+        this.severity = nm.getSeverity().toString();
         this.description = nm.getDescription();
         this.isRead = nm.getIsRead();
     }
