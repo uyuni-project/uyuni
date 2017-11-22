@@ -247,86 +247,6 @@ def token_packages(server_id, tokens_obj):
 
     return ret
 
-_query_product_packages = rhnSQL.Statement("""
-    select rp.name_id, rp.package_arch_id arch_id, X.name
-      from
-        (
-          select pn.name,
-                 latest.name_id,
-                 lookup_evr((latest.evr).epoch, (latest.evr).version, (latest.evr).release) AS evr_id,
-                 latest.arch_label AS ARCH,
-                 latest.arch_id
-            from
-               (
-                SELECT p.name_id AS name_id,
-                       max(pe.evr) AS evr,
-                       pa.label AS arch_label,
-                       pa.id AS arch_id
-                  FROM
-                       rhnPackageEVR pe
-                  JOIN rhnPackage p ON p.evr_id = pe.id
-                  JOIN rhnChannelPackage cp ON cp.package_id = p.id
-                  JOIN rhnPackageArch pa ON pa.id = p.package_arch_id
-                  JOIN rhnPackageProvides pv on p.id = pv.package_id
-                  JOIN rhnPackageCapability c on pv.capability_id = c.id
-                  JOIN rhnServerChannel sc on cp.channel_id = sc.channel_id
-                 WHERE
-                       sc.server_id = :server_id
-                   and c.name = 'product()'
-              GROUP BY p.name_id, pa.label, pa.id
-         ) latest
-         JOIN rhnPackageName pn ON pn.id = latest.name_id
-        where pn.name not like '%-migration'
-          and NOT EXISTS (
-                 SELECT 1
-                   FROM rhnServerPackage SP
-                  WHERE SP.server_id = :server_id
-                    AND SP.name_id = latest.name_id
-                    AND (SP.package_arch_id = latest.arch_id OR SP.package_arch_id IS NULL)
-          )
-        ) X
-        JOIN rhnPackage rp ON rp.name_id = X.name_id
-             AND rp.evr_id = X.evr_id
-             AND rp.package_arch_id = X.arch_id
-""")
-
-def token_product_packages(server_id, tokens_obj):
-    assert(isinstance(tokens_obj, ActivationTokens))
-    token = tokens_obj.tokens[-1]
-
-    h = rhnSQL.prepare(_query_product_packages)
-    package_names = {}
-    h.execute(server_id=server_id)
-    while True:
-        row = h.fetchone_dict()
-        if not row:
-            break
-        pn_id = row['name_id']
-        pa_id = row['arch_id']
-        package_names[(pn_id, pa_id)] = row['name']
-
-    ret = []
-    if not package_names:
-        return ret
-
-    package_arch_ids = package_names.keys()
-    # Get the latest action scheduled for this token
-    last_action_id = rhnFlags.get('token_last_action_id')
-
-    action_id = rhnAction.schedule_server_packages_update_by_arch(server_id,
-                                                                  package_arch_ids, org_id=token['org_id'],
-                                                                  prerequisite=last_action_id,
-                                                                  action_name="Product Package Auto-Install")
-
-    # This action becomes the latest now
-    rhnFlags.set('token_last_action_id', action_id)
-
-    for p in package_names.values():
-        ret.append("Scheduled for install:  '%s'" % p)
-
-    rhnSQL.commit()
-
-    return ret
 
 # given 2 channels, with one pathname overlap, you'll get
 # something like:
@@ -1102,7 +1022,6 @@ def process_token(server, server_arch, tokens_obj, virt_type=None):
 
     if is_management_entitled:
         history["packages"] = token_packages(server_id, tokens_obj)
-        history["products"] = token_product_packages(server_id, tokens_obj)
         history["config_channels"] = token_config_channels(server,
                                                            tokens_obj)
     else:
