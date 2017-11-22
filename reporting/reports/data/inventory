@@ -88,11 +88,16 @@ sql:
 		get_hw_info_as_clob(rhnserver.id, '; ') as hardware
 	from rhnserver left outer join
 		(
-		select server_id, ipaddr, ip6addr
-		from rhnservernetwork
+		select server_id, rsna4.address, rsna6.address
+		from rhnservernetinterface rsni
+		left join rhnServerNetAddress4 rsna4
+		on rsni.id = rsna4.interface_id
+		left join rhnServerNetAddress6 rsna6
+		on rsni.id = rsna6.interface_id
 		where id in (
 			select min(id)
-			from rhnservernetwork
+			from rhnservernetinterface
+			where is_primary = 'Y'
 			group by server_id
 			)
 		) rhnservernetwork
