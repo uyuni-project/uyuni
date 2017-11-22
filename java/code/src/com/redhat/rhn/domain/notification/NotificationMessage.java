@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2017 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+
 package com.redhat.rhn.domain.notification;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -5,9 +20,15 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * A notification NotificationMessage Object.
@@ -30,12 +51,11 @@ public class NotificationMessage {
     /**
      * Default constructor for a NotificationMessage
      *
-     * @param notificationSeverityIn the severity of the message
+     * @param severityIn the severity of the message
      * @param descriptionIn the description of the message
-     * @param isReadIn if the message is already read or not
      */
     public NotificationMessage(NotificationMessageSeverity severityIn, String descriptionIn) {
-        this.severity= severityIn;
+        this.severity = severityIn;
         this.description = descriptionIn;
     }
 
@@ -89,12 +109,18 @@ public class NotificationMessage {
         this.isRead = isReadIn;
     }
 
+    /**
+     * @return Returns the severity of the message to set.
+     */
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "severity")
     public NotificationMessageSeverity getSeverity() {
         return severity;
     }
 
+    /**
+     * @param severityIn the severity of the message.
+     */
     public void setSeverity(NotificationMessageSeverity severityIn) {
         this.severity = severityIn;
     }
@@ -136,6 +162,10 @@ public class NotificationMessage {
             .toString();
     }
 
+
+    /**
+     * The enum type for a {@link Notification Message}
+     */
     public enum NotificationMessageSeverity {
         info, warning, error
     }

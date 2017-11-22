@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 /**
  * WebSocket EndPoint for showing notifications real-time in web UI.
- * NOTE: there's an EndPoint instance for each websocket session
+ * NOTE: there's an EndPoint instance for each WebSocket session
  */
 @ServerEndpoint(value = "/websocket/notifications")
 public class Notification {
@@ -56,14 +56,15 @@ public class Notification {
 
             // update the notification counter to the unread messages
             sendMessage(session, NotificationMessageFactory.unreadMessagesSizeToString());
-        } else {
+        }
+        else {
            LOG.debug("No web sessionId available. Closing the web socket.");
         }
     }
 
     /**
      * Callback executed when the WebSocket is closed.
-     * @param sessios the closed WebSocket {@link Session}
+     * @param session the closed WebSocket {@link Session}
      */
     @OnClose
     public void onClose(Session session) {
@@ -84,7 +85,7 @@ public class Notification {
 
     /**
      * Callback executed an error occurs.
-     * @param session the websocket session
+     * @param session the WebSocket session
      * @param err the err that occurred
      */
     @OnError
@@ -105,6 +106,9 @@ public class Notification {
     /**
      * Must be synchronized. Sending messages concurrently from separate threads
      * will result in IllegalStateException.
+     *
+     * @param session the WebSocket session
+     * @param message the message to be sent
      */
     public static void sendMessage(Session session, String message) {
         synchronized (session) {
@@ -128,7 +132,8 @@ public class Notification {
      * A static method to notify all {@link Session}s attached to WebSocket from the outside
      * Must be synchronized. Sending messages concurrently from separate threads
      * will result in IllegalStateException.
-     * @param message
+     *
+     * @param message the message to be sent
      */
     public static void notifyAll(String message) {
         // notify all open WebSocket sessions
@@ -191,12 +196,11 @@ public class Notification {
                     try {
                         // check every 1 second
                         sleep(1000);
-                    } catch (InterruptedException e) {
+                    }
+                    catch (InterruptedException e) {
                     }
                 }
-            }
-
-            ;
+            };
         };
         notificationThread.start();
     }

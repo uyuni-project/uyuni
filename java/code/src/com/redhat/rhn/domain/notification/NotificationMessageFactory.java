@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2017 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -51,7 +51,6 @@ public class NotificationMessageFactory extends HibernateFactory {
      *
      * @param severityIn the label type of the message
      * @param descriptionIn the text message
-     * @param readIn if the message is read
      * @return new empty notificationMessage
      */
     public static NotificationMessage createNotificationMessage(
@@ -87,6 +86,11 @@ public class NotificationMessageFactory extends HibernateFactory {
         singleton.removeObject(notificationMessage);
     }
 
+    /**
+     * Lookup for all {@link NotificationMessage}.
+     *
+     * @return List of read and unread messages
+     */
     public static List<NotificationMessage> listAll() {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<NotificationMessage> criteria = builder.createQuery(NotificationMessage.class);
@@ -95,6 +99,8 @@ public class NotificationMessageFactory extends HibernateFactory {
 
     /**
      * List notification messages by read status.
+     *
+     * @param isRead the read flag criterion to filter messages
      * @return List of notification messages.
      */
     public static List<NotificationMessage> byRead(boolean isRead) {
@@ -115,6 +121,12 @@ public class NotificationMessageFactory extends HibernateFactory {
         return byRead(false);
     }
 
+    /**
+     * Lookup for a single {@link NotificationMessage} by its id
+     *
+     * @param messageId the id of the message
+     * @return the Optional wrapper for the message
+     */
     public static Optional<NotificationMessage> lookupById(Long messageId) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<NotificationMessage> query = builder.createQuery(NotificationMessage.class);
