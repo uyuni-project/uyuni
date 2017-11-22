@@ -623,7 +623,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigurationFactory.commit(srv1.getSandboxOverride());
 
         // Are local and sandbox guaranteed to NOT show up?
-        List channels  = srv1.getConfigChannels();
+        List channels  = srv1.getConfigChannelList();
         assertNotNull(channels);
         assertEquals(0, channels.size());
 
@@ -634,7 +634,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         srv1.subscribeConfigChannel(global, user);
 
         // Can we find the global channel?
-        channels  = srv1.getConfigChannels();
+        channels  = srv1.getConfigChannelList();
         assertEquals(1, channels.size());
     }
 
@@ -657,7 +657,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         assertEquals(EXPECTED_COUNT, actual);
 
-        final ConfigChannel c = s.getConfigChannels().get(0);
+        final ConfigChannel c = s.getConfigChannelStream().findFirst().get();
 
         SortedSet files = c.getConfigFiles();
         assertEquals(files.size(), EXPECTED_COUNT.getFiles() +
@@ -727,7 +727,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
                                 ConfigChannelType.local());
 
 
-        ConfigChannel c = s.getConfigChannels().get(0);
+        ConfigChannel c = s.getConfigChannelStream().findFirst().get();
         String path = c.getConfigFiles().first().getConfigFileName().getPath();
         ConfigFile fl = local.createConfigFile(
                                 ConfigFileState.normal(),
@@ -901,7 +901,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         assertTrue(s.unsubscribeConfigChannel(cc, user));
         ServerFactory.save(s);
         s = TestUtils.reload(s);
-        assertEquals(2, s.getConfigChannels().size());
+        assertEquals(2, s.getConfigChannelCount());
     }
 
     public void testFilesNotInChannel() throws Exception {

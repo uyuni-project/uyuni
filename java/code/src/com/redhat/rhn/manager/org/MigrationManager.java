@@ -37,6 +37,7 @@ import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -141,7 +142,7 @@ public class MigrationManager extends BaseManager {
 
         // Remove existing config channels
         if (server.getConfigChannelCount() > 0) {
-            server.getConfigChannels().clear();
+            server.setConfigChannels(Collections.emptyList(), user);
         }
 
         // If the server has a reactivation keys, remove them...

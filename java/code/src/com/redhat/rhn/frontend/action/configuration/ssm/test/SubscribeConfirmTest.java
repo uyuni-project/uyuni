@@ -28,6 +28,7 @@ import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
@@ -115,31 +116,19 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
          * Server 2: 3, 2, 4
          * Server 3: 2. 4. 3
          */
-        List<ConfigChannel> srv1Expected = new ArrayList<>();
-        srv1Expected.add(channel1);
-        srv1Expected.add(channel2);
-        srv1Expected.add(channel4);
-        srv1Expected.add(channel3);
-
-        List<ConfigChannel> srv2Expected = new ArrayList<>();
-        srv2Expected.add(channel3);
-        srv2Expected.add(channel2);
-        srv2Expected.add(channel4);
-
-        List<ConfigChannel> srv3Expected = new ArrayList<>();
-        srv3Expected.add(channel2);
-        srv3Expected.add(channel4);
-        srv3Expected.add(channel3);
+        List<ConfigChannel> srv1Expected = Arrays.asList(channel1, channel2, channel4, channel3);
+        List<ConfigChannel> srv2Expected = Arrays.asList(channel3, channel2, channel4);
+        List<ConfigChannel> srv3Expected = Arrays.asList(channel2, channel4, channel3);
 
         // Assert channel counts
-        assertEquals(srv1Expected.size(), server1.getConfigChannels().size());
-        assertEquals(srv2Expected.size(), server2.getConfigChannels().size());
-        assertEquals(srv3Expected.size(), server3.getConfigChannels().size());
+        assertEquals(srv1Expected.size(), server1.getConfigChannelCount());
+        assertEquals(srv2Expected.size(), server2.getConfigChannelCount());
+        assertEquals(srv3Expected.size(), server3.getConfigChannelCount());
 
         // Assert channel order
-        assertEquals(srv1Expected, server1.getConfigChannels());
-        assertEquals(srv2Expected, server2.getConfigChannels());
-        assertEquals(srv3Expected, server3.getConfigChannels());
+        assertEquals(srv1Expected, server1.getConfigChannelList());
+        assertEquals(srv2Expected, server2.getConfigChannelList());
+        assertEquals(srv3Expected, server3.getConfigChannelList());
     }
 
     public void testExecuteHighestPosition() throws Exception {
@@ -213,31 +202,19 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
          * Server 2: 4, 3, 2
          * Server 3: 2, 4, 3
          */
-        List<ConfigChannel> srv1Expected = new ArrayList<>();
-        srv1Expected.add(channel4);
-        srv1Expected.add(channel3);
-        srv1Expected.add(channel1);
-        srv1Expected.add(channel2);
-
-        List<ConfigChannel> srv2Expected = new ArrayList<>();
-        srv2Expected.add(channel4);
-        srv2Expected.add(channel3);
-        srv2Expected.add(channel2);
-
-        List<ConfigChannel> srv3Expected = new ArrayList<>();
-        srv3Expected.add(channel2);
-        srv3Expected.add(channel4);
-        srv3Expected.add(channel3);
+        List<ConfigChannel> srv1Expected = Arrays.asList(channel4, channel3, channel1, channel2);
+        List<ConfigChannel> srv2Expected = Arrays.asList(channel4, channel3, channel2);
+        List<ConfigChannel> srv3Expected = Arrays.asList(channel2, channel4, channel3);
 
         // Assert channel counts
-        assertEquals(srv1Expected.size(), server1.getConfigChannels().size());
-        assertEquals(srv2Expected.size(), server2.getConfigChannels().size());
-        assertEquals(srv3Expected.size(), server3.getConfigChannels().size());
+        assertEquals(srv1Expected.size(), server1.getConfigChannelCount());
+        assertEquals(srv2Expected.size(), server2.getConfigChannelCount());
+        assertEquals(srv3Expected.size(), server3.getConfigChannelCount());
 
         // Assert channel order
-        assertEquals(srv1Expected, server1.getConfigChannels());
-        assertEquals(srv2Expected, server2.getConfigChannels());
-        assertEquals(srv3Expected, server3.getConfigChannels());
+        assertEquals(srv1Expected, server1.getConfigChannelList());
+        assertEquals(srv2Expected, server2.getConfigChannelList());
+        assertEquals(srv3Expected, server3.getConfigChannelList());
     }
 
     public void testExecuteReplacePosition() throws Exception {
@@ -311,29 +288,18 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
          * Server 2: 2, 4, 3
          * Server 3: 2, 4, 3
          */
-        List<ConfigChannel> srv1Expected = new ArrayList<>();
-        srv1Expected.add(channel2);
-        srv1Expected.add(channel4);
-        srv1Expected.add(channel3);
-
-        List<ConfigChannel> srv2Expected = new ArrayList<>();
-        srv2Expected.add(channel2);
-        srv2Expected.add(channel4);
-        srv2Expected.add(channel3);
-
-        List<ConfigChannel> srv3Expected = new ArrayList<>();
-        srv3Expected.add(channel2);
-        srv3Expected.add(channel4);
-        srv3Expected.add(channel3);
+        List<ConfigChannel> srv1Expected = Arrays.asList(channel2, channel4, channel3);
+        List<ConfigChannel> srv2Expected = Arrays.asList(channel2, channel4, channel3);
+        List<ConfigChannel> srv3Expected = Arrays.asList(channel2, channel4, channel3);
 
         // Assert channel counts
-        assertEquals(srv1Expected.size(), server1.getConfigChannels().size());
-        assertEquals(srv2Expected.size(), server2.getConfigChannels().size());
-        assertEquals(srv3Expected.size(), server3.getConfigChannels().size());
+        assertEquals(srv1Expected.size(), server1.getConfigChannelCount());
+        assertEquals(srv2Expected.size(), server2.getConfigChannelCount());
+        assertEquals(srv3Expected.size(), server3.getConfigChannelCount());
 
         // Assert channel order
-        assertEquals(srv1Expected, server1.getConfigChannels());
-        assertEquals(srv2Expected, server2.getConfigChannels());
-        assertEquals(srv3Expected, server3.getConfigChannels());
+        assertEquals(srv1Expected, server1.getConfigChannelList());
+        assertEquals(srv2Expected, server2.getConfigChannelList());
+        assertEquals(srv3Expected, server3.getConfigChannelList());
     }
 }
