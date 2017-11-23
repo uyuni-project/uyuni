@@ -19,7 +19,6 @@ from base_templated_document import TemplatedDocument
 
 from spacewalk.common.rhnLog import log_debug
 
-from spacewalk.server.rhnServer.server_hardware import NetworkInformation
 from spacewalk.server.rhnServer.server_hardware import NetIfaceInformation
 
 RHN_PREFIX = 'rhn.system.'
@@ -76,23 +75,6 @@ class ServerTemplatedDocument(TemplatedDocument):
 
     def description(self):
         return self.server.server['description']
-
-    def hostname(self):
-        return self._get_network_info_attr('hostname')
-
-    def ipaddr(self):
-        return self._get_network_info_attr('ipaddr')
-
-    def ip6addr(self):
-        return self._get_network_info_attr('ip6addr')
-
-    def _get_network_info_attr(self, attr):
-        network_infos = self.server.hardware_by_class(NetworkInformation)
-
-        if network_infos:
-            return network_infos[0].data[attr]
-        else:
-            return None
 
     def custom_info(self, key):
         if self.server.custom_info is None:
