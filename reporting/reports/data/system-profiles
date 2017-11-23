@@ -83,7 +83,7 @@ sql:
 			where is_primary = 'Y'
 			group by server_id
 			)
-		) rhnservernetwork on rhnServer.id = rhnServerNetwork.server_id
+		) netinfos on rhnServer.id = netinfos.server_id
 		left outer join rhnServerChannel on rhnServer.id = rhnServerChannel.server_id
 		left outer join rhnChannel on rhnServerChannel.channel_id = rhnChannel.id
 		left outer join rhnVirtualInstance vi on vi.host_system_id = rhnServer.id and uuid is not null
