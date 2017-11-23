@@ -89,6 +89,7 @@ Feature: Migrate a traditional client into a Salt minion
     Then I should see a "has been deleted" text
     When I enable repository "SLE-Manager-Tools-SLE-12-x86_64-Pool" on this "sle-migrated-minion"
     And I enable repository "SLE-Manager-Tools-SLE-12-x86_64-Update" on this "sle-migrated-minion"
+    And I enable repository "Devel_Galaxy_Manager_Head_SLE-Manager-Tools-12-x86_64" on this "sle-migrated-minion"
     And I disable repository "susemanager:test-channel-x86_64" on this "sle-migrated-minion"
     And I install package "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-migrated-minion"
     And I remove package "salt-minion" from this "sle-migrated-minion"
