@@ -82,8 +82,8 @@ CREATE INDEX rhn_server_creator_idx
     TABLESPACE [[2m_tbs]]
     NOLOGGING;
 
-CREATE INDEX rhn_server_id_hostname_idx
-    ON rhnServer (id, hostname)
+CREATE INDEX rhn_server_hostname_idx
+    ON rhnServer (hostname)
     TABLESPACE [[4m_tbs]]
     NOLOGGING;
 
