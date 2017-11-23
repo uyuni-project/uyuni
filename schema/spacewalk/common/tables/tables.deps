@@ -38,7 +38,7 @@ rhnActionErrataUpdate          :: rhnAction rhnErrata
 rhnActionImageDeploy           :: rhnAction
 rhnActionKickstart             :: rhnAction rhnKickstartableTree
 rhnActionKickstartFileList     :: rhnActionKickstart rhnFileList
-rhnActionKickstartGuest        :: rhnActionKickstart rhnKickstartSession rhnKickstartableTree 
+rhnActionKickstartGuest        :: rhnActionKickstart rhnKickstartSession rhnKickstartableTree
 rhnActionPackage               :: rhnPackage rhnPackageName rhnPackageArch rhnAction
 rhnActionPackageAnswerfile     :: rhnActionPackage
 rhnActionPackageDelta          :: rhnPackageDelta
@@ -52,9 +52,9 @@ rhnChannelArch                 :: rhnArchType
 rhnChannelComps                :: rhnChannel
 rhnChannelCloned               :: rhnChannelComps
 rhnChannelErrata               :: rhnChannel rhnErrata
-rhnChannelFamily               :: web_customer 
+rhnChannelFamily               :: web_customer
 rhnChannelFamilyMembers        :: rhnChannel rhnChannelFamily
-rhnPrivateChannelFamily        :: web_customer rhnChannelFamily 
+rhnPrivateChannelFamily        :: web_customer rhnChannelFamily
 rhnPublicChannelFamily         :: rhnChannelFamily
 rhnChannelPackage              :: rhnChannel rhnPackage
 rhnChannelPackageArchCompat    :: rhnPackageArch rhnChannelArch
@@ -100,7 +100,7 @@ rhnKickstartableTree           :: rhnChannel rhnKSTreeType web_customer \
 rhnKickstartCommand            :: rhnKSData rhnKickstartCommandName
 rhnKickstartDefaults           :: rhnKSData rhnKickstartableTree rhnServerProfile \
                                   rhnKickstartVirtualizationType
-rhnKickstartDefaultRegToken    :: rhnKSData rhnRegToken                           
+rhnKickstartDefaultRegToken    :: rhnKSData rhnRegToken
 rhnKickstartPreserveFileList   :: rhnKSData rhnFileList
 rhnKickstartScript             :: rhnKSData
 rhnKickstartSession            :: rhnKSData web_customer rhnServer rhnAction \
@@ -118,7 +118,7 @@ rhnOrgExtGroupMapping          :: rhnUserExtGroup rhnServerGroup
 rhnPackage                     :: rhnPackageName rhnPackageEVR rhnPackageArch \
                                   rhnPackageGroup rhnSourceRPM web_customer \
                                   rhnChecksum
-rhnPackageArch                 :: rhnArchType                        
+rhnPackageArch                 :: rhnArchType
 rhnPackageDeltaElement         :: rhnPackageDelta rhnTransactionPackage
 rhnPackageEVR                  :: evr_t
 rhnPackageChangeLogRec         :: rhnPackage rhnPackageChangeLogData
@@ -173,7 +173,6 @@ rhnServerUuid                  :: rhnServer
 rhnServerInstallInfo           :: rhnServer
 rhnServerLocation              :: rhnServer
 rhnServerNeededCache           :: web_customer rhnServer rhnErrata rhnChannel
-rhnServerNetwork               :: rhnServer
 rhnServerNotes                 :: rhnServer web_contact
 rhnServerPackage               :: rhnServer rhnPackageArch rhnPackageName rhnPackageEVR
 rhnServerPackageArchCompat     :: rhnPackageArch rhnServerArch
