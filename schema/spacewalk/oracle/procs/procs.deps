@@ -44,7 +44,7 @@ delete_server                   :: rhn_channel.pks rhn_config.pks \
                                    rhnServerHistory rhnServerInfo rhnServerLock \
                                    rhnServerInstallInfo rhnServerLocation \
                                    rhnServerNeededErrataCache \
-                                   rhnServerNeededPackageCache rhnServerNetwork \
+                                   rhnServerNeededPackageCache \
                                    rhnServerNotes rhnServerPackage rhnSnapshot \
                                    rhnServerTokenRegs rhnSnapshotTag \
                                    rhnUserServerPrefs \
@@ -139,4 +139,3 @@ update_image_needed_cache       :: suseImageInfoChannel suseImageInfoPackage \
                                    suseImageInfo rhnPackage rhnPackageEVR \
                                    rhnChannelPackage rhnErrataPackage \
                                    rhnChannelErrata rhnPackageUpgradeArchCompat
-
