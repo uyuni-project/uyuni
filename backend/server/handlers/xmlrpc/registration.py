@@ -1026,7 +1026,8 @@ class Registration(rhnHandler):
         for hardware in hwlist[:]:
             if hardware['class'] == 'NETINFO':
                 self.extract_and_save_netinfos(server, hardware)
-            server.add_hardware(hardware)
+            else:
+                server.add_hardware(hardware)
         # XXX: check return code
         server.save_hardware()
         server.save()

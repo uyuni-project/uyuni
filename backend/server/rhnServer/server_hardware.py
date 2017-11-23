@@ -397,22 +397,6 @@ class CPUDevice(Device):
             if self.data["nrcpu"] == 0:
                 self.data["nrcpu"] = 1
 
-
-class NetworkInformation(Device):
-
-    """ This is a wrapper class for the Network Information (rhnServerNetwork) """
-    table = "rhnServerNetwork"
-
-    def __init__(self, dict=None):
-        fields = []
-        mapping = {'class': None}
-        Device.__init__(self, fields, dict, mapping)
-        self._autonull = ()
-        # use our own sequence
-        self.sequence = "rhn_server_net_id_seq"
-        # bugzilla: 129840 kudzu (rhpl) will sometimes pad octets
-        # with leading zeros, causing confusion; clean those up
-
 class NetIfaceInformation(Device):
     key_mapping = {
         'hwaddr': 'hw_addr',
@@ -1098,8 +1082,6 @@ class Hardware:
             class_type = HardwareDevice
         elif hw_class == "cpu":
             class_type = CPUDevice
-        elif hw_class == "netinfo":
-            class_type = NetworkInformation
         elif hw_class == "memory":
             class_type = MemoryInformation
         elif hw_class == "dmi":
@@ -1205,7 +1187,6 @@ class Hardware:
         self.__load_from_db(HardwareDevice, sysid)
         self.__load_from_db(CPUDevice, sysid)
         self.__load_from_db(DMIInformation, sysid)
-        self.__load_from_db(NetworkInformation, sysid)
         self.__load_from_db(MemoryInformation, sysid)
         self.__load_from_db(InstallInformation, sysid)
 
