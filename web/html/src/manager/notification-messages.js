@@ -126,7 +126,7 @@ const NotificationMessages = React.createClass({
   render: function() {
     const data = this.state.serverData;
     const panelButtons = <div className="pull-right btn-group">
-      <AsyncButton id="reload" icon="refresh" name="Refresh" text action={this.refreshServerData} />
+      <AsyncButton id="reload" icon="refresh" name={t('Refresh')} text action={this.refreshServerData} />
       <Button id="mark-all-as-read" icon="fa-check-circle" className='btn-default'
           title={t('Mark all as read')} text={t('Mark all as read')} handler={this.readThemAll} />
     </div>;
@@ -163,7 +163,7 @@ const NotificationMessages = React.createClass({
               <Column
                 columnKey="isRead"
                 comparator={this.sortByStatus}
-                header={t("Is read")}
+                header={t("Read")}
                 cell={ (row) => <CheckRead messageId={row['id']} isRead={row['isRead']} />}
               />
             </Table>
