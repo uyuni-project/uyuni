@@ -134,6 +134,22 @@ const NotificationMessages = React.createClass({
     });
   },
 
+  decodeIconBySeverity: function(severity) {
+    var severityHtml;
+    switch(severity) {
+      case 'info':
+        severityHtml = <span><i className="fa fa-info-circle" title={t('Info')}></i>{t('Info')}</span>;
+        break;
+      case 'warning':
+        severityHtml = <span><i className="fa fa-exclamation-triangle text-warning" title={t('Warning')}></i>{t('Warning')}</span>;
+        break;
+      case 'error':
+        severityHtml = <span><i className="fa fa-times-circle-o text-danger" title={t('Error')}></i>{t('Error')}</span>;
+        break;
+    }
+    return severityHtml;
+  },
+
   sortBySeverity: function(aRaw, bRaw, columnKey, sortDirection) {
     var statusValues = {'info': 0, 'warning': 1, 'error': 2};
     var a = statusValues[aRaw[columnKey]];
@@ -205,7 +221,7 @@ const NotificationMessages = React.createClass({
               columnKey="severity"
               comparator={this.sortBySeverity}
               header={t("Severity")}
-              cell={ (row) => row["severity"] }
+              cell={ (row) => this.decodeIconBySeverity(row["severity"])}
             />
             <Column
               columnKey="description"
