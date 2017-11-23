@@ -58,7 +58,6 @@ import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Server;
@@ -71,7 +70,6 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.test.GuestBuilder;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
-import com.redhat.rhn.domain.server.test.NetworkTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
@@ -240,7 +238,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         //subscribe to base channel.
         SystemManager.subscribeServerToChannel(admin, server, base);
-        server = (Server) reload(server);
+        server = reload(server);
         assertNotNull(server.getBaseChannel());
 
         List cids = new ArrayList();
@@ -248,7 +246,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         cids.add(new Integer(child2.getId().intValue()));
 
         int result = handler.setChildChannels(admin, sid, cids);
-        server = (Server) TestUtils.reload(server);
+        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(3, server.getChannels().size());
 
@@ -258,7 +256,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, cids.size());
 
         result = handler.setChildChannels(admin, sid, cids);
-        server = (Server) TestUtils.reload(server);
+        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(2, server.getChannels().size());
 
@@ -293,7 +291,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             //success
         }
 
-        server = (Server) reload(server);
+        server = reload(server);
         assertEquals(2, server.getChannels().size());
 
         // try setting the base channel of an s390 server to
@@ -333,7 +331,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         //subscribe to base channel.
         SystemManager.subscribeServerToChannel(admin, server, base);
-        server = (Server) reload(server);
+        server = reload(server);
         assertNotNull(server.getBaseChannel());
 
         List channelLabels = new ArrayList();
@@ -341,7 +339,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         channelLabels.add(new String(child2.getLabel()));
 
         int result = handler.setChildChannels(admin, sid, channelLabels);
-        server = (Server) TestUtils.reload(server);
+        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(3, server.getChannels().size());
 
@@ -351,7 +349,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, channelLabels.size());
 
         result = handler.setChildChannels(admin, sid, channelLabels);
-        server = (Server) TestUtils.reload(server);
+        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(2, server.getChannels().size());
 
@@ -386,7 +384,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             //success
         }
 
-        server = (Server) reload(server);
+        server = reload(server);
         assertEquals(2, server.getChannels().size());
 
         // try setting the base channel of an s390 server to
@@ -429,7 +427,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // Set base channel to base1
         int result = handler.setBaseChannel(admin, sid,
                 new Integer(base1.getId().intValue()));
-        server = (Server) reload(server);
+        server = reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
         assertEquals(server.getBaseChannel().getLabel(), base1.getLabel());
@@ -437,7 +435,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // Set base channel to base2
         result = handler.setBaseChannel(admin, sid,
                 new Integer(base2.getId().intValue()));
-        server = (Server) TestUtils.reload(server);
+        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
         assertEquals(server.getBaseChannel().getLabel(), base2.getLabel());
@@ -487,14 +485,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         // Set base channel to base1
         int result = handler.setBaseChannel(admin, sid, base1.getLabel());
-        server = (Server) reload(server);
+        server = reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
         assertEquals(server.getBaseChannel().getLabel(), base1.getLabel());
 
         // Set base channel to base2
         result = handler.setBaseChannel(admin, sid, base2.getLabel());
-        server = (Server) TestUtils.reload(server);
+        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
         assertEquals(server.getBaseChannel().getLabel(), base2.getLabel());
@@ -560,7 +558,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         //server shouldn't have any channels yet
         assertEquals(0, result.length);
         SystemManager.subscribeServerToChannel(admin, server, parent);
-        server = (Server) reload(server);
+        server = reload(server);
         result = handler.listSubscribableChildChannels(admin,
                 new Integer(server.getId().intValue()));
 
@@ -602,7 +600,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         //server shouldn't have any channels yet
         assertEquals(0, result.length);
         SystemManager.subscribeServerToChannel(admin, server, parent);
-        server = (Server) reload(server);
+        server = reload(server);
         result = handler.listChildChannels(admin,
                 new Integer(server.getId().intValue()));
 
@@ -774,7 +772,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerTestUtils.createTestSystem(admin);
         server.setBaseEntitlement(EntitlementManager.MANAGEMENT);
         TestUtils.saveAndFlush(server);
-        server = (Server) reload(server);
+        server = reload(server);
         KickstartDataTest.setupTestConfiguration(admin);
         KickstartData k = KickstartDataTest.createKickstartWithProfile(admin);
         KickstartDataTest.addCommand(admin, k, "url", "--url http://cascade.sfbay.redhat." +
@@ -854,7 +852,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Action a = ActionManager.scheduleHardwareRefreshAction(admin, server, new Date());
 
         ActionFactory.save(a);
-        a = (Action) reload(a);
+        a = reload(a);
 
         results = handler.listSystemEvents(admin,
                 new Integer(server.getId().intValue()));
@@ -1051,8 +1049,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         server.setNetworkInterfaces(new HashSet());
         assertNull(server.getIpAddress());
         assertNull(server.getHostname());
-        Network testNetwork = NetworkTest.createTestNetwork();
-        server.addNetwork(testNetwork);
 
         Map result = handler.getNetwork(admin, new Integer(server.getId().intValue()));
         assertNotNull(result.get("ip"));
@@ -1559,7 +1555,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Package pkg = PackageManagerTest.addPackageToSystemAndChannel(
                 "test-package-name" + TestUtils.randomString(), server,
                 ChannelFactoryTest.createTestChannel(admin));
-        server = (Server)TestUtils.reload(server);
+        server = TestUtils.reload(server);
 
         DataResult dr = ActionManager.recentlyScheduledActions(admin, null, 30);
         int preScheduleSize = dr.size();
@@ -1653,7 +1649,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         handler.setDetails(admin, new Integer(server.getId().intValue()), details);
         TestUtils.saveAndFlush(server);
-        server = (Server)reload(server);
+        server = reload(server);
 
         assertEquals(profileName, server.getName());
         assertEquals(description, server.getDescription());
@@ -1712,7 +1708,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 true);
 
         TestUtils.saveAndFlush(server);
-        server = (Server)reload(server);
+        server = reload(server);
         assertNotNull(server.getLock());
 
         //unlock the server
@@ -1720,7 +1716,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 false);
 
         TestUtils.saveAndFlush(server);
-        server = (Server)reload(server);
+        server = reload(server);
         assertNull(server.getLock());
     }
 
@@ -1732,7 +1728,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         handler.setDetails(admin, new Integer(server.getId().intValue()), details);
         TestUtils.saveAndFlush(server);
-        server = (Server)reload(server);
+        server = reload(server);
 
         assertNull(server.getBaseEntitlement());
     }
@@ -2145,8 +2141,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 contains = true;
                 assertEquals(act.getActionType(),
                         ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
-                VirtualizationSetMemoryAction action = (VirtualizationSetMemoryAction)
-                HibernateFactory.getSession().load(
+                VirtualizationSetMemoryAction action = HibernateFactory.getSession().load(
                         VirtualizationSetMemoryAction.class,  (long) id);
                 assertEquals(action.getMemory(), new Integer(512 * 1024));
             }
@@ -2174,8 +2169,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 contains = true;
                 assertEquals(act.getActionType(),
                         ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS);
-                VirtualizationSetVcpusAction action = (VirtualizationSetVcpusAction)
-                HibernateFactory.getSession().load(
+                VirtualizationSetVcpusAction action = HibernateFactory.getSession().load(
                         VirtualizationSetVcpusAction.class,  (long) id);
                 assertEquals(action.getVcpu(), new Integer(3));
             }
@@ -2253,7 +2247,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Matcher m = p.matcher(str);
         assertTrue(m.matches());
     }
-    
+
     public void testListMigrationTargetNoProducts() throws Exception {
 
         Server server = ServerFactoryTest.createTestServer(admin, true);

@@ -696,11 +696,6 @@ public class HardwareMapper {
 
         server.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
 
-        com.redhat.rhn.domain.server.Network network =
-                new com.redhat.rhn.domain.server.Network();
-        server.getNetworks().clear();
-        server.addNetwork(network);
-
         // remove interfaces not present in the Salt result
         server.getNetworkInterfaces().removeAll(
                 server.getNetworkInterfaces().stream()

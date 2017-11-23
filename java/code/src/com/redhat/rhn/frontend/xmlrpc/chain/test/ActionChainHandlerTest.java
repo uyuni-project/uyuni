@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
-import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
@@ -113,7 +112,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         serverPkgs.add(ipkg);
 
         ServerFactory.save(this.server);
-        this.server = (Server) ActionChainHandlerTest.reload(this.server);
+        this.server = ActionChainHandlerTest.reload(this.server);
         ach = new ActionChainHandler();
         actionChain = ActionChainFactory.createActionChain(CHAIN_LABEL, admin);
     }

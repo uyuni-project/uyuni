@@ -49,7 +49,6 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
-import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerArch;
@@ -1081,9 +1080,6 @@ public class SystemManagerTest extends RhnBaseTestCase {
         for (String name : hostnames) {
             Server s1 = ServerFactoryTest.createTestServer(user, true);
             s1.setHostname(name);
-            Network net = new Network();
-            net.setServer(s1);
-            s1.addNetwork(net);
         }
 
         List<SystemOverview> list = SystemManager.listDuplicatesByHostname(user, "duphost");

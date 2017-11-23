@@ -44,7 +44,6 @@ import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.ProxyInfo;
@@ -217,11 +216,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         newS.addNote(note1);
         newS.addNote(note2);
 
-        Network network1 = NetworkTest.createTestNetwork();
-        Network network2 = NetworkTest.createTestNetwork();
-        newS.addNetwork(network1);
-        newS.addNetwork(network2);
-
         NetworkInterface netint1 = NetworkInterfaceTest.createTestNetworkInterface();
         NetworkInterface netint2 = NetworkInterfaceTest.createTestNetworkInterface();
         newS.addNetworkInterface(netint1);
@@ -235,11 +229,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertTrue(notes.size() == 2);
         Note note = (Note) notes.toArray()[0];
         assertEquals(server2.getId(), note.getServer().getId());
-
-        Set networks = server2.getNetworks();
-        assertTrue(networks.size() == 2);
-        Network net = (Network) networks.toArray()[0];
-        assertEquals(server2.getId(), net.getServer().getId());
 
         Set interfaces = server2.getNetworkInterfaces();
         assertTrue(interfaces.size() == 2);

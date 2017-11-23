@@ -16,7 +16,6 @@
 package com.redhat.rhn.taskomatic.task.gatherer;
 
 import com.redhat.rhn.domain.server.CPU;
-import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
@@ -228,9 +227,5 @@ public class VirtualHostManagerProcessor {
 
     private void updateServerNetwork(Server server, String hostId) {
         server.setHostname(hostId);
-        Network n = new Network();
-        n.setServer(server);
-        server.getNetworks().clear();
-        server.getNetworks().add(n);
     }
 }

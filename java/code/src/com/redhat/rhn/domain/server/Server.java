@@ -100,7 +100,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private ServerLock lock;
     private ServerUuid serverUuid;
     private Set<Note> notes;
-    private Set<Network> networks;
     private Ram ram;
     private Dmi dmi;
     private NetworkInterface primaryInterface;
@@ -375,7 +374,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     protected Server() {
         devices = new HashSet<Device>();
         notes = new HashSet<Note>();
-        networks = new HashSet<Network>();
         networkInterfaces = new HashSet<NetworkInterface>();
         customDataValues = new HashSet<CustomDataValue>();
 
@@ -831,30 +829,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * @return Returns the networks
-     */
-    public Set<Network> getNetworks() {
-        return networks;
-    }
-
-    /**
-     * Sets the set of networks
-     * @param n The networks to set
-     */
-    public void setNetworks(Set<Network> n) {
-        this.networks = n;
-    }
-
-    /**
-     * Adds a network to the set of networks for this server.
-     * @param network The network to add.
-     */
-    public void addNetwork(Network network) {
-        network.setServer(this);
-        networks.add(network);
-    }
-
-    /**
      * Get the primary ip address for this server
      * @return Returns the primary ip for this server
      */
@@ -874,10 +848,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public String getIp6Address() {
         NetworkInterface ni = findPrimaryNetworkInterface();
         if (ni != null) {
-            for (String ipv6address : ni.getGlobalIpv6Addresses()) {
+            for (ServerNetAddress6 ipv6address : ni.getIPv6Addresses()) {
                 log.debug("Found a NetworkInterface: " + ipv6address);
-                if (!ipv6address.equals("::1")) {
-                    return ipv6address;
+                if (!ipv6address.getAddress().equals("::1")) {
+                    return ipv6address.getAddress();
                 }
             }
         }
@@ -976,43 +950,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
                     return ni;
                 }
             }
-        }
-        return null;
-    }
-
-    // Sometimes java really annoys me
-    private Network findPrimaryNetwork() {
-        if (!networks.isEmpty()) {
-            Iterator<Network> i = networks.iterator();
-            while (i.hasNext()) {
-                Network n = i.next();
-                String addr = getIpAddress();
-                if (addr != null &&
-                        !addr.equals("127.0.0.1")) {
-                    log.debug("returning Network that is !localhost");
-                    return n;
-                }
-            }
-            log.debug("giving up, returning 1st Network");
-            return networks.iterator().next();
-        }
-        return null;
-    }
-
-    private Network findPrimaryIpv6Network() {
-        if (!networks.isEmpty()) {
-            Iterator<Network> i = networks.iterator();
-            while (i.hasNext()) {
-                Network n = i.next();
-                String addr = getIp6Address();
-                if (addr != null &&
-                        !addr.equals("::1")) {
-                    log.debug("returning Network that is !localhost");
-                    return n;
-                }
-            }
-            log.debug("giving up, returning 1st Network");
-            return networks.iterator().next();
         }
         return null;
     }
@@ -1947,9 +1884,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
         }
         SystemManager.storeServer(this);
         primaryInterface.setPrimary("Y");
-        if (networks.size() == 1) {
-            Network n = networks.iterator().next();
-        }
     }
 
     /**
