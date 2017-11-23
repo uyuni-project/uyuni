@@ -11,16 +11,20 @@ const {AsyncButton, Button} = require("../components/buttons");
 const Panels = require("../components/panel");
 const Panel = Panels.Panel;
 
-function reloadData() {
-  return Network.get("/rhn/manager/notification-messages/data-unread", "application/json").promise;
+function reloadData(dataUrlSlice) {
+  return Network.get('/rhn/manager/notification-messages/' + dataUrlSlice, "application/json").promise;
 }
 
 const CheckRead = React.createClass({
   getInitialState: function() {
     return {
       messageId: this.props.messageId,
-      readState: this.props.isRead
+      readState: this.props.isRead,
     }
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({readState : nextProps.isRead});
   },
 
   updateReadStatus: function() {
@@ -30,7 +34,6 @@ const CheckRead = React.createClass({
     messageData.isRead = !this.state.readState;
     Network.post("/rhn/manager/notification-messages/update-message-status", JSON.stringify(messageData), "application/json").promise
     .then(data => {
-        console.log(data.message);
         this.setState({readState : !this.state.readState})
     })
     .catch(response => {
@@ -45,7 +48,11 @@ const CheckRead = React.createClass({
   render: function() {
     return (
       <div className="col-md-6">
-        <input type="checkbox" onClick={this.updateReadStatus} />
+        {
+          this.state.readState ?
+          <input type="checkbox" onClick={this.updateReadStatus} checked="checked" />
+          : <input type="checkbox" onClick={this.updateReadStatus} />
+        }
       </div>
     );
   }
@@ -57,16 +64,46 @@ const NotificationMessages = React.createClass({
     return {
       serverData: null,
       error: null,
+      dataUrlTags: ['#data-unread', '#data-all'],
+      currentDataUrlTag: location.hash ? location.hash : '#data-unread',
     };
   },
 
   componentWillMount: function() {
-    this.refreshServerData();
+    this.refreshServerData(this.state.currentDataUrlTag);
   },
 
-  refreshServerData: function() {
+  componentWillUpdate: function(nextProps, nextState) {
+    if (this.state.currentDataUrlTag != nextState.currentDataUrlTag) {
+      this.refreshServerData(nextState.currentDataUrlTag);
+    }
+  },
+
+  changeTabUrl: function(nextDataUrlTag) {
+    this.setState({currentDataUrlTag : nextDataUrlTag});
+  },
+
+  decodeDataUrlSlice: function(dataUrlTag) {
+    let dataUrlSlice;
+    // decode the tab, the data and the table to present
+    switch (dataUrlTag) {
+      case '#data-unread' : dataUrlSlice = 'data-unread'; break;
+      case '#data-all' : dataUrlSlice = 'data-all'; break;
+      default :
+        if (this.state.dataUrlTags[location.hash] != null) {
+          dataUrlSlice = location.hash.replace('#', '');
+        }
+        else {
+          dataUrlSlice = this.state.currentDataUrlTag ? this.state.currentDataUrlTag.replace('#', '') : 'data-unread';
+        }
+        break;
+    }
+    return dataUrlSlice;
+  },
+
+  refreshServerData: function(dataUrlTag) {
     var currentObject = this;
-    reloadData()
+    reloadData(this.decodeDataUrlSlice(dataUrlTag))
       .then(data => {
         currentObject.setState({
           serverData: data,
@@ -83,9 +120,10 @@ const NotificationMessages = React.createClass({
   },
 
   readThemAll: function() {
+    var currentObject = this;
     Network.post("/rhn/manager/notification-messages/mark-all-as-read", null, "application/json").promise
     .then(() => {
-      window.location.reload();
+      currentObject.refreshServerData();
     })
     .catch(response => {
       currentObject.setState({
@@ -125,6 +163,21 @@ const NotificationMessages = React.createClass({
 
   render: function() {
     const data = this.state.serverData;
+
+    const dataHashTag = location.hash;
+    const headerTabs =
+      <div className="spacewalk-content-nav">
+        <ul className="nav nav-tabs">
+          <li className={dataHashTag == '#data-unread' || dataHashTag == '' ? 'active': ''}>
+            <a href='#data-unread' onClick={() => this.changeTabUrl('#data-unread')}>{t('Unread Messages')}</a>
+          </li>
+          <li className={location.hash == '#data-all' ? 'active': ''}>
+            <a href='#data-all' onClick={() => this.changeTabUrl('#data-all')}>{t('All Messages')}</a>
+          </li>
+        </ul>
+      </div>
+    ;
+
     const panelButtons = <div className="pull-right btn-group">
       <AsyncButton id="reload" icon="refresh" name={t('Refresh')} text action={this.refreshServerData} />
       <Button id="mark-all-as-read" icon="fa-check-circle" className='btn-default'
@@ -132,52 +185,43 @@ const NotificationMessages = React.createClass({
     </div>;
 
     if (data != null) {
-      if (Object.keys(data).length > 0) {
-        return  (
-          <Panel title={t("Notification Messages")} icon="fa-envelope" button={ panelButtons }>
-            <ErrorMessage error={this.state.error} />
-            <p>{t('The server has collected the following notification messages.')}</p>
-            <Table
-              data={this.buildRows(data)}
-              identifier={(row) => row["id"]}
-              cssClassFunction={(row) => row["status"] == true ? 'text-muted' : null }
-              initialSortColumnKey="severity"
-              initialSortDirection={-1}
-              searchField={
-                  <SearchField filter={this.searchData}
-                      criteria={""}
-                      placeholder={t("Filter by description")} />
-              }>
-              <Column
-                columnKey="severity"
-                comparator={this.sortBySeverity}
-                header={t("Severity")}
-                cell={ (row) => row["severity"] }
-              />
-              <Column
-                columnKey="description"
-                comparator={Utils.sortByText}
-                header={t("Description")}
-                cell={ (row) => row["description"] }
-              />
-              <Column
-                columnKey="isRead"
-                comparator={this.sortByStatus}
-                header={t("Read")}
-                cell={ (row) => <CheckRead messageId={row['id']} isRead={row['isRead']} />}
-              />
-            </Table>
-          </Panel>
-        );
-      }
-      else {
-        return (
-          <Panel title={t("Notification Messages")} icon="fa-envelope" button={ panelButtons }>
-            <ErrorMessage error={this.state.error} />
-            <p>{t('There are no notification messages.')}</p>
-          </Panel>
-        );
-      }
+      return  (
+        <Panel title={t("Notification Messages")} icon="fa-envelope" button={ panelButtons }>
+          <ErrorMessage error={this.state.error} />
+          <p>{t('The server has collected the following notification messages.')}</p>
+          {headerTabs}
+          <Table
+            data={this.buildRows(data)}
+            identifier={(row) => row["id"]}
+            cssClassFunction={(row) => row["status"] == true ? 'text-muted' : null }
+            initialSortColumnKey="severity"
+            initialSortDirection={-1}
+            searchField={
+                <SearchField filter={this.searchData}
+                    criteria={""}
+                    placeholder={t("Filter by description")} />
+            }>
+            <Column
+              columnKey="severity"
+              comparator={this.sortBySeverity}
+              header={t("Severity")}
+              cell={ (row) => row["severity"] }
+            />
+            <Column
+              columnKey="description"
+              comparator={Utils.sortByText}
+              header={t("Description")}
+              cell={ (row) => row["description"] }
+            />
+            <Column
+              columnKey="isRead"
+              comparator={this.sortByStatus}
+              header={t("Read")}
+              cell={ (row) => <CheckRead messageId={row['id']} isRead={row['isRead']} />}
+            />
+          </Table>
+        </Panel>
+      );
     }
     else {
       return (

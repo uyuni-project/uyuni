@@ -268,6 +268,7 @@ public class Router implements SparkApplication {
         // NotificationMessages
         get("/manager/notification-messages", withUser(NotificationMessageController::getList), jade);
         get("/manager/notification-messages/data-unread", withUser(NotificationMessageController::dataUnread));
+        get("/manager/notification-messages/data-all", withUser(NotificationMessageController::dataAll));
         post("/manager/notification-messages/update-message-status",
                 withUser(NotificationMessageController::updateMessageStatus));
         post("/manager/notification-messages/mark-all-as-read",
