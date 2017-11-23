@@ -54,8 +54,8 @@ sql:
 		minion_id, machine_id
 	from (
 	select rhnserver.id as server_id, rhnserver.name as profile_name,
-		rhnserver.hostname, suseminioninfo.minion_id, trim(rhnservernetwork.ipaddr) as ip_address,
-		trim(rhnservernetwork.ip6addr) as ipv6_address,
+		rhnserver.hostname, suseminioninfo.minion_id, trim(netinfos.ipaddr) as ip_address,
+		trim(netinfos.ip6addr) as ipv6_address,
 		rhnserver.machine_id,
 		( select login from web_contact where rhnserver.creator_id = web_contact.id ) as registered_by,
 		to_char(rhnserver.created, 'YYYY-MM-DD HH24:MI:SS') as registration_time,
@@ -100,8 +100,8 @@ sql:
 			where is_primary = 'Y'
 			group by server_id
 			)
-		) rhnservernetwork
-		on rhnserver.id = rhnservernetwork.server_id
+		) netinfos
+		on rhnserver.id = netinfos.server_id
 		left outer join rhnserverchannel
 		on rhnserver.id = rhnserverchannel.server_id
 		left outer join rhnchannel
