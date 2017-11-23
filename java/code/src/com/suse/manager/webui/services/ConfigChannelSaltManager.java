@@ -16,7 +16,6 @@
 package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigInfo;
@@ -134,10 +133,10 @@ public class ConfigChannelSaltManager {
      */
     private void doGenerateConfigChannelFiles(ConfigChannel channel) throws IOException {
         // TODO synchronize at file level not on the class instance
-        if (!ConfigChannelType.NORMAL.equals(channel.getConfigChannelType().getLabel())) {
+        if (!(channel.isNormalChannel() || channel.isStateChannel())) {
             LOG.debug("Trying to generate salt files for incompatible channel type " +
-                    "(channel: " + channel + "). Skipping. (Only 'normal' configuration " +
-                    "channels are supported.)");
+                    "(channel: " + channel + "). Skipping. (Only 'normal' and 'state' " +
+                    "configuration channels are supported.)");
             return;
         }
         File channelDir = getChannelDir(channel);
@@ -149,9 +148,10 @@ public class ConfigChannelSaltManager {
                 .orElse(emptySortedSet())) {
             generateConfigFile(channelDir, file);
         }
-
-        File stateFile = new File(channelDir, defaultExtension("init.sls"));
-        writeContent(configChannelInitSLSContent(channel), channelDir, stateFile);
+        if (channel.isNormalChannel()) {
+            File stateFile = new File(channelDir, defaultExtension("init.sls"));
+            writeContent(configChannelInitSLSContent(channel), channelDir, stateFile);
+        }
     }
 
     private File getChannelDir(ConfigChannel channel) {
@@ -166,8 +166,8 @@ public class ConfigChannelSaltManager {
      */
     private void generateConfigFile(File channelDir, ConfigFile file) throws IOException {
         ConfigRevision latestRev = file.getLatestConfigRevision();
-        if (!latestRev.getConfigFileType().getLabel().equals(ConfigFileType.FILE)) {
-            // we only generate files, no symlinks/directories
+        if (!(latestRev.isFile() || latestRev.isSls())) {
+            // we only generate files/sls, no symlinks/directories
             return;
         }
         LOG.trace("Generating configuration file: " + file.getConfigFileName().getPath());
