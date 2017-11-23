@@ -22,8 +22,8 @@ sql:
 	select rhnErrata.advisory_name as advisory,
 		rhnServerNeededErrataCache.server_id,
 		rhnServer.name as profile_name,
-		rhnServer.hostname, trim(rhnservernetwork.ipaddr) as ip_address,
-		trim(rhnservernetwork.ip6addr) as ipv6_address
+		rhnServer.hostname, trim(netinfos.ipaddr) as ip_address,
+		trim(netinfos.ip6addr) as ipv6_address
 	from rhnErrata, rhnServer,
 		rhnServerNeededErrataCache left outer join
 		(
@@ -39,8 +39,8 @@ sql:
 			where is_primary = 'Y'
 			group by server_id
 			)
-		) rhnservernetwork
-		on rhnServerNeededErrataCache.server_id = rhnservernetwork.server_id
+		) netinfos
+		on rhnServerNeededErrataCache.server_id = netinfos.server_id
 	where rhnErrata.id = rhnServerNeededErrataCache.errata_id
 		and rhnServerNeededErrataCache.server_id = rhnServer.id
 	) X
