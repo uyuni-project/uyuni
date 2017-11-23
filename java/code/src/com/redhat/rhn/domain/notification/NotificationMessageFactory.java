@@ -93,8 +93,9 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static List<NotificationMessage> listAll() {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<NotificationMessage> criteria = builder.createQuery(NotificationMessage.class);
-        return getSession().createQuery(criteria).getResultList();
+        CriteriaQuery<NotificationMessage> query = builder.createQuery(NotificationMessage.class);
+        query.from(NotificationMessage.class);
+        return getSession().createQuery(query).getResultList();
     }
 
     /**
