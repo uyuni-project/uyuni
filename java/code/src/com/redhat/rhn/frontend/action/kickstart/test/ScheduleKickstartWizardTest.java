@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
-import com.redhat.rhn.domain.server.test.NetworkTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
@@ -104,7 +103,6 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 ServerFactoryTest.TYPE_SERVER_PROXY);
         proxy.setHostname("proxy");
-        proxy.addNetwork(NetworkTest.createNetworkInstance());
         ServerFactory.save(proxy);
         TestUtils.flushAndEvict(proxy);
         assertTrue(SystemManager.listProxies(user.getOrg()).size() == 1);
