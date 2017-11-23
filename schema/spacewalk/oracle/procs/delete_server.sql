@@ -7,10 +7,10 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
--- 
+--
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation. 
+-- in this software or its documentation.
 --
 --
 --
@@ -88,7 +88,7 @@ begin
 	update rhnKickstartSession
 		set old_server_id = case when old_server_id = server_id_in then null else old_server_id end,
 		    new_server_id = case when new_server_id = server_id_in then null else new_server_id end
-		where old_server_id = server_id_in 
+		where old_server_id = server_id_in
 		   or new_server_id = server_id_in;
 
 	rhn_channel.clear_subscriptions(server_id_in, 1);
@@ -104,13 +104,13 @@ begin
     -- If there's a newer row in rhnVirtualInstance with the same
     -- uuid, this guest must have been re-registered, so we can clean
     -- this data up.
-				
+
         delete from rhnVirtualInstance vi
 	      where (host_system_id = server_id_in and virtual_system_id is null)
                  or (virtual_system_id = server_id_in and host_system_id is null)
                  or (vi.virtual_system_id = server_id_in and vi.modified < (select max(vi2.modified)
                     from rhnVirtualInstance vi2 where vi2.uuid = vi.uuid));
-						
+
         -- this is merge of two single updates:
         --  update ... set host_system_id = null where host_system_id = server_id_in;
         --  update ... set virtual_system_id = null where virtual_system_id = server_id_in;
@@ -120,7 +120,7 @@ begin
 	       virtual_system_id = case when virtual_system_id = server_id_in then null else virtual_system_id end
 	 where host_system_id = server_id_in
 	    or virtual_system_id = server_id_in;
-		
+
         -- this is merge of two single updates:
         --  update ... set old_host_system_id = null when old_host_system_id = server_id_in;
         --  update ... set new_host_system_id = null when new_host_system_id = server_id_in;
@@ -130,7 +130,7 @@ begin
                new_host_system_id = case when new_host_system_id = server_id_in then null else new_host_system_id end
          where old_host_system_id = server_id_in
             or new_host_system_id = server_id_in;
-		 
+
 	-- We're deleting everything with a foreign key to rhnServer
 	-- here, now.  I'm hoping this will help aleviate our deadlock
 	-- problem.
@@ -166,7 +166,6 @@ begin
 	delete from rhnServerLocation where server_id = server_id_in;
 	delete from rhnServerLock where server_id = server_id_in;
 	delete from rhnServerNeededCache where server_id = server_id_in;
-	delete from rhnServerNetwork where server_id = server_id_in;
 	delete from rhnServerNotes where server_id = server_id_in;
 	-- I'm not removing the foreign key from rhnServerPackage; that'll
 	-- take forever.  Do the delete anyway.
@@ -174,8 +173,8 @@ begin
 	delete from rhnServerTokenRegs where server_id = server_id_in;
 	delete from rhnSnapshotTag where server_id = server_id_in;
 	-- this cascades to:
-	--   rhnSnapshotChannel, rhnSnapshotConfigChannel, rhnSnapshotPackage, 
-	--   rhnSnapshotConfigRevision, rhnSnapshotServerGroup, 
+	--   rhnSnapshotChannel, rhnSnapshotConfigChannel, rhnSnapshotPackage,
+	--   rhnSnapshotConfigRevision, rhnSnapshotServerGroup,
 	--   rhnSnapshotTag.
 	-- We may want to consider delete_snapshot() at some point, but
 	--   I don't think we need to yet.
@@ -192,7 +191,7 @@ begin
 	delete from rhnServerUuid where server_id = server_id_in;
 
     delete from rhnPushClient where server_id = server_id_in;
-	
+
 	-- now get rhnServer itself.
 	delete
 	from	rhnServer

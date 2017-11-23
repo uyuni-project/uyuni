@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 56c9cd27d549f43a57bc72e4167699456d9c057e
+-- oracle equivalent source sha1 31cf428b3a4c39081dad26785a678567a5a28ed7
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -8,10 +8,10 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
--- 
+--
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation. 
+-- in this software or its documentation.
 --
 --
 --
@@ -21,7 +21,7 @@
 create or replace
 function delete_server (
         server_id_in in numeric
-) returns void 
+) returns void
 as
 $$
 declare
@@ -168,7 +168,6 @@ begin
         delete from rhnServerLocation where server_id = server_id_in;
         delete from rhnServerLock where server_id = server_id_in;
         delete from rhnServerNeededCache where server_id = server_id_in;
-        delete from rhnServerNetwork where server_id = server_id_in;
         delete from rhnServerNotes where server_id = server_id_in;
         -- I'm not removing the foreign key from rhnServerPackage; that'll
         -- take forever.  Do the delete anyway.
@@ -207,4 +206,3 @@ begin
 end;
 $$
 language plpgsql;
-
