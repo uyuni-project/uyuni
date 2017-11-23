@@ -45,7 +45,6 @@ delete_server                   :: rhn_channel.pks rhn_config.pks \
                                    rhnServerHistory rhnServerInfo rhnServerLock \
                                    rhnServerInstallInfo rhnServerLocation \
                                    rhnServerNeededErrataCache \
-                                   rhnServerNeededPackageCache rhnServerNetwork \
                                    rhnServerNotes rhnServerPackage rhnSnapshot \
                                    rhnServerTokenRegs rhnSnapshotTag \
                                    rhnUserServerPrefs \
