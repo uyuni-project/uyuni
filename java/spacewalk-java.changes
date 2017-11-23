@@ -1,3 +1,4 @@
+- Do not remove virtual instances for registered systems (bsc#1063759)
 - Process right configfile on 'scheduleFileComparisons' API calls (bsc#1066663)
 - Fix reported UUIDs for guests instances within a virtual host (bsc#1063759)
 - Generate Order Items for OEM subscriptions (bsc#1045141)
