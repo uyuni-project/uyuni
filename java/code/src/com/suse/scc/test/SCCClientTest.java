@@ -31,9 +31,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
-
-import javax.xml.bind.DatatypeConverter;
 
 import junit.framework.TestCase;
 import simple.http.Request;
@@ -166,7 +166,7 @@ public class SCCClientTest extends TestCase {
         assertEquals("FULL", s.getType());
         assertEquals("EXPIRED", s.getStatus());
         assertEquals(null, s.getStartsAt());
-        assertEquals(DatatypeConverter.parseDateTime("2014-03-14T13:10:21.164Z").getTime(), s.getExpiresAt());
+        assertEquals(Date.from(Instant.parse("2014-03-14T13:10:21.164Z")), s.getExpiresAt());
         assertEquals(new Integer(6), s.getSystemLimit());
         assertEquals(new Integer(1), s.getSystemsCount());
         assertEquals(null, s.getVirtualCount());
