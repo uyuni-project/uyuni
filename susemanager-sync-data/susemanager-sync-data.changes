@@ -1,5 +1,9 @@
+- Support SUSE Manager for Retail 3.1 (bsc#1052079)
+- fix description for HA channel (bsc#1063588)
 - Add support for CAASP (bsc#1052283)
+- Add IBM DLPAR channels to SLES for SAP SPx ppc64le (bsc#1068057)
 - remove Certification Module 12 from SP2 and SP3 (bsc#1066819)
+
 -------------------------------------------------------------------
 Mon May 29 15:39:42 CEST 2017 - mc@suse.de
 
