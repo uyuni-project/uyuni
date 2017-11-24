@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -57,6 +58,7 @@ import com.redhat.rhn.testing.TestUtils;
 import java.net.InetAddress;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,6 +75,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     private static final String CHAIN_LABEL = "Quick Brown Fox";
     private static final String SCRIPT_LABEL = "Script Label";
     private static final String SCRIPT_SAMPLE = "#!/bin/bash\nexit 0;";
+    private static final String B64_SCRIPT_SAMPLE = Base64.getEncoder().encodeToString(SCRIPT_SAMPLE.getBytes());
     private Server server;
     private Package pkg;
     private Package channelPackage;
@@ -560,10 +563,12 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                                            this.server.getId().intValue(),
                                            CHAIN_LABEL,
                                            "root", "root", 300,
-                                           ActionChainHandlerTest.SCRIPT_SAMPLE) > 0);
+                                           ActionChainHandlerTest.B64_SCRIPT_SAMPLE) > 0);
         assertEquals(1, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_SCRIPT_RUN, actionChain.getEntries()
-                .iterator().next().getAction().getActionType());
+        Action action = actionChain.getEntries().iterator().next().getAction();
+        assertEquals(ActionFactory.TYPE_SCRIPT_RUN, action.getActionType());
+        assertEquals(ActionChainHandlerTest.SCRIPT_SAMPLE,
+                ((ScriptRunAction)action).getScriptActionDetails().getScriptContents());
     }
 
     public void testAcLabeledRemoteCommand() {
@@ -572,11 +577,30 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                                       this.server.getId().intValue(),
                                       CHAIN_LABEL, SCRIPT_LABEL,
                                       "root", "root", 300,
-                                      ActionChainHandlerTest.SCRIPT_SAMPLE) > 0);
+                                      ActionChainHandlerTest.B64_SCRIPT_SAMPLE) > 0);
         assertEquals(1, actionChain.getEntries().size());
         Action action = actionChain.getEntries().iterator().next().getAction();
         assertEquals(ActionFactory.TYPE_SCRIPT_RUN, action.getActionType());
         assertEquals(SCRIPT_LABEL, action.getName());
+        assertEquals(ActionChainHandlerTest.SCRIPT_SAMPLE,
+                ((ScriptRunAction)action).getScriptActionDetails().getScriptContents());
+    }
+
+    public void testAcRemoteCommandNoBase64() {
+        try {
+            assertFalse("Exception expected and no success",
+                    this.ach.addScriptRun(this.admin,
+                            this.server.getId().intValue(),
+                            CHAIN_LABEL,
+                            "root", "root", 300,
+                            ActionChainHandlerTest.SCRIPT_SAMPLE) > 0);
+        }
+        catch (IllegalArgumentException e) {
+            assertContains(e.getMessage(), "Illegal base64 character");
+        }
+        catch (Exception e) {
+            assertTrue("Wrong exception thrown", false);
+        }
     }
 
     /**
