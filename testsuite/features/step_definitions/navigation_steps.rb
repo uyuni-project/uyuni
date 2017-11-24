@@ -68,6 +68,26 @@ When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |targ
   step %(I wait until I see "#{node.full_hostname}" text, refreshing the page)
 end
 
+When(/^I wait until I do not see "([^"]*)" text, refreshing the page$/) do |text|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if not page.has_content?(text)
+        sleep 3
+        page.evaluate_script 'window.location.reload()'
+      end
+    end
+  rescue Timeout::Error
+    raise "The #{text} was always there in webpage"
+  end
+end
+
+When(/^I wait until I do not see the name of "([^"]*)", refreshing the page$/) do |target|
+  node = get_target(target)
+  step %(I wait until I do not see "#{node.full_hostname}" text, refreshing the page)
+end
+
+
 #
 # Check a checkbox of the given id
 #
