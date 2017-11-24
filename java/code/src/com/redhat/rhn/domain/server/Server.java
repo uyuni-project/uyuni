@@ -37,6 +37,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -393,8 +394,12 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @param user The user doing the action
      */
     public void subscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
-        configChannelList
-                .forEach(cc -> configListProc.add(getConfigChannels(), cc));
+        configChannelList.forEach(cc -> {
+            if (!ConfigChannelSaltManager.getInstance().areFilesGenerated(cc)) {
+                ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(cc);
+            }
+            configListProc.add(getConfigChannels(), cc);
+        });
     }
 
     /**

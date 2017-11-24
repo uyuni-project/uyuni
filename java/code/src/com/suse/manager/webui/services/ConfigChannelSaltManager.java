@@ -140,8 +140,7 @@ public class ConfigChannelSaltManager {
                     "channels are supported.)");
             return;
         }
-        File channelDir = Paths.get(baseDirPath).resolve(getChannelRelativePath(channel))
-                .toFile();
+        File channelDir = getChannelDir(channel);
         if (channelDir.exists()) {
             FileUtils.cleanDirectory(channelDir);
         }
@@ -153,6 +152,10 @@ public class ConfigChannelSaltManager {
 
         File stateFile = new File(channelDir, defaultExtension("init.sls"));
         writeContent(configChannelInitSLSContent(channel), channelDir, stateFile);
+    }
+
+    private File getChannelDir(ConfigChannel channel) {
+        return Paths.get(baseDirPath).resolve(getChannelRelativePath(channel)).toFile();
     }
 
     /**
@@ -404,5 +407,16 @@ public class ConfigChannelSaltManager {
     public String getFileStateName(ConfigFile file) {
         return getChannelStateName(file.getConfigChannel()) + "." +
                 file.getConfigFileName().getPath();
+    }
+
+    /**
+     * Returns true depending on whether salt files structure for given channel exists or
+     * false otherwise (internally it just checks whether the channel directory exists).
+     *
+     * @param channel the channel
+     * @return true if the salt files structure for the channel exists, false otherwise
+     */
+    public boolean areFilesGenerated(ConfigChannel channel) {
+        return getChannelDir(channel).exists();
     }
 }
