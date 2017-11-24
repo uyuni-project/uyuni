@@ -20,7 +20,9 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import javax.servlet.ServletRequest;
@@ -28,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
-import javax.xml.bind.DatatypeConverter;
 
 /**
  * <strong>FormatDateTag</strong><br>
@@ -246,17 +247,15 @@ public class FormatDateTag extends TagSupport {
         try {
             JspWriter out = pageContext.getOut();
 
-            Calendar refDate = Calendar.getInstance();
-            refDate.setTime(getReference());
-            Calendar valDate = Calendar.getInstance();
-            valDate.setTime(getValue());
+            OffsetDateTime refDate = OffsetDateTime.ofInstant(getReference().toInstant(), ZoneId.systemDefault());
+            OffsetDateTime valDate = OffsetDateTime.ofInstant(getValue().toInstant(), ZoneId.systemDefault());
 
             out.append("  <time");
             out.append(getCssClass());
             out.append(" data-reference-date=\"" +
-                    DatatypeConverter.printDateTime(refDate) + "\"");
+                    refDate.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) + "\"");
             out.append(" datetime=\"" +
-                    DatatypeConverter.printDateTime(valDate) + "\">");
+                    valDate.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) + "\">");
             out.append(getFormattedDate());
             out.append("  </time>");
         }
