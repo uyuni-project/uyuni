@@ -70,7 +70,7 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String dataUnread(Request request, Response response, User user) {
-        Object data = getJSONNotificationMessages(NotificationMessageFactory.listUnread());
+        Object data = getJSONNotificationMessages(NotificationMessageFactory.listUnreadByUser(user));
 
         response.type("application/json");
         return GSON.toJson(data);
