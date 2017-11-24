@@ -129,8 +129,15 @@ public class VirtualInstanceManager extends BaseManager {
         for (String uuid : uuidsToRemove) {
             List<VirtualInstance> virtualInstances =
                     vinst.lookupVirtualInstanceByUuid(uuid);
-            virtualInstances.stream().forEach(virtualInstance ->
-                vinst.deleteVirtualInstanceOnly(virtualInstance));
+            virtualInstances.stream().forEach(virtualInstance -> {
+                if (virtualInstance.isRegisteredGuest()) {
+                    virtualInstance.getHostSystem().removeGuest(virtualInstance);
+                    virtualInstance.setHostSystem(null);
+                }
+                else {
+                    vinst.deleteVirtualInstanceOnly(virtualInstance);
+                }
+            });
         }
     }
 
@@ -172,8 +179,15 @@ public class VirtualInstanceManager extends BaseManager {
         for (String uuid : uuidsToRemove) {
             List<VirtualInstance> virtualInstances =
                     vinst.lookupVirtualInstanceByUuid(uuid);
-            virtualInstances.stream().forEach(virtualInstance ->
-                vinst.deleteVirtualInstanceOnly(virtualInstance));
+            virtualInstances.stream().forEach(virtualInstance -> {
+                if (virtualInstance.isRegisteredGuest()) {
+                    virtualInstance.getHostSystem().removeGuest(virtualInstance);
+                    virtualInstance.setHostSystem(null);
+                }
+                else {
+                    vinst.deleteVirtualInstanceOnly(virtualInstance);
+                }
+            });
         }
     }
 

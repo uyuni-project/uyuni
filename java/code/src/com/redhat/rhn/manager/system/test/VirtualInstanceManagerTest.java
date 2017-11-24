@@ -3,6 +3,7 @@ package com.redhat.rhn.manager.system.test;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -201,6 +202,43 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         assertEquals("vm3", guest.getName());
         assertEquals("420ea57f7035ee1de2c1e23fe29f5ca7", guest.getUuid());
         assertEquals(STATE_CRASHED, guest.getState().getLabel());
+    }
+
+    public void testUnlinkVirtualInstanceFromHost() throws Exception {
+
+        Long id = server.getId();
+        List<VmInfo> plan = new LinkedList<>();
+
+        plan.add(new VmInfo(1479479686, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
+                new GuestProperties(4096, "vm2", STATE_RUNNING, "a4f100d349954f50a24f80fec75e3f5d", 4, VIRTTYPE_PARA)));
+
+        VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
+
+        Server test = SystemManager.lookupByIdAndUser(id, user);
+        assertNotNull(test);
+        assertEquals(1, test.getGuests().size());
+        VirtualInstance vinst = test.getGuests().iterator().next();
+        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        vinst.setGuestSystem(server2);
+        VirtualInstanceFactory.getInstance().saveVirtualInstance(vinst);
+
+        plan = new LinkedList<>();
+        plan.add(new VmInfo(1479479799, EVENT_TYPE_FULLREPORT, TARGET_DOMAIN, null));
+        plan.add(new VmInfo(1479479799, EVENT_TYPE_EXISTS, TARGET_DOMAIN,
+                new GuestProperties(1024, "vm3", STATE_CRASHED, "420ea57f7035ee1de2c1e23fe29f5ca7", 1, VIRTTYPE_PARA)));
+
+        VirtualInstanceManager.updateGuestsVirtualInstances(server, plan);
+
+        VirtualInstance guest = test.getGuests().iterator().next();
+        assertEquals("vm3", guest.getName());
+        assertEquals("420ea57f7035ee1de2c1e23fe29f5ca7", guest.getUuid());
+        assertEquals(STATE_CRASHED, guest.getState().getLabel());
+
+        Long id2 = server2.getId();
+        test = SystemManager.lookupByIdAndUser(id2, user);
+        assertNotNull(test);
+        assertNotNull(test.getVirtualInstance());
+        assertEquals("a4f100d349954f50a24f80fec75e3f5d", test.getVirtualInstance().getUuid());
     }
 
     public void testSwappedUuidPlanExec() throws Exception {
