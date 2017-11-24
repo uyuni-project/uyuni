@@ -527,11 +527,18 @@ When(/^I go to the bootstrapping page$/) do
     )
 end
 
-When(/^I refresh page until see "(.*?)" hostname as text$/) do |minion|
-  node = get_target(minion)
+When(/^I refresh page until I see "(.*?)" hostname as text$/) do |minion|
   within('#spacewalk-content') do
     steps %(
-     And I try to reload page until contains "#{node.hostname}" text
+     And I wait until I see the name of "#{minion}", refreshing the page
+      )
+  end
+end
+
+When(/^I refresh page until I do not see "(.*?)" hostname as text$/) do |minion|
+  within('#spacewalk-content') do
+    steps %(
+     And I wait until I do not see the name of "#{minion}", refreshing the page
       )
   end
 end

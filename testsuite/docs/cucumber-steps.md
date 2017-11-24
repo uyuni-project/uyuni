@@ -230,7 +230,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
 ```cucumber
   When I wait until I see "Software Updates Available" text, refreshing the page
   When I try to reload page until contains "OpenSCAP xccdf scanning" text
-  When I refresh page until see "sle-minion" hostname as text
+  When I refresh page until I see "sle-minion" hostname as text
 ```
 
 (first two will be unified)
