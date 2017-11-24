@@ -7,6 +7,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.jose4j.jwt.NumericDate;
 
 import java.security.Key;
+import java.util.Arrays;
 
 /**
  * Tests for the TokenBuilder class.
@@ -20,13 +21,21 @@ public class TokenBuilderTest extends BaseTestCaseWithUser {
         assertEquals(32, key.getEncoded().length);
     }
 
+    public void testGetKeyConvert() {
+        String secret = DigestUtils.sha256Hex("0123456789abcd");
+        Key key = TokenBuilder.getKeyForSecret(secret);
+        assertNotNull(key);
+        assertTrue(Arrays.equals(new byte[]{-88, 44, -110, 39, -52, 84, -57, 71, 86, 32, -50, -123, -70, 31, -54, 30, 111,
+                82, -84, -119, -99, 20, -82, 114, -21, 38, 65, 25, -50, 88, 44, -8}, key.getEncoded()));
+    }
+
     public void testExpectsHexSecret() {
         try {
             // randomString() len is 13
             TokenBuilder.getKeyForSecret(TestUtils.randomString());
             fail("secret should be a hex string");
         } catch(IllegalArgumentException e) {
-            assertContains(e.getMessage(), "hexBinary needs to be even-length");
+            assertContains(e.getMessage(), "Odd number of characters.");
         }
     }
 
