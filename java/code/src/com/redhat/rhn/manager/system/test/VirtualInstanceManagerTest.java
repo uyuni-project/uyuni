@@ -217,10 +217,10 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         Server test = SystemManager.lookupByIdAndUser(id, user);
         assertNotNull(test);
         assertEquals(1, test.getGuests().size());
-		VirtualInstance vinst = test.getGuests().iterator().next();
-		Server server2 = ServerFactoryTest.createTestServer(user, true);
-		vinst.setGuestSystem(server2);
-		VirtualInstanceFactory.getInstance().saveVirtualInstance(vinst);
+        VirtualInstance vinst = test.getGuests().iterator().next();
+        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        vinst.setGuestSystem(server2);
+        VirtualInstanceFactory.getInstance().saveVirtualInstance(vinst);
 
         plan = new LinkedList<>();
         plan.add(new VmInfo(1479479799, EVENT_TYPE_FULLREPORT, TARGET_DOMAIN, null));
