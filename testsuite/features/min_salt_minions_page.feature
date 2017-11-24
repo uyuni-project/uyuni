@@ -24,7 +24,7 @@ Feature: Management of minion keys
     Given I am authorized as "testing" with password "testing"
     And "sle-minion" key is "unaccepted"
     And I go to the minion onboarding page
-    Then I refresh page until see "sle-minion" hostname as text
+    Then I refresh page until I see "sle-minion" hostname as text
     And I see "sle-minion" fingerprint
     And I should see a "pending" text
 
@@ -36,7 +36,7 @@ Feature: Management of minion keys
     And I wait until Salt master sees "sle-minion" as "rejected"
     Then I should see a "rejected" text
     And I delete "sle-minion" from the Rejected section
-    Then I should not see "sle-minion" hostname
+    And I refresh page until I do not see "sle-minion" hostname as text
 
   Scenario: Accepted minion shows up as a registered system
     Given I am authorized as "testing" with password "testing"
