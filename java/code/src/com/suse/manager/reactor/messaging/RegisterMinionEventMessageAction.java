@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -374,6 +375,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             NotificationMessage notificationMessage = NotificationMessageFactory.createNotificationMessage(
                     NotificationMessageSeverity.error,
                     "Error registering minion with id: " + minionId + " " + t.getMessage());
+            notificationMessage.setOrg(OrgFactory.getSatelliteOrg());
+            notificationMessage.getRoles().add(RoleFactory.SAT_ADMIN);
+            notificationMessage.getRoles().add(RoleFactory.ORG_ADMIN);
+            notificationMessage.getRoles().add(RoleFactory.IMAGE_ADMIN);
+
             NotificationMessageFactory.store(notificationMessage);
         }
         finally {

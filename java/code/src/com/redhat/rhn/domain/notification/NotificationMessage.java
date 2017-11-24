@@ -15,20 +15,18 @@
 
 package com.redhat.rhn.domain.notification;
 
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.domain.role.RoleImpl;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * A notification NotificationMessage Object.
@@ -41,6 +39,8 @@ public class NotificationMessage {
     private NotificationMessageSeverity severity;
     private String description;
     private boolean isRead = false;
+    private Org org;
+    private List<Role> roles = new ArrayList<>();
 
     /**
      * Empty constructor
@@ -123,6 +123,27 @@ public class NotificationMessage {
      */
     public void setSeverity(NotificationMessageSeverity severityIn) {
         this.severity = severityIn;
+    }
+
+    @ManyToMany(targetEntity = RoleImpl.class)
+    @JoinTable(name = "susenotificationmessagerole",
+            joinColumns = { @JoinColumn(name = "message_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") })
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    @ManyToOne
+    public Org getOrg() {
+        return org;
+    }
+
+    public void setOrg(Org org) {
+        this.org = org;
     }
 
     /**
