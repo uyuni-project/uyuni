@@ -48,7 +48,7 @@ Requires: concurrent
 Requires: httpcomponents-client
 Requires: cobbler >= 2.0.0
 Requires: google-gson >= 2.2.4
-Requires: java-ibm >= 1.8.0
+Requires: java >= 1.8.0
 Requires: pam-modules
 Requires: snakeyaml
 Requires: sudo
@@ -80,7 +80,7 @@ BuildRequires: objectweb-asm
 BuildRequires: apache-commons-lang3
 BuildRequires: apache-commons-lang
 BuildRequires: google-gson >= 2.2.4
-BuildRequires: java-devel-ibm >= 1.8.0
+BuildRequires: java-devel >= 1.8.0
 BuildRequires: pam-modules
 BuildRequires: jsch
 BuildRequires: snakeyaml
