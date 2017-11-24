@@ -62,6 +62,8 @@ web.session_swap_secret_2 = 8cb0a0505b474d99caae5f44e8068b47
 web.session_swap_secret_3 = 35475259596c0e1da6ea718a4eb3023d
 web.session_swap_secret_4 = b940aba9a00de60b854ef783cdf0f414
 
+server.secret_key = aff06099cb8a547aabb148d487d51a99631a4c8023781ff14a783d45c8cd16c4
+
 # SSL available
 web.ssl_available = 1
 

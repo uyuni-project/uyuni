@@ -16,6 +16,9 @@ package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
@@ -113,8 +116,13 @@ public class TokenBuilder {
      * @return the key
      */
     public static Key getKeyForSecret(String secret) {
-        byte[] bytes = javax.xml.bind.DatatypeConverter.parseHexBinary(secret);
-        return new HmacKey(bytes);
+        try {
+            byte[] bytes = Hex.decodeHex(secret.toCharArray());
+            return new HmacKey(bytes);
+        }
+        catch (DecoderException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     /**

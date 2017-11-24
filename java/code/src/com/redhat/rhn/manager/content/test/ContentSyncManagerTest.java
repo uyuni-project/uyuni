@@ -55,13 +55,13 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
-import javax.xml.bind.DatatypeConverter;
 
 /**
  * Tests for {@link ContentSyncManager}.
@@ -104,7 +104,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1322));
                 assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1324));
                 assertEquals(702, dbs.getSystemLimit().longValue());
-                assertEquals(DatatypeConverter.parseDateTime("2017-12-31T00:00:00.000Z").getTime(),
+                assertEquals(Date.from(Instant.parse("2017-12-31T00:00:00.000Z")),
                         dbs.getExpiresAt());
             }
             s = cm.getSubscriptions();
@@ -113,14 +113,14 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 if (item.getSccId() == 9998L) {
                     assertEquals(10, item.getQuantity().longValue());
                     assertEquals(1234, item.getSubscriptionId().longValue());
-                    assertEquals(DatatypeConverter.parseDateTime("2013-01-01T00:00:00.000Z").getTime(),
+                    assertEquals(Date.from(Instant.parse("2013-01-01T00:00:00.000Z")),
                             item.getEndDate());
                     assertEquals("662644474670", item.getSku());
                 }
                 else if (item.getSccId() == 9999L) {
                     assertEquals(100, item.getQuantity().longValue());
                     assertEquals(1234, item.getSubscriptionId().longValue());
-                    assertEquals(DatatypeConverter.parseDateTime("2017-01-01T00:00:00.000Z").getTime(),
+                    assertEquals(Date.from(Instant.parse("2017-01-01T00:00:00.000Z")),
                             item.getEndDate());
                     assertEquals("874-005117", item.getSku());
                 }
