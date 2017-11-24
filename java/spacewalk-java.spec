@@ -465,20 +465,16 @@ Requires: tomcat-taglibs-standard
 %if 0%{?suse_version}
 Requires: apache-commons-cli
 Requires: apache-commons-codec
-Requires: jakarta-commons-dbcp
 Requires: apache-commons-lang3
 Requires: apache-commons-logging
 Requires: jakarta-commons-pool
-BuildRequires: jakarta-commons-dbcp
 BuildRequires: jakarta-commons-pool
 %else
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
-Requires: jakarta-commons-dbcp
 Requires: jakarta-commons-lang
 Requires: jakarta-commons-logging
 Requires: jakarta-commons-pool
-BuildRequires: jakarta-commons-dbcp
 BuildRequires: jakarta-commons-pool
 %endif # 0%{?suse_version}
 %endif # 0%{?fedora} || 0%{?rhel} >= 7

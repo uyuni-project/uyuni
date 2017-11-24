@@ -174,7 +174,7 @@
 	     xalan-j2 xerces-j2 xml-commons-apis simple-core ${ehcache}" />
 
   <property name="taskomatic.jar.dependencies"
-      value="${dist.jar.dependencies} commons-dbcp commons-pool jsch" />
+      value="${dist.jar.dependencies} commons-pool jsch" />
 
   <path id="bootjars">
     <fileset dir="${boot.lib.dir}" includes="*.jar" />
