@@ -16,6 +16,7 @@ package com.suse.manager.webui.websocket;
 
 import com.redhat.rhn.domain.notification.NotificationMessageFactory;
 
+import com.redhat.rhn.domain.user.User;
 import org.apache.log4j.Logger;
 
 import javax.websocket.OnOpen;
@@ -27,7 +28,9 @@ import javax.websocket.EndpointConfig;
 import javax.websocket.server.ServerEndpoint;
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,13 +38,14 @@ import java.util.stream.Collectors;
  * WebSocket EndPoint for showing notifications real-time in web UI.
  * NOTE: there's an EndPoint instance for each WebSocket session
  */
-@ServerEndpoint(value = "/websocket/notifications")
+@ServerEndpoint(value = "/websocket/notifications", configurator = WebsocketSessionConfigurator.class)
 public class Notification {
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(Notification.class);
 
-    private static Set<Session> wsSessions = new HashSet<>();
+    private final static Object lock = new Object();
+    private static Map<Session, User> wsSessions = new HashMap<>();
 
     /**
      * Callback executed when the WebSocket is opened.
@@ -50,12 +54,18 @@ public class Notification {
      */
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
+        User user = (User)session.getUserProperties().get("currentUser");
         if (session != null) {
-            LOG.debug(String.format("Hooked a new websocket session [id:%s]", session.getId()));
-            handshakeSession(session);
+            if (user != null) {
+                LOG.debug(String.format("Hooked a new websocket session [id:%s]", session.getId()));
+                handshakeSession(user, session);
 
-            // update the notification counter to the unread messages
-            sendMessage(session, NotificationMessageFactory.unreadMessagesSizeToString());
+                // update the notification counter to the unread messages
+                sendMessage(session, String.valueOf(NotificationMessageFactory.unreadMessagesSize(user)));
+            }
+            else {
+                LOG.debug("no authenticated user.");
+            }
         }
         else {
            LOG.debug("No web sessionId available. Closing the web socket.");
@@ -140,15 +150,14 @@ public class Notification {
         refreshOpenSessions();
         LOG.info(String.format("Notifying %s websocket sessions", wsSessions.size()));
 
-        synchronized (wsSessions) {
-            for (Session ws : wsSessions) {
+        synchronized (lock) {
+            wsSessions.forEach((session, user) -> {
                 try {
-                    ws.getBasicRemote().sendText(message);
+                    session.getBasicRemote().sendText(message);
+                } catch (IOException e) {
+                    LOG.error(String.format("Error sending message to websocket [id:%s]", session.getId()), e);
                 }
-                catch (IOException e) {
-                    LOG.error(String.format("Error sending message to websocket [id:%s]", ws.getId()), e);
-                }
-            }
+            });
         }
     }
 
@@ -156,9 +165,9 @@ public class Notification {
      * Add a new WebSocket Session to the collection
      * @param session the session to add
      */
-    private static void handshakeSession(Session session) {
-        synchronized (wsSessions) {
-            wsSessions.add(session);
+    private static void handshakeSession(User user, Session session) {
+        synchronized (lock) {
+            wsSessions.put(session, user);
         }
     }
 
@@ -167,7 +176,7 @@ public class Notification {
      * @param session the session to remove
      */
     private static void handbreakSession(Session session) {
-        synchronized (wsSessions) {
+        synchronized (lock) {
             wsSessions.remove(session);
         }
     }
@@ -176,8 +185,11 @@ public class Notification {
      * Keep only open WebSocket Session
      */
     private static void refreshOpenSessions() {
-        synchronized (wsSessions) {
-            wsSessions = wsSessions.stream().filter(ws -> ws.isOpen()).collect(Collectors.toSet());
+        synchronized (lock) {
+            wsSessions = wsSessions.entrySet().stream().filter(ws -> ws.getKey().isOpen()).collect(Collectors.toMap(
+                    Map.Entry::getKey,
+                    Map.Entry::getValue
+            ));
         }
     }
 
@@ -185,17 +197,17 @@ public class Notification {
         Thread notificationThread = new Thread() {
             @Override
             public void run() {
-                int lastUnreadMessages = -1;
                 while (true) {
-                    int dbUnreadMessages = NotificationMessageFactory.unreadMessagesSize();
-                    // if there are unread messages, notify it to all attached WebSocket sessions
-                    if (dbUnreadMessages != lastUnreadMessages) {
-                        lastUnreadMessages = dbUnreadMessages;
-                        Notification.notifyAll(String.valueOf(lastUnreadMessages));
+                    synchronized (lock) {
+                        // if there are unread messages, notify it to all attached WebSocket sessions
+                        wsSessions.forEach((session, user) -> {
+                            int unreadCount = NotificationMessageFactory.unreadMessagesSize(user);
+                            sendMessage(session, String.valueOf(unreadCount));
+                        });
                     }
                     try {
-                        // check every 1 second
-                        sleep(1000);
+                        // check every 10 second
+                        sleep(10000);
                     }
                     catch (InterruptedException e) {
                     }
