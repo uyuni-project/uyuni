@@ -22,7 +22,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.8.10.1
+Version: 2.8.12
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
@@ -286,10 +286,11 @@ Provides: python-spacewalk-client-setup-gnome = %{version}-%{release}
 Obsoletes: python-spacewalk-client-setup-gnome < %{version}-%{release}
 Requires: spacewalk-client-setup-gnome = %{version}-%{release}
 %if 0%{?suse_version}
-Requires: python-gnome python-gtk
+Requires: python3-gobject gtk3
 %else
-Requires: pygtk2 pygtk2-libglade
-Requires: usermode-gtk
+Requires: python3-gobject-base gtk3
+# gtk-builder-convert
+BuildRequires: gtk2-devel
 %endif
 %if 0%{?fedora} || 0%{?rhel} > 5
 Requires: liberation-sans-fonts
@@ -331,6 +332,18 @@ make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
 %if 0%{?build_py3}
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/actions/*.py src/bin/*.py test/*.py
 make -f Makefile.rhn-client-tools
+%if ! 0%{?without_rhn_register}
+for g in data/*.glade ; do
+        mv $g $g.old
+        gtk-builder-convert $g.old $g
+done
+sed -i 's/GTK_PROGRESS_LEFT_TO_RIGHT/horizontal/' data/progress.glade
+sed -i 's/GtkComboBox/GtkComboBoxText/; /property name="has_separator"/ d;' data/rh_register.glade
+sed -i '/class="GtkVBox"/ {
+                s/GtkVBox/GtkBox/;
+                a \ \ \ \ \ \ \ \ <property name="orientation">vertical</property\>
+                }' data/gui.glade
+%endif
 make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PYTHONPATH=%{python3_sitelib} PYTHONVERSION=%{python3_version} \
         PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
@@ -716,6 +729,7 @@ make -f Makefile.rhn-client-tools test
 %defattr(-,root,root,-)
 %{python_sitelib}/up2date_client/messageWindow.*
 %{python_sitelib}/up2date_client/rhnregGui.*
+%{python_sitelib}/up2date_client/gtk_compat.*
 %{python_sitelib}/up2date_client/gui.*
 %{python_sitelib}/up2date_client/progress.*
 %if 0%{?rhel} == 5
@@ -747,10 +761,12 @@ make -f Makefile.rhn-client-tools test
 %defattr(-,root,root,-)
 %{python3_sitelib}/up2date_client/messageWindow.*
 %{python3_sitelib}/up2date_client/rhnregGui.*
+%{python3_sitelib}/up2date_client/gtk_compat.*
 %{python3_sitelib}/up2date_client/gui.*
 %{python3_sitelib}/up2date_client/progress.*
 %{python3_sitelib}/up2date_client/__pycache__/messageWindow.*
 %{python3_sitelib}/up2date_client/__pycache__/rhnregGui.*
+%{python3_sitelib}/up2date_client/__pycache__/gtk_compat.*
 %{python3_sitelib}/up2date_client/__pycache__/gui.*
 %{python3_sitelib}/up2date_client/__pycache__/progress.*
 %endif
