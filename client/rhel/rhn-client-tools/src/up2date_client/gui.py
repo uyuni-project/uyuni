@@ -10,10 +10,6 @@
 import os
 import sys
 
-import gtk
-import gtk.glade
-
-gtk.glade.bindtextdomain("rhn-client-tools", "/usr/share/locale")
 
 import signal
 
@@ -35,6 +31,7 @@ from up2date_client import rhnreg
 from up2date_client import messageWindow
 
 from up2date_client import rhnregGui
+from up2date_client.gtk_compat import gtk, setCursor, getWidgetName
 
 
 
@@ -66,30 +63,30 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         # Pack all the pages into the empty druid screens
         contents = self.startPageVbox()
         container = self.xml.get_widget("startPageVbox")
-        container.pack_start(contents, True)
+        container.pack_start(contents, True, True, 0)
         contents = self.chooseServerPageVbox()
         container = self.xml.get_widget("chooseServerPageVbox")
-        container.pack_start(contents, True)
+        container.pack_start(contents, True, True, 0)
         contents = self.loginPageVbox()
         container = self.xml.get_widget("loginPageVbox")
-        container.pack_start(contents, True)
+        container.pack_start(contents, True, True, 0)
         contents = self.chooseChannelPageVbox()
         container = self.xml.get_widget("chooseChannelPageVbox")
-        container.pack_start(contents, True)
+        container.pack_start(contents, True, True, 0)
         self.chooseChannelPageVbox = container
         contents = self.createProfilePageVbox()
         container = self.xml.get_widget("createProfilePageVbox")
-        container.pack_start(contents, True)
+        container.pack_start(contents, True, True, 0)
         contents = self.reviewSubscriptionPageVbox()
         container = self.xml.get_widget("reviewSubscriptionPageVbox")
-        container.pack_start(contents, True)
+        container.pack_start(contents, True, True, 0)
         contents = self.provideCertificatePageVbox()
         container = self.xml.get_widget("provideCertificatePageVbox")
-        container.pack_start(contents, True)
+        container.pack_start(contents, True, True, 0)
         self.provideCertificatePageVbox = container
         contents = self.finishPageVbox()
         container = self.xml.get_widget("finishPageVbox")
-        container.pack_start(contents, True)
+        container.pack_start(contents, True, True, 0)
 
         self.initProfile = False
         self.oemInfo = {}
@@ -97,48 +94,31 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         self.already_registered_already_shown = False
         self.rhsm_already_registered_already_shown = False
 
-#        self.druid = self.xml.get_widget("druid")
         self.mainWin = self.xml.get_widget("mainWin")
         self.mainWin.connect("delete-event", gtk.main_quit)
         self.mainWin.connect("hide", gtk.main_quit)
         self.mainWin.connect("close", gtk.main_quit)
 
-#        # It's better to get widgets in advance so bugs don't hide in get_widget
-#        # calls that only get executed periodically.
-#        self.startPage = self.xml.get_widget("startPage")
-#        self.chooseServerPage = self.xml.get_widget("chooseServerPage")
-#        self.provideCertificatePage = self.xml.get_widget("provideCertificatePage")
-#        self.loginPage = self.xml.get_widget("loginPage")
-#        self.chooseChannelPage = self.xml.get_widget("chooseChannelPage")
-#        self.createProfilePage = self.xml.get_widget("createProfilePage")
-#        self.reviewSubscriptionPage = \
-#            self.xml.get_widget("reviewSubscriptionPage")
-#        self.finishPage = self.xml.get_widget("finishPage")
-        self.pages = {page.name: n  for n, page in enumerate(self.mainWin.get_children())}
+        self.pages = dict([(getWidgetName(self.mainWin.get_nth_page(n)), n)
+                          for n in range(self.mainWin.get_n_pages())])
 
         # Set up cursor changing functions. Overriding functions that aren't in
         # classes like this could be called a hack, but I think it's the best
         # we can do with the current overall setup and isn't too bad.
         def mySetBusyCursor():
-            cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
-            self.mainWin.window.set_cursor(cursor)
-            while gtk.events_pending():
-                gtk.main_iteration(False)
+            setCursor(self.mainWin, gtk.CURSOR_WATCH)
         def mySetArrowCursor():
-            cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
-            self.mainWin.window.set_cursor(cursor)
-            while gtk.events_pending():
-                gtk.main_iteration(False)
+            setCursor(self.mainWin, gtk.CURSOR_LEFT_PTR)
         rhnregGui.setBusyCursor = mySetBusyCursor
         rhnregGui.setArrowCursor = mySetArrowCursor
 
         self.mainWin.show_all()
-        # Druid doesn't signal prepare to the first page when starting up
+        # GtkAssistant doesn't signal prepare to the first page when starting up
         self.onStartPagePrepare(None, None, manualPrepare=True)
 
 
     def onMainWinCancel(self, mainWin):
-        dialog = rhnregGui.ConfirmQuitDialog()
+        dialog = rhnregGui.ConfirmQuitDialog(mainWin)
         if dialog.rc == 1:
             self.mainWin.set_current_page(self.pages['finishPageVbox'])
         else:
@@ -170,8 +150,9 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
               "reviewSubscriptionPageVbox" : self.onReviewSubscriptionPagePrepare,
               "finishPageVbox" : self.onFinishPagePrepare,
         }
-        if vbox.name in prepare_func:
-            prepare_func[vbox.name](mainWin, vbox)
+        vboxId = getWidgetName(vbox)
+        if vboxId in prepare_func:
+            prepare_func[vboxId](mainWin, vbox)
 
     def onMainWinApply(self, mainWin):
        forward_func = {
@@ -182,8 +163,9 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
               "provideCertificatePageVbox" : self.onProvideCertificatePageNext,
        }
        currentVbox = mainWin.get_nth_page(mainWin.get_current_page())
-       if currentVbox.name in forward_func:
-           forward_func[currentVbox.name](mainWin, None)
+       vboxId = getWidgetName(currentVbox)
+       if vboxId in forward_func:
+           forward_func[vboxId](mainWin, None)
 
     def onStartPagePrepare(self, mainWin, vbox, manualPrepare=False):
         if rhnreg.rhsm_registered() and not self.rhsm_already_registered_already_shown:
@@ -208,7 +190,8 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
             if ret: # something went wrong
                 self.nextPage('chooseServerPageVbox')
                 return
-            self.provideCertificatePageVbox.set_visible(False)
+            if hasattr(self.provideCertificatePageVbox, 'set_visible'):
+                self.provideCertificatePageVbox.set_visible(False)
             self.nextPage('loginPageVbox')
         except (up2dateErrors.SSLCertificateVerifyFailedError,\
                 up2dateErrors.SSLCertificateFileNotFound):
@@ -240,7 +223,10 @@ class Gui(rhnregGui.StartPage, rhnregGui.ChooseServerPage, rhnregGui.LoginPage,
         need to have any knowledge of the screen mechanism or order.
         """
         if not rhnregGui.ChooseChannelPage.chooseChannelShouldBeShown(self):
-            self.chooseChannelPageVbox.set_visible(False)
+            if hasattr(self.chooseChannelPageVbox, 'set_visible'):
+                self.chooseChannelPageVbox.set_visible(False)
+            else:
+                self.nextPage('createProfilePageVbox')
 
     def onChooseChannelPageNext(self, page, dummy):
         self.chooseChannelPageApply()
