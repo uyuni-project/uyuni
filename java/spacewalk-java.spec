@@ -467,8 +467,13 @@ Requires: apache-commons-cli
 Requires: apache-commons-codec
 Requires: apache-commons-lang3
 Requires: apache-commons-logging
-Requires: jakarta-commons-pool
-BuildRequires: jakarta-commons-pool
+%if 0%{?suse_version} <= 1320
+Requires:       jakarta-commons-pool
+BuildRequires:  jakarta-commons-pool
+%else
+Requires:       apache-commons-pool
+BuildRequires:  apache-commons-pool
+%endif # 0%{?suse_version} <= 1320
 %else
 Requires: jakarta-commons-cli
 Requires: jakarta-commons-codec
