@@ -600,10 +600,10 @@ is
                 and ni.id = na4.interface_id
 				and na4.address != '127.0.0.1';
 		cursor addresses is
-			select address ip_addr
+			select	address ip_addr
 			from	rhnServerNetInterface
-      left join rhnServerNetAddress4
-      on rhnServerNetInterface.id = rhnServerNetAddress4.interface_id
+      			left join rhnServerNetAddress4
+      			on rhnServerNetInterface.id = rhnServerNetAddress4.interface_id
 			where	server_id = server_id_in
 				and address != '127.0.0.1';
 	begin
