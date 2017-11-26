@@ -1,4 +1,6 @@
-drop function rhn_servernetwork_mod_trig_fun();
+DROP SEQUENCE IF EXISTS rhn_server_net_id_seq;
+DROP FUNCTION rhn_servernetwork_mod_trig_fun();
+DROP TRIGGER IF EXISTS rhn_servernetwork_mod_trig ON rhnServerNetwork`;
 
 -- delete_server.sql
 
