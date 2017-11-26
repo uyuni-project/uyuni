@@ -1,6 +1,6 @@
 drop function rhn_servernetwork_mod_trig_fun();
 
-## delete_server.sql
+-- delete_server.sql
 
 -- oracle equivalent source sha1 31cf428b3a4c39081dad26785a678567a5a28ed7
 --
