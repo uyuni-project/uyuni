@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 0bcdc1e11ef0c04d3b6f97dfefbde7f61df3e611
+-- oracle equivalent source sha1 bd4f142d4efaeb8cf40f98e1f28636ae483fb8f7
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -645,12 +645,12 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
                 and ni.id = na4.interface_id
 				and na4.address != '127.0.0.1';
 		addresses cursor is
-    select address ip_addr
-    from	rhnServerNetInterface
-    left join rhnServerNetAddress4
-    on rhnServerNetInterface.id = rhnServerNetAddress4.interface_id
-    where	server_id = server_id_in
-      and address != '127.0.0.1';
+			select	address ip_addr
+			from	rhnServerNetInterface
+      			left join rhnServerNetAddress4
+      			on rhnServerNetInterface.id = rhnServerNetAddress4.interface_id
+			where	server_id = server_id_in
+				and address != '127.0.0.1';
 	begin
 		for addr in addresses loop
 			return addr.ip_addr;
