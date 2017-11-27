@@ -706,7 +706,7 @@ public class SaltSSHService {
 
             return future.handle((applyResult, err) -> {
                 if (applyResult != null) {
-                    return (Optional<List<String>>)applyResult.fold((saltErr) ->
+                    return applyResult.<Optional<List<String>>>fold((saltErr) ->
                             Optional.of(singletonList(
                                         SaltUtils.decodeSaltErr(saltErr))),
                             (saltRes) -> saltRes.values().stream()
