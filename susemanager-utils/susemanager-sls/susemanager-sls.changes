@@ -1,3 +1,4 @@
+- Added state templates for deploying/comparing config channels for Salt
 - Fix failing certs state for Tumbleweed (bsc#970630)
 - Fix deprecated SLS files to avoid deprecation warnings during highstate (bsc#1041993)
 - Support xccdf 1.2 namespace in openscap result file (bsc#1059319)
