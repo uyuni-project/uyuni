@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers.utils;
 
-import com.google.gson.JsonElement;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -23,12 +22,12 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.JSONBootstrapHosts;
 import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.errors.JsonParsingError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
@@ -106,11 +105,7 @@ public abstract class AbstractMinionBootstrapper {
             Map<String, Object> pillarData = createPillarData(user, params, contactMethod);
             return saltService.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
-                        String errorMessage = decodeStdMessage(error, "stderr");
-                        String outMessage = errorMessage.isEmpty() ?
-                                decodeStdMessage(error, "stdout") : errorMessage;
-                        String responseMessage = outMessage.isEmpty() ?
-                                error.toString() : outMessage;
+                        String responseMessage = SaltUtils.decodeSaltErr(error);
                         LOG.error("Error during bootstrap: " + responseMessage);
                         return new BootstrapResult(false, Optional.of(contactMethod),
                                 responseMessage);
@@ -257,26 +252,7 @@ public abstract class AbstractMinionBootstrapper {
     protected abstract Optional<String> validateContactMethod(
             ContactMethod desiredContactMethod);
 
-    /**
-     * Decode the std message from the whole message
-     *
-     * @param message the message Object
-     * @param key the json key of the message to decode (e.g.: sdterr, stdout)
-     * @return the String decoded if it exists
-     */
-    private String decodeStdMessage(Object message, String key) {
-        if (message instanceof JsonParsingError) {
-            JsonElement json = ((JsonParsingError)message).getJson();
-            if (json.isJsonObject() && json.getAsJsonObject().has(key) &&
-                    json.getAsJsonObject().get(key).isJsonPrimitive() &&
-                    json.getAsJsonObject().get(key).getAsJsonPrimitive().isString()) {
-                return json.getAsJsonObject()
-                        .get(key).getAsJsonPrimitive().getAsString();
-            }
-        }
 
-        return message.toString();
-    }
 
     /**
      * Representation of the status of bootstrap and possibly error messages.

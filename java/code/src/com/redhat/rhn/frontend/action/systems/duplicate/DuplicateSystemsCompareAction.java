@@ -92,6 +92,11 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
                     itr.remove();
                     resync = true;
                 }
+                else if (sid.equals(context
+                        .getParam("removedServerId", false))) {
+                    itr.remove();
+                    resync = true;
+                }
             }
             if (resync) {
                 helper.execute();

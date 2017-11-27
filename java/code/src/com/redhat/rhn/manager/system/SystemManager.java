@@ -87,9 +87,10 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -108,7 +109,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * SystemManager
@@ -373,6 +376,91 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
         params.put("cid", cid);
         return m.execute(params);
+    }
+
+    /**
+     * How to cleanup the server on deletion.
+      */
+    public enum ServerCleanupType {
+        /**
+         * Fail in case of cleanup error.
+         */
+        FAIL_ON_CLEANUP_ERR,
+        /**
+         * Don't cleanup, just delete.
+         */
+        NO_CLEANUP,
+        /**
+         * Try cleanup first but delete server
+         * anyway in case of error.
+         */
+        FORCE_DELETE;
+
+        /**
+         * Get enum value from string.
+         * @param value the string
+         * @return an Optional with the enum value or empty if string didn't
+         * match any enum value.
+         */
+        public static Optional<ServerCleanupType> fromString(String value) {
+            try {
+                return Optional.of(valueOf(value.toUpperCase()));
+            }
+            catch (IllegalArgumentException e) {
+                return Optional.empty();
+            }
+        }
+
+    }
+
+    /**
+     * Delete a server and in case of Salt ssh-push minions remove SUSE Manager
+     * specific configuration. When removing ssh-push minions the default
+     * timeout for the cleanup operation is set to 5 minutes.
+     *
+     * @param user the user
+     * @param sid the server id
+     * @param cleanupType cleanup options
+     * @return a list of cleanup errors or empty if no errors or no cleanup was done
+     */
+    public static Optional<List<String>> deleteServerAndCleanup(
+            User user, long sid, ServerCleanupType cleanupType) {
+        return deleteServerAndCleanup(user, sid, cleanupType, 300);
+    }
+
+    /**
+     * Delete a server and in case of Salt ssh-push minions remove SUSE Manager
+     * specific configuration.
+     *
+     * @param user the user
+     * @param sid the server id
+     * @param cleanupType cleanup options
+     * @param cleanupTimeout timeout for cleanup operation
+     * @return a list of cleanup errors or empty if no errors or no cleanup was done
+     */
+    public static Optional<List<String>> deleteServerAndCleanup(
+            User user, long sid, ServerCleanupType cleanupType, int cleanupTimeout) {
+        if (!ServerCleanupType.NO_CLEANUP.equals(cleanupType)) {
+            Server server = lookupByIdAndUser(sid, user);
+            if (server.asMinionServer().isPresent()) {
+                boolean sshPush = Stream.of(
+                        ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH),
+                        ServerFactory
+                                .findContactMethodByLabel(ContactMethodUtil.SSH_PUSH_TUNNEL)
+                ).anyMatch(cm -> server.getContactMethod().equals(cm));
+                if (sshPush) {
+                    Optional<List<String>> errs = saltServiceInstance
+                            .cleanupSSHMinion(server.asMinionServer().get(),
+                                    cleanupTimeout);
+                    if (errs.isPresent() &&
+                            ServerCleanupType.FAIL_ON_CLEANUP_ERR.equals(cleanupType)) {
+                        return errs;
+                    } // else FORCE_DELETE
+                }
+            }
+        }
+        deleteServer(user, sid);
+        return Optional.empty();
     }
 
     /**
