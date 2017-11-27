@@ -95,11 +95,15 @@ public class NotificationMessageFactory extends HibernateFactory {
      *
      * @return List of read and unread messages
      */
-    public static List<NotificationMessage> listAll() {
+    public static List<NotificationMessage> listAllByUser(User user) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<NotificationMessage> query = builder.createQuery(NotificationMessage.class);
         query.from(NotificationMessage.class);
-        return getSession().createQuery(query).getResultList();
+
+        return getSession().createQuery(query).getResultList().stream()
+                .filter(e -> {
+                    return !Collections.disjoint(e.getRoles(), user.getRoles());
+                }).collect(Collectors.toList());
     }
 
     /**
@@ -178,22 +182,6 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static int unreadMessagesSize(User user) {
         return listUnreadByUser(user).size();
-    }
-
-    /**
-     * Get the count of unread messages
-     * @return the unread messages size count
-     */
-    public static int unreadMessagesSize() {
-        return listUnread().size();
-    }
-
-    /**
-     * Get the count of unread messages
-     * @return the unread messages size count
-     */
-    public static int unreadMessagesSize(Org org) {
-        return byRead(false, org).size();
     }
 
     @Override

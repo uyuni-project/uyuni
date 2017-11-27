@@ -85,7 +85,7 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String dataAll(Request request, Response response, User user) {
-        Object data = getJSONNotificationMessages(NotificationMessageFactory.listAll());
+        Object data = getJSONNotificationMessages(NotificationMessageFactory.listAllByUser(user));
 
         response.type("application/json");
         return GSON.toJson(data);
