@@ -295,7 +295,8 @@ This package contains the code for the Java version of the Spacewalk Web Site.
 %package config
 Summary: Configuration files for Spacewalk Java
 %if 0%{?suse_version}
-Requires(pre): tomcat
+Requires(post): apache2
+Requires(post): tomcat
 %endif
 Group: Applications/Internet
 Obsoletes: rhn-java-config < 5.3.0
