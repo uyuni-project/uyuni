@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -40,6 +41,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ConfigChannelDto;
@@ -50,12 +52,14 @@ import com.redhat.rhn.frontend.dto.ConfigRevisionDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.events.SsmConfigFilesEvent;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import org.apache.log4j.Logger;
 
@@ -71,6 +75,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -105,6 +110,37 @@ public class ConfigurationManager extends BaseManager {
      */
     public static ConfigurationManager getInstance() {
         return INSTANCE;
+    }
+
+    /**
+     * Saves the ConfigChannel and updates its salt file hierarchy on the disk.
+     *
+     * @param cc the config channel to save.
+     * @param channelOldLabel - the label of the channel before the change.
+     *                        Needed for synchronizing the salt file hierarchy.
+     */
+    public void save(ConfigChannel cc, Optional<String> channelOldLabel) {
+        ConfigurationFactory.commit(cc);
+        ConfigChannelSaltManager.getInstance()
+                .generateConfigChannelFiles(cc, channelOldLabel);
+
+        if (!channelOldLabel.filter(ol -> cc.getLabel().equals(ol)).isPresent()) {
+            SaltStateGeneratorService.INSTANCE.regenerateConfigStates(cc);
+        }
+    }
+
+    /**
+     * Saves the ConfigRevision and updates the salt file hierarchy corresponding to the
+     * revision channel.
+     *
+     * @param revision the config file revision
+     * @return the saved revision
+     */
+    public ConfigRevision saveRevision(ConfigRevision revision) {
+        ConfigRevision committed = ConfigurationFactory.commit(revision);
+        ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(
+                revision.getConfigFile().getConfigChannel(), Optional.empty());
+        return committed;
     }
 
     /**
@@ -1325,7 +1361,11 @@ public class ConfigurationManager extends BaseManager {
             throw new IllegalArgumentException("User is not a config admin.");
         }
         //remove the channel
+        ConfigChannelSaltManager.getInstance().removeConfigChannelFiles(channel);
+        StateFactory.StateRevisionsUsage usage =
+                StateFactory.latestStateRevisionsByConfigChannel(channel);
         ConfigurationFactory.removeConfigChannel(channel);
+        SaltStateGeneratorService.INSTANCE.regenerateCustomStates(usage);
     }
 
     /**
@@ -1371,7 +1411,11 @@ public class ConfigurationManager extends BaseManager {
         if (input == null) {
             return null;
         }
-        return ConfigurationFactory.createNewRevisionFromStream(user, input, size, file);
+        ConfigRevision newRevision = ConfigurationFactory
+                .createNewRevisionFromStream(user, input, size, file);
+        ConfigChannelSaltManager.getInstance()
+                .generateConfigChannelFiles(newRevision.getConfigFile().getConfigChannel());
+        return newRevision;
     }
     /**
      * Deletes a config revision. Performs checking to determine whether
@@ -1396,7 +1440,11 @@ public class ConfigurationManager extends BaseManager {
                     "] is not allowed access to revision [" + revision.getId() + "]");
         }
         //remove the channel
-        return ConfigurationFactory.removeConfigRevision(revision, user.getOrg().getId());
+        boolean result = ConfigurationFactory
+                .removeConfigRevision(revision, user.getOrg().getId());
+        ConfigChannelSaltManager.getInstance()
+                .generateConfigChannelFiles(revision.getConfigFile().getConfigChannel());
+        return result;
     }
 
     /**
@@ -1420,6 +1468,11 @@ public class ConfigurationManager extends BaseManager {
         }
         //remove the file
         ConfigurationFactory.removeConfigFile(file);
+        // we have removed a file using a Mode, let's clear the hibernate cache so that
+        // the ConfigChannelSaltManager sees the up-to-date state
+        HibernateFactory.getSession().clear();
+        ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(
+                (ConfigChannel) HibernateFactory.reload(file.getConfigChannel()));
     }
 
     /**
@@ -1448,6 +1501,8 @@ public class ConfigurationManager extends BaseManager {
         }
         //copy the file
         ConfigurationFactory.copyRevisionToChannel(user, revision, channel);
+        // here - re-create the channel on disk
+        ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(channel);
     }
 
 
@@ -2277,11 +2332,6 @@ public class ConfigurationManager extends BaseManager {
     public void ensureConfigManageable(Server server) {
         if (server == null) {
             throw new LookupException("Server doesn't exist");
-        }
-
-        if (server.asMinionServer().isPresent()) {
-            throw new UnsupportedOperationException("The traditional config " +
-                    "management features are not supported with Salt minions.");
         }
 
         if (!SystemManager.serverHasFeature(server.getId(),

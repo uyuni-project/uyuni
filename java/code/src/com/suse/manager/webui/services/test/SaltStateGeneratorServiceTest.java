@@ -18,6 +18,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -27,10 +28,14 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
+import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.yaml.snakeyaml.Yaml;
@@ -38,6 +43,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -265,9 +271,20 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         deleted.setStateName("deleted");
         deleted.setDeleted(true);
 
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Channel 1", "cfg-channel-1");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Channel 2", "cfg-channel-2");
+
         serverRev.getCustomStates().add(foo);
         serverRev.getCustomStates().add(bar);
         serverRev.getCustomStates().add(deleted);
+        serverRev.getConfigChannels().add(channel1);
+        serverRev.getConfigChannels().add(channel2);
+        // Fix for server assignments
+        // TODO: Revisit after state channel implementation
+        minion.subscribeConfigChannel(channel1, user);
+        minion.subscribeConfigChannel(channel2, user);
 
         SaltStateGeneratorService.INSTANCE.generateServerCustomState(serverRev);
 
@@ -283,9 +300,77 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         }
         assertTrue(map.containsKey("include"));
         List<String> includes = (List<String>)map.get("include");
+        assertEquals(4, includes.size());
+        assertTrue(includes.contains(SaltCustomStateStorageManager.INSTANCE
+                .getOrgNamespace(minion.getOrg().getId()) + ".foo"));
+        assertTrue(includes.contains(SaltCustomStateStorageManager.INSTANCE
+                .getOrgNamespace(minion.getOrg().getId()) + ".bar"));
+        assertTrue(includes.contains(
+                ConfigChannelSaltManager.getInstance().getChannelStateName(channel1)));
+        assertTrue(includes.contains(
+                ConfigChannelSaltManager.getInstance().getChannelStateName(channel2)));
+    }
+
+    public void testRegenerateConfigStates() throws Exception {
+        Server minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+
+        // Prepare input
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Channel 1", "cfg-channel-1");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Channel 2", "cfg-channel-2");
+
+        ServerStateRevision minion1Revision = new ServerStateRevision(minion1);
+        minion1Revision.getConfigChannels().add(channel1);
+        minion1Revision.getConfigChannels().add(channel2);
+
+        ServerStateRevision minion2Revision = new ServerStateRevision(minion2);
+        minion2Revision.getConfigChannels().add(channel1);
+
+        // Fix for server assignments
+        // TODO: Revisit after state channel implementation
+        minion1.subscribeConfigChannel(channel1, user);
+        minion1.subscribeConfigChannel(channel2, user);
+        minion2.subscribeConfigChannel(channel1, user);
+
+        StateFactory.save(minion1Revision);
+        StateFactory.save(minion2Revision);
+        StateFactory.getSession().flush();
+
+        SaltStateGeneratorService.INSTANCE.generateServerCustomState(minion1Revision);
+        SaltStateGeneratorService.INSTANCE.generateServerCustomState(minion2Revision);
+
+        Path minion1StateFile = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR).resolve(
+                defaultExtension(SALT_SERVER_STATE_FILE_PREFIX + minion1.getMachineId()));
+        Path minion2StateFile = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR).resolve(
+                defaultExtension(SALT_SERVER_STATE_FILE_PREFIX + minion2.getMachineId()));
+
+        FileTime minion1Modified = Files.getLastModifiedTime(minion1StateFile);
+        FileTime minion2Modified = Files.getLastModifiedTime(minion2StateFile);
+
+        // Execute
+        SaltStateGeneratorService.INSTANCE.regenerateConfigStates(channel2);
+
+        // Assert file modification times
+        // State file for minion 1 should be regenerated
+        assertTrue(
+                minion1Modified.compareTo(Files.getLastModifiedTime(minion1StateFile)) < 0);
+        // State file for minion 1 should NOT be regenerated
+        assertEquals(minion2Modified, Files.getLastModifiedTime(minion2StateFile));
+
+        // Assert file contents
+        Map<String, Object> map;
+        try (FileInputStream fi = new FileInputStream(minion1StateFile.toFile())) {
+            map = new Yaml().loadAs(fi, Map.class);
+        }
+        assertTrue(map.containsKey("include"));
+        List<String> includes = (List<String>)map.get("include");
         assertEquals(2, includes.size());
-        assertTrue(includes.contains("manager_org_" + minion.getOrg().getId() + ".foo"));
-        assertTrue(includes.contains("manager_org_" + minion.getOrg().getId() + ".bar"));
+        assertTrue(includes.contains(
+                ConfigChannelSaltManager.getInstance().getChannelStateName(channel1)));
+        assertTrue(includes.contains(
+                ConfigChannelSaltManager.getInstance().getChannelStateName(channel2)));
     }
 
 }

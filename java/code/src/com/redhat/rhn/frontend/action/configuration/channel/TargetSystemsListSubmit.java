@@ -118,7 +118,7 @@ public class TargetSystemsListSubmit extends BaseSetOperateOnSelectedItemsAction
 
         ConfigChannel cc = ConfigActionHelper.getChannel(requestIn);
         Server s = ServerFactory.lookupById(elementIn.getElement());
-        s.subscribe(cc);
+        s.subscribeConfigChannel(cc, userIn);
         ServerFactory.save(s);
 
         // bz 444517 - Create a snapshot to capture this change

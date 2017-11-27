@@ -114,7 +114,7 @@ public class ChannelSystemsListSubmit extends BaseSetOperateOnSelectedItemsActio
                                       User userIn) {
         ConfigChannel channel = ConfigActionHelper.getChannel(req);
         Server s = ServerFactory.lookupById(elementIn.getElement());
-        s.unsubscribe(channel);
+        s.unsubscribeConfigChannel(channel, userIn);
         ServerFactory.save(s);
         return Boolean.TRUE;
     }

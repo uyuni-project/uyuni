@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.xmlrpc.system.config;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
@@ -36,14 +35,15 @@ import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
-
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * ServerConfigChannelHandler
@@ -300,14 +300,11 @@ public class ServerConfigHandler extends BaseHandler {
             if (searchLocal) {
                 cf = cm.lookupConfigFile(loggedInUser,
                         server.getLocalOverride().getId(), path);
+
                 if (cf == null) {
-                    for (ConfigChannel cn : server.getConfigChannels()) {
-                        cf = cm.lookupConfigFile(loggedInUser, cn.getId(), path);
-                        if (cf != null) {
-                            revisions.add(cf.getLatestConfigRevision());
-                            break;
-                        }
-                    }
+                    cf = server.getConfigChannelStream()
+                            .map(cn -> cm.lookupConfigFile(loggedInUser, cn.getId(), path))
+                            .filter(Objects::nonNull).findFirst().orElse(null);
                 }
             }
             else {
@@ -433,7 +430,7 @@ public class ServerConfigHandler extends BaseHandler {
     public List<ConfigChannel> listChannels(User loggedInUser, Integer sid) {
         XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
         Server server = helper.lookupServer(loggedInUser, sid);
-        return server.getConfigChannels();
+        return server.getConfigChannelList();
     }
 
     /**
@@ -483,21 +480,24 @@ public class ServerConfigHandler extends BaseHandler {
                 XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.
                 lookupGlobals(loggedInUser, configChannelLabels);
-        ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
-        if (addToTop) {
-            Collections.reverse(channels);
+
+        List<ConfigChannel> channelsToAdd;
+        for (Server server : servers) {
+            if (addToTop) {
+                // Add the existing subscriptions to the end so they will be resubscribed
+                // and their ranks will be overridden
+                channelsToAdd = Stream
+                        .concat(channels.stream(), server.getConfigChannelStream())
+                        .collect(Collectors.toList());
+            }
+            else {
+                // Channels are added to the end by default
+                channelsToAdd = channels;
+            }
+
+            server.subscribeConfigChannels(channelsToAdd, loggedInUser);
         }
 
-        for (Server server : servers) {
-            for (ConfigChannel chan : channels) {
-                if (addToTop) {
-                    proc.add(server.getConfigChannels(), chan, 0);
-                }
-                else {
-                    proc.add(server.getConfigChannels(), chan);
-                }
-            }
-        }
         return 1;
     }
 
@@ -530,10 +530,8 @@ public class ServerConfigHandler extends BaseHandler {
                 XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.
                 lookupGlobals(loggedInUser, configChannelLabels);
-        ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
-        for (Server server : servers) {
-            proc.replace(server.getConfigChannels(), channels);
-        }
+
+        servers.forEach(s -> s.setConfigChannels(channels, loggedInUser));
         return 1;
     }
 
@@ -561,15 +559,13 @@ public class ServerConfigHandler extends BaseHandler {
                 XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.
                 lookupGlobals(loggedInUser, configChannelLabels);
-        ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
-        boolean success = true;
-        for (Server server : servers) {
-            success =  success && proc.remove(server.getConfigChannels(), channels);
-        }
-        if (success) {
-            return 1;
-        }
-        return 0;
+
+        // Check if all the channels are successfully unsubscribed
+        boolean success = servers.stream().map(
+                s -> s.unsubscribeConfigChannels(channels, loggedInUser) == channels.size())
+                .reduce(true, (a, b) -> a && b);
+
+        return success ? 1 : 0;
 
     }
 }

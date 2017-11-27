@@ -414,19 +414,20 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
 
     public void testDeployAllSystems()  throws Exception {
         // Create  global config channels
+        List<ConfigChannel> gccList = new ArrayList<>();
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
                 ConfigChannelType.global());
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
                 ConfigChannelType.global());
+        gccList.add(gcc1);
+        gccList.add(gcc2);
 
-        Long ver = new Long(2);
+        Long ver = 2L;
 
         // gcc1 only
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 
-        srv1.subscribe(gcc1);
-        srv1.subscribe(gcc2);
-
+        srv1.subscribeConfigChannels(gccList, regular);
         ServerFactory.save(srv1);
 
         Map <Long, Set<ConfigRevision>> revisions =

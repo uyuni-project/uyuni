@@ -40,25 +40,27 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-5"><bean:message key="sdc.config.locally-managed"/>:</label>
-                        <div class="col-md-6">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-md-3"><bean:message key="sdc.config.files.total"/>:</label>
-                                    <div class="col-md-9">
-                                        ${requestScope.localFiles}
+                    <rhn:require acl="system_has_management_entitlement()">
+                        <div class="form-group">
+                            <label class="col-md-5"><bean:message key="sdc.config.locally-managed"/>:</label>
+                            <div class="col-md-6">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-md-3"><bean:message key="sdc.config.files.total"/>:</label>
+                                        <div class="col-md-9">
+                                            ${requestScope.localFiles}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-5"><bean:message key="sdc.config.sandbox.files" />:</label>
-                        <div class="col-md-6">
-                            ${requestScope.sandboxFiles}
+                        <div class="form-group">
+                            <label class="col-md-5"><bean:message key="sdc.config.sandbox.files" />:</label>
+                            <div class="col-md-6">
+                                ${requestScope.sandboxFiles}
+                            </div>
                         </div>
-                    </div>
+                    </rhn:require>
                     <div class="form-group">
                         <label class="col-md-5"><bean:message key="sdc.config.central-channel.subscriptions"/>:</label>
                         <div class="col-md-6">
@@ -146,6 +148,7 @@
                         <bean:message key="sdc.config.compare.selected-files" arg0="/rhn/systems/details/configuration/DiffFile.do?sid=${param.sid}"/>
                     </li>
                 </rhn:require>
+                  <rhn:require acl="system_has_management_entitlement()">
                     <div class="list-group-item">
                         <strong>
                             <rhn:icon type="nav-bullet"/>
@@ -165,7 +168,8 @@
                     <li class="list-group-item">
                         <bean:message key="sdc.config.add-create.import-selected-files" arg0="/rhn/systems/details/configuration/addfiles/ImportFile.do?sid=${param.sid}"/>
                     </li>
-                    </rhn:require>
+                     </rhn:require>
+                   </rhn:require>
                 </ul>
                 </c:when>
                 <c:otherwise>
