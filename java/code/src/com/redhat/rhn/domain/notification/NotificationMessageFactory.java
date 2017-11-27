@@ -19,13 +19,11 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage.NotificationMessageSeverity;
 
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
 import org.apache.log4j.Logger;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.*;
 import java.util.stream.Collectors;

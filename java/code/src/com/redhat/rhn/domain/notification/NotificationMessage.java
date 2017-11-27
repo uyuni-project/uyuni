@@ -26,7 +26,6 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * A notification NotificationMessage Object.
@@ -135,6 +134,15 @@ public class NotificationMessage {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    /**
+     * Add a role to the role list
+     *
+     * @param roleIn
+     */
+    public void addRole(Role roleIn) {
+        this.getRoles().add(roleIn);
     }
 
     @ManyToOne

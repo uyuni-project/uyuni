@@ -376,9 +376,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     NotificationMessageSeverity.error,
                     "Error registering minion with id: " + minionId + " " + t.getMessage());
             notificationMessage.setOrg(OrgFactory.getSatelliteOrg());
-            notificationMessage.getRoles().add(RoleFactory.SAT_ADMIN);
-            notificationMessage.getRoles().add(RoleFactory.ORG_ADMIN);
-            notificationMessage.getRoles().add(RoleFactory.IMAGE_ADMIN);
+            notificationMessage.addRole(RoleFactory.SAT_ADMIN);
+            notificationMessage.addRole(RoleFactory.ORG_ADMIN);
+            notificationMessage.addRole(RoleFactory.IMAGE_ADMIN);
 
             NotificationMessageFactory.store(notificationMessage);
         }
