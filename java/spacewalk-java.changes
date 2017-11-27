@@ -8,7 +8,7 @@
 - Generate Order Items for OEM subscriptions (bsc#1045141)
 - fix alignment of systemtype counts text (bsc#1057084)
 - Enable 'Power Management' features on Salt minions.
-- Remove SUSE Manager specific configuration from Salt ssh minion when deleting system from SUSE Manager (bsc#1986)
+- Remove SUSE Manager specific configuration from Salt ssh minion when deleting system from SUSE Manager (bsc#1048326)
 - Fix editing of vhm config params (bsc#1063185)
 - Skip the server if no channel can be guessed (bsc#1040420)
 - Added a method to check if OS on machine supports containerization or not(bsc#1052728)
