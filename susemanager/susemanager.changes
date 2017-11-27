@@ -1,3 +1,4 @@
+- Support Open Enterprise Server 2018 (bsc#1060182)
 - Fixed bootstrap repository path for SLES4SAP version 12 and 12.1 (bsc#1062936)
 - ensure postgres db template uses unicode (bsc#1062476)
 - fix error message for database upgrade failure
