@@ -1,4 +1,4 @@
-- Remove SUSE Manager specific configuration from Salt ssh minion when deleting system from SUSE Manager (bsc#1986)
+- Remove SUSE Manager specific configuration from Salt ssh minion when deleting system from SUSE Manager (bsc#1048326)
 - Enable autofocus for login field
 - Do not remove virtual instances for registered systems (bsc#1063759)
 - Process right configfile on 'scheduleFileComparisons' API calls (bsc#1066663)
