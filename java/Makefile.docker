@@ -1,0 +1,23 @@
+# Makefile
+#
+
+# Docker tests variables
+DOCKER_CONTAINER_BASE = suma-3.0
+DOCKER_REGISTRY       = registry.mgr.suse.de
+DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
+DOCKER_PG_PORTS       = -p 5432:5432
+DOCKER_ORA_PORTS      = -p 1521:1521
+DOCKER_COMMON_OPTS    = --interactive --tty --rm
+
+all :: dockerrun_pg
+
+dockerpull ::
+	docker pull $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
+
+dockerrun_pg ::
+	cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
+	docker run $(DOCKER_COMMON_OPTS) $(DOCKER_PG_PORTS) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
+
+dockerrun_ora ::
+	cp buildconf/test/rhn.conf.oracle-example buildconf/test/rhn.conf
+	docker run --privileged $(DOCKER_COMMON_OPTS) $(DOCKER_ORA_PORTS) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-ora-4eclipse
