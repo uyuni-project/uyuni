@@ -102,7 +102,7 @@ public class NotificationMessageFactory extends HibernateFactory {
 
         return getSession().createQuery(query).getResultList().stream()
                 .filter(e -> {
-                    return !Collections.disjoint(e.getRoles(), user.getRoles());
+                    return !Collections.disjoint(e.getRoles(), user.getRoles()) || e.getRoles().isEmpty();
                 }).collect(Collectors.toList());
     }
 
@@ -156,7 +156,7 @@ public class NotificationMessageFactory extends HibernateFactory {
 
     public static List<NotificationMessage> listUnreadByUser(User user) {
         return byRead(false, user.getOrg()).stream().filter(e -> {
-            return !Collections.disjoint(e.getRoles(), user.getRoles());
+            return !Collections.disjoint(e.getRoles(), user.getRoles()) || e.getRoles().isEmpty();
         }).collect(Collectors.toList());
     }
 
