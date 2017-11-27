@@ -27,7 +27,10 @@ Feature: Setup SUSE Manager proxy
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" hostname
-    And I should see a "SUSE Manager Proxy" text
+    # Test DISABLED on HEAD because SCC is not ready yet
+    # Please re-enable when we reach alpha 1 milestone
+    #
+    #       And I should see a "SUSE Manager Proxy" text
 
 @proxy
   Scenario: Cleanup: remove proxy bootstrap scripts
