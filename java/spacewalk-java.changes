@@ -1,5 +1,12 @@
 - Adjust commons-pool dependency for SLES15
 - Remove jakarta-common-dbcp dependency, not required by quartz anymore
+- Updated Configuration related UI for Minions
+- Added state templates to deploy/compare config files for Salt systems
+- Assignment of configuration channels to Salt systems
+- Added salt file structure for (normal) configuration channels
+- Added new config channel type(state) and file type(sls)
+- Updated ACLs to enable file management feature for Minions as well
+- Remove SUSE Manager specific configuration from Salt ssh minion when deleting system from SUSE Manager (bsc#1048326)
 - Support Open Enterprise Server 2018 (bsc#1060182)
 - Do not remove virtual instances for registered systems (bsc#1063759)
 - Remove enforcement of IBM JDK
