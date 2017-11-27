@@ -55,9 +55,13 @@ Requires: rhnlib >= 2.5.74
 # for Debian support
 Requires: python-debian
 Requires: %{name}-libs == %{version}-%{release}
+%if 0%{?suse_version} > 1320
+Requires: python-pyliblzma
+%else
 %if 0%{?rhel} > 5 || 0%{?suse_version} >= 1315
 Requires: pyliblzma
-%endif
+%endif # %if 0%{?rhel} > 5 || 0%{?suse_version} >= 1315
+%endif # 0%{?suse_version} > 1320
 %if 0%{?pylint_check}
 BuildRequires: spacewalk-pylint >= 2.2
 %endif
@@ -333,9 +337,13 @@ Requires: python-dateutil
 Requires: susemanager-tools
 Requires: apache2-prefork
 %endif
+%if 0%{?suse_version} > 1320
+Requires: python-pyliblzma
+%else
 %if 0%{?fedora} || 0%{?rhel} > 6
 Requires: pyliblzma
-%endif
+%endif # 0%{?fedora} || 0%{?rhel} > 6
+%endif # 0%{?suse_version} > 1320
 %if 0%{?fedora} || 0%{?rhel}
 Requires: python2-devel
 Requires: mod_ssl
