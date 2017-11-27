@@ -372,6 +372,7 @@ public class ContentSyncManager {
         // Add missing base products
         SCCProduct oes2018 = new SCCProduct(45, "Open_Enterprise_Server", "2018",
                 null, "x86_64", "Open Enterprise Server 2018", "OES2");
+        oes2018.setProductType("base");
         missingProducts.add(oes2018);
 
         products.addAll(missingProducts);
