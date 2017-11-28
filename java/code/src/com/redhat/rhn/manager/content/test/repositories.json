@@ -11201,6 +11201,26 @@
   },
   {
     "autorefresh": true,
+    "description": "SLES12-LTSS-Updates for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": true,
+    "id": 2107,
+    "installer_updates": false,
+    "name": "SLES12-LTSS-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-LTSS/s390x/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLES12-LTSS-Debuginfo-Updates for sle-12-s390x",
+    "distro_target": "sle-12-s390x",
+    "enabled": false,
+    "id": 2108,
+    "installer_updates": false,
+    "name": "SLES12-LTSS-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-LTSS/s390x/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
     "description": "SUSE-OpenStack-Cloud-7-Updates for sle-12-x86_64",
     "distro_target": "sle-12-x86_64",
     "enabled": true,
@@ -15121,6 +15141,46 @@
   },
   {
     "autorefresh": true,
+    "description": "SLE-RT12-SP3-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2701,
+    "installer_updates": false,
+    "name": "SLE-RT12-SP3-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-RT/12-SP3/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-RT12-SP3-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2702,
+    "installer_updates": false,
+    "name": "SLE-RT12-SP3-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-RT/12-SP3/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-RT12-SP3-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2703,
+    "installer_updates": false,
+    "name": "SLE-RT12-SP3-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-RT/12-SP3/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-RT12-SP3-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2704,
+    "installer_updates": false,
+    "name": "SLE-RT12-SP3-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-RT/12-SP3/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
     "description": "SLE-Product-SLES15-Updates for sle-15-x86_64",
     "distro_target": "sle-15-x86_64",
     "enabled": true,
@@ -15341,52 +15401,52 @@
   },
   {
     "autorefresh": true,
-    "description": "SUSE-Manager-Retail-3.1-Updates for sle-12-x86_64",
-    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Manager-Server-3.1-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
     "enabled": true,
-    "id": 2519,
+    "id": 2727,
     "installer_updates": false,
-    "name": "SUSE-Manager-Retail-3.1-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Retail/3.1/x86_64/update/?my-fake-token"
+    "name": "SUSE-Manager-Server-3.1-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.1/ppc64le/update/?my-fake-token"
   },
   {
     "autorefresh": true,
-    "description": "SUSE-Manager-Retail-3.1-Debuginfo-Updates for sle-12-x86_64",
-    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Manager-Server-3.1-Debuginfo-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
     "enabled": false,
-    "id": 2520,
+    "id": 2728,
     "installer_updates": false,
-    "name": "SUSE-Manager-Retail-3.1-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Retail/3.1/x86_64/update_debug/?my-fake-token"
+    "name": "SUSE-Manager-Server-3.1-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.1/ppc64le/update_debug/?my-fake-token"
   },
   {
     "autorefresh": false,
-    "description": "SUSE-Manager-Retail-3.1-Pool for sle-12-x86_64",
-    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Manager-Server-3.1-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
     "enabled": true,
-    "id": 2521,
+    "id": 2729,
     "installer_updates": false,
-    "name": "SUSE-Manager-Retail-3.1-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Retail/3.1/x86_64/product/?my-fake-token"
+    "name": "SUSE-Manager-Server-3.1-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.1/ppc64le/product/?my-fake-token"
   },
   {
     "autorefresh": false,
-    "description": "SUSE-Manager-Retail-3.1-Debuginfo-Pool for sle-12-x86_64",
-    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Manager-Server-3.1-Debuginfo-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
     "enabled": false,
-    "id": 2522,
+    "id": 2730,
     "installer_updates": false,
-    "name": "SUSE-Manager-Retail-3.1-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Retail/3.1/x86_64/product_debug/?my-fake-token"
+    "name": "SUSE-Manager-Server-3.1-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.1/ppc64le/product_debug/?my-fake-token"
   },
   {
     "autorefresh": false,
-    "description": "SUSE-Manager-Retail-3.1-Source-Pool for sle-12-x86_64",
-    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Manager-Server-3.1-Source-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
     "enabled": false,
-    "id": 2523,
+    "id": 2731,
     "installer_updates": false,
-    "name": "SUSE-Manager-Retail-3.1-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Retail/3.1/x86_64/product_source/?my-fake-token"
+    "name": "SUSE-Manager-Server-3.1-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.1/ppc64le/product_source/?my-fake-token"
   }
 ]
