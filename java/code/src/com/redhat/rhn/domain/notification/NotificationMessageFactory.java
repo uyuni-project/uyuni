@@ -20,6 +20,9 @@ import com.redhat.rhn.domain.notification.NotificationMessage.NotificationMessag
 
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
+
+import com.suse.manager.webui.websocket.Notification;
+
 import org.apache.log4j.Logger;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -68,6 +71,7 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static void store(NotificationMessage notificationMessage) {
         singleton.saveObject(notificationMessage);
+        Notification.spreadUpdate();
     }
 
     /**
@@ -90,6 +94,7 @@ public class NotificationMessageFactory extends HibernateFactory {
      */
     public static void remove(NotificationMessage notificationMessage) {
         singleton.removeObject(notificationMessage);
+        Notification.spreadUpdate();
     }
 
     /**

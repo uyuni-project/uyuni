@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.utils.gson.JSONNotificationMessage;
+import com.suse.manager.webui.websocket.Notification;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -109,6 +110,7 @@ public class NotificationMessageController {
         if (nm.isPresent()) {
             NotificationMessageFactory.updateStatus(nm.get(), user, isRead);
         }
+        Notification.spreadUpdate();
 
         Map<String, String> data = new HashMap<>();
         data.put("message", "Message status updated");
@@ -128,6 +130,7 @@ public class NotificationMessageController {
         for (NotificationMessage nm : NotificationMessageFactory.listUnreadByUser(user)) {
             NotificationMessageFactory.updateStatus(nm, user,true);
         }
+        Notification.spreadUpdate();
         Map<String, String> data = new HashMap<>();
         data.put("message", "All messages marked as read succesfully");
         response.type("application/json");

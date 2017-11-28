@@ -29,10 +29,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * WebSocket EndPoint for showing notifications real-time in web UI.
@@ -90,7 +87,6 @@ public class Notification {
     @OnMessage
     public void onMessage(Session session, String messageBody) {
         LOG.debug(String.format("Received [message:%s] from session [id:%s].", messageBody, session.getId()));
-        notifyAll(messageBody);
     }
 
     /**
@@ -145,19 +141,13 @@ public class Notification {
      *
      * @param message the message to be sent
      */
-    public static void notifyAll(String message) {
-        // notify all open WebSocket sessions
-        refreshOpenSessions();
-        LOG.info(String.format("Notifying %s websocket sessions", wsSessions.size()));
-
-        synchronized (lock) {
-            wsSessions.forEach((session, user) -> {
-                try {
-                    session.getBasicRemote().sendText(message);
-                } catch (IOException e) {
-                    LOG.error(String.format("Error sending message to websocket [id:%s]", session.getId()), e);
-                }
-            });
+    public static void spreadUpdate() {
+        if (hasHandshakedSessions()) {
+            synchronized (lock) {
+                wsSessions.forEach((session, user) -> {
+                    sendMessage(session, String.valueOf(NotificationMessageFactory.unreadMessagesSize(user)));
+                });
+            }
         }
     }
 
@@ -182,27 +172,23 @@ public class Notification {
     }
 
     /**
-     * Keep only open WebSocket Session
+     * Check if there are any WebSocket Session attached
+     *
+     * @return true if at least one Session attached
      */
-    private static void refreshOpenSessions() {
-        synchronized (lock) {
-            wsSessions = wsSessions.entrySet().stream().filter(ws -> ws.getKey().isOpen()).collect(Collectors.toMap(
-                    Map.Entry::getKey,
-                    Map.Entry::getValue
-            ));
-        }
+    public static boolean hasHandshakedSessions() {
+        return !wsSessions.isEmpty();
     }
 
     static {
-        Thread notificationThread = new Thread() {
+        Thread notificationThread = new Thread("NotificationHandler") {
             @Override
             public void run() {
                 while (true) {
                     synchronized (lock) {
                         // if there are unread messages, notify it to all attached WebSocket sessions
                         wsSessions.forEach((session, user) -> {
-                            int unreadCount = NotificationMessageFactory.unreadMessagesSize(user);
-                            sendMessage(session, String.valueOf(unreadCount));
+                            sendMessage(session, String.valueOf(NotificationMessageFactory.unreadMessagesSize(user)));
                         });
                     }
                     try {
