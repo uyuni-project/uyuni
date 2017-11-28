@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Tue Nov 28 15:01:50 CET 2017 - jgonzalez@suse.com
+
+- version 3.1.13-1
+- Add Adelaide timezone to selectable timezones (bsc#1063891)
 - Added new relationships for Salt config management
 - Added new config channel type(state) and file type(sls)
 - Enable 'Power Management' features on Salt minions.
