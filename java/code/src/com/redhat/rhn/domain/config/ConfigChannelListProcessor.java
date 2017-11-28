@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -108,12 +107,11 @@ public class ConfigChannelListProcessor {
      * @param channelsToRemove the list of ConfigChannels to remove
      * @return returns true if the remove operation succeded
      */
-    public boolean remove(List cfgChannels, List channelsToRemove) {
-        boolean success = true;
-        for (Iterator itr = channelsToRemove.iterator(); itr.hasNext();) {
-            success = success && remove(cfgChannels, (ConfigChannel)itr.next());
-        }
-        return success;
+    public boolean remove(List<ConfigChannel> cfgChannels,
+            List<ConfigChannel> channelsToRemove) {
+        return channelsToRemove.stream()
+                .map(c -> remove(cfgChannels, c))
+                .reduce(true, (a, b) -> a && b);
     }
 
 

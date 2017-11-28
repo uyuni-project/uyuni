@@ -45,8 +45,9 @@ public class RankChannels extends BaseRankChannels {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Map getKeyMethodMap() {
-        Map keys = new HashMap();
+        Map<String, String> keys = new HashMap<>();
         keys.put("ssm.config.rank.jsp.apply", "apply");
         keys.put("ssm.config.rank.jsp.up", "handleNoScript");
         keys.put("ssm.config.rank.jsp.down", "handleNoScript");
@@ -56,6 +57,7 @@ public class RankChannels extends BaseRankChannels {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected ActionForward unspecified(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response) {
@@ -95,6 +97,7 @@ public class RankChannels extends BaseRankChannels {
                 "position", position);
     }
 
+    @Override
     protected void setup(RequestContext context,
                              DynaActionForm form,
                              RhnSet set) {
@@ -108,6 +111,7 @@ public class RankChannels extends BaseRankChannels {
      *
      * {@inheritDoc}
      */
+    @Override
     protected void populateWidgetLabels(LinkedHashSet labelValues,
                                             RequestContext context) {
         // TODO Auto-generated method stub
@@ -115,16 +119,17 @@ public class RankChannels extends BaseRankChannels {
     }
 
     private void updateSet(DynaActionForm form, RhnSet set) {
-        List channelIds = getChannelIds(form);
+        List<Long> channelIds = getChannelIds(form);
         if (!channelIds.isEmpty()) {
             set.clear();
             for (int i = 0; i < channelIds.size(); i++) {
-                set.addElement((Long)channelIds.get(i), new Long(i));
+                set.addElement(channelIds.get(i), (long) i);
             }
             RhnSetManager.store(set);
         }
     }
 
+    @Override
     protected void processParams(RequestContext context, Map map) {
         // TODO Auto-generated method stub
 

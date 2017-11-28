@@ -94,13 +94,13 @@
 
     <rhn-tab name="nav.sdc.config.overview" url="/rhn/systems/details/configuration/Overview.do"/>
 
-    <rhn-tab name="nav.sdc.config.view_modify_files" url="/rhn/systems/details/configuration/ViewModifyCentralPaths.do">
-        <rhn-tab name="nav.sdc.config.centrally_managed_files" url="/rhn/systems/details/configuration/ViewModifyCentralPaths.do"/>
+    <rhn-tab name="nav.sdc.config.view_modify_files" url="/rhn/systems/details/configuration/ViewModifyCentralPaths.do" acl="system_has_management_entitlement()">
+        <rhn-tab name="nav.sdc.config.centrally_managed_files" url="/rhn/systems/details/configuration/ViewModifyCentralPaths.do" />
         <rhn-tab name="nav.sdc.config.locally_managed_files" url="/rhn/systems/details/configuration/ViewModifyLocalPaths.do"/>
         <rhn-tab name="nav.sdc.config.sandbox_managed_files" url="/rhn/systems/details/configuration/ViewModifySandboxPaths.do"/>
     </rhn-tab>
 
-        <rhn-tab name="configchannel.nav.add" url="/rhn/systems/details/configuration/addfiles/UploadFile.do">
+        <rhn-tab name="configchannel.nav.add" url="/rhn/systems/details/configuration/addfiles/UploadFile.do" acl="system_has_management_entitlement()">
                 <rhn-tab name="configchannel.nav.add.upload" url="/rhn/systems/details/configuration/addfiles/UploadFile.do"/>
         <rhn-tab name="configchannel.nav.add.import" acl ="client_capable(configfiles.upload)"  url="/rhn/systems/details/configuration/addfiles/ImportFile.do">
                         <rhn-tab-url>/rhn/systems/details/configuration/addfiles/ImportFileSubmit.do</rhn-tab-url>

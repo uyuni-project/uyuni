@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
@@ -29,7 +28,6 @@ import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -284,13 +282,10 @@ public class SystemCompareDto {
         for (Server system : servers) {
             List keys = new LinkedList();
             if (system.getConfigChannelCount() > 0) {
-                Collection<ConfigChannel> channels = system.getConfigChannels();
-                if (channels != null) {
-                    for (ConfigChannel channel : channels) {
-                        keys.add(channel.getName());
-                        idMap.put(channel.getName(), channel.getId().toString());
-                    }
-                }
+                system.getConfigChannelStream().forEach(ch -> {
+                    keys.add(ch.getName());
+                    idMap.put(ch.getName(), ch.getId().toString());
+                });
             }
 
             ret.add(keys);

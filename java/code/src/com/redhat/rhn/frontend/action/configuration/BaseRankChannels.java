@@ -106,13 +106,13 @@ public abstract class BaseRankChannels extends RhnLookupDispatchAction {
      * @return List containing the channel ids in the order of
      *                   their new  rankings.
      */
-    protected List getChannelIds(DynaActionForm form) {
-        List channels = new ArrayList();
+    protected List<Long> getChannelIds(DynaActionForm form) {
+        List<Long> channels = new ArrayList<>();
         String rankedValues = (String)form.get(RANKED_VALUES);
         if (StringUtils.isNotBlank(rankedValues)) {
-            String [] values = rankedValues.split(",");
-            for (int i = 0; i < values.length; i++) {
-                channels.add(new Long(values[i]));
+            String[] values = rankedValues.split(",");
+            for (String value : values) {
+                channels.add(new Long(value));
             }
         }
         return channels;

@@ -172,11 +172,4 @@ public class ConfigChannelCreationHelper {
         cc.setName(name);
         cc.setDescription(description);
     }
-    /**
-     *
-     * @param cc the config channel to save.
-     */
-    public void save(ConfigChannel cc) {
-         ConfigurationFactory.commit(cc);
-    }
 }

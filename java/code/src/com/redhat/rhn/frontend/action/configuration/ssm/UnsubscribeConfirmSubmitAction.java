@@ -36,7 +36,9 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -92,28 +94,15 @@ public class UnsubscribeConfirmSubmitAction extends RhnListDispatchAction {
                 continue; //skip this element
             }
 
-            Iterator channels = channelSet.getElements().iterator();
-            //go through each channel and unsubscribe the current system
-            while (channels.hasNext()) {
-                Long ccid = ((RhnSetElement)channels.next()).getElement();
-                ConfigChannel channel;
+            List<ConfigChannel> configChannelList = new ArrayList<>();
+            for (RhnSetElement ch : channelSet.getElements()) {
                 try {
-                    channel = cm.lookupConfigChannel(user, ccid);
+                    configChannelList.add(cm.lookupConfigChannel(user, ch.getElement()));
                 }
-                catch (LookupException e) {
-                    continue; //skip this element
-                }
-
-                //unsubscribe the channel
-                if (server.unsubscribe(channel)) {
-                    hit = true;
-                }
+                catch (LookupException ignored) { }
             }
 
-            //update the number of successes if we have done something to this server
-            if (hit) {
-                successes++;
-            }
+            successes += server.unsubscribeConfigChannels(configChannelList, user);
         }
 
         RhnSetManager.remove(channelSet); //clear the set

@@ -354,10 +354,11 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
      */
     public static Set<Action> createConfigActions(User user,
             Map<Long, Collection<Long>> revisions, Collection<Long> serverIds,
-            ActionType type, Date earliest, ActionChain actionChain) {
+            ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
 
             List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
             return createConfigActionForServers(user, revisions, servers, type, earliest,
@@ -373,10 +374,11 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
      */
     public static Set<Action> createConfigActionForServers(User user,
         Map<Long, Collection<Long>> revisions, Collection<Server> servers,
-        ActionType type, Date earliest, ActionChain actionChain) {
+        ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
         Set<Action> result = new HashSet<Action>();
         if (actionChain == null) {
             ConfigAction action = ActionManager.createConfigAction(user, type, earliest);
@@ -391,6 +393,7 @@ public class ActionChainManager {
                 ActionFactory.save(action);
                 result.add(action);
             }
+            taskomaticApi.scheduleActionExecution(action);
         }
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
