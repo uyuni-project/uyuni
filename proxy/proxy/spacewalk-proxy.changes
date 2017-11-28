@@ -1,3 +1,4 @@
+- Fix building problems for SLES15
 - Try to resolve the proxy hostname even if the HTTP 'Host' header
   is an ip address (bsc#1057542)
 

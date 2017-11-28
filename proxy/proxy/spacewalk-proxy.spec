@@ -94,7 +94,11 @@ Requires: http_proxy
 Requires: mod_ssl
 Requires: squid
 %endif
+%if 0%{?suse_version} > 1320
+Requires: apache2-mod_wsgi-python3
+%else
 Requires: mod_wsgi
+%endif
 Requires(post): %{name}-common
 Conflicts: %{name}-redirect < %{version}-%{release}
 Conflicts: %{name}-redirect > %{version}-%{release}
@@ -139,7 +143,11 @@ BuildRequires: apache2
 Requires: mod_ssl
 %endif
 Requires: curl
+%if 0%{?suse_version} > 1320
+Requires: apache2-mod_wsgi-python3
+%else
 Requires: mod_wsgi
+%endif
 Requires: %{name}-broker >= %{version}
 Requires: spacewalk-backend >= 1.7.24
 Requires(pre): policycoreutils
