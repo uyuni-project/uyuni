@@ -158,6 +158,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -6297,5 +6298,32 @@ public class SystemHandler extends BaseHandler {
         JSONBootstrapHosts input = new JSONBootstrapHosts(
                 host, sshPort, sshUser, sshPassword, activationKey, proxyId.longValue());
         return XmlRpcSystemHelper.getInstance().bootstrap(user, input, saltSSH);
+    }
+
+    /**
+     * Schedule highstate application for a given system.
+     *
+     * @param loggedInUser The current user
+     * @param sid ID of the server
+     * @param earliestOccurrence Earliest occurrence of the highstate application
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule highstate application for a given system.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("dateTime.iso860", "earliestOccurrence")
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     */
+    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence) {
+        try {
+            List<Long> sids = Arrays.asList(sid.longValue());
+            Action a = ActionManager.scheduleApplyHighstate(loggedInUser, sids, earliestOccurrence);
+            a = ActionFactory.save(a);
+            TASKOMATIC_API.scheduleActionExecution(a);
+            return a.getId();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 }
