@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Nov 28 14:46:15 CET 2017 - jgonzalez@suse.com
+
+- version 2.7.1.13-1
 - Disallow entering multiple identical mirror credentials (bsc#971785)
 - Fix runtime data display in Images page (bsc#1062972)
 - add delete button to img-overview page (bsc#1061245)
