@@ -1,3 +1,4 @@
+- Added a script which will remove existing server locks against minions (bsc#1064258)
 -------------------------------------------------------------------
 Tue Nov 28 15:01:50 CET 2017 - jgonzalez@suse.com
 
