@@ -20,6 +20,8 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 
 import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.NotificationMessageFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -64,8 +66,18 @@ public class RepoSyncTask extends RhnJavaJob {
                     executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
                 }
                 catch (JobExecutionException e) {
+                    NotificationMessage notificationMessage = NotificationMessageFactory.createNotificationMessage(
+                            NotificationMessage.NotificationMessageSeverity.error,
+                            "Repository Sync for channel "+ channel.getName() + " failed: " + e.getMessage()
+                    );
+                    NotificationMessageFactory.store(notificationMessage);
                     log.error(e.getMessage());
                 }
+                NotificationMessage notificationMessage = NotificationMessageFactory.createNotificationMessage(
+                        NotificationMessage.NotificationMessageSeverity.info,
+                        "Repository Sync for channel "+ channel.getName() + " done."
+                );
+                NotificationMessageFactory.store(notificationMessage);
             }
             else {
                 log.error("No such channel with channel_id " + channelId);
