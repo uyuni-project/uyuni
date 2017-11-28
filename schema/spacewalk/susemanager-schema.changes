@@ -2,6 +2,7 @@
 - fix unique index for evr and capability and remove duplicates
   during migration (bsc#1058110)
 - rhnServerNetwork refactoring (bsc#1063419)
+- Add Adelaide timezone to selectable timezones (bsc#1063891)
 
 -------------------------------------------------------------------
 Tue Oct 17 13:04:25 CEST 2017 - jgonzalez@suse.com

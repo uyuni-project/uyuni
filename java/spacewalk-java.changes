@@ -10,6 +10,7 @@
 - Fail gracefully when GPG files are requested (bsc#1065676)
 - Improve messaging for "Compare Packages" (bsc#1065844)
 - rhnServerNetwork refactoring (bsc#1063419)
+- Add Adelaide timezone to selectable timezones (bsc#1063891)
 
 -------------------------------------------------------------------
 Tue Oct 17 12:38:13 CEST 2017 - jgonzalez@suse.com
