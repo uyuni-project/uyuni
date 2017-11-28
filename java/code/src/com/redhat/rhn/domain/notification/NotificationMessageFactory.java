@@ -105,10 +105,8 @@ public class NotificationMessageFactory extends HibernateFactory {
     public static List<NotificationMessage> listAllByUser(User user) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<NotificationMessage> query = builder.createQuery(NotificationMessage.class);
-        query.from(NotificationMessage.class);
         Root<NotificationMessage> root = query.from(NotificationMessage.class);
         builder.equal(root.get("org"), user.getOrg());
-
 
         return getSession().createQuery(query).list().stream()
                 .filter(e -> {
