@@ -873,3 +873,6 @@ is
 end rhn_server;
 /
 SHOW ERRORS
+
+DROP TABLE rhnServerNetwork;
+
