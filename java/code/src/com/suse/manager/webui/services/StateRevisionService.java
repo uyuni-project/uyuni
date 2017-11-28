@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services;
 
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -68,6 +69,7 @@ public enum StateRevisionService {
             // custom states can be simply added to the collections because
             // they don't hold any reference to the state revision
             cloneCustomStates(newRevision, StateFactory.latestCustomStates(server));
+            cloneConfigChannels(newRevision, StateFactory.latestConfigChannels(server));
         }
 
         return newRevision;
@@ -151,5 +153,11 @@ public enum StateRevisionService {
                                    Optional<Set<CustomState>> latestStates)  {
         newRevision.getCustomStates()
                 .addAll(latestStates.orElse(Collections.emptySet()));
+    }
+
+    private void cloneConfigChannels(StateRevision newRevision,
+            Optional<Set<ConfigChannel>> latestChannels) {
+        newRevision.getConfigChannels()
+                .addAll(latestChannels.orElse(Collections.emptySet()));
     }
 }

@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,10 +53,10 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Rev$
  */
 public class SubscribeConfirm extends RhnAction {
-    private static final String REPLACE = "replace";
-    private static final String LOWEST = "lowest";
-    private static final String HIGHEST = "highest";
-    private static final String POSITION = "position";
+    public static final String REPLACE = "replace";
+    public static final String LOWEST = "lowest";
+    public static final String HIGHEST = "highest";
+    public static final String POSITION = "position";
 
     /**
      * Set up the page.
@@ -135,7 +136,7 @@ public class SubscribeConfirm extends RhnAction {
             try {
                 Server server = SystemManager.lookupByIdAndUser(sid, user);
 
-                if (subscribeServer(user, server, channels, position)) {
+                if (subscribeServer(user, server, position)) {
                     successes++;
                 }
             }
@@ -160,54 +161,49 @@ public class SubscribeConfirm extends RhnAction {
         return mapping.findForward("success");
     }
 
-    private boolean subscribeServer(User user, Server server,
-            RhnSet toSubsChs, String position) {
-        boolean retval = false; // whether subscriptions have changed
-        // save the currently subscribed channels
-        List currentChs = new ArrayList(server.getConfigChannels());
+    private boolean subscribeServer(User user, Server server, String position) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
 
-        // for LOWEST the current channel subscription stays preserved
-        if (!position.equals(LOWEST)) {
-            server.getConfigChannels().clear();
-        }
+        // Position:
+        //   LOWEST: Subscribe to new channels at the lowest priority
+        //   REPLACE: Replace subscriptions with the new list
+        //   HIGHEST: Subscripe to new channels at the highest priority
 
         // Order the new channels in the order requested by user
         List rankElements = new ArrayList(
                 RhnSetDecl.CONFIG_CHANNELS_RANKING.get(user).getElements());
         Collections.sort(rankElements, new ConfigChannelSetComparator());
-        Iterator i = rankElements.iterator();
 
-        // subscribe to the new channels
-        while (i.hasNext()) {
-            Long ccid = ((RhnSetElement)i.next()).getElement();
-            ConfigChannel channel = cm.lookupConfigChannel(user, ccid);
+        List<ConfigChannel> channels = ((List<RhnSetElement>) rankElements).stream()
+                .map(elm -> cm.lookupConfigChannel(user, elm.getElement()))
+                .collect(Collectors.toList());
 
-            if (currentChs.contains(channel)) {
-                // for REPLACE we need to re-subscribe current channels
-                // in order requested by user
-                if (position.equals(REPLACE)) {
-                    server.subscribe(channel);
-                }
+        List<ConfigChannel> existingChannels = server.getConfigChannelList();
+
+        if (LOWEST.equals(position)) {
+            // Subscribe the new channels in the end. No re-ordering needed.
+            channels.removeAll(existingChannels);
+            if (!channels.isEmpty()) {
+                server.subscribeConfigChannels(channels, user);
+                return true;
             }
-            else {
-                if (toSubsChs.contains(channel.getId())) {
-                    // subscribe new channels
-                    server.subscribe(channel);
-                    retval = true;
-                }
+        }
+        else {
+            // Previously subscribed channels to append in the end,
+            // or nothing in case of REPLACE
+            if (HIGHEST.equals(position)) {
+                channels.addAll(existingChannels);
+            }
+
+            if (!channels.equals(existingChannels)) {
+                // Replace config channel subscriptions with the new list
+                server.setConfigChannels(channels, user);
+                return true;
             }
         }
 
-        if (position.equals(HIGHEST)) {
-            // for HIGHEST we have to re-subscribe to the channels the system was
-            // originally subscribed to
-            Iterator j = currentChs.iterator();
-            while (j.hasNext()) {
-                server.subscribe((ConfigChannel)j.next());
-            }
-        }
-        return retval;
+        // Subscriptions have not changed for this server
+        return false;
     }
 
     private void checkPosition(HttpServletRequest request) {

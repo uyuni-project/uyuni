@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.system.config.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -60,14 +61,15 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                 ConfigChannelType.global());
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
                 ConfigChannelType.global());
+        List<ConfigChannel> gccList = new ArrayList<>();
+        gccList.add(gcc1);
+        gccList.add(gcc2);
 
-        Long ver = new Long(2);
+        Long ver = 2L;
 
         // gcc1 only
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
-
-        srv1.subscribe(gcc1);
-        srv1.subscribe(gcc2);
+        srv1.subscribeConfigChannels(gccList, regular);
 
         ServerFactory.save(srv1);
 
@@ -178,6 +180,13 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                                                         channelLabels.size()), false));
         actual = handler.listChannels(regular, srv1.getId().intValue());
         assertEquals(channels, actual);
+
+        // Test removing nonexisting channels
+        handler.removeChannels(admin, serverIds, channelLabels.subList(0, 1));
+        assertEquals(0, handler.removeChannels(admin, serverIds, channelLabels));
+
+        // The other channel is removed even though the result is 0
+        assertEquals(0, handler.listChannels(admin, srv1.getId().intValue()).size());
     }
 
 
@@ -203,6 +212,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                         admin, server.getId().intValue(),
                         path, isDir, data, commitToLocal);
 
+            server = (Server) HibernateFactory.reload(server);
             ConfigChannel cc = commitToLocal ? server.getLocalOverride() :
                                                      server.getSandboxOverride();
             assertRev(rev, path, contents, group, owner, perms, isDir, cc, start, end,
@@ -223,6 +233,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         data.put(ConfigRevisionSerializer.SELINUX_CTX, selinuxCtx);
         ConfigRevision rev = handler.createOrUpdateSymlink(admin,
                     server.getId().intValue(), path, data, commitToLocal);
+        server = (Server) HibernateFactory.reload(server);
         ConfigChannel cc = commitToLocal ? server.getLocalOverride() :
             server.getSandboxOverride();
 

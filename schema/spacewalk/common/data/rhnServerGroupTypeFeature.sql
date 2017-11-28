@@ -233,7 +233,14 @@ insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
                                        created, modified)
 values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_channel_membership'),
         current_timestamp,current_timestamp);
-
+insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
+                                       created, modified)
+values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_channel_config_subscription'),
+        current_timestamp,current_timestamp);
+insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
+                                       created, modified)
+values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_channel_deploy_diff'),
+        current_timestamp,current_timestamp);
 insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
                                        created, modified)
 values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_system_custom_values'),
@@ -242,4 +249,9 @@ values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_system_custom_
 insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
                                        created, modified)
 values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_power_management'),
+        current_timestamp,current_timestamp);
+
+insert into rhnServerGroupTypeFeature (server_group_type_id, feature_id,
+                                       created, modified)
+values (lookup_sg_type('salt_entitled'), lookup_feature_type('ftr_config'),
         current_timestamp,current_timestamp);

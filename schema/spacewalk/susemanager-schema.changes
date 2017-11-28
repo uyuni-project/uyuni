@@ -1,3 +1,5 @@
+- Added new relationships for Salt config management
+- Added new config channel type(state) and file type(sls)
 - Enable 'Power Management' features on Salt minions.
 - enablement of the package profile feature for minions
 - increase max length of hardware address to 32 byte (bsc#989991)

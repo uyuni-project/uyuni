@@ -54,8 +54,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -77,7 +77,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
-public class ConfigurationManagerTest extends RhnBaseTestCase {
+public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
     private User user;
     private PageControl pc;
@@ -90,7 +90,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
     }};
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         //Create a user and an org
         user = UserTestUtils.findNewUser("testyman", "orgman");
@@ -102,7 +102,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
     }
 
     @Override
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         user = null;
         pc = null;
         cm = null;
@@ -125,7 +125,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         ConfigChannel global = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.global());
         // Susbscribe system to global
-        srv1.subscribe(global);
+        srv1.subscribeConfigChannel(global, user);
         ServerFactory.save(srv1);
 
         // Create files one, two, and three in global
@@ -287,14 +287,14 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
 
         SystemManagerTest.giveCapability(srv1.getId(),
                 SystemManager.CAP_CONFIGFILES_DEPLOY, ver);
-        srv1.subscribe(gcc1);
+        srv1.subscribeConfigChannel(gcc1, user);
         ServerFactory.save(srv1);
 
         // System 2 - no outranks, an override
         Server srv2 = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(srv2.getId(),
                 SystemManager.CAP_CONFIGFILES_DEPLOY, ver);
-        srv2.subscribe(gcc1);
+        srv2.subscribeConfigChannel(gcc1, user);
         srv2.setLocalOverride(local2);
         ServerFactory.save(srv2);
 
@@ -302,16 +302,16 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         Server srv3 = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(srv3.getId(),
                 SystemManager.CAP_CONFIGFILES_DEPLOY, ver);
-        srv3.subscribeAt(gcc2, 1);
-        srv3.subscribeAt(gcc1, 2);
+        srv3.subscribeConfigChannel(gcc2, user);
+        srv3.subscribeConfigChannel(gcc1, user);
         ServerFactory.save(srv3);
 
         // System 4 - 1 outrank, an override
         Server srv4 = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(srv4.getId(),
                 SystemManager.CAP_CONFIGFILES_DEPLOY, ver);
-        srv4.subscribeAt(gcc2, 1);
-        srv4.subscribeAt(gcc1, 2);
+        srv4.subscribeConfigChannel(gcc2, user);
+        srv4.subscribeConfigChannel(gcc1, user);
         srv4.setLocalOverride(local4);
         ServerFactory.save(srv4);
 
@@ -319,9 +319,9 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         Server srv5 = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(srv5.getId(),
                 SystemManager.CAP_CONFIGFILES_DEPLOY, ver);
-        srv5.subscribeAt(gcc3, 1);
-        srv5.subscribeAt(gcc2, 2);
-        srv5.subscribeAt(gcc1, 3);
+        srv5.subscribeConfigChannel(gcc3, user);
+        srv5.subscribeConfigChannel(gcc2, user);
+        srv5.subscribeConfigChannel(gcc1, user);
         ServerFactory.save(srv5);
 
         DataResult dr = ConfigurationManager.getInstance().
@@ -406,7 +406,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
 
         assertTrue(contains(cc, dr));
 
-        srv.subscribe(cc);
+        srv.subscribeConfigChannel(cc, user);
         ServerFactory.save(srv);
 
         dr = cm.listGlobalChannelsForSystemSubscriptions(srv, user, pc);
@@ -473,7 +473,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         //a member of the config channel and have access to the server as well.
         Server s = ServerFactoryTest.createTestServer(user, true);
 
-        s.subscribe(cf.getConfigChannel());
+        s.subscribeConfigChannel(cf.getConfigChannel(), user);
         ConfigTestUtils.giveConfigCapabilities(s);
         //Call the function we are testing
         DataResult dr = cm.listManagedSystemsAndFiles(user, pc);
@@ -623,7 +623,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         ConfigurationFactory.commit(srv1.getSandboxOverride());
 
         // Are local and sandbox guaranteed to NOT show up?
-        List channels  = srv1.getConfigChannels();
+        List channels  = srv1.getConfigChannelList();
         assertNotNull(channels);
         assertEquals(0, channels.size());
 
@@ -631,10 +631,10 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         ConfigChannel global = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.global());
         // Susbscribe system to global
-        srv1.subscribe(global);
+        srv1.subscribeConfigChannel(global, user);
 
         // Can we find the global channel?
-        channels  = srv1.getConfigChannels();
+        channels  = srv1.getConfigChannelList();
         assertEquals(1, channels.size());
     }
 
@@ -657,7 +657,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
 
         assertEquals(EXPECTED_COUNT, actual);
 
-        final ConfigChannel c = s.getConfigChannels().get(0);
+        final ConfigChannel c = s.getConfigChannelStream().findFirst().get();
 
         SortedSet files = c.getConfigFiles();
         assertEquals(files.size(), EXPECTED_COUNT.getFiles() +
@@ -682,7 +682,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         ConfigTestUtils.createConfigRevision(fl3,
                                 ConfigFileType.file());
 
-        s.subscribeAt(cc, 0);
+        s.subscribeConfigChannel(cc, user);
         ServerFactory.save(s);
         actual = cm.countCentrallyManagedPaths(s, user);
 
@@ -727,7 +727,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
                                 ConfigChannelType.local());
 
 
-        ConfigChannel c = s.getConfigChannels().get(0);
+        ConfigChannel c = s.getConfigChannelStream().findFirst().get();
         String path = c.getConfigFiles().first().getConfigFileName().getPath();
         ConfigFile fl = local.createConfigFile(
                                 ConfigFileState.normal(),
@@ -833,12 +833,12 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         srv1.setLocalOverride(lcc);
 
         // Subscribe to globals
-        srv1.subscribeAt(gcc2, 1);
-        srv1.subscribeAt(gcc1, 2);
+        srv1.subscribeConfigChannel(gcc2, user);
+        srv1.subscribeConfigChannel(gcc1, user);
 
         // Create a second, subscribe to global
         Server srv2 = ServerFactoryTest.createTestServer(user, true);
-        srv2.subscribe(gcc1);
+        srv2.subscribeConfigChannel(gcc1, user);
 
         ServerFactory.save(srv1);
         ServerFactory.save(srv2);
@@ -895,13 +895,13 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
     public void testChannelSubscriptions() throws Exception {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
         Server s = ConfigTestUtils.giveUserChanAccess(user, cc);
-        s.subscribe(ConfigTestUtils.createConfigChannel(user.getOrg()));
-        s.subscribe(ConfigTestUtils.createConfigChannel(user.getOrg()));
+        s.subscribeConfigChannel(ConfigTestUtils.createConfigChannel(user.getOrg()), user);
+        s.subscribeConfigChannel(ConfigTestUtils.createConfigChannel(user.getOrg()), user);
         ServerFactory.save(s);
-        assertTrue(s.unsubscribe(cc));
+        assertTrue(s.unsubscribeConfigChannel(cc, user));
         ServerFactory.save(s);
         s = TestUtils.reload(s);
-        assertEquals(2, s.getConfigChannels().size());
+        assertEquals(2, s.getConfigChannelCount());
     }
 
     public void testFilesNotInChannel() throws Exception {
@@ -960,10 +960,10 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         // Not in any channel, and NOT config-mgt-enabled
         Server srv6 = ServerFactoryTest.createTestServer(user, true);
 
-        srv1.subscribe(gcc1);
-        srv2.subscribe(gcc2);
-        srv3.subscribe(gcc2);
-        srv4.subscribe(gcc2);
+        srv1.subscribeConfigChannel(gcc1, user);
+        srv2.subscribeConfigChannel(gcc2, user);
+        srv3.subscribeConfigChannel(gcc2, user);
+        srv4.subscribeConfigChannel(gcc2, user);
 
         ServerFactory.save(srv1);
         ServerFactory.save(srv2);
@@ -1015,8 +1015,8 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         SystemManagerTest.giveCapability(srv1.getId(),
                 SystemManager.CAP_CONFIGFILES_DEPLOY, ver);
 
-        srv1.subscribe(gcc1);
-        srv1.subscribe(gcc2);
+        srv1.subscribeConfigChannel(gcc1, user);
+        srv1.subscribeConfigChannel(gcc2, user);
 
         ServerFactory.save(srv1);
 
@@ -1092,10 +1092,10 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         SystemManagerTest.giveCapability(srv3.getId(),
                 SystemManager.CAP_CONFIGFILES_DEPLOY, ver);
 
-        srv1.subscribe(gcc1);
-        srv2.subscribe(gcc2);
-        srv3.subscribeAt(gcc1, 1);
-        srv3.subscribeAt(gcc2, 2);
+        srv1.subscribeConfigChannel(gcc1, user);
+        srv2.subscribeConfigChannel(gcc2, user);
+        srv3.subscribeConfigChannel(gcc1, user);
+        srv3.subscribeConfigChannel(gcc2, user);
         ServerFactory.save(srv1);
         ServerFactory.save(srv2);
         ServerFactory.save(srv3);
@@ -1152,8 +1152,8 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.global());
         Server srv1 = ServerFactoryTest.createTestServer(user, true);
-        srv1.subscribe(gcc1);
-        srv1.subscribe(gcc2);
+        srv1.subscribeConfigChannel(gcc1, user);
+        srv1.subscribeConfigChannel(gcc2, user);
 
         //we want the items here to be in sorted order
         // 0, 1 will be used to test Centrally managed paths
@@ -1418,7 +1418,7 @@ public class ConfigurationManagerTest extends RhnBaseTestCase {
         assertFalse(cm.accessToChannel(user.getId(), cc.getId()));
 
         // Subscribe "our" system to that channel - we SHOULD have access
-        srv.subscribe(cc);
+        srv.subscribeConfigChannel(cc, user);
         ServerFactory.save(srv);
         assertTrue(cm.accessToChannel(user.getId(), cc.getId()));
 

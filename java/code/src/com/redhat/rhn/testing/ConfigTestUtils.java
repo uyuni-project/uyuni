@@ -355,7 +355,7 @@ public class ConfigTestUtils extends Assert {
         }
         Server srv = ServerFactoryTest.createTestServer(user, true);
         if (channel.isGlobalChannel()) {
-            srv.subscribe(channel);
+            srv.subscribeConfigChannel(channel, user);
         }
         else if (channel.isLocalChannel()) {
             srv.setLocalOverride(channel);

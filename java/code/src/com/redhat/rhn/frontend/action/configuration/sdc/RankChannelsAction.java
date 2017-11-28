@@ -34,10 +34,10 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,8 +52,9 @@ public class RankChannelsAction extends BaseRankChannels {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected Map getKeyMethodMap() {
-        Map keys = new HashMap();
+        Map<String, String> keys = new HashMap<>();
         keys.put("sdc.config.rank.jsp.update", "update");
         keys.put("ssm.config.rank.jsp.up", "handleNoScript");
         keys.put("ssm.config.rank.jsp.down", "handleNoScript");
@@ -64,6 +65,7 @@ public class RankChannelsAction extends BaseRankChannels {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected ActionForward unspecified(ActionMapping mapping,
             ActionForm form, HttpServletRequest request,
             HttpServletResponse response) {
@@ -97,14 +99,11 @@ public class RankChannelsAction extends BaseRankChannels {
         DynaActionForm form = (DynaActionForm) formIn;
         Server server = context.lookupAndBindServer();
 
-        List channelIds = getChannelIds(form);
-        if (!channelIds.isEmpty()) {
-            for (Iterator itr = channelIds.iterator(); itr.hasNext();) {
-                ConfigChannel channel = ConfigurationManager.getInstance()
-                                 .lookupConfigChannel(user, (Long)itr.next());
-                server.subscribe(channel);
-            }
-        }
+        ConfigurationManager cfgMgr = ConfigurationManager.getInstance();
+        List<ConfigChannel> configChannelList = getChannelIds(form).stream()
+                .map(chid -> cfgMgr.lookupConfigChannel(user, chid))
+                .collect(Collectors.toList());
+        server.subscribeConfigChannels(configChannelList, user);
 
         RhnSet set = getRhnSet(user);
         set.clear();
@@ -122,6 +121,7 @@ public class RankChannelsAction extends BaseRankChannels {
                 RequestContext.SID, server.getId().toString());
     }
 
+    @Override
     protected void setup(RequestContext context, DynaActionForm form,
                             RhnSet set) {
         //This happens if the rank channels page is used without the
@@ -138,17 +138,15 @@ public class RankChannelsAction extends BaseRankChannels {
      *
      * {@inheritDoc}
      */
+    @Override
     protected void populateWidgetLabels(LinkedHashSet labelValues,
                                             RequestContext context) {
         Server server = context.lookupAndBindServer();
-        for (Iterator itr = server.getConfigChannels().iterator();
-                                                    itr.hasNext();) {
-            ConfigChannel channel = (ConfigChannel) itr.next();
-            labelValues.add(lv(channel.getName(),
-                                        channel.getId().toString()));
-        }
+        server.getConfigChannelStream()
+                .forEach(c -> labelValues.add(lv(c.getName(), c.getId().toString())));
     }
 
+    @Override
     protected void processParams(RequestContext context, Map map) {
         Server server = context.lookupAndBindServer();
         map.put(RequestContext.SID, server.getId().toString());
@@ -158,10 +156,6 @@ public class RankChannelsAction extends BaseRankChannels {
         }
     }
 
-    /**
-     * @param request
-     * @return
-     */
     private boolean isWizardMode(RequestContext context) {
         return  Boolean.TRUE.toString().equals(context.getParam
                          (SubscriptionsSubmitAction.WIZARD_MODE, false));

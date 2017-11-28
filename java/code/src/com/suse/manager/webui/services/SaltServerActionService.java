@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
@@ -94,8 +95,12 @@ public enum SaltServerActionService {
     private static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
     private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
+    private static final String CONFIG_DEPLOY_FILES = "configuration.deploy_files";
+    private static final String CONFIG_DIFF_FILES = "configuration.diff_files";
     private static final String PARAM_PKGS = "param_pkgs";
     private static final String PARAM_PATCHES = "param_patches";
+    private static final String PARAM_FILES = "param_files";
+
 
 
     /** SLS pillar parameter name for the list of update stack patch names. */
@@ -135,6 +140,12 @@ public enum SaltServerActionService {
         }
         else if (ActionFactory.TYPE_REBOOT.equals(actionType)) {
             return rebootAction(minions);
+        }
+        else if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(actionType)) {
+            return deployFiles(minions, (ConfigAction) actionIn);
+        }
+        else if (ActionFactory.TYPE_CONFIGFILES_DIFF.equals(actionType)) {
+            return diffFiles(minions, (ConfigAction) actionIn);
         }
         else if (ActionFactory.TYPE_SCRIPT_RUN.equals(actionType)) {
             ScriptAction scriptAction = (ScriptAction) actionIn;
@@ -377,6 +388,83 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(com.suse.salt.netapi.calls.modules.System
                 .reboot(Optional.of(3)), minions);
+        return ret;
+    }
+
+    /**
+     * Deploy files(files, directory, symlink) through state.apply
+     *
+     * @param minions target systems
+     * @param action action which has all the revisions
+     * @return minions grouped by local call
+     */
+    private Map<LocalCall<?>, List<MinionServer>> deployFiles(List<MinionServer> minions,
+            ConfigAction action) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
+                .map(revAction -> revAction.getConfigRevision())
+                .map(revision -> {
+                    List<Map<String, Object>> fileParams = Collections.EMPTY_LIST;
+                    if (revision.isFile()) {
+                        fileParams = ConfigChannelSaltManager.getInstance()
+                                .getFileStateParams(revision.getConfigFile());
+                    }
+                    else if (revision.isDirectory()) {
+                        fileParams = ConfigChannelSaltManager.getInstance()
+                                .getDirectoryStateParams(revision.getConfigFile());
+                    }
+                    else if (revision.isSymlink()) {
+                        fileParams = ConfigChannelSaltManager.getInstance()
+                                .getSymLinkStateParams(revision.getConfigFile());
+                    }
+                    Map<String, Object> stateParameters = new HashMap<>();
+                    stateParameters.put("type", revision.getConfigFileType().getLabel());
+                    fileParams.stream().forEach(v -> stateParameters.putAll(v));
+                    return stateParameters;
+                }).collect(Collectors.toList());
+        ret.put(State.apply(Arrays.asList(CONFIG_DEPLOY_FILES),
+                Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
+                Optional.of(true)), minions);
+        return ret;
+    }
+    /**
+     * Deploy files(files, directory, symlink) through state.apply
+     *
+     * @param minions target systems
+     * @param action action which has all the revisions
+     * @return minions grouped by local call
+     */
+    private Map<LocalCall<?>, List<MinionServer>> diffFiles(List<MinionServer> minions,
+                                                              ConfigAction action) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
+                .map(revAction -> revAction.getConfigRevision())
+                .filter(revision->revision.isFile() ||
+                                  revision.isDirectory() ||
+                                  revision.isSymlink())
+                .map(revision -> {
+                    List<Map<String, Object>> fileParams = Collections.EMPTY_LIST;
+                    if (revision.isFile()) {
+                        fileParams = ConfigChannelSaltManager.getInstance()
+                                .getFileStateParams(revision.getConfigFile());
+                    }
+                    else if (revision.isDirectory()) {
+                        fileParams = ConfigChannelSaltManager.getInstance()
+                                .getDirectoryStateParams(revision.getConfigFile());
+                    }
+                    else if (revision.isSymlink()) {
+                        fileParams = ConfigChannelSaltManager.getInstance()
+                                .getSymLinkStateParams(revision.getConfigFile());
+                    }
+                    Map<String, Object> stateParameters = new HashMap<>();
+                    stateParameters.put("type", revision.getConfigFileType().getLabel());
+                    fileParams.stream().forEach(v -> stateParameters.putAll(v));
+                    return stateParameters;
+                }).collect(Collectors.toList());
+        ret.put(com.suse.manager.webui.utils.salt.State.apply(
+                        Arrays.asList(CONFIG_DIFF_FILES),
+                        Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
+                        Optional.of(true), Optional.of(true)), minions);
         return ret;
     }
 

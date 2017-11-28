@@ -31,8 +31,8 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -45,7 +45,7 @@ import java.util.Set;
  * MigrationManagerTest
  * @version $Rev$
  */
-public class MigrationManagerTest extends RhnBaseTestCase {
+public class MigrationManagerTest extends BaseTestCaseWithUser {
 
     private Set<User> origOrgAdmins = new HashSet<User>();
     private Set<User> destOrgAdmins = new HashSet<User>();
@@ -137,8 +137,8 @@ public class MigrationManagerTest extends RhnBaseTestCase {
         ConfigChannel configChannel = ConfigTestUtils.createConfigChannel(origOrg);
         ConfigChannel configChannel2 = ConfigTestUtils.createConfigChannel(origOrg);
 
-        server2.getConfigChannels().add(configChannel);
-        server2.getConfigChannels().add(configChannel2);
+        server2.subscribeConfigChannel(configChannel, user);
+        server2.subscribeConfigChannel(configChannel2, user);
 
         assertEquals(2, server2.getConfigChannelCount());
 

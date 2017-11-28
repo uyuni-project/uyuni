@@ -133,7 +133,7 @@ public class OverviewAction extends RhnAction {
 
 
         String configChannelsMsg = ConfigActionHelper.makeChannelCountsMessage(
-                                              server.getConfigChannels().size(),
+                                              server.getConfigChannelCount(),
                                  CONFIG_CHANNELS_URL + "?sid=" + server.getId());
 
         request.setAttribute(GLOBAL_CONFIG_CHANNELS, configChannelsMsg);

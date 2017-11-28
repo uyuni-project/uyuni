@@ -78,7 +78,7 @@ public class FileListConfirmSetupActionTest extends RhnMockStrutsTestCase {
         RhnSetManager.store(set);
 
         //we have to subscribe the server to the global channel.
-        server.subscribe(file2.getConfigChannel());
+        server.subscribeConfigChannel(file2.getConfigChannel(), user);
         SystemManager.storeServer(server);
         return server;
     }
