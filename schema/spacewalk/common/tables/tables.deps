@@ -164,6 +164,7 @@ rhnServerCrashFile             :: rhnServerCrash
 rhnServerCrashNote             :: rhnServerCrash web_contact
 rhnServerCustomDataValue       :: rhnCustomDataKey
 rhnServerDMI                   :: rhnServer
+rhnServerFQDN                  :: rhnServer
 rhnServerGroup                 :: rhnServerGroupType web_customer
 rhnServerGroupMembers          :: rhnServer rhnServerGroup
 rhnServerGroupTypeFeature      :: rhnFeature rhnServerGroupType
