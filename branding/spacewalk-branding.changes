@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Nov 28 12:32:26 CET 2017 - jgonzalez@suse.com
+
+- version 2.7.2.10-1
 - improve text for system types page (bsc#1057084)
 - Disallow entering multiple identical mirror credentials (bsc#971785)
 
