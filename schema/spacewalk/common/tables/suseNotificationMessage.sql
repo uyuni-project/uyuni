@@ -12,6 +12,18 @@ CREATE TABLE susenotificationmessage
 
 CREATE SEQUENCE suse_notification_message_id_seq;
 
+CREATE TABLE susenotificationmessageread
+(
+    message_id      NUMBER NOT NULL
+                        CONSTRAINT suse_notifmessageread_mid_fk
+                        REFERENCES susenotificationmessage (id)
+                        ON DELETE CASCADE,
+    user_id         NUMBER NOT NULL
+                        CONSTRAINT suse_notifmessageread_uid_fk
+                        REFERENCES web_contact (id)
+                        ON DELETE CASCADE
+)
+
 
 CREATE TABLE susenotificationmessagerole
 (
@@ -19,7 +31,7 @@ CREATE TABLE susenotificationmessagerole
                         CONSTRAINT suse_notifmessage_mid_fk
                         REFERENCES susenotificationmessage (id)
                         ON DELETE CASCADE,
-    role_id   NUMBER NOT NULL
+    role_id         NUMBER NOT NULL
                         CONSTRAINT suse_notifmessage_rid_fk
                         REFERENCES rhnUserGroup (id)
                         ON DELETE CASCADE

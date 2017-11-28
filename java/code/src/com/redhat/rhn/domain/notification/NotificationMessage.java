@@ -18,14 +18,15 @@ package com.redhat.rhn.domain.notification;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleImpl;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A notification NotificationMessage Object.
@@ -37,9 +38,9 @@ public class NotificationMessage {
     private Long id;
     private NotificationMessageSeverity severity;
     private String description;
-    private boolean isRead = false;
     private Org org;
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
+    private Set<User> users = new HashSet<>();
 
     /**
      * Empty constructor
@@ -93,22 +94,6 @@ public class NotificationMessage {
     }
 
     /**
-     * @return Returns the read.
-     */
-    @Type(type = "yes_no")
-    @Column(name = "is_read")
-    public boolean getIsRead() {
-        return isRead;
-    }
-
-    /**
-     * @param isReadIn The read to set.
-     */
-    public void setIsRead(boolean isReadIn) {
-        this.isRead = isReadIn;
-    }
-
-    /**
      * @return Returns the severity of the message to set.
      */
     @Enumerated(EnumType.STRING)
@@ -124,15 +109,27 @@ public class NotificationMessage {
         this.severity = severityIn;
     }
 
+    @ManyToMany(targetEntity = UserImpl.class)
+    @JoinTable(name = "susenotificationmessageread",
+            joinColumns = { @JoinColumn(name = "message_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") })
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
     @ManyToMany(targetEntity = RoleImpl.class)
     @JoinTable(name = "susenotificationmessagerole",
             joinColumns = { @JoinColumn(name = "message_id") },
             inverseJoinColumns = { @JoinColumn(name = "role_id") })
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -164,8 +161,8 @@ public class NotificationMessage {
         }
         NotificationMessage otherNotificationMessage = (NotificationMessage) other;
         return new EqualsBuilder()
+            .append(getId(), otherNotificationMessage.getId())
             .append(getDescription(), otherNotificationMessage.getDescription())
-            .append(getIsRead(), otherNotificationMessage.getIsRead())
             .isEquals();
     }
 
@@ -175,6 +172,7 @@ public class NotificationMessage {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
+            .append(getId())
             .append(getDescription())
             .toHashCode();
     }
@@ -187,13 +185,12 @@ public class NotificationMessage {
         return new ToStringBuilder(this)
             .append("id", getId())
             .append("description", getDescription())
-            .append("isRead", getIsRead())
             .toString();
     }
 
 
     /**
-     * The enum type for a {@link Notification Message}
+     * The enum type for a {@link NotificationMessage}
      */
     public enum NotificationMessageSeverity {
         info, warning, error
