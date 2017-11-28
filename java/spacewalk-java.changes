@@ -1,9 +1,10 @@
-- Updated Configuration related UI for Minions
-- Added state templates to deploy/compare config files for Salt systems
-- Assignment of configuration channels to Salt systems
-- Added salt file structure for (normal) configuration channels
-- Added new config channel type(state) and file type(sls)
-- Updated ACLs to enable file management feature for Minions as well
+-------------------------------------------------------------------
+Tue Nov 28 12:48:16 CET 2017 - jgonzalez@suse.com
+
+- version 2.7.46.8-1
+- Implemented assignment of configuration channels to Salt systems via Salt states
+- Added file structure under Salt root for configuration management
+- Enabled configuration management UI for Salt systems
 - Remove SUSE Manager specific configuration from Salt ssh minion when deleting system from SUSE Manager (bsc#1048326)
 - Support Open Enterprise Server 2018 (bsc#1060182)
 - Enable autofocus for login field
