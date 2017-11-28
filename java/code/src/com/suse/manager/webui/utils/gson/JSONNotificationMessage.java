@@ -45,11 +45,11 @@ public class JSONNotificationMessage {
      * Default constructor for a JSONNotificationMessage
      *@param nm the {@link NotificationMessage} source object
      */
-    public JSONNotificationMessage(NotificationMessage nm) {
+    public JSONNotificationMessage(NotificationMessage nm, boolean isRead) {
         this.id = nm.getId();
         this.severity = nm.getSeverity().toString();
         this.description = nm.getDescription();
-        this.isRead = nm.getIsRead();
+        this.isRead = isRead;
     }
 
     /**
