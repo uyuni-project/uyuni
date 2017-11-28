@@ -1,5 +1,8 @@
-- Support Open Enterprise Server 2018 (bsc#1060182)
+-------------------------------------------------------------------
+Tue Nov 28 15:24:03 CET 2017 - jgonzalez@suse.com
 
+- version 3.1.8-1
+- Support Open Enterprise Server 2018 (bsc#1060182)
 - Support SUSE Manager for Retail 3.1 (bsc#1052079)
 - fix description for HA channel (bsc#1063588)
 - Add support for CAASP (bsc#1052283)
