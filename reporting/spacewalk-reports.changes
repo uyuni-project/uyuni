@@ -1,4 +1,7 @@
+-------------------------------------------------------------------
+Tue Nov 28 12:15:45 CET 2017 - jgonzalez@suse.com
 
+- version 2.7.5.3-1
 - add machine_id and minion_id to system-profiles and inventory
   report (bsc#1054902)
 - rhnServerNetwork refactoring (bsc#1063419)
