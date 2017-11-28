@@ -1,4 +1,9 @@
+-------------------------------------------------------------------
+Tue Nov 28 12:33:58 CET 2017 - jgonzalez@suse.com
 
+- version 2.7.0.8-1
+- add comment to explain that FULLY_UPDATE_THIS_BOX gets ignored
+  on salt minions (bsc#1036254)
 - do not use registration keys from last autoinstallation
   (bsc#1057599)
 
@@ -7,8 +12,6 @@ Tue Aug 08 11:29:32 CEST 2017 - fkobzik@suse.de
 
 - version 2.7.0.7-1
 - Improve text for bootstrap (bsc#1032324)
-- add comment to explain that FULLY_UPDATE_THIS_BOX gets ignored
-  on salt minions (bsc#1036254)
 
 -------------------------------------------------------------------
 Mon Jun 12 09:04:22 CEST 2017 - mc@suse.de
