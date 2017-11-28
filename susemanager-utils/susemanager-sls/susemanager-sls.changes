@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Nov 28 15:18:20 CET 2017 - jgonzalez@suse.com
+
+- version 3.1.11-1
 - Added state templates for deploying/comparing config channels for Salt
 - Fix failing certs state for Tumbleweed (bsc#970630)
 - Fix deprecated SLS files to avoid deprecation warnings during highstate (bsc#1041993)
