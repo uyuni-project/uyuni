@@ -75,8 +75,12 @@ public class NotificationMessageFactory extends HibernateFactory {
      * @param notificationMessage notificationMessage
      * @param isRead flag status to set if the message is read or not
      */
-    public static void updateStatus(NotificationMessage notificationMessage, boolean isRead) {
-        notificationMessage.setIsRead(isRead);
+    public static void updateStatus(NotificationMessage notificationMessage, User user, boolean isRead) {
+        if (isRead) {
+            notificationMessage.getUsers().add(user);
+        } else {
+            notificationMessage.getUsers().remove(user);
+        }
         singleton.saveObject(notificationMessage);
     }
 
@@ -97,64 +101,19 @@ public class NotificationMessageFactory extends HibernateFactory {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<NotificationMessage> query = builder.createQuery(NotificationMessage.class);
         query.from(NotificationMessage.class);
+        Root<NotificationMessage> root = query.from(NotificationMessage.class);
+        builder.equal(root.get("org"), user.getOrg());
 
-        return getSession().createQuery(query).getResultList().stream()
+
+        return getSession().createQuery(query).list().stream()
                 .filter(e -> {
                     return !Collections.disjoint(e.getRoles(), user.getRoles()) || e.getRoles().isEmpty();
                 }).collect(Collectors.toList());
     }
 
-    /**
-     * List notification messages by read status.
-     *
-     * @param isRead the read flag criterion to filter messages
-     * @return List of notification messages.
-     */
-    public static List<NotificationMessage> byRead(boolean isRead) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<NotificationMessage> query = builder.createQuery(NotificationMessage.class);
-
-        Root<NotificationMessage> root = query.from(NotificationMessage.class);
-        query.where(builder.equal(root.get("isRead"), isRead));
-
-        return getSession().createQuery(query).list();
-    }
-
-    /**
-     * List notification messages by read status.
-     *
-     * @param isRead the read flag criterion to filter messages
-     * @return List of notification messages.
-     */
-    public static List<NotificationMessage> byRead(boolean isRead, Org org) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<NotificationMessage> query = builder.createQuery(NotificationMessage.class);
-
-        Root<NotificationMessage> root = query.from(NotificationMessage.class);
-        query.where(
-            builder.and(
-                builder.or(
-                  builder.equal(root.get("org"), org),
-                  builder.isNull(root.get("org"))
-                ),
-                builder.equal(root.get("isRead"), isRead)
-            )
-        );
-
-        return getSession().createQuery(query).list();
-    }
-
-    /**
-     * Lookup unread NotificationMessages .
-     * @return List of not yet read notification messages.
-     */
-    public static List<NotificationMessage> listUnread() {
-        return byRead(false);
-    }
-
     public static List<NotificationMessage> listUnreadByUser(User user) {
-        return byRead(false, user.getOrg()).stream().filter(e -> {
-            return !Collections.disjoint(e.getRoles(), user.getRoles()) || e.getRoles().isEmpty();
+        return listAllByUser(user).stream().filter(e -> {
+            return !e.getUsers().contains(user);
         }).collect(Collectors.toList());
     }
 

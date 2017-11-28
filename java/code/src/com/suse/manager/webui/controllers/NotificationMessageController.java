@@ -70,7 +70,7 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String dataUnread(Request request, Response response, User user) {
-        Object data = getJSONNotificationMessages(NotificationMessageFactory.listUnreadByUser(user));
+        Object data = getJSONNotificationMessages(NotificationMessageFactory.listUnreadByUser(user), user);
 
         response.type("application/json");
         return GSON.toJson(data);
@@ -85,7 +85,7 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String dataAll(Request request, Response response, User user) {
-        Object data = getJSONNotificationMessages(NotificationMessageFactory.listAllByUser(user));
+        Object data = getJSONNotificationMessages(NotificationMessageFactory.listAllByUser(user), user);
 
         response.type("application/json");
         return GSON.toJson(data);
@@ -107,7 +107,7 @@ public class NotificationMessageController {
         Optional<NotificationMessage> nm = NotificationMessageFactory.lookupById(messageId);
 
         if (nm.isPresent()) {
-            NotificationMessageFactory.updateStatus(nm.get(), isRead);
+            NotificationMessageFactory.updateStatus(nm.get(), user, isRead);
         }
 
         Map<String, String> data = new HashMap<>();
@@ -125,8 +125,8 @@ public class NotificationMessageController {
      * @return JSON result of the API call
      */
     public static String markAllAsRead(Request request, Response response, User user) {
-        for (NotificationMessage nm : NotificationMessageFactory.listUnread()) {
-            NotificationMessageFactory.updateStatus(nm, true);
+        for (NotificationMessage nm : NotificationMessageFactory.listUnreadByUser(user)) {
+            NotificationMessageFactory.updateStatus(nm, user,true);
         }
         Map<String, String> data = new HashMap<>();
         data.put("message", "All messages marked as read succesfully");
@@ -140,9 +140,9 @@ public class NotificationMessageController {
      * @param list of NotificationMessages
      * @return a list of JSONNotificationMessages
      */
-    public static List<JSONNotificationMessage> getJSONNotificationMessages(List<NotificationMessage> list) {
+    public static List<JSONNotificationMessage> getJSONNotificationMessages(List<NotificationMessage> list, User user) {
         return list.stream()
-                .map(nm -> new JSONNotificationMessage(nm))
+                .map(nm -> new JSONNotificationMessage(nm, nm.getUsers().contains(user)))
                 .collect(Collectors.toList());
     }
 }
