@@ -27,7 +27,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires(pre):  apache2
 Requires:       apache2-mod_wsgi
-Requires(pre):  atftp
+Requires(pre):  tftp(server)
 Requires:       spacewalk-backend
 Requires:       spacewalk-proxy-common
 Requires:       python

@@ -406,7 +406,7 @@ copy_remote_files_common() {
     chown -R tomcat:tomcat /var/lib/rhn/kickstarts
     chmod 600 /etc/pki/spacewalk/jabberd/server.pem
     chown jabber:jabber /etc/pki/spacewalk/jabberd/server.pem
-    chown tftp:tftp /srv/tftpboot
+    chown wwwrun:tftp /srv/tftpboot
     chmod 750 /srv/tftpboot
 }
 
