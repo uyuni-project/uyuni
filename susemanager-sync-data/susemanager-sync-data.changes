@@ -1,9 +1,10 @@
 - Support Open Enterprise Server 2018 (bsc#1060182)
-
 - fix description for HA channel (bsc#1063588)
 - Add support for CAASP (bsc#1052283)
 - Add IBM DLPAR channels to SLES for SAP SPx ppc64le (bsc#1068057)
 - remove Certification Module 12 from SP2 and SP3 (bsc#1066819)
+- add SUSE Manager Server 3.0 and 3.1 channels for mirroring
+- support SLE-RT 12 SP3 (bsc#1063940)
 
 -------------------------------------------------------------------
 Wed Aug 30 16:12:33 CEST 2017 - fkobzik@suse.de
