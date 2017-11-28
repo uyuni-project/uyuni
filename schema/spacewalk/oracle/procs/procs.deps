@@ -41,6 +41,7 @@ delete_server                   :: rhn_channel.pks rhn_config.pks \
                                    rhnServerActionVerifyMissing \
                                    rhnServerConfigChannel \
                                    rhnServerCustomDataValue rhnServerEvent \
+                                   rhnServerFQDN \
                                    rhnServerHistory rhnServerInfo rhnServerLock \
                                    rhnServerInstallInfo rhnServerLocation \
                                    rhnServerNeededErrataCache \
