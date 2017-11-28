@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Nov 28 14:36:51 CET 2017 - jgonzalez@suse.com
+
+- version 2.7.1.5-1
 - Try to resolve the proxy hostname even if the HTTP 'Host' header
   is an ip address (bsc#1057542)
 
