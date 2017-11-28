@@ -53,6 +53,7 @@
 - when searching for not installed products exclude release packages
   which are provided by others (bsc#1067509)
 - rhnServerNetwork refactoring (bsc#1063419)
+- Add Adelaide timezone to selectable timezones (bsc#1063891)
 
 -------------------------------------------------------------------
 Thu Sep 14 11:32:37 CEST 2017 - mc@suse.de
