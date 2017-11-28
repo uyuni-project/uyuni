@@ -19,7 +19,7 @@ BuildRequires:  spacewalk-backend-sql-postgresql
 BuildRequires:  suseRegisterInfo
 BuildRequires:  pyxml
 
-PreReq:         %fillup_prereq %insserv_prereq atftp
+PreReq:         %fillup_prereq %insserv_prereq tftp(server)
 Requires(pre):  tomcat salt
 Requires:       openslp-server
 Requires:       spacewalk-setup
@@ -134,6 +134,8 @@ if [ -f /etc/sysconfig/atftpd ]; then
 fi
 if [ ! -d /srv/tftpboot ]; then
   mkdir -p /srv/tftpboot
+  chmod 750 /srv/tftpboot
+  chown wwwrun:tftp /srv/tftpboot
 fi
 # XE appliance overlay file created this with different user
 chown root.root /etc/sysconfig
