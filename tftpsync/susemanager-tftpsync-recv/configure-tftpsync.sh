@@ -185,5 +185,4 @@ echo "open tftp service in SUSE firewall..."
 sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_CONFIGURATIONS_EXT tftp
 rcSuSEfirewall2 try-restart
 
-systemctl start tftp.socket
 rcapache2 restart
