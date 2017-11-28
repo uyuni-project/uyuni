@@ -13821,6 +13821,56 @@
   },
   {
     "autorefresh": true,
+    "description": "SUSE-Manager-Retail-3.1-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2519,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Retail-3.1-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Retail/3.1/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Retail-3.1-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2520,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Retail-3.1-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Retail/3.1/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Retail-3.1-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2521,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Retail-3.1-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Retail/3.1/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Retail-3.1-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2522,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Retail-3.1-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Retail/3.1/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Retail-3.1-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2523,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Retail-3.1-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Retail/3.1/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
     "description": "SLE-Module-Basesystem15-Updates for sle-15-x86_64",
     "distro_target": "sle-15-x86_64",
     "enabled": true,
