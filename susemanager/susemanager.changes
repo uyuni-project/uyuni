@@ -1,3 +1,5 @@
+-notify admin that database backups need reconfiguration after db upgrade
+
 -------------------------------------------------------------------
 Tue Nov 28 14:49:47 CET 2017 - jgonzalez@suse.com
 
