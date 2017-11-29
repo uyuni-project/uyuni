@@ -2141,7 +2141,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 contains = true;
                 assertEquals(act.getActionType(),
                         ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
-                VirtualizationSetMemoryAction action = HibernateFactory.getSession().load(
+                VirtualizationSetMemoryAction action = (VirtualizationSetMemoryAction) HibernateFactory.getSession().load(
                         VirtualizationSetMemoryAction.class,  (long) id);
                 assertEquals(action.getMemory(), new Integer(512 * 1024));
             }
@@ -2169,7 +2169,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 contains = true;
                 assertEquals(act.getActionType(),
                         ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS);
-                VirtualizationSetVcpusAction action = HibernateFactory.getSession().load(
+                VirtualizationSetVcpusAction action = (VirtualizationSetVcpusAction) HibernateFactory.getSession().load(
                         VirtualizationSetVcpusAction.class,  (long) id);
                 assertEquals(action.getVcpu(), new Integer(3));
             }
