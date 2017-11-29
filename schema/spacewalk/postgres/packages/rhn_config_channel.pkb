@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 78851f9fa315dac88cea70b11878877730269ac3
+-- oracle equivalent source sha1 ba04438c0afe4d458a358ffe3f806a867308168d
 
 -- setup search_path so that these functions are created in appropriate schema.
 update pg_settings set setting = 'rhn_config_channel,' || setting where name = 'search_path';  
