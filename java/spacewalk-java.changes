@@ -1,3 +1,4 @@
+- Allow 'Package List Refresh' when package arch has changed (bsc#1065259)
 - Implemented assignment of configuration channels to Salt systems via Salt states
 - Added file structure under Salt root for configuration management
 - Enabled configuration management UI for Salt systems
