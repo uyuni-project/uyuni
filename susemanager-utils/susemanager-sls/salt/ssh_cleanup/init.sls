@@ -14,8 +14,8 @@ mgr_remove_mgr_ssh_identity:
     - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
     - source: salt://salt_ssh/mgr_ssh_id.pub
 
+{%- if salt['pillar.get']('proxy_pub_key') and salt['pillar.get']('contact_method') == 'ssh-push-tunnel' %}
 # remove proxy ssh authorization (if any)
-{%- if salt['pillar.get']('mgr_server') != salt['pillar.get']('contact_method') == 'ssh-push-tunnel' %}
 mgr_remove_proxy_ssh_identity:
   ssh_auth.absent:
     - user: {{ salt['pillar.get']('mgr_sudo_user') or 'root' }}
