@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.websocket;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.NotificationMessageFactory;
 
 import com.redhat.rhn.domain.user.User;
@@ -138,16 +139,13 @@ public class Notification {
      * A static method to notify all {@link Session}s attached to WebSocket from the outside
      * Must be synchronized. Sending messages concurrently from separate threads
      * will result in IllegalStateException.
-     *
-     * @param message the message to be sent
      */
     public static void spreadUpdate() {
-        if (hasHandshakedSessions()) {
-            synchronized (lock) {
-                wsSessions.forEach((session, user) -> {
-                    sendMessage(session, String.valueOf(NotificationMessageFactory.unreadMessagesSize(user)));
-                });
-            }
+        synchronized (lock) {
+            // if there are unread messages, notify it to all attached WebSocket sessions
+            wsSessions.forEach((session, user) -> {
+                sendMessage(session, String.valueOf(NotificationMessageFactory.unreadMessagesSize(user)));
+            });
         }
     }
 
@@ -171,26 +169,13 @@ public class Notification {
         }
     }
 
-    /**
-     * Check if there are any WebSocket Session attached
-     *
-     * @return true if at least one Session attached
-     */
-    public static boolean hasHandshakedSessions() {
-        return !wsSessions.isEmpty();
-    }
-
     static {
-        Thread notificationThread = new Thread("NotificationHandler") {
+        Thread notificationThread = new Thread() {
             @Override
             public void run() {
                 while (true) {
-                    synchronized (lock) {
-                        // if there are unread messages, notify it to all attached WebSocket sessions
-                        wsSessions.forEach((session, user) -> {
-                            sendMessage(session, String.valueOf(NotificationMessageFactory.unreadMessagesSize(user)));
-                        });
-                    }
+                    spreadUpdate();
+                    HibernateFactory.closeSession();
                     try {
                         // check every 10 second
                         sleep(10000);
