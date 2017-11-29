@@ -89,7 +89,7 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   mkdir -p "$SRPMBUILD_DIR"
 
   cd "$GIT_DIR/$PKG_DIR"
-  $TITO build ${VERBOSE:+--debug} --test --srpm >"$T_LOG" 2>&1 || {
+  $TITO build ${VERBOSE:+--debug} ${TEST:+--test} --srpm >"$T_LOG" 2>&1 || {
     cat "$T_LOG"
     test $tries -eq 3 || continue
     FAILED_CNT=$(($FAILED_CNT+1))
