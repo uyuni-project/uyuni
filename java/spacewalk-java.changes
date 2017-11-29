@@ -1,4 +1,3 @@
-- Fix cleanup state error when deleting ssh-push minion (bsc#1070161)
 - Implemented assignment of configuration channels to Salt systems via Salt states
 - Added file structure under Salt root for configuration management
 - Enabled configuration management UI for Salt systems
