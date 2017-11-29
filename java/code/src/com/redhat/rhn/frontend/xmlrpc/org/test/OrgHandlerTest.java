@@ -114,6 +114,16 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
             // expected
         }
     }
+    
+    public void testContentStagingSettings() {
+        Org testOrg = createOrg();
+        int testId = testOrg.getId().intValue();
+        assertFalse(handler.isContentStagingEnabled(admin, testId));
+        handler.setContentStaging(admin,testId, true);
+        assertTrue(handler.isContentStagingEnabled(admin, testId));
+        handler.setContentStaging(admin, testId, false);
+        assertFalse(handler.isContentStagingEnabled(admin, testId));
+    }
 
     public void testDelete() throws Exception {
         Org testOrg = createOrg();

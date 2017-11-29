@@ -819,4 +819,53 @@ public class OrgHandler extends BaseHandler {
 
         return 1;
     }
+
+    /**
+     * Get the status of content staging settings for the given organization.
+     *
+     * @param loggedInUser The current user
+     * @param orgId Organization ID to change the setting for
+     * @return Returns the status of content staging settings.
+     *
+     * @xmlrpc.doc Get the status of content staging settings for the given organization.
+     * Returns true if enabled, false otherwise.
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.returntype boolean - Get the status of content staging settings.
+     */
+    public boolean isContentStagingEnabled(User loggedInUser, Integer orgId) {
+        ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
+        Org org = verifyOrgExists(orgId);
+        return org.getOrgConfig().isStagingContentEnabled();
+    }
+
+    /**
+     * Set the status of content staging for the given organization.
+     *
+     * @param loggedInUser The current user
+     * @param orgId Organization ID to change the setting for.
+     * @param enable Boolean to indicate desired settings.
+     * @return Returns 1 for successfull change, traceback otherwise.
+     *
+     * @xmlrpc.doc Set the status of content staging for the given organization.
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer setContentStaging(User loggedInUser, Integer orgId,
+                                     Boolean enable) {
+        ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
+        Org org = verifyOrgExists(orgId);
+        if (enable) {
+            org.getOrgConfig().setStagingContentEnabled(enable);
+        }
+        else {
+            org.getOrgConfig().setStagingContentEnabled(false);
+        }
+
+        return 1;
+    }
 }
