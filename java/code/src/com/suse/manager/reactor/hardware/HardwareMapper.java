@@ -819,17 +819,6 @@ public class HardwareMapper {
             netIf.setPrimary("Y");
         });
 
-        if (!primaryIPv4.isPresent()) {
-            // If no primary IPv4 reported by Salt then set the network addr
-            // to that of the primary interface (if any) or fallback to the first
-            // non localhost interface with a IPv4 addr
-        }
-
-        if (!primaryIPv6.isPresent()) {
-            // If no primary IPv6 reported by Salt then set the network addr
-            // to that of the primary interface (if any) or fallback to the first
-            // non localhost interface with a IPv6 addr
-        }
     }
 
     private Optional<NetworkInterface> firstNetIf(Server serverIn) {
