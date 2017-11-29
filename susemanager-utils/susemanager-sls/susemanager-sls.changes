@@ -1,3 +1,5 @@
+- Fix cleanup state error when deleting ssh-push minion (bsc#1070161)
+
 -------------------------------------------------------------------
 Tue Nov 28 15:18:20 CET 2017 - jgonzalez@suse.com
 
