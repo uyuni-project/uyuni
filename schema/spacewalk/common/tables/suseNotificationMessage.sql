@@ -4,35 +4,24 @@ CREATE TABLE susenotificationmessage
     CONSTRAINT suse_notifmess_pk PRIMARY KEY,
   severity VARCHAR2(64) NOT NULL,
   description VARCHAR2(256) NOT NULL,
-  org_id  NUMBER CONSTRAINT suse_notifmess_oid_fk
-                       REFERENCES web_customer (id)
-                       ON DELETE CASCADE,
-  is_read CHAR(1) DEFAULT ('N') NOT NULL
+  created timestamp with time zone NOT NULL DEFAULT now()
 );
 
 CREATE SEQUENCE suse_notification_message_id_seq;
 
-CREATE TABLE susenotificationmessageread
+CREATE TABLE suseusernotification
 (
+    id              NUMBER NOT NULL
+                        CONSTRAINT suse_user_notif_pk PRIMARY KEY, 
+    user_id         NUMBER NOT NULL
+                        CONSTRAINT suse_user_notif_uid_fk
+                        REFERENCES web_contact (id)
+                        ON DELETE CASCADE,
     message_id      NUMBER NOT NULL
-                        CONSTRAINT suse_notifmessageread_mid_fk
+                        CONSTRAINT suse_user_notif_mid_fk
                         REFERENCES susenotificationmessage (id)
                         ON DELETE CASCADE,
-    user_id         NUMBER NOT NULL
-                        CONSTRAINT suse_notifmessageread_uid_fk
-                        REFERENCES web_contact (id)
-                        ON DELETE CASCADE
+    read CHAR(1) DEFAULT ('N') NOT NULL
 )
 
-
-CREATE TABLE susenotificationmessagerole
-(
-    message_id      NUMBER NOT NULL
-                        CONSTRAINT suse_notifmessage_mid_fk
-                        REFERENCES susenotificationmessage (id)
-                        ON DELETE CASCADE,
-    role_id         NUMBER NOT NULL
-                        CONSTRAINT suse_notifmessage_rid_fk
-                        REFERENCES rhnUserGroup (id)
-                        ON DELETE CASCADE
-);
+CREATE SEQUENCE suse_user_notification_id_seq;
