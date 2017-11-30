@@ -1,3 +1,4 @@
+- fix content refresh when product keys change (bsc#1069943)
 - Allow 'Package List Refresh' when package arch has changed (bsc#1065259)
 - Support Open Enterprise Server 2018 (bsc#1060182)
 - Do not remove virtual instances for registered systems (bsc#1063759)
