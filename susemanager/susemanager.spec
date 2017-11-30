@@ -28,7 +28,7 @@ Requires:       cobbler
 %ifarch %ix86 x86_64
 Requires:       syslinux
 %endif
-%ifarch s390x
+%ifarch s390x ppc64le
 Requires:       syslinux-x86_64
 %endif
 Requires:       spacewalk-schema
