@@ -105,7 +105,7 @@ if [ -z "$PARENT_FQDN" ]; then
         exit 1;
 fi;
 
-default_or_input "TFTP Boot directory" TFTPBOOT $(egrep -m1 "^ATFTPD_DIRECTORY=" /etc/sysconfig/atftpd | sed 's/^ATFTPD_DIRECTORY="\(.*\)"[[:space:]]*$/\1/' || echo "")
+default_or_input "TFTP Boot directory" TFTPBOOT "/srv/tftpboot"
 
 default_or_input "SUSE Manager Proxy FQDN" SUMA_PROXY_FQDN $(hostname -f)
 
@@ -172,20 +172,17 @@ if [ ! -d "$TFTPBOOT" ]; then
     mkdir "$TFTPBOOT"
 fi
 ################################################################################
-# atftp needs to be able to read this dir, wwwrun needs to write it (bnc#877825)
+# tftp needs to be able to read this dir, wwwrun needs to write it (bnc#877825)
 ################################################################################
-chown wwwrun.tftp "$TFTPBOOT"
+chown wwwrun:tftp "$TFTPBOOT"
 chmod 750 "$TFTPBOOT"
-sed -i 's/^ATFTPD_DIRECTORY="\(.*\)"[[:space:]]*$/ATFTPD_DIRECTORY=""/' /etc/sysconfig/atftpd
-sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "$TFTPBOOT"
-chkconfig atftpd on
+systemctl enable tftp.socket
 
 ## open firewall for tftp ##
 ############################
 
 echo "open tftp service in SUSE firewall..."
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_CONFIGURATIONS_EXT atftp
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_CONFIGURATIONS_EXT tftp
 rcSuSEfirewall2 try-restart
 
-rcatftpd start
 rcapache2 restart
