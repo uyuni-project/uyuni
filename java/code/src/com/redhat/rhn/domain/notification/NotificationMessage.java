@@ -15,32 +15,37 @@
 
 package com.redhat.rhn.domain.notification;
 
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.Role;
-import com.redhat.rhn.domain.role.RoleImpl;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.legacy.UserImpl;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * A notification NotificationMessage Object.
  */
 @Entity
 @Table(name = "susenotificationmessage")
-public class NotificationMessage {
+public class NotificationMessage implements Serializable {
 
     private Long id;
     private NotificationMessageSeverity severity;
     private String description;
-    private Org org;
-    private Set<Role> roles = new HashSet<>();
-    private Set<User> users = new HashSet<>();
+    private Date created;
 
     /**
      * Empty constructor
@@ -109,46 +114,21 @@ public class NotificationMessage {
         this.severity = severityIn;
     }
 
-    @ManyToMany(targetEntity = UserImpl.class)
-    @JoinTable(name = "susenotificationmessageread",
-            joinColumns = { @JoinColumn(name = "message_id") },
-            inverseJoinColumns = { @JoinColumn(name = "user_id") })
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
-    @ManyToMany(targetEntity = RoleImpl.class)
-    @JoinTable(name = "susenotificationmessagerole",
-            joinColumns = { @JoinColumn(name = "message_id") },
-            inverseJoinColumns = { @JoinColumn(name = "role_id") })
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    /**
+    * @return Returns the created date.
+    */
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created")
+    public Date getCreated() {
+        return created;
     }
 
     /**
-     * Add a role to the role list
-     *
-     * @param roleIn
-     */
-    public void addRole(Role roleIn) {
-        this.getRoles().add(roleIn);
-    }
-
-    @ManyToOne
-    public Org getOrg() {
-        return org;
-    }
-
-    public void setOrg(Org org) {
-        this.org = org;
+    * @param createdIn The created date to set.
+    */
+    public void setCreated(Date createdIn) {
+        this.created = createdIn;
     }
 
     /**

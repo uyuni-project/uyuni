@@ -15,7 +15,7 @@
 package com.suse.manager.webui.websocket;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.notification.NotificationMessageFactory;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
 
 import com.redhat.rhn.domain.user.User;
 import org.apache.log4j.Logger;
@@ -42,7 +42,7 @@ public class Notification {
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(Notification.class);
 
-    private final static Object lock = new Object();
+    private static final Object LOCK = new Object();
     private static Map<Session, User> wsSessions = new HashMap<>();
 
     /**
@@ -59,14 +59,14 @@ public class Notification {
                 handshakeSession(user, session);
 
                 // update the notification counter to the unread messages
-                sendMessage(session, String.valueOf(NotificationMessageFactory.unreadMessagesSize(user)));
+                sendMessage(session, String.valueOf(UserNotificationFactory.unreadUserNotificationsSize(user)));
             }
             else {
                 LOG.debug("no authenticated user.");
             }
         }
         else {
-           LOG.debug("No web sessionId available. Closing the web socket.");
+            LOG.debug("No web sessionId available. Closing the web socket.");
         }
     }
 
@@ -141,10 +141,10 @@ public class Notification {
      * will result in IllegalStateException.
      */
     public static void spreadUpdate() {
-        synchronized (lock) {
+        synchronized (LOCK) {
             // if there are unread messages, notify it to all attached WebSocket sessions
             wsSessions.forEach((session, user) -> {
-                sendMessage(session, String.valueOf(NotificationMessageFactory.unreadMessagesSize(user)));
+                sendMessage(session, String.valueOf(UserNotificationFactory.unreadUserNotificationsSize(user)));
             });
         }
     }
@@ -154,7 +154,7 @@ public class Notification {
      * @param session the session to add
      */
     private static void handshakeSession(User user, Session session) {
-        synchronized (lock) {
+        synchronized (LOCK) {
             wsSessions.put(session, user);
         }
     }
@@ -164,7 +164,7 @@ public class Notification {
      * @param session the session to remove
      */
     private static void handbreakSession(Session session) {
-        synchronized (lock) {
+        synchronized (LOCK) {
             wsSessions.remove(session);
         }
     }
