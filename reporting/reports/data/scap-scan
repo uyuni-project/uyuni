@@ -62,7 +62,7 @@ sql:
 		and rhnxccdftestresult.server_id = rhnserver.id
 		and rhnxccdfruleresult.testresult_id = rhnxccdftestresult.id
 		and rhnxccdfruleresult.result_id = rhnxccdfruleresulttype.id
-	group by org_id, rhnxccdftestresult.server_id, hostname, trim(netinfos.ipaddr), rhnactionscap.action_id, rhnxccdftestresult.id, rhnxccdftestresult.identifier,
+	group by org_id, rhnxccdftestresult.server_id, hostname, trim(rhnservernetaddress4.address), rhnactionscap.action_id, rhnxccdftestresult.id, rhnxccdftestresult.identifier,
 		rhnxccdfbenchmark.identifier, rhnxccdfbenchmark.version, rhnxccdfprofile.identifier, rhnxccdfprofile.title, end_time
 	) X
 	-- where placeholder
