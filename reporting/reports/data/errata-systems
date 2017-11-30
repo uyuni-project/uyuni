@@ -22,12 +22,12 @@ sql:
 	select rhnErrata.advisory_name as advisory,
 		rhnServerNeededErrataCache.server_id,
 		rhnServer.name as profile_name,
-		rhnServer.hostname, trim(netinfos.ipaddr) as ip_address,
-		trim(netinfos.ip6addr) as ipv6_address
+		rhnServer.hostname, trim(ipaddr) as ip_address,
+		trim(ip6addr) as ipv6_address
 	from rhnErrata, rhnServer,
 		rhnServerNeededErrataCache left outer join
 		(
-		select server_id, rsna4.address, rsna6.address
+		select server_id, rsna4.address as ipaddr, rsna6.address as ip6addr
 		from rhnservernetinterface rsni
 		left join rhnServerNetAddress4 rsna4
 		on rsni.id = rsna4.interface_id
