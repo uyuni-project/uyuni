@@ -21,15 +21,20 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.notification.NotificationMessage;
-import com.redhat.rhn.domain.notification.NotificationMessageFactory;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.domain.role.RoleFactory;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Used for syncing repos (like yum repos) to a channel.
@@ -66,18 +71,26 @@ public class RepoSyncTask extends RhnJavaJob {
                     executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
                 }
                 catch (JobExecutionException e) {
-                    NotificationMessage notificationMessage = NotificationMessageFactory.createNotificationMessage(
+                    NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                             NotificationMessage.NotificationMessageSeverity.error,
-                            "Repository Sync for channel "+ channel.getName() + " failed: " + e.getMessage()
+                            "Repository Sync for channel " + channel.getName() + " failed: " + e.getMessage()
                     );
-                    NotificationMessageFactory.store(notificationMessage);
+
+                    Set<Role> roles = new HashSet<>();
+                    roles.add(RoleFactory.CHANNEL_ADMIN);
+                    roles.add(RoleFactory.SAT_ADMIN);
+                    roles.add(RoleFactory.ORG_ADMIN);
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage, roles);
+
                     log.error(e.getMessage());
                 }
-                NotificationMessage notificationMessage = NotificationMessageFactory.createNotificationMessage(
+                NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                         NotificationMessage.NotificationMessageSeverity.info,
-                        "Repository Sync for channel "+ channel.getName() + " done."
+                        "Repository Sync for channel " + channel.getName() + " done."
                 );
-                NotificationMessageFactory.store(notificationMessage);
+                Set<Role> roles = new HashSet<>();
+                roles.add(RoleFactory.CHANNEL_ADMIN);
+                UserNotificationFactory.storeNotificationMessageFor(notificationMessage, roles);
             }
             else {
                 log.error("No such channel with channel_id " + channelId);

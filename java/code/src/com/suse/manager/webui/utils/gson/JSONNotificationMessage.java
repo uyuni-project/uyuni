@@ -44,12 +44,14 @@ public class JSONNotificationMessage {
     /**
      * Default constructor for a JSONNotificationMessage
      *@param nm the {@link NotificationMessage} source object
+     *@param isReadIn the read/unread flag
      */
-    public JSONNotificationMessage(NotificationMessage nm, boolean isRead) {
+    public JSONNotificationMessage(NotificationMessage nm, boolean isReadIn) {
         this.id = nm.getId();
         this.severity = nm.getSeverity().toString();
         this.description = nm.getDescription();
-        this.isRead = isRead;
+        this.isRead = isReadIn;
+        this.created = nm.getCreated();
     }
 
     /**
@@ -146,6 +148,7 @@ public class JSONNotificationMessage {
         }
         JSONNotificationMessage otherNotificationMessage = (JSONNotificationMessage) other;
         return new EqualsBuilder()
+            .append(getId(), otherNotificationMessage.getId())
             .append(getDescription(), otherNotificationMessage.getDescription())
             .append(getCreated(), otherNotificationMessage.getCreated())
             .append(getIsRead(), otherNotificationMessage.getIsRead())
@@ -158,6 +161,7 @@ public class JSONNotificationMessage {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
+            .append(getId())
             .append(getDescription())
             .append(getCreated())
             .toHashCode();

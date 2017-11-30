@@ -230,6 +230,12 @@ const NotificationMessages = React.createClass({
               cell={ (row) => row["description"] }
             />
             <Column
+              columnKey="created"
+              comparator={Utils.sortByDate}
+              header={t("Created")}
+              cell={ (row) => moment(row["created"]).format("DD/MM/YYYY HH:mm:ss") }
+            />
+            <Column
               columnKey="isRead"
               comparator={this.sortByStatus}
               header={t("Read")}
