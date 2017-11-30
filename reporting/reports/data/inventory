@@ -54,8 +54,8 @@ sql:
 		minion_id, machine_id
 	from (
 	select rhnserver.id as server_id, rhnserver.name as profile_name,
-		rhnserver.hostname, suseminioninfo.minion_id, trim(netinfos.ipaddr) as ip_address,
-		trim(netinfos.ip6addr) as ipv6_address,
+		rhnserver.hostname, suseminioninfo.minion_id, trim(ipaddr) as ip_address,
+		trim(ip6addr) as ipv6_address,
 		rhnserver.machine_id,
 		( select login from web_contact where rhnserver.creator_id = web_contact.id ) as registered_by,
 		to_char(rhnserver.created, 'YYYY-MM-DD HH24:MI:SS') as registration_time,
@@ -88,7 +88,7 @@ sql:
 		get_hw_info_as_clob(rhnserver.id, '; ') as hardware
 	from rhnserver left outer join
 		(
-		select server_id, rsna4.address, rsna6.address
+		select server_id, rsna4.address as ipaddr, rsna6.address as ip6addr
 		from rhnservernetinterface rsni
 		left join rhnServerNetAddress4 rsna4
 		on rsni.id = rsna4.interface_id

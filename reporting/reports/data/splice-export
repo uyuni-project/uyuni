@@ -50,8 +50,8 @@ sql:
     select rhnserver.id as server_id,
         rhnserver.name as name,
         rhnserver.org_id as org_id,
-        rhnserver.hostname, trim(netinfos.ipaddr) as ip_address,
-        trim(netinfos.ip6addr) as ipv6_address,
+        rhnserver.hostname, trim(ipaddr) as ip_address,
+        trim(ip6addr) as ipv6_address,
         ( select login from web_contact where rhnserver.creator_id = web_contact.id ) as registered_by,
         to_char(rhnserver.created, 'YYYY-MM-DD HH24:MI:SS') as registration_time,
         ( select to_char(checkin, 'YYYY-MM-DD HH24:MI:SS') from rhnserverinfo where rhnserver.id = server_id ) as last_checkin_time,
@@ -80,7 +80,7 @@ sql:
         ) as is_virtualized
     from rhnserver left outer join
         (
-        select server_id, rsna4.address, rsna6.address
+        select server_id, rsna4.address as ipaddr, rsna6.address as ip6addr
         from rhnservernetinterface rsni
         left join rhnServerNetAddress4 rsna4
         on rsni.id = rsna4.interface_id
