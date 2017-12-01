@@ -206,3 +206,6 @@
 .spacewalk-icon-desktop-filled-group:before {
 	content: "\e909";
 }
+.spacewalk-icon-envelope-open-o:before {
+	content: "\e900";
+}
