@@ -1,3 +1,6 @@
+- add SUSE Manager Server 3.0 and 3.1 channels for mirroring
+- support SLE-RT 12 SP3 (bsc#1063940)
+
 -------------------------------------------------------------------
 Tue Nov 28 15:24:03 CET 2017 - jgonzalez@suse.com
 

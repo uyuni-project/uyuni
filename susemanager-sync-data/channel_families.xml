@@ -22,6 +22,7 @@
 	<family default_nodecount="0" label="MEEGO-1" name="MEEGO"/>
 	<family default_nodecount="0" label="ZLM7" name="ZENworks Linux Management"/>
 	<family default_nodecount="0" label="SLE-LP" name="SUSE Linux Enterprise Live Patching"/>
+	<family default_nodecount="0" label="SMS-PPC" name="SUSE Manager Server PPC"/>
 	<family default_nodecount="0" label="ATI" name="ATI"/>
 	<family default_nodecount="0" label="SMS-X86" name="SUSE Manager Server X86-64"/>
 	<family default_nodecount="0" label="SLES-X86-VMWARE" name="SUSE Linux Enterprise Server for VMware"/>
