@@ -16,42 +16,13 @@ function reloadData(dataUrlSlice) {
 }
 
 const CheckRead = React.createClass({
-  getInitialState: function() {
-    return {
-      messageId: this.props.messageId,
-      readState: this.props.isRead,
-    }
-  },
-
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({readState : nextProps.isRead});
-  },
-
-  updateReadStatus: function() {
-    var currentObject = this;
-    var messageData = {};
-    messageData.messageId = this.state.messageId;
-    messageData.isRead = !this.state.readState;
-    Network.post("/rhn/manager/notification-messages/update-message-status", JSON.stringify(messageData), "application/json").promise
-    .then(data => {
-        this.setState({readState : !this.state.readState})
-    })
-    .catch(response => {
-      currentObject.setState({
-        error: response.status == 401 ? "authentication" :
-          response.status >= 500 ? "general" :
-          null
-      });
-    });
-  },
-
   render: function() {
     return (
       <div className="col-md-6">
         {
-          this.state.readState ?
-          <input type="checkbox" onClick={this.updateReadStatus} checked="checked" />
-          : <input type="checkbox" onClick={this.updateReadStatus} />
+          this.props.isRead ?
+          <input type="checkbox" onClick={this.props.onChange} checked="checked" />
+          : <input type="checkbox" onClick={this.props.onChange} />
         }
       </div>
     );
@@ -117,6 +88,29 @@ const NotificationMessages = React.createClass({
             null
         });
       });
+  },
+
+  updateReadStatus: function(messageId) {
+    var currentObject = this;
+
+    var updatedData = this.state.serverData;
+    var messageRaw = updatedData.find(m => m.id == messageId);
+    messageRaw.isRead = !messageRaw.isRead;
+
+    var messageDataRequest = {};
+    messageDataRequest.messageId = messageRaw.id;
+    messageDataRequest.isRead = messageRaw.isRead;
+    Network.post("/rhn/manager/notification-messages/update-message-status", JSON.stringify(messageDataRequest), "application/json").promise
+    .then(data => {
+        this.setState({serverData : updatedData})
+    })
+    .catch(response => {
+      currentObject.setState({
+        error: response.status == 401 ? "authentication" :
+          response.status >= 500 ? "general" :
+          null
+      });
+    });
   },
 
   readThemAll: function() {
@@ -239,7 +233,7 @@ const NotificationMessages = React.createClass({
               columnKey="isRead"
               comparator={this.sortByStatus}
               header={t("Read")}
-              cell={ (row) => <CheckRead messageId={row['id']} isRead={row['isRead']} />}
+              cell={ (row) => <CheckRead onChange={() => this.updateReadStatus(row['id'], row['isRead'])} isRead={row['isRead']} />}
             />
           </Table>
         </Panel>
