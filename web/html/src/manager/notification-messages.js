@@ -203,7 +203,7 @@ const NotificationMessages = React.createClass({
           <Table
             data={this.buildRows(data)}
             identifier={(row) => row["id"]}
-            cssClassFunction={(row) => row["status"] == true ? 'text-muted' : null }
+            cssClassFunction={(row) => row["isRead"] == true ? 'text-muted' : '' }
             initialSortColumnKey="created"
             initialSortDirection={-1}
             searchField={
