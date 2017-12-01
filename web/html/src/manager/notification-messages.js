@@ -18,13 +18,16 @@ function reloadData(dataUrlSlice) {
 const CheckRead = React.createClass({
   render: function() {
     return (
-      <div className="col-md-6">
-        {
-          this.props.isRead ?
-          <input type="checkbox" onClick={this.props.onChange} checked="checked" />
-          : <input type="checkbox" onClick={this.props.onChange} />
+      <button className="btn btn-default btn-sm" onClick={this.props.onChange}>
+        {this.props.isRead ?
+          <span title={t('Read')}>
+            <i className='fa fa-1-5x spacewalk-icon-envelope-open-o no-margin text-muted'></i>
+          </span>
+          : <span title={t('Unread')}>
+              <i className='fa fa-1-5x fa-envelope no-margin text-primary'></i>
+            </span>
         }
-      </div>
+      </button>
     );
   }
 });
@@ -233,7 +236,8 @@ const NotificationMessages = React.createClass({
               columnKey="isRead"
               comparator={this.sortByStatus}
               header={t("Read")}
-              cell={ (row) => <CheckRead onChange={() => this.updateReadStatus(row['id'], row['isRead'])} isRead={row['isRead']} />}
+              cell={ (row) => <CheckRead onChange={() => this.updateReadStatus(row['id'], row['isRead'])}
+                  isRead={row['isRead']} />}
             />
           </Table>
         </Panel>
