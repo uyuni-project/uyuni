@@ -1,3 +1,4 @@
+- Display messages about wrong input more end-user friendly. (bsc#1015956)
 - Add api calls for content staging
 - fix content refresh when product keys change (bsc#1069943)
 - Allow 'Package List Refresh' when package arch has changed (bsc#1065259)
