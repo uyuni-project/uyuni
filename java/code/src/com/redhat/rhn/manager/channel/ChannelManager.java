@@ -110,6 +110,8 @@ public class ChannelManager extends BaseManager {
         RHEL4_EUS_VERSIONS.add("4ES");
     }
 
+    public static final String RHEL7_EUS_VERSION = "7Server";
+
 
     // Product name (also sometimes referred to as OS) is unfortunately very
     // convoluted. For RHEL, in rhnDistChannelMap is appears as "Red Hat Linux", in
@@ -1493,12 +1495,15 @@ public class ChannelManager extends BaseManager {
      *
      * RHEL 4 release samples: 7.6, 8, 9
      * RHEL 5 release samples: 5.1.0.1, 5.2.0.2, 5.3.0.3
-     *
+     * RHEL 6 release samples: 6.7.0.3.el6
+     * RHEL 7 release samples: 7.2-9.el7 7.3-1.el7 7.4-1.el7
      * RHEL 4 must be treated specially, if the release is X.Y, we only wish to look at
      * the X portion.
      *
      * For RHEL 5 and presumably all future releases, we only look at the W.X.Y portion of
-     * W.X.Y.Z.
+     * W.X.Y.Z. (works only for RHEL5 and 6)
+     *
+     * For RHEL7, format is W.X-Y.noise, all we need is W.X
      *
      * @param rhelVersion RHEL version we're comparing release for. (5Server, 4AS, 4ES)
      * @param originalRelease Original package release.
@@ -1514,6 +1519,15 @@ public class ChannelManager extends BaseManager {
                 return originalRelease;
             }
             return tokens[0];
+        }
+        else if (RHEL7_EUS_VERSION.equals(rhelVersion)) {
+            // rhnreleasechnnelmap release like '7.1-1.el7' - PackageEvr will be
+            // returned as 7.1.1.el7. We might be normalizing either.
+            // Replace '-' with '.', then split and use [0].[1]
+
+            tokens = originalRelease.replace('-', '.').split("\\.");
+            return new StringBuilder().
+                    append(tokens[0]).append(".").append(tokens[1]).toString();
         }
 
         if (tokens.length <= 3) {
@@ -1853,7 +1867,7 @@ public class ChannelManager extends BaseManager {
         EusReleaseComparator comparator = new EusReleaseComparator(version);
         for (EssentialChannelDto dto : dr) {
             log.debug(dto.getId());
-            if (comparator.compare(dto.getRelease(), pevr.toString()) >= 0) {
+            if (comparator.compare(dto, pevr) >= 0) {
                 result.add(dto);
             }
         }

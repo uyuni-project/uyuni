@@ -2,13 +2,13 @@
 
 Name: tito
 Version: 0.4.18
-Release: 1.9%{?dist}
+Release: 1.10%{?dist}
 Summary: A tool for managing rpm based git projects
 
 Group: Development/Tools
 License: GPLv2
 URL: http://rm-rf.ca/tito
-Source0: http://rm-rf.ca/files/tito/tito-%{version}.tar.gz
+Source0: http://pkgs.fedoraproject.org/repo/pkgs/tito/tito-0.4.18.tar.gz/318e6f546c9b331317c94ea5d178876a/tito-0.4.18.tar.gz
 Patch0:  0001-support-local-releasers.conf-overwrite.patch
 Patch1:  0001-fixed-building-third-party-packages.patch
 Patch2:  0001-fixed-changelog-formating.patch
@@ -92,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Nov 27 2017 Jiri Dostal <jdostal@redhat.com> 0.4.18-1.10
+- Update tito.spec - repair outdated URL, Fedora 27 rebuild
+
 * Tue Feb 14 2017 Jan Dobes 0.4.18-1.9
 - git diff on fedora 25 can generate rename patches not consumable by patch on
   rhel 6
