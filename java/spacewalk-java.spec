@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.41
+Version: 2.8.46
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -1034,6 +1034,25 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Fri Dec 01 2017 Grant Gainey 2.8.46-1
+- 1466006 - Previous fix breaks RHEL6-EUS logic :(
+- 1466006 - more RHEL7EUS version heuristics
+
+* Fri Dec 01 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.45-1
+- Unify heading for "Recently Registered Systems"
+- Use correct header string for system groups
+
+* Thu Nov 30 2017 Eric Herget <eherget@redhat.com> 2.8.44-1
+- Update ant setup to add xalan-j2 to build-lib.  Also update apidoc generation
+  steps.
+
+* Wed Nov 29 2017 Jiri Dostal <jdostal@redhat.com> 2.8.43-1
+- 1514020 - Unhandled internal exception when trying to cancel child scheduled
+  event
+
+* Wed Nov 29 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.42-1
+- 1482501 - update docs for system.listSystemEvents API method
+
 * Wed Nov 22 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.41-1
 - Improve messaging for "Compare Packages"
 
