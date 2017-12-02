@@ -28,7 +28,7 @@ Requires:       jabberd-sqlite
 Requires(post): libxslt-tools
 
 %description
-Script, which sets up Jabberd for Spacewalk. Used during installation of901d7ceee18abc92d9d51c6f08981618106da7e9
+Script, which sets up Jabberd for Spacewalk. Used during installation of
 Spacewalk server or Spacewalk proxy.
 
 %prep
