@@ -1,0 +1,18 @@
+#!/bin/bash
+
+CONFIG_FILE=/etc/sysconfig/rhn/ssl-cert-check
+
+unset EXPIRATION CHECK CERTS
+
+# Source the config file
+[ -f $CONFIG_FILE ] && . $CONFIG_FILE
+
+# Was SSL checking turned off in the config file?
+[ "$CHECK" == "no" ] && exit 0
+
+EXPIRATION=${EXPIRATION:-60}
+
+for cert in $CERTS; do
+    ssl-cert-check --mail --path $cert --days $EXPIRATION
+done
+exit 0
