@@ -178,6 +178,23 @@ const NotificationMessages = React.createClass({
     return Object.keys(message).map((id) => message[id]);
   },
 
+  messageReaction: function(action) {
+    let actionButton = null;
+    switch(action) {
+      case 'error':
+        actionButton = <button className="product-retry-btn btn btn-default btn-sm" data-toggle="tooltip" title="" data-original-title="Bootstrap">
+          <i className="fa fa-rocket fa-1-5x no-margin"></i>
+        </button>;
+      break;
+      case 'info':
+        actionButton = <button className="product-retry-btn btn btn-default btn-sm" data-toggle="tooltip" title="" data-original-title="Refresh">
+          <i className="fa fa-refresh fa-1-5x no-margin"></i>
+        </button>;
+      break;
+    }
+    return actionButton;
+  },
+
   render: function() {
     const data = this.state.serverData;
 
@@ -236,6 +253,11 @@ const NotificationMessages = React.createClass({
               comparator={Utils.sortByDate}
               header={t("Created")}
               cell={ (row) => moment(row["created"]).format("DD/MM/YYYY HH:mm:ss") }
+            />
+            <Column
+              columnKey="action"
+              header={t("Action")}
+              cell={ (row) => row['action'] ? this.messageReaction(row['action']) : null}
             />
             <Column
               columnKey="isRead"
