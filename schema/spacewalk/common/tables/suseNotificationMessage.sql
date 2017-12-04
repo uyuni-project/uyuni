@@ -2,8 +2,8 @@ CREATE TABLE susenotificationmessage
 (
   id NUMBER NOT NULL
     CONSTRAINT suse_notifmess_pk PRIMARY KEY,
-  severity VARCHAR2(64) NOT NULL,
-  description VARCHAR2(256) NOT NULL,
+  type VARCHAR2(32) NOT NULL,
+  data VARCHAR2(1024) NOT NULL,
   created timestamp with time zone NOT NULL DEFAULT now()
 );
 
@@ -22,6 +22,6 @@ CREATE TABLE suseusernotification
                         REFERENCES susenotificationmessage (id)
                         ON DELETE CASCADE,
     read CHAR(1) DEFAULT ('N') NOT NULL
-)
+);
 
 CREATE SEQUENCE suse_user_notification_id_seq;

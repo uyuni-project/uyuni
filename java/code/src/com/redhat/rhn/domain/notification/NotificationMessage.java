@@ -15,6 +15,11 @@
 
 package com.redhat.rhn.domain.notification;
 
+import com.google.gson.Gson;
+import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
+import com.redhat.rhn.domain.notification.types.NotificationData;
+import com.redhat.rhn.domain.notification.types.NotificationType;
+import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -23,17 +28,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 /**
  * A notification NotificationMessage Object.
@@ -43,8 +38,8 @@ import javax.persistence.TemporalType;
 public class NotificationMessage implements Serializable {
 
     private Long id;
-    private NotificationMessageSeverity severity;
-    private String description;
+    private NotificationType type;
+    private String data;
     private Date created;
 
     /**
@@ -56,12 +51,10 @@ public class NotificationMessage implements Serializable {
     /**
      * Default constructor for a NotificationMessage
      *
-     * @param severityIn the severity of the message
-     * @param descriptionIn the description of the message
+     * @param dataIn the json data of the message
      */
-    public NotificationMessage(NotificationMessageSeverity severityIn, String descriptionIn) {
-        this.severity = severityIn;
-        this.description = descriptionIn;
+    public NotificationMessage(NotificationData dataIn) {
+        setNotificationData(dataIn);
     }
 
     /**
@@ -86,32 +79,41 @@ public class NotificationMessage implements Serializable {
     /**
      * @return Returns the description.
      */
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
+    @Column(name = "data")
+    public String getData() {
+        return data;
+    }
+
+    @Transient
+    public void setNotificationData(NotificationData notificationData) {
+        setType(notificationData.getType());
+        setData(new Gson().toJson(notificationData));
+    }
+
+    @Transient
+    public NotificationData getNotificationData() {
+        switch (getType()) {
+            case OnboardingFailed: return new Gson().fromJson(getData(), OnboardingFailed.class);
+            case ChannelSyncFailed: return new Gson().fromJson(getData(), ChannelSyncFailed.class);
+            default: throw new RuntimeException("should not happen!");
+        }
     }
 
     /**
-     * @param descriptionIn The description to set.
+     * @param dataIn The description to set.
      */
-    public void setDescription(String descriptionIn) {
-        this.description = descriptionIn;
+    public void setData(String dataIn) {
+        this.data = dataIn;
     }
 
-    /**
-     * @return Returns the severity of the message to set.
-     */
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "severity")
-    public NotificationMessageSeverity getSeverity() {
-        return severity;
+    @Column(columnDefinition = "type")
+    public NotificationType getType() {
+        return type;
     }
 
-    /**
-     * @param severityIn the severity of the message.
-     */
-    public void setSeverity(NotificationMessageSeverity severityIn) {
-        this.severity = severityIn;
+    public void setType(NotificationType type) {
+        this.type = type;
     }
 
     /**
@@ -142,7 +144,7 @@ public class NotificationMessage implements Serializable {
         NotificationMessage otherNotificationMessage = (NotificationMessage) other;
         return new EqualsBuilder()
             .append(getId(), otherNotificationMessage.getId())
-            .append(getDescription(), otherNotificationMessage.getDescription())
+            .append(getData(), otherNotificationMessage.getData())
             .isEquals();
     }
 
@@ -153,7 +155,7 @@ public class NotificationMessage implements Serializable {
     public int hashCode() {
         return new HashCodeBuilder()
             .append(getId())
-            .append(getDescription())
+            .append(getData())
             .toHashCode();
     }
 
@@ -164,7 +166,7 @@ public class NotificationMessage implements Serializable {
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", getId())
-            .append("description", getDescription())
+            .append("data", getData())
             .toString();
     }
 

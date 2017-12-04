@@ -25,8 +25,8 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.notification.NotificationMessage;
-import com.redhat.rhn.domain.notification.NotificationMessage.NotificationMessageSeverity;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -375,8 +375,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             LOG.error("Error registering minion id: " + minionId, t);
             handleTransactions(false);
             NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                    NotificationMessageSeverity.error,
-                    "Error registering minion with id: " + minionId + " " + t.getMessage());
+                    new OnboardingFailed(minionId)
+            );
 
             Set<Role> roles = new HashSet<>();
             roles.add(RoleFactory.IMAGE_ADMIN);
