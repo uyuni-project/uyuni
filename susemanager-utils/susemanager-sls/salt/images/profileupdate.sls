@@ -7,6 +7,8 @@ mgr_image_profileupdate:
     - base: "{{ pillar.get('imagename') }}"
     - mods: packages.profileupdate
     - dryrun: True
+    - kwargs:
+        entrypoint: ""
 
 mgr_image_inspect:
   module.run:
