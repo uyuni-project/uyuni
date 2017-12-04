@@ -324,10 +324,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 });
             });
 
-            if (true) {
-                throw new RuntimeException("I'm a bug!");
-            }
-
             // get hardware and network async
             triggerHardwareRefresh(server);
 
