@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
+import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 
@@ -72,8 +74,7 @@ public class RepoSyncTask extends RhnJavaJob {
                 }
                 catch (JobExecutionException e) {
                     NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                            NotificationMessage.NotificationMessageSeverity.error,
-                            "Repository Sync for channel " + channel.getName() + " failed: " + e.getMessage()
+                            new ChannelSyncFailed(channel.getId())
                     );
 
                     Set<Role> roles = new HashSet<>();
@@ -85,8 +86,7 @@ public class RepoSyncTask extends RhnJavaJob {
                     log.error(e.getMessage());
                 }
                 NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                        NotificationMessage.NotificationMessageSeverity.info,
-                        "Repository Sync for channel " + channel.getName() + " done."
+                        new ChannelSyncFinished(channel.getId())
                 );
                 Set<Role> roles = new HashSet<>();
                 roles.add(RoleFactory.CHANNEL_ADMIN);

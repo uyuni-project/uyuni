@@ -17,6 +17,8 @@ package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.notification.NotificationMessage;
 
+import com.redhat.rhn.domain.notification.types.NotificationData;
+import com.redhat.rhn.domain.notification.types.NotificationType;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -29,8 +31,9 @@ import java.util.Date;
 public class JSONNotificationMessage {
 
     private Long id;
-    private String severity;
-    private String description;
+    private NotificationMessage.NotificationMessageSeverity severity;
+    private NotificationType type;
+    private NotificationData data;
     private boolean isRead;
     private Date created;
     private Date modified;
@@ -48,8 +51,9 @@ public class JSONNotificationMessage {
      */
     public JSONNotificationMessage(NotificationMessage nm, boolean isReadIn) {
         this.id = nm.getId();
-        this.severity = nm.getSeverity().toString();
-        this.description = nm.getDescription();
+        this.severity = nm.getNotificationData().getSeverity();
+        this.data = nm.getNotificationData();
+        this.type = nm.getType();
         this.isRead = isReadIn;
         this.created = nm.getCreated();
     }
@@ -68,18 +72,12 @@ public class JSONNotificationMessage {
         this.id = idIn;
     }
 
-    /**
-     * @return Returns the description.
-     */
-    public String getDescription() {
-        return description;
+    public NotificationData getData() {
+        return data;
     }
 
-    /**
-     * @param descriptionIn The description to set.
-     */
-    public void setDescription(String descriptionIn) {
-        this.description = descriptionIn;
+    public void setData(NotificationData data) {
+        this.data = data;
     }
 
     /**
@@ -124,18 +122,12 @@ public class JSONNotificationMessage {
         this.modified = modifiedIn;
     }
 
-    /**
-     * @return Returns the severity.
-     */
-    public String getType() {
+    public NotificationMessage.NotificationMessageSeverity getSeverity() {
         return severity;
     }
 
-    /**
-     * @param severityIn The severity to set.
-     */
-    public void setSeverity(String severityIn) {
-        this.severity = severityIn;
+    public void setSeverity(NotificationMessage.NotificationMessageSeverity severity) {
+        this.severity = severity;
     }
 
     /**
@@ -149,7 +141,7 @@ public class JSONNotificationMessage {
         JSONNotificationMessage otherNotificationMessage = (JSONNotificationMessage) other;
         return new EqualsBuilder()
             .append(getId(), otherNotificationMessage.getId())
-            .append(getDescription(), otherNotificationMessage.getDescription())
+            .append(getData(), otherNotificationMessage.getData())
             .append(getCreated(), otherNotificationMessage.getCreated())
             .append(getIsRead(), otherNotificationMessage.getIsRead())
             .isEquals();
@@ -162,7 +154,7 @@ public class JSONNotificationMessage {
     public int hashCode() {
         return new HashCodeBuilder()
             .append(getId())
-            .append(getDescription())
+            .append(getData())
             .append(getCreated())
             .toHashCode();
     }
@@ -174,7 +166,7 @@ public class JSONNotificationMessage {
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", getId())
-            .append("description", getDescription())
+            .append("data", getData())
             .append("created", getCreated())
             .append("isRead", getIsRead())
             .toString();
