@@ -273,6 +273,8 @@ public class Router implements SparkApplication {
                 withUser(NotificationMessageController::updateMessageStatus));
         post("/manager/notification-messages/mark-all-as-read",
                 withUser(NotificationMessageController::markAllAsRead));
+        post("/manager/notification-messages/retry-onboarding/:minionId",
+                withUser(NotificationMessageController::retryOnboarding));
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {
