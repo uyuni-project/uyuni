@@ -5,6 +5,7 @@
 - fix error message for database upgrade failure
 - check for sufficient diskspace in /var/lib/pgsql
 - notify admin that database backups need reconfiguration after db upgrade
+- add syslinux-x86_64 dependency for ppc64le (bsc#1065023)
 
 -------------------------------------------------------------------
 Mon May 29 15:41:25 CEST 2017 - mc@suse.de
