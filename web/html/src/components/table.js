@@ -141,9 +141,12 @@ const Table = React.createClass({
     selectable: React.PropTypes.bool, // enables item selection
     onSelect: React.PropTypes.func, // the handler to call when the table selection is updated. if this function is not provided, the select boxes won't be rendered
     selectedItems: React.PropTypes.array, // the identifiers for selected items
-    emptyText: React.PropTypes.string // The message which is shown when there are no rows to display
+    emptyText: React.PropTypes.string, // The message which is shown when there are no rows to display
+    loading: React.PropTypes.bool, // if data is loading
+    loadingText: React.PropTypes.string, // The message which is shown when the data is loading
   },
   defaultEmptyText: t('There are no entries to show.'),
+  defaultLoadingText: t('Loading..'),
 
   getInitialState: function() {
     return {
@@ -153,7 +156,8 @@ const Table = React.createClass({
       sortColumnKey: this.props.initialSortColumnKey || null,
       sortDirection: this.props.initialSortDirection || 1,
       selectedItems: this.props.selectedItems || [],
-      selectable: this.props.selectable
+      selectable: this.props.selectable,
+      loading: this.props.loading || false,
     };
   },
 
@@ -161,7 +165,8 @@ const Table = React.createClass({
     this.onPageCountChange(nextProps.data, this.state.criteria, this.state.itemsPerPage);
     this.setState({
         selectedItems: nextProps.selectedItems || [],
-        selectable: Boolean(nextProps.selectable)
+        selectable: Boolean(nextProps.selectable),
+        loading: Boolean(nextProps.loading) || false,
     });
   },
 
@@ -326,6 +331,7 @@ const Table = React.createClass({
     }
 
     const emptyText = this.props.emptyText || this.defaultEmptyText;
+    const loadingText= this.props.loadingText || this.defaultLoadingText;
 
     return (
       <div className="spacewalk-list">
@@ -352,23 +358,30 @@ const Table = React.createClass({
               </div>
             </div>
           </div>
-          { isEmpty ?
+          { this.state.loading ?
             <div className="panel-body">
-              <h4>{emptyText}</h4>
+              <h4>{loadingText}</h4>
             </div>
             :
-            <div>
-              <div className="table-responsive">
-                <table className="table table-striped vertical-middle">
-                  <thead>
-                    <tr>{headers}</tr>
-                  </thead>
-                  <tbody>
-                    {rows}
-                  </tbody>
-                </table>
+            (
+              isEmpty ?
+              <div className="panel-body">
+                <h4>{emptyText}</h4>
               </div>
-            </div>
+              :
+              <div>
+                <div className="table-responsive">
+                  <table className="table table-striped vertical-middle">
+                    <thead>
+                      <tr>{headers}</tr>
+                    </thead>
+                    <tbody>
+                      {rows}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )
           }
           <div className="panel-footer">
             <div className="spacewalk-list-bottom-addons">
