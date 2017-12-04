@@ -21,6 +21,9 @@ import com.redhat.rhn.domain.user.User;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
+import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.JSONNotificationMessage;
 import com.suse.manager.webui.websocket.Notification;
 
@@ -133,6 +136,26 @@ public class NotificationMessageController {
         Notification.spreadUpdate();
         Map<String, String> data = new HashMap<>();
         data.put("message", "All messages marked as read succesfully");
+        response.type("application/json");
+        return GSON.toJson(data);
+    }
+
+    /**
+     * Re-trigger onboarding the minion
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON result of the API call
+     */
+    public static String retryOnboarding(Request request, Response response, User user) {
+        String minionId = request.params("minionId");
+
+        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(SaltService.INSTANCE);
+        action.doExecute(new RegisterMinionEventMessage(minionId));
+
+        Map<String, String> data = new HashMap<>();
+        data.put("message", "Onboarding restarted.");
         response.type("application/json");
         return GSON.toJson(data);
     }

@@ -169,7 +169,7 @@ const NotificationMessages = React.createClass({
 
   searchData: function(datum, criteria) {
       if (criteria) {
-        return datum.description.toLowerCase().includes(criteria.toLowerCase());
+        return (this.buildDescription(datum)).toLowerCase().includes(criteria.toLowerCase());
       }
       return true;
   },
@@ -178,17 +178,32 @@ const NotificationMessages = React.createClass({
     return Object.keys(message).map((id) => message[id]);
   },
 
-  messageReaction: function(action) {
-    let actionButton = null;
-    switch(action) {
-      case 'error':
-        actionButton = <button className="product-retry-btn btn btn-default btn-sm" data-toggle="tooltip" title="" data-original-title="Bootstrap">
-          <i className="fa fa-rocket fa-1-5x no-margin"></i>
-        </button>;
+  buildDescription: function(row) {
+    let description = null;
+    switch(row['type']) {
+      case 'OnboardingFailed':
+        description = 'Error registering minion id: ' + row['data']['minionId'];
       break;
-      case 'info':
-        actionButton = <button className="product-retry-btn btn btn-default btn-sm" data-toggle="tooltip" title="" data-original-title="Refresh">
-          <i className="fa fa-refresh fa-1-5x no-margin"></i>
+    }
+    return description;
+  },
+
+  retryOnboarding: function(minionId) {
+    Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, "application/json").promise
+    .then((data) => {
+      console.log('message result = ' + data.message);
+    })
+    .catch(response => {
+    });
+  },
+
+  messageReaction: function(messageType, messageData) {
+    let actionButton = null;
+    switch(messageType) {
+      case 'OnboardingFailed':
+        actionButton = <button className="btn btn-default btn-sm" title={t('Retry bootstrap')}
+            onClick={() => this.retryOnboarding(messageData['minionId'])}>
+          <i className="fa fa-rocket fa-1-5x no-margin"></i>
         </button>;
       break;
     }
@@ -243,10 +258,15 @@ const NotificationMessages = React.createClass({
               cell={ (row) => this.decodeIconBySeverity(row["severity"])}
             />
             <Column
+              columnKey="type"
+              header={t("Type")}
+              cell={ (row) => row['type']}
+            />
+            <Column
               columnKey="description"
               comparator={Utils.sortByText}
               header={t("Description")}
-              cell={ (row) => row["description"] }
+              cell={ (row) => this.buildDescription(row) }
             />
             <Column
               columnKey="created"
@@ -257,7 +277,7 @@ const NotificationMessages = React.createClass({
             <Column
               columnKey="action"
               header={t("Action")}
-              cell={ (row) => row['action'] ? this.messageReaction(row['action']) : null}
+              cell={ (row) => this.messageReaction(row['type'], row['data'])}
             />
             <Column
               columnKey="isRead"
