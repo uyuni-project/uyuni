@@ -40,6 +40,7 @@ const NotificationMessages = React.createClass({
       error: null,
       dataUrlTags: ['#data-unread', '#data-all'],
       currentDataUrlTag: location.hash ? location.hash : '#data-unread',
+      loading: true,
     };
   },
 
@@ -76,19 +77,22 @@ const NotificationMessages = React.createClass({
   },
 
   refreshServerData: function(dataUrlTag) {
+    this.setState({loading: true});
     var currentObject = this;
     reloadData(this.decodeDataUrlSlice(dataUrlTag))
       .then(data => {
         currentObject.setState({
           serverData: data,
           error: null,
+          loading: false
         });
       })
       .catch(response => {
         currentObject.setState({
           error: response.status == 401 ? "authentication" :
             response.status >= 500 ? "general" :
-            null
+            null,
+          loading: false
         });
       });
   },
@@ -209,6 +213,7 @@ const NotificationMessages = React.createClass({
             cssClassFunction={(row) => row["isRead"] == true ? 'text-muted' : '' }
             initialSortColumnKey="created"
             initialSortDirection={-1}
+            loading={this.state.loading}
             searchField={
                 <SearchField filter={this.searchData}
                     criteria={""}
