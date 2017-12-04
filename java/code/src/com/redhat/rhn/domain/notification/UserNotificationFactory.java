@@ -16,7 +16,7 @@
 package com.redhat.rhn.domain.notification;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.notification.NotificationMessage.NotificationMessageSeverity;
+import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
@@ -73,13 +73,10 @@ public class UserNotificationFactory extends HibernateFactory {
     /**
      * Create new {@link NotificationMessage}.
      *
-     * @param severityIn the label type of the message
-     * @param descriptionIn the text message
      * @return new notificationMessage
      */
-    public static NotificationMessage createNotificationMessage(
-            NotificationMessageSeverity severityIn, String descriptionIn) {
-        NotificationMessage notificationMessage = new NotificationMessage(severityIn, descriptionIn);
+    public static NotificationMessage createNotificationMessage(NotificationData notification) {
+        NotificationMessage notificationMessage = new NotificationMessage(notification);
         return notificationMessage;
     }
 
