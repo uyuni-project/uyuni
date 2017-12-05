@@ -25,6 +25,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -38,6 +40,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
@@ -45,6 +48,10 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.session.SessionManager;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * UserFactory  - the singleton class used to fetch and store
@@ -696,6 +703,18 @@ public  class UserFactory extends HibernateFactory {
         Query query = session.getNamedQuery("User.findByEmail")
                 .setParameter("userEmail", email);
         return query.list();
+    }
+
+    /**
+     * Return a list of all users.
+     *
+     * @return list of users.
+     */
+    public List<User> findAllUsers() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<UserImpl> criteria = builder.createQuery(UserImpl.class);
+        Root<UserImpl> root = criteria.from(UserImpl.class);
+        return getSession().createQuery(criteria).getResultList().stream().<User>map(Function.identity()).collect(Collectors.toList());
     }
 
     /**
