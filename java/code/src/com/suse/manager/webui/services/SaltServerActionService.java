@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -153,8 +154,8 @@ public enum SaltServerActionService {
             return remoteCommandAction(minions, script);
         }
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
-            ApplyStatesAction applyStatesAction = (ApplyStatesAction) actionIn;
-            return applyStatesAction(minions, applyStatesAction.getDetails().getMods());
+            ApplyStatesActionDetails actionDetails = ((ApplyStatesAction) actionIn).getDetails();
+            return applyStatesAction(minions, actionDetails.getMods(), actionDetails.getTest());
         }
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
             ImageInspectAction iia = (ImageInspectAction) actionIn;
@@ -480,9 +481,10 @@ public enum SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionServer>> applyStatesAction(
-            List<MinionServer> minions, List<String> mods) {
+            List<MinionServer> minions, List<String> mods, boolean test) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(State.apply(mods, Optional.empty(), Optional.of(true)), minions);
+        ret.put(com.suse.manager.webui.utils.salt.State.apply(
+                mods, Optional.empty(), Optional.of(true), Optional.of(test)), minions);
         return ret;
     }
 
