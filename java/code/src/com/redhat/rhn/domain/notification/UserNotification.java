@@ -32,12 +32,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * A notification UserNotification Object.
  */
 @Entity
-@Table(name = "suseusernotification")
+@Table(name = "suseusernotification", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "message_id"})})
 public class UserNotification {
 
     private Long id;
