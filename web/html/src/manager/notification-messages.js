@@ -204,6 +204,15 @@ const NotificationMessages = React.createClass({
     });
   },
 
+  retryReposync: function(channelId) {
+    Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId, "application/json").promise
+    .then((data) => {
+      console.log('message result = ' + data.message);
+    })
+    .catch(response => {
+    });
+  },
+
   messageReaction: function(messageType, messageData) {
     let actionButton = null;
     switch(messageType) {
@@ -214,7 +223,8 @@ const NotificationMessages = React.createClass({
         </button>;
       break;
       case 'ChannelSyncFailed':
-        actionButton = <button className="product-retry-btn btn btn-default btn-sm" title={t('Retry repo sync')}>
+        actionButton = <button className="btn btn-default btn-sm" title={t('Retry repo sync')}
+            onClick={() => this.retryReposync(messageData['channelId'])}>
           <i className="fa fa-refresh fa-1-5x no-margin"></i>
         </button>;
       break;
