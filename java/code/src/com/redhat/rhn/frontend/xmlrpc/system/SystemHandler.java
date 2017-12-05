@@ -170,6 +170,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -6315,20 +6316,22 @@ public class SystemHandler extends BaseHandler {
      * Schedule highstate application for a given system.
      *
      * @param loggedInUser The current user
-     * @param sid ID of the server
-     * @param earliestOccurrence Earliest occurrence of the highstate application
-     * @return action id, exception thrown otherwise
+     * @param sid The system ID of the target system
+     * @param earliestOccurrence Earliest occurrence
+     * @param test Run states in test-only (dry-run) mode
+     * @return action ID or exception thrown otherwise
      *
      * @xmlrpc.doc Schedule highstate application for a given system.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #param("dateTime.iso860", "earliestOccurrence")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "sid", "The system ID of the target system")
+     * @xmlrpc.param #param_desc("dateTime.iso8601",  "earliestOccurrence", "Earliest occurrence")
+     * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only (dry-run) mode")
+     * @xmlrpc.returntype int actionId - The action ID of the scheduled action
      */
-    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence) {
+    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, boolean test) {
         try {
             List<Long> sids = Arrays.asList(sid.longValue());
-            Action a = ActionManager.scheduleApplyHighstate(loggedInUser, sids, earliestOccurrence);
+            Action a = ActionManager.scheduleApplyHighstate(loggedInUser, sids, earliestOccurrence, Optional.of(test));
             a = ActionFactory.save(a);
             TASKOMATIC_API.scheduleActionExecution(a);
             return a.getId();

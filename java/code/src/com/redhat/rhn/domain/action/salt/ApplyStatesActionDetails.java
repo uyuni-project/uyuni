@@ -33,6 +33,7 @@ public class ApplyStatesActionDetails extends ActionChild {
     private long actionId;
     private String states;
     private Set<ApplyStatesActionResult> results;
+    private boolean test = false;
 
     /**
      * @return the id
@@ -131,5 +132,19 @@ public class ApplyStatesActionDetails extends ActionChild {
         }
         resultIn.setParentScriptActionDetails(this);
         results.add(resultIn);
+    }
+
+    /**
+     * @return the value of test
+     */
+    public boolean getTest() {
+        return test;
+    }
+
+    /**
+     * @param testIn the value to set for test
+     */
+    public void setTest(boolean testIn) {
+        test = testIn;
     }
 }

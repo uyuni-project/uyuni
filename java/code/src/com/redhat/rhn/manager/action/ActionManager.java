@@ -100,6 +100,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Calendar;
 import java.util.Collections;
@@ -2147,11 +2148,27 @@ public class ActionManager extends BaseManager {
      * @param scheduler the user who is scheduling
      * @param sids list of server ids
      * @param earliest action will not be executed before this date
+     * @param test run states in test-only (dry-run) mode
      * @return the action object
      */
-    public static ApplyStatesAction scheduleApplyHighstate(User scheduler, List<Long> sids,
+    public static ApplyStatesAction scheduleApplyHighstate(User scheduler, List<Long> sids, Date earliest,
+            Optional<Boolean> test) {
+        return scheduleApplyStates(scheduler, sids, new ArrayList<>(), earliest, test);
+    }
+
+    /**
+     * Schedule state application given a list of state modules. Salt will apply the highstate if an empty list of
+     * state modules is given.
+     *
+     * @param scheduler the user who is scheduling
+     * @param sids list of server ids
+     * @param mods list of state modules to be applied
+     * @param earliest action will not be executed before this date
+     * @return the action object
+     */
+    public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
             Date earliest) {
-        return scheduleApplyStates(scheduler, sids, new ArrayList<>(), earliest);
+        return scheduleApplyStates(scheduler, sids, mods, earliest, Optional.empty());
     }
 
     /**
@@ -2162,10 +2179,11 @@ public class ActionManager extends BaseManager {
      * @param sids list of server ids
      * @param mods list of state modules to be applied
      * @param earliest action will not be executed before this date
+     * @param test run states in test-only (dry-run) mode
      * @return the action object
      */
-    public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids,
-            List<String> mods, Date earliest) {
+    public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
+            Date earliest, Optional<Boolean> test) {
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory
                 .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
         String states = mods.isEmpty() ? "highstate" : "states " + mods.toString();
@@ -2176,6 +2194,7 @@ public class ActionManager extends BaseManager {
 
         ApplyStatesActionDetails actionDetails = new ApplyStatesActionDetails();
         actionDetails.setMods(mods);
+        test.ifPresent(t -> actionDetails.setTest(t));
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
