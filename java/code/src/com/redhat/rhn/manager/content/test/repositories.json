@@ -11901,12 +11901,12 @@
   },
   {
     "autorefresh": true,
-    "description": "SLE-12-SP3-GA-Desktop-nVidia-Driver for ",
+    "description": "SLE-12-SP4-GA-Desktop-nVidia-Driver for ",
     "distro_target": null,
     "enabled": true,
     "id": 2217,
     "installer_updates": false,
-    "name": "SLE-12-SP3-GA-Desktop-nVidia-Driver",
+    "name": "SLE-12-SP4-GA-Desktop-nVidia-Driver",
     "url": "http://download.nvidia.com/suse/sle12sp3/"
   },
   {
@@ -13921,206 +13921,6 @@
   },
   {
     "autorefresh": true,
-    "description": "SLE-Module-Desktop-Applications15-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2534,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15/x86_64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Desktop-Applications15-Debuginfo-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2535,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15/x86_64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2536,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/x86_64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Debuginfo-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2537,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/x86_64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Source-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2538,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/x86_64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-DevTools15-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2539,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15/x86_64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-DevTools15-Debuginfo-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2540,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15/x86_64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2541,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/x86_64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Debuginfo-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2542,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/x86_64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Source-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2543,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/x86_64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Server-Applications15-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2544,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15/x86_64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Server-Applications15-Debuginfo-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2545,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15/x86_64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2546,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/x86_64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Debuginfo-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2547,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/x86_64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Source-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2548,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/x86_64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Legacy15-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2549,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/15/x86_64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Legacy15-Debuginfo-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2550,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/15/x86_64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2551,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/x86_64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Debuginfo-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2552,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/x86_64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Source-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2553,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/x86_64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
     "description": "SLE-Module-Basesystem15-Updates for sle-15-s390x",
     "distro_target": "sle-15-s390x",
     "enabled": true,
@@ -14258,836 +14058,6 @@
     "installer_updates": false,
     "name": "SLE-Module-Basesystem15-Source-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Basesystem/15/aarch64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Desktop-Applications15-Updates for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": true,
-    "id": 2593,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15/s390x/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Desktop-Applications15-Debuginfo-Updates for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2594,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15/s390x/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": true,
-    "id": 2595,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/s390x/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Debuginfo-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2596,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/s390x/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Source-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2597,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/s390x/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Desktop-Applications15-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2598,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15/ppc64le/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Desktop-Applications15-Debuginfo-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2599,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15/ppc64le/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2600,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/ppc64le/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Debuginfo-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2601,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/ppc64le/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Source-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2602,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/ppc64le/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Desktop-Applications15-Updates for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": true,
-    "id": 2603,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15/aarch64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Desktop-Applications15-Debuginfo-Updates for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2604,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Applications/15/aarch64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": true,
-    "id": 2605,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/aarch64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Debuginfo-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2606,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/aarch64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Applications15-Source-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2607,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Applications15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Applications/15/aarch64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-DevTools15-Updates for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": true,
-    "id": 2608,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15/s390x/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-DevTools15-Debuginfo-Updates for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2609,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15/s390x/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": true,
-    "id": 2610,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/s390x/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Debuginfo-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2611,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/s390x/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Source-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2612,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/s390x/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-DevTools15-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2613,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15/ppc64le/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-DevTools15-Debuginfo-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2614,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15/ppc64le/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2615,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/ppc64le/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Debuginfo-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2616,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/ppc64le/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Source-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2617,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/ppc64le/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-DevTools15-Updates for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": true,
-    "id": 2618,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15/aarch64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-DevTools15-Debuginfo-Updates for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2619,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Development-Tools/15/aarch64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": true,
-    "id": 2620,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/aarch64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Debuginfo-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2621,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/aarch64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-DevTools15-Source-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2622,
-    "installer_updates": false,
-    "name": "SLE-Module-DevTools15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Development-Tools/15/aarch64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Server-Applications15-Updates for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": true,
-    "id": 2623,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15/s390x/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Server-Applications15-Debuginfo-Updates for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2624,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15/s390x/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": true,
-    "id": 2625,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/s390x/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Debuginfo-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2626,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/s390x/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Source-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2627,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/s390x/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Server-Applications15-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2628,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15/ppc64le/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Server-Applications15-Debuginfo-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2629,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15/ppc64le/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2630,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/ppc64le/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Debuginfo-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2631,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/ppc64le/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Source-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2632,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/ppc64le/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Server-Applications15-Updates for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": true,
-    "id": 2633,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15/aarch64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Server-Applications15-Debuginfo-Updates for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2634,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Server-Applications/15/aarch64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": true,
-    "id": 2635,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/aarch64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Debuginfo-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2636,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/aarch64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Server-Applications15-Source-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2637,
-    "installer_updates": false,
-    "name": "SLE-Module-Server-Applications15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Server-Applications/15/aarch64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Legacy15-Updates for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": true,
-    "id": 2638,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/15/s390x/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Legacy15-Debuginfo-Updates for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2639,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/15/s390x/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": true,
-    "id": 2640,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/s390x/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Debuginfo-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2641,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/s390x/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Source-Pool for sle-15-s390x",
-    "distro_target": "sle-15-s390x",
-    "enabled": false,
-    "id": 2642,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/s390x/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Legacy15-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2643,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/15/ppc64le/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Legacy15-Debuginfo-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2644,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/15/ppc64le/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2645,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/ppc64le/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Debuginfo-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2646,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/ppc64le/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Source-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2647,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/ppc64le/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Legacy15-Updates for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": true,
-    "id": 2648,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/15/aarch64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Legacy15-Debuginfo-Updates for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2649,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/15/aarch64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": true,
-    "id": 2650,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/aarch64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Debuginfo-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2651,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/aarch64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Legacy15-Source-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2652,
-    "installer_updates": false,
-    "name": "SLE-Module-Legacy15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/15/aarch64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Desktop-Productivity15-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2668,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Productivity15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Productivity/15/x86_64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Desktop-Productivity15-Debuginfo-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2669,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Productivity15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Desktop-Productivity/15/x86_64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Productivity15-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2670,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Productivity15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Productivity/15/x86_64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Productivity15-Debuginfo-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2671,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Productivity15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Productivity/15/x86_64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Desktop-Productivity15-Source-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2672,
-    "installer_updates": false,
-    "name": "SLE-Module-Desktop-Productivity15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Desktop-Productivity/15/x86_64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Public-Cloud15-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2673,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/15/x86_64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Public-Cloud15-Debuginfo-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2674,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/15/x86_64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Public-Cloud15-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2675,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/15/x86_64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Public-Cloud15-Debuginfo-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2676,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/15/x86_64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-SAP-Applications15-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2677,
-    "installer_updates": false,
-    "name": "SLE-Module-SAP-Applications15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-SAP-Applications/15/x86_64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-SAP-Applications15-Debuginfo-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2678,
-    "installer_updates": false,
-    "name": "SLE-Module-SAP-Applications15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-SAP-Applications/15/x86_64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-SAP-Applications15-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2679,
-    "installer_updates": false,
-    "name": "SLE-Module-SAP-Applications15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-SAP-Applications/15/x86_64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-SAP-Applications15-Debuginfo-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2680,
-    "installer_updates": false,
-    "name": "SLE-Module-SAP-Applications15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-SAP-Applications/15/x86_64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-SAP-Applications15-Source-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2681,
-    "installer_updates": false,
-    "name": "SLE-Module-SAP-Applications15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-SAP-Applications/15/x86_64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-SAP-Applications15-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2682,
-    "installer_updates": false,
-    "name": "SLE-Module-SAP-Applications15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-SAP-Applications/15/ppc64le/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-SAP-Applications15-Debuginfo-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2683,
-    "installer_updates": false,
-    "name": "SLE-Module-SAP-Applications15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-SAP-Applications/15/ppc64le/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-SAP-Applications15-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2684,
-    "installer_updates": false,
-    "name": "SLE-Module-SAP-Applications15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-SAP-Applications/15/ppc64le/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-SAP-Applications15-Debuginfo-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2685,
-    "installer_updates": false,
-    "name": "SLE-Module-SAP-Applications15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-SAP-Applications/15/ppc64le/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-SAP-Applications15-Source-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2686,
-    "installer_updates": false,
-    "name": "SLE-Module-SAP-Applications15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-SAP-Applications/15/ppc64le/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Public-Cloud15-Updates for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": true,
-    "id": 2687,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/15/ppc64le/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-Public-Cloud15-Debuginfo-Updates for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2688,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/15/ppc64le/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Public-Cloud15-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": true,
-    "id": 2689,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/15/ppc64le/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-Public-Cloud15-Debuginfo-Pool for sle-15-aarch64",
-    "distro_target": "sle-15-aarch64",
-    "enabled": false,
-    "id": 2690,
-    "installer_updates": false,
-    "name": "SLE-Module-Public-Cloud15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/15/ppc64le/product_debug/?my-fake-token"
   },
   {
     "autorefresh": true,
@@ -15351,106 +14321,6 @@
   },
   {
     "autorefresh": true,
-    "description": "SLE-Module-HA15-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2717,
-    "installer_updates": false,
-    "name": "SLE-Module-HA15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HA/15/x86_64/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-HA15-Debuginfo-Updates for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2718,
-    "installer_updates": false,
-    "name": "SLE-Module-HA15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HA/15/x86_64/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-HA15-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": true,
-    "id": 2719,
-    "installer_updates": false,
-    "name": "SLE-Module-HA15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HA/15/x86_64/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-HA15-Debuginfo-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2720,
-    "installer_updates": false,
-    "name": "SLE-Module-HA15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HA/15/x86_64/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-HA15-Source-Pool for sle-15-x86_64",
-    "distro_target": "sle-15-x86_64",
-    "enabled": false,
-    "id": 2721,
-    "installer_updates": false,
-    "name": "SLE-Module-HA15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HA/15/x86_64/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-HA15-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2722,
-    "installer_updates": false,
-    "name": "SLE-Module-HA15-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HA/15/ppc64le/update/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
-    "description": "SLE-Module-HA15-Debuginfo-Updates for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2723,
-    "installer_updates": false,
-    "name": "SLE-Module-HA15-Debuginfo-Updates",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HA/15/ppc64le/update_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-HA15-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": true,
-    "id": 2724,
-    "installer_updates": false,
-    "name": "SLE-Module-HA15-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HA/15/ppc64le/product/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-HA15-Debuginfo-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2725,
-    "installer_updates": false,
-    "name": "SLE-Module-HA15-Debuginfo-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HA/15/ppc64le/product_debug/?my-fake-token"
-  },
-  {
-    "autorefresh": false,
-    "description": "SLE-Module-HA15-Source-Pool for sle-15-ppc64le",
-    "distro_target": "sle-15-ppc64le",
-    "enabled": false,
-    "id": 2726,
-    "installer_updates": false,
-    "name": "SLE-Module-HA15-Source-Pool",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HA/15/ppc64le/product_source/?my-fake-token"
-  },
-  {
-    "autorefresh": true,
     "description": "SUSE-Manager-Server-3.1-Updates for sle-12-ppc64le",
     "distro_target": "sle-12-ppc64le",
     "enabled": true,
@@ -15498,5 +14368,235 @@
     "installer_updates": false,
     "name": "SUSE-Manager-Server-3.1-Source-Pool",
     "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.1/ppc64le/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-15-GA-Desktop-NVIDIA-Driver for ",
+    "distro_target": null,
+    "enabled": true,
+    "id": 2747,
+    "installer_updates": false,
+    "name": "SLE-15-GA-Desktop-NVIDIA-Driver",
+    "url": "https://download.nvidia.com/suse/sle15/"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Product-SLED15-Updates for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": true,
+    "id": 2748,
+    "installer_updates": false,
+    "name": "SLE-Product-SLED15-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLED/15/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Product-SLED15-Pool for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": true,
+    "id": 2749,
+    "installer_updates": false,
+    "name": "SLE-Product-SLED15-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLED/15/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Product-SLES_SAP15-Updates for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": true,
+    "id": 2750,
+    "installer_updates": false,
+    "name": "SLE-Product-SLES_SAP15-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES_SAP/15/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Product-SLES_SAP15-Pool for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": true,
+    "id": 2751,
+    "installer_updates": false,
+    "name": "SLE-Product-SLES_SAP15-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES_SAP/15/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Product-SLES_SAP15-Updates for sle-15-ppc64le",
+    "distro_target": "sle-15-ppc64le",
+    "enabled": true,
+    "id": 2752,
+    "installer_updates": false,
+    "name": "SLE-Product-SLES_SAP15-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-SLES_SAP/15/ppc64le/update/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Product-SLES_SAP15-Pool for sle-15-ppc64le",
+    "distro_target": "sle-15-ppc64le",
+    "enabled": true,
+    "id": 2753,
+    "installer_updates": false,
+    "name": "SLE-Product-SLES_SAP15-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES_SAP/15/ppc64le/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Product-HA15-Updates for sle-ha-15-x86_64",
+    "distro_target": "sle-ha-15-x86_64",
+    "enabled": true,
+    "id": 2754,
+    "installer_updates": false,
+    "name": "SLE-Product-HA15-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-HA/15/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Product-HA15-Debuginfo-Updates for sle-ha-15-x86_64",
+    "distro_target": "sle-ha-15-x86_64",
+    "enabled": false,
+    "id": 2755,
+    "installer_updates": false,
+    "name": "SLE-Product-HA15-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-HA/15/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Product-HA15-Pool for sle-ha-15-x86_64",
+    "distro_target": "sle-ha-15-x86_64",
+    "enabled": true,
+    "id": 2756,
+    "installer_updates": false,
+    "name": "SLE-Product-HA15-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/15/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Product-HA15-Debuginfo-Pool for sle-ha-15-x86_64",
+    "distro_target": "sle-ha-15-x86_64",
+    "enabled": false,
+    "id": 2757,
+    "installer_updates": false,
+    "name": "SLE-Product-HA15-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/15/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Product-HA15-Source-Pool for sle-ha-15-x86_64",
+    "distro_target": "sle-ha-15-x86_64",
+    "enabled": false,
+    "id": 2758,
+    "installer_updates": false,
+    "name": "SLE-Product-HA15-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/15/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLES12-SP4-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2769,
+    "installer_updates": false,
+    "name": "SLES12-SP4-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP4/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLES12-SP4-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2770,
+    "installer_updates": false,
+    "name": "SLES12-SP4-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP4/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLES12-SP4-Installer-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2771,
+    "installer_updates": true,
+    "name": "SLES12-SP4-Installer-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SERVER-INSTALLER/12-SP4/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLES12-SP4-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2772,
+    "installer_updates": false,
+    "name": "SLES12-SP4-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLES12-SP4-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2773,
+    "installer_updates": false,
+    "name": "SLES12-SP4-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLES12-SP4-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2774,
+    "installer_updates": false,
+    "name": "SLES12-SP4-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-SDK12-SP4-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2799,
+    "installer_updates": false,
+    "name": "SLE-SDK12-SP4-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP4/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-SDK12-SP4-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2800,
+    "installer_updates": false,
+    "name": "SLE-SDK12-SP4-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP4/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-SDK12-SP4-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2801,
+    "installer_updates": false,
+    "name": "SLE-SDK12-SP4-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP4/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-SDK12-SP4-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2802,
+    "installer_updates": false,
+    "name": "SLE-SDK12-SP4-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP4/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-SDK12-SP4-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2803,
+    "installer_updates": false,
+    "name": "SLE-SDK12-SP4-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP4/x86_64/product_source/?my-fake-token"
   }
 ]
