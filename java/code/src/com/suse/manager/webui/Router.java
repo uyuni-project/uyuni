@@ -275,6 +275,8 @@ public class Router implements SparkApplication {
                 withUser(NotificationMessageController::markAllAsRead));
         post("/manager/notification-messages/retry-onboarding/:minionId",
                 withUser(NotificationMessageController::retryOnboarding));
+        post("/manager/notification-messages/retry-reposync/:channelId",
+                withUser(NotificationMessageController::retryReposync));
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {

@@ -16,8 +16,12 @@ package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -156,6 +160,33 @@ public class NotificationMessageController {
 
         Map<String, String> data = new HashMap<>();
         data.put("message", "Onboarding restarted.");
+        response.type("application/json");
+        return GSON.toJson(data);
+    }
+
+    /**
+     * Re-trigger channel reposync
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON result of the API call
+     */
+    public static String retryReposync(Request request, Response response, User user) {
+        Long channelId = Long.valueOf(request.params("channelId"));
+
+        String resultMessage = "Reposync restarted";
+
+        TaskomaticApi taskomatic = new TaskomaticApi();
+        try {
+            taskomatic.scheduleSingleRepoSync(ChannelFactory.lookupById(channelId), user);
+        }
+        catch (TaskomaticApiException e) {
+            resultMessage = "Failed to restart reposync: " + e.getMessage();
+        }
+
+        Map<String, String> data = new HashMap<>();
+        data.put("message", resultMessage);
         response.type("application/json");
         return GSON.toJson(data);
     }
