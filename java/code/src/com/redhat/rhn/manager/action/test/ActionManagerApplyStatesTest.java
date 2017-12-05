@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Unit tests for the code that is used to schedule {@link ApplyStatesAction}.
@@ -108,7 +109,7 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
         ApplyStatesAction action = ActionManager.scheduleApplyHighstate(user,
-                Collections.singletonList(server.getId()), earliestAction);
+                Collections.singletonList(server.getId()), earliestAction, Optional.empty());
 
         // Look it up and verify
         ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory
