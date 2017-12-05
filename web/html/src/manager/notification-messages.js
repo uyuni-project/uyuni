@@ -190,6 +190,7 @@ const NotificationMessages = React.createClass({
       case 'ChannelSyncFinished':
         description = <span>Channel <a href={"/rhn/channels/ChannelDetail.do?cid=" + row['data']['channelId']}>{row['data']['channelName']}</a> sync completed</span>;
       break;
+      default: description = JSON.stringify(row['data']);
     }
     return description;
   },
