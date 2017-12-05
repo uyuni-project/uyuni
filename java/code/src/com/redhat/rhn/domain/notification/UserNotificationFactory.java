@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.notification;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.types.NotificationData;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
@@ -30,6 +31,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -80,6 +83,36 @@ public class UserNotificationFactory extends HibernateFactory {
         return notificationMessage;
     }
 
+    public static void storeForUsers(NotificationMessage notificationMessageIn, Set<User> users) {
+        // save first the message to get the 'id' auto generated
+        // because it is referenced by the UserNotification object
+        singleton.saveObject(notificationMessageIn);
+        users.forEach(user -> UserNotificationFactory.store(new UserNotification(user, notificationMessageIn)));
+
+        // Update Notification WebSocket Sessions right now
+        Notification.spreadUpdate();
+    }
+
+    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn, Set<Role> rolesIn, Org org) {
+        // only users in the current Org
+        // do not create notifications for non active users
+        // only users with one role in the roles
+        Stream<User> allUsers = UserFactory.getInstance().findAllUsers(org).stream()
+                .filter(user -> !user.isDisabled());
+
+        if (rolesIn.isEmpty()) {
+            storeForUsers(notificationMessageIn, allUsers.collect(Collectors.toSet()));
+        } else {
+            storeForUsers(
+                    notificationMessageIn,
+                    allUsers.filter(user -> !Collections.disjoint(user.getRoles(), rolesIn)).collect(Collectors.toSet())
+            );
+        }
+
+        // Update Notification WebSocket Sessions right now
+        Notification.spreadUpdate();
+    }
+
     /**
      * Store {@link NotificationMessage} to the database.
      *
@@ -87,17 +120,21 @@ public class UserNotificationFactory extends HibernateFactory {
      * @param rolesIn the user roles the message is visible for
      */
     public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn, Set<Role> rolesIn) {
-        // save first the message to get the 'id' auto generated
-        // because it is referenced by the UserNotification object
-        singleton.saveObject(notificationMessageIn);
 
         // only users in the current Org
         // do not create notifications for non active users
         // only users with one role in the roles
-        UserFactory.getInstance().findAllUsers(OrgFactory.getSatelliteOrg()).stream()
-        .filter(user -> !user.isDisabled())
-        .filter(user -> !Collections.disjoint(user.getRoles(), rolesIn))
-        .forEach(user -> UserNotificationFactory.store(new UserNotification(user, notificationMessageIn)));
+        Stream<User> allUsers = UserFactory.getInstance().findAllUsers().stream()
+                .filter(user -> !user.isDisabled());
+
+        if (rolesIn.isEmpty()) {
+            storeForUsers(notificationMessageIn, allUsers.collect(Collectors.toSet()));
+        } else {
+            storeForUsers(
+                    notificationMessageIn,
+                    allUsers.filter(user -> !Collections.disjoint(user.getRoles(), rolesIn)).collect(Collectors.toSet())
+            );
+        }
 
         // Update Notification WebSocket Sessions right now
         Notification.spreadUpdate();
@@ -152,7 +189,7 @@ public class UserNotificationFactory extends HibernateFactory {
      * @param userIn the user
      * @return the unread messages size count
      */
-    public static Long unreadUserNotificationsSize(User userIn) {
+    public static long unreadUserNotificationsSize(User userIn) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         Root<UserNotification> root = criteria.from(UserNotification.class);
