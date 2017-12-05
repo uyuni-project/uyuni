@@ -184,6 +184,12 @@ const NotificationMessages = React.createClass({
       case 'OnboardingFailed':
         description = 'Error registering minion id: ' + row['data']['minionId'];
       break;
+      case 'ChannelSyncFailed':
+        description = <span>Error syncing the channel: <a href={"/rhn/channels/ChannelDetail.do?cid=" + row['data']['channelId']}>{row['data']['channelName']}</a></span>;
+      break;
+      case 'ChannelSyncFinished':
+        description = <span>Channel <a href={"/rhn/channels/ChannelDetail.do?cid=" + row['data']['channelId']}>{row['data']['channelName']}</a> sync completed</span>;
+      break;
     }
     return description;
   },
@@ -204,6 +210,11 @@ const NotificationMessages = React.createClass({
         actionButton = <button className="btn btn-default btn-sm" title={t('Retry bootstrap')}
             onClick={() => this.retryOnboarding(messageData['minionId'])}>
           <i className="fa fa-rocket fa-1-5x no-margin"></i>
+        </button>;
+      break;
+      case 'ChannelSyncFailed':
+        actionButton = <button className="product-retry-btn btn btn-default btn-sm" title={t('Retry repo sync')}>
+          <i className="fa fa-refresh fa-1-5x no-margin"></i>
         </button>;
       break;
     }
