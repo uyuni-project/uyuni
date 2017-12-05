@@ -21,7 +21,8 @@ CREATE TABLE suseusernotification
                         CONSTRAINT suse_user_notif_mid_fk
                         REFERENCES susenotificationmessage (id)
                         ON DELETE CASCADE,
-    read CHAR(1) DEFAULT ('N') NOT NULL
+    read CHAR(1) DEFAULT ('N') NOT NULL,
+    UNIQUE (user_id, message_id)
 );
 
 CREATE SEQUENCE suse_user_notification_id_seq;
