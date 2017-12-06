@@ -414,7 +414,7 @@ When(/^I select "([^"]*)" in (.*) field$/) do |value, box|
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
-  target = get_target(minion)  
+  target = get_target(minion)
   output, _code = target.run('date +%Z')
   result = output.strip
   result = 'CET' if result == 'CEST'
@@ -428,7 +428,7 @@ Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
 end
 
 Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
-  target = get_target(minion) 
+  target = get_target(minion)
   output, _code = target.run("grep 'RC_LANG=' /etc/sysconfig/language")
   raise unless output.strip == "RC_LANG=\"#{language}\""
 end
