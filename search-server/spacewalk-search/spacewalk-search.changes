@@ -1,3 +1,4 @@
+- Remove unused binary jars 
 - Updated to use Quartz 2.3.0 API (bsc#1049431)
 - rhnServerNetwork refactoring (bsc#1063419)
 
