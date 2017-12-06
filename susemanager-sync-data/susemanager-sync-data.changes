@@ -1,5 +1,6 @@
 - add SUSE Manager Server 3.0 and 3.1 channels for mirroring
 - support SLE-RT 12 SP3 (bsc#1063940)
+- add SLE12 LTSS as extension to SLES for SAP 12 (bsc#1069615)
 - Support Open Enterprise Server 2018 (bsc#1060182)
 - Support SUSE Manager for Retail 3.1 (bsc#1052079)
 - fix description for HA channel (bsc#1063588)
