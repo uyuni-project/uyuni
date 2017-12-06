@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
-import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 
 import org.quartz.JobExecutionContext;
@@ -32,11 +31,10 @@ import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Used for syncing repos (like yum repos) to a channel.
@@ -76,21 +74,29 @@ public class RepoSyncTask extends RhnJavaJob {
                     NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                             new ChannelSyncFailed(channel.getId())
                     );
+                    if (channel.getOrg() == null) {
+                        UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                                Collections.singleton(RoleFactory.CHANNEL_ADMIN));
+                    }
+                    else {
+                        UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                                Collections.singleton(RoleFactory.CHANNEL_ADMIN), channel.getOrg());
+                    }
 
-                    Set<Role> roles = new HashSet<>();
-                    roles.add(RoleFactory.CHANNEL_ADMIN);
-                    roles.add(RoleFactory.SAT_ADMIN);
-                    roles.add(RoleFactory.ORG_ADMIN);
-                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage, roles);
 
                     log.error(e.getMessage());
                 }
                 NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                         new ChannelSyncFinished(channel.getId())
                 );
-                Set<Role> roles = new HashSet<>();
-                roles.add(RoleFactory.CHANNEL_ADMIN);
-                UserNotificationFactory.storeNotificationMessageFor(notificationMessage, roles);
+                if (channel.getOrg() == null) {
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                            Collections.singleton(RoleFactory.CHANNEL_ADMIN));
+                }
+                else {
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                            Collections.singleton(RoleFactory.CHANNEL_ADMIN), channel.getOrg());
+                }
             }
             else {
                 log.error("No such channel with channel_id " + channelId);
