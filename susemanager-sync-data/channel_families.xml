@@ -19,6 +19,7 @@
 	<family default_nodecount="0" label="JBEAP" name="Novell Support for JBoss"/>
 	<family default_nodecount="-1" label="SUSE" name="openSUSE"/>
 	<family default_nodecount="0" label="20082" name="Novell Open Workgroup Suite - Small Business Edition"/>
+	<family default_nodecount="-1" label="MODULE" name="SUSE Linux Enterprise Modules"/>
 	<family default_nodecount="0" label="MEEGO-1" name="MEEGO"/>
 	<family default_nodecount="0" label="ZLM7" name="ZENworks Linux Management"/>
 	<family default_nodecount="0" label="SLE-LP" name="SUSE Linux Enterprise Live Patching"/>
