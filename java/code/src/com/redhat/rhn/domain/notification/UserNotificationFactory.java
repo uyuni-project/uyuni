@@ -74,6 +74,15 @@ public class UserNotificationFactory extends HibernateFactory {
     }
 
     /**
+     * Remove {@link UserNotification} from the database.
+     *
+     * @param userNotificationIn userNotification
+     */
+    public static void remove(UserNotification userNotificationIn) {
+        singleton.removeObject(userNotificationIn);
+    }
+
+    /**
      * Create new {@link NotificationMessage}.
      *
      * @return new notificationMessage
