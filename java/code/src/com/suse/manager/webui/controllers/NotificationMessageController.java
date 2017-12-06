@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -95,6 +94,30 @@ public class NotificationMessageController {
     public static String dataAll(Request request, Response response, User user) {
         Object data = getJSONNotificationMessages(UserNotificationFactory.listAllByUser(user), user);
 
+        response.type("application/json");
+        return GSON.toJson(data);
+    }
+
+    /**
+     * Delete a {@link UserNotification}
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON result of the API call
+     */
+    public static String delete(Request request, Response response, User user) {
+        Long messageId = Long.valueOf(request.params("messageId"));
+
+        Optional<UserNotification> un = UserNotificationFactory.lookupByUserAndMessageId(messageId, user);
+
+        if (un.isPresent()) {
+            UserNotificationFactory.remove(un.get());
+        }
+        Notification.spreadUpdate();
+
+        Map<String, String> data = new HashMap<>();
+        data.put("message", "Notification deleted");
         response.type("application/json");
         return GSON.toJson(data);
     }
