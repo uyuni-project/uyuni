@@ -420,6 +420,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 // clear previous capabilities
                 minion.getCapabilities().clear();
 
+                // Remove lock if exist
+                if (minion.getLock() != null) {
+                    SystemManager.unlockServer(minion);
+                }
+
                 // add reactivation event to server history
                 ServerHistoryEvent historyEvent = new ServerHistoryEvent();
                 historyEvent.setCreated(new Date());

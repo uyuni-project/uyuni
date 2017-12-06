@@ -270,6 +270,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         server.setMachineId(MACHINE_ID);
         ServerFactory.save(server);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+        SystemManager.lockServer(user,server,"manually locked");
 
         executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> {
             SLES_ASSERTIONS.accept(optMinion, machineId, key);
@@ -279,6 +280,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             history.addAll(minion.getHistory());
             Collections.sort(history, (h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
             assertEquals(history.get(history.size()-1).getSummary(), "Server reactivated as Salt minion");
+            assertNull(minion.getLock());
         }, DEFAULT_CONTACT_METHOD);
     }
 

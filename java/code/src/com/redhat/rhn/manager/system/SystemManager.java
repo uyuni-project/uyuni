@@ -2228,6 +2228,15 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * Unlocks a server, no permission will be checked here
+     * @param server Server that is attempting to be unlocked
+     */
+    public static void unlockServer(Server server) {
+        HibernateFactory.getSession().delete(server.getLock());
+        server.setLock(null);
+    }
+
+    /**
      * Locks a server if the user has permissions on the server
      * @param locker User who is attempting to lock the server
      * @param server Server that is attempting to be locked
