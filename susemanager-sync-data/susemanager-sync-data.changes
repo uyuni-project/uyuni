@@ -12,6 +12,7 @@ Tue Nov 28 15:24:03 CET 2017 - jgonzalez@suse.com
 - Add support for CAASP (bsc#1052283)
 - Add IBM DLPAR channels to SLES for SAP SPx ppc64le (bsc#1068057)
 - remove Certification Module 12 from SP2 and SP3 (bsc#1066819)
+- remove OES2018 Debuginfo channels (bsc#1071367)
 
 -------------------------------------------------------------------
 Wed Aug 30 15:55:17 CEST 2017 - mc@suse.de
