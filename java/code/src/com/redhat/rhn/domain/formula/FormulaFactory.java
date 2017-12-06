@@ -107,6 +107,7 @@ public class FormulaFactory {
                 formulasList.add(f.getName());
             }
         }
+        formulasList.sort(String.CASE_INSENSITIVE_ORDER);
         return FormulaFactory.orderFormulas(formulasList);
     }
 
