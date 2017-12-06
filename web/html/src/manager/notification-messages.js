@@ -167,9 +167,31 @@ const NotificationMessages = React.createClass({
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   },
 
+  buildTextDescription: function(row) {
+    let description = null;
+    switch(row['type']) {
+      case 'OnboardingFailed':
+        description = 'Error registering minion id: ' + row['data']['minionId'];
+      break;
+      case 'ChannelSyncFailed':
+        description = 'Error syncing the channel: ' + row['data']['channelName'];
+      break;
+      case 'ChannelSyncFinished':
+        description = 'Channel ' + row['data']['channelName'] + ' sync completed';
+      break;
+      default: description = JSON.stringify(row['data']);
+    }
+    return description;
+  },
+
+  sortByText: function(aRaw, bRaw, columnKey, sortDirection) {
+    var result = this.buildTextDescription(aRaw).toLowerCase().localeCompare(this.buildTextDescription(bRaw).toLowerCase());
+    return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
+  },
+
   searchData: function(datum, criteria) {
       if (criteria) {
-        return (this.buildDescription(datum)).toLowerCase().includes(criteria.toLowerCase());
+        return (this.buildTextDescription(datum)).toLowerCase().includes(criteria.toLowerCase());
       }
       return true;
   },
@@ -282,7 +304,7 @@ const NotificationMessages = React.createClass({
             />
             <Column
               columnKey="description"
-              comparator={Utils.sortByText}
+              comparator={this.sortByText}
               header={t("Description")}
               cell={ (row) => this.buildDescription(row) }
             />
