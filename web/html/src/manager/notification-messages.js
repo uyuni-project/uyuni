@@ -217,12 +217,12 @@ const NotificationMessages = React.createClass({
     let actionButton = null;
     switch(messageType) {
       case 'OnboardingFailed':
-        actionButton = <AsyncButton id="retryOnboarding" icon="fa fa-rocket fa-1-5x no-margin" title={t('Retry bootstrap')}
-            text action={() => this.retryOnboarding(messageData['minionId'])} />;
+        actionButton = <AsyncButton id="retryOnboarding" icon="fa fa-rocket fa-1-5x no-margin" classStyle="btn-sm"
+            title={t('Retry bootstrap')} text action={() => this.retryOnboarding(messageData['minionId'])} />;
       break;
       case 'ChannelSyncFailed':
-        actionButton = <AsyncButton id="retryReposync" icon="fa fa-refresh fa-1-5x no-margin" title={t('Retry repo sync')}
-        text action={() => this.retryReposync(messageData['channelId'])} />;
+        actionButton = <AsyncButton id="retryReposync" icon="fa fa-refresh fa-1-5x no-margin" classStyle="btn-sm"
+            title={t('Retry repo sync')} text action={() => this.retryReposync(messageData['channelId'])} />;
       break;
     }
     return actionButton;
@@ -300,14 +300,15 @@ const NotificationMessages = React.createClass({
             <Column
               columnKey="isRead"
               comparator={this.sortByStatus}
-              header={t("Read/Delete")}
+              header={t("Read|Delete")}
               cell={ (row) =>
                   <div className="btn-group">
-                    <AsyncButton id="updateReadStatus"
+                    <AsyncButton id="updateReadStatus" classStyle="btn-sm"
                         icon={(row['isRead'] ? ' spacewalk-icon-envelope-open-o text-muted' : 'envelope text-primary') + " fa-1-5x no-margin"}
                         title={row['isRead'] ? t('Flag as Unread') : t('Flag as Read')}
                         text action={() => this.updateReadStatus(row['id'], row['isRead'])} />
-                    <AsyncButton id="delete" icon="trash fa-1-5x no-margin" title={t('Delete Notification')}
+                    <AsyncButton id="delete"  classStyle="btn-sm"
+                        icon="trash fa-1-5x no-margin" title={t('Delete Notification')}
                         text action={() => this.deleteNotification(row['id'])} />
                   </div>
               }
