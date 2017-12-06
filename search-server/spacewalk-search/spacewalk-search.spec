@@ -17,6 +17,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 ExcludeArch: aarch64
 
+BuildRequires: junit
 #Requires: apache-ibatis-sqlmap
 Requires: c3p0 >= 0.9.1
 Requires: cglib
@@ -409,4 +410,3 @@ fi
 
 * Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.1-1
 - removed trailing whitespaces
-
