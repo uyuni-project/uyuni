@@ -455,6 +455,9 @@ public class SaltUtils {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
                 message = "Failed to apply state(s): " + states;
             }
+            if (applyStatesAction.getDetails().getTest()) {
+                message += " (test-mode)";
+            }
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
