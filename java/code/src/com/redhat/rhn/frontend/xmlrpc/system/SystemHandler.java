@@ -4171,8 +4171,8 @@ public class SystemHandler extends BaseHandler {
         LocalizationService ls = LocalizationService.getInstance();
 
         if (server.hasEntitlement(EntitlementManager.SALT)) {
-            throw new MissingCapabilityException(
-                    "System locking/unlocking is not available for Salt entitled systems",
+            throw new com.redhat.rhn.frontend.xmlrpc.MissingCapabilityException(
+                    "System locking/unlocking",
                     server);
         }
         else {

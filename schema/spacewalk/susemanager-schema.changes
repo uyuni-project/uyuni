@@ -1,3 +1,4 @@
+- Added a script which will remove existing server locks against minions (bsc#1064258)
 - Added new relationships for Salt config management
 - Added new config channel type(state) and file type(sls)
 - Enable 'Power Management' features on Salt minions.
