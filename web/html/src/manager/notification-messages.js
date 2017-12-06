@@ -15,23 +15,6 @@ function reloadData(dataUrlSlice) {
   return Network.get('/rhn/manager/notification-messages/' + dataUrlSlice, "application/json").promise;
 }
 
-const CheckRead = React.createClass({
-  render: function() {
-    return (
-      <button className="btn btn-default btn-sm" onClick={this.props.onChange}>
-        {this.props.isRead ?
-          <span title={t('Read')}>
-            <i className='fa fa-1-5x spacewalk-icon-envelope-open-o no-margin text-muted'></i>
-          </span>
-          : <span title={t('Unread')}>
-              <i className='fa fa-1-5x fa-envelope no-margin text-primary'></i>
-            </span>
-        }
-      </button>
-    );
-  }
-});
-
 const NotificationMessages = React.createClass({
 
   getInitialState: function() {
@@ -234,16 +217,12 @@ const NotificationMessages = React.createClass({
     let actionButton = null;
     switch(messageType) {
       case 'OnboardingFailed':
-        actionButton = <button className="btn btn-default btn-sm" title={t('Retry bootstrap')}
-            onClick={() => this.retryOnboarding(messageData['minionId'])}>
-          <i className="fa fa-rocket fa-1-5x no-margin"></i>
-        </button>;
+        actionButton = <AsyncButton id="retryOnboarding" icon="fa fa-rocket fa-1-5x no-margin" title={t('Retry bootstrap')}
+            text action={() => this.retryOnboarding(messageData['minionId'])} />;
       break;
       case 'ChannelSyncFailed':
-        actionButton = <button className="btn btn-default btn-sm" title={t('Retry repo sync')}
-            onClick={() => this.retryReposync(messageData['channelId'])}>
-          <i className="fa fa-refresh fa-1-5x no-margin"></i>
-        </button>;
+        actionButton = <AsyncButton id="retryReposync" icon="fa fa-refresh fa-1-5x no-margin" title={t('Retry repo sync')}
+        text action={() => this.retryReposync(messageData['channelId'])} />;
       break;
     }
     return actionButton;
@@ -324,9 +303,12 @@ const NotificationMessages = React.createClass({
               header={t("Read/Delete")}
               cell={ (row) =>
                   <div className="btn-group">
-                    <CheckRead onChange={() => this.updateReadStatus(row['id'], row['isRead'])} isRead={row['isRead']} />
-                    <AsyncButton id="delete" icon="trash fa-1-5x no-margin" name={t('Delete Notification')}
-                        text action={() => deleteNotification(row['id'])} />
+                    <AsyncButton id="updateReadStatus"
+                        icon={(row['isRead'] ? ' spacewalk-icon-envelope-open-o text-muted' : 'envelope text-primary') + " fa-1-5x no-margin"}
+                        title={row['isRead'] ? t('Flag as Unread') : t('Flag as Read')}
+                        text action={() => this.updateReadStatus(row['id'], row['isRead'])} />
+                    <AsyncButton id="delete" icon="trash fa-1-5x no-margin" title={t('Delete Notification')}
+                        text action={() => this.deleteNotification(row['id'])} />
                   </div>
               }
             />
