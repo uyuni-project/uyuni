@@ -120,9 +120,26 @@ const NotificationMessages = React.createClass({
     });
   },
 
+  deleteNotification: function(messageId) {
+    var currentObject = this;
+
+    var updatedData = this.state.serverData.filter(m => m.id != messageId);
+    Network.post("/rhn/manager/notification-messages/delete/" + messageId, "application/json").promise
+    .then(data => {
+      this.setState({serverData : updatedData})
+    })
+    .catch(response => {
+      currentObject.setState({
+        error: response.status == 401 ? "authentication" :
+          response.status >= 500 ? "general" :
+          null
+      });
+    });
+  },
+
   readThemAll: function() {
     var currentObject = this;
-    Network.post("/rhn/manager/notification-messages/mark-all-as-read", null, "application/json").promise
+    Network.post("/rhn/manager/notification-messages/mark-all-as-read", "application/json").promise
     .then(() => {
       currentObject.refreshServerData();
     })
@@ -304,9 +321,14 @@ const NotificationMessages = React.createClass({
             <Column
               columnKey="isRead"
               comparator={this.sortByStatus}
-              header={t("Read")}
-              cell={ (row) => <CheckRead onChange={() => this.updateReadStatus(row['id'], row['isRead'])}
-                  isRead={row['isRead']} />}
+              header={t("Read/Delete")}
+              cell={ (row) =>
+                  <div className="btn-group">
+                    <CheckRead onChange={() => this.updateReadStatus(row['id'], row['isRead'])} isRead={row['isRead']} />
+                    <AsyncButton id="delete" icon="trash fa-1-5x no-margin" name={t('Delete Notification')}
+                        text action={() => deleteNotification(row['id'])} />
+                  </div>
+              }
             />
           </Table>
         </Panel>

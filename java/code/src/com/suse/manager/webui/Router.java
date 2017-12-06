@@ -271,6 +271,8 @@ public class Router implements SparkApplication {
         get("/manager/notification-messages/data-all", withUser(NotificationMessageController::dataAll));
         post("/manager/notification-messages/update-message-status",
                 withUser(NotificationMessageController::updateMessageStatus));
+        post("/manager/notification-messages/delete/:messageId",
+                withUser(NotificationMessageController::delete));
         post("/manager/notification-messages/mark-all-as-read",
                 withUser(NotificationMessageController::markAllAsRead));
         post("/manager/notification-messages/retry-onboarding/:minionId",
