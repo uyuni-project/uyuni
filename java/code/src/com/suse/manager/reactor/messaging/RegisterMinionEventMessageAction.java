@@ -192,10 +192,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             return;
         }
 
+        Org org = null;
+
+        try {
         minionServer = migrateTraditionalOrGetNew(minionId,
                 isSaltSSH, activationKeyOverride, machineId);
 
-        try {
             MinionServer server = minionServer;
 
             server.setMachineId(machineId);
@@ -216,7 +218,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
 
-            Org org = activationKey.map(ActivationKey::getOrg)
+            org = activationKey.map(ActivationKey::getOrg)
                     .orElse(OrgFactory.getSatelliteOrg());
             if (server.getOrg() == null) {
                 server.setOrg(org);
@@ -373,12 +375,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                     new OnboardingFailed(minionId)
             );
-
-            Set<Role> roles = new HashSet<>();
-            roles.add(RoleFactory.IMAGE_ADMIN);
-            roles.add(RoleFactory.SAT_ADMIN);
-            roles.add(RoleFactory.ORG_ADMIN);
-            UserNotificationFactory.storeNotificationMessageFor(notificationMessage, roles);
+            if (org == null) {
+                UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                        Collections.singleton(RoleFactory.ORG_ADMIN));
+            } else {
+                UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                        Collections.singleton(RoleFactory.ORG_ADMIN), org);
+            }
         }
         finally {
             if (MinionPendingRegistrationService.containsMinion(minionId)) {
