@@ -1,3 +1,5 @@
+- Added custom JSON encoder in order to parse date fields correctly (bsc#1070372)
+
 -------------------------------------------------------------------
 Tue Nov 28 12:21:36 CET 2017 - jgonzalez@suse.com
 

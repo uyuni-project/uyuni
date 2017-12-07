@@ -46,6 +46,7 @@ from tempfile import mkstemp
 from textwrap import wrap
 from subprocess import Popen, PIPE
 
+
 try:
     import json
 except ImportError:
@@ -57,6 +58,14 @@ from spacecmd.optionparser import SpacecmdOptionParser
 
 
 __EDITORS = ['vim', 'vi', 'nano', 'emacs']
+
+
+class CustomJsonEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        if isinstance(obj,xmlrpclib.DateTime):
+            return datetime.fromtimestamp(time.mktime(obj.timetuple())).strftime("%F %T")
+        return json.JSONEncoder.default(self, obj)
 
 
 def parse_arguments(args, options=None, glob=True):
