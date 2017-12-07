@@ -32,6 +32,7 @@ import logging
 import xmlrpclib
 
 
+
 def help_api(self):
     print 'api: call RHN API with arguements directly'
     print '''usage: api [options] API_STRING
@@ -91,7 +92,7 @@ def do_api(self, args):
             for r in res:
                 output.write(options.format % r + "\n")
         else:
-            json_dump(res, output, indent=2)
+            json_dump(res, output, indent=2, cls=CustomJsonEncoder)
 
         if (output != sys.stdout):
             output.close()
