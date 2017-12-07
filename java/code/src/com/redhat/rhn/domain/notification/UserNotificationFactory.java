@@ -18,7 +18,6 @@ package com.redhat.rhn.domain.notification;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -85,6 +84,7 @@ public class UserNotificationFactory extends HibernateFactory {
     /**
      * Create new {@link NotificationMessage}.
      *
+     * @param notification notification data
      * @return new notificationMessage
      */
     public static NotificationMessage createNotificationMessage(NotificationData notification) {
@@ -92,6 +92,12 @@ public class UserNotificationFactory extends HibernateFactory {
         return notificationMessage;
     }
 
+    /**
+     * Stores a notification visible for the specified users.
+     *
+     * @param notificationMessageIn notification to store
+     * @param users user that should see the notification
+     */
     public static void storeForUsers(NotificationMessage notificationMessageIn, Set<User> users) {
         // save first the message to get the 'id' auto generated
         // because it is referenced by the UserNotification object
@@ -102,7 +108,15 @@ public class UserNotificationFactory extends HibernateFactory {
         Notification.spreadUpdate();
     }
 
-    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn, Set<Role> rolesIn, Org org) {
+    /**
+     * Stores a notification visible for users that match both the given roles and org.
+     *
+     * @param notificationMessageIn notification to store
+     * @param rolesIn roles to determin which users should see the notification.
+     * @param org org users need to be in to see the notification.
+     */
+    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn,
+        Set<Role> rolesIn, Org org) {
         // only users in the current Org
         // do not create notifications for non active users
         // only users with one role in the roles
@@ -111,7 +125,8 @@ public class UserNotificationFactory extends HibernateFactory {
 
         if (rolesIn.isEmpty()) {
             storeForUsers(notificationMessageIn, allUsers.collect(Collectors.toSet()));
-        } else {
+        }
+        else {
             storeForUsers(
                     notificationMessageIn,
                     allUsers.filter(user -> !Collections.disjoint(user.getRoles(), rolesIn)).collect(Collectors.toSet())
@@ -138,7 +153,8 @@ public class UserNotificationFactory extends HibernateFactory {
 
         if (rolesIn.isEmpty()) {
             storeForUsers(notificationMessageIn, allUsers.collect(Collectors.toSet()));
-        } else {
+        }
+        else {
             storeForUsers(
                     notificationMessageIn,
                     allUsers.filter(user -> !Collections.disjoint(user.getRoles(), rolesIn)).collect(Collectors.toSet())

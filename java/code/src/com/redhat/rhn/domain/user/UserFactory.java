@@ -51,7 +51,6 @@ import com.redhat.rhn.manager.session.SessionManager;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 /**
  * UserFactory  - the singleton class used to fetch and store
@@ -713,8 +712,8 @@ public  class UserFactory extends HibernateFactory {
     public List<User> findAllUsers() {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<UserImpl> criteria = builder.createQuery(UserImpl.class);
-        Root<UserImpl> root = criteria.from(UserImpl.class);
-        return getSession().createQuery(criteria).getResultList().stream().<User>map(Function.identity()).collect(Collectors.toList());
+        return getSession().createQuery(criteria).getResultList().stream()
+                .<User>map(Function.identity()).collect(Collectors.toList());
     }
 
     /**

@@ -72,12 +72,18 @@ public class JSONNotificationMessage {
         this.id = idIn;
     }
 
+    /**
+     * @return Returns the notification data.
+     */
     public NotificationData getData() {
         return data;
     }
 
-    public void setData(NotificationData data) {
-        this.data = data;
+    /**
+     * @param dataIn The notification data to set.
+     */
+    public void setData(NotificationData dataIn) {
+        this.data = dataIn;
     }
 
     /**
@@ -122,12 +128,18 @@ public class JSONNotificationMessage {
         this.modified = modifiedIn;
     }
 
+    /**
+     * @return Returns the severity.
+     */
     public NotificationMessage.NotificationMessageSeverity getSeverity() {
         return severity;
     }
 
-    public void setSeverity(NotificationMessage.NotificationMessageSeverity severity) {
-        this.severity = severity;
+    /**
+     * @param severityIn The severity to set.
+     */
+    public void setSeverity(NotificationMessage.NotificationMessageSeverity severityIn) {
+        this.severity = severityIn;
     }
 
     /**
