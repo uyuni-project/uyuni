@@ -125,26 +125,6 @@ When(/^I wait until Salt master sees "(.*?)" as "(.*?)"$/) do |minion, key_type|
     )
 end
 
-Given(/^"(.*?)" key is "(.*?)"$/) do |minion, key_type|
-  node = get_target(minion)
-  step %(I list "#{key_type}" keys at Salt Master)
-  unless $output.include?(node.hostname)
-    if key_type == 'accepted'
-      step %(I accept "#{minion}" key in the Salt master)
-    elsif key_type == 'rejected'
-      step %(I reject "#{minion}" key in the Salt master)
-    elsif key_type == 'unaccepted'
-      step %(I delete "#{minion}" key in the Salt master)
-    else
-      raise 'no valid key_type!'
-    end
-    steps %(
-      And I restart salt-minion on "#{minion}"
-      And I wait until Salt master sees "#{minion}" as "#{key_type}"
-        )
-  end
-end
-
 Then(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
   steps %(
     When I navigate to "rhn/systems/Overview.do" page
@@ -219,16 +199,14 @@ Then(/^the system should have a base channel set$/) do
   step %(I should not see a "This system has no Base Software Channel. You can select a Base Channel from the list below." text)
 end
 
-And(/^"(.*?)" is not registered in Spacewalk$/) do |host|
+Then(/^"(.*?)" should not be registered$/) do |host|
   node = get_target(host)
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
-  sid = @rpc.list_systems.select { |s| s['name'] == node.full_hostname }.map { |s| s['id'] }.first
-  @rpc.delete_system(sid) if sid
-  refute_includes(@rpc.list_systems.map { |s| s['id'] }, node.full_hostname)
+  refute_includes(@rpc.list_systems.map { |s| s['name'] }, node.full_hostname)
 end
 
-Given(/^"(.*?)" is registered in Spacewalk$/) do |host|
+Then(/^"(.*?)" should be registered$/) do |host|
   node = get_target(host)
   @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
   @rpc.login('admin', 'admin')
