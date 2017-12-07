@@ -29,7 +29,18 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  * A notification NotificationMessage Object.
@@ -85,12 +96,20 @@ public class NotificationMessage implements Serializable {
         return data;
     }
 
+    /**
+     * Set the notification specific data.
+     * @param notificationData notification data
+     */
     @Transient
     public void setNotificationData(NotificationData notificationData) {
         setType(notificationData.getType());
         setData(new Gson().toJson(notificationData));
     }
 
+    /**
+     * Get the notification specific data.
+     * @return the notification data
+     */
     @Transient
     public NotificationData getNotificationData() {
         switch (getType()) {
@@ -109,14 +128,22 @@ public class NotificationMessage implements Serializable {
         this.data = dataIn;
     }
 
+    /**
+     * Get the type of this notification.
+     * @return notification type
+     */
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "type")
     public NotificationType getType() {
         return type;
     }
 
-    public void setType(NotificationType type) {
-        this.type = type;
+    /**
+     * Sets this notifications type
+     * @param typeIn notification type
+     */
+    public void setType(NotificationType typeIn) {
+        this.type = typeIn;
     }
 
     /**

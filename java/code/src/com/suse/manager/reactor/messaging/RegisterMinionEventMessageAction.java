@@ -32,7 +32,6 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
-import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -82,7 +81,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -378,7 +376,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             if (org == null) {
                 UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
                         Collections.singleton(RoleFactory.ORG_ADMIN));
-            } else {
+            }
+            else {
                 UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
                         Collections.singleton(RoleFactory.ORG_ADMIN), org);
             }
