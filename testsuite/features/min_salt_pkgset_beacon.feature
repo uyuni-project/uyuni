@@ -18,9 +18,8 @@ Feature: System package list is updated if packages are manually installed or re
     And I reload the page until it does contain a "FINISHED" text in the table first row
 
   Scenario: Remove manually a package on a minion
-    Given "sle-minion" key is "accepted"
-    And I am on the Systems overview page of this "sle-minion"
-    When I follow "Software" in the content area
+    Given I am on the Systems overview page of this "sle-minion"
+    And I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "milkyway-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter"
@@ -29,9 +28,8 @@ Feature: System package list is updated if packages are manually installed or re
     And I click on the css "button.spacewalk-button-filter" until page does not contain "milkyway-dummy" text
 
   Scenario: Install manually a package on a minion
-    Given "sle-minion" key is "accepted"
-    And I am on the Systems overview page of this "sle-minion"
-    When I follow "Software" in the content area
+    Given I am on the Systems overview page of this "sle-minion"
+    And I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "milkyway-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter"

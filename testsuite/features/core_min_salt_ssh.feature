@@ -5,7 +5,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
 
   Scenario: No Salt package nor service are running on minion
     Given no Salt packages are installed on "ssh-minion"
-    And "ssh-minion" is not registered in Spacewalk
+    Then "ssh-minion" should not be registered
 
   Scenario: Bootstrap a SLES system managed via salt-ssh
     Given I am authorized
