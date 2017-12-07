@@ -59,6 +59,14 @@ from spacecmd.optionparser import SpacecmdOptionParser
 __EDITORS = ['vim', 'vi', 'nano', 'emacs']
 
 
+class CustomJsonEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        if isinstance(obj,xmlrpclib.DateTime):
+            return datetime.fromtimestamp(time.mktime(obj.timetuple())).strftime("%F %T")
+        return json.JSONEncoder.default(self, obj)
+
+
 def parse_arguments(args, options=None, glob=True):
     options = options or []
     try:
