@@ -464,7 +464,8 @@ The check box can be identified by name, id or label text.
 * Test registration (with XML-RPC)
 
 ```cucumber
-  Then "ssh-minion" is not registered in Spacewalk
+  Then "ssh-minion" should not be registered
+  Then "ssh-minion" should be registered
 ```
 
 * Check for base channel (with User Interface)
@@ -526,7 +527,6 @@ The check box can be identified by name, id or label text.
   When I wait until onboarding is completed for "ceos-minion"
   When I wait until salt-key "mincentos" is deleted
   Then the list of the "all" keys should contain "sle-minion" hostname
-  Then "sle-minion" key is "unaccepted"
 ```
 
 * Remote commands via Salt
