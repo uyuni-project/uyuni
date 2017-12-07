@@ -483,8 +483,8 @@ public enum SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> applyStatesAction(
             List<MinionServer> minions, List<String> mods, boolean test) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(com.suse.manager.webui.utils.salt.State.apply(
-                mods, Optional.empty(), Optional.of(true), Optional.of(test)), minions);
+        ret.put(com.suse.manager.webui.utils.salt.State.apply(mods, Optional.empty(), Optional.of(true),
+                test ? Optional.of(test) : Optional.empty()), minions);
         return ret;
     }
 
