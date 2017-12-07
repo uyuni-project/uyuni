@@ -72,7 +72,7 @@ public class RepoSyncTask extends RhnJavaJob {
                 }
                 catch (JobExecutionException e) {
                     NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                            new ChannelSyncFailed(channel.getId())
+                            new ChannelSyncFailed(channel.getId(), channel.getName())
                     );
                     if (channel.getOrg() == null) {
                         UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
@@ -87,7 +87,7 @@ public class RepoSyncTask extends RhnJavaJob {
                     log.error(e.getMessage());
                 }
                 NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                        new ChannelSyncFinished(channel.getId())
+                        new ChannelSyncFinished(channel.getId(), channel.getName())
                 );
                 if (channel.getOrg() == null) {
                     UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
