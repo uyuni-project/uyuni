@@ -158,6 +158,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -167,6 +168,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -6297,5 +6299,34 @@ public class SystemHandler extends BaseHandler {
         JSONBootstrapHosts input = new JSONBootstrapHosts(
                 host, sshPort, sshUser, sshPassword, activationKey, proxyId.longValue());
         return XmlRpcSystemHelper.getInstance().bootstrap(user, input, saltSSH);
+    }
+
+    /**
+     * Schedule highstate application for a given system.
+     *
+     * @param loggedInUser The current user
+     * @param sid The system ID of the target system
+     * @param earliestOccurrence Earliest occurrence
+     * @param test Run states in test-only (dry-run) mode
+     * @return action ID or exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule highstate application for a given system.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "sid", "The system ID of the target system")
+     * @xmlrpc.param #param_desc("dateTime.iso8601",  "earliestOccurrence", "Earliest occurrence")
+     * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only (dry-run) mode")
+     * @xmlrpc.returntype int actionId - The action ID of the scheduled action
+     */
+    public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, boolean test) {
+        try {
+            List<Long> sids = Arrays.asList(sid.longValue());
+            Action a = ActionManager.scheduleApplyHighstate(loggedInUser, sids, earliestOccurrence, Optional.of(test));
+            a = ActionFactory.save(a);
+            TASKOMATIC_API.scheduleActionExecution(a);
+            return a.getId();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 }
