@@ -224,7 +224,7 @@ public class ConfigChannelSaltManager {
     }
 
     /**
-     * Creates the contents of the init.sls for a configuration channel.
+     * Generates the contents of the init.sls for a configuration channel.
      *
      * Public for testing.
      *
@@ -278,6 +278,37 @@ public class ConfigChannelSaltManager {
         fileParams.add(singletonMap("makedirs", true));
         fileParams.addAll(getModeParams(file.getLatestConfigRevision().getConfigInfo()));
         return fileParams;
+    }
+
+    private ConfigFile getInitSlsFileForChannel(ConfigChannel channel) {
+        return channel.getConfigFiles().stream()
+                .filter(f -> "/init.sls".equals(f.getConfigFileName().getPath()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("init.sls file not found."));
+    }
+
+    /**
+     * Gets init.sls file content for a config channel.
+     *
+     * @param channel the channel
+     * @return the channel state content
+     */
+    public String getChannelStateContent(ConfigChannel channel) {
+        String content;
+        if (channel.isStateChannel()) {
+            content = getInitSlsFileForChannel(channel)
+                    .getLatestConfigRevision()
+                    .getConfigContent()
+                    .getContentsString();
+        }
+        else if (channel.isNormalChannel()) {
+            content = this.configChannelInitSLSContent(channel);
+        }
+        else {
+            throw new IllegalArgumentException("Invalid ConfigChannel type.");
+        }
+
+        return content;
     }
 
     /**

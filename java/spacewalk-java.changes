@@ -1,6 +1,7 @@
 - Uniform date formatting in System Details view (bsc#1045289)
 - Remove previous activation keys when migrating to salt (bsc#1031081)
 - Handle gpg_check correctly (bsc#1076578)
+- Replace custom states with configuration channels
 - Hide ownership/permission fields from create/upload config file forms for state channels (bsc#1072153)
 - Hide files from state channels from deploy/compare file lists (bsc#1072160)
 - Disable and hide deploy files tab for state config channels (bsc#1072157)

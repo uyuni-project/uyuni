@@ -116,7 +116,7 @@ public class ConfigurationManager extends BaseManager {
     }
 
     /**
-     * Saves the ConfigChannel and updates its salt file hierarchy on the disk.
+     * Saves the ConfigChannel and updates its salt file hierarchy and the assignment states on the disk.
      *
      * @param cc the config channel to save.
      * @param channelOldLabel - the label of the channel before the change.
@@ -1416,7 +1416,7 @@ public class ConfigurationManager extends BaseManager {
         StateFactory.StateRevisionsUsage usage =
                 StateFactory.latestStateRevisionsByConfigChannel(channel);
         ConfigurationFactory.removeConfigChannel(channel);
-        SaltStateGeneratorService.INSTANCE.regenerateCustomStates(usage);
+        SaltStateGeneratorService.INSTANCE.regenerateConfigStates(usage);
     }
 
     /**

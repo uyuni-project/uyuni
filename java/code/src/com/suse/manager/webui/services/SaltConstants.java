@@ -35,6 +35,6 @@ public class SaltConstants {
 
     public static final String SALT_SERVER_STATE_FILE_PREFIX = "custom_";
 
-    public static final String SALT_CUSTOM_STATES_DIR = "custom";
+    public static final String SALT_CONFIG_STATES_DIR = "custom";
 
 }
