@@ -2761,6 +2761,9 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="Highstate">
         <source>Highstate</source>
       </trans-unit>
+      <trans-unit id="Configuration Channels">
+          <source>Configuration Channels</source>
+      </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.minions">
         <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
         <context-group name="ctx">

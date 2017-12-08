@@ -34,6 +34,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Types;
@@ -341,6 +344,22 @@ public class ConfigurationFactory extends HibernateFactory {
         // about a revision, we have to commit it -again-.  Sigh.  See BZ212236
         save(revision);
         return revision;
+    }
+
+    /**
+     * Retrieves a list of global (normal and state) config channels in an organization
+     *
+     * @param org the org
+     * @return the list of global config channels
+     */
+    public static List<ConfigChannel> listGlobalChannels(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ConfigChannel> criteria = builder.createQuery(ConfigChannel.class);
+        Root<ConfigChannel> root = criteria.from(ConfigChannel.class);
+        criteria.where(builder.and(
+                root.get("configChannelType").in(ConfigChannelType.normal(), ConfigChannelType.state()),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
     }
 
     /**

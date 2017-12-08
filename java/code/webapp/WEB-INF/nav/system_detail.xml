@@ -210,7 +210,7 @@
     <rhn-tab name="Packages">
       <rhn-tab-url>/rhn/manager/systems/details/packages</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Custom">
+    <rhn-tab name="Configuration Channels">
       <rhn-tab-url>/rhn/manager/systems/details/custom</rhn-tab-url>
      </rhn-tab>
   </rhn-tab>

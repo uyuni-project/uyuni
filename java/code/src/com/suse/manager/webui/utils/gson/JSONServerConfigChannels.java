@@ -17,16 +17,16 @@ package com.suse.manager.webui.utils.gson;
 import java.util.Set;
 
 /**
- * JSON representation of a server and a list of custom Salt states.
+ * JSON representation of a server and a list of Salty config channels.
  */
-public class JSONServerCustomStates {
+public class JSONServerConfigChannels {
 
     /** Server id */
     private long id;
 
     private StateTargetType type;
 
-    private Set<JSONCustomState> saltStates;
+    private Set<JSONConfigChannel> channels;
 
     /**
      * @return the sever id
@@ -45,8 +45,8 @@ public class JSONServerCustomStates {
     /**
      * @return the custom Salt states
      */
-    public Set<JSONCustomState> getSaltStates() {
-        return saltStates;
+    public Set<JSONConfigChannel> getChannels() {
+        return channels;
     }
 
 

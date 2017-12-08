@@ -1,3 +1,4 @@
+- Replace custom states with configuration channels
 - Adapt labels in config channel overview page for state channels
 
 -------------------------------------------------------------------

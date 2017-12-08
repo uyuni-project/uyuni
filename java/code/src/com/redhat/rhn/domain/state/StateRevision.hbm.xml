@@ -12,21 +12,13 @@
             <one-to-many class="com.redhat.rhn.domain.state.PackageState"/>
         </set>
 
-        <set name="customStates" lazy="true" table="suseStateRevisionCustomState"
-             cascade="save-update" >
-            <key column="state_revision_id"/>
-            <many-to-many
-                    class="com.redhat.rhn.domain.state.CustomState"
-                    column="state_id"/>
-        </set>
-
-        <set name="configChannels" lazy="true" table="suseStateRevisionConfigChannel"
+        <bag name="configChannels" lazy="true" table="suseStateRevisionConfigChannel"
              cascade="save-update" >
             <key column="state_revision_id"/>
             <many-to-many
                     class="com.redhat.rhn.domain.config.ConfigChannel"
                     column="config_channel_id"/>
-        </set>
+        </bag>
 
         <property name="created" column="created" type="timestamp" insert="false" update="false"/>
         <many-to-one name="creator" column="creator_id" class="com.redhat.rhn.domain.user.legacy.UserImpl" lazy="proxy"/>
