@@ -47,6 +47,8 @@ Avoid "computing style" (abbreviations, snake case and camel case.
 
 Avoid the obvious like "Check", "Test", "SUSE Manager", "Spacewalk", etc.
 
+Avoid "is" like in ```And "sle-minion" is not registered```. Make it clear whether this is a test ```And "sle-minion" should be registered``` or an action ```And I unregister "sle-minion"``` by using either "should" or "I".
+
 Please use the correct capitalization for products (SLES, SUSE, Salt, zypper, etc.)
 
 Avoid reinventing function names and variables. Cucumber is all about human-readable text, factorizing or other things that make a computer program efficient are second class citizens with Cucumber.
