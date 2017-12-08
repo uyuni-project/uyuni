@@ -275,3 +275,4 @@ rhnISSSlaveOrgs                :: rhnISSSlave web_customer
 rhnISSMasterOrgs               :: rhnISSMaster web_customer
 rhnChildChannelArchCompat      :: rhnChannelArch
 rhnResetPassword               :: web_contact
+suseUserNotification           :: suseNotificationMessage web_contact

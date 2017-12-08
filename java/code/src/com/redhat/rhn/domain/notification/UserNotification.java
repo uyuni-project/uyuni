@@ -70,7 +70,7 @@ public class UserNotification {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unsg_seq")
-    @SequenceGenerator(name = "unsg_seq", sequenceName = "suse_user_notification_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "unsg_seq", sequenceName = "suse_user_notif_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
