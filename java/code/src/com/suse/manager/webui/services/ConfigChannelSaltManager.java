@@ -83,6 +83,21 @@ public class ConfigChannelSaltManager {
     }
 
     /**
+     * Store the salt file structure for a list of config channels on the disk.
+     *
+     * @param channelList - the list of config channels
+     * @throws IOException in case of an IO error
+     */
+    public void generateConfigChannelFiles(List<ConfigChannel> channelList) {
+        channelList.forEach(cc -> {
+            // Generate config files in the filesystem for salt state application
+            if (!this.areFilesGenerated(cc)) {
+                this.generateConfigChannelFiles(cc);
+            }
+        });
+    }
+
+    /**
      * Store the salt file structure for a config channel on the disk.
      * Removes the old hierarchy in case the label has been changed.
      *

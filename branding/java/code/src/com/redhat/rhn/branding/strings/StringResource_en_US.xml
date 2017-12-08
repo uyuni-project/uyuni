@@ -2867,6 +2867,18 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="ssm.delete.systems.cancel">
           <source>Cancel</source>
       </trans-unit>
+      <trans-unit id="unsubscribe.ssm.success">
+        <source>System successfully unsubscribed from configuration channels.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="unsubscribe.ssm.successes">
+        <source>Systems successfully unsubscribed from configuration channels.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
+        </context-group>
+      </trans-unit>
 
     </body>
   </file>

@@ -898,7 +898,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         s.subscribeConfigChannel(ConfigTestUtils.createConfigChannel(user.getOrg()), user);
         s.subscribeConfigChannel(ConfigTestUtils.createConfigChannel(user.getOrg()), user);
         ServerFactory.save(s);
-        assertTrue(s.unsubscribeConfigChannel(cc, user));
+        s.unsubscribeConfigChannel(cc, user);
         ServerFactory.save(s);
         s = TestUtils.reload(s);
         assertEquals(2, s.getConfigChannelCount());
