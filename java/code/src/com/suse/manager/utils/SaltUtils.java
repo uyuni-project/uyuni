@@ -433,7 +433,7 @@ public class SaltUtils {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
 
             // Revisit the action status if test=true
-            if (applyStatesAction.getDetails().getTest() && success && retcode == 0) {
+            if (applyStatesAction.getDetails().isTest() && success && retcode == 0) {
                 serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
             }
 
@@ -461,7 +461,7 @@ public class SaltUtils {
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
                 message = "Failed to apply state(s): " + states;
             }
-            if (applyStatesAction.getDetails().getTest()) {
+            if (applyStatesAction.getDetails().isTest()) {
                 message += " (test-mode)";
             }
             serverAction.setResultMsg(message);
