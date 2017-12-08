@@ -402,7 +402,7 @@ public enum SaltServerActionService {
             List<MinionServer> minions, PackageUpdateAction action) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
-                d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
+                d -> d.getPackageName().getName(), d -> d.getEvr().toString(), (a, b)-> a));
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGINSTALL),
                 Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs)),
                 Optional.of(true)), minions);
@@ -413,7 +413,7 @@ public enum SaltServerActionService {
             List<MinionServer> minions, PackageRemoveAction action) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         Map<String, String> pkgs = action.getDetails().stream().collect(Collectors.toMap(
-                d -> d.getPackageName().getName(), d -> d.getEvr().toString()));
+                d -> d.getPackageName().getName(), d -> d.getEvr().toString(), (a, b)-> a));
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGREMOVE),
                 Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs)),
                 Optional.of(true)), minions);
