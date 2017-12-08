@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.org.usergroup.UserGroup;
@@ -37,6 +38,8 @@ import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.configuration.SaltConfigSubscriptionService;
+import com.redhat.rhn.manager.configuration.SaltConfigurable;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -60,7 +63,7 @@ import java.util.Set;
  * web_customer
  * @version $Rev:67468 $
  */
-public class Org extends BaseDomainHelper {
+public class Org extends BaseDomainHelper implements SaltConfigurable {
 
     private static final String USER_ID_KEY = "user_id";
     private static final String ORG_ID_KEY = "org_id";
@@ -462,6 +465,30 @@ public class Org extends BaseDomainHelper {
         }
 
         return addonEntitlements;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void subscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        SaltConfigSubscriptionService.subscribeChannels(this, configChannelList, user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void unsubscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        SaltConfigSubscriptionService.unsubscribeChannels(this, configChannelList, user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        SaltConfigSubscriptionService.setConfigChannels(this, configChannelList, user);
     }
 
     /**

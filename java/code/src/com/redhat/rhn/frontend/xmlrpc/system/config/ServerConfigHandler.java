@@ -34,6 +34,7 @@ import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -558,11 +559,12 @@ public class ServerConfigHandler extends BaseHandler {
                 lookupGlobals(loggedInUser, configChannelLabels);
 
         // Check if all the channels are successfully unsubscribed
-        boolean success = servers.stream().map(
-                s -> s.unsubscribeConfigChannels(channels, loggedInUser) == channels.size())
-                .reduce(true, (a, b) -> a && b);
+        int channelCount = configChannelLabels.size();
+        int[] countsExpected = servers.stream().mapToInt(s -> s.getConfigChannelCount() - channelCount).toArray();
 
-        return success ? 1 : 0;
+        servers.forEach(s -> s.unsubscribeConfigChannels(channels, loggedInUser));
 
+        int[] countsActual = servers.stream().mapToInt(Server::getConfigChannelCount).toArray();
+        return Arrays.equals(countsExpected, countsActual) ? 1 : 0;
     }
 }
