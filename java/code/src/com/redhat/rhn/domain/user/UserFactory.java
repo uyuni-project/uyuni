@@ -712,6 +712,7 @@ public  class UserFactory extends HibernateFactory {
     public List<User> findAllUsers() {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<UserImpl> criteria = builder.createQuery(UserImpl.class);
+        criteria.from(UserImpl.class);
         return getSession().createQuery(criteria).getResultList().stream()
                 .<User>map(Function.identity()).collect(Collectors.toList());
     }
