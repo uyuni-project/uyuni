@@ -137,7 +137,7 @@ public class ApplyStatesActionDetails extends ActionChild {
     /**
      * @return the value of test
      */
-    public boolean getTest() {
+    public boolean isTest() {
         return test;
     }
 

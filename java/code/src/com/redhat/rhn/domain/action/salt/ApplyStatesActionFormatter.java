@@ -40,7 +40,7 @@ public class ApplyStatesActionFormatter extends ActionFormatter {
         String states = actionDetails.getMods().isEmpty() ? "highstate" :
                 actionDetails.getMods().stream().collect(Collectors.joining(", "));
         String ret = "Apply states (" + states + ")";
-        if (actionDetails.getTest()) {
+        if (actionDetails.isTest()) {
             ret += " in test-mode";
         }
         return ret;
