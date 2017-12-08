@@ -35,7 +35,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-import static com.suse.manager.webui.services.SaltConstants.SALT_CUSTOM_STATES_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
 
@@ -102,8 +102,7 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                             rev.setOrg(org);
                             return rev;
                         });
-                SaltStateGeneratorService.INSTANCE.generateOrgCustomState(orgRev,
-                        tempSaltRootPath);
+                SaltStateGeneratorService.INSTANCE.generateConfigState(orgRev, tempSaltRootPath);
 
                 List<ManagedServerGroup> groups = ServerGroupFactory
                         .listManagedGroups(org);
@@ -116,17 +115,15 @@ public class RefreshGeneratedSaltFilesEventMessageAction extends AbstractDatabas
                                 rev.setGroup(group);
                                 return rev;
                             });
-                    SaltStateGeneratorService.INSTANCE.generateGroupCustomState(
-                            groupRev, tempSaltRootPath);
+                    SaltStateGeneratorService.INSTANCE.generateConfigState(groupRev, tempSaltRootPath);
                 }
             }
 
-            Path saltPath = suseManagerStatesFilesRoot.resolve(
-                    SALT_CUSTOM_STATES_DIR);
+            Path saltPath = suseManagerStatesFilesRoot.resolve(SALT_CONFIG_STATES_DIR);
             Path oldSaltPath = saltGenerationTempDir.resolve(
-                    SALT_CUSTOM_STATES_DIR + "_todelete");
+                    SALT_CONFIG_STATES_DIR + "_todelete");
             Path tempCustomPath = tempSaltRootPath
-                    .resolve(SALT_CUSTOM_STATES_DIR);
+                    .resolve(SALT_CONFIG_STATES_DIR);
 
             // copy /srv/susemanager/salt/custom/custom_*.sls
             // to /srv/susemanager/tmpXXXX/salt/custom

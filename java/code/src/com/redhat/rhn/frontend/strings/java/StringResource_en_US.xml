@@ -747,12 +747,6 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="Custom States">
-        <source>Custom States</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Quota">
         <source>Quota</source>
         <context-group name="ctx">

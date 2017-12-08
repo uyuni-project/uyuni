@@ -76,7 +76,7 @@ public class MenuTree {
                     .addChild(new MenuItem("Organization Trusts").withPrimaryUrl("/rhn/multiorg/Organizations.do")
                         .withAltUrl("/rhn/multiorg/OrgTrustDetails.do").withAltUrl("/rhn/multiorg/channels/Consumed.do")
                         .withAltUrl("/rhn/multiorg/channels/Provided.do").withVisibility(adminRoles.get("org")))
-                    .addChild(new MenuItem("Custom States").withPrimaryUrl("/rhn/manager/yourorg/custom").withVisibility(adminRoles.get("org")))
+                    .addChild(new MenuItem("Configuration Channels").withPrimaryUrl("/rhn/manager/yourorg/custom").withVisibility(adminRoles.get("org")))
                     .withVisibility(adminRoles.get("org"))));
 
             // Systems

@@ -130,7 +130,7 @@ public class MinionController {
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView yourOrgCustomStates(Request request, Response response,
+    public static ModelAndView yourOrgConfigChannels(Request request, Response response,
                                                    User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("orgId", user.getOrg().getId());
@@ -146,7 +146,7 @@ public class MinionController {
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView serverGroupCustomStates(Request request, Response response,
+    public static ModelAndView serverGroupConfigChannels(Request request, Response response,
                                                        User user) {
         String orgId = request.queryParams("sgid");
         Map<String, Object> data = new HashMap<>();

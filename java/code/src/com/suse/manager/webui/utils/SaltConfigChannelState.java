@@ -15,23 +15,21 @@
 package com.suse.manager.webui.utils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
- * YAML generator for the Salt Custom State.
+ * YAML generator for the Salt config channels.
  */
-public class SaltCustomState implements SaltState {
+public class SaltConfigChannelState implements SaltState {
 
-    private Set<String> includedStates = new HashSet<>();
+    private List<String> includedStates = new ArrayList<>();
 
     /**
      * @param includedStatesIn the states to be included
      */
-    public SaltCustomState(Set<String> includedStatesIn) {
+    public SaltConfigChannelState(List<String> includedStatesIn) {
         this.includedStates = includedStatesIn;
     }
 
@@ -43,15 +41,14 @@ public class SaltCustomState implements SaltState {
     @Override
     public Map<String, Object> getData() {
         Map<String, Object> state = new LinkedHashMap<>();
-        List<String> included = new ArrayList<>(includedStates);
-        state.put("include", included);
+        state.put("include", new ArrayList<>(includedStates));
         return state;
     }
 
     /**
      * @return the included states
      */
-    public Set<String> getIncludedStates() {
+    public List<String> getIncludedStates() {
         return includedStates;
     }
 }

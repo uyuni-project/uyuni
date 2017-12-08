@@ -17,21 +17,18 @@ package com.suse.manager.webui.controllers;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
-import com.redhat.rhn.domain.state.CustomState;
-import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
@@ -39,6 +36,8 @@ import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.configuration.SaltConfigurable;
+import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.google.gson.Gson;
@@ -51,6 +50,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.utils.MinionServerUtils;
@@ -68,11 +68,11 @@ import com.suse.manager.webui.utils.SaltPkgRemoved;
 import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
-import com.suse.manager.webui.utils.gson.JSONCustomState;
+import com.suse.manager.webui.utils.gson.JSONConfigChannel;
 import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerApplyHighstate;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
-import com.suse.manager.webui.utils.gson.JSONServerCustomStates;
+import com.suse.manager.webui.utils.gson.JSONServerConfigChannels;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
@@ -134,10 +134,25 @@ public class StatesAPI {
      */
     public static String packages(Request request, Response response) {
         String serverId = request.queryParams("sid");
-        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
+        MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(Long.valueOf(serverId)));
 
         response.type("application/json");
         return GSON.toJson(latestPackageStatesJSON(server));
+    }
+
+    /**
+     * Get the content of the state for the given channel.
+     * @param request the http request
+     * @param response the http response
+     * @param user the current user
+     * @return the content of the state as a string
+     */
+    public static String stateContent(Request request, Response response, User user) {
+        Long channelId = Long.valueOf(request.params("channelId"));
+        ConfigChannel channel = ConfigurationManager.getInstance().lookupConfigChannel(user, channelId);
+        String content = ConfigChannelSaltManager.getInstance().getChannelStateContent(channel);
+        response.type("text/plain");
+        return content;
     }
 
     /**
@@ -155,7 +170,7 @@ public class StatesAPI {
         // TODO add org,group support
 
         // Find matches among this server's current packages states
-        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
+        MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(Long.valueOf(serverId)));
         Set<JSONPackageState> matching = latestPackageStatesJSON(server).stream()
                 .filter(p -> p.getName().toLowerCase().contains(targetLowerCase))
                 .collect(Collectors.toSet());
@@ -174,8 +189,8 @@ public class StatesAPI {
     }
 
     /**
-     * Find matches among this server's current custom states as well as among the
-     * custom states of the organization and convert to JSON.
+     * Find matches among this server's current config channels as well as among the
+     * config channels of the organization and convert to JSON.
      *
      * @param request the request object
      * @param response the response object
@@ -188,134 +203,110 @@ public class StatesAPI {
         StateTargetType type = StateTargetType.valueOf(request.queryParams("type"));
         long id = Long.valueOf(request.queryParams("id"));
 
-        Optional<Set<CustomState>> saltStates = handleTarget(type, id,
-            (serverId) -> {
-                Server server = ServerFactory.lookupById(id);
-                return StateFactory.latestCustomStates(server);
-            },
-            (groupId) -> {
-                ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id,
-                        user.getOrg()); // TODO is org really needed here?
-                return StateFactory.latestCustomStates(group);
-            },
-            (orgId) -> {
-                Org org = OrgFactory.lookupById(id);
-                return StateFactory.latestCustomStates(org);
-            }
-        );
+        // Lookup assigned states
+        List<ConfigChannel> assignedStates = handleTarget(type, id,
+                (serverId) -> {
+                    MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(id));
+                    return StateFactory.latestConfigChannels(server);
+                },
+                (groupId) -> {
+                    ServerGroup group = getEntityIfExists(ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()));
+                    return StateFactory.latestConfigChannels(group);
+                },
+                (orgId) -> {
+                    Org org = getEntityIfExists(OrgFactory.lookupById(id));
+                    return StateFactory.latestConfigChannels(org);
+                }
+        ).orElseGet(Collections::emptyList).stream()
+                .filter(c -> c.getName().toLowerCase().contains(targetLowerCase))
+                .collect(Collectors.toList());
 
         // Find matches among this currently assigned salt states
-        Set<JSONCustomState> result = new HashSet<>(); // use a set to avoid duplicates
+        Set<JSONConfigChannel> result = new HashSet<>(); // use a set to avoid duplicates
 
-        result.addAll(saltStates.orElseGet(Collections::emptySet).stream()
-                .filter(s -> s.getStateName().toLowerCase().contains(targetLowerCase))
-                .map(s -> new JSONCustomState(s.getStateName(), true))
-                .collect(Collectors.toList()));
+        result.addAll(JSONConfigChannel.listOrdered(assignedStates));
 
-        // Find matches among available catalog states
-        result.addAll(SaltService.INSTANCE.getCatalogStates(user.getOrg().getId())
-                .stream()
-                .filter(s -> s.toLowerCase().contains(targetLowerCase))
-                .map(s -> new JSONCustomState(s, false))
-                .collect(Collectors.toList()));
+        // Find matches among available channels
+        ConfigurationFactory.listGlobalChannels(user.getOrg()).stream()
+                .filter(s -> s.getName().toLowerCase().contains(targetLowerCase))
+                .map(JSONConfigChannel::new)
+                .forEach(result::add);
 
         return json(response, result);
     }
 
     /**
      * Save a new state revision for a server based on the latest existing revision and an
-     * incoming list of changed custom states assignments.
+     * incoming list of changed config channel assignments.
      *
      * @param request the request object
      * @param response the response object
      * @param user the current user
      * @return null to make spark happy
      */
-    public static String saveCustomStates(Request request, Response response,
-                                          User user) {
-        JSONServerCustomStates json = GSON.fromJson(request.body(),
-                JSONServerCustomStates.class);
+    public static String saveConfigChannels(Request request, Response response, User user) {
+        ConfigurationManager configManager = ConfigurationManager.getInstance();
+        JSONServerConfigChannels json = GSON.fromJson(request.body(), JSONServerConfigChannels.class);
 
-        // Merge the latest salt states with the changes
-        Set<String> toAssign = json.getSaltStates().stream()
-                .filter(s -> s.isAssigned())
-                .map(s -> s.getName())
-                .collect(Collectors.toSet());
-        Set<String> toRemove = json.getSaltStates().stream()
-                .filter(s -> !s.isAssigned())
-                .map(s -> s.getName())
-                .collect(Collectors.toSet());
+        List<ConfigChannel> channels = json.getChannels().stream()
+                .sorted((a, b) -> a.getPosition() - b.getPosition())
+                .map(j -> configManager.lookupConfigChannel(user, j.getId()))
+                .collect(Collectors.toList());
 
         try {
-
-            StateRevision newRevision = handleTarget(
-                    json.getTargetType(), json.getTargetId(),
+            SaltConfigurable entity = handleTarget(json.getTargetType(), json.getTargetId(),
                 (serverId) -> {
-                    Server server = ServerFactory.lookupById(serverId);
-                    checkUserHasPermissionsOnServer(server, user);
-
-                    // clone any existing package states
-                    ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
-                            .cloneLatest(server, user, true, false);
-
-                    // merge existing states with incoming selections
-                    mergeStates(newServerRevision,
-                            StateFactory.latestCustomStates(server),
-                            toRemove,
-                            toAssign);
-                    // assign any remaining new selection
-                    assignNewStates(user, newServerRevision, toAssign);
-                    SaltStateGeneratorService.INSTANCE
-                            .generateServerCustomState(newServerRevision);
-                    return newServerRevision;
+                        MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(serverId));
+                        checkUserHasPermissionsOnServer(server, user);
+                        return server;
                 },
                 (groupId) -> {
-                    ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(
-                            groupId, user.getOrg()); // TODO is org really needed here ?
-                    checkUserHasPermissionsOnServerGroup(user, group);
-
-                    ServerGroupStateRevision newGroupRevision =
-                            StateRevisionService.INSTANCE
-                                    .cloneLatest(group, user, true, false);
-
-                    mergeStates(newGroupRevision,
-                            StateFactory.latestCustomStates(group),
-                            toRemove,
-                            toAssign);
-                    assignNewStates(user, newGroupRevision, toAssign);
-                    SaltStateGeneratorService.INSTANCE
-                            .generateGroupCustomState(newGroupRevision);
-                    return newGroupRevision;
+                        ServerGroup group =
+                                getEntityIfExists(ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg()));
+                        checkUserHasPermissionsOnServerGroup(user, group);
+                        return group;
                 },
                 (orgId) -> {
-                    Org org = OrgFactory.lookupById(json.getTargetId());
-                    checkUserHasPermissionsOnOrg(org);
-
-                    OrgStateRevision newOrgRevision = StateRevisionService.INSTANCE
-                            .cloneLatest(org, user, true, false);
-
-                    mergeStates(newOrgRevision,
-                            StateFactory.latestCustomStates(org),
-                            toRemove,
-                            toAssign);
-                    assignNewStates(user, newOrgRevision, toAssign);
-                    SaltStateGeneratorService.INSTANCE
-                            .generateOrgCustomState(newOrgRevision);
-                    return newOrgRevision;
+                        Org org = getEntityIfExists(OrgFactory.lookupById(json.getTargetId()));
+                        checkUserHasPermissionsOnOrg(org);
+                        return org;
                 }
             );
-
-            StateFactory.save(newRevision);
-
-            return json(response, newRevision.getCustomStates()
-                    .stream().map(s -> new JSONCustomState(s.getStateName(), true))
-                    .collect(Collectors.toSet()));
+            entity.setConfigChannels(channels, user);
+            StateRevision revision = StateRevisionService.INSTANCE.getLatest(entity).get();
+            return json(response, JSONConfigChannel.listOrdered(revision.getConfigChannels()));
         }
         catch (Throwable t) {
             LOG.error(t.getMessage(), t);
             response.status(500);
             return "{}";
         }
+    }
+
+    /**
+     * Checks if the given {@link Optional<T>} has value and unwraps it, otherwise halts Spark with a 404 status.
+     * @param entity entity to check
+     * @param <T> type of the entity
+     * @return unwrapped entity of type T
+     */
+    private static <T> T getEntityIfExists(Optional<T> entity) {
+        return entity.orElseGet(() -> {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+            return null;
+        });
+    }
+
+    /**
+     * Checks if the given {@link T} is not null and returns it for chaining, otherwise halts Spark with a 404 status.
+     * @param entity entity to check
+     * @param <T> type of the entity
+     * @return given entity of type {@link T}
+     */
+    private static <T> T getEntityIfExists(T entity) {
+        if (entity == null) {
+            Spark.halt(HttpStatus.SC_NOT_FOUND);
+        }
+        return entity;
     }
 
     private static void checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
@@ -329,7 +320,7 @@ public class StatesAPI {
         }
     }
 
-    private static void checkUserHasPermissionsOnServer(Server server, User user) {
+    private static void checkUserHasPermissionsOnServer(MinionServer server, User user) {
         if (!SystemManager.isAvailableToUser(user, server.getId())) {
             Spark.halt(HttpStatus.SC_FORBIDDEN);
         }
@@ -337,29 +328,6 @@ public class StatesAPI {
 
     private static void checkUserHasPermissionsOnOrg(Org org) {
         // TODO
-    }
-
-    private static void mergeStates(StateRevision newRevision,
-                                    Optional<Set<CustomState>> latestStates,
-                                    Set<String> toRemove,
-                                    Set<String> toAssign) {
-        latestStates.ifPresent(oldStates -> {
-            for (CustomState oldState : oldStates) {
-                if (!toRemove.contains(oldState.getStateName())) {
-                    newRevision.getCustomStates().add(oldState);
-                    toAssign.remove(oldState.getStateName()); // state already assigned
-                }
-            }
-        });
-    }
-
-    private static void assignNewStates(User user, StateRevision newRevision,
-                                        Set<String> toAssign) {
-        for (String newStateName : toAssign) {
-            Optional<CustomState> newState = StateFactory
-                    .getCustomStateByName(user.getOrg().getId(), newStateName);
-            newState.ifPresent(s -> newRevision.getCustomStates().add(s));
-        }
     }
 
     /**
@@ -375,7 +343,7 @@ public class StatesAPI {
         response.type("application/json");
         JSONServerPackageStates json = GSON.fromJson(request.body(),
                 JSONServerPackageStates.class);
-        Server server = ServerFactory.lookupById(json.getServerId());
+        MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(json.getServerId()));
         checkUserHasPermissionsOnServer(server, user);
 
         // Create a new state revision for this server
@@ -386,11 +354,10 @@ public class StatesAPI {
         json.getPackageStates().addAll(latestPackageStatesJSON(server));
 
         // Add only valid states to the new revision, unmanaged packages will be skipped
-        json.getPackageStates().stream().forEach(pkgState ->
-                 pkgState.convertToPackageState().ifPresent(s -> {
-                     s.setStateRevision(state);
-                     state.addPackageState(s);
-                 }));
+        json.getPackageStates().forEach(pkgState -> pkgState.convertToPackageState().ifPresent(s -> {
+            s.setStateRevision(state);
+            state.addPackageState(s);
+        }));
         try {
             StateFactory.save(state);
             generateServerPackageState(server);
@@ -446,7 +413,7 @@ public class StatesAPI {
      * In the case of server groups the "custom.group_[id]" state
      * is applied instead of "custom_groups".
      * This is because the user wants to apply only the
-     * custom states assigned to one group, not all the states of all
+     * config channels assigned to one group, not all the states of all
      * the groups of which a minion might be member of.
      *
      * @param request the request object
@@ -466,7 +433,7 @@ public class StatesAPI {
             ApplyStatesAction scheduledAction = handleTarget(json.getTargetType(),
                     json.getTargetId(),
                     (serverId) -> {
-                        Server server = ServerFactory.lookupById(json.getTargetId());
+                        MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(json.getTargetId()));
                         checkUserHasPermissionsOnServer(server, user);
                         ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
                                 Arrays.asList(json.getTargetId()), json.getStates(),
@@ -474,12 +441,11 @@ public class StatesAPI {
                         return action;
                     },
                     (groupId) -> {
-                        ServerGroup group = ServerGroupFactory
-                                .lookupByIdAndOrg(json.getTargetId(), user.getOrg());
+                        ServerGroup group = getEntityIfExists(
+                                ServerGroupFactory.lookupByIdAndOrg(json.getTargetId(), user.getOrg()));
                         checkUserHasPermissionsOnServerGroup(user, group);
-                        List<Server> groupServers = ServerGroupFactory.listServers(group);
                         List<Long> minionServerIds = MinionServerUtils
-                                .filterSaltMinions(groupServers)
+                                .filterSaltMinions(ServerGroupFactory.listServers(group))
                                 .stream().map(s -> s.getId())
                                 .collect(Collectors.toList());
 
@@ -497,7 +463,7 @@ public class StatesAPI {
                         return action;
                     },
                     (orgId) -> {
-                        Org org = OrgFactory.lookupById(json.getTargetId());
+                        Org org = getEntityIfExists(OrgFactory.lookupById(json.getTargetId()));
                         checkUserHasPermissionsOnOrg(org);
                         List<Long> minionServerIds = MinionServerFactory
                                 .lookupByOrg(org.getId()).stream()
@@ -560,7 +526,7 @@ public class StatesAPI {
      * @param server the server
      * @return the current set of package states
      */
-    private static Set<JSONPackageState> latestPackageStatesJSON(Server server) {
+    private static Set<JSONPackageState> latestPackageStatesJSON(MinionServer server) {
         return convertToJSON(StateFactory.latestPackageStates(server)
                 .orElse(Collections.emptySet()));
     }
@@ -591,7 +557,7 @@ public class StatesAPI {
      *
      * @param server the server
      */
-    public static void generateServerPackageState(Server server) {
+    public static void generateServerPackageState(MinionServer server) {
         LOG.debug("Generating package state SLS file for: " + server.getId());
         Set<PackageState> packageStates = StateFactory
                 .latestPackageStates(server)
@@ -650,7 +616,7 @@ public class StatesAPI {
      * @param server the server
      */
     @SuppressWarnings("unused")
-    private void importPackageStates(Server server) {
+    private void importPackageStates(MinionServer server) {
         ServerStateRevision serverRev =  new ServerStateRevision();
         serverRev.setServer(server);
         Stream<PackageState> packageStateStream = server.getPackages().stream().map(pkg -> {

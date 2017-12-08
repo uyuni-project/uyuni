@@ -44,7 +44,7 @@ public class SaltConfigSubscriptionService {
         StateRevision revision = StateRevisionService.INSTANCE.cloneLatest(entity, user, true, true);
         revision.getConfigChannels().removeAll(channels);
         revision.getConfigChannels().addAll(channels);
-        SaltStateGeneratorService.INSTANCE.generateCustomState(revision);
+        SaltStateGeneratorService.INSTANCE.generateConfigState(revision);
         StateFactory.save(revision);
         ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(channels);
         return revision;
@@ -61,7 +61,7 @@ public class SaltConfigSubscriptionService {
     public static StateRevision unsubscribeChannels(SaltConfigurable entity, List<ConfigChannel> channels, User user) {
         StateRevision revision = StateRevisionService.INSTANCE.cloneLatest(entity, user, true, true);
         revision.getConfigChannels().removeAll(channels);
-        SaltStateGeneratorService.INSTANCE.generateCustomState(revision);
+        SaltStateGeneratorService.INSTANCE.generateConfigState(revision);
         StateFactory.save(revision);
         return revision;
     }
@@ -77,7 +77,7 @@ public class SaltConfigSubscriptionService {
     public static StateRevision setConfigChannels(SaltConfigurable entity, List<ConfigChannel> channels, User user) {
         StateRevision revision = StateRevisionService.INSTANCE.cloneLatest(entity, user, true, false);
         revision.getConfigChannels().addAll(channels);
-        SaltStateGeneratorService.INSTANCE.generateCustomState(revision);
+        SaltStateGeneratorService.INSTANCE.generateConfigState(revision);
         StateFactory.save(revision);
         ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(channels);
         return revision;

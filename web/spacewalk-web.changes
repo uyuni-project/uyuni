@@ -1,3 +1,4 @@
+- Replace custom states with configuration channels
 - Add 'yaml' option for Ace editor
 - Add links to salt formula list and adjust behavior. (bsc#1022078)
 - Allow selecting unnamed context in kubeconfig (bsc#1073482)
