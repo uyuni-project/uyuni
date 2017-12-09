@@ -149,7 +149,7 @@ class Database(sql_base.Database):
         if not (self.username and self.database):
             raise AttributeError("PostgreSQL requires at least a user and database name.")
 
-        if host is None or host == '' or host == 'local':
+        if host is None or host == '' or host == 'localhost':
             self.host = None
             self.port = None
         else:
@@ -200,7 +200,7 @@ class Database(sql_base.Database):
 
     def is_connected_to(self, backend, host, port, username, password,
                         database, sslmode, sslrootcert):
-        if host is None or host == '' or host == 'local':
+        if host is None or host == '' or host == 'localhost':
             host = None
             port = None
         if not port:
