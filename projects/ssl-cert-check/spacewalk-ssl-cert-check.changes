@@ -1,3 +1,8 @@
+- implement ssl-cert-check tool in python
+- remove dependency to certwatch
+- adapt cron and sysconfig script
+- added man page
+
 -------------------------------------------------------------------
 Mon Mar 06 16:34:39 CET 2017 - mc@suse.de
 

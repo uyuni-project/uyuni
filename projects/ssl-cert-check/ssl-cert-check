@@ -1,0 +1,67 @@
+#!/usr/bin/python
+
+import os
+import sys
+from datetime import datetime, timedelta
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
+
+from spacewalk.common import rhnMail
+from spacewalk.common.rhnConfig import CFG, initCFG
+from rhn.connections import idn_puny_to_unicode
+
+from optparse import OptionParser
+
+def send_mail(subject="", body=""):
+    """ Send email summary """
+    if body:
+        host_label = idn_puny_to_unicode(os.uname()[1])
+        headers = {
+            'Subject': subject,
+        }
+        sndr = "root@%s" % host_label
+        if CFG.default_mail_from:
+            sndr = CFG.default_mail_from
+        rhnMail.send(headers, body, sender=sndr)
+    else:
+        print("+++ email requested, but there is nothing to send +++")
+
+
+parser = OptionParser()
+parser.add_option("-p", "--path", dest="path",
+                  help="path to certificate file")
+parser.add_option("-d", "--days", dest="days", type="int", default=30,
+                  help="days before expiration to warn")
+parser.add_option("-m", "--mail", dest="mail", action="store_true", default=False,
+		  help="send an email instead of printing")
+
+(options, args) = parser.parse_args()
+
+if not (options.path and os.path.exists(options.path)):
+    sys.stderr.write("Invalid file parameter: {0}\n".format(options.path))
+    sys.exit(1)
+
+initCFG('web')
+
+delta = timedelta(days=options.days)
+exit = 0
+
+with open(options.path) as c:
+    try:
+        cert = x509.load_pem_x509_certificate(c.read(), default_backend())
+        timedif = cert.not_valid_after - datetime.utcnow()
+	if timedif < timedelta(days=0):
+            message = "Certificate {0} is expired".format(options.path)
+	    exit = 3
+        if timedif <= delta:
+            message = "Certificate {0} is going to expire in {1}".format(options.path, timedif)
+            exit = 2
+    except Exception as exp:
+        message = "{0}\n".format(exp.message)
+        exit = 1
+if exit > 0:
+    if options.mail:
+        send_mail("SUSE Manager: SSL Certificate Error", message)
+    else:
+        print(message)
+sys.exit(exit)
