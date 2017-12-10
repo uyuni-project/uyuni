@@ -4,16 +4,8 @@
 
     <property file="build.properties" />
 
-    <path id="project.taskjars">
-        <fileset dir="${java.task.lib.dir}" includes="**/*.jar" />
-    </path>
-
     <path id="project.classpath">
         <fileset dir="${java.lib.dir}" includes="**/*.jar" />
-        <fileset dir="${java.task.lib.dir}" >
-            <include name="junit*.jar" />
-            <include name="emma*.jar" />
-        </fileset>
     </path>
 
     <path id="test.classpath">
@@ -22,37 +14,8 @@
         <pathelement location="${basedir}/src/config" />
     </path>
 
-    <target name="init-tasks">
-        <taskdef name="ivy-retrieve"
-                 classname="fr.jayasoft.ivy.ant.IvyRetrieve"
-                 classpathref="project.taskjars"/>
-        <taskdef name="ivy-configure"
-                 classname="fr.jayasoft.ivy.ant.IvyConfigure"
-                 classpathref="project.taskjars"/>
-        <taskdef name="ivy-resolve"
-                 classname="fr.jayasoft.ivy.ant.IvyResolve"
-                 classpathref="project.taskjars"/>
-        <taskdef name="ivy-publish"
-                 classname="fr.jayasoft.ivy.ant.IvyPublish"
-                 classpathref="project.taskjars"/>
-        <taskdef resource="checkstyletask.properties">
-            <classpath>
-                <pathelement path="${java.task.lib.dir}/checkstyle-4.1.jar" />
-                <pathelement path="${java.task.lib.dir}/commons-beanutils-1.7.0.jar" />
-                <pathelement path="${java.task.lib.dir}/commons-logging-1.0.4.jar" />
-                <pathelement path="${java.task.lib.dir}/antlr-2.7.6.jar" />
-                <pathelement path="${java.task.lib.dir}/regexp-1.3.jar" />
-            </classpath>
-        </taskdef>
-        <taskdef resource="emma_ant.properties" classpathref="project.taskjars" />
-        <taskdef resource="net/sf/antcontrib/antlib.xml">
-            <classpath>
-                <pathelement location="${java.task.lib.dir}/ant-contrib-1.0.jar"/>
-            </classpath>
-        </taskdef>
-    </target>
 
-    <target name="check-testcase-name" if="testcase" depends="init-tasks">
+    <target name="check-testcase-name" if="testcase" depends="">
         <propertyregex property="valid.testcase"
             input="${testcase}"
             regexp="(.*)Test$"
@@ -91,28 +54,6 @@
         </junit>
     </target>
 
-    <target name="checkstyle" depends="init-tasks, package">
-        <delete dir="${report.dir}" />
-        <mkdir dir="${report.dir}" />
-        <checkstyle config="checkstyle.xml" failOnViolation="true" >
-            <property key="javadoc.method.scope" value="public" />
-            <property key="javadoc.type.scope" value="package" />
-            <property key="javadoc.var.scope" value="package" />
-            <property key="javadoc.lazy" value="${javadoc.lazy}" />
-            <fileset dir="${java.src.dir}" >
-                <include name="**/*.java" />
-                <exclude name="**/tests/**" />
-            </fileset>
-            <classpath>
-                <fileset dir="${java.lib.dir}" includes="**/*.jar" />
-                <fileset dir="${java.task.lib.dir}" includes="junit*.jar" />
-                <fileset dir="${dist.dir}" includes="${jar.file.name}" />
-            </classpath>
-            <formatter type="plain" />
-            <formatter type="xml" toFile="${report.dir}/checkstyle_report.xml" />
-        </checkstyle>
-    </target>
-
     <target name="resolve-local" description="resolve jars via jpackage" if="installbuild">
         <copy toDir="${java.lib.dir}" overwrite="true">
             <fileset dir="buildconf/tempjars">
@@ -124,7 +65,7 @@
     </target>
 
     <target name="resolve-ivy" description="retrieve dependencies with ivy"
-              depends="init-tasks" unless="installbuild">
+              depends="" unless="installbuild">
         <!-- properties set here to show we are overriding default ivy values -->
         <property name="ivy.default.ivy.user.dir" value="${user.home}/.ivy/search-server"/>
         <property name="ivy.local.default.artifact.pattern" value="[artifact]-[revision].[ext]" />
@@ -194,52 +135,4 @@
 
     <target name="install" depends="init-install,package" />
 
-    <target name="instrument" depends="init-tasks">
-        <mkdir dir="${report.dir}" />
-        <mkdir dir="${build.instrument.dir}" />
-
-        <emma enabled="true">
-            <instr merge="no"
-                   mode="overwrite"
-                   instrpath="${build.dir}"
-                   outfile="${report.dir}/coverage.em" >
-                <filter excludes="*Exception" />
-                <filter excludes="*.tests.*" />
-            </instr>
-            <!--
-            <instr outdir="${build.instrument.dir}" merge="no"
-                   instrpath="${build.dir}"
-                   mode="fullcopy"
-                   outfile="${report.dir}/coverage.em" >
-                <filter excludes="*Exception" />
-                <filter excludes="*.tests.*" />
-            </instr>
-            -->
-        </emma>
-
-        <!--
-        <copy toDir="${build.instrument.dir}/classes">
-            <fileset dir="${build.dir}">
-                <include name="**/*.xml" />
-            </fileset>
-        </copy>
-        -->
-    </target>
-
-    <target name="coverage-report" depends="instrument">
-        <emma enabled="true">
-            <report sourcepath="${java.src.dir}"
-                    sort="+block,+name,+method,+class"
-                    metrics="method:70,block:80,line:80,class:100">
-            <fileset dir="${report.dir}" includes="*.em" />
-            <fileset dir="." includes="*.ec" />
-            <html outfile="${report.dir}/emma.html"
-                  depth="method"
-                  columns="name,class,method,block,line" />
-            <xml outfile="${report.dir}/emma.xml"
-                 depth="method"
-                 columns="name,class,method,block,line" />
-            </report>
-        </emma>
-    </target>
 </project>
