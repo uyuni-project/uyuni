@@ -32,10 +32,12 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/cron.daily
 install -d $RPM_BUILD_ROOT/etc/sysconfig/rhn
 install -d $RPM_BUILD_ROOT/%{_bindir}
+install -d $RPM_BUILD_ROOT%{_mandir}/man8/
 
 install -m755 cron.ssl-cert-check $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/suse.de-ssl-cert-check
 install -m644 sysconfig.ssl-cert-check $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/rhn/ssl-cert-check
 install -m755 ssl-cert-check $RPM_BUILD_ROOT/%{_bindir}/ssl-cert-check
+install -m644 ssl-cert-check.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -45,6 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/sysconfig/rhn
 %attr(0755,root,root) %{_sysconfdir}/cron.daily/suse.de-ssl-cert-check
 %attr(0755,root,root) %{_bindir}/ssl-cert-check
+%{_mandir}/man8/ssl-cert-check.*
 %config %{_sysconfdir}/sysconfig/rhn/ssl-cert-check
 %doc LICENSE
 
