@@ -135,6 +135,16 @@ const NotificationMessages = React.createClass({
     });
   },
 
+  decodeTypeText: function(rawType) {
+    var typeText;
+    switch(rawType) {
+      case 'OnboardingFailed': typeText = t('Onboarding failed'); break;
+      case 'ChannelSyncFailed': typeText = t('Channel sync failed'); break;
+      case 'ChannelSyncFinished': typeText = t('Channel sync finished'); break;
+    }
+    return typeText;
+  },
+
   decodeIconBySeverity: function(severity) {
     var severityHtml;
     switch(severity) {
@@ -300,7 +310,7 @@ const NotificationMessages = React.createClass({
             <Column
               columnKey="type"
               header={t("Type")}
-              cell={ (row) => row['type']}
+              cell={ (row) => this.decodeTypeText(row['type'])}
             />
             <Column
               columnKey="description"
