@@ -429,7 +429,7 @@ public class StatesAPI {
                     }).collect(Collectors.toList());
 
             ApplyStatesAction action = ActionManager.scheduleApplyHighstate(user, minionIds,
-                    getScheduleDate(json));
+                    getScheduleDate(json), Optional.empty());
 
             TASKOMATIC_API.scheduleActionExecution(action);
 

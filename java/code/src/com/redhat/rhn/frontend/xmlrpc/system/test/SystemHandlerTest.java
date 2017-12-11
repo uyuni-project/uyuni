@@ -39,6 +39,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
@@ -2429,4 +2431,53 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals("", result);
     }
 
+    public void testScheduleApplyHighstate() {
+        Server testServer = ServerFactoryTest.createTestServer(admin, true);
+        int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
+        Date scheduleDate = new Date();
+
+        Long actionId = handler.scheduleApplyHighstate(admin, testServer.getId().intValue(), scheduleDate, false);
+        assertNotNull(actionId);
+
+        DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
+        assertEquals(1, schedule.size() - preScheduleSize);
+        assertEquals(actionId, ((ScheduledAction) schedule.get(0)).getId());
+
+        // Look up the action and verify the details
+        ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actionId);
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertEquals(scheduleDate, action.getEarliestAction());
+
+        ApplyStatesActionDetails details = action.getDetails();
+        assertNotNull(details);
+        assertNull(details.getStates());
+        assertEquals(0, details.getMods().size());
+        assertFalse(details.isTest());
+    }
+
+    public void testScheduleApplyHighstateTest() {
+        Server testServer = ServerFactoryTest.createTestServer(admin, true);
+        int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
+        Date scheduleDate = new Date();
+
+        Long actionId = handler.scheduleApplyHighstate(admin, testServer.getId().intValue(), scheduleDate, true);
+        assertNotNull(actionId);
+
+        DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
+        assertEquals(1, schedule.size() - preScheduleSize);
+        assertEquals(actionId, ((ScheduledAction) schedule.get(0)).getId());
+
+        // Look up the action and verify the details
+        ApplyStatesAction action = (ApplyStatesAction) ActionFactory.lookupByUserAndId(admin, actionId);
+        assertNotNull(action);
+        assertEquals(ActionFactory.TYPE_APPLY_STATES, action.getActionType());
+        assertEquals(scheduleDate, action.getEarliestAction());
+
+        ApplyStatesActionDetails details = action.getDetails();
+        assertNotNull(details);
+        assertNull(details.getStates());
+        assertEquals(0, details.getMods().size());
+        assertTrue(details.isTest());
+    }
 }
