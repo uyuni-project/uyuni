@@ -1,3 +1,4 @@
+- Adding initial version of web ui notifications
 - Fix runtime data display in Images page (bsc#1062972)
 - add delete button to img-overview page (bsc#1061245)
 - remove import button from image over page (bsc#1058128)
