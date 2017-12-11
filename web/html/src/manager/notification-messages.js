@@ -240,7 +240,7 @@ const NotificationMessages = React.createClass({
     switch(messageType) {
       case 'OnboardingFailed':
         actionButton = <AsyncButton id="retryOnboarding" icon="fa fa-rocket fa-1-5x no-margin" classStyle="btn-sm"
-            title={t('Retry bootstrap')} text action={() => this.retryOnboarding(messageData['minionId'])} />;
+            title={t('Retry onboarding')} text action={() => this.retryOnboarding(messageData['minionId'])} />;
       break;
       case 'ChannelSyncFailed':
         actionButton = <AsyncButton id="retryReposync" icon="fa fa-refresh fa-1-5x no-margin" classStyle="btn-sm"
