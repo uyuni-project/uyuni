@@ -1,3 +1,4 @@
+- Adding initial version of web ui notifications
 - New API call for scheduling highstate application
 - Order salt formulas alphabetically. (bsc#1022077)
 - Improved error message (bsc#1064258)
