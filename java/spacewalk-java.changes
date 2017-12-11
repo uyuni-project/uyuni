@@ -5,6 +5,7 @@
 - fix content refresh when product keys change (bsc#1069943)
 - Allow 'Package List Refresh' when package arch has changed (bsc#1065259)
 - New API call for scheduling highstate application
+- Adding initial version of web ui notifications
 
 -------------------------------------------------------------------
 Tue Nov 28 12:48:16 CET 2017 - jgonzalez@suse.com

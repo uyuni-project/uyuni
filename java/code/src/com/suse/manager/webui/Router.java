@@ -33,6 +33,7 @@ import com.suse.manager.webui.controllers.FormulaController;
 import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
+import com.suse.manager.webui.controllers.NotificationMessageController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.SaltSSHController;
@@ -262,6 +263,22 @@ public class Router implements SparkApplication {
                 withOrgAdmin(VisualizationController::systemsWithManagedGroupsData));
 
         get("/manager/download/saltssh/pubkey", SaltSSHController::getPubKey);
+
+
+        // NotificationMessages
+        get("/manager/notification-messages", withUser(NotificationMessageController::getList), jade);
+        get("/manager/notification-messages/data-unread", withUser(NotificationMessageController::dataUnread));
+        get("/manager/notification-messages/data-all", withUser(NotificationMessageController::dataAll));
+        post("/manager/notification-messages/update-message-status",
+                withUser(NotificationMessageController::updateMessageStatus));
+        post("/manager/notification-messages/delete/:messageId",
+                withUser(NotificationMessageController::delete));
+        post("/manager/notification-messages/mark-all-as-read",
+                withUser(NotificationMessageController::markAllAsRead));
+        post("/manager/notification-messages/retry-onboarding/:minionId",
+                withUser(NotificationMessageController::retryOnboarding));
+        post("/manager/notification-messages/retry-reposync/:channelId",
+                withUser(NotificationMessageController::retryReposync));
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {

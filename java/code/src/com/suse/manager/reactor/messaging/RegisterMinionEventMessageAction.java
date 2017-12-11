@@ -24,11 +24,15 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -186,10 +190,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             return;
         }
 
+        Org org = null;
+
+        try {
         minionServer = migrateTraditionalOrGetNew(minionId,
                 isSaltSSH, activationKeyOverride, machineId);
 
-        try {
             MinionServer server = minionServer;
 
             server.setMachineId(machineId);
@@ -210,7 +216,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
 
-            Org org = activationKey.map(ActivationKey::getOrg)
+            org = activationKey.map(ActivationKey::getOrg)
                     .orElse(OrgFactory.getSatelliteOrg());
             if (server.getOrg() == null) {
                 server.setOrg(org);
@@ -363,8 +369,18 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
         catch (Throwable t) {
             LOG.error("Error registering minion id: " + minionId, t);
-            // rethrow exception to force transaction rollback
-            throw new RuntimeException("Error registering minion " + minionId, t);
+            handleTransactions(false);
+            NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
+                    new OnboardingFailed(minionId)
+            );
+            if (org == null) {
+                UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                        Collections.singleton(RoleFactory.ORG_ADMIN));
+            }
+            else {
+                UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                        Collections.singleton(RoleFactory.ORG_ADMIN), org);
+            }
         }
         finally {
             if (MinionPendingRegistrationService.containsMinion(minionId)) {
