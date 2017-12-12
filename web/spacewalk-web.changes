@@ -1,3 +1,4 @@
+- Add 'yaml' option for Ace editor
 - Add links to salt formula list and adjust behavior. (bsc#1022078)
 
 -------------------------------------------------------------------
