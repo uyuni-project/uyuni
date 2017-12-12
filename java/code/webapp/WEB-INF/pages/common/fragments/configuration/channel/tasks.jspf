@@ -9,7 +9,7 @@
         <%-- This is here so that we can display a message if none of the following tables get shown --%>
         <c:set var="tableshown" scope="request" value="false" />
 
-        <rhn:require acl="not config_channel_type(server_import); config_channel_has_files(); config_channel_has_systems()"
+        <rhn:require acl="not config_channel_type(server_import); config_channel_has_files(); config_channel_has_systems(); not config_channel_type(state)"
                      mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
             <c:set var="tableshown" scope="request" value="true" />
 
@@ -42,7 +42,7 @@
 
         </rhn:require>
 
-        <rhn:require acl="config_channel_has_files(); config_channel_has_systems()"
+        <rhn:require acl="config_channel_has_files(); config_channel_has_systems(); not config_channel_type(state)"
                      mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
             <c:set var="tableshown" scope="request" value="true" />
             <!-- Compare Files table -->
