@@ -37,7 +37,7 @@ public class State {
      * @param mods mods
      * @param pillar pillar data
      * @param queue queue
-     * @param test dry-run true/false
+     * @param test test-mode true/false
      * @return LocalCall<Map<String, ApplyResult>> result
      */
     public static LocalCall<Map<String, ApplyResult>> apply(List<String> mods,
