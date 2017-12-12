@@ -11,6 +11,7 @@
 - fix create empty top.sls with no-op (bsc#1053038)
 - Enabling certificate deployment for Leap 42.3 clients which is
   needed for bootstrapping
+- fix Salt version detection for patches (bsc#1072350)
 
 -------------------------------------------------------------------
 Thu Sep 14 11:41:56 CEST 2017 - mc@suse.de
@@ -290,4 +291,3 @@ Tue Nov 17 09:35:38 CET 2015 - jrenner@suse.com
 
 - version 0.1.1-1
 - Initial package release
-
