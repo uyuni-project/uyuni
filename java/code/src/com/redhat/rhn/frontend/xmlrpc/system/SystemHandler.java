@@ -6316,17 +6316,17 @@ public class SystemHandler extends BaseHandler {
      * Schedule highstate application for a given system.
      *
      * @param loggedInUser The current user
-     * @param sid The system ID of the target system
+     * @param sid The system id of the target system
      * @param earliestOccurrence Earliest occurrence
      * @param test Run states in test-only mode
-     * @return action ID or exception thrown otherwise
+     * @return action id or exception thrown otherwise
      *
      * @xmlrpc.doc Schedule highstate application for a given system.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "sid", "The system ID of the target system")
-     * @xmlrpc.param #param_desc("dateTime.iso8601",  "earliestOccurrence", "Earliest occurrence")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
-     * @xmlrpc.returntype int actionId - The action ID of the scheduled action
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
     public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, boolean test) {
         try {
