@@ -508,7 +508,7 @@ end
 
 Then(/^remote-commands are enabled$/) do
   unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/script/run')
-    raise 'remote-commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist'
+    raise 'remote commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist'
   end
 end
 
