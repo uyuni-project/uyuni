@@ -15,6 +15,7 @@
 - Allow 'Package List Refresh' when package arch has changed (bsc#1065259)
 - New API call for scheduling highstate application
 - Adding initial version of web ui notifications
+- Show the time on the event history page in the users preferred timezone
 
 -------------------------------------------------------------------
 Tue Nov 28 12:48:16 CET 2017 - jgonzalez@suse.com

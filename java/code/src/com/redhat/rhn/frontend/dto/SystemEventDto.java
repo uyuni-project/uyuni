@@ -135,6 +135,14 @@ public class SystemEventDto extends BaseDto implements Serializable {
     }
 
     /**
+     * Returns the completed date as user settings formatted string
+     * @return datetime string
+     */
+    public String getCompletedString() {
+        return LocalizationService.getInstance().formatCustomDate(completed);
+    }
+
+    /**
      * @return Date of completion of the event
      */
     public Date getCompleted() {
