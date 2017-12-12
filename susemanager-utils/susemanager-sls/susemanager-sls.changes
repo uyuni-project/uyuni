@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Dec 12 12:05:09 CET 2017 - jgonzalez@suse.com
+
+- version 3.1.13-1
+- fix Salt version detection for patches (bsc#1072350)
+
+-------------------------------------------------------------------
 Wed Nov 29 10:15:59 CET 2017 - jgonzalez@suse.com
 
 - version 3.1.12-1
@@ -16,7 +22,6 @@ Tue Nov 28 15:18:20 CET 2017 - jgonzalez@suse.com
 - fix create empty top.sls with no-op (bsc#1053038)
 - Enabling certificate deployment for Leap 42.3 clients which is
   needed for bootstrapping
-- fix Salt version detection for patches (bsc#1072350)
 
 -------------------------------------------------------------------
 Thu Sep 14 11:41:56 CEST 2017 - mc@suse.de
