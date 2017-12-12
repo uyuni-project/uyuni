@@ -6960,6 +6960,8 @@
         name="submittedForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
+        <set-property property="acls" value="config_channel_has_systems(); config_channel_has_files(); not config_channel_type(server_import); not config_channel_type(state)"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
               path="/WEB-INF/pages/configuration/channel/deploy.jsp"/>
     </action>
@@ -6972,6 +6974,8 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequired" value="true" />
+        <set-property property="acls" value="config_channel_has_systems(); config_channel_has_files(); not config_channel_type(server_import); not config_channel_type(state)"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
               path="/configuration/channel/ChooseFiles.do"/>
         <forward name="success" redirect="true"
@@ -6985,6 +6989,8 @@
         name="submittedForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
+        <set-property property="acls" value="config_channel_has_systems(); config_channel_has_files(); not config_channel_type(server_import); not config_channel_type(state)"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
               path="/WEB-INF/pages/configuration/channel/deploysystems.jsp"/>
     </action>
@@ -6997,6 +7003,8 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequired" value="true" />
+        <set-property property="acls" value="config_channel_has_systems(); config_channel_has_files(); not config_channel_type(server_import); not config_channel_type(state)"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
               path="/configuration/channel/ChooseSystems.do"/>
         <forward name="confirm" redirect="true"
@@ -7014,6 +7022,8 @@
         name="datePickerForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
+        <set-property property="acls" value="config_channel_has_systems(); config_channel_has_files(); not config_channel_type(server_import); not config_channel_type(state)"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
               path="/WEB-INF/pages/configuration/channel/deployconfirm.jsp"/>
         <forward name="success" redirect="true"
