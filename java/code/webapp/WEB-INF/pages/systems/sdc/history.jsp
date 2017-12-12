@@ -82,7 +82,7 @@
                     </c:choose>
                 </rl:column>
                 <rl:column headerkey="system.event.history.time">
-                    ${current.completed}
+                    ${current.completedString}
                 </rl:column>
             </rl:list>
         </rl:listset>
