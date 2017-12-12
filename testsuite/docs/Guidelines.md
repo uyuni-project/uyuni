@@ -47,8 +47,6 @@ Avoid "computing style" (abbreviations, snake case and camel case.
 
 Avoid the obvious like "Check", "Test", "SUSE Manager", "Spacewalk", etc.
 
-Avoid "is" like in ```And "sle-minion" is not registered```. Make it clear whether this is a test ```And "sle-minion" should be registered``` or an action ```And I unregister "sle-minion"``` by using either "should" or "I".
-
 Please use the correct capitalization for products (SLES, SUSE, Salt, zypper, etc.)
 
 Avoid reinventing function names and variables. Cucumber is all about human-readable text, factorizing or other things that make a computer program efficient are second class citizens with Cucumber.
@@ -91,6 +89,10 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
  * Steps start with lower case (unless first person "I", abbreviation, etc.)
  * Don't use internals like ```#accept-btn```in steps, try to hide them with the scenario name
  * Use meaningful step names
+ * Use verbs that match the role of the step:
+   * "... is", "I am" or "... are" for "Given" steps (preconditions)
+   * "I ..." for "When" steps (actions)
+   * "... should" for "Then" steps (checks)
  * Don't use "we", use "I"
  * Put quotes (") around parameters
  * Don't use steps parameters if unneeded
