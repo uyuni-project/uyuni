@@ -48,7 +48,7 @@ def check_shutdown(host, time_out)
     end
   end
 rescue Timeout::Error
-  raise "Machine didn't reboot!"
+  raise "Machine didn't reboot"
 end
 
 def check_restart(host, node, time_out)
@@ -72,7 +72,7 @@ def check_restart(host, node, time_out)
     end
   end
 rescue Timeout::Error
-  raise "ERR: Machine didn't Went-up!"
+  raise "Machine didn't go up"
 end
 
 # Extract the os_version dynamically decoding the value in '/etc/os-release'

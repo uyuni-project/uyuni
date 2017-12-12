@@ -20,7 +20,7 @@ def wait_action_complete(actionid)
     end
   end
 rescue Timeout::Error
-  raise 'ERR: Action did not completed! Not found on completed actions'
+  raise 'Action did not complete. It was not found in completed actions'
 end
 
 When(/^I authenticate to XML-RPC$/) do
