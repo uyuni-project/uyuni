@@ -7292,6 +7292,8 @@
         input="/WEB-INF/pages/configuration/files/comparedeployed.jsp"
         type="com.redhat.rhn.frontend.action.configuration.files.CompareDeployedAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="acls" value="not is_in_state_channel()"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
                  path="/WEB-INF/pages/configuration/files/comparedeployed.jsp"/>
     </action>
@@ -7303,6 +7305,8 @@
         type="com.redhat.rhn.frontend.action.configuration.files.CompareDeployedSubmitAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequired" value="true" />
+        <set-property property="acls" value="not is_in_state_channel()"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default" redirect="true"
                  path="/configuration/file/CompareDeployed.do"/>
     </action>
@@ -7335,6 +7339,8 @@
         name="datePickerForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
+        <set-property property="acls" value="not is_in_state_channel()"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
                  path="/WEB-INF/pages/configuration/files/deploy.jsp"/>
         <forward name="global" redirect="true"
@@ -7350,6 +7356,8 @@
         name="submittedForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />
+        <set-property property="acls" value="not is_in_state_channel()"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
                  path="/WEB-INF/pages/configuration/files/deploy.jsp"/>
     </action>
@@ -7362,6 +7370,8 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequired" value="true" />
+        <set-property property="acls" value="not is_in_state_channel()"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
                  path="/configuration/file/GlobalRevisionDeploy.do"/>
         <forward name="confirm" redirect="true"
@@ -7374,6 +7384,8 @@
         type="com.redhat.rhn.frontend.action.configuration.files.GlobalRevisionDeployConfirmSetup"
         name="datePickerForm"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="acls" value="not is_in_state_channel()"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
                  path="/WEB-INF/pages/configuration/files/deployconfirm.jsp"/>
     </action>
@@ -7386,6 +7398,8 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
+        <set-property property="acls" value="not is_in_state_channel()"/>
+        <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
                  path="/WEB-INF/pages/configuration/files/deployconfirm.jsp"/>
         <forward name="success" redirect="true"
