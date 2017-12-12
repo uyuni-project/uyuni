@@ -56,6 +56,17 @@ public class ConfigAclHandler extends BaseHandler {
     }
 
     /**
+     * Tell whether a file belongs to a state channel.
+     * @param ctx Our current context, containing a crid or cfid.
+     * @param params The parameters containing a config revision id or nothing.
+     * @return whether the found revision belongs to a state channel.
+     */
+    public boolean aclIsInStateChannel(Object ctx, String[] params) {
+        ConfigRevision revision = getRevision((Map) ctx, params);
+        return revision.getConfigFile().getConfigChannel().isStateChannel();
+    }
+
+    /**
      * Tell whether the logged in user can edit the give channel.
      * @param ctx Our current context, containing the user
      * @param params The parameters containing a config channel id.
