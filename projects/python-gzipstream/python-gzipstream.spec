@@ -46,6 +46,9 @@ Obsoletes: python-gzipstream < %{version}-%{release}
 Summary:        %summary
 Group:          Development/Languages/Python
 BuildRequires:  python3-devel
+%if 0%{?suse_version}
+BuildRequires:  python-rpm-macros
+%endif
 
 %description -n python3-gzipstream %_description
 
