@@ -13,7 +13,7 @@
 %define rhnsd		 spacewalksd
 #
 %define without_rhn_register 1
-
+%bcond_with    test
 
 Name: spacewalk-client-tools
 Summary: Support programs and libraries for Spacewalk
@@ -126,7 +126,7 @@ Requires: dbus-python
 Requires: suseRegisterInfo
 Requires: logrotate
 
-%if 0%{?rhel} != 6
+%if %{with test} && 0%{?rhel} != 6
 # The following BuildRequires are for check only
 BuildRequires: python-coverage
 BuildRequires: rpm-python
@@ -160,7 +160,7 @@ Requires: python3-hwdata
 Requires: python3-rhnlib >= 2.5.78
 BuildRequires: python3-devel
 
-%if 0%{?rhel} != 6
+%if %{with test} && 0%{?rhel} != 6
 # The following BuildRequires are for check only
 BuildRequires: python3-coverage
 BuildRequires: python3-rpm
@@ -481,7 +481,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%if 0%{?fedora}
+%if %{with test} && 0%{?fedora}
 %check
 
 make -f Makefile.rhn-client-tools test
