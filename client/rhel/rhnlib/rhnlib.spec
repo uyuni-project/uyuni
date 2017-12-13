@@ -46,6 +46,9 @@ Spacewalk software.
 Summary: Python libraries for the Spacewalk project
 Group: Development/Libraries
 BuildRequires: python3-devel
+%if 0%{?suse_version}
+BuildRequires:  python-rpm-macros
+%endif
 Requires: python3-pyOpenSSL
 Conflicts: rhncfg < 5.10.45
 Conflicts: spacewalk-proxy-installer < 1.3.2
