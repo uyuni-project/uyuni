@@ -233,53 +233,65 @@ public abstract class ConfigFileData {
     private void validateData(boolean onCreate) throws ValidatorException {
 
         ValidatorResult msgs = new ValidatorResult();
-        // Validate user/uid
-        if (!ConfigurationValidation.validateUserOrGroup(getOwner()) &&
-            !ConfigurationValidation.validateUGID(getOwner())) {
-            msgs.addError(error("user-invalid"));
-        }
 
-        // Validate group
-        if (!ConfigurationValidation.validateUserOrGroup(group) &&
-            !ConfigurationValidation.validateUGID(group)) {
-            msgs.addError(error("group-invalid"));
-        }
-
-        // Validate mode
-        if (!getPermissions().matches("^[0-7][0-7][0-7][0-7]?$")) {
-            msgs.addError(error("mode-invalid"));
-        }
-
-        if (isFile()) {
-            if (!StringUtils.isBlank(getMacroStart())) {
-                // Validate macro-start
-                if (getMacroStart().indexOf('%') != -1) {
-                    msgs.addError(error("start-delim-percent"));
-                }
-            }
-
-            // Validate macro-end
-            if (!StringUtils.isBlank(getMacroEnd())) {
-                if (getMacroEnd().indexOf('%') != -1) {
-                    msgs.addError(error("end-delim-percent"));
-                }
-            }
-
-            if (getContentSize() > ConfigFile.getMaxFileSize()) {
-                msgs.addError("error.configtoolarge",
-                        StringUtil.displayFileSize(ConfigFile.getMaxFileSize(), false));
-            }
-            validateContents(msgs, onCreate);
-        }
+        validateUserAndGroup(msgs);
+        validateMacros(msgs);
+        validateFileSize(msgs, onCreate);
 
         ValidatorError ve = validateSELinux();
         if (ve != null) {
             msgs.addError(ve);
         }
 
-
         if (!msgs.isEmpty()) {
             throw new ValidatorException(msgs);
+        }
+    }
+
+    protected void validateFileSize(ValidatorResult result, boolean onCreate) {
+        if (isFile()) {
+            if (getContentSize() > ConfigFile.getMaxFileSize()) {
+                result.addError("error.configtoolarge",
+                        StringUtil.displayFileSize(ConfigFile.getMaxFileSize(), false));
+            }
+            validateContents(result, onCreate);
+        }
+    }
+
+    protected void validateMacros(ValidatorResult result) {
+        if (isFile()) {
+            if (!StringUtils.isBlank(getMacroStart())) {
+                // Validate macro-start
+                if (getMacroStart().indexOf('%') != -1) {
+                    result.addError(error("start-delim-percent"));
+                }
+            }
+
+            // Validate macro-end
+            if (!StringUtils.isBlank(getMacroEnd())) {
+                if (getMacroEnd().indexOf('%') != -1) {
+                    result.addError(error("end-delim-percent"));
+                }
+            }
+        }
+    }
+
+    protected void validateUserAndGroup(ValidatorResult result) {
+        // Validate user/uid
+        if (!ConfigurationValidation.validateUserOrGroup(getOwner()) &&
+                !ConfigurationValidation.validateUGID(getOwner())) {
+            result.addError(error("user-invalid"));
+        }
+
+        // Validate group
+        if (!ConfigurationValidation.validateUserOrGroup(group) &&
+                !ConfigurationValidation.validateUGID(group)) {
+            result.addError(error("group-invalid"));
+        }
+
+        // Validate mode
+        if (!getPermissions().matches("^[0-7][0-7][0-7][0-7]?$")) {
+            result.addError(error("mode-invalid"));
         }
     }
 
@@ -304,7 +316,7 @@ public abstract class ConfigFileData {
     protected abstract void validateContents(ValidatorResult result,
                                                         boolean onCreate);
 
-    private ValidatorError error(String msgKey) {
+    protected ValidatorError error(String msgKey) {
         return new ValidatorError("config-file-form.error." + msgKey);
     }
 
