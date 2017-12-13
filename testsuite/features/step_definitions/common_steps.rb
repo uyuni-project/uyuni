@@ -291,7 +291,7 @@ When(/^I make the credentials primary$/) do
 end
 
 When(/^I refresh SCC$/) do
-  sshcmd('echo -e "admin\nadmin\n" | mgr-sync refresh', ignore_err: true)
+  $server.run('echo -e "admin\nadmin\n" | mgr-sync refresh')
 end
 
 When(/^I delete the primary credentials$/) do
