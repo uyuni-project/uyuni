@@ -21,9 +21,11 @@
               <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/details.jspf"%>
             </div>
 
-            <div class="col-md-auto details-column-right">
-              <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/properties.jspf"%>
-            </div>
+            <rhn:require acl="not is_sls()" mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+                <div class="col-md-auto details-column-right">
+                  <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/properties.jspf"%>
+                </div>
+            </rhn:require>
         </div>
         <c:if test="${revision.file || revision.sls}">
           <div class="row-0">
