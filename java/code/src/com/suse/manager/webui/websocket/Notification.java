@@ -177,8 +177,8 @@ public class Notification {
                     spreadUpdate();
                     HibernateFactory.closeSession();
                     try {
-                        // check every 10 second
-                        sleep(10000);
+                        // check every 30 second
+                        sleep(30000);
                     }
                     catch (InterruptedException e) {
                     }
