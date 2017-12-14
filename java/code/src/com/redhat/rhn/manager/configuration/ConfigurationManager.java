@@ -100,6 +100,7 @@ public class ConfigurationManager extends BaseManager {
     public static final int ENABLE_ERROR_PACKAGES = 3;
 
     public static final String FEATURE_CONFIG = "ftr_config";
+
     /**
      * Prevent people for making objects of this class.
      */
@@ -1571,7 +1572,7 @@ public class ConfigurationManager extends BaseManager {
 
     /**
      * Copies a config file. Performs checking to determine whether
-     * the user actually can delete the config file.
+     * the user actually can copy the config file.
      * Only copies the revision of the file given. Puts the revision into a config
      * file with the same deploy path in the new channel, or creates a config file if
      * a candidate file does not exist.
@@ -1593,6 +1594,10 @@ public class ConfigurationManager extends BaseManager {
             throw new IllegalArgumentException("User [" + user.getId() +
                     "] does not have access to channel [" + channel.getId() + "].");
         }
+        if (revision.isInitSls() && !channel.isStateChannel()) {
+            throw new IllegalArgumentException("Can only copy the init.sls file to a state channel.");
+        }
+
         //copy the file
         ConfigurationFactory.copyRevisionToChannel(user, revision, channel);
         // here - re-create the channel on disk
