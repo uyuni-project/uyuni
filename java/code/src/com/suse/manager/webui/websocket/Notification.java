@@ -33,6 +33,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * WebSocket EndPoint for showing notifications real-time in web UI.
@@ -202,30 +206,19 @@ public class Notification {
         }
     }
 
-    static {
-        Thread notificationThread = new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        clearBrokenSessions();
-                        spreadUpdate();
-                        HibernateFactory.closeSession();
-                        try {
-                            // check every 30 second
-                            sleep(30000);
-                        }
-                        catch (InterruptedException e) {
-                        }
-                    }
-                    catch (Exception e) {
-                        LOG.error("Notification thread exception", e);
-                        // clear WebSocket connections
-                        clearBrokenSessions();
-                    }
+    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+    ScheduledFuture scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
+        public void run() {
+                try {
+                    clearBrokenSessions();
+                    spreadUpdate();
+                    HibernateFactory.closeSession();
                 }
-            };
-        };
-        notificationThread.start();
-    }
+                catch (Exception e) {
+                    LOG.error("Notification thread exception", e);
+                    // clear WebSocket connections
+                    clearBrokenSessions();
+                }
+            }
+    }, 30, 30, TimeUnit.SECONDS);
 }
