@@ -667,25 +667,51 @@ public class ConfigurationFactory extends HibernateFactory {
     }
 
     /**
+     * Attempt to safely remove a ConfigRevision without deleting the file. This
+     * uses a stored procedure and the stored procedure is required as it performs
+     * logic to determine the amount of org quota is now used and appropriately
+     * updates those tables.
+     *
+     * @param revision Revision to remove
+     * @param orgId The id for the org in which this revision is located.
+     * @return whether the remove attempt was successful or not.
+     * @throws ConfigFileSafeDeleteException thrown when attempting to delete the
+     * file itself along with the only revision
+     */
+    public static boolean safeRemoveConfigRevision(ConfigRevision revision, Long orgId)
+            throws ConfigFileSafeDeleteException {
+        return doRemoveConfigRevision(revision, orgId, true);
+    }
+
+    /**
      * Remove a ConfigRevision.
      * This uses a stored procedure and the stored procedure is required
      * as it performs logic to determine the amount of org quota is now
      * used and appropriately updates those tables.
      * @param revision Revision to remove
      * @param orgId The id for the org in which this revision is located.
-     * @return whether the parent file was deleted too.
+     * @return whether the file was deleted too.
      */
     public static boolean removeConfigRevision(ConfigRevision revision, Long orgId) {
+        try {
+            return doRemoveConfigRevision(revision, orgId, false);
+        }
+        catch (ConfigFileSafeDeleteException e) {
+            // Should never happen since we pass 'false' as safeDelete flag.
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static boolean doRemoveConfigRevision(ConfigRevision revision, Long orgId, boolean safeDelete)
+            throws ConfigFileSafeDeleteException {
         boolean latest = false;
         ConfigFile file = revision.getConfigFile();
         //is this revision the latest revision?
-        if (file.getLatestConfigRevision().getId()
-                .equals(revision.getId())) {
+        if (file.getLatestConfigRevision().getId().equals(revision.getId())) {
             latest = true;
         }
 
-        CallableMode m = ModeFactory.getCallableMode("config_queries",
-            "remove_config_revision");
+        CallableMode m = ModeFactory.getCallableMode("config_queries", "remove_config_revision");
 
         Map inParams = new HashMap();
         Map outParams = new HashMap();
@@ -702,10 +728,13 @@ public class ConfigurationFactory extends HibernateFactory {
                 file.setLatestConfigRevision(lookupConfigRevisionById(id));
                 commit(file);
             }
-            else {
-                //there are no revisions in this file, delete the file.
+            else if (!safeDelete) {
+                //there are no revisions in this file, delete the file (only if deleteFile flag is set).
                 removeConfigFile(file);
                 return true;
+            }
+            else {
+                throw new ConfigFileSafeDeleteException();
             }
         }
         return false;
