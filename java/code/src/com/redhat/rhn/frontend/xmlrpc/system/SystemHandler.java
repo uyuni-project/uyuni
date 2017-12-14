@@ -117,6 +117,7 @@ import com.redhat.rhn.frontend.xmlrpc.SystemsNotDeletedException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.UndefinedCustomFieldsException;
 import com.redhat.rhn.frontend.xmlrpc.UnrecognizedCountryException;
+import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
 import com.redhat.rhn.manager.MissingCapabilityException;
@@ -6319,11 +6320,20 @@ public class SystemHandler extends BaseHandler {
      */
     public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, boolean test) {
         try {
+            // Validate the given system id
+            Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+            if (!server.asMinionServer().isPresent()) {
+                throw new UnsupportedOperationException("System not managed with Salt: " + sid);
+            }
+
             List<Long> sids = Arrays.asList(sid.longValue());
             Action a = ActionManager.scheduleApplyHighstate(loggedInUser, sids, earliestOccurrence, Optional.of(test));
             a = ActionFactory.save(a);
             TASKOMATIC_API.scheduleActionExecution(a);
             return a.getId();
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException(e);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
