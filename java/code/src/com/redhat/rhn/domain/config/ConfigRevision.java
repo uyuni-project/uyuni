@@ -35,6 +35,8 @@ public class ConfigRevision extends BaseDomainHelper {
 
     protected Long changedById;
 
+    private static final String INIT_SLS_PATH = "/init.sls";
+
     /**
      * Protected constructor
      * Use ConfigurationFactory to create a new revision.
@@ -185,6 +187,14 @@ public class ConfigRevision extends BaseDomainHelper {
      */
     public boolean isSls() {
         return (configFileType != null && configFileType.getLabel().equals("sls"));
+    }
+
+    /**
+     * Is this revision THE init.sls?
+     * @return true if file is the init.sls
+     */
+    public boolean isInitSls() {
+        return isSls() && INIT_SLS_PATH.equals(configFile.getConfigFileName().getPath());
     }
 
     /**
