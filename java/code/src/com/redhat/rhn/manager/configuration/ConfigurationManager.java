@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileCount;
 import com.redhat.rhn.domain.config.ConfigFileName;
+import com.redhat.rhn.domain.config.ConfigFileSafeDeleteException;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
@@ -1497,7 +1498,7 @@ public class ConfigurationManager extends BaseManager {
      * the user actually can delete the config revision
      * @param user The user requesting to delete the revision
      * @param revision The revision to be deleted.
-     * @return whether the parent file was also deleted.
+     * @return whether the file was also deleted.
      * @throws IllegalArgumentException if user is not allowed to delete this
      *         config revision (different org or not config admin).
      */
@@ -1514,12 +1515,25 @@ public class ConfigurationManager extends BaseManager {
                     user.getId() +
                     "] is not allowed access to revision [" + revision.getId() + "]");
         }
-        //remove the channel
-        boolean result = ConfigurationFactory
-                .removeConfigRevision(revision, user.getOrg().getId());
+
+        // Remove the channel
+        boolean isFileDeleted = false;
+        if (revision.isInitSls()) {
+            try {
+                ConfigurationFactory.safeRemoveConfigRevision(revision,
+                        user.getOrg().getId());
+            }
+            catch (ConfigFileSafeDeleteException e) {
+                throw new IllegalArgumentException("Cannot delete the only revision for the init.sls file.", e);
+            }
+        }
+        else {
+            isFileDeleted = ConfigurationFactory.removeConfigRevision(revision, user.getOrg().getId());
+        }
+
         ConfigChannelSaltManager.getInstance()
                 .generateConfigChannelFiles(revision.getConfigFile().getConfigChannel());
-        return result;
+        return isFileDeleted;
     }
 
     /**
@@ -1541,6 +1555,11 @@ public class ConfigurationManager extends BaseManager {
                     "User [" + user.getId() +
                     "] does not have access to file [" + file.getId() + "].");
         }
+        if (ConfigChannelType.state().equals(file.getConfigChannel().getConfigChannelType()) &&
+                file.getLatestConfigRevision().isInitSls()) {
+            throw new IllegalArgumentException("Cannot delete the init.sls file.");
+        }
+
         //remove the file
         ConfigurationFactory.removeConfigFile(file);
         // we have removed a file using a Mode, let's clear the hibernate cache so that
