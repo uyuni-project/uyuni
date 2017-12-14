@@ -53,9 +53,12 @@ import static java.util.Optional.ofNullable;
 public class ChannelOverviewAction extends RhnAction {
 
     /** Current ChannelSummary, in request/responce */
-    public static final String CHANNEL_SUMMARY = "summary";
+    private static final String CHANNEL_SUMMARY = "summary";
     /** Are we editing? */
-    public static final String CHANNEL_EDITING = "editing";
+    private static final String CHANNEL_EDITING = "editing";
+    /** init.sls data for state channels */
+    private static final String INIT_SLS_FILE = "initsls";
+
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(ChannelOverviewAction.class);
 
@@ -174,6 +177,11 @@ public class ChannelOverviewAction extends RhnAction {
         if (cc.getId() != null) {
             User u = ctx.getCurrentUser();
             request.setAttribute(CHANNEL_SUMMARY, getSummary(u, cc));
+        }
+
+        if (cc.isStateChannel() && cc.getConfigFiles() != null) {
+            request.setAttribute(INIT_SLS_FILE, cc.getConfigFiles().stream()
+                    .filter(c -> c.getLatestConfigRevision().isInitSls()).findFirst().orElse(null));
         }
 
 
