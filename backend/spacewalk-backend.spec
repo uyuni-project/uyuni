@@ -265,7 +265,6 @@ Libraries required by both Spacewalk server and Spacewalk client tools.
 %package -n python3-%{name}-libs
 Summary: Spacewalk client tools libraries for python3
 Group: Applications/Internet
-BuildRequires: python2-devel
 BuildRequires: python3-devel
 Conflicts: %{name} < 1.7.0
 %if 0%{?suse_version}
