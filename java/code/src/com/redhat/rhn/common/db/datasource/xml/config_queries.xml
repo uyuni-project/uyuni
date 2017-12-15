@@ -1258,6 +1258,7 @@ SELECT  DISTINCT CFN.id, CFN.path
    AND  SCC.config_channel_id = CC.id
    AND  CC.confchan_type_id = CCT.id
    AND  CCT.label != 'server_import'
+   AND  CCT.label != 'state'
    AND  CF.config_file_name_id = CFN.id
 ORDER BY CFN.path
   </query>
@@ -1277,6 +1278,7 @@ SELECT  DISTINCT CFN.id, CFN.path
    AND  SCC.config_channel_id = CC.id
    AND  CC.confchan_type_id = CCT.id
    AND  CCT.label != 'server_import'
+   AND  CCT.label != 'state'
    AND  CF.config_file_name_id = CFN.id
 ORDER BY CFN.path
   </query>
@@ -1309,6 +1311,7 @@ select cc.label as config_channel_label,
            AND  SCC.config_channel_id = CC.id
            AND  CC.confchan_type_id = CCT.id
            AND  CCT.label != 'server_import'
+           AND  CCT.label != 'state'
            group by cf.config_file_name_id) tmp
  where tmp.id = cfn.id
    and (scc.position = tmp.position
@@ -1338,6 +1341,7 @@ SELECT  DISTINCT CFN.id, CFN.path
    AND  SCC.config_channel_id = CC.id
    AND  CC.confchan_type_id = CCT.id
    AND  CCT.label != 'server_import'
+   AND  CCT.label != 'state'
    AND  CF.config_file_name_id = CFN.id
 ORDER BY CFN.path
   </query>
