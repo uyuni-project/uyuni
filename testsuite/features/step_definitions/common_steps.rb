@@ -435,7 +435,7 @@ end
 
 And(/^I enable SUSE container repository, but not for SLES11 systems$/) do
   def apply_container_repos
-    $minion.run("zypper mr -e `grep -h SLE-Manager-Tools-12-x86_64] /etc/zypp/repos.d/* | tr -d '[]'`")
+    $minion.run("zypper mr -e `zypper lr | grep SLE-Manager-Tools | cut -d' ' -f3`")
     $minion.run('zypper mr -e SLE-Module-Containers-SLE-12-x86_64-Pool')
     $minion.run('zypper mr -e SLE-Module-Containers-SLE-12-x86_64-Update')
   end
@@ -447,7 +447,7 @@ end
 
 And(/^I disable SUSE container repository, but not for SLES11 systems$/) do
   def disable_container_repos
-    $minion.run("zypper mr -d `grep -h SLE-Manager-Tools-12-x86_64] /etc/zypp/repos.d/* | tr -d '[]'`")
+    $minion.run("zypper mr -d `zypper lr | grep SLE-Manager-Tools | cut -d' ' -f3`")
     $minion.run('zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Pool')
     $minion.run('zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Update')
     $minion.run('zypper -n --gpg-auto-import-keys ref')
