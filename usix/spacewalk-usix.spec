@@ -1,8 +1,12 @@
+%if 0%{?fedora} || 0%{?suse_version} > 1320
+%global build_py3   1
+%endif
+
 %if 0%{?rhel} && 0%{?rhel} < 6
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %endif
 
-%if 0%{?fedora} >= 23 || 0%{?suse_version} > 1320
+%if 0%{build_py3}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %global python3rhnroot %{python3_sitelib}/spacewalk
 %endif
@@ -30,7 +34,7 @@ BuildRequires: python-devel
 %description
 Library for writing code that runs on Python 2 and 3
 
-%if 0%{?fedora} >= 23 || 0%{?suse_version} > 1320
+%if 0%{build_py3}
 
 %package -n python3-%{name}
 Summary: Spacewalk client micro six library
@@ -58,7 +62,7 @@ install -m 0644 __init__.py $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py
 install -m 0644 common/__init__.py $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py
 install -m 0644 common/usix.py* $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py
 
-%if 0%{?fedora} >= 23 || 0%{?suse_version} > 1320
+%if 0%{build_py3}
 install -d $RPM_BUILD_ROOT%{python3rhnroot}/common
 cp $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py $RPM_BUILD_ROOT%{python3rhnroot}
 cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py $RPM_BUILD_ROOT%{python3rhnroot}/common
@@ -67,7 +71,7 @@ cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{python3rhnroo
 
 %if 0%{?suse_version} > 1140
 %py_compile -O %{buildroot}/%{pythonrhnroot}
-%if 0%{?suse_version} > 1320
+%if 0%{build_py3}
 %py3_compile -O %{buildroot}/%{python3rhnroot}
 %endif
 %endif
@@ -89,7 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 %exclude %{pythonrhnroot}/common/__init__.pyo
 %endif
 
-%if 0%{?fedora} >= 23 || 0%{?suse_version} > 1320
+%if 0%{build_py3}
 
 %files -n python3-%{name}
 %dir %{python3rhnroot}
