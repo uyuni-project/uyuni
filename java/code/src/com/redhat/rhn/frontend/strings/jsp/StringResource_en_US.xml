@@ -13811,7 +13811,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Enable Configuration Management on Systems</source>
         </trans-unit>
         <trans-unit id="configoverview.jsp.modconfig">
-          <source>Recently Modified Configuration Files:</source>
+          <source>Recently Modified Configuration Files</source>
         </trans-unit>
         <trans-unit id="configoverview.jsp.noFiles">
           <source>No configuration files.</source>
@@ -13823,7 +13823,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Modified</source>
         </trans-unit>
         <trans-unit id="configoverview.jsp.schedconfig">
-          <source>Recently Scheduled Configuration File Deployments:</source>
+          <source>Recently Scheduled Configuration File Deployments</source>
         </trans-unit>
         <trans-unit id="configoverview.jsp.system">
           <source>System</source>
