@@ -206,19 +206,21 @@ public class Notification {
         }
     }
 
-    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-    ScheduledFuture scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
-        public void run() {
-            try {
-                clearBrokenSessions();
-                spreadUpdate();
-                HibernateFactory.closeSession();
+    static {
+        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        ScheduledFuture scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
+            public void run() {
+                try {
+                    clearBrokenSessions();
+                    spreadUpdate();
+                    HibernateFactory.closeSession();
+                }
+                catch (Exception e) {
+                    LOG.error("Notification scheduledExecutorService exception", e);
+                    // clear WebSocket connections
+                    clearBrokenSessions();
+                }
             }
-            catch (Exception e) {
-                LOG.error("Notification scheduledExecutorService exception", e);
-                // clear WebSocket connections
-                clearBrokenSessions();
-            }
-        }
-    }, 30, 30, TimeUnit.SECONDS);
+        }, 30, 30, TimeUnit.SECONDS);
+    }
 }
