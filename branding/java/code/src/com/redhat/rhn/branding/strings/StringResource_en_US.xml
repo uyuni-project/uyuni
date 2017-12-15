@@ -1507,6 +1507,12 @@ As a Channel Administrator, you may change the base channels your systems are su
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state">
+        <source>Create configuration file</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.initsls">
         <source>State File</source>
         <context-group name="ctx">
