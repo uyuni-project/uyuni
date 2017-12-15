@@ -8,11 +8,18 @@ When(/^I wait for "(\d+)" seconds$/) do |arg1|
   sleep(arg1.to_i)
 end
 
-Then(/^I download the SSL certificate$/) do
+When(/^I download the SSL certificate$/) do
   cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
   wget = 'wget --no-check-certificate -O'
   $client.run("#{wget} #{cert_path} http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT", true, 500, 'root')
   $client.run("ls #{cert_path}")
+end
+
+When(/^I make the SSL certificate available to zypper$/) do
+  cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
+  trust_path = '/etc/pki/trust/anchors'
+  $client.run("cd #{trust_path} && ln -sf #{cert_path}")
+  $client.run("update-ca-certificates")
 end
 
 Then(/^I can see all system information for "([^"]*)"$/) do |target|
