@@ -30,7 +30,13 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * WebSocket EndPoint for showing notifications real-time in web UI.
@@ -44,6 +50,7 @@ public class Notification {
 
     private static final Object LOCK = new Object();
     private static Map<Session, User> wsSessions = new HashMap<>();
+    private static Set<Session> brokenSessions = new HashSet<>();
 
     /**
      * Callback executed when the WebSocket is opened.
@@ -97,7 +104,6 @@ public class Notification {
      */
     @OnError
     public void onError(Session session, Throwable err) {
-        handbreakSession(session);
         if (err instanceof EOFException) {
             LOG.debug("The client aborted the connection.", err);
         }
@@ -108,6 +114,7 @@ public class Notification {
         else {
             LOG.error("Websocket endpoint error", err);
         }
+        handbreakSession(session);
     }
 
     /**
@@ -131,6 +138,7 @@ public class Notification {
             }
             catch (IOException e) {
                 LOG.error("Error sending websocket message", e);
+                handbreakSession(session);
             }
         }
     }
@@ -150,6 +158,35 @@ public class Notification {
     }
 
     /**
+     * A static method to clean up all invalid sessions
+     */
+    public static void clearBrokenSessions() {
+        synchronized (LOCK) {
+            // look for closed sessions in the valid set
+            wsSessions.forEach((s, u) -> {
+                if (!s.isOpen()) {
+                    brokenSessions.add(s);
+                }
+            });
+
+            // remove any invalid/broken session from the valid set
+            // try to close it if it is still open
+            brokenSessions.forEach(session -> {
+                wsSessions.remove(session);
+                if (session.isOpen()) {
+                    try {
+                        session.close();
+                    }
+                    catch (IOException e) {
+                        LOG.error("Error trying to close the session manually", e);
+                    }
+                }
+            });
+            brokenSessions.clear();
+        }
+    }
+
+    /**
      * Add a new WebSocket Session to the collection
      * @param session the session to add
      */
@@ -160,31 +197,29 @@ public class Notification {
     }
 
     /**
-     * Remove a WebSocket Session from the collection
+     * Add a WebSocket Session to the broken collection to clean them up
      * @param session the session to remove
      */
     private static void handbreakSession(Session session) {
         synchronized (LOCK) {
-            wsSessions.remove(session);
+            brokenSessions.add(session);
         }
     }
 
+    private static ScheduledExecutorService scheduledExecutorService;
     static {
-        Thread notificationThread = new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    spreadUpdate();
-                    HibernateFactory.closeSession();
-                    try {
-                        // check every 10 second
-                        sleep(10000);
-                    }
-                    catch (InterruptedException e) {
-                    }
-                }
-            };
-        };
-        notificationThread.start();
+        scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        ScheduledFuture scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(() -> {
+            try {
+                clearBrokenSessions();
+                spreadUpdate();
+                HibernateFactory.closeSession();
+            }
+            catch (Exception e) {
+                LOG.error("Notification scheduledExecutorService exception", e);
+                // clear WebSocket connections
+                clearBrokenSessions();
+            }
+        }, 30, 30, TimeUnit.SECONDS);
     }
 }

@@ -15,7 +15,9 @@ const Notifications = React.createClass({
   },
 
   onBeforeUnload: function(e) {
-    this.state.websocket.close();
+    if (this.state.websocket != null) {
+      this.state.websocket.close();
+    }
     this.setState({
       pageUnloading: true
     });
@@ -29,10 +31,10 @@ const Notifications = React.createClass({
        "/rhn/websocket/notifications";
     var ws = new WebSocket(url);
     ws.onopen = () => {
-        console.log('Websocket onOpen');
+        console.log('Websocket connection open');
     };
     ws.onclose = (e) => {
-        console.log('Websocket onClose');
+        console.log('Websocket connection closed');
       var errs = this.state.errors ? this.state.errors : [];
       if (!this.state.pageUnloading && !this.state.websocketErr) {
           errs.push(t("Websocket connection closed. Refresh the page to try again."));
@@ -43,14 +45,17 @@ const Notifications = React.createClass({
       });
     };
     ws.onerror = (e) => {
-      console.log("Websocket error: " + e);
+      console.log("Websocket error: " + JSON.stringify(e));
+      if (this.state.websocket != null) {
+        this.state.websocket.close();
+      }
       this.setState({
          errors: [t("Error connecting to server. Refresh the page to try again.")],
-         websocketErr: true
+         websocketErr: true,
+         websocket: null,
       });
     };
     ws.onmessage = (e) => {
-        console.log('Websocket message=' + e.data);
         this.setState({unreadMessagesLength: e.data})
     };
     window.addEventListener("beforeunload", this.onBeforeUnload)
@@ -76,9 +81,9 @@ const Notifications = React.createClass({
   render: function() {
     return (
         <a href="/rhn/manager/notification-messages">
-          <i className="fa fa-bell"></i>
+          <i className={this.state.websocket == null ? 'fa fa-bell-slash' : 'fa fa-bell' }></i>
           {
-            this.state.unreadMessagesLength > 0 ?
+            this.state.websocket != null && this.state.unreadMessagesLength > 0 ?
             <div id="notification-counter" className={this.state.classStyle}>
               {this.state.unreadMessagesLength}
             </div> : null
