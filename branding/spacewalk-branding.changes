@@ -1,3 +1,4 @@
+- fix naming of the Tools channel (bsc#979633)
 - Remove enforcement of IBM JDK
 - improve text for system types page (bsc#1057084)
 - Visualization UI look&feel improvements
