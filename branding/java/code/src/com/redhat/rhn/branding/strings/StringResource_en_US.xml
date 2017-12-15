@@ -2555,6 +2555,9 @@ but are not subscribed to {0}.</source>
 but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="targetsystems.jsp.subscribetools">
+          <source>Subscribe to @@PRODUCT_NAME@@ Tools channel</source>
+      </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.configadmin">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; If you would like to deploy this file to a system not in this list, you'll need to first subscribe that system to the {0} configuration channel using the &lt;a href="{1}"&gt;'Target Systems' tab&lt;/a&gt; for that channel, then return to this screen.</source>
         <context-group name="ctx">
