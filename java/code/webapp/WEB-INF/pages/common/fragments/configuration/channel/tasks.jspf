@@ -87,7 +87,14 @@
             <li class="list-group-item">
                 <a href="/rhn/configuration/ChannelCreateFiles.do?ccid=${ccid}">
                     <rhn:icon type="item-add"/>
-                    <bean:message key="channelOverview.jsp.tasks.modifyCreate" />
+                    <c:choose>
+                        <c:when test="${type == 'state'}">
+                            <bean:message key="channelOverview.jsp.tasks.modifyCreate.state" />
+                        </c:when>
+                        <c:otherwise>
+                            <bean:message key="channelOverview.jsp.tasks.modifyCreate" />
+                        </c:otherwise>
+                    </c:choose>
                 </a>
             </li>
             <li class="list-group-item">
