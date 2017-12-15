@@ -59,6 +59,8 @@ public class ChannelOverviewAction extends RhnAction {
     /** init.sls data for state channels */
     private static final String INIT_SLS_FILE = "initsls";
 
+    private static final String CHANNEL_TYPE_LABEL = "type";
+
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(ChannelOverviewAction.class);
 
@@ -184,6 +186,8 @@ public class ChannelOverviewAction extends RhnAction {
             request.setAttribute(INIT_SLS_FILE, cc.getConfigFiles().stream()
                     .filter(c -> c.getLatestConfigRevision().isInitSls()).findFirst().orElse(null));
         }
+
+        request.setAttribute(CHANNEL_TYPE_LABEL, cc.getConfigChannelType().getLabel());
 
 
         ConfigActionHelper.processParamMap(cc, params);
