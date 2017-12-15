@@ -206,8 +206,9 @@ public class Notification {
         }
     }
 
+    private static ScheduledExecutorService scheduledExecutorService;
     static {
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        scheduledExecutorService = Executors.newScheduledThreadPool(1);
         ScheduledFuture scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(() -> {
             try {
                 clearBrokenSessions();
