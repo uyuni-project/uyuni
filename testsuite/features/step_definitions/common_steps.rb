@@ -433,29 +433,36 @@ And(/^I remove kickstart profiles and distros$/) do
   $server.run('cobbler distro remove --name "testdistro"')
 end
 
-And(/^I enable SUSE container repository, but not for SLES11 systems$/) do
-  def apply_container_repos
-    $minion.run("zypper mr -e `zypper lr | grep SLE-Manager-Tools | cut -d' ' -f3`")
-    $minion.run('zypper mr -e SLE-Module-Containers-SLE-12-x86_64-Pool')
-    $minion.run('zypper mr -e SLE-Module-Containers-SLE-12-x86_64-Update')
-  end
-  # there is no Docker Repos for sles11 systems.
-  _out, code = $minion.run('pidof systemd', false)
-  # only for SLES12 and major systems
-  apply_container_repos if code.zero?
+When(/^I enable SUSE Manager tools repository on "([^"]*)"$/) do |target|
+  node = get_target(target)
+  out, _code = node.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+  # This enables tools development repository too if it exists
+  node.run("zypper mr --enable #{out.gsub(/\s/, ' ')}")
 end
 
-And(/^I disable SUSE container repository, but not for SLES11 systems$/) do
-  def disable_container_repos
-    $minion.run("zypper mr -d `zypper lr | grep SLE-Manager-Tools | cut -d' ' -f3`")
-    $minion.run('zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Pool')
-    $minion.run('zypper mr -d SLE-Module-Containers-SLE-12-x86_64-Update')
+When(/^I enable SUSE container repository, but not for SLES11 systems$/) do
+  # There are no docker repositories for SLES11 systems,
+  # only for SLES12 and upper systems
+  _out, code = $minion.run('pidof systemd', false)
+  if code.zero?
+    out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+    $minion.run("zypper mr --enable #{out.gsub(/\s/, ' ')}")
+    $minion.run('zypper mr --enable SLE-Module-Containers-SLE-12-x86_64-Pool')
+    $minion.run('zypper mr --enable SLE-Module-Containers-SLE-12-x86_64-Update')
+  end
+end
+
+When(/^I disable SUSE container repository, but not for SLES11 systems$/) do
+  # There are no docker repositories for SLES11 systems,
+  # only for SLES12 and upper systems
+  _out, code = $minion.run('pidof systemd', false)
+  if code.zero?
+    out, _code = $minion.run('zypper lr | grep SLE-Manager-Tools | cut -d"|" -f2')
+    $minion.run("zypper mr --disable #{out.gsub(/\s/, ' ')}")
+    $minion.run('zypper mr --disable SLE-Module-Containers-SLE-12-x86_64-Pool')
+    $minion.run('zypper mr --disable SLE-Module-Containers-SLE-12-x86_64-Update')
     $minion.run('zypper -n --gpg-auto-import-keys ref')
   end
-  # there is no Docker Repos for sles11 systems.
-  _out, code = $minion.run('pidof systemd', false)
-  # only for SLES12 and major systems
-  disable_container_repos if code.zero?
 end
 
 And(/^I enable SLES pool and update repository on "([^"]*)", but not for SLES11$/) do |target|
