@@ -2,7 +2,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://github.com/spacewalkproject/spacewalk
-Version: 2.8.2
+Version: 2.8.3
 Release: 1%{?dist}
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 License: GPLv2
@@ -12,7 +12,7 @@ Requires: spacewalk-base
 Requires: perl(MIME::Base64)
 Requires: lsof
 BuildRequires: /usr/bin/pod2man
-%if 0%{?fedora} || 0%{?suse_version} >= 1210
+%if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210
 BuildRequires: systemd
 %endif
 Obsoletes: satellite-utils < 5.3.0
@@ -35,7 +35,7 @@ Various utility scripts and data files for Spacewalk installations.
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%if 0%{?fedora} || 0%{?suse_version} >= 1210
+%if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210
 mv -f spacewalk-service.systemd spacewalk-service
 make -f Makefile.admin install_systemd PREFIX=$RPM_BUILD_ROOT
 %if 0%{?suse_version} >= 1210
@@ -82,7 +82,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/rhn-deploy-ca-cert.pl.8*
 %{_mandir}/man8/rhn-install-ssl-cert.pl.8*
 %config(noreplace) %{_sysconfdir}/rhn/service-list
-%if 0%{?fedora} || 0%{?suse_version} >= 1210
+%if 0%{?rhel} >= 7 || 0%{?fedora} || 0%{?suse_version} >= 1210
 %{_unitdir}/spacewalk.target
 %{_unitdir}/spacewalk-wait-for-tomcat.service
 %{_unitdir}/spacewalk-wait-for-salt.service
@@ -94,6 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Dec 15 2017 Jan Dobes <jdobes@redhat.com> 2.8.3-1
+- 1524221 - ship systemd target on RHEL 7 too
+
 * Mon Nov 13 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.2-1
 - don't use systemctl pager for output as we have "| less"
 
