@@ -142,7 +142,11 @@ Provides: python3-rhn-client-tools = %{version}-%{release}
 Obsoletes: python3-rhn-client-tools < %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 %if 0%{?suse_version}
+%if 0%{?suse_version} >= 1500
 Requires: python3-dbus-python
+%else
+Requires: dbus-1-python3
+%endif
 Requires: libgudev-1_0-0
 Requires: python3-newt
 Requires: python3-pyudev
