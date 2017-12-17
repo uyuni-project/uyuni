@@ -17,6 +17,9 @@ import os
 import logging
 import yaml
 import json
+import sys
+if sys.version_info.major == 3:
+    unicode = str
 
 # SUSE Manager static pillar paths:
 MANAGER_STATIC_PILLAR_DATA_PATH = '/usr/share/susemanager/pillar_data'
