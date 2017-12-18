@@ -53,6 +53,7 @@ public class FormulaCatalogController {
     public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("info", FlashScopeHelper.flash(request));
+        data.put("pageSize", user.getPageSize());
         return new ModelAndView(data, "formula_catalog/list.jade");
     }
 
