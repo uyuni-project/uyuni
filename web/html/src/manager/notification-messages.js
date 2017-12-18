@@ -295,6 +295,7 @@ const NotificationMessages = React.createClass({
             cssClassFunction={(row) => row["isRead"] == true ? 'text-muted' : '' }
             initialSortColumnKey="created"
             initialSortDirection={-1}
+            initialItemsPerPage={userPrefPageSize}
             loading={this.state.loading}
             searchField={
                 <SearchField filter={this.searchData}

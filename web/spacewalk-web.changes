@@ -1,3 +1,4 @@
+- Add user preferences in order to change items-per-page (bsc#1055296)
 - Fix main menu column height
 - Adding initial version of web ui notifications
 

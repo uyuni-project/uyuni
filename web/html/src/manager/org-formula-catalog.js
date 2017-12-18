@@ -57,6 +57,7 @@ var FormulaCatalog = React.createClass({
                 data={this.state.serverData}
                 identifier={this.rowKey}
                 initialSortColumnKey="name"
+                initialItemsPerPage={userPrefPageSize}
                 searchPanel={
                     <SearchField filter={this.searchData}
                       placeholder={t("Filter by formula name")} />
