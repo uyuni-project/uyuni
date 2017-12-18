@@ -59,6 +59,7 @@ public class MenuTree {
             // Home
             nodes.add(new MenuItem("Home").withIcon("fa-home")
                 .addChild(new MenuItem("Overview").withPrimaryUrl("/rhn/YourRhn.do"))
+                .addChild(new MenuItem("Notification Messages").withPrimaryUrl("/rhn/manager/notification-messages"))
                 .addChild(new MenuItem("User Account")
                     .addChild(new MenuItem("Your Account").withPrimaryUrl("/rhn/account/UserDetails.do"))
                     .addChild(new MenuItem("Addresses")

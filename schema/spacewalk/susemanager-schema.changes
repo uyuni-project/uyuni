@@ -1,3 +1,4 @@
+- Adding initial version of web ui notifications
 - Add column to store the 'test' option for state apply actions
 - Added a script which will remove existing server locks against minions (bsc#1064258)
 - Added new relationships for Salt config management

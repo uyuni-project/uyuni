@@ -1103,6 +1103,12 @@
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Notification Messages">
+        <source>Notification Messages</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="User Account">
         <source>User Account</source>
         <context-group name="ctx">
