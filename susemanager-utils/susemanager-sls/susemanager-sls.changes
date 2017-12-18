@@ -1,3 +1,4 @@
+- python3 compatibility fixes in modules and states
 - Fix failing certs state for Tumbleweed (bsc#970630)
 - Fix deprecated SLS files to avoid deprecation warnings during highstate (bsc#1041993)
 
