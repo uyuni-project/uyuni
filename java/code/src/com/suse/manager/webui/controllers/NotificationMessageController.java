@@ -64,6 +64,7 @@ public class NotificationMessageController {
     public static ModelAndView getList(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
+        data.put("pageSize", user.getPageSize());
         return new ModelAndView(data, "notification-messages/list.jade");
     }
 
