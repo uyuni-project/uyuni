@@ -18,8 +18,6 @@ import logging
 import yaml
 import json
 import sys
-if sys.version_info.major == 3:
-    unicode = str
 
 # SUSE Manager static pillar paths:
 MANAGER_STATIC_PILLAR_DATA_PATH = '/usr/share/susemanager/pillar_data'
@@ -98,12 +96,12 @@ def process_formulas(formula_filename, minion_id, group_ids=[], as_group=False):
 
     if as_group:
         for group in group_ids:
-            for formula in data.get(unicode(group), []):
+            for formula in data.get(str(group), []):
                 out_formulas.append(formula.encode('utf-8'))
                 pillar.update(load_formula_pillar(minion_id, group, formula))
 
     else:
-        for formula in data.get(unicode(minion_id), []):
+        for formula in data.get(str(minion_id), []):
             out_formulas.append(formula.encode('utf-8'))
             pillar.update(load_formula_pillar(minion_id, None, formula))
 
