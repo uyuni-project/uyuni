@@ -184,7 +184,23 @@ import java.util.stream.Collectors;
 public class SystemHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(SystemHandler.class);
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private final TaskomaticApi TASKOMATIC_API;
+
+    /**
+     * Default constructor.
+     */
+    public SystemHandler() {
+        TASKOMATIC_API = new TaskomaticApi();
+    }
+
+    /**
+     * Set the {@link TaskomaticApi} instance to use, only for unit tests.
+     *
+     * @param taskomaticApiIn the {@link TaskomaticApi}
+     */
+    public SystemHandler(TaskomaticApi taskomaticApiIn) {
+        TASKOMATIC_API = taskomaticApiIn;
+    }
 
     /**
      * Get a reactivation key for this server.
