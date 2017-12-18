@@ -39,7 +39,7 @@ remove_traditional_stack:
 # disable all spacewalk:* repos
 {%- set repos_disabled = {'disabled': false} %}
 {%- set repos = salt['pkg.list_repos']() %}
-{%- for alias, data in repos.iteritems() %}
+{%- for alias, data in repos.items() %}
 {%- if 'spacewalk:' in alias %}
 {%- if data.get('enabled', true) %}
 disable_repo_{{ alias }}:

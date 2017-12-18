@@ -1,3 +1,4 @@
+- python3 compatibility fixes in modules and states
 - Fix cleanup state error when deleting ssh-push minion (bsc#1070161)
 - Fix image inspect when entrypoint is used by overwriting it
   (bsc#1070782)

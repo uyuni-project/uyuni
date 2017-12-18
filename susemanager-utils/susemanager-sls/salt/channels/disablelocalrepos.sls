@@ -1,7 +1,7 @@
 # disable all local repos
 # everything except susemanager:*
 {% set repos = salt['pkg.list_repos']() %}
-{% for alias, data in repos.iteritems() %}
+{% for alias, data in repos.items() %}
 {% if not 'susemanager:' in alias %}
 {% if data.get('enabled', true) %}
 disable_{{ alias }}:
