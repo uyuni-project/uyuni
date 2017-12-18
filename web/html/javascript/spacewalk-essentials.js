@@ -37,8 +37,8 @@ $(document).on("ready", function(){
 /* Getting the screen size to create a fixed padding-bottom in the Section tag to make both columns the same size */
 // On window load
 $(window).load(function () {
-  columnHeight();
   adjustDistanceForFixedHeader();
+  columnHeight();
 });
 
 // On window resize
@@ -61,9 +61,9 @@ $(window).scroll(function () {
 // A container function for what should be fired
 // to set HTML tag dimensions
 function alignContentDimensions() {
-  columnHeight();
   adjustDistanceForFixedHeader();
   sstStyle();
+  columnHeight();
 }
 
 // empty function by default hooked on window.scroll event
