@@ -20,11 +20,18 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 
 import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
+import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
+import com.redhat.rhn.domain.role.RoleFactory;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +71,31 @@ public class RepoSyncTask extends RhnJavaJob {
                     executeExtCmd(getSyncCommand(channel, params).toArray(new String[0]));
                 }
                 catch (JobExecutionException e) {
+                    NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
+                            new ChannelSyncFailed(channel.getId(), channel.getName())
+                    );
+                    if (channel.getOrg() == null) {
+                        UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                                Collections.singleton(RoleFactory.CHANNEL_ADMIN));
+                    }
+                    else {
+                        UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                                Collections.singleton(RoleFactory.CHANNEL_ADMIN), channel.getOrg());
+                    }
+
+
                     log.error(e.getMessage());
+                }
+                NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
+                        new ChannelSyncFinished(channel.getId(), channel.getName())
+                );
+                if (channel.getOrg() == null) {
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                            Collections.singleton(RoleFactory.CHANNEL_ADMIN));
+                }
+                else {
+                    UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                            Collections.singleton(RoleFactory.CHANNEL_ADMIN), channel.getOrg());
                 }
             }
             else {
