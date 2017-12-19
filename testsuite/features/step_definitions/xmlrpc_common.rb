@@ -58,7 +58,7 @@ end
 CREATE_USER_PASSWORD = 'die gurke'.freeze
 
 Given(/^I am logged in via XML\-RPC user as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @rpc = XMLRPCUserTest.new(ENV['TESTHOST'])
+  @rpc = XMLRPCUserTest.new(ENV['SERVER'])
   @rpc.login(luser, password)
 end
 
@@ -181,7 +181,7 @@ Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
 end
 
 # activation key test xmlrpc
-acttest = XMLRPCActivationKeyTest.new(ENV['TESTHOST'])
+acttest = XMLRPCActivationKeyTest.new(ENV['SERVER'])
 key = nil
 
 Given(/^I am logged in via XML\-RPC activationkey as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
@@ -219,7 +219,7 @@ Then(/^I have to see them by calling activationkey\.get_details\(\)$/) do
   raise unless acttest.get_details(key)
 end
 
-virtualhostmanager = XMLRPCVHMTest.new(ENV['TESTHOST'])
+virtualhostmanager = XMLRPCVHMTest.new(ENV['SERVER'])
 modules = []
 vhms = []
 params = {}
@@ -271,9 +271,9 @@ Then(/^I logout from XML\-RPC virtualhostmanager namespace$/) do
   virtualhostmanager.logout
 end
 
-rpc = XMLRPCActionChain.new(ENV['TESTHOST'])
-syschaintest = XMLRPCSystemTest.new(ENV['TESTHOST'])
-scdrpc = XMLRPCScheduleTest.new(ENV['TESTHOST'])
+rpc = XMLRPCActionChain.new(ENV['SERVER'])
+syschaintest = XMLRPCSystemTest.new(ENV['SERVER'])
+scdrpc = XMLRPCScheduleTest.new(ENV['SERVER'])
 
 # Auth
 Given(/^I am logged in via XML\-RPC actionchain as user "(.*?)" and password "(.*?)"$/) do |luser, password|
@@ -445,14 +445,14 @@ Then(/^there should be no more any scheduled actions$/) do
   assert_empty(scdrpc.list_in_progress_actions)
 end
 
-rpc_api_tester = XMLRPCApiTest.new(ENV['TESTHOST'])
+rpc_api_tester = XMLRPCApiTest.new(ENV['SERVER'])
 Given(/^I am logged in via XML\-RPC api as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   assert(rpc_api_tester.login(luser, password))
 end
 
 # cve audit
 Given(/^I am logged in via XML\-RPC cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @rpctest = XMLRPCCVEAuditTest.new(ENV['TESTHOST'])
+  @rpctest = XMLRPCCVEAuditTest.new(ENV['SERVER'])
   @rpctest.login(luser, password)
 end
 
