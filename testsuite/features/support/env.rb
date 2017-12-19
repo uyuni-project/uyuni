@@ -17,7 +17,7 @@ require File.join(File.dirname(__FILE__), 'zypp_lock_helper')
 require 'simplecov'
 require 'capybara/poltergeist'
 SimpleCov.start
-host = ENV['TESTHOST']
+host = ENV['SERVER']
 
 require 'minitest/unit'
 World(MiniTest::Assertions)
@@ -67,7 +67,7 @@ end
 
 # may be non url was given
 if host.include?("//")
-  raise "TESTHOST must be the FQDN only"
+  raise "SERVER must be the FQDN only"
 end
 host = "https://#{host}"
 

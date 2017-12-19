@@ -1,6 +1,6 @@
 # COPYRIGHT 2015 SUSE LLC
 
-systest = XMLRPCSystemTest.new(ENV['TESTHOST'])
+systest = XMLRPCSystemTest.new(ENV['SERVER'])
 servers = []
 rabbit = nil
 

@@ -2,13 +2,13 @@ require "twopence"
 
 # initialize ssh targets from environment variables.
 
-raise "Server ip var empty" if ENV['TESTHOST'].nil?
+raise "Server ip var empty" if ENV['SERVER'].nil?
 raise "client ip var empty" if ENV['CLIENT'].nil?
 raise "minion ip var empty" if ENV['MINION'].nil?
 raise "ceos-minion ip var empty" if ENV['CENTOSMINION'].nil?
 raise "ssh-minion ip var empty" if ENV['SSHMINION'].nil?
 
-$server_ip = ENV['TESTHOST']
+$server_ip = ENV['SERVER']
 $client_ip = ENV['CLIENT']
 $minion_ip = ENV['MINION']
 $ceos_minion_ip = ENV['CENTOSMINION']

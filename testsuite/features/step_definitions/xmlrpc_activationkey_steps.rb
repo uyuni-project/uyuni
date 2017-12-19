@@ -1,5 +1,5 @@
 # COPYRIGHT 2015 SUSE LLC
-rpctest = XMLRPCActivationKeyTest.new(ENV["TESTHOST"])
+rpctest = XMLRPCActivationKeyTest.new(ENV["SERVER"])
 key = nil
 
 Given(/^I am logged in via XML\-RPC\/activationkey as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|

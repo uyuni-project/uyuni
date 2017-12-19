@@ -203,7 +203,7 @@ Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
 end
 
 And(/^this minion is not registered in Spacewalk$/) do
-  @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
+  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
   sid = @rpc.listSystems.select { |s| s['name'] == $minion_fullhostname }.map { |s| s['id'] }.first
   @rpc.deleteSystem(sid) if sid
@@ -211,7 +211,7 @@ And(/^this minion is not registered in Spacewalk$/) do
 end
 
 Given(/^that this minion is registered in Spacewalk$/) do
-  @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
+  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
   assert_includes(@rpc.listSystems.map { |s| s['name'] }, $minion_fullhostname)
 end

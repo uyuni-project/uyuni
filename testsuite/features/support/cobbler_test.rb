@@ -12,7 +12,7 @@ require "pp"
 # list = ct.get_list( "systems" )
 
 class CobblerTest
-  def initialize(server_address=ENV['TESTHOST'], server_port=80, server_path="/cobbler_api")
+  def initialize(server_address=ENV['SERVER'], server_port=80, server_path="/cobbler_api")
     @server_address = server_address
     @server_port = server_port
     @server_path = server_path

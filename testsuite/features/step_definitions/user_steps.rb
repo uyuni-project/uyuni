@@ -1,6 +1,6 @@
 
 Given(/^I am authorized as an example user with no roles$/) do
-  @rpc = XMLRPCUserTest.new(ENV["TESTHOST"])
+  @rpc = XMLRPCUserTest.new(ENV["SERVER"])
   @rpc.login('admin', 'admin')
   @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
   @rpc.createUser(@username, 'linux')

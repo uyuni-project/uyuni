@@ -123,7 +123,7 @@ end
 
 When(/^I copy "([^"]*)"$/) do |arg1|
   user = "root@"
-  $command_output = `echo | scp -o StrictHostKeyChecking=no #{user}$TESTHOST:#{arg1} . 2>&1`
+  $command_output = `echo | scp -o StrictHostKeyChecking=no #{user}$SERVER:#{arg1} . 2>&1`
   unless $?.success?
     raise "Execute command failed: #{$!}: #{$command_output}"
   end
@@ -131,7 +131,7 @@ end
 
 When(/^I copy to server "([^"]*)"$/) do |arg1|
   user = "root@"
-  $command_output = `echo | scp -o StrictHostKeyChecking=no #{arg1} #{user}$TESTHOST: 2>&1`
+  $command_output = `echo | scp -o StrictHostKeyChecking=no #{arg1} #{user}$SERVER: 2>&1`
   unless $?.success?
     raise "Execute command failed: #{$!}: #{$command_output}"
   end
