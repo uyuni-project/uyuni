@@ -16824,12 +16824,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">System Set Manager header</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="view-log.jsp.header">
-        <source>System Set Manager Task Log</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">System Set Manager header</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="ssm.jsp.imgAlt">
         <source>System Set</source>
         <context-group name="ctx">
