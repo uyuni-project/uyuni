@@ -36,11 +36,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     Then I should see "ssh-minion" hostname
 
   Scenario: Subscribe the SSH-managed SLES minion to a base channel for testing
-    Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow "ssh-minion" link
+    Given I am on the Systems overview page of this "ssh-minion"
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I select "Test-Channel-x86_64" from "new_base_channel_id"
@@ -69,11 +65,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I reload the page until it does contain a "FINISHED" text in the table first row
 
   Scenario: Install a package on the SSH minion
-    Given I am authorized as "testing" with password "testing"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow "ssh-minion" link
+    Given I am on the Systems overview page of this "ssh-minion"
     And I follow "Software" in the content area
     And I follow "Install"
     And I check "hoag-dummy-1.1-2.1" in the list
