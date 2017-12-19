@@ -19,7 +19,7 @@ ENV['IGNORECERT'] = '1'
 
 ## codecoverage gem
 SimpleCov.start
-server = ENV['TESTHOST']
+server = ENV['SERVER']
 # 10 minutes maximal wait before giving up
 # the tests return much before that delay in case of success
 DEFAULT_TIMEOUT = 600

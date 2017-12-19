@@ -1,7 +1,7 @@
 require 'net/ssh'
 require 'stringio'
 
-def sshcmd(command, host: ENV['TESTHOST'], user: 'root', ignore_err: false)
+def sshcmd(command, host: ENV['SERVER'], user: 'root', ignore_err: false)
   # Execute a command on the remote server
   # Not passing :password uses systems keys for auth
   out = StringIO.new

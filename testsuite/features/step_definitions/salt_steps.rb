@@ -201,14 +201,14 @@ end
 
 Then(/^"(.*?)" should not be registered$/) do |host|
   node = get_target(host)
-  @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
+  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
   refute_includes(@rpc.list_systems.map { |s| s['name'] }, node.full_hostname)
 end
 
 Then(/^"(.*?)" should be registered$/) do |host|
   node = get_target(host)
-  @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
+  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
   assert_includes(@rpc.list_systems.map { |s| s['name'] }, node.full_hostname)
 end
@@ -228,7 +228,7 @@ end
 
 # user salt steps
 Given(/^I am authorized as an example user with no roles$/) do
-  @rpc = XMLRPCUserTest.new(ENV['TESTHOST'])
+  @rpc = XMLRPCUserTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
   @username = 'testuser' + (0...8).map { (65 + rand(26)).chr }.join.downcase
   @rpc.create_user(@username, 'linux')
