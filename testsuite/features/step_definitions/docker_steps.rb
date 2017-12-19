@@ -10,7 +10,7 @@ require 'timeout'
 # this module test image_profile
 module ImageProfile
   def create_delete
-    cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
+    cont_op = XMLRPCImageTest.new(ENV['SERVER'])
     cont_op.login('admin', 'admin')
     # create delete profile test
     cont_op.create_profile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
@@ -20,7 +20,7 @@ module ImageProfile
   end
 
   def custom_values
-    cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
+    cont_op = XMLRPCImageTest.new(ENV['SERVER'])
     cont_op.login('admin', 'admin')
     cont_op.create_profile('fakeone', 'dockerfile', 'galaxy-registry', 'BiggerPathBiggerTest', '')
     cont_op.create_custom_key('arancio', 'test containers')
@@ -37,7 +37,7 @@ module ImageProfile
   end
 
   def image_profiles_xmlrpc
-    cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
+    cont_op = XMLRPCImageTest.new(ENV['SERVER'])
     cont_op.login('admin', 'admin')
     # create delete tests
     create_delete
@@ -64,10 +64,10 @@ end
 World(ImageProfile)
 
 # container_operations
-cont_op = XMLRPCImageTest.new(ENV['TESTHOST'])
+cont_op = XMLRPCImageTest.new(ENV['SERVER'])
 # retrieve minion id, needed for scheduleImageBuild call
 def retrieve_minion_id
-  sysrpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
+  sysrpc = XMLRPCSystemTest.new(ENV['SERVER'])
   sysrpc.login('admin', 'admin')
   systems = sysrpc.list_systems
   refute_nil(systems)
