@@ -2,14 +2,14 @@ require 'twopence'
 
 # Initialize SSH targets from environment variables
 # If there is no proxy, don't define $PROXY environment variable
-raise 'Server IP address or domain name variable empty' if ENV['TESTHOST'].nil?
+raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
 raise 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
 raise 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
 raise 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
 raise 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
 
-$server_ip = ENV['TESTHOST']
+$server_ip = ENV['SERVER']
 $proxy_ip = ENV['PROXY']
 $client_ip = ENV['CLIENT']
 $minion_ip = ENV['MINION']

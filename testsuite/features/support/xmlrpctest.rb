@@ -1,7 +1,7 @@
 require 'xmlrpc/client'
 
 def retrieve_server_id(server)
-  sysrpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
+  sysrpc = XMLRPCSystemTest.new(ENV['SERVER'])
   sysrpc.login('admin', 'admin')
   systems = sysrpc.list_systems
   refute_nil(systems)
