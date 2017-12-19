@@ -1,5 +1,5 @@
 Given(/^I am logged in via XML\-RPC\/cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @rpctest = XMLRPCCVEAuditTest.new(ENV["TESTHOST"])
+  @rpctest = XMLRPCCVEAuditTest.new(ENV["SERVER"])
   @rpctest.login(luser, password)
 end
 

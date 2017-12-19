@@ -1,6 +1,6 @@
 require 'json'
 
-virtualhostmanager = XMLRPCVHMTest.new(ENV['TESTHOST'])
+virtualhostmanager = XMLRPCVHMTest.new(ENV['SERVER'])
 modules = []
 vhms = []
 params = {}

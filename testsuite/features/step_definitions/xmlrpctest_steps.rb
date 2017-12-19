@@ -1,6 +1,6 @@
 # COPYRIGHT 2015 SUSE LLC
 
-rpc_api_tester = XMLRPCApiTest.new(ENV["TESTHOST"])
+rpc_api_tester = XMLRPCApiTest.new(ENV["SERVER"])
 
 #
 # Steps

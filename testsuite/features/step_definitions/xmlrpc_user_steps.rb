@@ -2,7 +2,7 @@
 CREATE_USER_PASSWORD = "die gurke"
 
 Given(/^I am logged in via XML\-RPC\/user as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
-  @rpc = XMLRPCUserTest.new(ENV["TESTHOST"])
+  @rpc = XMLRPCUserTest.new(ENV["SERVER"])
   @rpc.login(luser, password)
 end
 

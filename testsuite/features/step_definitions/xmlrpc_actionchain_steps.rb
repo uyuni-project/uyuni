@@ -1,9 +1,9 @@
 require "xmlrpc/client"
 require "socket"
 
-rpc = XMLRPCActionChain.new(ENV["TESTHOST"])
-sysrpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
-scdrpc = XMLRPCScheduleTest.new(ENV['TESTHOST'])
+rpc = XMLRPCActionChain.new(ENV["SERVER"])
+sysrpc = XMLRPCSystemTest.new(ENV['SERVER'])
+scdrpc = XMLRPCScheduleTest.new(ENV['SERVER'])
 
 users = nil
 roles = nil

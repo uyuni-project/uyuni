@@ -1,4 +1,4 @@
-rpctest = XMLRPCChannelTest.new(ENV["TESTHOST"])
+rpctest = XMLRPCChannelTest.new(ENV["SERVER"])
 
 Given(/^I am logged in via XML\-RPC\/channel as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   assert(rpctest.login(luser, password))

@@ -14,7 +14,7 @@ Given(/^no Salt packages are installed on remote "(.*)"$/) do |host|
 end
 
 Given(/^remote minion host is not registered in Spacewalk$/) do
-  @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
+  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
   sid = @rpc.listSystems.select { |s| s['name'] == ENV['SSHMINION'] }.map { |s| s['id'] }.first
   @rpc.deleteSystem(sid) if sid
@@ -22,7 +22,7 @@ Given(/^remote minion host is not registered in Spacewalk$/) do
 end
 
 Given(/^centos minion is not registered in Spacewalk$/) do
-  @rpc = XMLRPCSystemTest.new(ENV['TESTHOST'])
+  @rpc = XMLRPCSystemTest.new(ENV['SERVER'])
   @rpc.login('admin', 'admin')
   sid = @rpc.listSystems.select { |s| s['name'] == ENV['CENTOSMINION'] }.map { |s| s['id'] }.first
   @rpc.deleteSystem(sid) if sid
