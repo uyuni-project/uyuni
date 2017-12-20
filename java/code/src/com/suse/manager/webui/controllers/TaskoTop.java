@@ -15,7 +15,6 @@
 
 package com.suse.manager.webui.controllers;
 
-import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
 
 import com.google.gson.Gson;
@@ -24,7 +23,6 @@ import com.suse.manager.webui.services.TaskoTopCollector;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -52,9 +50,7 @@ public class TaskoTop {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView show(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
-        return new ModelAndView(data, "taskotop/show.jade");
+        return new ModelAndView(new HashMap<>(), "taskotop/show.jade");
     }
 
     /**
