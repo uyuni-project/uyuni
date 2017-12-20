@@ -114,14 +114,6 @@ When(/^I use spacewalk\-channel to remove test-channel-x86_64-child-channel/) do
   step %(I execute spacewalk\-channel and pass "--remove -c #{child_channel} -u admin -p admin")
 end
 
-Then(/^I create mock initrd if download fails$/) do
-  # sometimes the download via sumaform fails. we create a fake empty img.
-  # for current testing this is enough.
-  initrd = '/install/Fedora_12_i386/images/pxeboot/initrd.img'
-  _out, code = $server.run("test -f #{initrd}", false)
-  $server.run("touch #{initrd}") if code.nonzero?
-end
-
 And(/^I navigate to "([^"]*)" page$/) do |page|
   visit("https://#{$server.full_hostname}/#{page}")
 end
