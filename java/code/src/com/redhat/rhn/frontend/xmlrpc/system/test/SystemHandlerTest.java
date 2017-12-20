@@ -145,7 +145,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     private SystemHandler handler = new SystemHandler();
 
-    private static final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
         setImposteriser(ClassImposteriser.INSTANCE);
     }};
