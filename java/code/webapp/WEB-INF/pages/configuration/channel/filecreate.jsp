@@ -20,7 +20,12 @@
                     action="/configuration/ChannelCreateFiles.do?ccid=${ccid}">
                     <rhn:csrf />
                     <rhn:submitted />
-                    <%@ include file="/WEB-INF/pages/common/fragments/configuration/channel/create.jspf" %>
+                    <rhn:require acl="config_channel_type(state)" mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+                        <%@ include file="/WEB-INF/pages/common/fragments/configuration/channel/create-defaultperms.jspf" %>
+                    </rhn:require>
+                    <rhn:require acl="not config_channel_type(state)" mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+                        <%@ include file="/WEB-INF/pages/common/fragments/configuration/channel/create.jspf" %>
+                    </rhn:require>
                 </html:form>
             </div>
         </div>
