@@ -16,28 +16,20 @@
 package com.redhat.rhn.manager.configuration.file;
 
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.config.ConfigFileType;
-import com.redhat.rhn.domain.config.ConfigInfo;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.config.ConfigurationFactory;
-import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.configuration.ConfigurationValidation;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
 /**
  * SLSFileData
  * @version $Rev$
  */
 public class SLSFileData extends ConfigFileData {
-    private static final String VALIDATION_XSD =
-            "/com/redhat/rhn/frontend/action/configuration/validation/" +
-                    "configFileFormForSls.xsd";
     private String contents;
 
     /**
@@ -83,45 +75,6 @@ public class SLSFileData extends ConfigFileData {
         }
 
     }
-
-    /**
-     * Entry point to validate the contents of this form..
-     * @param onCreate true if we're creating a config-file, false if we're only updating
-     * @throws ValidatorException if there are any validation errors.
-     */
-    @Override
-    public void validate(boolean onCreate) throws ValidatorException {
-        if (onCreate) {
-            validatePath();
-        }
-
-        // Struts-validation errors?  Bug out if so
-        ValidatorResult result = RhnValidationHelper.validate(this.getClass(),
-                makeValidationMap(), null,
-                VALIDATION_XSD);
-
-        if (!result.isEmpty()) {
-            throw new ValidatorException(result);
-        }
-
-        validateMacros(result);
-        validateFileSize(result, onCreate);
-
-        if (!result.isEmpty()) {
-            throw new ValidatorException(result);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ConfigInfo extractInfo() {
-        // Override user/group/mode values since they are not applicable for sls files,
-        // because they are not intended to be ever deployed.
-        return ConfigurationFactory.lookupOrInsertConfigInfo("root", "root", 644L, getSelinuxCtx(), null);
-    }
-
     /**
      *
      * {@inheritDoc}

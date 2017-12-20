@@ -33,7 +33,6 @@ import com.redhat.rhn.manager.configuration.ConfigurationValidation;
 import com.redhat.rhn.manager.configuration.file.BinaryFileData;
 import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 import com.redhat.rhn.manager.configuration.file.DirectoryData;
-import com.redhat.rhn.manager.configuration.file.SLSFileData;
 import com.redhat.rhn.manager.configuration.file.SymlinkData;
 import com.redhat.rhn.manager.configuration.file.TextFileData;
 import java.io.BufferedInputStream;
@@ -283,9 +282,6 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
         ConfigFileData data;
         if (isDirectory()) {
             data = new DirectoryData();
-        }
-        else if (ConfigFileType.sls().equals(extractFileType())) {
-            data = new SLSFileData(getContents());
         }
         else if (ConfigFileType.symlink().equals(extractFileType())) {
             data = new SymlinkData(getString(REV_SYMLINK_TARGET_PATH));
