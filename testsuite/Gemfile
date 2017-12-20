@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'capybara', '2.4.0'
-gem 'nokogiri', '1.7.0'
+gem 'nokogiri', '1.8.1'
 gem 'cucumber', '2.0.0'
-gem 'rack', '1.1.0'
+gem 'rack', '1.6.8'
 gem 'rack-test', '0.7.0'
 gem 'rake', '12.3.0'
 gem 'simplecov', '0.15.1'
