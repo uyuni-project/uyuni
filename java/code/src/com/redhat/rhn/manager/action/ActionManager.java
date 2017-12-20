@@ -2148,7 +2148,7 @@ public class ActionManager extends BaseManager {
      * @param scheduler the user who is scheduling
      * @param sids list of server ids
      * @param earliest action will not be executed before this date
-     * @param test run states in test-only (dry-run) mode
+     * @param test run states in test-only mode
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyHighstate(User scheduler, List<Long> sids, Date earliest,
@@ -2179,7 +2179,7 @@ public class ActionManager extends BaseManager {
      * @param sids list of server ids
      * @param mods list of state modules to be applied
      * @param earliest action will not be executed before this date
-     * @param test run states in test-only (dry-run) mode
+     * @param test run states in test-only mode
      * @return the action object
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,

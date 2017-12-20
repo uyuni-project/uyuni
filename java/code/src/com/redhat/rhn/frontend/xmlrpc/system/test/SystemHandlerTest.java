@@ -29,6 +29,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit3.JUnit3Mockery;
+import org.jmock.lib.concurrent.Synchroniser;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
@@ -114,6 +119,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchPackageException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.UndefinedCustomFieldsException;
+import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.frontend.xmlrpc.system.SUSEInstalledProduct;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
@@ -128,6 +134,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -137,6 +144,11 @@ import com.redhat.rhn.testing.UserTestUtils;
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
     private SystemHandler handler = new SystemHandler();
+
+    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+        setThreadingPolicy(new Synchroniser());
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }};
 
     public void testGetNetworkDevices() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -2431,12 +2443,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals("", result);
     }
 
-    public void testScheduleApplyHighstate() {
-        Server testServer = ServerFactoryTest.createTestServer(admin, true);
+    public void testScheduleApplyHighstate() throws Exception {
+        Server testServer = MinionServerFactoryTest.createTestMinionServer(admin);
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
         Date scheduleDate = new Date();
 
-        Long actionId = handler.scheduleApplyHighstate(admin, testServer.getId().intValue(), scheduleDate, false);
+        Long actionId = getMockedHandler().scheduleApplyHighstate(
+                admin, testServer.getId().intValue(), scheduleDate, false);
         assertNotNull(actionId);
 
         DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -2456,12 +2469,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertFalse(details.isTest());
     }
 
-    public void testScheduleApplyHighstateTest() {
-        Server testServer = ServerFactoryTest.createTestServer(admin, true);
+    public void testScheduleApplyHighstateTest() throws Exception {
+        Server testServer = MinionServerFactoryTest.createTestMinionServer(admin);
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
         Date scheduleDate = new Date();
 
-        Long actionId = handler.scheduleApplyHighstate(admin, testServer.getId().intValue(), scheduleDate, true);
+        Long actionId = getMockedHandler().scheduleApplyHighstate(
+                admin, testServer.getId().intValue(), scheduleDate, true);
         assertNotNull(actionId);
 
         DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -2479,5 +2493,28 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNull(details.getStates());
         assertEquals(0, details.getMods().size());
         assertTrue(details.isTest());
+    }
+
+    public void testHighstateNoMinion() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin);
+        try {
+            Long actionId = getMockedHandler().scheduleApplyHighstate(
+                    admin, server.getId().intValue(), new Date(), false);
+            fail("Should throw UnsupportedOperationException");
+        }
+        catch (UnsupportedOperationException e) {
+            assertEquals("System not managed with Salt: " + server.getId(), e.getMessage());
+        }
+    }
+
+    private SystemHandler getMockedHandler() throws Exception {
+        TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
+        SystemHandler systemHandler = new SystemHandler(taskomaticMock);
+
+        MOCK_CONTEXT.checking(new Expectations() {{
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        }});
+
+        return systemHandler;
     }
 }

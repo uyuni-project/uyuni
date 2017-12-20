@@ -119,6 +119,7 @@ import com.redhat.rhn.frontend.xmlrpc.SystemsNotDeletedException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.UndefinedCustomFieldsException;
 import com.redhat.rhn.frontend.xmlrpc.UnrecognizedCountryException;
+import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
 import com.redhat.rhn.manager.MissingCapabilityException;
@@ -185,7 +186,24 @@ import java.util.stream.Collectors;
 public class SystemHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(SystemHandler.class);
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private final TaskomaticApi taskomaticApi;
+
+    /**
+     * Default constructor.
+     */
+    public SystemHandler() {
+        this(new TaskomaticApi());
+    }
+
+    /**
+     * Set the {@link TaskomaticApi} instance to use, only for unit tests.
+     *
+     * @param taskomaticApiIn the {@link TaskomaticApi}
+     */
+    public SystemHandler(TaskomaticApi taskomaticApiIn) {
+        super();
+        taskomaticApi = taskomaticApiIn;
+    }
 
     /**
      * Get a reactivation key for this server.
@@ -3597,7 +3615,7 @@ public class SystemHandler extends BaseHandler {
             Action a = ActionManager.scheduleHardwareRefreshAction(loggedInUser, server,
                     earliestOccurrence);
             Action action = ActionFactory.save(a);
-            TASKOMATIC_API.scheduleActionExecution(action);
+            taskomaticApi.scheduleActionExecution(action);
             return action.getId();
         }
         catch (MissingEntitlementException e) {
@@ -3932,7 +3950,7 @@ public class SystemHandler extends BaseHandler {
             Action a = ActionManager.scheduleRebootAction(loggedInUser, server,
                     earliestOccurrence);
             a = ActionFactory.save(a);
-            TASKOMATIC_API.scheduleActionExecution(a);
+            taskomaticApi.scheduleActionExecution(a);
             return a.getId();
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
@@ -6316,25 +6334,34 @@ public class SystemHandler extends BaseHandler {
      * Schedule highstate application for a given system.
      *
      * @param loggedInUser The current user
-     * @param sid The system ID of the target system
+     * @param sid The system id of the target system
      * @param earliestOccurrence Earliest occurrence
-     * @param test Run states in test-only (dry-run) mode
-     * @return action ID or exception thrown otherwise
+     * @param test Run states in test-only mode
+     * @return action id or exception thrown otherwise
      *
      * @xmlrpc.doc Schedule highstate application for a given system.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "sid", "The system ID of the target system")
-     * @xmlrpc.param #param_desc("dateTime.iso8601",  "earliestOccurrence", "Earliest occurrence")
-     * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only (dry-run) mode")
-     * @xmlrpc.returntype int actionId - The action ID of the scheduled action
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("dateTime.iso8601", "earliestOccurrence")
+     * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
     public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, boolean test) {
         try {
+            // Validate the given system id
+            Server server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
+            if (!server.asMinionServer().isPresent()) {
+                throw new UnsupportedOperationException("System not managed with Salt: " + sid);
+            }
+
             List<Long> sids = Arrays.asList(sid.longValue());
             Action a = ActionManager.scheduleApplyHighstate(loggedInUser, sids, earliestOccurrence, Optional.of(test));
             a = ActionFactory.save(a);
-            TASKOMATIC_API.scheduleActionExecution(a);
+            taskomaticApi.scheduleActionExecution(a);
             return a.getId();
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException(e);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
