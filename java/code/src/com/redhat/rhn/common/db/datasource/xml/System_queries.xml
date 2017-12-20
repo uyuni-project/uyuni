@@ -1289,6 +1289,7 @@ SELECT  DISTINCT ST.element AS ID
     LEFT OUTER JOIN rhnServerLocation SL ON S.id = SL.server_id
     LEFT OUTER JOIN rhnServerDmi DMI ON S.id = DMI.server_id
    WHERE  S.id IN (%s)
+    AND RSNI.is_primary = 'Y'
 ORDER BY S.ID
 </query>
 
