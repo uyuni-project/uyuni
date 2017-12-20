@@ -1,5 +1,8 @@
+include ../common.jade
 #taskotop
 
 script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
+
++userPreferences
 script(src='/javascript/manager/taskotop.bundle.js', type='text/javascript')

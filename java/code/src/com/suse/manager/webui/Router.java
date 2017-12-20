@@ -20,6 +20,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.head;
@@ -63,7 +64,7 @@ public class Router implements SparkApplication {
         //CVEAudit
 
         get("/manager/audit/cve",
-                withCsrfToken(withUser(CVEAuditController::cveAuditView)), jade);
+                withUserPreferences(withCsrfToken(withUser(CVEAuditController::cveAuditView))), jade);
 
         post("/manager/api/audit/cve", withUser(CVEAuditController::cveAudit));
         get("/manager/api/audit/cve.csv", withUser(CVEAuditController::cveAuditCSV));
@@ -73,7 +74,7 @@ public class Router implements SparkApplication {
 
         // Minions
         get("/manager/systems/keys",
-                withCsrfToken(withUser(MinionController::list)),
+                withUserPreferences(withCsrfToken(withUser(MinionController::list))),
                 jade);
         get("/manager/systems/bootstrap",
                 withCsrfToken(withOrgAdmin(MinionController::bootstrap)),
@@ -130,7 +131,7 @@ public class Router implements SparkApplication {
 
         // Virtual Host Managers
         get("/manager/vhms",
-                withCsrfToken(withOrgAdmin(VirtualHostManagerController::list)),
+                withUserPreferences(withCsrfToken(withOrgAdmin(VirtualHostManagerController::list))),
                 jade);
         post("/manager/api/vhms/kubeconfig/validate",
                 withOrgAdmin(VirtualHostManagerController::validateKubeconfig));
@@ -161,7 +162,7 @@ public class Router implements SparkApplication {
 
         // Subscription Matching
         get("/manager/subscription-matching",
-                withProductAdmin(SubscriptionMatchingController::show),
+                withUserPreferences(withCsrfToken(withProductAdmin(SubscriptionMatchingController::show))),
                 jade);
         get("/manager/subscription-matching/:filename",
                 withProductAdmin(SubscriptionMatchingController::csv));
@@ -178,7 +179,7 @@ public class Router implements SparkApplication {
 
         // States Catalog
         get("/manager/state-catalog",
-                withOrgAdmin(StateCatalogController::list), jade);
+                withUserPreferences(withOrgAdmin(StateCatalogController::list)), jade);
         get("/manager/state-catalog/state",
                 withCsrfToken(withOrgAdmin(StateCatalogController::add)), jade);
         get("/manager/state-catalog/state/:name",
@@ -198,7 +199,7 @@ public class Router implements SparkApplication {
 
         // TaskoTop
         get("/manager/admin/runtime-status",
-                withOrgAdmin(TaskoTop::show), jade);
+                withUserPreferences(withCsrfToken(withOrgAdmin(TaskoTop::show))), jade);
         get("/manager/api/admin/runtime-status/data",
                 withOrgAdmin(TaskoTop::data));
 
@@ -214,7 +215,7 @@ public class Router implements SparkApplication {
 
         // Formula catalog
         get("/manager/formula-catalog",
-                withOrgAdmin(FormulaCatalogController::list), jade);
+                withUserPreferences(withOrgAdmin(FormulaCatalogController::list)), jade);
         get("/manager/formula-catalog/formula/:name",
                 withCsrfToken(withOrgAdmin(FormulaCatalogController::details)), jade);
 
@@ -250,15 +251,15 @@ public class Router implements SparkApplication {
 
         // Visualization
         get("/manager/visualization/virtualization-hierarchy",
-                withOrgAdmin(VisualizationController::showVirtualizationHierarchy), jade);
+                withCsrfToken(withOrgAdmin(VisualizationController::showVirtualizationHierarchy)), jade);
         get("/manager/api/visualization/virtualization-hierarchy/data",
                 withOrgAdmin(VisualizationController::virtHierarchyData));
         get("/manager/visualization/proxy-hierarchy",
-                withOrgAdmin(VisualizationController::showProxyHierarchy), jade);
+                withCsrfToken(withOrgAdmin(VisualizationController::showProxyHierarchy)), jade);
         get("/manager/api/visualization/proxy-hierarchy/data",
                 withOrgAdmin(VisualizationController::proxyHierarchyData));
         get("/manager/visualization/systems-with-managed-groups",
-                withOrgAdmin(VisualizationController::systemsWithManagedGroups), jade);
+                withCsrfToken(withOrgAdmin(VisualizationController::systemsWithManagedGroups)), jade);
         get("/manager/api/visualization/systems-with-managed-groups/data",
                 withOrgAdmin(VisualizationController::systemsWithManagedGroupsData));
 
@@ -266,7 +267,8 @@ public class Router implements SparkApplication {
 
 
         // NotificationMessages
-        get("/manager/notification-messages", withUser(NotificationMessageController::getList), jade);
+        get("/manager/notification-messages",
+                withUserPreferences(withCsrfToken(withUser(NotificationMessageController::getList))), jade);
         get("/manager/notification-messages/data-unread", withUser(NotificationMessageController::dataUnread));
         get("/manager/notification-messages/data-all", withUser(NotificationMessageController::dataAll));
         post("/manager/notification-messages/update-message-status",
@@ -283,7 +285,7 @@ public class Router implements SparkApplication {
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {
         get("/manager/cm/imagestores",
-                withCsrfToken(withUser(ImageStoreController::listView)), jade);
+                withUserPreferences(withCsrfToken(withUser(ImageStoreController::listView))), jade);
         get("/manager/cm/imagestores/create",
                 withCsrfToken(withImageAdmin(ImageStoreController::createView)), jade);
         get("/manager/cm/imagestores/edit/:id",
@@ -303,7 +305,7 @@ public class Router implements SparkApplication {
                 withImageAdmin(ImageStoreController::delete));
 
         get("/manager/cm/imageprofiles",
-                withCsrfToken(withUser(ImageProfileController::listView)), jade);
+                withUserPreferences(withCsrfToken(withUser(ImageProfileController::listView))), jade);
         get("/manager/cm/imageprofiles/create",
                 withCsrfToken(withImageAdmin(ImageProfileController::createView)), jade);
         get("/manager/cm/imageprofiles/edit/:id",
@@ -333,7 +335,7 @@ public class Router implements SparkApplication {
         get("/manager/api/cm/build/hosts", withUser(ImageBuildController::getBuildHosts));
         post("/manager/api/cm/build/:id", withImageAdmin(ImageBuildController::build));
 
-        get("/manager/cm/images", withCsrfToken(withUser(ImageBuildController::listView)),
+        get("/manager/cm/images", withUserPreferences(withCsrfToken(withUser(ImageBuildController::listView))),
                 jade);
 
         get("/manager/api/cm/images", withUser(ImageBuildController::list));
