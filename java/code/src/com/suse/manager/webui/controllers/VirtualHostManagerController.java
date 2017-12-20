@@ -85,7 +85,6 @@ public class VirtualHostManagerController {
      */
     public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("pageSize", user.getPageSize());
         return new ModelAndView(data, "virtualhostmanager/list.jade");
     }
 

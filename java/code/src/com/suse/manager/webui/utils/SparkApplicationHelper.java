@@ -173,6 +173,30 @@ public class SparkApplicationHelper {
     }
 
     /**
+     * Returns a route that adds the user preferences variables to model.
+     *
+     * The model associated with the input route must contain the data in the form of a Map instance.
+     * The preferences variables will be inserted into this Map. Otherwise exception will be thrown.
+     *
+     * @param route the route
+     * @return the route that adds the user preferences to the ModelAndView
+     */
+    public static TemplateViewRoute withUserPreferences(TemplateViewRoute route) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            ModelAndView modelAndView = route.handle(request, response);
+            Object model = modelAndView.getModel();
+            if (model instanceof Map) {
+                ((Map) model).put("pageSize", user.getPageSize());
+            }
+            else {
+                throw new UnsupportedOperationException("User preferences can be added only to a Map!");
+            }
+            return modelAndView;
+        };
+    }
+
+    /**
      * Use in routes to automatically get the current user, which must have the
      * role specified, in your controller. Example:
      * <code>Spark.get("/url", withRole(Controller::method, RoleFactory.SAT_ADMIN));</code>
