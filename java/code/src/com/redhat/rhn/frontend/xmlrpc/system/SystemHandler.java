@@ -184,13 +184,13 @@ import java.util.stream.Collectors;
 public class SystemHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(SystemHandler.class);
-    private final TaskomaticApi TASKOMATIC_API;
+    private final TaskomaticApi taskomaticApi;
 
     /**
      * Default constructor.
      */
     public SystemHandler() {
-        TASKOMATIC_API = new TaskomaticApi();
+        this(new TaskomaticApi());
     }
 
     /**
@@ -199,7 +199,8 @@ public class SystemHandler extends BaseHandler {
      * @param taskomaticApiIn the {@link TaskomaticApi}
      */
     public SystemHandler(TaskomaticApi taskomaticApiIn) {
-        TASKOMATIC_API = taskomaticApiIn;
+        super();
+        taskomaticApi = taskomaticApiIn;
     }
 
     /**
@@ -3602,7 +3603,7 @@ public class SystemHandler extends BaseHandler {
             Action a = ActionManager.scheduleHardwareRefreshAction(loggedInUser, server,
                     earliestOccurrence);
             Action action = ActionFactory.save(a);
-            TASKOMATIC_API.scheduleActionExecution(action);
+            taskomaticApi.scheduleActionExecution(action);
             return action.getId();
         }
         catch (MissingEntitlementException e) {
@@ -3937,7 +3938,7 @@ public class SystemHandler extends BaseHandler {
             Action a = ActionManager.scheduleRebootAction(loggedInUser, server,
                     earliestOccurrence);
             a = ActionFactory.save(a);
-            TASKOMATIC_API.scheduleActionExecution(a);
+            taskomaticApi.scheduleActionExecution(a);
             return a.getId();
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
@@ -6345,7 +6346,7 @@ public class SystemHandler extends BaseHandler {
             List<Long> sids = Arrays.asList(sid.longValue());
             Action a = ActionManager.scheduleApplyHighstate(loggedInUser, sids, earliestOccurrence, Optional.of(test));
             a = ActionFactory.save(a);
-            TASKOMATIC_API.scheduleActionExecution(a);
+            taskomaticApi.scheduleActionExecution(a);
             return a.getId();
         }
         catch (LookupException e) {
