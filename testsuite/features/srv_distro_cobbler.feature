@@ -24,9 +24,6 @@ Feature: Cobbler and distribution autoinstallation
     Then I should see a "testprofile" text
     And I should see a "testdistro" text
 
-  Scenario: Create mock initrd if download via sumaform fails
-    Then I create mock initrd if download fails
-
   Scenario: Create a distribution via the UI
     When I follow "Autoinstallation" in the left menu
     And I follow "Distributions" in the left menu
