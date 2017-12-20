@@ -70,7 +70,6 @@ public class StateCatalogController {
     public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("info", FlashScopeHelper.flash(request));
-        data.put("pageSize", user.getPageSize());
         return new ModelAndView(data, "state-catalog/list.jade");
     }
 

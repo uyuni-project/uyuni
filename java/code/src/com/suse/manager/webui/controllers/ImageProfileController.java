@@ -76,7 +76,6 @@ public class ImageProfileController {
      */
     public static ModelAndView listView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("pageSize", user.getPageSize());
         data.put("isAdmin", user.hasRole(ADMIN_ROLE));
         return new ModelAndView(data, "content_management/list-profiles.jade");
     }
