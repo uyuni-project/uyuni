@@ -22,7 +22,12 @@
             </div>
 
             <div class="col-md-auto details-column-right">
-              <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/properties.jspf"%>
+                <rhn:require acl="is_in_state_channel()" mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+                    <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/properties-defaultperms.jspf"%>
+                </rhn:require>
+                <rhn:require acl="not is_in_state_channel()" mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+                    <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/properties.jspf"%>
+                </rhn:require>
             </div>
         </div>
         <c:if test="${revision.file || revision.sls}">
