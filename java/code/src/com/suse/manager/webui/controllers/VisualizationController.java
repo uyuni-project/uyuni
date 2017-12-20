@@ -15,8 +15,6 @@
 
 package com.suse.manager.webui.controllers;
 
-
-import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.visualization.VisualizationManager;
 import spark.ModelAndView;
@@ -46,7 +44,6 @@ public class VisualizationController {
     public static ModelAndView showVirtualizationHierarchy(Request request,
             Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("title", "Virtualization Hierarchy");
         data.put("endpoint",
                 "/rhn/manager/api/visualization/virtualization-hierarchy/data");
@@ -79,7 +76,6 @@ public class VisualizationController {
     public static ModelAndView showProxyHierarchy(Request request, Response response,
             User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("title", "Proxy Hierarchy");
         data.put("endpoint", "/rhn/manager/api/visualization/proxy-hierarchy/data");
         data.put("view", "proxy-hierarchy");
@@ -111,7 +107,6 @@ public class VisualizationController {
     public static ModelAndView systemsWithManagedGroups(Request request, Response response,
             User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("title", "Systems Grouping");
         data.put("endpoint", "/rhn/manager/api/visualization/" +
                 "systems-with-managed-groups/data");

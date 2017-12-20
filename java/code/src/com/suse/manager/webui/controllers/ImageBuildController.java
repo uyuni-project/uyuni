@@ -207,7 +207,6 @@ public class ImageBuildController {
             model.put("id", null);
         }
 
-        model.put("pageSize", user.getPageSize());
         model.put("isAdmin", user.hasRole(ADMIN_ROLE));
         Map<String, GathererModule> modules = new GathererRunner().listModules();
         model.put("isRuntimeInfoEnabled", ImagesUtil.isImageRuntimeInfoEnabled());

@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.notification.UserNotification;
@@ -62,9 +61,7 @@ public class NotificationMessageController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView getList(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
-        return new ModelAndView(data, "notification-messages/list.jade");
+        return new ModelAndView(new HashMap<>(), "notification-messages/list.jade");
     }
 
 
