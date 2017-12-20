@@ -162,7 +162,7 @@ public class Router implements SparkApplication {
 
         // Subscription Matching
         get("/manager/subscription-matching",
-                withUserPreferences(withProductAdmin(SubscriptionMatchingController::show)),
+                withUserPreferences(withCsrfToken(withProductAdmin(SubscriptionMatchingController::show))),
                 jade);
         get("/manager/subscription-matching/:filename",
                 withProductAdmin(SubscriptionMatchingController::csv));
@@ -199,7 +199,7 @@ public class Router implements SparkApplication {
 
         // TaskoTop
         get("/manager/admin/runtime-status",
-                withUserPreferences(withOrgAdmin(TaskoTop::show)), jade);
+                withUserPreferences(withCsrfToken(withOrgAdmin(TaskoTop::show))), jade);
         get("/manager/api/admin/runtime-status/data",
                 withOrgAdmin(TaskoTop::data));
 
@@ -251,15 +251,15 @@ public class Router implements SparkApplication {
 
         // Visualization
         get("/manager/visualization/virtualization-hierarchy",
-                withOrgAdmin(VisualizationController::showVirtualizationHierarchy), jade);
+                withCsrfToken(withOrgAdmin(VisualizationController::showVirtualizationHierarchy)), jade);
         get("/manager/api/visualization/virtualization-hierarchy/data",
                 withOrgAdmin(VisualizationController::virtHierarchyData));
         get("/manager/visualization/proxy-hierarchy",
-                withOrgAdmin(VisualizationController::showProxyHierarchy), jade);
+                withCsrfToken(withOrgAdmin(VisualizationController::showProxyHierarchy)), jade);
         get("/manager/api/visualization/proxy-hierarchy/data",
                 withOrgAdmin(VisualizationController::proxyHierarchyData));
         get("/manager/visualization/systems-with-managed-groups",
-                withOrgAdmin(VisualizationController::systemsWithManagedGroups), jade);
+                withCsrfToken(withOrgAdmin(VisualizationController::systemsWithManagedGroups)), jade);
         get("/manager/api/visualization/systems-with-managed-groups/data",
                 withOrgAdmin(VisualizationController::systemsWithManagedGroupsData));
 
@@ -267,7 +267,8 @@ public class Router implements SparkApplication {
 
 
         // NotificationMessages
-        get("/manager/notification-messages", withUserPreferences(withUser(NotificationMessageController::getList)), jade);
+        get("/manager/notification-messages",
+                withUserPreferences(withCsrfToken(withUser(NotificationMessageController::getList))), jade);
         get("/manager/notification-messages/data-unread", withUser(NotificationMessageController::dataUnread));
         get("/manager/notification-messages/data-all", withUser(NotificationMessageController::dataAll));
         post("/manager/notification-messages/update-message-status",
