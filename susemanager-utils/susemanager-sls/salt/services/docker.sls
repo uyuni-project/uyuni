@@ -4,7 +4,11 @@ mgr_install_docker:
     - pkgs:
       - docker: '>=1.9.0'
 {%- if grains['pythonversion'][0] == 3 %}
+{%- if grains['osmajorrelease' == 12 %}
+      - python3-docker-py: '>=1.6.0'
+{%- else %}
       - python3-docker: '>=1.6.0'
+{%- endif %}
 {%- else %}
       - python-docker-py: '>=1.6.0'
 {%- endif %}
