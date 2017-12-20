@@ -19,6 +19,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.head;
@@ -54,7 +55,7 @@ public class Router implements SparkApplication {
 
         // Minions
         get("/manager/minions",
-                withCsrfToken(withUser(MinionController::list)),
+                withUserPreferences(withCsrfToken(withUser(MinionController::list))),
                 jade);
         get("/manager/minions/bootstrap",
                 withCsrfToken(withOrgAdmin(MinionController::bootstrap)),
@@ -122,7 +123,7 @@ public class Router implements SparkApplication {
 
         // Subscription Matching
         get("/manager/subscription-matching",
-                withProductAdmin(SubscriptionMatchingController::show),
+                withUserPreferences(withCsrfToken(withProductAdmin(SubscriptionMatchingController::show))),
                 jade);
         get("/manager/subscription-matching/:filename",
                 withProductAdmin(SubscriptionMatchingController::csv));
@@ -139,7 +140,7 @@ public class Router implements SparkApplication {
 
         // States Catalog
         get("/manager/state-catalog",
-                withOrgAdmin(StateCatalogController::list), jade);
+                withUserPreferences(withOrgAdmin(StateCatalogController::list)), jade);
         get("/manager/state-catalog/state",
                 withCsrfToken(withOrgAdmin(StateCatalogController::add)), jade);
         get("/manager/state-catalog/state/:name",
@@ -159,7 +160,7 @@ public class Router implements SparkApplication {
 
         // TaskoTop
         get("/manager/admin/runtime-status",
-                withOrgAdmin(TaskoTop::show), jade);
+                withUserPreferences(withCsrfToken(withOrgAdmin(TaskoTop::show))), jade);
         get("/manager/api/admin/runtime-status/data",
                 withOrgAdmin(TaskoTop::data));
 
@@ -175,7 +176,7 @@ public class Router implements SparkApplication {
 
         // Formula catalog
         get("/manager/formula-catalog",
-                withOrgAdmin(FormulaCatalogController::list), jade);
+                withUserPreferences(withOrgAdmin(FormulaCatalogController::list)), jade);
         get("/manager/formula-catalog/formula/:name",
                 withCsrfToken(withOrgAdmin(FormulaCatalogController::details)), jade);
 

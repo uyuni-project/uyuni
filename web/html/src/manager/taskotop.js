@@ -128,6 +128,7 @@ const TaskoTop = React.createClass({
               identifier={(row) => row["id"]}
               cssClassFunction={(row) => row["status"] == 'skipped' ? 'text-muted' : null }
               initialSortColumnKey="status"
+              initialItemsPerPage={userPrefPageSize}
               searchField={
                   <SearchField filter={this.searchData}
                       criteria={""}
