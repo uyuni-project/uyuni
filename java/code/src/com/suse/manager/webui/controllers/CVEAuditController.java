@@ -64,7 +64,6 @@ public class CVEAuditController {
      */
     public static ModelAndView cveAuditView(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
-        model.put("pageSize", user.getPageSize());
         return new ModelAndView(model, "audit/cve.jade");
     }
 
