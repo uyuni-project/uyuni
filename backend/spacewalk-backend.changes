@@ -1,3 +1,4 @@
+- fix directory name in spacewalk-data-fsck
 - search for product packages when installed packages are available
   (bsc#1060182)
 - rhnServerNetwork refactoring (bsc#1063419)
