@@ -1,3 +1,5 @@
+- fix failed package installation when in RES 32 and 64 bit packages are
+  installed together (bsc#1071314)
 - Add user preferences in order to change items-per-page (bsc#1055296)
 - Adding initial version of web ui notifications
 - New API call for scheduling highstate application
