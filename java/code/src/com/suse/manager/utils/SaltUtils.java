@@ -82,6 +82,7 @@ import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.JsonParsingError;
 import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.results.Change;
@@ -143,6 +144,9 @@ public class SaltUtils {
     private SaltService saltService = SaltService.INSTANCE;
 
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
+
+    // SUSE OS family as defined in Salt grains
+    private static final String OS_FAMILY_SUSE = "Suse";
 
     /**
      * Enumerates results of handlePackageChanges().
@@ -566,6 +570,12 @@ public class SaltUtils {
                 String message = parseMigrationMessage(jsonResult);
                 serverAction.setResultMsg(message.length() > 1024 ?
                         message.substring(0, 1024) : message);
+
+                // Make sure grains are updated after dist upgrade
+                serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
+                    MinionList minionTarget = new MinionList(minionServer.getMinionId());
+                    saltService.syncGrains(minionTarget);
+                });
             }
 
         }
@@ -952,9 +962,18 @@ public class SaltUtils {
             server.setOsFamily(grains.getValueAsString("os_family"));
             server.setRunningKernel(grains.getValueAsString("kernelrelease"));
             server.setOs(grains.getValueAsString("osfullname"));
-            // TODO: set the release as well, but this needs
-            // RegisterMinionEventMessageAction.getOsRelease()
-            // server.setRelease();
+
+            /** Release is set directly from grain information for SUSE systems only.
+                RH systems require some parsing on the grains to get the correct release
+                See RegisterMinionEventMessageAction#getOsRelease
+
+                However, release can change only after SP migration and SUMA supports this only on SUSE systems.
+                Also, the getOsRelease method requires remote command execution and was therefore avoided for now.
+                If we decide to support RedHat distro/SP upgrades in the future, this code has to be reviewed.
+             */
+            if (server.getOsFamily().equals(OS_FAMILY_SUSE)) {
+                server.setRelease(grains.getValueAsString("osrelease"));
+            }
         }
 
         ServerFactory.save(server);
