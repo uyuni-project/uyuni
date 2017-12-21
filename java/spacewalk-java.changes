@@ -1,3 +1,5 @@
+- fix failed package installation when in RES 32 and 64 bit packages are
+  installed together (bsc#1071314)
 - Add user preferences in order to change items-per-page (bsc#1055296)
 - Order salt formulas alphabetically. (bsc#1022077)
 - Improved error message (bsc#1064258)
