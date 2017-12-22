@@ -16,6 +16,7 @@ package com.suse.utils;
 
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -70,6 +71,23 @@ public class Opt {
         }
         else {
            return present.apply(opt.get());
+        }
+    }
+
+    /**
+     * Takes an Optional and consumes it even if it is empty.
+     *
+     * @param opt the Optional
+     * @param empty consumer in case Optional is empty
+     * @param present function transforming the content of the Optional if present
+     * @param <T> content type of the supplied Optional
+     */
+    public static <T> void consume(Optional<T> opt, Runnable empty, Consumer<? super T> present) {
+        if (!opt.isPresent()) {
+            empty.run();
+        }
+        else {
+            present.accept(opt.get());
         }
     }
 }
