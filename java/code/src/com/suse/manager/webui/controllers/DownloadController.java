@@ -22,7 +22,10 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.Comps;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+
 import com.suse.manager.webui.utils.TokenBuilder;
+import com.suse.utils.Opt;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -38,10 +41,9 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Key;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static spark.Spark.halt;
 
@@ -206,38 +208,27 @@ public class DownloadController {
             }
         });
         try {
-            JwtClaims jwtClaims = JWT_CONSUMER.processToClaims(token);
+            JwtClaims claims = JWT_CONSUMER.processToClaims(token);
 
-            // Add all the organization channels
-            Set<String> channels = new HashSet<String>();
-            if (jwtClaims.hasClaim("org")) {
-                long orgId = jwtClaims.getClaimValue("org", Long.class);
-                List<String> orgChannels =
-                        ChannelFactory.getAccessibleChannelsByOrg(orgId)
-                                .stream()
-                                .map(i -> i.getLabel())
-                                .collect(Collectors.toList());
-                channels.addAll(orgChannels);
+            // enforce channel claim
+            Optional<List<String>> channelClaim = Optional.ofNullable(claims.getStringListClaimValue("onlyChannels"));
+            if (Opt.fold(channelClaim, () -> false, channels -> !channels.contains(channel))) {
+                halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
             }
-            else {
+
+            // enforce org claim
+            Optional<Long> orgClaim = Optional.ofNullable(claims.getClaimValue("org", Long.class));
+            Opt.consume(orgClaim, () -> {
                 halt(HttpStatus.SC_BAD_REQUEST, "Token does not specify the organization");
-            }
-
-            if (jwtClaims.hasClaim("onlyChannels")) {
-                // keep only channels from the whitelist
-                channels.retainAll(jwtClaims.getStringListClaimValue("onlyChannels"));
-            }
-
-            if (!channels.contains(channel)) {
-                halt(HttpStatus.SC_FORBIDDEN,
-                     String.format("Token does not provide access to channel %s",
-                                   channel));
-            }
+            }, orgId -> {
+                if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
+                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel %s" + channel);
+                }
+            });
         }
         catch (InvalidJwtException | MalformedClaimException e) {
             halt(HttpStatus.SC_FORBIDDEN,
-                 String.format("Token is not valid to access %s in %s: %s",
-                               filename, channel, e.getMessage()));
+                 String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
         }
     }
 

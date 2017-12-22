@@ -496,6 +496,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[select cp.package_id from rhnChannelPackage cp where cp.channel_id = :cid]]>
     </sql-query>
 
+    <sql-query name="Channel.isAccessibleBy">
+        <return-scalar type="int" column="count"/>
+        SELECT COUNT(*) AS count
+          FROM rhnChannel c
+          JOIN rhnAvailableChannels ac ON c.id = ac.channel_id
+          WHERE c.label = :channel_label
+            AND ac.org_id = :org_id
+    </sql-query>
+
     <sql-query name="Channel.lookupOriginalPackages">
         <![CDATA[
             SELECT DISTINCT cp.package_id AS id
