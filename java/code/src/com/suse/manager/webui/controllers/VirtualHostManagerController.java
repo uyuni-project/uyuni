@@ -278,19 +278,19 @@ public class VirtualHostManagerController {
             try (InputStream fi = kubeconfigFile.get().getInputStream()) {
                 map = new Yaml().loadAs(fi, Map.class);
                 List<Map<String, Object>> contexts = null;
-                String currentContext = null;
                 if (map.get("contexts") != null && map.get("contexts") instanceof List) {
-                    contexts = (List<Map<String, Object>>)map.get("contexts");
-                    contexts.forEach(ctx -> {
-                        if (ctx.get("name") == null) {
-                            throw new IllegalArgumentException(
-                                    "'name' key missing from kube-config/contexts list");
-                        }
-                    });
+                    contexts = (List<Map<String, Object>>) map.get("contexts");
+                    if (contexts.stream().map(m -> (String) m.get("name")).filter(StringUtils::isEmpty).count() > 1) {
+                        throw new IllegalArgumentException(
+                                "Only one default (unnamed) context is allowed in a kubeconfig file.");
+                    }
                 }
+
+                String currentContext = null;
                 if (map.get("current-context") instanceof String) {
                     currentContext = (String)map.get("current-context");
                 }
+
                 Map<String, Object> json = new HashedMap();
                 json.put("contexts", contexts.stream()
                         .map(ctx -> ctx.get("name"))

@@ -149,6 +149,10 @@ class VirtualHostManagerDetails extends React.Component {
 function ConfigParams(props) {
     const data = props.data;
 
+    if (data.config.kubeconfig && !data.config.context) {
+      data.config.context = "<default>";
+    }
+
     const items = Object.keys(data.config).map(key => {
         return (
             <tr>
