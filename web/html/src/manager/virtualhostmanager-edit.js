@@ -86,8 +86,13 @@ class VirtualHostManagerEdit extends React.Component {
         }
         let request = null;
         if (this.props.type.toLowerCase()  === "kubernetes") {
+            const formData = new FormData(this.form);
+            if (formData.get('module_context') === "<default>") {
+                // Remove '<default>' placeholder for submit
+                formData.set('module_context', "");
+            }
             request = Network.post("/rhn/manager/api/vhms/update/kubernetes",
-                new FormData(this.form), false, false);
+                formData, false, false);
         } else {
             request = Network.post("/rhn/manager/api/vhms/update/" + this.state.model.id,
                 $(this.form).serialize());
@@ -105,8 +110,13 @@ class VirtualHostManagerEdit extends React.Component {
         }
         let request = null;
         if (this.props.type.toLowerCase()  === "kubernetes") {
+            const formData = new FormData(this.form);
+            if (formData.get('module_context') === "<default>") {
+                // Remove '<default>' placeholder for submit
+                formData.set('module_context', "");
+            }
             request = Network.post("/rhn/manager/api/vhms/create/kubernetes",
-                new FormData(this.form), false, false);
+                formData, false, false);
         } else {
             request = Network.post("/rhn/manager/api/vhms/create",
                 $(this.form).serialize());
@@ -197,13 +207,18 @@ class VirtualHostManagerEdit extends React.Component {
         formData.append("kubeconfig", kubeconfig);
         Network.post("/rhn/manager/api/vhms/kubeconfig/validate", formData, false, false)
             .promise
-            .then(data => {
-                if (data.data.contexts) {
+            .then(res => {
+                const data = res.data;
+                if(data.currentContext === "") {
+                    // Replace unnamed context with '<default>' to differ it from empty choice
+                    data.currentContext = "<default>";
+                }
+                if (data.contexts) {
                     this.setState({
                         messages: null,
                         validKubeconfig: true,
                         model: Object.assign(this.state.model, {
-                               contexts: data.data.contexts,
+                               contexts: data.contexts,
                                module_context: data.currentContext
                         })
                     });
@@ -223,7 +238,7 @@ class VirtualHostManagerEdit extends React.Component {
             contextSelect = <Input.Select name="module_context" label={t("Current Context")} required labelClass="col-md-3" divClass="col-md-6"
                 value={this.state.model.module_context}>
                 <option value="">---</option>
-            { this.state.model.contexts.map(k =>
+            { this.state.model.contexts.map(k => k === "" ? "<default>" : k).map(k =>
                 <option key={k} value={k} selected={k === this.state.model.module_context ? true : null }>{k}</option>) }
             </Input.Select>
         }
