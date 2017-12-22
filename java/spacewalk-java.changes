@@ -1,3 +1,4 @@
+- Fix incorrect 'os-release' report after SP migration (bsc#1071553)
 - fix failed package installation when in RES 32 and 64 bit packages are
   installed together (bsc#1071314)
 - Add user preferences in order to change items-per-page (bsc#1055296)
