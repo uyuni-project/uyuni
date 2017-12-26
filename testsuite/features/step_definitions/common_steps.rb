@@ -11,7 +11,7 @@ end
 When(/^I download the SSL certificate$/) do
   cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
   wget = 'wget --no-check-certificate -O'
-  $client.run("#{wget} #{cert_path} http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT", true, 500, 'root')
+  $client.run("#{wget} #{cert_path} http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT", true, 500, 'root')
   $client.run("ls #{cert_path}")
 end
 

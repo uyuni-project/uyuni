@@ -14,6 +14,10 @@ module LavandaBasic
     @in_full_hostname = fqn.strip
   end
 
+  def init_ip(ip)
+    @in_ip = ip
+  end
+
   # getter functions, executed on testsuite
   def hostname
     raise 'empty hostname, something wrong' if @in_hostname.empty?
@@ -23,6 +27,11 @@ module LavandaBasic
   def full_hostname
     raise 'empty hostname, something wrong' if @in_full_hostname.empty?
     @in_full_hostname
+  end
+
+  def ip
+    raise 'empty ip, something wrong' if @in_ip.empty?
+    @in_ip
   end
 
   # monkeypatch the run
