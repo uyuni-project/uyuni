@@ -15,7 +15,7 @@ Given(/^salt-minion is configured on "(.*?)"$/) do |minion|
     file_delete(node, key)
     puts "Key #{key} has been removed on minion"
   end
-  cmd = " echo  \'master : #{$server_ip}\' > /etc/salt/minion.d/susemanager.conf"
+  cmd = " echo  \'master : #{$server.ip}\' > /etc/salt/minion.d/susemanager.conf"
   node.run(cmd, false)
   step %(I start salt-master)
   step %(I start salt-minion on "#{minion}")
@@ -412,16 +412,16 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
 end
 
 When(/^I refresh the pillar data$/) do
-  $server.run("salt '#{$minion_ip}' saltutil.refresh_pillar")
+  $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar")
 end
 
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
   if minion == 'sle-minion'
-    target = $minion_ip
+    target = $minion.ip
     cmd = 'salt'
     extra_cmd = ''
   elsif minion == 'ssh-minion'
-    target = $ssh_minion_ip
+    target = $ssh_minion.ip
     cmd = 'salt-ssh'
     extra_cmd = '-i --roster-file=/tmp/tmp_roster_tests -w -W'
     $server.run("printf '#{target}:\n  host: #{target}\n  user: root\n  passwd: linux' > /tmp/tmp_roster_tests")
