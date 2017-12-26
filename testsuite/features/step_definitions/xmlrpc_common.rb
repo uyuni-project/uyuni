@@ -5,8 +5,8 @@ require 'xmlrpc/client'
 require 'socket'
 require 'xmlrpc/client'
 
-rpctest = XMLRPCChannelTest.new($proxy_ip ? $proxy_ip : $server_ip)
-systest = XMLRPCSystemTest.new($proxy_ip ? $proxy_ip : $server_ip)
+rpctest = XMLRPCChannelTest.new($proxy ? $proxy.ip : $server.ip)
+systest = XMLRPCSystemTest.new($proxy ? $proxy.ip : $server.ip)
 
 Given(/^I am logged in via XML\-RPC system as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   systest.login(luser, password)
@@ -127,7 +127,7 @@ Given(/^I am logged in via XML\-RPC channel as user "([^"]*)" and password "([^"
 end
 
 When(/^I create a repo with label "([^"]*)" and url$/) do |label|
-  url = "http://#{$server_ip}/pub/AnotherRepo/"
+  url = "http://#{$server.ip}/pub/AnotherRepo/"
   assert(rpctest.create_repo(label, url))
 end
 
