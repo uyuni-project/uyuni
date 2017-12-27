@@ -9,20 +9,13 @@ raise 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
 raise 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
 raise 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
 
-$server_ip = ENV['SERVER']
-$proxy_ip = ENV['PROXY']
-$client_ip = ENV['CLIENT']
-$minion_ip = ENV['MINION']
-$ceos_minion_ip = ENV['CENTOSMINION']
-$ssh_minion_ip = ENV['SSHMINION']
-
 # Define twopence objects
-$client = Twopence.init("ssh:#{$client_ip}")
-$proxy = Twopence.init("ssh:#{$proxy_ip}") if $proxy_ip
-$server = Twopence.init("ssh:#{$server_ip}")
-$minion = Twopence.init("ssh:#{$minion_ip}")
-$ceos_minion = Twopence.init("ssh:#{$ceos_minion_ip}")
-$ssh_minion = Twopence.init("ssh:#{$ssh_minion_ip}")
+$client = Twopence.init("ssh:#{ENV['CLIENT']}")
+$proxy = Twopence.init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
+$server = Twopence.init("ssh:#{ENV['SERVER']}")
+$minion = Twopence.init("ssh:#{ENV['MINION']}")
+$ssh_minion = Twopence.init("ssh:#{ENV['SSHMINION']}")
+$ceos_minion = Twopence.init("ssh:#{ENV['CENTOSMINION']}")
 
 # Lavanda library module extension
 # Look at support/lavanda.rb for more details
@@ -44,6 +37,15 @@ nodes.each do |node|
   raise 'No fully qualified domain name for node' if code.nonzero?
   node.init_full_hostname(fqdn)
 end
+
+# store ip in attribute
+# use this with server.ip
+$server.init_ip(ENV['SERVER'])
+$proxy.init_ip(ENV['PROXY']) if $proxy
+$client.init_ip(ENV['CLIENT'])
+$minion.init_ip(ENV['MINION'])
+$ceos_minion.init_ip(ENV['CENTOSMINION'])
+$ssh_minion.init_ip(ENV['SSHMINION'])
 
 # This function is used to get one of the nodes based on its type
 def get_target(host)

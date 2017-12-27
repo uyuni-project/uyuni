@@ -44,7 +44,7 @@ end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, target|
   node = get_target(target)
-  node.run("wget http://#{$server_ip}/#{file}", true, 500, 'root')
+  node.run("wget http://#{$server.ip}/#{file}", true, 500, 'root')
 end
 
 When(/^file "([^"]*)" exists on server$/) do |arg1|
@@ -232,7 +232,7 @@ And(/^I register "([^*]*)" as traditional client$/) do |client|
   node = get_target(client)
   command = 'wget --no-check-certificate ' \
             '-O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
-            "http://#{$server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
+            "http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
   node.run(command, true, 500)
   command = 'rhnreg_ks --username=admin --password=admin --force ' \
             "--serverUrl=#{registration_url} " \
@@ -306,7 +306,7 @@ When(/^I register this client for SSH push via tunnel$/) do
   $server.run('cp /etc/sysconfig/rhn/up2date /etc/sysconfig/rhn/up2date.BACKUP')
   # generate expect file
   bootstrap = '/srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh'
-  script = "spawn spacewalk-ssh-push-init --client #{$client_ip} --register #{bootstrap} --tunnel\n" \
+  script = "spawn spacewalk-ssh-push-init --client #{$client.ip} --register #{bootstrap} --tunnel\n" \
            "while {1} {\n" \
            "  expect {\n" \
            "    eof                                                        {break}\n" \
@@ -388,7 +388,7 @@ end
 
 When(/^I configure the proxy$/) do
   # prepare the settings file
-  settings = "RHN_PARENT=#{$server_ip}\n" \
+  settings = "RHN_PARENT=#{$server.ip}\n" \
              "HTTP_PROXY=''\n" \
              "VERSION=''\n" \
              "TRACEBACK_EMAIL=galaxy-noise@suse.de\n" \
@@ -398,7 +398,7 @@ When(/^I configure the proxy$/) do
              "SSL_PASSWORD=spacewalk\n" \
              "SSL_ORG=SUSE\n" \
              "SSL_ORGUNIT=SUSE\n" \
-             "SSL_COMMON=#{$proxy_ip}\n" \
+             "SSL_COMMON=#{$proxy.ip}\n" \
              "SSL_CITY=Nuremberg\n" \
              "SSL_STATE=Bayern\n" \
              "SSL_COUNTRY=DE\n" \
