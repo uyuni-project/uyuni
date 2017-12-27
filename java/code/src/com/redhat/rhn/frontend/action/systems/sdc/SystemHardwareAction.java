@@ -62,6 +62,7 @@ public class SystemHardwareAction extends RhnAction {
     public static final String SID = "sid";
 
     /** {@inheritDoc} */
+    @Override
     public ActionForward execute(ActionMapping mapping,
             ActionForm formIn,
             HttpServletRequest request,
@@ -172,6 +173,7 @@ public class SystemHardwareAction extends RhnAction {
         request.setAttribute("network_ip_addr", server.getIpAddress());
         request.setAttribute("network_ip6_addr", server.getIp6Address());
         request.setAttribute("network_cnames", server.getDecodedCnames());
+        request.setAttribute("fqdns", server.getFqdns());
 
         List<String> nicList = new ArrayList();
         for (NetworkInterface n : server.getNetworkInterfaces()) {
