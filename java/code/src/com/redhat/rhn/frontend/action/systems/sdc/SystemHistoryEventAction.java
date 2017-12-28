@@ -74,6 +74,7 @@ public class SystemHistoryEventAction extends RhnAction {
         }
         catch (LookupException e) {
             ServerHistoryEvent event = ActionFactory.lookupHistoryEventById(aid);
+            request.setAttribute("actionname", event.getSummary());
             request.setAttribute("actiontype", event.getSummary());
             request.setAttribute("earliestaction", event.getCreated());
             request.setAttribute("actionnotes", event.getDetails());
