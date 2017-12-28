@@ -488,9 +488,6 @@ public class UserManagerTest extends RhnBaseTestCase {
        assertTrue(dr.size() >= 1);
        dr.elaborate(Collections.EMPTY_MAP);
        SystemSearchResult sr = dr.get(0);
-       System.err.println("sr.getDescription() = " + sr.getDescription());
-       System.err.println("sr.getHostname() = " + sr.getHostname());
        assertNotNull(sr.getDescription());
-       //assertTrue(sr.getHostname() != null);
    }
 }
