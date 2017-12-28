@@ -2023,7 +2023,7 @@ select event_id as id,
          where SH.server_id = :sid
          union
         select SA.action_id event_id,
-               AType.name || ' scheduled by ' || NVL(U.login, '(none)') as summary,
+               COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') as summary,
                SA.created,
                SA.pickup_time as picked_up,
                SA.completion_time as completed,
@@ -2061,7 +2061,7 @@ select count(action_id) as count
   class="com.redhat.rhn.frontend.dto.SystemPendingEventDto">
   <query params="sid">
 select SA.action_id as ID,
-               AType.name || ' scheduled by ' || NVL(U.login, '(none)') as summary,
+               COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') as summary,
                to_char(A.earliest_action, 'YYYY-MM-DD HH24:MI:SS') as scheduled_for,
                AType.label as history_type,
                AType.name as history_type_name,
@@ -2091,7 +2091,7 @@ order by scheduled_for desc, id desc
  where ST.user_id = :user_id
    and ST.label = :set_label-->
 select SA.action_id as ID,
-               AType.name || ' scheduled by ' || NVL(U.login, '(none)') as summary,
+               COALESCE(A.name, AType.name) || ' scheduled by ' || NVL(U.login, '(none)') as summary,
                to_char(A.earliest_action, 'YYYY-MM-DD HH24:MI:SS') as scheduled_for,
                AType.label as history_type,
                AType.name as history_type_name,
