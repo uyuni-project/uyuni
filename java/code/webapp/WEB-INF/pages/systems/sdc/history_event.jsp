@@ -30,10 +30,10 @@
         <div class="col-sm-10">
           <c:choose>
             <c:when test="${requestScope.scheduler != null}">
-          <bean:message key="system.event.summaryText" arg0="${fn:escapeXml(requestScope.actiontype)}" arg1="${fn:escapeXml(requestScope.scheduler)}" />
+          <bean:message key="system.event.summaryText" arg0="${fn:escapeXml(requestScope.actionname)}" arg1="${fn:escapeXml(requestScope.scheduler)}" />
             </c:when>
             <c:otherwise>
-              <c:out value="${requestScope.actiontype}" />
+              <c:out value="${requestScope.actionname}" />
             </c:otherwise>
           </c:choose>
         </div>
