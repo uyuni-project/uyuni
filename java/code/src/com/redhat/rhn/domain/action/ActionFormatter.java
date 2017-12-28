@@ -183,7 +183,7 @@ public class ActionFormatter {
         if (!(server instanceof MinionServer)) {
             if (sa.getPickupTime() != null) {
                 retval.append(ls.getMessage("system.event.details.pickup",
-                        sa.getPickupTime()));
+                        ls.formatDate(sa.getPickupTime())));
             }
             else {
                 retval.append(ls.getMessage("system.event.details.notPickedUp"));
@@ -192,7 +192,7 @@ public class ActionFormatter {
         }
         if (sa.getCompletionTime() != null) {
             retval.append(ls.getMessage("system.event.details.completed",
-                    sa.getCompletionTime()));
+                    ls.formatDate(sa.getCompletionTime())));
             retval.append("</br>");
             retval.append(ls.getMessage("system.event.details.returned",
                     StringEscapeUtils.escapeHtml4(sa.getResultMsg()), sa.getResultCode()));
