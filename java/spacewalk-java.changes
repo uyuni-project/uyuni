@@ -1,3 +1,4 @@
+- Fix action names and date formatting in system event history (bsc#1073713)
 - Fix incorrect 'os-release' report after SP migration (bsc#1071553)
 - fix failed package installation when in RES 32 and 64 bit packages are
   installed together (bsc#1071314)
