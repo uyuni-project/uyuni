@@ -27,8 +27,10 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
@@ -476,6 +478,10 @@ public class UserManagerTest extends RhnBaseTestCase {
 
        Server s = ServerFactoryTest.createTestServer(user, true,
                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+       NetworkInterface lo =
+               NetworkInterfaceTest.createTestNetworkInterface(s, "lo", "127.0.0.1", null);
+       s.addNetworkInterface(lo);
+       s.setPrimaryInterface(lo);
        s.setDescription("Test Description Value");
        List<Long> ids = new ArrayList<Long>();
        ids.add(s.getId());
