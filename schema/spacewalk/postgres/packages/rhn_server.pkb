@@ -642,7 +642,7 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
 			from	rhnServerNetInterface ni,
 			        rhnServerNetAddress4 na4
 			where	server_id = server_id_in
-                and ni.id = na4.interface_id
+		                and ni.id = na4.interface_id
 				and na4.address != '127.0.0.1';
 		addresses cursor is
 			select	address ip_addr
