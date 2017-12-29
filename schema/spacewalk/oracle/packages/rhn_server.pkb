@@ -595,9 +595,9 @@ is
 		cursor interfaces is
 			select	ni.name as name, na4.address as address
 			from	rhnServerNetInterface ni,
-                    rhnServerNetAddress4 na4
+				rhnServerNetAddress4 na4
 			where	ni.server_id = server_id_in
-                and ni.id = na4.interface_id
+				and ni.id = na4.interface_id
 				and na4.address != '127.0.0.1';
 		cursor addresses is
 			select	address ip_addr
