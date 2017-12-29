@@ -650,7 +650,8 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
       			left join rhnServerNetAddress4
       			on rhnServerNetInterface.id = rhnServerNetAddress4.interface_id
 			where	server_id = server_id_in
-				and address != '127.0.0.1';
+				and address != '127.0.0.1'
+				and is_primary = 'Y';
 	begin
 		for addr in addresses loop
 			return addr.ip_addr;
