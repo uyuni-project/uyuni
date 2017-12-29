@@ -59,6 +59,7 @@ sql:
 		and rhnxccdftestresult.profile_id = rhnxccdfprofile.id
 		and rhnxccdftestresult.server_id = rhnservernetinterface.server_id
 		and rhnservernetinterface.id = rhnservernetaddress4.interface_id
+		and rhnservernetinterface.is_primary = 'Y'
 		and rhnxccdftestresult.server_id = rhnserver.id
 		and rhnxccdfruleresult.testresult_id = rhnxccdftestresult.id
 		and rhnxccdfruleresult.result_id = rhnxccdfruleresulttype.id
