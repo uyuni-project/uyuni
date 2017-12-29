@@ -229,8 +229,6 @@ end delete_server;
 /
 show errors;
 
--- rhn_server.pkb
-
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -828,17 +826,18 @@ is
 		cursor interfaces is
 			select	ni.name as name, na4.address as address
 			from	rhnServerNetInterface ni,
-                    rhnServerNetAddress4 na4
+				rhnServerNetAddress4 na4
 			where	ni.server_id = server_id_in
-                and ni.id = na4.interface_id
+				and ni.id = na4.interface_id
 				and na4.address != '127.0.0.1';
 		cursor addresses is
-			select address ip_addr
+			select	address ip_addr
 			from	rhnServerNetInterface
-      left join rhnServerNetAddress4
-      on rhnServerNetInterface.id = rhnServerNetAddress4.interface_id
+			left join rhnServerNetAddress4
+			on rhnServerNetInterface.id = rhnServerNetAddress4.interface_id
 			where	server_id = server_id_in
-				and address != '127.0.0.1';
+				and address != '127.0.0.1'
+				and is_primary = 'Y';
 	begin
 		for addr in addresses loop
 			return addr.ip_addr;
