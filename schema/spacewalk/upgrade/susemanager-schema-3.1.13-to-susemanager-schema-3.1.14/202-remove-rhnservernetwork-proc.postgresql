@@ -1,6 +1,6 @@
 DROP SEQUENCE IF EXISTS rhn_server_net_id_seq;
-DROP FUNCTION rhn_servernetwork_mod_trig_fun();
 DROP TRIGGER IF EXISTS rhn_servernetwork_mod_trig ON rhnServerNetwork;
+DROP FUNCTION IF EXISTS rhn_servernetwork_mod_trig_fun();
 
 -- delete_server.sql
 
@@ -916,4 +916,4 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
 -- restore the original setting
 update pg_settings set setting = overlay( setting placing '' from 1 for (length('rhn_server')+1) ) where name = 'search_path';
 
-DROP TABLE rhnServerNetwork;
+DROP TABLE IF EXISTS rhnServerNetwork;

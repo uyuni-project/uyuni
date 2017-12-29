@@ -1,6 +1,24 @@
-DROP SEQUENCE rhn_server_net_id_seq;
-DROP TRIGGER rhn_servernetwork_mod_trig;
+BEGIN
+  EXECUTE IMMEDIATE 'DROP SEQUENCE rhn_server_net_id_seq';
+EXCEPTION
+  WHEN OTHERS THEN
+    IF SQLCODE != -2289 THEN
+      RAISE;
+    END IF;
+END;
 
+/
+
+BEGIN
+  EXECUTE IMMEDIATE 'DROP TRIGGER rhn_servernetwork_mod_trig';
+EXCEPTION
+  WHEN OTHERS THEN
+    IF SQLCODE != -4080 THEN
+      RAISE;
+    END IF;
+END;
+
+/
 
 -- delete_server.sql
 
@@ -874,5 +892,12 @@ end rhn_server;
 /
 SHOW ERRORS
 
-DROP TABLE rhnServerNetwork;
-
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE rhnServerNetwork';
+EXCEPTION
+   WHEN OTHERS THEN
+      IF SQLCODE != -942 THEN
+         RAISE;
+      END IF;
+END;
+/
