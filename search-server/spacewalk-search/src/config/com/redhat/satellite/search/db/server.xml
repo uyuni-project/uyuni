@@ -58,14 +58,15 @@
                 LEFT OUTER JOIN rhnServerDmi dmi ON s.id = dmi.server_id
                 LEFT OUTER JOIN rhnCPU cpu on s.id = cpu.server_id
                 LEFT OUTER JOIN rhnVirtualInstance vi on s.id = vi.virtual_system_id
-            WHERE s.modified &gt;= #{last_modified}
+            WHERE rsni.is_primary = 'Y' and (
+                s.modified &gt;= #{last_modified}
                 or rsn.modified &gt;= #{last_modified}
                 or si.checkin &gt;= #{last_modified}
                 or rr.modified &gt;= #{last_modified}
                 or sl.modified &gt;= #{last_modified}
                 or dmi.modified &gt;= #{last_modified}
                 or cpu.modified &gt;= #{last_modified}
-                or s.id &gt; #{id}
+                or s.id &gt; #{id})
             ORDER by s.id ASC
     </select>
 
