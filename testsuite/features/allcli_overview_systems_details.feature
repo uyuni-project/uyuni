@@ -16,6 +16,7 @@ Feature: The system details of each minion and client provides an overview of th
     Given I am on the Systems overview page of this "ssh-minion"
     Then I can see all system information for "ssh-minion"
 
+@centosminion
   Scenario: CentOS minion grains are displayed correctly on the details page
     Given I am on the Systems overview page of this "ceos-minion"
     Then I can see all system information for "ceos-minion"
