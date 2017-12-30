@@ -7,6 +7,7 @@
 
 Feature: Be able to bootstrap a SSH-managed CentOS minion and do some basic operations on it
 
+@centosminion
   Scenario: Delete the CentOS minion
     Given no Salt packages are installed on "ceos-minion"
     When I am on the Systems overview page of this "ceos-minion"
@@ -17,6 +18,7 @@ Feature: Be able to bootstrap a SSH-managed CentOS minion and do some basic oper
     Then I should see a "has been deleted" text
     And I wait until salt-key "mincentos" is deleted
 
+@centosminion
   Scenario: Bootstrap a SSH-managed CentOS minion
     Given I am authorized
     When I go to the bootstrapping page
@@ -32,6 +34,7 @@ Feature: Be able to bootstrap a SSH-managed CentOS minion and do some basic oper
     And I wait until onboarding is completed for "ceos-minion"
 
 @proxy
+@centosminion
   Scenario: Check connection from SSH-managed CentOS minion to proxy
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Details" in the content area
@@ -39,12 +42,14 @@ Feature: Be able to bootstrap a SSH-managed CentOS minion and do some basic oper
     Then I should see "proxy" hostname
 
 @proxy
+@centosminion
   Scenario: Check registration on proxy of SSH-managed CentOS minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos-minion" hostname
 
+@centosminion
   Scenario: Subscribe the SSH-managed CentOS minion to a base channel for testing
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Software" in the content area
