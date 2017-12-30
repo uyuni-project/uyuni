@@ -17,8 +17,8 @@ classpath_sourcepath_entry = """        <classpathentry kind="lib" path="%s" sou
 
 def main():
     if len(argv) != 2 and len(argv) != 3:
-        print "Usage: python %s <jar dirs separated by :> [<src jars separated by :>]" % argv[0]
-        print """Example: python %s "/usr/share/java:/usr/share/java-ext" "/usr/share/src-jars" """ % argv[0]
+        print ("Usage: python %s <jar dirs separated by :> [<src jars separated by :>]" % argv[0])
+        print ("Example: python %s \"/usr/share/java:/usr/share/java-ext\" \"/usr/share/src-jars\"" % argv[0])
         exit(1)
 
     src_entries = {}
@@ -50,7 +50,7 @@ def main():
                 if f != "rhn.jar" and f.endswith(".jar") and not f in entries:
                     entries[f] = classpath_entry % dr
 
-    print base_template % "\n".join (entries.values())
+    print (base_template % "\n".join (entries.values()))
 
 if __name__=="__main__":
     main()
