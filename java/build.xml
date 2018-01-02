@@ -74,7 +74,7 @@
   </target>
 
   <!-- Generates Eclipse classpath after setting up dependent jars   -->
-  <target name="gen-eclipse" depends="gen-eclipse-base, link-jars"
+  <target name="gen-eclipse" depends="gen-eclipse-base"
           description = "Generates eclipse .classpath file after linking jars">
   </target>
 
