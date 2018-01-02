@@ -167,17 +167,17 @@ public class VirtualInstanceManager extends BaseManager {
                             vinst.lookupVirtualInstanceByUuid(guid);
 
                     Map<String, String> vmData = optionalVmData.get(name);
-                    VirtualInstanceState st = (vmData != null) ?
+                    VirtualInstanceState st = (vmData != null && vmData.get("vmState") != null) ?
                             vinst.getState(vmData.get("vmState"))
-                                .orElse(vinst.getUnknownState()) : vinst.getUnknownState();
+                                    .orElse(vinst.getUnknownState()) : vinst.getUnknownState();
 
                     if (virtualInstances.isEmpty()) {
                         addGuestVirtualInstance(guid, name, type, st, server, null);
                     }
                     else {
                         virtualInstances.stream().forEach(virtualInstance ->
-                            updateGuestVirtualInstance(virtualInstance, name,
-                                    st, server, virtualInstance.getGuestSystem()));
+                            updateGuestVirtualInstance(virtualInstance, name, st, server,
+                                    virtualInstance.getGuestSystem()));
                     }
                 });
 
