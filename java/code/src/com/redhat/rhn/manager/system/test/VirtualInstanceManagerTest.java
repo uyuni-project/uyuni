@@ -296,29 +296,36 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
         vms.put("SUSE-Manager-Test-VM-1", "564d09ec-41b9-c894-566b-30248333e6d3");
         vms.put("SUSE-Manager-Test-VM-2", "564d3f2d-4a22-723a-839f-5fd8912ca2ca");
         vms.put("SUSE-Manager-Test-VM-3", "564db0e5-d359-31f7-2bae-755c960e3fd6");
+        vms.put("SUSE-Manager-Test-VM-4", "564d638d-95c1-c9ab-f838-6bb7295b8f37");
         Map<String, String> vmRunningState = new HashMap<>();
         vmRunningState.put("vmState", "running");
         Map<String, String> vmStoppedState = new HashMap<>();
         vmStoppedState.put("vmState", "stopped");
+        Map<String, String> vmNoState = new HashMap<>();
+        vmNoState.put("foo", "bar");
 
         optionalVmData.put("SUSE-Manager-Test-VM-1", vmRunningState);
         optionalVmData.put("SUSE-Manager-Test-VM-2", vmStoppedState);
+        optionalVmData.put("SUSE-Manager-Test-VM-3", vmNoState);
 
         VirtualInstanceManager.updateGuestsVirtualInstances(server, type, vms, optionalVmData);
 
         Server test = SystemManager.lookupByIdAndUser(id, user);
         assertNotNull(test);
-        assertEquals(3, test.getGuests().size());
+        assertEquals(4, test.getGuests().size());
 
         for (VirtualInstance guest : test.getGuests()) {
             if (guest.getName().equals("SUSE-Manager-Test-VM-1")) {
-                assertEquals(STATE_RUNNING, guest.getState());
+                assertEquals(STATE_RUNNING, guest.getState().getLabel());
             }
             else if (guest.getName().equals("SUSE-Manager-Test-VM-2")) {
-                assertEquals(STATE_STOPPED, guest.getState());
+                assertEquals(STATE_STOPPED, guest.getState().getLabel());
             }
             else if (guest.getName().equals("SUSE-Manager-Test-VM-3")) {
-                assertEquals(STATE_UNKNOWN, guest.getState());
+                assertEquals(STATE_UNKNOWN, guest.getState().getLabel());
+            }
+            else if (guest.getName().equals("SUSE-Manager-Test-VM-4")) {
+                assertEquals(STATE_UNKNOWN, guest.getState().getLabel());
             }
         }
     }
@@ -343,13 +350,13 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
 
         for (VirtualInstance guest : test.getGuests()) {
             if (guest.getName().equals("SUSE-Manager-Test-VM-1")) {
-                assertEquals(STATE_UNKNOWN, guest.getState());
+                assertEquals(STATE_UNKNOWN, guest.getState().getLabel());
             }
             else if (guest.getName().equals("SUSE-Manager-Test-VM-2")) {
-                assertEquals(STATE_UNKNOWN, guest.getState());
+                assertEquals(STATE_UNKNOWN, guest.getState().getLabel());
             }
             else if (guest.getName().equals("SUSE-Manager-Test-VM-3")) {
-                assertEquals(STATE_UNKNOWN, guest.getState());
+                assertEquals(STATE_UNKNOWN, guest.getState().getLabel());
             }
         }
     }
