@@ -313,7 +313,6 @@ public class JSONHost {
     /**
      * Sets a map of optional VM data for virtual guests running on this host.
      * Keys are guest names and values are corresponding VM info attributes.
-     * @return map of guests optional data
      * @param optionalVmDataIn the map of guests optional data
      */
     public void setOptionalVmData(Map<String, Map<String, String>> optionalVmDataIn) {
