@@ -28,6 +28,7 @@ import com.suse.manager.model.gatherer.GathererModule;
 
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -132,5 +133,18 @@ public class GathererJsonIOTest extends TestCase {
         assertEquals(2, h.getTotalCpuSockets().intValue());
         assertEquals(16, h.getTotalCpuThreads().intValue());
         assertEquals("564d6d90-459c-2256-8f39-3cb2bd24b7b0", h.getVms().get("vCenter"));
+        assertEquals(Collections.emptyMap(), h.getOptionalVmData());
+    }
+
+    public void testReadGathererOutputWithVmAddiotnalData() throws Exception {
+        FileReader fr = new FileReader(TestUtils.findTestData(GATHEREROUT).getPath());
+        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr);
+
+        assertEquals(3, hosts.keySet().size());
+
+        assertTrue(hosts.containsKey("9c84c119-cb23-439b-b479-327e81d53988"));
+        JSONHost h = hosts.get("9c84c119-cb23-439b-b479-327e81d53988").get("abcdefg.suse.de");
+        assertNotNull(h.getOptionalVmData());
+        assertEquals("running", h.getOptionalVmData().get("SUSE-Manager-Reference").get("vmState"));
     }
 }

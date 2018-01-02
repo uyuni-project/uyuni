@@ -4,6 +4,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
+import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -14,6 +15,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.webui.utils.salt.custom.GuestProperties;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +38,7 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
     private static final String STATE_PAUSED = "paused";
     private static final String STATE_STOPPED = "stopped";
     private static final String STATE_CRASHED = "crashed";
+    private static final String STATE_UNKNOWN = "unknown";
 
     private User user;
     private Server server;
@@ -277,6 +281,75 @@ public class VirtualInstanceManagerTest extends RhnBaseTestCase {
             }
             else {
                 assertTrue(false);
+            }
+        }
+    }
+
+    public void testUpdateGuestVirtualInstancesFromJSON() throws Exception {
+
+        Long id = server.getId();
+        Map<String, String> vms = new HashMap<>();
+        Map<String, Map<String, String>> optionalVmData = new HashMap<>();
+        VirtualInstanceType type = VirtualInstanceFactory.getInstance()
+                .getVirtualInstanceType("vmware");
+
+        vms.put("SUSE-Manager-Test-VM-1", "564d09ec-41b9-c894-566b-30248333e6d3");
+        vms.put("SUSE-Manager-Test-VM-2", "564d3f2d-4a22-723a-839f-5fd8912ca2ca");
+        vms.put("SUSE-Manager-Test-VM-3", "564db0e5-d359-31f7-2bae-755c960e3fd6");
+        Map<String, String> vmRunningState = new HashMap<>();
+        vmRunningState.put("vmState", "running");
+        Map<String, String> vmStoppedState = new HashMap<>();
+        vmStoppedState.put("vmState", "stopped");
+
+        optionalVmData.put("SUSE-Manager-Test-VM-1", vmRunningState);
+        optionalVmData.put("SUSE-Manager-Test-VM-2", vmStoppedState);
+
+        VirtualInstanceManager.updateGuestsVirtualInstances(server, type, vms, optionalVmData);
+
+        Server test = SystemManager.lookupByIdAndUser(id, user);
+        assertNotNull(test);
+        assertEquals(3, test.getGuests().size());
+
+        for (VirtualInstance guest : test.getGuests()) {
+            if (guest.getName().equals("SUSE-Manager-Test-VM-1")) {
+                assertEquals(STATE_RUNNING, guest.getState());
+            }
+            else if (guest.getName().equals("SUSE-Manager-Test-VM-2")) {
+                assertEquals(STATE_STOPPED, guest.getState());
+            }
+            else if (guest.getName().equals("SUSE-Manager-Test-VM-3")) {
+                assertEquals(STATE_UNKNOWN, guest.getState());
+            }
+        }
+    }
+
+    public void testUpdateGuestVirtualInstancesFromJSONWithNoAdditionalVmData() throws Exception {
+
+        Long id = server.getId();
+        Map<String, String> vms = new HashMap<>();
+        Map<String, Map<String, String>> optionalVmData = new HashMap<>();
+        VirtualInstanceType type = VirtualInstanceFactory.getInstance()
+                .getVirtualInstanceType("vmware");
+
+        vms.put("SUSE-Manager-Test-VM-1", "564d09ec-41b9-c894-566b-30248333e6d3");
+        vms.put("SUSE-Manager-Test-VM-2", "564d3f2d-4a22-723a-839f-5fd8912ca2ca");
+        vms.put("SUSE-Manager-Test-VM-3", "564db0e5-d359-31f7-2bae-755c960e3fd6");
+
+        VirtualInstanceManager.updateGuestsVirtualInstances(server, type, vms, optionalVmData);
+
+        Server test = SystemManager.lookupByIdAndUser(id, user);
+        assertNotNull(test);
+        assertEquals(3, test.getGuests().size());
+
+        for (VirtualInstance guest : test.getGuests()) {
+            if (guest.getName().equals("SUSE-Manager-Test-VM-1")) {
+                assertEquals(STATE_UNKNOWN, guest.getState());
+            }
+            else if (guest.getName().equals("SUSE-Manager-Test-VM-2")) {
+                assertEquals(STATE_UNKNOWN, guest.getState());
+            }
+            else if (guest.getName().equals("SUSE-Manager-Test-VM-3")) {
+                assertEquals(STATE_UNKNOWN, guest.getState());
             }
         }
     }
