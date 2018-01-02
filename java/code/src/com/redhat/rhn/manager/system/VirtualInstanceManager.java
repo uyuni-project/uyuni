@@ -27,7 +27,6 @@ import com.suse.manager.webui.utils.salt.custom.VmInfo;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -170,8 +169,7 @@ public class VirtualInstanceManager extends BaseManager {
                     Map<String, String> vmData = optionalVmData.get(name);
                     VirtualInstanceState st = (vmData != null) ?
                             vinst.getState(vmData.get("vmState"))
-                                    .orElse(vinst.getUnknownState())
-                            : vinst.getUnknownState();
+                                .orElse(vinst.getUnknownState()) : vinst.getUnknownState();
 
                     if (virtualInstances.isEmpty()) {
                         addGuestVirtualInstance(guid, name, type, st, server, null);
