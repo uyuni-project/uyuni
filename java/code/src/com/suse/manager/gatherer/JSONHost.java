@@ -189,8 +189,7 @@ public class JSONHost {
      */
     public Map<String, Map<String, String>> getOptionalVmData() {
         if (this.optionalVmData == null) {
-            Map<String, Map<String, String>> emptyMap = Collections.emptyMap();
-            return emptyMap;
+            return Collections.emptyMap();
         }
         return optionalVmData;
     }
