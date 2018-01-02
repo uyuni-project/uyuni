@@ -132,7 +132,7 @@ public class VirtualHostManagerProcessor {
         VirtualInstanceType virtType = extractVirtualInstanceType(jsonHost.getType());
         VirtualInstanceManager.updateHostVirtualInstance(server, virtType);
         VirtualInstanceManager.updateGuestsVirtualInstances(server, virtType,
-                jsonHost.getVms());
+                jsonHost.getVms(), jsonHost.getOptionalVmData());
     }
 
     private VirtualHostManagerNodeInfo updateAndGetNodeInfo(String hostLabel,

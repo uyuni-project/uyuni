@@ -16,6 +16,8 @@
 package com.suse.manager.gatherer;
 
 import java.util.Map;
+import java.util.Collections;
+
 
 /**
  * Json representation of a Virtual Host system.
@@ -63,6 +65,9 @@ public class JSONHost {
 
     /** Maps virtual guests names to UUIDs. */
     private Map<String, String> vms;
+
+    /** Maps virtual guest names to optional VM data. */
+    private Map<String, Map<String, String>> optionalVmData;
 
     /**
      * Gets the name.
@@ -178,6 +183,19 @@ public class JSONHost {
     }
 
     /**
+     * Gets a map of optional VM data for virtual guests running on this host.
+     * Keys are guest names and values are corresponding VM optional data attributes.
+     * @return map of guests optional data
+     */
+    public Map<String, Map<String, String>> getOptionalVmData() {
+        if (this.optionalVmData == null) {
+            Map<String, Map<String, String>> emptyMap = Collections.emptyMap();
+            return emptyMap;
+        }
+        return optionalVmData;
+    }
+
+    /**
      * Sets the name.
      * @param nameIn the new name
      */
@@ -290,5 +308,15 @@ public class JSONHost {
      */
     public void setVms(Map<String, String> vmsIn) {
         vms = vmsIn;
+    }
+
+    /**
+     * Sets a map of optional VM data for virtual guests running on this host.
+     * Keys are guest names and values are corresponding VM info attributes.
+     * @return map of guests optional data
+     * @param optionalVmDataIn the map of guests optional data
+     */
+    public void setOptionalVmData(Map<String, Map<String, String>> optionalVmDataIn) {
+        optionalVmData = optionalVmDataIn;
     }
 }
