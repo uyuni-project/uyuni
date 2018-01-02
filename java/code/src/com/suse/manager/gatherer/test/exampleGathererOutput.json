@@ -60,6 +60,26 @@
                 "ix32vt1302": "564d638d-95c1-c9ab-f838-6bb7295b8f37",
                 "ix64vt1301": "564d1d5d-5416-07af-cffd-f4b676e83a4d",
                 "ix64vt1302": "564defaf-ee96-b7cf-87b8-4d0fa21b7321"
+            },
+            "optionalVmData": {
+                "SUSE-Manager-Reference": {
+                    "vmState": "running"
+                },
+                "SUSE-Manager-Testsuite1": {
+                    "vmState": "stopped"
+                },
+                "ix32vt1301": {
+                    "vmState": "running"
+                },
+                "ix32vt1302": {
+                    "vmState": "running"
+                },
+                "ix64vt1301": {
+                    "vmState": "unknown"
+                },
+                "ix64vt1302": {
+                    "vmState": "unknown"
+                }
             }
         }
     },
