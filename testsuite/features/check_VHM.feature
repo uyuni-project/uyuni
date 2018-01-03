@@ -43,6 +43,7 @@ Feature: Test "virtualhostmanager" Web UI.
   Scenario: Check new Virtual Hosts
     Given I am on the Systems page
       And I follow "Systems" in the left menu
+      And I wait until i see "10.162.186.111" text, refreshing the page
     When I follow "10.162.186.111"
     Then I should see a "OS: VMware ESXi" text
     When I follow "Virtual Systems" in the left menu
