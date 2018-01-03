@@ -124,9 +124,17 @@ public class KickstartBuilder {
 
         Set<KickstartCommand> commandOptions = new HashSet<KickstartCommand>();
 
+        boolean isReallyKickstartProfile = false;
         for (String currentLine : lines) {
             if (currentLine.startsWith("#") || currentLine.equals("")) {
                 continue;
+            }
+            if (!isReallyKickstartProfile &&
+                    (currentLine.trim().startsWith("<?xml") ||
+                     currentLine.trim().startsWith("<!DOCTYPE") ||
+                     currentLine.trim().startsWith("<!--") ||
+                     currentLine.trim().startsWith("<profile"))) {
+                break;
             }
 
             // Split the first word from the rest of the line:
@@ -139,16 +147,19 @@ public class KickstartBuilder {
             }
             if (partitionCommands.contains(firstWord)) {
                 partitionBuf.append(currentLine).append("\n");
+                isReallyKickstartProfile = true;
                 continue;
             }
 
             if (optionAliases.containsKey(firstWord)) {
                 firstWord = optionAliases.get(firstWord);
+                isReallyKickstartProfile = true;
             }
 
             // authconfig is an alias to the auth command
             if (firstWord.equals("authconfig")) {
                 firstWord = "auth";
+                isReallyKickstartProfile = true;
             }
 
             // Some possible values do not seem to be valid command names, (authconfig has
@@ -164,6 +175,7 @@ public class KickstartBuilder {
             // If we're to use the default URL for the new profile's kickstart tree,
             // ignore any url/nfs/cdrom/harddrive commands and instead add the default url:
             if (installationTypes.contains(firstWord)) {
+                isReallyKickstartProfile = true;
                 firstWord = "url";
                 restOfLine = tree.getDefaultDownloadLocation();
                 log.warn("Using default kickstartable tree URL:");
