@@ -44,6 +44,7 @@ Feature: Virtual host manager web UI
 
   Scenario: Check new virtual hosts
     Given I am on the Systems page
+    And I wait until i see "10.162.186.111" text, refreshing the page
     When I follow "10.162.186.111"
     Then I should see a "OS: VMware ESXi" text
     When I click Systems, under Systems node
