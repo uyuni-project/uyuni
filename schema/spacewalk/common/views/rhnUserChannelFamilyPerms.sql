@@ -21,6 +21,11 @@ create or replace view rhnUserChannelFamilyPerms as
 		pcf.modified
 	from	rhnPublicChannelFamily pcf,
 		web_contact u
+	where	pcf.channel_family_id not in (
+			select priv.channel_family_id
+			from rhnPrivateChannelFamily priv
+			where u.org_id = priv.org_id
+		)
 	union
 	select	pcf.channel_family_id,
 		u.org_id,
