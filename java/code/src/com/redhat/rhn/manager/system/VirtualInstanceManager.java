@@ -149,11 +149,11 @@ public class VirtualInstanceManager extends BaseManager {
      * @param server to be processed
      * @param type - virtualization type to be set to the guests
      * @param vms - guests to be mapped to this server
+     * @param optionalVmData - guests optional data
      */
     public static void updateGuestsVirtualInstances(Server server, VirtualInstanceType type,
-            Map<String, String> vms) {
+            Map<String, String> vms, Map<String, Map<String, String>> optionalVmData) {
         VirtualInstanceFactory vinst = VirtualInstanceFactory.getInstance();
-        VirtualInstanceState st = vinst.getUnknownState();
         List<String> uuidsToRemove = server.getGuests().stream().map(g -> g.getUuid())
                 .collect(Collectors.toList());
         vms.entrySet().stream().forEach(
@@ -165,6 +165,11 @@ public class VirtualInstanceManager extends BaseManager {
                     uuidsToRemove.remove(guid);
                     List<VirtualInstance> virtualInstances =
                             vinst.lookupVirtualInstanceByUuid(guid);
+
+                    Map<String, String> vmData = optionalVmData.get(name);
+                    VirtualInstanceState st = (vmData != null && vmData.get("vmState") != null) ?
+                            vinst.getState(vmData.get("vmState"))
+                                    .orElse(vinst.getUnknownState()) : vinst.getUnknownState();
 
                     if (virtualInstances.isEmpty()) {
                         addGuestVirtualInstance(guid, name, type, st, server, null);
