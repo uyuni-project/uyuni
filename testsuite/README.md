@@ -25,9 +25,10 @@ For the group of the **core features**, the order is relevant. The core features
 
 The **secondary features** can be run any number of times, and the order is not important.
 
-## Proxy
+## Optional components
 
-If you decide to test with a proxy, look at the [proxy instructions](docs/proxy.md).
+If you decide to test with optional components like a proxy or a CentOS minion,
+look at the [optional components instructions](docs/optional.md).
 
 # Contributing
 

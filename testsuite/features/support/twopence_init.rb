@@ -6,7 +6,7 @@ raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
 raise 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
 raise 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
-raise 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
+warn 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
 raise 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
 
 # Define twopence objects
@@ -14,37 +14,37 @@ $client = Twopence.init("ssh:#{ENV['CLIENT']}")
 $proxy = Twopence.init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
 $server = Twopence.init("ssh:#{ENV['SERVER']}")
 $minion = Twopence.init("ssh:#{ENV['MINION']}")
+$ceos_minion = Twopence.init("ssh:#{ENV['CENTOSMINION']}") if ENV['CENTOSMINION']
 $ssh_minion = Twopence.init("ssh:#{ENV['SSHMINION']}")
-$ceos_minion = Twopence.init("ssh:#{ENV['CENTOSMINION']}")
 
 # Lavanda library module extension
 # Look at support/lavanda.rb for more details
-$server.extend(LavandaBasic)
-$proxy.extend(LavandaBasic) if $proxy
-$client.extend(LavandaBasic)
-$minion.extend(LavandaBasic)
-$ceos_minion.extend(LavandaBasic)
-$ssh_minion.extend(LavandaBasic)
-
-# Initialize hostname
 nodes = [$server, $proxy, $client, $minion, $ceos_minion, $ssh_minion]
 nodes.each do |node|
   next if node.nil?
+
+  node.extend(LavandaBasic)
+end
+
+# Initialize hostname
+nodes.each do |node|
+  next if node.nil?
+
   hostname, _local, _remote, code = node.test_and_store_results_together('hostname', 'root', 500)
   raise 'Cannot get hostname for node' if code.nonzero?
   node.init_hostname(hostname)
+
   fqdn, _local, _remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
   raise 'No fully qualified domain name for node' if code.nonzero?
   node.init_full_hostname(fqdn)
 end
 
-# store ip in attribute
-# use this with server.ip
+# Initialize IP address or domain name
 $server.init_ip(ENV['SERVER'])
 $proxy.init_ip(ENV['PROXY']) if $proxy
 $client.init_ip(ENV['CLIENT'])
 $minion.init_ip(ENV['MINION'])
-$ceos_minion.init_ip(ENV['CENTOSMINION'])
+$ceos_minion.init_ip(ENV['CENTOSMINION']) if $ceos_minion
 $ssh_minion.init_ip(ENV['SSHMINION'])
 
 # This function is used to get one of the nodes based on its type
