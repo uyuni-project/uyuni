@@ -1,3 +1,5 @@
+- Fix the file count for deployed files(bsc#1074300)
+
 -------------------------------------------------------------------
 Tue Jan 30 13:17:29 CET 2018 - jgonzalez@suse.com
 

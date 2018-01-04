@@ -387,12 +387,9 @@ public class ActionChainManager {
             for (Server server : servers) {
                 ActionManager.checkConfigActionOnServer(type, server);
                 ActionFactory.addServerToAction(server.getId(), action);
-
-                ActionManager.addConfigurationRevisionsToAction(user,
-                    revisions.get(server.getId()), action, server);
-                ActionFactory.save(action);
-                result.add(action);
+                ActionManager.addConfigurationRevisionsToAction(user, revisions.get(server.getId()), action, server);
             }
+            result.add(action);
             taskomaticApi.scheduleActionExecution(action);
         }
         else {
