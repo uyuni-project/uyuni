@@ -8,6 +8,7 @@
 
 Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
 
+@centosminion
   Scenario: Bootstrap a CentOS minion
      Given I am authorized
      When I go to the bootstrapping page
@@ -24,6 +25,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
      And I wait until onboarding is completed for "ceos-minion"
 
 @proxy
+@centosminion
   Scenario: Check connection from CentOS minion to proxy
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Details" in the content area
@@ -31,12 +33,14 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Then I should see "proxy" hostname
 
 @proxy
+@centosminion
   Scenario: Check registration on proxy of CentOS minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos-minion" hostname
 
+@centosminion
   Scenario: Schedule an OpenSCAP audit job for the CentOS minion
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Audit" in the content area
@@ -47,6 +51,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Then I should see a "XCCDF scan has been scheduled" text
     And I wait until OpenSCAP scan is completed for "ceos-minion"
 
+@centosminion
   Scenario: Run a remote command on the CentOS minion
     Given I am authorized as "testing" with password "testing"
     When I follow "Salt"
@@ -62,6 +67,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Then I should see a "rhel fedora" text
     And I should see a "REDHAT_SUPPORT_PRODUCT" text
 
+@centosminion
   Scenario: Reboot the CentOS minion
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow first "Schedule System Reboot"
@@ -71,6 +77,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Then I wait and check that "ceos-minion" has rebooted
     And I wait until "salt-minion" service is up and running on "ceos-minion"
 
+@centosminion
   Scenario: Check the results of the OpenSCAP scan on the CentOS minion
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Audit" in the content area
