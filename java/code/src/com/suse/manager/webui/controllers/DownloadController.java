@@ -29,6 +29,7 @@ import com.suse.utils.Opt;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.consumer.InvalidJwtException;
@@ -53,6 +54,7 @@ import static spark.Spark.halt;
  */
 public class DownloadController {
 
+    private static final Logger LOG = Logger.getLogger(DownloadController.class);
     private static final Key KEY = TokenBuilder.getKeyForSecret(
             TokenBuilder.getServerSecret().orElseThrow(
                         () -> new IllegalArgumentException(
@@ -204,6 +206,7 @@ public class DownloadController {
     private static void validateToken(String token, String channel, String filename) {
         AccessTokenFactory.lookupByToken(token).ifPresent(obj -> {
             if (!obj.getValid()) {
+                LOG.warn("Request with invalidated token");
                 halt(HttpStatus.SC_FORBIDDEN, "This token is not valid");
             }
         });
@@ -213,20 +216,24 @@ public class DownloadController {
             // enforce channel claim
             Optional<List<String>> channelClaim = Optional.ofNullable(claims.getStringListClaimValue("onlyChannels"));
             if (Opt.fold(channelClaim, () -> false, channels -> !channels.contains(channel))) {
+                LOG.warn("Request with token which did not provide access to requested channel: " + channel);
                 halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
             }
 
             // enforce org claim
             Optional<Long> orgClaim = Optional.ofNullable(claims.getClaimValue("org", Long.class));
             Opt.consume(orgClaim, () -> {
+                LOG.warn("Request with token which did not specify an organization");
                 halt(HttpStatus.SC_BAD_REQUEST, "Token does not specify the organization");
             }, orgId -> {
                 if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
-                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel %s" + channel);
+                    LOG.warn("The token did not provide access to requested channel: " + channel);
+                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
                 }
             });
         }
         catch (InvalidJwtException | MalformedClaimException e) {
+            LOG.warn("Request with invalid token: " + e.getMessage());
             halt(HttpStatus.SC_FORBIDDEN,
                  String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
         }
