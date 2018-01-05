@@ -27,8 +27,7 @@ The **secondary features** can be run any number of times, and the order is not 
 
 ## Optional components
 
-If you decide to test with optional components like a proxy or a CentOS minion,
-look at the [optional components instructions](docs/optional.md).
+To know how to test with or without optional components like a proxy, a CentOS minion or a SSH minion, look at the [optional components instructions](docs/optional.md).
 
 
 # Contributing
