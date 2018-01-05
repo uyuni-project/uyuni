@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -46,6 +47,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -60,6 +62,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Grains;
@@ -130,6 +134,23 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
                 allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
             } };
+
+    private final ExpectationsFunction SLES_NO_AK_EXPECTATIONS = (saltServiceMock, key) ->
+            new Expectations() {{
+                allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                will(returnValue(Optional.of(MINION_ID)));
+                allowing(saltServiceMock).getMachineId(MINION_ID);
+                will(returnValue(Optional.of(MACHINE_ID)));
+                allowing(saltServiceMock).getGrains(MINION_ID);
+                will(returnValue(getGrains(MINION_ID, null, key)));
+
+                allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                allowing(saltServiceMock).callSync(
+                        with(any(LocalCall.class)),
+                        with(any(String.class)));
+                will(returnValue(Optional.empty()));
+            }};
 
     private ActivationKeySupplier ACTIVATION_KEY_SUPPLIER = (contactMethod) -> {
         Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
@@ -212,8 +233,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      * @throws java.io.IOException
      * @throws java.lang.ClassNotFoundException
      */
-    public void testDoExecute()
-            throws Exception {
+    public void testDoExecute() throws Exception {
         executeTest(
                 SLES_EXPECTATIONS,
                 ACTIVATION_KEY_SUPPLIER,
@@ -694,6 +714,65 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertNotNull(minion.getBaseChannel());
                     assertEquals("RES", minion.getBaseChannel().getProductName().getName());
                 }, DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
+     * Test that registration of a minion with no activation key and no creator user will
+     * put that minion in the default ("Satellite") organization
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testRegisterSystemNoUser() throws Exception {
+        executeTest(
+                SLES_NO_AK_EXPECTATIONS,
+                (cm) -> null,
+                (minion, machineId, key) -> {
+                    assertEquals(OrgFactory.getSatelliteOrg(), minion.get().getOrg());
+                },
+                DEFAULT_CONTACT_METHOD
+        );
+    }
+
+    /**
+     * Test that registration of a minion with no activation key and with a creator user (e.g.
+     * user who accepts the salt key in the UI) will put that minion in the organization
+     * of the creator user.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testRegisterSystemFromDifferentOrg() throws Exception {
+        User creator = UserFactory.lookupById(UserTestUtils.createUser("chuck", "rangers"));
+        MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+
+        executeTest(
+                SLES_NO_AK_EXPECTATIONS,
+                (cm) -> null,
+                (minion, machineId, key) -> {
+                    assertEquals(creator.getOrg(), minion.get().getOrg());
+                },
+                DEFAULT_CONTACT_METHOD
+        );
+    }
+
+    /**
+     * Test that registration of a minion with an activation key and a creator user (e.g.
+     * user who accepts the salt key in the UI) will put that minion in the organization
+     * of the activation key (the organization of the user is ignored in this case).
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testRegisterSystemWithAKAndCreator() throws Exception {
+        User creator = UserFactory.lookupById(UserTestUtils.createUser("chuck", "rangers"));
+        MinionPendingRegistrationService.addMinion(creator, MINION_ID, ContactMethodUtil.DEFAULT, Optional.empty());
+
+        executeTest(
+                SLES_EXPECTATIONS,
+                ACTIVATION_KEY_SUPPLIER,
+                (minion, machineId, key) -> {
+                    assertEquals(ActivationKeyFactory.lookupByKey(key).getOrg(), minion.get().getOrg());
+                },
+                DEFAULT_CONTACT_METHOD
+        );
     }
 
     private Channel setupBaseAndRequiredChannels(ChannelFamily channelFamily,
