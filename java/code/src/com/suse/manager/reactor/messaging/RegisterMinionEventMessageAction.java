@@ -225,13 +225,17 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 server.setOrg(org);
             }
             else if (!server.getOrg().equals(org)) {
-                LOG.error("The Server organization does not match the activation key " +
-                          "organization. The activation key will not be used.");
+                // only log activation key ignore message when the activation key is not empty
+                String ignoreAKMessage = activationKey.map(ak -> "Ignoring activation key " + ak + ".").orElse("");
+                LOG.error("The existing server organization (" + server.getOrg() + ") does not match the " +
+                        "organization selected for registration (" + org + "). Keeping the " +
+                        "existing server organization. " + ignoreAKMessage);
                 activationKey = Optional.empty();
                 org = server.getOrg();
-                addHistoryEvent(server, "Invalid Activation Key",
-                        "The Server organization does not match the activation key " +
-                                "organization. The activation key will not be used.");
+                addHistoryEvent(server, "Invalid Server Organization",
+                        "The existing server organization (" + server.getOrg() + ") does not match the " +
+                        "organization selected for registration (" + org + "). Keeping the " +
+                        "existing server organization. " + ignoreAKMessage);
             }
 
             // Set creator to the user who accepted the key if available
