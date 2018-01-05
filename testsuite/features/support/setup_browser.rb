@@ -72,14 +72,15 @@ Before do
   restart_driver
 end
 
-# do proxy tests only when we have a proxy
+# do some tests only if the corresponding node exists
 Before('@proxy') do |scenario|
   scenario.skip_invoke! unless $proxy
 end
-
-# do CentOS tests only when we have a CentOS minion
 Before('@centosminion') do |scenario|
   scenario.skip_invoke! unless $ceos_minion
+end
+Before('@sshminion') do |scenario|
+  scenario.skip_invoke! unless $ssh_minion
 end
 
 # embed a screenshot after each failed scenario

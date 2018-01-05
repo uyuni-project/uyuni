@@ -3,10 +3,12 @@
 
 Feature: Be able to bootstrap a Salt host managed via salt-ssh
 
+@sshminion
   Scenario: No Salt package nor service are running on minion
     Given no Salt packages are installed on "ssh-minion"
     Then "ssh-minion" should not be registered
 
+@sshminion
   Scenario: Bootstrap a SLES system managed via salt-ssh
     Given I am authorized
     And I go to the bootstrapping page
@@ -22,6 +24,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I wait until onboarding is completed for "ssh-minion"
 
 @proxy
+@sshminion
   Scenario: Check connection from SSH minion to proxy
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "Details" in the content area
@@ -29,12 +32,14 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     Then I should see "proxy" hostname
 
 @proxy
+@sshminion
   Scenario: Check registration on proxy of SSH minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ssh-minion" hostname
 
+@sshminion
   Scenario: Subscribe the SSH-managed SLES minion to a base channel for testing
     Given I am on the Systems overview page of this "ssh-minion"
     And I follow "Software" in the content area
@@ -44,6 +49,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I click on "Modify Base Software Channel"
     Then I should see a "System's Base Channel has been updated." text
 
+@sshminion
   Scenario: Apply the highstate on ssh-minion to apply base channels
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow "States" in the content area
@@ -53,6 +59,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I follow "Pending"
     And I try to reload page until it does not contain "Apply states scheduled by admin" text
 
+@sshminion
   Scenario: Schedule errata refresh to reflect channel assignment
     Given I am authorized as "admin" with password "admin"
     When I follow "Admin"
@@ -64,6 +71,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     When I reload the page
     And I reload the page until it does contain a "FINISHED" text in the table first row
 
+@sshminion
   Scenario: Install a package on the SSH minion
     Given I am on the Systems overview page of this "ssh-minion"
     And I follow "Software" in the content area
@@ -74,6 +82,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     Then I should see a "1 package install has been scheduled" text
     And I wait for "hoag-dummy-1.1-2.1" to be installed on this "ssh-minion"
 
+@sshminion
   Scenario: Reboot the SSH-managed SLES minion
     Given I am on the Systems overview page of this "ssh-minion"
     When I follow first "Schedule System Reboot"
