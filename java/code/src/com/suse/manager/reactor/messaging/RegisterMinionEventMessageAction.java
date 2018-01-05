@@ -46,6 +46,7 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -215,8 +216,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
 
+            Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
+
             org = activationKey.map(ActivationKey::getOrg)
-                    .orElse(OrgFactory.getSatelliteOrg());
+                    .orElse(creator.map(User::getOrg)
+                            .orElse(OrgFactory.getSatelliteOrg()));
             if (server.getOrg() == null) {
                 server.setOrg(org);
             }
@@ -231,8 +235,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             }
 
             // Set creator to the user who accepted the key if available
-            server.setCreator(MinionPendingRegistrationService.getCreator(minionId)
-                    .orElse(null));
+            server.setCreator(creator.orElse(null));
 
             String osfullname = grains.getValueAsString("osfullname");
             String osfamily = grains.getValueAsString("os_family");
