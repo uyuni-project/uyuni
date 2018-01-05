@@ -56,7 +56,7 @@
         <dependency org="suse" name="jmock" rev="2.6.0" />
         <dependency org="suse" name="jmock-junit3" rev="2.6.0" />
         <dependency org="suse" name="jmock-legacy" rev="2.6.0" />
-        <dependency org="suse" name="jose4j" rev="0.4.4" />
+        <dependency org="suse" name="jose4j" rev="0.5.1" />
         <dependency org="suse" name="jsch" rev="0.1.54" />
         <dependency org="suse" name="jta" rev="1.1" />
         <dependency org="suse" name="junit" rev="3.8.2" />
