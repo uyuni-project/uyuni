@@ -193,8 +193,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         Org org = null;
 
         try {
-        minionServer = migrateTraditionalOrGetNew(minionId,
-                isSaltSSH, activationKeyOverride, machineId);
+            minionServer = migrateTraditionalOrGetNew(minionId,
+                    isSaltSSH, activationKeyOverride, machineId);
 
             MinionServer server = minionServer;
 
@@ -210,7 +210,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Optional<String> activationKeyFromGrains = grains
                     .getMap("susemanager")
                     .flatMap(suma -> suma.getOptionalAsString("activation_key"));
-
             Optional<String> activationKeyLabel = activationKeyOverride.isPresent() ?
                     activationKeyOverride : activationKeyFromGrains;
             Optional<ActivationKey> activationKey = activationKeyLabel
