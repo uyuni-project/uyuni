@@ -214,7 +214,9 @@ public class DownloadController {
             JwtClaims claims = JWT_CONSUMER.processToClaims(token);
 
             // enforce channel claim
-            Optional<List<String>> channelClaim = Optional.ofNullable(claims.getStringListClaimValue("onlyChannels"));
+            Optional<List<String>> channelClaim = Optional.ofNullable(claims.getStringListClaimValue("onlyChannels"))
+                    // new versions of getStringListClaimValue() return an empty list instead of null
+                    .filter(l -> !l.isEmpty());
             if (Opt.fold(channelClaim, () -> false, channels -> !channels.contains(channel))) {
                 LOG.warn("Request with token which did not provide access to requested channel: " + channel);
                 halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
