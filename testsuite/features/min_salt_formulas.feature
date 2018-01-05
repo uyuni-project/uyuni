@@ -33,12 +33,17 @@ Feature: Use salt formulas
      And I select "French (Canada)" in keyboard layout field
      And I click on "Save Formula"
      Then I should see a "Formula saved!" text
+
+  Scenario: Check the pillar data after saving the formula
      When I refresh the pillar data
      Then the pillar data for "formulas" should be "- locale" on "sle-minion"
      And the pillar data for "timezone:name" should be "Etc/GMT-5" on "sle-minion"
      And the pillar data for "keyboard_and_language:keyboard_layout" should be "French (Canada)" on "sle-minion"
      And the pillar data for "keyboard_and_language:language" should be "French" on "sle-minion"
-     And the pillar data for "formulas" should be empty on "ssh-minion"
+
+@sshminion
+  Scenario: No other minion is affected by the formula
+     Then the pillar data for "formulas" should be empty on "ssh-minion"
      And the pillar data for "timezone" should be empty on "ssh-minion"
      And the pillar data for "keyboard_and_language" should be empty on "ssh-minion"
 
@@ -54,16 +59,6 @@ Feature: Use salt formulas
      And the keymap on "sle-minion" should be "ca.map.gz"
      And the language on "sle-minion" should be "fr_FR.UTF-8"
 
-  Scenario: Check the pillar data
-     When I refresh the pillar data
-     Then the pillar data for "formulas" should be "- locale" on "sle-minion"
-     And the pillar data for "timezone:name" should be "Etc/GMT-5" on "sle-minion"
-     And the pillar data for "keyboard_and_language:keyboard_layout" should be "French (Canada)" on "sle-minion"
-     And the pillar data for "keyboard_and_language:language" should be "French" on "sle-minion"
-     And the pillar data for "formulas" should be empty on "ssh-minion"
-     And the pillar data for "timezone" should be empty on "ssh-minion"
-     And the pillar data for "keyboard_and_language" should be empty on "ssh-minion"
-
   Scenario: Reset the formula on the minion
      Given I am on the Systems overview page of this "sle-minion"
      When I follow "Formulas" in the content area
@@ -71,14 +66,13 @@ Feature: Use salt formulas
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
      Then I should see a "Formula saved!" text
-     And I refresh the pillar data
-     And the pillar data for "formulas" should be "- locale" on "sle-minion"
+
+  Scenario: Check the pillar data after resetting the formula
+     When I refresh the pillar data
+     Then the pillar data for "formulas" should be "- locale" on "sle-minion"
      And the pillar data for "timezone:name" should be "CET" on "sle-minion"
      And the pillar data for "keyboard_and_language:keyboard_layout" should be "English (US)" on "sle-minion"
      And the pillar data for "keyboard_and_language:language" should be "English (US)" on "sle-minion"
-     And the pillar data for "formulas" should be empty on "ssh-minion"
-     And the pillar data for "timezone" should be empty on "ssh-minion"
-     And the pillar data for "keyboard_and_language" should be empty on "ssh-minion"
 
   Scenario: Apply the reset formula via the highstate
      Given I am on the Systems overview page of this "sle-minion"
@@ -100,14 +94,13 @@ Feature: Use salt formulas
      And I should see a "Locale" text
      When I uncheck the "locale" formula
      And I click on "Save"
-     Then I refresh the pillar data
-     And the "locale" formula should be unchecked
-     And the pillar data for "formulas" should be empty on "sle-minion"
+     Then the "locale" formula should be unchecked
+
+  Scenario: Check the pillar data after disabling the formula
+     When I refresh the pillar data
+     Then the pillar data for "formulas" should be empty on "sle-minion"
      And the pillar data for "timezone" should be empty on "sle-minion"
      And the pillar data for "keyboard_and_language" should be empty on "sle-minion"
-     And the pillar data for "formulas" should be empty on "ssh-minion"
-     And the pillar data for "timezone" should be empty on "ssh-minion"
-     And the pillar data for "keyboard_and_language" should be empty on "ssh-minion"
 
   Scenario: Assing formula to minion via group formula
      Given I am on the groups page
@@ -126,12 +119,17 @@ Feature: Use salt formulas
      And I check the "sle-minion" client
      And I click on "Add Systems"
      Then I should see a "1 systems were added to locale-formula-group server group." text
-     And I refresh the pillar data
-     And the pillar data for "formulas" should be "- locale" on "sle-minion"
+
+  Scenario: Check the pillar data after assigning group formula
+     When I refresh the pillar data
+     Then the pillar data for "formulas" should be "- locale" on "sle-minion"
      And the pillar data for "timezone:name" should be "CET" on "sle-minion"
      And the pillar data for "keyboard_and_language:keyboard_layout" should be "English (US)" on "sle-minion"
      And the pillar data for "keyboard_and_language:language" should be "English (US)" on "sle-minion"
-     And the pillar data for "formulas" should be empty on "ssh-minion"
+
+@sshminion
+  Scenario: No other minion is affected by the group formula
+     Then the pillar data for "formulas" should be empty on "ssh-minion"
      And the pillar data for "timezone" should be empty on "ssh-minion"
      And the pillar data for "keyboard_and_language" should be empty on "ssh-minion"
 
