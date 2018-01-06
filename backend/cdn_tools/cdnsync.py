@@ -377,6 +377,12 @@ class CdnSync(object):
         log(0, "======================================")
         log(0, "| Channel: %s" % channel)
         log(0, "======================================")
+
+        # Print note if channel is already EOL
+        if self._is_channel_eol(channel):
+            log(0, "NOTE: This channel reached end-of-life on %s." %
+                datetime.strptime(self.channel_metadata[channel]['eol'], "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d"))
+
         log(0, "Sync of channel started.")
         log2disk(0, "Please check 'cdnsync/%s.log' for sync log of this channel." % channel, notimeYN=True)
         sync = reposync.RepoSync(channel,
@@ -676,10 +682,14 @@ class CdnSync(object):
                                         "Please, check /var/log/rhn/cdnsync.log for details")
 
     def _channel_line_format(self, channel, longest_label):
-        if channel in self.synced_channels:
-            status = 'p'
+        if self._is_channel_eol(channel):
+            eol_status = "EOL"
         else:
-            status = '.'
+            eol_status = ""
+        if channel in self.synced_channels:
+            sync_status = 'p'
+        else:
+            sync_status = '.'
         try:
             packages_number = open(constants.CDN_REPODATA_ROOT + '/' + channel + "/packages_num", 'r').read()
         # pylint: disable=W0703
@@ -698,7 +708,15 @@ class CdnSync(object):
         offset = longest_label - len(channel)
         space += " " * offset
 
-        return "    %s %s%s%6s packages %9s" % (status, channel, space, packages_number, packages_size)
+        return "%3s %s %s%s%6s packages %9s" % (eol_status, sync_status, channel, space,
+                                                packages_number, packages_size)
+
+    def _is_channel_eol(self, channel):
+        if channel in self.channel_metadata:
+            if 'eol' in self.channel_metadata[channel] and self.channel_metadata[channel]['eol']:
+                if datetime.now() > datetime.strptime(self.channel_metadata[channel]['eol'], "%Y-%m-%d %H:%M:%S"):
+                    return True
+        return False
 
     def print_channel_tree(self, repos=False):
         channel_tree, not_available_channels = self._tree_available_channels()
@@ -710,8 +728,7 @@ class CdnSync(object):
                        "Is %s package installed?" % constants.MAPPINGS_RPM_NAME)
             else:
                 log(0, "\n".join(error_messages))
-            sys.exit(1)
-
+                sys.exit(1)
 
         available_base_channels = [x for x in sorted(channel_tree) if x not in not_available_channels]
         custom_cdn_channels = [ch for ch in self.synced_channels if self.synced_channels[ch]]
@@ -721,6 +738,7 @@ class CdnSync(object):
         log(0, "p = previously imported/synced channel")
         log(0, ". = channel not yet imported/synced")
         log(0, "? = package count not available (try to run cdn-sync --count-packages)")
+        log(0, "EOL = channel reached end-of-life")
 
         log(0, "Entitled base channels:")
         if not available_base_channels:
@@ -825,6 +843,54 @@ class CdnSync(object):
                     for repo in sorted(provided_repos):
                         log(0, "    %s" % repo)
             log(0, "")
+
+    def print_eol_channel_list(self):
+        available_channels = self._list_available_channels()
+
+        # Filter only channels with EOL date defined
+        eol_channels = {}
+        for channel in available_channels:
+            if 'eol' in self.channel_metadata[channel] and self.channel_metadata[channel]['eol']:
+                eol_channels[channel] = datetime.strptime(self.channel_metadata[channel]['eol'], "%Y-%m-%d %H:%M:%S")
+
+        if eol_channels:
+            longest_label = len(max(eol_channels, key=len))
+        else:
+            longest_label = 0
+
+        already_eol_channels = []
+        notyet_eol_channels = []
+
+        # Split into 2 channel groups based on current date
+        for channel in eol_channels:
+            if datetime.now() > eol_channels[channel]:
+                already_eol_channels.append(channel)
+            else:
+                notyet_eol_channels.append(channel)
+
+        # Print these channel groups, sorted by date
+        def print_channel_line(ch):
+            if ch in self.synced_channels:
+                sync_status = 'p'
+            else:
+                sync_status = '.'
+            space = " "
+            offset = longest_label - len(ch)
+            space += " " * offset
+            log(0, "    %s %s%s%s" % (sync_status, channel, space, eol_channels[channel].strftime("%Y-%m-%d")))
+
+        log(0, "p = previously imported/synced channel")
+        log(0, ". = channel not yet imported/synced")
+        log(0, "Channels reached end-of-life already:")
+        if not already_eol_channels:
+            log(0, "      NONE")
+        for channel in sorted(already_eol_channels, key=lambda channel: eol_channels[channel]):
+            print_channel_line(channel)
+        log(0, "Channels not reached end-of-life yet:")
+        if not notyet_eol_channels:
+            log(0, "      NONE")
+        for channel in sorted(notyet_eol_channels, key=lambda channel: eol_channels[channel]):
+            print_channel_line(channel)
 
     def _msg_array_if_not_activated(self):
         error_messages = []

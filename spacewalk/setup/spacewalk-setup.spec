@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.8.3
+Version:        2.8.4
 Release:        1%{?dist}
 Summary:        Initial setup tools for Spacewalk
 
@@ -231,6 +231,9 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Wed Dec 20 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.4-1
+- warn when fqdn is not in lowercase
+
 * Thu Dec 14 2017 Eric Herget <eherget@redhat.com> 2.8.3-1
 - 1456471 - PR570 - Using own certificates for installer
 - 1456471 - PR570 - [RFE] Using own certifications for installer (CA, private
