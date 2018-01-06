@@ -46,6 +46,7 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -193,8 +194,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         Org org = null;
 
         try {
-        minionServer = migrateTraditionalOrGetNew(minionId,
-                isSaltSSH, activationKeyOverride, machineId);
+            minionServer = migrateTraditionalOrGetNew(minionId,
+                    isSaltSSH, activationKeyOverride, machineId);
 
             MinionServer server = minionServer;
 
@@ -210,30 +211,35 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Optional<String> activationKeyFromGrains = grains
                     .getMap("susemanager")
                     .flatMap(suma -> suma.getOptionalAsString("activation_key"));
-
             Optional<String> activationKeyLabel = activationKeyOverride.isPresent() ?
                     activationKeyOverride : activationKeyFromGrains;
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
 
+            Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
+
             org = activationKey.map(ActivationKey::getOrg)
-                    .orElse(OrgFactory.getSatelliteOrg());
+                    .orElse(creator.map(User::getOrg)
+                            .orElse(OrgFactory.getSatelliteOrg()));
             if (server.getOrg() == null) {
                 server.setOrg(org);
             }
             else if (!server.getOrg().equals(org)) {
-                LOG.error("The Server organization does not match the activation key " +
-                          "organization. The activation key will not be used.");
+                // only log activation key ignore message when the activation key is not empty
+                String ignoreAKMessage = activationKey.map(ak -> "Ignoring activation key " + ak + ".").orElse("");
+                LOG.error("The existing server organization (" + server.getOrg() + ") does not match the " +
+                        "organization selected for registration (" + org + "). Keeping the " +
+                        "existing server organization. " + ignoreAKMessage);
                 activationKey = Optional.empty();
                 org = server.getOrg();
-                addHistoryEvent(server, "Invalid Activation Key",
-                        "The Server organization does not match the activation key " +
-                                "organization. The activation key will not be used.");
+                addHistoryEvent(server, "Invalid Server Organization",
+                        "The existing server organization (" + server.getOrg() + ") does not match the " +
+                        "organization selected for registration (" + org + "). Keeping the " +
+                        "existing server organization. " + ignoreAKMessage);
             }
 
             // Set creator to the user who accepted the key if available
-            server.setCreator(MinionPendingRegistrationService.getCreator(minionId)
-                    .orElse(null));
+            server.setCreator(creator.orElse(null));
 
             String osfullname = grains.getValueAsString("osfullname");
             String osfamily = grains.getValueAsString("os_family");
