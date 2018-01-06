@@ -12,7 +12,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.8.2
+Version: 2.8.4
 Release: 1%{?dist}
 URL: https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -171,6 +171,13 @@ if [ -e %{apacheconfdir}/vhosts.d/vhost-ssl.conf ]; then
 fi
 
 %changelog
+* Fri Jan 05 2018 Jiri Dostal <jdostal@redhat.com> 2.8.4-1
+- Remove whitespace from rhn.conf
+
+* Thu Jan 04 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.3-1
+- Updated man page for rhn.conf file to include information on setting
+  Satellite's SMTP server
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
 - purged changelog entries for Spacewalk 2.0 and older
 
