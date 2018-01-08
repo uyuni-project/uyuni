@@ -30,20 +30,24 @@ begin
       update rhnchannelnewestpackage set evr_id = original.id where evr_id = duplicate.id;
       update rhnpackage set evr_id = original.id where evr_id = duplicate.id;
       select id into nevra_orig from rhnpackagenevra where evr_id = original.id;
-      for nevra_dup in select id
-                from rhnpackagenevra
-               where evr_id = duplicate.id loop
-        for snapshotitem in select snapshot_id
-                              from rhnsnapshotpackage
-                             where nevra_id = nevra_dup.id loop
-          begin
-            update rhnsnapshotpackage set nevra_id = nevra_orig.id where nevra_id = nevra_dup.id and snapshot_id = snapshotitem.snapshot_id;
-          exception when unique_violation then
-            delete from rhnsnapshotpackage where nevra_id = nevra_dup.id and snapshot_id = snapshotitem.snapshot_id;
-          end;
+      if NOT FOUND then
+        update rhnpackagenevra set evr_id = original.id where evr_id = duplicate.id;
+      else
+        for nevra_dup in select id
+                           from rhnpackagenevra
+                          where evr_id = duplicate.id loop
+          for snapshotitem in select snapshot_id
+                                from rhnsnapshotpackage
+                               where nevra_id = nevra_dup.id loop
+            begin
+              update rhnsnapshotpackage set nevra_id = nevra_orig.id where nevra_id = nevra_dup.id and snapshot_id = snapshotitem.snapshot_id;
+            exception when unique_violation then
+              delete from rhnsnapshotpackage where nevra_id = nevra_dup.id and snapshot_id = snapshotitem.snapshot_id;
+            end;
+          end loop;
         end loop;
-      end loop;
-      delete from rhnpackagenevra where evr_id = duplicate.id;
+        delete from rhnpackagenevra where evr_id = duplicate.id;
+      end if;
       update rhnproxyinfo set proxy_evr_id = original.id where proxy_evr_id = duplicate.id;
       update rhnserveractionverifymissing set package_evr_id = original.id where package_evr_id = duplicate.id;
       update rhnserveractionverifyresult set package_evr_id = original.id where package_evr_id = duplicate.id;
@@ -62,7 +66,7 @@ begin
 end;
 $$ language plpgsql;
 
-drop trigger rhn_pack_evr_no_updel_trig on rhnpackageevr;
+drop trigger if exists rhn_pack_evr_no_updel_trig on rhnpackageevr;
 
 select fix_rhn_pe_v_r_e_uq();
 
