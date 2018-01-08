@@ -73,8 +73,7 @@
                 mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
                 <div align="left">
                     <hr />
-                    <strong><bean:message key="compare.jsp.noprovisioning"
-                        arg0="${system.name}" arg1="${param.sid}"/></strong>
+                    <strong><bean:message key="compare.jsp.noprovisioning" /></strong>
                 </div>
             </rhn:require>
         </c:if>
