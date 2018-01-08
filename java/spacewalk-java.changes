@@ -1,3 +1,4 @@
+- fix message about package profile sync (bsc#1073739)
 - Add VM state as info gathered from VMware (bsc#1063759)
 - improve performance of token checking, when RPMs or metadata are downloaded from minions (bsc#1061273)
 - Fix action names and date formatting in system event history (bsc#1073713)
