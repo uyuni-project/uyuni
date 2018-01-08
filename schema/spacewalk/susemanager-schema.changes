@@ -1,3 +1,4 @@
+- fix duplicate entries in channel listings
 - handle nevra not found case while fixing duplicate evr ids (bsc#1074508)
 - Enable 'Power Management' features on Salt minions.
 - fix unique index for evr and capability and remove duplicates
