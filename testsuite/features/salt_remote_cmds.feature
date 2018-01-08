@@ -43,7 +43,7 @@ Feature: Test the remote commands via salt
     And "/root/12345" exists on the filesystem of "sle-minion"
     And I follow "Events" in the content area
     And I follow "History" in the content area
-    Then I follow "Run an arbitrary script scheduled by testing" in the content area
+    Then I follow "Remote Command on" in the content area
     And I should see a "Script executed successfully." text
     And I should see a "Return Code: 0" text
 
