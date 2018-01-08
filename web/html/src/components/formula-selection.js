@@ -130,11 +130,14 @@ class FormulaSelection extends React.Component {
             );
             groups.groupless.forEach(function (formula) {
                 list.push(
-                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListStyle(formula.selected)}>
+                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name}
+                            title={formula.description} 
+                            className={this.getListStyle(formula.selected)}>
                         <i className={this.getListIcon(formula.selected)} />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {toTitle(formula.name)}
-                        { formula.description ? (<i id={"info_button_" + formula.name} className="fa fa-lg fa-info-circle pull-right" />) : null }
+                        { formula.description ? (<i id={"info_button_" + formula.name}
+                                className="fa fa-lg fa-info-circle pull-right" />) : null }
                         {this.getDescription(formula)}
                     </a>
                 );
@@ -145,7 +148,8 @@ class FormulaSelection extends React.Component {
             const group = groups[group_name];
             const group_state = this.getGroupItemState(group);
             list.push(
-                <a href="#" onClick={this.onGroupItemClick} id={"group_" + group_name} key={"group_" + group_name} className={this.getListStyle(group_state)}>
+                <a href="#" onClick={this.onGroupItemClick} id={"group_" + group_name}
+                        key={"group_" + group_name} className={this.getListStyle(group_state)}>
                     <strong>
                         <i className={this.getListIcon(group_state)} />
                         {" " + toTitle(group_name)}
@@ -154,11 +158,14 @@ class FormulaSelection extends React.Component {
             );
             group.forEach(function (formula) {
                 list.push(
-                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListStyle(formula.selected)}>
+                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name}
+                            title={formula.description}
+                            className={this.getListStyle(formula.selected)}>
                         <i className={this.getListIcon(formula.selected)} />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {toTitle(formula.name)}
-                        { formula.description ? (<i id={"info_button_" + formula.name} className="fa fa-lg fa-info-circle pull-right" />) : null }
+                        { formula.description ? (<i id={"info_button_" + formula.name}
+                                className="fa fa-lg fa-info-circle pull-right" />) : null }
                         {this.getDescription(formula)}
                     </a>
                 );
