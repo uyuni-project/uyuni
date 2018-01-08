@@ -1,3 +1,4 @@
+- Removing unused mockobjects and strutstest jars
 - fix message about package profile sync (bsc#1073739)
 - On registration, assign server to the organization of the creator when activation key is empty (bsc#1016377)
 - Fix logging issues when saving autoyast profiles (bsc#1073474)
