@@ -628,6 +628,8 @@ class Server(ServerWrapper):
         # why would we do that?)
         self.user = None
 
+        self.addr.update(self.fetch_addr())
+
         # XXX: Fix me
         if reload_all:
             if not self.reload_packages_byid(self.server["id"]) == 0:
@@ -635,6 +637,34 @@ class Server(ServerWrapper):
             if not self.reload_hardware_byid(self.server["id"]) == 0:
                 return -1
         return 0
+
+    def fetch_addr(self):
+
+        server = self.getid()
+        ret = {}
+
+        h = rhnSQL.prepare("""
+        select address as ipaddr
+        from rhnservernetinterface rsni
+        join rhnservernetaddress4 rsna4 on rsna4.interface_id = rsni.id
+        where is_primary = 'Y' and server_id = :serverid
+        """)
+
+        h.execute(serverid=server)
+        ret.update(h.fetchone_dict())
+
+        h = rhnSQL.prepare("""
+        select address as ip6addr
+        from rhnservernetinterface rsni
+        join rhnservernetaddress6 rsna4 on rsna4.interface_id = rsni.id
+        where is_primary = 'Y' and server_id = :serverid
+        """)
+
+        h.execute(serverid=server)
+        ret.update(h.fetchone_dict())
+
+        return ret
+
 
     # Use the values we find in the cert to cause a reload of this
     # server from the database.
