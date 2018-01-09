@@ -134,8 +134,7 @@ class FormulaSelection extends React.Component {
                             title={formula.description} 
                             className={this.getListStyle(formula.selected)}>
                         <i className={this.getListIcon(formula.selected)} />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        {toTitle(formula.name)}
+                        <span style={{marginLeft: 20}}>{toTitle(formula.name)}</span>
                         { formula.description ? (<i id={"info_button_" + formula.name}
                                 className="fa fa-lg fa-info-circle pull-right" />) : null }
                         {this.getDescription(formula)}
@@ -162,8 +161,7 @@ class FormulaSelection extends React.Component {
                             title={formula.description}
                             className={this.getListStyle(formula.selected)}>
                         <i className={this.getListIcon(formula.selected)} />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        {toTitle(formula.name)}
+                        <span style={{marginLeft: 20}}>{toTitle(formula.name)}</span>
                         { formula.description ? (<i id={"info_button_" + formula.name}
                                 className="fa fa-lg fa-info-circle pull-right" />) : null }
                         {this.getDescription(formula)}
