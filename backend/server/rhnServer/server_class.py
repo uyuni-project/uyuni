@@ -638,6 +638,7 @@ class Server(ServerWrapper):
                 return -1
         return 0
 
+    # Reload primary IP information from database
     def fetch_addr(self):
 
         server = self.getid()
