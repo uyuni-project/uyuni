@@ -677,7 +677,6 @@ class Server(ServerWrapper):
 
         return ret
 
-
     # Use the values we find in the cert to cause a reload of this
     # server from the database.
     def loadcert(self, cert, load_user=1):
