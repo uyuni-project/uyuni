@@ -663,7 +663,9 @@ class Server(ServerWrapper):
         """)
 
         h.execute(serverid=server)
-        ret.update(h.fetchone_dict())
+        data = h.fetchone_dict()
+        if data:
+            ret.update(data)
 
         h = rhnSQL.prepare("""
         select address as ip6addr
@@ -673,7 +675,9 @@ class Server(ServerWrapper):
         """)
 
         h.execute(serverid=server)
-        ret.update(h.fetchone_dict())
+        data = h.fetchone_dict()
+        if data:
+            ret.update(data)
 
         return ret
 
