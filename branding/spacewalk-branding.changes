@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 10 16:08:09 CET 2018 - jgonzalez@suse.com
+
+- version 2.5.2.16-1
 - fix message about package profile sync (bsc#1073739)
 - fix naming of the Tools channel (bsc#979633)
 
