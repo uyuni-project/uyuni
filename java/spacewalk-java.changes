@@ -1,3 +1,4 @@
+- Fix encoding/decoding of url_bounce with more parameters (bsc#1075408)
 - Removing unused mockobjects and strutstest jars
 - Adjust commons-pool dependency for SLES15
 - Remove jakarta-common-dbcp dependency, not required by quartz anymore
