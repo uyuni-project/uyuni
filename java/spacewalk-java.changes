@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 10 16:14:11 CET 2018 - jgonzalez@suse.com
+
+- version 2.5.59.19-1
 - fix message about package profile sync (bsc#1073739)
 - Add VM state as info gathered from VMware (bsc#1063759)
 - improve performance of token checking, when RPMs or metadata are downloaded from minions (bsc#1061273)
