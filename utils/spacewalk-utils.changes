@@ -1,3 +1,7 @@
+- Remove restrictions imposed on regex used in 'removelist' parameter passed
+  to spacewalk-clone-by-date that allowed only exact match
+  (bsc#1075254)
+
 -------------------------------------------------------------------
 Tue Aug 08 11:32:45 CEST 2017 - fkobzik@suse.de
 
