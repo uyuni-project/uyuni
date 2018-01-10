@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.suse.manager.webui.utils.MinionServerUtils;
+import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.utils.Json;
 import spark.ModelAndView;
@@ -173,7 +173,7 @@ public class MinionController {
 
         List<Server> groupServers = ServerGroupFactory.listServers(group);
         List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(groupServers)
-                .stream().map(SimpleMinionJson::fromMinionServer)
+                .map(SimpleMinionJson::fromMinionServer)
                 .collect(Collectors.toList());
 
         Map<String, Object> data = new HashMap<>();
