@@ -64,6 +64,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -561,7 +562,9 @@ public class SaltUtils {
                 ServerFactory.save(serverAction.getServer());
                 MessageQueue.publish(
                         new ChannelsChangedEventMessage(serverAction.getServerId()));
-
+                MessageQueue.publish(
+                        new ApplyStatesEventMessage(serverAction.getServerId(), false,
+                                ApplyStatesEventMessage.CHANNELS));
                 String message = parseDryRunMessage(jsonResult);
                 serverAction.setResultMsg(message.length() > 1024 ?
                          message.substring(0, 1024) : message);
