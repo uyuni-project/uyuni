@@ -66,7 +66,12 @@ public class Notification {
                 handshakeSession(user, session);
 
                 // update the notification counter to the unread messages
-                sendMessage(session, String.valueOf(UserNotificationFactory.unreadUserNotificationsSize(user)));
+                try {
+                    sendMessage(session, String.valueOf(UserNotificationFactory.unreadUserNotificationsSize(user)));
+                }
+                finally {
+                    HibernateFactory.closeSession();
+                }
             }
             else {
                 LOG.debug("no authenticated user.");
@@ -213,12 +218,14 @@ public class Notification {
             try {
                 clearBrokenSessions();
                 spreadUpdate();
-                HibernateFactory.closeSession();
             }
             catch (Exception e) {
                 LOG.error("Notification scheduledExecutorService exception", e);
                 // clear WebSocket connections
                 clearBrokenSessions();
+            }
+            finally {
+                HibernateFactory.closeSession();
             }
         }, 30, 30, TimeUnit.SECONDS);
     }
