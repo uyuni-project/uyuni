@@ -385,8 +385,6 @@ This package contains testing files of spacewalk-java.
 %{_datadir}/rhn/unit-tests/*
 %{_datadir}/rhn/unittest.xml
 %attr(644, tomcat, tomcat) %{jardir}/commons-lang3.jar
-%attr(644, tomcat, tomcat) %{jardir}/mockobjects*.jar
-%attr(644, tomcat, tomcat) %{jardir}/strutstest*.jar
 %endif
 
 %package apidoc-sources
@@ -780,8 +778,6 @@ rm -rf $RPM_BUILD_ROOT%{jardir}/tomcat*.jar
 rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/lib/rhn-test.jar
 rm -rf $RPM_BUILD_ROOT/classes/com/redhat/rhn/common/conf/test/conf
 rm -rf $RPM_BUILD_ROOT%{_datadir}/rhn/unittest.xml
-rm -rf $RPM_BUILD_ROOT%{jardir}/mockobjects*.jar
-rm -rf $RPM_BUILD_ROOT%{jardir}/strutstest*.jar
 %endif
 
 # show all JAR symlinks
