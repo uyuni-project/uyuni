@@ -52,7 +52,7 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.utils.MinionServerUtils;
+import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.SaltInclude;
 import com.suse.manager.webui.utils.gson.StateTargetType;
 import org.apache.http.HttpStatus;
@@ -445,7 +445,7 @@ public class StatesAPI {
                         checkUserHasPermissionsOnServerGroup(user, group);
                         List<Long> minionServerIds = MinionServerUtils
                                 .filterSaltMinions(ServerGroupFactory.listServers(group))
-                                .stream().map(s -> s.getId())
+                                .map(s -> s.getId())
                                 .collect(Collectors.toList());
 
                         List<String> states = json.getStates();
