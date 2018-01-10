@@ -1,3 +1,4 @@
+- Add links to salt formula list and adjust behavior. (bsc#1022078)
 - Allow selecting unnamed context in kubeconfig (bsc#1073482)
 - Add user preferences in order to change items-per-page (bsc#1055296)
 - Fix main menu column height
