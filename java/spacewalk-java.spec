@@ -144,12 +144,11 @@ BuildRequires: tomcat-lib >= 7
 Requires: struts >= 1.2.9
 Requires(pre): tomcat >= 8
 Requires: tomcat-lib >= 8
-# SLE15 already uses tomcat-servlet-4.0-api but openSUSE 15.0 does not
-%if 0%{?suse_version} < 1500 || 0%{?is_opensuse}
+%if 0%{?suse_version} < 1500
 Requires: tomcat-servlet-3.1-api >= 8
 %else
-Requires: tomcat-servlet-4.0-api >= 8
-%endif
+Requires: tomcat-servlet-4.0-api >= 9
+%endif # 0%{?suse_version} < 1500
 BuildRequires: struts >= 1.2.9
 BuildRequires: tomcat >= 8
 BuildRequires: tomcat-lib >= 8
@@ -555,10 +554,10 @@ done
 
 %build
 # compile only java sources (no packing here)
-%if !0%{?suse_version} || 0%{?is_opensuse} || 0%{?suse_version} < 1500
-ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat8" init-install compile
-%else
+%if 0%{?suse_version} >= 1500
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" init-install compile
+%else
+ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat8" init-install compile
 %endif
 
 %if 0%{?run_checkstyle}
@@ -601,10 +600,10 @@ find . -type f -name '*.xml' | xargs perl -CSAD -lne '
 %endif
 
 echo "Building apidoc docbook sources"
-%if !0%{?suse_version} || 0%{?is_opensuse} || 0%{?suse_version} < 1500
-ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat8" init-install apidoc-docbook
-%else
+%if 0%{?suse_version} >= 1500
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" init-install apidoc-docbook
+%else
+ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat8" init-install apidoc-docbook
 %endif
 cd build/reports/apidocs/docbook
 /usr/bin/xmllint --xinclude --postvalid book.xml > susemanager_api_doc.xml
@@ -623,11 +622,7 @@ rm -rf $RPM_BUILD_ROOT
 
 # on Fedora 19 some jars are named differently
 %if 0%{?fedora} || 0%{?rhel} >= 7
-%if !0%{?suse_version} || 0%{?is_opensuse} || 0%{?suse_version} < 1500
-ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat8" install-tomcat
-%else
-ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat
-%endif
+ant -Dprefix=$RPM_BUILD_ROOT install-tomcat
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 
 # Need to use 2 versions of rhn.xml, Tomcat 8 changed syntax
@@ -635,12 +630,11 @@ install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 install -m 644 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %else
 install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
-%endif
+%endif # 0%{?fedora} >= 23
 
 %else
 %if 0%{?suse_version}
-# SLE15 already uses tomcat9 but openSUSE 15.0 does not
-%if 0%{?suse_version} < 1500 || 0%{?is_opensuse}
+%if 0%{?suse_version} < 1500 
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat8" install-tomcat8-suse
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
@@ -648,13 +642,13 @@ install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalin
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
-%endif
+%endif # 0%{?suse_version} < 1500
 %else
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat6
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/
 install -m 644 conf/rhn-tomcat5.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
-%endif
-%endif
+%endif # 0%{?suse_version}
+%endif # 0%{?fedora} || 0%{?rhel} >= 7
 
 # check spelling errors in all resources for English if aspell installed
 [ -x "$(which aspell)" ] && scripts/spelling/check_java.sh .. en_US
