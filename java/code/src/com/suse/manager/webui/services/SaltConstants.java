@@ -37,4 +37,6 @@ public class SaltConstants {
 
     public static final String SALT_CONFIG_STATES_DIR = "custom";
 
+    public static final String LEGACY_STATES_BACKUP = "/srv/susemanager/legacy_states";
+
 }
