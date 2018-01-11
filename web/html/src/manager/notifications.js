@@ -30,11 +30,8 @@ const Notifications = React.createClass({
       (port ? ":" + port : "") +
        "/rhn/websocket/notifications";
     var ws = new WebSocket(url);
-    ws.onopen = () => {
-        console.log('Websocket connection open');
-    };
+    ws.onopen = () => {};
     ws.onclose = (e) => {
-        console.log('Websocket connection closed');
       var errs = this.state.errors ? this.state.errors : [];
       if (!this.state.pageUnloading && !this.state.websocketErr) {
           errs.push(t("Websocket connection closed. Refresh the page to try again."));
