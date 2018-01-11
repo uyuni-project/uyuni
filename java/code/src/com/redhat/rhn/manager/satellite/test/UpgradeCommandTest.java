@@ -28,17 +28,15 @@ import java.util.List;
 public class UpgradeCommandTest extends BaseTestCaseWithUser {
 
     public void testUpgradeProfiles() throws Exception {
+        TaskFactory.createTask(user.getOrg(), UpgradeCommand.UPGRADE_KS_PROFILES, new Long(0));
+        List l = TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_KS_PROFILES);
+        assertTrue(l.get(0) instanceof Task);
+
         KickstartData ksd = KickstartTestHelper.createTestKickStart(user);
 
         KickstartSession ksession =
             KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksd);
         assertNull(ksession);
-        TaskFactory.createTask(user.getOrg(),
-                UpgradeCommand.UPGRADE_KS_PROFILES, new Long(0));
-
-        List l = TaskFactory.getTaskListByNameLike(
-                UpgradeCommand.UPGRADE_KS_PROFILES);
-        assertTrue(l.get(0) instanceof Task);
 
         // UpgradeCommand its its own transaction so we gotta commit.
         commitAndCloseSession();
@@ -52,8 +50,7 @@ public class UpgradeCommandTest extends BaseTestCaseWithUser {
             KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksd);
         assertNotNull(ksession);
 
-        l = TaskFactory.getTaskListByNameLike(
-                UpgradeCommand.UPGRADE_KS_PROFILES);
-        assertTrue((l == null || l.isEmpty()));
+        List<Task> tasks = TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_KS_PROFILES);
+        assertTrue((tasks == null || tasks.isEmpty()));
     }
 }
