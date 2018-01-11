@@ -42,4 +42,18 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[from com.redhat.rhn.domain.config.ConfigRevision as cr
                 where cr.configFile = :cf]]>
     </query>
+    <query name="ConfigRevision.stateContentMigrationCandidates">
+        <![CDATA[
+                  select distinct channel.org.id, channel.name, revision
+                    from ConfigRevision as revision
+                         inner join revision.configContent as content
+                         inner join revision.configFile as file
+                         inner join file.configFileName as fileName
+                         inner join file.configChannel as channel
+                   where channel.configChannelType.label = 'state'
+                         and fileName.path = '/init.sls'
+                         and revision.revision = 1
+                         and length(content.contents) = 0
+                   ]]>
+    </query>
 </hibernate-mapping>

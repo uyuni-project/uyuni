@@ -1,5 +1,7 @@
 - Uniform date formatting in System Details view (bsc#1045289)
 - Remove previous activation keys when migrating to salt (bsc#1031081)
+- Import content of custom states from filesystem to database on startup, backup old state files
+- Change the directory of the (normal) configuration channels from mgr_cfg_org_N to manager_org_N
 - Handle gpg_check correctly (bsc#1076578)
 - Replace custom states with configuration channels
 - Hide ownership/permission fields from create/upload config file forms for state channels (bsc#1072153)
