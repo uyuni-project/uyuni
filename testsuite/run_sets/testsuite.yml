@@ -88,6 +88,7 @@
 - features/min_salt_minions_page.feature
 - features/srv_xmlrpc_channel.feature
 - features/trad_config_channel.feature
+- features/min_salt_config_channel.feature
 - features/min_salt_pkgset_beacon.feature
 - features/srv_patches_page.feature
 - features/srv_spacewalk_repo_sync.feature
