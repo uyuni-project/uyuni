@@ -397,6 +397,11 @@ When(/^I destroy "([^"]*)" directory on server$/) do |directory|
   $server.run("rm -rf #{directory}")
 end
 
+When(/^I destroy "([^"]*)" directory on "([^"]*)"$/) do |directory, host|
+  node = get_target(host)
+  node.run("rm -rf #{directory}")
+end
+
 When(/^I remove "([^"]*)" from "([^"]*)"$/) do |filename, host|
   node = get_target(host)
   file_delete(node, filename)
@@ -409,6 +414,10 @@ end
 Then(/^file "([^"]*)" should exist on "([^"]*)"$/) do |filename, host|
   node = get_target(host)
   node.run("test -f #{filename}", true)
+end
+
+Then(/^file "([^"]*)" should not exist on server$/) do |filename|
+  $server.run("test ! -f #{filename}")
 end
 
 When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filename, host|

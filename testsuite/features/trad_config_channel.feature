@@ -345,3 +345,6 @@ Feature: Configuration management of traditional clients
     And I follow "New Test Channel"
     And I follow "delete channel"
     And I click on "Delete Config Channel"
+
+  Scenario: Cleanup: delete configuration file on client
+    When I remove "/etc/mgr-test-file.cnf" from "sle-client"
