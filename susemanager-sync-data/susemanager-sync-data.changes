@@ -1,3 +1,5 @@
+- use TLS for mirroring OES2018 channels (bsc#1074430)
+
 -------------------------------------------------------------------
 Thu Jan 11 10:53:12 CET 2018 - jgonzalez@suse.com
 
