@@ -108,7 +108,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         HibernateFactory.getSession().doWork(connection -> {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(
-                "SELECT * FROM rhnServerNeededPackageCache WHERE server_id = " +
+                "SELECT * FROM rhnServerNeededCache WHERE server_id = " +
                 sid.toString()
             );
             assertTrue(rs.next());
@@ -180,7 +180,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             // verify what was inserted
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(
-                "SELECT * FROM rhnServerNeededPackageCache WHERE server_id = " +
+                "SELECT * FROM rhnServerNeededCache WHERE server_id = " +
                 sid.toString()
             );
             assertTrue(rs.next());
@@ -196,7 +196,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             assertEquals(1, rows);
 
             rs = stmt.executeQuery(
-                "SELECT * FROM rhnServerNeededPackageCache WHERE server_id = "
+                "SELECT * FROM rhnServerNeededCache WHERE server_id = "
                 + sid.toString()
             );
             assertFalse(rs.next());
