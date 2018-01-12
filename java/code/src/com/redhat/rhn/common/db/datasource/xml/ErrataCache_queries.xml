@@ -21,7 +21,7 @@ select snpc.server_id, snpc.errata_id, snpc.package_id
     </query>
   </mode>
 
-<write-mode name="delete_needed_package_cache">
+<write-mode name="delete_needed_cache">
   <query params="server_id, errata_id, package_id">
 DELETE FROM rhnServerNeededCache
       WHERE server_id = :server_id
@@ -30,7 +30,7 @@ DELETE FROM rhnServerNeededCache
   </query>
 </write-mode>
 
-<write-mode name="delete_needed_package_cache_null_errata">
+<write-mode name="delete_needed_cache_null_errata">
   <query params="server_id, package_id">
 DELETE FROM rhnServerNeededCache
       WHERE server_id = :server_id
@@ -39,7 +39,7 @@ DELETE FROM rhnServerNeededCache
   </query>
 </write-mode>
 
-<write-mode name="delete_needed_package_cache_all">
+<write-mode name="delete_needed_cache_all">
   <query params="server_id">
 DELETE FROM rhnServerNeededCache
       WHERE server_id = :server_id

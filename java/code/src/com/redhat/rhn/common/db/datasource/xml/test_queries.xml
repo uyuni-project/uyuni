@@ -355,7 +355,7 @@ SELECT u.created as CREATED
   </query>
 </write-mode>
 
-<write-mode name="insert_into_rhnServerNeededPackageCache">
+<write-mode name="insert_into_rhnServerNeededCache">
   <query params="errata_id, server_id, package_id">
     INSERT INTO rhnServerNeededCache(ERRATA_ID, SERVER_ID, PACKAGE_ID)
         VALUES(:errata_id, :server_id, :package_id)
