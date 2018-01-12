@@ -136,7 +136,7 @@ SELECT  S.id AS ID,
         S.name AS SERVER_NAME
   FROM  rhnServer S,
         rhnPackage P,
-        rhnServerNeededPackageCache SNPC,
+        rhnServerNeededCache SNC,
         rhnSet SET1,
         rhnSet SET2
  WHERE  SET1.user_id = :user_id
@@ -147,8 +147,8 @@ SELECT  S.id AS ID,
    AND  SET2.element = P.name_id
    AND  SET2.element_two = P.evr_id
    AND  SET2.element_three = P.package_arch_id
-   AND  SNPC.package_id = P.id
-   AND  SNPC.server_id = S.id
+   AND  SNC.package_id = P.id
+   AND  SNC.server_id = S.id
 GROUP BY s.id, s.name
 ORDER BY UPPER(S.name)
 </query>
