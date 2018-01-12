@@ -258,6 +258,17 @@ public class ActivationKeyFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup activation keys for a given activated server.
+     *
+     * @param server the activated server
+     * @return list of keys that were used for activation
+     */
+    public static List<ActivationKey> lookupByActivatedServer(Server server) {
+        return getSession().getNamedQuery("ActivationKey.findByActivatedServer").
+                setEntity("server", server).list();
+    }
+
+    /**
      * Remove all activation-keys associated with a given server
      *
      * @param sid server-id of the server of interest

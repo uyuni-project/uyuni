@@ -40,6 +40,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     and token.server = :server]]>
     </query>
 
+    <query name="ActivationKey.findByActivatedServer">
+        <![CDATA[select actKey
+                   from com.redhat.rhn.domain.token.ActivationKey actKey,
+                        com.redhat.rhn.domain.token.Token token
+                  where actKey.token = token
+                    and actKey.bootstrap = 'N'
+                    and :server in elements(token.activatedServers)]]>
+    </query>
+
     <query name="ActivationKey.findBySession">
         <![CDATA[from com.redhat.rhn.domain.token.ActivationKey as ak where ak.kickstartSession = :session]]>
     </query>
