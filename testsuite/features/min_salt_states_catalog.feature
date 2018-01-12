@@ -1,4 +1,4 @@
-# Copyright (c) 2016 SUSE LLC
+# Copyright (c) 2016-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Salt states catalog
@@ -40,7 +40,7 @@ Feature: Salt states catalog
     Then I should see a "1 Changes" text
     And I click on the css "button#save-btn"
     And I click on the css "button#apply-btn"
-    Then file "/root/foobar" exists on "sle-minion"
+    And I wait until file "/root/foobar" exists on "sle-minion"
 
   Scenario: Cleanup: remove the state and the file
     Given I am authorized as "testing" with password "testing"
