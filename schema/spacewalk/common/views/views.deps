@@ -45,8 +45,6 @@ rhnServerFeaturesView            :: rhnFeature rhnServerGroupTypeFeature \
                                     rhnServerGroupMembers rhnServerGroup 
 rhnServerGroupMembership         :: rhnServerGroupType rhnServerGroupMembers \
                                     rhnServerGroup
-rhnServerGroupOVLiteHelper       :: rhnServerNeededPackageCache rhnErrata \
-                                    rhnServerGroupMembers
 rhnServerOutdatedPackages        :: rhnServerNeededCache rhnErrata \
                                     rhnPackageName rhnPackageEVR rhnPackage
 rhnStorageDevice                 :: rhnDevice
