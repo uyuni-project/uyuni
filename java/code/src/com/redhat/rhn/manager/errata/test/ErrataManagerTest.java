@@ -233,7 +233,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testRelevantErrataList() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        ErrataCacheManagerTest.createServerNeededPackageCache(user,
+        ErrataCacheManagerTest.createServerNeededCache(user,
                 ErrataFactory.ERRATA_TYPE_BUG);
         DataResult errata = ErrataManager.relevantErrata(user);
         assertNotNull(errata);
@@ -243,7 +243,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testRelevantErrataByTypeList() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
-        ErrataCacheManagerTest.createServerNeededPackageCache(user,
+        ErrataCacheManagerTest.createServerNeededCache(user,
                 ErrataFactory.ERRATA_TYPE_BUG);
         PageControl pc = new PageControl();
         pc.setStart(1);

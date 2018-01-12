@@ -86,7 +86,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         return oid;
     }
 
-    public void testInsertNeededPackageCache() throws Exception {
+    public void testInsertNeededCache() throws Exception {
 
         // create a lot of stuff to test this simple insert.
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
@@ -121,7 +121,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         });
     }
 
-    public static Map createServerNeededPackageCache(User userIn,
+    public static Map createServerNeededCache(User userIn,
             String errataType) throws Exception {
         Map retval = new HashMap();
         Errata e = ErrataFactoryTest.createTestErrata(userIn.getOrg().getId());
@@ -160,7 +160,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         return retval;
     }
 
-    public void testDeleteNeededPackageCache() throws Exception {
+    public void testDeleteNeededCache() throws Exception {
         // create a lot of stuff to test this simple insert.
         Long oid = UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName());
         Org org = OrgFactory.lookupById(oid);
@@ -192,7 +192,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
             assertFalse(rs.next());
 
             // now let's delete the above record
-            rows = ErrataCacheManager.deleteNeededPackageCache(sid, eid, pid);
+            rows = ErrataCacheManager.deleteNeededCache(sid, eid, pid);
             assertEquals(1, rows);
 
             rs = stmt.executeQuery(

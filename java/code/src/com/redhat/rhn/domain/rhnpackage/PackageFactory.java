@@ -423,7 +423,7 @@ public class PackageFactory extends HibernateFactory {
 
     /**
      * Deletes a particular package object from hibernate. Note, currently This
-     * does not delete it from rhnServerNeededPackageCache so you probably want
+     * does not delete it from rhnServerNeededCache so you probably want
      * to use SystemManager.deletePackages() to do that instead. This does not
      * also cleanup rhNPackageSource entries
      * @param pack the package to delete
