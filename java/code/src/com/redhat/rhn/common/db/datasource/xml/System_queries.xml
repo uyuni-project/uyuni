@@ -425,10 +425,10 @@ ORDER BY  UPPER(NVL(S.NAME, '(none)')), S.ID
 <mode name="systems_with_needed_package" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="org_id, pid, user_id">
 SELECT  S.ID
-  FROM  rhnServerNeededPackageCache SNPC, rhnServer S
+  FROM  rhnServerNeededCache SNC, rhnServer S
  WHERE  S.org_id = :org_id
-   AND  SNPC.package_id = :pid
-   AND  SNPC.server_id = S.id
+   AND  SNC.package_id = :pid
+   AND  SNC.server_id = S.id
    AND  EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
 ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
