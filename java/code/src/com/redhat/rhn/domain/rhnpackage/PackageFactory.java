@@ -42,7 +42,6 @@ import java.util.Set;
 
 /**
  * PackageFactory
- * @version $Rev$
  */
 public class PackageFactory extends HibernateFactory {
 
