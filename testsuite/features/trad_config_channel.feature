@@ -1,10 +1,7 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
-#
-# 1) Create configuration channel.
-# 2) Subscribe system to channel, deploy some files
 
-Feature: Configuration channel basic functions
+Feature: Configuration management of traditional clients
 
   Scenario: Successfully create configuration channel
     Given I am authorized as "admin" with password "admin"
@@ -136,8 +133,8 @@ Feature: Configuration channel basic functions
 
   Scenario: Check file deployment
     When I run "rhn_check -vvv" on "sle-client"
-    Then on this client the file "/etc/mgr-test-file.cnf" should exist
-    And on this client the file "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY=yes"
+    Then file "/etc/mgr-test-file.cnf" should exist on "sle-client"
+    And file "/etc/mgr-test-file.cnf" should contain "MGR_PROXY=yes" on "sle-client"
 
   Scenario: Change local file and compare
     Given I am authorized as "admin" with password "admin"
@@ -145,7 +142,7 @@ Feature: Configuration channel basic functions
     And I follow "Systems" in the left menu
     And I follow "Overview" in the left menu
     And I follow this "sle-client" link
-    And I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=no"
+    And I store "MGR_PROXY=no" into file "/etc/mgr-test-file.cnf" on "sle-client"
     And I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
@@ -238,7 +235,7 @@ Feature: Configuration channel basic functions
 
   Scenario: Change one local file and compare multiple files
     # bsc#910243, bsc#910247
-    Given I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=yes"
+    Given I store "MGR_PROXY=yes" into file "/etc/mgr-test-file.cnf" on "sle-client"
     And I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     When I follow "Systems" in the left menu

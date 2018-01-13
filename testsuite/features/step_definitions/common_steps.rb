@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2017 SUSE-LINUX
+# Copyright (c) 2010-2018 SUSE
 # Licensed under the terms of the MIT license.
 
 require 'jwt'
@@ -187,7 +187,7 @@ Then(/^trigger cobbler system record$/) do
       And I follow "Provisioning"
       And I click on "Create PXE installation configuration"
       And I click on "Continue"
-      Then file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks="
+      And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks=" on server
       )
   end
 end
@@ -376,11 +376,7 @@ Then(/^I see verification succeeded/) do
   find('i.text-success')
 end
 
-# configuration steps
-
-When(/^I change the local file "([^"]*)" to "([^"]*)"$/) do |filename, content|
-  $client.run("echo \"#{content}\" > #{filename}", true, 600, 'root')
-end
+# configuration management steps
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
@@ -395,17 +391,39 @@ Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
   end
 end
 
-Then(/^on this client the file "([^"]*)" should exist$/) do |arg1|
-  $client.run("test -f #{arg1}", true)
+# generic file management steps
+
+When(/^I destroy "([^"]*)" directory on server$/) do |directory|
+  $server.run("rm -rf #{directory}")
 end
 
-Then(/^on this client the file "([^"]*)" should have the content "([^"]*)"$/) do |filename, content|
-  $client.run("test -f #{filename}")
-  $client.run("grep #{content} #{filename}")
+When(/^I remove "([^"]*)" from "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  file_delete(node, filename)
 end
 
-Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |client|
-  node = get_target(client)
+Then(/^file "([^"]*)" should exist on server$/) do |filename|
+  $server.run("test -f #{filename}")
+end
+
+Then(/^file "([^"]*)" should exist on "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  node.run("test -f #{filename}", true)
+end
+
+When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filename, host|
+  node = get_target(host)
+  node.run("echo \"#{content}\" > #{filename}", true, 600, 'root')
+end
+
+Then(/^file "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |filename, content, host|
+  node = get_target(host)
+  node.run("test -f #{filename}")
+  node.run("grep \"#{content}\" #{filename}")
+end
+
+Then(/^I remove server hostname from hosts file on "([^"]*)"$/) do |host|
+  node = get_target(host)
   node.run("sed -i \'s/#{$server.full_hostname}//\' /etc/hosts")
 end
 

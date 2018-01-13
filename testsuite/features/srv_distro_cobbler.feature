@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2017 Novell, Inc.
+# Copyright (c) 2010-2018 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 Feature: Cobbler and distribution autoinstallation
@@ -96,7 +96,7 @@ Feature: Cobbler and distribution autoinstallation
     And I enter "kernel_option=a_value" as "kernel_options"
     And I click on "Update"
     And I wait for "5" seconds
-    Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value"
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value" on server
 
   Scenario: Add a kernel option to the uploaded profile
     When I follow "Autoinstallation" in the left menu
@@ -105,7 +105,7 @@ Feature: Cobbler and distribution autoinstallation
     And I enter "kernel_option2=a_value2" as "kernel_options"
     And I click on "Update"
     And I wait for "5" seconds
-    Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2"
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2" on server
 
   Scenario: Check default snippets
     When I follow "Autoinstallation" in the left menu
@@ -134,13 +134,13 @@ Feature: Cobbler and distribution autoinstallation
 
   Scenario: Test for PXE environment files
     Given cobblerd is running
-    Then file "/srv/tftpboot/pxelinux.cfg/default" exists on server
-    And file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1"
-    And file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1"
-    And file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/initrd.img" exists on server
-    And file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/vmlinuz" exists on server
-    And file "/srv/tftpboot/menu.c32" exists on server
-    And file "/srv/tftpboot/pxelinux.0" exists on server
+    Then file "/srv/tftpboot/pxelinux.cfg/default" should exist on server
+    When I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1" on server
+    And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1" on server
+    Then file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/initrd.img" should exist on server
+    And file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/vmlinuz" should exist on server
+    And file "/srv/tftpboot/menu.c32" should exist on server
+    And file "/srv/tftpboot/pxelinux.0" should exist on server
 
   Scenario: Trigger the creation of a cobbler system record
     Then trigger cobbler system record

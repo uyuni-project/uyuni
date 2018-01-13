@@ -1,4 +1,4 @@
-# Copyright 2011-2016 SUSE
+# Copyright 2011-2018 SUSE
 
 Given(/^a postgresql database is running$/) do
   $output = sshcmd('file /var/lib/pgsql/data/postgresql.conf', ignore_err: true)
@@ -178,8 +178,4 @@ Then(/^I disable backup in the directory "(.*?)"$/) do |_arg1|
   assert_includes(
     sshcmd('smdba backup-hot --enable=off')[:stdout], 'Finished'
   )
-end
-
-When(/^when I destroy "(.*?)" directory$/) do |pg_xlog|
-  sshcmd("rm -rf #{pg_xlog}")
 end
