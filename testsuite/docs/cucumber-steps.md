@@ -396,9 +396,12 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I fetch "pub/bootstrap/bootstrap-test.sh" to "sle-client"
   When I remove "/root/foobar" from "sle-minion"
-  Then file "/root/foobar" exists on "sle-minion"
-  Then file "/srv/tftpboot/pxelinux.cfg/default" exists on server
-  Then file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value"
+  When I destroy "/var/lib/pgsql/data/pg_xlog" directory on server
+  When I wait until file "/root/foobar" exists on "sle-minion"
+  Then file "/etc/mgr-test-file.cnf" should exist on "sle-client"
+  Then file "/srv/tftpboot/pxelinux.cfg/default" should exist on server
+  When I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value" on server
+  Then file "/etc/mgr-test-file.cnf" should contain "MGR_PROXY=yes" on "sle-client"
   When I get the contents of the remote file "/etc/salt/master.d/susemanager.conf"
   Then it should contain a "rest_cherrypy:" text
 ```
