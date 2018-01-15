@@ -1,3 +1,4 @@
+- Fix custom SERVER_KEY overriding (bsc#1075862)
 - detect subvolumes on /var even with newer btrfs tools (bsc#1077076)
 - notify admin that database backups need reconfiguration after db upgrade
 - add syslinux-x86_64 dependency for ppc64le (bsc#1065023)
