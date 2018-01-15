@@ -1,3 +1,4 @@
+- Fix custom SERVER_KEY overriding (bsc#1075862)
 - detect subvolumes on /var even with newer btrfs tools (bsc#1077076)
 
 -------------------------------------------------------------------
