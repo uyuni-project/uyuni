@@ -78,7 +78,7 @@ rhnUserReceiveNotifications      :: rhnUserServerPerms rhnWebContactDisabled web
 rhnServerOverview                :: rhnUserServerPerms \
                                     rhnChannel rhnVisibleServerGroupMembers \
                                     rhnServerChannel rhnServerHistory \
-                                    rhnPackage rhnServerNeededPackageCache \
+                                    rhnPackage \
                                     rhnServerErrataTypeView \
                                     rhn_entitlements.pks
 suseImageOverview                :: rhnChannel suseImageInfoChannel rhnPackage \
