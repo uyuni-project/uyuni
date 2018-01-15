@@ -618,6 +618,21 @@ public class SaltService {
     }
 
     /**
+     * Call 'saltutil.refresh_pillar' to sync the grains to the target minion(s).
+     * @param minionList minion list
+     */
+    public void refreshPillar(MinionList minionList) {
+        try {
+            LocalCall<Boolean> call = SaltUtil.refreshPillar(Optional.empty(),
+                    Optional.empty());
+            callAsync(call, minionList);
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
      * @param minionList minion list
      */
