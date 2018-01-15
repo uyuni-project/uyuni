@@ -1,11 +1,35 @@
-- Support Open Enterprise Server 2018 (bsc#1060182)
-- ensure postgres db template uses unicode (bsc#1062476)
-- fix migration from SUSE Manager versions > 2.1 (bsc#1055306)
-- Fixed bootstrap repository path for SLES4SAP version 12 and 12.1 (bsc#1062936)
-- fix error message for database upgrade failure
-- check for sufficient diskspace in /var/lib/pgsql
 - notify admin that database backups need reconfiguration after db upgrade
 - add syslinux-x86_64 dependency for ppc64le (bsc#1065023)
+
+-------------------------------------------------------------------
+Tue Nov 28 14:49:47 CET 2017 - jgonzalez@suse.com
+
+- version 3.1.11-1
+- Support Open Enterprise Server 2018 (bsc#1060182)
+- Fixed bootstrap repository path for SLES4SAP version 12 and 12.1 (bsc#1062936)
+- ensure postgres db template uses unicode (bsc#1062476)
+- fix error message for database upgrade failure
+- check for sufficient diskspace in /var/lib/pgsql
+
+-------------------------------------------------------------------
+Thu Sep 14 11:29:42 CEST 2017 - mc@suse.de
+
+- version 3.1.10-1
+- fix migration from SUSE Manager versions > 2.1 (bsc#1055306)
+
+-------------------------------------------------------------------
+Wed Aug 30 15:59:51 CEST 2017 - mc@suse.de
+
+- version 3.1.9-1
+- Do not use checkpoint_segments parameter during migrations
+
+-------------------------------------------------------------------
+Tue Aug 08 11:41:57 CEST 2017 - fkobzik@suse.de
+
+- version 3.1.8-1
+- Assert correct java version (bsc#1049575)
+- Create bootstrap repo for SLES for SAP 11 SP1 (bsc#1049471)
+- Adjust the bootstrap repo with SLE 12 SP3 repos
 
 -------------------------------------------------------------------
 Mon May 29 15:41:25 CEST 2017 - mc@suse.de

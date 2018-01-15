@@ -1,4 +1,9 @@
 - fix default value in squid.conf template
+
+-------------------------------------------------------------------
+Tue Nov 28 12:14:04 CET 2017 - jgonzalez@suse.com
+
+- version 2.7.2.4-1
 - more exact question for custom certificate and key (bsc#1059998)
 
 -------------------------------------------------------------------
