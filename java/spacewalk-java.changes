@@ -1,3 +1,4 @@
+- Speed up scheduling of package updates through the SSM (bsc#1076034)
 - Fix encoding/decoding of url_bounce with more parameters (bsc#1075408)
 - Removing unused mockobjects and strutstest jars
 - Adjust commons-pool dependency for SLES15
