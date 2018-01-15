@@ -30,11 +30,7 @@ Feature: Salt minions configuration management
     And file "/srv/susemanager/salt/mgr_cfg_org_1/mixedchannel/etc/s-mgr/config" should exist on server
 
   Scenario: Subscribe a traditional client to the configuration channel
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-client" link
+    When I am on the Systems overview page of this "sle-client"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -44,11 +40,7 @@ Feature: Salt minions configuration management
     Then I should see a "Channel Subscriptions successfully changed for" text
 
   Scenario: Subscribe a salt minion to the configuration channel
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-minion" link
+    When I am on the Systems overview page of this "sle-minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
