@@ -49,7 +49,7 @@ FROMVERSION="undefined"
 KEYFILE="/root/migration-key"
 DBDUMPFILE="susemanager.dmp.gz"
 SERVER_CRT="/etc/pki/tls/certs/spacewalk.crt"
-SERVER_KEY="/etc/pki/tls/private/spacewalk.key"
+[ -z "$SERVER_KEY" ] && { SERVER_KEY="/etc/pki/tls/private/spacewalk.key"; }
 
 RSYNC_PASSWORD=""
 
