@@ -1,6 +1,17 @@
-- Fix building problems for SLES15
+- Proxy: use query string in upstream HEAD requests (bsc#1036260)
+
+-------------------------------------------------------------------
+Tue Nov 28 14:36:51 CET 2017 - jgonzalez@suse.com
+
+- version 2.7.1.5-1
 - Try to resolve the proxy hostname even if the HTTP 'Host' header
   is an ip address (bsc#1057542)
+
+-------------------------------------------------------------------
+Tue Aug 08 11:30:23 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.1.4-1
+- Proxy: use query string in upstream HEAD requests (bsc#1036260)
 
 -------------------------------------------------------------------
 Mon May 29 15:06:36 CEST 2017 - mc@suse.de

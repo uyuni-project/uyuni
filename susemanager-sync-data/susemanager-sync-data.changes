@@ -2,6 +2,19 @@
 - add SUSE Manager Server 3.0 and 3.1 channels for mirroring
 - support SLE-RT 12 SP3 (bsc#1063940)
 - add SLE12 LTSS as extension to SLES for SAP 12 (bsc#1069615)
+
+-------------------------------------------------------------------
+Tue Dec 12 12:07:43 CET 2017 - jgonzalez@suse.com
+
+- version 3.1.9-1
+- add SUSE Manager Server 3.0 and 3.1 channels for mirroring
+- support SLE-RT 12 SP3 (bsc#1063940)
+- add SLE12 LTSS as extension to SLES for SAP 12 (bsc#1069615)
+
+-------------------------------------------------------------------
+Tue Nov 28 15:24:03 CET 2017 - jgonzalez@suse.com
+
+- version 3.1.8-1
 - Support Open Enterprise Server 2018 (bsc#1060182)
 - Support SUSE Manager for Retail 3.1 (bsc#1052079)
 - fix description for HA channel (bsc#1063588)
@@ -9,6 +22,21 @@
 - Add IBM DLPAR channels to SLES for SAP SPx ppc64le (bsc#1068057)
 - remove Certification Module 12 from SP2 and SP3 (bsc#1066819)
 - remove OES2018 Debuginfo channels (bsc#1071367)
+
+-------------------------------------------------------------------
+Wed Aug 30 15:55:17 CEST 2017 - mc@suse.de
+
+- version 3.1.7-1
+- Add Proxy subchannels for SLES 12 SP3 (bsc#1053850)
+
+-------------------------------------------------------------------
+Tue Aug 08 11:44:26 CEST 2017 - fkobzik@suse.de
+
+- version 3.1.6-1
+- Support SUSE Storage Enterprise 5 and SUSE LINUX Enterprise Server 12 - SP3
+  for SAP Applications on ppc64le (bsc#1028098)
+- Update channels.xml with OpenStack Cloud Continuous Delivery 6 (bsc#1039458)
+- Add the SLE 12 SP3-related products (bsc#1037609)
 
 -------------------------------------------------------------------
 Mon May 29 15:39:42 CEST 2017 - mc@suse.de

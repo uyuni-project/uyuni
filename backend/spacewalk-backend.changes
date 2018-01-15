@@ -1,3 +1,14 @@
+- fix issues with syncing deb repos (bsc#1050433)
+- honor MAX_LOG_AGE for (renamed) cobbler/tasks logs file
+  in spacewalk-debug (bsc#1025201)
+- add hostname to duplicate machine_id email (bsc#1055292)
+- fix link to manual and the described procedure
+- don't crash when token is set to 'fake' (bsc#1060022)
+- when searching for not installed products exclude release packages
+  which are provided by others (bsc#1067509)
+- search for product packages when installed packages are available
+  (bsc#1060182)
+- rhnServerNetwork refactoring (bsc#1063419)
 - Fix: restore hostname and ip*addr in templated documents (bsc#1075044)
 - fix directory name in spacewalk-data-fsck
 - search for product packages when installed packages are available
@@ -22,7 +33,6 @@ Fri Nov 10 16:30:32 CET 2017 - mc@suse.de
 - detect and parse package groups in filters
 - add new spacewalk-repo-sync command line option to synopsis of man-page
 - add new parameter '--show-packages' for spacewalk-repo-sync.
-
 
 -------------------------------------------------------------------
 Thu Oct 26 17:12:49 CEST 2017 - mc@suse.de

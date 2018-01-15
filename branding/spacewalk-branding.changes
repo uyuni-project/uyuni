@@ -2,8 +2,39 @@
 - fix message about package profile sync (bsc#1073739)
 - fix naming of the Tools channel (bsc#979633)
 - Remove enforcement of IBM JDK
+
+-------------------------------------------------------------------
+Tue Nov 28 12:32:26 CET 2017 - jgonzalez@suse.com
+
+- version 2.7.2.10-1
 - improve text for system types page (bsc#1057084)
+- Disallow entering multiple identical mirror credentials (bsc#971785)
+
+-------------------------------------------------------------------
+Thu Sep 14 11:38:02 CEST 2017 - mc@suse.de
+
+- version 2.7.2.9-1
+- fixes ise error with invalid custom key id (bsc#1048294)
+- Add message about channel changes on salt managed systems to
+  UI and API docs (bsc#1048845)
 - Visualization UI look&feel improvements
+
+-------------------------------------------------------------------
+Wed Aug 30 16:02:47 CEST 2017 - mc@suse.de
+
+- version 2.7.2.8-1
+- add missing translations
+- Fix ace_editor textarea width
+
+-------------------------------------------------------------------
+Tue Aug 08 11:28:05 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.2.7-1
+- Fix overlapping of elem. (bsc#1031143)
+- Fix overlapping text narrow window (bsc#1009118) 
+- Fix formulas action buttons position (bsc#1047513)
+- Fix broken link (bsc#1033999)
+- Alphabar: change title to 'Select first character' (bsc1042199)
 
 -------------------------------------------------------------------
 Mon Jun 12 09:11:29 CEST 2017 - mc@suse.de

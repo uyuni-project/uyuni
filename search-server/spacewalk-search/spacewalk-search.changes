@@ -1,6 +1,17 @@
 - Remove unused binary jars 
 - Updated to use Quartz 2.3.0 API (bsc#1049431)
+
+-------------------------------------------------------------------
+Tue Nov 28 14:38:11 CET 2017 - jgonzalez@suse.com
+
+- version 2.7.3.3-1
 - rhnServerNetwork refactoring (bsc#1063419)
+
+-------------------------------------------------------------------
+Tue Aug 08 11:31:54 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.3.2-1
+- remove executable bit from service files (bsc#1051518)
 
 -------------------------------------------------------------------
 Wed May 03 16:42:51 CEST 2017 - michele.bologna@suse.com

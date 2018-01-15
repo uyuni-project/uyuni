@@ -1,3 +1,5 @@
+- Fix update mechanism when updating the updateservice (bsc#1073619)
+
 -------------------------------------------------------------------
 Thu Oct 26 16:57:12 CEST 2017 - mc@suse.de
 
