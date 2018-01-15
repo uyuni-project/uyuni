@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: SMBDA database helper tool
@@ -79,7 +79,7 @@ Feature: SMBDA database helper tool
     When I set a checkpoint
     And when I issue command "smdba backup-hot"
     And when in the database I create dummy table "dummy" with column "test" and value "bogus data"
-    And when I destroy "/var/lib/pgsql/data/pg_xlog" directory
+    And I destroy "/var/lib/pgsql/data/pg_xlog" directory on server
     And when I restore database from the backup
     And when I issue command "smdba db-status"
     Given a postgresql database is running
