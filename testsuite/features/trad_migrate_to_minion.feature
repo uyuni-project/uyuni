@@ -1,4 +1,4 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Migrate a traditional client into a Salt minion
@@ -78,7 +78,7 @@ Feature: Migrate a traditional client into a Salt minion
       """
     And I click on "Schedule"
     Then I should see a "Remote Command has been scheduled successfully" text
-    And file "/tmp/remote-command-on-migrated-test" exists on "sle-migrated-minion"
+    When I wait until file "/tmp/remote-command-on-migrated-test" exists on "sle-migrated-minion"
     And I remove "/tmp/remote-command-on-migrated-test" from "sle-migrated-minion"
 
   Scenario: Cleanup: Migrate back to traditional client
