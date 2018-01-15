@@ -47,24 +47,20 @@ When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, target|
   node.run("wget http://#{$server.ip}/#{file}", true, 500, 'root')
 end
 
-When(/^file "([^"]*)" exists on server$/) do |arg1|
-  $server.run("test -f #{arg1}")
-end
-
-When(/^file "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
+When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
   sleep(3)
   output = {}
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        output = sshcmd("grep #{arg2} #{arg1}", ignore_err: true)
-        break if output[:stdout] =~ /#{arg2}/
+        output = sshcmd("grep #{content} #{file}", ignore_err: true)
+        break if output[:stdout] =~ /#{content}/
         sleep(2)
       end
     end
   rescue Timeout::Error
     $stderr.write("-----\n#{output[:stderr]}\n-----\n")
-    raise "#{arg2} not found in File #{arg1}"
+    raise "#{content} not found in file #{file}"
   end
 end
 
@@ -104,12 +100,12 @@ end
 
 Then(/^the PXE default profile should be enabled$/) do
   sleep(1)
-  step %(file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT pxe-default-profile")
+  step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT pxe-default-profile" on server)
 end
 
 Then(/^the PXE default profile should be disabled$/) do
   sleep(1)
-  step %(file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local")
+  step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
@@ -190,7 +186,7 @@ Then(/^the command should fail$/) do
   raise 'Previous command must fail, but has NOT failed!' if $fail_code.zero?
 end
 
-When(/^file "(.*)" exists on "(.*)"$/) do |file, host|
+When(/^I wait until file "(.*)" exists on "(.*)"$/) do |file, host|
   node = get_target(host)
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
@@ -202,11 +198,6 @@ When(/^file "(.*)" exists on "(.*)"$/) do |file, host|
   rescue Timeout::Error
     raise unless file_exists?(node, file)
   end
-end
-
-Then(/^I remove "(.*)" from "(.*)"$/) do |file, host|
-  node = get_target(host)
-  file_delete(node, file)
 end
 
 Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
