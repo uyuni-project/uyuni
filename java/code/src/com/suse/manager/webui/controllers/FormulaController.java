@@ -17,6 +17,9 @@ package com.suse.manager.webui.controllers;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.formula.FormulaFactory;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -25,6 +28,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.StateTargetType;
 
 import com.google.gson.Gson;
@@ -34,6 +38,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+import com.suse.salt.netapi.datatypes.target.MinionList;
+import com.suse.utils.Opt;
 import org.apache.http.HttpStatus;
 
 import java.io.IOException;
@@ -45,6 +51,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -184,18 +192,23 @@ public class FormulaController {
         try {
             switch (type) {
                 case SERVER:
-                    if (!checkUserHasPermissionsOnServer(user,
-                            ServerFactory.lookupById(id))) {
+                    Optional<MinionServer> minion = MinionServerFactory.lookupById(id);
+                    if (!checkUserHasPermissionsOnServer(user, minion.get())) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveServerFormulaData(formData, id, formulaName);
+                    SaltService.INSTANCE.refreshPillar(new MinionList(minion.get().getMinionId()));
                     break;
                 case GROUP:
-                    if (!checkUserHasPermissionsOnServerGroup(user,
-                                ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg()))) {
+                    ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
+                    if (!checkUserHasPermissionsOnServerGroup(user, group)) {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveGroupFormulaData(formData, id, formulaName);
+                    List<String> minionIds = group.getServers().stream()
+                            .flatMap(s -> Opt.stream(s.asMinionServer()))
+                            .map(MinionServer::getMinionId).collect(Collectors.toList());
+                    SaltService.INSTANCE.refreshPillar(new MinionList(minionIds));
                     break;
                 default:
                     return errorResponse(response, Arrays.asList("Invalid target type!"));
