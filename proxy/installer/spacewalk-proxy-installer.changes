@@ -1,3 +1,4 @@
+- fix default value in squid.conf template
 - more exact question for custom certificate and key (bsc#1059998)
 
 -------------------------------------------------------------------
