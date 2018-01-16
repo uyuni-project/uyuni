@@ -1,3 +1,4 @@
+- fix notifications leading to stale transactions
 - Fix encoding/decoding of url_bounce with more parameters (bsc#1075408)
 - After dry-run, sync channels back with the server (bsc#1071468)
 - fix message about package profile sync (bsc#1073739)
