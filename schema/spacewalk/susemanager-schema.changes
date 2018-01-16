@@ -1,14 +1,49 @@
+- Update to Quartz 2.3.0 (bsc#1049431)
 - fix duplicate entries in channel listings
-- Adding initial version of web ui notifications
-- Add column to store the 'test' option for state apply actions
+- handle nevra not found case while fixing duplicate evr ids (bsc#1074508)
 - Added a script which will remove existing server locks against minions (bsc#1064258)
+- Add column to store the 'test' option for state apply actions
+- Adding initial version of web ui notifications
+
+-------------------------------------------------------------------
+Tue Nov 28 15:01:50 CET 2017 - jgonzalez@suse.com
+
+- version 3.1.13-1
+- Add Adelaide timezone to selectable timezones (bsc#1063891)
 - Added new relationships for Salt config management
 - Added new config channel type(state) and file type(sls)
 - Enable 'Power Management' features on Salt minions.
 - enablement of the package profile feature for minions
+- re-create unique index on minion_id (bsc#1059568, bsc#1056358)
 - increase max length of hardware address to 32 byte (bsc#989991)
-- Update to Quartz 2.3.0 (bsc#1049431)
+- fix unique index for evr and capability and remove duplicates
+  during migration (bsc#1058110)
 - rhnServerNetwork refactoring (bsc#1063419)
+
+-------------------------------------------------------------------
+Thu Sep 14 17:36:43 CEST 2017 - mc@suse.de
+
+- version 3.1.12-1
+- provide schema upgrade path from 3.0.21 to 3.1
+
+-------------------------------------------------------------------
+Thu Sep 14 11:26:31 CEST 2017 - mc@suse.de
+
+- version 3.1.11-1
+- DB objects for Kubernetes integration
+
+-------------------------------------------------------------------
+Wed Aug 30 15:56:40 CEST 2017 - mc@suse.de
+
+- version 3.1.10-1
+- Backend for importing images
+- Fix unsetting of image build host when a related action is deleted
+
+-------------------------------------------------------------------
+Tue Aug 08 11:43:14 CEST 2017 - fkobzik@suse.de
+
+- version 3.1.9-1
+- Adapt for the new gpgcheck flag for the channels
 
 -------------------------------------------------------------------
 Mon Jun 12 09:13:09 CEST 2017 - mc@suse.de

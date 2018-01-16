@@ -1,5 +1,9 @@
-- After dry-run, sync channels back with the server (bsc#1071468)
 - Removing unused mockobjects and strutstest jars
+- Adjust commons-pool dependency for SLES15
+- Remove jakarta-common-dbcp dependency, not required by quartz anymore
+- Remove enforcement of IBM JDK
+- Update to Quartz 2.3.0 (bsc#1049431)
+- After dry-run, sync channels back with the server (bsc#1071468)
 - fix message about package profile sync (bsc#1073739)
 - On registration, assign server to the organization of the creator when activation key is empty (bsc#1016377)
 - Fix logging issues when saving autoyast profiles (bsc#1073474)
@@ -11,80 +15,163 @@
 - fix failed package installation when in RES 32 and 64 bit packages are
   installed together (bsc#1071314)
 - Add user preferences in order to change items-per-page (bsc#1055296)
-- Adding initial version of web ui notifications
-- New API call for scheduling highstate application
 - Order salt formulas alphabetically. (bsc#1022077)
 - Improved error message (bsc#1064258)
 - Display messages about wrong input more end-user friendly. (bsc#1015956)
 - Add api calls for content staging
 - fix content refresh when product keys change (bsc#1069943)
 - Allow 'Package List Refresh' when package arch has changed (bsc#1065259)
+- New API call for scheduling highstate application
+- Adding initial version of web ui notifications
+- Show the time on the event history page in the users preferred timezone
+
+-------------------------------------------------------------------
+Tue Nov 28 12:48:16 CET 2017 - jgonzalez@suse.com
+
+- version 2.7.46.8-1
 - Implemented assignment of configuration channels to Salt systems via Salt states
 - Added file structure under Salt root for configuration management
 - Enabled configuration management UI for Salt systems
 - Remove SUSE Manager specific configuration from Salt ssh minion when deleting system from SUSE Manager (bsc#1048326)
-- Adjust commons-pool dependency for SLES15
-- Remove jakarta-common-dbcp dependency, not required by quartz anymore
 - Support Open Enterprise Server 2018 (bsc#1060182)
+- Enable autofocus for login field
 - Do not remove virtual instances for registered systems (bsc#1063759)
-- Remove enforcement of IBM JDK
 - Process right configfile on 'scheduleFileComparisons' API calls (bsc#1066663)
 - Fix reported UUIDs for guests instances within a virtual host (bsc#1063759)
-- Enable autofocus for login field
 - Generate Order Items for OEM subscriptions (bsc#1045141)
 - fix alignment of systemtype counts text (bsc#1057084)
 - Enable 'Power Management' features on Salt minions.
-- Remove SUSE Manager specific configuration from Salt ssh minion when deleting system from SUSE Manager (bsc#1048326)
 - Fix editing of vhm config params (bsc#1063185)
 - Skip the server if no channel can be guessed (bsc#1040420)
 - Added a method to check if OS on machine supports containerization or not(bsc#1052728)
 - 'Cancel Autoinstallation' link has been changed to look like button to make it more visible (bsc#1035955)
 - Make systems in system group list selectable by the group admins (bsc#1021432)
 - Hide non-relevant typed systems in SystemCurrency (bsc#1019097)
-- Exclude salt systems from the list of target systems for traditional
-  configuration stack installation
 - Start registration for accepted minions only on the minion start event,
   not automatically on any event (bsc#1054044)
+- Exclude salt systems from the list of target systems for traditional
+  configuration stack installation
+- Keep the the GPG Check value if validation fails (bsc#1061548)
 - Extract Proxy version from installed product (bsc#1055467)
-- Disallow entering multiple identical mirror credentials (bsc#971785)
 - Provide another create method(with additional parameter Gpgcheck) to create software channel through XML RPC(bsc#1060691).
+- Improve duplicate hostname and transaction handling in minion registration
 - Added 'Machine Id' information as part of details in System namespace for XMLRPC API(bsc#1054902)
 - Modified the displayed message after updation of activation key (bsc#1060389)
-- Improve duplicate hostname and transaction handling in minion registration
 - Display GUI message after successfully deleting custom key (bsc#1048295)
-- Harmonize presentation of patch information (bsc#1032065)
 - fix links on schedule pages (bsc#1059201)
+- Harmonize presentation of patch information (bsc#1032065)
 - Display a feedback message when user deletes configuration channel(bsc#1048355)
 - Fix duplicate machine id in event history on minion restart (bsc#1059388)
 - Show link in message when rescheduling actions (bsc#1032122)
 - Prevent ISE when distribution does not exist (bsc#1059524)
+- do not store registration-keys during autoinstallation (bsc#1057599)
+- enable package profile comparisons on minions
+- Disallow entering multiple identical mirror credentials (bsc#971785)
+- ensure correct ordering of patches (bsc#1059801)
 - fix cloning Kickstart Profiles with Custom Options (bsc#1061576)
 - checkin the foreign host if a s390 minion finished a job (bsc#971916)
 - increase max length of hardware address to 32 byte (bsc#989991)
+- Set the creator user for minions correctly in case it is known (bsc#1058862)
+- Fix minor UI issues on overview page (bsc#1063590)
+- Hide invisible first level menu items (bsc#1063822)
+- Fail gracefully when GPG files are requested (bsc#1065676)
 - fix unscheduling actions for traditional systems (bsc#1065216)
 - add logging messages for SP migration (bsc#1066819, bsc#1066404)
+- Improve messaging for "Compare Packages" (bsc#1065844)
 - when searching for not installed products exclude release packages
   which are provided by others (bsc#1067509)
+- rhnServerNetwork refactoring (bsc#1063419)
+- Add Adelaide timezone to selectable timezones (bsc#1063891)
+
+-------------------------------------------------------------------
+Thu Sep 14 11:32:37 CEST 2017 - mc@suse.de
+
+- version 2.7.46.7-1
 - Adapt Salt runner and wheel calls to the new
   error handling introduced in salt-netapi-client-0.12.0
 - change log level and event history for duplicate machine id  (bsc#1041489)
 - Trim spaces around the target expression in the Salt remote
   command page (bsc#1056678)
+- check entitlement usage based on grains when onboarding a
+  minion (bsc#1043880)
 - fixes ise error with invalid custom key id (bsc#1048294)
+- Image runtime UI
+- Redesign VHM pages on ReactJS
+- Add VHM type Kubernetes
+- Kubernetes runner and image matching implementation
+- XMLRPC method for importing images
+- Extra return data fields for content management XMLRPC methods
 - Add back "Add Selected to SSM" buttons to Group pages (bsc#1047702)
 - fix a ConstraintViolationException when refreshing hardware with
   changed network interfaces or IP addresses
+- Add message about channel changes on salt managed systems to
+  UI and API docs (bsc#1048845)
+- show Child Channels tab in SSM again if a salt minion is in the set
 - improve performance of package installation and patch application
 - Visualization UI look&feel improvements
-- enable package profile comparisons on minions
-- ensure correct ordering of patches (bsc#1059801)
-- Set the creator user for minions correctly in case it is known (bsc#1058862)
-- Fix minor UI issues on overview page (bsc#1063590)
-- Hide invisible first level menu items (bsc#1063822)
-- Update to Quartz 2.3.0 (bsc#1049431)
-- Fail gracefully when GPG files are requested (bsc#1065676)
-- Improve messaging for "Compare Packages" (bsc#1065844)
-- rhnServerNetwork refactoring (bsc#1063419)
+
+-------------------------------------------------------------------
+Wed Aug 30 16:00:28 CEST 2017 - mc@suse.de
+
+- version 2.7.46.6-1
+- Import image UI
+- Update images list and overview pages for external images
+- Add syntax highlighting for state catalog
+- Delete and create new ServerNetAddress if it already exists on
+  HW refresh (bsc#1054225)
+- organization name allows XSS
+- check if base product exists to prevent NPE
+- Fix enter key submit on ListTag filter input (bsc#1048762)
+- Create VirtpollerData object with JSON content instead null
+  (bsc#1049170)
+- Fix unsetting of image build host when a related action is deleted
+- Prevent malformed XML if 'arch' is set to NULL (bsc#1045575)
+- Resolve comps.xml file for repositories (bsc#1048528)
+- Fix: address review issues
+- Install update stack erratas as a package list (bsc#1049139)
+- Feat: allow deletion for server subset (bsc#1051452)
+
+-------------------------------------------------------------------
+Tue Aug 08 11:46:36 CEST 2017 - fkobzik@suse.de
+
+- version 2.7.46.5-1
+- Fix: don't add default channel if AK is not valid (bsc#1047656)
+- Add 'Enable GPG check' function for channels
+- No legend icon for Activity Ocurring. (bsc#1051719)
+- Implement API call for bootstrapping systems
+- Fix product ids reported for SUSE Manager Server to the subscription matcher
+- Fix adding products when assigning channels (bsc#1049664)
+- Set default memory size for SLES 12 installations to 1024MB (bsc#1047707)
+- BugFix: enable remote-command for Salt clients in SSM (bsc#1050385)
+- Add missing help icons/links (bsc#1049425)
+- Fixed invalid help links (bsc#1049425)
+- Fix: wrong openscap xid (bsc#1030898)
+- Organization name allows XSS CVE-2017-7538 (bsc#1048968)
+- Fixes overlapping text narrow window (bsc#1009118)
+- Adapt to the salt-netapi-client update (v0.12.0)
+- Fixes alignment on the orgdetails (bsc#1017513)
+- Fix text for activation key buttons (bsc#1042975)
+- Add a dynamic counter of the remaining textarea length
+- Bugfix: set, check and cut textarea maxlength (bsc#1043430)
+- MinionActionExecutor: raise skip timeout (bsc#1046865)
+- Update channels.xml with OpenStack Cloud Continuous Delivery 6 (bsc#1039458)
+- Do not create VirtualInstance duplicates for the same 'uuid'
+- Add taskomatic task to cleanup duplicated uuids for same system id
+- Handle possible wrong UUIDs on SLE11 minions (bsc#1046218)
+- Removed duplicate overview menu item (bsc#1045981)
+- Enable act-key name empty on creation (bsc#1032350)
+- Fix NPE when there's not udev results (bsc#1042552)
+- Alphabar: change title to 'Select first character' (bsc1042199)
+- Duplicate Systems: correct language not to mention 'profiles' (bsc1035728)
+- Fix list filters to work with URL special characters (bsc#1042846)
+- Use getActive() instead of isActive() for JavaBeans compliance (bsc#1043143)
+- Fix: hide non-org event details (bsc#1039579)
+
+-------------------------------------------------------------------
+Mon Jun 19 16:36:09 CEST 2017 - mc@suse.de
+
+- version 2.7.46.4-1
+- adapt to taglibs 1.2.5 (bsc#1044804)
 
 -------------------------------------------------------------------
 Mon Jun 12 09:07:20 CEST 2017 - mc@suse.de
