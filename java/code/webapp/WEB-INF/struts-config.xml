@@ -2638,6 +2638,8 @@
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/systems/overview.jsp"/>
+        <forward name="ssm-list-systems"
+                 path="/systems/ssm/ListSystems.do"/>
         <forward name="YourRhn"
                  path="/YourRhn.do"
                  redirect="true" />
@@ -2935,6 +2937,8 @@
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/systems/grouplist.jsp"/>
+        <forward name="ssm-list-systems"
+                 path="/systems/ssm/ListSystems.do"/>
     </action>
 
     <action path="/systems/SystemEntitlements"
