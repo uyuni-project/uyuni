@@ -1,3 +1,5 @@
+- Fix encoding/decoding of url_bounce with more parameters (bsc#1075408)
+
 -------------------------------------------------------------------
 Wed Jan 10 16:14:11 CET 2018 - jgonzalez@suse.com
 
