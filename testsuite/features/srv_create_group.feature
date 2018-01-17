@@ -1,4 +1,4 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Create a group
@@ -34,12 +34,8 @@ Feature: Create a group
     Then I should see a "1 systems were added to newgroup server group." text
 
   Scenario: Check that this client is part of the new group
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-client" link
-    And I follow "Groups" in the content area
+    Given I am on the Systems overview page of this "sle-client"
+    When I follow "Groups" in the content area
     Then I should see a "newgroup" text 
 
   Scenario: Add the new group to SSM
