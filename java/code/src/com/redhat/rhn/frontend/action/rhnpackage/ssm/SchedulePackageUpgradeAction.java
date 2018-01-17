@@ -37,7 +37,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -144,16 +143,6 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable 
         TagHelper.bindElaboratorTo("groupList", results.getElaborator(), request);
 
         return results;
-    }
-
-    private String[] splitEvr(String evr) {
-        String[] values = StringUtils.split(evr, "-");
-        for (int i = 0; i < values.length; i++) {
-            if ("null".equals(values[i])) {
-                values[i] = null;
-            }
-        }
-        return values;
     }
 
     private ActionForward executePackageAction(ActionMapping mapping,
