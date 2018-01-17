@@ -1,4 +1,10 @@
+-------------------------------------------------------------------
+Wed Jan 17 11:10:05 CET 2018 - jgonzalez@suse.com
+
+- version 5.10.119.1-1
 - Fix update mechanism when updating the updateservice (bsc#1073619)
+- Add --config option to rhncfg-manager and rhncfg-client
+- Add better handling of interrupted system calls
 
 -------------------------------------------------------------------
 Fri Nov 10 16:22:55 CET 2017 - mc@suse.de
