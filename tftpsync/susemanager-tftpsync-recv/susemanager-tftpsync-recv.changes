@@ -1,4 +1,9 @@
-use tftpd instead of atftpd
+-------------------------------------------------------------------
+Wed Jan 17 10:57:39 CET 2018 - jgonzalez@suse.com
+
+- version 3.2.1-1
+- enable tftp.socket; no need to start tftp.service
+- use tftpd instead of atftpd
 
 -------------------------------------------------------------------
 Wed Jan 11 17:03:02 CET 2017 - michele.bologna@suse.com
