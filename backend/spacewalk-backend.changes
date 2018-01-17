@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 17 11:51:01 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.37.1-1
 - fix issues with syncing deb repos (bsc#1050433)
 - honor MAX_LOG_AGE for (renamed) cobbler/tasks logs file
   in spacewalk-debug (bsc#1025201)
