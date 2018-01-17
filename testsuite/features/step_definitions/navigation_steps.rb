@@ -1,17 +1,9 @@
-# Copyright (c) 2010-2017 Novell, Inc.
+# Copyright (c) 2010-2018 Novell, Inc.
 # Licensed under the terms of the MIT license.
 
 #
 # Test the current path of the URL
 #
-
-Given(/^I am on the Systems overview page of "(.*?)"$/) do |minion|
-  steps %(
-    Given I am on the Systems page
-    And I follow "Systems" in the left menu
-    And I follow "#{minion}" link
-    )
-end
 
 When(/^I follow "(.*?)" link$/) do |host|
   node = get_target(host)

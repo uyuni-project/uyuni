@@ -85,11 +85,7 @@ Feature: Configuration management of traditional clients
     And I should see a "Update Configuration File" button
 
   Scenario: Subscribe a system to new configuration channel
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-client" link
+    When I am on the Systems overview page of this "sle-client"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -107,11 +103,7 @@ Feature: Configuration management of traditional clients
     Then I should see a table line with "/etc/mgr-test-file.cnf", "New Test Channel", "1 system"
 
   Scenario: Check centrally managed files of SLES client
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-client" link
+    When I am on the Systems overview page of this "sle-client"
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Centrally-Managed Files" in the content area
@@ -137,11 +129,7 @@ Feature: Configuration management of traditional clients
     And file "/etc/mgr-test-file.cnf" should contain "MGR_PROXY=yes" on "sle-client"
 
   Scenario: Change local file and compare
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-client" link
+    When I am on the Systems overview page of this "sle-client"
     And I store "MGR_PROXY=no" into file "/etc/mgr-test-file.cnf" on "sle-client"
     And I follow "Configuration" in the content area
     And I follow "Compare Files" in the content area
@@ -160,11 +148,7 @@ Feature: Configuration management of traditional clients
     And I should see a "+MGR_PROXY=no" text
 
   Scenario: Import the changed test configuration file
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-client" link
+    When I am on the Systems overview page of this "sle-client"
     And I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
@@ -179,11 +163,7 @@ Feature: Configuration management of traditional clients
     Then I should see a table line with "/etc/mgr-test-file.cnf", "Revision 1"
 
   Scenario: Import the changed cron configuration file
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-client" link
+    When I am on the Systems overview page of this "sle-client"
     And I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
@@ -198,11 +178,7 @@ Feature: Configuration management of traditional clients
     Then I should see a table line with "/etc/sysconfig/cron", "Revision 1"
 
   Scenario: Copy sandbox file to centrally managed
-    Given I am authorized as "admin" with password "admin"
-    When I follow "Home" in the left menu
-    And I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-client" link
+    When I am on the Systems overview page of this "sle-client"
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
@@ -235,13 +211,9 @@ Feature: Configuration management of traditional clients
 
   Scenario: Change one local file and compare multiple files
     # bsc#910243, bsc#910247
-    Given I store "MGR_PROXY=yes" into file "/etc/mgr-test-file.cnf" on "sle-client"
-    And I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Systems" in the left menu
-    And I follow "Overview" in the left menu
-    And I follow this "sle-client" link
-    When I follow "Configuration" in the content area
+    When I am on the Systems overview page of this "sle-client"
+    And I follow "Configuration" in the content area
+    And I store "MGR_PROXY=yes" into file "/etc/mgr-test-file.cnf" on "sle-client"
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
     And I check "/etc/sysconfig/cron" in the list
