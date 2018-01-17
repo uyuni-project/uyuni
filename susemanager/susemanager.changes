@@ -1,4 +1,9 @@
+-------------------------------------------------------------------
+Wed Jan 17 13:26:44 CET 2018 - jgonzalez@suse.com
+
+- version 3.2.1-1
 - notify admin that database backups need reconfiguration after db upgrade
+- switch from atftpd to tftpd
 - add syslinux-x86_64 dependency for ppc64le (bsc#1065023)
 
 -------------------------------------------------------------------
