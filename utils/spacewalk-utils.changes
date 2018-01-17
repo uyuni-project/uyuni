@@ -1,3 +1,11 @@
+-------------------------------------------------------------------
+Wed Jan 17 13:02:31 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.8.1-1
+- add nightly-server repository for Fedora 27
+- add nightly-client repository for Fedora 27
+- add Fedora 27 repositories
+1bedaa21757e199b0a88bb1562506040ca33fd8a remove Fedora 24 as it is EOL now
 - Remove restrictions imposed on regex used in 'removelist' parameter passed
   to spacewalk-clone-by-date that allowed only exact match
   (bsc#1075254)
