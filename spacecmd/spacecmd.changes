@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Wed Jan 17 11:14:54 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.13.1-1
+- add --config option to spacecmd
 - Added custom JSON encoder in order to parse date fields correctly (bsc#1070372)
 
 -------------------------------------------------------------------
