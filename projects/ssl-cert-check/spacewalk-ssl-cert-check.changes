@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 17 10:55:33 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.1-1
 - implement ssl-cert-check tool in python
 - remove dependency to certwatch
 - adapt cron and sysconfig script
