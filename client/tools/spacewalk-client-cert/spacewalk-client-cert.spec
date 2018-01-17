@@ -3,7 +3,7 @@
 %endif
 
 Name:		spacewalk-client-cert
-Version:	2.8.1
+Version:	2.8.1.1
 Release:	1%{?dist}
 Summary:	Package allowing manipulation with Spacewalk client certificates
 
