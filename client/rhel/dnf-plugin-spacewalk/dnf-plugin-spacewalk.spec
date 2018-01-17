@@ -7,7 +7,7 @@
 
 Summary: DNF plugin for Spacewalk
 Name: dnf-plugin-spacewalk
-Version: 2.8.4
+Version: 2.8.4.1
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
