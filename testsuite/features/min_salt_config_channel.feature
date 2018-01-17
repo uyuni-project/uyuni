@@ -73,6 +73,25 @@ Feature: Salt minions configuration management
     And I apply highstate on "sle-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-minion"
 
+  Scenario: Change file on Salt minion and compare
+    When I am on the Systems overview page of this "sle-minion"
+    And I store "COLOR=red" into file "/etc/s-mgr/config" on "sle-minion"
+    And I follow "Configuration" in the content area
+    And I follow "Compare Files" in the content area
+    And I check "/etc/s-mgr/config" in the list
+    And I click on "Compare Files"
+    And I click on "Schedule Compare"
+    Then I should see a "1 files scheduled for comparison." text
+    And I follow "Events" in the content area
+    And I follow "History" in the content area
+    Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
+    When I follow first "Show differences between profiled config files and deployed config files"
+    # bsc#1076201 - CFG-MGMT-SALT: incomplete web UI for comparing files
+    # Then I should see a "Differences exist" link
+    # When I follow "Differences exist"
+    # Then I should see a "-COLOR=white" text
+    # And I should see a "+COLOR=red" text
+
   Scenario: Cleanup: remove both systems from configuration channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
