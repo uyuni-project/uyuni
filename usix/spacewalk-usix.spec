@@ -14,7 +14,7 @@
 %global pythonrhnroot %{python_sitelib}/spacewalk
 
 Name:	    spacewalk-usix
-Version:	2.8.0.1
+Version:	2.8.0.2
 Release:	1%{?dist}
 Summary:	Spacewalk server and client nano six library
 
