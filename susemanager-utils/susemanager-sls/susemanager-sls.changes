@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 17 13:31:27 CET 2018 - jgonzalez@suse.com
+
+- version 3.2.1-1
 - addition of parameters to package manipulation states to improve
   SUSE Manager performance
 - python3 compatibility fixes in modules and states
