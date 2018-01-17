@@ -1,3 +1,6 @@
+- Fix bsc number for change 'configchannel export binary flag to
+  json'
+
 -------------------------------------------------------------------
 Wed Jan 17 11:14:54 CET 2018 - jgonzalez@suse.com
 
@@ -23,13 +26,6 @@ Thu Oct 26 17:00:51 CEST 2017 - mc@suse.de
 - Make spacecmd prompt for password when overriding config file user
 - show less output of common packages in selected channels
 - adding softwarechannel_listmanageablechannels
-
--------------------------------------------------------------------
-Tue Nov 28 12:21:36 CET 2017 - jgonzalez@suse.com
-
-- version 2.7.8.8-1
-- Fix bsc number for change 'configchannel export binary flag to
-  json'
 
 -------------------------------------------------------------------
 Wed Aug 30 16:05:32 CEST 2017 - mc@suse.de
