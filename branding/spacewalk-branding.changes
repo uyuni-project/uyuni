@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 17 11:53:10 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.2.1-1
 - fix pre formatted code (bsc#1067608)
 - fix message about package profile sync (bsc#1073739)
 - fix naming of the Tools channel (bsc#979633)
