@@ -1,3 +1,4 @@
+- handle duplicate serverpackage entries while fixing duplicate evr ids (bsc#1075345)
 - Fix encoding/decoding of url_bounce with more parameters (bsc#1075408)
 
 -------------------------------------------------------------------
