@@ -1,4 +1,6 @@
-# COPYRIGHT 2015 SUSE LLC
+# COPYRIGHT 2015-2018 SUSE LLC
+# Licensed under the terms of the MIT license.
+
 require 'json'
 require 'xmlrpc/client'
 require 'socket'
@@ -136,24 +138,24 @@ end
 When(/^I create the following channels:/) do |table|
   channels = table.hashes
   channels.each do |ch|
-    assert_equal(
+    assert_equal(1,
       rpctest.create(
         ch['LABEL'], ch['NAME'], ch['SUMMARY'], ch['ARCH'], ch['PARENT']
-      ), 1
+      )
     )
   end
 end
 
 When(/^I delete the software channel with label "([^"]*)"$/) do |label|
-  assert_equal(rpctest.delete(label), 1)
+  assert_equal(1, rpctest.delete(label))
 end
 
 When(/^I delete the repo with label "([^"]*)"$/) do |label|
-  assert_equal(rpctest.delete_repo(label), 1)
+  assert_equal(1, rpctest.delete_repo(label))
 end
 
 Then(/^something should get listed with a call of listSoftwareChannels$/) do
-  assert_equal(rpctest.get_software_channels_count < 1, false)
+  assert_equal(false, rpctest.get_software_channels_count < 1)
 end
 
 Then(/^"([^"]*)" should get listed with a call of listSoftwareChannels$/) do |label|
@@ -161,7 +163,7 @@ Then(/^"([^"]*)" should get listed with a call of listSoftwareChannels$/) do |la
 end
 
 Then(/^"([^"]*)" should not get listed with a call of listSoftwareChannels$/) do |label|
-  assert_equal(rpctest.verify_channel(label), false)
+  assert_equal(false, rpctest.verify_channel(label))
 end
 
 Then(/^"([^"]*)" should be the parent channel of "([^"]*)"$/) do |parent, child|
@@ -171,13 +173,13 @@ end
 Then(/^channel "([^"]*)" should have attribute "([^"]*)" from type "([^"]*)"$/) do |label, attr, type|
   ret = rpctest.get_channel_details(label)
   assert(ret)
-  assert_equal(ret[attr].class.to_s, type)
+  assert_equal(type, ret[attr].class.to_s)
 end
 
 Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
   ret = rpctest.get_channel_details(label)
   assert(ret)
-  assert_equal(ret.key?(attr), false)
+  assert_equal(false, ret.key?(attr))
 end
 
 # activation key test xmlrpc
