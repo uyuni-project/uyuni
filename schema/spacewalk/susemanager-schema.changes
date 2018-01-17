@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jan 17 13:30:11 CET 2018 - jgonzalez@suse.com
+
+- version 3.2.1-1
 - Update to Quartz 2.3.0 (bsc#1049431)
 - fix duplicate entries in channel listings
 - handle nevra not found case while fixing duplicate evr ids (bsc#1074508)
