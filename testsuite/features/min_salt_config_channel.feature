@@ -65,6 +65,7 @@ Feature: Salt minions configuration management
 
   Scenario: Check that file has been created on both systems
     When I run "rhn_check -vvv" on "sle-client"
+    And I wait until file "/etc/s-mgr/config" exists on "sle-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-client"
     And file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-minion"
 
@@ -91,6 +92,28 @@ Feature: Salt minions configuration management
     # When I follow "Differences exist"
     # Then I should see a "-COLOR=white" text
     # And I should see a "+COLOR=red" text
+
+  Scenario: Check configuration channel and files via XML-RPC
+    Given I am logged in via XML-RPC configchannel as user "admin" and password "admin"
+    Then channel "mixedchannel" should exist
+    And channel "mixedchannel" should contain file "/etc/s-mgr/config"
+    And "sle-client" should be subscribed to channel "mixedchannel"
+    And "sle-minion" should be subscribed to channel "mixedchannel"
+    And I logout from XML-RPC configchannel namespace
+
+  Scenario: Extend configuration channel and deploy files via XML-RPC
+    Given I am logged in via XML-RPC configchannel as user "admin" and password "admin"
+    When I store "COLOR=green" into file "/etc/s-mgr/config" on "sle-minion"
+    And I store "COLOR=yellow" into file "/etc/s-mgr/config" on "sle-client"
+    And I add file "/etc/s-mgr/other" containing "NAME=Dante" to channel "mixedchannel"
+    And I deploy all systems registered to channel "mixedchannel"
+    And I run "rhn_check -vvv" on "sle-client"
+    And I wait until file "/etc/s-mgr/other" exists on "sle-minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-minion"
+    And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle-minion"
+    And file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-client"
+    And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle-client"
+    And I logout from XML-RPC configchannel namespace
 
   Scenario: Cleanup: remove both systems from configuration channel
     Given I am authorized as "admin" with password "admin"
