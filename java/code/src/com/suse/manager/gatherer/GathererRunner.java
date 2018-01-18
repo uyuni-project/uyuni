@@ -28,6 +28,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 
+import java.lang.StringBuilder;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -138,7 +140,15 @@ public class GathererRunner {
             stdin.close();
 
             InputStreamReader irr = new InputStreamReader(p.getInputStream());
-            hosts = new GathererJsonIO().readHosts(irr);
+            // We need to consume the input stream as it comes to avoid
+            // a deadlock because the buffer size is full.
+            BufferedReader br = new BufferedReader(irr);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            hosts = new GathererJsonIO().readHosts(sb.toString());
 
             int exitCode = p.waitFor();
             if (exitCode != 0) {
