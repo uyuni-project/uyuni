@@ -353,15 +353,14 @@ public class ActionChainManager {
      * @param type the type of configuration action
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
-     * @return scheduled actions
      * @throws TaskomaticApiException if there was a Taskomatic error
      */
-    public static Set<Action> createConfigActions(User user,
+    public static void createConfigActions(User user,
             Map<Long, Collection<Long>> revisions, Collection<Long> serverIds,
             ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
 
             List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
-            return createConfigActionForServers(user, revisions, servers, type, earliest,
+            createConfigActionForServers(user, revisions, servers, type, earliest,
                 actionChain);
     }
 
@@ -373,13 +372,11 @@ public class ActionChainManager {
      * @param type the type of configuration action
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
-     * @return scheduled actions
      * @throws TaskomaticApiException if there was a Taskomatic error
      */
-    public static Set<Action> createConfigActionForServers(User user,
+    public static void createConfigActionForServers(User user,
         Map<Long, Collection<Long>> revisions, Collection<Server> servers,
         ActionType type, Date earliest, ActionChain actionChain) throws TaskomaticApiException {
-        Set<Action> result = new HashSet<Action>();
         if (actionChain == null) {
             ConfigAction action = ActionManager.createConfigAction(user, type, earliest);
             ActionFactory.save(action);
@@ -389,7 +386,6 @@ public class ActionChainManager {
                 ActionFactory.addServerToAction(server.getId(), action);
                 ActionManager.addConfigurationRevisionsToAction(user, revisions.get(server.getId()), action, server);
             }
-            result.add(action);
             taskomaticApi.scheduleActionExecution(action);
         }
         else {
@@ -398,17 +394,14 @@ public class ActionChainManager {
                 ConfigAction action = ActionManager
                     .createConfigAction(user, type, earliest);
                 ActionFactory.save(action);
-                result.add(action);
                 ActionManager.checkConfigActionOnServer(type, server);
                 ActionChainFactory.queueActionChainEntry(action, actionChain, server,
                     sortOrder);
                 ActionManager.addConfigurationRevisionsToAction(user,
                     revisions.get(server.getId()), action, server);
                 ActionFactory.save(action);
-                result.add(action);
             }
         }
-        return result;
     }
 
     /**
