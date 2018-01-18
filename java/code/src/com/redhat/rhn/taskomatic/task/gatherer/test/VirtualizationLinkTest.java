@@ -29,7 +29,7 @@ public class VirtualizationLinkTest extends BaseTestCaseWithUser {
     public void testLinking() throws Exception {
         FileReader fr =
                 new FileReader(TestUtils.findTestData("gatherer.out.json").getPath());
-        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr);
+        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr.toString());
 
         VirtualHostManager manager = new VirtualHostManager();
         String vhmLabel = "1";
