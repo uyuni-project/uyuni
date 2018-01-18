@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.core;
 
+import com.redhat.rhn.domain.task.TaskFactory;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the Taskomatic schedule task execution system.
@@ -71,7 +73,15 @@ public class TaskomaticDaemon  extends BaseDaemon {
         return accum;
     }
 
+    private void checkTriggersState() {
+        String triggers = TaskFactory.getQuartzFaultyTriggers().stream().collect(Collectors.joining(", "));
+        if (!triggers.isEmpty()) {
+            logMessage(LOG_ERROR, "The following triggers are stuck in ERROR state: " + triggers, null);
+        }
+    }
+
     protected int onStartup(CommandLine commandLine) {
+        checkTriggersState();
         Map overrides = null;
         int retval = BaseDaemon.SUCCESS;
 

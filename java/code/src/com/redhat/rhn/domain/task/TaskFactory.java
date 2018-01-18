@@ -122,4 +122,13 @@ public class TaskFactory extends HibernateFactory {
           .setString("namelike", nameIn + "%")
           .list();
     }
+
+    /**
+     * This list the quartz triggers which are stuck in ERROR state.
+     * This is not for general use but only to mitigate a bug in older quartz versions.
+     * @return Trigger names that are in ERROR state.
+     */
+    public static List<String> getQuartzFaultyTriggers() {
+        return HibernateFactory.getSession().getNamedQuery("Task.listFaultyTriggers").list();
+    }
 }
