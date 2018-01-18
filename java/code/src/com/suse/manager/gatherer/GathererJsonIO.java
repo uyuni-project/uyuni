@@ -69,7 +69,7 @@ public class GathererJsonIO {
      * (virtual name, {@link JSONHost}) pairs
      * @throws JsonSyntaxException in case JSON does not have correct syntax
      */
-    public Map<String, Map<String, JSONHost>> readHosts(Reader reader)
+    public Map<String, Map<String, JSONHost>> readHosts(String reader)
             throws JsonSyntaxException {
         return  gson.fromJson(reader,
                 new TypeToken<Map<String, Map<String, JSONHost>>>() { }.getType());
