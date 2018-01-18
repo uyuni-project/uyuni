@@ -437,7 +437,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     @SuppressWarnings("unchecked")
     public void testAcPackageUpgrade() throws Exception {
         Map<String, Object> info =
-                ErrataCacheManagerTest.createServerNeededPackageCache(this.admin,
+                ErrataCacheManagerTest.createServerNeededCache(this.admin,
                         ErrataFactory.ERRATA_TYPE_BUG);
         List<Integer> upgradePackages = new ArrayList<Integer>();
         Server system = (Server) info.get("server");

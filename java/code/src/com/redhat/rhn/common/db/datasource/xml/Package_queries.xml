@@ -1463,9 +1463,9 @@ WHERE EP.errata_id = :eid
 <mode name="server_packages_needing_update">
   <query params="sid, name">
 SELECT P.id, PE.epoch, PE.version, PE.release
-  FROM rhnPackageEVR PE, rhnPackageName PN, rhnPackage P, rhnServerNeededPackageCache SNPC
- WHERE SNPC.server_id = :sid
-   AND P.id = SNPC.package_id
+  FROM rhnPackageEVR PE, rhnPackageName PN, rhnPackage P, rhnServerNeededCache SNC
+ WHERE SNC.server_id = :sid
+   AND P.id = SNC.package_id
    AND PN.id = P.name_id
    AND PN.name = :name
    AND PE.id = P.evr_id

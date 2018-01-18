@@ -1,3 +1,4 @@
+- avoid use of the potentially-slow rhnServerNeededPackageCache view
 - handle duplicate serverpackage entries while fixing duplicate evr ids (bsc#1075345)
 - fix duplicate entries in channel listings
 - handle nevra not found case while fixing duplicate evr ids (bsc#1074508)

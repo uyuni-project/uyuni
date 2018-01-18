@@ -167,16 +167,16 @@ SELECT  S.id AS ID,
         rhnPackageName PN,
         rhnPackage P,
         rhnPackageArch PA,
-        rhnServerNeededPackageCache SNPC,
+        rhnServerNeededCache SNC,
         rhnSet
- WHERE  SNPC.server_id IN (%s)
+ WHERE  SNC.server_id IN (%s)
    AND  rhnSet.user_id = :user_id
    AND  rhnSet.label = :package_set_label
    AND  rhnSet.element = P.name_id
    AND  rhnSet.element_two = P.evr_id
    AND  rhnSet.element_three = P.package_arch_id
-   AND  SNPC.package_id = P.id
-   AND  SNPC.server_id = S.id
+   AND  SNC.package_id = P.id
+   AND  SNC.server_id = S.id
    AND  P.name_id = PN.id
    AND  P.evr_id = PE.id
    AND  P.package_arch_id = PA.id
@@ -425,10 +425,10 @@ ORDER BY  UPPER(NVL(S.NAME, '(none)')), S.ID
 <mode name="systems_with_needed_package" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="org_id, pid, user_id">
 SELECT  S.ID
-  FROM  rhnServerNeededPackageCache SNPC, rhnServer S
+  FROM  rhnServerNeededCache SNC, rhnServer S
  WHERE  S.org_id = :org_id
-   AND  SNPC.package_id = :pid
-   AND  SNPC.server_id = S.id
+   AND  SNC.package_id = :pid
+   AND  SNC.server_id = S.id
    AND  EXISTS (SELECT 1 FROM rhnUserServerPerms USP WHERE USP.user_id = :user_id AND USP.server_id = S.id)
 ORDER BY  UPPER(COALESCE(S.NAME, '(none)')), S.ID
   </query>
@@ -773,8 +773,8 @@ select * from (
           FROM rhnServerFeaturesView SFV
          WHERE SFV.server_id = S.id
            AND SFV.label = 'ftr_system_grouping') AS selectable
-  FROM    rhnServer S, rhnUserServerPerms USP, rhnServerNeededPackageCache SNPC
-  WHERE    S.ORG_ID = :org_id AND S.ID = USP.server_id AND USP.user_id = :user_id AND S.id = SNPC.server_id
+  FROM    rhnServer S, rhnUserServerPerms USP, rhnServerNeededCache SNC
+  WHERE    S.ORG_ID = :org_id AND S.ID = USP.server_id AND USP.user_id = :user_id AND S.id = SNC.server_id
 ) X
 ORDER BY  UPPER(COALESCE(X.NAME, '(none)')), X.ID
   </query>
