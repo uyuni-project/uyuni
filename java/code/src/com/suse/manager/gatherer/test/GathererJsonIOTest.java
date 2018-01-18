@@ -114,7 +114,7 @@ public class GathererJsonIOTest extends TestCase {
 
     public void testReadGathererOutput() throws Exception {
         FileReader fr = new FileReader(TestUtils.findTestData(GATHEREROUT).getPath());
-        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr);
+        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr.toString());
 
         assertEquals(3, hosts.keySet().size());
 
@@ -138,7 +138,7 @@ public class GathererJsonIOTest extends TestCase {
 
     public void testReadGathererOutputWithVmAddiotnalData() throws Exception {
         FileReader fr = new FileReader(TestUtils.findTestData(GATHEREROUT).getPath());
-        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr);
+        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr.toString());
 
         assertEquals(3, hosts.keySet().size());
 
