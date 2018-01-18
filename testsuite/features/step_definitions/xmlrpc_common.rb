@@ -8,6 +8,8 @@ require 'socket'
 rpctest = XMLRPCChannelTest.new($proxy ? $proxy.ip : $server.ip)
 systest = XMLRPCSystemTest.new($proxy ? $proxy.ip : $server.ip)
 
+# system namespace
+
 Given(/^I am logged in via XML\-RPC system as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   systest.login(luser, password)
 end
@@ -48,15 +50,12 @@ but with activation key with Default contact method, I should get an XML-RPC fau
   assert(exception_thrown, 'Exception must be thrown for non-compatible activation keys.')
 end
 
-When(/^I call system\.create_system_record\(\) with sys_name "([^"]*)", ks_label "([^"]*)", ip "([^"]*)", mac "([^"]*)"$/) do |sys_name, ks_lab, ip, mac|
-  systest.create_system_record(sys_name, ks_lab, ip, mac)
-end
-
 Then(/^I logout from XML\-RPC system namespace$/) do
   systest.logout
 end
 
-# xmlrpc_user tests
+# user namespace
+
 CREATE_USER_PASSWORD = 'die gurke'.freeze
 
 Given(/^I am logged in via XML\-RPC user as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
@@ -99,10 +98,6 @@ Then(/^I should see "([^"]*)" when I call user\.list_roles\(\) with "([^"]*)"$/)
   assert_includes(@rpc.get_user_roles(luser), rolename)
 end
 
-Then(/^I logout from XML\-RPC user namespace$/) do
-  assert(@rpc.logout)
-end
-
 When(/^I delete user "([^"]*)"$/) do |luser|
   @rpc.delete_user(luser)
 end
@@ -121,6 +116,12 @@ end
 Then(/^I shall not see "([^"]*)" when I call user\.list_roles\(\) with "([^"]*)" uid$/) do |rolename, luser|
   refute_includes(@rpc.get_user_roles(luser), rolename)
 end
+
+Then(/^I logout from XML\-RPC user namespace$/) do
+  assert(@rpc.logout)
+end
+
+# channel namespace
 
 Given(/^I am logged in via XML\-RPC channel as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   assert(rpctest.login(luser, password))
@@ -182,7 +183,8 @@ Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
   assert_equal(false, ret.key?(attr))
 end
 
-# activation key test xmlrpc
+# activationkey namespace
+
 acttest = XMLRPCActivationKeyTest.new(ENV['SERVER'])
 key = nil
 
@@ -212,7 +214,6 @@ When(/^I add config channels "([^"]*)" to a newly created key$/) do |channel_nam
   raise if acttest.add_config_channel(key, channel_name) < 1
 end
 
-# Details
 When(/^I call activationkey\.set_details\(\) to the key$/) do
   raise unless acttest.set_details(key)
 end
@@ -220,6 +221,8 @@ end
 Then(/^I have to see them by calling activationkey\.get_details\(\)$/) do
   raise unless acttest.get_details(key)
 end
+
+# virtualhostmanager namespace
 
 virtualhostmanager = XMLRPCVHMTest.new(ENV['SERVER'])
 modules = []
@@ -272,6 +275,8 @@ end
 Then(/^I logout from XML\-RPC virtualhostmanager namespace$/) do
   virtualhostmanager.logout
 end
+
+# actionchain namespace
 
 rpc = XMLRPCActionChain.new(ENV['SERVER'])
 syschaintest = XMLRPCSystemTest.new(ENV['SERVER'])
@@ -350,9 +355,7 @@ Then(/^no action chain with the label "(.*?)"$/) do |label|
   refute_includes(rpc.list_chains, label)
 end
 
-#
 # Schedule scenario
-#
 When(/^I call actionchain\.add_script_run\(\) with the script like "(.*?)"$/) do |script|
   refute(rpc.add_script_run($client_id, script, $chain_label) < 1)
 end
@@ -452,7 +455,8 @@ Given(/^I am logged in via XML\-RPC api as user "([^"]*)" and password "([^"]*)"
   assert(rpc_api_tester.login(luser, password))
 end
 
-# cve audit
+# cveaudit namespace
+
 Given(/^I am logged in via XML\-RPC cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   @rpctest = XMLRPCCVEAuditTest.new(ENV['SERVER'])
   @rpctest.login(luser, password)
