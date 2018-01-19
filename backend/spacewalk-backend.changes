@@ -1,3 +1,4 @@
+- support multiple FQDNs per system (bsc#1063419)
 - Fix: restore hostname and ip*addr in templated documents (bsc#1075044)
 - fix directory name in spacewalk-data-fsck
 

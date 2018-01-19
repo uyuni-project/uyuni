@@ -1,3 +1,4 @@
+- support multiple FQDNs per system (bsc#1063419)
 - Fix update mechanism when updating the updateservice (bsc#1073619)
 
 -------------------------------------------------------------------
