@@ -9,4 +9,5 @@ Feature: Reboot of a salt minion
     Then I should see a "System Reboot Confirmation" text
     And I should see a "Reboot system" button
     And I click on "Reboot system"
+    Then I should see a "Reboot scheduled for system" text
     Then I wait and check that "sle-minion" has rebooted

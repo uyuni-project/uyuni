@@ -1,3 +1,4 @@
+- Uniform the notification message when rebooting a system (bsc#1036302)
 - avoid use of the potentially-slow rhnServerNeededPackageCache view
 
 -------------------------------------------------------------------
