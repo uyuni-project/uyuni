@@ -1,9 +1,9 @@
 # Copyright (c) 2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Salt minions configuration management
+Feature: Management of configuration of all types of clients in a single channel
 
-  Scenario: Create a configuration channel for both Salt minion and traditional client
+  Scenario: Create a configuration channel for mixed client types
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
@@ -11,7 +11,7 @@ Feature: Salt minions configuration management
     And I follow "Create Config Channel"
     And I enter "Mixed Channel" as "cofName"
     And I enter "mixedchannel" as "cofLabel"
-    And I enter "This is a configuration channel for both Salt minion and traditional client" as "cofDescription"
+    And I enter "This is a configuration channel for different system types" as "cofDescription"
     And I click on "Create Config Channel"
     Then I should see a "Mixed Channel" text
 
@@ -39,7 +39,7 @@ Feature: Salt minions configuration management
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-  Scenario: Subscribe a salt minion to the configuration channel
+  Scenario: Subscribe a Salt minion to the configuration channel
     When I am on the Systems overview page of this "sle-minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
@@ -49,7 +49,29 @@ Feature: Salt minions configuration management
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-  Scenario: Deploy the file to both systems
+@centosminion
+  Scenario: Subscribe a CentOS minion to the configuration channel
+    When I am on the Systems overview page of this "ceos-minion"
+    And I follow "Configuration" in the content area
+    And I follow "Manage Configuration Channels" in the content area
+    And I follow first "Subscribe to Channels" in the content area
+    And I check "Mixed Channel" in the list
+    And I click on "Continue"
+    And I click on "Update Channel Rankings"
+    Then I should see a "Channel Subscriptions successfully changed for" text
+
+@sshminion
+  Scenario: Subscribe a SSH minion to the configuration channel
+    When I am on the Systems overview page of this "ssh-minion"
+    And I follow "Configuration" in the content area
+    And I follow "Manage Configuration Channels" in the content area
+    And I follow first "Subscribe to Channels" in the content area
+    And I check "Mixed Channel" in the list
+    And I click on "Continue"
+    And I click on "Update Channel Rankings"
+    Then I should see a "Channel Subscriptions successfully changed for" text
+
+  Scenario: Deploy the file to all systems
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
@@ -59,20 +81,71 @@ Feature: Salt minions configuration management
     And I follow "Deploy all configuration files to all subscribed systems"
     Then I should see a "/etc/s-mgr/config" link
     And I should see "sle-client" as link
+    And I should see "sle-minion" as link
     When I click on "Deploy Files to Selected Systems"
-    Then I should see a "2 revision-deploys are being scheduled," text
+    Then I should see a " revision-deploys are being scheduled," text
     And I should see a "0 revision-deploys overridden." text
 
-  Scenario: Check that file has been created on both systems
+  Scenario: Check that file has been created on traditional client
     When I run "rhn_check -vvv" on "sle-client"
-    And I wait until file "/etc/s-mgr/config" exists on "sle-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-client"
-    And file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-minion"
 
-  Scenario: Apply highstate to override changed content
+  Scenario: Check that file has been created on SLE minion
+    When I wait until file "/etc/s-mgr/config" exists on "sle-minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-minion"
+
+@centosminion
+  Scenario: Check that file has been created on CentOS minion
+    When I wait until file "/etc/s-mgr/config" exists on "ceos-minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos-minion"
+
+@sshminion
+  Scenario: Check that file has been created on SSH minion
+    When I wait until file "/etc/s-mgr/config" exists on "ssh-minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ssh-minion"
+
+  Scenario: Apply highstate to override changed content on SLE minion
     When I store "COLOR=blue" into file "/etc/s-mgr/config" on "sle-minion"
     And I apply highstate on "sle-minion"
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "sle-minion"
+
+@centosminion
+  Scenario: Apply highstate to override changed content on CentOS minion
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ceos-minion"
+    And I apply highstate on "ceos-minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos-minion"
+
+@sshminion
+  Scenario: Apply highstate to override changed content on SSH minion
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ssh-minion"
+    And I apply highstate on "ssh-minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ssh-minion"
+
+@centosminion
+  Scenario: Unsubscribe CentOS minion and delete configuration files
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    And I follow "Mixed Channel"
+    And I follow "Systems" in the content area
+    And I check the "ceos-minion" client
+    And I click on "Unsubscribe systems"
+    Then I should see a "Successfully unsubscribed 1 system(s)." text
+    And I destroy "/etc/s-mgr" directory on "ceos-minion"
+
+@sshminion
+  Scenario: Unsubscribe SSH minion and delete configuration files
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Home" in the left menu
+    And I follow "Configuration" in the left menu
+    And I follow "Configuration Channels" in the left menu
+    And I follow "Mixed Channel"
+    And I follow "Systems" in the content area
+    And I check the "ssh-minion" client
+    And I click on "Unsubscribe systems"
+    Then I should see a "Successfully unsubscribed 1 system(s)." text
+    And I destroy "/etc/s-mgr" directory on "ssh-minion"
 
   Scenario: Change file on Salt minion and compare
     When I am on the Systems overview page of this "sle-minion"
@@ -137,7 +210,7 @@ Feature: Salt minions configuration management
     And I click on "Confirm"
     Then I should see a "Configuration channel subscriptions changed for 2 systems successfully." text
 
-  Scenario: Cleanup: remove both systems from configuration channel
+  Scenario: Cleanup: remove remaining systems from configuration channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
@@ -159,6 +232,6 @@ Feature: Salt minions configuration management
     And I click on "Delete Config Channel"
     Then file "/srv/susemanager/salt/mgr_cfg_org_1/mixedchannel/init.sls" should not exist on server
 
-  Scenario: Cleanup: delete configuration files on both systems
+  Scenario: Cleanup: delete configuration files on remaining systems
     When I destroy "/etc/s-mgr" directory on "sle-client"
     And I destroy "/etc/s-mgr" directory on "sle-minion"
