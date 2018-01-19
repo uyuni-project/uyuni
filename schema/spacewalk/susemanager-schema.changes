@@ -1,3 +1,5 @@
+- fix hostname schema upgrade (bsc#1076622)
+
 -------------------------------------------------------------------
 Thu Jan 11 10:21:04 CET 2018 - jgonzalez@suse.com
 
