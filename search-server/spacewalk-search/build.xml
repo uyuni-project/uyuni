@@ -27,6 +27,20 @@
              classname="org.apache.ivy.ant.IvyPublish"/>
     </target>
 
+    <target name="make-eclipse-project" depends = "resolve-ivy"
+            description="Generate eclipse project files">
+      <copy file="buildconf/eclipse.project" tofile=".project" />
+      <exec executable="../../scripts/gen-eclipse.py" output=".classpath" >
+        <arg value="src/java:src/config"/>
+        <arg value="
+          ${java.lib.dir}:
+          ${env.JAVA_HOME}/lib/tools.jar:
+          ${env.JAVA_HOME}/lib/ant.jar:
+          ${env.JAVA_HOME}/lib/ant-junit.jar
+        "/>
+      </exec>
+    </target>
+
     <target name="check-testcase-name" if="testcase" depends="">
         <propertyregex property="valid.testcase"
             input="${testcase}"
