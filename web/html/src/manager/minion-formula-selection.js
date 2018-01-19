@@ -50,6 +50,7 @@ ReactDOM.render(
   <FormulaSelection
     dataUrl={"/rhn/manager/api/formulas/list/SERVER/" + serverId}
     saveRequest={saveRequest}
+    systemId={serverId}
     addFormulaNavBar={addFormulaNavBar} />,
   document.getElementById('formulas')
 );
