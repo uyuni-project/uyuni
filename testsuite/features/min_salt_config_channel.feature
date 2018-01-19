@@ -115,6 +115,28 @@ Feature: Salt minions configuration management
     And file "/etc/s-mgr/other" should contain "NAME=Dante" on "sle-client"
     And I logout from XML-RPC configchannel namespace
 
+  Scenario: Unsubscribe systems via XML-RPC
+    Given I am logged in via XML-RPC system as user "admin" and password "admin"
+    When I unsubscribe "sle-client" and "sle-minion" from configuration channel "mixedchannel"
+    And I logout from XML-RPC system namespace
+    And I am logged in via XML-RPC configchannel as user "admin" and password "admin"
+    Then "sle-client" should not be subscribed to channel "mixedchannel"
+    And "sle-minion" should not be subscribed to channel "mixedchannel"
+    And I logout from XML-RPC configchannel namespace
+
+  Scenario: Re-add systems via SSM
+    Given I am authorized as "admin" with password "admin"
+    When I am on the System Overview page
+    And I check the "sle-client" client
+    And I check the "sle-minion" client
+    And I am on System Set Manager Overview
+    And I follow "config channel subscriptions" in the content area
+    And I check "Mixed Channel" in the list
+    And I click on "Continue"
+    And I click on "Apply Subscriptions"
+    And I click on "Confirm"
+    Then I should see a "Configuration channel subscriptions changed for 2 systems successfully." text
+
   Scenario: Cleanup: remove both systems from configuration channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Home" in the left menu

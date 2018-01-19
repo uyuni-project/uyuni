@@ -50,6 +50,14 @@ but with activation key with Default contact method, I should get an XML-RPC fau
   assert(exception_thrown, 'Exception must be thrown for non-compatible activation keys.')
 end
 
+When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, host2, channel|
+  node1 = get_target(host1)
+  node_id1 = retrieve_server_id(node1.full_hostname)
+  node2 = get_target(host2)
+  node_id2 = retrieve_server_id(node2.full_hostname)
+  systest.remove_channels([ node_id1, node_id2 ], [ channel ])
+end
+
 Then(/^I logout from XML\-RPC system namespace$/) do
   systest.logout
 end
@@ -523,6 +531,12 @@ Then(/^"([^"]*)" should be subscribed to channel "([^"]*)"$/) do |host, channel|
   node = get_target(host)
   result = cfgtest.list_subscribed_systems(channel)
   assert_equal(1, result.count { |item| item['name'] == node.full_hostname })
+end
+
+Then(/^"([^"]*)" should not be subscribed to channel "([^"]*)"$/) do |host, channel|
+  node = get_target(host)
+  result = cfgtest.list_subscribed_systems(channel)
+  assert_equal(0, result.count { |item| item['name'] == node.full_hostname })
 end
 
 When(/^I add file "([^"]*)" containing "([^"]*)" to channel "([^"]*)"$/) do |file, contents, channel|
