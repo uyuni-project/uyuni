@@ -79,7 +79,7 @@ public class SystemRebootAction extends RhnAction {
                     String[] messageParams = new String[3];
                     messageParams[0] = server.getName();
                     messageParams[1] = earliest.toString();
-                    messageParams[2] = action.getId().toString();
+                    messageParams[2] = sid.toString();
                     createMessage(request, "system.reboot.scheduled", messageParams);
                 }
                 else {
