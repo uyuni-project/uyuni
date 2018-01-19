@@ -1,1 +1,0 @@
-ALTER TABLE rhnServerNetInterface MODIFY hw_addr VARCHAR2(96);
