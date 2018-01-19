@@ -1,3 +1,4 @@
+- refresh pillar data on formular change (bsc#1028285)
 - Uniform the notification message when rebooting a system (bsc#1036302)
 - avoid use of the potentially-slow rhnServerNeededPackageCache view
 - Speed up scheduling of package updates through the SSM (bsc#1076034)
