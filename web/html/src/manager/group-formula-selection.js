@@ -50,6 +50,7 @@ ReactDOM.render(
   <FormulaSelection
     dataUrl={"/rhn/manager/api/formulas/list/GROUP/" + groupId}
     saveRequest={saveRequest}
+    systemGroupId={groupId}
     addFormulaNavBar={addFormulaNavBar} />,
   document.getElementById('formulas')
 );
