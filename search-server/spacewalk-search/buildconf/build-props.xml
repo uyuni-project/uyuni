@@ -4,6 +4,8 @@
     <available file="/usr/share/java/log4j-1.jar" />
   </condition>
 
+  <property name="ivy.settings.file" value="buildconf/ivyconf.xml" />
+
   <property name="jpackage.jars"
       value="c3p0 cglib commons-cli commons-codec commons-httpclient commons-lang3
              commons-logging ${log4j} objectweb-asm/asm oro
