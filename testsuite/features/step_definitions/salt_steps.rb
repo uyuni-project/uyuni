@@ -416,20 +416,19 @@ When(/^I refresh the pillar data$/) do
 end
 
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+  node = get_target(minion)
   if minion == 'sle-minion'
-    target = $minion.ip
     cmd = 'salt'
     extra_cmd = ''
-  elsif minion == 'ssh-minion'
-    target = $ssh_minion.ip
+  elsif minion == 'ssh-minion' or minion == 'ceos-minion'
     cmd = 'salt-ssh'
-    extra_cmd = '-i --roster-file=/tmp/tmp_roster_tests -w -W'
-    $server.run("printf '#{target}:\n  host: #{target}\n  user: root\n  passwd: linux' > /tmp/tmp_roster_tests")
+    extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
+    $server.run("printf '#{node.full_hostname}:\n  host: #{node.full_hostname}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
   else
     raise 'Invalid target'
   end
-  output, _code = $server.run("#{cmd} '#{target}' pillar.get '#{key}' #{extra_cmd}")
-  puts output
+  output, _code = $server.run("#{cmd} '#{node.full_hostname}' pillar.get '#{key}' #{extra_cmd}")
+  STDOUT.puts output
   if value == ''
     raise unless output.split("\n").length == 1
   else
