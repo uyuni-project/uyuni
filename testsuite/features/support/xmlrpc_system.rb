@@ -43,4 +43,9 @@ class XMLRPCSystemTest < XMLRPCBaseTest
       @connection.call('system.bootstrap', @sid, host, 22, 'root', 'linux', activation_key, proxy_id, salt_ssh)
     end
   end
+
+  # Unsubscribe configuration channels from server
+  def remove_channels(servers, channels)
+    @connection.call('system.config.remove_channels', @sid, servers, channels)
+  end
 end
