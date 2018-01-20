@@ -50,6 +50,14 @@ but with activation key with Default contact method, I should get an XML-RPC fau
   assert(exception_thrown, 'Exception must be thrown for non-compatible activation keys.')
 end
 
+When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, host2, channel|
+  node1 = get_target(host1)
+  node_id1 = retrieve_server_id(node1.full_hostname)
+  node2 = get_target(host2)
+  node_id2 = retrieve_server_id(node2.full_hostname)
+  systest.remove_channels([ node_id1, node_id2 ], [ channel ])
+end
+
 Then(/^I logout from XML\-RPC system namespace$/) do
   systest.logout
 end
@@ -500,4 +508,45 @@ end
 
 Then(/^I logout from XML\-RPC cve audit namespace$/) do
   assert(@rpctest.logout)
+end
+
+# configchannel namespace
+
+cfgtest = XMLRPCConfigChannelTest.new(ENV['SERVER'])
+
+Given(/^I am logged in via XML\-RPC configchannel as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
+  cfgtest.login(luser, password)
+end
+
+Then(/^channel "([^"]*)" should exist$/) do |channel|
+  assert_equal(1, cfgtest.channel_exists(channel))
+end
+
+Then(/^channel "([^"]*)" should contain file "([^"]*)"$/) do |channel, file|
+  result = cfgtest.list_files(channel)
+  assert_equal(1, result.count { |item| item['path'] == file })
+end
+
+Then(/^"([^"]*)" should be subscribed to channel "([^"]*)"$/) do |host, channel|
+  node = get_target(host)
+  result = cfgtest.list_subscribed_systems(channel)
+  assert_equal(1, result.count { |item| item['name'] == node.full_hostname })
+end
+
+Then(/^"([^"]*)" should not be subscribed to channel "([^"]*)"$/) do |host, channel|
+  node = get_target(host)
+  result = cfgtest.list_subscribed_systems(channel)
+  assert_equal(0, result.count { |item| item['name'] == node.full_hostname })
+end
+
+When(/^I add file "([^"]*)" containing "([^"]*)" to channel "([^"]*)"$/) do |file, contents, channel|
+  cfgtest.create_or_update_path(channel, file, contents)
+end
+
+When(/^I deploy all systems registered to channel "([^"]*)"$/) do |channel|
+  cfgtest.deploy_all_systems(channel)
+end
+
+When(/^I logout from XML\-RPC configchannel namespace$/) do
+  cfgtest.logout
 end
