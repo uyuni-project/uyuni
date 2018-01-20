@@ -1,8 +1,12 @@
-VERSION = 3.2.4
+VERSION = 3.2.5
 REGISTRY = registry.mgr.suse.de
 ORATARGET = suma-head-ora
 # --no-cache=true
 BUILDOPTS=
+
+#
+# no *-4eclipse container: we use the last released version for head
+#
 
 all: suma-head-base suma-head-cobbler suma-head-gatherer suma-head-spacewalkkoan suma-head-pgsql suma-head-ora
 
