@@ -356,6 +356,10 @@ class Registration(rhnHandler):
             for hw in data['hardware_profile'][:]:
                 if hw['class'] == 'NETINFO':
                     self.extract_and_save_netinfos(newserv, hw)
+                    continue
+                if hw['class'] == 'FQDN':
+                    self.extract_and_save_fqdns(newserv, hw)
+                    continue
                 newserv.add_hardware(hw)
         # fill in the other details from the data dictionary
         if profile_name is not None and not \
@@ -1026,14 +1030,23 @@ class Registration(rhnHandler):
             server.addr["ip6addr"] = hardware["ip6addr"]
             del hardware["ip6addr"]
 
+    def extract_and_save_fqdns(self, server, hardware):
+        hardware_curr = hardware.copy()
+        for fqdn in hardware['name']:
+            hardware_curr['name'] = fqdn
+            server.add_hardware(hardware_curr)
+
     def __add_hw_profile_no_auth(self, server, hwlist):
         """ Insert a new profile for the server, but do not authenticate """
         log_debug(1, server.getid(), "items: %d" % len(hwlist))
         for hardware in hwlist[:]:
             if hardware['class'] == 'NETINFO':
                 self.extract_and_save_netinfos(server, hardware)
-            else:
-                server.add_hardware(hardware)
+                continue
+            if hardware['class'] == 'FQDN':
+                self.extract_and_save_fqdns(server, hardware)
+                continue
+            server.add_hardware(hardware)
         # XXX: check return code
         server.save_hardware()
         server.save()
