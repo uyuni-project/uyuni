@@ -27,7 +27,7 @@ Feature: Use salt formulas
   Scenario: Parametrize the formula on the minion
      Given I am on the Systems overview page of this "sle-minion"
      When I follow "Formulas" in the content area
-     And I follow "Locale" in the content area
+     And I follow first "Locale" in the content area
      And I select "Etc/GMT-5" in timezone name field
      And I select "French" in language field
      And I select "French (Canada)" in keyboard layout field
@@ -62,7 +62,7 @@ Feature: Use salt formulas
   Scenario: Reset the formula on the minion
      Given I am on the Systems overview page of this "sle-minion"
      When I follow "Formulas" in the content area
-     And I follow "Locale" in the content area
+     And I follow first "Locale" in the content area
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
      Then I should see a "Formula saved!" text
@@ -102,7 +102,7 @@ Feature: Use salt formulas
      And the pillar data for "timezone" should be empty on "sle-minion"
      And the pillar data for "keyboard_and_language" should be empty on "sle-minion"
 
-  Scenario: Assing formula to minion via group formula
+  Scenario: Assign formula to minion via group formula
      Given I am on the groups page
      When I follow "Create Group"
      And I enter "locale-formula-group" as "name"
@@ -142,7 +142,7 @@ Feature: Use salt formulas
      And I should see a "locale-formula-group" text
      And I should see a "deleted" text
 
-  Scenario: Cleanup: reset locale values on "sle-minion"
+  Scenario: Cleanup: reset locale values on the minion
      Given I am on the Systems overview page of this "sle-minion"
      And I follow "States" in the content area
      And I click on "Apply Highstate"
@@ -153,3 +153,7 @@ Feature: Use salt formulas
      And the timezone on "sle-minion" should be "CET"
      And the keymap on "sle-minion" should be "us.map.gz"
      And the language on "sle-minion" should be "en_US.UTF-8"
+
+  Scenario: Cleanup: uninstall formula package from the server
+     Given I am authorized
+     And I manually uninstall the "locale" formula from the server

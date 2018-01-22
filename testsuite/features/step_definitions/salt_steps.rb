@@ -356,6 +356,10 @@ When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install -y #{package}-formula")
 end
 
+When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
+  $server.run("zypper --non-interactive remove -y #{package}-formula")
+end
+
 When(/^I ([^"]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
@@ -428,7 +432,6 @@ Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key
     raise 'Invalid target'
   end
   output, _code = $server.run("#{cmd} '#{node.full_hostname}' pillar.get '#{key}' #{extra_cmd}")
-  STDOUT.puts output
   if value == ''
     raise unless output.split("\n").length == 1
   else
