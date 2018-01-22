@@ -41,7 +41,7 @@
       </rhn:column>
 
       <rhn:column header="globalconfiglist.jsp.type">
-              ${current.type}
+              ${current.typeDisplay}
       </rhn:column>
 
       <rhn:column header="globalconfiglist.jsp.files"
