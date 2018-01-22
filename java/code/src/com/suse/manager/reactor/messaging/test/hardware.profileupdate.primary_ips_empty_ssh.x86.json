@@ -3109,6 +3109,7 @@
                     "ps": "ps -efH", 
                     "server_id": 190547802, 
                     "fqdn": "suma-ref31-min-centos7.mgr.suse.de", 
+                    "fqdns": ["minion3sp2.tf.local", "minion3sp2.suse.local"],
                     "uuid": "5268bca0-3cfa-4672-b62f-5e368d8f3952", 
                     "ip6_interfaces": {
                         "lo": [
