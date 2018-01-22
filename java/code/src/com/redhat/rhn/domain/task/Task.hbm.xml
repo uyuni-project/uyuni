@@ -43,5 +43,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <return alias="t" class="com.redhat.rhn.domain.task.Task" />
     </sql-query>
 
+    <sql-query name="Task.listFaultyTriggers">
+        <return-scalar column="trigger_name" type="string"/>
+        <![CDATA[SELECT trigger_name
+          FROM qrtz_triggers
+             WHERE trigger_state = 'ERROR'
+        ]]>
+    </sql-query>
+
 
 </hibernate-mapping>
