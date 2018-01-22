@@ -14,20 +14,14 @@
         <pathelement location="${basedir}/src/config" />
     </path>
 
-    <target name="init-ivy">
-        <mkdir dir="${build.dir}" />
-        <jpackage-deps jars="ivy" dir="${build.dir}" />
+    <target name="init-ivy" unless="installbuild">
+        <mkdir dir="${java.lib.dir}" />
+        <jpackage-deps jars="ivy" dir="${java.lib.dir}" />
         <taskdef name="ivy-retrieve"
              classname="org.apache.ivy.ant.IvyRetrieve"/>
-        <taskdef name="ivy-configure"
-             classname="org.apache.ivy.ant.IvyConfigure"/>
-        <taskdef name="ivy-resolve"
-             classname="org.apache.ivy.ant.IvyResolve"/>
-        <taskdef name="ivy-publish"
-             classname="org.apache.ivy.ant.IvyPublish"/>
     </target>
 
-    <target name="make-eclipse-project" depends = "resolve-ivy"
+    <target name="make-eclipse-project" depends="resolve-ivy"
             description="Generate eclipse project files">
       <copy file="buildconf/eclipse.project" tofile=".project" />
       <exec executable="../../scripts/gen-eclipse.py" output=".classpath" >
