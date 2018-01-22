@@ -1,3 +1,5 @@
+- Adapt query to retrieve the servers from the DB after drop of rhnServerNetwork table (bsc#1083114)
+
 -------------------------------------------------------------------
 Thu Jan 11 10:10:35 CET 2018 - jgonzalez@suse.com
 
