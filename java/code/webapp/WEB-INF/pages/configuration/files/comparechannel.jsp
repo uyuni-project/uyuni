@@ -25,7 +25,7 @@
   <rhn:listdisplay filterBy="comparechannel.jsp.channel">
     <rhn:column header="comparechannel.jsp.channel"
                 url="/rhn/configuration/ChannelOverview.do?ccid=${current.id}">
-        <c:if test="${current.type == 'normal'}">
+        <c:if test="${current.type == 'normal' || current.type == 'state'}">
           <rhn:icon type="header-channel" title="config.common.globalAlt" />
           ${current.name}
         </c:if>
