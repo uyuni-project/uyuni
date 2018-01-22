@@ -188,13 +188,19 @@ public class ServerFactory extends HibernateFactory {
         DetachedCriteria proxyIds = DetachedCriteria.forClass(ProxyInfo.class)
                 .setProjection(Projections.property("server.id"));
 
-        Optional<Server> result = HibernateFactory.getSession()
-            .createCriteria(Server.class)
-            .add(Subqueries.propertyIn("id", proxyIds))
-            .add(Restrictions.eq("hostname", name))
-            .list()
-            .stream()
-            .findFirst();
+        Optional<Server> result = findByFqdn(name);
+
+        if (result.isPresent()) {
+            return result;
+        }
+
+        result = HibernateFactory.getSession()
+                .createCriteria(Server.class)
+                .add(Subqueries.propertyIn("id", proxyIds))
+                .add(Restrictions.eq("hostname", name))
+                .list()
+                .stream()
+                .findFirst();
 
         if (result.isPresent()) {
             return result;
@@ -394,7 +400,7 @@ public class ServerFactory extends HibernateFactory {
      * @return the Server found
      */
     public static Server lookupById(Long id) {
-        return (Server) HibernateFactory.getSession().get(Server.class, id);
+        return HibernateFactory.getSession().get(Server.class, id);
     }
 
     /**
@@ -703,6 +709,29 @@ public class ServerFactory extends HibernateFactory {
     public static List<Server> listConfigEnabledSystems() {
         return singleton.listObjectsByNamedQuery(
                 "Server.listConfigEnabledSystems", Collections.EMPTY_MAP);
+    }
+
+    /**
+     * Returns a List of FQDNs associated to the system
+     * @param sid the server id to check for. Required.
+     * @return a list of FQDNs
+     */
+    public static List<String> listFqdns(Long sid) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("sid", sid);
+        return singleton.listObjectsByNamedQuery("Server.listFqdns", params);
+    }
+
+    /**
+     * Lookup a Server by their FQDN
+     * @param name of the FQDN to search for
+     * @return the Server found
+     */
+    public static Optional<Server> findByFqdn(String name) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("name", name);
+        return Optional.ofNullable((Server) singleton
+                .lookupObjectByNamedQuery("Server.findByFqdn", params));
     }
 
     /**
