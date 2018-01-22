@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -595,6 +596,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     // base channel check
                     assertNotNull(minion.getBaseChannel());
                     assertEquals(baseChannelX8664, minion.getBaseChannel());
+
+                    assertTrue(minion.getFqdns().isEmpty());
                 }, DEFAULT_CONTACT_METHOD);
     }
 
@@ -629,6 +632,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertTrue(optMinion.isPresent());
                     MinionServer minion = optMinion.get();
                     assertEquals("7Server", minion.getRelease());
+                    assertTrue(minion.getFqdns().isEmpty());
 
                     assertNull(minion.getBaseChannel());
                 }, DEFAULT_CONTACT_METHOD);

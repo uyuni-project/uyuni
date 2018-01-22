@@ -746,6 +746,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals("10.162.210.36", server.getIpAddress());
         assertEquals("fe80::a8b2:93ff:fe00:14", server.getIp6Address());
         assertFalse(server.getNetworkInterfaces().containsAll(oldIfs));
+        assertFalse(server.getFqdns().isEmpty());
+        assertEquals(2, server.getFqdns().size());
     }
 
     public void testHardwareProfileUpdateS390() throws Exception {
