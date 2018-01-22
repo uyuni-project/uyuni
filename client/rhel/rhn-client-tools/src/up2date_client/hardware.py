@@ -961,6 +961,41 @@ def read_machineinfo():
         machineinfo["machine_id"] = machine_id
     return machineinfo
 
+def read_all_fqdns():
+    def flatten_dict(d):
+        def items():
+            for key, value in d.items():
+                if isinstance(value, dict):
+                    for subkey, subvalue in flatten_dict(value).items():
+                        yield key + "." + subkey, subvalue
+                else:
+                    yield key, value
+        return dict(items())
+    
+    fqdns = set()
+    ret = {}
+    ret["class"] = "FQDN"
+    
+    interfaces = flatten_dict(read_network_interfaces())
+    ips = []
+    
+    for ipv4 in list(value for key, value in interfaces.iteritems() if key.endswith('ipaddr') and not key.startswith('lo')):
+        if ipv4:
+            ips.append(ipv4)
+    for ipv6 in list(value for key, value in interfaces.iteritems() if key.endswith('ipv6') and not key.startswith('lo')):
+        if ipv6:
+            ips.append(ipv6[0]['addr'])
+    for ip in ips:
+        try:
+            fqdns.add(socket.gethostbyaddr(ip)[0])
+        except (socket.error, socket.herror, socket.gaierror, socket.timeout) as e:
+            log = up2dateLog.initLog()
+            msg = "Error resolving address: %s\n" % (e)
+            log.log_error(msg)
+
+    ret["name"] = list(fqdns)
+    return ret
+
 # this one reads it all
 def Hardware():
     if using_gudev:
@@ -1043,6 +1078,14 @@ def Hardware():
                 allhw.append(ret)
         except:
             print(_("Error reading network interface information:"), sys.exc_info()[0])
+
+    if not cfg["skipNetwork"]:
+        try:
+            ret = read_all_fqdns()
+            if ret:
+                allhw.append(ret)
+        except:
+            print(_("Error reading network FQDNs information:"), sys.exc_info()[0])
 
     try:
         ret = get_sysinfo()
