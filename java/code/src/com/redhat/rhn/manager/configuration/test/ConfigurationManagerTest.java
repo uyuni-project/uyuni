@@ -1477,4 +1477,44 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
                 .filter(s -> s.getId().equals(minion.getId()))
                 .count());
     }
+
+    /**
+     * Test method for determining if a channel is duplicated.
+     */
+    public void testIsNormalChannelDuplicated() {
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                ConfigChannelType.normal());
+
+        assertTrue(ConfigurationManager.isDuplicated(channel.getLabel(),
+                ConfigChannelType.normal(),
+                channel.getOrg()));
+
+        assertTrue(ConfigurationManager.isDuplicated(channel.getLabel(),
+                ConfigChannelType.state(),
+                channel.getOrg()));
+
+        assertFalse(ConfigurationManager.isDuplicated(channel.getLabel(),
+                ConfigChannelType.local(),
+                channel.getOrg()));
+    }
+
+    /**
+     * Test method for determining if a channel is duplicated.
+     */
+    public void testIsLocalChannelDuplicated() {
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                ConfigChannelType.local());
+
+        assertFalse(ConfigurationManager.isDuplicated(channel.getLabel(),
+                ConfigChannelType.normal(),
+                channel.getOrg()));
+
+        assertFalse(ConfigurationManager.isDuplicated(channel.getLabel(),
+                ConfigChannelType.state(),
+                channel.getOrg()));
+
+        assertTrue(ConfigurationManager.isDuplicated(channel.getLabel(),
+                ConfigChannelType.local(),
+                channel.getOrg()));
+    }
 }
