@@ -49,6 +49,12 @@ except ImportError:
     iterparse = cElementTree.iterparse
 from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException
 from urlgrabber.grabber import URLGrabError
+try:
+    #  python 2
+    import urlparse
+except ImportError:
+    #  python3
+    import urllib.parse as urlparse # pylint: disable=F0401,E0611
 
 from spacewalk.common import fileutils, checksum
 from spacewalk.satellite_tools.download import get_proxies
@@ -145,10 +151,16 @@ class ContentSource(object):
         self.proxy_url = None
         self.proxy_user = None
         self.proxy_pass = None
+        self.authtoken = None
 
         # read the proxy configuration
         # /etc/rhn/rhn.conf has more priority than yum.conf
         initCFG('server.satellite')
+
+        # keep authtokens for mirroring
+        (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
+        if query:
+            self.authtoken = query
 
         if CFG.http_proxy:
             self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
@@ -240,7 +252,6 @@ class ContentSource(object):
         repo.proxy = None
         repo.proxy_username = None
         repo.proxy_password = None
-        repo.authtoken = None
 
         if "file://" in self.url:
             repo.copy_local = 1
@@ -277,8 +288,6 @@ class ContentSource(object):
             #repo.urls = [url for url in repo.urls if '?' not in url]
         for burl in repo.baseurl:
             (scheme, netloc, path, query, fragid) = urlparse.urlsplit(burl)
-	    if query:
-                repo.authtoken = query
             repo.gpgkey = [urlparse.urlunsplit((scheme, netloc, path + '/repodata/repomd.xml.key', query, fragid))]
         repo.setup(0, None, gpg_import_func=self.getKeyForRepo,
                    confirm_func=self.askImportKey)
@@ -855,7 +864,7 @@ class ContentSource(object):
 
         params['urls'] = self.repo.urls
         params['relative_path'] = relative_path
-        params['authtoken'] = self.repo.authtoken
+        params['authtoken'] = self.authtoken
         params['target_file'] = target_file
         params['ssl_ca_cert'] = self.repo.sslcacert
         params['ssl_client_cert'] = self.repo.sslclientcert

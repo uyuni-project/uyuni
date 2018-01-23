@@ -51,25 +51,25 @@ public class NamedPreparedStatementTest extends RhnBaseTestCase {
 
     private String TWO_VAR_QUERY = "SELECT DISTINCT E.id, E.update_date " +
                                    "FROM rhnErrata E, " +
-                                   "rhnServerNeededPackageCache SNPC " +
+                                   "rhnServerNeededCache SNC " +
                                    "WHERE EXISTS (SELECT server_id FROM " +
                                    "rhnUserServerPerms USP WHERE " +
                                    "USP.user_id = :user_id AND " +
                                    "USP.server_id = :sid) " +
-                                   "AND SNPC.server_id = :sid " +
-                                   "AND SNPC.errata_id = E.id " +
+                                   "AND SNC.server_id = :sid " +
+                                   "AND SNC.errata_id = E.id " +
                                    "ORDER BY E.update_date, E.id";
 
     private String TWO_VAR_QUERY_SUBST = "SELECT DISTINCT E.id, " +
                                          "E.update_date " +
                                          "FROM rhnErrata E, " +
-                                         "rhnServerNeededPackageCache SNPC " +
+                                         "rhnServerNeededCache SNC " +
                                          "WHERE EXISTS (SELECT server_id " +
                                          "FROM rhnUserServerPerms USP " +
                                          "WHERE USP.user_id = ? AND " +
                                          "USP.server_id = ?) " +
-                                         "AND SNPC.server_id = ? " +
-                                         "AND SNPC.errata_id = E.id " +
+                                         "AND SNC.server_id = ? " +
+                                         "AND SNC.errata_id = E.id " +
                                          "ORDER BY E.update_date, E.id";
 
     private String COLON_IN_QUOTES = "SELECT 'FOO:BAR:MI:SS' " +

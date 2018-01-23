@@ -6,10 +6,6 @@ class XMLRPCSystemTest < XMLRPCBaseTest
     @connection.call('system.list_systems', @sid)
   end
 
-  def delete_system(id)
-    @connection.call('system.delete_systems', @sid, id)
-  end
-
   # Get the list of latest installable packages for a given system.
   def list_all_installable_packages(server)
     @connection.call('system.list_all_installable_packages', @sid, server)
@@ -18,22 +14,6 @@ class XMLRPCSystemTest < XMLRPCBaseTest
   # Get the list of latest upgradable packages for a given system.
   def list_latest_upgradable_packages(server)
     @connection.call('system.list_latest_upgradable_packages', @sid, server)
-  end
-
-  # Go wild...
-  # No need to write monstrous scenario for a little checks.
-  # We just do it all at once instead.
-  def get_sys_info(server)
-    server_id = server['id']
-    conn_path = @connection.call('system.get_connection_path', @sid, server_id)
-    puts conn_path
-  end
-
-  # Create a cobbler system record for a system that is not registered
-  def create_system_record(sys_name, ks_label, ip, mac)
-    netdev = { 'ip' => ip, 'mac' => mac, 'name' => 'eth0' }
-    netdevs = [netdev]
-    @connection.call('system.create_system_record', @sid, sys_name, ks_label, '', '', netdevs)
   end
 
   # Bootstrap a salt system
@@ -62,5 +42,10 @@ class XMLRPCSystemTest < XMLRPCBaseTest
       proxy_id = proxy.map { |s| s['id'] }.first
       @connection.call('system.bootstrap', @sid, host, 22, 'root', 'linux', activation_key, proxy_id, salt_ssh)
     end
+  end
+
+  # Unsubscribe configuration channels from server
+  def remove_channels(servers, channels)
+    @connection.call('system.config.remove_channels', @sid, servers, channels)
   end
 end

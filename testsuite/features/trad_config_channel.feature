@@ -128,7 +128,7 @@ Feature: Configuration management of traditional clients
     Then file "/etc/mgr-test-file.cnf" should exist on "sle-client"
     And file "/etc/mgr-test-file.cnf" should contain "MGR_PROXY=yes" on "sle-client"
 
-  Scenario: Change local file and compare
+  Scenario: Change file on traditional client and compare
     When I am on the Systems overview page of this "sle-client"
     And I store "MGR_PROXY=no" into file "/etc/mgr-test-file.cnf" on "sle-client"
     And I follow "Configuration" in the content area

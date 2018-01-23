@@ -137,13 +137,13 @@ Feature: Cobbler and distribution autoinstallation
     Then file "/srv/tftpboot/pxelinux.cfg/default" should exist on server
     When I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile:1" on server
     And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ks=.*fedora_kickstart_profile_upload:1" on server
-    Then file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/initrd.img" should exist on server
-    And file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/vmlinuz" should exist on server
-    And file "/srv/tftpboot/menu.c32" should exist on server
-    And file "/srv/tftpboot/pxelinux.0" should exist on server
+    And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/initrd.img" exists on server
+    And I wait until file "/srv/tftpboot/images/fedora_kickstart_distro:1:SUSETest/vmlinuz" exists on server
+    And I wait until file "/srv/tftpboot/menu.c32" exists on server
+    And I wait until file "/srv/tftpboot/pxelinux.0" exists on server
 
   Scenario: Trigger the creation of a cobbler system record
-    Then trigger cobbler system record
+    When I trigger cobbler system record
 
   Scenario: Cleanup: delete test distro and profiles
     Then I remove kickstart profiles and distros

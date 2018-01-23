@@ -45,23 +45,6 @@
     <echo message="Linking run jars"/>
     <link-jars ivyxml="${rhn-home}/ivy.xml" libdir="${lib.dir}"
                jars="${run.jar.dependencies}" dir="${run-external.lib.dir}"/>
-    <!--
-         allows adding jar files for quick testing of tools
-         that do not have RPMs yet.
-     -->
-    <mkdir dir="${rhn-home}/buildconf/tempjars" />
-    <copy toDir="${build.lib.dir}" overwrite="true">
-      <fileset dir="${rhn-home}/buildconf/tempjars">
-          <include name="**/*.jar" />
-          <include name="**/*.properties" />
-      </fileset>
-    </copy>
-    <copy toDir="${run-external.lib.dir}" overwrite="true">
-      <fileset dir="${rhn-home}/buildconf/tempjars">
-          <include name="**/*.jar" />
-          <include name="**/*.properties" />
-      </fileset>
-    </copy>
     </target>
 
   <!-- Generates Eclipse .classpath  -->
@@ -70,7 +53,7 @@
       <exec executable="../scripts/gen-eclipse.py"
         output="${basedir}/.classpath" >
         <arg value="code/internal/src:code/src"/>
-        <arg value="${eclipse.lib.dirs}:${rhn-home}/buildconf/tempjars:${env.JAVA_HOME}/lib/tools.jar" />
+        <arg value="${eclipse.lib.dirs}:${env.JAVA_HOME}/lib/tools.jar" />
     </exec>
   </target>
 
@@ -931,13 +914,6 @@ delete from rhnChannel where label like 'ChannelLabel%';
              failonerror="false"
              overwrite="true" />
 
-    <mkdir dir="${rhn-home}/buildconf/tempjars" />
-    <copy toDir="${prefix}${webapp-dir}/rhn/WEB-INF/lib" overwrite="true">
-      <fileset dir="${rhn-home}/buildconf/tempjars">
-        <include name="**/*.jar" />
-      </fileset>
-    </copy>
-
     <!--
       - delete the symlinks for the jars that break the webapp.  Basically
       - these are the oracle jars and the servlet jars
@@ -992,13 +968,6 @@ delete from rhnChannel where label like 'ChannelLabel%';
                    dir="${build.lib.dir}" />
     <jpackage-deps jars="${install.run.jar.dependencies}"
                    dir="${run-external.lib.dir}"/>
-    <mkdir dir="${rhn-home}/buildconf/tempjars" />
-    <copy toDir="${build.lib.dir}" overwrite="true">
-      <fileset dir="${rhn-home}/buildconf/tempjars">
-          <include name="**/*.jar" />
-          <include name="**/*.properties" />
-      </fileset>
-    </copy>
   </target>
 
   <target name="resolve-ivy" description="retrieve dependencies with ivy"

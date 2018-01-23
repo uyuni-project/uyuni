@@ -113,17 +113,17 @@ public class ErrataCacheManager extends HibernateFactory {
     }
 
     /**
-     * Deletes record from NeededPackage cache table.
+     * Deletes a record from rhnServerNeededCache.
      * @param sid Server Id
      * @param errataId Errata Id
      * @param packageId Package Id
      * @return number of rows affected.
      */
-    public static int deleteNeededPackageCache(Long sid, Long errataId,
+    public static int deleteNeededCache(Long sid, Long errataId,
             Long packageId) {
         if (errataId != null) {
             WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
-                    "delete_needed_package_cache");
+                    "delete_needed_cache");
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("server_id", sid);
             params.put("errata_id", errataId);
@@ -131,7 +131,7 @@ public class ErrataCacheManager extends HibernateFactory {
             return m.executeUpdate(params);
         }
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
-                "delete_needed_package_cache_null_errata");
+                "delete_needed_cache_null_errata");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("server_id", sid);
         params.put("package_id", packageId);
@@ -139,13 +139,13 @@ public class ErrataCacheManager extends HibernateFactory {
     }
 
     /**
-     * Delete all records from NeededPackage cache for the server provided.
+     * Delete all records from rhnServerNeededCache for the server provided.
      * @param sid Server Id
      * @return number of rows affected.
      */
-    public static int deleteNeededPackageCache(Long sid) {
+    public static int deleteNeededCache(Long sid) {
         WriteMode m = ModeFactory.getWriteMode("ErrataCache_queries",
-                "delete_needed_package_cache_all");
+                "delete_needed_cache_all");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("server_id", sid);
         return m.executeUpdate(params);
@@ -373,9 +373,9 @@ public class ErrataCacheManager extends HibernateFactory {
 
 
     /**
-     * Clear out and re-generate the entries in rhnServerNeededPackageCache and
-     * rhnServerNeededErrataCache tables by channel. Usefull if the set of
-     * errata or packages gets changed with a Channel
+     * Clear out and re-generate the entries in rhnServerNeededErrataCache
+     * tables by channel. Usefull if the set of errata or packages gets changed
+     * with a Channel
      *
      * @param cid - channel to update caches for.
      */
