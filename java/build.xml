@@ -50,8 +50,9 @@
   <!-- Generates Eclipse .classpath  -->
   <target name="gen-eclipse-base" depends="resolve"
           description = "Generates eclipse .classpath file">
-      <exec executable="${basedir}/scripts/gen-eclipse.py"
+      <exec executable="../scripts/gen-eclipse.py"
         output="${basedir}/.classpath" >
+        <arg value="code/internal/src:code/src"/>
         <arg value="${eclipse.lib.dirs}:${env.JAVA_HOME}/lib/tools.jar" />
     </exec>
   </target>

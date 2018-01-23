@@ -14,6 +14,26 @@
         <pathelement location="${basedir}/src/config" />
     </path>
 
+    <target name="init-ivy" unless="installbuild">
+        <mkdir dir="${java.lib.dir}" />
+        <jpackage-deps jars="ivy" dir="${java.lib.dir}" />
+        <taskdef name="ivy-retrieve"
+             classname="org.apache.ivy.ant.IvyRetrieve"/>
+    </target>
+
+    <target name="make-eclipse-project" depends="resolve-ivy"
+            description="Generate eclipse project files">
+      <copy file="buildconf/eclipse.project" tofile=".project" />
+      <exec executable="../../scripts/gen-eclipse.py" output=".classpath" >
+        <arg value="src/java:src/config"/>
+        <arg value="
+          ${java.lib.dir}:
+          ${env.JAVA_HOME}/lib/tools.jar:
+          ${env.JAVA_HOME}/lib/ant.jar:
+          ${env.JAVA_HOME}/lib/ant-junit.jar
+        "/>
+      </exec>
+    </target>
 
     <target name="check-testcase-name" if="testcase" depends="">
         <propertyregex property="valid.testcase"
@@ -65,7 +85,7 @@
     </target>
 
     <target name="resolve-ivy" description="retrieve dependencies with ivy"
-              depends="" unless="installbuild">
+              depends="init-ivy" unless="installbuild">
         <!-- properties set here to show we are overriding default ivy values -->
         <property name="ivy.default.ivy.user.dir" value="${user.home}/.ivy/search-server"/>
         <property name="ivy.local.default.artifact.pattern" value="[artifact]-[revision].[ext]" />
