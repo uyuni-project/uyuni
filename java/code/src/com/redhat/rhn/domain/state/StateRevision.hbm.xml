@@ -12,13 +12,15 @@
             <one-to-many class="com.redhat.rhn.domain.state.PackageState"/>
         </set>
 
-        <bag name="configChannels" lazy="true" table="suseStateRevisionConfigChannel"
-             cascade="save-update" >
+        <list name="configChannels" lazy="true" table="suseStateRevisionConfigChannel"
+              cascade="save-update" where="(position > 0)"
+              collection-type="com.redhat.rhn.common.hibernate.ForceRecreationListType">
             <key column="state_revision_id"/>
+            <list-index column="position" base="1"/>
             <many-to-many
                     class="com.redhat.rhn.domain.config.ConfigChannel"
                     column="config_channel_id"/>
-        </bag>
+        </list>
 
         <property name="created" column="created" type="timestamp" insert="false" update="false"/>
         <many-to-one name="creator" column="creator_id" class="com.redhat.rhn.domain.user.legacy.UserImpl" lazy="proxy"/>

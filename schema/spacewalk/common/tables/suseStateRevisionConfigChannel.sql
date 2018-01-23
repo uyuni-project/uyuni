@@ -23,6 +23,7 @@ CREATE TABLE suseStateRevisionConfigChannel
                           CONSTRAINT suse_state_rev_cfgchn_id_fk
                               REFERENCES rhnConfigChannel (id)
                               ON DELETE CASCADE,
+    position NUMBER,
     CONSTRAINT suse_state_rev_id_cfgchn_id_uq UNIQUE (state_revision_id, config_channel_id)
 )
 ENABLE ROW MOVEMENT
