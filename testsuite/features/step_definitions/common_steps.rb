@@ -174,7 +174,7 @@ Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |di
   ct.distro_create(distro, '/install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/linux', 'install/SLES11-SP1-x86_64/DVD1/boot/x86_64/loader/initrd')
 end
 
-Then(/^trigger cobbler system record$/) do
+When(/^I trigger cobbler system record$/) do
   # not for SSH-push traditional client
   space = 'spacecmd -u admin -p admin'
   host = $client.full_hostname
