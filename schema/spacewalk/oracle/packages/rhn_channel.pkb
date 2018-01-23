@@ -55,7 +55,16 @@ IS
         if allowed = 0 then
             rhn_exception.raise_exception('no_subscribe_permissions');
         end if;
+        
+        FOR check_subscription IN check_server_subscription(server_id_in, channel_id_in)
+        LOOP
+            server_already_in_chan := TRUE;
+        END LOOP check_subscription;
 
+        IF server_already_in_chan
+        THEN
+            RETURN;
+        END IF;
 
         SELECT parent_channel INTO channel_parent_val FROM rhnChannel WHERE id = channel_id_in;
 
@@ -85,16 +94,6 @@ IS
             THEN
                 rhn_exception.raise_exception('channel_server_one_base');
             END IF;
-        END IF;
-
-        FOR check_subscription IN check_server_subscription(server_id_in, channel_id_in)
-        LOOP
-            server_already_in_chan := TRUE;
-        END LOOP check_subscription;
-
-        IF server_already_in_chan
-        THEN
-            RETURN;
         END IF;
 
         channel_family_id_val := rhn_channel.family_for_channel(channel_id_in);

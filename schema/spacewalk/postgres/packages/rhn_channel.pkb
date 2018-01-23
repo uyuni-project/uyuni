@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 f68706d578b21cd0cf5fac10b55d7ce73e7ffe96
+-- oracle equivalent source sha1 076f6bdf2a66f38e029acf34e53bdd4d46f76abc
 --
 -- Copyright (c) 2008--2016 Red Hat, Inc.
 --
@@ -59,7 +59,13 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         if allowed = 0 then
             perform rhn_exception.raise_exception('no_subscribe_permissions');
         end if;
+        
+        server_already_in_chan := rhn_channel.check_server_subscription(server_id_in, channel_id_in);
 
+        IF server_already_in_chan
+        THEN
+            RETURN;
+        END IF;
 
         SELECT parent_channel INTO channel_parent_val FROM rhnChannel WHERE id = channel_id_in;
 
@@ -80,13 +86,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
             THEN
                 perform rhn_exception.raise_exception('channel_server_one_base');
             END IF;
-        END IF;
-
-        server_already_in_chan := rhn_channel.check_server_subscription(server_id_in, channel_id_in);
-
-        IF server_already_in_chan
-        THEN
-            RETURN;
         END IF;
 
         channel_family_id_val := rhn_channel.family_for_channel(channel_id_in);
