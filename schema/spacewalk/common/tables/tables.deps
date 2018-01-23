@@ -258,8 +258,6 @@ suseUpgradePath                :: suseProducts
 suseServerVirtualHostManager   :: rhnServer suseVirtualHostManager suseVirtualHostManagerNodeInfo
 suseVHMConfig                  :: suseVirtualHostManager
 suseVirtualHostManager         :: web_customer suseCredentials rhnServerGroup
-suseCustomState                :: web_customer
-suseStateRevisionCustomState   :: suseCustomState suseStateRevision
 suseServerGroupStateRevision   :: rhnServerGroup suseStateRevision
 suseOrgStateRevision           :: web_customer suseStateRevision
 web_contact                    :: web_customer
