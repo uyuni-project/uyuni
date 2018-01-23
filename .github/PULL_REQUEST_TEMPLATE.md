@@ -1,38 +1,29 @@
-## What does this PR do?
-
-## What issues does this PR fix or reference?
-(Remove this section if not relevant)
- - https://github.com/SUSE/spacewalk/issues/<NUMBER>
- - https://github.com/SUSE/spacewalk/issues/<NUMBER>
- - https://github.com/SUSE/spacewalk/issues/<NUMBER>
+## What does this PR change?
 
 ## GUI diff
-(Remove this section if not relevant, ie. non-GUI change)
+*REMOVE THIS SECTION if it does not apply*
+
 Before:
 
 After:
 
-
-## Previous Behavior
-(Remove this section if not relevant)
-
-## New Behavior
-(Remove this section if not relevant)
-
-## Tests written? 
-(If this section if not relevant explain why)
-- [ ] Unit
-- [ ] Spacewalk-testsuite
-  - https://github.com/SUSE/spacewalk-testsuite-base/pull/<NUMBER>
+ - [ ] documentation team has been contacted
 
 ## Documentation
-(Remove this section if not relevant, ie. no user visible change)
-- [ ] Man pages
-- [ ] Wikipage
-  - https://wiki.microfocus.com/index.php/SUSE_Manager/<PAGE>
+- [ ] No documentation needed: *add explanation why*
+- [ ] Wiki page: *add link*
+- [ ] Documentation issue: #123
 
-## Ports
-(Remove irrelevant, always use PRs please)
- - to Manager 3.0: https://github.com/SUSE/spacewalk/pull/<NUMBER>
- - to Manager 3.1: https://github.com/SUSE/spacewalk/pull/<NUMBER>
- - to Manager HEAD: https://github.com/SUSE/spacewalk/pull/<NUMBER>
+## Test coverage
+- [ ] No tests: *add explanation why*
+- [ ] Unit tests
+- [ ] Cucumber tests
+
+## Links
+
+Related issues:
+ - #123
+
+Related PRs:
+ - [ ] Manager-3.0: #123
+ - [ ] Manager-3.1: #123

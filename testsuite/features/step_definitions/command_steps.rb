@@ -11,8 +11,17 @@ end
 
 Then(/^I apply highstate on "(.*?)"$/) do |minion|
   node = get_target(minion)
-  cmd = "salt '#{node.full_hostname}' state.highstate"
-  $server.run_until_ok(cmd)
+  if minion == 'sle-minion'
+    cmd = 'salt'
+    extra_cmd = ''
+  elsif minion == 'ssh-minion' or minion == 'ceos-minion'
+    cmd = 'salt-ssh'
+    extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
+    $server.run("printf '#{node.full_hostname}:\n  host: #{node.full_hostname}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
+  else
+    raise 'Invalid target'
+  end
+  $server.run_until_ok("#{cmd} #{node.full_hostname} state.highstate #{extra_cmd}")
 end
 
 Then(/^I wait until "([^"]*)" service is up and running on "([^"]*)"$/) do |service, target|
@@ -197,6 +206,19 @@ When(/^I wait until file "(.*)" exists on "(.*)"$/) do |file, host|
     end
   rescue Timeout::Error
     raise unless file_exists?(node, file)
+  end
+end
+
+When(/^I wait until file "(.*)" exists on server$/) do |file|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if file_exists?($server, file)
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+    raise unless file_exists?($server, file)
   end
 end
 

@@ -2,7 +2,7 @@
 #
 # VERSION               1.1.0
 
-FROM registry.mgr.suse.de/sles12sp2:latest
+FROM registry.mgr.suse.de/sles12sp3:latest
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
 

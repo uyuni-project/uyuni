@@ -68,7 +68,7 @@ public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
 
         for (Iterator itr = e.getPackages().iterator(); itr.hasNext();) {
             Package pkg = (Package) itr.next();
-            ErrataCacheManager.deleteNeededPackageCache(server.getId(),
+            ErrataCacheManager.deleteNeededCache(server.getId(),
                     e.getId(), pkg.getId());
         }
         actionPerform();

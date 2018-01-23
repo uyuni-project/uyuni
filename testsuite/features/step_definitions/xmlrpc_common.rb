@@ -8,6 +8,8 @@ require 'socket'
 rpctest = XMLRPCChannelTest.new($proxy ? $proxy.ip : $server.ip)
 systest = XMLRPCSystemTest.new($proxy ? $proxy.ip : $server.ip)
 
+# system namespace
+
 Given(/^I am logged in via XML\-RPC system as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   systest.login(luser, password)
 end
@@ -48,15 +50,20 @@ but with activation key with Default contact method, I should get an XML-RPC fau
   assert(exception_thrown, 'Exception must be thrown for non-compatible activation keys.')
 end
 
-When(/^I call system\.create_system_record\(\) with sys_name "([^"]*)", ks_label "([^"]*)", ip "([^"]*)", mac "([^"]*)"$/) do |sys_name, ks_lab, ip, mac|
-  systest.create_system_record(sys_name, ks_lab, ip, mac)
+When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)"$/) do |host1, host2, channel|
+  node1 = get_target(host1)
+  node_id1 = retrieve_server_id(node1.full_hostname)
+  node2 = get_target(host2)
+  node_id2 = retrieve_server_id(node2.full_hostname)
+  systest.remove_channels([ node_id1, node_id2 ], [ channel ])
 end
 
 Then(/^I logout from XML\-RPC system namespace$/) do
   systest.logout
 end
 
-# xmlrpc_user tests
+# user namespace
+
 CREATE_USER_PASSWORD = 'die gurke'.freeze
 
 Given(/^I am logged in via XML\-RPC user as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
@@ -99,10 +106,6 @@ Then(/^I should see "([^"]*)" when I call user\.list_roles\(\) with "([^"]*)"$/)
   assert_includes(@rpc.get_user_roles(luser), rolename)
 end
 
-Then(/^I logout from XML\-RPC user namespace$/) do
-  assert(@rpc.logout)
-end
-
 When(/^I delete user "([^"]*)"$/) do |luser|
   @rpc.delete_user(luser)
 end
@@ -121,6 +124,12 @@ end
 Then(/^I shall not see "([^"]*)" when I call user\.list_roles\(\) with "([^"]*)" uid$/) do |rolename, luser|
   refute_includes(@rpc.get_user_roles(luser), rolename)
 end
+
+Then(/^I logout from XML\-RPC user namespace$/) do
+  assert(@rpc.logout)
+end
+
+# channel namespace
 
 Given(/^I am logged in via XML\-RPC channel as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   assert(rpctest.login(luser, password))
@@ -182,7 +191,8 @@ Then(/^channel "([^"]*)" should not have attribute "([^"]*)"$/) do |label, attr|
   assert_equal(false, ret.key?(attr))
 end
 
-# activation key test xmlrpc
+# activationkey namespace
+
 acttest = XMLRPCActivationKeyTest.new(ENV['SERVER'])
 key = nil
 
@@ -212,7 +222,6 @@ When(/^I add config channels "([^"]*)" to a newly created key$/) do |channel_nam
   raise if acttest.add_config_channel(key, channel_name) < 1
 end
 
-# Details
 When(/^I call activationkey\.set_details\(\) to the key$/) do
   raise unless acttest.set_details(key)
 end
@@ -220,6 +229,8 @@ end
 Then(/^I have to see them by calling activationkey\.get_details\(\)$/) do
   raise unless acttest.get_details(key)
 end
+
+# virtualhostmanager namespace
 
 virtualhostmanager = XMLRPCVHMTest.new(ENV['SERVER'])
 modules = []
@@ -272,6 +283,8 @@ end
 Then(/^I logout from XML\-RPC virtualhostmanager namespace$/) do
   virtualhostmanager.logout
 end
+
+# actionchain namespace
 
 rpc = XMLRPCActionChain.new(ENV['SERVER'])
 syschaintest = XMLRPCSystemTest.new(ENV['SERVER'])
@@ -350,9 +363,7 @@ Then(/^no action chain with the label "(.*?)"$/) do |label|
   refute_includes(rpc.list_chains, label)
 end
 
-#
 # Schedule scenario
-#
 When(/^I call actionchain\.add_script_run\(\) with the script like "(.*?)"$/) do |script|
   refute(rpc.add_script_run($client_id, script, $chain_label) < 1)
 end
@@ -452,7 +463,8 @@ Given(/^I am logged in via XML\-RPC api as user "([^"]*)" and password "([^"]*)"
   assert(rpc_api_tester.login(luser, password))
 end
 
-# cve audit
+# cveaudit namespace
+
 Given(/^I am logged in via XML\-RPC cve audit as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
   @rpctest = XMLRPCCVEAuditTest.new(ENV['SERVER'])
   @rpctest.login(luser, password)
@@ -496,4 +508,45 @@ end
 
 Then(/^I logout from XML\-RPC cve audit namespace$/) do
   assert(@rpctest.logout)
+end
+
+# configchannel namespace
+
+cfgtest = XMLRPCConfigChannelTest.new(ENV['SERVER'])
+
+Given(/^I am logged in via XML\-RPC configchannel as user "([^"]*)" and password "([^"]*)"$/) do |luser, password|
+  cfgtest.login(luser, password)
+end
+
+Then(/^channel "([^"]*)" should exist$/) do |channel|
+  assert_equal(1, cfgtest.channel_exists(channel))
+end
+
+Then(/^channel "([^"]*)" should contain file "([^"]*)"$/) do |channel, file|
+  result = cfgtest.list_files(channel)
+  assert_equal(1, result.count { |item| item['path'] == file })
+end
+
+Then(/^"([^"]*)" should be subscribed to channel "([^"]*)"$/) do |host, channel|
+  node = get_target(host)
+  result = cfgtest.list_subscribed_systems(channel)
+  assert_equal(1, result.count { |item| item['name'] == node.full_hostname })
+end
+
+Then(/^"([^"]*)" should not be subscribed to channel "([^"]*)"$/) do |host, channel|
+  node = get_target(host)
+  result = cfgtest.list_subscribed_systems(channel)
+  assert_equal(0, result.count { |item| item['name'] == node.full_hostname })
+end
+
+When(/^I add file "([^"]*)" containing "([^"]*)" to channel "([^"]*)"$/) do |file, contents, channel|
+  cfgtest.create_or_update_path(channel, file, contents)
+end
+
+When(/^I deploy all systems registered to channel "([^"]*)"$/) do |channel|
+  cfgtest.deploy_all_systems(channel)
+end
+
+When(/^I logout from XML\-RPC configchannel namespace$/) do
+  cfgtest.logout
 end

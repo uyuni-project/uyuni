@@ -356,6 +356,10 @@ When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   $server.run("zypper --non-interactive install -y #{package}-formula")
 end
 
+When(/^I manually uninstall the "([^"]*)" formula from the server$/) do |package|
+  $server.run("zypper --non-interactive remove -y #{package}-formula")
+end
+
 When(/^I ([^"]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
   xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
@@ -416,20 +420,18 @@ When(/^I refresh the pillar data$/) do
 end
 
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+  node = get_target(minion)
   if minion == 'sle-minion'
-    target = $minion.ip
     cmd = 'salt'
     extra_cmd = ''
-  elsif minion == 'ssh-minion'
-    target = $ssh_minion.ip
+  elsif minion == 'ssh-minion' or minion == 'ceos-minion'
     cmd = 'salt-ssh'
-    extra_cmd = '-i --roster-file=/tmp/tmp_roster_tests -w -W'
-    $server.run("printf '#{target}:\n  host: #{target}\n  user: root\n  passwd: linux' > /tmp/tmp_roster_tests")
+    extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
+    $server.run("printf '#{node.full_hostname}:\n  host: #{node.full_hostname}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
   else
     raise 'Invalid target'
   end
-  output, _code = $server.run("#{cmd} '#{target}' pillar.get '#{key}' #{extra_cmd}")
-  puts output
+  output, _code = $server.run("#{cmd} '#{node.full_hostname}' pillar.get '#{key}' #{extra_cmd}")
   if value == ''
     raise unless output.split("\n").length == 1
   else

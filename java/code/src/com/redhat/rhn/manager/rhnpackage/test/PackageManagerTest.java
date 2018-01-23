@@ -132,7 +132,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
     public void testUpgradable() throws Exception {
         Map info = ErrataCacheManagerTest.
-            createServerNeededPackageCache(user, ErrataFactory.ERRATA_TYPE_BUG);
+            createServerNeededCache(user, ErrataFactory.ERRATA_TYPE_BUG);
         Server s = (Server) info.get("server");
         Package p = (Package) info.get("package");
         p = (Package) TestUtils.saveAndReload(p);
