@@ -209,6 +209,19 @@ When(/^I wait until file "(.*)" exists on "(.*)"$/) do |file, host|
   end
 end
 
+When(/^I wait until file "(.*)" exists on server$/) do |file|
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        break if file_exists?($server, file)
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+    raise unless file_exists?($server, file)
+  end
+end
+
 Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
   timeout = 800
   node = get_target(target)
