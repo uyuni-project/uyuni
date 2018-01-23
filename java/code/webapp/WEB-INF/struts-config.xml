@@ -6915,7 +6915,7 @@
         className="com.redhat.rhn.frontend.struts.RhnActionMapping"
         parameter="dispatch">
         <set-property property="postRequired" value="true" />
-        <set-property property="acls" value="config_channel_type(normal);"/>
+        <set-property property="acls" value="config_channel_type(normal) or config_channel_type(state);"/>
         <set-property property="mixins" value="com.redhat.rhn.common.security.acl.ConfigAclHandler" />
         <forward name="default"
             path="/configuration/channel/ChannelSystems.do"/>
