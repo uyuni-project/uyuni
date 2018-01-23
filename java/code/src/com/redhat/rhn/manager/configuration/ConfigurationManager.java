@@ -2448,12 +2448,29 @@ public class ConfigurationManager extends BaseManager {
     }
 
     /**
-     * Returns the config channel id of a channel given
-     * a user, a channel label, an org and a channel tpye
-     * @param user User who is looking up
-     * @return the config channel id or null of nothing exists
+     * Returns true if there already exists a config channel that is uniquely determined
+     * by given label, channel type and organization.
+     *
+     * Note: Handling of the channels of 'state' and 'normal' types is stricter: if there is
+     * already a channel of 'state' type, the method will return true also for the 'normal'
+     * channel type (with the same name and org) and vice versa.
+     *
+     * @param label Label of the config channel
+     * @param cct the contig channel type
+     * @param org the org of the current user
+     * @return true if there already exists such a channel/false otherwise.
      */
-
+    public static boolean isDuplicated(String label, ConfigChannelType cct, Org org) {
+        if (cct.getLabel().equals(ConfigChannelType.STATE) ||
+                cct.getLabel().equals(ConfigChannelType.NORMAL)) {
+            // if global channel, we want to be a bit stricter
+            return channelExists(label, ConfigChannelType.state(), org) ||
+                    channelExists(label, ConfigChannelType.normal(), org);
+        }
+        else {
+            return channelExists(label, cct, org);
+        }
+    }
 
     /**
      * Returns true if there already exists
@@ -2463,8 +2480,7 @@ public class ConfigurationManager extends BaseManager {
      * @param org the org of the current user
      * @return true if there already exists such a channel/false otherwise.
      */
-    public boolean isDuplicated(String label, ConfigChannelType cct,
-            Org org) {
+    private static boolean channelExists(String label, ConfigChannelType cct, Org org) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("cc_label", label);
         params.put("cct_label", cct.getLabel());
