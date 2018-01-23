@@ -1,3 +1,4 @@
+- setting 'Base Channels' as default tab for 'Channels' tab in SSM Overview screen (bsc#979616)
 - log triggers that are in ERROR state
 - refresh pillar data on formular change (bsc#1028285)
 - Uniform the notification message when rebooting a system (bsc#1036302)
