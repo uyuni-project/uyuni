@@ -28,6 +28,7 @@ import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -238,6 +239,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
                     if (!ConfigChannelSaltManager.getInstance().areFilesGenerated(channel)) {
                         ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(channel);
                     }
+                    SaltStateGeneratorService.INSTANCE.regenerateConfigStates(channel);
                 });
     }
 
