@@ -205,12 +205,12 @@ public class UpgradeCommand extends BaseTransactionCommand {
         log.warn("Migrating content of " + candidates.size() + " custom states from disk to database.");
         candidates.forEach(row -> {
             Long orgId = (Long) row[0];
-            String channelName = (String) row[1];
+            String channelLabel = (String) row[1];
             ConfigRevision revision = (ConfigRevision) row[2];
 
             Path statePath = saltRootPath
                     .resolve(ORG_STATE_DIR_PREFIX + orgId)
-                    .resolve(channelName + ".sls");
+                    .resolve(channelLabel + ".sls");
 
             try {
                 byte[] bytes = FileUtils.readFileToByteArray(statePath.toFile());

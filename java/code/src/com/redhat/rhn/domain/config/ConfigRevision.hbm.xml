@@ -44,7 +44,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </query>
     <query name="ConfigRevision.stateContentMigrationCandidates">
         <![CDATA[
-                  select distinct channel.org.id, channel.name, revision
+                  select distinct channel.org.id, channel.label, revision
                     from ConfigRevision as revision
                          inner join revision.configContent as content
                          inner join revision.configFile as file

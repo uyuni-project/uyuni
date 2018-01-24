@@ -81,7 +81,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
 
         Path statePath = tmpSaltRoot
                 .resolve("manager_org_" + user.getOrg().getId())
-                .resolve(stateChannel.getName() + ".sls");
+                .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
         String stateContents = "my-state:\n    ....";
@@ -122,7 +122,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
 
         Path statePath = tmpSaltRoot
                 .resolve("manager_org_" + user.getOrg().getId())
-                .resolve(stateChannel.getName() + ".sls");
+                .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
         String stateContents = "my-state:\n    ....";
@@ -152,7 +152,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
 
         Path statePath = tmpSaltRoot
                 .resolve("manager_org_" + user.getOrg().getId())
-                .resolve(stateChannel.getName() + ".sls");
+                .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
         String stateContents = "my-state:\n    ....";
@@ -183,7 +183,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
 
         Path statePath = tmpSaltRoot
                 .resolve("manager_org_" + user.getOrg().getId())
-                .resolve(normalChannel.getName() + ".sls");
+                .resolve(normalChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
         String stateContents = "my-state:\n    ....";
