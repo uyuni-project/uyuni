@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -75,6 +76,8 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      * @throws IOException if anything goes wrong
      */
     public void testProcessCustomStates() throws IOException {
+        ConfigChannelSaltManager.getInstance().setBaseDirPath(tmpSaltRoot.toAbsolutePath().toString());
+
         ConfigChannel stateChannel = createTestStateChannel();
         ConfigFile configFile = stateChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
         ConfigTestUtils.createConfigRevision(configFile, 1L);
@@ -93,6 +96,14 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         assertEquals(
                 stateContents,
                 configFile.getLatestConfigRevision().getConfigContent().getContentsString());
+
+        Path channelDirectory = tmpSaltRoot
+                .resolve("mgr_cfg_org_" + user.getOrg().getId())
+                .resolve(stateChannel.getLabel());
+        File stateFile = channelDirectory.resolve("init.sls").toFile();
+        assertTrue(channelDirectory.toFile().isDirectory());
+        assertTrue(stateFile.exists());
+        assertEquals(stateContents, FileUtils.readFileToString(stateFile));
     }
 
     /**
