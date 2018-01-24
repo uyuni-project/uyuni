@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
 import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -221,12 +222,23 @@ public class UpgradeCommand extends BaseTransactionCommand {
                 ConfigurationFactory.getSession().save(revision);
             }
             catch (IOException e) {
-                log.error("Error when importing state '" + channelName +
+                log.error("Error when importing state '" + channelLabel +
                         "' from file '" + statePath + "'. Skipping this state.", e);
                 // when import failed, we don't want to continue
                 throw new RuntimeException(e);
             }
         });
+
+        // Let's generate the channels content on the disk
+        candidates.stream()
+                .map(row -> (ConfigRevision) row[2])
+                .map(revision -> revision.getConfigFile().getConfigChannel())
+                .distinct()
+                .forEach(channel -> {
+                    if (!ConfigChannelSaltManager.getInstance().areFilesGenerated(channel)) {
+                        ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(channel);
+                    }
+                });
     }
 
     /**
