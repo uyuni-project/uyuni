@@ -83,7 +83,7 @@ WHERE NOT EXISTS (SELECT id
             );
 
 -- REVISION
-SELECT lookup_config_info(null, null, null, null, null) FROM DUAL;
+SELECT lookup_config_info('root', 'root', 644, null, null) FROM dual;
 INSERT INTO rhnConfigRevision(
     id,
     revision,
@@ -97,7 +97,7 @@ SELECT
     1,
     cf.id,
     (SELECT id FROM rhnConfigContent WHERE checksum_id = lookup_checksum('md5', 'd41d8cd98f00b204e9800998ecf8427e')),
-    lookup_config_info(null, null, null, null, null),
+    lookup_config_info('root', 'root', 644, null, null),
     (SELECT id FROM rhnConfigFileType WHERE label = 'sls')
 FROM rhnConfigFile cf
 WHERE
