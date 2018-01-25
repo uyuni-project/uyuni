@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Management of minion keys
@@ -57,12 +57,13 @@ Feature: Management of minion keys
     When I get OS information of "sle-minion" from the Master
     Then it should contain a "SLES" text
 
-  Scenario: Cleanup: re-apply highstate to restore channels on the minion
+  Scenario: Cleanup: restore channels on the minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area
-    And I select "Test-Channel-x86_64" from "new_base_channel_id"
-    And I click on "Confirm"
-    And I click on "Modify Base Software Channel"
-    And I should see a "System's Base Channel has been updated." text
-    Then I apply highstate on "sle-minion"
+    And I check radio button "Test-Channel-x86_64"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
