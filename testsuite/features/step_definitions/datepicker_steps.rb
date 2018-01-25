@@ -93,6 +93,11 @@ When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
     .timepicker('setTime', '#{action_time}');")
 end
 
+When(/^I schedule action to (\d+) minutes from now$/) do |minutes|
+  action_time = (DateTime.now + Rational(1,1440) * minutes.to_i).strftime("%Y-%m-%dT%H:%M%:z")
+  page.execute_script("window.schedulePage.setScheduleTime('#{action_time}')")
+end
+
 Then(/^the time field is set to "([^"]*)"$/) do |arg1|
   h, m = arg1.chomp.split(':').map(&:to_i)
   # the fields that give backwards compatibility
