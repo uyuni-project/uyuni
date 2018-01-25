@@ -151,6 +151,40 @@ def cpu_count():
     re_cpu = re.compile(r"^cpu[0-9]+$")
     return len([i for i in cpu_dir if re_cpu.match(i)])
 
+def read_all_fqdns():
+    def flatten_dict(d):
+        def items():
+            for key, value in d.items():
+                if isinstance(value, dict):
+                    for subkey, subvalue in flatten_dict(value).items():
+                        yield key + "." + subkey, subvalue
+                else:
+                    yield key, value
+        return dict(items())
+    
+    fqdns = set()
+    ret = {}
+    ret["class"] = "FQDN"
+    
+    interfaces = flatten_dict(read_network_interfaces())
+    ips = []
+    
+    for ipv4 in list(value for key, value in interfaces.iteritems() if key.endswith('ipaddr') and not key.startswith('lo')):
+        if ipv4:
+            ips.append(ipv4)
+    for ipv6 in list(value for key, value in interfaces.iteritems() if key.endswith('ipv6') and not key.startswith('lo')):
+        if ipv6:
+            ips.append(ipv6[0]['addr'])
+    for ip in ips:
+        try:
+            fqdns.add(socket.gethostbyaddr(ip)[0])
+        except (socket.error, socket.herror, socket.gaierror, socket.timeout) as e:
+            log = up2dateLog.initLog()
+            msg = "Error resolving address: %s\n" % (e)
+            log.log_error(msg)
+
+    ret["name"] = list(fqdns)
+    return ret
 
 # This has got to be one of the ugliest fucntions alive
 def read_cpuinfo():
@@ -770,6 +804,15 @@ def Hardware():
                 allhw.append(ret)
         except:
             print _("Error reading network interface information:"), sys.exc_type
+
+    if not cfg["skipNetwork"]:
+        # minimal networking info
+        try:
+            ret = read_all_fqdns()
+            if ret:
+                allhw.append(ret)
+        except:
+            print _("Error reading FQDN information:"), sys.exc_type
 
     # all Done.
     return allhw
