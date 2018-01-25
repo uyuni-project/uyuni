@@ -54,7 +54,6 @@
 - features/srv_distro_cobbler.feature
 - features/srv_mainpage.feature
 - features/srv_xmlrpc_user.feature
-- features/srv_smdba.feature
 - features/min_salt_states_catalog.feature
 - features/srv_salt_download_endpoint.feature
 - features/srv_virtual_host_manager.feature

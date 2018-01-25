@@ -59,7 +59,6 @@
 - features/srv_distro_cobbler.feature
 - features/srv_mainpage.feature
 - features/srv_xmlrpc_user.feature
-- features/srv_smdba.feature
 - features/min_salt_states_catalog.feature
 - features/srv_salt_download_endpoint.feature
 - features/srv_virtual_host_manager.feature
@@ -96,5 +95,8 @@
 
 ## Secondary features END ##
 
-## Post run feature (non idempotent)
+## Post run feature (non idempotent) (don't add any feature here)
+# this feature is destructive for other features, so it is better at the end
+- features/srv_smdba.feature
+# this feature is needed for gathering log/debug infos.
 - features/srv_susemanager_debug.feature
