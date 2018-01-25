@@ -581,6 +581,17 @@ class NetIfaceInformation(Device):
         self.status = 0
         return 0
 
+class FQDNInformation(Device):
+    """ This is a wrapper class for the FQDN information (rhnServerFQDN) """
+    table = "rhnServerFQDN"
+
+    def __init__(self, dict=None):
+        fields = ["name"]
+        unique = ["name"]
+        mapping = {'class': None}
+        Device.__init__(self, fields, dict, mapping)
+        self._autonull = ('name')
+        self.sequence = "rhn_serverfqdn_id_seq"
 
 class NetIfaceAddress(Device):
     key_mapping = {
@@ -1090,6 +1101,8 @@ class Hardware:
             class_type = InstallInformation
         elif hw_class == "netinterfaces":
             class_type = NetIfaceInformation
+        elif hw_class == "fqdn":
+            class_type = FQDNInformation
         elif hw_class == "sysinfo":
             # special case: we got info about a virtual host
             # where this system is running on
@@ -1187,6 +1200,7 @@ class Hardware:
         self.__load_from_db(DMIInformation, sysid)
         self.__load_from_db(MemoryInformation, sysid)
         self.__load_from_db(InstallInformation, sysid)
+        self.__load_from_db(FQDNInformation, sysid)
 
         net_iface_info = NetIfaceInformation()
         net_iface_info.reload(sysid)

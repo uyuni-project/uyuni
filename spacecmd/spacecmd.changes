@@ -1,3 +1,5 @@
+- support multiple FQDNs per system (bsc#1063419)
+
 -------------------------------------------------------------------
 Wed Jan 17 17:34:42 CET 2018 - jgonzalez@suse.com
 
