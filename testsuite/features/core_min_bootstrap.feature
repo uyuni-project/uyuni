@@ -1,4 +1,4 @@
-# Copyright (c) 2016 SUSE LLC
+# Copyright (c) 2016-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to bootstrap a Salt minion via the GUI
@@ -197,11 +197,13 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I wait until I see the name of "sle-minion", refreshing the page
      And I wait until onboarding is completed for "sle-minion"
 
-  Scenario: Subscribe to base channel
+  Scenario: Subscribe the SLES minion to a base channel
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
-    Then I follow "Software Channels" in the content area
-    And I select "Test-Channel-x86_64" from "new_base_channel_id"
-    And I click on "Confirm"
-    And I click on "Modify Base Software Channel"
-    And I should see a "System's Base Channel has been updated." text
+    And I follow "Software Channels" in the content area
+    And I check radio button "Test-Channel-x86_64"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed

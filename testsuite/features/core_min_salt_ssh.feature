@@ -40,22 +40,16 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     Then I should see "ssh-minion" hostname
 
 @sshminion
-  Scenario: Subscribe the SSH-managed SLES minion to a base channel for testing
+  Scenario: Subscribe the SSH-managed SLES minion to a base channel
     Given I am on the Systems overview page of this "ssh-minion"
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    And I select "Test-Channel-x86_64" from "new_base_channel_id"
-    And I click on "Confirm"
-    And I click on "Modify Base Software Channel"
-    Then I should see a "System's Base Channel has been updated." text
-
-@sshminion
-  Scenario: Apply the highstate on ssh-minion to apply base channels
-    Given I am on the Systems overview page of this "ssh-minion"
-    When I follow "States" in the content area
-    And I click on "Apply Highstate"
-    Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I check radio button "Test-Channel-x86_64"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
 
 @sshminion
   Scenario: Schedule errata refresh to reflect channel assignment

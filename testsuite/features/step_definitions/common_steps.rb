@@ -35,7 +35,6 @@ Then(/^I can see all system information for "([^"]*)"$/) do |target|
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
 end
 
-
 # events
 
 When(/^I wait until event "([^"]*)" is completed$/) do |event|
@@ -51,7 +50,6 @@ When(/^I wait until event "([^"]*)" is completed$/) do |event|
     And I wait until I see "This action's status is: Completed." text, refreshing the page
   )
 end
-
 
 # spacewalk errors steps
 Then(/^I control that up2date logs on client under test contains no Traceback error$/) do

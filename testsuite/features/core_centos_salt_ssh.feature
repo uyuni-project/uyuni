@@ -1,4 +1,4 @@
-# Copyright (c) 2016 SUSE LLC
+# Copyright (c) 2016-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  0) delete CentOS minion from previous non-SSH tests
@@ -50,11 +50,13 @@ Feature: Be able to bootstrap a SSH-managed CentOS minion and do some basic oper
     Then I should see "ceos-minion" hostname
 
 @centosminion
-  Scenario: Subscribe the SSH-managed CentOS minion to a base channel for testing
+  Scenario: Subscribe the SSH-managed CentOS minion to a base channel
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    And I select "Test Base Channel" from "new_base_channel_id"
-    And I click on "Confirm"
-    And I click on "Modify Base Software Channel"
-    Then I should see a "System's Base Channel has been updated." text
+    And I check radio button "Test Base Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
