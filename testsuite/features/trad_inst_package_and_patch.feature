@@ -1,4 +1,4 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Install a package to the traditional client
@@ -16,7 +16,7 @@ Feature: Install a package to the traditional client
     And I click on "Confirm"
     And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "1 package install has been scheduled for" text
-    And "virgo-dummy-2.0-1.1" is installed on "sle-client"
+    And "virgo-dummy-2.0-1.1" should be installed on "sle-client"
 
   Scenario: Enable old packages for testing a patch install
     When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"
@@ -43,7 +43,7 @@ Feature: Install a package to the traditional client
     And I click on "Confirm"
     And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "1 patch update has been scheduled for" text
-    And "andromeda-dummy-2.0-1.1" is installed on "sle-client"
+    And "andromeda-dummy-2.0-1.1" should be installed on "sle-client"
 
   Scenario: Cleanup: remove packages and restore non-update repo
     And I run "zypper -n rm andromeda-dummy" on "sle-client"

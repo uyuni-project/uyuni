@@ -1,4 +1,4 @@
-# Copyright (c) 2016 SUSE LLC
+# Copyright (c) 2016-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Be able to bootstrap a Salt host managed via salt-ssh
@@ -55,9 +55,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    When I follow "Events"
-    And I follow "Pending"
-    And I try to reload page until it does not contain "Apply states scheduled by admin" text
+    And I wait until event "Apply highstate scheduled by admin" is completed
 
 @sshminion
   Scenario: Schedule errata refresh to reflect channel assignment
@@ -80,7 +78,8 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
-    And I wait for "hoag-dummy-1.1-2.1" to be installed on this "ssh-minion"
+    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    Then "hoag-dummy-1.1-2.1" should be installed on "ssh-minion"
 
 @sshminion
   Scenario: Reboot the SSH-managed SLES minion

@@ -1,4 +1,4 @@
-# Copyright (c) 2016 SUSE LLC
+# Copyright (c) 2016-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Salt states
@@ -32,12 +32,12 @@ Feature: Salt states
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "milkyway-dummy" text
-    And "milkyway-dummy" is installed on "sle-minion"
+    And "milkyway-dummy" should be installed on "sle-minion"
     And I change the state of "milkyway-dummy" to "Removed" and ""
     Then I should see a "1 Changes" text
     And I click save
     And I click apply
-    And "milkyway-dummy" is not installed on "sle-minion"
+    And I wait for "milkyway-dummy" to be uninstalled on "sle-minion"
 
   Scenario: Install a package through the UI
     Given I am on the Systems overview page of this "sle-minion"
@@ -46,7 +46,7 @@ Feature: Salt states
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "milkyway-dummy" text
-    And "milkyway-dummy" is not installed on "sle-minion"
+    And "milkyway-dummy" should not be installed on "sle-minion"
     And I change the state of "milkyway-dummy" to "Installed" and ""
     Then I should see a "1 Changes" text
     And I click save
@@ -60,7 +60,7 @@ Feature: Salt states
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "virgo-dummy" text
-    And "virgo-dummy-1.0" is installed on "sle-minion"
+    And "virgo-dummy-1.0" should be installed on "sle-minion"
     And I change the state of "virgo-dummy" to "Installed" and "Any"
     Then I should see a "1 Changes" text
     And I click save
@@ -74,7 +74,7 @@ Feature: Salt states
     And I should see a "Package States" text
     And I list packages with "dummy"
     Then I should see a "andromeda-dummy" text
-    And "andromeda-dummy-1.0-4.1" is installed on "sle-minion"
+    And "andromeda-dummy-1.0-4.1" should be installed on "sle-minion"
     And I change the state of "andromeda-dummy" to "Installed" and "Latest"
     Then I should see a "1 Changes" text
     And I click save

@@ -35,6 +35,24 @@ Then(/^I can see all system information for "([^"]*)"$/) do |target|
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
 end
 
+
+# events
+
+When(/^I wait until event "([^"]*)" is completed$/) do |event|
+  # The code below is not perfect because there might be other events with the
+  # same name in the events history - however, that's the best we have so far.
+  steps %(
+    When I follow "Events"
+    And I follow "Pending"
+    And I try to reload page until it does not contain "#{event}" text
+    And I follow "History"
+    Then I try to reload page until it contains "#{event}" text
+    And I follow first "#{event}"
+    And I wait until I see "This action's status is: Completed." text, refreshing the page
+  )
+end
+
+
 # spacewalk errors steps
 Then(/^I control that up2date logs on client under test contains no Traceback error$/) do
   cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
@@ -253,7 +271,7 @@ Then(/^I should have '([^']*)' in the patch metadata$/) do |text|
   $client.run(cmd, true, 500, 'root')
 end
 
-# channel steps
+# package steps
 Then(/^I should see package "([^"]*)"$/) do |package|
   raise unless has_xpath?("//div[@class=\"table-responsive\"]/table/tbody/tr/td/a[contains(.,'#{package}')]")
 end

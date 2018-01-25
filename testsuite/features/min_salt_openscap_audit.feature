@@ -1,4 +1,4 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: openSCAP audits
@@ -15,7 +15,7 @@ Feature: openSCAP audits
     And I enter "/usr/share/openscap/scap-yast2sec-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until OpenSCAP scan is completed for "sle-minion"
+    And I wait until event "OpenSCAP xccdf scanning" is completed
 
   Scenario: Check results of the audit job on the minion
     Given I am on the Systems overview page of this "sle-minion"

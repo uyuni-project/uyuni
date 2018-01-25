@@ -12,8 +12,9 @@
     1. [Operating system](#b7)
     1. [SUSE Manager utilities](#b8)
     1. [Registration and channels](#b9)
-    1. [Salt](#b10)
-    1. [XML-RPC](#b11)
+    1. [Events](#b10)
+    1. [Salt](#b11)
+    1. [XML-RPC](#b12)
 1. [Writing new tests](#c)
     1. [Running remote commands](#c1)
     1. [Getting the FQDN of a host](#c2)
@@ -229,7 +230,8 @@ For a test with a regular expression, there is ```I should see a text like "..."
 
 ```cucumber
   When I wait until I see "Software Updates Available" text, refreshing the page
-  When I try to reload page until contains "OpenSCAP xccdf scanning" text
+  When I try to reload page until it contains "OpenSCAP xccdf scanning" text
+  When I try to reload page until it does not contain "OpenSCAP xccdf scanning" text
   When I refresh page until I see "sle-minion" hostname as text
 ```
 
@@ -371,16 +373,22 @@ The check box can be identified by name, id or label text.
   Then the command should fail
 ```
 
-* Packages
+* Repositories
 
 ```cucumber
   When I enable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
   When I disable repository "Devel_Galaxy_BuildRepo" on this "sle-minion"
+```
+
+* Packages
+
+```cucumber
   When I install package "virgo-dummy-1.0-1.1" on this "sle-minion"
   When I remove package "orion-dummy" from this "sle-minion"
   When I wait for "virgo-dummy-1.0" to be installed on this "sle-minion"
-  Then "man" is installed on "sle-client"
-  Then "milkyway-dummy" is not installed
+  When I wait for "milkyway-dummy" to be uninstalled on "sle-minion"
+  Then "man" should be installed on "sle-client"
+  Then "milkyway-dummy" should not be installed on "sle-minion"
 ```
 
 * Services
@@ -391,20 +399,28 @@ The check box can be identified by name, id or label text.
   When I wait until "salt-minion" service is up and running on "ceos-minion"
 ```
 
-* Files
-
+* File removal
 ```cucumber
-  When I fetch "pub/bootstrap/bootstrap-test.sh" to "sle-client"
   When I remove "/root/foobar" from "sle-minion"
   When I destroy "/var/lib/pgsql/data/pg_xlog" directory on server
   When I destroy "/etc/s-mgr" directory on "sle-minion"
+```
+
+* File existence
+```cucumber
   When I wait until file "/root/foobar" exists on "sle-minion"
   Then file "/etc/mgr-test-file.cnf" should exist on "sle-client"
   When I wait until file "/srv/tftpboot/pxelinux.cfg/default" exists on server
   Then file "/srv/susemanager/salt/mgr_cfg_org_1/mixedchannel/init.sls" should exist on server
   Then file "/srv/susemanager/salt/mgr_cfg_org_1/s-mgr/config/init.sls" should not exist on server
+```
+
+* File contents
+
+```cucumber
   When I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value" on server
   Then file "/etc/mgr-test-file.cnf" should contain "MGR_PROXY=yes" on "sle-client"
+
   When I get the contents of the remote file "/etc/salt/master.d/susemanager.conf"
   Then it should contain a "rest_cherrypy:" text
 ```
@@ -488,8 +504,26 @@ The check box can be identified by name, id or label text.
   Then the download should get no error
 ```
 
+* HTTP file transfer
+
+```cucumber
+  When I fetch "pub/bootstrap/bootstrap-test.sh" to "sle-client"
+```
+
 
 <a name="b10" />
+
+#### Events
+
+* Wait for task completion
+
+```cucumber
+  When I wait until onboarding is completed for "ceos-minion"
+  When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+```
+
+
+<a name="b11" />
 
 #### Salt
 
@@ -530,7 +564,6 @@ The check box can be identified by name, id or label text.
   When I reject "sle-minion" from the Pending section
   When I delete "sle-minion" from the Rejected section
   When I wait until Salt master sees "sle-minion" as "rejected"
-  When I wait until onboarding is completed for "ceos-minion"
   When I wait until salt-key "mincentos" is deleted
   Then the list of the "all" keys should contain "sle-minion" hostname
 ```
@@ -565,7 +598,7 @@ The check box can be identified by name, id or label text.
   When I apply highstate on "sle-minion"
 ```
 
-<a name="b11" />
+<a name="b12" />
 
 #### XML-RPC
 

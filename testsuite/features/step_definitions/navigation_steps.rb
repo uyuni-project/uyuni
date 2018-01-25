@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 #
-# Test the current path of the URL
+# Texts and links
 #
 
 When(/^I follow "(.*?)" link$/) do |host|
@@ -369,12 +369,12 @@ Then(/^I reload the page$/) do
   visit current_url
 end
 
-Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
+When(/^I try to reload page until it contains "([^"]*)" text$/) do |text|
   found = false
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        if page.has_content?(arg1)
+        if page.has_content?(text)
           found = true
           break
         end
@@ -383,17 +383,17 @@ Then(/^I try to reload page until contains "([^"]*)" text$/) do |arg1|
       end
     end
   rescue Timeout::Error
-    raise "'#{arg1}' cannot be found after wait and reload page"
+    raise "'#{text}' cannot be found after wait and reload page"
   end
   raise unless found
 end
 
-Then(/^I try to reload page until it does not contain "([^"]*)" text$/) do |arg1|
+When(/^I try to reload page until it does not contain "([^"]*)" text$/) do |text|
   found = true
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        unless page.has_content?(arg1)
+        unless page.has_content?(text)
           found = false
           break
         end
@@ -402,7 +402,7 @@ Then(/^I try to reload page until it does not contain "([^"]*)" text$/) do |arg1
       end
     end
   rescue Timeout::Error
-    raise "'#{arg1}' is still found after wait and reload page"
+    raise "'#{text}' is still found after wait and reload page"
   end
   raise if found
 end
