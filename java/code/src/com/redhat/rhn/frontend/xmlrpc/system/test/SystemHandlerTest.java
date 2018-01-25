@@ -1855,6 +1855,19 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(testPackage.getPath(), returned.get("path"));
     }
 
+    public void testListFqdns() throws Exception {
+        Server testServer = ServerFactoryTest.createTestServer(admin, true);
+        testServer.addFqdn("foo.bar.baz");
+        testServer.addFqdn("foo.bat.xyz");
+        ServerFactory.save(testServer);
+
+        List<String> returned = handler.listFqdns(admin, testServer.getId().intValue());
+
+        assertEquals(2, returned.size());
+        assertTrue(returned.contains("foo.bar.baz"));
+        assertTrue(returned.contains("foo.bat.xyz"));
+    }
+
     public void testScheduleSyncPackagesWithSystem() throws Exception {
 
         Channel testChannel = ChannelFactoryTest.createTestChannel(admin);

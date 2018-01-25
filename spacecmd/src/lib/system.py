@@ -2196,6 +2196,54 @@ def do_system_listnotes(self, args):
 
 ####################
 
+####################
+
+
+def help_system_listfqdns(self):
+    print 'system_listfqdns: List the associated FQDNs for a system'
+    print 'usage: system_listfqdns <SYSTEM>'
+    print
+    print self.HELP_SYSTEM_OPTS
+
+
+def complete_system_listfqdns(self, text, line, beg, end):
+    return self.tab_complete_systems(text)
+
+
+def do_system_listfqdns(self, args):
+    (args, _options) = parse_arguments(args)
+
+    if not len(args):
+        self.help_system_listfqdns()
+        return
+
+    # use the systems listed in the SSM
+    if re.match('ssm', args[0], re.I):
+        systems = self.ssm.keys()
+    else:
+        systems = self.expand_systems(args)
+
+    add_separator = False
+
+    for system in sorted(systems):
+        if add_separator:
+            print self.SEPARATOR
+        add_separator = True
+
+        if len(systems) > 1:
+            print 'System: %s' % system
+            print
+
+        system_id = self.get_system_id(system)
+        if not system_id:
+            continue
+
+        fqdns = self.client.system.listFqdns(self.session, system_id)
+
+        for f in fqdns:
+            print f
+
+####################
 
 def help_system_setbasechannel(self):
     print "system_setbasechannel: Set a system's base software channel"

@@ -185,6 +185,7 @@
   "virtual": "kvm",
   "cpu_model": "Intel Xeon E312xx (Sandy Bridge)",
   "fqdn": "clisles12-suma3pg.vagrant.local",
+  "fqdns": ["minion3sp2.tf.local", "minion3sp2.suse.local"],
   "pythonexecutable": "/usr/bin/python",
   "productname": "Standard PC (i440FX + PIIX, 1996)",
   "osarch": "x86_64",

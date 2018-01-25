@@ -3542,6 +3542,21 @@ public class SystemHandler extends BaseHandler {
         return server.getNotes();
     }
 
+    /**
+     * Lists all of the FQDNs that are associated with a system.
+     * If no FQDNs are found it should return an empty set.
+     * @param loggedInUser The current user
+     * @param sid the system id
+     * @return Array of FQDNs objects associated with the given system
+     *
+     * @xmlrpc.doc Provides a list of FQDNs associated with a system.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.returntype #array_single("string", "fqdn")
+     */
+    public List<String> listFqdns(User loggedInUser, Integer sid) {
+        return ServerFactory.listFqdns(new Long(sid.longValue()));
+    }
 
     /**
      * Lists all of the packages that are installed on a system that also belong

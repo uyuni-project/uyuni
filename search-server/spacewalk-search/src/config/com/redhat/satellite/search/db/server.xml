@@ -60,7 +60,7 @@
                 LEFT OUTER JOIN rhnVirtualInstance vi on s.id = vi.virtual_system_id
             WHERE rsni.is_primary = 'Y' and (
                 s.modified &gt;= #{last_modified}
-                or rsn.modified &gt;= #{last_modified}
+                or rsni.modified &gt;= #{last_modified}
                 or si.checkin &gt;= #{last_modified}
                 or rr.modified &gt;= #{last_modified}
                 or sl.modified &gt;= #{last_modified}

@@ -45,6 +45,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -675,6 +676,18 @@ public class HardwareMapper {
         return virtUuidSwapped;
     }
 
+    @SuppressWarnings("unchecked")
+    private void extractFqdnsFromGrains(MinionServer serverIn, ValueMap grainsIn) {
+        Optional<Collection<?>> fqdnsFromGrains = grainsIn.getValueAsCollection("fqdns");
+        fqdnsFromGrains.ifPresent(fqdnsGrains -> {
+            Collection<String> fqndsFromGrains = (Collection<String>) fqdnsGrains;
+            serverIn.getFqdns().clear();
+            for (String fqdn : fqndsFromGrains) {
+                serverIn.addFqdn(fqdn);
+            }
+        });
+    }
+
     /**
      * Store network information as returned by Salt.
      *
@@ -701,6 +714,7 @@ public class HardwareMapper {
                     .filter(addr -> !"::1".equals(addr));
 
         server.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
+        extractFqdnsFromGrains(server, grains);
 
         // remove interfaces not present in the Salt result
         server.getNetworkInterfaces().removeAll(

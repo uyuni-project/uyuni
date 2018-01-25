@@ -17963,6 +17963,12 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="sdc.details.hardware.fqdns">
+        <source>FQDNs:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="sdc.details.hardware.machine_id">
         <source>Machine ID:</source>
         <context-group name="ctx">

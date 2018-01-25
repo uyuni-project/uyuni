@@ -167,6 +167,16 @@
                               </c:if>
                             </td>
                         </tr>
+                        <c:if test="${not empty fqdns}">
+                          <tr>
+                            <th><bean:message key="sdc.details.hardware.fqdns" /></th>
+                            <td>
+                              <c:forEach items="${fqdns}" var="fqdn" varStatus="loop">
+                                  ${fqdn.name}<br />
+                              </c:forEach>
+                            </td>
+                          </tr>
+                        </c:if>
                     </rhn:require>
 
                 </table>

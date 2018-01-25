@@ -99,6 +99,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private ServerLock lock;
     private ServerUuid serverUuid;
     private Set<Note> notes;
+    private Set<ServerFQDN> fqdns;
     private Ram ram;
     private Dmi dmi;
     private NetworkInterface primaryInterface;
@@ -441,6 +442,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
         notes = new HashSet<Note>();
         networkInterfaces = new HashSet<NetworkInterface>();
         customDataValues = new HashSet<CustomDataValue>();
+        fqdns = new HashSet<>();
 
         ignoreEntitlementsForMigration = Boolean.FALSE;
     }
@@ -2061,5 +2063,29 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setHostname(String hostnameIn) {
         hostname = hostnameIn;
+    }
+
+    /**
+     * Sets the FQDNs
+     * @return set of FQDNs for the server
+     */
+    public Set<ServerFQDN> getFqdns() {
+        return fqdns;
+    }
+
+    /**
+     * Add a FQDN to the list of FQDNS of this server
+     * @param nameIn FQDN to be added
+     */
+    public void addFqdn(String nameIn) {
+        fqdns.add(new ServerFQDN(this, nameIn));
+    }
+
+    /**
+     * Setter for the FQDNs variable
+     * @param fqdnsIn the fqdns set to be set
+     */
+    public void setFqdns(Set<ServerFQDN> fqdnsIn) {
+        this.fqdns = fqdnsIn;
     }
 }
