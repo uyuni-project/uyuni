@@ -1,3 +1,5 @@
+- fix spacewalk-data-fsck restore of broken package db entry (bsc#1071526)
+
 -------------------------------------------------------------------
 Wed Jan 10 16:04:33 CET 2018 - jgonzalez@suse.com
 
