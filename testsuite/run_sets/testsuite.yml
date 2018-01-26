@@ -91,7 +91,6 @@
 - features/allcli_config_channel.feature
 - features/min_salt_pkgset_beacon.feature
 - features/srv_patches_page.feature
-- features/srv_spacewalk_repo_sync.feature
 - features/srv_spacewalk_channel.feature
 
 ## Secondary features END ##
