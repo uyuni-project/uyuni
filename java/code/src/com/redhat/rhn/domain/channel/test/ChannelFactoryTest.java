@@ -130,6 +130,24 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         return createTestChannel(org, arch, cfam);
     }
 
+    /**
+     * Create a test channel setting the GPGCheck flag via a parameter.
+     *
+     * @param user the user
+     * @param gpgCheckIn the GPGCheck flag to set
+     * @return the test channel
+     * @throws Exception
+     */
+    public static Channel createTestChannel(User user, boolean gpgCheckIn) throws Exception {
+        Channel c = ChannelFactoryTest.createTestChannel(user.getOrg());
+        c.setGPGCheck(gpgCheckIn);
+        // assume we want the user to have access to this channel once created
+        UserManager.addChannelPerm(user, c.getId(), "subscribe");
+        UserManager.addChannelPerm(user, c.getId(), "manage");
+        ChannelFactory.save(c);
+        return c;
+    }
+
     public static Channel createTestChannel(Org org, ChannelArch arch, ChannelFamily cfam) throws Exception {
         String label = "channellabel" + TestUtils.randomString().toLowerCase();
         String basedir = "TestChannel basedir";
@@ -332,6 +350,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         clone.setGPGKeyUrl(original.getGPGKeyUrl());
         clone.setGPGKeyId(original.getGPGKeyId());
         clone.setGPGKeyFp(original.getGPGKeyFp());
+        clone.setGPGCheck(original.isGPGCheck());
         clone.setEndOfLife(new Date());
         clone.setChannelFamily(cfam);
         clone.setChannelArch(original.getChannelArch());

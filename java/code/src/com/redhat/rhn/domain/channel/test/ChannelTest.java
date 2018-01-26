@@ -89,12 +89,19 @@ public class ChannelTest extends BaseTestCaseWithUser {
     }
 
     public void testChannelGpgCheck() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(user, true);
         ChannelFactory.save(c);
         assertTrue(c.isGPGCheck());
         TestUtils.flushAndEvict(c);
         Channel c1 = ChannelFactory.lookupById(c.getId());
         assertTrue(c1.isGPGCheck());
+
+        Channel c2 = ChannelFactoryTest.createTestChannel(user, false);
+        ChannelFactory.save(c2);
+        assertFalse(c2.isGPGCheck());
+        TestUtils.flushAndEvict(c2);
+        Channel c3 = ChannelFactory.lookupById(c2.getId());
+        assertFalse(c3.isGPGCheck());
     }
 
     public void testEquals() throws Exception {

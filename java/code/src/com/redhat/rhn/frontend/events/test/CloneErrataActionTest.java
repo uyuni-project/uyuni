@@ -78,6 +78,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
         // generation was scheduled
         assertEquals(0, cloned.getErrataCount());
         assertEquals(1, countActiveRepomdTasks(cloned.getLabel()));
+        assertEquals(original.isGPGCheck(), cloned.isGPGCheck());
 
         // run CloneErrataAction
         Collection<Long> errataIds = new LinkedList<Long>() { { add(errata.getId()); } };

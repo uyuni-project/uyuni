@@ -66,7 +66,7 @@ public class CreateChannelCommand {
     protected String gpgKeyUrl;
     protected String gpgKeyId;
     protected String gpgKeyFp;
-    protected boolean gpgCheck;
+    protected boolean gpgCheck = true;
     protected String checksum;
 
 
