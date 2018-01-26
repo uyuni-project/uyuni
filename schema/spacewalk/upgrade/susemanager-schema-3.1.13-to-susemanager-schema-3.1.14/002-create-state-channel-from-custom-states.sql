@@ -17,8 +17,7 @@ SELECT
    state_name
 FROM suseCustomState
 WHERE
-    state_deleted = 'N' AND
-    NOT EXISTS (SELECT id FROM rhnConfigChannel WHERE label = state_name);
+    state_deleted = 'N';
 
 -------------------------------------------------------------------------------
 -- CONFIG FILE ----------------------------------------------------------------
@@ -49,9 +48,7 @@ SELECT
     (SELECT id from rhnConfigFileState WHERE label = 'alive')
 FROM rhnConfigChannel cc
 WHERE
-    cc.confchan_type_id IN (SELECT id from rhnConfigChannelType WHERE label = 'state') AND
-    -- don't insert the file when the channel already has some file
-    NOT EXISTS (SELECT id FROM rhnConfigFile WHERE config_channel_id = cc.id);
+    cc.confchan_type_id IN (SELECT id from rhnConfigChannelType WHERE label = 'state');
 
 -------------------------------------------------------------------------------
 -- CONFIG REVISION ------------------------------------------------------------

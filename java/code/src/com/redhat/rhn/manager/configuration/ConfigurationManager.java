@@ -2487,7 +2487,7 @@ public class ConfigurationManager extends BaseManager {
      * @param org the org of the current user
      * @return true if there already exists such a channel/false otherwise.
      */
-    public static boolean isDuplicated(String label, ConfigChannelType cct, Org org) {
+    public static boolean conflictingChannelExists(String label, ConfigChannelType cct, Org org) {
         if (cct.getLabel().equals(ConfigChannelType.STATE) ||
                 cct.getLabel().equals(ConfigChannelType.NORMAL)) {
             // if global channel, we want to be a bit stricter

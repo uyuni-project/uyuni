@@ -2,6 +2,9 @@
 - Hide ownership/permission fields from create/upload config file forms for state channels (bsc#1072153)
 - Hide files from state channels from deploy/compare file lists (bsc#1072160)
 - Disable and hide deploy files tab for state config channels (bsc#1072157)
+- Allow ordering config channels in state revision
+- Disallow creating 'normal' config channels when a 'state' channel with the
+  same name and org already exists and vice versa.
 - UI has been updated to manage state channels
 - support multiple FQDNs per system (bsc#1063419)
 - setting 'Base Channels' as default tab for 'Channels' tab in SSM Overview screen (bsc#979616)

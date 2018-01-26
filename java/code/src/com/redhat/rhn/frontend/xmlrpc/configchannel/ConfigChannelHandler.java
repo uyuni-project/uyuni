@@ -721,7 +721,7 @@ public class ConfigChannelHandler extends BaseHandler {
      */
     public int channelExists(User loggedInUser, String channelLabel) {
         ConfigurationManager manager = ConfigurationManager.getInstance();
-        if (manager.isDuplicated(channelLabel, ConfigChannelType.normal(),
+        if (manager.conflictingChannelExists(channelLabel, ConfigChannelType.normal(),
                 loggedInUser.getOrg())) {
             return 1;
         }

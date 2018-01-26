@@ -177,7 +177,7 @@ public class ConfigChannelCreationHelper {
                             String label, String description) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         if (!label.equals(cc.getLabel()) &&
-                cm.isDuplicated(label, cc.getConfigChannelType(), cc.getOrg())) {
+                cm.conflictingChannelExists(label, cc.getConfigChannelType(), cc.getOrg())) {
             ValidatorException.raiseException("channelOverview.error.labelexists",
                     label);
         }
