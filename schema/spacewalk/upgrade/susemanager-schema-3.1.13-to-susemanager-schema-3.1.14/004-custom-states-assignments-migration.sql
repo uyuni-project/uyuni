@@ -27,10 +27,6 @@ WHERE
                 WHERE server_id = serverRev.server_id
                       AND config_channel_id = configChannel.id);
 
--- TODO: deal with this corner case
--- Create empty revision for servers which don't have one
--- (minions that had a configuration channel assigned, but no (package/custom) states)
-
 -- NEW STYLE SYSTEM-CHANNEL ASSIGNMENT (via suseStateRevisionConfigChannel)
 -- (suseStateRevisionConfigChannel duplicates the information from rhnServerConfigChannel)
 -- Here we insert new 'revision - config channel' association based on
