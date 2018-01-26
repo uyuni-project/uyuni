@@ -43,10 +43,10 @@ bootstrap_repo:
 {%- if grains['os_family'] == 'RedHat' %}
 trust_suse_manager_tools_gpg_key:
   cmd.run:
-{%- if grains['osmajorrelease'] == '6' %}
+{%- if grains['osmajorrelease']|int == 6 %}
     - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res6tools:file') }}
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res6tools:name') }}
-{%- elif grains['osmajorrelease'] == '7' %}
+{%- elif grains['osmajorrelease']|int == 7 %}
     - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:res7tools:file') }}
     - unless: rpm -q {{ salt['pillar.get']('gpgkeys:res7tools:name') }}
 {%- endif %}
