@@ -31,6 +31,7 @@
 
 ## Core features END ###
 
+
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
@@ -90,5 +91,12 @@
 
 ## Secondary features END ##
 
-## Post run feature (non idempotent)
+
+## Post run features BEGIN ##
+
+# IMMUTABLE ORDER
+
+# this feature is needed for gathering log/debug infos
 - features/srv_susemanager_debug.feature
+
+## Post run features END ##

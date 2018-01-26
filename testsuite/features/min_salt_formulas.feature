@@ -1,4 +1,4 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Use salt formulas
@@ -52,10 +52,8 @@ Feature: Use salt formulas
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     And I follow "Events"
-     And I follow "Pending"
-     And I try to reload page until it does not contain "Apply states scheduled by admin" text
-     And the timezone on "sle-minion" should be "+05"
+     When I wait until event "Apply highstate scheduled by admin" is completed
+     Then the timezone on "sle-minion" should be "+05"
      And the keymap on "sle-minion" should be "ca.map.gz"
      And the language on "sle-minion" should be "fr_FR.UTF-8"
 
@@ -79,10 +77,8 @@ Feature: Use salt formulas
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     And I follow "Events"
-     And I follow "Pending"
-     And I try to reload page until it does not contain "Apply states scheduled by admin" text
-     And the timezone on "sle-minion" should be "CET"
+     When I wait until event "Apply highstate scheduled by admin" is completed
+     Then the timezone on "sle-minion" should be "CET"
      And the keymap on "sle-minion" should be "us.map.gz"
      And the language on "sle-minion" should be "en_US.UTF-8"
 
@@ -147,10 +143,8 @@ Feature: Use salt formulas
      And I follow "States" in the content area
      And I click on "Apply Highstate"
      Then I should see a "Applying the highstate has been scheduled." text
-     And I follow "Events"
-     And I follow "Pending"
-     And I try to reload page until it does not contain "Apply states scheduled by admin" text
-     And the timezone on "sle-minion" should be "CET"
+     When I wait until event "Apply highstate scheduled by admin" is completed
+     Then the timezone on "sle-minion" should be "CET"
      And the keymap on "sle-minion" should be "us.map.gz"
      And the language on "sle-minion" should be "en_US.UTF-8"
 

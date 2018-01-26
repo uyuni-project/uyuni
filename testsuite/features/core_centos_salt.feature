@@ -1,4 +1,4 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # 1) register a Centos minion via GUI
@@ -49,7 +49,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     And I enter "/usr/share/xml/scap/ssg/content/ssg-centos7-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until OpenSCAP scan is completed for "ceos-minion"
+    And I wait until event "OpenSCAP xccdf scanning" is completed
 
 @centosminion
   Scenario: Run a remote command on the CentOS minion
