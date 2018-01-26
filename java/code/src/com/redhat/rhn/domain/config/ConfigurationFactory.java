@@ -363,6 +363,19 @@ public class ConfigurationFactory extends HibernateFactory {
     }
 
     /**
+     * Retrieves a list of global (normal and state) config channels
+     *
+     * @return the list of global config channels
+     */
+    public static List<ConfigChannel> listGlobalChannels() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ConfigChannel> criteria = builder.createQuery(ConfigChannel.class);
+        Root<ConfigChannel> root = criteria.from(ConfigChannel.class);
+        criteria.where(root.get("configChannelType").in(ConfigChannelType.normal(), ConfigChannelType.state()));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
      * Lookup a ConfigChannel by its id
      * @param id The identifier for the ConfigChannel
      * @return the ConfigChannel found or null if not found.

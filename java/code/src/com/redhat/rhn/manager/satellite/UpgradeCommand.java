@@ -33,10 +33,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -60,6 +62,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
     private final Path saltRootPath;
     private final Path legacyStatesBackupDirectory;
     private static final String ORG_STATE_DIR_PREFIX = "manager_org_";
+    private static final String ORG_CFG_CHANNEL_LEGACY_PREFIX = "mgr_cfg_org_";
 
     /**
      * Constructor
@@ -148,7 +151,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
     }
 
     /**
-     * Migrates the legacy custom states stored in the salt root on the filesystem to the database.
+     * Migrates the legacy custom states stored in the salt root on the filesystem to the database
+     * and regenerates the contents of the (normal + state) configuration channels + their assignment
+     * to the systems, groups and orgs on the disk.
      *
      * The custom states now make use of the {@link ConfigChannel} and related classes.
      *
@@ -160,17 +165,18 @@ public class UpgradeCommand extends BaseTransactionCommand {
      * of the state file on the disk.
      *
      * Before the import, the files corresponding to the legacy states are backed up to a separate directory.
-     * After the import, the directories of the legacy states are deleted.
+     * After the import, the legacy state files are deleted.
      *
      * If the process of backing up fails, neither the import nor the clean up will happen.
-     *
-     * (This method can be safely removed when ... TODO complete this comment)
      */
-
     private void processCustomStates() {
         backupLegacyStates();
         importLegacyStatesToDb();
         cleanUpLegacyStates();
+
+        // Re-generate the configuration channels
+        cleanUpLegacyConfigChannelDirectory();
+        regenerateConfigChannelFiles();
     }
 
     /**
@@ -180,7 +186,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
      */
     private void backupLegacyStates() {
         try {
-            Set<Path> orgStateDirs = listOrgStateDirs();
+            Set<Path> orgStateDirs = listDirsWithPrefix(ORG_STATE_DIR_PREFIX);
             legacyStatesBackupDirectory.toFile().mkdirs();
             for (Path stateDir : orgStateDirs) {
                 FileUtils.copyDirectory(
@@ -214,6 +220,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
                     .resolve(ORG_STATE_DIR_PREFIX + orgId)
                     .resolve(channelLabel + ".sls");
 
+            log.info("Migrating " + channelLabel + " from path " + statePath + ".");
+
             try {
                 byte[] bytes = FileUtils.readFileToByteArray(statePath.toFile());
                 ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
@@ -229,18 +237,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
                 throw new RuntimeException(e);
             }
         });
-
-        // Let's generate the channels content on the disk
-        candidates.stream()
-                .map(row -> (ConfigRevision) row[2])
-                .map(revision -> revision.getConfigFile().getConfigChannel())
-                .distinct()
-                .forEach(channel -> {
-                    if (!ConfigChannelSaltManager.getInstance().areFilesGenerated(channel)) {
-                        ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(channel);
-                    }
-                    SaltStateGeneratorService.INSTANCE.regenerateConfigStates(channel);
-                });
     }
 
     /**
@@ -248,20 +244,48 @@ public class UpgradeCommand extends BaseTransactionCommand {
      */
     private void cleanUpLegacyStates() {
         try {
-            for (Path stateDir : listOrgStateDirs()) {
-                FileUtils.deleteDirectory(stateDir.toFile());
+            for (Path stateDir : listDirsWithPrefix(ORG_STATE_DIR_PREFIX)) {
+                Collection<File> legacySlsFiles = FileUtils.listFiles(
+                        stateDir.toFile(),
+                        new String[]{"sls"},
+                        false);
+                for (File file : legacySlsFiles) {
+                    if (file.isFile()) {
+                        file.delete();
+                    }
+                }
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
-            log.error("Error cleaning up directory with legacy custom states. Ignoring.");
+            log.error("Error cleaning up directory with legacy custom states. Ignoring.", e);
         }
     }
 
-    // list of state directories of organizations
-    private Set<Path> listOrgStateDirs() throws IOException {
+    private void cleanUpLegacyConfigChannelDirectory() {
+        try {
+            for (Path dir : listDirsWithPrefix(ORG_CFG_CHANNEL_LEGACY_PREFIX)) {
+                FileUtils.deleteDirectory(dir.toFile());
+            }
+        }
+        catch (IOException e) {
+            log.error("Error when cleaning legacy config channel directory. Ignoring.", e);
+        }
+    }
+
+    // re-generates config channels (state + normal) + their assignments on the disk
+    private void regenerateConfigChannelFiles() {
+        ConfigurationFactory.listGlobalChannels().stream().forEach(channel -> {
+            if (!ConfigChannelSaltManager.getInstance().areFilesGenerated(channel)) {
+                ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(channel);
+            }
+            SaltStateGeneratorService.INSTANCE.regenerateConfigStates(channel);
+        });
+    }
+
+    // list of directories with given prefix and natural number suffix in the salt root
+    private Set<Path> listDirsWithPrefix(String prefix) throws IOException {
         return Files.list(saltRootPath)
-                .filter(path -> path.getFileName().toString().matches("^" + ORG_STATE_DIR_PREFIX + "\\d*$") &&
+                .filter(path -> path.getFileName().toString().matches("^" + prefix + "\\d*$") &&
                         path.toFile().isDirectory())
                 .collect(Collectors.toSet());
     }
