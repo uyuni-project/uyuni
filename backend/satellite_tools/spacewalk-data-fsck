@@ -4,6 +4,7 @@
 import sys
 import os
 import stat
+import shutil
 from optparse import Option, OptionParser
 import tempfile
 
@@ -117,6 +118,10 @@ def check_db_vs_disk(options):
                 if options.checksum:
                     report['checksum'] += check_disk_checksum(abs_path,
                                                               row['checksum_type'], row['checksum'])
+        elif options.restore:
+            abs_path = "unknown"
+            report['restore'] += check_disk_nevrao(abs_path, row.copy(), True)
+
     h.close()
     error_found = 0
     for i in ['file', 'exists', 'restore', 'size', 'nevrao', 'checksum']:
@@ -163,6 +168,17 @@ def check_disk_nevrao(abs_path, row, restore=None):
     except ValueError:
         log(0, "File path %s mismatch structure" % row['path'])
         return 1
+    except AttributeError:
+        if not restore:
+            log(0, "File path missing in DB")
+            return 1
+        file['org_id'] = ""
+        file['checksum_prefix'] = ""
+        file['name'] = ""
+        file['evr'] = ""
+        file['arch'] = ""
+        file['checksum'] = ""
+        file['basename'] = ""
 
     if not row['org_id']:
         row['org_id'] = 'NULL'
@@ -176,7 +192,7 @@ def check_disk_nevrao(abs_path, row, restore=None):
     row['evr'] += row['version'] + '-' + row['release']
     row['basename'] = "%s-%s-%s.%s.%s" % (
         row['name'], row['version'], row['release'],
-        row['arch'], row['path'][-3:])
+        row['arch'], (row.get('path') or "rpm")[-3:])
     ret = 0
     for key in ('org_id', 'checksum_prefix', 'name', 'evr', 'arch', 'checksum',
                 'basename'):
@@ -197,11 +213,17 @@ def restore_file_path(file, row):
     query = "update rhnPackage set path=\'" + new_path + "\' where id=" + str(row['id'])
     new_path = prefix + new_path
 
+    if row['path']:
+        backup_path = prefix + row['path']
     if (os.path.isfile(new_path) and
-       check_disk_checksum(new_path, row['checksum_type'], row['checksum'])):
+       check_disk_checksum(new_path, row['checksum_type'], row['checksum']) == 0):
             backup_path = tempfile.mkdtemp() + new_path
+            os.makedirs(backup_path.rsplit('/', 1)[0])
             log(0, "Target file path exists, moving to: %s" % backup_path)
-            os.renames(new_path, backup_path)
+            shutil.move(new_path, backup_path)
+    elif not row['path']:
+        # path is empty - unable to restore
+        return delete_package_entry(row)
 
     cleanup = True
     try:  # 1st, make dirs needed
@@ -214,7 +236,7 @@ def restore_file_path(file, row):
             cleanup = False  # dir already exists, do not cleanup
     try:  # 2nd, create hardlink; os.link and os.makedirs in 1 dir would be problem due to checking of errno 17...
         if not os.path.isfile(new_path):
-            os.link(prefix + row['path'], new_path)
+            shutil.move(backup_path, new_path)
     except OSError:
         log(0, "File path restoration failed, rolling back: %s" % row['path'])
         if cleanup == True:
@@ -222,24 +244,40 @@ def restore_file_path(file, row):
                 os.removedirs(new_path.rsplit('/', 1)[0])
             except OSError, e:
                 if e.errno != 39:
-                    log(0, "Could not rollback file path restoration: %s" % row['path'])
+                    log(0, "Could not rollback file path restoration: %s" % row['path'] or '')
                     return 1
         return
     h = rhnSQL.prepare(query)
     h.execute()
     rhnSQL.commit()
     try:
-        os.remove(prefix + row['path'])
-        os.removedirs(prefix + row['path'].rsplit('/', 1)[0])
+        if backup_path:
+            if os.path.isfile(backup_path):
+                os.remove(backup_path)
+            os.removedirs(backup_path.rsplit('/', 1)[0])
     except OSError, e:
         if e.errno == 2:
             log(2, "File %s%s was removed by someone else but transaction has been successfully completed" %
                 (prefix, row['path']))
         elif e.errno != 39:
             log(4, "Unexpected error, computer is going to self destruct")
-    log(0, "File %s%s successfully restored, new file path: %s" % (prefix, row['path'], new_path))
+    log(0, "File successfully restored, new file path: %s" % new_path)
     return 0
 
+def delete_package_entry(row):
+    query1 = "delete from rhnChannelPackage where package_id=" + str(row['id'])
+    query2 = "delete from rhnPackage where id=" + str(row['id'])
+    try:
+        h = rhnSQL.prepare(query1)
+        h.execute()
+        h = rhnSQL.prepare(query2)
+        h.execute()
+        rhnSQL.commit()
+        log(0, "Successfully removed DB package entry without path")
+    except Exception as e:
+        log(0, "Failed to remove DB package entry: ", e)
+        return 1
+    return 0
 
 def check_disk_checksum(abs_path, checksum_type, db_checksum):
     try:
