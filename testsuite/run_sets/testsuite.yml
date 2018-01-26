@@ -33,6 +33,7 @@
 
 ## Core features END ###
 
+
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
@@ -95,9 +96,14 @@
 
 ## Secondary features END ##
 
-## Post run feature (non idempotent) (don't add any feature here)
+
+## Post run features BEGIN ##
+
+# IMMUTABLE ORDER
 
 # this feature is destructive for other features, so it is better at the end
 - features/srv_smdba.feature
-# this feature is needed for gathering log/debug infos.
+# this feature is needed for gathering log/debug infos
 - features/srv_susemanager_debug.feature
+
+## Post run features END ##

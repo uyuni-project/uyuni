@@ -1,4 +1,4 @@
-# Copyright 2015-2017 SUSE LLC
+# Copyright 2015-2018 SUSE LLC
 require 'timeout'
 require 'open-uri'
 require 'tempfile'
@@ -122,37 +122,15 @@ When(/^I wait until Salt master sees "(.*?)" as "(.*?)"$/) do |minion, key_type|
   steps %(
     When I list "#{key_type}" keys at Salt Master
     Then the list of the "#{key_type}" keys should contain "#{minion}" hostname
-    )
+  )
 end
 
-Then(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
+When(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
   steps %(
     When I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "#{system}", refreshing the page
     And I follow this "#{system}" link
-    When I follow "Events"
-    And I follow "History"
-  )
-  puts 'I navigate to rhn/systems/Overview.do page, and'
-  puts "I go to #{system} events history page"
-  steps %(
-    Then I try to reload page until contains "Package List Refresh scheduled by (none)" text
-    And I follow first "Package List Refresh scheduled by (none)"
-    And I wait until I see "This action's status is: Completed." text, refreshing the page
-    And I wait for "5" seconds
-  )
-end
-
-Then(/^I wait until OpenSCAP scan is completed for "([^"]*)"$/) do |system|
-  steps %(
-    When I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "#{system}", refreshing the page
-    And I follow this "#{system}" link
-    When I follow "Events"
-    And I follow "History"
-    Then I try to reload page until contains "OpenSCAP xccdf scanning" text
-    And I follow first "OpenSCAP xccdf scanning"
-    And I wait until I see "This action's status is: Completed." text, refreshing the page
+    And I wait until event "Package List Refresh scheduled by (none)" is completed
     And I wait for "5" seconds
   )
 end
@@ -538,7 +516,7 @@ When(/^I change the state of "([^"]*)" to "([^"]*)" and "([^"]*)"$/) do |pkg, st
   end
 end
 
-Then(/^"([^"]*)" is not installed on "([^"]*)"$/) do |package, host|
+Then(/^I wait for "([^"]*)" to be uninstalled on "([^"]*)"$/) do |package, host|
   node = get_target(host)
   uninstalled = false
   output = ''
@@ -554,7 +532,7 @@ Then(/^"([^"]*)" is not installed on "([^"]*)"$/) do |package, host|
       end
     end
   end
-  raise "exec rpm removal failed (Code #{$CHILD_STATUS}): #{$ERROR_INFO}: #{output}" unless uninstalled
+  raise "Package removal failed (Code #{$CHILD_STATUS}): #{$ERROR_INFO}: #{output}" unless uninstalled
 end
 
 Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|

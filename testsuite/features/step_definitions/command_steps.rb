@@ -1,13 +1,19 @@
-# Copyright (c) 2014-17 SUSE
+# Copyright (c) 2014-2018 SUSE
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
 require 'timeout'
 
-Then(/^"([^"]*)" is installed on "([^"]*)"$/) do |package, target|
-  node = get_target(target)
+Then(/^"([^"]*)" should be installed on "([^"]*)"$/) do |package, host|
+  node = get_target(host)
   node.run("rpm -q #{package}")
 end
+
+Then(/^"([^"]*)" should not be installed on "([^"]*)"$/) do |package, host|
+  node = get_target(host)
+  node.run("rpm -q #{package}; test $? -ne 0")
+end
+
 
 Then(/^I apply highstate on "(.*?)"$/) do |minion|
   node = get_target(minion)
