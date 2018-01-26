@@ -1485,15 +1485,15 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.normal());
 
-        assertTrue(ConfigurationManager.isDuplicated(channel.getLabel(),
+        assertTrue(ConfigurationManager.conflictingChannelExists(channel.getLabel(),
                 ConfigChannelType.normal(),
                 channel.getOrg()));
 
-        assertTrue(ConfigurationManager.isDuplicated(channel.getLabel(),
+        assertTrue(ConfigurationManager.conflictingChannelExists(channel.getLabel(),
                 ConfigChannelType.state(),
                 channel.getOrg()));
 
-        assertFalse(ConfigurationManager.isDuplicated(channel.getLabel(),
+        assertFalse(ConfigurationManager.conflictingChannelExists(channel.getLabel(),
                 ConfigChannelType.local(),
                 channel.getOrg()));
     }
@@ -1505,15 +1505,15 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 ConfigChannelType.local());
 
-        assertFalse(ConfigurationManager.isDuplicated(channel.getLabel(),
+        assertFalse(ConfigurationManager.conflictingChannelExists(channel.getLabel(),
                 ConfigChannelType.normal(),
                 channel.getOrg()));
 
-        assertFalse(ConfigurationManager.isDuplicated(channel.getLabel(),
+        assertFalse(ConfigurationManager.conflictingChannelExists(channel.getLabel(),
                 ConfigChannelType.state(),
                 channel.getOrg()));
 
-        assertTrue(ConfigurationManager.isDuplicated(channel.getLabel(),
+        assertTrue(ConfigurationManager.conflictingChannelExists(channel.getLabel(),
                 ConfigChannelType.local(),
                 channel.getOrg()));
     }
