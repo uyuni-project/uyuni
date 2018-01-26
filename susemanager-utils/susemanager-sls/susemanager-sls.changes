@@ -1,3 +1,5 @@
+- compare osmajorrelease in jinja always as integer
+
 -------------------------------------------------------------------
 Thu Jan 11 10:51:55 CET 2018 - jgonzalez@suse.com
 
