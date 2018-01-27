@@ -49,6 +49,7 @@ public class ErrataOverview extends BaseDto {
     private String relationship;
     private boolean rebootSuggested;
     private boolean restartSuggested;
+    private Integer severityid;
     private String severityLabel;
 
     /**
@@ -141,6 +142,18 @@ public class ErrataOverview extends BaseDto {
      */
     public void setPackageNames(List p) {
         this.packageNames = p;
+    }
+    /**
+     * @return Returns severity.
+     */
+    public Integer getSeverityid() {
+        return severityid;
+    }
+    /**
+     * @param sId The severity to set.
+     */
+    public void setSeverityid(Integer sId) {
+        this.severityid = sId;
     }
     /**
      * @return Returns the cves.

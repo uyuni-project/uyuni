@@ -25,19 +25,41 @@
 
             <rl:decorator name="ElaborationDecorator"/>
 
-                 <rl:column sortable="false"
-                                   bound="false"
-                           headerkey="erratalist.jsp.type">
+            <rl:column sortable="false"
+                       bound="false"
+                       headerkey="erratalist.jsp.type">
 
-                    <c:if test="${current.securityAdvisory}">
-                        <rhn:icon type="errata-security" title="erratalist.jsp.securityadvisory" />
-                    </c:if>
-                    <c:if test="${current.bugFix}">
-                        <rhn:icon type="errata-bugfix" title="erratalist.jsp.bugadvisory" />
-                    </c:if>
-                    <c:if test="${current.productEnhancement}">
-                        <rhn:icon type="errata-enhance" title="erratalist.jsp.productenhancementadvisory" />
-                    </c:if>
+                <c:if test="${current.securityAdvisory}">
+                    <c:choose>
+                        <c:when test="${current.severityid=='0'}">
+                            <rhn:icon type="errata-security-critical"
+                                      title="erratalist.jsp.securityadvisory"/>
+                        </c:when>
+                        <c:when test="${current.severityid=='1'}">
+                            <rhn:icon type="errata-security-important"
+                                      title="erratalist.jsp.securityadvisory"/>
+                        </c:when>
+                        <c:when test="${current.severityid=='2'}">
+                            <rhn:icon type="errata-security-moderate"
+                                      title="erratalist.jsp.securityadvisory"/>
+                        </c:when>
+                        <c:when test="${current.severityid=='3'}">
+                            <rhn:icon type="errata-security-low"
+                                      title="erratalist.jsp.securityadvisory"/>
+                        </c:when>
+                        <c:otherwise>
+                            <rhn:icon type="errata-security"
+                                      title="erratalist.jsp.securityadvisory"/>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
+                <c:if test="${current.bugFix}">
+                    <rhn:icon type="errata-bugfix" title="erratalist.jsp.bugadvisory"/>
+                </c:if>
+                <c:if test="${current.productEnhancement}">
+                    <rhn:icon type="errata-enhance"
+                              title="erratalist.jsp.productenhancementadvisory"/>
+                </c:if>
                     <c:if test="${current.rebootSuggested}">
                         <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />
                     </c:if>
