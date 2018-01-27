@@ -1036,6 +1036,7 @@ public class ErrataFactory extends HibernateFactory {
             eo.setIssueDate((Date)values[6]);
             eo.setRebootSuggested((Boolean)values[7]);
             eo.setRestartSuggested((Boolean)values[8]);
+            eo.setSeverityid((Integer)values[9]);
             errata.add(eo);
         }
 
