@@ -762,8 +762,8 @@ class RepoSync(object):
         e['synopsis']      = notice['title'] or notice['update_id']
         if notice['type'] == 'security' and 'severity' in notice:
             e['security_impact'] = notice['severity']
-        if notice['type'] == 'security' and not e['synopsis'].startswith(notice['severity'] + ': '):
-            e['synopsis'] = notice['severity'] + ': ' + e['synopsis']
+            if not e['synopsis'].startswith(notice['severity'] + ': '):
+                e['synopsis'] = notice['severity'] + ': ' + e['synopsis']
         e['topic']         = ' '
         e['solution']      = ' '
         e['issue_date']    = self._to_db_date(notice['issued'])
