@@ -760,10 +760,14 @@ class RepoSync(object):
         e['product']       = notice['release'] or 'Unknown'
         e['description']   = notice['description'] or 'not set'
         e['synopsis']      = notice['title'] or notice['update_id']
-        if notice['type'] == 'security' and 'severity' in notice:
+        if notice['severity']:
             e['security_impact'] = notice['severity']
-            if not e['synopsis'].startswith(notice['severity'] + ': '):
+            if notice['type'] == 'security' and not e['synopsis'].startswith(notice['severity'] + ': '):
                 e['synopsis'] = notice['severity'] + ': ' + e['synopsis']
+        else:
+            # 'severity' not available in older yum versions
+            # set default to Low to get a correct currency rating
+            e['security_impact'] = "Low"
         e['topic']         = ' '
         e['solution']      = ' '
         e['issue_date']    = self._to_db_date(notice['issued'])
@@ -792,12 +796,6 @@ class RepoSync(object):
         e['keywords'] = self._update_keywords(notice)
         e['bugs'] = self._update_bugs(notice)
         e['cve'] = self._update_cve(notice)
-        if notice['severity']:
-            e['security_impact'] = notice['severity']
-        else:
-            # 'severity' not available in older yum versions
-            # set default to Low to get a correct currency rating
-            e['security_impact'] = "Low"
         e['locally_modified'] = None
         return e
 
