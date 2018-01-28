@@ -1,3 +1,4 @@
+- Replace custom states with configuration channels
 - fix pre formatted code (bsc#1067608)
 - fix message about package profile sync (bsc#1073739)
 - fix naming of the Tools channel (bsc#979633)

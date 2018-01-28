@@ -53,6 +53,9 @@
               <c:when test="${current.type == 'directory'}">
                 <rhn:icon type="header-folder" />
               </c:when>
+              <c:when test="${current.type == 'sls'}">
+                <rhn:icon type="system-state" />
+              </c:when>
               <c:otherwise>
                 <rhn:icon type="header-symlink" />
               </c:otherwise>
@@ -63,6 +66,9 @@
                       url="/rhn/configuration/ChannelOverview.do?ccid=${current.configChannelId}">
             <c:if test="${current.configChannelType == 'normal'}">
               <rhn:icon type="header-channel" />
+            </c:if>
+            <c:if test="${current.configChannelType == 'state'}">
+              <rhn:icon type="system-state" />
             </c:if>
             <c:if test="${current.configChannelType == 'local_override'}">
               <rhn:icon type="header-system" />

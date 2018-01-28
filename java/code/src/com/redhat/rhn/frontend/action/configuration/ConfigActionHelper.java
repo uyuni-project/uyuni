@@ -287,17 +287,19 @@ public abstract class ConfigActionHelper {
                                                String url,
                                                boolean includeEmptyFilesAndDirs,
                                                boolean includeAddUrlForEmpty) {
-        long fileCount = count.getFiles(), dirCount = count.getDirectories(),
-                symlinkCount = count.getSymlinks();
+        long fileCount = count.getFiles(), slsCount = count.getSlsFiles(),
+                dirCount = count.getDirectories(), symlinkCount = count.getSymlinks();
         int fileSuffix = getSuffix(fileCount);
+        int slsSuffix = getSuffix(slsCount);
         int dirSuffix = getSuffix(dirCount);
         int symlinkSuffix = getSuffix(symlinkCount);
 
         LocalizationService service  = LocalizationService.getInstance();
-        String key = "config." + "files_" + fileSuffix + "_dirs_" + dirSuffix +
-                "_symlinks_" + symlinkSuffix;
+        String key = "config." + "sls_" + slsSuffix + "_files_" + fileSuffix +
+                     "_dirs_" + dirSuffix + "_symlinks_" + symlinkSuffix;
 
-        if (fileSuffix == NONE && dirSuffix == NONE && symlinkSuffix == NONE) {
+        if (fileSuffix == NONE && dirSuffix == NONE &&
+                symlinkSuffix == NONE && slsSuffix == NONE) {
             if (includeAddUrlForEmpty && url != null) {
                 key += "_url";
                 return service.getMessage(key, new Object[] {url});
@@ -305,7 +307,7 @@ public abstract class ConfigActionHelper {
             return service.getMessage(key);
         }
 
-        /* now we know there is at least one file/dir/symlink
+        /* now we know there is at least one file/dir/symlink/sls
          * so all we need to do is make all NONEs into PLURALs
          */
         if (includeEmptyFilesAndDirs) {
@@ -318,12 +320,18 @@ public abstract class ConfigActionHelper {
             if (dirSuffix == NONE) {
                 dirSuffix = PLURAL;
             }
+            if (slsSuffix == NONE) {
+                slsSuffix = PLURAL;
+            }
+            key = "config." + "sls_" + slsSuffix + "_files_" + fileSuffix +
+                  "_dirs_" + dirSuffix + "_symlinks_" + symlinkSuffix;
         }
 
         String message = service.getMessage(key, new Object[] {
+            String.valueOf(slsCount),
             String.valueOf(fileCount),
             String.valueOf(dirCount),
-            String.valueOf(symlinkCount)
+            String.valueOf(symlinkCount),
         });
         if (url != null) {
             HtmlTag a = new HtmlTag("a");

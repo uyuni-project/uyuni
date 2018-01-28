@@ -99,9 +99,9 @@ public class TokenTest extends RhnBaseTestCase {
 
         // Create a global channel
         ConfigChannel global1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigChannel global2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
 
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
 

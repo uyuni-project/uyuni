@@ -813,15 +813,15 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         UserTestUtils.addUserRole(admin, RoleFactory.CONFIG_ADMIN);
         // Create a global channel
         ConfigChannel global1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigChannel global2 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
 
         ConfigChannel global3 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
 
         ConfigChannel global4 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
 
         List<ConfigChannel> configs = new LinkedList<ConfigChannel>();
         configs.add(global1);

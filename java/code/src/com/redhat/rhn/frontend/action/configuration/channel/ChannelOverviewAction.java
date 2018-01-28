@@ -14,18 +14,26 @@
  */
 package com.redhat.rhn.frontend.action.configuration.channel;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.action.configuration.ConfigFileForm;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.configuration.ChannelSummary;
 import com.redhat.rhn.manager.configuration.ConfigChannelCreationHelper;
+import com.redhat.rhn.manager.configuration.ConfigFileBuilder;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
+import com.redhat.rhn.manager.configuration.file.ConfigFileData;
+import com.redhat.rhn.manager.configuration.file.SLSFileData;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -45,9 +53,16 @@ import static java.util.Optional.ofNullable;
 public class ChannelOverviewAction extends RhnAction {
 
     /** Current ChannelSummary, in request/responce */
-    public static final String CHANNEL_SUMMARY = "summary";
+    private static final String CHANNEL_SUMMARY = "summary";
     /** Are we editing? */
-    public static final String CHANNEL_EDITING = "editing";
+    private static final String CHANNEL_EDITING = "editing";
+    /** init.sls data for state channels */
+    private static final String INIT_SLS_FILE = "initsls";
+
+    private static final String CHANNEL_TYPE_LABEL = "type";
+
+    /* Logger for this class */
+    private static final Logger LOG = Logger.getLogger(ChannelOverviewAction.class);
 
 
     /** {@inheritDoc} */
@@ -73,6 +88,7 @@ public class ChannelOverviewAction extends RhnAction {
                     helper.update(cc, daForm);
                     ConfigurationManager.getInstance().save(cc,
                             ofNullable(channelOldLabel));
+                    createInitSlsFile(cc, request, daForm);
                     setupForm(request, cc, daForm, params);
                     return getStrutsDelegate().forwardParams(
                             mapping.findForward("success"), params);
@@ -117,6 +133,31 @@ public class ChannelOverviewAction extends RhnAction {
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
     }
 
+    /**
+     * Create the init.sls file for channel
+     * @param request the incoming request
+     * @param channel the channel to be affected
+     * @param form the form to be filled in
+     */
+    private void createInitSlsFile(ConfigChannel channel,
+                                     HttpServletRequest request, DynaActionForm form) {
+        if (channel.isStateChannel()) {
+            channel = (ConfigChannel) HibernateFactory.reload(channel);
+            ConfigFileData data = new SLSFileData(StringUtil.webToLinux(
+                                    form.getString(ConfigFileForm.REV_CONTENTS)));
+            try {
+                RequestContext ctx = new RequestContext(request);
+                ConfigFileBuilder.getInstance().create(data, ctx.getCurrentUser(), channel);
+            }
+            catch (ValidatorException ve) {
+                getStrutsDelegate().saveMessages(request, ve.getResult());
+            }
+            catch (Exception e) {
+                LOG.error("Error creating init.sls file ", e);
+            }
+        }
+    }
+
 
     /**
      * Given the incoming request, set up the ChanelOverview form with channel info
@@ -139,6 +180,13 @@ public class ChannelOverviewAction extends RhnAction {
             User u = ctx.getCurrentUser();
             request.setAttribute(CHANNEL_SUMMARY, getSummary(u, cc));
         }
+
+        if (cc.isStateChannel() && cc.getConfigFiles() != null) {
+            request.setAttribute(INIT_SLS_FILE, cc.getConfigFiles().stream()
+                    .filter(c -> c.getLatestConfigRevision().isInitSls()).findFirst().orElse(null));
+        }
+
+        request.setAttribute(CHANNEL_TYPE_LABEL, cc.getConfigChannelType().getLabel());
 
 
         ConfigActionHelper.processParamMap(cc, params);
@@ -172,10 +220,10 @@ public class ChannelOverviewAction extends RhnAction {
         User u = ctx.getCurrentUser();
 
         ConfigChannel cc = ConfigActionHelper.getChannel(request);
-
         // Creating a new channel?
         if (cc == null && isSubmitted(form)) {
-            cc = helper.create(u);
+            ConfigChannelType type = ConfigChannelType.lookup(request.getParameter("type"));
+            cc = helper.create(u, type);
         }
         return cc;
     }

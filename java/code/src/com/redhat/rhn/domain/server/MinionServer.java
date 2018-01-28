@@ -16,12 +16,10 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.state.ServerStateRevision;
-import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.StateRevisionService;
+import com.redhat.rhn.manager.configuration.SaltConfigSubscriptionService;
+import com.redhat.rhn.manager.configuration.SaltConfigurable;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -35,7 +33,7 @@ import java.util.Set;
 /**
  * MinionServer
  */
-public class MinionServer extends Server {
+public class MinionServer extends Server implements SaltConfigurable {
 
     private String minionId;
     private String osFamily;
@@ -105,38 +103,25 @@ public class MinionServer extends Server {
     @Override
     public void subscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
         super.subscribeConfigChannels(configChannelList, user);
-        ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
-                .cloneLatest(this, user, true, true);
-        newServerRevision.getConfigChannels().addAll(configChannelList);
-        SaltStateGeneratorService.INSTANCE.generateServerCustomState(newServerRevision);
-        StateFactory.save(newServerRevision);
+        SaltConfigSubscriptionService.subscribeChannels(this, configChannelList, user);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
-    public int unsubscribeConfigChannels(List<ConfigChannel> configChannelList,
-            User user) {
-        ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
-                .cloneLatest(this, user, true, true);
-        newServerRevision.getConfigChannels().removeAll(configChannelList);
-        SaltStateGeneratorService.INSTANCE.generateServerCustomState(newServerRevision);
-        StateFactory.save(newServerRevision);
-        return super.unsubscribeConfigChannels(configChannelList, user);
+    public void unsubscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        super.unsubscribeConfigChannels(configChannelList, user);
+        SaltConfigSubscriptionService.unsubscribeChannels(this, configChannelList, user);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public void setConfigChannels(List<ConfigChannel> configChannelList, User user) {
         super.setConfigChannels(configChannelList, user);
-        ServerStateRevision newServerRevision = StateRevisionService.INSTANCE
-                .cloneLatest(this, user, true, false);
-        newServerRevision.getConfigChannels().addAll(configChannelList);
-        SaltStateGeneratorService.INSTANCE.generateServerCustomState(newServerRevision);
-        StateFactory.save(newServerRevision);
+        SaltConfigSubscriptionService.setConfigChannels(this, configChannelList, user);
     }
 
     /**

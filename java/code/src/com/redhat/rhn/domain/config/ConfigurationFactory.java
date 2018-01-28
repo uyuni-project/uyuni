@@ -34,6 +34,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Types;
@@ -215,7 +218,7 @@ public class ConfigurationFactory extends HibernateFactory {
                             "create_new_config_revision");
 
 
-        if (revision.isFile()) {
+        if (revision.isFile() || revision.isSls()) {
             //We need to save the content first so that we have an id for
             // the stored procedure.
             singleton.saveObject(revision.getConfigContent());
@@ -229,7 +232,7 @@ public class ConfigurationFactory extends HibernateFactory {
 
         inParams.put("revision_in", revision.getRevision());
         inParams.put("config_file_id_in", revision.getConfigFile().getId());
-        if (revision.isFile()) {
+        if (revision.isFile() || revision.isSls()) {
             inParams.put("config_content_id_in", revision.getConfigContent().getId());
         }
         else {
@@ -341,6 +344,35 @@ public class ConfigurationFactory extends HibernateFactory {
         // about a revision, we have to commit it -again-.  Sigh.  See BZ212236
         save(revision);
         return revision;
+    }
+
+    /**
+     * Retrieves a list of global (normal and state) config channels in an organization
+     *
+     * @param org the org
+     * @return the list of global config channels
+     */
+    public static List<ConfigChannel> listGlobalChannels(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ConfigChannel> criteria = builder.createQuery(ConfigChannel.class);
+        Root<ConfigChannel> root = criteria.from(ConfigChannel.class);
+        criteria.where(builder.and(
+                root.get("configChannelType").in(ConfigChannelType.normal(), ConfigChannelType.state()),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Retrieves a list of global (normal and state) config channels
+     *
+     * @return the list of global config channels
+     */
+    public static List<ConfigChannel> listGlobalChannels() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ConfigChannel> criteria = builder.createQuery(ConfigChannel.class);
+        Root<ConfigChannel> root = criteria.from(ConfigChannel.class);
+        criteria.where(root.get("configChannelType").in(ConfigChannelType.normal(), ConfigChannelType.state()));
+        return getSession().createQuery(criteria).getResultList();
     }
 
     /**
@@ -673,25 +705,51 @@ public class ConfigurationFactory extends HibernateFactory {
     }
 
     /**
+     * Attempt to safely remove a ConfigRevision without deleting the file. This
+     * uses a stored procedure and the stored procedure is required as it performs
+     * logic to determine the amount of org quota is now used and appropriately
+     * updates those tables.
+     *
+     * @param revision Revision to remove
+     * @param orgId The id for the org in which this revision is located.
+     * @return whether the remove attempt was successful or not.
+     * @throws ConfigFileSafeDeleteException thrown when attempting to delete the
+     * file itself along with the only revision
+     */
+    public static boolean safeRemoveConfigRevision(ConfigRevision revision, Long orgId)
+            throws ConfigFileSafeDeleteException {
+        return doRemoveConfigRevision(revision, orgId, true);
+    }
+
+    /**
      * Remove a ConfigRevision.
      * This uses a stored procedure and the stored procedure is required
      * as it performs logic to determine the amount of org quota is now
      * used and appropriately updates those tables.
      * @param revision Revision to remove
      * @param orgId The id for the org in which this revision is located.
-     * @return whether the parent file was deleted too.
+     * @return whether the file was deleted too.
      */
     public static boolean removeConfigRevision(ConfigRevision revision, Long orgId) {
+        try {
+            return doRemoveConfigRevision(revision, orgId, false);
+        }
+        catch (ConfigFileSafeDeleteException e) {
+            // Should never happen since we pass 'false' as safeDelete flag.
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static boolean doRemoveConfigRevision(ConfigRevision revision, Long orgId, boolean safeDelete)
+            throws ConfigFileSafeDeleteException {
         boolean latest = false;
         ConfigFile file = revision.getConfigFile();
         //is this revision the latest revision?
-        if (file.getLatestConfigRevision().getId()
-                .equals(revision.getId())) {
+        if (file.getLatestConfigRevision().getId().equals(revision.getId())) {
             latest = true;
         }
 
-        CallableMode m = ModeFactory.getCallableMode("config_queries",
-            "remove_config_revision");
+        CallableMode m = ModeFactory.getCallableMode("config_queries", "remove_config_revision");
 
         Map inParams = new HashMap();
         Map outParams = new HashMap();
@@ -708,10 +766,13 @@ public class ConfigurationFactory extends HibernateFactory {
                 file.setLatestConfigRevision(lookupConfigRevisionById(id));
                 commit(file);
             }
-            else {
-                //there are no revisions in this file, delete the file.
+            else if (!safeDelete) {
+                //there are no revisions in this file, delete the file (only if deleteFile flag is set).
                 removeConfigFile(file);
                 return true;
+            }
+            else {
+                throw new ConfigFileSafeDeleteException();
             }
         }
         return false;
@@ -951,8 +1012,11 @@ public class ConfigurationFactory extends HibernateFactory {
             throw new IllegalArgumentException("Error: channel type cannot be null");
         }
 
-        if (ConfigChannelType.global().getLabel().equals(type)) {
-            return channel; //for global channels, there name is the channel name.
+        if (ConfigChannelType.normal().getLabel().equals(type)) {
+            return channel;
+        }
+        if (ConfigChannelType.state().getLabel().equals(type)) {
+            return channel;
         }
         else if (ConfigChannelType.local().getLabel().equals(type)) {
             return LocalizationService.getInstance()

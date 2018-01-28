@@ -58,9 +58,9 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     public void testDeployConfiguration() throws Exception {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         List<ConfigChannel> gccList = new ArrayList<>();
         gccList.add(gcc1);
         gccList.add(gcc2);
@@ -139,9 +139,9 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     public void testConfigChannels() throws Exception {
         // Create  global config channels
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
 
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
 

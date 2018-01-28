@@ -56,6 +56,6 @@ public class SubscriptionsSetupAction extends BaseSetListAction {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         Server server = context.lookupAndBindServer();
         SdcHelper.ssmCheck(context.getRequest(), server.getId(), user);
-        return cm.listGlobalChannelsForSystemSubscriptions(server, user, pc);
+        return cm.listChannelsForSystemSubscriptions(server, user, pc);
     }
 }

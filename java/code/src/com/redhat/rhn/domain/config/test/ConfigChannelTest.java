@@ -29,10 +29,12 @@ public class ConfigChannelTest extends RhnBaseTestCase {
         ConfigChannel cc = ConfigurationFactory.newConfigChannel();
         cc.setConfigChannelType(ConfigChannelType.local());
         assertTrue(cc.isLocalChannel());
-        cc.setConfigChannelType(ConfigChannelType.global());
-        assertTrue(cc.isGlobalChannel());
+        cc.setConfigChannelType(ConfigChannelType.normal());
+        assertTrue(cc.isNormalChannel());
         cc.setConfigChannelType(ConfigChannelType.sandbox());
         assertTrue(cc.isSandboxChannel());
+        cc.setConfigChannelType(ConfigChannelType.state());
+        assertTrue(cc.isStateChannel());
     }
 }
 

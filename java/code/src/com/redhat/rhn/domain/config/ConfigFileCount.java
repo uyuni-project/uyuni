@@ -25,19 +25,23 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 public class ConfigFileCount {
     private long files;
+    private long slsFiles;
     private long directories;
     private long symlinks;
 
     /**
      * Creates a new instance of this class
      * @param files the files to set
+     * @param slsFiles the files to set
      * @param directories dirs to set
      * @param symlinks symlinks to set
      * @return a new ConfigFileCount object using the params passed in
      */
-    public static ConfigFileCount create(long files, long directories, long symlinks) {
+    public static ConfigFileCount create(long files, long slsFiles, long directories,
+                                         long symlinks) {
         ConfigFileCount  cf = new  ConfigFileCount();
         cf.setFiles(files);
+        cf.setSlsFiles(slsFiles);
         cf.setDirectories(directories);
         cf.setSymlinks(symlinks);
         return cf;
@@ -51,7 +55,7 @@ public class ConfigFileCount {
     }
     /**
      *
-     * @param directories the number dirs to set
+     * @param dirs the number dirs to set
      */
     private void setDirectories(long dirs) {
         this.directories = dirs;
@@ -65,10 +69,24 @@ public class ConfigFileCount {
     }
     /**
      *
-     * @param files the number of files to set
+     * @param numFiles the number of files to set
      */
     private void setFiles(long numFiles) {
         this.files = numFiles;
+    }
+    /**
+     *
+     * @return the number of sls files
+     */
+    public long getSlsFiles() {
+        return slsFiles;
+    }
+    /**
+     *
+     * @param numSlsFiles the number of files to set
+     */
+    private void setSlsFiles(long numSlsFiles) {
+        this.slsFiles = numSlsFiles;
     }
     /**
      *

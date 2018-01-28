@@ -2,8 +2,8 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const CustomStatesModule = require("../components/custom-states")
-const CustomStates = CustomStatesModule.CustomStates;
+const ConfigChannelsModule = require("../components/config-channels")
+const ConfigChannels = ConfigChannelsModule.ConfigChannels;
 const MessagesUtils = require("../components/messages").Utils;
 const Network = require("../utils/network");
 
@@ -25,7 +25,7 @@ function applyRequest(component) {
         .promise.then(data => {
               console.log("apply action queued:" + data);
               component.setState({
-                  messages: MessagesUtils.info(<span>{t("Applying the custom states has been ")}
+                  messages: MessagesUtils.info(<span>{t("Applying the config channels has been ")}
                       <a href={"/rhn/systems/details/history/Event.do?sid=" + serverId + "&aid=" + data}>{t("scheduled")}</a>
                   </span>)
               });
@@ -38,13 +38,13 @@ function saveRequest(states) {
         JSON.stringify({
             id: serverId,
             type: "SERVER",
-            saltStates: states
+            channels: states
         }),
         "application/json"
     );
 }
 
 ReactDOM.render(
-  <CustomStates matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest}/>,
-  document.getElementById('custom-states')
+  <ConfigChannels matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest}/>,
+  document.getElementById('config-channels')
 );

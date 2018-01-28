@@ -71,7 +71,7 @@ public class XmlRpcConfigChannelHelper {
      */
     public ConfigChannel lookupGlobal(User user, String label) {
         ConfigurationManager manager = ConfigurationManager.getInstance();
-        return manager.lookupConfigChannel(user, label, ConfigChannelType.global());
+        return manager.lookupConfigChannel(user, label, ConfigChannelType.normal());
     }
 
     /**

@@ -1,3 +1,8 @@
+- Migrate old custom states to state channels, assign systems to these new
+  channels, delete old custom-state-to-system assignments, delete the custom
+  states from the db; Before migrating, rename custom states with same name as
+  existing configuration channel labels.
+- Update queries for global channels
 - Check if channel is already subscribed even before checking if parent channel is subscribed or not (bsc#1072797)
 - support multiple FQDNs per system (bsc#1063419)
 - avoid use of the potentially-slow rhnServerNeededPackageCache view

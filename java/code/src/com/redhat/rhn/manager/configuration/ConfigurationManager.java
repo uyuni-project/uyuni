@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileCount;
 import com.redhat.rhn.domain.config.ConfigFileName;
+import com.redhat.rhn.domain.config.ConfigFileSafeDeleteException;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
@@ -58,6 +59,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.utils.MinionServerUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
@@ -98,6 +100,7 @@ public class ConfigurationManager extends BaseManager {
     public static final int ENABLE_ERROR_PACKAGES = 3;
 
     public static final String FEATURE_CONFIG = "ftr_config";
+
     /**
      * Prevent people for making objects of this class.
      */
@@ -113,7 +116,7 @@ public class ConfigurationManager extends BaseManager {
     }
 
     /**
-     * Saves the ConfigChannel and updates its salt file hierarchy on the disk.
+     * Saves the ConfigChannel and updates its salt file hierarchy and the assignment states on the disk.
      *
      * @param cc the config channel to save.
      * @param channelOldLabel - the label of the channel before the change.
@@ -201,6 +204,27 @@ public class ConfigurationManager extends BaseManager {
         elabParams.put("user_id", user.getId());
         return makeDataResult(params, elabParams, null, m);
     }
+    /**
+     * This query lists  all the channels based on system type
+     * a user can see along with info on whether the
+     * channels are subscribed to a given server
+     * Basically used in SDC Subscribe Channels page
+     * @param server the server to check the channels
+     *                                      subscriptions on
+     * @param user The user looking at channels.
+     * @param pc A page control for this user.
+     * @return A list of the channels in DTO format.
+     */
+    public DataResult<ConfigChannelDto> listChannelsForSystemSubscriptions(Server server,
+                                                                          User user,
+                                                                          PageControl pc) {
+        if (MinionServerUtils.isMinionServer(server)) {
+            return listGlobalChannelsForSystemSubscriptions(server, user, pc);
+        }
+        else {
+            return listNormalChannelsForSystemSubscriptions(server, user, pc);
+        }
+    }
 
     /**
      * This query basically lists  all the global channels
@@ -219,6 +243,32 @@ public class ConfigurationManager extends BaseManager {
             PageControl pc) {
         SelectMode m = ModeFactory.getMode("config_queries",
                 "config_channels_for_system_subscriptions");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user.getId());
+        params.put("org_id", user.getOrg().getId());
+        params.put("sid", server.getId());
+        Map<String, Object> elabParams = new HashMap<String, Object>();
+        elabParams.put("user_id", user.getId());
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * This query lists only the the global channels
+     * of type 'Normal' a user can see along with info on whether the
+     * channels are subscribed to a given server
+     * Basically used in SDC Subscribe Channels page
+     * @param server the server to check the channels
+     *                                      subscriptions on
+     * @param user The user looking at channels.
+     * @param pc A page control for this user.
+     * @return A list of the channels in DTO format.
+     */
+    public DataResult<ConfigChannelDto>
+    listNormalChannelsForSystemSubscriptions(Server server,
+                                             User user,
+                                             PageControl pc) {
+        SelectMode m = ModeFactory.getMode("config_queries",
+                "normal_config_channels_for_system_subscriptions");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("org_id", user.getOrg().getId());
@@ -1017,6 +1067,25 @@ public class ConfigurationManager extends BaseManager {
     }
 
     /**
+     * Return the number of SLS files in this config-channel
+     * @param user user making the request
+     * @param channel channel of interest
+     * @return number of sls files in this channel
+     */
+    public int getSlsCount(User user, ConfigChannel channel)  {
+        if (!accessToChannel(user.getId(), channel.getId())) {
+            throw new IllegalArgumentException(
+                    "User [" + user.getId() +
+                            "] has no access to channel [" + channel.getId() + "]");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("ccid", channel.getId());
+        params.put("filetype", "sls");
+        params.put("user_id", user.getId());
+        return doCountFiles(params);
+    }
+
+    /**
      * List systems subscribed to this channel, sorted by date-modified (descending)
      * @param user user making the request
      * @param channel channel of interest
@@ -1139,6 +1208,7 @@ public class ConfigurationManager extends BaseManager {
         summary.setNumDirs(getDirCount(user, channel));
         summary.setNumFiles(getFileCount(user, channel));
         summary.setNumSymlinks(getSymlinkCount(user, channel));
+        summary.setNumSls(getSlsCount(user, channel));
 
         DataResult dr = getFileInfo(user, channel);
         if (dr != null && dr.size() > 0) {
@@ -1295,12 +1365,19 @@ public class ConfigurationManager extends BaseManager {
      */
     public DataResult listSystemsNotInChannel(User user, ConfigChannel channel,
             PageControl pc) {
+        SelectMode mode = null;
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("ccid", channel.getId());
         params.put("user_id", user.getId());
-        SelectMode m = ModeFactory.getMode("config_queries",
-                "managed_systems_not_in_channel");
-        DataResult dr = makeDataResult(params, new HashMap(), pc, m);
+        if (channel.isStateChannel()) {
+            mode = ModeFactory.getMode("config_queries",
+                    "managed_minions_not_in_channel");
+        }
+        else {
+            mode = ModeFactory.getMode("config_queries",
+                    "managed_systems_not_in_channel");
+        }
+        DataResult dr = makeDataResult(params, new HashMap(), pc, mode);
         return dr;
     }
 
@@ -1365,7 +1442,7 @@ public class ConfigurationManager extends BaseManager {
         StateFactory.StateRevisionsUsage usage =
                 StateFactory.latestStateRevisionsByConfigChannel(channel);
         ConfigurationFactory.removeConfigChannel(channel);
-        SaltStateGeneratorService.INSTANCE.regenerateCustomStates(usage);
+        SaltStateGeneratorService.INSTANCE.regenerateConfigStates(usage);
     }
 
     /**
@@ -1422,7 +1499,7 @@ public class ConfigurationManager extends BaseManager {
      * the user actually can delete the config revision
      * @param user The user requesting to delete the revision
      * @param revision The revision to be deleted.
-     * @return whether the parent file was also deleted.
+     * @return whether the file was also deleted.
      * @throws IllegalArgumentException if user is not allowed to delete this
      *         config revision (different org or not config admin).
      */
@@ -1439,12 +1516,25 @@ public class ConfigurationManager extends BaseManager {
                     user.getId() +
                     "] is not allowed access to revision [" + revision.getId() + "]");
         }
-        //remove the channel
-        boolean result = ConfigurationFactory
-                .removeConfigRevision(revision, user.getOrg().getId());
+
+        // Remove the channel
+        boolean isFileDeleted = false;
+        if (revision.isInitSls()) {
+            try {
+                ConfigurationFactory.safeRemoveConfigRevision(revision,
+                        user.getOrg().getId());
+            }
+            catch (ConfigFileSafeDeleteException e) {
+                throw new IllegalArgumentException("Cannot delete the only revision for the init.sls file.", e);
+            }
+        }
+        else {
+            isFileDeleted = ConfigurationFactory.removeConfigRevision(revision, user.getOrg().getId());
+        }
+
         ConfigChannelSaltManager.getInstance()
                 .generateConfigChannelFiles(revision.getConfigFile().getConfigChannel());
-        return result;
+        return isFileDeleted;
     }
 
     /**
@@ -1466,6 +1556,11 @@ public class ConfigurationManager extends BaseManager {
                     "User [" + user.getId() +
                     "] does not have access to file [" + file.getId() + "].");
         }
+        if (ConfigChannelType.state().equals(file.getConfigChannel().getConfigChannelType()) &&
+                file.getLatestConfigRevision().isInitSls()) {
+            throw new IllegalArgumentException("Cannot delete the init.sls file.");
+        }
+
         //remove the file
         ConfigurationFactory.removeConfigFile(file);
         // we have removed a file using a Mode, let's clear the hibernate cache so that
@@ -1477,7 +1572,7 @@ public class ConfigurationManager extends BaseManager {
 
     /**
      * Copies a config file. Performs checking to determine whether
-     * the user actually can delete the config file.
+     * the user actually can copy the config file.
      * Only copies the revision of the file given. Puts the revision into a config
      * file with the same deploy path in the new channel, or creates a config file if
      * a candidate file does not exist.
@@ -1499,6 +1594,10 @@ public class ConfigurationManager extends BaseManager {
             throw new IllegalArgumentException("User [" + user.getId() +
                     "] does not have access to channel [" + channel.getId() + "].");
         }
+        if (revision.isInitSls() && !channel.isStateChannel()) {
+            throw new IllegalArgumentException("Can only copy the init.sls file to a state channel.");
+        }
+
         //copy the file
         ConfigurationFactory.copyRevisionToChannel(user, revision, channel);
         // here - re-create the channel on disk
@@ -1752,7 +1851,7 @@ public class ConfigurationManager extends BaseManager {
     private ConfigFileCount processCountedFilePathQueries(String query, Map params) {
         SelectMode m = ModeFactory.getMode("config_queries", query);
         List results = m.execute(params);
-        long files = 0, dirs = 0, symlinks = 0;
+        long files = 0, slsFiles = 0, dirs = 0, symlinks = 0;
 
         for (Iterator itr = results.iterator(); itr.hasNext();) {
             Map map = (Map)itr.next();
@@ -1762,6 +1861,9 @@ public class ConfigurationManager extends BaseManager {
             if (ConfigFileType.file().getLabel().equals(fileType)) {
                 files = count.longValue();
             }
+            else if (ConfigFileType.sls().getLabel().equals(fileType)) {
+                slsFiles = count.longValue();
+            }
             else if (ConfigFileType.symlink().getLabel().equals(fileType)) {
                 symlinks = count.longValue();
             }
@@ -1770,7 +1872,7 @@ public class ConfigurationManager extends BaseManager {
             }
         }
 
-        return ConfigFileCount.create(files, dirs, symlinks);
+        return ConfigFileCount.create(files, slsFiles,  dirs, symlinks);
     }
 
     /**
@@ -1836,6 +1938,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("user_id", user.getId());
         List pathList = m.execute(params);
         Set files = new HashSet();
+        Set slsfiles = new HashSet();
         Set dirs = new HashSet();
         Set symlinks = new HashSet();
         for (Iterator itr = pathList.iterator(); itr.hasNext();) {
@@ -1847,6 +1950,11 @@ public class ConfigurationManager extends BaseManager {
                     files.add(path);
                 }
             }
+            if (ConfigFileType.sls().getLabel().equals(fileType)) {
+                if (!dirs.contains(path) && !symlinks.contains(path)) {
+                     slsfiles.add(path);
+                }
+            }
             else if (ConfigFileType.symlink().getLabel().equals(fileType)) {
                 if (!dirs.contains(path) && !files.contains(path)) {
                     symlinks.add(path);
@@ -1856,7 +1964,8 @@ public class ConfigurationManager extends BaseManager {
                 dirs.add(path);
             }
         }
-        return ConfigFileCount.create(files.size(), dirs.size(), symlinks.size());
+        return ConfigFileCount.create(files.size(), slsfiles.size(), dirs.size(),
+                symlinks.size());
     }
 
 
@@ -2366,12 +2475,29 @@ public class ConfigurationManager extends BaseManager {
     }
 
     /**
-     * Returns the config channel id of a channel given
-     * a user, a channel label, an org and a channel tpye
-     * @param user User who is looking up
-     * @return the config channel id or null of nothing exists
+     * Returns true if there already exists a config channel that is uniquely determined
+     * by given label, channel type and organization.
+     *
+     * Note: Handling of the channels of 'state' and 'normal' types is stricter: if there is
+     * already a channel of 'state' type, the method will return true also for the 'normal'
+     * channel type (with the same name and org) and vice versa.
+     *
+     * @param label Label of the config channel
+     * @param cct the contig channel type
+     * @param org the org of the current user
+     * @return true if there already exists such a channel/false otherwise.
      */
-
+    public static boolean conflictingChannelExists(String label, ConfigChannelType cct, Org org) {
+        if (cct.getLabel().equals(ConfigChannelType.STATE) ||
+                cct.getLabel().equals(ConfigChannelType.NORMAL)) {
+            // if global channel, we want to be a bit stricter
+            return channelExists(label, ConfigChannelType.state(), org) ||
+                    channelExists(label, ConfigChannelType.normal(), org);
+        }
+        else {
+            return channelExists(label, cct, org);
+        }
+    }
 
     /**
      * Returns true if there already exists
@@ -2381,8 +2507,7 @@ public class ConfigurationManager extends BaseManager {
      * @param org the org of the current user
      * @return true if there already exists such a channel/false otherwise.
      */
-    public boolean isDuplicated(String label, ConfigChannelType cct,
-            Org org) {
+    private static boolean channelExists(String label, ConfigChannelType cct, Org org) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("cc_label", label);
         params.put("cct_label", cct.getLabel());

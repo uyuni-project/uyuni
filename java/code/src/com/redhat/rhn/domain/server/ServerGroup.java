@@ -16,7 +16,11 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.Identifiable;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.configuration.SaltConfigSubscriptionService;
+import com.redhat.rhn.manager.configuration.SaltConfigurable;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -30,8 +34,7 @@ import java.util.List;
  *
  * @version $Rev: 2143 $
  */
-public class ServerGroup extends BaseDomainHelper
-                                implements Identifiable {
+public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltConfigurable {
 
     public static final long UNLIMITED = Long.MAX_VALUE;
 
@@ -144,6 +147,30 @@ public class ServerGroup extends BaseDomainHelper
     */
     public Long getCurrentMembers() {
         return ServerGroupFactory.getCurrentMembers(this);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void subscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        SaltConfigSubscriptionService.subscribeChannels(this, configChannelList, user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void unsubscribeConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        SaltConfigSubscriptionService.unsubscribeChannels(this, configChannelList, user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setConfigChannels(List<ConfigChannel> configChannelList, User user) {
+        SaltConfigSubscriptionService.setConfigChannels(this, configChannelList, user);
     }
 
     /**

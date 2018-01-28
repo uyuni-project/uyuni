@@ -58,7 +58,7 @@ public class SubscriptionsSubmitAction extends BaseSetOperateOnSelectedItemsActi
         RequestContext context = new RequestContext(request);
         ConfigurationManager cm = ConfigurationManager.getInstance();
         Server server = context.lookupAndBindServer();
-        return cm.listGlobalChannelsForSystemSubscriptions(server, user, null);
+        return cm.listChannelsForSystemSubscriptions(server, user, null);
     }
 
     /**

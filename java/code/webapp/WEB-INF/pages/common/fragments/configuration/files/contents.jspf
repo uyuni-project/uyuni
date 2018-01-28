@@ -1,5 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
+<c:choose>
+    <c:when test="${revision.sls}">
+        <%@ include file="/WEB-INF/pages/common/fragments/editareaYaml.jspf" %>
+    </c:when>
+    <c:otherwise >
+        <%@ include file="/WEB-INF/pages/common/fragments/editarea.jspf" %>
+    </c:otherwise>
+</c:choose>
 
 <div class="panel panel-default">
     <div class="panel-heading">

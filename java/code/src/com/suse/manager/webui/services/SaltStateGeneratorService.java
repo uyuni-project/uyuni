@@ -16,7 +16,7 @@ package com.suse.manager.webui.services;
 
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SALT_CUSTOM_STATES_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_PILLAR_DATA_PATH;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
@@ -43,7 +43,7 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.utils.MachinePasswordUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
-import com.suse.manager.webui.utils.SaltCustomState;
+import com.suse.manager.webui.utils.SaltConfigChannelState;
 import com.suse.manager.webui.utils.SaltPillar;
 
 import org.apache.log4j.Logger;
@@ -57,7 +57,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -237,31 +236,31 @@ public enum SaltStateGeneratorService {
     }
 
     /**
-     * Remove the custom states assignments for minion server.
+     * Remove the config channel assignments for minion server.
      * @param minion the minion server
      */
-    public void removeCustomStateAssignments(MinionServer minion) {
-        removeCustomStateAssignments(getServerStateFileName(minion.getMachineId()));
+    public void removeConfigChannelAssignments(MinionServer minion) {
+        removeConfigChannelAssignments(getServerStateFileName(minion.getMachineId()));
     }
 
     /**
-     * Remove the custom states assignments for server group.
+     * Remove the config channel assignments for server group.
      * @param group the server group
      */
-    public void removeCustomStateAssignments(ServerGroup group) {
-        removeCustomStateAssignments(getGroupStateFileName(group.getId()));
+    public void removeConfigChannelAssignments(ServerGroup group) {
+        removeConfigChannelAssignments(getGroupStateFileName(group.getId()));
     }
 
     /**
-     * Remove the custom states assignments for an organization.
+     * Remove the config channel assignments for an organization.
      * @param org the organization
      */
-    public void removeCustomStateAssignments(Org org) {
-        removeCustomStateAssignments(getOrgStateFileName(org.getId()));
+    public void removeConfigChannelAssignments(Org org) {
+        removeConfigChannelAssignments(getOrgStateFileName(org.getId()));
     }
 
-    private void removeCustomStateAssignments(String file) {
-        Path baseDir = suseManagerStatesFilesRoot.resolve(SALT_CUSTOM_STATES_DIR);
+    private void removeConfigChannelAssignments(String file) {
+        Path baseDir = suseManagerStatesFilesRoot.resolve(SALT_CONFIG_STATES_DIR);
         Path filePath = baseDir.resolve(defaultExtension(file));
 
         try {
@@ -274,112 +273,84 @@ public enum SaltStateGeneratorService {
     }
 
     /**
-     * Generate .sls file to assign custom states to a server.
-     * @param serverStateRevision the state revision of a server
+     * Generate .sls file to assign config channels to a configurable entity.
+     * @param revision the state revision of the configurable
      */
-    public void generateServerCustomState(ServerStateRevision serverStateRevision) {
-        serverStateRevision.getServer().asMinionServer().ifPresent(minion -> {
-            LOG.debug("Generating custom state SLS file for server: " + minion.getId());
+    public void generateConfigState(StateRevision revision) {
+        generateConfigState(revision, suseManagerStatesFilesRoot);
+    }
 
-            generateCustomStates(minion.getOrg().getId(), serverStateRevision,
-                    getServerStateFileName(minion.getMachineId()),
-                    suseManagerStatesFilesRoot);
+    /**
+     * Generate .sls file to assign config channels to a configurable entity.
+     * @param revision the state revision of the configurable
+     * @param statePath the directory where to generate the files
+     */
+    public void generateConfigState(StateRevision revision, Path statePath) {
+        if (revision instanceof ServerStateRevision) {
+            generateServerConfigState((ServerStateRevision) revision, statePath);
+        }
+        else if (revision instanceof ServerGroupStateRevision) {
+            generateGroupConfigState((ServerGroupStateRevision) revision, statePath);
+        }
+        else if (revision instanceof OrgStateRevision) {
+            generateOrgConfigState((OrgStateRevision) revision, statePath);
+        }
+    }
+
+    /**
+     * Generate .sls file to assign config channels to a server.
+     * @param serverStateRevision the state revision of a server
+     * @param statePath the directory where to generate the files
+     */
+    private void generateServerConfigState(ServerStateRevision serverStateRevision, Path statePath) {
+        serverStateRevision.getServer().asMinionServer().ifPresent(minion -> {
+            LOG.debug("Generating config channel SLS file for server: " + minion.getId());
+
+            generateConfigStates(serverStateRevision, getServerStateFileName(minion.getMachineId()), statePath);
         });
     }
 
     /**
-     * Generate .sls file to assign custom states to a server group.
-     * @param groupStateRevision the state revision of a server group
-     */
-    public void generateGroupCustomState(ServerGroupStateRevision groupStateRevision) {
-        generateGroupCustomState(groupStateRevision, suseManagerStatesFilesRoot);
-    }
-
-    /**
-     * Generate .sls file to assign custom states to a server group.
+     * Generate .sls file to assign config channels to a server group.
      * @param groupStateRevision the state revision of a server group
      * @param statePath the directory where to generate the files
      */
-    public void generateGroupCustomState(ServerGroupStateRevision groupStateRevision,
+    private void generateGroupConfigState(ServerGroupStateRevision groupStateRevision,
                                          Path statePath) {
         ServerGroup group = groupStateRevision.getGroup();
-        LOG.debug("Generating custom state SLS file for server group: " + group.getId());
+        LOG.debug("Generating config channel SLS file for server group: " + group.getId());
 
-        generateCustomStates(group.getOrg().getId(), groupStateRevision,
-                getGroupStateFileName(group.getId()), statePath);
-    }
-
-
-    /**
-     * Generate .sls file to assign custom states to an org.
-     * @param orgStateRevision the state revision of an org
-     */
-    public void generateOrgCustomState(OrgStateRevision orgStateRevision) {
-        generateOrgCustomState(orgStateRevision, suseManagerStatesFilesRoot);
+        generateConfigStates(groupStateRevision, getGroupStateFileName(group.getId()), statePath);
     }
 
     /**
-     * Generate .sls file to assign custom states to an org.
+     * Generate .sls file to assign config channels to an org.
      * @param orgStateRevision the state revision of an org
      * @param statePath the directory where to generate the sls files
      */
-    public void generateOrgCustomState(OrgStateRevision orgStateRevision, Path statePath) {
+    private void generateOrgConfigState(OrgStateRevision orgStateRevision, Path statePath) {
         Org org = orgStateRevision.getOrg();
-        LOG.debug("Generating custom state SLS file for organization: " + org.getId());
+        LOG.debug("Generating config channel SLS file for organization: " + org.getId());
 
-        generateCustomStates(org.getId(), orgStateRevision,
-                getOrgStateFileName(org.getId()), statePath);
+        generateConfigStates(orgStateRevision, getOrgStateFileName(org.getId()), statePath);
     }
 
-    private void generateCustomStates(long orgId, StateRevision stateRevision,
-                                      String fileName, Path statePath) {
+    private void generateConfigStates(StateRevision stateRevision, String fileName, Path statePath) {
+        generateStateAssignmentFile(fileName, stateRevision.getConfigChannels(), statePath);
+    }
+
+    private void generateStateAssignmentFile(String fileName, List<ConfigChannel> states, Path statePath) {
         ConfigChannelSaltManager confChannelSaltManager =
                 ConfigChannelSaltManager.getInstance();
-
-        // Custom states
-        // TODO: Remove this part when state channels are implemented
-        Stream<String> stateNames = stateRevision.getCustomStates()
-                .stream()
-                .filter(s -> !s.isDeleted()) // skip deleted states
-                .map(s -> SaltCustomStateStorageManager.INSTANCE.getOrgNamespace(orgId) +
-                        "." + s.getStateName());
-
-        // Config channels
-        // TODO: Move getChannelStateName call into generateCustomStateAssignmentFile when
-        // state channels are implemented (currently custom states use a different path
-        Stream<ConfigChannel> cfgStates;
-        if (stateRevision instanceof ServerStateRevision) {
-            // Fix for server assignment order. Unlike server group and org assignments,
-            // they have an ordering which must be preserved inside assignment file.
-            // THIS APPROACH ONLY WORKS IF THE SPECIFIED REVISION IS THE LATEST ONE.
-            //
-            // TODO: Revisit this when custom states and server group & org assignments
-            // are implemented
-            // (Add ranking data to suseStateRevisionConfigChannel?)
-
-            Server server = ((ServerStateRevision)stateRevision).getServer();
-            cfgStates = server.getConfigChannelStream();
-        }
-        else {
-            cfgStates = stateRevision.getConfigChannels().stream();
-        }
-        Stream<String> cfgStateNames =
-                cfgStates.map(confChannelSaltManager::getChannelStateName);
-
-        generateCustomStateAssignmentFile(orgId, fileName,
-                Stream.concat(stateNames, cfgStateNames).collect(Collectors.toSet()),
-                statePath);
-    }
-
-    private void generateCustomStateAssignmentFile(long orgId, String fileName,
-        Set<String> stateNames, Path statePath) {
-        Path baseDir = statePath.resolve(SALT_CUSTOM_STATES_DIR);
+        Path baseDir = statePath.resolve(SALT_CONFIG_STATES_DIR);
+        List<String> stateNames =
+                states.stream().map(confChannelSaltManager::getChannelStateName).collect(Collectors.toList());
         try {
             Files.createDirectories(baseDir);
             Path filePath = baseDir.resolve(defaultExtension(fileName));
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(filePath.toFile());
-            saltStateGenerator.generate(new SaltCustomState(stateNames));
+            saltStateGenerator.generate(new SaltConfigChannelState(stateNames));
         }
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
@@ -388,55 +359,41 @@ public enum SaltStateGeneratorService {
     }
 
     /**
-     * Generate pillar and custom states assignments for a
+     * Generate pillar and config channels assignments for a
      * newly registered server.
      * @param minion newly registered minion
      */
     public void registerServer(MinionServer minion) {
-        // TODO create an empty revision ?
+        // create an empty revision ? -Too late now :(
         generatePillar(minion);
-        generateCustomStateAssignmentFile(minion.getOrg().getId(),
-                getServerStateFileName(minion.getMachineId()),
-                Collections.emptySet(), suseManagerStatesFilesRoot);
+        generateStateAssignmentFile(getServerStateFileName(minion.getMachineId()), Collections.emptyList(),
+                suseManagerStatesFilesRoot);
     }
 
     /**
-     * Remove pillars and custom states assignments of a server.
+     * Remove pillars and config channels assignments of a server.
      * @param minion the minion
      */
     public void removeServer(MinionServer minion) {
         removePillar(minion);
-        removeCustomStateAssignments(minion);
+        removeConfigChannelAssignments(minion);
     }
 
     /**
-     * Remove custom states assignments of a group.
+     * Remove config channels assignments of a group.
      * @param group the group
      */
     public void removeServerGroup(ServerGroup group) {
-        removeCustomStateAssignments(group);
+        removeConfigChannelAssignments(group);
     }
 
     /**
-     * Remove custom states assignments of all servers in that org.
+     * Remove config channels assignments of all servers in that org.
      * @param org the org
      */
     public void removeOrg(Org org) {
-        MinionServerFactory.lookupByOrg(org.getId()).stream()
-                .forEach(this::removeServer);
-        removeCustomStateAssignments(org);
-    }
-
-    /**
-     * Regenerate custom state assignments for org, group and severs where
-     * the given state is used.
-     * @param orgId org id
-     * @param name custom state name
-     */
-    public void regenerateCustomStates(long orgId, String name) {
-        StateFactory.StateRevisionsUsage usage = StateFactory
-                .latestStateRevisionsByCustomState(orgId, name);
-        regenerateCustomStates(usage);
+        MinionServerFactory.lookupByOrg(org.getId()).forEach(this::removeServer);
+        removeConfigChannelAssignments(org);
     }
 
     /**
@@ -447,41 +404,35 @@ public enum SaltStateGeneratorService {
     public void regenerateConfigStates(ConfigChannel configChannelIn) {
         StateFactory.StateRevisionsUsage usage = StateFactory
                 .latestStateRevisionsByConfigChannel(configChannelIn);
-        regenerateCustomStates(usage);
+        regenerateConfigStates(usage);
     }
 
     /**
-     * Regenerate custom state assignments for org, group and severs for
+     * Regenerate config channel assignments for org, group and severs for
      * the given usages.
-     * @param usage custom states usages
+     * @param usage config channel usages
      */
-    public void regenerateCustomStates(StateFactory.StateRevisionsUsage usage) {
-        usage.getServerStateRevisions().forEach(rev ->
-                generateServerCustomState(rev)
-        );
-        usage.getServerGroupStateRevisions().forEach(rev ->
-                generateGroupCustomState(rev)
-        );
-        usage.getOrgStateRevisions().forEach(rev ->
-                generateOrgCustomState(rev)
-        );
+    public void regenerateConfigStates(StateFactory.StateRevisionsUsage usage) {
+        usage.getServerStateRevisions().forEach(this::generateConfigState);
+        usage.getServerGroupStateRevisions().forEach(this::generateConfigState);
+        usage.getOrgStateRevisions().forEach(this::generateConfigState);
     }
 
     /**
      * Regenerate pillar with the new org and create a new state revision without
-     * any package or custom states.
+     * any package or config channels.
      * @param minion the migrated server
      * @param user the user performing the migration
      */
     public void migrateServer(MinionServer minion, User user) {
-        // generate a new state revision without any package or custom states
+        // generate a new state revision without any package or config channels
         ServerStateRevision newStateRev = StateRevisionService.INSTANCE
                 .cloneLatest(minion, user, false, false);
         StateFactory.save(newStateRev);
 
-        // refresh pillar, custom and package states
+        // refresh pillar, config and package states
         generatePillar(minion);
-        generateServerCustomState(newStateRev);
+        generateConfigState(newStateRev);
         StatesAPI.generateServerPackageState(minion);
     }
 
@@ -504,7 +455,7 @@ public enum SaltStateGeneratorService {
      * @return the name of the generated server group .sls file.
      */
     public String getServerGroupGeneratedStateName(long groupId) {
-        return SALT_CUSTOM_STATES_DIR + "." + getGroupStateFileName(groupId);
+        return SALT_CONFIG_STATES_DIR + "." + getGroupStateFileName(groupId);
     }
 
     /**
@@ -526,9 +477,8 @@ public enum SaltStateGeneratorService {
      * @param serverGroup the new server group
      */
     public void createServerGroup(ServerGroup serverGroup) {
-        generateCustomStateAssignmentFile(serverGroup.getOrg().getId(),
-                getGroupStateFileName(serverGroup.getId()),
-                Collections.emptySet(), suseManagerStatesFilesRoot);
+        generateStateAssignmentFile(getGroupStateFileName(serverGroup.getId()), Collections.emptyList(),
+                suseManagerStatesFilesRoot);
     }
 
     /**
@@ -536,9 +486,8 @@ public enum SaltStateGeneratorService {
      * @param org the new org
      */
     public void createOrg(Org org) {
-        generateCustomStateAssignmentFile(org.getId(),
-                getOrgStateFileName(org.getId()),
-                Collections.emptySet(), suseManagerStatesFilesRoot);
+        generateStateAssignmentFile(getOrgStateFileName(org.getId()), Collections.emptyList(),
+                suseManagerStatesFilesRoot);
     }
 
 

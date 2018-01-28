@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
-import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.MinionServer;
 
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
@@ -51,7 +51,7 @@ public class StateFactory extends HibernateFactory {
     private static StateFactory singleton = new StateFactory();
 
     /**
-     * Holds the result of {@link StateFactory#latestStateRevisionsByCustomState}.
+     * Holds the result of {@link StateFactory#latestStateRevisionsByConfigChannel}.
      */
     public static class StateRevisionsUsage {
         private List<ServerStateRevision> serverStateRevisions = new LinkedList<>();
@@ -99,20 +99,12 @@ public class StateFactory extends HibernateFactory {
     }
 
     /**
-     * Save a {@link CustomState}.
-     * @param customState the salt state to save
-     */
-    public static void save(CustomState customState) {
-        singleton.saveObject(customState);
-    }
-
-    /**
      * Lookup the latest set of {@link PackageState} objects for a given server.
      *
      * @param server the server
      * @return the latest package states for this server
      */
-    public static Optional<Set<PackageState>> latestPackageStates(Server server) {
+    public static Optional<Set<PackageState>> latestPackageStates(MinionServer server) {
         Optional<ServerStateRevision> revision = latestRevision(ServerStateRevision.class,
                 "server", server);
         return revision.map(ServerStateRevision::getPackageStates);
@@ -166,44 +158,8 @@ public class StateFactory extends HibernateFactory {
      * @param server the server
      * @return the optional {@link OrgStateRevision}
      */
-    public static Optional<ServerStateRevision> latestStateRevision(Server server) {
+    public static Optional<ServerStateRevision> latestStateRevision(MinionServer server) {
         return latestRevision(ServerStateRevision.class, "server", server);
-    }
-
-    /**
-     * Lookup the latest set of custom {@link CustomState} objects for a given server.
-     *
-     * @param org the organization
-     * @return the latest custom states for this server
-     */
-    public static Optional<Set<CustomState>> latestCustomStates(Org org) {
-        Optional<OrgStateRevision> revision = latestRevision(
-                OrgStateRevision.class, "org", org);
-        return filterDeleted(revision);
-    }
-
-    /**
-     * Lookup the latest set of custom {@link CustomState} objects for a given server.
-     *
-     * @param group the server group
-     * @return the latest custom states for this server
-     */
-    public static Optional<Set<CustomState>> latestCustomStates(ServerGroup group) {
-        Optional<ServerGroupStateRevision> revision = latestRevision(
-                ServerGroupStateRevision.class, "group", group);
-        return filterDeleted(revision);
-    }
-
-    /**
-     * Lookup the latest set of custom {@link CustomState} objects for a given server.
-     *
-     * @param server the server
-     * @return the latest custom states for this server
-     */
-    public static Optional<Set<CustomState>> latestCustomStates(Server server) {
-        Optional<ServerStateRevision> revision = latestRevision(
-                ServerStateRevision.class, "server", server);
-        return filterDeleted(revision);
     }
 
     /**
@@ -212,22 +168,38 @@ public class StateFactory extends HibernateFactory {
      * @param server the server
      * @return the latest config channels for this server
      */
-    public static Optional<Set<ConfigChannel>> latestConfigChannels(Server server) {
+    public static Optional<List<ConfigChannel>> latestConfigChannels(MinionServer server) {
         Optional<ServerStateRevision> revision = latestRevision(
                 ServerStateRevision.class, "server", server);
         return Optional
                 .ofNullable(revision.map(StateRevision::getConfigChannels).orElse(null));
     }
 
-    private static Optional<Set<CustomState>> filterDeleted(
-            Optional<? extends StateRevision> revision) {
-        return revision.map(
-                r -> r.getCustomStates().stream()
-                        .filter(s -> !s.isDeleted())
-                        .collect(Collectors.toSet())
-        );
+    /**
+     * Lookup the latest set of {@link ConfigChannel} objects for a given server group.
+     *
+     * @param group the server group
+     * @return the latest config channels for this server
+     */
+    public static Optional<List<ConfigChannel>> latestConfigChannels(ServerGroup group) {
+        Optional<ServerGroupStateRevision> revision = latestRevision(
+                ServerGroupStateRevision.class, "group", group);
+        return Optional
+                .ofNullable(revision.map(StateRevision::getConfigChannels).orElse(null));
     }
 
+    /**
+     * Lookup the latest set of {@link ConfigChannel} objects for a given org.
+     *
+     * @param org the organization
+     * @return the latest config channels for this server
+     */
+    public static Optional<List<ConfigChannel>> latestConfigChannels(Org org) {
+        Optional<OrgStateRevision> revision = latestRevision(
+                OrgStateRevision.class, "org", org);
+        return Optional
+                .ofNullable(revision.map(StateRevision::getConfigChannels).orElse(null));
+    }
 
     private static <T extends StateRevision> Optional<T> latestRevision(
             Class<T> revisionType, String field, Object bean) {
@@ -248,81 +220,6 @@ public class StateFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         return log;
-    }
-
-    /**
-     * Get a {@link CustomState} object from the db by name
-     * @param name the name of the state to get
-     * @param orgId the org id
-     * @return an {@link Optional} containing a {@link CustomState} object
-     */
-    public static Optional<CustomState> getCustomStateByName(long orgId, String name) {
-        CustomState state = (CustomState)getSession().createCriteria(CustomState.class)
-                .add(Restrictions.eq("stateName", name))
-                .add(Restrictions.eq("org.id", orgId))
-                .add(Restrictions.eq("deleted", false))
-                .uniqueResult();
-        return Optional.ofNullable(state);
-    }
-
-    /**
-     * Get a list of {@link CustomState} from the db by organization
-     * @param orgId the org id
-     * @return a list of {@link CustomState} that belong to the given org
-     */
-    public static List<CustomState> getCustomStatesByOrg(long orgId) {
-        return (List<CustomState>)getSession().createCriteria(CustomState.class)
-                .add(Restrictions.eq("org.id", orgId))
-                .add(Restrictions.eq("deleted", false))
-                .list();
-    }
-
-    /**
-     * Mark custom state as deleted in the database. Does not actually remove it.
-     * @param orgId the org id
-     * @param name the custom state name
-     */
-    public static void removeCustomState(long orgId, String name) {
-        Optional<CustomState> customState = getCustomStateByName(orgId, name);
-        customState.ifPresent(state ->
-                state.setDeleted(true)
-        );
-    }
-
-    /**
-     * Find latest state revisions where a custom state is used.
-     * @param orgIdIn the org of the custom state
-     * @param stateNameIn the name of the custom state
-     * @return a {@link StateRevisionsUsage} bean holding the latest
-     * server/group/org revisions where the given custom state is used
-     */
-    public static StateRevisionsUsage latestStateRevisionsByCustomState(
-            long orgIdIn, String stateNameIn) {
-        List<Long[]> idList = getSession().getNamedQuery("StateRevision.findStateUsage")
-                .setLong("orgId", orgIdIn)
-                .setString("stateName", stateNameIn)
-                .list();
-
-        StateRevisionsUsage usage = new StateRevisionsUsage();
-        for (Object[] ids : idList) {
-            Long stateId = (Long)ids[0];
-
-            if (ids[1] != null) {
-                ServerStateRevision rev =
-                        getSession().get(ServerStateRevision.class, stateId);
-                usage.getServerStateRevisions().add(rev);
-            }
-            else if (ids[2] != null) {
-                ServerGroupStateRevision rev =
-                        getSession().get(ServerGroupStateRevision.class, stateId);
-                usage.getServerGroupStateRevisions().add(rev);
-            }
-            else if (ids[3] != null) {
-                OrgStateRevision rev = getSession().get(OrgStateRevision.class, stateId);
-                usage.getOrgStateRevisions().add(rev);
-            }
-        }
-        return usage;
     }
 
     /**
@@ -369,7 +266,7 @@ public class StateFactory extends HibernateFactory {
      * @param eventUserId the creator of the state
      * @param pkgs list of packages to add to the state
      */
-    public static void addPackagesToNewStateRevision(Server server,
+    public static void addPackagesToNewStateRevision(MinionServer server,
             Optional<Long> eventUserId, List<Package> pkgs) {
         Optional<User> eventUser = eventUserId.map(UserFactory::lookupById);
         Optional<User> creatorUser = Optional.ofNullable(server.getCreator());

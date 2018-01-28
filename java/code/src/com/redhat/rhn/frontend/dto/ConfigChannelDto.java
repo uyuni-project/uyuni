@@ -39,6 +39,7 @@ public class ConfigChannelDto extends BaseDto {
     private String type;
     private Integer position;
     private Integer filesOnlyCount;
+    private Integer slsOnlyCount;
     private Integer dirsOnlyCount;
     private Integer symlinksOnlyCount;
 
@@ -153,6 +154,10 @@ public class ConfigChannelDto extends BaseDto {
             int totalFiles = 0;
             if (filesOnlyCount != null) {
                 totalFiles += filesOnlyCount.intValue();
+            }
+
+            if (slsOnlyCount != null) {
+                totalFiles += slsOnlyCount.intValue();
             }
 
             if (dirsOnlyCount != null) {
@@ -391,6 +396,21 @@ public class ConfigChannelDto extends BaseDto {
     }
 
     /**
+     * @return the slsOnlyCount
+     */
+    public Integer getSlsOnlyCount() {
+        return slsOnlyCount;
+    }
+
+
+    /**
+     * @param count the slsOnlyCount to set
+     */
+    public void setSlsOnlyCount(Integer count) {
+        this.slsOnlyCount = count;
+    }
+
+    /**
      * @return the symlinksOnlyCount
      */
     public Integer getSymlinksOnlyCount() {
@@ -412,9 +432,12 @@ public class ConfigChannelDto extends BaseDto {
      *
      */
     public String getFilesAndDirsDisplayString() {
-        int files = 0, dirs = 0, symlinks = 0;
+        int files = 0, slsFiles = 0, dirs = 0, symlinks = 0;
         if (filesOnlyCount != null) {
             files = filesOnlyCount.intValue();
+        }
+        if (slsOnlyCount != null) {
+            slsFiles = slsOnlyCount.intValue();
         }
         if (dirsOnlyCount != null) {
             dirs = dirsOnlyCount.intValue();
@@ -422,7 +445,7 @@ public class ConfigChannelDto extends BaseDto {
         if (symlinksOnlyCount != null) {
             symlinks = symlinksOnlyCount.intValue();
         }
-        ConfigFileCount count = ConfigFileCount.create(files, dirs, symlinks);
+        ConfigFileCount count = ConfigFileCount.create(files, slsFiles,  dirs, symlinks);
         return ConfigActionHelper.makeFileCountsMessage(count, null, false, false);
     }
 

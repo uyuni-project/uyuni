@@ -242,7 +242,7 @@ public class ConfigChannelHandler extends BaseHandler {
     public ConfigChannel getDetails(User loggedInUser, String configChannelLabel) {
         ConfigurationManager manager = ConfigurationManager.getInstance();
         return manager.lookupConfigChannel(loggedInUser, configChannelLabel,
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
     }
 
     /**
@@ -287,7 +287,7 @@ public class ConfigChannelHandler extends BaseHandler {
                                             String description) {
         ConfigurationManager manager = ConfigurationManager.getInstance();
         ConfigChannel cc = manager.lookupConfigChannel(loggedInUser, label,
-                                        ConfigChannelType.global());
+                                        ConfigChannelType.normal());
 
         ConfigChannelCreationHelper helper = new ConfigChannelCreationHelper();
 
@@ -721,7 +721,7 @@ public class ConfigChannelHandler extends BaseHandler {
      */
     public int channelExists(User loggedInUser, String channelLabel) {
         ConfigurationManager manager = ConfigurationManager.getInstance();
-        if (manager.isDuplicated(channelLabel, ConfigChannelType.global(),
+        if (manager.conflictingChannelExists(channelLabel, ConfigChannelType.normal(),
                 loggedInUser.getOrg())) {
             return 1;
         }

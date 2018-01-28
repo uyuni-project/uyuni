@@ -1482,6 +1482,24 @@ As a Channel Administrator, you may change the base channels your systems are su
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state">
+        <source>Create configuration file</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="channelOverview.jsp.tasks.initsls">
+        <source>State File</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="channelOverview.jsp.tasks.viewinitsls">
+        <source>View/Edit 'init.sls' File</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      </trans-unit>
 
       <!-- code/src/com/redhat/rhn/frontend/strings/java/StringResource_en_US.xml -->
       <trans-unit id="Clone Errata">
@@ -2718,6 +2736,9 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="Highstate">
         <source>Highstate</source>
       </trans-unit>
+      <trans-unit id="Configuration Channels">
+          <source>Configuration Channels</source>
+      </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.minions">
         <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
         <context-group name="ctx">
@@ -2848,6 +2869,18 @@ You may grant provisioning entitlements _here_.
       </trans-unit>
       <trans-unit id="ssm.delete.systems.cancel">
           <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="unsubscribe.ssm.success">
+        <source>System successfully unsubscribed from configuration channels.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="unsubscribe.ssm.successes">
+        <source>Systems successfully unsubscribed from configuration channels.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
+        </context-group>
       </trans-unit>
 
     </body>

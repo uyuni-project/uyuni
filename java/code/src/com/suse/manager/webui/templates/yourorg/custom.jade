@@ -4,7 +4,7 @@
     i.fa.fa-group
     | #{" " + orgName + " "}
 
-#custom-states
+#config-channels
 
 script(type='text/javascript').
     var csrfToken = "#{csrf_token}";
@@ -12,5 +12,6 @@ script(type='text/javascript').
 
 script(src='/javascript/ace-editor/src-min-noconflict/ace.js')
 script(src='/javascript/ace-editor/src-min-noconflict/ext-modelist.js')
+script(src='/javascript/jquery-ui.js')
 
-script(src='/javascript/manager/org-custom-states.bundle.js', type='text/javascript')
+script(src='/javascript/manager/org-config-channels.bundle.js', type='text/javascript')

@@ -8,9 +8,13 @@
 <head>
 </head>
 <body>
-<rhn:toolbar base="h1" icon="header-channel-configuration"
+<c:set var="actionLink" value="/rhn/configuration/ChannelCreate.do?editing=true&type=state"/>
+<c:set var="actionMessage" value="toolbar.create.state.configchannel"/>
+<c:set var="actionIcon" value="item-add"/>
+
+<rhn:toolbar base="h1" icon="header-channel-configuration"   miscUrl="${actionLink}" miscIcon="${actionIcon}" miscText="${actionMessage}" miscAlt="${actionMessage}"  miscAcl="user_role(config_admin)"
  helpUrl="/rhn/help/reference/en-US/ref.webui.config.files.jsp#configuration-files-central"
- creationUrl="/rhn/configuration/ChannelCreate.do?editing=true"
+ creationUrl="/rhn/configuration/ChannelCreate.do?editing=true&type=normal"
  creationType="configchannel"
  creationAcl="user_role(config_admin)">
   <bean:message key="globalconfiglist.jsp.toolbar"/>
@@ -34,6 +38,10 @@
 
       <rhn:column header="globalconfiglist.jsp.label">
         ${current.label}
+      </rhn:column>
+
+      <rhn:column header="globalconfiglist.jsp.type">
+              ${current.typeDisplay}
       </rhn:column>
 
       <rhn:column header="globalconfiglist.jsp.files"
