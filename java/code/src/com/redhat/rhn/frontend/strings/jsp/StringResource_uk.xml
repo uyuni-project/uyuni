@@ -5139,7 +5139,7 @@ organization. You may grant or remove the organization administrator role in the
           
         </trans-unit>
         <trans-unit id="ssm.overview.channels.memberships">
-          <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChildSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
+          <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChannelSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
           
         </trans-unit>
         <trans-unit id="ssm.overview.channels.subscriptions">

@@ -34,6 +34,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
+import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -83,7 +84,8 @@ public class ChannelDetailsAction extends RhnAction {
             params.put("cid", cid);
             fwd = "success";
             ServerFactory.listMinionsByChannel(cid).stream().forEach(ms -> {
-                SaltStateGeneratorService.INSTANCE.generatePillar(ms, false);
+                SaltStateGeneratorService.INSTANCE.generatePillar(ms, false,
+                        Collections.emptySet());
             });
         }
 

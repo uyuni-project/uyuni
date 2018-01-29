@@ -5140,7 +5140,7 @@ nicht standardmäßigen Organisation hinzufügen, werden diese von der Standard-
           <target>Channels</target>
         </trans-unit>
         <trans-unit id="ssm.overview.channels.memberships">
-          <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChildSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
+          <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChannelSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
           <target>&lt;a href=&quot;/rhn/channel/ssm/ChildSubscriptions.do&quot;&gt;Channel-Mitgliedschaften&lt;/a&gt; von Systemen verwalten</target>
         </trans-unit>
         <trans-unit id="ssm.overview.channels.subscriptions">

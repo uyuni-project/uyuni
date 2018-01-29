@@ -25,6 +25,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -48,6 +50,7 @@ import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFileName;
@@ -2189,6 +2192,42 @@ public class ActionManager extends BaseManager {
         ActionFactory.save(action);
 
         scheduleForExecution(action, new HashSet<>(sids));
+        return action;
+    }
+
+    /**
+     * Schedule setting the channels.
+     *
+     * @param scheduler the user who is scheduling
+     * @param sids list of server ids
+     * @param baseChannel the base channel to set, if any
+     * @param channels the additional channels to subscribe
+     * @param earliest action will not be executed before this date
+     * @return the action object
+     * @throws TaskomaticApiException if the the action could not be
+     * scheduled in Taskomatic
+     */
+    public static SubscribeChannelsAction scheduleSubscribeChannelsAction(User scheduler,
+                                                                          Set<Long> sids,
+                                                                          Optional<Channel> baseChannel,
+                                                                          Collection<Channel> channels,
+                                                                          Date earliest)
+    throws TaskomaticApiException {
+        SubscribeChannelsAction action = (SubscribeChannelsAction)ActionFactory
+                .createAction(ActionFactory.TYPE_SUBSCRIBE_CHANNELS, earliest);
+        action.setName("Subscribe channels");
+        action.setOrg(scheduler.getOrg());
+        action.setSchedulerUser(scheduler);
+
+        SubscribeChannelsActionDetails actionDetails = new SubscribeChannelsActionDetails(
+                baseChannel.orElse(null),
+                new HashSet<>(channels));
+        actionDetails.setParentAction(action);
+        action.setDetails(actionDetails);
+        ActionFactory.save(action);
+        scheduleForExecution(action, sids);
+
+        taskomaticApi.scheduleSubscribeChannels(scheduler, action);
         return action;
     }
 

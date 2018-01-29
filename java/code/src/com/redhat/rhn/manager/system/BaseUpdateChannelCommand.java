@@ -29,6 +29,9 @@ import org.apache.log4j.Logger;
  */
 public class BaseUpdateChannelCommand extends BasePersistOperation {
 
+    private boolean skipChannelChangedEvent;
+    private boolean scheduleApplyChannelsState;
+
     /**
      * Logger for this class
      */
@@ -67,5 +70,38 @@ public class BaseUpdateChannelCommand extends BasePersistOperation {
         }
     }
 
+    /**
+     * @return skipChannelChangedEvent to get
+     */
+    public boolean isSkipChannelChangedEvent() {
+        return skipChannelChangedEvent;
+    }
 
+    /**
+     * Set true here to skip sending the {@link ChannelsChangedEventMessage} for this
+     * command. This makes sense in case the child channels were removed as part of a base
+     * channel change.
+     *
+     * @param skip the value to set: true if sending the event should be skipped
+     */
+    public void skipChannelChangedEvent(boolean skip) {
+        skipChannelChangedEvent = skip;
+    }
+
+    /**
+     * @return scheduleApplyChannelsState to get
+     */
+    public boolean isScheduleApplyChannelsState() {
+        return scheduleApplyChannelsState;
+    }
+
+    /**
+     * Set to true to schedule applying the channels state for Salt systems after
+     * the channels are updated.
+     *
+     * @param scheduleApplyChannelsStateIn to set
+     */
+    public void setScheduleApplyChannelsState(boolean scheduleApplyChannelsStateIn) {
+        this.scheduleApplyChannelsState = scheduleApplyChannelsStateIn;
+    }
 }

@@ -258,6 +258,37 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
 
+    <sql-query name="Channel.findChildChannelsByParentInSSM">
+        <return-scalar column="channelId" type="long"/>
+        <return-scalar column="channelName" type="string"/>
+        <return-scalar column="channelOrg" type="long"/>
+        <![CDATA[
+    select distinct c.id as channelId, c.name as channelName, c.org_id as channelOrg
+    from
+                    rhnChannelFamilyMembers cfm,
+                    rhnChannelFamily cf,
+                    rhnServerChannelArchCompat scac,
+                    rhnChannel c,
+                    rhnUserServerPerms usp,
+                    rhnServerChannel sc,
+                    rhnSet st,
+                    rhnServer s
+    where   st.user_id = :user_id
+            and st.label = 'system_list'
+            and st.element = s.id
+            and usp.user_id = :user_id
+            and st.element = usp.server_id
+            and st.element = sc.server_id
+            and s.server_arch_id = scac.server_arch_id
+            and scac.channel_arch_id = c.channel_arch_id
+            and c.id = cfm.channel_id
+            and cfm.channel_family_id = cf.id
+            and c.parent_channel = :parent_id
+            and cf.label not in ('rhn-satellite','rhn-proxy', 'SMS', 'SMS-X86', 'SMS-Z', 'SMS-PPC', 'SMP')
+            and rhn_channel.user_role_check(c.id, :user_id, 'subscribe')=1
+        ]]>
+    </sql-query>
+
     <sql-query name="Channel.findRedHatBaseChannelsByUserId">
         <![CDATA[SELECT {c.*}
                 FROM rhnChannel {c}

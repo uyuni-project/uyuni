@@ -69,6 +69,7 @@ import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
@@ -78,41 +79,53 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.ChannelTestUtils;
-import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.ServerGroupTestUtils;
-import com.redhat.rhn.testing.ServerTestUtils;
-import com.redhat.rhn.testing.TestStatics;
-import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.testing.*;
 
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
 import org.hibernate.type.IntegerType;
+import org.jmock.Expectations;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
+import static com.redhat.rhn.manager.action.test.ActionManagerTest.assertNotEmpty;
+import static com.redhat.rhn.testing.RhnBaseTestCase.reload;
 
-public class SystemManagerTest extends RhnBaseTestCase {
+
+public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
     public static final Long NUM_CPUS = new Long(5);
     public static final int HOST_RAM_MB = 2048;
     public static final int HOST_SWAP_MB = 1024;
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
                 MockXMLRPCInvoker.class.getName());
         MockConnection.clear();
+        setImposteriser(ClassImposteriser.INSTANCE);
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() {
+            {
+                allowing(taskomaticMock)
+                    .scheduleActionExecution(with(any(Action.class)));
+            }
+        });
     }
 
     public void testSnapshotServer() throws Exception {
@@ -1226,5 +1239,88 @@ public class SystemManagerTest extends RhnBaseTestCase {
         actual = SystemManager.countSystemsInSetWithoutFeature(user, "non matching",
                         "ftr_kickstart");
         assertEquals(0, actual);
+    }
+
+    public void testUpdateServerChannels() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser", "testOrg" +
+                this.getClass().getSimpleName());
+        Server server = ServerFactoryTest.createTestServer(user, true);
+
+        Channel base1 = ChannelFactoryTest.createBaseChannel(user);
+        Channel ch1_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+
+        ch1_1.setParentChannel(base1);
+
+        server.addChannel(base1);
+        server.addChannel(ch1_1);
+
+        Channel base2 = ChannelFactoryTest.createBaseChannel(user);
+        Channel ch2_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch2_2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch2_1.setParentChannel(base2);
+        ch2_2.setParentChannel(base2);
+
+        HibernateFactory.getSession().flush();
+
+        SystemManager.updateServerChannels(user, server, Optional.of(base2), Arrays.asList(ch2_1, ch2_2), null);
+
+        assertEquals(base2.getId(), server.getBaseChannel().getId());
+        assertEquals(2, server.getChildChannels().size());
+        assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2_1.getId())));
+        assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2_2.getId())));
+    }
+
+    public void testUpdateServerChannelsNoChildren() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser", "testOrg" +
+                this.getClass().getSimpleName());
+        Server server = ServerFactoryTest.createTestServer(user, true);
+
+        Channel base1 = ChannelFactoryTest.createBaseChannel(user);
+        Channel ch1_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+
+        ch1_1.setParentChannel(base1);
+
+        server.addChannel(base1);
+        server.addChannel(ch1_1);
+
+        Channel base2 = ChannelFactoryTest.createBaseChannel(user);
+        Channel ch2_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch2_2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch2_1.setParentChannel(base2);
+        ch2_2.setParentChannel(base2);
+
+        HibernateFactory.getSession().flush();
+
+        SystemManager.updateServerChannels(user, server, Optional.of(base2), Collections.emptyList(), null);
+
+        assertEquals(base2.getId(), server.getBaseChannel().getId());
+        assertEquals(0, server.getChildChannels().size());
+    }
+
+    public void testUpdateServerChannelsNoBase() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser", "testOrg" +
+                this.getClass().getSimpleName());
+        Server server = ServerFactoryTest.createTestServer(user, true);
+
+        Channel base1 = ChannelFactoryTest.createBaseChannel(user);
+        Channel ch1_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+
+        ch1_1.setParentChannel(base1);
+
+        server.addChannel(base1);
+        server.addChannel(ch1_1);
+
+        Channel base2 = ChannelFactoryTest.createBaseChannel(user);
+        Channel ch2_1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch2_2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch2_1.setParentChannel(base2);
+        ch2_2.setParentChannel(base2);
+
+        HibernateFactory.getSession().flush();
+
+        SystemManager.updateServerChannels(user, server, Optional.empty(), Arrays.asList(ch2_1, ch2_2), null);
+
+        assertNull(server.getBaseChannel());
+        assertEquals(0, server.getChildChannels().size());
     }
 }
