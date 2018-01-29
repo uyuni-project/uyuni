@@ -684,7 +684,84 @@ public class ChannelSoftwareHandler extends BaseHandler {
         return 1;
     }
 
+    /**
+     * Creates a software channel, parent_channel_label can be empty string
+     * @param loggedInUser The current user
+     * @param label Channel label to be created
+     * @param name Name of Channel
+     * @param summary Channel Summary
+     * @param archLabel Architecture label
+     * @param parentLabel Parent Channel label (may be null)
+     * @param checksumType checksum type for this channel
+     * @param gpgKey a map consisting of
+     *      <li>string url</li>
+     *      <li>string id</li>
+     *      <li>string fingerprint</li>
+     * @param gpgCheck GPG check enable/disable
+     * @return 1 if creation of channel succeeds.
+     * @since 10.9
+     * @throws PermissionCheckFailureException  thrown if user does not have
+     * permission to create the channel.
+     * @throws InvalidChannelNameException thrown if given name is in use or
+     * otherwise, invalid.
+     * @throws InvalidChannelLabelException throw if given label is in use or
+     * otherwise, invalid.
+     * @throws InvalidParentChannelException thrown if parent label is for a
+     * channel that is not a base channel.
+     *
+     * @xmlrpc.doc Creates a software channel
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "label", "label of the new channel")
+     * @xmlrpc.param #param_desc("string", "name", "name of the new channel")
+     * @xmlrpc.param #param_desc("string", "summary" "summary of the channel")
+     * @xmlrpc.param #param_desc("string", "archLabel",
+     *              "the label of the architecture the channel corresponds to,
+     *              see channel.software.listArches API for complete listing")
+     * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
+     *              channel, an empty string if it does not have one")
+     * @xmlrpc.param #param_desc("string", "checksumType", "checksum type for this channel,
+     *              used for yum repository metadata generation")
+     *      #options()
+     *          #item_desc ("sha1", "Offers widest compatibility  with clients")
+     *          #item_desc ("sha256", "Offers highest security, but is compatible
+     *                        only with newer clients: Fedora 11 and newer,
+     *                        or Enterprise Linux 6 and newer.")
+     *      #options_end()
+     * @xmlrpc.param
+     *      #struct("gpgKey")
+     *          #prop_desc("string", "url", "GPG key URL")
+     *          #prop_desc("string", "id", "GPG key ID")
+     *          #prop_desc("string", "fingerprint", "GPG key Fingerprint")
+     *      #struct_end()
+     * @xmlrpc.param #param_desc("boolean", "gpgCheck", "true if the GPG check should be
+     *     enabled by default, false otherwise")
 
+     * @xmlrpc.returntype int - 1 if the creation operation succeeded, 0 otherwise
+     */
+    public int create(User loggedInUser, String label, String name,
+                      String summary, String archLabel, String parentLabel,
+                      String checksumType, Map<String, String> gpgKey, boolean gpgCheck)
+            throws PermissionCheckFailureException, InvalidChannelLabelException,
+            InvalidChannelNameException, InvalidParentChannelException {
+
+        if (!loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN)) {
+            throw new PermissionCheckFailureException();
+        }
+        CreateChannelCommand ccc = new CreateChannelCommand();
+        ccc.setArchLabel(archLabel);
+        ccc.setLabel(label);
+        ccc.setName(name);
+        ccc.setSummary(summary);
+        ccc.setParentLabel(parentLabel);
+        ccc.setUser(loggedInUser);
+        ccc.setChecksumLabel(checksumType);
+        ccc.setGpgKeyUrl(gpgKey.get("url"));
+        ccc.setGpgKeyId(gpgKey.get("id"));
+        ccc.setGpgKeyFp(gpgKey.get("fingerprint"));
+        ccc.setGpgCheck(gpgCheck);
+
+        return (ccc.create() != null) ? 1 : 0;
+    }
     /**
      * Creates a software channel, parent_channel_label can be empty string
      * @param loggedInUser The current user
@@ -741,22 +818,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
         throws PermissionCheckFailureException, InvalidChannelLabelException,
                InvalidChannelNameException, InvalidParentChannelException {
 
-        if (!loggedInUser.hasRole(RoleFactory.CHANNEL_ADMIN)) {
-            throw new PermissionCheckFailureException();
-        }
-        CreateChannelCommand ccc = new CreateChannelCommand();
-        ccc.setArchLabel(archLabel);
-        ccc.setLabel(label);
-        ccc.setName(name);
-        ccc.setSummary(summary);
-        ccc.setParentLabel(parentLabel);
-        ccc.setUser(loggedInUser);
-        ccc.setChecksumLabel(checksumType);
-        ccc.setGpgKeyUrl(gpgKey.get("url"));
-        ccc.setGpgKeyId(gpgKey.get("id"));
-        ccc.setGpgKeyFp(gpgKey.get("fingerprint"));
-
-        return (ccc.create() != null) ? 1 : 0;
+        return create(loggedInUser, label, name, summary, archLabel, parentLabel,
+                checksumType, gpgKey, true);
     }
 
     /**
