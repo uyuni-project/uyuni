@@ -1,3 +1,4 @@
+- Uniform date formatting in System Details view (bsc#1045289)
 - Handle gpg_check correctly (bsc#1076578)
 - Show the time on the event history page in the users preferred timezone (bsc#1063891)
 - Uniform the notification message when rebooting a system (bsc#1036302)

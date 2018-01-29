@@ -267,7 +267,7 @@
                                   arg0="${system.pushClient.state.name}"/>
                     <c:choose>
                       <c:when test="${system.pushClient.lastMessageTime != null}">
-                        <fmt:formatDate value="${system.pushClient.lastMessageTime}" type="both" dateStyle="short" timeStyle="long"/><br/>
+                        <rhn:formatDate humanStyle="calendar" value="${system.pushClient.lastMessageTime}" type="both" dateStyle="short" timeStyle="long"/><br/>
                       </c:when>
                       <c:otherwise>
                         <bean:message key="sdc.details.overview.unknown" /><br/>
@@ -275,7 +275,7 @@
                     </c:choose>
                     <c:if test="${system.pushClient.lastPingTime != null}">
                       <bean:message key="sdc.details.overview.osa.status.lastping"/>
-                      <fmt:formatDate value="${system.pushClient.lastPingTime}" type="both" dateStyle="short" timeStyle="long"/>
+                      <rhn:formatDate humanStyle="calendar" value="${system.pushClient.lastPingTime}" type="both" dateStyle="short" timeStyle="long"/>
                       <br/>
                     </c:if>
                      <a href="/rhn/systems/details/Overview.do?sid=${system.id}&amp;ping=1"><bean:message key="sdc.details.overview.osa.status.ping"/></a>
