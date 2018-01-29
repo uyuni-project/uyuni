@@ -1,8 +1,12 @@
 "use strict";
+const React = require("react");
 
-const React = require("react")
+export type Cancelable = {
+  promise: Promise<any>,
+  cancel: (any) => void
+};
 
-const cancelable = (promise, onCancel) => {
+function cancelable(promise: Promise<any>, onCancel: (Error|void) => void): Cancelable {
     var rejectFn;
     var isCanceled = false;
 
@@ -19,14 +23,14 @@ const cancelable = (promise, onCancel) => {
 
     return {
         promise: race,
-        cancel: (reason) => {
+        cancel: (reason: any) => {
             isCanceled = true;
             rejectFn(reason);
         }
     };
 }
 
-function dateWithTimezone(dateString) {
+function dateWithTimezone(dateString: string): Date {
     const offsetNum = parseInt(dateString.substring(dateString.length - 6).replace(':', ''));
     const serverOffset = Math.trunc(offsetNum / 100) * 60 + offsetNum % 100;
     const orig = new Date(dateString);
@@ -36,7 +40,7 @@ function dateWithTimezone(dateString) {
     return final;
 }
 
-function LocalDateTime(date) {
+function LocalDateTime(date: Date): string {
     const padTo = (v) => {
         v = v.toString();
         if(v.length >= 2) return v;
@@ -52,23 +56,23 @@ function LocalDateTime(date) {
            "T" + padTo(hours) + ":" + padTo(minutes) + ":" + padTo(seconds);
 }
 
-function sortById(aRaw, bRaw) {
+function sortById(aRaw: Object, bRaw: Object): number {
   const aId = aRaw["id"];
   const bId = bRaw["id"];
   return aId > bId ? 1 : (aId < bId ? -1 : 0);
 }
 
-function sortByText(aRaw, bRaw, columnKey, sortDirection) {
+function sortByText(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number): number {
   var result = aRaw[columnKey].toLowerCase().localeCompare(bRaw[columnKey].toLowerCase());
   return (result || sortById(aRaw, bRaw)) * sortDirection;
 }
 
-function sortByNumber(aRaw, bRaw, columnKey, sortDirection) {
+function sortByNumber(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number): number {
     const result = aRaw[columnKey] > bRaw[columnKey] ? 1 : (aRaw[columnKey] < bRaw[columnKey] ? -1 : 0);
     return result * sortDirection;
 }
 
-function sortByDate(aRaw, bRaw, columnKey, sortDirection) {
+function sortByDate(aRaw: Object, bRaw: Object, columnKey: string, sortDirection: number): number {
     const aDate = aRaw[columnKey] instanceof Date ? aRaw[columnKey] : new Date(aRaw[columnKey]);
     const bDate = bRaw[columnKey] instanceof Date ? bRaw[columnKey] : new Date(bRaw[columnKey]);
 
@@ -76,21 +80,21 @@ function sortByDate(aRaw, bRaw, columnKey, sortDirection) {
     return result * sortDirection;
 }
 
-function getQueryStringValue(key) {
+function getQueryStringValue(key: string): string {
   // See for a standard implementation:
   // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
   return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" +
         encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
 }
 
-function urlBounce(defaultUrl, qstrParamKey) {
+function urlBounce(defaultUrl: string, qstrParamKey?: string): void {
     window.location = getQueryStringValue(qstrParamKey || "url_bounce") || defaultUrl;
 }
 
 /**
  * Replace all "_" and "-" with spaces and capitalize the first letter of each word
  */
-function capitalize(str) {
+function capitalize(str: string): string {
     return str.replace(new RegExp("_|-", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
