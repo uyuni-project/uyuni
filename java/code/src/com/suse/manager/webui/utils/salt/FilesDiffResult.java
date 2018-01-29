@@ -28,7 +28,7 @@ import java.util.Optional;
  * Result to represent diffs of files(file, dir, symlink)
  *
  */
-public class FilesDiffResult  extends StateApplyResult<JsonElement> {
+public class FilesDiffResult extends StateApplyResult<JsonElement> {
 
     protected JsonElement pchanges;
 
@@ -38,8 +38,8 @@ public class FilesDiffResult  extends StateApplyResult<JsonElement> {
      */
     public Map getPChanges() {
         return JsonParser.GSON.fromJson(this.pchanges, Map.class);
-
     }
+
     /**
      * Return the pchanges
      * @param dataType Class type
@@ -61,7 +61,7 @@ public class FilesDiffResult  extends StateApplyResult<JsonElement> {
     }
 
     /**
-     *FileResult object, to represents 'pchanges' contents for file
+     *FileResult object, to represent 'pchanges' contents for file
      */
     public static class FileResult {
         private Optional<String> newfile = Optional.empty();
@@ -83,7 +83,7 @@ public class FilesDiffResult  extends StateApplyResult<JsonElement> {
     }
 
     /**
-     * SymLinkResult object, to represents 'pchanges' contents for symlink
+     * SymLinkResult object, to represent 'pchanges' contents for symlink
      */
     public static class SymLinkResult {
         @SerializedName("new")
@@ -98,7 +98,7 @@ public class FilesDiffResult  extends StateApplyResult<JsonElement> {
     }
 
     /**
-     * DirectoryResult object, to represents 'pchanges' contents for directory
+     * DirectoryResult object, to represent 'pchanges' contents for directory
      */
     public static class DirectoryResult {
         private  Optional<String> directory =  Optional.empty();
