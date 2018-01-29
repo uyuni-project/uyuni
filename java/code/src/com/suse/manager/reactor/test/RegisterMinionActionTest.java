@@ -293,10 +293,16 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
         SystemManager.lockServer(user,server,"manually locked");
 
+        // Activation key used for the traditional registration
+        ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
+        activationKey.getToken().getActivatedServers().add(server);
+
         executeTest(SLES_EXPECTATIONS, ACTIVATION_KEY_SUPPLIER, (optMinion, machineId, key) -> {
             SLES_ASSERTIONS.accept(optMinion, machineId, key);
             MinionServer minion = optMinion.get();
             assertEquals(server.getId(), minion.getId());
+            assertEquals(1, ActivationKeyFactory.lookupByActivatedServer(minion).size());
+            assertEquals(key, ActivationKeyFactory.lookupByActivatedServer(minion).get(0).getKey());
             List<ServerHistoryEvent> history = new ArrayList<>();
             history.addAll(minion.getHistory());
             Collections.sort(history, (h1, h2) -> h1.getCreated().compareTo(h2.getCreated()));
