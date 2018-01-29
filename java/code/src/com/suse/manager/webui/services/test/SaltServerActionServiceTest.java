@@ -16,14 +16,17 @@ package com.suse.manager.webui.services.test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -75,5 +78,40 @@ public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
 
         Map<LocalCall<?>, List<MinionServer>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction, mins);
         assertNotEmpty(result.values());
+    }
+
+    public void testDeployFiles() throws Exception {
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion3 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion4 = MinionServerFactoryTest.createTestMinionServer(user);
+        List<MinionServer> minions = Arrays.asList(minion1,minion2, minion3, minion4);
+
+        final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+        ConfigAction configAction = ActionManager.createConfigAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY,
+                Date.from(now.toInstant()));
+
+        ActionFactory.addServerToAction(minion1, configAction);
+        ActionFactory.addServerToAction(minion2, configAction);
+        ActionFactory.addServerToAction(minion3, configAction);
+        ActionFactory.addServerToAction(minion4, configAction);
+
+        //create the revision, file, and channel.
+        ConfigRevision revision1 = ConfigTestUtils.createConfigRevision(user.getOrg());
+        revision1.getConfigFile().setLatestConfigRevision(revision1);
+        ConfigRevision revision2 = ConfigTestUtils.createConfigRevision(user.getOrg());
+        revision2.getConfigFile().setLatestConfigRevision(revision2);
+        ConfigRevision revision3 = ConfigTestUtils.createConfigRevision(user.getOrg());
+        revision3.getConfigFile().setLatestConfigRevision(revision3);
+
+        ActionFactory.addConfigRevisionToAction(revision1, minion1, configAction);
+        ActionFactory.addConfigRevisionToAction(revision2, minion1, configAction);
+        ActionFactory.addConfigRevisionToAction(revision1, minion2, configAction);
+        ActionFactory.addConfigRevisionToAction(revision2, minion2, configAction);
+
+        ActionFactory.addConfigRevisionToAction(revision1, minion3, configAction);
+        ActionFactory.addConfigRevisionToAction(revision3, minion4, configAction);
+        Map<LocalCall<?>, List<MinionServer>> result = SaltServerActionService.INSTANCE.callsForAction(configAction, minions);
+        assertEquals(result.size(), 3);
     }
 }

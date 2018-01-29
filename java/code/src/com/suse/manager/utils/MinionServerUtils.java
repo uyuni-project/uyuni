@@ -12,14 +12,14 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils;
+package com.suse.manager.utils;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utility for working with minion servers.
@@ -33,11 +33,11 @@ public class MinionServerUtils {
      * @param servers a list of servers
      * @return a list containing the results of the function
      */
-    public static List<MinionServer> filterSaltMinions(List<Server> servers) {
+    public static Stream<MinionServer> filterSaltMinions(List<Server> servers) {
         return servers.stream()
-                .filter(s -> isMinionServer(s))
-                .map(s -> s.asMinionServer().get())
-                .collect(Collectors.toList());
+                .flatMap(server -> server.asMinionServer()
+                        .map(Stream::of)
+                        .orElse(Stream.empty()));
     }
 
     /**
