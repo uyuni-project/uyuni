@@ -1,3 +1,4 @@
+- For minion, no option to modfiy config file but just view
 - Handle gpg_check correctly (bsc#1076578)
 - Uniform date formatting in System Details view (bsc#1045289)
 - Import content of custom states from filesystem to database on startup, backup old state files
