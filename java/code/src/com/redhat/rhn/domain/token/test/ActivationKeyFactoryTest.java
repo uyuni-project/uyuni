@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.token.test;
 
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -56,5 +57,19 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
         List<ActivationKey> activationKeys =
                 ActivationKeyFactory.lookupByServer(activationKey.getServer());
         assertEquals(0, activationKeys.size());
+    }
+
+    public void testLookupByActivatedServer() throws Exception {
+        ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
+        Server server = activationKey.getServer();
+
+        // Server not added to activated servers
+        List<ActivationKey> activationKeys = ActivationKeyFactory.lookupByActivatedServer(server);
+        assertEquals(0, activationKeys.size());
+
+        // Add server to activated servers
+        activationKey.getToken().getActivatedServers().add(server);
+        activationKeys = ActivationKeyFactory.lookupByActivatedServer(server);
+        assertEquals(activationKey, activationKeys.get(0));
     }
 }
