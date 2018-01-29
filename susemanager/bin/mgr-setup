@@ -38,6 +38,8 @@ SATELLITE_IP=""
 SATELLITE_IS_RH=1
 KEYFILE="/root/migration-key"
 DBDUMPFILE="susemanager.dmp.gz"
+SERVER_CRT="/etc/pki/tls/certs/spacewalk.crt"
+[ -z "$SERVER_KEY" ] && { SERVER_KEY="/etc/pki/tls/private/spacewalk.key"; }
 
 RSYNC_PASSWORD=""
 
