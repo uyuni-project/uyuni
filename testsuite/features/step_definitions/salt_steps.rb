@@ -304,29 +304,12 @@ Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |c
   raise unless found
 end
 
-# states catalog
-When(/^I enter the salt state$/) do |multiline|
-  within('div#content-state') do
-    find('.ace_text-input', visible: false).set(multiline)
-  end
-end
-
 When(/^I click on the css "(.*)"$/) do |css|
   find(css).click
 end
 
-When(/^I click on the css "(.*)" and confirm$/) do |css|
-  accept_alert do
-    find(css).click
-  end
-end
-
 When(/^I enter "(.*)" in the css "(.*)"$/) do |input, css|
   find(css).set(input)
-end
-
-When(/^I select the state "(.*)"$/) do |state|
-  find("input##{state}-cbox").click
 end
 
 # salt formulas
