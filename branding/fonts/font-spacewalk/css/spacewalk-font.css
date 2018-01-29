@@ -198,20 +198,20 @@
   content: "\e63c";
 }
 .spacewalk-icon-envelope-open-o:before {
-	content: "\e900";
+	content: "\e800";
 }
 .spacewalk-icon-suse-manager:before {
-  content: "\e901";
+  content: "\e801";
 }
 .spacewalk-icon-desktop-filled-group:before {
-	content: "\e902";
+	content: "\e802";
 }
 .spacewalk-icon-desktop-filled:before {
-  content: "\e903";
+  content: "\e803";
 }
 .spacewalk-icon-desktop-filled-non-checking-in:before {
-  content: "\e904";
+  content: "\e804";
 }
 .spacewalk-icon-desktop-filled-unpatched:before {
-  content: "\e905";
+  content: "\e805";
 }
