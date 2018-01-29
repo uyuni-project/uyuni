@@ -1,4 +1,5 @@
--notify admin that database backups need reconfiguration after db upgrade
+- detect subvolumes on /var even with newer btrfs tools (bsc#1077076)
+- notify admin that database backups need reconfiguration after db upgrade
 - add syslinux-x86_64 dependency for ppc64le (bsc#1065023)
 - do not try to force db encoding on db upgrade; use same value as for
   installation (bsc#1077730)
