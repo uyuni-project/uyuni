@@ -597,7 +597,7 @@ public class SaltUtils {
             handleScapXccdfEval(serverAction, jsonResult, action);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
-            handleFilesDiff(serverAction, jsonResult, action);
+            handleFilesDiff(jsonResult, action);
             serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
             /**
              * For comparison we are simply using file.managed state in dry-run mode, Salt doesn't return
@@ -711,11 +711,10 @@ public class SaltUtils {
 
     /**
      * Set the results based on the result from SALT
-     * @param serverAction serverAction
      * @param jsonResult response from SALT master
      * @param action main action
      */
-    private void handleFilesDiff(ServerAction serverAction, JsonElement jsonResult, Action action) {
+    private void handleFilesDiff(JsonElement jsonResult, Action action) {
         TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<Map<String, FilesDiffResult>>() { };
         Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());
         Map<String, FilesDiffResult> diffResults = new HashMap<>();
