@@ -411,8 +411,8 @@ The check box can be identified by name, id or label text.
   When I wait until file "/root/foobar" exists on "sle-minion"
   Then file "/etc/mgr-test-file.cnf" should exist on "sle-client"
   When I wait until file "/srv/tftpboot/pxelinux.cfg/default" exists on server
-  Then file "/srv/susemanager/salt/mgr_cfg_org_1/mixedchannel/init.sls" should exist on server
-  Then file "/srv/susemanager/salt/mgr_cfg_org_1/s-mgr/config/init.sls" should not exist on server
+  Then file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should exist on server
+  Then file "/srv/susemanager/salt/manager_org_1/s-mgr/config/init.sls" should not exist on server
 ```
 
 * File contents
