@@ -36,6 +36,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerPath;
@@ -214,6 +215,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     activationKeyOverride : activationKeyFromGrains;
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
+
+            // Remove existing activation keys if new one is supplied
+            if (activationKey.isPresent() && server.getId() != null) {
+                List<ActivationKey> keys = ActivationKeyFactory.lookupByActivatedServer(server);
+                keys.stream().forEach(key -> {
+                    Set<Server> activatedServers = key.getToken().getActivatedServers();
+                    activatedServers.remove(server);
+                });
+            }
 
             Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
 
