@@ -50,6 +50,7 @@ public class CloneChannelCommand extends CreateChannelCommand {
         parentId = null;
         originalState = originalStateIn;
         original = cloneFrom;
+        gpgCheck = cloneFrom.isGPGCheck(); // set the original channel flag as the default value
     }
 
     /**
@@ -84,6 +85,7 @@ public class CloneChannelCommand extends CreateChannelCommand {
         c.setGPGKeyId(gpgKeyId);
         c.setGPGKeyUrl(gpgKeyUrl);
         c.setGPGKeyFp(gpgKeyFp);
+        c.setGPGCheck(gpgCheck);
         c.setAccess(access);
         c.setMaintainerName(maintainerName);
         c.setMaintainerEmail(maintainerEmail);
