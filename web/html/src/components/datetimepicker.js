@@ -62,7 +62,7 @@ class DatePicker extends React.Component {
 
     render() {
         return (
-            <input type="text" data-date-today-highlight="true" data-date-orientation="top auto"
+            <input type="text" id={this.props.id} data-date-today-highlight="true" data-date-orientation="top auto"
                     data-date-autoclose="true" data-date-language="en_US" data-date-format="dd.mm.yy"
                     data-date-week-start="0" className="form-control" size="15"
                     ref={(c) => this._input = $(c)} />
@@ -124,7 +124,7 @@ class TimePicker extends React.Component {
 
     render() {
         return (
-            <input type="text" data-time-format="H:i" className="form-control"
+            <input type="text" id={this.props.id} data-time-format="H:i" className="form-control"
                     size="10" ref={(c) => this._input = $(c)} />
         );
     }
@@ -187,11 +187,11 @@ class DateTimePicker extends React.Component {
                 <span className="input-group-addon" data-picker-type="date" onClick={this.toggleDatepicker.bind(this)}>
                     &nbsp;<i className="fa fa-calendar"></i>
                 </span>
-                <DatePicker key="date" onDateChanged={date => this.onDateChanged(date)} onToggle={this.onToggleDate.bind(this)} open={this.state.dateOpen} value={this.props.value} />
+                <DatePicker id={this.props.id ? this.props.id + "_date" : null} key="date" onDateChanged={date => this.onDateChanged(date)} onToggle={this.onToggleDate.bind(this)} open={this.state.dateOpen} value={this.props.value} />
                 <span className="input-group-addon" data-picker-type="time" onClick={this.toggleTimepicker.bind(this)}>
                     &nbsp;<i className="fa fa-clock-o"></i>
                 </span>
-                <TimePicker key="time" onTimeChanged={date => this.onTimeChanged(date)} onToggle={this.onToggleTime.bind(this)} open={this.state.timeOpen} value={this.props.value} />
+                <TimePicker id={this.props.id ? this.props.id + "_time" : null} key="time" onTimeChanged={date => this.onTimeChanged(date)} onToggle={this.onToggleTime.bind(this)} open={this.state.timeOpen} value={this.props.value} />
                 <span className="input-group-addon">
                     {this.props.timezone}
                 </span>

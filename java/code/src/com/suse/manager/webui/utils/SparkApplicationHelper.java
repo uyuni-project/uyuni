@@ -290,6 +290,18 @@ public class SparkApplicationHelper {
     }
 
     /**
+     * Serialize the result and set the response content type to JSON.
+     * @param gson {@link Gson} object to use for serialization
+     * @param response the http response
+     * @param result the object to serialize to JSON
+     * @return a JSON string
+     */
+    public static String json(Gson gson, Response response, Object result) {
+        response.type("application/json");
+        return gson.toJson(result);
+    }
+
+    /**
      * Serialize the result and set the response content type to JSON
      * and the http status code to the given value.
      * @param response the http response
@@ -301,5 +313,20 @@ public class SparkApplicationHelper {
         response.type("application/json");
         response.status(httpStatusCode);
         return GSON.toJson(result);
+    }
+
+    /**
+     * Serialize the result and set the response content type to JSON
+     * and the http status code to the given value.
+     * @param gson {@link Gson} object to use for serialization
+     * @param response the http response
+     * @param httpStatusCode the http status code of the response
+     * @param result the object to serialize to JSON
+     * @return a JSON string
+     */
+    public static String json(Gson gson, Response response, int httpStatusCode, Object result) {
+        response.type("application/json");
+        response.status(httpStatusCode);
+        return gson.toJson(result);
     }
 }

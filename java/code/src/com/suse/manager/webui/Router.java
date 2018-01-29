@@ -37,6 +37,7 @@ import com.suse.manager.webui.controllers.NotificationMessageController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.SaltSSHController;
+import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.SystemsController;
@@ -112,10 +113,25 @@ public class Router implements SparkApplication {
                 jade);
         get("/manager/groups/details/highstate",
                 withCsrfToken(withUser(MinionController::serverGroupHighstate)), jade);
+
+        // SSM API
         get("/manager/systems/ssm/highstate",
                 withCsrfToken(withUser(MinionController::ssmHighstate)), jade);
+        get("/manager/systems/ssm/channels/bases",
+                withUser(SsmController::getBaseChannels));
+        post("/manager/systems/ssm/channels/allowed-changes",
+                withUser(SsmController::computeAllowedChannelChanges));
+        post("/manager/systems/ssm/channels",
+                withUser(SsmController::changeChannels));
 
+        // Systems API
         post("/manager/api/systems/:sid/delete", withOrgAdmin(SystemsController::delete));
+        get("/manager/api/systems/:sid/channels", withUser(SystemsController::getChannels));
+        get("/manager/api/systems/:sid/channels-available-base",
+                withUser(SystemsController::getAvailableBaseChannels));
+        post("/manager/api/systems/:sid/channels", withUser(SystemsController::subscribeChannels));
+        get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
+                withUser(SystemsController::getAccessibleChannelChildren));
 
         // States API
         post("/manager/api/states/apply", withUser(StatesAPI::apply));
