@@ -578,12 +578,6 @@ The check box can be identified by name, id or label text.
   Then I should see "SuSE-release" in the command output for "sle-minion"
 ```
 
-* Salt states
-
-```cucumber
-  When I select the state "teststate"
-```
-
 * Salt pillars
 
 ```cucumber
