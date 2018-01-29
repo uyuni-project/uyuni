@@ -18,7 +18,6 @@
 -- data for rhnActionType
 
 -- last two values are for TRIGGER_SNAPSHOT, UNLOCKED_ONLY
-
 insert into rhnActionType values (1, 'packages.refresh_list', 'Package List Refresh', 'Y', 'N');
 insert into rhnActionType values (2, 'hardware.refresh_list', 'Hardware List Refresh', 'N', 'N');
 insert into rhnActionType values (3, 'packages.update', 'Package Install', 'Y', 'Y');
@@ -77,6 +76,7 @@ insert into rhnActionType values (502, 'packages.setLocks', 'Lock packages', 'N'
 insert into rhnActionType values (503, 'states.apply', 'Apply states', 'N', 'N');
 insert into rhnActionType values (504, 'image.build', 'Build an Image Profile', 'N', 'N');
 insert into rhnActionType values (505, 'image.inspect', 'Inspect an Image', 'N', 'N');
+insert into rhnActionType values (506, 'channels.subscribe', 'Subscribe to channels', 'N', 'N');
 --
 --
 -- Revision 1.25  2004/10/29 05:07:52  pjones
