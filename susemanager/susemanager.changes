@@ -1,3 +1,5 @@
+- detect subvolumes on /var even with newer btrfs tools (bsc#1077076)
+
 -------------------------------------------------------------------
 Wed Jan 17 13:26:44 CET 2018 - jgonzalez@suse.com
 
