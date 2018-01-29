@@ -33,6 +33,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
+import com.suse.manager.webui.utils.MinionServerUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -73,6 +74,8 @@ public class OverviewAction extends RhnAction {
     private static final int SINGULAR = 1;
     private static final int PLURAL = 2;
 
+    private static final String VIEW_CENTRAL_FILES_URL =
+            "/rhn/systems/details/configuration/ViewCentralPaths.do";
     private static final String LOCAL_FILES_URL =
                     "/rhn/systems/details/configuration/ViewModifyLocalPaths.do";
     private static final String CENTRAL_FILES_URL =
@@ -126,11 +129,18 @@ public class OverviewAction extends RhnAction {
                 cm.countCentrallyDeployablePaths(server, user),
                 DEPLOY_FILES_URL + "?sid=" + server.getId());
 
-        setupFiles(context,
-                CENRALLY_MANAGED_FILES,
-                cm.countCentrallyManagedPaths(server, user),
-                CENTRAL_FILES_URL + "?sid=" + server.getId());
-
+        if (MinionServerUtils.isMinionServer(server)) {
+            setupFiles(context,
+                    CENRALLY_MANAGED_FILES,
+                    cm.countCentrallyManagedPaths(server, user),
+                    VIEW_CENTRAL_FILES_URL + "?sid=" + server.getId());
+        }
+        else {
+            setupFiles(context,
+                    CENRALLY_MANAGED_FILES,
+                    cm.countCentrallyManagedPaths(server, user),
+                    CENTRAL_FILES_URL + "?sid=" + server.getId());
+        }
 
         String configChannelsMsg = ConfigActionHelper.makeChannelCountsMessage(
                                               server.getConfigChannelCount(),
