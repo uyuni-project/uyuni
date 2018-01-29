@@ -751,7 +751,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
 
     public void testCloneAll() throws Exception {
-        Channel original = ChannelFactoryTest.createTestChannel(admin);
+        Channel original = ChannelFactoryTest.createTestChannel(admin, false);
         Package pack = PackageTest.createTestPackage(admin.getOrg());
         Errata errata = ErrataFactoryTest.createTestPublishedErrata(
                 admin.getOrg().getId());
@@ -771,6 +771,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertNotNull(chan);
         assertEquals(label, chan.getLabel());
         assertEquals(1, chan.getPackages().size());
+        assertEquals(original.isGPGCheck(), chan.isGPGCheck());
+        assertFalse(chan.isGPGCheck());
 
         // errata cloning is tested in CloneErrataActionTest
 
