@@ -85,7 +85,7 @@ mkdir /var/lib/pgsql/data
 chown postgres:postgres /var/lib/pgsql/data
 
 echo "`date +"%H:%M:%S"`   Initialize new postgresql 9.6 database..."
-su - postgres -c "initdb -D /var/lib/pgsql/data --locale en_US.UTF-8"
+su - postgres -c "initdb -D /var/lib/pgsql/data"
 if [ $? -eq 0 ]; then
     echo "`date +"%H:%M:%S"`   Successfully initialized new postgresql 9.6 database."
 else
