@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
@@ -1296,5 +1297,29 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(s, ServerFactory.lookupProxyServer(fullyQualifiedDomainName).get());
         // plain hostname: precise lookup
         assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).get());
+    }
+
+    public void testFindServersInSetByChannel() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        parent.setParentChannel(null);
+
+        Channel child = ChannelFactoryTest.createTestChannel(user);
+        child.setParentChannel(parent);
+
+        server.addChannel(parent);
+        server.addChannel(child);
+
+        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        set.addElement(server.getId() + "");
+        RhnSetManager.store(set);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        List<Long> servers = ServerFactory.findServersInSetByChannel(user, server.getBaseChannel().getId());
+        assertEquals(1, servers.size());
+        assertEquals(server.getId(), servers.stream().findFirst().get());
+
     }
 }

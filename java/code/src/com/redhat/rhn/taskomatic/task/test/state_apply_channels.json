@@ -1,0 +1,13 @@
+{
+  "file_|-mgrchannels_repo_|-/etc/zypp/repos.d/susemanager:channels.repo_|-managed": {
+    "comment": "File /etc/zypp/repos.d/susemanager:channels.repo is in the correct state",
+    "pchanges": {},
+    "name": "/etc/zypp/repos.d/susemanager:channels.repo",
+    "start_time": "10:16:53.636455",
+    "result": true,
+    "duration": 41.947,
+    "__run_num__": 0,
+    "changes": {},
+    "__id__": "mgrchannels_repo"
+  }
+}

@@ -17,6 +17,12 @@ package com.redhat.rhn.taskomatic.task;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 
+import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.quartz.JobExecutionContext;
@@ -24,7 +30,10 @@ import org.quartz.JobExecutionContext;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Execute SUSE Manager actions via Salt.
@@ -33,6 +42,8 @@ public class MinionActionExecutor extends RhnJavaJob {
 
     private static final int ACTION_DATABASE_GRACE_TIME = 10000;
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
+
+    private SaltServerActionService saltServerActionService = SaltServerActionService.INSTANCE;
 
     /**
      * @param context the job execution context
@@ -49,6 +60,10 @@ public class MinionActionExecutor extends RhnJavaJob {
         boolean forcePackageListRefresh = false;
         long actionId = context.getJobDetail()
                 .getJobDataMap().getLongValueFromString("action_id");
+        User user = Optional.ofNullable(context.getJobDetail().getJobDataMap().get("user_id"))
+                .map(id -> Long.parseLong(id.toString()))
+                .map(userId -> UserFactory.lookupById(userId))
+                .orElse(null);
 
         boolean isStagingJob =
                 context.getJobDetail().getJobDataMap().getBooleanValue("staging_job");
@@ -94,12 +109,51 @@ public class MinionActionExecutor extends RhnJavaJob {
         }
 
         log.info("Executing action: " + actionId);
-        SaltServerActionService.INSTANCE.execute(action, forcePackageListRefresh,
+        saltServerActionService.execute(action, forcePackageListRefresh,
                 isStagingJob, Optional.ofNullable(stagingJobMinionServerId));
+
+        handleTraditionalClients(user, action);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
             log.debug("Total duration was: " + duration + " ms");
         }
+    }
+
+    // for traditional systems only the subscribe channels action will be handled here
+    // all other actions are still handled like before
+    private void handleTraditionalClients(User user, Action action) {
+        List<ServerAction> serverActions = action.getServerActions().stream()
+                // skip minions, they're handled by the job return event
+                .filter(sa -> !sa.getServer().asMinionServer().isPresent())
+                .collect(Collectors.toList());
+        serverActions.forEach(sa -> {
+            ActionType actionType = action.getActionType();
+            if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(actionType)) {
+                SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
+                SystemManager.updateServerChannels(user, sa.getServer(),
+                        Optional.ofNullable(sca.getDetails().getBaseChannel()),
+                        sca.getDetails().getChannels(),
+                        null);
+            }
+            else {
+                log.warn("Action type " +
+                        (actionType != null ? actionType.getName() : "") +
+                        " is not supported by " + this.getClass().getSimpleName());
+                return;
+            }
+            sa.setStatus(ActionFactory.STATUS_COMPLETED);
+            sa.setCompletionTime(new Date());
+            sa.setResultCode(0L);
+            sa.setResultMsg("Successfully changed channels");
+        });
+    }
+
+    /**
+     * Needed only for unit tests.
+     * @param saltServerActionServiceIn to set
+     */
+    public void setSaltServerActionService(SaltServerActionService saltServerActionServiceIn) {
+        this.saltServerActionService = saltServerActionServiceIn;
     }
 }

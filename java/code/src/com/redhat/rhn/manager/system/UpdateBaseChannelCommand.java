@@ -124,7 +124,10 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
             }
         }
 
-        MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId()));
+        if (!isSkipChannelChangedEvent()) {
+            MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId(),
+                null, isScheduleApplyChannelsState()));
+        }
         return super.store();
     }
 
