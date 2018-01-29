@@ -31,14 +31,7 @@
     </rhn-tab>
 
     <rhn-tab name="Channels" acl="all_systems_in_set_have_feature(ftr_channel_membership)">
-        <rhn-tab-url>/rhn/channel/ssm/BaseChannelSubscribe.do</rhn-tab-url>
-        <rhn-tab name="Base Channels">
-            <rhn-tab-url>/rhn/channel/ssm/BaseChannelSubscribe.do</rhn-tab-url>
-        </rhn-tab>
-        <rhn-tab name="Child Channels">
-            <rhn-tab-url>/rhn/channel/ssm/ChildSubscriptions.do</rhn-tab-url>
-            <rhn-tab-url>/rhn/channel/ssm/ChildSubscriptionsConfirm.do</rhn-tab-url>
-        </rhn-tab>
+        <rhn-tab-url>/rhn/channel/ssm/ChannelSubscriptions.do</rhn-tab-url>
     </rhn-tab>
 
     <rhn-tab name="ssm.nav.config" url="/rhn/systems/ssm/config/Deploy.do"
