@@ -20,6 +20,8 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.Collections;
+
 
 /**
  * TokenCleanup
@@ -38,9 +40,10 @@ public class TokenCleanup extends RhnJavaJob {
         try {
             MinionServerFactory.listMinions().forEach(minionServer -> {
                 try {
-                    if (AccessTokenFactory.refreshTokens(minionServer)) {
+                    if (AccessTokenFactory.refreshTokens(minionServer, Collections.emptySet())) {
+                        // TODO schedule state.apply channels to refresh channels on minion ?
                         SaltStateGeneratorService.INSTANCE.generatePillar(
-                                minionServer, false);
+                                minionServer, false, Collections.emptySet());
                     }
                 }
                 catch (Exception e) {

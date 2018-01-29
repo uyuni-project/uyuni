@@ -50,7 +50,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
 
     private List<Long> cids;
     private Server server;
-    private boolean skipChannelChangedEvent = false;
+
 
     /**
      * Constructor
@@ -110,9 +110,10 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
         log.debug("unsubscribing from other channels");
         unsubscribeFromOldChannels(user, remove, server);
 
-        if (!skipChannelChangedEvent) {
+        if (!isSkipChannelChangedEvent()) {
             MessageQueue.publish(new ChannelsChangedEventMessage(
-                    server.getId(), user.getId()));
+                    server.getId(), user.getId(), null,
+                    isScheduleApplyChannelsState()));
         }
         super.store();
 
@@ -202,14 +203,6 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
         }
     }
 
-    /**
-     * Set true here to skip sending the {@link ChannelsChangedEventMessage} for this
-     * command. This makes sense in case the child channels were removed as part of a base
-     * channel change.
-     *
-     * @param skip the value to set: true if sending the event should be skipped
-     */
-    public void skipChannelChangedEvent(boolean skip) {
-        skipChannelChangedEvent = skip;
-    }
+
+
 }

@@ -1180,4 +1180,21 @@ public class ServerFactory extends HibernateFactory {
         return Optional.ofNullable((Capability) criteria.uniqueResult());
     }
 
+    /**
+     * Find servers in the user's system set that are subscribed to the given channel.
+     *
+     * @param user user
+     * @param channelId channel id
+     * @return a list of Servers ids in the user's SSM subscribed to the
+     * given channel
+     */
+    public static List<Long> findServersInSetByChannel(User user, long channelId) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user.getId());
+        params.put("channel_id", channelId);
+        return singleton.listObjectsByNamedQuery(
+                "Server.findServerInSSMByChannel", params);
+
+    }
+
 }

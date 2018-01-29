@@ -65,6 +65,7 @@ import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.manager.ssm.SsmChannelDto;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -2703,5 +2704,16 @@ public class ChannelManager extends BaseManager {
         }
 
         return original.getParentChannel().getId();
+    }
+
+    /**
+     * Find child channel with the given parent in SSM.
+     *
+     * @param user user
+     * @param parentId id of the parent channel
+     * @return List of channels.
+     */
+    public static List<SsmChannelDto> findChildChannelsByParentInSSM(User user, long parentId) {
+        return ChannelFactory.findChildChannelsByParentInSSM(user, parentId);
     }
 }

@@ -593,4 +593,18 @@ SELECT 1 FROM dual
   </query>
 </mode>
 
+<mode name="action_subscribe_channels_list">
+    <query params="details_id">
+        SELECT * FROM rhnActionSubChannelsList
+        WHERE subscribe_channels_id = :details_id
+    </query>
+</mode>
+
+<mode name="latest_action_subscribe_channels">
+    <query>
+        SELECT * FROM rhnActionSubChannels
+        WHERE id=(SELECT MAX(id) FROM rhnActionSubChannels)
+    </query>
+</mode>
+
 </datasource_modes>

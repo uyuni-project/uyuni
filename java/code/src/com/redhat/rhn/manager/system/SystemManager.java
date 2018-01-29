@@ -49,6 +49,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -110,9 +111,11 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
+import java.util.stream.Collectors;
 
 /**
  * SystemManager
@@ -3522,6 +3525,53 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
         params.put("minion_id", minionId);
         m.executeUpdate(params);
+    }
+
+    /**
+     * Update the the base and child channels of a server. Calls
+     * the {@link UpdateBaseChannelCommand} and {@link UpdateChildChannelsCommand}.
+     *
+     * @param user the user changing the channels
+     * @param server the server for which to change channels
+     * @param baseChannel the base channel to set
+     * @param childChannels the full list of child channels to set. Any channel no provided will be unsubscribed.
+     * @param accessTokenId id of the access token that will be passed to
+     * {@link com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction}
+     * and will be used when regenerating the Pillar data for Salt minions.
+     */
+    public static void updateServerChannels(User user,
+                                            Server server,
+                                            Optional<Channel> baseChannel,
+                                            Collection<Channel> childChannels,
+                                            Long accessTokenId) {
+        long baseChannelId =
+                baseChannel.map(base -> base.getId()).orElse(-1L);
+
+        // if there's no base channel present the there are no child channels to set
+        List<Long> childChannelIds = baseChannel.isPresent() ?
+                childChannels.stream().map(c -> c.getId()).collect(Collectors.toList()) :
+                Collections.emptyList();
+
+        UpdateBaseChannelCommand baseChannelCommand =
+                new UpdateBaseChannelCommand(
+                        user,
+                        server,
+                        baseChannelId);
+
+        UpdateChildChannelsCommand childChannelsCommand =
+                new UpdateChildChannelsCommand(
+                        user,
+                        server,
+                        childChannelIds);
+
+        baseChannelCommand.skipChannelChangedEvent(true);
+        baseChannelCommand.store();
+        childChannelsCommand.skipChannelChangedEvent(true);
+        childChannelsCommand.store();
+
+        MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId(),
+                accessTokenId));
+
     }
 
 }
