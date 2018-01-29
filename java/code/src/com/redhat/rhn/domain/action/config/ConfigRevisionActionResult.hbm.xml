@@ -16,10 +16,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <property name="result" column="result" type="binary" lazy="true" />
                 <property name="created" column="created" type="timestamp" />
                 <property name="modified" column="modified" type="timestamp" />
-                <many-to-one name="configRevisionAction"
-                        column="action_config_revision_id"
+                <one-to-one name="configRevisionAction"
                         class="com.redhat.rhn.domain.action.config.ConfigRevisionAction"
-                        outer-join="true" not-null="true" insert="false" update="false" />
+                            cascade="save-update" />
         </class>
     <query name="ConfigRevisionActionResult.findById">
         <![CDATA[from com.redhat.rhn.domain.action.config.ConfigRevisionActionResult

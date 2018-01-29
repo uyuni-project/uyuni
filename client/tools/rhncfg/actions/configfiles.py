@@ -375,8 +375,8 @@ def diff(params, cache_only=None):
                 diffs[file] = "%s: binary files differ" % file
         extras['diffs'] = diffs
 
-    log_to_file(0, "Files successfully diffed: %s %s" % (format_file_string(files, create_key_list()), str(extras)))
-    return 0, "Files successfully diffed", extras
+    log_to_file(0, "Files successfully compared: %s %s" % (format_file_string(files, create_key_list()), str(extras)))
+    return 0, "Files successfully compared", extras
 
 verify = diff
 

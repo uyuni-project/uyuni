@@ -1818,6 +1818,9 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="configfiles.deployed">
+        <source>Files successfully deployed</source>
+      </trans-unit>
       <trans-unit id="configfiles.verify">
         <source>Verify deployed config files</source>
         <context-group name="ctx">
@@ -1829,6 +1832,9 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="configfiles.diffed">
+        <source>Files successfully compared</source>
       </trans-unit>
       <trans-unit id="config.actionnote">
         <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of {2} from &lt;a href="{3}"&gt;{4}&lt;/a&gt;</source>

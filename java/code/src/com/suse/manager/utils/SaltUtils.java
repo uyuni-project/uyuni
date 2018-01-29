@@ -21,10 +21,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
+import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
+import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
@@ -39,6 +42,7 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -70,6 +74,7 @@ import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.FilesDiffResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
@@ -94,8 +99,13 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+
+import static com.suse.manager.webui.utils.salt.FilesDiffResult.SymLinkResult;
+import static com.suse.manager.webui.utils.salt.FilesDiffResult.DirectoryResult;
+import static com.suse.manager.webui.utils.salt.FilesDiffResult.FileResult;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -111,6 +121,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -585,14 +596,39 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_SCAP_XCCDF_EVAL)) {
             handleScapXccdfEval(serverAction, jsonResult, action);
         }
-        else {
-            // Pretty-print the whole return map (or whatever fits into 1024 characters)
-            Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            String json = gson.toJson(returnObject);
-            serverAction.setResultMsg(json.length() > 1024 ?
-                    json.substring(0, 1024) : json);
+        else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DIFF)) {
+            handleFilesDiff(jsonResult, action);
+            serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.diffed"));
+            /**
+             * For comparison we are simply using file.managed state in dry-run mode, Salt doesn't return
+             * 'result' attribute(actionFailed method check this attribute) when File(File, Dir, Symlink)
+             * already exist on the system and action is considered as Failed even though there was no error.
+             */
+            serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_CONFIGFILES_DEPLOY)) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+                serverAction.setResultMsg(LocalizationService.getInstance().getMessage("configfiles.deployed"));
+            }
+            else {
+                serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
+            }
+        }
+        else {
+           serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
+        }
+    }
+
+    /**
+     * Get the raw json result with pretty-print. If json result will be longer than 1024, it will
+     * be trimmed.
+     * @param jsonResult json result with pretty print
+     */
+    private String  getJsonResultWithPrettyPrint(JsonElement jsonResult) {
+        Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String json = gson.toJson(returnObject);
+        return json.length() > 1024 ? json.substring(0, 1024) : json;
     }
 
     private String parseMigrationMessage(JsonElement jsonResult) {
@@ -671,6 +707,56 @@ public class SaltUtils {
             }
         }
         return "Unable to parse dry run result";
+    }
+
+    /**
+     * Set the results based on the result from SALT
+     * @param jsonResult response from SALT master
+     * @param action main action
+     */
+    private void handleFilesDiff(JsonElement jsonResult, Action action) {
+        TypeToken<Map<String, FilesDiffResult>> typeToken = new TypeToken<Map<String, FilesDiffResult>>() { };
+        Map<String, FilesDiffResult> results = Json.GSON.fromJson(jsonResult, typeToken.getType());
+        Map<String, FilesDiffResult> diffResults = new HashMap<>();
+        // We are only interested in results where files are different/new.
+        results.values().stream().filter(fdr -> !fdr.isResult()).forEach(fdr -> diffResults.put(fdr.getName(), fdr));
+
+        ConfigVerifyAction configAction = (ConfigVerifyAction) action;
+        configAction.getConfigRevisionActions().forEach(cra -> {
+            ConfigRevision cr = cra.getConfigRevision();
+            String fileName = cr.getConfigFile().getConfigFileName().getPath();
+            FilesDiffResult mapFileResult = diffResults.get(fileName);
+            boolean isNew = false;
+            if (mapFileResult != null) {
+                if (cr.isFile()) {
+                    FileResult filePchanges = mapFileResult.getPChanges(FileResult.class);
+                    isNew = filePchanges.getNewfile().isPresent();
+                }
+                else if (cr.isSymlink()) {
+                    SymLinkResult symLinkPchanges = mapFileResult.getPChanges(SymLinkResult.class);
+                    isNew = symLinkPchanges.getNewSymlink().isPresent();
+                }
+                else if (cr.isDirectory()) {
+                    TypeToken<Map<String, DirectoryResult>> typeTokenD =
+                            new TypeToken<Map<String, DirectoryResult>>() { };
+                    DirectoryResult dirPchanges = mapFileResult.getPChanges(typeTokenD).get(fileName);
+                    isNew = dirPchanges.getDirectory().isPresent();
+                }
+                if (isNew) {
+                    cra.setFailureId(1L); // 1 is for missing file(Client does not have this file yet)
+                }
+                else {
+                    ConfigRevisionActionResult cresult = new ConfigRevisionActionResult();
+                    cresult.setConfigRevisionAction(cra);
+                    String result = StringEscapeUtils
+                            .unescapeJava(YamlHelper.INSTANCE.dump(mapFileResult.getPChanges()));
+                    cresult.setResult(result.getBytes());
+                    cresult.setCreated(new Date());
+                    cresult.setModified(new Date());
+                    cra.setConfigRevisionActionResult(cresult);
+                }
+            }
+        });
     }
 
     private void handleScapXccdfEval(ServerAction serverAction,
