@@ -1,3 +1,6 @@
+- do not try to force db encoding on db upgrade; use same value as for
+  installation (bsc#1077730)
+
 -------------------------------------------------------------------
 Thu Jan 11 10:17:31 CET 2018 - jgonzalez@suse.com
 
