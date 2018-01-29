@@ -1,3 +1,4 @@
+- Check if channel is already subscribed even before checking if parent channel is subscribed or not (bsc#1072797)
 - support multiple FQDNs per system (bsc#1063419)
 - avoid use of the potentially-slow rhnServerNeededPackageCache view
 
