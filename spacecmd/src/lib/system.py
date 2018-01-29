@@ -2303,6 +2303,90 @@ def do_system_setbasechannel(self, args):
 
 ####################
 
+def help_system_schedulechangechannels(self):
+    print "system_schedulechangechannels: Schedule changing a system's software channels"
+    print '''usage: system_setbasechannel <SYSTEMS> [options]
+
+options:
+  -b BASE_CHANNEL base channel label
+  -c CHILD_CHANNEL child channel labels (allowed multiple times)
+  -s START_TIME time defaults to now'''
+    print
+    print self.HELP_SYSTEM_OPTS
+
+
+def complete_system_schedulechangechannels(self, text, line, beg, end):
+
+    if len(line.split(' ')) == 2:
+        return self.tab_complete_systems(text)
+
+def do_system_schedulechangechannels(self, args):
+    options = [Option('-b', '--base', action='store'),
+               Option('-c', '--child', action='append', default=[]),
+               Option('-s', '--start-time', action='store')]
+    (args, options) = parse_arguments(args, options)
+    # import pdb;
+    # pdb.set_trace()
+    if len(args) < 1:
+        self.help_system_schedulechangechannels()
+        return
+
+    if not options.base:
+        logging.error('A base channel is required')
+        return
+
+    # use the systems listed in the SSM
+    if re.match('ssm', args[0], re.I):
+        systems = self.ssm.keys()
+    else:
+        systems = self.expand_systems(args)
+
+    if not options.start_time:
+        options.start_time = parse_time_input('now')
+    else:
+        options.start_time = parse_time_input(options.start_time)
+
+    baseChannel = options.base
+    childChannels = options.child or []
+
+    add_separator = False
+
+    for system in systems:
+        system_id = self.get_system_id(system)
+        if not system_id:
+            continue
+
+        oldBase = self.client.system.getSubscribedBaseChannel(self.session,
+                                                          system_id)
+
+        oldKids = self.client.system.listSubscribedChildChannels(self.session,
+                                                       system_id)
+        if add_separator:
+            print self.SEPARATOR
+        add_separator = True
+
+        print 'System:           %s' % system
+        print 'Old Base Channel: %s' % oldBase.get('label')
+        print 'Old Child Channels: %s' % ', '.join([k.get('label') for k in oldKids])
+        print 'New Base Channel: %s' % baseChannel
+        print 'New Child channels %s' % ', '.join(childChannels)
+
+    if not self.user_confirm():
+        return
+
+    for system in systems:
+        system_id = self.get_system_id(system)
+        if not system_id:
+            continue
+
+        actionId = self.client.system.scheduleChangeChannels(self.session,
+                                          system_id,
+                                          baseChannel,
+                                          childChannels,
+                                          options.start_time)
+        print 'Scheduled action id: %s' % actionId
+
+####################
 
 def help_system_listbasechannel(self):
     print('system_listbasechannel: List the base channel for a system')
