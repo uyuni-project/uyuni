@@ -26,8 +26,8 @@ Feature: Management of configuration of all types of clients in a single channel
     And I enter "COLOR=white" in the editor
     And I click on "Create Configuration File"
     Then I should see a "Revision 1 of /etc/s-mgr/config from channel Mixed Channel" text
-    And file "/srv/susemanager/salt/mgr_cfg_org_1/mixedchannel/init.sls" should exist on server
-    And file "/srv/susemanager/salt/mgr_cfg_org_1/mixedchannel/etc/s-mgr/config" should exist on server
+    And file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should exist on server
+    And file "/srv/susemanager/salt/manager_org_1/mixedchannel/etc/s-mgr/config" should exist on server
 
   Scenario: Subscribe a traditional client to the configuration channel
     When I am on the Systems overview page of this "sle-client"
@@ -230,7 +230,7 @@ Feature: Management of configuration of all types of clients in a single channel
     And I follow "Mixed Channel"
     And I follow "delete channel"
     And I click on "Delete Config Channel"
-    Then file "/srv/susemanager/salt/mgr_cfg_org_1/mixedchannel/init.sls" should not exist on server
+    Then file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should not exist on server
 
   Scenario: Cleanup: delete configuration files on remaining systems
     When I destroy "/etc/s-mgr" directory on "sle-client"
