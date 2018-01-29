@@ -1,3 +1,4 @@
+- Uniform date formatting in System Details view (bsc#1045289)
 - Handle gpg_check correctly (bsc#1076578)
 - support multiple FQDNs per system (bsc#1063419)
 - Uniform the notification message when rebooting a system (bsc#1036302)
