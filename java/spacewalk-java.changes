@@ -1,3 +1,4 @@
+- Uniform date formatting in System Details view (bsc#1045289)
 - Import content of custom states from filesystem to database on startup, backup old state files
 - Change the directory of the (normal) configuration channels from mgr_cfg_org_N to manager_org_N
 - Replace custom states with configuration channels
