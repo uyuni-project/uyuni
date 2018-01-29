@@ -1,3 +1,5 @@
+- Provide another create method(with additional parameter Gpgcheck)
+  to create software channel through XML RPC(bsc#1060691).
 - Uniform date formatting in System Details view (bsc#1045289)
 - Handle gpg_check correctly (bsc#1076578)
 - Show the time on the event history page in the users preferred timezone (bsc#1063891)
