@@ -35,9 +35,9 @@ public class MinionServerUtils {
      */
     public static Stream<MinionServer> filterSaltMinions(List<Server> servers) {
         return servers.stream()
-                      .flatMap(server ->server.asMinionServer()
-                                        .map(Stream::of)
-                                        .orElse(Stream.empty()));
+                .flatMap(server -> server.asMinionServer()
+                        .map(Stream::of)
+                        .orElse(Stream.empty()));
     }
 
     /**

@@ -408,29 +408,25 @@ public enum SaltServerActionService {
         Set<MinionServer> targetSet = new HashSet<>(minions);
         Map<MinionServer, Set<ConfigRevision>> serverConfigMap = action.getConfigRevisionActions()
                 .stream()
-                .filter(cr->targetSet.contains(cr.getServer()))
+                .filter(cra -> targetSet.contains(cra.getServer()))
                 .collect(Collectors.groupingBy(
-                        cr->cr.getServer().asMinionServer().get(),
+                        cra -> cra.getServer().asMinionServer().get(),
                         Collectors.mapping(ConfigRevisionAction::getConfigRevision, Collectors.toSet())));
         Map<Set<ConfigRevision>, Set<MinionServer>> revsServersMap = serverConfigMap.entrySet()
                 .stream()
-                .collect(Collectors.groupingBy(
-                        entry -> entry.getValue(),
-                        Collectors.mapping(entry -> entry.getKey(), Collectors.toSet())
-                ));
+                .collect(Collectors.groupingBy(entry -> entry.getValue(),
+                        Collectors.mapping(entry -> entry.getKey(), Collectors.toSet())));
         revsServersMap.forEach((configRevisions, selectedServers) -> {
-        List<Map<String, Object>> fileStates = configRevisions
-                .stream()
-                .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
-                .collect(Collectors.toList());
-        ret.put(State.apply(Arrays.asList(CONFIG_DEPLOY_FILES),
-                  Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
-                  Optional.of(true)), selectedServers.stream().collect(Collectors.toList()));
+            List<Map<String, Object>> fileStates = configRevisions
+                    .stream()
+                    .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
+                    .collect(Collectors.toList());
+            ret.put(State.apply(Arrays.asList(CONFIG_DEPLOY_FILES),
+                    Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
+                    Optional.of(true)), selectedServers.stream().collect(Collectors.toList()));
         });
         return ret;
     }
-
-
 
     /**
      * Deploy files(files, directory, symlink) through state.apply
@@ -443,15 +439,15 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
                 .map(revAction -> revAction.getConfigRevision())
-                .filter(revision->revision.isFile() ||
-                                  revision.isDirectory() ||
-                                  revision.isSymlink())
+                .filter(revision -> revision.isFile() ||
+                        revision.isDirectory() ||
+                        revision.isSymlink())
                 .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
                 .collect(Collectors.toList());
         ret.put(com.suse.manager.webui.utils.salt.State.apply(
-                        Arrays.asList(CONFIG_DIFF_FILES),
-                        Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
-                        Optional.of(true), Optional.of(true)), minions);
+                Arrays.asList(CONFIG_DIFF_FILES),
+                Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
+                Optional.of(true), Optional.of(true)), minions);
         return ret;
     }
 

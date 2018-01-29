@@ -266,7 +266,7 @@ public class ConfigChannelSaltManager {
      * @param file file
      * @return List of params map
      */
-    public List<Map<String, Object>> getFileStateParams(ConfigFile file) {
+    private List<Map<String, Object>> getFileStateParams(ConfigFile file) {
         Path filePath = Paths.get(file.getConfigFileName().getPath());
         if (filePath.getRoot() != null) {
             filePath = filePath.getRoot().relativize(filePath);
@@ -340,7 +340,7 @@ public class ConfigChannelSaltManager {
      * @param file file
      * @return List of params map
      */
-    public List<Map<String, Object>> getDirectoryStateParams(ConfigFile file) {
+    private List<Map<String, Object>> getDirectoryStateParams(ConfigFile file) {
         List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", file.getConfigFileName().getPath()));
         fileParams.add(singletonMap("makedirs", true));
@@ -361,7 +361,7 @@ public class ConfigChannelSaltManager {
      * @param file file
      * @return List of params map
      */
-    public List<Map<String, Object>> getSymLinkStateParams(ConfigFile file) {
+    private List<Map<String, Object>> getSymLinkStateParams(ConfigFile file) {
         List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", file.getConfigFileName().getPath()));
         fileParams.add(singletonMap("target", file.getLatestConfigRevision().getConfigInfo()
