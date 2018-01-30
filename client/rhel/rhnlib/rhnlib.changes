@@ -1,3 +1,5 @@
+- replace netstat with ss command
+
 -------------------------------------------------------------------
 Wed Jan 17 11:13:43 CET 2018 - jgonzalez@suse.com
 
