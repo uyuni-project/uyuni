@@ -1,3 +1,4 @@
+- Uniform date formatting in System Details view (bsc#1045289)
 - Remove previous activation keys when migrating to salt (bsc#1031081)
 - Handle gpg_check correctly (bsc#1076578)
 - support multiple FQDNs per system (bsc#1063419)
