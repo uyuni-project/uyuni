@@ -1,4 +1,4 @@
-# Copyright (c) 2017 SUSE LLC
+# Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Migrate a traditional client into a salt minion
@@ -18,15 +18,17 @@ Feature: Migrate a traditional client into a salt minion
      And I select "1-SUSE-PKG-x86_64" from "activationKeys"
      And I click on "Bootstrap"
      And I wait for "100" seconds
-     Then I should see a "Successfully bootstrapped host! Your system should appear in System Overview shortly." text
+     Then I should see a "Successfully bootstrapped host! " text
 
-  Scenario: Verify the minion was bootstrapped with activation key
-     Given I am on the Systems overview page of this client
-     Then I should see a "Activation Key: 	1-SUSE-PKG" text
+  # bsc#1031081 - old and new activation keys shown for the migrated client
+  #Scenario: Verify the minion was bootstrapped with activation key
+  #  Given I am on the Systems overview page of this client
+  #  Then I should see a "Activation Key: 	1-SUSE-PKG" text
+  #  And I should not see a "1-SUSE-DEV" text
 
+  # bsc#1020902 - moving from traditional to salt with bootstrap is not disabling rhnsd
   Scenario: Check that service nhsd has been stopped
-     # bsc#1020902 - moving from traditional to salt with bootstrap is not disabling rhnsd
-     When I run "systemctl status nhsd" on "sle-migrated-minion"
+     When I run "systemctl status nhsd" on "sle-migrated-minion" without error control
      Then the command should fail
 
   Scenario: Check that the migrated system is now a minion
@@ -42,7 +44,7 @@ Feature: Migrate a traditional client into a salt minion
      Given I am on the Systems overview page of this client
      When I follow "Events" in the content area
      And I follow "History" in the content area
-     Then I should see a "System reboot scheduled by admin" text
+     Then I should see a "Subscription via Token" text
 
   Scenario: Install a package onto the migrated minion
      Given I am on the Systems overview page of this client

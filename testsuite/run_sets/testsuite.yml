@@ -54,7 +54,6 @@
 - features/powermanagement-test.feature
 - features/CVE-ID-new-syntax.feature
 - features/datepicker.feature
-# - features/migrate_client_to_minion.feature. Need to be tested with whole suite
 - features/delete_system_profile.feature
 - features/bare-metal-test.feature
 - features/compare_channel.feature
@@ -78,6 +77,7 @@
 - features/salt_pkgset_beacon.feature
 - features/salt_minion_details.feature
 - features/minion_bootstrap.feature
+- features/migrate_client_to_minion.feature
 - features/salt_remote_cmds.feature
 # this feature need another vm/client - features/salt_ssh.feature
 - features/salt_install_package.feature
