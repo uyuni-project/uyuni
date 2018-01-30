@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jan 30 13:48:55 CET 2018 - jgonzalez@suse.com
+
+- version 3.1.14-1
 - Migrate old custom states to state channels, assign systems to these new
   channels, delete old custom-state-to-system assignments, delete the custom
   states from the db; Before migrating, rename custom states with same name as
