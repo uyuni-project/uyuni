@@ -139,6 +139,22 @@ public class GathererRunner {
             stdin.flush();
             stdin.close();
 
+            // Thread that reads process error output to avoid blocking
+            Thread errStreamReader = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        String line = null;
+                        BufferedReader inErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                        while ((line = inErr.readLine()) != null) {
+                            // do nothing, just consuming stderr output
+                        }
+                    } catch (Exception e) {
+                        logger.error("Error reading stderr from external process", e);
+                    }
+                }
+            });
+            errStreamReader.start();
+
             InputStreamReader irr = new InputStreamReader(p.getInputStream());
             // We need to consume the input stream as it comes to avoid
             // a deadlock because the buffer size is full.
