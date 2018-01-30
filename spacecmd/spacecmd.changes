@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jan 30 13:13:35 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.8.9-1
 - support multiple FQDNs per system (bsc#1063419)
 - Added custom JSON encoder in order to parse date fields correctly (bsc#1070372)
 
