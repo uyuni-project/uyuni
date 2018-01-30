@@ -36,6 +36,8 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
+
 /**
  * Tests importing the legacy custom states contents into the custom channels.
  */
@@ -83,7 +85,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         ConfigTestUtils.createConfigRevision(configFile, 1L);
 
         Path statePath = tmpSaltRoot
-                .resolve("manager_org_" + user.getOrg().getId())
+                .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
                 .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
@@ -103,7 +105,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
                 configFile.getLatestConfigRevision().getConfigContent().getContentsString());
 
         Path channelDirectory = tmpSaltRoot
-                .resolve("manager_org_" + user.getOrg().getId())
+                .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
                 .resolve(stateChannel.getLabel());
         File stateFile = channelDirectory.resolve("init.sls").toFile();
         assertTrue(channelDirectory.toFile().isDirectory());
@@ -138,7 +140,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         configRevision.getConfigContent().setContents(originalContent.getBytes());
 
         Path statePath = tmpSaltRoot
-                .resolve("manager_org_" + user.getOrg().getId())
+                .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
                 .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
@@ -168,7 +170,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         configRevision.setConfigContent(configContent);
 
         Path statePath = tmpSaltRoot
-                .resolve("manager_org_" + user.getOrg().getId())
+                .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
                 .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
@@ -199,7 +201,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         configRevision.setConfigContent(configContent);
 
         Path statePath = tmpSaltRoot
-                .resolve("manager_org_" + user.getOrg().getId())
+                .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
                 .resolve(normalChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
@@ -248,7 +250,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         assertTrue(legacyStatesBackupDirectory.toFile().list().length == 0);
 
         // this dir must be imported with all its contents
-        File dir1 = tmpSaltRoot.resolve("manager_org_1").toFile();
+        File dir1 = tmpSaltRoot.resolve(ORG_STATES_DIRECTORY_PREFIX + "1").toFile();
         dir1.mkdirs();
         File state1 = dir1.toPath().resolve("customstate1.sls").toFile();
         state1.createNewFile();
@@ -258,11 +260,11 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         FileUtils.writeStringToFile(state1, "contents2");
 
         // empty directory
-        File dir2 = tmpSaltRoot.resolve("manager_org_87654321").toFile();
+        File dir2 = tmpSaltRoot.resolve(ORG_STATES_DIRECTORY_PREFIX + "87654321").toFile();
         dir2.mkdirs();
 
         // this dir must not be imported
-        File noStatesHereDir = tmpSaltRoot.resolve("manager_org_no_org_id").toFile();
+        File noStatesHereDir = tmpSaltRoot.resolve(ORG_STATES_DIRECTORY_PREFIX + "no_org_id").toFile();
         noStatesHereDir.mkdirs();
 
         // legacy configuration channels directories
