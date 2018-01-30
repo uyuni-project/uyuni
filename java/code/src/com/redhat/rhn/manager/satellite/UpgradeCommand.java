@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.satellite;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -275,12 +276,9 @@ public class UpgradeCommand extends BaseTransactionCommand {
 
     // re-generates config channels (state + normal) + their assignments on the disk
     private void regenerateConfigChannelFiles() {
-        ConfigurationFactory.listGlobalChannels().stream().forEach(channel -> {
-            if (!ConfigChannelSaltManager.getInstance().areFilesGenerated(channel)) {
-                ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(channel);
-            }
-            SaltStateGeneratorService.INSTANCE.regenerateConfigStates(channel);
-        });
+        List<ConfigChannel> globalChannels = ConfigurationFactory.listGlobalChannels();
+        ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(globalChannels);
+        globalChannels.forEach(SaltStateGeneratorService.INSTANCE::regenerateConfigStates);
     }
 
     // list of directories with given prefix and natural number suffix in the salt root
