@@ -50,7 +50,7 @@ def find_netmask(device):
     try:
         nm = execute("LANG=C ipcalc -4ms $(ip -4 -o addr show dev %s | awk '{print $4}')|awk -F= '{print $2}'" % device)
     except:
-        nm = execute("LANG=C ifconfig %s | perl -lne '/Mask:([\d.]+)/ and print $1'" % device)
+        nm = execute("LANG=C ip -4 -o addr show dev %s | perl -lne 'print $1 if m!/(.+) brd!'" % device)
     if nm:
         return nm[0]
     else:
