@@ -42,11 +42,11 @@ Feature: Migrate a traditional client into a Salt minion
     When I run "systemctl status nhsd" on "sle-migrated-minion" without error control
     Then the command should fail
 
-  # issue #2558: Migration between traditional and minion - what about the activation keys?
-  Scenario: Check that minion has both old and new activation keys
+  # bsc#1031081 - old and new activation keys shown for the migrated client
+  Scenario: Check that minion only has the new activation key
     Given I am on the Systems overview page of this "sle-migrated-minion"
-    Then I should see a "Activation Key:	1-SUSE-DEV-x86_64" text
-    And I should see a "			1-SUSE-PKG-x86_64" text
+    Then I should see a "Activation Key:	1-SUSE-PKG-x86_64" text
+    And I should not see a "1-SUSE-DEV-x86_64" text
 
   Scenario: Check that channels are still the same after migration
     Given I am on the Systems overview page of this "sle-migrated-minion"
@@ -97,3 +97,8 @@ Feature: Migrate a traditional client into a Salt minion
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Properties" in the content area
     Then I wait until I see "Base System Type:     Management" text, refreshing the page
+
+  Scenario: Cleanup: Check that we have again the old activation key
+    Given I am on the Systems overview page of this "sle-client"
+    Then I should see a "Activation Key:	1-SUSE-DEV-x86_64" text
+    And I should not see a "1-SUSE-PKG-x86_64" text
