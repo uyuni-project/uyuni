@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jan 30 13:47:31 CET 2018 - jgonzalez@suse.com
+
+- version 3.1.12-1
 - Fix custom SERVER_KEY overriding (bsc#1075862)
 - detect subvolumes on /var even with newer btrfs tools (bsc#1077076)
 - notify admin that database backups need reconfiguration after db upgrade
