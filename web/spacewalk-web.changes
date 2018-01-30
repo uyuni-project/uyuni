@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jan 30 13:45:37 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.1.14-1
 - Replace custom states with configuration channels
 - Add 'yaml' option for Ace editor
 - Add links to salt formula list and adjust behavior. (bsc#1022078)
