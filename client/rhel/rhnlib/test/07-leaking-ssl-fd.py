@@ -86,8 +86,10 @@ if __name__ == '__main__':
     time.sleep(3);
 
     # Try to catch netstat, while thread is still running
-    port443 = "netstat -tanp |grep :443 | grep %s/python" % os.getpid()
-    port80 = "netstat -tanp |grep :80 | grep %s/python" % os.getpid()
+    #port443 = "netstat -tanp |grep :443 | grep %s/python" % os.getpid()
+    #port80 = "netstat -tanp |grep :80 | grep %s/python" % os.getpid()
+    port443 = "ss -tanp |grep :443 | grep python | grep pid=%s" % os.getpid()
+    port80 = "ss -tanp |grep :80 | grep python | grep pid=%s" % os.getpid()
     while attempt.isAlive():
         res80 = os.system(port80)
         if (res80 == 0):        # Port 80 is used ERROR
