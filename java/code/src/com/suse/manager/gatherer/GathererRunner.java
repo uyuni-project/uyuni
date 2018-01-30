@@ -28,7 +28,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 
-import java.lang.StringBuilder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -148,7 +147,8 @@ public class GathererRunner {
                         while ((line = inErr.readLine()) != null) {
                             // do nothing, just consuming stderr output
                         }
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         logger.error("Error reading stderr from external process", e);
                     }
                 }
