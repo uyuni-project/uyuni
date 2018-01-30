@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
+import com.suse.manager.webui.services.SaltConstants;
 
 /**
  * Test for {@link ConfigChannelSaltManagerTest}.
@@ -113,7 +114,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         String saltUri = ConfigChannelSaltManager.getInstance().getSaltUriForConfigFile(file);
 
         String expectedUri = "salt://" +
-                "manager_org_" + channel.getOrgId() +
+                SaltConstants.ORG_STATES_DIRECTORY_PREFIX + channel.getOrgId() +
                 "/" + channel.getLabel() +
                 "/" + file.getConfigFileName().getPath();
         assertEquals(expectedUri, saltUri);
