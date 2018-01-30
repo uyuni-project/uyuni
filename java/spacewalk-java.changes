@@ -1,3 +1,4 @@
+- Handle stderr from "virtual-host-gatherer" to avoid hanging (bsc#1067010)
 - Provide another create method(with additional parameter Gpgcheck)
   to create software channel through XML RPC(bsc#1060691).
 - Uniform date formatting in System Details view (bsc#1045289)
