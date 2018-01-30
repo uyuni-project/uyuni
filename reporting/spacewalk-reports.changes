@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 30 13:34:11 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.5.4-1
+- More rhnServerNetwork refactoring (bsc#1063419)
+
+-------------------------------------------------------------------
 Tue Nov 28 12:15:45 CET 2017 - jgonzalez@suse.com
 
 - version 2.7.5.3-1
