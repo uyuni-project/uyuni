@@ -1,7 +1,9 @@
+-------------------------------------------------------------------
+Tue Jan 30 13:51:22 CET 2018 - jgonzalez@suse.com
+
+- version 3.1.10-1
 - use TLS for mirroring OES2018 channels (bsc#1074430)
 - add SUSE Manager Server 3.0 and 3.1 channels for mirroring
-- support SLE-RT 12 SP3 (bsc#1063940)
-- add SLE12 LTSS as extension to SLES for SAP 12 (bsc#1069615)
 
 -------------------------------------------------------------------
 Tue Dec 12 12:07:43 CET 2017 - jgonzalez@suse.com
