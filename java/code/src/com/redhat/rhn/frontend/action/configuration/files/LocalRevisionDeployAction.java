@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.configuration.files;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.server.Server;
@@ -71,8 +70,7 @@ public class LocalRevisionDeployAction extends RhnAction {
 
         ConfigRevision cr = ConfigActionHelper.findRevision(request);
 
-        if (ConfigChannelType.global().equals(
-                cr.getConfigFile().getConfigChannel().getConfigChannelType())) {
+        if (cr.getConfigFile().getConfigChannel().isGlobalChannel()) {
             return getStrutsDelegate().forwardParams(mapping.findForward("global"),
                     params);
         }

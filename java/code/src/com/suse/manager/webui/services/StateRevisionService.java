@@ -16,9 +16,8 @@ package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.OrgStateRevision;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.ServerGroupStateRevision;
@@ -26,9 +25,11 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.configuration.SaltConfigurable;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,13 +47,13 @@ public enum StateRevisionService {
      * @param server the sever
      * @param user the user
      * @param clonePackageStates if package states should be copied
-     * @param cloneCustomStates if custom states should be copied
+     * @param cloneConfigChannels if config channels should be copied
      * @return a new {@link ServerStateRevision} instance with
      * cloned/copied dependencies
      */
-    public ServerStateRevision cloneLatest(Server server, User user,
+    public ServerStateRevision cloneLatest(MinionServer server, User user,
                                            boolean clonePackageStates,
-                                           boolean cloneCustomStates) {
+                                           boolean cloneConfigChannels) {
         ServerStateRevision newRevision = new ServerStateRevision();
         newRevision.setServer(server);
         newRevision.setCreator(user);
@@ -65,10 +66,9 @@ public enum StateRevisionService {
             clonePackageStates(latestStates, newRevision);
         }
 
-        if (cloneCustomStates) {
-            // custom states can be simply added to the collections because
+        if (cloneConfigChannels) {
+            // config channels can be simply added to the collections because
             // they don't hold any reference to the state revision
-            cloneCustomStates(newRevision, StateFactory.latestCustomStates(server));
             cloneConfigChannels(newRevision, StateFactory.latestConfigChannels(server));
         }
 
@@ -76,17 +76,72 @@ public enum StateRevisionService {
     }
 
     /**
+     * Clone the latest state revision for the given configurable.
+     * @param entity the configurable entity
+     * @param user the user
+     * @param clonePackageStates if package states should be copied
+     * @param cloneConfigChannels if config channels should be copied
+     * @return a new {@link StateRevision} instance with
+     * cloned/copied dependencies
+     */
+    public StateRevision cloneLatest(SaltConfigurable entity, User user, boolean clonePackageStates,
+            boolean cloneConfigChannels) {
+        StateRevision revision;
+
+        if (entity instanceof MinionServer) {
+            revision = this.cloneLatest((MinionServer) entity, user, clonePackageStates, cloneConfigChannels);
+        }
+        else if (entity instanceof ServerGroup) {
+            revision = this.cloneLatest((ServerGroup) entity, user, clonePackageStates, cloneConfigChannels);
+        }
+        else if (entity instanceof Org) {
+            revision = this.cloneLatest((Org) entity, user, clonePackageStates, cloneConfigChannels);
+        }
+        else {
+            revision = null;
+        }
+
+        return revision;
+    }
+
+    /**
+     * Get the latest state revision for the given configurable.
+     *
+     * @param <T>    the actual type of the state revision
+     * @param entity the configurable entity
+     * @return the {@link StateRevision} instance
+     */
+    public <T extends StateRevision> Optional<T> getLatest(SaltConfigurable entity) {
+        Optional<T> revision;
+
+        if (entity instanceof MinionServer) {
+            revision = (Optional<T>) StateFactory.latestStateRevision((MinionServer) entity);
+        }
+        else if (entity instanceof ServerGroup) {
+            revision = (Optional<T>) StateFactory.latestStateRevision((ServerGroup) entity);
+        }
+        else if (entity instanceof Org) {
+            revision = (Optional<T>) StateFactory.latestStateRevision((Org) entity);
+        }
+        else {
+            revision = Optional.empty();
+        }
+
+        return revision;
+    }
+
+    /**
      * Clone the latest state revision for the given server group.
      * @param group the server group.
      * @param user the user
      * @param clonePackageStates if package states should be copied
-     * @param cloneCustomStates if custom states should be copied
+     * @param cloneConfigChannels if config channels should be copied
      * @return a new {@link OrgStateRevision} instance with
      * cloned/copied dependencies
      */
     public ServerGroupStateRevision cloneLatest(ServerGroup group, User user,
                                         boolean clonePackageStates,
-                                        boolean cloneCustomStates) {
+                                        boolean cloneConfigChannels) {
         ServerGroupStateRevision newRevision = new ServerGroupStateRevision();
         newRevision.setGroup(group);
         newRevision.setCreator(user);
@@ -97,8 +152,8 @@ public enum StateRevisionService {
             clonePackageStates(latestStates, newRevision);
         }
 
-        if (cloneCustomStates) {
-            cloneCustomStates(newRevision, StateFactory.latestCustomStates(group));
+        if (cloneConfigChannels) {
+            cloneConfigChannels(newRevision, StateFactory.latestConfigChannels(group));
         }
         return newRevision;
     }
@@ -108,13 +163,13 @@ public enum StateRevisionService {
      * @param org the organization
      * @param user the user
      * @param clonePackageStates if package states should be copied
-     * @param cloneCustomStates if custom states should be copied
+     * @param cloneConfigChannels if config channels should be copied
      * @return a new {@link OrgStateRevision} instance with
      * cloned/copied dependencies
      */
     public OrgStateRevision cloneLatest(Org org, User user,
                                             boolean clonePackageStates,
-                                            boolean cloneCustomStates) {
+                                            boolean cloneConfigChannels) {
         OrgStateRevision newRevision = new OrgStateRevision();
         newRevision.setOrg(org);
         newRevision.setCreator(user);
@@ -125,8 +180,8 @@ public enum StateRevisionService {
             clonePackageStates(latestStates, newRevision);
         }
 
-        if (cloneCustomStates) {
-            cloneCustomStates(newRevision, StateFactory.latestCustomStates(org));
+        if (cloneConfigChannels) {
+            cloneConfigChannels(newRevision, StateFactory.latestConfigChannels(org));
         }
         return newRevision;
     }
@@ -149,15 +204,9 @@ public enum StateRevisionService {
         newRevision.setPackageStates(packageCopies);
     }
 
-    private void cloneCustomStates(StateRevision newRevision,
-                                   Optional<Set<CustomState>> latestStates)  {
-        newRevision.getCustomStates()
-                .addAll(latestStates.orElse(Collections.emptySet()));
-    }
-
     private void cloneConfigChannels(StateRevision newRevision,
-            Optional<Set<ConfigChannel>> latestChannels) {
+            Optional<List<ConfigChannel>> latestChannels) {
         newRevision.getConfigChannels()
-                .addAll(latestChannels.orElse(Collections.emptySet()));
+                .addAll(latestChannels.orElse(Collections.emptyList()));
     }
 }

@@ -8,7 +8,7 @@
   <rhn-tab name="Configuration" acl="user_role(satellite_admin)" url="/rhn/admin/multiorg/OrgConfigDetails.do"/>
   <rhn-tab name="States" acl="user_role(satellite_admin)" >
      <rhn-tab-url>/rhn/manager/multiorg/details/custom</rhn-tab-url>
-     <rhn-tab name="Custom">
+     <rhn-tab name="Configuration Channels">
         <rhn-tab-url>/rhn/manager/multiorg/details/custom</rhn-tab-url>
      </rhn-tab>
   </rhn-tab>

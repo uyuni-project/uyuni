@@ -167,7 +167,16 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
      * @return true if global
      */
     public boolean isGlobalChannel() {
-        return ConfigChannelType.global().equals(
+        return ConfigChannelType.normal().equals(getConfigChannelType()) ||
+                ConfigChannelType.state().equals(getConfigChannelType());
+    }
+
+    /**
+     * Is this a normal channel?
+     * @return true if normal
+     */
+    public boolean isNormalChannel() {
+        return ConfigChannelType.normal().equals(
                 getConfigChannelType());
     }
 
@@ -177,6 +186,15 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
      */
     public boolean isSandboxChannel() {
         return ConfigChannelType.sandbox().equals(
+                getConfigChannelType());
+    }
+
+    /**
+     * Is this a state channel?
+     * @return true if of type state
+     */
+    public boolean isStateChannel() {
+        return ConfigChannelType.state().equals(
                 getConfigChannelType());
     }
 

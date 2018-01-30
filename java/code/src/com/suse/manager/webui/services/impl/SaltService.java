@@ -18,12 +18,9 @@ import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
 import com.suse.manager.reactor.SaltReactor;
-import com.suse.manager.webui.services.SaltCustomStateStorageManager;
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.MinionServerUtils;
@@ -120,9 +117,6 @@ public class SaltService {
 
     // executing salt-ssh calls
     private final SaltSSHService saltSSHService;
-
-    private SaltCustomStateStorageManager customSaltStorageManager =
-            SaltCustomStateStorageManager.INSTANCE;
 
     private static final Predicate<? super String> SALT_MINION_PREDICATE = (mid) ->
             MinionPendingRegistrationService.containsSSHMinion(mid) ||
@@ -764,100 +758,6 @@ public class SaltService {
     }
 
     /**
-     * Save a Salt .sls file.
-     * @param orgId the organization id
-     * @param name the name of the file
-     * @param content the content of the file
-     * @param oldName the previous name of the file,
-     *                when the file already exists
-     * @param oldChecksum the checksum of the file at
-     *                    the time of showing it to the user
-     */
-    public void saveCustomState(long orgId, String name, String content,
-                                String oldName, String oldChecksum) {
-        try {
-            customSaltStorageManager.storeState(orgId, name, content, oldName, oldChecksum);
-            if (customSaltStorageManager.isRename(oldName, name)) {
-                // for some reason the following native query does not trigger a flush
-                // and the new name is not yet in the db
-                StateFactory.getSession().flush();
-
-                SaltStateGeneratorService.INSTANCE.regenerateCustomStates(orgId, name);
-            }
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Delete a Salt .sls file.
-     * @param orgId the organization id
-     * @param name the name of the file
-     */
-    public void deleteCustomState(long orgId, String name) {
-        try {
-            StateFactory.StateRevisionsUsage usage = StateFactory
-                    .latestStateRevisionsByCustomState(orgId, name);
-            customSaltStorageManager.deleteState(orgId, name);
-            SaltStateGeneratorService.INSTANCE.regenerateCustomStates(usage);
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Get a list of all Salt .sls files
-     * for a given organization.
-     *
-     * @param orgId the organization id
-     * @return a list of names without the .sls extension
-     */
-    public List<String> getCatalogStates(long orgId) {
-        return customSaltStorageManager.listByOrg(orgId);
-    }
-
-    /**
-     * Get the content of the give Salt .sls file.
-     * @param orgId the organization id
-     * @param name the name of the file
-     * @return the content of the file if the file exists
-     */
-    public Optional<String> getOrgStateContent(long orgId, String name) {
-        try {
-            return customSaltStorageManager.getContent(orgId, name);
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Returns true if an org state exists.
-     * @param orgId the organization id
-     * @param name the name of the file
-     * @return true if the file exists
-     */
-    public boolean orgStateExists(long orgId, String name) {
-        return customSaltStorageManager.exists(orgId, name);
-    }
-
-    /**
-     * Add the organization namespace to the given states.
-     * @param orgId the organization id
-     * @param states the states names
-     * @return a set of names that included the organization namespace
-     * @deprecated Will be removed when the state config channels are fully implemented
-     */
-    @Deprecated
-    public Set<String> resolveOrgStates(long orgId, Set<String> states) {
-        return states.stream().map(state -> customSaltStorageManager
-                .getOrgNamespace(orgId) + "." + state)
-                .collect(Collectors.toSet());
-    }
-
-    /**
      * Pings a target set of minions.
      * @param targetIn the target
      * @return a Map from minion ids which responded to the ping to Boolean.TRUE
@@ -925,15 +825,6 @@ public class SaltService {
             LOG.error(e);
         }
         return uptime;
-    }
-
-    /**
-     * Get the directory where custom state files are stored on disk.
-     * @param orgId the organization id
-     * @return the path where .sls files are stored
-     */
-    public String getCustomStateBaseDir(long orgId) {
-        return customSaltStorageManager.getBaseDirPath();
     }
 
     /**

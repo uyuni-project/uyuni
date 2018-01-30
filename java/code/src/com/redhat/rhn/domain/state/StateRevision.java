@@ -21,8 +21,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,8 +36,7 @@ public class StateRevision {
     private Date created;
     private User creator;
     private Set<PackageState> packageStates = new HashSet<>();
-    private Set<CustomState> customStates = new HashSet<>();
-    private Set<ConfigChannel> configChannels = new HashSet<>();
+    private List<ConfigChannel> configChannels = new ArrayList<>();
 
     /**
      * @return the id
@@ -101,30 +102,16 @@ public class StateRevision {
     }
 
     /**
-     * @return the custom states assigned to this server
-     */
-    public Set<CustomState> getCustomStates() {
-        return customStates;
-    }
-
-    /**
-     * @param customStatesIn the custom states to assign to this server
-     */
-    public void setCustomStates(Set<CustomState> customStatesIn) {
-        this.customStates = customStatesIn;
-    }
-
-    /**
      * @return the config channels assigned to this server
      */
-    public Set<ConfigChannel> getConfigChannels() {
+    public List<ConfigChannel> getConfigChannels() {
         return configChannels;
     }
 
     /**
      * @param configChannelsIn the config channels to assign to this server
      */
-    public void setConfigChannels(Set<ConfigChannel> configChannelsIn) {
+    public void setConfigChannels(List<ConfigChannel> configChannelsIn) {
         this.configChannels = configChannelsIn;
     }
 

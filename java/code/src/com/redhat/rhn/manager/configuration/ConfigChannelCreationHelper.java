@@ -133,10 +133,23 @@ public class ConfigChannelCreationHelper {
      * @return the created channel
      */
     public ConfigChannel create(User user) {
-        ConfigChannelType t = ConfigChannelType.global();
+        ConfigChannelType t = ConfigChannelType.normal();
         ConfigChannel cc = ConfigurationFactory.newConfigChannel();
         cc.setOrg(user.getOrg());
         cc.setConfigChannelType(t);
+        return cc;
+    }
+
+    /**
+     * Creates a new config channel of specific type
+     * @param user needed for authentication.
+     * @param type type of the channel.
+     * @return the created channel
+     */
+    public ConfigChannel create(User user, ConfigChannelType type) {
+        ConfigChannel cc = ConfigurationFactory.newConfigChannel();
+        cc.setOrg(user.getOrg());
+        cc.setConfigChannelType(type);
         return cc;
     }
     /**
@@ -164,7 +177,7 @@ public class ConfigChannelCreationHelper {
                             String label, String description) {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         if (!label.equals(cc.getLabel()) &&
-                cm.isDuplicated(label, cc.getConfigChannelType(), cc.getOrg())) {
+                cm.conflictingChannelExists(label, cc.getConfigChannelType(), cc.getOrg())) {
             ValidatorException.raiseException("channelOverview.error.labelexists",
                     label);
         }

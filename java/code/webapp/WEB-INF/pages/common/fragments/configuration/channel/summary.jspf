@@ -8,13 +8,26 @@
                 <tr>
                         <th><bean:message key="channelOverview.jsp.numfiles-header" /></th>
                         <c:choose>
-                                <c:when test="${summary.numFiles + summary.numDirs + summary.numSymlinks > 0}">
-                                        <td><bean:message key="channelOverview.jsp.numfiles"
-                                                arg0="${summary.numFiles}" arg1="${summary.numDirs}" arg2="${summary.numSymlinks}" />
-                                                <br />(<a
-                                                href="/rhn/configuration/ChannelFiles.do?ccid=${channel.id}"><bean:message
-                                                key="channelOverview.jsp.numfiles-total"
-                                                arg0="${summary.numFiles + summary.numDirs + summary.numSymlinks}" /></a>)</td>
+                                <c:when test="${summary.numSls + summary.numFiles + summary.numDirs + summary.numSymlinks > 0}">
+                                        <td>
+                                                <c:choose>
+                                                    <c:when test="${channel.isStateChannel()}">
+                                                          <bean:message key="channelOverview.jsp.state.channel.numfiles"
+                                                             arg0="${summary.numSls}" arg1="${summary.numFiles}" />
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                         <bean:message key="channelOverview.jsp.numfiles"
+                                                            arg0="${summary.numFiles}" arg1="${summary.numDirs}" arg2="${summary.numSymlinks}" />
+                                                    </c:otherwise>
+                                                </c:choose>
+
+                                                <br/>
+                                                (<a
+                                                    href="/rhn/configuration/ChannelFiles.do?ccid=${channel.id}"><bean:message
+                                                    key="channelOverview.jsp.numfiles-total"
+                                                    arg0="${summary.numSls + summary.numFiles + summary.numDirs + summary.numSymlinks}" />
+                                                </a>)
+                                        </td>
                                 </c:when>
                                 <c:otherwise>
                                         <td><bean:message key="channelOverview.jsp.numfiles-none" /></td>
@@ -22,7 +35,7 @@
                         </c:choose>
                 </tr>
                 <%-- If this is not a global channel, there will always be one system subscribed. --%>
-                <rhn:require acl="config_channel_type(normal)"
+                <rhn:require acl="config_channel_type(normal) or config_channel_type(state)"
                              mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
               <tr>
                         <th><bean:message key="channelOverview.jsp.systems-header" /></th>
@@ -43,7 +56,7 @@
                         </c:choose>
               </tr>
             </rhn:require>
-                <c:if test="${channel.configChannelType.label == 'normal'}">
+                <c:if test="${channel.globalChannel}">
                         <tr>
                                 <th><bean:message key="channelOverview.jsp.recentsystem-header" /></th>
                                 <c:choose>
@@ -65,13 +78,16 @@
                 <tr>
                         <th><bean:message key="channelOverview.jsp.recentfile-header" /></th>
                         <td><c:choose>
-                                <c:when test="${summary.numFiles + summary.numDirs + summary.numSymlinks > 0}">
+                                <c:when test="${summary.numFiles + summary.numDirs + summary.numSymlinks + summary.numSls > 0}">
                                         <c:choose>
                                                 <c:when test="${summary.mostRecentMod.configFile.latestConfigRevision.directory}">
                                                         <rhn:icon type="header-folder" title="config.common.dirAlt" />
                                                 </c:when>
                                                 <c:when test="${summary.mostRecentMod.configFile.latestConfigRevision.symlink}">
                                                         <rhn:icon type="header-symlink" title="config.common.symlinkAlt" />
+                                                </c:when>
+                                                <c:when test="${summary.mostRecentMod.configFile.latestConfigRevision.sls}">
+                                                        <rhn:icon type="header-file" title="onfig.common.fileAlt" />
                                                 </c:when>
                                                 <c:otherwise>
                                                         <rhn:icon type="header-file" title="config.common.fileAlt" />

@@ -32,7 +32,7 @@ import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageA
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.io.FileUtils;
 
-import static com.suse.manager.webui.services.SaltConstants.SALT_CUSTOM_STATES_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 
 /**
@@ -60,16 +60,16 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
 
         ServerStateRevision serverRev = new ServerStateRevision();
         serverRev.setServer(server);
-        SaltStateGeneratorService.INSTANCE.generateServerCustomState(serverRev);
+        SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev);
 
-        assertTrue(Files.exists(tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR)
+        assertTrue(Files.exists(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR)
                 .resolve(SALT_SERVER_STATE_FILE_PREFIX + server.getMachineId() + ".sls")));
 
         RefreshGeneratedSaltFilesEventMessageAction action = new RefreshGeneratedSaltFilesEventMessageAction(
                 tmpSaltRoot.toString(), tmpFileRoot.toString());
         action.execute(new RefreshGeneratedSaltFilesEventMessage());
 
-        Path customPath = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR);
+        Path customPath = tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR);
         assertTrue(Files.exists(customPath.resolve(
                 SALT_SERVER_STATE_FILE_PREFIX + server.getMachineId() + ".sls")));
 
@@ -78,7 +78,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
 
     public void testDoExecuteNoCustomDir() throws Exception {
         // no /srv/susemanager/salt/custom
-        assertFalse(Files.exists(tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR)));
+        assertFalse(Files.exists(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR)));
 
         RefreshGeneratedSaltFilesEventMessageAction action = new RefreshGeneratedSaltFilesEventMessageAction(
                 tmpSaltRoot.toString(), tmpFileRoot.toString());
@@ -89,7 +89,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
 
     private void checkAssertions(RefreshGeneratedSaltFilesEventMessageAction action) throws IOException {
 
-        Path customPath = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR);
+        Path customPath = tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR);
         for (Org org : OrgFactory.lookupAllOrgs()) {
             assertTrue(Files.exists(customPath.resolve(
                     "org_" + user.getOrg().getId() + ".sls")));

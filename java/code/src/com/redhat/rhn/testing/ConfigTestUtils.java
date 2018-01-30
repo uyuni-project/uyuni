@@ -76,7 +76,7 @@ public class ConfigTestUtils extends Assert {
      */
     public static ConfigChannel createConfigChannel(Org org, String name, String label) {
         return createConfigChannel(org, name, label,
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
     }
 
     /**
@@ -88,7 +88,7 @@ public class ConfigTestUtils extends Assert {
         return createConfigChannel(org,
                 "test-config-channel-name-" + TestUtils.randomString(),
                 "test-config-channel-label-" + TestUtils.randomString(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
     }
 
     /**

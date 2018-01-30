@@ -123,7 +123,7 @@ public class FileDetailsAction extends RhnAction {
                  StringUtil.displayFileSize(ConfigFile.getMaxFileSize()));
         request.setAttribute(MAX_EDIT_SIZE,
                 StringUtil.displayFileSize(ConfigFileForm.MAX_EDITABLE_SIZE));
-        if (cr.isFile()) {
+        if (cr.isFile() || cr.isSls()) {
             request.setAttribute(REV_TOTAL_SIZE, StringUtil.displayFileSize(totalBytes));
             request.setAttribute(REV_SIZE,
                     StringUtil.displayFileSize(

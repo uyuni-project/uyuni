@@ -9,7 +9,7 @@
                 <rhn-tab-url>/rhn/configuration/file/DeleteFile.do</rhn-tab-url>
                 <rhn-tab-url>/rhn/configuration/file/DeleteRevision.do</rhn-tab-url>
         </rhn-tab>
-        <rhn-tab name="configfile.nav.deploy" url="/rhn/configuration/file/RevisionDeploy.do">
+        <rhn-tab name="configfile.nav.deploy" url="/rhn/configuration/file/RevisionDeploy.do"  acl="not is_in_state_channel()">
                 <rhn-tab-url>/rhn/configuration/file/RevisionDeploy.do</rhn-tab-url>
                 <rhn-tab-url>/rhn/configuration/file/GlobalRevisionDeploy.do</rhn-tab-url>
                 <rhn-tab-url>/rhn/configuration/file/GlobalRevisionDeploySubmit.do</rhn-tab-url>
@@ -23,16 +23,16 @@
                 <rhn-tab name="configfile.nav.copy.central" url="/rhn/configuration/file/CopyFileCentral.do"
                          acl="user_role(config_admin)"/>
                 <rhn-tab name="configfile.nav.copy.local" url="/rhn/configuration/file/CopyFileLocal.do"
-                         acl="user_role(config_admin)"/>
+                         acl="user_role(config_admin); not is_sls()"/>
                 <rhn-tab name="configfile.nav.copy.sandbox" url="/rhn/configuration/file/CopyFileSandbox.do"
-                         acl="user_role(config_admin)"/>
+                         acl="user_role(config_admin); not is_sls()"/>
         </rhn-tab>
         <rhn-tab name="configfile.nav.copy" url="/rhn/configuration/file/CopyFileLocal.do"
                  acl="not user_role(config_admin)">
                 <rhn-tab name="configfile.nav.copy.local" url="/rhn/configuration/file/CopyFileLocal.do"
-                         acl="not user_role(config_admin)"/>
+                         acl="not user_role(config_admin); not is_sls()"/>
                 <rhn-tab name="configfile.nav.copy.sandbox" url="/rhn/configuration/file/CopyFileSandbox.do"
-                         acl="not user_role(config_admin)"/>
+                         acl="not user_role(config_admin); not is_sls()"/>
         </rhn-tab>
         <rhn-tab name="configfile.nav.compare"
                   url="/rhn/configuration/file/CompareRevision.do">
@@ -41,7 +41,7 @@
                 <rhn-tab name="configfile.nav.compare.file" url="/rhn/configuration/file/CompareChannel.do">
                   <rhn-tab-url>/rhn/configuration/file/CompareFile.do</rhn-tab-url>
                 </rhn-tab>
-                <rhn-tab name="configfile.nav.compare.deployed" url="/rhn/configuration/file/CompareDeployed.do"/>
+                <rhn-tab name="configfile.nav.compare.deployed" acl="not is_in_state_channel()" url="/rhn/configuration/file/CompareDeployed.do"/>
                 <rhn-tab-url>/rhn/configuration/file/Diff.do</rhn-tab-url>
         </rhn-tab>
 </rhn-navi-tree>
