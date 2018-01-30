@@ -423,7 +423,7 @@ public class ConfigChannelSaltManager {
      * @return the Salt namespace
      */
     public String getOrgNamespace(long orgId) {
-        return "manager_org_" + orgId;
+        return SaltConstants.ORG_STATES_DIRECTORY_PREFIX + orgId;
     }
 
     /**
