@@ -1,3 +1,5 @@
+- replace ifconfig with ip command
+
 -------------------------------------------------------------------
 Fri Nov 10 16:37:00 CET 2017 - mc@suse.de
 
