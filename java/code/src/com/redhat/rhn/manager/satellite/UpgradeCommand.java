@@ -43,6 +43,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
+
 /**
  * Class responsible for executing one-time upgrade logic
  */
@@ -61,7 +63,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
 
     private final Path saltRootPath;
     private final Path legacyStatesBackupDirectory;
-    private static final String ORG_STATE_DIR_PREFIX = "manager_org_";
     private static final String ORG_CFG_CHANNEL_LEGACY_PREFIX = "mgr_cfg_org_";
 
     /**
@@ -186,7 +187,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
      */
     private void backupLegacyStates() {
         try {
-            Set<Path> orgStateDirs = listDirsWithPrefix(ORG_STATE_DIR_PREFIX);
+            Set<Path> orgStateDirs = listDirsWithPrefix(ORG_STATES_DIRECTORY_PREFIX);
             legacyStatesBackupDirectory.toFile().mkdirs();
             for (Path stateDir : orgStateDirs) {
                 FileUtils.copyDirectory(
@@ -217,7 +218,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
             ConfigRevision revision = (ConfigRevision) row[2];
 
             Path statePath = saltRootPath
-                    .resolve(ORG_STATE_DIR_PREFIX + orgId)
+                    .resolve(ORG_STATES_DIRECTORY_PREFIX + orgId)
                     .resolve(channelLabel + ".sls");
 
             log.info("Migrating " + channelLabel + " from path " + statePath + ".");
@@ -244,7 +245,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
      */
     private void cleanUpLegacyStates() {
         try {
-            for (Path stateDir : listDirsWithPrefix(ORG_STATE_DIR_PREFIX)) {
+            for (Path stateDir : listDirsWithPrefix(ORG_STATES_DIRECTORY_PREFIX)) {
                 Collection<File> legacySlsFiles = FileUtils.listFiles(
                         stateDir.toFile(),
                         new String[]{"sls"},
