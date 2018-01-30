@@ -28,7 +28,6 @@ import com.google.gson.stream.JsonWriter;
 import com.suse.manager.model.gatherer.GathererModule;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.util.Map;
 
 /**
