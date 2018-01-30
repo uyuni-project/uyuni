@@ -1,6 +1,16 @@
 - Uniform date formatting in System Details view (bsc#1045289)
 - Remove previous activation keys when migrating to salt (bsc#1031081)
+- Import content of custom states from filesystem to database on startup, backup old state files
+- Change the directory of the (normal) configuration channels from mgr_cfg_org_N to manager_org_N
 - Handle gpg_check correctly (bsc#1076578)
+- Replace custom states with configuration channels
+- Hide ownership/permission fields from create/upload config file forms for state channels (bsc#1072153)
+- Hide files from state channels from deploy/compare file lists (bsc#1072160)
+- Disable and hide deploy files tab for state config channels (bsc#1072157)
+- Allow ordering config channels in state revision
+- Disallow creating 'normal' config channels when a 'state' channel with the
+  same name and org already exists and vice versa.
+- UI has been updated to manage state channels
 - support multiple FQDNs per system (bsc#1063419)
 - Uniform the notification message when rebooting a system (bsc#1036302)
 - avoid use of the potentially-slow rhnServerNeededPackageCache view

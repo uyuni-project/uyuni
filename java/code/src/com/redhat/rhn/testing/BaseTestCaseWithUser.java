@@ -17,7 +17,6 @@ package com.redhat.rhn.testing;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
-import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.io.FileUtils;
 
@@ -47,8 +46,6 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
                 .toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
-        SaltCustomStateStorageManager.INSTANCE.setBaseDirPath(tmpSaltRoot
-                .toAbsolutePath().toString());
     }
 
     /**

@@ -80,13 +80,11 @@ public class UnsubscribeConfirmSubmitAction extends RhnListDispatchAction {
         ConfigurationManager cm = ConfigurationManager.getInstance();
         DataResult systemSet = cm.ssmSystemListForChannels(user, null);
 
-        int successes = 0;
         Iterator systems = systemSet.iterator();
         //go through each system in the set
         while (systems.hasNext()) {
             Long sid = ((ConfigSystemDto)systems.next()).getId();
             Server server;
-            boolean hit = false;
             try {
                 server = SystemManager.lookupByIdAndUser(sid, user);
             }
@@ -102,7 +100,7 @@ public class UnsubscribeConfirmSubmitAction extends RhnListDispatchAction {
                 catch (LookupException ignored) { }
             }
 
-            successes += server.unsubscribeConfigChannels(configChannelList, user);
+            server.unsubscribeConfigChannels(configChannelList, user);
         }
 
         RhnSetManager.remove(channelSet); //clear the set
@@ -110,19 +108,19 @@ public class UnsubscribeConfirmSubmitAction extends RhnListDispatchAction {
         //no longer be valid, so delete them too.
         ConfigActionHelper.clearRhnSets(user);
 
-        createMessage(request, successes);
+        createMessage(request, systemSet.size() == 1);
         return mapping.findForward("success");
     }
 
-    private void createMessage(HttpServletRequest request, int successes) {
+    private void createMessage(HttpServletRequest request, boolean single) {
         ActionMessages msg = new ActionMessages();
-        if (successes == 1) {
+        if (single) {
             msg.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("unsubscribe.ssm.success"));
         }
         else {
             msg.add(ActionMessages.GLOBAL_MESSAGE,
-                new ActionMessage("unsubscribe.ssm.successes", new Integer(successes)));
+                new ActionMessage("unsubscribe.ssm.successes"));
         }
         getStrutsDelegate().saveMessages(request, msg);
     }

@@ -2,10 +2,10 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const CustomStatesModule = require("../components/custom-states")
-const CustomStates = CustomStatesModule.CustomStates;
+const ConfigChannelsModule = require("../components/config-channels")
+const ConfigChannels = ConfigChannelsModule.ConfigChannels;
 const MessagesUtils = require("../components/messages").Utils;
-const msg = CustomStatesModule.msg;
+const msg = ConfigChannelsModule.msg;
 const Network = require("../utils/network");
 
 function matchUrl(target) {
@@ -26,7 +26,7 @@ function applyRequest(component) {
     .promise.then(data => {
         console.log("apply action queued:" + data)
         component.setState({
-            messages: MessagesUtils.info(t("Applying the custom states has been scheduled for each minion server in this organization"))
+            messages: MessagesUtils.info(t("Applying the config channels has been scheduled for each minion server in this organization"))
         });
     });
 }
@@ -37,13 +37,13 @@ function saveRequest(states) {
         JSON.stringify({
             id: orgId,
             type: "ORG",
-            saltStates: states
+            channels: states
         }),
         "application/json"
     );
 }
 
 ReactDOM.render(
-  <CustomStates matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest}/>,
-  document.getElementById('custom-states')
+  <ConfigChannels matchUrl={matchUrl} saveRequest={saveRequest} applyRequest={applyRequest}/>,
+  document.getElementById('config-channels')
 );

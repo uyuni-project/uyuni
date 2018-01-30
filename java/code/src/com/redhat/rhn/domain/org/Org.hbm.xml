@@ -154,7 +154,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         WHERE 1=1
         AND  CC.org_id = :org_id
         AND  CC.confchan_type_id = CCT.id
-        AND  CCT.label = 'normal'
+        AND  CCT.label IN ('normal', 'state')
     </sql-query>
     <sql-query name="Org.numOfOrgs">
         <return-scalar type="long" column="org_count"/>

@@ -12,21 +12,15 @@
             <one-to-many class="com.redhat.rhn.domain.state.PackageState"/>
         </set>
 
-        <set name="customStates" lazy="true" table="suseStateRevisionCustomState"
-             cascade="save-update" >
+        <list name="configChannels" lazy="true" table="suseStateRevisionConfigChannel"
+              cascade="save-update" where="(position > 0)"
+              collection-type="com.redhat.rhn.common.hibernate.ForceRecreationListType">
             <key column="state_revision_id"/>
-            <many-to-many
-                    class="com.redhat.rhn.domain.state.CustomState"
-                    column="state_id"/>
-        </set>
-
-        <set name="configChannels" lazy="true" table="suseStateRevisionConfigChannel"
-             cascade="save-update" >
-            <key column="state_revision_id"/>
+            <list-index column="position" base="1"/>
             <many-to-many
                     class="com.redhat.rhn.domain.config.ConfigChannel"
                     column="config_channel_id"/>
-        </set>
+        </list>
 
         <property name="created" column="created" type="timestamp" insert="false" update="false"/>
         <many-to-one name="creator" column="creator_id" class="com.redhat.rhn.domain.user.legacy.UserImpl" lazy="proxy"/>
@@ -88,43 +82,4 @@
         where cc.org_id= :orgId and cc.id = :channelId
         and (srvrev.entity_id is not null or grprev.entity_id is not null or orgrev.entity_id is not null)
     </sql-query>
-
-    <sql-query name="StateRevision.findStateUsage">
-        <return-scalar column="state_revision_id" type="long"/>
-        <return-scalar column="server_id" type="long"/>
-        <return-scalar column="group_id" type="long"/>
-        <return-scalar column="org_id" type="long"/>
-        select srcs.state_revision_id as state_revision_id, srvrev.entity_id as server_id, grprev.entity_id as group_id, orgrev.entity_id as org_id
-        from
-        susecustomstate cs
-        inner join susestaterevisioncustomstate srcs on cs.id=srcs.state_id
-        left join (
-            select ssr.state_revision_id as state_revision_id, ssr.server_id as entity_id
-            from suseServerStateRevision ssr
-            where ssr.state_revision_id=(
-                select max(ssrmax.state_revision_id) from suseServerStateRevision ssrmax
-                where ssrmax.server_id=ssr.server_id
-            )
-        ) srvrev on srvrev.state_revision_id=srcs.state_revision_id
-        left join (
-            select sgsr.state_revision_id as state_revision_id, sgsr.group_id as entity_id
-            from suseServerGroupStateRevision sgsr
-            where sgsr.state_revision_id=(
-            select max(sgsrmax.state_revision_id) from suseServerGroupStateRevision sgsrmax
-            where sgsrmax.group_id=sgsr.group_id
-            )
-        ) grprev on grprev.state_revision_id=srcs.state_revision_id
-        left join (
-            select osr.state_revision_id as state_revision_id, osr.org_id as entity_id
-            from suseOrgStateRevision osr
-            where osr.state_revision_id=(
-            select max(osrmax.state_revision_id) from suseOrgStateRevision osrmax
-            where osrmax.org_id=osr.org_id
-            )
-        ) orgrev on orgrev.state_revision_id=srcs.state_revision_id
-
-        where cs.org_id= :orgId and cs.state_name= :stateName and cs.state_deleted='N'
-        and (srvrev.entity_id is not null or grprev.entity_id is not null or orgrev.entity_id is not null)
-    </sql-query>
-
 </hibernate-mapping>

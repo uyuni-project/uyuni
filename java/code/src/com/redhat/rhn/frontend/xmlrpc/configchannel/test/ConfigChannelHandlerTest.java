@@ -416,9 +416,9 @@ public class ConfigChannelHandlerTest extends BaseHandlerTestCase {
         // Create  global config channels
         List<ConfigChannel> gccList = new ArrayList<>();
         ConfigChannel gcc1 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(admin.getOrg(),
-                ConfigChannelType.global());
+                ConfigChannelType.normal());
         gccList.add(gcc1);
         gccList.add(gcc2);
 

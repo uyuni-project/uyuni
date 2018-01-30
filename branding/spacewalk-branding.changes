@@ -1,3 +1,6 @@
+- Replace custom states with configuration channels
+- Adapt labels in config channel overview page for state channels
+
 -------------------------------------------------------------------
 Wed Jan 17 11:53:10 CET 2018 - jgonzalez@suse.com
 
@@ -35,7 +38,7 @@ Tue Aug 08 11:28:05 CEST 2017 - fkobzik@suse.de
 
 - version 2.7.2.7-1
 - Fix overlapping of elem. (bsc#1031143)
-- Fix overlapping text narrow window (bsc#1009118) 
+- Fix overlapping text narrow window (bsc#1009118)
 - Fix formulas action buttons position (bsc#1047513)
 - Fix broken link (bsc#1033999)
 - Alphabar: change title to 'Select first character' (bsc1042199)

@@ -25,7 +25,6 @@ import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.head;
 import static spark.Spark.post;
-import static spark.Spark.put;
 
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
@@ -38,7 +37,6 @@ import com.suse.manager.webui.controllers.NotificationMessageController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.SaltSSHController;
-import com.suse.manager.webui.controllers.StateCatalogController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.SystemsController;
@@ -107,10 +105,10 @@ public class Router implements SparkApplication {
                 withCsrfToken(MinionController::orgCustomStates),
                 jade);
         get("/manager/yourorg/custom",
-                withCsrfToken(withUser(MinionController::yourOrgCustomStates)),
+                withCsrfToken(withUser(MinionController::yourOrgConfigChannels)),
                 jade);
         get("/manager/groups/details/custom",
-                withCsrfToken(withUser(MinionController::serverGroupCustomStates)),
+                withCsrfToken(withUser(MinionController::serverGroupConfigChannels)),
                 jade);
         get("/manager/groups/details/highstate",
                 withCsrfToken(withUser(MinionController::serverGroupHighstate)), jade);
@@ -123,11 +121,12 @@ public class Router implements SparkApplication {
         post("/manager/api/states/apply", withUser(StatesAPI::apply));
         post("/manager/api/states/applyall", withUser(StatesAPI::applyHighstate));
         get("/manager/api/states/match", withUser(StatesAPI::matchStates));
-        post("/manager/api/states/save", withUser(StatesAPI::saveCustomStates));
+        post("/manager/api/states/save", withUser(StatesAPI::saveConfigChannels));
         get("/manager/api/states/packages", StatesAPI::packages);
         post("/manager/api/states/packages/save", withUser(StatesAPI::savePackages));
         get("/manager/api/states/packages/match", StatesAPI::matchPackages);
         get("/manager/api/states/highstate", StatesAPI::showHighstate);
+        get("/manager/api/states/:channelId/content", withUser(StatesAPI::stateContent));
 
         // Virtual Host Managers
         get("/manager/vhms",
@@ -176,26 +175,6 @@ public class Router implements SparkApplication {
                 withProductAdmin(SubscriptionMatchingController::createPin));
         post("/manager/api/subscription-matching/pins/:id/delete",
                 withProductAdmin(SubscriptionMatchingController::deletePin));
-
-        // States Catalog
-        get("/manager/state-catalog",
-                withUserPreferences(withOrgAdmin(StateCatalogController::list)), jade);
-        get("/manager/state-catalog/state",
-                withCsrfToken(withOrgAdmin(StateCatalogController::add)), jade);
-        get("/manager/state-catalog/state/:name",
-                withCsrfToken(withOrgAdmin(StateCatalogController::edit)), jade);
-
-        // States Catalog API
-        get("/manager/api/state-catalog/data",
-                withOrgAdmin(StateCatalogController::data));
-        get("/manager/api/state-catalog/state/:name/content",
-                withUser(StateCatalogController::content));
-        post("/manager/api/state-catalog/state",
-                withOrgAdmin(StateCatalogController::create));
-        put("/manager/api/state-catalog/state/:name",
-                withOrgAdmin(StateCatalogController::update));
-        delete("/manager/api/state-catalog/state/:name",
-                withOrgAdmin(StateCatalogController::delete));
 
         // TaskoTop
         get("/manager/admin/runtime-status",

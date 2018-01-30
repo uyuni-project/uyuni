@@ -113,7 +113,7 @@ public class ConfigChannelSaltManagerTest extends BaseTestCaseWithUser {
         String saltUri = ConfigChannelSaltManager.getInstance().getSaltUriForConfigFile(file);
 
         String expectedUri = "salt://" +
-                "mgr_cfg_org_" + channel.getOrgId() +
+                "manager_org_" + channel.getOrgId() +
                 "/" + channel.getLabel() +
                 "/" + file.getConfigFileName().getPath();
         assertEquals(expectedUri, saltUri);

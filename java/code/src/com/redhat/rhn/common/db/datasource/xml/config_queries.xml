@@ -482,6 +482,7 @@ SELECT CF.id,
    AND CR.config_file_id = CF.id
    AND CF.latest_config_revision_id = CR.id
    AND CR.config_file_type_id = CFT.id
+   AND (CFT.label != 'sls' OR CFN.path != '/init.sls')
 ORDER BY CFN.path
   </query>
 </mode>
@@ -624,7 +625,7 @@ SELECT CF.id, CFN.path
  WHERE CC.org_id = :org_id
    AND CF.config_channel_id = CC.id
    AND CC.confchan_type_id = CCT.id
-   AND CCT.label = 'normal'
+   AND CCT.label IN('normal','state')
    AND rhn_config_channel.get_user_file_access(CF.id, :user_id) = 1
    AND CF.config_file_name_id = CFN.id
 ORDER BY UPPER(CFN.path)
@@ -735,7 +736,7 @@ SELECT  count(CC.id) AS count
   FROM  rhnConfigChannel CC, rhnConfigChannelType CCT
  WHERE  CC.org_id = :org_id
    AND  CC.confchan_type_id = CCT.id
-   AND  CCT.label = 'normal'
+   AND  CCT.label IN('normal', 'state')
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
   </query>
 </mode>
@@ -746,7 +747,7 @@ SELECT  count(CF.id) AS count
   FROM  rhnConfigFile CF, rhnConfigChannel CC, rhnConfigChannelType CCT
  WHERE  CC.org_id = :org_id
    AND  CC.confchan_type_id = CCT.id
-   AND  CCT.label = 'normal'
+   AND  (CCT.label = 'normal' OR CCT.label = 'state')
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
    AND  CC.id = CF.config_channel_id
   </query>
@@ -758,7 +759,7 @@ SELECT  count(CF.id) AS count
   FROM  rhnConfigFile CF, rhnConfigChannel CC, rhnConfigChannelType CCT
  WHERE  CC.org_id = :org_id
    AND  CC.confchan_type_id = CCT.id
-   AND  CCT.label != 'normal'
+   AND  CCT.label NOT IN ('normal', 'state')
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
    AND  CC.id = CF.config_channel_id
   </query>
@@ -1257,6 +1258,7 @@ SELECT  DISTINCT CFN.id, CFN.path
    AND  SCC.config_channel_id = CC.id
    AND  CC.confchan_type_id = CCT.id
    AND  CCT.label != 'server_import'
+   AND  CCT.label != 'state'
    AND  CF.config_file_name_id = CFN.id
 ORDER BY CFN.path
   </query>
@@ -1276,6 +1278,7 @@ SELECT  DISTINCT CFN.id, CFN.path
    AND  SCC.config_channel_id = CC.id
    AND  CC.confchan_type_id = CCT.id
    AND  CCT.label != 'server_import'
+   AND  CCT.label != 'state'
    AND  CF.config_file_name_id = CFN.id
 ORDER BY CFN.path
   </query>
@@ -1308,6 +1311,7 @@ select cc.label as config_channel_label,
            AND  SCC.config_channel_id = CC.id
            AND  CC.confchan_type_id = CCT.id
            AND  CCT.label != 'server_import'
+           AND  CCT.label != 'state'
            group by cf.config_file_name_id) tmp
  where tmp.id = cfn.id
    and (scc.position = tmp.position
@@ -1337,6 +1341,7 @@ SELECT  DISTINCT CFN.id, CFN.path
    AND  SCC.config_channel_id = CC.id
    AND  CC.confchan_type_id = CCT.id
    AND  CCT.label != 'server_import'
+   AND  CCT.label != 'state'
    AND  CF.config_file_name_id = CFN.id
 ORDER BY CFN.path
   </query>
@@ -1412,7 +1417,7 @@ SELECT CC.id,
        rhnConfigChannel CC
  WHERE CC.org_id = :org_id
    AND CC.confchan_type_id = CCT.id
-   AND CCT.label IN ('normal')
+   AND CCT.label IN ('normal', 'state')
    AND rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
    AND EXISTS ( SELECT 1
                   FROM rhnSet ST, rhnServerConfigChannel SCC
@@ -1868,6 +1873,27 @@ SELECT  DISTINCT S.id,
 ORDER BY UPPER(COALESCE(X.name, '(none)'))
         </query>
 </mode>
+    <!-- List all minions that the user has access to, that are -not- already subscribed to the channel-->
+<mode name="managed_minions_not_in_channel" class="com.redhat.rhn.frontend.dto.ConfigSystemDto">
+        <query params="ccid,user_id">
+        SELECT * FROM (
+          SELECT  DISTINCT S.id,
+            S.name
+         FROM  rhnServer S
+            inner join rhnUserServerPerms USP on S.id = USP.server_id
+            inner join suseMinionInfo SMI on S.id = SMI.server_id
+         WHERE  rhn_config_channel.get_user_chan_access(:ccid, :user_id) = 1
+            AND  USP.user_id = :user_id
+            AND  NOT EXISTS(
+               SELECT 1
+               FROM rhnServerConfigChannel SCC
+               WHERE SCC.server_id = S.id
+               AND SCC.config_channel_id =:ccid
+              )
+         ) X
+         ORDER BY UPPER(COALESCE(X.name, '(none)'))
+        </query>
+</mode>
 
 <!-- list all the global config channels for a system.  Used in sdc. -->
 <mode name="config_channels_for_system" class="com.redhat.rhn.frontend.dto.ConfigChannelDto">
@@ -1880,7 +1906,7 @@ SELECT  CC.id, CC.name, SCC.position
    AND  USP.user_id = :user_id
    AND  SCC.config_channel_id = CC.id
    AND  CC.confchan_type_id = CCT.id
-   AND  CCT.label = 'normal'
+   AND  CCT.label IN ('normal', 'state')
 ORDER BY SCC.position ASC
   </query>
   <elaborator params="sid">
@@ -1894,6 +1920,15 @@ SELECT  CC.id, CC.label,
                 AND CF.latest_config_revision_id IS NOT NULL
                 AND CFT.LABEL = 'file'
             ), 0) AS files_only_count,
+       COALESCE( (
+             SELECT COUNT(CF.id)
+               FROM rhnConfigFile CF
+               INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
+               INNER JOIN rhnConfigFileType CFT ON CFT.ID = CR.CONFIG_FILE_TYPE_ID
+              WHERE CF.config_channel_id = CC.id
+               AND CF.latest_config_revision_id IS NOT NULL
+               AND CFT.LABEL = 'sls'
+            ), 0) AS sls_only_count,
        COALESCE( (
              SELECT COUNT(CF.id)
                FROM rhnConfigFile CF
@@ -1951,7 +1986,7 @@ SELECT CC.id, CC.name, CC.label, CCT.label as type,
           INNER JOIN rhnConfigChannel CC ON CC.confchan_type_id = CCT.id
           INNER JOIN rhnRegTokenConfigChannels tcc On CC.id = tcc.CONFIG_CHANNEL_ID
  WHERE CC.org_id = :org_id
-   AND CCT.label IN ('normal')
+   AND CCT.label IN ('normal', 'state')
    AND tcc.token_id = :tid
 ORDER BY tcc.position
   </query>
@@ -1967,7 +2002,7 @@ SELECT CC.id, CC.name, CC.label, CCT.label as type,
   FROM rhnConfigChannelType CCT
           INNER JOIN rhnConfigChannel CC ON CC.confchan_type_id = CCT.id
  WHERE CC.org_id = :org_id
-   AND CCT.label IN ('normal')
+   AND CCT.label IN ('normal', 'state')
    AND NOT EXISTS (select 1 from rhnRegTokenConfigChannels tcc where
                                         CC.id = tcc.CONFIG_CHANNEL_ID AND tcc.token_id = :tid)
  order by cc.name
@@ -1981,7 +2016,7 @@ SELECT CC.id, CC.name, CC.label, CCT.label as type
   FROM rhnConfigChannelType CCT
           INNER JOIN rhnConfigChannel CC ON CC.confchan_type_id = CCT.id
  WHERE CC.org_id = :org_id
-   AND CCT.label IN ('normal')
+   AND CCT.label IN ('normal', 'state')
    AND rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
 ORDER BY UPPER(CC.name)
   </query>
@@ -2025,6 +2060,14 @@ SELECT CC.id AS ID,
                 AND CF.latest_config_revision_id IS NOT NULL
                 AND CFT.LABEL = 'file')
               AS files_only_count,
+             (SELECT COUNT(CF.id)
+               FROM rhnConfigFile CF
+               INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
+               INNER JOIN rhnConfigFileType CFT ON CFT.ID = CR.CONFIG_FILE_TYPE_ID
+              WHERE CF.config_channel_id = CC.id
+                AND CF.latest_config_revision_id IS NOT NULL
+                AND CFT.LABEL = 'sls')
+              AS sls_only_count,
             (SELECT COUNT(CF.id)
                FROM rhnConfigFile CF
                INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
@@ -2054,7 +2097,7 @@ SELECT CC.id,
   FROM rhnConfigChannelType CCT
         INNER JOIN rhnConfigChannel CC ON CC.confchan_type_id = CCT.id
    WHERE CC.org_id = :org_id
-   AND CCT.label IN ('normal')
+   AND CCT.label IN ('normal', 'state')
    AND NOT EXISTS (select 1 from rhnServerConfigChannel SCC where SCC.server_id =:sid and SCC.config_channel_id = CC.id)
    AND rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
 ORDER BY UPPER(CC.name)
@@ -2062,6 +2105,25 @@ ORDER BY UPPER(CC.name)
   <elaborator name="elaborator_config_channel_system_count" params="user_id"/>
   <elaborator name="elaborator_config_channel_file_dir_count"/>
 </mode>
+
+<mode name="normal_config_channels_for_system_subscriptions"
+          class="com.redhat.rhn.frontend.dto.ConfigChannelDto">
+    <query params="org_id, user_id, sid">
+     SELECT CC.id,
+            CC.name,
+            CC.label
+     FROM rhnConfigChannelType CCT
+            INNER JOIN rhnConfigChannel CC ON CC.confchan_type_id = CCT.id
+     WHERE CC.org_id = :org_id
+     AND CCT.label IN ('normal')
+     AND NOT EXISTS (select 1 from rhnServerConfigChannel SCC where SCC.server_id =:sid and SCC.config_channel_id = CC.id)
+     AND rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
+     ORDER BY UPPER(CC.name)
+      </query>
+      <elaborator name="elaborator_config_channel_system_count" params="user_id"/>
+      <elaborator name="elaborator_config_channel_file_dir_count"/>
+</mode>
+
 
 <query name="ssm_channel_elab" params="system_set_label, user_id">
 SELECT  CC.id,
@@ -2074,6 +2136,15 @@ SELECT  CC.id,
                 AND CF.latest_config_revision_id IS NOT NULL
                 AND CFT.LABEL = 'file'
             ), 0) AS files_only_count,
+        COALESCE( (
+            SELECT COUNT(CF.id)
+            FROM rhnConfigFile CF
+            INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
+            INNER JOIN rhnConfigFileType CFT ON CFT.ID = CR.CONFIG_FILE_TYPE_ID
+            WHERE CF.config_channel_id = CC.id
+            AND CF.latest_config_revision_id IS NOT NULL
+            AND CFT.LABEL = 'sls'
+            ), 0) AS sls_only_count,
         COALESCE( (
              SELECT COUNT(CF.id)
                FROM rhnConfigFile CF
@@ -2120,7 +2191,7 @@ SELECT  CC.id, CC.name
     ON  CC.id = SSMCHannels.config_channel_id
  WHERE  CC.org_id = :org_id
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
-   AND  CCT.label = 'normal'
+   AND  CCT.label IN ('normal', 'state')
    AND  COALESCE(SSMCHannels.server_cnt, 0) &lt; (SELECT count(*)
                                                     FROM rhnSet
                                                    WHERE label = 'system_list'
@@ -2155,7 +2226,7 @@ SELECT  CC.id, CC.name
     ON  CC.id = SSMCHannels.config_channel_id
  WHERE  CC.org_id = :org_id
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
-   AND  CCT.label = 'normal'
+   AND  CCT.label IN ('normal', 'state')
    AND  SSMCHannels.config_channel_id is not NULL
 ORDER BY UPPER(CC.name)
   </query>
@@ -2171,7 +2242,7 @@ SELECT  CC.id, CC.name
    AND  ST.element = CC.id
    AND  CC.confchan_type_id = CCT.id
    AND  rhn_config_channel.get_user_chan_access(CC.id, :user_id) = 1
-   AND  CCT.label = 'normal'
+   AND  CCT.label IN ('normal', 'state')
 ORDER BY ST.element_two
   </query>
   <elaborator name="ssm_channel_elab" />
@@ -2188,6 +2259,15 @@ SELECT  CC.id,
                 AND CF.latest_config_revision_id IS NOT NULL
                 AND CFT.LABEL = 'file'
             ), 0) AS files_only_count,
+        COALESCE( (
+              SELECT COUNT(CF.id)
+                FROM rhnConfigFile CF
+                INNER JOIN rhnConfigRevision CR ON CR.id = CF.latest_config_revision_id
+                INNER JOIN rhnConfigFileType CFT ON CFT.ID = CR.CONFIG_FILE_TYPE_ID
+              WHERE CF.config_channel_id = CC.id
+                AND CF.latest_config_revision_id IS NOT NULL
+                AND CFT.LABEL = 'sls'
+            ), 0) AS sls_only_count,
         COALESCE( (
              SELECT COUNT(CF.id)
                FROM rhnConfigFile CF
@@ -2212,7 +2292,7 @@ SELECT  CC.id,
  WHERE  CC.id IN (%s)
 </query>
 
-<!-- Find all config-channels of a given type (normal, local, sandbox OTHER THAN a specified one -->
+<!-- Find all config-channels of a given type (normal, local, sandbox, state OTHER THAN a specified one -->
 <query name ="find_other_channels" params="org_id, ccid, type, user_id" class="com.redhat.rhn.frontend.dto.ConfigChannelDto">
   SELECT  DISTINCT CC.id, CC.label, CC.name, CCT.label AS type
     FROM  rhnConfigChannel CC, rhnConfigChannelType CCT

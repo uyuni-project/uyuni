@@ -9,7 +9,23 @@
         <%-- This is here so that we can display a message if none of the following tables get shown --%>
         <c:set var="tableshown" scope="request" value="false" />
 
-        <rhn:require acl="not config_channel_type(server_import); config_channel_has_files(); config_channel_has_systems()"
+        <rhn:require acl="config_channel_type(state)" mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+            <c:set var="tableshown" scope="request" value="true" />
+            <li class="list-group-item">
+                <strong>
+                    <rhn:icon type="nav-bullet"/>
+                    <bean:message key="channelOverview.jsp.tasks.initsls" />
+                </strong>
+            </li>
+            <li class="list-group-item">
+                <a href="/rhn/configuration/file/FileDetails.do?cfid=${initsls.id}">
+                    <rhn:icon type="system-state"/>
+                    <bean:message key="channelOverview.jsp.tasks.viewinitsls" />
+                </a>
+            </li>
+        </rhn:require>
+
+        <rhn:require acl="not config_channel_type(server_import); config_channel_has_files(); config_channel_has_systems(); not config_channel_type(state)"
                      mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
             <c:set var="tableshown" scope="request" value="true" />
 
@@ -42,7 +58,7 @@
 
         </rhn:require>
 
-        <rhn:require acl="config_channel_has_files(); config_channel_has_systems()"
+        <rhn:require acl="config_channel_has_files(); config_channel_has_systems(); not config_channel_type(state)"
                      mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
             <c:set var="tableshown" scope="request" value="true" />
             <!-- Compare Files table -->
@@ -71,7 +87,14 @@
             <li class="list-group-item">
                 <a href="/rhn/configuration/ChannelCreateFiles.do?ccid=${ccid}">
                     <rhn:icon type="item-add"/>
-                    <bean:message key="channelOverview.jsp.tasks.modifyCreate" />
+                    <c:choose>
+                        <c:when test="${type == 'state'}">
+                            <bean:message key="channelOverview.jsp.tasks.modifyCreate.state" />
+                        </c:when>
+                        <c:otherwise>
+                            <bean:message key="channelOverview.jsp.tasks.modifyCreate" />
+                        </c:otherwise>
+                    </c:choose>
                 </a>
             </li>
             <li class="list-group-item">

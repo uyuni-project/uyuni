@@ -11981,6 +11981,12 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <context context-type="sourcefile">/rhn/configuration/GlobalConfigChannelList.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="toolbar.create.state.configchannel">
+            <source>Create State Channel</source>
+            <context-group name="ctx">
+                <context context-type="sourcefile">/rhn/configuration/GlobalConfigChannelList.do</context>
+            </context-group>
+      </trans-unit>
       <trans-unit id="toolbar.create.org">
         <source>Create Organization</source>
         <context-group name="ctx">
@@ -12001,6 +12007,12 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
       </trans-unit>
       <trans-unit id="globalconfiglist.jsp.label">
         <source>Label</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/GlobalConfigChannelList.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="globalconfiglist.jsp.type">
+        <source>Type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/GlobalConfigChannelList.do</context>
         </context-group>
@@ -12090,6 +12102,12 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="channelOverview.jsp.sls-edit">
+        <source>SLS Contents&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="channelOverview.jsp.descr">
         <source>Description:</source>
         <context-group name="ctx">
@@ -12126,6 +12144,13 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
           <context context-type="paramnotes">"36 files, 2 directories, 0 symlinks"</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="channelOverview.jsp.state.channel.numfiles">
+          <source>{0} sls, {1} files</source>
+          <context-group name="ctx">
+             <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
+             <context context-type="paramnotes">"36 files, 2 directories, 0 symlinks"</context>
+          </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.numfiles-total">
         <source>{0} total</source>
@@ -13333,6 +13358,12 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="filedetails.details.jspf.sls">
+        <source>SLS</source>
+        <context-group name="ctx">
+           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="filedetails.details.jspf.symlink">
         <source>Symlink</source>
         <context-group name="ctx">
@@ -13780,7 +13811,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Enable Configuration Management on Systems</source>
         </trans-unit>
         <trans-unit id="configoverview.jsp.modconfig">
-          <source>Recently Modified Configuration Files:</source>
+          <source>Recently Modified Configuration Files</source>
         </trans-unit>
         <trans-unit id="configoverview.jsp.noFiles">
           <source>No configuration files.</source>
@@ -13792,7 +13823,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Modified</source>
         </trans-unit>
         <trans-unit id="configoverview.jsp.schedconfig">
-          <source>Recently Scheduled Configuration File Deployments:</source>
+          <source>Recently Scheduled Configuration File Deployments</source>
         </trans-unit>
         <trans-unit id="configoverview.jsp.system">
           <source>System</source>

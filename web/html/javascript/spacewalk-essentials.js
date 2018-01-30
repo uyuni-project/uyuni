@@ -350,6 +350,7 @@ function setupTextareaEditor(textarea, mode) {
     <option value="ruby">Ruby</option> \
     <option value="python">Python</option> \
     <option value="perl">perl</option> \
+    <option value="yaml">Yaml</option> \
     </select>');
   modeSel.find('option').each(function() {
   if ($(this).text() == mode)

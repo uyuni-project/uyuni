@@ -41,8 +41,29 @@ public class ConfigAclHandler extends BaseHandler {
      */
     public boolean aclIsFile(Object ctx, String[] params) {
         ConfigRevision revision = getRevision((Map) ctx, params);
-        //return whether or not this errata is published
         return revision.isFile();
+    }
+
+    /**
+     * Tell whether a file is of type sls.
+     * @param ctx Our current context, containing a crid or cfid.
+     * @param params The parameters containing a config revision id or nothing.
+     * @return whether the found revision is a file.
+     */
+    public boolean aclIsSls(Object ctx, String[] params) {
+        ConfigRevision revision = getRevision((Map) ctx, params);
+        return revision.isSls();
+    }
+
+    /**
+     * Tell whether a file belongs to a state channel.
+     * @param ctx Our current context, containing a crid or cfid.
+     * @param params The parameters containing a config revision id or nothing.
+     * @return whether the found revision belongs to a state channel.
+     */
+    public boolean aclIsInStateChannel(Object ctx, String[] params) {
+        ConfigRevision revision = getRevision((Map) ctx, params);
+        return revision.getConfigFile().getConfigChannel().isStateChannel();
     }
 
     /**

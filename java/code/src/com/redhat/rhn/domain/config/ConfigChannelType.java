@@ -36,6 +36,7 @@ public class ConfigChannelType extends BaseDomainHelper {
     public static final String NORMAL = "normal";
     public static final String LOCAL = "local_override";
     public static final String SANDBOX = "server_import";
+    public static final String STATE = "state";
 
     private static final Map POSSIBLE_TYPES = new TreeMap(String.
                                                     CASE_INSENSITIVE_ORDER);
@@ -59,8 +60,16 @@ public class ConfigChannelType extends BaseDomainHelper {
      *
      * @return the global channel type object
      */
-    public static ConfigChannelType global() {
+    public static ConfigChannelType normal() {
         return lookup(NORMAL);
+    }
+
+    /**
+     *
+     * @return the global channel type object
+     */
+    public static ConfigChannelType state() {
+        return lookup(STATE);
     }
 
     /**
@@ -71,15 +80,16 @@ public class ConfigChannelType extends BaseDomainHelper {
      */
     public static ConfigChannelType lookup(String type) {
         if (POSSIBLE_TYPES.isEmpty()) {
-            ConfigChannelType global = ConfigurationFactory.
+            ConfigChannelType normal = ConfigurationFactory.
                             lookupConfigChannelTypeByLabel(NORMAL);
+            ConfigChannelType state = ConfigurationFactory.
+                    lookupConfigChannelTypeByLabel(STATE);
             ConfigChannelType local = ConfigurationFactory.
                             lookupConfigChannelTypeByLabel(LOCAL);
             ConfigChannelType sandbox = ConfigurationFactory.
                             lookupConfigChannelTypeByLabel(SANDBOX);
-            POSSIBLE_TYPES.put(NORMAL, global);
-            POSSIBLE_TYPES.put("central", global);
-            POSSIBLE_TYPES.put("global", global);
+            POSSIBLE_TYPES.put(NORMAL, normal);
+            POSSIBLE_TYPES.put("central", normal);
 
 
             POSSIBLE_TYPES.put("local", local);
@@ -87,6 +97,9 @@ public class ConfigChannelType extends BaseDomainHelper {
 
             POSSIBLE_TYPES.put(SANDBOX, sandbox);
             POSSIBLE_TYPES.put("sandbox", sandbox);
+
+            POSSIBLE_TYPES.put(STATE, state);
+
         }
 
         if (!POSSIBLE_TYPES.containsKey(type)) {

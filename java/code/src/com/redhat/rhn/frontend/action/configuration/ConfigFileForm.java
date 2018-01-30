@@ -183,7 +183,7 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
         set(ConfigFileForm.REV_UID, cr.getConfigInfo().getUsername());
         set(ConfigFileForm.REV_GID, cr.getConfigInfo().getGroupname());
         set("submitted", Boolean.TRUE);
-        if (cr.isFile()) {
+        if (cr.isFile() || cr.isSls()) {
             set(ConfigFileForm.REV_BINARY, cr.getConfigContent().isBinary());
             if (!cr.getConfigContent().isBinary()) {
                 set(ConfigFileForm.REV_CONTENTS, cr.getConfigContent().getContentsString());
@@ -209,7 +209,7 @@ public class ConfigFileForm extends ScrubbingDynaActionForm {
      * @return true IFF the above conditions are true
      */
     protected boolean canDisplayContent(ConfigRevision cr) {
-        return (cr.isFile() &&
+        return (cr.isFile() || cr.isSls() &&
                 !cr.getConfigContent().isBinary() &&
                 cr.getConfigContent().getFileSize().longValue() < MAX_EDITABLE_SIZE);
     }

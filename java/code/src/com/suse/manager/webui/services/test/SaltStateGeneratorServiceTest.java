@@ -19,6 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -26,7 +27,6 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
-import com.redhat.rhn.domain.state.CustomState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -35,7 +35,6 @@ import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
-import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.yaml.snakeyaml.Yaml;
@@ -43,7 +42,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.attribute.FileTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,7 +51,7 @@ import java.util.stream.Collectors;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
-import static com.suse.manager.webui.services.SaltConstants.SALT_CUSTOM_STATES_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 
 /**
@@ -255,40 +254,23 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         assertEquals(proxyHostname, channelFromFile.get("host"));
     }
 
-    public void testGenerateServerCustomState() throws Exception {
+    public void testGenerateServerConfigState() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         ServerStateRevision serverRev = new ServerStateRevision();
         serverRev.setServer(minion);
-
-        CustomState foo = new CustomState();
-        foo.setStateName("foo");
-
-        CustomState bar = new CustomState();
-        bar.setStateName("bar");
-
-        CustomState deleted = new CustomState();
-        deleted.setStateName("deleted");
-        deleted.setDeleted(true);
 
         ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Channel 1", "cfg-channel-1");
         ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Channel 2", "cfg-channel-2");
 
-        serverRev.getCustomStates().add(foo);
-        serverRev.getCustomStates().add(bar);
-        serverRev.getCustomStates().add(deleted);
         serverRev.getConfigChannels().add(channel1);
         serverRev.getConfigChannels().add(channel2);
-        // Fix for server assignments
-        // TODO: Revisit after state channel implementation
-        minion.subscribeConfigChannel(channel1, user);
-        minion.subscribeConfigChannel(channel2, user);
 
-        SaltStateGeneratorService.INSTANCE.generateServerCustomState(serverRev);
+        SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev);
 
-        Path filePath = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR)
+        Path filePath = tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR)
                 .resolve(defaultExtension(SALT_SERVER_STATE_FILE_PREFIX +
                         minion.getMachineId()));
 
@@ -300,11 +282,6 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         }
         assertTrue(map.containsKey("include"));
         List<String> includes = (List<String>)map.get("include");
-        assertEquals(4, includes.size());
-        assertTrue(includes.contains(SaltCustomStateStorageManager.INSTANCE
-                .getOrgNamespace(minion.getOrg().getId()) + ".foo"));
-        assertTrue(includes.contains(SaltCustomStateStorageManager.INSTANCE
-                .getOrgNamespace(minion.getOrg().getId()) + ".bar"));
         assertTrue(includes.contains(
                 ConfigChannelSaltManager.getInstance().getChannelStateName(channel1)));
         assertTrue(includes.contains(
@@ -328,36 +305,36 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         ServerStateRevision minion2Revision = new ServerStateRevision(minion2);
         minion2Revision.getConfigChannels().add(channel1);
 
-        // Fix for server assignments
-        // TODO: Revisit after state channel implementation
-        minion1.subscribeConfigChannel(channel1, user);
-        minion1.subscribeConfigChannel(channel2, user);
-        minion2.subscribeConfigChannel(channel1, user);
-
         StateFactory.save(minion1Revision);
         StateFactory.save(minion2Revision);
         StateFactory.getSession().flush();
 
-        SaltStateGeneratorService.INSTANCE.generateServerCustomState(minion1Revision);
-        SaltStateGeneratorService.INSTANCE.generateServerCustomState(minion2Revision);
+        SaltStateGeneratorService.INSTANCE.generateConfigState(minion1Revision);
+        SaltStateGeneratorService.INSTANCE.generateConfigState(minion2Revision);
 
-        Path minion1StateFile = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR).resolve(
+        Path minion1StateFile = tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR).resolve(
                 defaultExtension(SALT_SERVER_STATE_FILE_PREFIX + minion1.getMachineId()));
-        Path minion2StateFile = tmpSaltRoot.resolve(SALT_CUSTOM_STATES_DIR).resolve(
+        Path minion2StateFile = tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR).resolve(
                 defaultExtension(SALT_SERVER_STATE_FILE_PREFIX + minion2.getMachineId()));
 
-        FileTime minion1Modified = Files.getLastModifiedTime(minion1StateFile);
-        FileTime minion2Modified = Files.getLastModifiedTime(minion2StateFile);
+        byte[] min1InitialContent = Files.readAllBytes(minion1StateFile);
+        byte[] min2InitialContent = Files.readAllBytes(minion2StateFile);
+
+        channel1.setLabel("cfg-channel-1-upd");
+        channel2.setLabel("cfg-channel-2-upd");
+        ConfigurationFactory.commit(channel1);
+        ConfigurationFactory.commit(channel2);
 
         // Execute
         SaltStateGeneratorService.INSTANCE.regenerateConfigStates(channel2);
+        byte[] min1FinalContent = Files.readAllBytes(minion1StateFile);
+        byte[] min2FinalContent = Files.readAllBytes(minion2StateFile);
 
         // Assert file modification times
         // State file for minion 1 should be regenerated
-        assertTrue(
-                minion1Modified.compareTo(Files.getLastModifiedTime(minion1StateFile)) < 0);
+        assertFalse(Arrays.equals(min1InitialContent, min1FinalContent));
         // State file for minion 1 should NOT be regenerated
-        assertEquals(minion2Modified, Files.getLastModifiedTime(minion2StateFile));
+        assertTrue(Arrays.equals(min2InitialContent, min2FinalContent));
 
         // Assert file contents
         Map<String, Object> map;

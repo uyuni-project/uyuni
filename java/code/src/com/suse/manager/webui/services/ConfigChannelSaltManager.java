@@ -16,7 +16,6 @@
 package com.suse.manager.webui.services;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigInfo;
@@ -84,6 +83,21 @@ public class ConfigChannelSaltManager {
     }
 
     /**
+     * Store the salt file structure for a list of config channels on the disk.
+     *
+     * @param channelList - the list of config channels
+     * @throws IOException in case of an IO error
+     */
+    public void generateConfigChannelFiles(List<ConfigChannel> channelList) {
+        channelList.forEach(cc -> {
+            // Generate config files in the filesystem for salt state application
+            if (!this.areFilesGenerated(cc)) {
+                this.generateConfigChannelFiles(cc);
+            }
+        });
+    }
+
+    /**
      * Store the salt file structure for a config channel on the disk.
      * Removes the old hierarchy in case the label has been changed.
      *
@@ -134,10 +148,10 @@ public class ConfigChannelSaltManager {
      */
     private void doGenerateConfigChannelFiles(ConfigChannel channel) throws IOException {
         // TODO synchronize at file level not on the class instance
-        if (!ConfigChannelType.NORMAL.equals(channel.getConfigChannelType().getLabel())) {
+        if (!(channel.isNormalChannel() || channel.isStateChannel())) {
             LOG.debug("Trying to generate salt files for incompatible channel type " +
-                    "(channel: " + channel + "). Skipping. (Only 'normal' configuration " +
-                    "channels are supported.)");
+                    "(channel: " + channel + "). Skipping. (Only 'normal' and 'state' " +
+                    "configuration channels are supported.)");
             return;
         }
         File channelDir = getChannelDir(channel);
@@ -149,9 +163,10 @@ public class ConfigChannelSaltManager {
                 .orElse(emptySortedSet())) {
             generateConfigFile(channelDir, file);
         }
-
-        File stateFile = new File(channelDir, defaultExtension("init.sls"));
-        writeContent(configChannelInitSLSContent(channel), channelDir, stateFile);
+        if (channel.isNormalChannel()) {
+            File stateFile = new File(channelDir, defaultExtension("init.sls"));
+            writeContent(configChannelInitSLSContent(channel), channelDir, stateFile);
+        }
     }
 
     private File getChannelDir(ConfigChannel channel) {
@@ -166,8 +181,8 @@ public class ConfigChannelSaltManager {
      */
     private void generateConfigFile(File channelDir, ConfigFile file) throws IOException {
         ConfigRevision latestRev = file.getLatestConfigRevision();
-        if (!latestRev.getConfigFileType().getLabel().equals(ConfigFileType.FILE)) {
-            // we only generate files, no symlinks/directories
+        if (!(latestRev.isFile() || latestRev.isSls())) {
+            // we only generate files/sls, no symlinks/directories
             return;
         }
         LOG.trace("Generating configuration file: " + file.getConfigFileName().getPath());
@@ -209,7 +224,7 @@ public class ConfigChannelSaltManager {
     }
 
     /**
-     * Creates the contents of the init.sls for a configuration channel.
+     * Generates the contents of the init.sls for a configuration channel.
      *
      * Public for testing.
      *
@@ -263,6 +278,37 @@ public class ConfigChannelSaltManager {
         fileParams.add(singletonMap("makedirs", true));
         fileParams.addAll(getModeParams(file.getLatestConfigRevision().getConfigInfo()));
         return fileParams;
+    }
+
+    private ConfigFile getInitSlsFileForChannel(ConfigChannel channel) {
+        return channel.getConfigFiles().stream()
+                .filter(f -> "/init.sls".equals(f.getConfigFileName().getPath()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("init.sls file not found."));
+    }
+
+    /**
+     * Gets init.sls file content for a config channel.
+     *
+     * @param channel the channel
+     * @return the channel state content
+     */
+    public String getChannelStateContent(ConfigChannel channel) {
+        String content;
+        if (channel.isStateChannel()) {
+            content = getInitSlsFileForChannel(channel)
+                    .getLatestConfigRevision()
+                    .getConfigContent()
+                    .getContentsString();
+        }
+        else if (channel.isNormalChannel()) {
+            content = this.configChannelInitSLSContent(channel);
+        }
+        else {
+            throw new IllegalArgumentException("Invalid ConfigChannel type.");
+        }
+
+        return content;
     }
 
     /**
@@ -353,7 +399,7 @@ public class ConfigChannelSaltManager {
      * @return the Salt namespace
      */
     public String getOrgNamespace(long orgId) {
-        return "mgr_cfg_org_" + orgId;
+        return "manager_org_" + orgId;
     }
 
     /**

@@ -22,7 +22,6 @@ import java.util.TimeZone;
 
 import javax.servlet.http.Cookie;
 
-import com.suse.manager.webui.services.SaltCustomStateStorageManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.struts.action.DynaActionForm;
 import org.hibernate.HibernateException;
@@ -92,8 +91,6 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase {
                 .toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
-        SaltCustomStateStorageManager.INSTANCE.setBaseDirPath(tmpSaltRoot
-                .toAbsolutePath().toString());
     }
 
     /**

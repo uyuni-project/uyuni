@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 78851f9fa315dac88cea70b11878877730269ac3
+-- oracle equivalent source sha1 ba04438c0afe4d458a358ffe3f806a867308168d
 
 -- setup search_path so that these functions are created in appropriate schema.
 update pg_settings set setting = 'rhn_config_channel,' || setting where name = 'search_path';  
@@ -69,7 +69,7 @@ CREATE OR REPLACE FUNCTION get_user_chan_access(config_channel_id_in IN NUMERIC,
          WHERE CC.id = config_channel_id_in
            AND CCT.id = CC.confchan_type_id;
 
-        IF (rhn_user.check_role_implied(user_id_in, 'config_admin') = 1) AND (global_channel = 'normal')
+        IF (rhn_user.check_role_implied(user_id_in, 'config_admin') = 1) AND (global_channel IN ('normal', 'state'))
         THEN
             RETURN 1;
         END IF;
