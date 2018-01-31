@@ -160,11 +160,13 @@ Feature: Management of configuration of all types of clients in a single channel
     And I follow "History" in the content area
     Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
     When I follow first "Show differences between profiled config files and deployed config files"
-    # bsc#1076201 - CFG-MGMT-SALT: incomplete web UI for comparing files
-    # Then I should see a "Differences exist" link
-    # When I follow "Differences exist"
+    Then I should see a "Differences exist" link
+    When I follow "Differences exist"
+    # bsc#1078764 - CFG-MGMT-SALT: inconsistent UI between traditional clients and Salt minions when comparing files
     # Then I should see a "-COLOR=white" text
     # And I should see a "+COLOR=red" text
+    Then I should see a "+COLOR=white" text
+    And I should see a "-COLOR=red" text
 
   Scenario: Check configuration channel and files via XML-RPC
     Given I am logged in via XML-RPC configchannel as user "admin" and password "admin"
