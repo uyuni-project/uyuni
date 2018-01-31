@@ -1,3 +1,4 @@
+- Imporve webui for comparing files (bsc#1076201)
 - For minion, no option to modfiy config file but just view
 - Uniform date formatting in System Details view (bsc#1045289)
 - Remove previous activation keys when migrating to salt (bsc#1031081)
