@@ -29,10 +29,12 @@ import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.configuration.ConfigFileBuilder;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import java.io.File;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -99,6 +101,12 @@ public class FileDetailsAction extends RhnAction {
         request.setAttribute("documentation", ConfigDefaults.get().isDocAvailable());
         request.setAttribute(ManageRevisionSetup.MAX_SIZE, StringUtil
                 .displayFileSize(ConfigFile.getMaxFileSize()));
+
+        request.setAttribute("saltPath",
+                ConfigChannelSaltManager.getInstance().getSaltUriForConfigFile(cr.getConfigFile()));
+        request.setAttribute("saltBasePath",
+                ConfigChannelSaltManager.getInstance().getSaltBaseUriForChannel(cr.getConfigFile().getConfigChannel()) +
+                        File.separator);
 
         return getStrutsDelegate().forwardParams(
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
