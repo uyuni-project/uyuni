@@ -1,3 +1,4 @@
+- Show full Salt paths in config file details page
 - Replace custom states with configuration channels
 - Adapt labels in config channel overview page for state channels
 

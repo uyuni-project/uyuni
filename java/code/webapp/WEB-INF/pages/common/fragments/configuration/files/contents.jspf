@@ -33,9 +33,14 @@
                                 arg2="${revision.revision}"
                                 arg3="${revbytes}"/>
               </c:when>
-              <c:otherwise >
-                        <html:textarea styleClass="form-control" property="contents" rows="20" cols="80" styleId="contents"/><br />
-                        <span class="help-block"><bean:message key="filedetails.jsp.tip.edit"/></span>
+              <c:otherwise>
+                <html:textarea styleClass="form-control" property="contents" rows="20" cols="80" styleId="contents"/><br />
+                <rhn:require acl="is_sls()" mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+                    <span class="help-block"><bean:message key="filedetails.jsp.tip.saltpath" arg0="${saltBasePath}"/></span>
+                </rhn:require>
+                <rhn:require acl="not is_sls()" mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
+                    <span class="help-block"><bean:message key="filedetails.jsp.tip.edit"/></span>
+                </rhn:require>
               </c:otherwise>
             </c:choose>
           </c:when>
