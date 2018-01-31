@@ -3953,7 +3953,18 @@
         <forward name="success" redirect = "true"
                  path="/systems/SystemGroupList.do"/>
     </action>
-
+    <action path="/systems/details/configuration/ViewCentralPaths"
+              scope="request"
+              type="com.redhat.rhn.frontend.action.configuration.sdc.ViewModifyPathsAction"
+              parameter="normal"
+              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+          <set-property property="postRequiredIfSubmitted" value="true" />
+          <set-property property="acls"
+                        value="system_feature(ftr_config)"/>
+          <forward name="default"
+                   path="/WEB-INF/pages/configuration/sdc/viewfilescentral.jsp"
+          />
+     </action>
      <action path="/systems/details/configuration/ViewModifyCentralPaths"
          scope="request"
          type="com.redhat.rhn.frontend.action.configuration.sdc.ViewModifyPathsAction"

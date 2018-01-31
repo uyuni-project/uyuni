@@ -465,6 +465,9 @@
         <trans-unit id="nav.sdc.config.view_modify_files">
           <source>View/Modify Files</source>
         </trans-unit>
+        <trans-unit id="nav.sdc.config.view_files">
+          <source>View Files</source>
+        </trans-unit>
         <trans-unit id="nav.sdc.config.compare_files">
           <source>Compare Files</source>
         </trans-unit>
