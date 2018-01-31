@@ -87,7 +87,7 @@
                                                         <rhn:icon type="header-symlink" title="config.common.symlinkAlt" />
                                                 </c:when>
                                                 <c:when test="${summary.mostRecentMod.configFile.latestConfigRevision.sls}">
-                                                        <rhn:icon type="header-file" title="onfig.common.fileAlt" />
+                                                        <rhn:icon type="header-file" title="config.common.fileAlt" />
                                                 </c:when>
                                                 <c:otherwise>
                                                         <rhn:icon type="header-file" title="config.common.fileAlt" />
