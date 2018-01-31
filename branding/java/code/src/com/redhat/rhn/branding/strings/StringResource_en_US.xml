@@ -2891,6 +2891,9 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="filedetails.jsp.note.macrosalt">
+        <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
