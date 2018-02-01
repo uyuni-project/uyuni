@@ -13,6 +13,14 @@
                     <p class="form-control-static"><bean:write name="configFileForm" property="cffPath"/></p>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="control-label col-md-3">
+                    <bean:message key="filedetails.properties.jspf.saltpath" />:
+                </label>
+                <div class="col-md-9">
+                    <p class="form-control-static"><c:out value="${saltPath}"/></p>
+                </div>
+            </div>
             <c:choose>
             <c:when test="${revision.symlink}">
             <div class="form-group">

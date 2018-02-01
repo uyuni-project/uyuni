@@ -1,3 +1,6 @@
+- Hide macro delimiters for config files in state channels
+- Show full Salt paths in config file details page
+
 -------------------------------------------------------------------
 Tue Jan 30 13:17:29 CET 2018 - jgonzalez@suse.com
 
