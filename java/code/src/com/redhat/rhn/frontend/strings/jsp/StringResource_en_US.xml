@@ -12039,7 +12039,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.configchannel">
-        <source>delete channel</source>
+        <source>Delete Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -12247,19 +12247,19 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate">
-        <source>Create configuration file or directory</source>
+        <source>Create Configuration File or Directory</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyUpload">
-        <source>Upload configuration files</source>
+        <source>Upload Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyImport">
-        <source>Import a file from another channel or system</source>
+        <source>Import a File from Another Channel or System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -13238,13 +13238,13 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         </context-group>
       </trans-unit>
       <trans-unit id="filedetails.header.jspf.download_latest">
-        <source>download latest revision</source>
+        <source>Download Latest revision</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.configfile">
-        <source>delete this file revision</source>
+        <source>Delete This File Revision</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
@@ -13256,7 +13256,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.deletefile">
-        <source>delete this file</source>
+        <source>Delete This File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
@@ -13494,7 +13494,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <!-- header.jspf -->
       <trans-unit id="filedetails.header.jspf.download">
-        <source>download file</source>
+        <source>Download File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
