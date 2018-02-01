@@ -2904,7 +2904,21 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/systems/ssm/config/Unsubscribe.do</context>
         </context-group>
       </trans-unit>
-
+      <trans-unit id="filedetails.properties.jspf.saltpath">
+        <source>Salt Filesystem Path</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="filedetails.jsp.tip.saltpath">
+        <source>&lt;strong&gt;Tip:&lt;/strong&gt; To reference any file in the channel, you can use the base &lt;strong&gt;"{0}"&lt;/strong&gt; followed by the actual file path.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="filedetails.jsp.note.macrosalt">
+        <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

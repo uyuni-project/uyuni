@@ -1,3 +1,12 @@
+- Hide macro delimiters for config files in state channels
+- Show full Salt paths in config file details page
+
+-------------------------------------------------------------------
+Tue Jan 30 13:17:29 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.46.9-1
+- Remove previous activation keys when migrating to salt (bsc#1031081)
+>>>>>>> 3afb6f6459... Show full Salt paths in config file details page
 - Imporve webui for comparing files (bsc#1076201)
 - For minion, no option to modfiy config file but just view
 - Uniform date formatting in System Details view (bsc#1045289)
