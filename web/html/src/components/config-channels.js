@@ -383,7 +383,7 @@ class ConfigChannels extends React.Component {
           { this.state.rank ?
             <div className="col-md-offset-2 col-md-8">
               <h2>Edit Channel Ranks</h2>
-              <p>{t("Edit the order of the configuration channels by dragging them.")}</p>
+              <p>{t("Edit the ranking of the configuration channels by dragging them.")}</p>
               <RankingTable items={currentAssignment} onUpdate={this.onUpdateRanking} emptyMsg={t("There are no states assigned.")}/>
             </div>
             :
