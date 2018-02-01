@@ -1,5 +1,5 @@
 Name:           susemanager-nagios-plugin
-Version:        3.1.1
+Version:        3.2.0
 Release:        1%{?dist}
 Summary:        Nagios plugins for SUSE Manager
 Group:          System/Monitoring
