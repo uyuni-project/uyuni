@@ -50,6 +50,7 @@ public class ConfigChannelSaltManager {
     private String encoding;
     private static ConfigChannelSaltManager instance;
     private static final Logger LOG = Logger.getLogger(ConfigChannelSaltManager.class);
+    private static final String SALT_FS_PREFIX = "salt://";
 
     /**
      * Gets the instance.
@@ -270,7 +271,7 @@ public class ConfigChannelSaltManager {
             filePath = filePath.getRoot().relativize(filePath);
         }
 
-        String saltUri = "salt://" + getChannelRelativePath(file.getConfigChannel())
+        String saltUri = SALT_FS_PREFIX + getChannelRelativePath(file.getConfigChannel())
                 .resolve(filePath);
         List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", file.getConfigFileName().getPath()));
@@ -312,6 +313,16 @@ public class ConfigChannelSaltManager {
     }
 
     /**
+     * Gets salt base URI for a given channel.
+     *
+     * @param channel the channel
+     * @return the salt base URI for channel (starting with salt://)
+     */
+    public String getSaltBaseUriForChannel(ConfigChannel channel) {
+        return SALT_FS_PREFIX + getChannelRelativePath(channel);
+    }
+
+    /**
      * Gets the salt URI for given file.
      *
      * @param file the file
@@ -322,7 +333,7 @@ public class ConfigChannelSaltManager {
         if (filePath.getRoot() != null) {
             filePath = filePath.getRoot().relativize(filePath);
         }
-        return "salt://" + getChannelRelativePath(file.getConfigChannel())
+        return SALT_FS_PREFIX + getChannelRelativePath(file.getConfigChannel())
                 .resolve(filePath);
     }
 
