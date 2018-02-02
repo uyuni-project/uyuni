@@ -58,7 +58,7 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
             if f == 'build_time':
                 if val is not None and isinstance(val, IntType):
                     # A UNIX timestamp
-                    val = localtime(val)
+                    val = gmtime(val)
             elif val:
                 # Convert to strings
                 if isinstance(val, UnicodeType):
