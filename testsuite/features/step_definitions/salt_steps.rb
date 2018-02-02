@@ -131,7 +131,6 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
     And I wait until I see the name of "#{system}", refreshing the page
     And I follow this "#{system}" link
     And I wait until event "Package List Refresh scheduled by (none)" is completed
-    And I wait for "5" seconds
   )
 end
 
