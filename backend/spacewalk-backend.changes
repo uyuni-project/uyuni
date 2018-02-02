@@ -1,3 +1,5 @@
+- use GTM for rpm build_time (bsc#1078056)
+
 -------------------------------------------------------------------
 Fri Feb 02 12:00:22 CET 2018 - jgonzalez@suse.com
 
