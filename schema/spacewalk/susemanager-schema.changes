@@ -1,3 +1,5 @@
+- Make migration idempotent (bsc#1078749)
+
 -------------------------------------------------------------------
 Tue Jan 30 13:48:55 CET 2018 - jgonzalez@suse.com
 
