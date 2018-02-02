@@ -1,9 +1,9 @@
+-------------------------------------------------------------------
+Fri Feb 02 13:07:51 CET 2018 - jgonzalez@suse.com
+
+- version 3.2.2-1
 - Fix custom SERVER_KEY overriding (bsc#1075862)
 - detect subvolumes on /var even with newer btrfs tools (bsc#1077076)
-
--------------------------------------------------------------------
-Mon Jan 29 11:57:43 CET 2018 - mantel@suse.de
-
 - do not try to force db encoding on db upgrade; use same value as
   for installation (bsc#1077730)
 
