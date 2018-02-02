@@ -21,7 +21,7 @@ Feature: Management of configuration of all types of clients in a single channel
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Mixed Channel"
-    And I follow "Create configuration file or directory"
+    And I follow "Create Fonfiguration File or Directory"
     And I enter "/etc/s-mgr/config" as "cffPath"
     And I enter "COLOR=white" in the editor
     And I click on "Create Configuration File"
