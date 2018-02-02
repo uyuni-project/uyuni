@@ -29,6 +29,40 @@ public class ChannelsChangedEventMessage implements EventDatabaseMessage {
     private final long serverId;
     private final Long userId;
     private final Transaction transaction;
+    private Long accessTokenId;
+    private boolean scheduleApplyChannelsState;
+
+    /**
+     * Constructor for creating a {@link ChannelsChangedEventMessage} for a given server.
+     *
+     * @param serverIdIn the server id
+     * @param userIdIn the user id
+     * @param accessTokenIdIn id of the access token that's used for the new channels
+     */
+    public ChannelsChangedEventMessage(long serverIdIn, long userIdIn, Long accessTokenIdIn) {
+        this.serverId = serverIdIn;
+        this.userId = userIdIn;
+        this.accessTokenId = accessTokenIdIn;
+        this.transaction = HibernateFactory.getSession().getTransaction();
+    }
+
+    /**
+     * Constructor for creating a {@link ChannelsChangedEventMessage} for a given server.
+     *
+     * @param serverIdIn the server id
+     * @param userIdIn the user id
+     * @param accessTokenIdIn id of the access token that's used for the new channels
+     * @param scheduleApplyChannelsStateIn whether to schedule applying the channels state
+     * for Salt minions
+     */
+    public ChannelsChangedEventMessage(long serverIdIn, long userIdIn, Long accessTokenIdIn,
+                                       boolean scheduleApplyChannelsStateIn) {
+        this.serverId = serverIdIn;
+        this.userId = userIdIn;
+        this.accessTokenId = accessTokenIdIn;
+        this.transaction = HibernateFactory.getSession().getTransaction();
+        this.scheduleApplyChannelsState = scheduleApplyChannelsStateIn;
+    }
 
     /**
      * Constructor for creating a {@link ChannelsChangedEventMessage} for a given server.
@@ -83,6 +117,27 @@ public class ChannelsChangedEventMessage implements EventDatabaseMessage {
     @Override
     public String toText() {
         return toString();
+    }
+
+    /**
+     * @return scheduleApplyChannelsState to get
+     */
+    public boolean isScheduleApplyChannelsState() {
+        return scheduleApplyChannelsState;
+    }
+
+    /**
+     * @param scheduleApplyChannelsStateIn to set
+     */
+    public void setScheduleApplyChannelsState(boolean scheduleApplyChannelsStateIn) {
+        this.scheduleApplyChannelsState = scheduleApplyChannelsStateIn;
+    }
+
+    /**
+     * @return accessTokenId to get
+     */
+    public Long getAccessTokenId() {
+        return accessTokenId;
     }
 
     @Override

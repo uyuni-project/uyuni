@@ -3,6 +3,10 @@
 const Functions = require("../utils/functions.js");
 const MessagesUtils = require("../components/messages.js").Utils;
 
+export type JsonResult<T> = {
+  data: T
+}
+
 function request(url, type, headers, data, contentType, processData = true) {
    const a = $.ajax({
          url: url,
@@ -50,7 +54,13 @@ function errorMessageByStatus(status) {
 }
 
 function responseErrorMessage(jqXHR, messageMapFunc = null) {
-   console.log("Error: " + jqXHR.status + " " + jqXHR.statusText + ", response text: " + jqXHR.responseText)
+   if (jqXHR instanceof Error) {
+     console.log("Error: " + jqXHR);
+     throw jqXHR;
+   } else {
+     console.log("Error: " + jqXHR.status + " " + jqXHR.statusText + ", response text: " + jqXHR.responseText);
+   }
+
    if (jqXHR.responseJSON && jqXHR.responseJSON.messages &&
         Array.isArray(jqXHR.responseJSON.messages) &&
         jqXHR.responseJSON.messages.length > 0) {

@@ -2,3 +2,6 @@
 sqlnet.log
 *~
 buildy
+output.html
+failed.txt
+Gemfile.lock

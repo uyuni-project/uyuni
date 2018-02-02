@@ -98,6 +98,16 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
   select(arg1, from: arg2)
 end
 
+When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
+  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td,'#{line}')]//select")
+  select(value, from: select[:id])
+end
+
+When(/^I choose radio button "([^"]*)" for child channel "([^"]*)"$/) do |radio, channel|
+  label = find(:xpath, "//dt[contains(.//div, '#{channel}')]//label[text()='#{radio}']")
+  choose(label[:for])
+end
+
 When(/^I choose "([^"]*)"$/) do |arg1|
   find(:xpath, "//input[@type='radio' and @value='#{arg1}']").set(true)
 end
@@ -272,6 +282,11 @@ end
 When(/^I check the "(.*?)" client$/) do |target|
   node = get_target(target)
   step %(I check "#{node.full_hostname}" in the list)
+end
+
+When(/^I uncheck the "(.*?)" client$/) do |host|
+  node = get_target(host)
+  step %(I uncheck "#{node.full_hostname}" in the list)
 end
 
 Given(/^I am on the groups page$/) do

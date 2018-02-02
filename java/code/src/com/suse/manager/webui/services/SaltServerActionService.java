@@ -19,6 +19,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
@@ -29,12 +31,14 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
-import com.redhat.rhn.domain.action.scap.ScapAction;
-import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
+import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.image.DockerfileProfile;
@@ -48,7 +52,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionServerUtils;
@@ -78,16 +81,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * Takes {@link Action} objects to be executed via salt.
  */
-public enum SaltServerActionService {
+public class SaltServerActionService {
 
     /* Singleton instance of this class */
-    INSTANCE;
+    public static final SaltServerActionService INSTANCE = new SaltServerActionService();
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
@@ -184,6 +188,10 @@ public enum SaltServerActionService {
             ScapAction scapAction = (ScapAction)actionIn;
             return scapXccdfEvalAction(minions, scapAction.getScapActionDetails());
         }
+        else if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(actionType)) {
+            SubscribeChannelsAction subscribeAction = (SubscribeChannelsAction)actionIn;
+            return subscribeChanelsAction(minions, subscribeAction.getDetails());
+        }
         else {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Action type " +
@@ -193,6 +201,8 @@ public enum SaltServerActionService {
             return Collections.emptyMap();
         }
     }
+
+
 
     private Optional<ServerAction> serverActionFor(Action actionIn, MinionServer minion) {
         return actionIn.getServerActions().stream()
@@ -489,6 +499,50 @@ public enum SaltServerActionService {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         ret.put(com.suse.manager.webui.utils.salt.State.apply(mods, Optional.empty(), Optional.of(true),
                 test ? Optional.of(test) : Optional.empty()), minions);
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionServer>> subscribeChanelsAction(
+            List<MinionServer> minions, SubscribeChannelsActionDetails actionDetails) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+
+        minions.forEach(minion -> {
+            List<AccessToken> tokens = new ArrayList<>();
+
+            // generate access tokens
+            Set<Channel> allChannels = new HashSet<>();
+            allChannels.addAll(actionDetails.getChannels());
+            if (actionDetails.getBaseChannel() != null) {
+                allChannels.add(actionDetails.getBaseChannel());
+            }
+            AccessToken newToken = AccessTokenFactory.generate(minion, allChannels)
+                    .orElseThrow(() ->
+                            new RuntimeException("Could not generate new token for " +
+                                    minion.getMinionId()));
+            newToken.setValid(false);
+            // persist the access tokens to be activated by the Salt job return event
+            // if the state.apply channels returns successfully
+            actionDetails.getAccessTokens().add(newToken);
+
+            tokens.add(newToken);
+
+            tokens.forEach(accessToken -> {
+                Map<String, Object> chanPillar = new HashMap<>();
+                accessToken.getChannels().forEach(chan -> {
+                    Map<String, Object> chanProps =
+                            SaltStateGeneratorService.getChannelPillarData(minion, accessToken, chan);
+                    chanPillar.put(chan.getLabel(), chanProps);
+                });
+                Map<String, Object> pillar = new HashMap<>();
+                pillar.put("_mgr_channels_items_name", "mgr_channels_new");
+                pillar.put("mgr_channels_new", chanPillar);
+
+                ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.CHANNELS),
+                        Optional.of(pillar), Optional.of(true)), Collections.singletonList(minion));
+
+            });
+        });
+
         return ret;
     }
 

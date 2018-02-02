@@ -15,11 +15,13 @@
 
 package com.redhat.rhn.manager.action.test;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartGuestAction;
@@ -44,6 +46,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -72,6 +75,7 @@ import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -103,6 +107,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
+        Config.get().setString("server.secret_key",
+                DigestUtils.sha256Hex(TestUtils.randomString()));
     }
 
     public void testGetSystemGroups() throws Exception {
@@ -748,6 +754,53 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         DataResult dr = TestUtils.runTestQuery("package_install_list", params);
         assertEquals(2, dr.size());
     }
+
+    public void testScheduleSubscribeChannels() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
+                    with(any(SubscribeChannelsAction.class)));
+        } });
+
+        MinionServer srvr = MinionServerFactoryTest.createTestMinionServer(user);
+        Channel base = ChannelFactoryTest.createBaseChannel(user);
+        Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+
+        Optional<Channel> baseChannel = Optional.of(base);
+        Set<Channel> channels = new HashSet<>();
+        channels.add(ch1);
+        channels.add(ch2);
+        Action action = ActionManager.scheduleSubscribeChannelsAction(user,
+                Collections.singleton(srvr.getId()),
+                baseChannel,
+                channels,
+                new Date());
+
+        assertTrue(action instanceof SubscribeChannelsAction);
+        SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("details_id", sca.getDetails().getId());
+        DataResult dr = TestUtils.runTestQuery("action_subscribe_channels_list", params);
+        assertEquals(2, dr.size());
+
+        Action action2 = ActionFactory.lookupById(action.getId());
+        assertTrue(action2 instanceof SubscribeChannelsAction);
+        SubscribeChannelsAction sca2 = (SubscribeChannelsAction)action2;
+        assertEquals(base.getId(), sca2.getDetails().getBaseChannel().getId());
+        assertEquals(2, sca2.getDetails().getChannels().size());
+        sca2.getDetails().getChannels().stream().anyMatch(c -> c.getId().equals(ch1.getId()));
+        sca2.getDetails().getChannels().stream().anyMatch(c -> c.getId().equals(ch2.getId()));
+        // tokens are generated right when executing the action
+        assertEquals(0, sca2.getDetails().getAccessTokens().size());
+        assertEquals(1, action2.getServerActions().size());
+    }
+
 
     public static void assertNotEmpty(Collection coll) {
         assertNotNull(coll);

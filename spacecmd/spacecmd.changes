@@ -1,3 +1,6 @@
+- Allow scheduling the change of software channels as an action. The previous channels remain accessible
+  to the registered system until the action is executed.
+
 -------------------------------------------------------------------
 Fri Feb 02 11:58:16 CET 2018 - jgonzalez@suse.com
 

@@ -4623,6 +4623,10 @@
 
 
     <!-- SSM\Channels -->
+    <action path="/channel/ssm/ChannelSubscriptions"
+        forward="/WEB-INF/pages/channel/ssm/channelssub.jsp">
+    </action>
+
     <action path="/channel/ssm/ChildSubscriptions"
         scope="request"
         input="/WEB-INF/pages/channel/ssm/childsubs.jsp"

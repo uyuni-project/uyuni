@@ -48,6 +48,18 @@ public class JsonResult<T> {
     }
 
     /**
+     * Create an error result with the given messages.
+     *
+     * @param messagesIn a list of messages
+     * @param dataIn the data
+     * @param <T> the type of data
+     * @return a JsonResult
+     */
+    public static <T> JsonResult<T> error(List<String> messagesIn, T dataIn) {
+        return new JsonResult<>(false, messagesIn, dataIn);
+    }
+
+    /**
      * Create a success result without data.
      *
      * @return a JsonResult

@@ -24,7 +24,9 @@ import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -52,6 +54,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -104,19 +107,22 @@ public enum SaltStateGeneratorService {
      * @param minion the minion server
      */
     public void generatePillar(MinionServer minion) {
-        generatePillar(minion, true);
+        generatePillar(minion, true, Collections.emptySet());
     }
 
     /**
      * Generate server specific pillar if the given server is a minion.
      * @param minion the minion server
      * @param refreshAccessTokens if access tokens should be refreshed first
+     * @param tokensToActivate channels access tokens to activate when refreshing
+     * the tokens
      */
-    public void generatePillar(MinionServer minion, boolean refreshAccessTokens) {
+    public void generatePillar(MinionServer minion, boolean refreshAccessTokens,
+                               Collection<AccessToken> tokensToActivate) {
         LOG.debug("Generating pillar file for minion: " + minion.getMinionId());
 
         if (refreshAccessTokens) {
-            AccessTokenFactory.refreshTokens(minion);
+            AccessTokenFactory.refreshTokens(minion, tokensToActivate);
         }
 
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(minion);
@@ -144,20 +150,7 @@ public enum SaltStateGeneratorService {
         Map<String, Object> chanPillar = new HashMap<>();
         minion.getAccessTokens().forEach(accessToken -> {
             accessToken.getChannels().forEach(chan -> {
-                Map<String, Object> chanProps = new HashMap<>();
-                chanProps.put("alias", "susemanager:" + chan.getLabel());
-                chanProps.put("name", chan.getName());
-                chanProps.put("enabled", "1");
-                chanProps.put("autorefresh", "1");
-                chanProps.put("host", getChannelHost(minion));
-                if ("ssh-push-tunnel".equals(minion.getContactMethod().getLabel())) {
-                    chanProps.put("port", Config.get().getInt("ssh_push_port_https"));
-                }
-                chanProps.put("token", accessToken.getToken());
-                chanProps.put("type", "rpm-md");
-                chanProps.put("gpgcheck", "0");
-                chanProps.put("repo_gpgcheck", "0");
-                chanProps.put("pkg_gpgcheck", chan.isGPGCheck() ? "1" : "0");
+                Map<String, Object> chanProps = getChannelPillarData(minion, accessToken, chan);
 
                 chanPillar.put(chan.getLabel(), chanProps);
             });
@@ -193,6 +186,31 @@ public enum SaltStateGeneratorService {
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }
+    }
+
+    /**
+     * Create channel pillar data for the given minion, access token and channel.
+     * @param minion the minion
+     * @param accessToken the access token
+     * @param chan the channel
+     * @return a {@link Map} containing the pillar data
+     */
+    public static Map<String, Object> getChannelPillarData(MinionServer minion, AccessToken accessToken, Channel chan) {
+        Map<String, Object> chanProps = new HashMap<>();
+        chanProps.put("alias", "susemanager:" + chan.getLabel());
+        chanProps.put("name", chan.getName());
+        chanProps.put("enabled", "1");
+        chanProps.put("autorefresh", "1");
+        chanProps.put("host", getChannelHost(minion));
+        if ("ssh-push-tunnel".equals(minion.getContactMethod().getLabel())) {
+            chanProps.put("port", Config.get().getInt("ssh_push_port_https"));
+        }
+        chanProps.put("token", accessToken.getToken());
+        chanProps.put("type", "rpm-md");
+        chanProps.put("gpgcheck", "0");
+        chanProps.put("repo_gpgcheck", "0");
+        chanProps.put("pkg_gpgcheck", chan.isGPGCheck() ? "1" : "0");
+        return chanProps;
     }
 
     /**

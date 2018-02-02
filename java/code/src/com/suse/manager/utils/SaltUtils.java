@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
@@ -41,6 +42,7 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
@@ -63,6 +65,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -614,6 +617,9 @@ public class SaltUtils {
                 serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
             }
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
+            handleSubscribeChannels(serverAction, jsonResult, action);
+        }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
@@ -629,6 +635,37 @@ public class SaltUtils {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(returnObject);
         return json.length() > 1024 ? json.substring(0, 1024) : json;
+    }
+
+    private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+            serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
+            SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
+
+            // activate the new token
+            Optional<AccessToken> tokenOpt = sca.getDetails().getAccessTokens()
+                    .stream()
+                    .filter(ac -> ac.getMinion().getId().equals(serverAction.getServer().getId()))
+                    .findFirst();
+
+            // if successful update channels in db and trigger pillar refresh
+            SystemManager.updateServerChannels(
+                    action.getSchedulerUser(),
+                    serverAction.getServer(),
+                    Optional.ofNullable(sca.getDetails().getBaseChannel()),
+                    sca.getDetails().getChannels(),
+                    tokenOpt
+                            .map(AccessToken::getId)
+                            .orElse(null));
+        }
+        else {
+            Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String json = gson.toJson(returnObject);
+            serverAction.setResultMsg(json.length() > 1024 ?
+                    json.substring(0, 1024) : json);
+            serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS);
+        }
     }
 
     private String parseMigrationMessage(JsonElement jsonResult) {

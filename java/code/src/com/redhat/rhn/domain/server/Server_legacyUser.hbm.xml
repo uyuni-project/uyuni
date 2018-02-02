@@ -483,5 +483,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                  GROUP BY sc.server_id, pn.name) X]]>
     </sql-query>
 
+    <sql-query name="Server.findServerInSSMByChannel">
+        <return-scalar column="serverId" type="long"/>
+        <![CDATA[
+            SELECT s.id AS serverId
+            FROM rhnServer s
+                JOIN rhnServerChannel sc ON s.id=sc.server_id AND sc.channel_id=:channel_id
+                JOIN rhnSet rset ON rset.element = s.id AND rset.user_id = :user_id AND rset.label = 'system_list'
+        ]]>
+    </sql-query>
 
 </hibernate-mapping>
