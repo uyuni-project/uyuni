@@ -60,7 +60,7 @@ Feature: Configuration state channels
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "My State Channel"
-    And I follow "delete channel"
+    And I follow "Delete Channel"
     Then I should see a "Are you sure you want to delete this config channel?" text
     When I click on "Delete Config Channel"
     Then I should see a "Channel 'My State Channel' has been deleted." text

@@ -19,10 +19,10 @@ Feature: Configuration management of traditional clients
     And I should see a "Edit Properties" link
     And I should see a "Configuration Actions" text
     And I should see a "Add/Create Files" text
-    And I should see a "Create configuration file or directory" link
-    And I should see a "Upload configuration files" link
-    And I should see a "Import a file from another channel or system" link
-    And I should see a "delete channel" link
+    And I should see a "Create Configuration File or Directory" link
+    And I should see a "Upload Configuration Files" link
+    And I should see a "Import a File From Another Channel or System" link
+    And I should see a "Delete Channel" link
 
   Scenario: Try to create same channel again; this should fail
     Given I am authorized as "admin" with password "admin"
@@ -66,10 +66,10 @@ Feature: Configuration management of traditional clients
     And I should see a "Edit Properties" link
     And I should see a "Configuration Actions" text
     And I should see a "Add/Create Files" text
-    And I should see a "Create configuration file or directory" link
-    And I should see a "Upload configuration files" link
-    And I should see a "Import a file from another channel or system" link
-    And I should see a "delete channel" link
+    And I should see a "Create Configuration File or Directory" link
+    And I should see a "Upload Configuration Files" link
+    And I should see a "Import a File From Another Channel or System" link
+    And I should see a "Delete Channel" link
 
   Scenario: Add a configuration file to new configuration channel
     Given I am authorized as "admin" with password "admin"
@@ -77,7 +77,7 @@ Feature: Configuration management of traditional clients
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"
-    And I follow "Create configuration file or directory"
+    And I follow "Create Configuration File or Directory"
     And I enter "/etc/mgr-test-file.cnf" as "cffPath"
     And I enter "MGR_PROXY=yes" in the editor
     And I click on "Create Configuration File"
@@ -202,7 +202,7 @@ Feature: Configuration management of traditional clients
     And I follow "Configuration" in the left menu
     When I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"
-    And I follow "Create configuration file or directory"
+    And I follow "Create Configuration File or Directory"
     And I enter "/tmp/mycache.txt" as "cffPath"
     And I enter "cache" in the editor
     And I click on "Create Configuration File"
@@ -306,7 +306,7 @@ Feature: Configuration management of traditional clients
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Test Channel"
-    And I follow "delete channel"
+    And I follow "Delete Channel"
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: remove new configuration channel
@@ -315,7 +315,7 @@ Feature: Configuration management of traditional clients
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "New Test Channel"
-    And I follow "delete channel"
+    And I follow "Delete Channel"
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: delete configuration file on client

@@ -239,7 +239,7 @@ Feature: Action chaining
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Action Chain Channel"
-    And I follow "delete channel"
+    And I follow "Delete Channel"
     And I click on "Delete Config Channel"
 
   Scenario: Cleanup: remove packages and repository used in action chain
