@@ -15,19 +15,34 @@
 
 package com.suse.manager.webui.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.context.Context;
+import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
+import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -38,8 +53,15 @@ import spark.Request;
 import spark.Response;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
@@ -54,10 +76,16 @@ public class SystemsController {
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(SystemsController.class);
 
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .serializeNulls()
+            .create();
+
     /**
      * Deletes a system.
      * @param request the request
-     * @param response the reposen
+     * @param response the response
      * @param user the user
      * @return the json response
      */
@@ -121,6 +149,137 @@ public class SystemsController {
         return json(response, JsonResult.success());
     }
 
+    /**
+     * Get the current channels of a system.
+     *
+     * @param request the http request
+     * @param response the http response
+     * @param user the user
+     * @return the json response
+     */
+    public static String getChannels(Request request, Response response, User user) {
+        return withServer(request, response, user, (server) -> {
+            Channel base = server.getBaseChannel();
+            ChannelsJson jsonChannels = new ChannelsJson();
+            if (base != null) {
+                jsonChannels.setBase(base);
+                jsonChannels.setChildren(server.getChildChannels().stream());
+            }
+
+            return json(response, JsonResult.success(jsonChannels));
+        });
+    }
+
+    /**
+     * Get base channels available for a system.
+     *
+     * @param request the http request
+     * @param response the http response
+     * @param user the user
+     * @return the json response
+     */
+    public static String getAvailableBaseChannels(Request request, Response response, User user) {
+        return withServer(request, response, user, (server) -> {
+            List<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(
+                    user, server);
+            List<ChannelsJson.ChannelJson> baseChannels =
+                    orgChannels.stream().map(c -> new ChannelsJson.ChannelJson(c.getId(),
+                            c.getName(),
+                            c.isCustom(),
+                            true
+                            ))
+                    .collect(Collectors.toList());
+
+            return json(response, JsonResult.success(baseChannels));
+        });
+    }
+
+    private static String withServer(Request request, Response response, User user, Function<Server, String> handler) {
+        long serverId;
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            return json(response,
+                    HttpStatus.SC_BAD_REQUEST,
+                    JsonResult.error("invalid_server_id"));
+        }
+        Server server = ServerFactory.lookupById(serverId);
+        if (server == null) {
+            return json(response,
+                    HttpStatus.SC_NOT_FOUND,
+                    JsonResult.error("server_not_found"));
+        }
+        return handler.apply(server);
+    }
+
+    /**
+     * Subscribe a system to channels.
+     * @param request the http request
+     * @param response the http response
+     * @param user the user
+     * @return the json response
+     */
+    public static String subscribeChannels(Request request, Response response, User user) {
+        long serverId;
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            return json(response,
+                    HttpStatus.SC_BAD_REQUEST,
+                    JsonResult.error("invalid_server_id"));
+        }
+        SubscribeChannelsJson json = GSON.fromJson(request.body(), SubscribeChannelsJson.class);
+        Optional<Channel> base = Optional.empty();
+        Set<Channel> children;
+        if (json.getBase().filter(b -> b.getId() > -1).isPresent()) {
+            // we have a base selected and its id is not -1
+            base = Optional.ofNullable(ChannelFactory
+                    .lookupByIdAndUser(json.getBase().get().getId(), user));
+            if (!base.isPresent()) {
+                return json(response,
+                        HttpStatus.SC_FORBIDDEN,
+                        JsonResult.error("base_not_found_or_not_authorized"));
+            }
+        }
+        try {
+            children = Optional.ofNullable(json.getChildren())
+                    .map(l -> l
+                            .stream()
+                            .map(m ->
+                                    Optional.ofNullable(
+                                            ChannelFactory.lookupByIdAndUser(m.getId(), user))
+                                        .orElseThrow(() -> new IllegalArgumentException(m.getName()))
+                            )
+                            .collect(Collectors.toSet()))
+                    .orElse(Collections.emptySet());
+        }
+        catch (IllegalArgumentException e) {
+            return json(response,
+                    HttpStatus.SC_FORBIDDEN,
+                    JsonResult.error("child_not_found_or_not_authorized", e.getMessage()));
+        }
+
+        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        Date earliest = Date.from(
+                json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
+        );
+
+        try {
+            SubscribeChannelsAction sca = ActionManager.scheduleSubscribeChannelsAction(user,
+                    Collections.singleton(serverId),
+                    base,
+                    children,
+                    earliest);
+            return json(response, JsonResult.success(sca.getId()));
+        }
+        catch (TaskomaticApiException e) {
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    JsonResult.error("taskomatic_error"));
+        }
+    }
+
     protected static void createSuccessMessage(HttpServletRequest req, String msgKey,
                                         String param1) {
         ActionMessages msg = new ActionMessages();
@@ -138,6 +297,54 @@ public class SystemsController {
         StrutsDelegate.getInstance().saveMessages(req, errs);
     }
 
+    /**
+     * Get available child channels for a base channel.
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the json response
+     */
+    public static Object getAccessibleChannelChildren(Request request, Response response, User user) {
+        return withServer(request, response, user, (server) -> {
+            long channelId;
+            try {
+                channelId = Long.parseLong(request.params("channelId"));
+            }
+            catch (NumberFormatException e) {
+                return json(response,
+                        HttpStatus.SC_BAD_REQUEST,
+                        JsonResult.error("invalid_channel_id"));
+            }
+            try {
+                if (channelId < 0) {
+                    // disable base channel
+                    return json(response, Collections.emptyList());
+                }
+
+                Channel baseChannel = ChannelManager.lookupByIdAndUser(channelId, user);
+                if (!baseChannel.isBaseChannel()) {
+                    return json(response,
+                            HttpStatus.SC_BAD_REQUEST,
+                            JsonResult.error("not_a_base_channel"));
+                }
+
+                List<Channel> children = baseChannel.getAccessibleChildrenFor(user);
+                List<ChannelsJson.ChannelJson> jsonList = children.stream()
+                        .filter(c -> c.isSubscribable(user.getOrg(), server))
+                        .map(c -> new ChannelsJson.ChannelJson(c.getId(),
+                                c.getName(),
+                                c.isCustom(),
+                                c.isSubscribable(user.getOrg(), server)))
+                        .collect(Collectors.toList());
+                return json(response, JsonResult.success(jsonList));
+            }
+            catch (LookupException e) {
+                return json(response,
+                        HttpStatus.SC_NOT_FOUND,
+                        JsonResult.error("invalid_channel_id"));
+            }
+        });
+    }
 
 
 }

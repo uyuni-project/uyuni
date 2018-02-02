@@ -42,6 +42,10 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import org.hibernate.criterion.MatchMode;
+import com.redhat.rhn.manager.ssm.SsmChannelDto;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
  * ChannelFactory
  * @version $Rev$
@@ -230,7 +234,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param labelsIn the labels to search for
      * @return list of channel ids
      */
-    public static List getChannelIds(List<String> labelsIn) {
+    public static List<Long> getChannelIds(List<String> labelsIn) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("labels", labelsIn);
         List<Long> list = singleton.listObjectsByNamedQuery(
@@ -970,6 +974,27 @@ public class ChannelFactory extends HibernateFactory {
         params.put("org_id", user.getOrg().getId());
         return singleton.listObjectsByNamedQuery(
                 "Channel.findCompatCustomBaseChsSSMNoBase", params);
+    }
+
+    /**
+     * Find child channel ids with the given parent in SSM.
+     *
+     * @param user user
+     * @param parentChannelId id of the parent channel
+     * @return List of child channel ids.
+     */
+    public static List<SsmChannelDto> findChildChannelsByParentInSSM(User user, long parentChannelId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", user.getId());
+        params.put("parent_id", parentChannelId);
+
+        List<Object[]> res = singleton
+                .listObjectsByNamedQuery("Channel.findChildChannelsByParentInSSM", params);
+        return res
+                .stream()
+                .map(r -> Arrays.asList(r))
+                .map(r -> new SsmChannelDto((long)r.get(0), (String)r.get(1), r.get(2) != null))
+                .collect(Collectors.toList());
     }
 
     /**

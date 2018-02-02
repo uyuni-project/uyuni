@@ -39,16 +39,22 @@ public class ChannelsJson {
 
         private Long id;
         private String name;
+        private boolean custom;
+        private boolean subscribable;
 
         /**
          * Instantiates a new Channel json.
          *
          * @param idIn   the id
          * @param nameIn the name
+         * @param customIn custom channel flag
+         * @param subscribableIn subscribable flag
          */
-        public ChannelJson(Long idIn, String nameIn) {
+        public ChannelJson(Long idIn, String nameIn, boolean customIn, boolean subscribableIn) {
             this.id = idIn;
             this.name = nameIn;
+            this.custom = customIn;
+            this.subscribable = subscribableIn;
         }
 
         /**
@@ -63,6 +69,20 @@ public class ChannelsJson {
          */
         public String getName() {
             return name;
+        }
+
+        /**
+         * @return custom to get
+         */
+        public boolean isCustom() {
+            return custom;
+        }
+
+        /**
+         * @return subscribable to get
+         */
+        public boolean isSubscribable() {
+            return subscribable;
         }
     }
 
@@ -91,7 +111,7 @@ public class ChannelsJson {
      * @param baseIn the base channel
      */
     public void setBase(Channel baseIn) {
-        this.base = new ChannelJson(baseIn.getId(), baseIn.getLabel());
+        this.base = new ChannelJson(baseIn.getId(), baseIn.getLabel(), baseIn.isCustom(), true);
     }
 
     /**
@@ -105,7 +125,7 @@ public class ChannelsJson {
      * @param childrenIn the child channels
      */
     public void setChildren(Stream<Channel> childrenIn) {
-        this.children = childrenIn.map((c) -> new ChannelJson(c.getId(), c.getLabel()))
+        this.children = childrenIn.map((c) -> new ChannelJson(c.getId(), c.getLabel(), c.isCustom(), true))
                 .collect(Collectors.toList());
     }
 

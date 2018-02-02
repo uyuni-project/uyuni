@@ -29,6 +29,7 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
@@ -164,6 +165,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -325,6 +327,9 @@ public class SystemHandler extends BaseHandler {
      *   - the channel corresponding to cid is not a valid child channel.
      *   - the user doesn't have subscribe access to any one of the current or
      *     new child channels.
+     * @deprecated being replaced by system.scheduleChangeChannels(string sessionKey,
+     * int serverId, String baseChannelLabel, array_single channelLabels, date earliestOccurrence).
+     * This method will schedule an action for changing the child channels immediately.
      *
      * @xmlrpc.doc Subscribe the given server to the child channels provided.  This
      * method will unsubscribe the server from any child channels that the server
@@ -338,6 +343,7 @@ public class SystemHandler extends BaseHandler {
      * or channelLabel")
      * @xmlrpc.returntype #return_int_success()
      */
+    @Deprecated
     public int setChildChannels(User loggedInUser, Integer sid,
             List channelIdsOrLabels)
                     throws FaultException {
@@ -389,6 +395,7 @@ public class SystemHandler extends BaseHandler {
 
         UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(loggedInUser,
                 server, channelIds);
+        cmd.setScheduleApplyChannelsState(true);
         cmd.store();
 
         SystemManager.snapshotServer(server, LocalizationService
@@ -425,6 +432,7 @@ public class SystemHandler extends BaseHandler {
         UpdateBaseChannelCommand cmd =
                 new UpdateBaseChannelCommand(
                         loggedInUser, server, new Long(cid.longValue()));
+        cmd.setScheduleApplyChannelsState(true);
         ValidatorError ve = cmd.store();
         if (ve != null) {
             throw new InvalidChannelException(
@@ -445,20 +453,21 @@ public class SystemHandler extends BaseHandler {
      *   - the channel corresponding to cid is not a base channel.
      *   - the user doesn't have subscribe access to either the current or
      *     the new base channel.
+     * @deprecated being replaced by system.scheduleChangeChannels(string sessionKey,
+     * int serverId, String baseChannelLabel, array_single channelLabels, date earliestOccurrence).
+     *
      *
      * @xmlrpc.doc Assigns the server to a new base channel.  If the user provides an empty
      * string for the channelLabel, the current base channel and all child channels will
-     * be removed from the system. Changes to channel assignments on salt managed systems
-     * will take effect at next highstate application.
+     * be removed from the system.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("string", "channelLabel")
      * @xmlrpc.returntype #return_int_success()
      */
+    @Deprecated
     public int setBaseChannel(User loggedInUser, Integer sid, String channelLabel)
             throws FaultException {
-
-        //Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
 
         UpdateBaseChannelCommand cmd = null;
@@ -476,6 +485,7 @@ public class SystemHandler extends BaseHandler {
 
             if (channelIds.size() > 0) {
                 cmd = new UpdateBaseChannelCommand(loggedInUser, server, channelIds.get(0));
+                cmd.setScheduleApplyChannelsState(true);
             }
             else {
                 throw new InvalidChannelLabelException();
@@ -489,6 +499,77 @@ public class SystemHandler extends BaseHandler {
         SystemManager.snapshotServer(server, LocalizationService
                 .getInstance().getMessage("snapshots.basechannel"));
         return 1;
+    }
+
+    /**
+     * Schedule an action to change the channels of the given system. Works for both traditional
+     * and Salt systems.
+     * To remove the base channel provide an empty string must be provided.
+     * @param loggedInUser The current user
+     * @param serverId ID of the server
+     * @param baseChannelLabel The label of the base channel to subscribe to
+     * @param childLabels The list of child channel labels to subscribe to
+     * @param earliestOccurrence Earliest occurrence of the errata update
+     * be subscribed to.
+     * @return an action id, exception thrown otherwise
+     * @since 19.0
+     *
+     * @xmlrpc.doc Schedule an action to change the channels of the given system. Works for both traditional
+     * and Salt systems.
+     * This method accepts labels for the base and child channels.
+     * If the user provides an empty string for the channelLabel, the current base channel and
+     * all child channels will be removed from the system.
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "channelLabel")
+     * @xmlrpc.param  #param_desc($date, "date", "the time/date to schedule the action")
+     * @xmlrpc.returntype #array_single("int", "actionId")
+     */
+    public long scheduleChangeChannels(User loggedInUser, Integer serverId, String baseChannelLabel,
+                                       List childLabels, Date earliestOccurrence) {
+        //Get the logged in user and server
+        Server server = lookupServer(loggedInUser, serverId);
+        Optional<Channel> baseChannel = Optional.empty();
+
+        // base channel
+        if (StringUtils.isNotEmpty(baseChannelLabel)) {
+            List<Long> channelIds = ChannelFactory.getChannelIds(Collections.singletonList(baseChannelLabel));
+            long baseChannelId = channelIds.stream().findFirst().orElseThrow(() -> new InvalidChannelLabelException());
+            baseChannel = Optional.of(ChannelManager.lookupByIdAndUser(baseChannelId, loggedInUser));
+        }
+        // else if the user provides an empty string for the channel label, they are requesting
+        // to remove the base channel
+
+        // check if user passed a list of labels for the child channels
+        if (childLabels.stream().anyMatch(e -> !(e instanceof String))) {
+            throw new InvalidChannelListException();
+        }
+
+        List<Long> channelIds = ChannelFactory.getChannelIds(childLabels);
+
+        // if we weren't able to retrieve channel ids for all labels provided,
+        // one or more of the labels must be invalid...
+        if (channelIds.size() != childLabels.size()) {
+            throw new InvalidChannelLabelException();
+        }
+
+        List<Channel> childChannels = channelIds.stream()
+                .map(cid -> ChannelFactory.lookupByIdAndUser(cid, loggedInUser))
+                .collect(Collectors.toList());
+
+        try {
+            SubscribeChannelsAction action = ActionManager.scheduleSubscribeChannelsAction(loggedInUser,
+                    Collections.singleton(server.getId()),
+                    baseChannel,
+                    childChannels,
+                    earliestOccurrence);
+            return action.getId();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
@@ -6381,5 +6462,13 @@ public class SystemHandler extends BaseHandler {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
         }
+    }
+
+    /**
+     * Only needed for unit tests.
+     * @return the {@link TaskomaticApi} instance used by this class
+     */
+    public TaskomaticApi getTaskomaticApi() {
+        return taskomaticApi;
     }
 }

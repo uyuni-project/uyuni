@@ -70,7 +70,7 @@ class Button extends React.Component {
     render() {
         const margin = this.props.text != undefined ? "" : " no-margin"
         return (
-            <button id={this.props.id} type="button" title={this.props.title} className={'btn ' + this.props.className} onClick={this.props.handler}>
+            <button id={this.props.id} type="button" title={this.props.title} className={'btn ' + this.props.className} onClick={this.props.handler} disabled={this.props.disabled}>
                 <i className={'fa ' + this.props.icon + margin}/>{this.props.text}
             </button>
         )

@@ -5147,7 +5147,7 @@ organization. You may grant or remove the organization administrator role in the
           <target>チャンネル</target>
         </trans-unit>
         <trans-unit id="ssm.overview.channels.memberships">
-          <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChildSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
+          <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChannelSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
           <target>システムの &lt;a href=&quot;/rhn/channel/ssm/ChildSubscriptions.do&quot;&gt;チャンネルメンバーシップ&lt;/a&gt; を管理します</target>
         </trans-unit>
         <trans-unit id="ssm.overview.channels.subscriptions">

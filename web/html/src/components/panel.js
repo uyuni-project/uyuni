@@ -100,12 +100,21 @@ function BootstrapPanel(props) {
         <div className="panel panel-default">
             { props.title &&
             <div className="panel-heading">
-                <h4>{props.title}</h4>
+                <h2>
+                  { props.icon && <i className={"fa " +  props.icon}></i> }
+                  {props.title}
+                </h2>
+                { props.header && <span>{props.header}</span>}
             </div>
             }
             <div className="panel-body">
-                {props.children}
+                { props.children }
             </div>
+            { props.footer &&
+              <div className="panel-footer">
+                {props.footer}
+              </div>
+            }
         </div>
     );
 }

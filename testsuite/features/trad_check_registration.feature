@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Client display after registration
@@ -179,10 +179,9 @@ Feature: Client display after registration
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    Then I should see a "Software Channel Subscriptions" text
-    And I should see a "Base Software Channel" text
-    And I should see a "Change Subscriptions" button
-    And I should see a "Confirm" button
+    Then I should see a "Base Software Alteration" text
+    And I should see a "Child Channels Subscriptions" text
+    And I should see a "Next" button
 
   Scenario: Show Configuration => View/Modify Files page
     Given I am on the Systems overview page of this "sle-client"

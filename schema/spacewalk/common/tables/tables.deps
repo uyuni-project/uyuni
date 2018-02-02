@@ -219,6 +219,9 @@ rhnVisibleObjects              :: PXTSessions
 rhnWebContactChangeLog         :: rhnWebContactChangeState
 rhnActionChain                 :: web_contact
 rhnActionChainEntry            :: rhnActionChain rhnAction rhnServer
+rhnActionSubChannels           :: rhnAction rhnChannel
+rhnActionSubChannelsList       :: rhnActionSubChannels rhnChannel
+rhnActionSubChannelsTokens     :: suseChannelAccessToken rhnActionSubChannels
 suseChannelAccessToken         :: suseMinionInfo
 suseChannelAccessTokenChannel  :: suseChannelAccessToken rhnChannel
 suseCredentials                :: suseCredentialsType web_contact

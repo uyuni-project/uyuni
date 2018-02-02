@@ -19,6 +19,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -527,6 +528,23 @@ public class TaskomaticApi {
     public void scheduleActionExecution(Action action)
         throws TaskomaticApiException {
         scheduleActionExecution(action, false);
+    }
+
+    /**
+     * Schedule a channel subscription action.
+     *
+     * @param user the user that schedules the action
+     * @param action the action to schedule
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSubscribeChannels(User user, SubscribeChannelsAction action)
+            throws TaskomaticApiException {
+        Map<String, String> params = new HashMap<>();
+        params.put("action_id", Long.toString(action.getId()));
+        params.put("user_id", Long.toString(user.getId()));
+        invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
+                MINION_ACTION_JOB_PREFIX + action.getId(), params,
+                action.getEarliestAction());
     }
 
     /**
