@@ -230,12 +230,13 @@ For a test with a regular expression, there is ```I should see a text like "..."
 
 ```cucumber
   When I wait until I see "Software Updates Available" text, refreshing the page
-  When I try to reload page until it contains "OpenSCAP xccdf scanning" text
-  When I try to reload page until it does not contain "OpenSCAP xccdf scanning" text
+  When I wait until I do not see "Apply highstate scheduled by admin" text, refreshing the page
+  When I wait until I see the name of "sle-minion", refreshing the page
+  When I wait until I do not see the name of "sle-minion", refreshing the page
   When I refresh page until I see "sle-minion" hostname as text
 ```
 
-(first two will be unified)
+(last one should probably be renamed - it looks in the contents area of the page)
 
 
 <a name="b4" />

@@ -16,7 +16,8 @@ Feature: Install a package to the traditional client
     And I click on "Confirm"
     And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "1 package install has been scheduled for" text
-    And "virgo-dummy-2.0-1.1" should be installed on "sle-client"
+    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    Then "virgo-dummy-2.0-1.1" should be installed on "sle-client"
 
   Scenario: Enable old packages for testing a patch install
     When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-client"

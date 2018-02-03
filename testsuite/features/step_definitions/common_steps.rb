@@ -44,11 +44,11 @@ When(/^I wait until event "([^"]*)" is completed$/) do |event|
   steps %(
     When I follow "Events"
     And I follow "Pending"
-    And I wait for "1" seconds
-    And I try to reload page until it does not contain "#{event}" text
+    And I wait for "1" second
+    And I wait until I do not see "#{event}" text, refreshing the page
     And I follow "History"
-    And I wait for "1" seconds
-    And I try to reload page until it contains "#{event}" text
+    And I wait for "1" second
+    And I wait until I see "#{event}" text, refreshing the page
     And I follow first "#{event}"
     And I wait until I see "This action's status is: Completed." text, refreshing the page
   )
