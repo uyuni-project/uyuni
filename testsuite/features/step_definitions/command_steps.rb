@@ -434,3 +434,15 @@ When(/^I configure the proxy$/) do
   cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
   $proxy.run(cmd, true, 600, 'root')
 end
+
+Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
+  # for testing buildtime of generated metadata - See bsc#1078056
+  node = get_target(host)
+  cmd = "dumpsolv /var/cache/zypp/solv/spacewalk\:test-channel-x86_64/solv | grep -E 'solvable:name|solvable:buildtime'| grep -A1 '#{pkg}$'| perl -ne 'if($_ =~ /^solvable:buildtime:\\s*(\\d+)/) { print $1; }'"
+  metadata_buildtime, rc = node.run(cmd)
+  raise "Command failed: #{cmd}" unless rc.zero?
+  cmd = "rpm -q --qf '%{BUILDTIME}' #{pkg}"
+  rpm_buildtime, rc = node.run(cmd)
+  raise "Command failed: #{cmd}" unless rc.zero?
+  raise "Wrong buildtime in metadata: #{metadata_buildtime} != #{rpm_buildtime}" unless metadata_buildtime == rpm_buildtime
+end
