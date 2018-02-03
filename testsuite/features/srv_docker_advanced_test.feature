@@ -40,26 +40,26 @@ Feature: Advanced content management
 
   Scenario: Cleanup: remove docker profile
     Given I am authorized as "docker" with password "docker"
-    And I follow "Images" in the left menu
+    When I follow "Images" in the left menu
     And I follow "Profiles" in the left menu
-    When I check the row with the "suse_docker_admin" text
+    And I check the row with the "suse_docker_admin" text
     And I click on "Delete"
     And I click on the css "button.btn-danger"
-    And I should see a "Image profile has been deleted." text
+    And I wait until I see "Image profile has been deleted." text
 
   Scenario: Cleanup: remove docker_admin" Image Store
     Given I am authorized as "docker" with password "docker"
-    And I follow "Images" in the left menu
+    When I follow "Images" in the left menu
     And I follow "Stores" in the left menu
-    When I check the row with the "docker_admin" text
+    And I check the row with the "docker_admin" text
     And I click on "Delete"
     And I click on the css "button.btn-danger"
-    And I should see a "Image store has been deleted." text
+    And I wait until I see "Image store has been deleted." text
 
   Scenario: Cleanup: delete no role user
     Given I am on the active Users page
-    And I follow "norole"
-    When I follow "Delete User"
+    When I follow "norole"
+    And I follow "Delete User"
     Then I should see a "Confirm User Deletion" text
     And I should see a "This will delete this user permanently." text
     When I click on "Delete User"
