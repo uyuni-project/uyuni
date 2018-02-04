@@ -44,11 +44,12 @@ Feature: Install a package to the traditional client
     And I click on "Confirm"
     And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "1 patch update has been scheduled for" text
-    And "andromeda-dummy-2.0-1.1" should be installed on "sle-client"
+    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    Then "andromeda-dummy-2.0-1.1" should be installed on "sle-client"
     And The metadata buildtime from package "andromeda-dummy" match the one in the rpm on "sle-client"
 
   Scenario: Cleanup: remove packages and restore non-update repo
-    And I run "zypper -n rm andromeda-dummy" on "sle-client"
+    When I run "zypper -n rm andromeda-dummy" on "sle-client"
     And I run "zypper -n rm virgo-dummy" on "sle-client"
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client"
     And I run "rhn_check -vvv" on "sle-client"
