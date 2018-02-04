@@ -383,44 +383,6 @@ Then(/^I reload the page$/) do
   visit current_url
 end
 
-When(/^I try to reload page until it contains "([^"]*)" text$/) do |text|
-  found = false
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        if page.has_content?(text)
-          found = true
-          break
-        end
-        sleep(5)
-        visit current_url
-      end
-    end
-  rescue Timeout::Error
-    raise "'#{text}' cannot be found after wait and reload page"
-  end
-  raise unless found
-end
-
-When(/^I try to reload page until it does not contain "([^"]*)" text$/) do |text|
-  found = true
-  begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
-      loop do
-        unless page.has_content?(text)
-          found = false
-          break
-        end
-        sleep(5)
-        visit current_url
-      end
-    end
-  rescue Timeout::Error
-    raise "'#{text}' is still found after wait and reload page"
-  end
-  raise if found
-end
-
 Then(/^I should see something$/) do
   steps %(
     Given I should see a "Sign In" text
