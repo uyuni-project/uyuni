@@ -7,8 +7,7 @@ Feature: Very first settings
   I want to create the organisation, the first users and set the HTTP proxy
 
   # bsc#1077780 - "JDBCConnectionException: could not prepare statement" after bootstrapping minion
-  # Potential workaround against bsc#1077780 - does it work?
-  Scenario: Ugly hack
+  Scenario: Temporary workaround against bsc#1077780
     Given I restart the spacewalk service
 
   Scenario: Create admin user and first organization
