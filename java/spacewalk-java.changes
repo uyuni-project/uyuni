@@ -1,5 +1,10 @@
-- Allow scheduling the change of software channels as an action. The previous channels remain accessible
-  to the registered system until the action is executed.
+-------------------------------------------------------------------
+Mon Feb 05 12:48:29 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.59.3-1
+- Allow scheduling the change of software channels as an action.
+  The previous channels remain accessible to the registered system
+  until the action is executed.
 
 -------------------------------------------------------------------
 Fri Feb 02 12:36:31 CET 2018 - jgonzalez@suse.com
