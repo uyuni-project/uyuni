@@ -1,9 +1,17 @@
-# Idempotency:
+# Idempotency
 
-Prerequisites for each minion/Trad-client.
+## Registration
 
-As a standard status, we require that tradclient and minions have the **base channel assigned**, where the test pkg are.
+Each client must be correctly registered (in bootstrapped state) at the beginning of the feature.
 
-If you remove a tradclient or minion, **always readd** the base channel, otherwise all pkgs/patches test will fail.
 
-For more prerequisites, look at core feature, but this is the only prerequisite for tradclient or minions.
+## Base channel
+
+As a standard status, we require that traditional clients and Salt minions have the **base channel assigned**. The base channel is where the test packages are.
+
+If you remove a traditional client or minion, **always re-add** the base channel, otherwise all package and patch tests will fail.
+
+
+## Other
+
+For more prerequisites, look at the core features.
