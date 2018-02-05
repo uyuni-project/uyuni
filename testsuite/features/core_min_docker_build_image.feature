@@ -3,10 +3,8 @@
 #
 # Basic images do not contain zypper nor the name of the server,
 # so the inspect functionality is not tested here.
-Feature: Be able to build container images
 
-  Scenario: Check prerequisites of content management feature
-  Then I check that sles-minion exists otherwise bootstrap it
+Feature: Build container images
 
   Scenario: Create a Docker user with image administrators rights
   Given I am on the active Users page
