@@ -19,6 +19,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.SmtpMail;
 import com.redhat.rhn.domain.user.User;
+import com.suse.manager.utils.MailHelper;
 
 /**
  * BaseMailAction - basic abstract class to encapsulate some common Action logic.
@@ -36,17 +37,13 @@ public abstract class BaseMailAction {
      */
     public void execute(EventMessage msg) {
         BaseEvent aevt = (BaseEvent) msg;
-        Mail mailer = getMail();
-        mailer.setRecipients(getRecipients(aevt.getUser()));
-        mailer.setSubject(getSubject(aevt));
-        mailer.setBody(msg.toText());
-        mailer.send();
+        MailHelper.withMailer(getMail()).sendEmail(getRecipients(aevt.getUser()), getSubject(aevt), msg.toText());
     }
 
     /**
-    * Get the mailer associated with this class
-    * @return the mailer associated with this class
-    */
+     * Get the mailer associated with this class
+     * @return the mailer associated with this class
+     */
     protected Mail getMail() {
         String clazz = Config.get().getString(
                 "web.mailer_class");
@@ -61,6 +58,4 @@ public abstract class BaseMailAction {
             return new SmtpMail();
         }
     }
-
-
 }
