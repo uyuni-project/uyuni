@@ -93,7 +93,7 @@ Feature: Action chaining
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     When I follow "Action Chain Channel"
-    And I follow "Create configuration file or directory"
+    And I follow "Create Configuration File or Directory"
     And I enter "/etc/action-chain.cnf" as "cffPath"
     And I enter "Testchain=YES_PLEASE" in the editor
     And I click on "Create Configuration File"
