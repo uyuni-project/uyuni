@@ -1,5 +1,6 @@
 package com.redhat.rhn.taskomatic.task.gatherer.test;
 
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -11,7 +12,6 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.gatherer.GathererJsonIO;
 import com.suse.manager.gatherer.JSONHost;
 
-import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,9 +27,8 @@ public class VirtualizationLinkTest extends BaseTestCaseWithUser {
      * @throws Exception - if anything goes wrong
      */
     public void testLinking() throws Exception {
-        FileReader fr =
-                new FileReader(TestUtils.findTestData("gatherer.out.json").getPath());
-        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr);
+        String json = FileUtils.readStringFromFile(TestUtils.findTestData("gatherer.out.json").getPath());
+        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(json);
 
         VirtualHostManager manager = new VirtualHostManager();
         String vhmLabel = "1";

@@ -26,7 +26,6 @@ import com.suse.manager.gatherer.GathererJsonIO;
 import com.suse.manager.gatherer.JSONHost;
 import com.suse.manager.model.gatherer.GathererModule;
 
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -113,8 +112,8 @@ public class GathererJsonIOTest extends TestCase {
     }
 
     public void testReadGathererOutput() throws Exception {
-        FileReader fr = new FileReader(TestUtils.findTestData(GATHEREROUT).getPath());
-        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr);
+        String json = FileUtils.readStringFromFile(TestUtils.findTestData(GATHEREROUT).getPath());
+        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(json);
 
         assertEquals(3, hosts.keySet().size());
 
@@ -137,8 +136,8 @@ public class GathererJsonIOTest extends TestCase {
     }
 
     public void testReadGathererOutputWithVmAddiotnalData() throws Exception {
-        FileReader fr = new FileReader(TestUtils.findTestData(GATHEREROUT).getPath());
-        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr);
+        String json = FileUtils.readStringFromFile(TestUtils.findTestData(GATHEREROUT).getPath());
+        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(json);
 
         assertEquals(3, hosts.keySet().size());
 

@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -137,8 +138,33 @@ public class GathererRunner {
             stdin.flush();
             stdin.close();
 
+            // Thread that reads process error output to avoid blocking
+            Thread errStreamReader = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        String line = null;
+                        BufferedReader inErr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+                        while ((line = inErr.readLine()) != null) {
+                            // do nothing, just consuming stderr output
+                        }
+                    }
+                    catch (Exception e) {
+                        logger.error("Error reading stderr from external process", e);
+                    }
+                }
+            });
+            errStreamReader.start();
+
             InputStreamReader irr = new InputStreamReader(p.getInputStream());
-            hosts = new GathererJsonIO().readHosts(irr);
+            // We need to consume the input stream as it comes to avoid
+            // a deadlock because the buffer size is full.
+            BufferedReader br = new BufferedReader(irr);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            hosts = new GathererJsonIO().readHosts(sb.toString());
 
             int exitCode = p.waitFor();
             if (exitCode != 0) {

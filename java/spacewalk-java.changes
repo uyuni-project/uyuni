@@ -1,3 +1,4 @@
+- Handle stderr from "virtual-host-gatherer" to avoid hanging (bsc#1067010)
 - Fix issues in text for config management.
 - Hide macro delimiters for config files in state channels
 - Show full Salt paths in config file details page
