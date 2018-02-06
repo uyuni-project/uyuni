@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <upgradepaths>
 	<upgrade from_pdid="42" from_product="Open_Enterprise_Server-2015-None.x86_64" to_pdid="43" to_product="Open_Enterprise_Server-2015.1-None.x86_64"/>
 	<upgrade from_pdid="677" from_product="SUSE-Linux-Enterprise-Server-SP2-10-None.i686" to_pdid="751" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.i686"/>
