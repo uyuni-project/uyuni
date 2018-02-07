@@ -52,6 +52,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
       <key column="product_id"/>
       <one-to-many class="com.redhat.rhn.domain.product.SUSEProductChannel"/>
     </set>
+
+    <set name="recommends" inverse="true" table="suseProductRecommend">
+      <key column="base_pdid"/>
+      <many-to-many column="rec_pdid"
+                    class="com.redhat.rhn.domain.product.SUSEProduct"/>
+    </set>
   </class>
 
   <query name="SUSEProduct.clear">
