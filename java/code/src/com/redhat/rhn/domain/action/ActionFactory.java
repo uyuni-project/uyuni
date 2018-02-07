@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
@@ -440,6 +441,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_IMAGE_INSPECT)) {
             retval = new ImageInspectAction();
+        }
+        else if (typeIn.equals(TYPE_SUBSCRIBE_CHANNELS)) {
+            retval = new SubscribeChannelsAction();
         }
 
         else {
@@ -1160,5 +1164,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_IMAGE_INSPECT =
             lookupActionTypeByLabel("image.inspect");
+
+    /**
+     * The constant representing setting of channels.  [ID:506]
+     */
+    public static final ActionType TYPE_SUBSCRIBE_CHANNELS =
+            lookupActionTypeByLabel("channels.subscribe");
 }
 

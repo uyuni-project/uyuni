@@ -26,6 +26,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -116,6 +117,23 @@ public class AccessTokenFactory extends HibernateFactory {
      * @return boolean indicating if something change
      */
     public static boolean refreshTokens(MinionServer minion) {
+        return refreshTokens(minion, Collections.emptySet());
+    }
+
+    /**
+     * Refreshes the AccessTokens of the given minion.
+     * A token will be refreshed if either
+     *  - its close to or already expired.
+     *  - it gives access to more channels then the minion should have access to.
+     * If the parameter tokensToActivate is not empty, the channels from the supplied
+     * tokens will be taken into consideration and the tokens will be activated and
+     * added to the minion.
+     *
+     * @param minion  the minion to refresh the tokens for
+     * @param tokensToActivate the tokens to activate and to add to the minion
+     * @return boolean indicating if something change
+     */
+    public static boolean refreshTokens(MinionServer minion, Collection<AccessToken> tokensToActivate) {
         List<AccessToken> unneededTokens = unneededTokens(minion);
         Set<AccessToken> all = minion.getAccessTokens();
         all.removeAll(unneededTokens);
@@ -144,8 +162,10 @@ public class AccessTokenFactory extends HibernateFactory {
         List<AccessToken> update = collect.get(true);
         List<AccessToken> noUpdate = collect.get(false);
 
-        List<Channel> allTokenChannels = all.stream().flatMap(s -> s.getChannels()
-                .stream()).collect(Collectors.toList());
+        List<Channel> allTokenChannels =
+                Stream.concat(all.stream(), tokensToActivate.stream())
+                        .flatMap(s -> s.getChannels().stream())
+                        .collect(Collectors.toList());
 
         ArrayList<Channel> withoutToken = new ArrayList<>(minion.getChannels());
         withoutToken.removeAll(allTokenChannels);
@@ -172,6 +192,10 @@ public class AccessTokenFactory extends HibernateFactory {
         ).collect(Collectors.toList());
         minion.getAccessTokens().clear();
         minion.getAccessTokens().addAll(tokens);
+        tokensToActivate.forEach(toActivate -> {
+            toActivate.setValid(true);
+            minion.getAccessTokens().add(toActivate);
+        });
 
         return !unneededTokens.isEmpty() || !update.isEmpty() || !newTokens.isEmpty();
     }

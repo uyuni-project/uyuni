@@ -4,6 +4,10 @@
 require 'jwt'
 require 'securerandom'
 
+When(/^I save a screenshot as "([^"]+)"$/) do |filename|
+  save_screenshot(filename)
+end
+
 When(/^I wait for "(\d+)" seconds?$/) do |arg1|
   sleep(arg1.to_i)
 end
@@ -35,7 +39,6 @@ Then(/^I can see all system information for "([^"]*)"$/) do |target|
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
 end
 
-
 # events
 
 When(/^I wait until event "([^"]*)" is completed$/) do |event|
@@ -53,7 +56,6 @@ When(/^I wait until event "([^"]*)" is completed$/) do |event|
     And I wait until I see "This action's status is: Completed." text, refreshing the page
   )
 end
-
 
 # spacewalk errors steps
 Then(/^I control that up2date logs on client under test contains no Traceback error$/) do
@@ -234,10 +236,32 @@ end
 
 # weak deaps steps
 When(/^I refresh the metadata for "([^"]*)"$/) do |host|
-  raise 'Invalid target.' unless host == 'sle-client'
-  target = $client
-  target.run('rhn_check -vvv', true, 500, 'root')
-  client_refresh_metadata
+  case host
+  when 'sle-client'
+    $client.run('rhn_check -vvv', true, 500, 'root')
+    client_refresh_metadata
+  when 'sle-minion'
+    $minion.run('zypper --non-interactive ref -s', true, 500, 'root')
+  else
+    raise 'Invalid target.'
+  end
+end
+
+Then(/^channel "([^"]*)" should be enabled on "([^"]*)"$/) do |channel, host|
+  node = get_target(host)
+  node.run("zypper lr -E | grep '#{channel}'")
+end
+
+Then(/^"(\d+)" channels should be enabled on "([^"]*)"$/) do |count, host|
+  node = get_target(host)
+  _out, code = node.run("zypper lr -E | tail -n +5 | wc -l")
+  raise "Expected #{count} channels enabled but found #{_out}." unless count.to_i == _out.to_i
+end
+
+Then(/^"(\d+)" channels with prefix "([^"]*)" should be enabled on "([^"]*)"$/) do |count, prefix, host|
+  node = get_target(host)
+  _out, code = node.run("zypper lr -E | tail -n +5 | grep '#{prefix}' | wc -l")
+  raise "Expected #{count} channels enabled but found #{_out}." unless count.to_i == _out.to_i
 end
 
 Then(/^I should have '([^']*)' in the metadata for "([^"]*)"$/) do |text, host|
@@ -411,6 +435,13 @@ Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
   end
 end
 
+Then(/^a table line should contain system "([^"]*)", "([^"]*)"$/) do |host, text|
+  node = get_target(host)
+  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{node.full_hostname}')]]") do
+    raise unless find_all(:xpath, "//td[contains(., '#{text}')]")
+  end
+end
+
 # generic file management steps
 
 When(/^I destroy "([^"]*)" directory on server$/) do |directory|
@@ -563,6 +594,29 @@ Then(/^remote-commands are enabled$/) do
   unless file_exists?($client, '/etc/sysconfig/rhn/allowed-actions/script/run')
     raise 'remote commands are disabled: /etc/sysconfig/rhn/allowed-actions/script/run does not exist'
   end
+end
+
+When(/^I remember when I scheduled an action$/) do
+  moment = "schedule_action"
+  val = DateTime.now
+  if defined?($moments)
+    $moments[moment] = val
+  else
+    $moments = {moment => val}
+  end
+end
+
+Then(/^I should see "([^"]*)" at least (\d+) minutes after I scheduled an action$/) do |text, minutes|
+  # TODO is there a better way then page.all ?
+  elements = page.all('div', text: text)
+  raise if elements.nil?
+  match = elements[0].text.match(/#{text}\s*(\d+\/\d+\/\d+ \d+:\d+:\d+ (AM|PM)+ [^\s]+)/)
+  raise "No element found matching text '#{text}'" if match.nil?
+  text_time = DateTime.strptime("#{match.captures[0]}", '%m/%d/%C %H:%M:%S %p %Z')
+  raise "Time the action was scheduled not found in memory" unless defined?($moments) and $moments["schedule_action"]
+  initial = $moments["schedule_action"]
+  after = initial + Rational(1, 1440) * minutes.to_i
+  raise "#{text_time.to_s} is not #{minutes} minutes later than '#{initial.to_s}'" unless (text_time + Rational(1, 1440)) >= after
 end
 
 # Valid claims:

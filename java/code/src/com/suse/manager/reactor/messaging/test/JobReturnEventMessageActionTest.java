@@ -16,17 +16,23 @@ package com.suse.manager.reactor.messaging.test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -71,6 +77,7 @@ import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
 import com.suse.utils.Json;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -117,6 +124,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
+        Config.get().setString("server.secret_key",
+                DigestUtils.sha256Hex(TestUtils.randomString()));
     }
 
     /**
@@ -1152,7 +1161,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testNoRegisterOnInexistentMinionReturnEvent() throws Exception {
-
+        int initialMessageCount = MessageQueue.getMessageCount();
         // Setup an event message from file contents
         Optional<JobReturnEvent> event = JobReturnEvent.parse(
                 getJobReturnEvent("openscap.xccdf.success.json", 123));
@@ -1162,7 +1171,58 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
         messageAction.doExecute(message);
 
-        assertEquals(0, MessageQueue.getMessageCount());
+        assertEquals(initialMessageCount, MessageQueue.getMessageCount());
+    }
+
+    public void testSubscribeChannelsActionSuccess() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
+                    with(any(SubscribeChannelsAction.class)));
+        } });
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("dev-minsles12sp2.test.local");
+
+        Channel base = ChannelFactoryTest.createBaseChannel(user);
+        Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch1.setParentChannel(base);
+        ch2.setParentChannel(base);
+
+        Optional<Channel> baseChannel = Optional.of(base);
+        Set<Channel> channels = new HashSet<>();
+        channels.add(ch1);
+        channels.add(ch2);
+
+        Action action = ActionManager.scheduleSubscribeChannelsAction(user,
+                Collections.singleton(minion.getId()),
+                baseChannel,
+                channels,
+                new Date());
+
+        ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
+
+        action.addServerAction(sa);
+
+        HibernateFactory.getSession().flush();
+
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("subscribe.channels.success.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
+        assertEquals(0L, (long)sa.getResultCode());
+        assertEquals(baseChannel.get().getId(), minion.getBaseChannel().getId());
+        assertEquals(2, minion.getChildChannels().size());
+        assertTrue(minion.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch1.getId())));
+        assertTrue(minion.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2.getId())));
     }
 
 }

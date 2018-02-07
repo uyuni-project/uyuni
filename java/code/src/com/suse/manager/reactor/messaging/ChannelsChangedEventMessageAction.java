@@ -15,6 +15,8 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -26,12 +28,14 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import org.apache.log4j.Logger;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -44,9 +48,12 @@ public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
 
     private static Logger log = Logger.getLogger(ChannelsChangedEventMessageAction.class);
 
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+
     @Override
     protected void doExecute(EventMessage event) {
-        long serverId = ((ChannelsChangedEventMessage) event).getServerId();
+        ChannelsChangedEventMessage msg = (ChannelsChangedEventMessage) event;
+        long serverId = msg.getServerId();
 
         Server s = ServerFactory.lookupById(serverId);
         if (s == null) {
@@ -63,11 +70,36 @@ public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
             ErrataManager.insertErrataCacheTask(minion);
 
             // Regenerate the pillar data
-            SaltStateGeneratorService.INSTANCE.generatePillar(minion);
+            SaltStateGeneratorService.INSTANCE.generatePillar(minion,
+                    true,
+                    msg.getAccessTokenId() != null ?
+                            AccessTokenFactory.lookupById(msg.getAccessTokenId())
+                                    .map(Collections::singleton)
+                                    .orElseThrow(() ->
+                                            new RuntimeException(
+                                                    "AccessToken not found id=" + msg.getServerId())) :
+                            Collections.emptyList()
+                    );
 
             // add product packages to package state
             StateFactory.addPackagesToNewStateRevision(minion,
                     Optional.ofNullable(event.getUserId()), prodPkgs);
+
+            if (msg.isScheduleApplyChannelsState()) {
+                User user = UserFactory.lookupById(event.getUserId());
+                ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                        Collections.singletonList(minion.getId()),
+                        Collections.singletonList(ApplyStatesEventMessage.CHANNELS),
+                        new Date());
+                try {
+                    TASKOMATIC_API.scheduleActionExecution(action, false);
+                }
+                catch (TaskomaticApiException e) {
+                    log.error("Could not schedule channels state application for system: " +
+                            s.getId());
+                }
+            }
+
         });
         if (!optMinion.isPresent()) {
             try {

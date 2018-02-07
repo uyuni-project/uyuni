@@ -5138,7 +5138,7 @@ serviços de uma organização não-padrão, eles serão deduzidos da organizaç
           <target>Canais</target>
         </trans-unit>
         <trans-unit id="ssm.overview.channels.memberships">
-          <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChildSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
+          <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChannelSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
           <target>Gerenciar Sistemas' &lt;a href=&quot;/rhn/channel/ssm/ChildSubscriptions.do&quot;&gt;registro de canal&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="ssm.overview.channels.subscriptions">

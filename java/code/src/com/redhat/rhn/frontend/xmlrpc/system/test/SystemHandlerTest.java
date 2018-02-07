@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
@@ -128,6 +129,7 @@ import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -534,6 +536,42 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             // success
         }
     }
+
+    public void testScheduleChangeChannels() throws Exception {
+        SystemHandler handler = getMockedHandler();
+        ActionManager.setTaskomaticApi(handler.getTaskomaticApi());
+
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Channel child1 = ChannelFactoryTest.createTestChannel(admin);
+        Channel child2 = ChannelFactoryTest.createTestChannel(admin);
+        Channel parent = ChannelFactoryTest.createTestChannel(admin);
+        child1.setParentChannel(parent);
+        child2.setParentChannel(parent);
+
+        server.addChannel(parent);
+        server.addChannel(child1);
+        server.addChannel(child2);
+
+        Integer sid = new Integer(server.getId().intValue());
+
+        Channel base1 = ChannelFactoryTest.createTestChannel(admin);
+        base1.setParentChannel(null);
+        Channel child3 = ChannelFactoryTest.createTestChannel(admin);
+        child3.setParentChannel(base1);
+        Date earliest = new Date();
+        long actionId = handler.scheduleChangeChannels(admin, sid, base1.getLabel(),
+                    Arrays.asList(child3.getLabel()), earliest);
+
+        Action action = ActionFactory.lookupById(actionId);
+        assertEquals(earliest, action.getEarliestAction());
+        assertTrue(action instanceof SubscribeChannelsAction);
+        SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
+        assertEquals(base1.getId(), sca.getDetails().getBaseChannel().getId());
+        assertEquals(1, sca.getDetails().getChannels().size());
+        assertTrue(sca.getDetails().getChannels()
+                .stream().filter(cc -> cc.getId().equals(child3.getId())).findFirst().isPresent());
+    }
+
 
     public void testListSubscribableBaseChannels() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -2526,6 +2564,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         MOCK_CONTEXT.checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+            allowing(taskomaticMock)
+                    .scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         }});
 
         return systemHandler;
