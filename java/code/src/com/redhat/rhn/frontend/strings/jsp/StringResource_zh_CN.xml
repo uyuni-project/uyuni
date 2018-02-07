@@ -5105,11 +5105,11 @@ organization. You may grant or remove the organization administrator role in the
           <target>概述</target>
         </trans-unit>
         <trans-unit id="ssm.overview.summary">
-          <source>Welcome to the System Set Manager. This interface will allow you to easily work with large numbers of systems in the @@PRODUCT_NAME@@.</source>
+          <source>Manage multiple systems simultaneously with system set manager.</source>
           <target>欢迎使用系统组件管理器。这个界面可让您在 @@PRODUCT_NAME@@ 中轻松管理大量系统。</target>
         </trans-unit>
         <trans-unit id="ssm.overview.summary2">
-          <source>The following tabs aid you in a number of tasks:</source>
+          <source>The navigation tabs above will assist you in executing the following actions.</source>
           <target>以下标签将帮您完成大量任务：</target>
         </trans-unit>
         <trans-unit id="ssm.overview.systems">

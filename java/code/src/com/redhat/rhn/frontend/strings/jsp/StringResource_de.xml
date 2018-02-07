@@ -5102,11 +5102,11 @@ nicht standardmäßigen Organisation hinzufügen, werden diese von der Standard-
           <target>Überblick</target>
         </trans-unit>
         <trans-unit id="ssm.overview.summary">
-          <source>Welcome to the System Set Manager. This interface will allow you to easily work with large numbers of systems in the @@PRODUCT_NAME@@.</source>
+          <source>Manage multiple systems simultaneously with system set manager.</source>
           <target>Willkommen beim System Set Manager. Diese Oberfläche ermöglicht es Ihnen, eine große Anzahl von Systemen im @@PRODUCT_NAME@@ zu handhaben.</target>
         </trans-unit>
         <trans-unit id="ssm.overview.summary2">
-          <source>The following tabs aid you in a number of tasks:</source>
+          <source>The navigation tabs above will assist you in executing the following actions.</source>
           <target>Die folgenden Tabs helfen Ihnen bei einer Reihe von Aufgaben:</target>
         </trans-unit>
         <trans-unit id="ssm.overview.systems">
