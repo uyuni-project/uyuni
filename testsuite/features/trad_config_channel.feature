@@ -21,7 +21,7 @@ Feature: Configuration management of traditional clients
     And I should see a "Add/Create Files" text
     And I should see a "Create Configuration File or Directory" link
     And I should see a "Upload Configuration Files" link
-    And I should see a "Import a File From Another Channel or System" link
+    And I should see a "Import a File from Another Channel or System" link
     And I should see a "Delete Channel" link
 
   Scenario: Try to create same channel again; this should fail
@@ -68,7 +68,7 @@ Feature: Configuration management of traditional clients
     And I should see a "Add/Create Files" text
     And I should see a "Create Configuration File or Directory" link
     And I should see a "Upload Configuration Files" link
-    And I should see a "Import a File From Another Channel or System" link
+    And I should see a "Import a File from Another Channel or System" link
     And I should see a "Delete Channel" link
 
   Scenario: Add a configuration file to new configuration channel
