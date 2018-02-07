@@ -8,7 +8,7 @@ const Buttons = require("../components/buttons");
 
 const Button = Buttons.Button;
 const AsyncButton = Buttons.AsyncButton;
-const capitalize = require("../utils/functions").capitalize;
+const capitalize = require("../utils/functions").Utils.capitalize;
 
 class FormulaSelection extends React.Component {
     constructor(props) {
