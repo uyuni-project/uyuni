@@ -1,3 +1,4 @@
+- Fix broken 'Add' links in system's config channel overview page (bsc#1079865)
 - Remove SUSE Manager repositories when deleting salt minions (bsc#1079847)
 - Fix issues in text for config management.
 
