@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <c:choose>
-    <c:when test="${sshMinionsPresent}">
+    <c:when test="${saltMinionsPresent}">
         <div class="modal fade text-left" role="dialog" aria-labelledby="addPinPopUpLabel" id="confirmDeleteDialog">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -14,12 +14,12 @@
                   <h4 class="modal-title"><bean:message key="ssm.delete.systems.header" /></h4>
                 </div>
                 <div class="modal-body">
-                    <p><bean:message key="ssm.delete.systems.saltssh.cleanup"/></p>
-                    <p><bean:message key="ssm.delete.systems.saltssh.cleanup.type"/>
-                    <select id="saltsshcleanup" name="saltsshcleanup" class="form-control">
-                        <option value="FORCE_DELETE" selected><bean:message key="ssm.delete.systems.saltssh.cleanup.force_delete"/></option>
-                        <option value="NO_CLEANUP"><bean:message key="ssm.delete.systems.saltssh.cleanup.no_cleanup"/></option>
-                        <option value="FAIL_ON_CLEANUP_ERR"><bean:message key="ssm.delete.systems.saltssh.cleanup.skip_on_err"/></option>
+                    <p><bean:message key="ssm.delete.systems.salt.cleanup"/></p>
+                    <p><bean:message key="ssm.delete.systems.salt.cleanup.type"/>
+                    <select id="saltCleanup" name="saltCleanup" class="form-control">
+                        <option value="FORCE_DELETE" selected><bean:message key="ssm.delete.systems.salt.cleanup.force_delete"/></option>
+                        <option value="NO_CLEANUP"><bean:message key="ssm.delete.systems.salt.cleanup.no_cleanup"/></option>
+                        <option value="FAIL_ON_CLEANUP_ERR"><bean:message key="ssm.delete.systems.salt.cleanup.skip_on_err"/></option>
                     </select>
                     </p>
                 </div>
@@ -38,7 +38,7 @@
             data-target="#confirmDeleteDialog">${rhn:localize('ssm.delete.systems.confirmbutton')}</button>
     </c:when>
     <c:otherwise>
-        <input type="hidden" name="saltsshcleanup" value="FORCE_DELETE"/>
+        <input type="hidden" name="saltCleanup" value="FORCE_DELETE"/>
         <html:submit styleClass="btn btn-danger" property="dispatch">
             <bean:message key="ssm.delete.systems.confirmbutton"/>
         </html:submit>

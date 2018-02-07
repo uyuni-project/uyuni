@@ -1,3 +1,6 @@
+include:
+    - cleanup_minion
+
 {% if salt['pillar.get']('contact_method') == 'ssh-push-tunnel' %}
 # remove server to localhost aliasing from /etc/hosts
 mgr_remove_mgr_server_localhost_alias:
