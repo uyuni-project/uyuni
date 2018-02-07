@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Feb 07 14:08:51 CET 2018 - jgonzalez@suse.com
+
+- version 3.1.15-1
 - Make migration idempotent (bsc#1078749)
 - Fix: schema with proper extension (bsc#1079820)
 
