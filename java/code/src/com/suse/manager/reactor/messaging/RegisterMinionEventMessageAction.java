@@ -216,15 +216,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Optional<ActivationKey> activationKey = activationKeyLabel
                     .map(ActivationKeyFactory::lookupByKey);
 
-            // Remove existing activation keys if new one is supplied
-            if (activationKey.isPresent() && server.getId() != null) {
-                List<ActivationKey> keys = ActivationKeyFactory.lookupByActivatedServer(server);
-                keys.stream().forEach(key -> {
-                    Set<Server> activatedServers = key.getToken().getActivatedServers();
-                    activatedServers.remove(server);
-                });
-            }
-
             Optional<User> creator = MinionPendingRegistrationService.getCreator(minionId);
 
             org = activationKey.map(ActivationKey::getOrg)
@@ -455,6 +446,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 if (minion.getLock() != null) {
                     SystemManager.unlockServer(minion);
                 }
+
+                // Remove relations to previously used activation keys
+                List<ActivationKey> keys = ActivationKeyFactory.lookupByActivatedServer(minion);
+                keys.stream().forEach(key -> {
+                    Set<Server> activatedServers = key.getToken().getActivatedServers();
+                    activatedServers.remove(minion);
+                });
 
                 // add reactivation event to server history
                 ServerHistoryEvent historyEvent = new ServerHistoryEvent();
