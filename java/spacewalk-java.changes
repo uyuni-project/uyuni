@@ -1,3 +1,4 @@
+- Clean up SUSE manager repos in bootstrap script for trad clients (bsc#1077997)
 - Handle stderr from "virtual-host-gatherer" to avoid hanging (bsc#1067010)
 - Unify methods to send email on a single API
 - Fix broken 'Add' links in system's config channel overview page (bsc#1079865)
