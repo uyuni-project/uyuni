@@ -230,7 +230,7 @@ Feature: Management of configuration of all types of clients in a single channel
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Mixed Channel"
-    And I follow "delete channel"
+    And I follow "Delete Channel"
     And I click on "Delete Config Channel"
     Then file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should not exist on server
 
