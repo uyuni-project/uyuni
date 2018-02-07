@@ -1,5 +1,3 @@
-'use strict';
-
 var React = require("react");
 
 class AsyncButton extends React.Component {
@@ -45,16 +43,15 @@ class AsyncButton extends React.Component {
         case "initial": style += this.props.defaultType ? this.props.defaultType : "btn-default"; break;
         default: style += this.props.defaultType ? this.props.defaultType : "btn-default"; break;
     }
-    const margin = this.props.name != undefined ? "" : " no-margin"
+    const margin = this.props.name !== undefined ? "" : " no-margin"
     return (
-        <button id={this.props.id} type="button" title={t(this.props.title)} className={style + ' ' + this.props.classStyle}
-            disabled={this.state.value == "waiting" || this.props.disabled} onClick={this.trigger}>
-           {this.state.value == "waiting" ?
+        <button id={this.props.id} title={this.props.title} className={style} disabled={this.state.value === "waiting" || this.props.disabled} onClick={this.trigger}>
+           {this.state.value === "waiting" ?
                 <i className={"fa fa-circle-o-notch fa-spin" + margin}></i> :
-                this.props.icon != undefined ?
+                this.props.icon !== undefined ?
                    <i className={"fa fa-" + this.props.icon + margin}></i> :
                    undefined}
-           {t(this.props.name)}
+           {this.props.name}
         </button>
     );
   }
@@ -62,13 +59,8 @@ class AsyncButton extends React.Component {
 }
 
 class Button extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        const margin = this.props.text != undefined ? "" : " no-margin"
+        const margin = this.props.text !== undefined ? "" : " no-margin"
         return (
             <button id={this.props.id} type="button" title={this.props.title} className={'btn ' + this.props.className} onClick={this.props.handler} disabled={this.props.disabled}>
                 <i className={'fa ' + this.props.icon + margin}/>{this.props.text}
@@ -78,13 +70,8 @@ class Button extends React.Component {
 }
 
 class LinkButton extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        const margin = this.props.text != undefined ? "" : " no-margin"
+        const margin = this.props.text !== undefined ? "" : " no-margin"
         var icon = this.props.icon ?
             <i className={'fa ' + this.props.icon + margin}/> :
             null;
@@ -99,11 +86,6 @@ class LinkButton extends React.Component {
 }
 
 class SubmitButton extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <button id={this.props.id} type="submit" className={'btn ' + this.props.className} disabled={this.props.disabled}>
