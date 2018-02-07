@@ -37,7 +37,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
@@ -62,8 +61,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 /**
@@ -101,16 +98,11 @@ public class SystemsController {
         }
         Server server = ServerFactory.lookupById(sid);
 
-        boolean sshPush = Stream.of(
-                ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH),
-                ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH_TUNNEL)
-        ).anyMatch(cm -> server.getContactMethod().equals(cm));
-
-        if (server.asMinionServer().isPresent() && sshPush) {
+        if (server.asMinionServer().isPresent()) {
             if (!Boolean.parseBoolean(noclean)) {
                 Optional<List<String>> cleanupErr =
                         SaltService.INSTANCE.
-                                cleanupSSHMinion(server.asMinionServer().get(), 300);
+                                cleanupMinion(server.asMinionServer().get(), 300);
                 if (cleanupErr.isPresent()) {
                     return json(response, JsonResult.error(cleanupErr.get()));
                 }

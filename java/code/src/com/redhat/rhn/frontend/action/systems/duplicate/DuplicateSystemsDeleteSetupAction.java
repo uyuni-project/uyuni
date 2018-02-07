@@ -16,8 +16,6 @@ package com.redhat.rhn.frontend.action.systems.duplicate;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.rhnset.RhnSet;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -28,7 +26,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -59,12 +56,8 @@ public class DuplicateSystemsDeleteSetupAction extends RhnAction implements List
        ListHelper helper = new ListHelper(this, request);
        helper.execute();
 
-        boolean sshMinionsPresent = ((List<SystemOverview>)helper.getDataSet()).stream()
-                .map(overview -> ServerFactory.lookupById(overview.getId()))
-                .filter(server -> ContactMethodUtil
-                        .isSSHPushContactMethod(server.getContactMethod()))
-                .count() > 0;
-        request.setAttribute("sshMinionsPresent", sshMinionsPresent);
+       boolean saltMinionsPresent = SystemManager.containsSaltMinion(helper.getDataSet());
+       request.setAttribute("saltMinionsPresent", saltMinionsPresent);
 
        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
@@ -73,17 +66,17 @@ public class DuplicateSystemsDeleteSetupAction extends RhnAction implements List
             ActionMapping mapping) {
 
         RhnSet set = RhnSetDecl.DUPLICATE_SYSTEMS.get(context.getCurrentUser());
-        String saltSshCleanup = context.getRequiredParamAsString("saltsshcleanup");
+        String saltCleanup = context.getRequiredParamAsString("saltCleanup");
         // Fire the request off asynchronously
         SsmDeleteServersEvent event =
             new SsmDeleteServersEvent(context.getCurrentUser(),
                             new ArrayList<Long>(set.getElementValues()),
                     SystemManager.ServerCleanupType
-                            .fromString(saltSshCleanup)
+                            .fromString(saltCleanup)
                             .orElseThrow(() ->
                                     new IllegalArgumentException(
                                             "Invalid server cleanup type value: " +
-                                                    saltSshCleanup))
+                                                    saltCleanup))
                     );
         MessageQueue.publish(event);
         set.clear();
