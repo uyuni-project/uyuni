@@ -75,8 +75,14 @@ class FormulaForm extends React.Component {
     saveFormula(event) {
         event.preventDefault();
         this.setState({ formulaChanged: false });
+        let scope = this.props.scope;
+        let formType = scope;
+        if (formType === 'system') {
+            formType = 'SERVER';
+        }
+
         let formData = {
-            type: this.props.scope.toUpperCase(),
+            type: formType,
             id: this.props.systemId,
             formula_name: this.state.formulaName,
             content: this.getValuesClean()
