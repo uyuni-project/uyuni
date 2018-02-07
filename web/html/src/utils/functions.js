@@ -98,6 +98,15 @@ function capitalize(str: string): string {
     return str.replace(new RegExp("_|-", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
+function generatePassword() {
+    const length = Math.floor(Math.random() * 10) + 15;
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:-_";
+    let password = "";
+    for (let i = 0; i < length; i++)
+        password += charset.charAt(Math.floor(Math.random() * charset.length));
+    return password;
+}
+
 
 module.exports = {
     Utils: {
@@ -108,7 +117,8 @@ module.exports = {
         sortByNumber: sortByNumber,
         sortByDate: sortByDate,
         urlBounce: urlBounce,
-        capitalize: capitalize
+        capitalize: capitalize,
+        generatePassword: generatePassword
     },
     Formats: {
         LocalDateTime: LocalDateTime
