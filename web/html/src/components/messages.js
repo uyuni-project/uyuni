@@ -1,27 +1,21 @@
-'use strict';
+const React = require("react");
 
-var React = require("react");
+class Messages extends React.Component {
+    _classNames = {
+        "error": "danger",
+        "success": "success",
+        "info": "info",
+        "warning": "warning",
+    }
 
-var Messages = React.createClass({
-  _classNames : {
-    "error": "danger",
-    "success": "success",
-    "info": "info",
-    "warning": "warning",
-  },
+    render() {
+        var msgs = this.props.items.map(function(item, index) {
+            return (<div key={"msg" + index} className={'alert alert-' + this._classNames[item.severity]}>{item.text}</div>);
+        }.bind(this));
+        return (<div key={"messages-pop-up"}>{msgs}</div>);
+    }
 
-  getInitialState: function() {
-    return {};
-  },
-
-  render: function() {
-    var msgs = this.props.items.map(function(item, index) {
-                return (<div key={"msg" + index} className={'alert alert-' + this._classNames[item.severity]}>{item.text}</div>);
-            }.bind(this));
-    return (<div key={"messages-pop-up"}>{msgs}</div>);
-  }
-
-});
+}
 
 function msg(severityIn, ...textIn) {
     return textIn.map(function(txt) {return {severity: severityIn, text: textIn}});
