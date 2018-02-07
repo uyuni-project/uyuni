@@ -5098,11 +5098,11 @@ organization. You may grant or remove the organization administrator role in the
           <target>總覽</target>
         </trans-unit>
         <trans-unit id="ssm.overview.summary">
-          <source>Welcome to the System Set Manager. This interface will allow you to easily work with large numbers of systems in the @@PRODUCT_NAME@@.</source>
+          <source>Manage multiple systems simultaneously with system set manager.</source>
           <target>歡迎使用系統設置管理程式。此介面將能讓您輕易的處理 @@PRODUCT_NAME@@ 中的大量系統。</target>
         </trans-unit>
         <trans-unit id="ssm.overview.summary2">
-          <source>The following tabs aid you in a number of tasks:</source>
+          <source>The navigation tabs above will assist you in executing the following actions.</source>
           <target>下列分頁能協助您完成幾項工作：</target>
         </trans-unit>
         <trans-unit id="ssm.overview.systems">

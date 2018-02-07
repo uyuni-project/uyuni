@@ -5100,11 +5100,11 @@ serviços de uma organização não-padrão, eles serão deduzidos da organizaç
           <target>Visão Geral</target>
         </trans-unit>
         <trans-unit id="ssm.overview.summary">
-          <source>Welcome to the System Set Manager. This interface will allow you to easily work with large numbers of systems in the @@PRODUCT_NAME@@.</source>
+          <source>Manage multiple systems simultaneously with system set manager.</source>
           <target>Bem vindo ao Gerenciador de Conjunto de Sistema. Esta interface permitirá que você trabalhe com facilidade com uma grande quantidade de sistemas no @@PRODUCT_NAME@@.</target>
         </trans-unit>
         <trans-unit id="ssm.overview.summary2">
-          <source>The following tabs aid you in a number of tasks:</source>
+          <source>The navigation tabs above will assist you in executing the following actions.</source>
           <target>As marcações a seguir ajundam-no em diversas tarefas:</target>
         </trans-unit>
         <trans-unit id="ssm.overview.systems">
