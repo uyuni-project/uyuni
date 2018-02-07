@@ -87,6 +87,7 @@ public class SaltSSHService {
     public static final int SSH_PUSH_PORT = 22;
 
     private static final Logger LOG = Logger.getLogger(SaltSSHService.class);
+    private static final String CLEANUP_SSH_MINION_SALT_STATE = "cleanup_ssh_minion";
 
     // Shared salt client instance
     private final SaltClient saltClient;
@@ -693,7 +694,7 @@ public class SaltSSHService {
             Map<String, CompletionStage<Result<Map<String, State.ApplyResult>>>> res =
                     callAsyncSSH(
                             State.apply(
-                                    Collections.singletonList("ssh_cleanup"),
+                                    Collections.singletonList(CLEANUP_SSH_MINION_SALT_STATE),
                                     Optional.of(pillarData),
                                     Optional.empty()),
                             new MinionList(minion.getMinionId()), timeoutAfter);
@@ -720,7 +721,7 @@ public class SaltSSHService {
                     );
                 }
                 else if (err instanceof TimeoutException) {
-                    return Optional.of(singletonList("minion_unreachable"));
+                    return Optional.of(singletonList(SaltService.MINION_UNREACHABLE_ERROR));
                 }
                 else {
                     return Optional.of(singletonList(err.getMessage()));

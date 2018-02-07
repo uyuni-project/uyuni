@@ -18,9 +18,11 @@ import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
 import com.suse.manager.reactor.SaltReactor;
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.utils.MinionServerUtils;
@@ -37,6 +39,7 @@ import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
 import com.suse.salt.netapi.calls.runner.Jobs;
@@ -86,6 +89,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Singleton class acting as a service layer for accessing the salt API.
@@ -124,6 +128,9 @@ public class SaltService {
                                 .findByMinionId(mid)
                                 .filter(m -> MinionServerUtils.isSshPushMinion(m))
                                 .isPresent();
+
+    private static final String CLEANUP_MINION_SALT_STATE = "cleanup_minion";
+    protected static final String MINION_UNREACHABLE_ERROR = "minion_unreachable";
 
     private SaltReactor reactor = null;
 
@@ -1050,14 +1057,43 @@ public class SaltService {
     }
 
     /**
-     * Remove SUSE Manager specific configuration from a Salt ssh minion.
+     * Remove SUSE Manager specific configuration from a Salt minion.
      *
      * @param minion the minion.
      * @param timeout operation timeout
      * @return list of error messages or empty if no error
      */
-    public Optional<List<String>> cleanupSSHMinion(MinionServer minion,
+    public Optional<List<String>> cleanupMinion(MinionServer minion,
                                                    int timeout) {
-        return saltSSHService.cleanupSSHMinion(minion, timeout);
+        boolean sshPush = Stream.of(
+                ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH),
+                ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH_TUNNEL)
+        ).anyMatch(cm -> minion.getContactMethod().equals(cm));
+
+        if (sshPush) {
+            return saltSSHService.cleanupSSHMinion(minion, timeout);
+        }
+        return this.cleanupRegularMinion(minion);
     }
+
+    /**
+     * Remove SUSE Manager specific configuration from a Salt regular minion.
+     *
+     * @param minion the minion.
+     * @return list of error messages or empty if no error
+     */
+    private Optional<List<String>> cleanupRegularMinion(MinionServer minion) {
+        Optional<Map<String, ApplyResult>> response = applyState(minion.getMinionId(), CLEANUP_MINION_SALT_STATE);
+
+        //response is empty in case the minion is down
+        if (response.isPresent()) {
+            return response.get().values().stream().filter(value -> !value.isResult())
+                    .map(value -> value.getComment())
+                    .collect(Collectors.collectingAndThen(Collectors.toList(),
+                            (list) -> list.isEmpty() ? Optional.<List<String>>empty() :
+                                    Optional.of(list)));
+        }
+        return Optional.of(Collections.singletonList(SaltService.MINION_UNREACHABLE_ERROR));
+    }
+
 }
