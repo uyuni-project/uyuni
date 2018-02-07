@@ -1,3 +1,4 @@
+- Clean up SUSE manager repos in bootstrap script for trad clients (bsc#1077997)
 - Fix broken 'Add' links in system's config channel overview page (bsc#1079865)
 - Remove SUSE Manager repositories when deleting salt minions (bsc#1079847)
 - Allow scheduling the change of software channels as an action. The previous channels remain accessible

@@ -256,6 +256,42 @@ def getRegistrationStackSh(saltEnabled):
 
     return """\
 echo
+echo "CLEANING UP OLD SUSE MANAGER REPOSITORIES"
+echo "-------------------------------------------------"
+
+function clean_up_old_trad_repos() {{
+  local trad_client_repo_prefix="spacewalk:"
+  
+  for file in $1/$trad_client_repo_prefix*.repo; do
+    if [ -f "$file" ] ; then
+      echo "Removing $(realpath "$file")"
+      rm -f $(realpath "$file")
+    fi
+  done
+}}
+
+function clean_up_old_salt_repos() {{
+  local salt_minion_channels_file="susemanager:channels.repo"
+
+  if [ -f "$1/$salt_minion_channels_file" ] ; then
+    echo "Removing $1/$salt_minion_channels_file"
+    rm -f "$1/$salt_minion_channels_file"
+  fi
+}}
+
+function clean_up_old_repos() {{
+  local suse_os_repos_path="/etc/zypp/repos.d"
+  local redhat_os_repos_path="/etc/yum.repos.d"
+  
+  clean_up_old_salt_repos $suse_os_repos_path
+  clean_up_old_salt_repos $redhat_os_repos_path
+
+  clean_up_old_trad_repos $suse_os_repos_path
+  clean_up_old_trad_repos $redhat_os_repos_path
+}}
+
+clean_up_old_repos
+echo
 echo "CHECKING THE REGISTRATION STACK"
 echo "-------------------------------------------------"
 
