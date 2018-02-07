@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -358,5 +358,26 @@ public class SUSEProductFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         return log;
+    }
+
+    public static void updateRecommendedExtensions(SCCProduct baseProduct, List<Integer> recommendedExtensions) {
+        List<SUSEProductRecommend> newRecommendedExts = new LinkedList<>();
+        SUSEProduct bprd = SUSEProductFactory.lookupByProductId(baseProduct.getId());
+        for (Integer extid : recommendedExtensions) {
+            SUSEProduct ext = SUSEProductFactory.lookupByProductId(extid);
+            newRecommendedExts.add(new SUSEProductRecommend(bprd, ext));
+        }
+
+        List<SUSEProductRecommend> existingRecommendedProducts = findRecommendedProducts(bprd);
+        for (SUSEProductRecommend recommended : existingRecommendedProducts) {
+            if (!newRecommendedExts.contains(recommended)) {
+                SUSEProductFactory.remove(recommended);
+            }
+        }
+        for (SUSEProductRecommend recommended : newRecommendedExts) {
+            if (!existingRecommendedProducts.contains(recommended)) {
+                SUSEProductFactory.save(recommended);
+            }
+        }
     }
 }
