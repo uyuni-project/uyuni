@@ -1,4 +1,5 @@
 - Make migration idempotent (bsc#1078749)
+- Fix: schema with proper extension (bsc#1079820)
 
 -------------------------------------------------------------------
 Mon Feb 05 12:52:43 CET 2018 - jgonzalez@suse.com
