@@ -1162,6 +1162,11 @@ public class ContentSyncManager {
             if (baseProduct.getExtensions() == null) {
                 continue;
             }
+            if (baseProduct.getProductType().equals("base")) {
+                List<Integer> recommendedExtensions = new LinkedList<>();
+                findRecommendedExtensions(baseProduct, recommendedExtensions);
+                SUSEProductFactory.updateRecommendedExtensions(baseProduct, recommendedExtensions);
+            }
             for (SCCProduct extensionProduct : baseProduct.getExtensions()) {
                 String ident = baseProduct.hashCode() + "-" + extensionProduct.hashCode();
                 if (!sourceTargetDone.contains(ident)) {
@@ -1183,6 +1188,18 @@ public class ContentSyncManager {
         // Sync the database list of product extensions with the updated one
         SUSEProductFactory.mergeAllProductExtension(latestProductExtensions);
 
+    }
+
+    private void findRecommendedExtensions(SCCProduct prd, List<Integer> recommendedExtensions) {
+        if (prd.getExtensions() == null) {
+            return;
+        }
+        for (SCCProduct extensionProduct : prd.getExtensions()) {
+            if (extensionProduct.isRecommended()) {
+                recommendedExtensions.add(extensionProduct.getId());
+            }
+            findRecommendedExtensions(extensionProduct, recommendedExtensions);
+        }
     }
 
     /**
