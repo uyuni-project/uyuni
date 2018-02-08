@@ -138,13 +138,11 @@ Feature: Configuration management of traditional clients
     And I click on "Schedule Compare"
     Then I should see a "1 files scheduled for comparison." text
     When I run "rhn_check -vvv" on "sle-client"
-    And I follow "Events" in the content area
-    And I follow "History" in the content area
-    Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
-    When I follow first "Show differences between profiled config files and deployed config files"
+    And I wait until event "Show differences between profiled config files and deployed config files scheduled by admin" is completed
     Then I should see a "Differences exist" link
     When I follow "Differences exist"
     Then I should not see a "Differences exist in a file that is not readable by all. Re-deployment of configuration file is recommended." text
+    And I should see a "-MGR_PROXY=yes" text
     And I should see a "+MGR_PROXY=no" text
 
   Scenario: Import the changed test configuration file
@@ -222,10 +220,7 @@ Feature: Configuration management of traditional clients
     And I click on "Schedule Compare"
     Then I should see a "3 files scheduled for comparison." text
     When I run "rhn_check -vvv" on "sle-client"
-    And I follow "Events" in the content area
-    And I follow "History" in the content area
-    Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
-    When I follow first "Show differences between profiled config files and deployed config files"
+    And I wait until event "Show differences between profiled config files and deployed config files scheduled by admin" is completed
     Then I should see a "Differences exist" link
     And I should see a "/etc/mgr-test-file.cnf (rev. 2) Differences exist /etc/sysconfig/cron (rev. 1) /tmp/mycache.txt (rev. 1) Missing file" text
     When I follow "Differences exist"
