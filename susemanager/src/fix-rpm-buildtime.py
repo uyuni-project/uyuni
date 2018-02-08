@@ -123,7 +123,7 @@ if __name__ == '__main__':
     print 'Scanning', len(package_list), 'packages'
 
     # iterate on each package
-    for package_blob in package_list[:2]:
+    for package_blob in package_list:
 
         package_id = package_blob['id']
 
