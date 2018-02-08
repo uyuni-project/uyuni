@@ -156,10 +156,7 @@ Feature: Management of configuration of all types of clients in a single channel
     And I click on "Compare Files"
     And I click on "Schedule Compare"
     Then I should see a "1 files scheduled for comparison." text
-    And I follow "Events" in the content area
-    And I follow "History" in the content area
-    Then I should see a "Show differences between profiled config files and deployed config files scheduled by admin" link
-    When I follow first "Show differences between profiled config files and deployed config files"
+    When I wait until event "Show differences between profiled config files and deployed config files scheduled by admin" is completed
     Then I should see a "Differences exist" link
     When I follow "Differences exist"
     # bsc#1078764 - CFG-MGMT-SALT: inconsistent UI between traditional clients and Salt minions when comparing files
