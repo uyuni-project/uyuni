@@ -734,7 +734,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             prd2.setArch("i686");
             List<Integer> predIn = new ArrayList<Integer>();
             predIn.add(10012345);
-            prd2.setPredecessorIds(predIn);
+            prd2.setOnlinePredecessorIds(predIn);
             products.add(prd2);
 
             if (SUSEProductFactory.lookupByProductId(10012345) == null) {
@@ -825,7 +825,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             product2.setArch("i686");
             List<Integer> predIn = new ArrayList<Integer>();
             predIn.add(product1Id);
-            product2.setPredecessorIds(predIn);
+            product2.setOnlinePredecessorIds(predIn);
             products.add(product2);
 
             // Update SUSE products and upgrade paths
@@ -838,7 +838,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Remove the first product
             products.remove(product1);
-            product2.setPredecessorIds(new ArrayList<Integer>());
+            product2.setOnlinePredecessorIds(new ArrayList<Integer>());
             csm.updateSUSEProducts(products);
 
             // There should be no upgrade paths
@@ -901,7 +901,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             product2.setArch("i686");
             List<Integer> predIn = new ArrayList<Integer>();
             predIn.add(product1Id);
-            product2.setPredecessorIds(predIn);
+            product2.setOnlinePredecessorIds(predIn);
             products.add(product2);
 
             // Update SUSE products and upgrade paths
@@ -913,7 +913,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(1, SUSEProductFactory.findAllSUSEUpgradePaths().size());
 
             // Remove the upgrade path via the predecessor Id
-            product2.setPredecessorIds(new ArrayList<Integer>());
+            product2.setOnlinePredecessorIds(new ArrayList<Integer>());
             csm.updateSUSEProducts(products);
 
             // There should be no upgrade paths
