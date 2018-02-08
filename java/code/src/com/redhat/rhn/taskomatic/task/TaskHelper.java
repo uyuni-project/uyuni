@@ -19,19 +19,11 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.Mail;
-import com.redhat.rhn.common.messaging.SmtpMail;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.user.User;
 
-import org.apache.log4j.Logger;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import com.suse.manager.utils.MailHelper;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -51,23 +43,12 @@ public class TaskHelper {
 
     /**
      * Send an error email to the Satellite admin
-     * @param logger to log any errors to
      * @param messageBody to send.
      */
-    public static void sendErrorEmail(Logger logger, String messageBody) {
-        Config c = Config.get();
+    public static void sendErrorEmail(String messageBody) {
         LocalizationService ls = LocalizationService.getInstance();
-        String[] recipients = null;
-        if (c.getString("web.traceback_mail").equals("")) {
+        String[] recipients = MailHelper.getAdminRecipientsFromConfig();
 
-            recipients = new String[1];
-            recipients[0] = "root@localhost";
-        }
-        else {
-            recipients = c.getStringArray("web.traceback_mail");
-        }
-        SmtpMail mail = new SmtpMail();
-        mail.setRecipients(recipients);
         StringBuilder subject = new StringBuilder();
         subject.append(ls.getMessage("web traceback subject", Locale.getDefault()));
         try {
@@ -76,14 +57,7 @@ public class TaskHelper {
         catch (Throwable t) {
             subject.append("Taskomatic");
         }
-        mail.setSubject(subject.toString());
-        mail.setBody(messageBody);
-        try {
-            sendMail(mail, logger);
-        }
-        catch (Throwable t) {
-            logger.error(t);
-        }
+        MailHelper.withSmtp().sendEmail(recipients, subject.toString(), messageBody);
 
     }
 
@@ -98,19 +72,10 @@ public class TaskHelper {
         String[] recipients = null;
         if (orgId != null) {
             List<String> emails = getActiveOrgAdminEmails(orgId);
-            recipients = emails.toArray(new String[emails.size()]);
+            recipients = !emails.isEmpty() ?
+                    emails.toArray(new String[emails.size()]) :
+                    MailHelper.getAdminRecipientsFromConfig();
         }
-        if (recipients == null) {
-            if (c.getString("web.traceback_mail").equals("")) {
-                recipients = new String[1];
-                recipients[0] = "root@localhost";
-            }
-            else {
-                recipients = c.getStringArray("web.traceback_mail");
-            }
-        }
-        SmtpMail mail = new SmtpMail();
-        mail.setRecipients(recipients);
         StringBuilder subject = new StringBuilder();
         subject.append(ls.getMessage("taskomatic notif subject", Locale.getDefault()));
         try {
@@ -119,9 +84,7 @@ public class TaskHelper {
         catch (Throwable t) {
             // nothing
         }
-        mail.setSubject(subject.toString());
-        mail.setBody(messageBody);
-        sendMail(mail, null);
+        MailHelper.withSmtp().sendEmail(recipients, subject.toString(), messageBody);
     }
 
     /**
@@ -143,45 +106,4 @@ public class TaskHelper {
         return toReturn;
     }
 
-    /**
-     * Sends stacktrace via email
-     * @param logger caller's logger
-     * @param error error being thrown
-     */
-    public static void sendErrorMail(Logger logger, Throwable error) {
-        StringWriter writer = new StringWriter();
-        PrintWriter pw = new PrintWriter(writer);
-        error.printStackTrace(pw);
-        pw.flush();
-        sendErrorEmail(logger, writer.toString());
-    }
-
-    /**
-     * Sends mail and logs the mail message if debug logging is enabled
-     * @param mail - message to be sent
-     * @param logger - logger assigned to the caller
-     */
-    public static void sendMail(Mail mail, Logger logger) {
-        if (logger != null && logger.isDebugEnabled()) {
-            logger.debug("Sending mail message:\n" + mail.toString());
-        }
-        mail.send();
-    }
-
-    /**
-     * @param org The org in question
-     * @return Returns a list of email addresses for the org_admins in the given org.
-     */
-    public static String[] getAdminEmails(Org org) {
-        List admins = org.getActiveOrgAdmins();
-        String[] emails = new String[admins.size()];
-        //go through the user objects and extract the email addrs
-        int i = 0;
-        for (Iterator itr = admins.iterator(); itr.hasNext(); i++) {
-            User admin = (User) itr.next();
-            emails[i] = admin.getEmail();
-        }
-
-        return emails;
-    }
 }

@@ -37,7 +37,7 @@ import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
-import com.suse.manager.reactor.utils.MailHelper;
+import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
@@ -169,7 +169,7 @@ public class SaltReactor implements EventListener {
                               DELAY_TIME_SECONDS + " seconds.");
                     Thread.sleep(1000 * DELAY_TIME_SECONDS);
                     if (retries == 1) {
-                        MailHelper.sendAdminEmail("Cannot connect to salt event bus",
+                        MailHelper.withSmtp().sendAdminEmail("Cannot connect to salt event bus",
                                 "salt-api daemon is not responding. Check the status of " +
                                         "salt-api daemon and (re)-start it if needed\n\n" +
                                         "This is the only notification you will receive.");
