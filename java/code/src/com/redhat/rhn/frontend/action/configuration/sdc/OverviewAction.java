@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFileCount;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
@@ -160,12 +161,16 @@ public class OverviewAction extends RhnAction {
                                 String key,
                                 ConfigFileCount info,
                                 String url) {
+        boolean renderAddUrl = false;
         if (info.getDirectories() == 0 && info.getFiles() == 0) {
             Server server = context.lookupAndBindServer();
-            url = ADD_FILES_URL + "?sid=" + server.getId();
+            if (!(server instanceof MinionServer)) {
+                url = ADD_FILES_URL + "?sid=" + server.getId();
+                renderAddUrl = true;
+            }
         }
         context.getRequest().setAttribute(key,
-                        ConfigActionHelper.makeFileCountsMessage(info, url, true));
+                        ConfigActionHelper.makeFileCountsMessage(info, url, renderAddUrl));
     }
 
 
@@ -243,8 +248,8 @@ public class OverviewAction extends RhnAction {
 
             Object [] params = new Object[2];
 
-            params[0] = ConfigActionHelper.makeFileCountsMessage(total,
-                                                                null, true, true);
+            params[0] = ConfigActionHelper.makeFileCountsMessage(total, null, true,
+                    !(server instanceof MinionServer));
             params[1] = ACTION_DETAILS_URL + "?aid=" + ca.getId() + "&sid=" +
                     server.getId();
             String messageKey;
