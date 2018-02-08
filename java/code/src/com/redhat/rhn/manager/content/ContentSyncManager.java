@@ -84,7 +84,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Content synchronization logic.
@@ -422,33 +424,28 @@ public class ContentSyncManager {
             Map<XMLProduct, Set<XMLChannel>> productToChannelMap) {
 
         // get a map from channel labels to channels
-        Map<String, XMLChannel> labelsTochannels =
-                new HashMap<String, XMLChannel>();
-        for (Set<XMLChannel> channels : productToChannelMap.values()) {
-            for (XMLChannel channel : channels) {
-                labelsTochannels.put(channel.getLabel(), channel);
-            }
-        }
+        final Map<String, XMLChannel> channelByLabel = productToChannelMap.values().stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toMap(XMLChannel::getLabel, s -> s));
+
 
         // get a map from every channel to its base channel
-        Map<XMLChannel, XMLChannel> baseChannels =
-                new HashMap<XMLChannel, XMLChannel>();
-        for (XMLChannel channel : labelsTochannels.values()) {
+        Map<XMLChannel, XMLChannel> baseChannelByChannel = new HashMap<>();
+        for (XMLChannel channel : channelByLabel.values()) {
             XMLChannel parent = channel;
-            while (!parent.getParent().equals("BASE")) {
-                parent = labelsTochannels.get(parent.getParent());
+            while (!parent.getParent().equals(BASE_CHANNEL)) {
+                parent = channelByLabel.get(parent.getParent());
             }
-            baseChannels.put(channel, parent);
+            baseChannelByChannel.put(channel, parent);
         }
 
         // convert every XMLProduct to dto objects (one per base channel)
-        SortedSet<MgrSyncProductDto> all = new TreeSet<MgrSyncProductDto>();
+        Set<MgrSyncProductDto> all = new TreeSet<>();
         for (XMLProduct product : products) {
-            Set<XMLChannel> channels = productToChannelMap.get(product);
-            Map<XMLChannel, MgrSyncProductDto> baseMap =
-                    new HashMap<XMLChannel, MgrSyncProductDto>();
-            for (XMLChannel channel : channels) {
-                XMLChannel base = baseChannels.get(channel);
+            Set<XMLChannel> productChannels = productToChannelMap.get(product);
+            Map<XMLChannel, MgrSyncProductDto> baseMap = new HashMap<>();
+            for (XMLChannel channel : productChannels) {
+                XMLChannel base = baseChannelByChannel.get(channel);
 
                 MgrSyncProductDto productDto = baseMap.get(base);
                 // if this is a new product
@@ -474,23 +471,13 @@ public class ContentSyncManager {
         }
 
         // divide base from extension products
-        Collection<MgrSyncProductDto> bases = new LinkedList<MgrSyncProductDto>();
-        Collection<MgrSyncProductDto> extensions = new LinkedList<MgrSyncProductDto>();
-        for (MgrSyncProductDto product : all) {
-            boolean isBase = false;
-            for (XMLChannel channel : product.getChannels()) {
-                if (channel.getParent().equals(BASE_CHANNEL)) {
-                    isBase = true;
-                    break;
-                }
-            }
-            if (isBase) {
-                bases.add(product);
-            }
-            else {
-                extensions.add(product);
-            }
-        }
+
+        Map<Boolean, List<MgrSyncProductDto>> partition = all.stream().collect(Collectors.partitioningBy(
+                product -> product.getChannels().stream()
+                        .anyMatch(channel -> channel.getParent().equals(BASE_CHANNEL))
+        ));
+        List<MgrSyncProductDto> bases = partition.get(true);
+        List<MgrSyncProductDto> extensions = partition.get(false);
 
         // add base-extension relationships
         for (MgrSyncProductDto base : bases) {
