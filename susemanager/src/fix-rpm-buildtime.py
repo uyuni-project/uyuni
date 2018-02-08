@@ -125,15 +125,19 @@ if __name__ == '__main__':
 
     for sync in all_syncs :
         print '-', sync['version']
+
+        # find all package id list for the current sync version
         package_id_list = get_all_package_ids_by_version(sync['version'])
         print ''
         print 'Scanning', len(package_id_list), 'packages for the', sync['version'], ' sync version..'
 
         # iterate on each package found on the sync version
-        for package_id in get_all_package_ids_by_version(sync['version']):
+        for package_id_blob in package_id_list:
+
+            package_id = package_id_blob['id']
 
             # extract the package from the database
-            current_db_package = get_package_by_id(package_id['id'])
+            current_db_package = get_package_by_id(package_id)
             
             # get the absolute path of the package on the filesystem
             absolute_package_path = _package_path_prefix + current_db_package['path']
@@ -145,7 +149,7 @@ if __name__ == '__main__':
             if current_db_package['build_time'] != rpm_tag_build_time:
                 print ''
                 print '###############'
-                print 'id =', current_db_package['id']
+                print 'id =', package_id
                 print 'name =', current_db_package['name']
                 print 'path =', absolute_package_path
                 print ''
@@ -154,20 +158,20 @@ if __name__ == '__main__':
                 print ''
 
                 # update the row in DB
-                ret = update_package_build_time_by_id(current_db_package['id'], rpm_tag_build_time)
+                ret = update_package_build_time_by_id(package_id, rpm_tag_build_time)
                 if ret == 1:
-                    print 'build_time updated for the package id', current_db_package['id']
+                    print 'build_time updated for the package id', package_id
                     something_changed = True
                 else:
-                  print 'something went wrong during update of the build_time for the package id', current_db_package['id']
+                  print 'something went wrong during update of the build_time for the package id', package_id
 
                 # remove the stored metadata snippet for this package
-                ret = delete_repodata_snippet_by_id(current_db_package['id'])
+                ret = delete_repodata_snippet_by_id(package_id)
                 if ret == 1:
-                    print 'repodata snipped removed for the package id', current_db_package['id']
+                    print 'repodata snipped removed for the package id', package_id
                     something_changed = True
                 else:
-                    print 'something went wrong during remove of the repodata snippet for the package id', current_db_package['id']
+                    print 'something went wrong during remove of the repodata snippet for the package id', package_id
                 print '###############'
 
     # finally trigger regeneration of all metadata for all channels
