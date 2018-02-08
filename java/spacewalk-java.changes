@@ -7,6 +7,12 @@
 - Show full Salt paths in config file details page
 
 -------------------------------------------------------------------
+Thu Feb 01 13:06:17 CET 2018 - jgonzalez@suse.com
+
+- version 2.7.46.10-1
+- Fix the file count for deployed files(bsc#1074300)
+
+-------------------------------------------------------------------
 Tue Jan 30 13:17:29 CET 2018 - jgonzalez@suse.com
 
 - version 2.7.46.9-1

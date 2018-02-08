@@ -2,6 +2,13 @@
   to the registered system until the action is executed.
 
 -------------------------------------------------------------------
+Wed Feb 07 14:08:51 CET 2018 - jgonzalez@suse.com
+
+- version 3.1.15-1
+- Make migration idempotent (bsc#1078749)
+- Fix: schema with proper extension (bsc#1079820)
+
+-------------------------------------------------------------------
 Tue Jan 30 13:48:55 CET 2018 - jgonzalez@suse.com
 
 - version 3.1.14-1

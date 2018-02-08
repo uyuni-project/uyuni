@@ -45,6 +45,7 @@ import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.dto.ConfigGlobalDeployDto;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
+import com.redhat.rhn.frontend.dto.ServerActionDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -68,6 +69,8 @@ import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -565,6 +568,30 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         //This last test really doesn't work if we limit more than we create.
         //this is to ensure that if we change those values, the tests are still valid.
         assertTrue(numToShow < numFiles);
+    }
+
+    public void testGetRecentConfigDeployActions() throws Exception {
+        ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigFile file = ConfigTestUtils.createConfigFile(cc);
+        ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(file);
+        Server minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server minion3 = MinionServerFactoryTest.createTestMinionServer(user);
+
+        List<Server> servers = Arrays.asList(minion1, minion2, minion3);
+        ConfigAction action = ActionManager.createConfigAction(user, ActionFactory.TYPE_CONFIGFILES_DEPLOY, new Date());
+        for (Server server : servers) {
+            ActionFactory.addServerToAction(server.getId(), action);
+            ActionFactory.addConfigRevisionToAction(configRevision, server, action);
+        }
+        ActionFactory.save(action);
+        ConfigTestUtils.giveUserChanAccess(user, cc);
+        DataResult dr = cm.getRecentConfigDeployActions(user, new Integer( 5));
+        assertEquals(3, dr.getTotalSize()); // Number of server actions
+        dr.stream().forEach(sad-> {
+            ServerActionDto serverAction = (ServerActionDto)sad;
+            assertEquals(1, serverAction.getFileCount().intValue());
+        });
     }
 
     public void testGetOverviewSummary() throws Exception {

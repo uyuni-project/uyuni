@@ -812,7 +812,7 @@ ORDER BY SA.completion_time DESC
                   A.earliest_action AS earliest, WC.login AS scheduled_by_name,
                   (SELECT  count(ACR.config_revision_id)
                      FROM  rhnActionConfigRevision ACR
-                    WHERE  ACR.action_id = A.id) file_count
+                    WHERE  ACR.action_id = A.id AND server_id=S.id) file_count
             FROM  rhnAction A inner join
                   rhnServerAction SA on SA.action_id = A.id inner join
                   rhnActionStatus RAS on SA.status = RAS.id inner join
@@ -836,7 +836,7 @@ ORDER BY SA.completion_time DESC
                   A.earliest_action AS earliest, WC.login AS scheduled_by_name,
                   (SELECT  count(ACR.config_revision_id)
                      FROM  rhnActionConfigRevision ACR
-                    WHERE  ACR.action_id = A.id) file_count
+                    WHERE  ACR.action_id = A.id AND server_id=S.id) file_count
             FROM  rhnAction A inner join
                   rhnServerAction SA on SA.action_id = A.id inner join
                   rhnActionStatus RAS on SA.status = RAS.id inner join

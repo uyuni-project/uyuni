@@ -1,3 +1,5 @@
+-- oracle equivalent source sha1 ff5fe7355519272628945233220c2bd5f2c57b56
+
 DROP SEQUENCE IF EXISTS rhn_server_net_id_seq;
 DROP TRIGGER IF EXISTS rhn_servernetwork_mod_trig ON rhnServerNetwork;
 DROP FUNCTION IF EXISTS rhn_servernetwork_mod_trig_fun();
