@@ -123,7 +123,7 @@ if __name__ == '__main__':
     print 'Scanning', len(package_list), 'packages'
 
     # iterate on each package
-    for package_blob in package_list:
+    for index, package_blob in enumerate(package_list):
 
         package_id = package_blob['id']
 
@@ -162,9 +162,12 @@ if __name__ == '__main__':
                 print 'something went wrong during remove of the repodata snippet for the package id', package_id
             print '###############'
 
+        if index % 100 == 0:
+            rhnSQL.commit()
+
     # finally trigger regeneration of all metadata for all channels
     if something_changed:
         ret = regenerate_metadata_for_all_channels()
         print 'queued', ret, 'channel metadata regeneration'
 
-    rhnSQL.commit()
+rhnSQL.commit()
