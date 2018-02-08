@@ -27,13 +27,11 @@ _query_all_possible_affected_packages = rhnSQL.Statement("""
     where created >=
     (
         select
-            created
+            min(created)
         from rhnVersionInfo vi
             join rhnPackageEVR evr
                 on vi.evr_id = evr.id
         where evr.version like '3.1.%'
-        order by created
-        limit 1
     )
 """)
 
