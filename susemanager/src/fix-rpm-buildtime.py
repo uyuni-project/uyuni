@@ -1,11 +1,10 @@
 #!/usr/bin/python
 
-
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL
+from datetime import datetime
 import time
 import os, rpm
-from datetime import datetime, timedelta
 
 _package_path_prefix = '/var/spacewalk/'
 
@@ -13,14 +12,14 @@ _package_path_prefix = '/var/spacewalk/'
 # - find every sync after install/update to 3.1
 #
 _query_find_all_affected_sync = rhnSQL.Statement("""
-  select
-    created,
-    version
-  from rhnVersionInfo vi
-    join rhnPackageEVR evr
-      on vi.evr_id = evr.id
-  where evr.version like '3.1.%'
-  order by created
+    select
+        created,
+        version
+    from rhnVersionInfo vi
+        join rhnPackageEVR evr
+            on vi.evr_id = evr.id
+    where evr.version like '3.1.%'
+    order by created
 """)
 
 def get_affected_syncs():
@@ -33,7 +32,11 @@ def get_affected_syncs():
 #
 # - get the list of package ids for certain version
 #
-_query_all_package_ids_by_version = rhnSQL.Statement("""select id from rhnPackageEVR where version = :version""")
+_query_all_package_ids_by_version = rhnSQL.Statement("""
+    select id
+    from rhnPackageEVR
+    where version = :version
+""")
 
 def get_all_package_ids_by_version(version):
     h = rhnSQL.prepare(_query_all_package_ids_by_version)
@@ -45,7 +48,15 @@ def get_all_package_ids_by_version(version):
 #
 # - every found package (rhnPackage column) has "path" and "buildtime".
 #
-_query_package_by_id = rhnSQL.Statement("""select p.*, pn.name from rhnPackage p join rhnPackageName pn on p.name_id = pn.id where p.id = :id""")
+_query_package_by_id = rhnSQL.Statement("""
+    select
+        p.*,
+        pn.name
+    from rhnPackage p
+        join rhnPackageName pn
+            on p.name_id = pn.id
+    where p.id = :id
+""")
 
 def get_package_by_id(id):
     h = rhnSQL.prepare(_query_package_by_id)
@@ -74,7 +85,11 @@ def get_rpm_tag_build_time(rpm_file):
 #
 # - update package build_time in DB
 #
-_update_package_build_time = rhnSQL.Statement("""update rhnPackage set build_time = :build_time where id = :id""")
+_update_package_build_time = rhnSQL.Statement("""
+    update rhnPackage
+    set build_time = :build_time
+    where id = :id
+""")
 
 def update_package_build_time_by_id(id, build_time):
     h = rhnSQL.prepare(_update_package_build_time)
@@ -85,7 +100,11 @@ def update_package_build_time_by_id(id, build_time):
 #
 # - delete package repodata snippet from DB
 #
-_delete_repodata_snippet_by_id = rhnSQL.Statement("""delete from rhnPackageRepodata where package_id = :id""")
+_delete_repodata_snippet_by_id = rhnSQL.Statement("""
+    delete
+    from rhnPackageRepodata
+    where package_id = :id
+""")
 
 def delete_repodata_snippet_by_id(id):
     h = rhnSQL.prepare(_delete_repodata_snippet_by_id)
@@ -98,12 +117,14 @@ def delete_repodata_snippet_by_id(id):
 #
 _insert_trigger_to_regenerate_metadata_for_all_channels = rhnSQL.Statement("""
     insert into rhnRepoRegenQueue (id, CHANNEL_LABEL, REASON, FORCE)
-      (select
-        sequence_nextval('rhn_repo_regen_queue_id_seq'),
-        C.label,
-        'fix names for cloned patches',
-        'Y'
-      from rhnChannel C)
+    (
+        select
+            sequence_nextval('rhn_repo_regen_queue_id_seq'),
+            C.label,
+            'fix names for cloned patches',
+            'Y'
+        from rhnChannel C
+    )
 """)
 
 def regenerate_metadata_for_all_channels():
