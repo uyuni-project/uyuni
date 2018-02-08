@@ -6319,7 +6319,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
         <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0_url">
-          <source>No files, directories or symlinks. &lt;a href="{1}"&gt; Add&lt;/a&gt;</source>
+          <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0">
           <source>No files, directories or symlinks.</source>
@@ -6346,7 +6346,7 @@ Follow this url to see the full list of inactive systems:
           <source>{2} directories and {3} symlink</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_2">
-          <source>{3} directories and {3} symlinks</source>
+          <source>{2} directories and {3} symlinks</source>
         </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_0">
           <source>{1} file</source>
@@ -6409,10 +6409,10 @@ Follow this url to see the full list of inactive systems:
           <source>{0} state</source>
         </trans-unit>
         <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0">
-          <source>{0} state and {0} file </source>
+          <source>{0} state and {1} file</source>
         </trans-unit>
         <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0">
-          <source>{0} state and {1} files </source>
+          <source>{0} state and {1} files</source>
         </trans-unit>
       </group>
       <group>
