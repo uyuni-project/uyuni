@@ -1,12 +1,15 @@
 #!/usr/bin/python
 
+from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.server import rhnSQL
 from datetime import datetime
 import time
 import os, rpm
 
-_package_path_prefix = '/var/spacewalk/'
+
+initCFG('server')
+_package_path_prefix = CFG.MOUNT_POINT
 
 #
 # - find first sync after install/update to 3.1
