@@ -193,8 +193,10 @@ public class SCCProduct {
     }
 
     /**
+     * @deprecated use {@link getOnlinePredecessorIds} or {@link getOfflinePredecessorIds} instead
      * @return the predecessor Ids
      */
+    @Deprecated
     public List<Integer> getPredecessorIds() {
         return predecessorIds;
     }
@@ -320,13 +322,6 @@ public class SCCProduct {
      */
     public void setIdentifier(String identifierIn) {
         this.identifier = identifierIn;
-    }
-
-    /**
-     * @param predecessorIdsIn the predecessor Ids to set
-     */
-    public void setPredecessorIds(List<Integer> predecessorIdsIn) {
-        this.predecessorIds = predecessorIdsIn;
     }
 
     /**
