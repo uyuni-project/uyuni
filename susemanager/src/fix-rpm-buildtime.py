@@ -128,7 +128,7 @@ if __name__ == '__main__':
         package_id = package_blob['id']
 
         # get the absolute path of the package on the filesystem
-        absolute_package_path = _package_path_prefix + package_blob['path']
+        absolute_package_path = os.path.join(_package_path_prefix, package_blob['path'])
 
         # extract the rpm_tag_build_time from the rpm
         rpm_tag_build_time = datetime(*time.gmtime(get_rpm_tag_build_time(absolute_package_path))[:6])
