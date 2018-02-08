@@ -97,7 +97,7 @@ _insert_trigger_to_regenerate_metadata_for_all_channels = rhnSQL.Statement("""
         select
             sequence_nextval('rhn_repo_regen_queue_id_seq'),
             C.label,
-            'fix names for cloned patches',
+            'align rpm build_time by script for bsc1078056',
             'Y'
         from rhnChannel C
     )
