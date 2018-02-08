@@ -50,7 +50,9 @@ def get_all_package_ids_by_version(version):
 #
 _query_package_by_id = rhnSQL.Statement("""
     select
-        p.*,
+        p.id,
+        p.path,
+        p.build_time,
         pn.name
     from rhnPackage p
         join rhnPackageName pn
