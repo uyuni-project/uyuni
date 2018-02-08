@@ -1113,6 +1113,7 @@ public class ContentSyncManager {
 
         // Iterate through products from SCC and check predecessor IDs
         for (SCCProduct p : products) {
+            // TODO: switch to getOnlinePredecessorIds() ?
             if (p.getPredecessorIds() != null) {
                 SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(p.getId());
                 for (Integer predecessorId : p.getPredecessorIds()) {
@@ -1197,6 +1198,7 @@ public class ContentSyncManager {
         if (fromProduct == null || toProduct == null) {
             return false;
         }
+        // TODO: this hack might be obsolete when using online_predecessor_ids
         // Dirty Hack: prevent major version update from 11.X to 12.X
         return !(fromProduct.getVersion().matches("^11(\\.\\d+)*$") &&
                 toProduct.getVersion().matches("^12(\\.\\d+)*$"));
