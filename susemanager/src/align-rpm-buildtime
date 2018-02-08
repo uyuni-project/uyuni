@@ -7,7 +7,7 @@ from datetime import datetime
 import time
 import os, rpm
 
-LOG_FILE = '/var/log/rhn/fix-rpm-buildtime.log'
+LOG_FILE = '/var/log/rhn/align-rpm-buildtime.log'
 initLOG(LOG_FILE, 1)
 
 initCFG('server')
