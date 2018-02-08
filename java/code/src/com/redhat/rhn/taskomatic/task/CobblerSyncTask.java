@@ -79,7 +79,7 @@ public class CobblerSyncTask extends RhnJavaJob {
             distSync.backsyncKernelOptions();
             ValidatorError ve = distSync.syncNullDistros();
             if (ve != null && distroWarnCount < 1) {
-                TaskHelper.sendErrorEmail(log, ve.getMessage());
+                TaskHelper.sendErrorEmail(ve.getMessage());
                 distroWarnCount++;
             }
 
@@ -117,7 +117,7 @@ public class CobblerSyncTask extends RhnJavaJob {
 
             ve = distSync.store();
             if (ve != null) {
-                TaskHelper.sendErrorEmail(log, ve.getMessage());
+                TaskHelper.sendErrorEmail(ve.getMessage());
             }
 
             CobblerProfileSyncCommand profSync = new CobblerProfileSyncCommand();

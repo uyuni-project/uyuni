@@ -21,14 +21,13 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.Mail;
-import com.redhat.rhn.common.messaging.SmtpMail;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.frontend.dto.ActionMessage;
 import com.redhat.rhn.frontend.dto.AwolServer;
 import com.redhat.rhn.frontend.dto.OrgIdWrapper;
 import com.redhat.rhn.frontend.dto.ReportingUser;
 
+import com.suse.manager.utils.MailHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.quartz.JobExecutionContext;
@@ -56,24 +55,6 @@ public class DailySummary extends RhnJavaJob {
     private static final int ERRATA_SPACER = 4;
     private static final String ERRATA_UPDATE = "Errata Update";
     private static final String ERRATA_INDENTION = StringUtils.repeat(" ", ERRATA_SPACER);
-
-
-    private Mail mail;
-
-    /**
-     * Default constructor
-     */
-    public DailySummary() {
-        this(new SmtpMail());
-    }
-
-    /**
-     * Constructor takes in a Mailer
-     * @param mailer mailer if you don't want to use the default SmtpMail
-     */
-    public DailySummary(Mail mailer) {
-        mail = mailer;
-    }
 
     /**
      * {@inheritDoc}
@@ -160,16 +141,9 @@ public class DailySummary extends RhnJavaJob {
                     ru.getLogin(), ru.getAddress(), awolMsg, actionMsg);
 
             LocalizationService ls = LocalizationService.getInstance();
-            mail.setSubject(ls.getMessage(
-                    "dailysummary.email.subject", ls.formatShortDate(new Date())));
-            mail.setRecipient(ru.getAddress());
-
-            if (log.isDebugEnabled()) {
-                log.debug("Sending email to [" + ru.getAddress() + "]");
-            }
-
-            mail.setBody(emailMsg);
-            TaskHelper.sendMail(mail, log);
+            String subject = ls.getMessage(
+                    "dailysummary.email.subject", ls.formatShortDate(new Date()));
+            MailHelper.withSmtp().sendEmail(ru.getAddress(), subject, emailMsg);
         }
         watch.stop();
         if (log.isDebugEnabled()) {

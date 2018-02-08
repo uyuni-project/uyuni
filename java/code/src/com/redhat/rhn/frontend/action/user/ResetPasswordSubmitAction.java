@@ -21,6 +21,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.suse.manager.utils.MailHelper;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -30,12 +32,8 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.ResetPasswordFactory;
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.Mail;
-import com.redhat.rhn.common.messaging.SmtpMail;
 import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -110,11 +108,13 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
         updateUser(u, pw);
 
         // Send confirmation email
-        String emailBody = setupEmailBody("email.reset.password",
+        String emailBody = MailHelper.composeEmailBody("email.reset.password",
                                           u.getEmail(), u.getLogin(),
                                           ConfigDefaults.get().getHostname());
-        sendEmail(u.getEmail(),
-                  "help.credentials.jsp.passwordreset.confirmation", emailBody);
+        String subject = MailHelper.PRODUCT_PREFIX + LocalizationService.getInstance().
+                getMessage("help.credentials.jsp.passwordreset.confirmation");
+        String rhnHeader = "Requested " + subject + " for " + u.getEmail();
+        MailHelper.withSmtp().addRhnHeader(rhnHeader).sendEmail(u.getEmail(), subject, emailBody);
 
         // invalidate any other tokens for them
         ResetPasswordFactory.invalidateUserTokens(u.getId());
@@ -167,30 +167,6 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
         u.setPassword(pw);
         u.setLastLoggedIn(new Date());
         UserManager.storeUser(u);
-    }
-
-    // See ForgotCredentials
-    private void sendEmail(String recipient, String subjectKey, String body) {
-        String subject = LocalizationService.getInstance().getMessage(subjectKey);
-        Mail mail = new SmtpMail();
-        mail.setHeader("X-RHN-Info", "Requested " + subject + " for " + recipient);
-        mail.setRecipient(recipient);
-        mail.setSubject(Config.get().getString("web.product_name") + " " + subject);
-        mail.setBody(body);
-        log.debug("Sending mail message:\n" + mail.toString());
-        try {
-            mail.send();
-        }
-        catch (Exception e) {
-            log.error("Exception while sending email: ");
-            log.error(e.getMessage(), e);
-        }
-    }
-
-    private String setupEmailBody(String template, Object... args) {
-        // Build email body from template
-        LocalizationService ls = LocalizationService.getInstance();
-        return ls.getMessage(template, args);
     }
 
 }

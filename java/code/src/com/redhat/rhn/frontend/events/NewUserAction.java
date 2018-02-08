@@ -17,12 +17,12 @@ package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.utils.MailHelper;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -54,7 +54,6 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
 
         super.execute(msg);
         NewUserEvent evt = (NewUserEvent) msg;
-        Mail mail = getMail();
 
         Map map = new HashMap();
         map.put("login", evt.getUser().getLogin());
@@ -79,12 +78,11 @@ public class NewUserAction extends BaseMailAction implements MessageAction {
 
         //Get the admin details(email) from the event message
         //and set in recipients to send the mail
-        mail.setRecipients(getEmails(evt));
-        mail.setSubject(LocalizationService.getInstance().
-                getMessage("email.newuser.subject", evt.getUserLocale(), subjectArgs));
-        mail.setBody(LocalizationService.getInstance().
-                getMessage("email.newuser.body", evt.getUserLocale(), bodyArgs));
-        mail.send();
+        String subject = LocalizationService.getInstance().
+                getMessage("email.newuser.subject", evt.getUserLocale(), subjectArgs);
+        String body = LocalizationService.getInstance().
+                getMessage("email.newuser.body", evt.getUserLocale(), bodyArgs);
+        MailHelper.withMailer(getMail()).sendEmail(getEmails(evt), subject, body);
 
         if (logger.isDebugEnabled()) {
             logger.debug("execute(EventMessage) - end");

@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.suse.manager.utils.MailHelper;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -31,13 +32,10 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.Mail;
-import com.redhat.rhn.common.messaging.SmtpMail;
 import com.redhat.rhn.domain.common.ResetPassword;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -119,10 +117,12 @@ public class ForgotCredentialsAction extends RhnAction {
                 ResetPassword rp = ResetPasswordFactory.createNewEntryFor(foundUser);
                 String link = ResetPasswordFactory.generateLink(rp);
 
-                String emailBody = setupEmailBody("email.forgotten.password",
+                String emailBody = MailHelper.composeEmailBody("email.forgotten.password",
                         email, link, login);
-                sendEmail(email, LocalizationService.getInstance().
-                        getMessage("help.credentials.jsp.passwordreset"), emailBody);
+                String subject = MailHelper.PRODUCT_PREFIX + LocalizationService.getInstance().
+                        getMessage("help.credentials.jsp.passwordreset");
+                String rhnHeader = "Requested " + subject + " for " + email;
+                MailHelper.withSmtp().addRhnHeader(rhnHeader).sendEmail(email, subject, emailBody);
 
                 // Save time and login to session
                 saveRequestTime(session, "password", login);
@@ -161,10 +161,12 @@ public class ForgotCredentialsAction extends RhnAction {
                 logins.append(usr.getLogin() + "\n");
             }
 
-            String emailBody = setupEmailBody("email.forgotten.logins",
+            String emailBody = MailHelper.composeEmailBody("email.forgotten.logins",
                     email, logins.toString(), ConfigDefaults.get().getHostname());
-            sendEmail(email, LocalizationService.getInstance().
-                    getMessage("help.credentials.jsp.logininfo"), emailBody);
+            String subject = MailHelper.PRODUCT_PREFIX + LocalizationService.getInstance().
+                    getMessage("help.credentials.jsp.logininfo");
+            String rhnHeader = "Requested " + subject + " for " + email;
+            MailHelper.withSmtp().addRhnHeader(rhnHeader).sendEmail(email, subject, emailBody);
 
             // Save time and email to session
             saveRequestTime(session, "logins", email);
@@ -176,38 +178,6 @@ public class ForgotCredentialsAction extends RhnAction {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("help.credentials.nologins"));
         }
-    }
-
-    private void sendEmail(String recipient,
-            String subject, String body) {
-
-        Mail mail = new SmtpMail();
-        mail.setHeader("X-RHN-Info",
-                "Requested " + subject + " for " + recipient);
-        mail.setRecipient(recipient);
-        mail.setSubject(Config.get().getString("web.product_name") +
-                " " + subject);
-        mail.setBody(body);
-        log.debug("Sending mail message:\n" + mail.toString());
-        try {
-            mail.send();
-        }
-        catch (Exception e) {
-            log.error("Exception while sending email: ");
-            log.error(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Get template, enter args there and return result.
-     * @param template name of template
-     * @param args args to be in template
-     * @return complete body, args in template
-     */
-    private String setupEmailBody(String template, Object... args) {
-        // Build email body from template
-        LocalizationService ls = LocalizationService.getInstance();
-        return ls.getMessage(template, args);
     }
 
     /**
