@@ -1,3 +1,4 @@
+- Remove previous activation keys on every (re-)activation (bsc#1031081)
 - Clean up SUSE manager repos in bootstrap script for trad clients (bsc#1077997)
 - Handle stderr from "virtual-host-gatherer" to avoid hanging (bsc#1067010)
 - Unify methods to send email on a single API
