@@ -49,6 +49,10 @@ public class SCCProduct {
     private List<SCCRepository> repositories;
     @SerializedName("predecessor_ids")
     private List<Integer> predecessorIds;
+    @SerializedName("online_predecessor_ids")
+    private List<Integer> onlinePredecessorIds;
+    @SerializedName("offline_predecessor_ids")
+    private List<Integer> offlinePredecessorIds;
     @SerializedName("product_type")
     private String productType;
     private boolean recommended;
@@ -196,6 +200,20 @@ public class SCCProduct {
     }
 
     /**
+     * @return the online predecessor Ids
+     */
+    public List<Integer> getOnlinePredecessorIds() {
+        return onlinePredecessorIds;
+    }
+
+    /**
+     * @return the offline predecessor Ids
+     */
+    public List<Integer> getOfflinePredecessorIds() {
+        return offlinePredecessorIds;
+    }
+
+    /**
      * @return the productType
      */
     public String getProductType() {
@@ -309,6 +327,13 @@ public class SCCProduct {
      */
     public void setPredecessorIds(List<Integer> predecessorIdsIn) {
         this.predecessorIds = predecessorIdsIn;
+    }
+
+    /**
+     * @param onlinePredecessorIdsIn the online predecessor Ids to set
+     */
+    public void setOnlinePredecessorIds(List<Integer> onlinePredecessorIdsIn) {
+        this.onlinePredecessorIds = onlinePredecessorIdsIn;
     }
 
     /**
