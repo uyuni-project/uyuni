@@ -302,7 +302,7 @@ public abstract class ConfigActionHelper {
                 symlinkSuffix == NONE && slsSuffix == NONE) {
             if (includeAddUrlForEmpty && url != null) {
                 key += "_url";
-                return service.getMessage(key, new Object[] {url});
+                return service.getMessage(key, url);
             }
             return service.getMessage(key);
         }
