@@ -1,12 +1,14 @@
 #!/usr/bin/python
 
 from spacewalk.common.rhnConfig import CFG, initCFG
-from spacewalk.common.rhnLog import log_debug
+from spacewalk.common.rhnLog import initLOG, log_debug, log_error
 from spacewalk.server import rhnSQL
 from datetime import datetime
 import time
 import os, rpm
 
+LOG_FILE = '/var/log/rhn/fix-rpm-buildtime.log'
+initLOG(LOG_FILE, 1)
 
 initCFG('server')
 _package_path_prefix = CFG.MOUNT_POINT
@@ -109,6 +111,9 @@ def regenerate_metadata_for_all_channels():
     return ret
 
 
+#
+# the main
+#
 if __name__ == '__main__':
     
     rhnSQL.initDB()
@@ -117,7 +122,8 @@ if __name__ == '__main__':
 
     # find all packages
     package_list = get_all_possible_affected_packages()
-    print ''
+
+    log_debug(1, 'Scanning', len(package_list), 'packages')
     print 'Scanning', len(package_list), 'packages'
 
     # iterate on each package
@@ -133,32 +139,22 @@ if __name__ == '__main__':
 
         # compare RPM vs DB "buildtime"s
         if package_blob['build_time'] != rpm_tag_build_time:
-            print ''
-            print '###############'
-            print 'id =', package_id
-            print 'name =', package_blob['name']
-            print 'path =', absolute_package_path
-            print ''
-            print '>>> DB package build time  :', package_blob['build_time']
-            print '<<< RPM package build time :', rpm_tag_build_time
-            print ''
 
             # update the row in DB
             ret = update_package_build_time_by_id(package_id, rpm_tag_build_time)
             if ret == 1:
-                print 'build_time updated for the package id', package_id
+                log_debug(1, 'build_time updated for the package id', package_id)
                 something_changed = True
             else:
-                print 'something went wrong during update of the build_time for the package id', package_id
+                log_error('something went wrong during update of the build_time for the package id', package_id)
 
             # remove the stored metadata snippet for this package
             ret = delete_repodata_snippet_by_id(package_id)
             if ret == 1:
-                print 'repodata snipped removed for the package id', package_id
+                log_debug(1, 'repodata snipped removed for the package id', package_id)
                 something_changed = True
             else:
-                print 'something went wrong during remove of the repodata snippet for the package id', package_id
-            print '###############'
+                log_error('something went wrong during remove of the repodata snippet for the package id', package_id)
 
         if index % 100 == 0:
             rhnSQL.commit()
@@ -166,6 +162,7 @@ if __name__ == '__main__':
     # finally trigger regeneration of all metadata for all channels
     if something_changed:
         ret = regenerate_metadata_for_all_channels()
+        log_debug(1, 'queued', ret, 'channel metadata regeneration')
         print 'queued', ret, 'channel metadata regeneration'
 
 rhnSQL.commit()
