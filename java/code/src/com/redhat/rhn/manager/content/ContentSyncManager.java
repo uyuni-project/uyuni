@@ -1106,22 +1106,17 @@ public class ContentSyncManager {
                     path.getFromProductId());
             SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
                     path.getToProductId());
-            if (isValidUpgradePath(fromProduct, toProduct)) {
-                latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
-            }
+            latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
         }
 
         // Iterate through products from SCC and check predecessor IDs
         for (SCCProduct p : products) {
-            // TODO: switch to getOnlinePredecessorIds() ?
-            if (p.getPredecessorIds() != null) {
+            if (p.getOnlinePredecessorIds() != null) {
                 SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(p.getId());
-                for (Integer predecessorId : p.getPredecessorIds()) {
+                for (Integer predecessorId : p.getOnlinePredecessorIds()) {
                     SUSEProduct fromProduct =
                             SUSEProductFactory.lookupByProductId(predecessorId);
-                    if (isValidUpgradePath(fromProduct, toProduct)) {
-                        latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
-                    }
+                    latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
                 }
             }
         }
@@ -1186,22 +1181,6 @@ public class ContentSyncManager {
             }
             findRecommendedExtensions(extensionProduct, recommendedExtensions);
         }
-    }
-
-    /**
-     * Check if both products exist in the DB and it is a valid upgrade path.
-     *
-     * @param fromProduct the source product
-     * @param toProduct the destination product
-     */
-    private Boolean isValidUpgradePath(SUSEProduct fromProduct, SUSEProduct toProduct) {
-        if (fromProduct == null || toProduct == null) {
-            return false;
-        }
-        // TODO: this hack might be obsolete when using online_predecessor_ids
-        // Dirty Hack: prevent major version update from 11.X to 12.X
-        return !(fromProduct.getVersion().matches("^11(\\.\\d+)*$") &&
-                toProduct.getVersion().matches("^12(\\.\\d+)*$"));
     }
 
     /**
