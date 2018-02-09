@@ -297,7 +297,7 @@ class MgrSync(object):
                 self.log.debug("Adding channel '{0}'".format(channel))
                 print("Adding '{0}' channel".format(channel))
                 added_channels = self._execute_xmlrpc_method(self.conn.sync.content,
-                                                             "addChannel",
+                                                             "addChannels",
                                                              self.auth.token(),
                                                              channel,
                                                              mirror)
