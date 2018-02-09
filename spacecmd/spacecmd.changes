@@ -1,3 +1,5 @@
+- Configure gpg_flag via spacecmd creating a channel (bsc#1080290)
+
 -------------------------------------------------------------------
 Mon Feb 05 12:44:39 CET 2018 - jgonzalez@suse.com
 
@@ -5,6 +7,7 @@ Mon Feb 05 12:44:39 CET 2018 - jgonzalez@suse.com
 - Allow scheduling the change of software channels as an action.
   The previous channels remain accessible to the registered system
   until the action is executed.
+  to the registered system until the action is executed.
 
 -------------------------------------------------------------------
 Fri Feb 02 11:58:16 CET 2018 - jgonzalez@suse.com
