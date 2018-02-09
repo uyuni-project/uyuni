@@ -53,6 +53,7 @@ def get_rpm_tag_build_time(rpm_file):
     try:
         hdr = transaction_set.hdrFromFdno(fd)
     except rpm.error:
+        os.close(fd)
         fd = os.open(rpm_file, os.O_RDONLY)
         transaction_set.setVSFlags(rpm._RPMVSF_NOSIGNATURES)
         hdr = transaction_set.hdrFromFdno(fd)
