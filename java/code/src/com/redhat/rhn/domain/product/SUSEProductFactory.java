@@ -30,6 +30,9 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -246,6 +249,13 @@ public class SUSEProductFactory extends HibernateFactory {
         Criteria c = session.createCriteria(SUSEProduct.class);
         c.add(Restrictions.eq("productId", productId));
         return (SUSEProduct) c.uniqueResult();
+    }
+
+    public static List<SUSEProductRecommend> allRecommends() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SUSEProductRecommend> criteria = builder.createQuery(SUSEProductRecommend.class);
+        Root<SUSEProductRecommend> root = criteria.from(SUSEProductRecommend.class);
+        return getSession().createQuery(criteria).getResultList();
     }
 
     /**
