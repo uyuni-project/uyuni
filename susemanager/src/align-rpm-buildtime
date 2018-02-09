@@ -140,7 +140,8 @@ if __name__ == '__main__':
     package_list = get_all_possible_affected_packages()
 
     log_debug(1, 'Scanning', len(package_list), 'packages')
-    print 'Scanning', len(package_list), 'packages'
+    sys.stdout.write('Scanning ' + str(len(package_list)) + ' packages')
+    sys.stdout.write('\n')
 
     # iterate on each package
     for index, package_blob in enumerate(package_list):
@@ -176,10 +177,13 @@ if __name__ == '__main__':
             rhnSQL.commit()
             sys.stdout.write('.')
 
+    sys.stdout.write('\n')
+
     # finally trigger regeneration of all metadata for all channels
     if something_changed:
         ret = regenerate_metadata_for_all_channels()
         log_debug(1, 'queued', ret, 'channel metadata regeneration')
-        print 'queued', ret, 'channel metadata regeneration'
+        sys.stdout.write('queued ' + str(ret) + ' channel metadata regeneration')
+        sys.stdout.write('\n')
 
 rhnSQL.commit()
