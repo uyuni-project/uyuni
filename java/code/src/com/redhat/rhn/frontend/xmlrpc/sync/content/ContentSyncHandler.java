@@ -27,6 +27,7 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
 import com.suse.mgrsync.XMLChannel;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -207,6 +208,32 @@ public class ContentSyncHandler extends BaseHandler {
         ContentSyncManager csm = new ContentSyncManager();
         csm.addChannel(channelLabel, mirrorUrl);
         return BaseHandler.VALID;
+    }
+
+    /**
+     * Add a new channel to the SUSE Manager database and its required bases.
+     *
+     * @param loggedInUser the currently logged in user
+     * @param channelLabel label of the channel to add
+     * @param mirrorUrl optional mirror URL
+     * @return Array of enabled channel labels
+     * @throws ContentSyncException in case of an error
+     *
+     * @xmlrpc.doc Add a new channel to the SUSE Manager database
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "channelLabel", "Label of the channel to add")
+     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
+     * @xmlrpc.returntype #array_single("string", "enabled channel labels")
+     */
+    public Object[] addChannels(User loggedInUser, String channelLabel, String mirrorUrl)
+            throws ContentSyncException {
+        ensureSatAdmin(loggedInUser);
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.addChannel(channelLabel, mirrorUrl);
+        // TODO: add all channels which were enabled to the return list
+        List<String> returnList = new ArrayList<>();
+        returnList.add(channelLabel);
+        return returnList.toArray();
     }
 
     /**
