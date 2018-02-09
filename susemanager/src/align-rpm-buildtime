@@ -48,16 +48,31 @@ def get_all_possible_affected_packages():
 #
 def get_rpm_tag_build_time(rpm_file):
     """Returns rpm information by querying a rpm"""
-    transaction_set = rpm.ts()
+    # open .rpm file
     fd = os.open(rpm_file, os.O_RDONLY)
+
+    # init transaction set
+    transaction_set = rpm.TransactionSet()
+
+    # handle exception in case of an rpm with no-signatures
     try:
+        # read header
         hdr = transaction_set.hdrFromFdno(fd)
     except rpm.error:
+        # closing and reopening rpm file
+        # prevents the 'too many open files' error
         os.close(fd)
         fd = os.open(rpm_file, os.O_RDONLY)
+
+        # adjust the transaction_set to read an rpm with no-signatures
         transaction_set.setVSFlags(rpm._RPMVSF_NOSIGNATURES)
+
+        # read header
         hdr = transaction_set.hdrFromFdno(fd)
+
+    # close file
     os.close(fd)
+
     return hdr[rpm.RPMTAG_BUILDTIME]
 
 
