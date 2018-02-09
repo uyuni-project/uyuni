@@ -136,7 +136,7 @@ class MgrSync(object):
             elif 'credentials' in options.add_target:
                 self._add_credentials(options.primary, options.target)
             elif 'product' in options.add_target:
-                self._add_products(mirror="")
+                self._add_products(mirror="", no_recommends=options.no_recommends)
         elif vars(options).has_key('refresh'):
             self.exit_with_error = not self._refresh(
                 enable_reposync=options.refresh_channels,
@@ -289,20 +289,31 @@ class MgrSync(object):
                                 parent.label))
                             self._add_channels([parent.label])
 
+            if channel in channels_to_sync:
+                # was enabled before - we can skip it
+                continue
+
             if add_channel:
                 self.log.debug("Adding channel '{0}'".format(channel))
                 print("Adding '{0}' channel".format(channel))
-                self._execute_xmlrpc_method(self.conn.sync.content,
-                                            "addChannel",
-                                            self.auth.token(),
-                                            channel,
-                                            mirror)
-                match = find_channel_by_label(channel, current_channels, self.log)
-                if match:
-                    match.status = Channel.Status.INSTALLED
+                added_channels = self._execute_xmlrpc_method(self.conn.sync.content,
+                                                             "addChannel",
+                                                             self.auth.token(),
+                                                             channel,
+                                                             mirror)
+                # Flag added channels to not enable twice
+                for clabel in added_channels:
+                    match = find_channel_by_label(clabel, current_channels, self.log)
+                    if match:
+                        match.status = Channel.Status.INSTALLED
+                    if clabel not in channels_to_sync:
+                        print("Scheduling reposync for '{0}' channel".format(clabel))
+                        channels_to_sync.append(clabel)
 
-            print("Scheduling reposync for '{0}' channel".format(channel))
-            channels_to_sync.append(channel)
+            if channel not in channels_to_sync:
+                print("Scheduling reposync for '{0}' channel".format(channel))
+                channels_to_sync.append(channel)
+
         self._schedule_channel_reposync(channels_to_sync)
 
     def _schedule_channel_reposync(self, channels):
@@ -393,7 +404,7 @@ class MgrSync(object):
 
         return interactive_data
 
-    def _add_products(self, mirror=""):
+    def _add_products(self, mirror="", no_recommends=False):
         """ Add a list of products.
 
         If the products list is empty the interactive mode is started.
@@ -410,8 +421,7 @@ class MgrSync(object):
                 product.friendly_name))
             return
 
-        mandatory_channels = [c.label for c in product.channels
-                              if not c.optional]
+        mandatory_channels = self._find_channels_for_product(product, no_recommends=no_recommends)
 
         self.log.debug("Adding channels required by '{0}' product".format(
             product.friendly_name))
@@ -420,6 +430,17 @@ class MgrSync(object):
         self._add_channels(channels=mandatory_channels, mirror=mirror)
         self.log.info("Product successfully added")
         print("Product successfully added")
+
+    def _find_channels_for_product(self, product, no_recommends=False):
+        ret = []
+        if not product:
+            return ret
+        ret.extend([c.label for c in product.channels if not c.optional])
+        if product.isBase:
+            for extprd in product.extensions:
+                if extprd.recommended and not no_recommends:
+                    ret.extend([c.label for c in extprd.channels if not c.optional])
+        return ret
 
     def _select_product_interactive_mode(self):
         """Show not installed products prefixing a number, then reads
