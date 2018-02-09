@@ -27,9 +27,9 @@ import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
-import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -74,6 +74,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -81,7 +82,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -426,7 +426,7 @@ public class ContentSyncManager {
         // get a map from channel labels to channels
         final Map<String, XMLChannel> channelByLabel = productToChannelMap.values().stream()
                 .flatMap(Collection::stream)
-                .collect(Collectors.toMap(XMLChannel::getLabel, s -> s));
+                .collect(Collectors.toMap(XMLChannel::getLabel, s -> s, (a,b) -> b));
 
 
         // get a map from every channel to its base channel
@@ -479,13 +479,25 @@ public class ContentSyncManager {
         List<MgrSyncProductDto> bases = partition.get(true);
         List<MgrSyncProductDto> extensions = partition.get(false);
 
+        //TODO: this is not optimal yet
+        Map<Long, List<Long>> recommendedForBase = SUSEProductFactory.allRecommends().stream().collect(
+                Collectors.groupingBy(
+                        s -> s.getRecommendedProduct().getProductId(),
+                        Collectors.mapping(s -> s.getBaseProduct().getProductId(), Collectors.toList())
+                )
+        );
+
         // add base-extension relationships
         for (MgrSyncProductDto base : bases) {
             for (MgrSyncProductDto extension : extensions) {
                 for (XMLChannel baseChannel : base.getChannels()) {
                     for (XMLChannel extensionChannel : extension.getChannels()) {
                         if (extensionChannel.getParent().equals(baseChannel.getLabel())) {
+                            boolean recommended = recommendedForBase.getOrDefault(extension.getId(), Collections.emptyList())
+                                    .contains(base.getId());
+                            extension.setRecommended(recommended);
                             base.addExtension(extension);
+                            base.setRecommended(false);
                         }
                     }
                 }

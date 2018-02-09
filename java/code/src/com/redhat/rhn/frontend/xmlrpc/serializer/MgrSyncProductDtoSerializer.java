@@ -45,6 +45,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *         #array_end()
  *       #struct_end()
  *     #array_end()
+ *     #prop_desc("bool", "recommended", "Recommended")
  *   #struct_end()
  */
 public class MgrSyncProductDtoSerializer extends RhnXmlRpcCustomSerializer {
@@ -68,6 +69,7 @@ public class MgrSyncProductDtoSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("status", product.getStatus().toString().toLowerCase());
         helper.add("channels", product.getChannels());
         helper.add("extensions", product.getExtensions());
+        helper.add("recommended", product.isRecommended());
 
         helper.writeTo(output);
     }
