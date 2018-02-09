@@ -55,6 +55,9 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
     /** The extensions products of this product. */
     private SortedSet<MgrSyncProductDto> extensions;
 
+    /** Is this extension recommended */
+    private boolean recommended;
+
     /**
      * Instantiates a new listed product.
      *
@@ -71,6 +74,23 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
         baseChannel = baseChannelIn;
         channels = new HashSet<XMLChannel>();
         extensions = new TreeSet<MgrSyncProductDto>();
+        recommended = false;
+    }
+
+    /**
+     * Is this a recommended extension
+     * @return true in case this is a  recommended extension, otherwise false
+     */
+    public boolean isRecommended() {
+        return recommended;
+    }
+
+    /**
+     * Set as recommended extension
+     * @param recommendedIn is recommended
+     */
+    public void setRecommended(boolean recommendedIn) {
+        this.recommended = recommendedIn;
     }
 
     /**
