@@ -512,7 +512,8 @@ options:
   -c CHECKSUM %s
   -u GPG_URL
   -i GPG_ID
-  -f GPG_FINGERPRINT''' % CHECKSUM
+  -f GPG_FINGERPRINT
+  -g DISABLE_GPG_CHECK''' % CHECKSUM
 
 
 def do_softwarechannel_create(self, args):
@@ -523,7 +524,8 @@ def do_softwarechannel_create(self, args):
                 Option('-c', '--checksum', action='store'),
                 Option('-u', '--gpg_url', action='store'),
                 Option('-i', '--gpg_id', action='store'),
-                Option('-f', '--gpg_fingerprint', action='store') ]
+                Option('-f', '--gpg_fingerprint', action='store'),
+                Option('-g', '--disable_gpg_check', action='store_true') ]
 
     (args, options) = parse_arguments(args, options)
 
@@ -570,6 +572,14 @@ def do_softwarechannel_create(self, args):
         print '---------------'
         print
         options.gpg_fingerprint = prompt_user('GPG Fingerprint:')
+
+        print
+        print 'GPG CHECK'
+        print '---------------'
+        print
+        options.disable_gpg_check = self.user_confirm('Disable GPG Check [y/N]? ',
+                                nospacer=True, ignore_yes=True)
+
     else:
         if not options.name:
             logging.error('A channel name is required')
@@ -604,10 +614,25 @@ def do_softwarechannel_create(self, args):
                                             options.checksum,
                                             {'url' :         options.gpg_url,
                                              'id' :          options.gpg_id,
-                                             'fingerprint' : options.gpg_fingerprint}
+                                             'fingerprint' : options.gpg_fingerprint},
+                                             not options.disable_gpg_check
                                            )
     else:
-        self.client.channel.software.create(self.session,
+        if options.disable_gpg_check:
+            self.client.channel.software.create(self.session,
+                                            options.label,
+                                            options.name,
+                                            options.name, # summary
+                                            'channel-%s' % options.arch,
+                                            options.parent_channel,
+                                            options.checksum,
+                                            {'url' :         '',
+                                             'id' :          '',
+                                             'fingerprint' : ''},
+                                             not options.disable_gpg_check
+                                           )
+        else:
+            self.client.channel.software.create(self.session,
                                             options.label,
                                             options.name,
                                             options.name,  # summary
