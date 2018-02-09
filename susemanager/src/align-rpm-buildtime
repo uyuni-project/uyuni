@@ -140,8 +140,8 @@ if __name__ == '__main__':
     package_list = get_all_possible_affected_packages()
 
     if package_list is not None:
-        log_debug(1, 'Scanning', len(package_list), 'packages')
-        sys.stdout.write('Scanning ' + str(len(package_list)) + ' packages')
+        log_debug(1, 'Scanning %s packages' % len(package_list))
+        sys.stdout.write('Scanning %s packages' % len(package_list))
         sys.stdout.write('\n')
 
         # iterate on each package
@@ -161,30 +161,31 @@ if __name__ == '__main__':
                 # update the row in DB
                 ret = update_package_build_time_by_id(package_id, rpm_tag_build_time)
                 if ret == 1:
-                    log_debug(1, 'build_time updated for the package id', package_id)
+                    log_debug(1, 'build_time updated for the package id %s' % package_id)
                     something_changed = True
                 else:
-                    log_error('something went wrong during update of the build_time for the package id', package_id)
+                    log_error('something went wrong during update of the build_time for the package id %s' % package_id)
 
                 # remove the stored metadata snippet for this package
                 ret = delete_repodata_snippet_by_id(package_id)
                 if ret == 1:
-                    log_debug(1, 'repodata snipped removed for the package id', package_id)
+                    log_debug(1, 'repodata snipped removed for the package id %s' % package_id)
                     something_changed = True
                 else:
-                    log_error('something went wrong during remove of the repodata snippet for the package id', package_id)
+                    log_error('something went wrong during remove of the repodata snippet for the package id %s' % package_id)
 
             if index % 100 == 0:
                 rhnSQL.commit()
                 sys.stdout.write('.')
+                sys.stdout.flush()
 
         sys.stdout.write('\n')
 
         # finally trigger regeneration of all metadata for all channels
         if something_changed:
             ret = regenerate_metadata_for_all_channels()
-            log_debug(1, 'queued', ret, 'channel metadata regeneration')
-            sys.stdout.write('queued ' + str(ret) + ' channel metadata regeneration')
+            log_debug(1, 'queued %s channel metadata regeneration' % ret)
+            sys.stdout.write('queued %s channel metadata regeneration' % ret)
             sys.stdout.write('\n')
 
         rhnSQL.commit()
