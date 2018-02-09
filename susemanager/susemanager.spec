@@ -191,6 +191,7 @@ fi
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
 %attr(0755,root,root) %{_sbindir}/mgr-sync
+%attr(0755,root,root) %{_sbindir}/align-rpm-buildtime
 %{pythonsmroot}/susemanager/__init__.py*
 %{pythonsmroot}/susemanager/mgr_clean_old_patchnames.py*
 %{pythonsmroot}/susemanager/mgr_delete_patch.py*
