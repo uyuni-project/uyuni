@@ -135,6 +135,7 @@ public class RepomdIndexWriter {
         }
         if (type.equals("modules")) {
             location = "modules.yaml";
+        }
         else if (type.equals("products")) {
             location = "products.xml";
         }
