@@ -21,6 +21,7 @@ Version: 5.3
 Release: 2%{?dist}
 Source0: https://github.com/oracle/python-%{name}/archive/%{version}.tar.gz#/python-%{name}-%{version}.tar.gz
 License: Python Software Foundation License
+Group: Development/Libraries
 Prefix: %{_prefix}
 Url: http://cx-oracle.sourceforge.net
 AutoReq: 0

@@ -11,6 +11,7 @@
 
 Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
+Group: Applications/Internet
 License: GPLv2
 Version: 2.8.4
 Release: 1%{?dist}
@@ -31,6 +32,7 @@ but it does generate a number of sub-packages.
 
 %package -n spacewalk-html
 Summary: HTML document files for Spacewalk
+Group: Applications/Internet
 Requires: httpd
 Requires: spacewalk-branding
 Obsoletes: rhn-help < 5.3.0
@@ -47,6 +49,7 @@ This package contains the HTML files for the Spacewalk web site.
 
 
 %package -n spacewalk-base
+Group: Applications/Internet
 Summary: Programs which need to be installed for the Spacewalk Web base classes
 Provides: spacewalk(spacewalk-base) = %{version}-%{release}
 %if 0%{?suse_version}
@@ -70,6 +73,7 @@ database.  This includes RHN::* and RHN::DB::*.
 
 %package -n spacewalk-base-minimal
 Summary: Core of Perl modules for %{name} package
+Group: Applications/Internet
 Provides: spacewalk(spacewalk-base-minimal) = %{version}-%{release}
 Obsoletes: rhn-base-minimal < 5.3.0
 Provides: rhn-base-minimal = 5.3.0
@@ -83,6 +87,7 @@ sessions and exceptions.
 
 %package -n spacewalk-base-minimal-config
 Summary: Configuration for %{name} package
+Group: Applications/Internet
 Provides: spacewalk(spacewalk-base-minimal-config) = %{version}-%{release}
 Requires: httpd
 Requires: spacewalk-base-minimal = %{version}-%{release}
@@ -93,6 +98,7 @@ Configuration file for spacewalk-base-minimal package.
 
 %package -n spacewalk-dobby
 Summary: Perl modules and scripts to administer a PostgreSQL database
+Group: Applications/Internet
 Requires: perl-Filesys-Df
 Obsoletes: rhn-dobby < 5.3.0
 Provides: rhn-dobby = 5.3.0

@@ -19,6 +19,7 @@ Summary:        Java client library for SUSE Studio
 Version:        0.1.4
 Release:        6%{?dist}
 License:        MIT
+Group:          Development/Libraries/Java
 Url:            https://github.com/susestudio/susestudio-lib-java
 Source0:        https://github.com/susestudio/susestudio-lib-java/archive/v%{version}.tar.gz#/susestudio-lib-java-%{version}.tar.gz
 BuildRequires:  ant

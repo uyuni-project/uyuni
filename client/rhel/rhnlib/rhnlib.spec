@@ -11,6 +11,7 @@ Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 
+Group: Development/Libraries
 License: GPL-2.0
 
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
@@ -42,6 +43,7 @@ Spacewalk software.
 %if 0%{?build_py3}
 %package -n python3-rhnlib
 Summary: Python libraries for the Spacewalk project
+Group: Development/Libraries
 BuildRequires: python3-devel
 %if 0%{?suse_version}
 BuildRequires:  python-rpm-macros

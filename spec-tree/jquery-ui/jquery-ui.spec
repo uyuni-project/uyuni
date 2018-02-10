@@ -9,6 +9,7 @@ Version:        1.10.4.custom
 Release:        4%{?dist}
 Summary:        jQuery UI is a curated set of user interface elements built on top of the jQuery JavaScript Library.
 
+Group:          Applications/Internet
 License:        MIT
 URL:            http://jqueryui.com/
 # The source zip can be downloaded from the following URL:

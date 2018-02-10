@@ -4,6 +4,7 @@ Name:		oracle-instantclient-selinux
 Version:	11.2.0.4
 Release:	1%{?dist}
 Summary:	SELinux support for Oracle Instant Client 11g
+Group:		System Environment/Base
 License:	GPLv2+
 # This src.rpm is canonical upstream.
 # You can obtain it using this set of commands
@@ -23,6 +24,7 @@ SELinux support for Oracle Instant Client.
 
 %package -n oracle-instantclient-sqlplus-selinux
 Summary:	SELinux support for Oracle Instant Client sqlplus
+Group:		System Environment/Base
 Requires:	oracle-instantclient11.2-sqlplus
 Requires:	oracle-nofcontext-selinux
 Requires(post):	/usr/sbin/semanage, %{sbinpath}/restorecon, /usr/sbin/selinuxenabled

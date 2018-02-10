@@ -1,5 +1,6 @@
 Name: spacewalk-reports
 Summary: Script based reporting
+Group: Applications/Internet
 License: GPLv2
 Version: 2.8.4
 Release: 1%{?dist}

@@ -2,6 +2,7 @@ Name:		simple-core
 Version:	3.1.3
 Release:	10%{?dist}
 Summary:	Embeddable Java HTTP engine capable of handling large loads
+Group:	 	Development/Libraries	
 License:	GNU
 URL:	 	http://www.simpleframework.org	
 Source0:	simple-core-%{version}.tar.gz	
@@ -20,6 +21,7 @@ The core API consists of a simple.http package and various sub-packages, it also
 
 %package javadoc
 Summary:       Javadoc for %{name}
+Group:         Documentation
 
 %description javadoc
 Javadoc for %{name}.

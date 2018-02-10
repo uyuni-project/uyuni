@@ -10,6 +10,7 @@ Version:        2.8.2
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://github.com/spacewalkproject/spacewalk
+Group:          Applications/Internet
 License:        GPLv2
 BuildArch:      noarch
 
@@ -19,6 +20,7 @@ inventory, provision, update and control your Linux machines.
 
 %package common
 Summary: Spacewalk Systems Management Application with Oracle database backend
+Group:   Applications/Internet
 License: GPLv2
 Obsoletes: spacewalk < 0.7.0
 
@@ -97,6 +99,7 @@ inventory, provision, update and control your Linux machines.
 
 %package oracle
 Summary: Spacewalk Systems Management Application with Oracle database backend
+Group:   Applications/Internet
 License: GPLv2
 Obsoletes: spacewalk < 0.7.0
 Requires:  spacewalk-common = %{version}-%{release}
@@ -122,6 +125,7 @@ Version for Oracle database backend.
 
 %package postgresql
 Summary: Spacewalk Systems Management Application with PostgreSQL database backend
+Group:   Applications/Internet
 License: GPLv2
 Obsoletes: spacewalk < 0.7.0
 Requires:  spacewalk-common = %{version}-%{release}
