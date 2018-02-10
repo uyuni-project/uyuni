@@ -64,10 +64,12 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libcares19.la
 %postun -p /sbin/ldconfig
 
 %files
+%defattr(-, root, root)
 %doc README README.cares CHANGES NEWS LICENSE
 %{_libdir}/*.so.*
 
 %files devel
+%defattr(-, root, root, 0755)
 %{_includedir}/c-ares19/ares.h
 %{_includedir}/c-ares19/ares_build.h
 %{_includedir}/c-ares19/ares_dns.h

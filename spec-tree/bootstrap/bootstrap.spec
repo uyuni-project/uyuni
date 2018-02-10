@@ -64,6 +64,7 @@ rm -rf %{buildroot}
 
 
 %files
+%defattr(-,root,root,-)
 %{apachedocroot}/fonts/*
 %{apachedocroot}/javascript/*
 %if 0%{?suse_version}
@@ -72,6 +73,7 @@ rm -rf %{buildroot}
 %endif
 
 %files less
+%defattr(-,root,root,-)
 %{apacheconfd}/bootstrap-less.conf
 %{_datadir}/bootstrap
 

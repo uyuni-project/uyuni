@@ -58,12 +58,14 @@ rm -rf %{buildroot}
 
 
 %files
+%defattr(-,root,root,-)
 %{apachedocroot}/fonts/font-awesome
 %if 0%{?suse_version}
 %dir %{apachedocroot}/fonts
 %endif
 
 %files devel
+%defattr(-,root,root,-)
 %{_datadir}/font-awesome
 
 

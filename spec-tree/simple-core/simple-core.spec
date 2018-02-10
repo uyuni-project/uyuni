@@ -49,6 +49,7 @@ cp -pr doc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}-%{version}
 %clean
 
 %files
+%defattr(0644,root,root,0755)
 %{_javadir}/%{name}-%{version}.jar
 %{_javadir}/%{name}.jar
 %if 0%{?rhel} && 0%{?rhel} < 7

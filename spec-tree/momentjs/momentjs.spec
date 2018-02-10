@@ -47,6 +47,7 @@ rm -rf %{buildroot}
 
 
 %files
+%defattr(-,root,root,-)
 %{apacheconfd}/momentjs.conf
 %{_datadir}/momentjs
 
