@@ -71,6 +71,7 @@ rm -f $RPM_BUILD_ROOT%{python_sitelib}/*egg-info/requires.txt
 
 
 %files
+%defattr(-,root,root,-)
 %doc README.mkd AUTHORS COPYING
 %doc %{_mandir}/man5/titorc.5.gz
 %doc %{_mandir}/man5/tito.props.5.gz

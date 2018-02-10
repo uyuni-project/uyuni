@@ -56,6 +56,7 @@ done
 
 
 %files
+%defattr(-,root,root,-)
 %doc AUTHORS LICENSE
 %{_bindir}/gyp
 %{python_sitelib}/*

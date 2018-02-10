@@ -51,6 +51,7 @@ make -f Makefile.rhnlib
 
 
 %files
+%defattr(-,root,root,-)
 %doc ChangeLog COPYING README TODO
 
 %{python_sitelib}/*

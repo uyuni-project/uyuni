@@ -57,6 +57,7 @@ rm -rf %{buildroot}
 
 
 %files
+%defattr(-,root,root,-)
 %doc
 %{apachedocroot}/fonts/Roboto
 %if 0%{?suse_version}
@@ -64,6 +65,7 @@ rm -rf %{buildroot}
 %endif
 
 %files condensed
+%defattr(-,root,root,-)
 %{apachedocroot}/fonts/RobotoCondensed
 %if 0%{?suse_version}
 %dir %{apachedocroot}/fonts
