@@ -12,6 +12,7 @@ License:	GPLv2+
 # cd spacewalk
 # make srpm TAG=%{name}-%{version}-%{release}
 URL:		https://github.com/spacewalkproject/spacewalk
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 
 Requires(post):	/usr/sbin/semanage, %{sbinpath}/restorecon, /usr/sbin/selinuxenabled

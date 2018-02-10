@@ -6,6 +6,7 @@ Group: Applications/Internet
 License: OPL-1.0
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: susemanager-advanced-topics_en-pdf
 BuildRequires: susemanager-reference_en-pdf

@@ -18,6 +18,7 @@ Source0:        %{name}-%{version}.zip
 %if 0%{?suse_version}
 BuildRequires:  unzip
 %endif
+BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:      noarch
 
 %description

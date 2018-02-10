@@ -35,6 +35,7 @@ BuildRequires:  fdupes
 BuildRequires:  apache2
 %endif
 BuildArch:      noarch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
 TAce is an embeddable code editor written in JavaScript.

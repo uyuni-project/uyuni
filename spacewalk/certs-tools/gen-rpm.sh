@@ -293,6 +293,7 @@ Group: $GROUP
 License: GPL
 BuildArch: $ARCH
 Source: %{name}-%{version}.tar.gz
+BuildRoot: /var/tmp/%{name}-%{version}-root
 Summary: $SUMMARY
 Packager: $PACKAGER
 Vendor: $VENDOR

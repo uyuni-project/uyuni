@@ -14,7 +14,7 @@ License: GPL-2.0 and Apache-2.0
 # make test-srpm
 URL: https://fedorahosted.org/spacewalk
 Source0: %{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
 BuildRequires: nutch
 BuildRequires: susemanager-jsp_en >= 1.2

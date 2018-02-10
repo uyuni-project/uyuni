@@ -11,6 +11,7 @@ Summary:         SELinux policy module supporting Oracle
 Group:           System Environment/Base
 License:         GPLv2+
 Source0:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRoot:       %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:   checkpolicy, selinux-policy-devel, hardlink
 BuildArch:       noarch
 

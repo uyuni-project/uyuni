@@ -29,6 +29,7 @@ Version: 2.8.6
 Release: 1%{?dist}
 URL:      https://github.com/spacewalkproject/spacewalk
 Source0:  https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 Requires: %{pythonX}-%{name} = %{version}-%{release}
 Requires: openssl rpm-build spacewalk-base-minimal-config
