@@ -13,6 +13,7 @@ Release: 1%{?dist}
 # make test-srpm
 URL: https://github.com/spacewalkproject/spacewalk
 Source0: %{name}-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 ExcludeArch: aarch64
 

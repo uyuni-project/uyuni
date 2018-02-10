@@ -26,6 +26,7 @@ Patch1:		gyp-python24.patch
 
 BuildRequires:	python2-devel
 BuildArch:	noarch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
 GYP is a tool to generates native Visual Studio, Xcode and SCons

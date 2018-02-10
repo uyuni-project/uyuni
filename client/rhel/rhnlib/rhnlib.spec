@@ -13,6 +13,7 @@ Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version
 
 Group: Development/Libraries
 License: GPL-2.0
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch: noarch

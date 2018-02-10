@@ -16,6 +16,7 @@ Source0:        http://fontawesome.io/assets/font-awesome-4.0.3.zip
 %if 0%{?suse_version}
 BuildRequires:  unzip
 %endif
+BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:      noarch
 
 %description
