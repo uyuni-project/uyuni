@@ -22,7 +22,7 @@ Group: System Environment/Base
 Source0: spacewalk-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.8.12.2
+Version: 2.8.16
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
@@ -329,7 +329,6 @@ Python 3 specific files for spacewalk-client-setup-gnome.
 make -f Makefile.rhn-client-tools
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version} \
         PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
@@ -483,7 +482,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %if %{with test} && 0%{?fedora}
 %check
