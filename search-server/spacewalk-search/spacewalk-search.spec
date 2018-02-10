@@ -2,9 +2,8 @@
 
 Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
-Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.8.2.2
+Version: 2.8.3
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -13,7 +12,6 @@ Release: 1%{?dist}
 # make test-srpm
 URL: https://github.com/spacewalkproject/spacewalk
 Source0: %{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 ExcludeArch: aarch64
 
@@ -162,7 +160,6 @@ ln -sf ../../etc/init.d/rhn-search $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
 export NO_BRP_CHECK_BYTECODE_VERSION=true
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %post
 was_running=0
@@ -252,6 +249,11 @@ fi
 %endif
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Thu Sep 21 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
 - 1483503 - disable ibm java coredumps in tanukiwrapper
 

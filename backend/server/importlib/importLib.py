@@ -285,6 +285,7 @@ class Channel(Information):
         'description'       : StringType,
         'last_modified'     : DateType,
         'comps_last_modified' : DateType,
+        'modules_last_modified': DateType,
         'gpg_key_url'       : StringType,
         'update_tag'        : StringType,
         'product_name_id'   : IntType,

@@ -23,13 +23,11 @@
 
 Name: spacewalk-certs-tools
 Summary: Spacewalk SSL Key/Cert Tool
-Group: Applications/Internet
 License: GPLv2
-Version: 2.8.5.1
+Version: 2.8.6
 Release: 1%{?dist}
 URL:      https://github.com/spacewalkproject/spacewalk
 Source0:  https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 Requires: %{pythonX}-%{name} = %{version}-%{release}
 Requires: openssl rpm-build spacewalk-base-minimal-config
@@ -94,7 +92,6 @@ sed -i 's|etc/httpd/conf|etc/apache2|g' ssl-howto.txt
 %endif
 
 %install
-rm -rf $RPM_BUILD_ROOT
 install -d -m 755 $RPM_BUILD_ROOT/%{rhnroot}/certs
 make -f Makefile.certs install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version} \
@@ -124,7 +121,6 @@ ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 %endif
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
@@ -165,6 +161,12 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.6-1
+- removed %%%%defattr from specfile
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Thu Dec 14 2017 Eric Herget <eherget@redhat.com> 2.8.5-1
 - 1456471 - PR570 - Using own certificates for installer
 - 1456471 - PR570 - [RFE] Using own certifications for installer (CA, private

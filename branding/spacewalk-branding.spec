@@ -17,15 +17,13 @@
 %endif
 
 Name:       spacewalk-branding
-Version:    2.8.4.3
+Version:    2.8.5
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
-Group:      Applications/Internet
 License:    GPLv2
 URL:        https://github.com/spacewalkproject/spacewalk/
 Source0:    https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildArch:  noarch
 BuildRequires: java-devel >= 1.8.0
 BuildRequires: nodejs
@@ -71,7 +69,6 @@ Spacewalk specific branding, CSS, and images.
 %package devel
 Requires:       %{name} = %{version}-%{release}
 Summary:        Spacewalk LESS source files for development use
-Group:          Applications/Internet
 
 %description devel
 This package contains LESS source files corresponding to Spacewalk's
@@ -154,10 +151,14 @@ rm -rf %{buildroot}
 %endif
 
 %files devel
-%defattr(-,root,root)
 %{wwwdocroot}/css/*.less
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.5-1
+- removed %%%%defattr from specfile
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Mon Jan 22 2018 Jiri Dostal <jdostal@redhat.com> 2.8.4-1
 - Unify icons/style with other services
 

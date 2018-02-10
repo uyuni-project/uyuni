@@ -17,16 +17,14 @@
 
 Name:           rhn-virtualization
 Summary:        Spacewalk action support for virualization
-Version:        5.4.69.1
+Version:        5.4.70
 Release:        1%{?dist}
 
-Group:          System Environment/Base
 License:        GPLv2
 URL:            https://github.com/spacewalkproject/spacewalk
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
@@ -75,7 +73,6 @@ package.
 
 %package host
 Summary: Spacewalk Virtualization support specific to the Host system
-Group: System Environment/Base
 Requires: %{pythonX}-%{name}-host = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: cron
@@ -123,7 +120,6 @@ make -f Makefile.rhn-virtualization
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make -f Makefile.rhn-virtualization DESTDIR=$RPM_BUILD_ROOT PKGDIR0=%{_initrddir} \
         PYTHONPATH=%{python_sitelib} install
 sed -i 's,@PYTHON@,python,; s,@PYTHONPATH@,%{python_sitelib},;' \
@@ -161,7 +157,6 @@ rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %if 0%{?suse_version}
 %post host
@@ -306,6 +301,11 @@ fi
 %endif
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 5.4.70-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Fri Nov 03 2017 Jan Dobes 5.4.69-1
 - simplify status check
 

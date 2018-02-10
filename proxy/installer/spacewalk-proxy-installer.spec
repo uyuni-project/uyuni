@@ -9,13 +9,11 @@
 
 Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
-Group:   Applications/Internet
 License: GPLv2
-Version: 2.8.4.1
+Version: 2.8.5
 Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-root-%(%{__id_u} -n)
 BuildArch: noarch
 
 Requires: rhncfg-client
@@ -85,7 +83,6 @@ sed -i -e"s/^range_offset_limit -1 KB/range_offset_limit none/" /etc/squid/squid
 %endif
 
 %install
-rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_bindir}
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man8
 mkdir -p $RPM_BUILD_ROOT/%{_usr}/sbin
@@ -107,7 +104,6 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' rhn-proxy-activate.py
 install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT%{_bindir}/rhn-proxy-activate
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %check
 %if 0%{?pylint_check}
@@ -134,6 +130,11 @@ spacewalk-pylint .
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.5-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Sun Oct 15 2017 Gennadii Altukhov <grinrag@gmail.com> 2.8.4-1
 - fix dependencies for spacewalk-proxy-installer
 

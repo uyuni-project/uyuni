@@ -14,15 +14,13 @@
 %global pythonrhnroot %{python_sitelib}/spacewalk
 
 Name:	    spacewalk-usix
-Version:	2.8.0.2
+Version:	2.8.1
 Release:	1%{?dist}
 Summary:	Spacewalk server and client nano six library
 
-Group:		Applications/Internet
 License:	GPLv2
 URL:		  https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch: noarch
 %endif
@@ -38,7 +36,6 @@ Library for writing code that runs on Python 2 and 3
 
 %package -n python3-%{name}
 Summary: Spacewalk client micro six library
-Group: Applications/Internet
 Provides: python3-spacewalk-backend-usix = %{version}-%{release}
 Obsoletes: python3-spacewalk-backend-usix < 2.8
 BuildRequires: python3-devel
@@ -56,7 +53,6 @@ Library for writing code that runs on Python 2 and 3
 %define debug_package %{nil}
 
 %install
-rm -rf $RPM_BUILD_ROOT
 install -m 0755 -d $RPM_BUILD_ROOT%{pythonrhnroot}/common
 install -m 0644 __init__.py $RPM_BUILD_ROOT%{pythonrhnroot}/__init__.py
 install -m 0644 common/__init__.py $RPM_BUILD_ROOT%{pythonrhnroot}/common/__init__.py
@@ -77,7 +73,6 @@ cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{python3rhnroo
 %endif
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
@@ -108,6 +103,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Wed Aug 09 2017 Michael Mraka <michael.mraka@redhat.com> 2.7.8-1
 - 1477753 - precompile py3 bytecode
 

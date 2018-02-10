@@ -13,11 +13,10 @@
 %endif
 
 Name:        spacecmd
-Version:     2.8.15.3
+Version:     2.8.16
 Release:     1%{?dist}
 Summary:     Command-line interface to Spacewalk and Red Hat Satellite servers
 
-Group:       Applications/System
 License:     GPLv3+
 URL:         https://github.com/spacewalkproject/spacewalk/wiki/spacecmd
 Source:      https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -106,7 +105,6 @@ PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 %endif
 
 %files
-%defattr(-,root,root)
 %{_bindir}/spacecmd
 %{python_sitelib}/spacecmd/
 %ghost %config %{_sysconfdir}/spacecmd.conf
@@ -116,6 +114,10 @@ PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 %doc %{_mandir}/man1/spacecmd.1.gz
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.16-1
+- removed %%%%defattr from specfile
+- removed Group from specfile
+
 * Mon Jan 22 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.15-1
 - search for actual package name
 

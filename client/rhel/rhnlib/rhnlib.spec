@@ -6,14 +6,12 @@
 
 Summary: Python libraries for the Spacewalk project
 Name: rhnlib
-Version: 2.8.5.3
+Version: 2.8.6
 Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 
-Group: Development/Libraries
 License: GPL-2.0
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch: noarch
@@ -44,7 +42,6 @@ Spacewalk software.
 %if 0%{?build_py3}
 %package -n python3-rhnlib
 Summary: Python libraries for the Spacewalk project
-Group: Development/Libraries
 BuildRequires: python3-devel
 %if 0%{?suse_version}
 BuildRequires:  python-rpm-macros
@@ -78,7 +75,6 @@ make -f Makefile.rhnlib
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix=%{_prefix}
 %if 0%{?build_py3}
 %{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --prefix=%{_prefix}
@@ -86,7 +82,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 
 %files
@@ -101,6 +96,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.6-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.5-1
 - rhnlib: enable py3 build for Tumbleweed
 

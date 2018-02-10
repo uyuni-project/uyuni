@@ -25,14 +25,12 @@
 
 Name: spacewalk-java
 Summary: Java web application files for Spacewalk
-Group: Applications/Internet
 License: GPLv2
-Version: 2.8.59.3
+Version: 2.8.66
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:   %{name}-rpmlintrc
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 ExcludeArch: ia64 aarch64
 
@@ -96,7 +94,6 @@ BuildRequires: httpcomponents-client
 BuildRequires: velocity
 %else
 Requires: cobbler20
-Requires: dojo
 Requires: java >= 1:1.7.0
 Requires: java-devel >= 1:1.7.0
 Requires: jpam
@@ -302,7 +299,6 @@ Summary: Configuration files for Spacewalk Java
 Requires(post): apache2
 Requires(post): tomcat
 %endif
-Group: Applications/Internet
 Obsoletes: rhn-java-config < 5.3.0
 Obsoletes: rhn-java-config-sat < 5.3.0
 Provides: rhn-java-config = %{version}-%{release}
@@ -314,7 +310,6 @@ application and taskomatic process.
 
 %package lib
 Summary: Jar files for Spacewalk Java
-Group: Applications/Internet
 Obsoletes: rhn-java-lib < 5.3.0
 Obsoletes: rhn-java-lib-sat < 5.3.0
 Provides: rhn-java-lib = %{version}-%{release}
@@ -328,7 +323,6 @@ and taskomatic process.
 %if 0%{?with_oracle}
 %package oracle
 Summary: Oracle database backend support files for Spacewalk Java
-Group: Applications/Internet
 BuildRequires: ojdbc14
 Requires: ojdbc14
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -348,7 +342,6 @@ This package contains Oracle database backend files for the Spacewalk Java.
 
 %package postgresql
 Summary: PostgreSQL database backend support files for Spacewalk Java
-Group: Applications/Internet
 Requires: postgresql-jdbc
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires: tomcat >= 7
@@ -368,7 +361,6 @@ This package contains PostgreSQL database backend files for the Spacewalk Java.
 %if ! 0%{?omit_tests} > 0
 %package tests
 Summary: Test Classes for testing spacewalk-java
-Group:  Applications/Internet
 
 BuildRequires:  jmock < 2.0
 Requires: jmock < 2.0
@@ -404,7 +396,6 @@ This package contains apidoc-docbook xml sources of spacewalk-java.
 
 %package -n spacewalk-taskomatic
 Summary: Java version of taskomatic
-Group: Applications/Internet
 
 # for RHEL6 we need to filter out several package versions
 %if  0%{?rhel} && 0%{?rhel} >= 6
@@ -616,7 +607,6 @@ cd $RPM_BUILD_ROOT
 %install
 export NO_BRP_CHECK_BYTECODE_VERSION=true
 export NO_BRP_STALE_LINK_ERROR=yes
-rm -rf $RPM_BUILD_ROOT
 
 # on Fedora 19 some jars are named differently
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -781,7 +771,6 @@ echo "#### SYMLINKS END ####"
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %if 0%{?suse_version}
 %pre -n spacewalk-taskomatic
@@ -1048,6 +1037,34 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Fri Feb 09 2018 Grant Gainey 2.8.66-1
+- 1481329 - Lost an <rhn-tab-directory> tab in previous commit for this BZ
+
+* Fri Feb 09 2018 Jiri Dostal <jdostal@redhat.com> 2.8.65-1
+- Add proper errata severity editing/creating to WebUI
+- Add severity handling to API calls
+
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.64-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
+* Thu Feb 08 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.63-1
+- write modules information during repodata generation
+- support downloading of modules.yaml files via java stack
+- make module information part of channel just like comps
+- provide a way how to handle different repo metadata files in Java
+
+* Tue Feb 06 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.62-1
+- removed unused dependency on dojo
+
+* Mon Feb 05 2018 Jiri Dostal <jdostal@redhat.com> 2.8.61-1
+- 1541955 - Clone of an erratum doesn't have original erratum's severity
+
+* Tue Jan 30 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.60-1
+- Adapt other errata sites to colors
+- update checkstyle license to 2018
+
 * Thu Jan 25 2018 Jiri Dostal <jdostal@redhat.com> 2.8.59-1
 - 1537108 - Colorful icons for differet errata severities
 - Automatic commit of package [spacewalk-java] release [2.8.58-1].
