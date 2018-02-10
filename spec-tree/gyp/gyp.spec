@@ -9,6 +9,7 @@ Version:	0.1
 Release:	0.6%{?revision:.%{revision}svn}.3%{?dist}
 Summary:	Generate Your Projects
 
+Group:		Development/Tools
 License:	BSD
 URL:		http://code.google.com/p/gyp/
 # No released tarball avaiable. so the tarball was generated

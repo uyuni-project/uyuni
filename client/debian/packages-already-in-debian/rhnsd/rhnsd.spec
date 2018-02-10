@@ -1,5 +1,6 @@
 Summary: Red Hat Network query daemon
 License: GPLv2
+Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 URL:     https://github.com/spacewalkproject/spacewalk
 Name: rhnsd

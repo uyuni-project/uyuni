@@ -9,6 +9,7 @@ Version:        4.0.3
 Release:        3%{?dist}
 Summary:        The iconic font designed for Bootstrap
 
+Group:          Application/Internet
 License:        OFL 1.1 and MIT
 URL:            http://fontawesome.io/
 Source0:        http://fontawesome.io/assets/font-awesome-4.0.3.zip
@@ -23,6 +24,7 @@ color, drop shadow, and anything that can be done with the power of CSS.
 
 %package devel
 Summary:       Less and Scss files for Font Awesome development
+Group:         Application/Development
 
 %description devel
 Less and Scss files for Font Awesome development.

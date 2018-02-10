@@ -11,6 +11,7 @@ Version:        %{somajor}.%{sominor}
 Release:        4.%{git_date}git%{git_commit_hash}.3%{?dist}
 Summary:        HTTP request/response parser for C
 
+Group:          System Environment/Libraries
 License:        MIT
 URL:            https://github.com/joyent/http-parser
 # download from https://github.com/joyent/http-parser/tarball/%%{version}
@@ -32,6 +33,7 @@ connection).
 
 
 %package devel
+Group:          Development/Libraries
 Summary:        Development headers and libraries for http-parser
 Requires:       %{name} = %{version}-%{release}
 

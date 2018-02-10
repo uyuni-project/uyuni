@@ -10,6 +10,7 @@ Name: dnf-plugin-spacewalk
 Version: 2.8.5
 Release: 1%{?dist}
 License: GPLv2
+Group: System Environment/Base
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 URL:     https://github.com/spacewalkproject/spacewalk
 BuildArch: noarch

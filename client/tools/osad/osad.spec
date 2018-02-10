@@ -22,6 +22,7 @@
 
 Name: osad
 Summary: Open Source Architecture Daemon
+Group:   System Environment/Daemons
 License: GPLv2
 Version: 5.11.99
 Release: 1%{?dist}
@@ -114,6 +115,7 @@ Python 3 specific files for %{name}
 
 %package -n python2-osa-common
 Summary: OSA common files
+Group:    System Environment/Daemons
 Requires: jabberpy
 Conflicts: %{name} < %{version}-%{release}
 Conflicts: %{name} > %{version}-%{release}
@@ -125,6 +127,7 @@ Python 2 common files needed by osad and osa-dispatcher
 %if 0%{?build_py3}
 %package -n python3-osa-common
 Summary: OSA common files
+Group:    System Environment/Daemons
 Requires: python3-jabberpy
 Conflicts: %{name} < %{version}-%{release}
 Conflicts: %{name} > %{version}-%{release}
@@ -136,6 +139,7 @@ Python 3 common files needed by osad and osa-dispatcher
 
 %package -n osa-dispatcher
 Summary: OSA dispatcher
+Group:    System Environment/Daemons
 Requires: spacewalk-backend-server >= 1.2.32
 Requires: python2-osa-dispatcher = %{version}-%{release}
 Requires: lsof
@@ -190,6 +194,7 @@ Python 3 specific files for osa-dispatcher.
 %global modulename osa-dispatcher
 
 Summary: SELinux policy module supporting osa-dispatcher
+Group: System Environment/Base
 BuildRequires: checkpolicy, selinux-policy-devel, hardlink
 BuildRequires: policycoreutils >= %{POLICYCOREUTILSVER}
 Requires: spacewalk-selinux

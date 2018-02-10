@@ -8,6 +8,7 @@ Name:            oracle-rhnsat-selinux
 Version:         10.2.0.27
 Release:         1%{?dist}
 Summary:         SELinux policy module supporting Oracle
+Group:           System Environment/Base
 License:         GPLv2+
 Source0:         https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRequires:   checkpolicy, selinux-policy-devel, hardlink

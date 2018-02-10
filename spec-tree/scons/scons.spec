@@ -4,6 +4,7 @@ Name:		scons
 Version:	2.0.1
 Release:	1%{?posttag}.2%{?dist}
 Summary:	An Open Source software construction tool
+Group:		Development/Tools
 License:	MIT
 URL:		http://www.scons.org
 Source:		http://downloads.sourceforge.net/scons/scons-%{version}%{?posttag}.tar.gz

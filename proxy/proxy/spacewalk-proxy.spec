@@ -6,6 +6,7 @@ Name: spacewalk-proxy
 Summary: Spacewalk Proxy Server
 Version: 2.8.3
 Release: 1%{?dist}
+Group:   Applications/Internet
 License: GPLv2
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -39,6 +40,7 @@ This package is never built.
 
 %package management
 Summary: Packages required by the Spacewalk Management Proxy
+Group:   Applications/Internet
 %if 0%{?suse_version}
 Requires: http_proxy
 Requires: openslp-server
@@ -78,6 +80,7 @@ Provides: rhn-apache = 1:%{version}
 This package require all needed packages for Spacewalk Proxy Server.
 
 %package broker
+Group:   Applications/Internet
 Summary: The Broker component for the Spacewalk Proxy Server
 Requires: spacewalk-certs-tools
 Requires: spacewalk-proxy-package-manager
@@ -114,6 +117,7 @@ be sent to Squid and which should be sent directly to parent Spacewalk
 server.
 
 %package redirect
+Group:   Applications/Internet
 Summary: The SSL Redirect component for the Spacewalk Proxy Server
 Requires: spacewalk-proxy-broker = %{version}-%{release}
 Requires: httpd
@@ -130,6 +134,7 @@ and assures a fully secure SSL connection is established and maintained
 between an Spacewalk Proxy Server and parent Spacewalk server.
 
 %package common
+Group:   Applications/Internet
 Summary: Modules shared by Spacewalk Proxy components
 %if 0%{?suse_version}
 BuildRequires: apache2
@@ -158,6 +163,7 @@ Spacewalk Proxy components.
 
 %package package-manager
 Summary: Custom Channel Package Manager for the Spacewalk Proxy Server
+Group:   Applications/Internet
 Requires: spacewalk-backend >= 1.7.24
 Requires: rhnlib >= 2.5.56
 Requires: python

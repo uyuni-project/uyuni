@@ -3,6 +3,7 @@ Epoch:	 1
 Version: 2.8
 Release: 1%{?dist}
 Summary: Check ssl certs for impending expiration
+Group:   Applications/System
 License: GPLv2
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz

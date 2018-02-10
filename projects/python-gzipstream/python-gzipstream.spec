@@ -44,6 +44,7 @@ Obsoletes: python-gzipstream < %{version}-%{release}
 %if 0%{?build_py3}
 %package -n python3-gzipstream
 Summary:        %summary
+Group:          Development/Languages/Python
 BuildRequires:  python3-devel
 %if 0%{?suse_version}
 BuildRequires:  python-rpm-macros

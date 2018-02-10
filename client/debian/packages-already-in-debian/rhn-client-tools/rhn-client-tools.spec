@@ -1,5 +1,6 @@
 Summary: Support programs and libraries for Red Hat Network or Spacewalk
 License: GPLv2
+Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 URL:     https://github.com/spacewalkproject/spacewalk
 Name: rhn-client-tools
@@ -75,6 +76,7 @@ system to receive software updates from Red Hat Network or Spacewalk.
 
 %package -n rhn-check
 Summary: Check for RHN actions
+Group: System Environment/Base
 Requires: %{name} = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: zypp-plugin-spacewalk
@@ -88,6 +90,7 @@ scheduled actions.
 
 %package -n rhn-setup
 Summary: Configure and register an RHN/Spacewalk client
+Group: System Environment/Base
 Requires: usermode >= 1.36
 Requires: %{name} = %{version}-%{release}
 Requires: rhnsd
@@ -105,6 +108,7 @@ or Spacewalk server.
 
 %package -n rhn-setup-gnome
 Summary: A GUI interface for RHN/Spacewalk Registration
+Group: System Environment/Base
 Requires: %{name} = %{version}-%{release}
 Requires: rhn-setup = %{version}-%{release}
 Requires: pam >= 0.72
