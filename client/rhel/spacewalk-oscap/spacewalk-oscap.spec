@@ -6,16 +6,14 @@
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:		spacewalk-oscap
-Version:	2.8.4.1
+Version:	2.8.5
 Release:	1%{?dist}
 Summary:	OpenSCAP plug-in for rhn-check
 
-Group:		Applications/System
 License:	GPLv2
 URL:		https://github.com/spacewalkproject/spacewalk
 Source0:	https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
@@ -65,7 +63,6 @@ make -f Makefile.spacewalk-oscap
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make -f Makefile.spacewalk-oscap install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python_sitelib}
 %if 0%{?build_py3}
 make -f Makefile.spacewalk-oscap install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python3_sitelib}
@@ -80,7 +77,6 @@ make -f Makefile.spacewalk-oscap install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{pyt
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 
 %files
@@ -116,6 +112,11 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.5-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Mon Oct 23 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.4-1
 - spacewalk-oscap: add missing directories to filelist and enable py3 build for
   Tumbleweed

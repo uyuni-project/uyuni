@@ -4,15 +4,13 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.8.9.2
+Version:	2.8.11
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
-Group:		Applications/Internet
 License:	GPLv2 and GPLv3+
 URL:		https://github.com/spacewalkproject/spacewalk
 Source0:	https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
 %if 0%{?pylint_check}
@@ -89,7 +87,6 @@ Generic utilities that may be run against a Spacewalk server.
 make all %{?pod2man}
 
 %install
-rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{rhnroot}
 make install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir} %{?pod2man}
@@ -99,7 +96,6 @@ popd
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %check
 %if 0%{?pylint_check}
@@ -124,6 +120,14 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.11-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
+* Tue Feb 06 2018 Grant Gainey 2.8.10-1
+- 1537766 - Fix broken DELETE in postgresql
+
 * Tue Jan 23 2018 Grant Gainey 2.8.9-1
 - 1537766 - Add spacewalk-manage-snapshots, to give sw-admin a snapshot-mgt
   tool

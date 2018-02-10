@@ -11,13 +11,11 @@
 
 Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
-Group: Applications/Internet
 License: GPLv2
-Version: 2.8.3.3
+Version: 2.8.4
 Release: 1%{?dist}
 URL:          https://github.com/spacewalkproject/spacewalk/
 Source0:      https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 BuildRequires: perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}
@@ -33,7 +31,6 @@ but it does generate a number of sub-packages.
 
 %package -n spacewalk-html
 Summary: HTML document files for Spacewalk
-Group: Applications/Internet
 Requires: httpd
 Requires: spacewalk-branding
 Obsoletes: rhn-help < 5.3.0
@@ -50,7 +47,6 @@ This package contains the HTML files for the Spacewalk web site.
 
 
 %package -n spacewalk-base
-Group: Applications/Internet
 Summary: Programs which need to be installed for the Spacewalk Web base classes
 Provides: spacewalk(spacewalk-base) = %{version}-%{release}
 %if 0%{?suse_version}
@@ -74,7 +70,6 @@ database.  This includes RHN::* and RHN::DB::*.
 
 %package -n spacewalk-base-minimal
 Summary: Core of Perl modules for %{name} package
-Group: Applications/Internet
 Provides: spacewalk(spacewalk-base-minimal) = %{version}-%{release}
 Obsoletes: rhn-base-minimal < 5.3.0
 Provides: rhn-base-minimal = 5.3.0
@@ -88,7 +83,6 @@ sessions and exceptions.
 
 %package -n spacewalk-base-minimal-config
 Summary: Configuration for %{name} package
-Group: Applications/Internet
 Provides: spacewalk(spacewalk-base-minimal-config) = %{version}-%{release}
 Requires: httpd
 Requires: spacewalk-base-minimal = %{version}-%{release}
@@ -99,7 +93,6 @@ Configuration file for spacewalk-base-minimal package.
 
 %package -n spacewalk-dobby
 Summary: Perl modules and scripts to administer a PostgreSQL database
-Group: Applications/Internet
 Requires: perl-Filesys-Df
 Obsoletes: rhn-dobby < 5.3.0
 Provides: rhn-dobby = 5.3.0
@@ -124,7 +117,6 @@ popd
 %endif
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 make -C html install PREFIX=$RPM_BUILD_ROOT
 
@@ -144,7 +136,6 @@ install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_RO
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/susemanager-database %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %files -n spacewalk-base
 %defattr(644,root,root,755)
@@ -186,6 +177,11 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.4-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Mon Oct 16 2017 Tomas Kasparek <tkasparek@redhat.com> 2.8.3-1
 - 1360841 - extend dobby logging to see whether action completed or not
 

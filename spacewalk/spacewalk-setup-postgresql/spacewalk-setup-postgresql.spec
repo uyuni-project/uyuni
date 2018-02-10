@@ -1,12 +1,10 @@
 Name:           spacewalk-setup-postgresql
-Version:        2.8.1.1
+Version:        2.8.2
 Release:        1%{?dist}
 Summary:        Tools to setup embedded PostgreSQL database for Spacewalk
-Group:          Applications/System
 License:        GPLv2
 URL:            https://github.com/spacewalkproject/spacewalk
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 Requires:       postgresql-server > 8.4
 %if 0%{?rhel} == 5
@@ -50,7 +48,6 @@ rm -rf %{buildroot}
 
 
 %files
-%defattr(-,root,root,-)
 %doc LICENSE
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/setup
@@ -67,6 +64,11 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
+- removed %%%%defattr from specfile
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
 - purged changelog entries for Spacewalk 2.0 and older
 - Bumping package versions for 2.8.

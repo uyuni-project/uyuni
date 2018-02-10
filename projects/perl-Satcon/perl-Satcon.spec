@@ -2,12 +2,10 @@
 
 Name:           perl-Satcon
 Summary:        Framework for configuration files
-Version:        2.8.1.1
+Version:        2.8.2
 Release:        1%{?dist}
 License:        GPLv2
-Group:          Applications/System
 URL:            https://github.com/spacewalkproject/spacewalk
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -50,7 +48,6 @@ This package include Satcon perl module and supporting applications.
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
 
 make pure_install PERL_INSTALL_ROOT=$RPM_BUILD_ROOT
 
@@ -63,7 +60,6 @@ find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
 make test
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %doc README LICENSE
@@ -71,6 +67,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/*
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.2-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Wed Sep 06 2017 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
 - purged changelog entries for Spacewalk 2.0 and older
 - Bumping package versions for 2.8.

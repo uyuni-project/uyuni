@@ -53,6 +53,8 @@ CREATE TABLE rhnErrataTmp
     last_modified     timestamp with local time zone
                           DEFAULT (current_timestamp) NOT NULL,
     severity_id       NUMBER
+                          CONSTRAINT rhn_erratatmp_sevid_fk
+                              REFERENCES rhnErrataSeverity (id)
 )
 ENABLE ROW MOVEMENT
 ;

@@ -4,13 +4,11 @@
 
 Name: spacewalk-proxy
 Summary: Spacewalk Proxy Server
-Version: 2.8.2.1
+Version: 2.8.3
 Release: 1%{?dist}
-Group:   Applications/Internet
 License: GPLv2
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
 BuildArch: noarch
 Requires: httpd
@@ -41,7 +39,6 @@ This package is never built.
 
 %package management
 Summary: Packages required by the Spacewalk Management Proxy
-Group:   Applications/Internet
 %if 0%{?suse_version}
 Requires: http_proxy
 Requires: openslp-server
@@ -81,7 +78,6 @@ Provides: rhn-apache = 1:%{version}
 This package require all needed packages for Spacewalk Proxy Server.
 
 %package broker
-Group:   Applications/Internet
 Summary: The Broker component for the Spacewalk Proxy Server
 Requires: spacewalk-certs-tools
 Requires: spacewalk-proxy-package-manager
@@ -118,7 +114,6 @@ be sent to Squid and which should be sent directly to parent Spacewalk
 server.
 
 %package redirect
-Group:   Applications/Internet
 Summary: The SSL Redirect component for the Spacewalk Proxy Server
 Requires: spacewalk-proxy-broker = %{version}-%{release}
 Requires: httpd
@@ -135,7 +130,6 @@ and assures a fully secure SSL connection is established and maintained
 between an Spacewalk Proxy Server and parent Spacewalk server.
 
 %package common
-Group:   Applications/Internet
 Summary: Modules shared by Spacewalk Proxy components
 %if 0%{?suse_version}
 BuildRequires: apache2
@@ -164,7 +158,6 @@ Spacewalk Proxy components.
 
 %package package-manager
 Summary: Custom Channel Package Manager for the Spacewalk Proxy Server
-Group:   Applications/Internet
 Requires: spacewalk-backend >= 1.7.24
 Requires: rhnlib >= 2.5.56
 Requires: python
@@ -211,7 +204,6 @@ A ZeroMQ Proxy for Salt Minions
 make -f Makefile.proxy
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make -f Makefile.proxy install PREFIX=$RPM_BUILD_ROOT
 install -d -m 750 $RPM_BUILD_ROOT/%{_var}/cache/rhn/proxy-auth
 mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
@@ -245,7 +237,6 @@ install -m 0755 mgr-proxy-ssh-force-cmd $RPM_BUILD_ROOT/%{_sbindir}/mgr-proxy-ss
 install -d -m 0755 $RPM_BUILD_ROOT/%{_var}/lib/spacewalk
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %check
 %if 0%{?pylint_check}
@@ -479,6 +470,11 @@ fi
 
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Mon Nov 13 2017 Jan Dobes 2.8.2-1
 - proxy isn't Python 3 yet, still require Python 2 rhnpush
 - removing useless condition

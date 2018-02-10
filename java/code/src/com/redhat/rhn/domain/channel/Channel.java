@@ -75,6 +75,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private ChannelProduct product;
     private ProductName productName;
     private Comps comps;
+    private Modules modules;
     private String summary;
     private Set<Errata> erratas = new HashSet<Errata>();
     private Set<Package> packages = new HashSet<Package>();
@@ -209,6 +210,20 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public Comps getComps() {
         return comps;
+    }
+
+    /**
+     * @param modulesIn The Modules to set.
+     */
+    public void setModules(Modules modulesIn) {
+        this.modules = modulesIn;
+    }
+
+    /**
+     * @return Returns the Modules.
+     */
+    public Modules getModules() {
+        return modules;
     }
 
     /**

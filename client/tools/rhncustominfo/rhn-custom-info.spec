@@ -4,9 +4,8 @@
 
 Name: rhn-custom-info
 Summary: Set and list custom values for Spacewalk-enabled machines
-Version: 5.4.41.1
+Version: 5.4.42
 Release: 1%{?dist}
-Group: Applications/System
 License: GPLv2
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 URL:     https://github.com/spacewalkproject/spacewalk
@@ -48,7 +47,6 @@ make -f Makefile.rhn-custom-info all
 %endif
 
 %install
-rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT
 %global pypath %{?build_py3:%{python3_sitelib}}%{!?build_py3:%{python_sitelib}}
 make -f Makefile.rhn-custom-info install PREFIX=$RPM_BUILD_ROOT ROOT=%{pypath}
@@ -59,7 +57,6 @@ ln -s rhn-custom-info $RPM_BUILD_ROOT/%{_bindir}/mgr-custom-info
 %endif
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
@@ -69,6 +66,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/rhn-custom-info.*
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 5.4.42-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+
 * Tue Oct 10 2017 Michael Mraka <michael.mraka@redhat.com> 5.4.41-1
 - extra path is not needed anymore
 

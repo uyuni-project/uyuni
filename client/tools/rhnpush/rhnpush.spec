@@ -10,14 +10,12 @@
 
 Name:          rhnpush
 Summary:       Package uploader for the Spacewalk
-Group:         Applications/System
 License:       GPLv2
 URL:           https://github.com/spacewalkproject/spacewalk
-Version:       5.5.108.1
+Version:       5.5.109
 Release:       1%{?dist}
 Source0:       https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
-BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
@@ -76,7 +74,6 @@ Python 3 specific files for rhnpush.
 make -f Makefile.rhnpush all
 
 %install
-rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{python_sitelib}
 make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{python_sitelib} \
     MANDIR=%{_mandir} PYTHON_VERSION=%{python_version}
@@ -95,7 +92,6 @@ make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} 
 ln -s rhnpush%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhnpush
 
 %clean
-rm -rf $RPM_BUILD_ROOT
 
 %check
 %if 0%{?pylint_check}
@@ -129,6 +125,11 @@ spacewalk-pylint $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{python_sitelib}
 %endif
 
 %changelog
+* Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 5.5.109-1
+- remove install/clean section initial cleanup
+- removed Group from specfile
+- removed BuildRoot from specfiles
+
 * Mon Oct 09 2017 Michael Mraka <michael.mraka@redhat.com> 5.5.108-1
 - run pylint on all Fedoras
 - simplified Makefile
