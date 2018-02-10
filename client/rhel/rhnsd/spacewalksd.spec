@@ -5,7 +5,7 @@
 %define rhnsd		 spacewalksd
 #
 Name: spacewalksd
-Version: 5.0.33.2
+Version: 5.0.35
 Release: 1%{?dist}
 Summary: Spacewalk query daemon
 License: GPL-2.0
@@ -60,7 +60,6 @@ your machine, and runs any actions.
 make -f Makefile.rhnsd %{?_smp_mflags} CFLAGS="-pie -fPIE -Wl,-z,relro,-z,now %{optflags}"
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make -f Makefile.rhnsd install VERSION=%{version}-%{release} PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir} INIT_DIR=$RPM_BUILD_ROOT/%{_initrddir}
 
 %if 0%{?suse_version} && 0%{?suse_version} < 1210
@@ -176,7 +175,6 @@ fi
 %endif
 
 %clean
-rm -fr $RPM_BUILD_ROOT
 
 
 %files -f rhnsd.lang
