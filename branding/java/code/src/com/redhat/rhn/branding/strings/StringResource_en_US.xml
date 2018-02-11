@@ -1877,6 +1877,10 @@ tree will not be usable for autoinstalling.
         <source>Successfully deleted {0} patches.</source>
       </trans-unit>
 
+      <trans-unit id="channels.subscribe">
+        <source>Subscribe Software Channels</source>
+      </trans-unit>
+
       <!-- Service Pack Migrations -->
       <trans-unit id="distupgrade.upgrade">
         <source>Service Pack Migration</source>
