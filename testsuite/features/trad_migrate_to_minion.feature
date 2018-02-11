@@ -88,7 +88,6 @@ Feature: Migrate a traditional client into a Salt minion
     When I click on "Delete Profile"
     Then I should see a "has been deleted" text
     When I enable SUSE Manager tools repository on "sle-migrated-minion"
-    And I disable repository "susemanager:test-channel-x86_64" on this "sle-migrated-minion"
     And I install package "spacewalk-client-setup spacewalk-oscap rhncfg-actions" on this "sle-migrated-minion"
     And I remove package "salt-minion" from this "sle-migrated-minion"
     And I register using "1-SUSE-DEV-x86_64" key
