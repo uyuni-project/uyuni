@@ -11,7 +11,7 @@ Feature: Management of minion keys
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
-    Then I should see a "has been deleted" text
+    Then I wait until I see "has been deleted" text
 
   Scenario: Completeness of the onboarding page
     Given I am authorized as "testing" with password "testing"

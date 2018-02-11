@@ -15,7 +15,7 @@ Feature: Be able to bootstrap a SSH-managed CentOS minion and do some basic oper
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    Then I should see a "has been deleted" text
+    Then I wait until I see "has been deleted" text
     And I wait until salt-key "mincentos" is deleted
 
 @centosminion
