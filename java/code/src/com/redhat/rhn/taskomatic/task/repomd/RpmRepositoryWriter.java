@@ -341,17 +341,17 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             else if (metadataType.equals(MODULES)) {
                 method = channel.getClass().getMethod("getModules");
             }
-            else {
-                return null;
-            }
         }
         catch (NoSuchMethodException e) {
+            return null;
+        }
+        if (method == null) {
             return null;
         }
 
         try {
             RepoMetadata rmd = (RepoMetadata)method.invoke(channel);
-            if (rmd.getRelativeFilename() != null) {
+            if (rmd != null && rmd.getRelativeFilename() != null) {
                 return rmd.getRelativeFilename();
             }
         }
