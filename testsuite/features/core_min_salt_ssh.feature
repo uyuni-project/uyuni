@@ -4,11 +4,6 @@
 Feature: Be able to bootstrap a Salt host managed via salt-ssh
 
 @sshminion
-  Scenario: No Salt package nor service are running on minion
-    Given no Salt packages are installed on "ssh-minion"
-    Then "ssh-minion" should not be registered
-
-@sshminion
   Scenario: Bootstrap a SLES system managed via salt-ssh
     Given I am authorized
     And I go to the bootstrapping page

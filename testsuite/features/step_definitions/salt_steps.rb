@@ -534,19 +534,18 @@ When(/^I click save$/) do
   find('button#save').click
 end
 
-And(/^I wait until salt\-key "(.*?)" is deleted$/) do |key|
+# salt-ssh steps
+When(/^I wait until Salt key "(.*?)" is deleted$/) do |key|
   cmd = "salt-key -L | grep '#{key}' "
   $server.run_until_fail(cmd)
 end
 
-# salt ssh steps
-SALT_PACKAGES = 'salt salt-minion'.freeze
-Given(/^no Salt packages are installed on "(.*?)"$/) do |host|
+When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
   if ['sle-minion', 'ssh-minion', 'sle-client', 'sle-migrated-minion'].include?(host)
-    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y #{SALT_PACKAGES}", false)
+    target.run("test -e /usr/bin/zypper && zypper --non-interactive remove -y salt salt-minion", false)
   elsif ['ceos-minion'].include?(host)
-    target.run("test -e /usr/bin/yum && yum -y remove #{SALT_PACKAGES}", false)
+    target.run("test -e /usr/bin/yum && yum -y remove salt salt-minion", false)
   end
 end
 

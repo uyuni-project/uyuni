@@ -5,18 +5,22 @@
 #  1) bootstrap a new CentOS minion via salt-ssh
 #  2) subscribe it to a base channel for testing
 
-Feature: Be able to bootstrap a SSH-managed CentOS minion and do some basic operations on it
+Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on it
 
 @centosminion
   Scenario: Delete the CentOS minion
-    Given no Salt packages are installed on "ceos-minion"
     When I am on the Systems overview page of this "ceos-minion"
-    And I stop salt-minion on "ceos-minion"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     Then I should see a "has been deleted" text
-    And I wait until salt-key "mincentos" is deleted
+    And "ceos-minion" should not be registered
+
+@centosminion
+  Scenario: Don't use Salt for a SSH-managed CentOS minion
+    When I stop salt-minion on "ceos-minion"
+    And I uninstall Salt packages from "ceos-minion"
+    And I wait until Salt key "mincentos" is deleted
 
 @centosminion
   Scenario: Bootstrap a SSH-managed CentOS minion
