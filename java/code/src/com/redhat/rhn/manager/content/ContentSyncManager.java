@@ -385,16 +385,12 @@ public class ContentSyncManager {
      * Returns all available products in user-friendly format.
      * @param availableChannels list of available channels
      * @return list of all available products
-     * @throws ContentSyncException in case of an error
      */
-    public Collection<MgrSyncProductDto> listProducts(List<XMLChannel> availableChannels)
-        throws ContentSyncException {
+    public Collection<MgrSyncProductDto> listProducts(List<XMLChannel> availableChannels) {
         // get all products in the DB
-        Collection<XMLProduct> dbProducts = new HashSet<XMLProduct>();
-        for (SUSEProduct product : SUSEProductFactory.findAllSUSEProducts()) {
-            dbProducts.add(new XMLProduct(product.getFriendlyName(), product
-                    .getProductId(), product.getVersion()));
-        }
+        List<XMLProduct> dbProducts = SUSEProductFactory.findAllSUSEProducts().stream().map(
+            p -> new XMLProduct(p.getFriendlyName(), p.getProductId(), p.getVersion())
+        ).collect(Collectors.toList());
 
         // get all the channels we have an entitlement for
         Map<XMLProduct, Set<XMLChannel>> productToChannelMap =
