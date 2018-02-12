@@ -3,7 +3,7 @@ export type Cancelable = {
   cancel: (any) => void
 };
 
-const cancelable = (promise, onCancel) => {
+function cancelable(promise: Promise<any>, onCancel: (Error|void) => void): Cancelable {
     var rejectFn;
     var isCanceled = false;
 
@@ -95,7 +95,7 @@ function capitalize(str: string): string {
     return str.replace(new RegExp("_|-", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
-function generatePassword() {
+function generatePassword(): string {
     const length = Math.floor(Math.random() * 10) + 15;
     const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:-_";
     let password = "";
