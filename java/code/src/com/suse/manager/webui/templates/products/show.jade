@@ -1,0 +1,8 @@
+include ../common.jade
+#products
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+
++userPreferences
+script(src='/javascript/manager/products.bundle.js', type='text/javascript')
