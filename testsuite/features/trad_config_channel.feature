@@ -208,7 +208,8 @@ Feature: Configuration management of traditional clients
     And I should see a "Update Configuration File" button
 
   Scenario: Change one local file and compare multiple files
-    # bsc#910243, bsc#910247
+    # bsc#910243 - configfile.compare: Filelist in Eventhistory is not sorted alphabetically
+    # bsc#910247 - configfile.compare task shows different result in Web-UI than 'rhncfg-client verify -o'
     When I am on the Systems overview page of this "sle-client"
     And I follow "Configuration" in the content area
     And I store "MGR_PROXY=yes" into file "/etc/mgr-test-file.cnf" on "sle-client"
