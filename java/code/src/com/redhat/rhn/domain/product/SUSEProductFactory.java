@@ -34,7 +34,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -251,10 +253,15 @@ public class SUSEProductFactory extends HibernateFactory {
         return (SUSEProduct) c.uniqueResult();
     }
 
-    public static List<SUSEProductRecommend> allRecommends() {
+    /**
+     * Return all {@link SUSEProductExtension} which are recommended
+     * @return SUSEProductExtensions which are recommended
+     */
+    public static List<SUSEProductExtension> allRecommendedExtensions() {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SUSEProductRecommend> criteria = builder.createQuery(SUSEProductRecommend.class);
-        Root<SUSEProductRecommend> root = criteria.from(SUSEProductRecommend.class);
+        CriteriaQuery<SUSEProductExtension> criteria = builder.createQuery(SUSEProductExtension.class);
+        Root<SUSEProductExtension> root = criteria.from(SUSEProductExtension.class);
+        criteria.where(builder.equal(root.get("recommended"), true));
         return getSession().createQuery(criteria).getResultList();
     }
 
@@ -328,6 +335,18 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Find all {@link SUSEProductExtension} of a product.
+     * @param base product to find extensions of
+     * @return list of product extension of the given product
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProduct> findAllSUSEProductExtensionsOf(SUSEProduct base) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("baseId", base.getId());
+        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllSUSEProductExtensionOf", params);
+    }
+
+    /**
      * Find all {@link SUSEProduct}.
      * @return list of all known products
      */
@@ -368,26 +387,5 @@ public class SUSEProductFactory extends HibernateFactory {
     @Override
     protected Logger getLogger() {
         return log;
-    }
-
-    public static void updateRecommendedExtensions(SCCProduct baseProduct, List<Integer> recommendedExtensions) {
-        List<SUSEProductRecommend> newRecommendedExts = new LinkedList<>();
-        SUSEProduct bprd = SUSEProductFactory.lookupByProductId(baseProduct.getId());
-        for (Integer extid : recommendedExtensions) {
-            SUSEProduct ext = SUSEProductFactory.lookupByProductId(extid);
-            newRecommendedExts.add(new SUSEProductRecommend(bprd, ext));
-        }
-
-        List<SUSEProductRecommend> existingRecommendedProducts = findRecommendedProducts(bprd);
-        for (SUSEProductRecommend recommended : existingRecommendedProducts) {
-            if (!newRecommendedExts.contains(recommended)) {
-                SUSEProductFactory.remove(recommended);
-            }
-        }
-        for (SUSEProductRecommend recommended : newRecommendedExts) {
-            if (!existingRecommendedProducts.contains(recommended)) {
-                SUSEProductFactory.save(recommended);
-            }
-        }
     }
 }
