@@ -45,7 +45,7 @@ Feature: Weak dependencies in the package page and in the metadata on the client
     And I should see a "apache2" text
 
   Scenario: Show Enhances information
-    # bnc#846436
+    # bsc#846436 - extra packages installed when performing a patch update
     When I follow "Test-Channel-x86_64"
     And I follow "Packages"
     And I follow "orion-dummy-1.1-1.1.x86_64"

@@ -11,7 +11,7 @@ Feature: Listing, adding and removing channels using the spacewalk-channel comma
     And I should get "test-channel-x86_64-child-channel"
 
   Scenario: Add an invalid child channel
-    # bnc#875958
+    # bsc#875958 - spacewalk-channel error code is 0 although channel adding failed
     Then spacewalk-channel fails with "--add -c test_child_channel -u admin -p admin"
 
   Scenario: Add a valid child channel
