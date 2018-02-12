@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -347,21 +348,13 @@ public class SUSEProductTestUtils extends HibernateFactory {
         downHAGEO.add(productHAGEO12);
         productHAGEO122.setDowngrades(downHAGEO);
 
-        productSLES12.setExtensionFor(Collections.singleton(productHA12));
-        productSLES121.setExtensionFor(Collections.singleton(productHA121));
-        productSLES122.setExtensionFor(Collections.singleton(productHA122));
+        SUSEProductExtension e1 = new SUSEProductExtension(productSLES12, productHA12, productSLES12, false);
+        SUSEProductExtension e2 = new SUSEProductExtension(productSLES121, productHA121, productSLES121, false);
+        SUSEProductExtension e3 = new SUSEProductExtension(productSLES122, productHA122, productSLES122, false);
 
-        productHA12.setExtensionFor(Collections.singleton(productHAGEO12));
-        productHA121.setExtensionFor(Collections.singleton(productHAGEO121));
-        productHA122.setExtensionFor(Collections.singleton(productHAGEO122));
-
-        productHA12.setExtensionOf(Collections.singleton(productSLES12));
-        productHA121.setExtensionOf(Collections.singleton(productSLES121));
-        productHA122.setExtensionOf(Collections.singleton(productSLES122));
-
-        productHAGEO12.setExtensionOf(Collections.singleton(productHA12));
-        productHAGEO121.setExtensionOf(Collections.singleton(productHA121));
-        productHAGEO122.setExtensionOf(Collections.singleton(productHA122));
+        SUSEProductExtension e4 = new SUSEProductExtension(productHA12, productHAGEO12, productSLES12, false);
+        SUSEProductExtension e5 = new SUSEProductExtension(productHA121, productHAGEO121, productSLES121, false);
+        SUSEProductExtension e6 = new SUSEProductExtension(productHA122, productHAGEO122, productSLES122, false);
 
         TestUtils.saveAndReload(productHAGEO122);
         TestUtils.saveAndReload(productHAGEO121);
@@ -372,6 +365,13 @@ public class SUSEProductTestUtils extends HibernateFactory {
         TestUtils.saveAndReload(productSLES121);
         TestUtils.saveAndReload(productHA12);
         TestUtils.saveAndReload(productSLES12);
+
+        TestUtils.saveAndReload(e1);
+        TestUtils.saveAndReload(e2);
+        TestUtils.saveAndReload(e3);
+        TestUtils.saveAndReload(e4);
+        TestUtils.saveAndReload(e5);
+        TestUtils.saveAndReload(e6);
 
         Channel bcSLES12 = createBaseChannelForBaseProduct(productSLES12, admin);
         createChildChannelsForProduct(productHA12, bcSLES12, admin);

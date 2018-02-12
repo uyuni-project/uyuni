@@ -43,6 +43,7 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -280,17 +281,20 @@ public class DistUpgradeManager extends BaseManager {
                 //        migrations.delete(combination)
                 //        break
                 //end
-                HashSet<SUSEProduct> intersection = new HashSet<>(product.getExtensionOf());
+                SUSEProductFactory.findAllSUSEProductExtensionsOf(product);
+                HashSet<SUSEProduct> intersection = new HashSet<>(
+                        SUSEProductFactory.findAllSUSEProductExtensionsOf(product));
                 intersection.retainAll(combination.getAddonProducts());
                 if (intersection.isEmpty() &&
-                        !product.getExtensionOf().contains(combination.getBaseProduct())) {
+                        !SUSEProductFactory.findAllSUSEProductExtensionsOf(product).contains(
+                                combination.getBaseProduct())) {
                     result.remove(combination);
                     if (logger.isDebugEnabled()) {
                         logger.debug("Remove incompatible target: " +
                                 combination.toString());
                         logger.debug("Base product of '" + product.getFriendlyName() +
                                 "': " + combination.getBaseProduct().getFriendlyName());
-                        product.getExtensionOf().forEach(base ->
+                        SUSEProductFactory.findAllSUSEProductExtensionsOf(product).forEach(base ->
                             logger.debug("Possible bases: " + base.getFriendlyName()));
                         logger.debug("--------------------------");
                     }
