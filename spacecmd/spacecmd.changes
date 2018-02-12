@@ -1,3 +1,5 @@
+- Configure gpg_flag via spacecmd creating a channel (bsc#1080290)
+
 -------------------------------------------------------------------
 Wed Jan 10 16:02:37 CET 2018 - jgonzalez@suse.com
 
