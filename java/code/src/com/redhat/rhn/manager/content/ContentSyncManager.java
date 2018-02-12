@@ -480,10 +480,10 @@ public class ContentSyncManager {
         List<MgrSyncProductDto> extensions = partition.get(false);
 
         //TODO: this is not optimal yet
-        Map<Long, List<Long>> recommendedForBase = SUSEProductFactory.allRecommends().stream().collect(
+        Map<Long, List<Long>> recommendedForBase = SUSEProductFactory.allRecommendedExtensions().stream().collect(
                 Collectors.groupingBy(
-                        s -> s.getRecommendedProduct().getProductId(),
-                        Collectors.mapping(s -> s.getBaseProduct().getProductId(), Collectors.toList())
+                        s -> s.getExtensionProduct().getProductId(),
+                        Collectors.mapping(s -> s.getRootProduct().getProductId(), Collectors.toList())
                 )
         );
 
@@ -910,17 +910,14 @@ public class ContentSyncManager {
         //FIXME: not used, we now refresh the cache in getSubscriptions(c). DELETE?
     }
 
-    /**
-     * Creates or updates entries in the SUSEProducts database table with a given list of
-     * {@link SCCProduct} objects.
-     *
-     * @param products list of products
-     * @throws ContentSyncException in case of an error
+    /*
+     * Walk the tree
      */
-    public void updateSUSEProducts(Collection<SCCProduct> products)
-            throws ContentSyncException {
-        Collection<SUSEProduct> processed = new LinkedList<SUSEProduct>();
-        for (SCCProduct p : products) {
+    private void updateSUSEProduct(SCCProduct p, SCCProduct root, Map<Integer, SUSEProduct> processed,
+            Collection<SUSEProductExtension> latestProductExtensions) {
+
+        SUSEProduct product = null;
+        if (! processed.containsKey(p.getId())) {
             // Create the channel family if it is not available
             String productClass = p.getProductClass();
             ChannelFamily cf = null;
@@ -929,7 +926,7 @@ public class ContentSyncManager {
             }
 
             // Update this product in the database if it is there
-            SUSEProduct product = SUSEProductFactory.findSUSEProduct(p.getIdentifier(),
+            product = SUSEProductFactory.findSUSEProduct(p.getIdentifier(),
                     p.getVersion(), p.getReleaseType(), p.getArch(), false);
             if (product != null) {
                 // it is not guaranteed for this ID to be stable in time, as it
@@ -946,10 +943,10 @@ public class ContentSyncManager {
                 product.setName(p.getIdentifier().toLowerCase());
                 // Version rarely can be null.
                 product.setVersion(p.getVersion() != null ?
-                                   p.getVersion().toLowerCase() : null);
+                        p.getVersion().toLowerCase() : null);
                 // Release Type often can be null.
                 product.setRelease(p.getReleaseType() != null ?
-                                   p.getReleaseType().toLowerCase() : null);
+                        p.getReleaseType().toLowerCase() : null);
                 product.setFriendlyName(p.getFriendlyName());
                 product.setFree(p.isFree());
 
@@ -958,19 +955,52 @@ public class ContentSyncManager {
                     // unsupported architecture, skip the product
                     log.error("Unknown architecture '" + p.getArch() +
                             "'. This may be caused by a missing database migration");
-                    continue;
+                    return;
                 }
                 product.setArch(pArch);
             }
             product.setBase(p.isBaseProduct());
             product.setChannelFamily(cf);
             SUSEProductFactory.save(product);
-            processed.add(product);
+            processed.put(p.getId(), product);
+        }
+        else {
+            product = SUSEProductFactory.lookupByProductId(p.getId());
         }
 
-        SUSEProductFactory.removeAllExcept(processed);
+        if (p.getExtensions() == null) {
+            return;
+        }
+        for (SCCProduct e : p.getExtensions()) {
+            SUSEProduct suseExtPrd = SUSEProductFactory.lookupByProductId(e.getId());
+            SUSEProduct suseRootPrd = SUSEProductFactory.lookupByProductId(root.getId());
+            if (product != null && suseExtPrd != null && suseRootPrd != null) {
+                latestProductExtensions.add(
+                        new SUSEProductExtension(product, suseExtPrd, suseRootPrd, p.isRecommended()));
+            }
+            updateSUSEProduct(e, root, processed, latestProductExtensions);
+        }
+    }
+    /**
+     * Creates or updates entries in the SUSEProducts database table with a given list of
+     * {@link SCCProduct} objects.
+     *
+     * @param products list of products
+     * @throws ContentSyncException in case of an error
+     */
+    public void updateSUSEProducts(Collection<SCCProduct> products)
+            throws ContentSyncException {
+        Map<Integer, SUSEProduct> processed = new HashMap<>();
+        Collection<SUSEProductExtension> latestProductExtensions =
+                new LinkedList<SUSEProductExtension>();
+        for (SCCProduct p : products) {
+            updateSUSEProduct(p, p, processed, latestProductExtensions);
+        }
+
+        SUSEProductFactory.removeAllExcept(processed.values());
+        // Sync the database list of product extensions with the updated one
+        SUSEProductFactory.mergeAllProductExtension(latestProductExtensions);
         updateUpgradePaths(products);
-        updateProductExtensions(products);
     }
 
     /**
@@ -1122,64 +1152,6 @@ public class ContentSyncManager {
 
         // Sync the database list of upgrade paths with the updated one
         SUSEProductFactory.mergeAllUpgradePaths(latestUpgradePaths);
-    }
-
-    /**
-     * Recreate contents of the suseProductExtension table with extensions
-     * of products from SCC
-     *
-     * @param products Collection of SCC Products
-     * @throws ContentSyncException in case of an error
-     */
-    public void updateProductExtensions(Collection<SCCProduct> products)
-            throws ContentSyncException {
-        Collection<SUSEProductExtension> latestProductExtensions =
-                new LinkedList<SUSEProductExtension>();
-
-        Set<String> sourceTargetDone = new HashSet<>();
-        // Iterate through products from SCC and check extensions
-        for (SCCProduct baseProduct : products) {
-            if (baseProduct.getExtensions() == null) {
-                continue;
-            }
-            if (baseProduct.getProductType().equals("base")) {
-                List<Integer> recommendedExtensions = new LinkedList<>();
-                findRecommendedExtensions(baseProduct, recommendedExtensions);
-                SUSEProductFactory.updateRecommendedExtensions(baseProduct, recommendedExtensions);
-            }
-            for (SCCProduct extensionProduct : baseProduct.getExtensions()) {
-                String ident = baseProduct.hashCode() + "-" + extensionProduct.hashCode();
-                if (!sourceTargetDone.contains(ident)) {
-                    // we do not check for extensions of targetProduct.
-                    // SCC repeat them in the output as a toplevel product.
-                    sourceTargetDone.add(ident);
-                    SUSEProduct suseBasePrd =
-                            SUSEProductFactory.lookupByProductId(baseProduct.getId());
-                    SUSEProduct suseExtPrd =
-                            SUSEProductFactory.lookupByProductId(extensionProduct.getId());
-                    if (suseBasePrd != null && suseExtPrd != null) {
-                        latestProductExtensions.add(
-                                new SUSEProductExtension(suseBasePrd, suseExtPrd));
-                    }
-                }
-            }
-        }
-
-        // Sync the database list of product extensions with the updated one
-        SUSEProductFactory.mergeAllProductExtension(latestProductExtensions);
-
-    }
-
-    private void findRecommendedExtensions(SCCProduct prd, List<Integer> recommendedExtensions) {
-        if (prd.getExtensions() == null) {
-            return;
-        }
-        for (SCCProduct extensionProduct : prd.getExtensions()) {
-            if (extensionProduct.isRecommended()) {
-                recommendedExtensions.add(extensionProduct.getId());
-            }
-            findRecommendedExtensions(extensionProduct, recommendedExtensions);
-        }
     }
 
     /**

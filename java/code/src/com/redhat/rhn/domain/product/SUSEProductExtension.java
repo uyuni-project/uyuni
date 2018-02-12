@@ -28,6 +28,8 @@ public class SUSEProductExtension extends BaseDomainHelper implements Serializab
 
     private SUSEProduct baseProduct;
     private SUSEProduct extensionProduct;
+    private SUSEProduct rootProduct;
+    private boolean recommended = false;
 
     /**
      * Default constructor.
@@ -39,10 +41,14 @@ public class SUSEProductExtension extends BaseDomainHelper implements Serializab
      * Constructor taking two {@link SUSEProduct}s.
      * @param base original product
      * @param extension target product
+     * @param root root product
+     * @param recommendedIn recommended
      */
-    public SUSEProductExtension(SUSEProduct base, SUSEProduct extension) {
+    public SUSEProductExtension(SUSEProduct base, SUSEProduct extension, SUSEProduct root, boolean recommendedIn) {
         setBaseProduct(base);
         setExtensionProduct(extension);
+        setRootProduct(root);
+        setRecommended(recommendedIn);
     }
 
     /**
@@ -74,6 +80,34 @@ public class SUSEProductExtension extends BaseDomainHelper implements Serializab
     }
 
     /**
+     * @return Returns the rootProduct.
+     */
+    public SUSEProduct getRootProduct() {
+        return rootProduct;
+    }
+
+    /**
+     * @param rootProductIn The rootProduct to set.
+     */
+    public void setRootProduct(SUSEProduct rootProductIn) {
+        this.rootProduct = rootProductIn;
+    }
+
+    /**
+     * @return Returns the recommended.
+     */
+    public boolean isRecommended() {
+        return recommended;
+    }
+
+    /**
+     * @param recommendedIn The recommended to set.
+     */
+    public void setRecommended(boolean recommendedIn) {
+        this.recommended = recommendedIn;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -81,6 +115,7 @@ public class SUSEProductExtension extends BaseDomainHelper implements Serializab
         return new HashCodeBuilder()
                 .append(getBaseProduct())
                 .append(getExtensionProduct())
+                .append(getRootProduct())
                 .toHashCode();
     }
 
@@ -97,6 +132,7 @@ public class SUSEProductExtension extends BaseDomainHelper implements Serializab
         return new EqualsBuilder()
             .append(getBaseProduct(), otherSUSEProductExtension.getBaseProduct())
             .append(getExtensionProduct(), otherSUSEProductExtension.getExtensionProduct())
+            .append(getRootProduct(), otherSUSEProductExtension.getRootProduct())
             .isEquals();
     }
 }
