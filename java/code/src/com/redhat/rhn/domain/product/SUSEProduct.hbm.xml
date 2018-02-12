@@ -37,27 +37,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     class="com.redhat.rhn.domain.product.SUSEProduct"/>
     </set>
 
-    <set name="extensionFor" inverse="true" table="SUSEProductExtension">
-      <key column="base_pdid"/>
-      <many-to-many column="ext_pdid"
-                    class="com.redhat.rhn.domain.product.SUSEProduct"/>
-    </set>
-    <set name="extensionOf" table="SUSEProductExtension">
-      <key column="ext_pdid"/>
-      <many-to-many column="base_pdid"
-                      class="com.redhat.rhn.domain.product.SUSEProduct"/>
-    </set>
-
     <set name="suseProductChannels" table="SUSEProductChannel" inverse="true">
       <key column="product_id"/>
       <one-to-many class="com.redhat.rhn.domain.product.SUSEProductChannel"/>
     </set>
 
-    <set name="recommends" inverse="true" table="suseProductRecommend">
-      <key column="base_pdid"/>
-      <many-to-many column="rec_pdid"
-                    class="com.redhat.rhn.domain.product.SUSEProduct"/>
-    </set>
   </class>
 
   <query name="SUSEProduct.clear">
