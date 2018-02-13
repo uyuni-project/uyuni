@@ -81,10 +81,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -300,6 +300,48 @@ public class ContentSyncManager {
     }
 
     /**
+     * Return a fixed friendly name
+     * @param friendlyName input friendly name
+     * @param productClass product class
+     * @param archs known archs
+     * @return fixed friendly name
+     */
+    private static String makeFriendlyNameConsistent(String friendlyName, String productClass,
+            List<PackageArch> archs) {
+        if (friendlyName.endsWith(" (BETA)")) {
+            friendlyName = friendlyName.substring(0, friendlyName.length() - 7);
+        }
+        for (PackageArch arch : archs) {
+            if (friendlyName.endsWith(" " + arch.getLabel())) {
+                friendlyName = friendlyName.substring(0, friendlyName.length() -
+                        arch.getLabel().length() - 1);
+            }
+        }
+        if (friendlyName.endsWith(" VMWARE")) {
+            friendlyName = friendlyName.substring(0, friendlyName.length() - 7);
+        }
+
+        // make naming consistent: add VMWare suffix where appropriate
+        if (productClass != null && productClass.toLowerCase().contains("vmware")) {
+            friendlyName += " VMWare";
+        }
+        return friendlyName;
+    }
+
+    /**
+     * Recursivly walk the extensions and fix the friendly name
+     * @param product the scc product
+     * @param archs list of known archs
+     */
+    private static void adjustFriendlyName(SCCProduct product, List<PackageArch> archs) {
+        String friendlyName = makeFriendlyNameConsistent(product.getFriendlyName(), product.getProductClass(), archs);
+        product.setFriendlyName(friendlyName);
+        Optional.ofNullable(product.getExtensions()).orElseGet(Collections::emptyList).forEach(e -> {
+            adjustFriendlyName(e, archs);
+        });
+    }
+
+    /**
      * HACK: fixes data in SCC products that do not have it correct
      * To be removed when SCC team fixes this
      * @param products the products
@@ -307,28 +349,10 @@ public class ContentSyncManager {
     @SuppressWarnings("unchecked")
     public void addDirtyFixes(Collection<SCCProduct> products) {
         LinkedList<SCCProduct> missingProducts = new LinkedList<>();
-
+        List<PackageArch> archs = HibernateFactory.getSession().createCriteria(PackageArch.class).list();
         for (SCCProduct product : products) {
             // make naming consistent: strip arch or VMWARE suffix
-            String friendlyName = product.getFriendlyName();
-            List<PackageArch> archs =
-                    HibernateFactory.getSession().createCriteria(PackageArch.class).list();
-            for (PackageArch arch : archs) {
-                if (friendlyName.endsWith(" " + arch.getLabel())) {
-                    friendlyName = friendlyName.substring(0, friendlyName.length() -
-                        arch.getLabel().length() - 1);
-                }
-            }
-            if (friendlyName.endsWith(" VMWARE")) {
-                friendlyName = friendlyName.substring(0, friendlyName.length() - 7);
-            }
-
-            // make naming consistent: add VMWare suffix where appropriate
-            String productClass = product.getProductClass();
-            if (productClass != null && productClass.toLowerCase().contains("vmware")) {
-                friendlyName += " VMWare";
-            }
-            product.setFriendlyName(friendlyName);
+            adjustFriendlyName(product, archs);
 
             // add missing extension products if their base exists
             switch (product.getId()) {
@@ -422,7 +446,7 @@ public class ContentSyncManager {
         // get a map from channel labels to channels
         final Map<String, XMLChannel> channelByLabel = productToChannelMap.values().stream()
                 .flatMap(Collection::stream)
-                .collect(Collectors.toMap(XMLChannel::getLabel, s -> s, (a,b) -> b));
+                .collect(Collectors.toMap(XMLChannel::getLabel, s -> s, (a, b) -> b));
 
 
         // get a map from every channel to its base channel
@@ -489,8 +513,8 @@ public class ContentSyncManager {
                 for (XMLChannel baseChannel : base.getChannels()) {
                     for (XMLChannel extensionChannel : extension.getChannels()) {
                         if (extensionChannel.getParent().equals(baseChannel.getLabel())) {
-                            boolean recommended = recommendedForBase.getOrDefault(extension.getId(), Collections.emptyList())
-                                    .contains(base.getId());
+                            boolean recommended = recommendedForBase.getOrDefault(extension.getId(),
+                                    Collections.emptyList()).contains(base.getId());
                             extension.setRecommended(recommended);
                             base.addExtension(extension);
                             base.setRecommended(false);
@@ -913,7 +937,7 @@ public class ContentSyncManager {
             Collection<SUSEProductExtension> latestProductExtensions) {
 
         SUSEProduct product = null;
-        if (! processed.containsKey(p.getId())) {
+        if (!processed.containsKey(p.getId())) {
             // Create the channel family if it is not available
             String productClass = p.getProductClass();
             ChannelFamily cf = null;
