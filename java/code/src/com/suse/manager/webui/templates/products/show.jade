@@ -3,6 +3,9 @@ include ../common.jade
 
 script(type='text/javascript').
     const csrfToken = "#{csrf_token}";
+    const issMaster_flag_from_backend = #{issMaster};
+    const refreshNeeded_flag_from_backend = #{refreshNeeded};
+    const refreshRunning_flag_from_backend = #{refreshRunning};
 
 +userPreferences
 script(src='/javascript/manager/products.bundle.js', type='text/javascript')
