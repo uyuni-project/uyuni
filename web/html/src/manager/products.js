@@ -2,6 +2,7 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
+const SCCDialog = require('./scc-refresh-dialog-jspf').SCCDialog;
 
 const setupWizartSteps = [
   {
@@ -84,6 +85,7 @@ const Products = React.createClass({
             <div className='panel-body'>
             </div>
         </div>
+        <SCCDialog />
         {footer}
       </div>
     )
