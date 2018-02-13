@@ -125,7 +125,7 @@ public class Router implements SparkApplication {
                 withUser(SsmController::changeChannels));
 
         // Systems API
-        post("/manager/api/systems/:sid/delete", withOrgAdmin(SystemsController::delete));
+        post("/manager/api/systems/:sid/delete", withUser(SystemsController::delete));
         get("/manager/api/systems/:sid/channels", withUser(SystemsController::getChannels));
         get("/manager/api/systems/:sid/channels-available-base",
                 withUser(SystemsController::getAvailableBaseChannels));
