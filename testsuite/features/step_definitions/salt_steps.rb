@@ -136,17 +136,17 @@ end
 
 When(/^I delete "(.*?)" key in the Salt master$/) do |minion|
   node = get_target(minion)
-  $output, _code = $server.run("salt-key -y -d #{node.hostname}", false)
+  $output, _code = $server.run("salt-key -y -d #{node.full_hostname}", false)
 end
 
 When(/^I accept "(.*?)" key in the Salt master$/) do |minion|
   node = get_target(minion)
-  $server.run("salt-key -y --accept=#{node.hostname}")
+  $server.run("salt-key -y --accept=#{node.full_hostname}")
 end
 
 When(/^I reject "(.*?)" key in the Salt master$/) do |minion|
   node = get_target(minion)
-  $server.run("salt-key -y --reject=#{node.hostname}")
+  $server.run("salt-key -y --reject=#{node.full_hostname}")
 end
 
 When(/^I delete all keys in the Salt master$/) do
@@ -535,11 +535,6 @@ When(/^I click save$/) do
 end
 
 # salt-ssh steps
-When(/^I wait until Salt key "(.*?)" is deleted$/) do |key|
-  cmd = "salt-key -L | grep '#{key}' "
-  $server.run_until_fail(cmd)
-end
-
 When(/^I uninstall Salt packages from "(.*?)"$/) do |host|
   target = get_target(host)
   if ['sle-minion', 'ssh-minion', 'sle-client', 'sle-migrated-minion'].include?(host)
