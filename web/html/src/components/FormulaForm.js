@@ -226,8 +226,8 @@ class FormulaForm extends React.Component {
         else {
             if (this.props.addFormulaNavBar !== undefined)
                 this.props.addFormulaNavBar(this.state.formulaList, this.props.formulaId);
-            const nextHref = this.props.getFormulaUrl(this.props.formulaId - 1);
-            const prevHref = this.props.getFormulaUrl(this.props.formulaId + 1);
+            const nextHref = this.props.getFormulaUrl(this.props.formulaId + 1);
+            const prevHref = this.props.getFormulaUrl(this.props.formulaId - 1);
             return (
                 <div>
                     {messages}
