@@ -3,7 +3,36 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
+const setupWizartSteps = [
+  {
+    label: 'HTTP Proxy',
+    url: '/rhn/admin/setup/ProxySettings.do',
+    active: false
+  },
+  {
+    label: 'Organization Credentials',
+    url: '/rhn/admin/setup/MirrorCredentials.do',
+    active: false
+  },
+  {
+    label: 'SUSE Products',
+    url: '/rhn/admin/setup/ProxySettings.do',
+    active: true
+  },
+  {
+    label: '**SUSE Products [OLD VERSION]**',
+    url: '/rhn/admin/setup/SUSEProducts.do',
+    active: false
+  }
+];
+
 const Products = React.createClass({
+  getInitialState: function() {
+    return {
+      steps: []
+    }
+  },
+
   render: function() {
     const title =
       <div className='spacewalk-toolbar-h1'>
@@ -16,35 +45,46 @@ const Products = React.createClass({
         </h1>
       </div>
     ;
+
+    const tabs = 
+      <div className='spacewalk-content-nav'>
+        <ul className='nav nav-tabs'>
+          { setupWizartSteps.map(step => <li className={step.active ? 'active' : ''}><a href={step.url}>{t(step.label)}</a></li>)}
+        </ul>
+      </div>;
+
     const prevStyle = { 'margin-left': '10px' , 'vertical-align': 'middle'};
+    const currentStepIndex = setupWizartSteps.indexOf(setupWizartSteps.find(step => step.active));
+    const footer =
+      <div className='panel-footer'>
+        <div className='btn-group'>  
+          {
+            currentStepIndex > 1 ?
+              <a className="btn btn-default" href={setupWizartSteps[currentStepIndex-1].url}>
+                <i className="fa fa-arrow-left"></i>{t('Prev')}
+              </a> : null
+          }
+          {
+            currentStepIndex < (setupWizartSteps.length - 1) ?
+              <a className="btn btn-success" href={setupWizartSteps[currentStepIndex+1].url}>
+                <i className="fa fa-arrow-right"></i>{t('Next')}
+              </a> : null
+          }
+        </div>
+        <span style={prevStyle}>
+          { currentStepIndex+1 }&nbsp;{t('of')}&nbsp;{ setupWizartSteps.length }
+        </span>
+      </div>;
+
     return (
       <div className='responsive-wizard'>
         {title}
-        <div className='spacewalk-content-nav'>
-          <ul className='nav nav-tabs'>
-            <li><a href='/rhn/admin/setup/ProxySettings.do'>{t('HTTP Proxy')}</a></li>
-            <li><a href='/rhn/admin/setup/MirrorCredentials.do'>{t('Organization Credentials')}</a></li>
-            <li className='active'><a href='/rhn/manager/admin/setup/products'>{t('SUSE Products')}</a></li>
-            <li><a href='/rhn/admin/setup/SUSEProducts.do'>{t('**SUSE Products [OLD VERSION]**')}</a></li>
-          </ul>
-        </div>
+        {tabs}
         <div className='panel panel-default' id='products-content' data-refresh-needed='${refreshNeeded}'>
             <div className='panel-body'>
             </div>
         </div>
-    
-
-        <div className='panel-footer'>
-          <div className='btn-group'>
-            <a className='btn btn-default' href='/rhn/admin/setup/MirrorCredentials.do'>
-              <i className='fa fa-arrow-left'></i>{t('Prev')}
-            </a>
-          </div>
-          <span style={prevStyle}>
-            {t('3 of 3')}
-          </span>
-        </div>
-
+        {footer}
       </div>
     )
   }
