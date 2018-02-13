@@ -1146,6 +1146,9 @@ public class ContentSyncManager {
                     path.getFromProductId());
             SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
                     path.getToProductId());
+            if (fromProduct == null || toProduct == null) {
+                continue;
+            }
             latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
         }
 
@@ -1156,6 +1159,9 @@ public class ContentSyncManager {
                 for (Integer predecessorId : p.getOnlinePredecessorIds()) {
                     SUSEProduct fromProduct =
                             SUSEProductFactory.lookupByProductId(predecessorId);
+                    if (fromProduct == null || toProduct == null) {
+                        continue;
+                    }
                     latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
                 }
             }
