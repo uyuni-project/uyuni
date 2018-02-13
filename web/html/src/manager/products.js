@@ -30,7 +30,9 @@ const setupWizartSteps = [
 const Products = React.createClass({
   getInitialState: function() {
     return {
-      steps: []
+      issMaster: issMaster_flag_from_backend,
+      refreshNeeded: refreshNeeded_flag_from_backend,
+      refreshRunning: refreshRunning_flag_from_backend
     }
   },
 
@@ -81,11 +83,14 @@ const Products = React.createClass({
       <div className='responsive-wizard'>
         {title}
         {tabs}
-        <div className='panel panel-default' id='products-content' data-refresh-needed='${refreshNeeded}'>
+        <div className='panel panel-default' id='products-content' data-refresh-needed={this.state.refreshNeeded}>
             <div className='panel-body'>
             </div>
         </div>
         <SCCDialog />
+        <div className="hidden" id="iss-master" data-iss-master={this.state.issMaster}></div>
+        <div className="hidden" id="refresh-running" data-refresh-running={this.state.refreshRunning}></div>
+        <div className="hidden" id="sccconfig.jsp.refresh">{t('Refreshing data from SUSE Customer Center')}</div>
         {footer}
       </div>
     )
