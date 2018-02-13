@@ -22,7 +22,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <![CDATA[delete from com.redhat.rhn.domain.product.SUSEProductExtension]]>
   </query>
 
-  <sql-query name="SUSEProductExtension.findAllSUSEProductExtensionOf">
+  <sql-query name="SUSEProductExtension.findAllExtensionProductsOf">
     <![CDATA[select {ext.*}
              from SUSEProductExtension pe
              join SUSEProducts base on base.id = pe.base_pdid
@@ -30,5 +30,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
              where base.id = :baseId
              ]]>
     <return alias="ext" class="com.redhat.rhn.domain.product.SUSEProduct"/>
+  </sql-query>
+
+  <sql-query name="SUSEProductExtension.findAllBaseProductsOf">
+    <![CDATA[select {base.*}
+             from SUSEProductExtension pe
+             join SUSEProducts base on base.id = pe.base_pdid
+             join SUSEProducts ext on pe.ext_pdid = ext.id
+             where ext.id = :extId
+             ]]>
+    <return alias="base" class="com.redhat.rhn.domain.product.SUSEProduct"/>
   </sql-query>
 </hibernate-mapping>

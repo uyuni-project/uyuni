@@ -283,12 +283,12 @@ public class DistUpgradeManager extends BaseManager {
                 //        migrations.delete(combination)
                 //        break
                 //end
-                SUSEProductFactory.findAllSUSEProductExtensionsOf(product);
+                //SUSEProductFactory.findAllSUSEProductExtensionsOf(product);
                 HashSet<SUSEProduct> intersection = new HashSet<>(
-                        SUSEProductFactory.findAllSUSEProductExtensionsOf(product));
+                        SUSEProductFactory.findAllBaseProductsOf(product));
                 intersection.retainAll(combination.getAddonProducts());
                 if (intersection.isEmpty() &&
-                        !SUSEProductFactory.findAllSUSEProductExtensionsOf(product).contains(
+                        !SUSEProductFactory.findAllBaseProductsOf(product).contains(
                                 combination.getBaseProduct())) {
                     result.remove(combination);
                     if (logger.isDebugEnabled()) {
@@ -296,7 +296,7 @@ public class DistUpgradeManager extends BaseManager {
                                 combination.toString());
                         logger.debug("Base product of '" + product.getFriendlyName() +
                                 "': " + combination.getBaseProduct().getFriendlyName());
-                        SUSEProductFactory.findAllSUSEProductExtensionsOf(product).forEach(base ->
+                        SUSEProductFactory.findAllBaseProductsOf(product).forEach(base ->
                             logger.debug("Possible bases: " + base.getFriendlyName()));
                         logger.debug("--------------------------");
                     }
