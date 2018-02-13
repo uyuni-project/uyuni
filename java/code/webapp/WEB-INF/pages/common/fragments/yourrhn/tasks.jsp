@@ -51,14 +51,14 @@
         </rhn:require>
       </rhn:require>
 
-      <c:if test="${documentation == 'true'}">
+      <rhn:require acl="user_role(org_admin)">
         <li class="list-group-item">
         <rhn:icon type="nav-bullet" /> <a
-            href="/rhn/help/getting-started/en-US/preparing.and.registering.clients.jsp">
-                <bean:message key="yourrhn.jsp.tasks.registersystem" />
+            href="/rhn/manager/systems/bootstrap">
+              <bean:message key="yourrhn.jsp.tasks.registersystem" />
           </a>
         </li>
-      </c:if>
+      </rhn:require>
 
       <rhn:require
         acl="user_role(activation_key_admin)">
