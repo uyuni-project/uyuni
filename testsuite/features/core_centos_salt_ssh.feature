@@ -20,7 +20,7 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
   Scenario: Don't use Salt for a SSH-managed CentOS minion
     When I stop salt-minion on "ceos-minion"
     And I uninstall Salt packages from "ceos-minion"
-    And I wait until Salt key "mincentos" is deleted
+    And I delete "ceos-minion" key in the Salt master
 
 @centosminion
   Scenario: Bootstrap a SSH-managed CentOS minion

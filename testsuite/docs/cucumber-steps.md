@@ -563,9 +563,9 @@ The check box can be identified by name, id or label text.
 ```cucumber
   When I accept "sle-minion" key
   When I reject "sle-minion" from the Pending section
+  When I delete "ceos-minion" key in the Salt master
   When I delete "sle-minion" from the Rejected section
   When I wait until Salt master sees "sle-minion" as "rejected"
-  When I wait until Salt key "mincentos" is deleted
   Then the list of the "all" keys should contain "sle-minion" hostname
 ```
 
