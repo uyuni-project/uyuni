@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Feb 14 12:56:19 CET 2018 - jgonzalez@suse.com
+
+- version 2.5.59.20-1
 - Handle stderr from "virtual-host-gatherer" to avoid hanging (bsc#1067010)
 - Provide another create method(with additional parameter Gpgcheck)
   to create software channel through XML RPC(bsc#1060691).
