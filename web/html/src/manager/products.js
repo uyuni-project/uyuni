@@ -17,7 +17,7 @@ const setupWizartSteps = [
   },
   {
     label: 'SUSE Products',
-    url: '/rhn/admin/setup/ProxySettings.do',
+    url: location.href.split(/\?|#/)[0],
     active: true
   }
 ];
