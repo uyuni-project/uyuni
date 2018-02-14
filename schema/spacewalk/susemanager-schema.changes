@@ -1,4 +1,7 @@
+- handle duplicate serverpackage entries while fixing duplicate evr
+  ids (bsc#1075345)
 - Fix: schema with proper extension (bsc#1079820)
+
 -------------------------------------------------------------------
 Fri Jan 19 10:09:03 CET 2018 - jgonzalez@suse.com
 
