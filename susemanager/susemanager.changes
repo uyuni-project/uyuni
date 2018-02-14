@@ -1,6 +1,10 @@
+-------------------------------------------------------------------
+Wed Feb 14 12:59:50 CET 2018 - jgonzalez@suse.com
+
+- version 3.0.26-1
 - Fix custom SERVER_KEY overriding (bsc#1075862)
-- do not try to force db encoding on db upgrade; use same value as for
-  installation (bsc#1077730)
+- do not try to force db encoding on db upgrade; use same value as
+  for installation (bsc#1077730)
 
 -------------------------------------------------------------------
 Thu Jan 11 10:17:31 CET 2018 - jgonzalez@suse.com
