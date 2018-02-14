@@ -3,7 +3,10 @@
 
 Feature: Power management
 
-  Scenario: Is the power management page accessible
+  Scenario: Fake an IPMI host
+    Given the server starts mocking an IPMI host
+
+  Scenario: Check the power management page
     Given I am on the Systems overview page of this "sle-client"
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
@@ -15,12 +18,12 @@ Feature: Power management
     Given I am on the Systems overview page of this "sle-client"
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
-    When I enter "10.162.210.10" as "powerAddress"
+    When I enter "127.0.0.1" as "powerAddress"
     And I enter "ipmiusr" as "powerUsername"
     And I enter "test" as "powerPassword"
     And I click on "Save"
     Then I should see a "Power settings saved" text
-    And the cobbler report contains "Power Management Address       : 10.162.210.10"
+    And the cobbler report contains "Power Management Address       : 127.0.0.1"
     And the cobbler report contains "Power Management Username      : ipmiusr"
     And the cobbler report contains "Power Management Password      : test"
     And the cobbler report contains "Power Management Type          : ipmitool"
@@ -47,7 +50,7 @@ Feature: Power management
     Then I click on "Get status"
     And I should see the power is "On"
 
-  Scenario: Check powermanagement SSM configuration
+  Scenario: Check power management SSM configuration
     Given I am authorized
     And I am on the System Overview page
     And I check the "sle-client" client
@@ -67,7 +70,7 @@ Feature: Power management
     Then I should see a "Configuration successfully saved for 1 system(s)" text
     And the cobbler report contains "Power Management Username      : testing"
     And the cobbler report contains "Power Management Password      : qwertz"
-    And the cobbler report contains "Power Management Address       : 10.162.210.10"
+    And the cobbler report contains "Power Management Address       : 127.0.0.1"
     And the cobbler report contains "Power Management Type          : ipmitool"
 
   Scenario: Check power management SSM operation
@@ -79,3 +82,6 @@ Feature: Power management
     And I should see a "Power Off" button
     And I should see a "Reboot" button
     And I follow "Clear"
+
+  Scenario: Cleanup: don't fake an IPMI host
+    Given the server stops mocking an IPMI host
