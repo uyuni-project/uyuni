@@ -35,8 +35,10 @@ const Products = React.createClass({
     const title =
       <div className='spacewalk-toolbar-h1'>
         <h1>
-          <i className='fa fa-header-preferences'></i>
+          <i className='fa fa-cogs'></i>
+          &nbsp;
           {t('Setup Wizard')}
+          &nbsp;
           <a href='/rhn/help/reference/en-US/ref.webui.admin.jsp#ref.webui.admin.wizard'
               target='_blank'><i className='fa fa-question-circle spacewalk-help-link'></i>
           </a>
