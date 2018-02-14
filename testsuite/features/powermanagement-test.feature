@@ -1,9 +1,12 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Test Powermanagement
+Feature: Power management
 
-  Scenario: Is the powermanagement page accessible
+  Scenario: Fake an IPMI host
+    Given the server starts mocking an IPMI host
+
+  Scenario: Check the power management page
     Given I am on the Systems overview page of this client
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
@@ -11,16 +14,16 @@ Feature: Test Powermanagement
     And I should see a "IPMI" text
     And I should see a "Save" button
 
-  Scenario: Save powermanagement values
+  Scenario: Save power management values
     Given I am on the Systems overview page of this client
     And I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
-    When I enter "10.162.210.10" as "powerAddress"
+    When I enter "127.0.0.1" as "powerAddress"
     And I enter "ipmiusr" as "powerUsername"
     And I enter "test" as "powerPassword"
     And I click on "Save"
     Then I should see a "Power settings saved" text
-    And the cobbler report contains "Power Management Address       : 10.162.210.10"
+    And the cobbler report contains "Power Management Address       : 127.0.0.1"
     And the cobbler report contains "Power Management Username      : ipmiusr"
     And the cobbler report contains "Power Management Password      : test"
     And the cobbler report contains "Power Management Type          : ipmitool"
@@ -47,7 +50,7 @@ Feature: Test Powermanagement
     Then I click on "Get status"
     And I should see the power is "On"
 
-  Scenario: check powermanagement in SSM
+  Scenario: Check power management in SSM
     Given I am on the Systems page
     When I check this client
     And I wait for "15" seconds
@@ -55,7 +58,7 @@ Feature: Test Powermanagement
     Then I should see a "Configure power management" link in the content area
     And I should see a "power management operations" link in the content area
 
-  Scenario: check powermanagement SSM configuration
+  Scenario: Check power management SSM configuration
     Given I am on the Systems page
     When I follow "System Set Manager" in the left menu
     And I follow "Configure power management" in the content area
@@ -73,10 +76,10 @@ Feature: Test Powermanagement
     Then I should see a "Configuration successfully saved for 1 system(s)" text
     And the cobbler report contains "Power Management Username      : testing"
     And the cobbler report contains "Power Management Password      : qwertz"
-    And the cobbler report contains "Power Management Address       : 10.162.210.10"
+    And the cobbler report contains "Power Management Address       : 127.0.0.1"
     And the cobbler report contains "Power Management Type          : ipmitool"
 
-  Scenario: check powermanagement SSM Operation
+  Scenario: Check power management SSM Operation
     Given I am on the Systems page
     When I follow "System Set Manager" in the left menu
     And I follow "power management operations" in the content area
@@ -85,3 +88,6 @@ Feature: Test Powermanagement
     And I should see a "Power Off" button
     And I should see a "Reboot" button
     And I follow "Clear"
+
+  Scenario: Cleanup: don't fake an IPMI host
+    Given the server stops mocking an IPMI host

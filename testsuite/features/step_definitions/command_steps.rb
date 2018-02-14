@@ -1,4 +1,4 @@
-# Copyright (c) 2014 SUSE
+# Copyright (c) 2014-2018 SUSE
 # Licensed under the terms of the MIT license.
 require 'timeout'
 
@@ -145,6 +145,21 @@ end
 Then(/^the pxe-default-profile should be disabled$/) do
   sleep(1)
   step %(file "/srv/tftpboot/pxelinux.cfg/default" contains "'ONTIMEOUT local'")
+end
+
+When(/^the server starts mocking an IPMI host$/) do
+  ["ipmisim1.emu", "lan.conf", "fake_ipmi_host.sh"].each do |file|
+    source = File.dirname(__FILE__) + '/../upload_files/' + file
+    dest = "/etc/ipmi/" + file
+    rc = file_inject($server, source, dest)
+    raise 'File injection failed' unless rc.zero?
+  end
+  $server.run("ipmi_sim -n < /dev/null > /dev/null &")
+end
+
+When(/^the server stops mocking an IPMI host$/) do
+  $server.run("kill $(pidof ipmi_sim)")
+  $server.run("kill $(pidof -x fake_ipmi_host.sh)")
 end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
