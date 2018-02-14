@@ -6,7 +6,6 @@
 - Show the time on the event history page in the users preferred timezone (bsc#1063891)
 - Uniform the notification message when rebooting a system (bsc#1036302)
 - refresh pillar data on formular change (bsc#1028285)
-- handle duplicate serverpackage entries while fixing duplicate evr ids (bsc#1075345)
 - Fix encoding/decoding of url_bounce with more parameters (bsc#1075408)
 
 -------------------------------------------------------------------
