@@ -440,10 +440,11 @@ Product successfully added"""
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
                     self.mgr_sync.conn.sync.content,
-                    "addChannel",
+                    "addChannels",
                     self.fake_auth_token,
                     channel.label,
 		    mirror_url))
+            expected_xmlrpc_calls.append(self._mock_iterator())
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
                     self.mgr_sync.conn.channel.software,
@@ -496,7 +497,8 @@ Product successfully added"""
                                  self._mock_iterator(), self._mock_iterator()]
         for channel in mandatory_channels:
             expected_xmlrpc_calls.append(
-                call(self.mgr_sync.conn.sync.content, "addChannel", self.fake_auth_token, channel.label, ''))
+                call(self.mgr_sync.conn.sync.content, "addChannels", self.fake_auth_token, channel.label, ''))
+            expected_xmlrpc_calls.append(self._mock_iterator())
 
         expected_xmlrpc_calls.append(
             call(self.mgr_sync.conn.channel.software, "syncRepo", self.fake_auth_token,
@@ -523,6 +525,7 @@ Product successfully added"""
             return_value=dict((c.label, c) for c in chosen_product.channels))
 
         stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
@@ -559,7 +562,7 @@ Product successfully added"""
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
                     self.mgr_sync.conn.sync.content,
-                    "addChannel",
+                    "addChannels",
                     self.fake_auth_token,
                     channel.label,
                     ''))
@@ -633,10 +636,11 @@ Product successfully added"""
                 expected_xmlrpc_calls.append(
                     call._execute_xmlrpc_method(
                         self.mgr_sync.conn.sync.content,
-                        "addChannel",
+                        "addChannels",
                         self.fake_auth_token,
                         channel.label,
                         ''))
+                expected_xmlrpc_calls.append(self._mock_iterator())
         expected_xmlrpc_calls.append(
             call._execute_xmlrpc_method(
                 self.mgr_sync.conn.channel.software,
@@ -769,10 +773,16 @@ Product successfully added"""
         mandatory_channels = [channel for channel in chosen_product.channels if not channel.optional]
 
         for channel in mandatory_channels:
-            expected_xmlrpc_calls.append(call(self.mgr_sync.conn.sync.content, "addChannel",
+            expected_xmlrpc_calls.append(call(self.mgr_sync.conn.sync.content, "addChannels",
                                               self.fake_auth_token, channel.label, ''))
+            expected_xmlrpc_calls.append(self._mock_iterator())
 
         expected_xmlrpc_calls.append(call(self.mgr_sync.conn.channel.software, "syncRepo", self.fake_auth_token,
                                           [channel.label for channel in mandatory_channels]))
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+
+def xmlrpc_sideeffect(*args, **kwargs):
+    if args[1] == "addChannels":
+        return [args[3]]
+    return read_data_from_fixture('list_channels.data')
