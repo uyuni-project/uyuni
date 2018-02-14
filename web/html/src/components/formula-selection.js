@@ -122,7 +122,7 @@ class FormulaSelection extends React.Component {
 
         if (groups.groupless.length > 0) {
             list.push(
-                <span key={"groupless"} className="list-group-item disabled">
+                <span key="groupless" className="list-group-item disabled">
                     <strong>
                         <i className="fa fa-lg fa-square-o" />
                         {t(" No group")}
