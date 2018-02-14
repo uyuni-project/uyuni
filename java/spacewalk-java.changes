@@ -1,3 +1,5 @@
+- add rhn.conf salt_check_download_tokens parameter to disable token checking (bsc#1082119)
+
 -------------------------------------------------------------------
 Wed Feb 28 09:37:21 CET 2018 - jgonzalez@suse.com
 

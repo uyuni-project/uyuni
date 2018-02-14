@@ -246,6 +246,12 @@ public class ConfigDefaults {
     public static final String SALT_CONTENT_STAGING_ADVANCE =
             "salt_content_staging_advance";
 
+    /**
+     * If true, check via JWT tokens that files requested by a minion are actually accessible by that minon.
+     * Turning this flag to false disables the checks.
+     */
+    public static final String SALT_CHECK_DOWNLOAD_TOKENS = "salt_check_download_tokens";
+
 
     private ConfigDefaults() {
     }
