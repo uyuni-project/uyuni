@@ -66,7 +66,7 @@ const Products = React.createClass({
             <table className="table table-rounded">
               <thead>
                 <tr>
-                  <th><input type="checkbox" className="select-all" autocomplete="off" /></th>
+                  <th><input type="checkbox" className="select-all" autoComplete="off" /></th>
                   <th>{t('Available Products Below')}</th>
                   <th>{t('Architecture')}</th>
                   <th>{t('Channels')}</th>
@@ -86,7 +86,7 @@ const Products = React.createClass({
               </tbody>
               <tfoot>
                 <tr>
-                  <td><input type="checkbox" className="select-all" autocomplete="off" /></td>
+                  <td><input type="checkbox" className="select-all" autoComplete="off" /></td>
                   <td colSpan="6">
                     <button className="btn btn-success" id="synchronize">
                       <i className="fa fa-plus"></i>{t('Add products')}
@@ -120,7 +120,7 @@ const Products = React.createClass({
       );
     }
 
-    const prevStyle = { 'margin-left': '10px' , 'vertical-align': 'middle'};
+    const prevStyle = { 'marginLeft': '10px' , 'verticalAlign': 'middle'};
     const currentStepIndex = setupWizartSteps.indexOf(setupWizartSteps.find(step => step.active));
     const footer =
       <div className='panel-footer'>

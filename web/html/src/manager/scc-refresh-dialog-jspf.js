@@ -8,7 +8,7 @@ const SCCDialog = React.createClass({
     return (
       <div>
         <div id="scc-migration-dialog" className="modal fade bs-example-modal-sm"
-            tabindex="-1" role="dialog" aria-labelledby="scc-refresh-dialog-title" aria-hidden="true">
+            tabIndex="-1" role="dialog" aria-labelledby="scc-refresh-dialog-title" aria-hidden="true">
           <div className="modal-dialog modal-sm">
               <div className="modal-content">
                   <div className="modal-header">
