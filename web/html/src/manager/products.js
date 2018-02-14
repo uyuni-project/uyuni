@@ -19,11 +19,6 @@ const setupWizartSteps = [
     label: 'SUSE Products',
     url: '/rhn/admin/setup/ProxySettings.do',
     active: true
-  },
-  {
-    label: '**SUSE Products [OLD VERSION]**',
-    url: '/rhn/admin/setup/SUSEProducts.do',
-    active: false
   }
 ];
 

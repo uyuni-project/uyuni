@@ -2268,39 +2268,6 @@ tree will not be usable for autoinstalling.
       </trans-unit>
 
       <!--  SCC refresh -->
-      <trans-unit id="sccconfig.jsp.refresh">
-        <source>Refreshing data from SUSE Customer Center</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.bepatient">
-         <source>Please be patient, this might take several minutes.</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.channels">
-        <source>Channels</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.channelfamilies">
-        <source>Channel Families</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.products">
-        <source>Products</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.productchannels">
-        <source>Product Channels</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.subscriptions">
-        <source>Subscriptions</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.close">
-        <source>Close</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.completed">
-        <source>Completed</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.failed">
-        <source>Operation not successful</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.failed.details.link">
-        <source>Details</source>
-      </trans-unit>
       <trans-unit id="copyright.jsp.title">
         <source>Copyright (c) 2011 - 2017 SUSE LLC.</source>
       </trans-unit>
