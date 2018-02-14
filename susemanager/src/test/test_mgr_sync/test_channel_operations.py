@@ -50,6 +50,17 @@ class ChannelOperationsTest(unittest.TestCase):
         if os.path.exists("tmp.log"):
             os.unlink("tmp.log")
 
+    def _mock_iterator(self):
+        '''
+        Mock *called* iterator.
+
+        :return:
+        '''
+        mocked_iter = MagicMock()
+        for dummy_element in mocked_iter():
+            pass
+        return mocked_iter.mock_calls[-1]
+
     def test_list_channels_no_channels(self):
         options = get_options("list channels".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
@@ -263,10 +274,11 @@ Status:
 
         expected_xmlrpc_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "addChannel",
+                                        "addChannels",
                                         self.fake_auth_token,
                                         channel,
                                         mirror_url),
+            self._mock_iterator(),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
@@ -295,10 +307,11 @@ Status:
 	    self.assertEqual(0, self.mgr_sync.run(options))
 	expected_xmlrpc_calls = [
 	    call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-		                        "addChannel",
+		                        "addChannels",
 		                        self.fake_auth_token,
 		                        channel,
 		                        ''),
+            self._mock_iterator(),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
@@ -334,19 +347,21 @@ Status:
 
         expected_xmlrpc_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "addChannel",
+                                        "addChannels",
                                         self.fake_auth_token,
                                         base_channel,
                                         ''),
+            self._mock_iterator(),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
                                         [base_channel]),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "addChannel",
+                                        "addChannels",
                                         self.fake_auth_token,
                                         channel,
                                         ''),
+            self._mock_iterator(),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
@@ -462,14 +477,15 @@ Scheduling reposync for 'res4-es-i386' channel"""
         self.assertEqual(expected_output.split("\n"),
                          recorder.stderr)
 
+
     def test_add_channels_interactive(self):
         options = get_options("add channel".split())
         available_channels = ['ch1', 'ch2']
         chosen_channel = available_channels[0]
         self.mgr_sync._list_channels = MagicMock(
             return_value=available_channels)
-        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
-            'list_channels.data'))
+        stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
@@ -490,7 +506,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
 
         expected_xmlrpc_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "addChannel",
+                                        "addChannels",
                                         self.fake_auth_token,
                                         chosen_channel,
                                         ''),
@@ -508,8 +524,8 @@ Scheduling reposync for 'res4-es-i386' channel"""
         chosen_channel = available_channels[0]
         self.mgr_sync._list_channels = MagicMock(
             return_value=available_channels)
-        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
-            'list_channels.data'))
+        stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
@@ -530,7 +546,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
 
         expected_xmlrpc_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "addChannel",
+                                        "addChannels",
                                         self.fake_auth_token,
                                         chosen_channel,
                                         ''),
@@ -541,3 +557,8 @@ Scheduling reposync for 'res4-es-i386' channel"""
         ]
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+
+def xmlrpc_sideeffect(*args, **kwargs):
+    if args[1] == "addChannels":
+        return [args[3]]
+    return read_data_from_fixture('list_channels.data')
