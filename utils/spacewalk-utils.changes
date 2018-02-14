@@ -1,5 +1,9 @@
-- Remove restrictions imposed on regex used in 'removelist' parameter passed
-  to spacewalk-clone-by-date that allowed only exact match
+-------------------------------------------------------------------
+Wed Feb 14 12:58:40 CET 2018 - jgonzalez@suse.com
+
+- version 2.5.6.7-1
+- Remove restrictions imposed on regex used in 'removelist' parameter
+  passed to spacewalk-clone-by-date that allowed only exact match
   (bsc#1075254)
 
 -------------------------------------------------------------------
