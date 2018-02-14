@@ -9,7 +9,4 @@
   <rhn-tab name="SUSE Products" acl="user_role(satellite_admin)">
     <rhn-tab-url>/rhn/manager/admin/setup/products</rhn-tab-url>
   </rhn-tab>
-  <rhn-tab name="SUSE Products [OLD VERSION]" acl="user_role(satellite_admin)">
-    <rhn-tab-url>/rhn/admin/setup/SUSEProducts.do</rhn-tab-url>
-  </rhn-tab>
 </rhn-navi-tree>
