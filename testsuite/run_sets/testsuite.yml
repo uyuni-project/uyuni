@@ -68,7 +68,7 @@
 - features/srv_docker_advanced_test.feature
 - features/srv_docker_cve_audit.feature
 - features/min_salt_install_package.feature
-- features/srv_powermanagement.feature
+- features/srv_power_management.feature
 - features/srv_datepicker.feature
 - features/trad_openscap_audit.feature
 - features/srv_create_group.feature

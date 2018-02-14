@@ -123,6 +123,21 @@ Then(/^the PXE default profile should be disabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT local" on server)
 end
 
+When(/^the server starts mocking an IPMI host$/) do
+  ["ipmisim1.emu", "lan.conf", "fake_ipmi_host.sh"].each do |file|
+    source = File.dirname(__FILE__) + '/../upload_files/' + file
+    dest = "/etc/ipmi/" + file
+    rc = file_inject($server, source, dest)
+    raise 'File injection failed' unless rc.zero?
+  end
+  $server.run("ipmi_sim -n < /dev/null > /dev/null &")
+end
+
+When(/^the server stops mocking an IPMI host$/) do
+  $server.run("kill $(pidof ipmi_sim)")
+  $server.run("kill $(pidof -x fake_ipmi_host.sh)")
+end
+
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
   output = sshcmd("cobbler system report --name #{$client.full_hostname}:1", ignore_err: true)[:stdout]
   raise "Not found: #{output}" unless output.include?(arg1)
