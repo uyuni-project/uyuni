@@ -146,3 +146,6 @@ scc_url = https://scc.suse.com
 
 # Message queue thread pool size
 java.message_queue_thread_pool_size = 5
+
+# Leave token checking enabled
+salt_check_download_tokens = true

@@ -67,7 +67,23 @@ public class DownloadController {
     private static final String MOUNT_POINT_PATH = Config.get()
             .getString(ConfigDefaults.MOUNT_POINT);
 
+    /**
+     * If true, check via JWT tokens that files requested by a minion are actually accessible by that minon. Turning
+     * this flag to false disables the checks.
+     */
+    private static boolean checkTokens = Config.get().getBoolean(ConfigDefaults.SALT_CHECK_DOWNLOAD_TOKENS);
+
     private DownloadController() {
+    }
+
+    /**
+     * Toggles token checking (only for unit tests).
+     *
+     * @param checkTokensIn true if tokens should be checked
+     * accessible by that minon
+     */
+    public static void setCheckTokens(boolean checkTokensIn) {
+        checkTokens = checkTokensIn;
     }
 
     /**
@@ -86,8 +102,10 @@ public class DownloadController {
                     String.format("Key or signature file not provided: %s", filename));
         }
 
-        String token = getTokenFromRequest(request);
-        validateToken(token, channelLabel, filename);
+        if (checkTokens) {
+            String token = getTokenFromRequest(request);
+            validateToken(token, channelLabel, filename);
+        }
 
         File file = new File(new File("/var/cache/rhn/repodata", channelLabel),
                 filename).getAbsoluteFile();
@@ -155,8 +173,10 @@ public class DownloadController {
         String version = StringUtils.substringAfterLast(rest, "-");
         String name = StringUtils.substringBeforeLast(rest, "-");
 
-        String token = getTokenFromRequest(request);
-        validateToken(token, channel, basename);
+        if (checkTokens) {
+            String token = getTokenFromRequest(request);
+            validateToken(token, channel, basename);
+        }
 
         Package pkg = PackageFactory.lookupByChannelLabelNevra(
                 channel, name, version, release, null, arch);

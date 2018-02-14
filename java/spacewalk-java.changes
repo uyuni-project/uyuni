@@ -1,3 +1,4 @@
+- add rhn.conf salt_check_download_tokens parameter to disable token checking (bsc#1082119)
 - Refresh pillar data when executing the subscribe channels action for ssh-push minions (bsc#1080349)
 - Users who can view system should be able to delete it (bsc#1079652)
 - Set hostname before hardware refresh as well (bsc#1077760)

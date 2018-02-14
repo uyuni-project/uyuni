@@ -42,6 +42,7 @@ import spark.RequestResponseFactory;
 import spark.Response;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Function;
@@ -109,6 +110,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
         // Change mount point to the parent of the temp file
         Config.get().setString(ConfigDefaults.MOUNT_POINT, packageFile.getParent());
+
+        DownloadController.setCheckTokens(true);
     }
 
     /**
@@ -176,6 +179,75 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         }
     }
 
+    /**
+     * Test download with an invalid token parameter, but token checking disabled.
+     */
+    public void testDownloadPackageWithDisabledTokenChecking() {
+        Map<String, String> params = new HashMap<>();
+        params.put("invalid-token-should-be-ignored", "");
+        Request request = getMockRequestWithParams(params);
+
+        DownloadController.setCheckTokens(false);
+        try {
+            DownloadController.downloadPackage(request, response);
+            assertEquals(packageFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
+            assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
+            assertEquals("attachment; filename=" + packageFile.getName(),
+                    response.raw().getHeader("Content-Disposition"));
+        }
+        catch (spark.HaltException e) {
+            fail("No HaltException should be thrown with a valid token!");
+        }
+    }
+
+    /**
+     * Test download with an invalid token parameter, but token checking disabled.
+     * @throws IOException in case of unexpected exceptions
+     */
+    public void testDownloadMetadataWithDisabledTokenChecking() throws IOException {
+        Map<String, String> params = new HashMap<>();
+        params.put("invalid-token-should-be-ignored", "");
+        Request request =  SparkTestUtils.createMockRequestWithParams(
+                "http://localhost:8080/rhn/manager/download/:channel/repodata/:file",
+                params,
+                Collections.emptyMap(),
+                channel.getLabel(), "comps.xml");
+
+        DownloadController.setCheckTokens(false);
+
+        String compsRelativeDirPath = "rhn/comps/" + channel.getName();
+        String compsDirPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) + "/"
+                + compsRelativeDirPath;
+        String compsName = compsRelativeDirPath + "123hash123-comps-Server.x86_64";
+        File compsDir = new File(compsDirPath);
+        try {
+            compsDir.mkdirs();
+            File compsFile = File.createTempFile(compsDirPath + "/" + compsName, ".xml", compsDir);
+            Files.write(compsFile.getAbsoluteFile().toPath(),
+                    TestUtils.randomString().getBytes());
+
+            // create comps object
+            Comps comps = new Comps();
+            comps.setChannel(channel);
+            comps.setRelativeFilename(compsRelativeDirPath + "/" + compsFile.getName());
+            channel.setComps(comps);
+
+            try {
+                assertNotNull(DownloadController.downloadMetadata(request, response));
+
+                assertEquals(compsFile.getAbsolutePath(), response.raw().getHeader("X-Sendfile"));
+                assertEquals("application/octet-stream", response.raw().getHeader("Content-Type"));
+                assertEquals("attachment; filename=" + compsFile.getName(),
+                        response.raw().getHeader("Content-Disposition"));
+            }
+            catch (spark.HaltException e) {
+                fail("No HaltException should be thrown with a valid token!");
+            }
+        }
+        finally {
+            FileUtils.deleteDirectory(compsDir);
+        }
+    }
     /**
      * Test that the download is rejected when two tokens are present (even though the 1st
      * one is valid).
