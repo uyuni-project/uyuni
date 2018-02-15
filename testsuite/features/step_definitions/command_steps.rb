@@ -130,6 +130,7 @@ When(/^the server starts mocking an IPMI host$/) do
     rc = file_inject($server, source, dest)
     raise 'File injection failed' unless rc.zero?
   end
+  $server.run("chmod +x /etc/ipmi/fake_ipmi_host.sh")
   $server.run("ipmi_sim -n < /dev/null > /dev/null &")
 end
 
