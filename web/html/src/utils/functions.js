@@ -1,6 +1,3 @@
-"use strict";
-const React = require("react");
-
 export type Cancelable = {
   promise: Promise<any>,
   cancel: (any) => void
@@ -31,7 +28,7 @@ function cancelable(promise: Promise<any>, onCancel: (Error|void) => void): Canc
 }
 
 function dateWithTimezone(dateString: string): Date {
-    const offsetNum = parseInt(dateString.substring(dateString.length - 6).replace(':', ''));
+    const offsetNum = parseInt(dateString.substring(dateString.length - 6).replace(':', ''), 10);
     const serverOffset = Math.trunc(offsetNum / 100) * 60 + offsetNum % 100;
     const orig = new Date(dateString);
     const clientOffset = -orig.getTimezoneOffset();
@@ -84,7 +81,7 @@ function getQueryStringValue(key: string): string {
   // See for a standard implementation:
   // https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
   return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" +
-        encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+        encodeURIComponent(key).replace(/[.+*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
 }
 
 function urlBounce(defaultUrl: string, qstrParamKey?: string): void {
@@ -98,6 +95,15 @@ function capitalize(str: string): string {
     return str.replace(new RegExp("_|-", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
+function generatePassword(): string {
+    const length = Math.floor(Math.random() * 10) + 15;
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:-_";
+    let password = "";
+    for (let i = 0; i < length; i++)
+        password += charset.charAt(Math.floor(Math.random() * charset.length));
+    return password;
+}
+
 
 module.exports = {
     Utils: {
@@ -108,7 +114,8 @@ module.exports = {
         sortByNumber: sortByNumber,
         sortByDate: sortByDate,
         urlBounce: urlBounce,
-        capitalize: capitalize
+        capitalize: capitalize,
+        generatePassword: generatePassword
     },
     Formats: {
         LocalDateTime: LocalDateTime

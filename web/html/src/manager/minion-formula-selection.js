@@ -5,7 +5,7 @@ const ReactDOM = require("react-dom");
 
 const Network = require("../utils/network");
 const FormulaSelection = require("../components/formula-selection").FormulaSelection;
-const toTitle = require("../components/FormulaForm").toTitle;
+const capitalize = require("../utils/functions").Utils.capitalize;
 
 function saveRequest(component, selectedFormulas) {
     const formData = {};
@@ -41,7 +41,7 @@ function addFormulaNavBar(formulaList) {
     var navBar = "<ul class='nav nav-tabs nav-tabs-pf' id='formula-nav-bar'>\n"
     navBar += "<li class='active'><a href='/rhn/manager/systems/details/formulas?sid=" + serverId + "'>Formulas</a></li>\n";
     for (var i in formulaList)
-        navBar += "<li><a href='/rhn/manager/systems/details/formula/" + i + "?sid=" + serverId + "'>" + toTitle(formulaList[i]) + "</a></li>\n";
+        navBar += "<li><a href='/rhn/manager/systems/details/formula/" + i + "?sid=" + serverId + "'>" + capitalize(formulaList[i]) + "</a></li>\n";
     navBar += "</ul>"
     $(".spacewalk-content-nav").append(navBar);
 }
