@@ -4,18 +4,18 @@ const React = require("react");
 
 const Messages = require("../components/messages").Messages;
 const Network = require("../utils/network");
-const Buttons = require("../components/buttons")
+const Buttons = require("../components/buttons");
 
 const Button = Buttons.Button;
 const AsyncButton = Buttons.AsyncButton;
+const capitalize = require("../utils/functions").Utils.capitalize;
 
 class FormulaSelection extends React.Component {
     constructor(props) {
         super(props);
 
         ["init", "saveRequest", "resetChanges", "removeAllFormulas", "getGroupItemState",
-        "getListIcon", "getListStyle", "generateList", "buildFormulaEntry", "buildGroupEntry",
-        "onGroupItemClick", "onListItemClick"]
+        "getListIcon", "getListStyle", "generateList", "onGroupItemClick", "onListItemClick"]
         .forEach(method => this[method] = this[method].bind(this));
 
         this.state = {
@@ -23,8 +23,6 @@ class FormulaSelection extends React.Component {
             groups: {groupless: []},
             activeFormulas: [],
             acviteSelectedFormulas: [],
-            activeFormulaUrlPostfix: "",
-            activeFormulaUrlPrefix: "",
             showDescription: false,
             messages: []
         };
@@ -32,16 +30,6 @@ class FormulaSelection extends React.Component {
     }
 
     init() {
-        let activeFormulaUrlPrefix;
-        let activeFormulaUrlPostfix;
-        if (this.props.systemId) {
-            activeFormulaUrlPrefix = "/rhn/manager/systems/details/formula/";
-            activeFormulaUrlPostfix = "?sid=" + this.props.systemId;
-        }
-        else {
-            activeFormulaUrlPrefix = "/rhn/manager/groups/details/formula/" 
-            activeFormulaUrlPostfix = "?sgid=" + this.props.systemGroupId;
-        }
         Network.get(this.props.dataUrl).promise.then(data => {
             const groupDict = {groupless: []};
             const formulaDict = {};
@@ -57,9 +45,7 @@ class FormulaSelection extends React.Component {
                 activeFormulas: get(data.active, data.selected),
                 activeSelectedFormulas: data.selected,
                 formulas: formulaDict,
-                groups: groupDict,
-                activeFormulaUrlPrefix: activeFormulaUrlPrefix,
-                activeFormulaUrlPostfix: activeFormulaUrlPostfix
+                groups: groupDict
             });
         });
     }
@@ -135,74 +121,51 @@ class FormulaSelection extends React.Component {
         const groups = this.state.groups;
 
         if (groups.groupless.length > 0) {
-            list.push(this.buildGroupEntry("groupless"));
+            list.push(
+                <span key="groupless" className="list-group-item disabled">
+                    <strong>
+                        <i className="fa fa-lg fa-square-o" />
+                        {t(" No group")}
+                    </strong>
+                </span>
+            );
             groups.groupless.forEach(function (formula) {
-                list.push(this.buildFormulaEntry(formula));
+                list.push(
+                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListStyle(formula.selected)}>
+                        <i className={this.getListIcon(formula.selected)} />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {capitalize(formula.name)}
+                        { formula.description ? (<i id={"info_button_" + formula.name} className="fa fa-lg fa-info-circle pull-right" />) : null }
+                        {this.getDescription(formula)}
+                    </a>
+                );
             }, this);
         }
         for (var group_name in groups) {
             if (group_name == "groupless") continue;
             const group = groups[group_name];
-            list.push(this.buildGroupEntry(group_name));
+            const group_state = this.getGroupItemState(group);
+            list.push(
+                <a href="#" onClick={this.onGroupItemClick} id={"group_" + group_name} key={"group_" + group_name} className={this.getListStyle(group_state)}>
+                    <strong>
+                        <i className={this.getListIcon(group_state)} />
+                        {" " + capitalize(group_name)}
+                    </strong>
+                </a>
+            );
             group.forEach(function (formula) {
-                list.push(this.buildFormulaEntry(formula));
+                list.push(
+                    <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name} title={formula.description} className={this.getListStyle(formula.selected)}>
+                        <i className={this.getListIcon(formula.selected)} />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {capitalize(formula.name)}
+                        { formula.description ? (<i id={"info_button_" + formula.name} className="fa fa-lg fa-info-circle pull-right" />) : null }
+                        {this.getDescription(formula)}
+                    </a>
+                );
             }, this);
         }
         return list;
-    }
-
-    buildFormulaEntry(formula) {
-        const isActive = this.state.activeFormulas.includes(formula.name);
-        const systemId = this.props.systemId;
-        const systemGroupId = this.props.systemGroupId;
-        const activeFormulas = this.state.activeFormulas;
-        const inactiveFormulaUrlPrefix="/rhn/manager/formula-catalog/formula/";
-        let formulaUrl = "";
-
-        if (isActive) {
-            formulaUrl += this.state.activeFormulaUrlPrefix
-                    + activeFormulas.indexOf(formula.name) + this.state.activeFormulaUrlPostfix;
-        }
-        else {
-            formulaUrl += inactiveFormulaUrlPrefix + formula.name;
-        }
-
-        return (
-            <div className={this.getListStyle(isActive)}  title={formula.description}>
-                <a href="#" onClick={this.onListItemClick} id={formula.name} key={formula.name}>
-                    <i className={this.getListIcon(formula.selected)} />
-                </a>
-                <a href={formulaUrl}>
-                    <span style={{marginLeft: 20}}>{toTitle(formula.name)}</span>
-                    { formula.description ? (<i id={"info_button_" + formula.name}
-                            className="fa fa-lg fa-info-circle pull-right" />) : null }
-                    {this.getDescription(formula)}
-                </a>
-            </div>);
-    }
-
-    buildGroupEntry(group_name) {
-        if (group_name == "groupless") {
-            return (
-                <span key={"groupless"} className="list-group-item disabled">
-                    <strong>
-                        <i className={this.getListIcon(null)} />
-                        {t("No group")}
-                    </strong>
-                </span>);
-        }
-        else {
-            const group = this.state.groups[group_name];
-            const group_state = this.getGroupItemState(group);
-            return (
-                <a href="#" onClick={this.onGroupItemClick} id={"group_" + group_name}
-                        key={"group_" + group_name} className={this.getListStyle(group_state)}>
-                    <strong>
-                        <i className={this.getListIcon(group_state)} />
-                        {" " + toTitle(group_name)}
-                    </strong>
-                </a>);
-        }
     }
 
     onListItemClick(e) {
@@ -302,11 +265,6 @@ function get(value, def) {
     if (value == undefined)
         return def;
     return value;
-}
-
-// Replace all "_" and "-" with spaces and capitalize the first letter of each word
-function toTitle(str) {
-    return str.replace(new RegExp("_|-", 'g'), " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
 module.exports = {

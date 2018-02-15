@@ -42,9 +42,9 @@ function get(url, contentType) {
 }
 
 function errorMessageByStatus(status) {
-    if (status == 401) {
+    if (status === 401) {
         return [t("Session expired, please reload the page.")];
-    } else if (status == 403) {
+    } else if (status === 403) {
         return [t("Authorization error, please reload the page or try to logout/login again.")];
     } else if (status >= 500) {
         return [t("Server error, please check log files.")];
@@ -77,7 +77,7 @@ function responseErrorMessage(jqXHR, messageMapFunc = null) {
       return MessagesUtils.error(msgs);
    } else {
       let msg = errorMessageByStatus(jqXHR.status);
-      if (msg.length == 0) {
+      if (msg.length === 0) {
         msg = "Server error, please check log files.";
       }
       return MessagesUtils.error(msg);
