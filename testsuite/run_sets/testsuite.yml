@@ -60,7 +60,6 @@
 - features/ssh_push.feature
 - features/delete_config_channel.feature
 - features/users-deleteuser1.feature
-- features/xmlrpc_api.feature
 - features/xmlrpc_activationkey.feature
 - features/xmlrpc_channel.feature
 #  - features/xmlrpc_VHM.feature
