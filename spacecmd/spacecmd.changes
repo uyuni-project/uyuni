@@ -1,3 +1,4 @@
+- Fix typo (bsc#1081151)
 - Configure gpg_flag via spacecmd creating a channel (bsc#1080290)
 
 -------------------------------------------------------------------
