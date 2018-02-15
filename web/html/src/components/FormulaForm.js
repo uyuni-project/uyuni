@@ -118,7 +118,7 @@ class FormulaForm extends React.Component {
                 if (!$.isEmptyObject(value))
                     result[key] = value;
             }
-            else if ((element.$scope === this.props.currentScope || element.$scope === "system") && !(value && value.length === 0)) {
+            else if ((element.$scope === this.props.scope || element.$scope === "system") && !(value && value.length === 0)) {
                 result[key] = value;
             }
         }
@@ -130,14 +130,14 @@ class FormulaForm extends React.Component {
             if (this.props.scope === "system") {
                 Network.get(this.props.dataUrl).promise.then(data => {
                     this.setState({
-                        formulaValues: generateValues(this.state.formulaLayout, get((data === null ? undefined : data.group_data), {}), {}, this.props.currentScope),
+                        formulaValues: generateValues(this.state.formulaLayout, get((data === null ? undefined : data.group_data), {}), {}, this.props.scope),
                         formulaChanged: false
                     });
                 });
             }
             else {
                 this.setState({
-                    formulaValues: generateValues(this.state.formulaLayout, {}, {}, this.props.currentScope),
+                    formulaValues: generateValues(this.state.formulaLayout, {}, {}, this.props.scope),
                     formulaChanged: false
                 });
             }
