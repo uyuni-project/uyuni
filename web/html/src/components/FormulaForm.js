@@ -76,8 +76,8 @@ class FormulaForm extends React.Component {
         event.preventDefault();
         this.setState({ formulaChanged: false });
         let scope = this.props.scope;
-        let formType = scope;
-        if (formType === 'system') {
+        let formType = scope.toUpperCase();
+        if (formType === 'SYSTEM') {
             formType = 'SERVER';
         }
 
