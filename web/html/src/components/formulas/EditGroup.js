@@ -6,10 +6,17 @@ class EditGroup extends React.Component {
 
         this.handleAddItem = this.handleAddItem.bind(this);
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
+        this.isDisabled = this.isDisabled.bind(this);
+    }
+
+    isDisabled() {
+        const formScope = this.props.formulaForm.props.scope;
+        const elementScope = this.props.element.$scope;
+        return elementScope === "readonly" || (formScope !== elementScope && elementScope !== "system");
     }
 
     handleAddItem(event) {
-        if (this.props.element.$maxItems <= this.props.value.length)
+        if (this.props.element.$maxItems <= this.props.value.length || this.isDisabled())
             return;
 
         let newValue = this.props.value;
@@ -21,7 +28,7 @@ class EditGroup extends React.Component {
     }
 
     handleRemoveItem(index) {
-        if (this.props.element.$minItems >= this.props.value.length)
+        if (this.props.element.$minItems >= this.props.value.length || this.isDisabled())
             return;
 
         this.props.value.splice(index, 1);
@@ -52,7 +59,7 @@ class EditGroup extends React.Component {
                         <i className="fa fa-minus"
                             onClick={() => this.handleRemoveItem(i)}
                             title={this.props.element.$minItems >= this.props.value.length ? "Min number of items reached" : "Remove item"}
-                            disabled={this.props.element.$minItems >= this.props.value.length} />
+                            disabled={this.props.element.$minItems >= this.props.value.length || this.isDisabled()} />
                     </div>
                     <div className="panel-body">
                         {item_elements}
@@ -84,7 +91,7 @@ class EditGroup extends React.Component {
                         type="button"
                         title={this.props.element.$maxItems <= this.props.value.length ? "Max number of items reached" : "Add Element"}
                         onClick={this.handleAddItem}
-                        disabled={this.props.element.$maxItems <= this.props.value.length}>
+                        disabled={this.props.element.$maxItems <= this.props.value.length || this.isDisabled()}>
                         <i className="fa fa-plus" /> Add Item
                     </button>
                 </div>
