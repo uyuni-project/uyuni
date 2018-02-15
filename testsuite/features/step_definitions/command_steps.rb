@@ -151,9 +151,12 @@ When(/^the server starts mocking an IPMI host$/) do
   ["ipmisim1.emu", "lan.conf", "fake_ipmi_host.sh"].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
     dest = "/etc/ipmi/" + file
-    rc = file_inject($server, source, dest)
-    raise 'File injection failed' unless rc.zero?
+    $command_output = `echo | scp -o StrictHostKeyChecking=no #{source} root@#$SERVER:#{dest} 2>&1`
+    unless $?.success?
+      raise "Execute command failed: #{$!}: #{$command_output}"
+    end
   end
+  $server.run("chmod +x /etc/ipmi/fake_ipmi_host.sh")
   $server.run("ipmi_sim -n < /dev/null > /dev/null &")
 end
 
