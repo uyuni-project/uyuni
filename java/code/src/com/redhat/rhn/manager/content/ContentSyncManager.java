@@ -1018,9 +1018,36 @@ public class ContentSyncManager {
         }
 
         SUSEProductFactory.removeAllExcept(processed.values());
+        assignManagerToolsChannels(products, latestProductExtensions);
         // Sync the database list of product extensions with the updated one
         SUSEProductFactory.mergeAllProductExtension(latestProductExtensions);
         updateUpgradePaths(products);
+    }
+
+    /**
+     * SUSE Manager Tools channel comes as base products from SCC and are not
+     * assigned to the real base products. They are an extension of the basesystem module
+     *
+     * @param products list of SCC products
+     * @param latestProductExtensions collection of all newly parsed products extensions
+     */
+    private void assignManagerToolsChannels(Collection<SCCProduct> products,
+            List<SUSEProductExtension> latestProductExtensions) {
+        // Add sle-manager-tools as recommended extension to all basesystem modules
+        for (SCCProduct p : products) {
+            if (p.getIdentifier().equals("sle-module-basesystem") && p.getVersion().equals("15")) {
+                SUSEProduct base = SUSEProductFactory.lookupByProductId(p.getId());
+                List<SUSEProduct> roots = SUSEProductFactory.findAllRootProductsOf(base);
+                for (SUSEProduct root : roots) {
+                    SUSEProduct ext = SUSEProductFactory.findSUSEProduct("sle-manager-tools", "15", null,
+                            root.getArch().getLabel(), true);
+                    SUSEProductExtension toolsExt = new SUSEProductExtension(base, ext, root, true);
+                    if (!latestProductExtensions.contains(toolsExt)) {
+                        latestProductExtensions.add(toolsExt);
+                    }
+                }
+            }
+        }
     }
 
     /**
