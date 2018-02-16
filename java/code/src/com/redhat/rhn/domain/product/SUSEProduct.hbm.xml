@@ -48,4 +48,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <![CDATA[delete from com.redhat.rhn.domain.product.SUSEProduct]]>
   </query>
 
+  <query name="SUSEProduct.byChannel">
+    <![CDATA[select pc from com.redhat.rhn.domain.product.SUSEProduct p
+          join p.suseProductChannels pc
+          where pc.channelLabel = :label]]>
+  </query>
+
 </hibernate-mapping>

@@ -17,6 +17,8 @@ package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncException;
@@ -29,7 +31,10 @@ import com.suse.mgrsync.XMLChannel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * API handler offering content synchronization methods.
@@ -229,10 +234,27 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
-        csm.addChannel(channelLabel, mirrorUrl);
         // TODO: add all channels which were enabled to the return list
+
+        Map<String, String> archByChannelLabel = csm.listChannels().stream().collect(Collectors.toMap(
+                XMLChannel::getLabel,
+                XMLChannel::getArch
+        ));
+
+        List<String> mandetoryChannelLabels = SUSEProductFactory.findAllMandetoryChannels(channelLabel, archByChannelLabel::get)
+                .filter(s -> s.getChannel() == null)
+                .map(SUSEProductChannel::getChannelLabel)
+                .collect(Collectors.toList());
+
+        LinkedHashSet<String> strings = new LinkedHashSet<>(mandetoryChannelLabels);
+
+        for (String channel : strings) {
+            csm.addChannel(channel, mirrorUrl);
+        }
+
         List<String> returnList = new ArrayList<>();
         returnList.add(channelLabel);
+        returnList.addAll(mandetoryChannelLabels);
         return returnList.toArray();
     }
 

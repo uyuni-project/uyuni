@@ -34,10 +34,16 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.Collection;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.List;
+import java.util.Map;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * SUSEProductFactory - the class used to fetch and store
@@ -112,6 +118,58 @@ public class SUSEProductFactory extends HibernateFactory {
         for (SUSEProduct product : (List<SUSEProduct>) c.list()) {
             remove(product);
         }
+    }
+
+    public static List<SUSEProductChannel> lookupByChannelLabel(String channelLabel) {
+        Session session = HibernateFactory.getSession();
+        return (List<SUSEProductChannel>)session.getNamedQuery("SUSEProduct.byChannel")
+                .setParameter("label", channelLabel).list();
+    }
+
+
+    public static Stream<SUSEProductChannel> findAllMandetoryChannels(SUSEProduct product, SUSEProduct base, String baseChannelLabel) {
+        System.out.println("Product: " + product.getFriendlyName() + " " + product.getProductId());
+        System.out.println("Base: " + base.getFriendlyName() + " " + base.getProductId());
+        System.out.println("BaseChannelLabel: " + baseChannelLabel);
+        System.out.println();
+        product.getSuseProductChannels().stream().forEach(p -> {
+            System.out.println("channel: " + p.getChannelLabel() + " parent: " + p.getParentChannelLabel());
+        });
+        System.out.println();
+        System.out.println("Bases:");
+        SUSEProductFactory.findAllBaseProductsOf(product, base).forEach(p -> {
+            System.out.println(p.getFriendlyName());
+        });
+        System.out.println();
+        System.out.println();
+        Stream<SUSEProductChannel> concat = Stream.concat(
+                product.getSuseProductChannels().stream().filter(
+                        c -> baseChannelLabel.equals(c.getParentChannelLabel()) ||
+                                baseChannelLabel.equals(c.getChannelLabel())
+                ),
+                SUSEProductFactory.findAllBaseProductsOf(product, base).stream().flatMap(
+                        p -> findAllMandetoryChannels(p, base, baseChannelLabel)
+                )
+        );
+        return concat;
+    }
+
+    public static Stream<SUSEProductChannel> findAllMandetoryChannels(String channelLabel, Function<String, String> archByChannelLabel) {
+        List<SUSEProductChannel> suseProducts = SUSEProductFactory.lookupByChannelLabel(channelLabel);
+        SUSEProductChannel suseProductChannel = suseProducts.get(0);
+
+        Stream<SUSEProductChannel> suseProductChannelStream = Optional.ofNullable(suseProductChannel.getParentChannelLabel()).map(parentChannelLabel -> {
+            List<SUSEProductChannel> suseProducts2 = SUSEProductFactory.lookupByChannelLabel(parentChannelLabel);
+            SUSEProductChannel baseProductChannel = suseProducts2.get(0);
+            return findAllMandetoryChannels(
+                    suseProductChannel.getProduct(),
+                    baseProductChannel.getProduct(),
+                    parentChannelLabel
+            );
+        }).orElseGet(() -> suseProductChannel.getProduct().getSuseProductChannels().stream());
+        return Stream.concat(Stream.of(suseProductChannel), suseProductChannelStream).filter(s -> {
+            return archByChannelLabel.apply(s.getChannelLabel()).equals(archByChannelLabel.apply(suseProductChannel.getChannelLabel()));
+        });
     }
 
     /**
@@ -377,6 +435,19 @@ public class SUSEProductFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("extId", ext.getId());
         return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllBaseProductsOf", params);
+    }
+
+    /**
+     * Find all base products of a product.
+     * @param ext product to find bases for
+     * @return list of base products of the given product
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext, SUSEProduct base) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("extId", ext.getId());
+        params.put("rootId", base.getId());
+        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllBaseProductsForRootOf", params);
     }
 
     /**
