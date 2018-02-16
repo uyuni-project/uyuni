@@ -28,6 +28,28 @@
         </rhn:require>
       </c:if>
 
+      <c:if test="${requestScope.requiringReboot > 0}">
+        <rhn:require acl="user_role(satellite_admin)">
+          <rhn:require acl="user_role(org_admin)">
+            <li class="list-group-item">
+              <rhn:icon type="nav-bullet" /> <a
+                href="/rhn/systems/RequiringReboot.do">
+                    <c:choose>
+                        <c:when test="${requestScope.requiringReboot == 1}">
+                            <bean:message key="onesystem.message" />
+                            <bean:message key="yourrhn.jsp.tasks.reboot" arg0="${requestScope.requiringReboot}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <bean:message key="manysystems.message" arg0="${requestScope.requiringReboot}"/>
+                            <bean:message key="yourrhn.jsp.tasks.reboot"/>
+                        </c:otherwise>
+                    </c:choose>
+              </a>
+            </li>
+          </rhn:require>
+        </rhn:require>
+      </c:if>
+
       <rhn:require acl="not user_role(satellite_admin)">
         <rhn:require acl="user_role(org_admin)">
         <li class="list-group-item">

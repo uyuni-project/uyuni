@@ -10177,6 +10177,12 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="yourrhn.jsp.tasks.reboot">
+        <source>&lt;strong&gt;Requiring Reboot&lt;/strong&gt;</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/YourRhn.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.subscriptions">
         <source>Manage &lt;strong&gt;Entitlements&lt;/strong&gt; &amp;amp; &lt;strong&gt;Subscriptions&lt;/strong&gt;</source>
         <context-group name="ctx">
