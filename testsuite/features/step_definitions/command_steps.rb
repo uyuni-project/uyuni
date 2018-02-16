@@ -151,7 +151,8 @@ When(/^the server starts mocking an IPMI host$/) do
   ["ipmisim1.emu", "lan.conf", "fake_ipmi_host.sh"].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
     dest = "/etc/ipmi/" + file
-    $command_output = `echo | scp -o StrictHostKeyChecking=no #{source} root@#$SERVER:#{dest} 2>&1`
+    user = "root@"
+    $command_output = `echo | scp -o StrictHostKeyChecking=no #{source} #{user}$SERVER:#{dest} 2>&1`
     unless $?.success?
       raise "Execute command failed: #{$!}: #{$command_output}"
     end
