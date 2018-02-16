@@ -194,26 +194,24 @@ public class SUSEProductFactory extends HibernateFactory {
     /**
      * Merge all {@link SUSEProductExtension} from existing ones
      * and the ones passed as parameter.
-     * @param newProductExtensions the new list of ProductExtensions to keep stored
+     * @param newExtensions the new list of ProductExtensions to keep stored
      */
-    public static void mergeAllProductExtension(
-            List<SUSEProductExtension> newProductExtensions) {
-        List<SUSEProductExtension> existingProductExtensions =
-                findAllSUSEProductExtensions();
-        for (SUSEProductExtension existingExtension : existingProductExtensions) {
-            if (!newProductExtensions.contains(existingExtension)) {
+    public static void mergeAllProductExtension(List<SUSEProductExtension> newExtensions) {
+        List<SUSEProductExtension> existingExtensions = findAllSUSEProductExtensions();
+        for (SUSEProductExtension existingExtension : existingExtensions) {
+            if (!newExtensions.contains(existingExtension)) {
                 SUSEProductFactory.remove(existingExtension);
             }
             else {
-                SUSEProductExtension newExtension = newProductExtensions.get(newProductExtensions.indexOf(existingExtension));
+                SUSEProductExtension newExtension = newExtensions.get(newExtensions.indexOf(existingExtension));
                 if (newExtension.isRecommended() != existingExtension.isRecommended()) {
                     existingExtension.setRecommended(newExtension.isRecommended());
                     SUSEProductFactory.save(existingExtension);
                 }
             }
         }
-        for (SUSEProductExtension newExtension : newProductExtensions) {
-            if (!existingProductExtensions.contains(newExtension)) {
+        for (SUSEProductExtension newExtension : newExtensions) {
+            if (!existingExtensions.contains(newExtension)) {
                 SUSEProductFactory.save(newExtension);
             }
         }
