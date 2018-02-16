@@ -451,6 +451,18 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Find all root products of a product.
+     * @param base product to find roots for
+     * @return list of root products of the given product
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProduct> findAllRootProductsOf(SUSEProduct base) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("baseId", base.getId());
+        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllRootProductsOf", params);
+    }
+
+    /**
      * Find all {@link SUSEProduct}.
      * @return list of all known products
      */

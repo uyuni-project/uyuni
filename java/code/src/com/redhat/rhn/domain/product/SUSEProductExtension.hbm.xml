@@ -51,4 +51,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
              ]]>
     <return alias="base" class="com.redhat.rhn.domain.product.SUSEProduct"/>
   </sql-query>
+
+  <sql-query name="SUSEProductExtension.findAllRootProductsOf">
+    <![CDATA[select {root.*}
+             from SUSEProductExtension pe
+             join SUSEProducts base on base.id = pe.base_pdid
+             join SUSEProducts root on pe.root_pdid = root.id
+             where base.id = :baseId
+             ]]>
+    <return alias="root" class="com.redhat.rhn.domain.product.SUSEProduct"/>
+  </sql-query>
 </hibernate-mapping>
