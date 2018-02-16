@@ -1,3 +1,5 @@
+- Fix master tops merging when running salt>=2018
+
 -------------------------------------------------------------------
 Wed Feb 14 13:01:42 CET 2018 - jgonzalez@suse.com
 

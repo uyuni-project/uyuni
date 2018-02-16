@@ -47,7 +47,8 @@ def top(**kwargs):
     Returns the SUSE Manager top state information of a minion
     for the `base` salt environment.
     '''
-    if kwargs['opts']['environment'] in [None, "base"]:
+    env = kwargs['opts'].get('environment') or kwargs['opts'].get('saltenv')
+    if env in [None, "base"]:
         log.debug('Loading SUSE Manager TOP state information for the "base" environment')
         return {"base": MANAGER_BASE_TOP}
     return None
