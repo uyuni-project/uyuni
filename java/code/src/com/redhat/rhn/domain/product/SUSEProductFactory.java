@@ -139,17 +139,24 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param newProductExtensions the new list of ProductExtensions to keep stored
      */
     public static void mergeAllProductExtension(
-            Collection<SUSEProductExtension> newProductExtensions) {
+            List<SUSEProductExtension> newProductExtensions) {
         List<SUSEProductExtension> existingProductExtensions =
                 findAllSUSEProductExtensions();
-        for (SUSEProductExtension productExtension : existingProductExtensions) {
-            if (!newProductExtensions.contains(productExtension)) {
-                SUSEProductFactory.remove(productExtension);
+        for (SUSEProductExtension existingExtension : existingProductExtensions) {
+            if (!newProductExtensions.contains(existingExtension)) {
+                SUSEProductFactory.remove(existingExtension);
+            }
+            else {
+                SUSEProductExtension newExtension = newProductExtensions.get(newProductExtensions.indexOf(existingExtension));
+                if (newExtension.isRecommended() != existingExtension.isRecommended()) {
+                    existingExtension.setRecommended(newExtension.isRecommended());
+                    SUSEProductFactory.save(existingExtension);
+                }
             }
         }
-        for (SUSEProductExtension productExtension : newProductExtensions) {
-            if (!existingProductExtensions.contains(productExtension)) {
-                SUSEProductFactory.save(productExtension);
+        for (SUSEProductExtension newExtension : newProductExtensions) {
+            if (!existingProductExtensions.contains(newExtension)) {
+                SUSEProductFactory.save(newExtension);
             }
         }
     }
