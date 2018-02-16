@@ -992,13 +992,13 @@ public class ContentSyncManager {
             return;
         }
         for (SCCProduct e : p.getExtensions()) {
+            updateSUSEProduct(e, root, processed, latestProductExtensions);
             SUSEProduct suseExtPrd = SUSEProductFactory.lookupByProductId(e.getId());
             SUSEProduct suseRootPrd = SUSEProductFactory.lookupByProductId(root.getId());
             if (product != null && suseExtPrd != null && suseRootPrd != null) {
                 latestProductExtensions.add(
-                        new SUSEProductExtension(product, suseExtPrd, suseRootPrd, p.isRecommended()));
+                        new SUSEProductExtension(product, suseExtPrd, suseRootPrd, e.isRecommended()));
             }
-            updateSUSEProduct(e, root, processed, latestProductExtensions);
         }
     }
     /**
@@ -1011,7 +1011,7 @@ public class ContentSyncManager {
     public void updateSUSEProducts(Collection<SCCProduct> products)
             throws ContentSyncException {
         Map<Integer, SUSEProduct> processed = new HashMap<>();
-        Collection<SUSEProductExtension> latestProductExtensions =
+        List<SUSEProductExtension> latestProductExtensions =
                 new LinkedList<SUSEProductExtension>();
         for (SCCProduct p : products) {
             updateSUSEProduct(p, p, processed, latestProductExtensions);
