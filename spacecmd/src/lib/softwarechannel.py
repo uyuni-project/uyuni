@@ -544,7 +544,7 @@ options:
   -u GPG_URL
   -i GPG_ID
   -f GPG_FINGERPRINT
-  -g DISABLE_GPG_CHECK''' % CHECKSUM)
+  -g DISABLE_GPG_CHECK''' % CHECKSUM
 
 
 def do_softwarechannel_create(self, args):
