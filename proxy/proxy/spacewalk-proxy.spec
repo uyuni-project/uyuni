@@ -1,10 +1,10 @@
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %{!?pylint_check: %global pylint_check 1}
 %endif
 
 Name: spacewalk-proxy
 Summary: Spacewalk Proxy Server
-Version: 2.8.3
+Version: 2.8.5
 Release: 1%{?dist}
 Group:   Applications/Internet
 License: GPLv2
@@ -15,7 +15,7 @@ BuildRequires: python
 BuildArch: noarch
 Requires: httpd
 %if 0%{?pylint_check}
-BuildRequires: spacewalk-pylint
+BuildRequires: spacewalk-python2-pylint
 %endif
 BuildRequires: rhnpush >= 5.5.74
 # proxy isn't Python 3 yet
@@ -183,7 +183,7 @@ Spacewalk Server. This service adds flexibility and economy of
 resources to package update and deployment.
 
 This package contains the Command rhn_package_manager, which  manages
-an Spacewalk Proxy Server's custom channel.
+an Spacewalk Proxy Server\'s custom channel.
 
 %package salt
 Summary:        A ZeroMQ Proxy for Salt Minions
@@ -249,7 +249,7 @@ install -d -m 0755 $RPM_BUILD_ROOT/%{_var}/lib/spacewalk
 %if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python_sitelib}:/usr/share/rhn
-spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
+spacewalk-python2-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %endif
 
 %post broker
@@ -477,6 +477,12 @@ fi
 
 
 %changelog
+* Tue Feb 13 2018 Eric Herget <eherget@redhat.com> 2.8.5-1
+- run pylint on rhel 7 builds
+
+* Tue Feb 13 2018 Eric Herget <eherget@redhat.com> 2.8.4-1
+- Update to use newly separated spacewalk-python[2|3]-pylint packages
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
 - remove install/clean section initial cleanup
 - removed Group from specfile

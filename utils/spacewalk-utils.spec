@@ -1,10 +1,10 @@
 %define rhnroot %{_prefix}/share/rhn
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %{!?pylint_check: %global pylint_check 1}
 %endif
 
 Name:		spacewalk-utils
-Version:	2.8.11
+Version:	2.8.13
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -16,7 +16,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
 %if 0%{?pylint_check}
-BuildRequires:  spacewalk-pylint >= 2.2
+BuildRequires:  spacewalk-python2-pylint
 %endif
 BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  docbook-utils
@@ -102,7 +102,7 @@ popd
 %check
 %if 0%{?pylint_check}
 # check coding style
-spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
+spacewalk-python2-pylint $RPM_BUILD_ROOT%{rhnroot}
 %endif
 
 %files
@@ -122,6 +122,12 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Tue Feb 13 2018 Eric Herget <eherget@redhat.com> 2.8.13-1
+- run pylint on rhel 7 builds
+
+* Tue Feb 13 2018 Eric Herget <eherget@redhat.com> 2.8.12-1
+- Update to use newly separated spacewalk-python[2|3]-pylint packages
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.11-1
 - remove install/clean section initial cleanup
 - removed Group from specfile

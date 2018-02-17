@@ -11,7 +11,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 2.8.5
+Version: 2.8.6
 Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -43,7 +43,7 @@ Requires: chkconfig
 Requires: libxslt
 Requires: spacewalk-certs-tools >= 1.6.4
 %if 0%{?pylint_check}
-BuildRequires: spacewalk-pylint
+BuildRequires: spacewalk-python2-pylint
 BuildRequires: python2-rhn-client-tools
 %endif
 BuildRequires: /usr/bin/docbook2man
@@ -110,7 +110,7 @@ install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT%{_bindir}/rhn-proxy-activat
 %check
 %if 0%{?pylint_check}
 # check coding style
-spacewalk-pylint .
+spacewalk-python2-pylint .
 %endif
 
 %files
@@ -132,6 +132,9 @@ spacewalk-pylint .
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Tue Feb 13 2018 Eric Herget <eherget@redhat.com> 2.8.6-1
+- Update to use newly separated spacewalk-python[2|3]-pylint packages
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.5-1
 - remove install/clean section initial cleanup
 - removed Group from specfile
