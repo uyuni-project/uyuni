@@ -38,7 +38,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.46
+Version: 2.8.48
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -62,7 +62,7 @@ Requires: pyliblzma
 %endif # %if 0%{?rhel} > 5 || 0%{?suse_version} >= 1315
 %endif # 0%{?suse_version} > 1320
 %if 0%{?pylint_check}
-BuildRequires: spacewalk-pylint >= 2.2
+BuildRequires: spacewalk-python2-pylint
 %endif
 BuildRequires: /usr/bin/msgfmt
 BuildRequires: /usr/bin/docbook2man
@@ -467,12 +467,12 @@ make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} test || :
 %if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn:/usr/share/rhn
-spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
-                 $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
-                 $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
-                 $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools \
-                 $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
-                 $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
+spacewalk-python2-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
+                         $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
+                         $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
+                         $RPM_BUILD_ROOT%{pythonrhnroot}/cdn_tools \
+                         $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
+                         $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
 %endif
 
 rm -f $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py*
@@ -933,6 +933,12 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 
 %changelog
+* Tue Feb 13 2018 Eric Herget <eherget@redhat.com> 2.8.48-1
+- Update to use newly separated spacewalk-python[2|3]-pylint packages
+
+* Tue Feb 13 2018 Grant Gainey 2.8.47-1
+- 1540981 - Clarify error-reporting when checksum_cache is bad
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.46-1
 - clean up specfile
 

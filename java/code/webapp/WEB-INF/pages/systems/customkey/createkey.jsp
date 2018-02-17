@@ -25,6 +25,7 @@
                 <div class="col-lg-6">
                     <input type="text" name="label"
                            length="64" size="30" class="form-control"
+                           maxlength="64"
                            value="<c:out value="${old_label}" />"/>
                 </div>
             </div>

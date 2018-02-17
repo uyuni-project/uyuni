@@ -13,7 +13,7 @@ Summary:       Package uploader for the Spacewalk
 Group:         Applications/System
 License:       GPLv2
 URL:           https://github.com/spacewalkproject/spacewalk
-Version:       5.5.109
+Version:       5.5.110
 Release:       1%{?dist}
 Source0:       https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
@@ -24,7 +24,7 @@ BuildArch:      noarch
 Requires:      %{pythonX}-%{name} = %{version}-%{release}
 BuildRequires: docbook-utils, gettext
 %if 0%{?pylint_check}
-BuildRequires:  spacewalk-pylint >= 0.6
+BuildRequires:  spacewalk-python2-pylint
 %endif
 
 %description
@@ -99,7 +99,7 @@ ln -s rhnpush%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhnpush
 %if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}
-spacewalk-pylint $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{python_sitelib}
+spacewalk-python2-pylint $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{python_sitelib}
 %endif
 
 %files
@@ -127,6 +127,9 @@ spacewalk-pylint $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{python_sitelib}
 %endif
 
 %changelog
+* Tue Feb 13 2018 Eric Herget <eherget@redhat.com> 5.5.110-1
+- Update to use newly separated spacewalk-python[2|3]-pylint packages
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 5.5.109-1
 - remove install/clean section initial cleanup
 - removed Group from specfile
