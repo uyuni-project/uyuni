@@ -109,6 +109,8 @@ def main():
                       help="alternative email address(es) for sync output (--email option)")
     parser.add_option('', '--no-errata', action='store_true', dest='no_errata',
                       default=False, help="Do not sync errata")
+    parser.add_option('', '--no-packages', action='store_true', dest='no_packages',
+                      default=False, help="Do not sync packages")
     parser.add_option('', '--sync-kickstart', action='store_true', dest='sync_kickstart',
                       default=False, help="Sync kickstartable tree")
     parser.add_option('', '--force-all-errata', action='store_true', dest='force_all_errata',
@@ -245,6 +247,7 @@ def main():
                       filters=options.filters,
                       deep_verify=options.deep_verify,
                       no_errata=options.no_errata,
+                      no_packages=options.no_packages,
                       sync_kickstart=options.sync_kickstart,
                       latest=options.latest,
                       log_level=options.verbose,
