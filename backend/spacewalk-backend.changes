@@ -1,3 +1,7 @@
+- add --no-packages option to spacewalk-repo-sync
+- use --force-all-errata only to re-sync patches
+  --deep-verify still used for package checksum check and single
+  errata import (bsc#1077244)
 - use GTM for rpm build_time (bsc#1078056)
 
 -------------------------------------------------------------------
