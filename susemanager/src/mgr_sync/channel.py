@@ -33,6 +33,9 @@ class Channel(object):
         self.optional = data["optional"]
         self._children = []
 
+    def __repr__(self):
+        return self.to_ascii_row(True)
+
     @property
     def short_status(self):
         if self.status == Channel.Status.AVAILABLE:

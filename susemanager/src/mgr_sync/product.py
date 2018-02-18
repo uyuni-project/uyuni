@@ -35,6 +35,9 @@ class Product(object):
         self.channels = [Channel(channel) for channel in data['channels']]
         self.isBase = False
 
+    def __repr__(self):
+        return self.to_ascii_row()
+
     @property
     def short_status(self):
         # pylint: disable=E1101
