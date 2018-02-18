@@ -92,6 +92,7 @@ Status:
   - [U] - channel is unavailable
 
 [ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
+[ ] RHEL x86_64 AS 4 RES 4 [rhel-x86_64-as-4]
 [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
     [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
     [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
@@ -121,6 +122,7 @@ Status:
   - [U] - channel is unavailable
 
 [ ] rhel-i386-as-4
+[ ] rhel-x86_64-as-4
 [I] sles10-sp4-pool-x86_64
     [ ] sle10-sdk-sp4-pool-x86_64
     [I] sle10-sdk-sp4-updates-x86_64"""
@@ -151,6 +153,9 @@ Status:
 
 [ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
     [ ] RES4 AS for i386 RES 4 [res4-as-i386]
+[ ] RHEL x86_64 AS 4 RES 4 [rhel-x86_64-as-4]
+    [ ] RES4 AS SUSE-Manager-Tools x86_64 SUSE-Manager-Tools [res4-as-suse-manager-tools-x86_64]
+    [ ] RES4 AS for x86_64 RES 4 [res4-as-x86_64]
 [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
     [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
     [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
@@ -179,7 +184,8 @@ Status:
   - [ ] - channel is not installed, but is available
   - [U] - channel is unavailable
 
-[ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]"""
+[ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
+[ ] RHEL x86_64 AS 4 RES 4 [rhel-x86_64-as-4]"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -241,8 +247,9 @@ Status:
   - [U] - channel is unavailable
 
 01) [ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
+02) [ ] RHEL x86_64 AS 4 RES 4 [rhel-x86_64-as-4]
     [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
-    02) [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
+    03) [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
         [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
@@ -252,7 +259,7 @@ Status:
             "listChannels",
             self.fake_auth_token)
 
-        self.assertEqual(['rhel-i386-as-4', 'sle10-sdk-sp4-pool-x86_64'],
+        self.assertEqual(['rhel-i386-as-4', 'rhel-x86_64-as-4', 'sle10-sdk-sp4-pool-x86_64'],
                          available_channels)
 
     def test_add_available_base_channel_with_mirror(self):
@@ -302,6 +309,7 @@ Status:
         return_value=parse_channels(
             read_data_from_fixture("list_channels.data"), self.mgr_sync.log))
 	stubbed_xmlrpm_call = MagicMock()
+	stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
 	self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 	with ConsoleRecorder() as recorder:
 	    self.assertEqual(0, self.mgr_sync.run(options))
@@ -311,7 +319,6 @@ Status:
 		                        self.fake_auth_token,
 		                        channel,
 		                        ''),
-            self._mock_iterator(),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
@@ -320,8 +327,9 @@ Status:
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
         expected_output = [
-            "Adding '{0}' channel".format(channel),
-            "Scheduling reposync for '{0}' channel".format(channel)
+            "Added '{0}' channel".format(channel),
+            "Scheduling reposync for following channels:",
+            "- {0}".format(channel)
         ]
         self.assertEqual(expected_output, recorder.stdout)
 
@@ -340,6 +348,7 @@ Status:
                 read_data_from_fixture("list_channels.data"), self.mgr_sync.log))
 
         stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with ConsoleRecorder() as recorder:
@@ -351,7 +360,6 @@ Status:
                                         self.fake_auth_token,
                                         base_channel,
                                         ''),
-            self._mock_iterator(),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
@@ -361,7 +369,6 @@ Status:
                                         self.fake_auth_token,
                                         channel,
                                         ''),
-            self._mock_iterator(),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
@@ -371,10 +378,12 @@ Status:
 
         expected_output = """'res4-es-i386' depends on channel 'rhel-i386-es-4' which has not been added yet
 Going to add 'rhel-i386-es-4'
-Adding 'rhel-i386-es-4' channel
-Scheduling reposync for 'rhel-i386-es-4' channel
-Adding 'res4-es-i386' channel
-Scheduling reposync for 'res4-es-i386' channel"""
+Added 'rhel-i386-es-4' channel
+Scheduling reposync for following channels:
+- rhel-i386-es-4
+Added 'res4-es-i386' channel
+Scheduling reposync for following channels:
+- res4-es-i386"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
     def test_add_already_installed_channel(self):
@@ -406,7 +415,8 @@ Scheduling reposync for 'res4-es-i386' channel"""
 
         expected_output = [
             "Channel '{0}' has already been added".format(channel),
-            "Scheduling reposync for '{0}' channel".format(channel)
+            "Scheduling reposync for following channels:",
+            "- {0}".format(channel)
         ]
         self.assertEqual(expected_output, recorder.stdout)
 
@@ -495,8 +505,9 @@ Scheduling reposync for 'res4-es-i386' channel"""
                 self.mgr_sync.run(options)
 
         expected_output = [
-            "Adding '{0}' channel".format(chosen_channel),
-            "Scheduling reposync for '{0}' channel".format(chosen_channel)
+            "Added '{0}' channel".format(chosen_channel),
+            "Scheduling reposync for following channels:",
+            "- {0}".format(chosen_channel)
         ]
         self.assertEqual(expected_output, recorder.stdout)
 
@@ -535,8 +546,9 @@ Scheduling reposync for 'res4-es-i386' channel"""
                 self.mgr_sync.run(options)
 
         expected_output = [
-            "Adding '{0}' channel".format(chosen_channel),
-            "Scheduling reposync for '{0}' channel".format(chosen_channel)
+            "Added '{0}' channel".format(chosen_channel),
+            "Scheduling reposync for following channels:",
+            "- {0}".format(chosen_channel)
         ]
         self.assertEqual(expected_output, recorder.stdout)
 

@@ -319,9 +319,11 @@ class MgrSync(object):
 
         :param channels: the labels identifying the channels
         """
+        if not channels:
+            return
 
         try:
-            print("Scheduling reposync for folowing channels:\n- {0}".format("\n- ".join(channels)))
+            print("Scheduling reposync for following channels:\n- {0}".format("\n- ".join(channels)))
             self.log.info("Scheduling reposync for '{0}'".format(
                 channels))
             self._execute_xmlrpc_method(self.conn.channel.software,
@@ -660,13 +662,10 @@ class MgrSync(object):
                     continue
 
                 self.log.debug("Scheduling reposync for '{0}' channel".format(bc.label))
-                print("Scheduling reposync for '{0}' channel".format(bc.label))
                 channels_to_sync.append(bc.label)
                 for child in bc.children:
                     if child.status == Channel.Status.INSTALLED:
                         self.log.debug("Scheduling reposync for '{0}' channel".format(
-                            child.label))
-                        print("Scheduling reposync for '{0}' channel".format(
                             child.label))
                         channels_to_sync.append(child.label)
             self._schedule_channel_reposync(channels_to_sync)
