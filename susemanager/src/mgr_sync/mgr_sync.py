@@ -295,7 +295,6 @@ class MgrSync(object):
 
             if add_channel:
                 self.log.debug("Adding channel '{0}'".format(channel))
-                print("Adding '{0}' channel".format(channel))
                 added_channels = self._execute_xmlrpc_method(self.conn.sync.content,
                                                              "addChannels",
                                                              self.auth.token(),
@@ -307,11 +306,10 @@ class MgrSync(object):
                     if match:
                         match.status = Channel.Status.INSTALLED
                     if clabel not in channels_to_sync:
-                        print("Scheduling reposync for '{0}' channel".format(clabel))
+                        print("Added '{0}' channel".format(clabel))
                         channels_to_sync.append(clabel)
 
             if channel not in channels_to_sync:
-                print("Scheduling reposync for '{0}' channel".format(channel))
                 channels_to_sync.append(channel)
 
         self._schedule_channel_reposync(channels_to_sync)
@@ -323,6 +321,7 @@ class MgrSync(object):
         """
 
         try:
+            print("Scheduling reposync for folowing channels:\n- {0}".format("\n- ".join(channels)))
             self.log.info("Scheduling reposync for '{0}'".format(
                 channels))
             self._execute_xmlrpc_method(self.conn.channel.software,
