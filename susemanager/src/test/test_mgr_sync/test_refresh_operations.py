@@ -138,8 +138,9 @@ Refreshing SUSE Product channels               [DONE]
 Refreshing Subscriptions                       [DONE]
 
 Scheduling refresh of all the available channels
-Scheduling reposync for 'sles10-sp4-pool-x86_64' channel
-Scheduling reposync for 'sle10-sdk-sp4-updates-x86_64' channel"""
+Scheduling reposync for following channels:
+- sles10-sp4-pool-x86_64
+- sle10-sdk-sp4-updates-x86_64"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 

@@ -405,6 +405,7 @@ Status:
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
         stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call.side_effect = xmlrpc_product_sideeffect
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
@@ -423,12 +424,18 @@ Status:
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
-Adding 'res4-as-suse-manager-tools-x86_64' channel
-Scheduling reposync for 'res4-as-suse-manager-tools-x86_64' channel
-Adding 'rhel-x86_64-as-4' channel
-Scheduling reposync for 'rhel-x86_64-as-4' channel
-Adding 'res4-as-x86_64' channel
-Scheduling reposync for 'res4-as-x86_64' channel
+'res4-as-suse-manager-tools-x86_64' depends on channel 'rhel-x86_64-as-4' which has not been added yet
+Going to add 'rhel-x86_64-as-4'
+Added 'rhel-x86_64-as-4' channel
+Scheduling reposync for following channels:
+- rhel-x86_64-as-4
+Added 'res4-as-suse-manager-tools-x86_64' channel
+Added 'rhel-x86_64-as-4' channel
+Added 'res4-as-x86_64' channel
+Scheduling reposync for following channels:
+- res4-as-suse-manager-tools-x86_64
+- rhel-x86_64-as-4
+- res4-as-x86_64
 Product successfully added"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
@@ -464,6 +471,7 @@ Product successfully added"""
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
         stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call.side_effect = xmlrpc_product_sideeffect
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
@@ -482,24 +490,32 @@ Status:
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
-Adding 'res4-as-suse-manager-tools-x86_64' channel
-Scheduling reposync for 'res4-as-suse-manager-tools-x86_64' channel
-Adding 'rhel-x86_64-as-4' channel
-Scheduling reposync for 'rhel-x86_64-as-4' channel
-Adding 'res4-as-x86_64' channel
-Scheduling reposync for 'res4-as-x86_64' channel
+'res4-as-suse-manager-tools-x86_64' depends on channel 'rhel-x86_64-as-4' which has not been added yet
+Going to add 'rhel-x86_64-as-4'
+Added 'rhel-x86_64-as-4' channel
+Scheduling reposync for following channels:
+- rhel-x86_64-as-4
+Added 'res4-as-suse-manager-tools-x86_64' channel
+Added 'rhel-x86_64-as-4' channel
+Added 'res4-as-x86_64' channel
+Scheduling reposync for following channels:
+- res4-as-suse-manager-tools-x86_64
+- rhel-x86_64-as-4
+- res4-as-x86_64
 Product successfully added"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         mandatory_channels = [channel for channel in chosen_product.channels if not channel.optional]
-        expected_xmlrpc_calls = [call(self.mgr_sync.conn.sync.content, "listChannels", self.fake_auth_token),
-                                 self._mock_iterator(), self._mock_iterator()]
-        for channel in mandatory_channels:
-            expected_xmlrpc_calls.append(
-                call(self.mgr_sync.conn.sync.content, "addChannels", self.fake_auth_token, channel.label, ''))
-            expected_xmlrpc_calls.append(self._mock_iterator())
-
+        expected_xmlrpc_calls = [
+                call(self.mgr_sync.conn.sync.content, "listChannels", self.fake_auth_token),
+                call(self.mgr_sync.conn.sync.content, "listChannels", self.fake_auth_token),
+                call(self.mgr_sync.conn.sync.content, "addChannels", self.fake_auth_token, 'rhel-x86_64-as-4', ''),
+                call(self.mgr_sync.conn.channel.software, "syncRepo", self.fake_auth_token, ['rhel-x86_64-as-4']),
+                call(self.mgr_sync.conn.sync.content, "addChannels", self.fake_auth_token, 'res4-as-suse-manager-tools-x86_64', ''),
+                call(self.mgr_sync.conn.sync.content, "addChannels", self.fake_auth_token, 'rhel-x86_64-as-4', ''),
+                call(self.mgr_sync.conn.sync.content, "addChannels", self.fake_auth_token, 'res4-as-x86_64', ''),
+                ]
         expected_xmlrpc_calls.append(
             call(self.mgr_sync.conn.channel.software, "syncRepo", self.fake_auth_token,
                  [channel.label for channel in mandatory_channels]))
@@ -544,15 +560,15 @@ Status:
 
 001) [ ] SUSE Linux Enterprise Desktop 11 SP3 (x86_64)
 Adding channels required by 'SUSE Linux Enterprise Desktop 11 SP3' product
-Adding 'sled11-sp3-pool-x86_64' channel
-Scheduling reposync for 'sled11-sp3-pool-x86_64' channel
-Adding 'sles11-sp3-suse-manager-tools-x86_64-sled-sp3' channel
-Scheduling reposync for 'sles11-sp3-suse-manager-tools-x86_64-sled-sp3' channel
-Adding 'sled11-sp3-updates-x86_64' channel
-Scheduling reposync for 'sled11-sp3-updates-x86_64' channel
+Added 'sled11-sp3-pool-x86_64' channel
+Added 'sles11-sp3-suse-manager-tools-x86_64-sled-sp3' channel
+Added 'sled11-sp3-updates-x86_64' channel
+Scheduling reposync for following channels:
+- sled11-sp3-pool-x86_64
+- sles11-sp3-suse-manager-tools-x86_64-sled-sp3
+- sled11-sp3-updates-x86_64
 Product successfully added"""
 
-        self.maxDiff = None
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_xmlrpc_calls = []
@@ -593,6 +609,7 @@ Product successfully added"""
             return_value=dict((c.label, c) for c in chosen_product.channels))
 
         stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call.side_effect = xmlrpc_product_sideeffect
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         # set the base channel as already installed
@@ -618,14 +635,14 @@ Status:
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
-Adding 'res4-as-suse-manager-tools-x86_64' channel
-Scheduling reposync for 'res4-as-suse-manager-tools-x86_64' channel
+Added 'res4-as-suse-manager-tools-x86_64' channel
 Channel 'rhel-x86_64-as-4' has already been added
-Scheduling reposync for 'rhel-x86_64-as-4' channel
-Adding 'res4-as-x86_64' channel
-Scheduling reposync for 'res4-as-x86_64' channel
+Added 'res4-as-x86_64' channel
+Scheduling reposync for following channels:
+- res4-as-suse-manager-tools-x86_64
+- rhel-x86_64-as-4
+- res4-as-x86_64
 Product successfully added"""
-        self.maxDiff = None
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_xmlrpc_calls = []
@@ -640,7 +657,6 @@ Product successfully added"""
                         self.fake_auth_token,
                         channel.label,
                         ''))
-                expected_xmlrpc_calls.append(self._mock_iterator())
         expected_xmlrpc_calls.append(
             call._execute_xmlrpc_method(
                 self.mgr_sync.conn.channel.software,
@@ -662,6 +678,7 @@ Product successfully added"""
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
         stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call.side_effect = xmlrpc_sideeffect
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         # set the 1st required channel as already installed
@@ -739,12 +756,12 @@ All the available products have already been installed, nothing to do"""
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
         stubbed_xmlrpm_call = MagicMock()
+        stubbed_xmlrpm_call.side_effect = xmlrpc_product_sideeffect
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         # set the 1st required channel as optional and unavailable
         chosen_product.channels[0].optional = True
         chosen_product.channels[0].status = Channel.Status.UNAVAILABLE
-
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
             mock.return_value = str(
                 available_products.index(chosen_product) + 1)
@@ -761,21 +778,21 @@ Status:
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
-Adding 'rhel-x86_64-as-4' channel
-Scheduling reposync for 'rhel-x86_64-as-4' channel
-Adding 'res4-as-x86_64' channel
-Scheduling reposync for 'res4-as-x86_64' channel
+Added 'rhel-x86_64-as-4' channel
+Added 'res4-as-x86_64' channel
+Scheduling reposync for following channels:
+- rhel-x86_64-as-4
+- res4-as-x86_64
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_xmlrpc_calls = [call(self.mgr_sync.conn.sync.content, "listChannels",
-                                      self.fake_auth_token), self._mock_iterator(), self._mock_iterator()]
+                                      self.fake_auth_token)]
         mandatory_channels = [channel for channel in chosen_product.channels if not channel.optional]
 
         for channel in mandatory_channels:
             expected_xmlrpc_calls.append(call(self.mgr_sync.conn.sync.content, "addChannels",
                                               self.fake_auth_token, channel.label, ''))
-            expected_xmlrpc_calls.append(self._mock_iterator())
 
         expected_xmlrpc_calls.append(call(self.mgr_sync.conn.channel.software, "syncRepo", self.fake_auth_token,
                                           [channel.label for channel in mandatory_channels]))
@@ -786,3 +803,8 @@ def xmlrpc_sideeffect(*args, **kwargs):
     if args[1] == "addChannels":
         return [args[3]]
     return read_data_from_fixture('list_channels.data')
+
+def xmlrpc_product_sideeffect(*args, **kwargs):
+    if args[1] == "addChannels":
+        return [args[3]]
+    return read_data_from_fixture('list_channels_simplified.data')
