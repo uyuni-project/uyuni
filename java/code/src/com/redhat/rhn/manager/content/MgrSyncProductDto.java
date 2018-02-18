@@ -213,12 +213,13 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
     @Override
     public int compareTo(MgrSyncProductDto other) {
         return new CompareToBuilder()
-        .append(getNormalizedName(), other.getNormalizedName())
-        .append(getVersion(), other.getVersion())
-        .append(getArch(), other.getArch())
-        .append(getId(), other.getId())
-        .append(getBaseChannel().getLabel(), other.getBaseChannel().getLabel())
-        .toComparison();
+                .append(!isRecommended(), !other.isRecommended())
+                .append(getNormalizedName(), other.getNormalizedName())
+                .append(getVersion(), other.getVersion())
+                .append(getArch(), other.getArch())
+                .append(getId(), other.getId())
+                .append(getBaseChannel().getLabel(), other.getBaseChannel().getLabel())
+                .toComparison();
     }
 
     /**
