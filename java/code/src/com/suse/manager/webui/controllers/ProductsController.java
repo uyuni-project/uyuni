@@ -18,14 +18,22 @@ package com.suse.manager.webui.controllers;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.manager.model.products.Product;
 
+import org.apache.log4j.Logger;
+
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import spark.ModelAndView;
@@ -40,6 +48,8 @@ public class ProductsController {
     private static final String ISS_MASTER = "issMaster";
     private static final String REFRESH_NEEDED = "refreshNeeded";
     private static final String REFRESH_RUNNING = "refreshRunning";
+
+    private static Logger log = Logger.getLogger(ImageBuildController.class);
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -66,5 +76,29 @@ public class ProductsController {
         data.put(REFRESH_RUNNING, String.valueOf(latestRun != null && latestRun.getEndTime() == null));
 
         return new ModelAndView(data, "products/show.jade");
+    }
+
+    /**
+     * Returns JSON data for the SUSE products
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON result of the API call
+     */
+    public static String data(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<String, Object>();
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            Collection<MgrSyncProductDto> products = csm.listProducts(csm.listChannels());
+            data.put("baseProducts", products);
+        }
+        catch (Exception e) {
+            log.error("Exception while rendering products: " + e.getMessage());
+            data.put("error", "Exception while fetching products: " + e.getMessage());
+        }
+
+        response.type("application/json");
+        return GSON.toJson(data);
     }
 }
