@@ -37,7 +37,6 @@ Obsoletes: rhn-client-tools < %{version}-%{release}
 Obsoletes: rhn-setup-gnome
 %endif
 Requires: rpm >= 4.2.3-24_nonptl
-Requires: rpm-python
 Requires: gnupg
 Requires: coreutils
 Requires: %{pythonX}-%{name} = %{version}-%{release}
