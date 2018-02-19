@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -87,20 +88,17 @@ public class ProductsController {
      * @return JSON result of the API call
      */
     public static String data(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<>();
         try {
-            List<Product> jsonProducts = new LinkedList<Product>();
-
             ContentSyncManager csm = new ContentSyncManager();
             Collection<MgrSyncProductDto> products = csm.listProducts(csm.listChannels());
-            for (MgrSyncProductDto mgrSyncProductDto : products) {
-                jsonProducts.add(
-                        new Product(
-                                mgrSyncProductDto.getId(),
-                                mgrSyncProductDto.getFriendlyName(),
-                                mgrSyncProductDto.isRecommended()
-                                ));
-            }
+            List<Product> jsonProducts = products.stream().map(
+                syncProduct -> new Product(
+                    syncProduct.getId(),
+                    syncProduct.getFriendlyName(),
+                    syncProduct.isRecommended()
+                )
+            ).collect(Collectors.toList());
             data.put("baseProducts", jsonProducts);
         }
         catch (Exception e) {
