@@ -35,6 +35,10 @@ def _calculate_sls(actionchain_id, minion_id, chunk):
                                                 chunk)
 
 def _get_ac_storage_filenamepath():
+    '''
+    Calculate the filepath to the '_mgractionchains.conf' which is placed
+    by default in /etc/salt/minion.d/
+    '''
     config_dir = __opts__.get('conf_dir', None)
     if config_dir is None and 'conf_file' in self.opts:
         config_dir = os.path.dirname(__opts__['conf_file'])
@@ -49,13 +53,20 @@ def _get_ac_storage_filenamepath():
     return os.path.join(minion_d_dir, '_mgractionchains.conf')
 
 def _read_next_ac_chunk():
+    '''
+    Read and remove the content of '_mgractionchains.conf' file. Return the parsed YAML.
+    '''
     f_storage_filename = _get_ac_storage_filenamepath()
-    with salt.utils.fopen(f_storage_filename, "rw") as f_storage:
+    ret = None
+    with salt.utils.fopen(f_storage_filename, "r") as f_storage:
         ret = yaml.load(f_storage.read())
-        f_storage.write()
-        return ret
+    os.remove(f_storage_filename)
+    return ret
 
 def _persist_next_ac_chunk(next_chunk):
+    '''
+    Persist next_chunk to execute as YAML in '_mgractionchains.conf'
+    '''
     f_storage_filename = _get_ac_storage_filenamepath()
     with salt.utils.fopen(f_storage_filename, "w") as f_storage:
         f_storage.write(yaml.dump(next_chunk))
@@ -113,6 +124,11 @@ def resume():
         next_chunk = _read_next_ac_chunk()
         if not next_chunk:
             return
+        if type(next_chunk) != dict:
+            err_str = "Not able to resume Action Chain execution! Malformed " \
+                      "'_mgractionchains.conf' found: {0}".format(next_chunk)
+            log.error(err_str)
+            raise CommandExecutionError(err_str)
         next_chunk = next_chunk.get('next_chunk')
         log.debug("Resuming execution of SUSE Manager Action Chain -> Target SLS: "
                   "{0}".format(next_chunk))
