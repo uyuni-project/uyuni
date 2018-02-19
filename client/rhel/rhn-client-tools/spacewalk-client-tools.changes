@@ -1,3 +1,5 @@
+- move dependency to python2 subpackage
+
 -------------------------------------------------------------------
 Fri Feb 02 15:46:00 CET 2018 - jgonzalez@suse.com
 
