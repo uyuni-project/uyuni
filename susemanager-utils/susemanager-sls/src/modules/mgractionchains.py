@@ -21,12 +21,12 @@ __virtualname__ = 'mgractionchains'
 
 SALT_ACTIONCHAIN_BASE = 'actionchains'
 
+
 def __virtual__():
     '''
     This module is always enabled while 'state.sls' is available.
     '''
     return __virtualname__ if 'state.sls' in __salt__ else (False, 'state.sls is not available')
-
 
 def _calculate_sls(actionchain_id, minion_id, chunk):
     return '{0}.actionchain_{1}_{2}_{3}'.format(SALT_ACTIONCHAIN_BASE,
@@ -46,28 +46,19 @@ def _get_ac_storage_filenamepath():
         os.path.dirname(__opts__.get('default_include',
                                       salt.config.DEFAULT_MINION_OPTS['default_include'])))
 
-    if not os.path.isdir(minion_d_dir):
-        os.makedirs(minion_d_dir)
-
-    schedule_conf = os.path.join(minion_d_dir, '_mgractionchains.conf')
+    return os.path.join(minion_d_dir, '_mgractionchains.conf')
 
 def _read_next_ac_chunk():
-    try:
-        f_storage_filename = _get_ac_storage_filenamepath()
-        with salt.utils.fopen(f_storage_filename, "rw") as f_storage:
-            ret = yaml.load(f_storage.read())
-            f_storage.write()
-            return ret
-    except (IOError, yaml.scanner.ScannerError) as exc:
-        log.error("Error processing YAML from '{0}': {1}".format(f_storage_filename, exc))
+    f_storage_filename = _get_ac_storage_filenamepath()
+    with salt.utils.fopen(f_storage_filename, "rw") as f_storage:
+        ret = yaml.load(f_storage.read())
+        f_storage.write()
+        return ret
 
-def _save_nextactionchains(next_chunk):
-    try:
-        f_storage_filename = _get_ac_storage_filenamepath()
-        with salt.utils.fopen(f_storage_filename, "w") as f_storage:
-            f_storage.write(yaml.dump(next_chunk))
-    except (IOError, yaml.scanner.ScannerError) as exc:
-        log.error("Error writing YAML from '{0}': {1}".format(f_storage_filename, exc))
+def _persist_next_ac_chunk(next_chunk):
+    f_storage_filename = _get_ac_storage_filenamepath()
+    with salt.utils.fopen(f_storage_filename, "w") as f_storage:
+        f_storage.write(yaml.dump(next_chunk))
 
 def start(actionchain_id):
     '''
@@ -88,6 +79,29 @@ def start(actionchain_id):
               "'{0}' -> Target SLS: {1}".format(actionchain_id, target_sls))
     return __salt__['state.sls'](target_sls, metadata={"mgractionchain": True})
 
+def next(next_chunk):
+    '''
+    Persist the next Action Chain chunk to be executed by the 'resume' method.
+
+    next_chunk
+        The next target SLS to be executed.
+
+    CLI Example:
+
+    .. code-block:: bash
+
+        salt '*' mgractionchains.next actionchains.actionchain_123_minion_2
+    '''
+    yaml_dict = {
+        'next_chunk': next_chunk,
+    }
+    try:
+        _persist_next_ac_chunk(yaml_dict)
+    except (IOError, yaml.scanner.ScannerError) as exc:
+        err_str = "Error writing YAML from '{0}': {1}".format(f_storage_filename, exc)
+        log.error(err_str)
+        raise CommandExecutionError(err_str)
+
 def resume():
     '''
     Continue the execution of a SUSE Manager Action Chain.
@@ -95,7 +109,15 @@ def resume():
 
     This method is called by the Salt Reactor as a response to the 'minion/start/event'.
     '''
-    next_chunk = _read_next_ac_chunk().get('next_chunk')
-    log.debug("Resuming execution of SUSE Manager Action Chain -> Target SLS: "
-              "{0}".format(next_chunk))
-    return __salt__['state.sls'](target_sls, metadata={"mgractionchain": True})
+    try:
+        next_chunk = _read_next_ac_chunk()
+        if not next_chunk:
+            return
+        next_chunk = next_chunk.get('next_chunk')
+        log.debug("Resuming execution of SUSE Manager Action Chain -> Target SLS: "
+                  "{0}".format(next_chunk))
+        return __salt__['state.sls'](next_chunk, metadata={"mgractionchain": True})
+    except (IOError, yaml.scanner.ScannerError) as exc:
+        err_str = "Error processing YAML from '{0}': {1}".format(f_storage_filename, exc)
+        log.error(err_str)
+        raise CommandExecutionError(err_str)
