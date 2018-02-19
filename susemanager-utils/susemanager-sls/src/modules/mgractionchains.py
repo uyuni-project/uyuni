@@ -12,7 +12,8 @@ log = logging.getLogger(__name__)
 
 __virtualname__ = 'mgractionchains'
 
-SALT_ACTIONCHAINS_BASE = 'actionchains'
+SALT_ACTIONCHAIN_STORAGE = '/etc/salt/minion.d/_mgractionchains.conf'
+SALT_ACTIONCHAIN_BASE = 'actionchains'
 
 
 def __virtual__():
@@ -23,7 +24,7 @@ def __virtual__():
 
 
 def _calculate_sls(actionchain_id, minion_id, chunk):
-    return '{0}.actionchain_{1}_{2}_{3}'.format(SALT_ACTIONCHAINS_BASE,
+    return '{0}.actionchain_{1}_{2}_{3}'.format(SALT_ACTIONCHAIN_BASE,
                                                 actionchain_id,
                                                 minion_id,
                                                 chunk)
@@ -42,4 +43,6 @@ def start(actionchain_id):
         salt '*' mgractionchains.start 123
     '''
     target_sls = _calculate_sls(actionchain_id, __grains__['id'], 1)
+    log.debug("Starting execution of SUSE Manager Action Chains ID "
+              "'{0}' -> Target SLS: {1}".format(actionchain_id, target_sls))
     return __salt__['state.sls'](target_sls, metadata={"mgractionchain": True})
