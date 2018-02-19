@@ -3,6 +3,10 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const Network = require("../utils/network");
+const MessageContainer = require("../components/messages").Messages;
+const {Table, Column, SearchField, Highlight} = require("../components/table");
+const Functions = require("../utils/functions");
+const Utils = Functions.Utils;
 const SCCDialog = require('./scc-refresh-dialog-jspf').SCCDialog;
 
 const setupWizartSteps = [
@@ -23,14 +27,19 @@ const setupWizartSteps = [
   }
 ];
 
+function reloadData() {
+  return Network.get('/rhn/manager/api/admin/products', "application/json").promise;
+}
+
 const Products = React.createClass({
   getInitialState: function() {
     return {
       issMaster: issMaster_flag_from_backend,
       refreshNeeded: refreshNeeded_flag_from_backend,
       refreshRunning: refreshRunning_flag_from_backend,
-      serverData: null,
+      serverData: {'baseProducts' : []},
       error: null,
+      loading: true
     }
   },
 
@@ -38,26 +47,41 @@ const Products = React.createClass({
     this.refreshServerData();
   },
 
-  refreshServerData: function() {
+  refreshServerData: function(dataUrlTag) {
+    this.setState({loading: true});
     var currentObject = this;
-    Network.get("/rhn/manager/api/admin/products", "application/json").promise
+    reloadData()
       .then(data => {
-        console.log(data['baseProducts'].length)
         currentObject.setState({
-          serverData: data,
+          serverData: data['baseProducts'],
           error: null,
+          loading: false
         });
       })
       .catch(response => {
         currentObject.setState({
           error: response.status == 401 ? "authentication" :
             response.status >= 500 ? "general" :
-            null
+            null,
+          loading: false
         });
       });
   },
 
+  searchData: function(datum, criteria) {
+      if (criteria) {
+        return (datum.label).toLowerCase().includes(criteria.toLowerCase());
+      }
+      return true;
+  },
+
+  buildRows: function(message) {
+    return Object.keys(message).map((id) => message[id]);
+  },
+
   render: function() {
+    const data = this.state.serverData;
+
     const title =
       <div className='spacewalk-toolbar-h1'>
         <h1>
@@ -91,44 +115,65 @@ const Products = React.createClass({
       pageContent = (
         <div className="row" id="suse-products">
           <div className="col-sm-9">
-            <table className="table table-rounded">
-              <thead>
-                <tr>
-                  <th><input type="checkbox" className="select-all" autoComplete="off" /></th>
-                  <th>{t('Available Products Below')}</th>
-                  <th>{t('Architecture')}</th>
-                  <th>{t('Channels')}</th>
-                  <th>{t('Status')}</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody className="table-content">
-                <tr id="loading-placeholder">
-                  <td colSpan="6">
-                    <div className="spinner-container">
-                        <i className="fa fa-spinner fa-spin" />
-                        <span>{t('Loading...')}</span>
+            {
+              this.state.error == null  ?
+                <div>
+                  <div className="spacewalk-section-toolbar">
+                    <div className="action-button-wrapper">
+                      <div className="btn-group">
+                        <button className="btn btn-success" id="synchronize">
+                          <i className="fa fa-plus"></i>{t('Add products')}
+                        </button>
+                        &nbsp;
+                        <button className="btn btn-default"
+                            id="refresh" data-toggle="tooltip"
+                            title={t('Refreshes the product catalog from the Customer Center')}>
+                          <i className="fa fa-refresh"></i>{t('Refresh')}
+                        </button>
+                      </div>
                     </div>
-                  </td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td><input type="checkbox" className="select-all" autoComplete="off" /></td>
-                  <td colSpan="6">
-                    <button className="btn btn-success" id="synchronize">
-                      <i className="fa fa-plus"></i>{t('Add products')}
-                    </button>
-                    &nbsp;
-                    <button className="btn btn-default"
-                        id="refresh" data-toggle="tooltip"
-                        title={t('Refreshes the product catalog from the Customer Center')}>
-                      <i className="fa fa-refresh"></i>{t('Refresh')}
-                    </button>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
+                  </div>
+                  <Table
+                    data={this.buildRows(data)}
+                    identifier={(row) => row["id"]}
+                    cssClassFunction={''}
+                    initialSortColumnKey="label"
+                    initialSortDirection={1}
+                    initialItemsPerPage={userPrefPageSize}
+                    loading={this.state.loading}
+                    searchField={
+                        <SearchField filter={this.searchData}
+                            criteria={""}
+                            placeholder={t("Filter by product name")} />
+                    }>
+                    <Column
+                      columnKey="id"
+                      comparator={Utils.sortByNumber}
+                      header={t("Id")}
+                      cell={ (row) => row["id"]}
+                    />
+                    <Column
+                      columnKey="label"
+                      comparator={Utils.sortByText}
+                      header={t("Product Name")}
+                      cell={ (row) => row["label"]}
+                    />
+                    <Column
+                      columnKey="arch"
+                      comparator={Utils.sortByText}
+                      header={t("Architecture")}
+                      cell={ (row) => row["arch"]}
+                    />
+                    <Column
+                      columnKey="recommended"
+                      comparator={Utils.sortByText}
+                      header={t("Recommended")}
+                      cell={ (row) => row["recommended"]}
+                    />
+                  </Table>
+                </div>
+                : <ErrorMessage error={this.state.error} />
+            }
           </div>
           <div className="col-sm-3 hidden-xs" id="wizard-faq">
               <h4>{t("Why aren't all SUSE products displayed in the list?")}</h4>
@@ -189,6 +234,15 @@ const Products = React.createClass({
     )
   }
 });
+
+const ErrorMessage = (props) => <MessageContainer items={
+  props.error == "authentication" ?
+    MessagesUtils.warning(t("Session expired, please reload the page to see up-to-date data.")) :
+  props.error == "general" ?
+    MessagesUtils.warning(t("Server error, please check log files.")) :
+  []
+} />
+;
 
 ReactDOM.render(
   <Products />,
