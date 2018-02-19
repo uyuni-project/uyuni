@@ -28,10 +28,10 @@ def __virtual__():
     '''
     return __virtualname__ if 'state.sls' in __salt__ else (False, 'state.sls is not available')
 
-def _calculate_sls(actionchain_id, minion_id, chunk):
+def _calculate_sls(actionchain_id, machine_id, chunk):
     return '{0}.actionchain_{1}_{2}_{3}'.format(SALT_ACTIONCHAIN_BASE,
                                                 actionchain_id,
-                                                minion_id,
+                                                machine_id,
                                                 chunk)
 
 def _get_ac_storage_filenamepath():
@@ -40,7 +40,7 @@ def _get_ac_storage_filenamepath():
     by default in /etc/salt/minion.d/
     '''
     config_dir = __opts__.get('conf_dir', None)
-    if config_dir is None and 'conf_file' in self.opts:
+    if config_dir is None and 'conf_file' in __opts__:
         config_dir = os.path.dirname(__opts__['conf_file'])
     if config_dir is None:
         config_dir = salt.syspaths.CONFIG_DIR
@@ -57,19 +57,31 @@ def _read_next_ac_chunk():
     Read and remove the content of '_mgractionchains.conf' file. Return the parsed YAML.
     '''
     f_storage_filename = _get_ac_storage_filenamepath()
+    if not os.path.isfile(f_storage_filename):
+        return None
     ret = None
-    with salt.utils.fopen(f_storage_filename, "r") as f_storage:
-        ret = yaml.load(f_storage.read())
-    os.remove(f_storage_filename)
-    return ret
+    try:
+        with salt.utils.fopen(f_storage_filename, "r") as f_storage:
+            ret = yaml.load(f_storage.read())
+        os.remove(f_storage_filename)
+        return ret
+    except (IOError, yaml.scanner.ScannerError) as exc:
+        err_str = "Error processing YAML from '{0}': {1}".format(f_storage_filename, exc)
+        log.error(err_str)
+        raise CommandExecutionError(err_str)
 
 def _persist_next_ac_chunk(next_chunk):
     '''
     Persist next_chunk to execute as YAML in '_mgractionchains.conf'
     '''
     f_storage_filename = _get_ac_storage_filenamepath()
-    with salt.utils.fopen(f_storage_filename, "w") as f_storage:
-        f_storage.write(yaml.dump(next_chunk))
+    try:
+        with salt.utils.fopen(f_storage_filename, "w") as f_storage:
+            f_storage.write(yaml.dump(next_chunk))
+    except (IOError, yaml.scanner.ScannerError) as exc:
+        err_str = "Error writing YAML from '{0}': {1}".format(f_storage_filename, exc)
+        log.error(err_str)
+        raise CommandExecutionError(err_str)
 
 def start(actionchain_id):
     '''
@@ -85,12 +97,12 @@ def start(actionchain_id):
         salt '*' mgractionchains.start 123
     '''
     #TODO: We should kill previously stored action before starting a new one?
-    target_sls = _calculate_sls(actionchain_id, __grains__['id'], 1)
+    target_sls = _calculate_sls(actionchain_id, __grains__['machine_id'], 1)
     log.debug("Starting execution of SUSE Manager Action Chains ID "
               "'{0}' -> Target SLS: {1}".format(actionchain_id, target_sls))
     return __salt__['state.sls'](target_sls, metadata={"mgractionchain": True})
 
-def next(next_chunk):
+def next(actionchain_id, chunk):
     '''
     Persist the next Action Chain chunk to be executed by the 'resume' method.
 
@@ -101,17 +113,12 @@ def next(next_chunk):
 
     .. code-block:: bash
 
-        salt '*' mgractionchains.next actionchains.actionchain_123_minion_2
+        salt '*' mgractionchains.next actionchains.actionchain_123_machineid_2
     '''
     yaml_dict = {
-        'next_chunk': next_chunk,
+        'next_chunk': _calculate_sls(actionchain_id, __grains__['machine_id'], chunk)
     }
-    try:
-        _persist_next_ac_chunk(yaml_dict)
-    except (IOError, yaml.scanner.ScannerError) as exc:
-        err_str = "Error writing YAML from '{0}': {1}".format(f_storage_filename, exc)
-        log.error(err_str)
-        raise CommandExecutionError(err_str)
+    _persist_next_ac_chunk(yaml_dict)
 
 def resume():
     '''
@@ -120,20 +127,15 @@ def resume():
 
     This method is called by the Salt Reactor as a response to the 'minion/start/event'.
     '''
-    try:
-        next_chunk = _read_next_ac_chunk()
-        if not next_chunk:
-            return
-        if type(next_chunk) != dict:
-            err_str = "Not able to resume Action Chain execution! Malformed " \
-                      "'_mgractionchains.conf' found: {0}".format(next_chunk)
-            log.error(err_str)
-            raise CommandExecutionError(err_str)
-        next_chunk = next_chunk.get('next_chunk')
-        log.debug("Resuming execution of SUSE Manager Action Chain -> Target SLS: "
-                  "{0}".format(next_chunk))
-        return __salt__['state.sls'](next_chunk, metadata={"mgractionchain": True})
-    except (IOError, yaml.scanner.ScannerError) as exc:
-        err_str = "Error processing YAML from '{0}': {1}".format(f_storage_filename, exc)
+    next_chunk = _read_next_ac_chunk()
+    if not next_chunk:
+        return
+    if type(next_chunk) != dict:
+        err_str = "Not able to resume Action Chain execution! Malformed " \
+                  "'_mgractionchains.conf' found: {0}".format(next_chunk)
         log.error(err_str)
         raise CommandExecutionError(err_str)
+    next_chunk = next_chunk.get('next_chunk')
+    log.debug("Resuming execution of SUSE Manager Action Chain -> Target SLS: "
+              "{0}".format(next_chunk))
+    return __salt__['state.sls'](next_chunk, metadata={"mgractionchain": True})
