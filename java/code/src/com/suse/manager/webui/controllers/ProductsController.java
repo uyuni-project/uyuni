@@ -89,9 +89,19 @@ public class ProductsController {
     public static String data(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<String, Object>();
         try {
+            List<Product> jsonProducts = new LinkedList<Product>();
+
             ContentSyncManager csm = new ContentSyncManager();
             Collection<MgrSyncProductDto> products = csm.listProducts(csm.listChannels());
-            data.put("baseProducts", products);
+            for (MgrSyncProductDto mgrSyncProductDto : products) {
+                jsonProducts.add(
+                        new Product(
+                                mgrSyncProductDto.getId(),
+                                mgrSyncProductDto.getFriendlyName(),
+                                mgrSyncProductDto.isRecommended()
+                                ));
+            }
+            data.put("baseProducts", jsonProducts);
         }
         catch (Exception e) {
             log.error("Exception while rendering products: " + e.getMessage());
