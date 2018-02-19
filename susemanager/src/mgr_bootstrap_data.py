@@ -270,6 +270,67 @@ RES7 = [
         "python2-suseRegisterInfo",
        ]
 
+PKGLIST15 = [
+                "libgudev-1_0-0",
+                "libnewt0_52",
+                "libslang2",
+                "newt",
+                "python3-asn1crypto",
+                "python3-cffi",
+                "python3-cryptography",
+                "python-dmidecode",
+                "python3-dmidecode",
+                "python3-idna",
+                "python3-libxml2-python",
+                "python3-netifaces",
+                "python3-newt",
+                "python3-pyasn1",
+                "python3-pycparser",
+                "python3-pyOpenSSL",
+                "python3-pyudev",
+                "python3-rpm",
+                "hwdata",
+                "python3-hwdata",
+                "python3-rhnlib",
+                "spacewalk-check",
+                "spacewalk-client-setup",
+                "spacewalk-client-tools",
+                "python3-spacewalk-check",
+                "python3-spacewalk-client-setup",
+                "python3-spacewalk-client-tools",
+                "python3-spacewalk-usix",
+                "spacewalksd",
+                "suseRegisterInfo",
+                "python3-suseRegisterInfo",
+                "zypp-plugin-spacewalk",
+                "python3-zypp-plugin",
+                "python3-zypp-plugin-spacewalk",
+                "libpgm-5_2-0",
+                "libsodium23",
+                "libunwind",
+                "libzmq5",
+                "python3-Babel",
+                "python3-certifi",
+                "python3-chardet",
+                "python3-Jinja2",
+                "python3-MarkupSafe",
+                "python3-msgpack-python",
+                "python3-psutil",
+                "python3-py",
+                "python3-pycrypto",
+                "python3-pytz",
+                "python3-PyYAML",
+                "python3-pyzmq",
+                "python3-requests",
+                "python3-simplejson",
+                "python3-tornado",
+                "python3-urllib3",
+                "timezone",
+                "salt",
+                "python3-salt",
+                "salt-minion",
+            ]
+
 DATA = {
     'SLE-11-SP1-i586' : {
                           'PDID' : 684, 'PKGLIST' : PKGLIST11,
@@ -511,5 +572,21 @@ DATA = {
                           'PDID' : 45, 'PKGLIST' : PKGLIST12 + ENHANCE12SP1,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/2/bootstrap/'
                        },
+    'SLE-15-aarch64' : {
+                          'PDID' : [1589, 1709], 'PKGLIST' : PKGLIST15,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+                        },
+    'SLE-15-ppc64le' : {
+                          'PDID' : [1588, 1710], 'PKGLIST' : PKGLIST15,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+                        },
+    'SLE-15-s390x' : {
+                          'PDID' : [1587, 1711], 'PKGLIST' : PKGLIST15,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+                        },
+    'SLE-15-x86_64' : {
+                          'PDID' : [1576, 1712], 'PKGLIST' : PKGLIST15,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
+                        },
 }
 
