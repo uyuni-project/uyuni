@@ -281,6 +281,7 @@ public class Router implements SparkApplication {
         // SUSE Products
         get("/manager/admin/setup/products",
                 withUserPreferences(withCsrfToken(withOrgAdmin(ProductsController::show))), jade);
+        get("/manager/api/admin/products", withUser(ProductsController::data));
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {
