@@ -18,8 +18,6 @@ package com.suse.manager.model.products;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.tools.ant.taskdefs.condition.IsReachable;
-import org.simpleframework.xml.Attribute;
 
 /**
  * A Product.
@@ -27,23 +25,14 @@ import org.simpleframework.xml.Attribute;
 public class Product {
 
     /** The id. */
-    @Attribute
-    private Long id;
+    private final Long id;
 
     /** The label. */
-    @Attribute
-    private String label;
+    private final String label;
     
     /** The recommended flag. */
-    @Attribute
-    private boolean recommended;
+    private final boolean recommended;
     
-
-    /**
-     * Default constructor.
-     */
-    public Product() { }
-
     /**
      * Instantiates a new Product.
      * @param idIn the id in
@@ -65,14 +54,6 @@ public class Product {
     }
 
     /**
-     * Set the id
-     * @param idIn id
-     */
-    public void setId(Long idIn) {
-        this.id = idIn;
-    }
-
-    /**
      * Gets the label.
      * @return the label
      */
@@ -81,27 +62,11 @@ public class Product {
     }
 
     /**
-     * Set the product label
-     * @param labelIn label
-     */
-    public void setLabel(String labelIn) {
-        this.label = labelIn;
-    }
-
-    /**
      * Gets the recommended flag.
      * @return the recommended
      */
     public Boolean isRecommended() {
         return recommended;
-    }
-
-    /**
-     * Set the product recommended flag
-     * @param recommendedIn recommended
-     */
-    public void setRecommended(Boolean recommendedIn) {
-        this.recommended = recommendedIn;
     }
 
     /**
