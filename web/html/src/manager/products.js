@@ -2,6 +2,7 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
+const Network = require("../utils/network");
 const SCCDialog = require('./scc-refresh-dialog-jspf').SCCDialog;
 
 const setupWizartSteps = [
@@ -27,8 +28,33 @@ const Products = React.createClass({
     return {
       issMaster: issMaster_flag_from_backend,
       refreshNeeded: refreshNeeded_flag_from_backend,
-      refreshRunning: refreshRunning_flag_from_backend
+      refreshRunning: refreshRunning_flag_from_backend,
+      serverData: null,
+      error: null,
     }
+  },
+
+  componentWillMount: function() {
+    this.refreshServerData();
+  },
+
+  refreshServerData: function() {
+    var currentObject = this;
+    Network.get("/rhn/manager/api/admin/products", "application/json").promise
+      .then(data => {
+        console.log(data['baseProducts'].length)
+        currentObject.setState({
+          serverData: data,
+          error: null,
+        });
+      })
+      .catch(response => {
+        currentObject.setState({
+          error: response.status == 401 ? "authentication" :
+            response.status >= 500 ? "general" :
+            null
+        });
+      });
   },
 
   render: function() {
