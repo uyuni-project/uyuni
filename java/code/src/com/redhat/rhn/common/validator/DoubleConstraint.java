@@ -47,7 +47,7 @@ public class DoubleConstraint extends RequiredIfConstraint {
     public DoubleConstraint(String identifierIn) {
         super(identifierIn);
         this.minInclusive = Double.MIN_VALUE;
-        this.minInclusive = Double.MAX_VALUE;
+        this.maxInclusive = Double.MAX_VALUE;
     }
 
 
