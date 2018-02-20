@@ -10178,7 +10178,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.reboot">
-        <source>&lt;strong&gt;Requiring Reboot&lt;/strong&gt;</source>
+        <source>Manage Systems &lt;strong&gt;Requiring Reboot&lt;/strong&gt; ({0})</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
