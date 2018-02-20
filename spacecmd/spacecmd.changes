@@ -1,3 +1,4 @@
+- Add function to update software channel through spacecmd
 - Configure gpg_flag via spacecmd creating a channel (bsc#1080290)
 - Allow scheduling the change of software channels as an action. The previous channels remain accessible
   to the registered system until the action is executed.
