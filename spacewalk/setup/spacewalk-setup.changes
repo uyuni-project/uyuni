@@ -1,3 +1,5 @@
+- Configure Salt Reactor for handle Action Chain execution on Minions
+
 -------------------------------------------------------------------
 Mon Mar 05 08:56:03 CET 2018 - jgonzalez@suse.com
 
