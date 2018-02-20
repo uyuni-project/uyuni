@@ -32,6 +32,8 @@ public class Product {
     
     /** The recommended flag. */
     private final boolean recommended;
+
+    private final String arch;
     
     /**
      * Instantiates a new Product.
@@ -39,9 +41,10 @@ public class Product {
      * @param labelIn the label in
      * @param recommendedIn the recommended flag in
      */
-    public Product(Long idIn, String labelIn, Boolean recommendedIn) {
+    public Product(Long idIn, String labelIn, String archIn, Boolean recommendedIn) {
         id = idIn;
         label = labelIn;
+        arch = archIn;
         recommended = recommendedIn;
     }
 
@@ -67,6 +70,10 @@ public class Product {
      */
     public Boolean isRecommended() {
         return recommended;
+    }
+
+    public String getArch() {
+        return arch;
     }
 
     /**
