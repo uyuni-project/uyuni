@@ -96,6 +96,7 @@ public class ProductsController {
                 syncProduct -> new Product(
                     syncProduct.getId(),
                     syncProduct.getFriendlyName(),
+                    syncProduct.getArch(),
                     syncProduct.isRecommended()
                 )
             ).collect(Collectors.toList());
