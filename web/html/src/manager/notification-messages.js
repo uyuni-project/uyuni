@@ -24,6 +24,7 @@ const NotificationMessages = React.createClass({
       dataUrlTags: ['#data-unread', '#data-all'],
       currentDataUrlTag: location.hash ? location.hash : '#data-unread',
       loading: true,
+      messages: []
     };
   },
 
@@ -67,7 +68,8 @@ const NotificationMessages = React.createClass({
         currentObject.setState({
           serverData: data,
           error: null,
-          loading: false
+          loading: false,
+          messages: []
         });
       })
       .catch(response => {
@@ -75,7 +77,8 @@ const NotificationMessages = React.createClass({
           error: response.status == 401 ? "authentication" :
             response.status >= 500 ? "general" :
             null,
-          loading: false
+          loading: false,
+          messages: []
         });
       });
   },
@@ -230,7 +233,9 @@ const NotificationMessages = React.createClass({
   retryOnboarding: function(minionId) {
     Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, "application/json").promise
     .then((data) => {
-      console.log('message result = ' + data.message);
+      var newMessagesState = this.state.messages;
+      newMessagesState.push({ severity: data.severity, text: data.text });
+      this.setState({ messages : newMessagesState });
     })
     .catch(response => {
     });
@@ -239,7 +244,9 @@ const NotificationMessages = React.createClass({
   retryReposync: function(channelId) {
     Network.post("/rhn/manager/notification-messages/retry-reposync/" + channelId, "application/json").promise
     .then((data) => {
-      console.log('message result = ' + data.message);
+      var newMessagesState = this.state.messages;
+      newMessagesState.push({ severity: data.severity, text: data.text });
+      this.setState({ messages : newMessagesState });
     })
     .catch(response => {
     });
@@ -283,10 +290,16 @@ const NotificationMessages = React.createClass({
           title={t('Mark all as read')} text={t('Mark all as read')} handler={this.readThemAll} />
     </div>;
 
+    const visibleMessages = this.state.messages.length > 3 ? this.state.messages.slice(this.state.messages.length - 3) : this.state.messages;
+    const messages = visibleMessages.map(m => <MessageContainer items={[{severity: m.severity, text: <p>{t(m.text)}.</p> }]}/>);
+
     if (data != null) {
       return  (
         <Panel title={t("Notification Messages")} icon="fa-envelope" button={ panelButtons }>
           <ErrorMessage error={this.state.error} />
+
+          { messages }
+
           <p>{t('The server has collected the following notification messages.')}</p>
           {headerTabs}
           <Table
