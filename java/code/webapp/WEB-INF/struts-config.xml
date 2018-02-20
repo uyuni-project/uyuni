@@ -135,6 +135,8 @@
             <form-property name="fax" type="java.lang.Boolean"/>
             <form-property name="mail" type="java.lang.Boolean"/>
             <form-property name="pagesize" type="java.lang.Integer"/>
+            <form-property name="preferredLocale" type="java.lang.String" />
+            <form-property name="timezone" type="java.lang.Integer"/>
             <form-property name="possiblePanes"
                            type="org.apache.struts.util.LabelValueBean[]"/>
             <form-property name="selectedPanes" type="java.lang.String[]"/>
@@ -760,13 +762,6 @@
         <form-bean name="systemEntitlementsForm"
            type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
         <form-property name="addOnEntitlement" type="java.lang.String"/>
-        </form-bean>
-        <form-bean name="localePreferencesForm"
-                   type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-           <form-property name="preferredLocale" type="java.lang.String" />
-           <form-property name="timezone" type="java.lang.Integer"/>
-           <form-property name="submitted" type="java.lang.Boolean" />
-           <form-property name="uid" type="java.lang.Long" />
         </form-bean>
 
         <form-bean name="deactivateSelfForm"
@@ -1457,35 +1452,12 @@
       <forward name="default" path="/WEB-INF/pages/admin/users/userpreferences.jsp" />
     </action>
 
-    <action path="/users/LocalePreferences"
-        name="localePreferencesForm"
-        scope="request"
-        input="/WEB-INF/pages/admin/users/userpreferences.jsp"
-        type="com.redhat.rhn.frontend.action.user.UserLocalePrefAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-      <set-property property="postRequiredIfSubmitted" value="true" />
-      <set-property property="acls"
-                    value="user_role(org_admin)"/>
-      <forward name="default" path="/WEB-INF/pages/admin/users/localepreferences.jsp" />
-      <forward name="display" path="/users/LocalePreferences.do" />
-    </action>
-
-
     <action path="/account/UserPreferences"
         name="userPrefForm"
         scope="request"
         input="/WEB-INF/pages/user/edit/yourpreferences.jsp"
         type="com.redhat.rhn.frontend.action.user.UserPrefSetupAction">
       <forward name="default" path="/WEB-INF/pages/user/edit/yourpreferences.jsp" />
-    </action>
-
-    <action path="/account/LocalePreferences"
-         name="localePreferencesForm"
-         scope="request"
-         type="com.redhat.rhn.frontend.action.user.UserLocalePrefAction">
-        <forward name="display" path="/account/LocalePreferences.do"
-             redirect="true" />
-        <forward name="default" path="/WEB-INF/pages/user/edit/localepreference.jsp" />
     </action>
 
     <action path="/users/PrefSubmit"

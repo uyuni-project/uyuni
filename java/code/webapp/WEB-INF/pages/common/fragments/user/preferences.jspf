@@ -48,6 +48,28 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
+    <h4><bean:message key="preferences.jsp.tz"/></h4>
+  </div>
+  <div class="panel-body">
+    <p><bean:message key="preferences.jsp.datestimes"/></p>
+    <div class="form-group">
+      <div class="col-md-2">
+        <bean:message key="preferences.jsp.displaytimesas"/>
+      </div>
+      <div class="col-md-4">
+        <html:select styleClass="form-control" property="timezone">
+          <html:options collection="timezones"
+          property="value"
+          labelProperty="display" />
+        </html:select>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
     <h4><bean:message key="preferences.jsp.csvtitle" /></h4>
   </div>
   <div class="panel-body">
@@ -60,6 +82,7 @@
 </div>
 
     <html:hidden property="uid" />
+    <html:hidden property="preferredLocale" value="en_US" />
 
 <div class="text-left">
     <rhn:submit valueKey="preferences.jsp.submitvalue"/>

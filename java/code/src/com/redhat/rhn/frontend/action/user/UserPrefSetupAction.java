@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.struts.LabelValueEnabledBean;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.user.UserManager;
@@ -47,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
  * UserPreferencesAction, edit action for user detail page
  * @version $Rev: 1226 $
  */
-public class UserPrefSetupAction extends RhnAction {
+public class UserPrefSetupAction extends BaseUserSetupAction {
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -76,6 +75,20 @@ public class UserPrefSetupAction extends RhnAction {
         request.setAttribute("showTaskoNotify",
                 Boolean.valueOf(user.hasRole(RoleFactory.ORG_ADMIN) ||
                         user.hasRole(RoleFactory.SAT_ADMIN)));
+
+        requestContext.getRequest().setAttribute("targetuser", user);
+        requestContext.getRequest().setAttribute("supportedLocales", buildImageMap());
+        requestContext.getRequest().setAttribute("noLocale", buildNoneLocale());
+        requestContext.getRequest().setAttribute("timezones", getTimeZones());
+        if (user.getTimeZone() != null) {
+            form.set("timezone",
+                    new Integer(user.getTimeZone().getTimeZoneId()));
+        }
+        else {
+            form.set("timezone", new Integer(UserManager.getDefaultTimeZone()
+                    .getTimeZoneId()));
+        }
+        form.set("uid", user.getId());
         form.set("taskoNotify", user.getTaskoNotify());
 
         form.set("pagesize", new Integer(user.getPageSize()));
