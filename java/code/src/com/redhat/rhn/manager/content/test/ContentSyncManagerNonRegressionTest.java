@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -40,6 +43,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -251,4 +256,31 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
         }
     }
+
+    public void testProductByChannelLabel() throws Exception {
+        File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
+        List<XMLChannel> allChannels = new Persister().read(XMLChannels.class, channelsXML).getChannels();
+        Map<String, String> archByChannelLabel = allChannels.stream().collect(Collectors.toMap(
+                XMLChannel::getLabel,
+                XMLChannel::getArch
+        ));
+        //Stream<String> stream = SUSEProductFactory.findAllSUSEProductChannels().stream().map(SUSEProductChannel::getChannelLabel);
+        //Stream<String> stream = Stream.of("openstack-cloud-magnum-orchestration-pool-x86_64", "sle-module-containers12-pool-ppc64le");
+        //Stream<String> stream = Stream.of("rhel-i386-server-6");
+        //Stream<String> stream = Stream.of("sle11-hae-sp1-pool-ppc64", "suse-manager-proxy-3.0-pool-x86_64-sap-sp1");
+        //stream.forEach(channelLabel -> {
+        //    List<SUSEProductChannel> collect = SUSEProductFactory.findAllMandetoryChannels(
+        //            channelLabel,
+        //            archByChannelLabel::get
+        //    ).collect(Collectors.toList());
+        //    System.out.println("input: " + channelLabel);
+        //    System.out.println();
+        //    collect.forEach(c -> {
+        //        System.out.println(c.getChannelLabel());
+        //    });
+        //    System.out.println();
+        //    System.out.println();
+        //});
+    }
+
 }
