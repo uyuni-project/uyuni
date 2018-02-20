@@ -590,7 +590,42 @@ public class ChannelSoftwareHandler extends BaseHandler {
         throws NoSuchChannelException {
         return lookupChannelById(loggedInUser, id.longValue());
     }
+    /**
+     * Allows to modify channel attributes
+     * @param loggedInUser The current user
+     * @param channelLabel label of channel to be modified
+     * @param details map of channel attributes to be changed
+     * @return 1 if edit was successful, exception thrown otherwise
+     *
+     * @xmlrpc.doc Allows to modify channel attributes
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "channelId", "channel id")
+     * @xmlrpc.param
+     *  #struct("channel_map")
+     *      #prop_desc("string", "checksum_label", "new channel repository checksum label
+     *          (optional)")
+     *      #prop_desc("string", "name", "new channel name (optional)")
+     *      #prop_desc("string", "summary", "new channel summary (optional)")
+     *      #prop_desc("string", "description", "new channel description (optional)")
+     *      #prop_desc("string", "maintainer_name", "new channel maintainer name
+     *          (optional)")
+     *      #prop_desc("string", "maintainer_email", "new channel email address
+     *          (optional)")
+     *      #prop_desc("string", "maintainer_phone", "new channel phone number (optional)")
+     *      #prop_desc("string", "gpg_key_url", "new channel gpg key url (optional)")
+     *      #prop_desc("string", "gpg_key_id", "new channel gpg key id (optional)")
+     *      #prop_desc("string", "gpg_key_fp", "new channel gpg key fingerprint
+     *          (optional)")
+     *      #prop_desc("string", "gpg_check", "enable/disable gpg check (optional)")
+     *
+     *  #struct_end()
 
+     *@xmlrpc.returntype #return_int_success()
+     */
+    public int setDetails(User loggedInUser, String channelLabel, Map<String, String> details) {
+        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
+        return setDetails(loggedInUser, channel.getId().intValue(), details);
+    }
     /**
      * Allows to modify channel attributes
      * @param loggedInUser The current user
@@ -617,6 +652,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #prop_desc("string", "gpg_key_id", "new channel gpg key id (optional)")
      *      #prop_desc("string", "gpg_key_fp", "new channel gpg key fingerprint
      *          (optional)")
+     *      #prop_desc("string", "gpg_check", "enable/disable gpg check (optional)")
+     *
      *  #struct_end()
 
      *@xmlrpc.returntype #return_int_success()
@@ -636,6 +673,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         validKeys.add("gpg_key_url");
         validKeys.add("gpg_key_id");
         validKeys.add("gpg_key_fp");
+        validKeys.add("gpg_check");
         validateMap(validKeys, details);
 
         UpdateChannelCommand ucc = new UpdateChannelCommand(loggedInUser, channel);
@@ -678,6 +716,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         if (details.containsKey("gpg_key_fp")) {
             ucc.setGpgKeyFp(details.get("gpg_key_fp"));
+        }
+
+        if (details.containsKey("gpg_check")) {
+            ucc.setGpgCheck(Boolean.parseBoolean(details.get("gpg_check")));
         }
 
        ucc.update(channelId.longValue());
@@ -1979,6 +2021,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *              gpg_id might be used as well")
      *          #prop_desc("string", "gpg_key_fp", "(optional),
      *              gpg_fingerprint might be used as well")
+     *          #prop_desc("string", "gpg_check", "(optional)")
      *          #prop_desc("string", "description", "(optional)")
      *          #prop_desc("string", "checksum", "either sha1 or sha256")
      *      #struct_end()
@@ -2001,6 +2044,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         validKeys.add("gpg_key_url");
         validKeys.add("gpg_key_id");
         validKeys.add("gpg_key_fp");
+        validKeys.add("gpg_check");
         validKeys.add("description");
         validKeys.add("checksum");
         validateMap(validKeys, channelDetails);
@@ -2042,12 +2086,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
 
         String gpgUrl, gpgId, gpgFingerprint;
+        boolean gpgCheck = true;
         if (channelDetails.containsKey("gpg_key_url") ||
                 channelDetails.containsKey("gpg_url") ||
                 channelDetails.containsKey("gpg_key_id") ||
                 channelDetails.containsKey("gpg_id") ||
                 channelDetails.containsKey("gpg_key_fp") ||
-                channelDetails.containsKey("gpg_fingerprint")) {
+                channelDetails.containsKey("gpg_fingerprint") ||
+                channelDetails.containsKey("gpg_check")) {
             // if one of the GPG information was set, use it
             if (channelDetails.get("gpg_key_url") == null) {
                 gpgUrl = channelDetails.get("gpg_url");
@@ -2067,12 +2113,17 @@ public class ChannelSoftwareHandler extends BaseHandler {
             else {
                 gpgFingerprint = channelDetails.get("gpg_key_fp");
             }
+            if (channelDetails.containsKey("gpg_check")) {
+                gpgCheck = Boolean.parseBoolean(channelDetails.get("gpg_check"));
+            }
+
         }
         else {
             // copy GPG info from the original channel
             gpgUrl = originalChan.getGPGKeyUrl();
             gpgId = originalChan.getGPGKeyId();
             gpgFingerprint = originalChan.getGPGKeyFp();
+            gpgCheck = originalChan.isGPGCheck();
         }
 
         CloneChannelCommand helper = new CloneChannelCommand(originalState.booleanValue(),
@@ -2083,6 +2134,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         helper.setGpgKeyFp(gpgFingerprint);
         helper.setGpgKeyId(gpgId);
         helper.setGpgKeyUrl(gpgUrl);
+        helper.setGpgCheck(gpgCheck);
         helper.setLabel(label);
         if (parentLabel != null) {
             helper.setParentLabel(parentLabel);
