@@ -175,11 +175,15 @@ public class NotificationMessageController {
     public static String retryOnboarding(Request request, Response response, User user) {
         String minionId = request.params("minionId");
 
+        String severity = "success";
+        String resultMessage = "Onboarding restarted of the minioniId '%s'";
+
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(SaltService.INSTANCE);
         action.doExecute(new RegisterMinionEventMessage(minionId));
 
         Map<String, String> data = new HashMap<>();
-        data.put("message", "Onboarding restarted.");
+        data.put("severity", severity);
+        data.put("text", String.format(resultMessage, minionId));
         response.type("application/json");
         return GSON.toJson(data);
     }
@@ -195,18 +199,21 @@ public class NotificationMessageController {
     public static String retryReposync(Request request, Response response, User user) {
         Long channelId = Long.valueOf(request.params("channelId"));
 
-        String resultMessage = "Reposync restarted";
+        String resultMessage = "Reposync restarted for the channel '%s'";
+        String severity = "success";
 
         TaskomaticApi taskomatic = new TaskomaticApi();
         try {
             taskomatic.scheduleSingleRepoSync(ChannelFactory.lookupById(channelId), user);
         }
         catch (TaskomaticApiException e) {
-            resultMessage = "Failed to restart reposync: " + e.getMessage();
+            severity = "error";
+            resultMessage = "Failed to restart reposync for the channel '%s': " + e.getMessage();
         }
 
         Map<String, String> data = new HashMap<>();
-        data.put("message", resultMessage);
+        data.put("severity", severity);
+        data.put("text", String.format(resultMessage, ChannelFactory.lookupById(channelId).getLabel()));
         response.type("application/json");
         return GSON.toJson(data);
     }
