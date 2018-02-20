@@ -34,16 +34,7 @@
             <li class="list-group-item">
               <rhn:icon type="nav-bullet" /> <a
                 href="/rhn/systems/RequiringReboot.do">
-                    <c:choose>
-                        <c:when test="${requestScope.requiringReboot == 1}">
-                            <bean:message key="onesystem.message" />
-                            <bean:message key="yourrhn.jsp.tasks.reboot" arg0="${requestScope.requiringReboot}"/>
-                        </c:when>
-                        <c:otherwise>
-                            <bean:message key="manysystems.message" arg0="${requestScope.requiringReboot}"/>
-                            <bean:message key="yourrhn.jsp.tasks.reboot"/>
-                        </c:otherwise>
-                    </c:choose>
+                    <bean:message key="yourrhn.jsp.tasks.reboot" arg0="${requestScope.requiringReboot}"/>
               </a>
             </li>
           </rhn:require>
