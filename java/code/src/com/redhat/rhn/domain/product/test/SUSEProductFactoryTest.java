@@ -21,11 +21,20 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.test.ContentSyncManagerNonRegressionTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.mgrsync.XMLChannel;
+import com.suse.mgrsync.XMLChannels;
+import org.simpleframework.xml.core.Persister;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.io.File;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Tests for {@link SUSEProductFactory}.
@@ -75,4 +84,5 @@ public class SUSEProductFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, remaining.size());
         assertEquals(p, remaining.get(0));
     }
+
 }
