@@ -19,6 +19,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -37,6 +39,7 @@ import org.apache.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,6 +52,7 @@ import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
 
 import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Collectors.toList;
 
 /**
  * TaskomaticApi
@@ -59,6 +63,8 @@ public class TaskomaticApi {
     public static final String MINION_ACTION_JOB_PREFIX = "minion-action-executor-";
     public static final String MINION_ACTION_JOB_DOWNLOAD_PREFIX =
             MINION_ACTION_JOB_PREFIX + "download-";
+    public static final String MINION_ACTIONCHAIN_BUNCH_LABEL = "minion-actionchain-executor-bunch";
+    public static final String MINION_ACTIONCHAIN_JOB_PREFIX = "minion-actionchain-executor-";
     private static final Logger LOG = Logger.getLogger(TaskomaticApi.class);
 
 
@@ -496,6 +502,41 @@ public class TaskomaticApi {
         invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
                 MINION_ACTION_JOB_PREFIX + action.getId(), params,
                 action.getEarliestAction());
+    }
+
+    /**
+     * Schedule an Action Chain execution for Salt minions.
+     *
+     * @param actionchain the actionchain to be executed
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleActionChainExecution(ActionChain actionchain)
+        throws TaskomaticApiException {
+        Set<Server> minionServers = actionchain.getEntries().stream()
+                .map(ActionChainEntry::getAction)
+                .map(Action::getServerActions)
+                .flatMap(serverActions -> serverActions.stream())
+                .collect(toList()).stream()
+                .map(ServerAction::getServer)
+                .filter(s -> MinionServerUtils.isMinionServer(s))
+                .collect(toSet());
+
+        if (minionServers.isEmpty()) {
+            return;
+        }
+
+        Date earliestAction = actionchain.getEarliestAction();
+
+        Map<String, List<String>> params = new HashMap<>();
+        List<String> actionChainId = Arrays.asList(Long.toString(actionchain.getId()));
+        params.put("actionchain_id", actionChainId);
+        params.put("targets_ids", minionServers.stream()
+                .map(Object::toString)
+                .collect(toList()));
+
+        invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTIONCHAIN_BUNCH_LABEL,
+                MINION_ACTIONCHAIN_JOB_PREFIX + actionchain.getId(), params,
+                earliestAction);
     }
 
     /**

@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -107,6 +108,17 @@ public class ActionChain extends BaseDomainHelper {
     public Set<ActionChainEntry> getEntries() {
         return entries;
     }
+
+    /**
+     * Gets the earliest action date in related actions.
+     *
+     * @return the entries
+     */
+    public Date getEarliestAction() {
+        return entries.stream().map(ActionChainEntry::getAction)
+                .map(Action::getEarliestAction).min(Date::compareTo).get();
+    }
+
 
     /**
      * Sets the entries.
