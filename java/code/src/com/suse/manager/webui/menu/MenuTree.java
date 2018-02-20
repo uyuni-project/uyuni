@@ -69,7 +69,6 @@ public class MenuTree {
                         .withAltUrl("/rhn/account/DeleteCredentials.do"))
                     .addChild(new MenuItem("Account Deactivation").withPrimaryUrl("/rhn/account/AccountDeactivation.do")))
                 .addChild(new MenuItem("Your Preferences").withPrimaryUrl("/rhn/account/UserPreferences.do"))
-                .addChild(new MenuItem("Locale Preferences").withPrimaryUrl("/rhn/account/LocalePreferences.do"))
                 .addChild(new MenuItem("Your Organization")
                     .addChild(new MenuItem("Configuration")
                         .withPrimaryUrl("/rhn/multiorg/OrgConfigDetails.do").withVisibility(adminRoles.get("org")))

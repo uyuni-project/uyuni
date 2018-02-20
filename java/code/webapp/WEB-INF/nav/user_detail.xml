@@ -13,9 +13,8 @@
     <rhn-tab name="Subscription" url="/rhn/users/ChannelPerms.do" />
     <rhn-tab name="Management" url="/rhn/users/ChannelManagementPerms.do" acl="org_role(channel_admin)"/>
   </rhn-tab>
-  <rhn-tab name="Preferences" url="/rhn/users/UserPreferences.do">
-    <rhn-tab name="User" url="/rhn/users/UserPreferences.do"/>
-    <rhn-tab name="Locale" url="/rhn/users/LocalePreferences.do"/>
+  <rhn-tab name="Preferences">
+    <rhn-tab-url>/rhn/users/UserPreferences.do</rhn-tab-url>
   </rhn-tab>
   <rhn-tab name="Addresses">
     <rhn-tab-url>/rhn/users/Addresses.do</rhn-tab-url>
