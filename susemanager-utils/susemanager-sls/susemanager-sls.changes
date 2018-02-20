@@ -1,3 +1,4 @@
+- Provide new Salt module and Reactor to handle Action Chains on Minions
 - use dockermod with new salt and user repository/tag option for build
 - adapt names for gpg keys which have been changed
 - perform docker login before building and inspecting images (bsc#1085635)
