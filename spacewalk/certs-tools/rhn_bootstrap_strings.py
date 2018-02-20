@@ -388,10 +388,14 @@ if [ "$INSTALLER" == zypper ]; then
     local BASE=""
     local VERSION=""
     local PATCHLEVEL=""
-    test -r /etc/SuSE-release && {{
-      grep -q 'Enterprise' /etc/SuSE-release && BASE="sle"
+    if [ -r /etc/SuSE-release ]; then
+      grep -q 'Enterprise' /etc/SuSE-release && BASE='sle'
       eval $(grep '^\(VERSION\|PATCHLEVEL\)' /etc/SuSE-release | tr -d '[:blank:]')
-    }}
+    elif [ -r /etc/os-release ]; then
+      grep -q 'Enterprise' /etc/os-release && BASE='sle'
+      VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"
+      PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
+    fi
     Z_CLIENT_CODE_BASE="${{BASE:-unknown}}"
     Z_CLIENT_CODE_VERSION="${{VERSION:-unknown}}"
     Z_CLIENT_CODE_PATCHLEVEL="${{PATCHLEVEL:-0}}"
