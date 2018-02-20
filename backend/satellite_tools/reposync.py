@@ -736,7 +736,6 @@ class RepoSync(object):
         modulesfile = plug.get_modules()
         if modulesfile:
             self.copy_metadata_file(modulesfile, 'modules', relative_modules_dir)
-
     def _populate_erratum(self, notice):
         patch_name = self._patch_naming(notice)
         existing_errata = self.get_errata(patch_name)
@@ -823,9 +822,6 @@ class RepoSync(object):
 
             # Save advisory names from all repositories
             self.all_errata.add(notice['update_id'])
-
-            if not self.force_all_errata and notice['update_id'] in channel_advisory_names:
-                continue
 
             # pylint: disable=W0703
             try:
@@ -1710,8 +1706,8 @@ class RepoSync(object):
            new_errata_version: integer version number
            new_errata_changedate: date of the last change in DB format "%Y-%m-%d %H:%M:%S"
         """
-        if self.deep_verify:
-            # with deep_verify always re-import all errata
+        if self.force_all_errata:
+            # with force_all_errata always re-import all errata
             return True
 
         if int(existing_errata['advisory_rel']) < int(new_errata_version):
