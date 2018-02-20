@@ -392,12 +392,10 @@ public class ProductSyncManager {
         }
 
         // Add base channel on top of everything else so it can be added first.
-        Collections.sort(mandatoryChannelsOut, new Comparator<Channel>() {
-            public int compare(Channel a, Channel b) {
-                return a.getLabel().equals(productIn.getBaseChannel().getLabel()) ? -1 :
-                        b.getLabel().equals(productIn.getBaseChannel().getLabel()) ? 1 : 0;
-            }
-        });
+        mandatoryChannelsOut.sort(
+                (a, b) -> a.getLabel().equals(productIn.getBaseChannel().getLabel()) ? -1 :
+                          b.getLabel().equals(productIn.getBaseChannel().getLabel()) ? 1 : 0
+        );
 
         // Setup the product that will be displayed
         SetupWizardProductDto displayProduct = new SetupWizardProductDto(
