@@ -1,10 +1,5 @@
 // responsive tabs
 .responsive-wizard {
-  ul.nav.nav-tabs + .panel.panel-default,
-  .spacewalk-content-nav + .panel.panel-default {
-    border-radius: 0 0 4px 4px;
-    border-top: 0px ;
-  }
   .panel-footer {
     background-color: transparent;
   }
@@ -15,7 +10,7 @@ body{
 
 // Setup Wizard
 .responsive-wizard {
-  .panel-body {
+  > .panel-default > .panel-body {
     padding-bottom: 0;
     button.btn {
       .btn-sm;
