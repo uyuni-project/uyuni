@@ -359,7 +359,8 @@ const Table = React.createClass({
             </div>
           </div>
           { this.state.loading ?
-            <div className="panel-body">
+            <div className="panel-body text-center">
+              <i className='fa fa-spinner fa-spin fa-1-5x'></i>
               <h4>{loadingText}</h4>
             </div>
             :
