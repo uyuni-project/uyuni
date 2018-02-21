@@ -1,5 +1,13 @@
 #!/bin/bash
 
+DISTRIBUTION_ID="$(source /etc/os-release && echo ${ID})"
+case ${DISTRIBUTION_ID} in
+    sles)      JVM='/usr/lib64/jvm/jre-1.8.0-ibm/bin/java';;
+    opensuse)  JVM='/usr/lib64/jvm/jre-1.8.0-openjdk/bin/java';;
+    *)         echo 'Unknown distribution!'
+               exit 1;;
+esac
+
 if [ ! $UID -eq 0 ]; then
     echo "You need to be superuser (root) to run this script!"
     exit 1
@@ -15,9 +23,9 @@ fi
 
 # ensure correct java version is being used (bsc#1049575)
 echo "Asserting correct java version..."
-update-alternatives --set java /usr/lib64/jvm/jre-1.8.0-ibm/bin/java
+update-alternatives --set java ${JVM}
 if [ ! $? -eq 0 ]; then
-    echo "Failed to set jre-1.8.0-ibm as default java version!"
+    echo "Failed to set ${JVM} as default java version!"
     exit 1
 fi
 
