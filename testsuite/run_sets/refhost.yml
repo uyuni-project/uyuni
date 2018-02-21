@@ -8,8 +8,8 @@
 
 # IMMUTABLE ORDER
 
-# initialize SUSE Manager server
 - features/core_first_settings.feature
+# initialize SUSE Manager server
 - features/core_srv_channels_add.feature
 - features/core_srv_push_package.feature
 - features/core_srv_create_repository.feature
@@ -75,6 +75,7 @@
 - features/trad_mgr_bootstrap.feature
 - features/trad_sp_migration.feature
 - features/srv_salt.feature
+- features/min_salt_user_states.feature
 - features/trad_lock_packages.feature
 - features/srv_check_channels_page.feature
 - features/min_salt_minion_details.feature

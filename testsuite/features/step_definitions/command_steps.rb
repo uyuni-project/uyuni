@@ -103,14 +103,14 @@ end
 
 When(/^I copy "([^"]*)" from "([^"]*)"$/) do |file, target|
   node = get_target(target)
-  rc = file_extract(node, file, File.basename(file))
-  raise 'File extraction failed' unless rc.zero?
+  return_code = file_extract(node, file, File.basename(file))
+  raise 'File extraction failed' unless return_code.zero?
 end
 
 When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, target|
   node = get_target(target)
-  rc = file_inject(node, file, File.basename(file))
-  raise 'File injection failed' unless rc.zero?
+  return_code = file_inject(node, file, File.basename(file))
+  raise 'File injection failed' unless return_code.zero?
 end
 
 Then(/^the PXE default profile should be enabled$/) do
@@ -127,8 +127,8 @@ When(/^the server starts mocking an IPMI host$/) do
   ["ipmisim1.emu", "lan.conf", "fake_ipmi_host.sh"].each do |file|
     source = File.dirname(__FILE__) + '/../upload_files/' + file
     dest = "/etc/ipmi/" + file
-    rc = file_inject($server, source, dest)
-    raise 'File injection failed' unless rc.zero?
+    return_code = file_inject($server, source, dest)
+    raise 'File injection failed' unless return_code.zero?
   end
   $server.run("chmod +x /etc/ipmi/fake_ipmi_host.sh")
   $server.run("ipmi_sim -n < /dev/null > /dev/null &")
@@ -137,6 +137,35 @@ end
 When(/^the server stops mocking an IPMI host$/) do
   $server.run("kill $(pidof ipmi_sim)")
   $server.run("kill $(pidof -x fake_ipmi_host.sh)")
+end
+
+When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
+  node = get_target(host)
+  # copy state file to server
+  file = 'user_defined_state.sls'
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/srv/salt/" + file
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  # generate top file and copy it to server
+  script = "base:\n" \
+           "  '#{node.full_hostname}':\n" \
+           "    - user_defined_state\n"
+  path = generate_temp_file('top.sls', script)
+  return_code = file_inject($server, path, '/srv/salt/top.sls')
+  raise 'File injection failed' unless return_code.zero?
+  `rm #{path}`
+  # make both files readeable by salt
+  $server.run('chgrp salt /srv/salt/*')
+end
+
+When(/^I uninstall the user-defined state from the server$/) do
+  $server.run('rm /srv/salt/{user_defined_state.sls,top.sls}')
+end
+
+When(/^I uninstall the managed file from "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('rm /tmp/test_user_defined_state')
 end
 
 Then(/^the cobbler report contains "([^"]*)"$/) do |arg1|
@@ -413,11 +442,11 @@ end
 
 When(/^I copy server\'s keys to the proxy$/) do
   ['RHN-ORG-PRIVATE-SSL-KEY', 'RHN-ORG-TRUSTED-SSL-CERT', 'rhn-ca-openssl.cnf'].each do |file|
-    rc = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
-    raise 'File extraction failed' unless rc.zero?
+    return_code = file_extract($server, '/root/ssl-build/' + file, '/tmp/' + file)
+    raise 'File extraction failed' unless return_code.zero?
     $proxy.run('mkdir -p /root/ssl-build')
-    rc = file_inject($proxy, '/tmp/' + file, '/root/ssl-build/' + file)
-    raise 'File injection failed' unless rc.zero?
+    return_code = file_inject($proxy, '/tmp/' + file, '/root/ssl-build/' + file)
+    raise 'File injection failed' unless return_code.zero?
   end
 end
 
@@ -455,10 +484,10 @@ Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "
   # for testing buildtime of generated metadata - See bsc#1078056
   node = get_target(host)
   cmd = "dumpsolv /var/cache/zypp/solv/spacewalk\:test-channel-x86_64/solv | grep -E 'solvable:name|solvable:buildtime'| grep -A1 '#{pkg}$'| perl -ne 'if($_ =~ /^solvable:buildtime:\\s*(\\d+)/) { print $1; }'"
-  metadata_buildtime, rc = node.run(cmd)
-  raise "Command failed: #{cmd}" unless rc.zero?
+  metadata_buildtime, return_code = node.run(cmd)
+  raise "Command failed: #{cmd}" unless return_code.zero?
   cmd = "rpm -q --qf '%{BUILDTIME}' #{pkg}"
-  rpm_buildtime, rc = node.run(cmd)
-  raise "Command failed: #{cmd}" unless rc.zero?
+  rpm_buildtime, return_code = node.run(cmd)
+  raise "Command failed: #{cmd}" unless return_code.zero?
   raise "Wrong buildtime in metadata: #{metadata_buildtime} != #{rpm_buildtime}" unless metadata_buildtime == rpm_buildtime
 end
