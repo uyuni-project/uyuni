@@ -185,12 +185,6 @@ const Products = React.createClass({
                       }
                     />
                     <Column
-                      columnKey='id'
-                      comparator={Utils.sortByNumber}
-                      header={t('Id')}
-                      cell={ (row) => row['identifier']}
-                    />
-                    <Column
                       columnKey='label'
                       comparator={Utils.sortByText}
                       header={t('Product Name')}
