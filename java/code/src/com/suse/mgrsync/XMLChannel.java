@@ -53,6 +53,9 @@ public class XMLChannel {
     private String optional;
 
     @Attribute
+    private String eol;
+
+    @Attribute
     private String parent;
 
     @Attribute(name = "product_name")
@@ -193,6 +196,30 @@ public class XMLChannel {
         }
         else {
             this.optional = "N";
+        }
+    }
+
+    /**
+     * True if this channel reached end of life, false otherwise.
+     *
+     * @return eol
+     */
+    public Boolean getEol() {
+        return (this.eol + "").toUpperCase().equals("Y");
+    }
+
+
+    /**
+     * Sets if this channel reached end of life.
+     *
+     * @param eolIn true if eol
+     */
+    public void setEol(boolean eolIn) {
+        if (eolIn) {
+            this.eol = "Y";
+        }
+        else {
+            this.eol = "N";
         }
     }
 
