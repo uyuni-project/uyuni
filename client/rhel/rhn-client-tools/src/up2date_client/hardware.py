@@ -985,9 +985,7 @@ def read_all_fqdns():
         try:
             fqdns.add(socket.gethostbyaddr(ip)[0])
         except (socket.error, socket.herror, socket.gaierror, socket.timeout) as e:
-            log = up2dateLog.initLog()
-            msg = "Error resolving address: %s\n" % (e)
-            log.log_error(msg)
+            up2dateLog.initLog().log_me("Error resolving address: %s\n" % (e))
 
     ret["name"] = list(fqdns)
     return ret
