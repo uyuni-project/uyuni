@@ -7,6 +7,7 @@ const MessageContainer = require("../components/messages").Messages;
 const {Table, Column, SearchField, Highlight} = require("../components/table");
 const Functions = require("../utils/functions");
 const Utils = Functions.Utils;
+const StatePersistedMixin = require("../components/util").StatePersistedMixin;
 const SCCDialog = require('./scc-refresh-dialog-jspf').SCCDialog;
 
 const setupWizartSteps = [
@@ -30,6 +31,29 @@ const setupWizartSteps = [
 function reloadData() {
   return Network.get('/rhn/manager/api/admin/products', "application/json").promise;
 }
+
+const ProductSelector = React.createClass({
+  mixins: [StatePersistedMixin],
+
+  getInitialState: function() {
+    return {
+      checked: false
+    }
+  },
+
+  onChange: function() {
+    this.setState({ checked: !this.state.checked });
+    this.props.onChange(this.props.id, !this.state.checked);
+  },
+
+  render: function() {
+    return (
+      <input type='checkbox' id={this.props.id} value={this.props.id}
+          checked={this.state.checked ? 'checked' : ''}
+          onChange={this.onChange} />
+    )
+  }
+});
 
 const Products = React.createClass({
   getInitialState: function() {
@@ -121,14 +145,13 @@ const Products = React.createClass({
                   <div className="spacewalk-section-toolbar">
                     <div className="action-button-wrapper">
                       <div className="btn-group">
-                        <button className="btn btn-success" id="synchronize">
-                          <i className="fa fa-plus"></i>{t('Add products')}
-                        </button>
-                        &nbsp;
                         <button className="btn btn-default"
                             id="refresh" data-toggle="tooltip"
                             title={t('Refreshes the product catalog from the Customer Center')}>
                           <i className="fa fa-refresh"></i>{t('Refresh')}
+                        </button>
+                        <button className="btn btn-success" id="synchronize">
+                          <i className="fa fa-plus"></i>{t('Add products')}
                         </button>
                       </div>
                     </div>
@@ -146,6 +169,17 @@ const Products = React.createClass({
                             criteria={""}
                             placeholder={t("Filter by product name")} />
                     }>
+                    <Column
+                      columnKey="checkbox"
+                      header={t("")}
+                      cell={ (row) =>
+                          <ProductSelector id={row['id']} value={row['id']}
+                              onChange={(a, b) => alert(a + ',' + b)}
+                              saveState={(state) => {this.state[row['id']] = state;}}
+                              loadState={() => this.state[row['id']]}
+                          />
+                      }
+                    />
                     <Column
                       columnKey="id"
                       comparator={Utils.sortByNumber}
