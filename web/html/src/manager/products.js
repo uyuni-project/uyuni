@@ -89,6 +89,10 @@ const Products = React.createClass({
     this.setState({ selectedItems: items });
   },
 
+  submit: function() {
+    alert(this.state.selectedItems);
+  },
+
   render: function() {
     const data = this.state.serverData;
 
@@ -136,7 +140,7 @@ const Products = React.createClass({
                             title={t('Refreshes the product catalog from the Customer Center')}>
                           <i className='fa fa-refresh'></i>{t('Refresh')}
                         </button>
-                        <button className='btn btn-success' id='synchronize'>
+                        <button className='btn btn-success' id='synchronize' onClick={this.submit}>
                           <i className='fa fa-plus'></i>{t('Add products')}
                         </button>
                       </div>
