@@ -467,32 +467,34 @@ end
 # Test for a visible link inside of a <div> with the attribute
 # "class" or "id" of the given name
 #
-Then(/^I should see a "([^"]*)" link in element "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    raise unless find_link(arg1).visible?
+Then(/^I should see a "([^"]*)" link in element "([^"]*)"$/) do |link, element|
+  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
+    raise unless find_link(link).visible?
   end
 end
 
-Then(/^I should not see a "([^"]*)" link in element "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    raise unless has_no_link?(arg1)
+Then(/^I should not see a "([^"]*)" link in element "([^"]*)"$/) do |link, element|
+  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
+    raise unless has_no_link?(link)
   end
 end
 
-Then(/^I should see a "([^"]*)" text in element "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@id=\"#{arg2}\" or @class=\"#{arg2}\"]") do
-    raise unless has_content?(arg1)
+Then(/^I should see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
+  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
+    raise unless has_content?(text)
   end
 end
 
-Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |arg1, arg2, arg3|
-  within(:xpath, "//div[@id=\"#{arg3}\" or @class=\"#{arg3}\"]") do
-    raise if !has_content?(arg1) && !has_content?(arg2)
+Then(/^I should not see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
+  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
+    raise if has_content?(text)
   end
 end
 
-Then(/^I should see a "([^"]*)" link in "([^"]*)" "([^"]*)"$/) do |arg1, arg2, arg3|
-  raise unless page.has_xpath?("//#{arg2}[@id='#{arg3}' or @class='#{arg3}']/a[text()='#{arg1}']")
+Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |text1, text2, element|
+  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
+    raise unless has_content?(text1) || has_content?(text2)
+  end
 end
 
 Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, column|

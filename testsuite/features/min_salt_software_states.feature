@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Salt states
+Feature: Salt package states
 
   Scenario: Pre-requisite: install milkyway-dummy-1.0 and virgo-dummy-1.0 packages
     Given I am authorized as "admin" with password "admin"
