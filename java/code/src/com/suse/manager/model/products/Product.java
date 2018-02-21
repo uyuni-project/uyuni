@@ -34,17 +34,20 @@ public class Product {
     private final boolean recommended;
 
     private final String arch;
-    
+
+    private final String identifier;
+
     /**
      * Instantiates a new Product.
      * @param idIn the id in
      * @param labelIn the label in
      * @param recommendedIn the recommended flag in
      */
-    public Product(Long idIn, String labelIn, String archIn, Boolean recommendedIn) {
+    public Product(Long idIn, String identifierIn, String labelIn, String archIn, Boolean recommendedIn) {
         id = idIn;
         label = labelIn;
         arch = archIn;
+        identifier = identifierIn;
         recommended = recommendedIn;
     }
 
@@ -74,6 +77,10 @@ public class Product {
 
     public String getArch() {
         return arch;
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
     /**
