@@ -103,6 +103,10 @@ const Products = React.createClass({
     return Object.keys(message).map((id) => message[id]);
   },
 
+  handleProductSelection: function(productId, isSelected) {
+    console.log(productId + ' - ' + isSelected);
+  },
+
   render: function() {
     const data = this.state.serverData;
 
@@ -158,7 +162,7 @@ const Products = React.createClass({
                   </div>
                   <Table
                     data={this.buildRows(data)}
-                    identifier={(row) => row['id']}
+                    identifier={(row) => row['identifier']}
                     cssClassFunction={''}
                     initialSortColumnKey='label'
                     initialSortDirection={1}
@@ -173,10 +177,10 @@ const Products = React.createClass({
                       columnKey='checkbox'
                       header={t('')}
                       cell={ (row) =>
-                          <ProductSelector id={row['id']} value={row['id']}
-                              onChange={(a, b) => alert(a + ',' + b)}
-                              saveState={(state) => {this.state[row['id']] = state;}}
-                              loadState={() => this.state[row['id']]}
+                          <ProductSelector id={row['identifier']} value={row['identifier']}
+                              onChange={(id, checked) => this.handleProductSelection(id, checked)}
+                              saveState={(state) => {this.state[row['identifier']] = state;}}
+                              loadState={() => this.state[row['identifier']]}
                           />
                       }
                     />
@@ -184,7 +188,7 @@ const Products = React.createClass({
                       columnKey='id'
                       comparator={Utils.sortByNumber}
                       header={t('Id')}
-                      cell={ (row) => row['id']}
+                      cell={ (row) => row['identifier']}
                     />
                     <Column
                       columnKey='label'
