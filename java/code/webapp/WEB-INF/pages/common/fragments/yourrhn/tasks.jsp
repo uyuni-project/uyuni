@@ -29,15 +29,13 @@
       </c:if>
 
       <c:if test="${requestScope.requiringReboot > 0}">
-        <rhn:require acl="user_role(satellite_admin)">
-          <rhn:require acl="user_role(org_admin)">
-            <li class="list-group-item">
-              <rhn:icon type="nav-bullet" /> <a
-                href="/rhn/systems/RequiringReboot.do">
-                    <bean:message key="yourrhn.jsp.tasks.reboot" arg0="${requestScope.requiringReboot}"/>
-              </a>
-            </li>
-          </rhn:require>
+        <rhn:require acl="user_role(org_admin)">
+          <li class="list-group-item">
+            <rhn:icon type="nav-bullet" /> <a
+              href="/rhn/systems/RequiringReboot.do">
+                  <bean:message key="yourrhn.jsp.tasks.reboot" arg0="${requestScope.requiringReboot}"/>
+            </a>
+          </li>
         </rhn:require>
       </c:if>
 
