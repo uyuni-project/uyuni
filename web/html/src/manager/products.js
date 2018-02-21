@@ -32,29 +32,6 @@ function reloadData() {
   return Network.get('/rhn/manager/api/admin/products', 'application/json').promise;
 }
 
-const ProductSelector = React.createClass({
-  mixins: [StatePersistedMixin],
-
-  getInitialState: function() {
-    return {
-      checked: false
-    }
-  },
-
-  onChange: function() {
-    this.setState({ checked: !this.state.checked });
-    this.props.onChange(this.props.id, !this.state.checked);
-  },
-
-  render: function() {
-    return (
-      <input type='checkbox' id={this.props.id} value={this.props.id}
-          checked={this.state.checked ? 'checked' : ''}
-          onChange={this.onChange} />
-    )
-  }
-});
-
 const Products = React.createClass({
   getInitialState: function() {
     return {
@@ -63,7 +40,8 @@ const Products = React.createClass({
       refreshRunning: refreshRunning_flag_from_backend,
       serverData: {'baseProducts' : []},
       error: null,
-      loading: true
+      loading: true,
+      selectedItems: []
     }
   },
 
@@ -103,8 +81,12 @@ const Products = React.createClass({
     return Object.keys(message).map((id) => message[id]);
   },
 
-  handleProductSelection: function(productId, isSelected) {
-    console.log(productId + ' - ' + isSelected);
+  handleSelectItems: function(items) {
+    const removed = this.state.selectedItems.filter(i => !items.includes(i));
+    const isAdd = removed.length === 0;
+    const list = isAdd ? items : removed;
+
+    this.setState({ selectedItems: items });
   },
 
   render: function() {
@@ -168,22 +150,14 @@ const Products = React.createClass({
                     initialSortDirection={1}
                     initialItemsPerPage={userPrefPageSize}
                     loading={this.state.loading}
+                    selectable={true}
+                    onSelect={this.handleSelectItems}
+                    selectedItems={this.state.selectedItems}
                     searchField={
                         <SearchField filter={this.searchData}
                             criteria={''}
                             placeholder={t('Filter by product name')} />
                     }>
-                    <Column
-                      columnKey='checkbox'
-                      header={t('')}
-                      cell={ (row) =>
-                          <ProductSelector id={row['identifier']} value={row['identifier']}
-                              onChange={(id, checked) => this.handleProductSelection(id, checked)}
-                              saveState={(state) => {this.state[row['identifier']] = state;}}
-                              loadState={() => this.state[row['identifier']]}
-                          />
-                      }
-                    />
                     <Column
                       columnKey='label'
                       comparator={Utils.sortByText}
