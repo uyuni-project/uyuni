@@ -49,17 +49,19 @@ const SearchPanel = (props) =>
       React.Children.map(props.children,
         (child) => React.cloneElement(child, { criteria: props.criteria, onSearch: props.onSearch }))
     }
-    <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
-    { props.selectable && props.selectedCount > 0 &&
-        <span>
-            {t("({0} selected)", props.selectedCount)}&nbsp;
-            <a href="#" onClick={props.onClear}>{t("Clear")}</a>
-            &nbsp;/&nbsp;
-        </span>
-    }
-    { props.selectable &&
-        <a href="#" onClick={props.onSelectAll}>{t("Select All")}</a>
-    }
+    <div className="d-inline-block">
+      <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
+      { props.selectable && props.selectedCount > 0 &&
+          <span>
+              {t("({0} selected)", props.selectedCount)}&nbsp;
+              <a href="#" onClick={props.onClear}>{t("Clear")}</a>
+              &nbsp;/&nbsp;
+          </span>
+      }
+      { props.selectable &&
+          <a href="#" onClick={props.onSelectAll}>{t("Select All")}</a>
+      }
+    </div>
   </div>
 ;
 
