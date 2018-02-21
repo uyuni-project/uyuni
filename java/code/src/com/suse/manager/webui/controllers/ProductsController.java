@@ -95,6 +95,7 @@ public class ProductsController {
             List<Product> jsonProducts = products.stream().map(
                 syncProduct -> new Product(
                     syncProduct.getId(),
+                    syncProduct.getIdent(),
                     syncProduct.getFriendlyName(),
                     syncProduct.getArch(),
                     syncProduct.isRecommended()
