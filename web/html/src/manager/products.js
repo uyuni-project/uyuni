@@ -2,12 +2,12 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-const Network = require("../utils/network");
-const MessageContainer = require("../components/messages").Messages;
-const {Table, Column, SearchField, Highlight} = require("../components/table");
-const Functions = require("../utils/functions");
+const Network = require('../utils/network');
+const MessageContainer = require('../components/messages').Messages;
+const {Table, Column, SearchField, Highlight} = require('../components/table');
+const Functions = require('../utils/functions');
 const Utils = Functions.Utils;
-const StatePersistedMixin = require("../components/util").StatePersistedMixin;
+const StatePersistedMixin = require('../components/util').StatePersistedMixin;
 const SCCDialog = require('./scc-refresh-dialog-jspf').SCCDialog;
 
 const setupWizartSteps = [
@@ -29,7 +29,7 @@ const setupWizartSteps = [
 ];
 
 function reloadData() {
-  return Network.get('/rhn/manager/api/admin/products', "application/json").promise;
+  return Network.get('/rhn/manager/api/admin/products', 'application/json').promise;
 }
 
 const ProductSelector = React.createClass({
@@ -84,8 +84,8 @@ const Products = React.createClass({
       })
       .catch(response => {
         currentObject.setState({
-          error: response.status == 401 ? "authentication" :
-            response.status >= 500 ? "general" :
+          error: response.status == 401 ? 'authentication' :
+            response.status >= 500 ? 'general' :
             null,
           loading: false
         });
@@ -130,48 +130,48 @@ const Products = React.createClass({
     let pageContent;
     if (this.state.refreshRunning) {
       pageContent = (
-        <div className="alert alert-warning" role="alert">
+        <div className='alert alert-warning' role='alert'>
           {t('A refresh of the product data is currently running in the background. Please try again later.')}
         </div>
       );
     }
     else if (this.state.issMaster) {
       pageContent = (
-        <div className="row" id="suse-products">
-          <div className="col-sm-9">
+        <div className='row' id='suse-products'>
+          <div className='col-sm-9'>
             {
               this.state.error == null  ?
                 <div>
-                  <div className="spacewalk-section-toolbar">
-                    <div className="action-button-wrapper">
-                      <div className="btn-group">
-                        <button className="btn btn-default"
-                            id="refresh" data-toggle="tooltip"
+                  <div className='spacewalk-section-toolbar'>
+                    <div className='action-button-wrapper'>
+                      <div className='btn-group'>
+                        <button className='btn btn-default'
+                            id='refresh' data-toggle='tooltip'
                             title={t('Refreshes the product catalog from the Customer Center')}>
-                          <i className="fa fa-refresh"></i>{t('Refresh')}
+                          <i className='fa fa-refresh'></i>{t('Refresh')}
                         </button>
-                        <button className="btn btn-success" id="synchronize">
-                          <i className="fa fa-plus"></i>{t('Add products')}
+                        <button className='btn btn-success' id='synchronize'>
+                          <i className='fa fa-plus'></i>{t('Add products')}
                         </button>
                       </div>
                     </div>
                   </div>
                   <Table
                     data={this.buildRows(data)}
-                    identifier={(row) => row["id"]}
+                    identifier={(row) => row['id']}
                     cssClassFunction={''}
-                    initialSortColumnKey="label"
+                    initialSortColumnKey='label'
                     initialSortDirection={1}
                     initialItemsPerPage={userPrefPageSize}
                     loading={this.state.loading}
                     searchField={
                         <SearchField filter={this.searchData}
-                            criteria={""}
-                            placeholder={t("Filter by product name")} />
+                            criteria={''}
+                            placeholder={t('Filter by product name')} />
                     }>
                     <Column
-                      columnKey="checkbox"
-                      header={t("")}
+                      columnKey='checkbox'
+                      header={t('')}
                       cell={ (row) =>
                           <ProductSelector id={row['id']} value={row['id']}
                               onChange={(a, b) => alert(a + ',' + b)}
@@ -181,35 +181,35 @@ const Products = React.createClass({
                       }
                     />
                     <Column
-                      columnKey="id"
+                      columnKey='id'
                       comparator={Utils.sortByNumber}
-                      header={t("Id")}
-                      cell={ (row) => row["id"]}
+                      header={t('Id')}
+                      cell={ (row) => row['id']}
                     />
                     <Column
-                      columnKey="label"
+                      columnKey='label'
                       comparator={Utils.sortByText}
-                      header={t("Product Name")}
-                      cell={ (row) => row["label"]}
+                      header={t('Product Name')}
+                      cell={ (row) => row['label']}
                     />
                     <Column
-                      columnKey="arch"
+                      columnKey='arch'
                       comparator={Utils.sortByText}
-                      header={t("Architecture")}
-                      cell={ (row) => row["arch"]}
+                      header={t('Architecture')}
+                      cell={ (row) => row['arch']}
                     />
                     <Column
-                      columnKey="recommended"
+                      columnKey='recommended'
                       comparator={Utils.sortByText}
-                      header={t("Recommended")}
-                      cell={ (row) => row["recommended"]}
+                      header={t('Recommended')}
+                      cell={ (row) => row['recommended']}
                     />
                   </Table>
                 </div>
                 : <ErrorMessage error={this.state.error} />
             }
           </div>
-          <div className="col-sm-3 hidden-xs" id="wizard-faq">
+          <div className='col-sm-3 hidden-xs' id='wizard-faq'>
               <h4>{t("Why aren't all SUSE products displayed in the list?")}</h4>
               <p>{t('The products displayed on this list are directly linked to your \
                   Organization credentials (Mirror credentials) as well as your SUSE subscriptions.')}</p>
@@ -221,7 +221,7 @@ const Products = React.createClass({
     }
     else {
       pageContent = (
-        <div className="alert alert-warning" role="alert">
+        <div className='alert alert-warning' role='alert'>
           {t('This server is configured as an Inter-Server Synchronisation (ISS) slave. SUSE Products can only be managed on the ISS master.')}
         </div>
       );
@@ -234,14 +234,14 @@ const Products = React.createClass({
         <div className='btn-group'>  
           {
             currentStepIndex > 1 ?
-              <a className="btn btn-default" href={setupWizartSteps[currentStepIndex-1].url}>
-                <i className="fa fa-arrow-left"></i>{t('Prev')}
+              <a className='btn btn-default' href={setupWizartSteps[currentStepIndex-1].url}>
+                <i className='fa fa-arrow-left'></i>{t('Prev')}
               </a> : null
           }
           {
             currentStepIndex < (setupWizartSteps.length - 1) ?
-              <a className="btn btn-success" href={setupWizartSteps[currentStepIndex+1].url}>
-                <i className="fa fa-arrow-right"></i>{t('Next')}
+              <a className='btn btn-success' href={setupWizartSteps[currentStepIndex+1].url}>
+                <i className='fa fa-arrow-right'></i>{t('Next')}
               </a> : null
           }
         </div>
@@ -260,9 +260,9 @@ const Products = React.createClass({
             </div>
         </div>
         <SCCDialog />
-        <div className="hidden" id="iss-master" data-iss-master={this.state.issMaster}></div>
-        <div className="hidden" id="refresh-running" data-refresh-running={this.state.refreshRunning}></div>
-        <div className="hidden" id="sccconfig.jsp.refresh">{t('Refreshing data from SUSE Customer Center')}</div>
+        <div className='hidden' id='iss-master' data-iss-master={this.state.issMaster}></div>
+        <div className='hidden' id='refresh-running' data-refresh-running={this.state.refreshRunning}></div>
+        <div className='hidden' id='sccconfig.jsp.refresh'>{t('Refreshing data from SUSE Customer Center')}</div>
         {footer}
       </div>
     )
@@ -270,10 +270,10 @@ const Products = React.createClass({
 });
 
 const ErrorMessage = (props) => <MessageContainer items={
-  props.error == "authentication" ?
-    MessagesUtils.warning(t("Session expired, please reload the page to see up-to-date data.")) :
-  props.error == "general" ?
-    MessagesUtils.warning(t("Server error, please check log files.")) :
+  props.error == 'authentication' ?
+    MessagesUtils.warning(t('Session expired, please reload the page to see up-to-date data.')) :
+  props.error == 'general' ?
+    MessagesUtils.warning(t('Server error, please check log files.')) :
   []
 } />
 ;
