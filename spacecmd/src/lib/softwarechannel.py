@@ -30,9 +30,18 @@
 # invalid function name
 # pylint: disable=C0103
 
-from optparse import Option
-import urllib
-import xmlrpclib
+try:
+    from urllib import ContentTooShortError
+except ImportError:
+    from urllib.error import ContentTooShortError
+try:
+    from urllib import urlretrieve
+except ImportError:
+    from urllib.request import urlretrieve
+try:
+    from xmlrpc import client as xmlrpclib
+except ImportError:
+    import xmlrpclib
 from spacecmd.utils import *
 
 
@@ -48,9 +57,11 @@ options:
 
 
 def do_softwarechannel_list(self, args, doreturn=False):
-    options = [Option('-v', '--verbose', action='store_true'),
-               Option('-t', '--tree', action='store_true')]
-    (args, options) = parse_arguments(args, options)
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-v', '--verbose', action='store_true')
+    arg_parser.add_argument('-t', '--tree', action='store_true')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if (options.tree):
         labels = self.list_base_channels()
@@ -94,8 +105,10 @@ options:
 
 
 def do_softwarechannel_listmanageablechannels(self, args, doreturn=False):
-    options = [Option('-v', '--verbose', action='store_true')]
-    (args, options) = parse_arguments(args, options)
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-v', '--verbose', action='store_true')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     channels = self.client.channel.listManageableChannels(self.session)
     labels = [c.get('label') for c in channels]
@@ -128,8 +141,10 @@ options:
 
 
 def do_softwarechannel_listbasechannels(self, args):
-    options = [Option('-v', '--verbose', action='store_true')]
-    (args, options) = parse_arguments(args, options)
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-v', '--verbose', action='store_true')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     channels = self.list_base_channels()
 
@@ -156,8 +171,10 @@ def help_softwarechannel_listchildchannels(self):
 
 
 def do_softwarechannel_listchildchannels(self, args):
-    options = [Option('-v', '--verbose', action='store_true')]
-    (args, options) = parse_arguments(args, options)
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-v', '--verbose', action='store_true')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
     if not args:
         channels = self.list_child_channels()
     else:
@@ -186,7 +203,9 @@ def complete_softwarechannel_listsystems(self, text, line, beg, end):
 
 
 def do_softwarechannel_listsystems(self, args, doreturn=False):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_listsystems()
@@ -224,7 +243,9 @@ def complete_softwarechannel_listpackages(self, text, line, beg, end):
 
 
 def do_softwarechannel_listpackages(self, args, doreturn=False):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_listpackages()
@@ -260,7 +281,9 @@ def complete_softwarechannel_listallpackages(self, text, line, beg, end):
 
 
 def do_softwarechannel_listallpackages(self, args, doreturn=False):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_listallpackages()
@@ -317,7 +340,9 @@ def complete_softwarechannel_listlatestpackages(self, text, line, beg, end):
 
 
 def do_softwarechannel_listlatestpackages(self, args, doreturn=False):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_listlatestpackages()
@@ -364,17 +389,19 @@ def complete_softwarechannel_setdetails(self, text, line, beg, end):
 
 def do_softwarechannel_setdetails(self, args):
     # pylint: disable=R0911
-    options = [Option('-n', '--name', action='store'),
-               Option('-s', '--summary', action='store'),
-               Option('-d', '--description', action='store'),
-               Option('-c', '--checksum', action='store'),
-               Option('-m', '--maintainer_name', action='store'),
-               Option('-e', '--maintainer_email', action='store'),
-               Option('-p', '--maintainer_phone', action='store'),
-               Option('-u', '--gpg_url', action='store'),
-               Option('-i', '--gpg_id', action='store'),
-               Option('-f', '--gpg_fingerprint', action='store')]
-    (args, options) = parse_arguments(args, options)
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-n', '--name')
+    arg_parser.add_argument('-s', '--summary')
+    arg_parser.add_argument('-d', '--description')
+    arg_parser.add_argument('-c', '--checksum')
+    arg_parser.add_argument('-m', '--maintainer_name')
+    arg_parser.add_argument('-e', '--maintainer_email')
+    arg_parser.add_argument('-p', '--maintainer_phone')
+    arg_parser.add_argument('-u', '--gpg_url')
+    arg_parser.add_argument('-i', '--gpg_id')
+    arg_parser.add_argument('-f', '--gpg_fingerprint')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_setdetails()
@@ -435,7 +462,7 @@ def do_softwarechannel_setdetails(self, args):
 
     # get confirmation
     print('Setting following attributes...')
-    print()
+    print('')
     if new_details.get('name'):
         print('Name:             %s' % new_details.get('name'))
     if new_details.get('summary'):
@@ -456,10 +483,10 @@ def do_softwarechannel_setdetails(self, args):
         print('GPG Fingerprint:  %s' % new_details.get('gpg_key_fp'))
     if new_details.get('gpg_key_url'):
         print('GPG URL:          %s' % new_details.get('gpg_key_url'))
-    print()
+    print('')
     print('... for the following channels:')
     print('\n'.join(channels))
-    print()
+    print('')
     if not self.user_confirm('Apply? [y/N]:'):
         return
 
@@ -502,7 +529,9 @@ def complete_softwarechannel_details(self, text, line, beg, end):
 
 
 def do_softwarechannel_details(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_details()
@@ -540,31 +569,31 @@ def do_softwarechannel_details(self, args):
         print('Number of Packages: %i' % len(packages))
 
         if details.get('summary'):
-            print()
+            print('')
             print('Summary')
             print('-------')
             print('\n'.join(wrap(details.get('summary'))))
 
         if details.get('description'):
-            print()
+            print('')
             print('Description')
             print('-----------')
             print('\n'.join(wrap(details.get('description'))))
 
-        print()
+        print('')
         print('GPG Key:            %s' % details.get('gpg_key_id'))
         print('GPG Fingerprint:    %s' % details.get('gpg_key_fp'))
         print('GPG URL:            %s' % details.get('gpg_key_url'))
 
         if trees:
-            print()
+            print('')
             print('Kickstart Trees')
             print('---------------')
             for tree in trees:
                 print(tree.get('label'))
 
         if details.get('contentSources'):
-            print()
+            print('')
             print('Repos')
             print('-----')
             for repo in details.get('contentSources'):
@@ -584,7 +613,9 @@ def complete_softwarechannel_listerrata(self, text, line, beg, end):
 
 
 def do_softwarechannel_listerrata(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_listerrata()
@@ -608,7 +639,7 @@ def do_softwarechannel_listerrata(self, args):
     for channel in sorted(channels):
         if len(channels) > 1:
             print('Channel: %s' % channel)
-            print()
+            print('')
 
         if begin_date and end_date:
             errata = self.client.channel.software.listErrata(self.session,
@@ -637,8 +668,10 @@ def help_softwarechannel_listarches(self):
     print("    -v verbose (display label and name)")
 
 def do_softwarechannel_listarches(self, args):
-    options = [Option('-v', '--verbose', action='store_true')]
-    (args, options) = parse_arguments(args, options)
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-v', '--verbose', action='store_true')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     arches = self.client.channel.software.listArches(self.session)
 
@@ -660,7 +693,9 @@ def complete_softwarechannel_delete(self, text, line, beg, end):
 
 
 def do_softwarechannel_delete(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_delete()
@@ -720,17 +755,17 @@ options:
 def do_softwarechannel_create(self, args):
     arches = self.client.channel.software.listArches(self.session)
     self.ARCH_LABELS = [x["label"].replace("channel-","") for x in arches]
-    options = [ Option('-n', '--name', action='store'),
-                Option('-l', '--label', action='store'),
-                Option('-p', '--parent-channel', action='store'),
-                Option('-a', '--arch', action='store'),
-                Option('-c', '--checksum', action='store'),
-                Option('-u', '--gpg_url', action='store'),
-                Option('-i', '--gpg_id', action='store'),
-                Option('-f', '--gpg_fingerprint', action='store'),
-                Option('-g', '--disable_gpg_check', action='store_true') ]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-n', '--name')
+    arg_parser.add_argument('-l', '--label')
+    arg_parser.add_argument('-p', '--parent-channel')
+    arg_parser.add_argument('-a', '--arch')
+    arg_parser.add_argument('-c', '--checksum')
+    arg_parser.add_argument('-u', '--gpg_url')
+    arg_parser.add_argument('-f', '--gpg_fingerprint')
+    arg_parser.add_argument('-g', '--disable_gpg_check')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         options.name = prompt_user('Channel Name:', noblank=True)
@@ -739,47 +774,47 @@ def do_softwarechannel_create(self, args):
         print('Base Channels')
         print('-------------')
         print('\n'.join(sorted(self.list_base_channels())))
-        print()
+        print('')
 
         options.parent_channel = \
             prompt_user('Select Parent [blank to create a base channel]:')
 
-        print()
+        print('')
         print('Architecture')
         print('------------')
         print('\n'.join(sorted(self.ARCH_LABELS)))
-        print()
+        print('')
         options.arch = prompt_user('Select:')
 
-        print()
+        print('')
         print('Checksum type')
         print('------------')
         print('\n'.join(sorted(self.CHECKSUM)))
-        print()
+        print('')
         options.checksum = prompt_user('Select:')
 
-        print()
+        print('')
         print('GPG URL')
         print('------------')
-        print()
+        print('')
         options.gpg_url = prompt_user('GPG URL:')
 
-        print()
+        print('')
         print('GPG ID')
         print('------------')
-        print()
+        print('')
         options.gpg_id = prompt_user('GPG ID:')
 
-        print()
+        print('')
         print('GPG Fingerprint')
         print('---------------')
-        print()
+        print('')
         options.gpg_fingerprint = prompt_user('GPG Fingerprint:')
 
-        print
-        print 'GPG CHECK'
-        print '---------------'
-        print
+        print('')
+        print('GPG CHECK')
+        print('---------------')
+        print('')
         options.disable_gpg_check = self.user_confirm('Disable GPG Check [y/N]? ',
                                 nospacer=True, ignore_yes=True)
 
@@ -880,18 +915,19 @@ options:
 
 
 def do_softwarechannel_clone(self, args):
-    options = [Option('-n', '--name', action='store'),
-               Option('-l', '--label', action='store'),
-               Option('-s', '--source-channel', action='store'),
-               Option('-p', '--parent-channel', action='store'),
-               Option('-x', '--regex', action='store'),
-               Option('-o', '--original-state', action='store_true'),
-               Option('-g', '--gpg-copy', action='store_true'),
-               Option('', '--gpg-url', action='store'),
-               Option('', '--gpg-id', action='store'),
-               Option('', '--gpg-fingerprint', action='store')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-n', '--name')
+    arg_parser.add_argument('-l', '--label')
+    arg_parser.add_argument('-s', '--source-channel')
+    arg_parser.add_argument('-p', '--parent-channel')
+    arg_parser.add_argument('-x', '--regex')
+    arg_parser.add_argument('-o', '--original-state', action='store_true')
+    arg_parser.add_argument('-g', '--gpg-copy', action='store_true')
+    arg_parser.add_argument('--gpg-url')
+    arg_parser.add_argument('--gpg-id')
+    arg_parser.add_argument('--gpg-fingerprint')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         print('Source Channels:')
@@ -906,7 +942,7 @@ def do_softwarechannel_clone(self, args):
 
         print('Base Channels:')
         print('\n'.join(sorted(self.list_base_channels())))
-        print()
+        print('')
 
         options.parent_channel = \
             prompt_user('Select Parent [blank to create a base channel]:')
@@ -1029,16 +1065,17 @@ options:
 
 
 def do_softwarechannel_clonetree(self, args):
-    options = [Option('-s', '--source-channel', action='store'),
-               Option('-p', '--prefix', action='store'),
-               Option('-x', '--regex', action='store'),
-               Option('-o', '--original-state', action='store_true'),
-               Option('-g', '--gpg-copy', action='store_true'),
-               Option('', '--gpg-url', action='store'),
-               Option('', '--gpg-id', action='store'),
-               Option('', '--gpg-fingerprint', action='store')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-s', '--source-channel')
+    arg_parser.add_argument('-p', '--prefix')
+    arg_parser.add_argument('-x', '--regex')
+    arg_parser.add_argument('-o', '--original-state', action='store_true')
+    arg_parser.add_argument('-g', '--gpg-copy', action='store_true')
+    arg_parser.add_argument('--gpg-url')
+    arg_parser.add_argument('--gpg-id')
+    arg_parser.add_argument('--gpg-fingerprint')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         print('Source Channels:')
@@ -1194,7 +1231,9 @@ def complete_softwarechannel_addpackages(self, text, line, beg, end):
 
 
 def do_softwarechannel_addpackages(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_softwarechannel_addpackages()
@@ -1252,7 +1291,9 @@ def complete_softwarechannel_removeerrata(self, text, line, beg, end):
 
 
 def do_softwarechannel_removeerrata(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_removeerrata()
@@ -1294,12 +1335,12 @@ def do_softwarechannel_removeerrata(self, args):
 
     print_errata_list(errata_details)
 
-    print()
+    print('')
     print('Packages')
     print('--------')
     print('\n'.join(sorted([ self.get_package_name(p) for p in package_ids if self.get_package_name(p) ])))
 
-    print()
+    print('')
     print('Total Errata:   %s' % str(len(errata)).rjust(3))
     print('Total Packages: %s' % str(len(package_ids)).rjust(3))
 
@@ -1344,7 +1385,9 @@ def complete_softwarechannel_removepackages(self, text, line, beg,
 
 
 def do_softwarechannel_removepackages(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_removepackages()
@@ -1405,10 +1448,10 @@ def complete_softwarechannel_adderratabydate(self, text, line, beg, end):
 
 
 def do_softwarechannel_adderratabydate(self, args):
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-p', '--publish', action='store_true')
 
-    options = [Option('-p', '--publish', action='store_true')]
-
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 4:
         self.help_softwarechannel_adderratabydate()
@@ -1476,7 +1519,9 @@ def complete_softwarechannel_listerratabydate(self, text, line, beg, end):
 
 
 def do_softwarechannel_listerratabydate(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 3:
         self.help_softwarechannel_listerratabydate()
@@ -1532,10 +1577,11 @@ def complete_softwarechannel_adderrata(self, text, line, beg, end):
 
 
 def do_softwarechannel_adderrata(self, args):
-    options = [Option('-q', '--quick', action='store_true'),
-               Option('-s', '--skip', action='store_true')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-q', '--quick', action='store_true')
+    arg_parser.add_argument('-s', '--skip', action='store_true')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
         self.help_softwarechannel_adderrata()
@@ -1609,13 +1655,13 @@ def do_softwarechannel_adderrata(self, args):
     print_errata_list(errata_details)
 
     if not options.quick:
-        print()
+        print('')
         print('Packages')
         print('--------')
         print('\n'.join(
-            sorted([ self.get_package_name(p) for p in package_ids if self.get_package_name(p) ])))
+            sorted([self.get_package_name(p) for p in package_ids])))
 
-        print()
+        print('')
     print('Total Errata:   %s' % str(len(errata)).rjust(3))
 
     if not options.quick:
@@ -1657,8 +1703,9 @@ def complete_softwarechannel_getorgaccess(self, text, line, beg, end):
 
 
 def do_softwarechannel_getorgaccess(self, args):
+    arg_parser = get_argument_parser()
 
-    (args, _options) = parse_arguments(args)
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     # If no args are passed, we dump the org access for all channels
     if not args:
@@ -1700,10 +1747,12 @@ def do_softwarechannel_setorgaccess(self, args, options=None):
         self.help_softwarechannel_setorgaccess()
         return
     if not options:
-        options = [Option('-e', '--enable', action='store_true'),
-                   Option('-d', '--disable', action='store_true'),
-                   Option('-p', '--protected', action='append')]
-        (args, options) = parse_arguments(args, options)
+        arg_parser = get_argument_parser()
+        arg_parser.add_argument('-e', '--enable', action='store_true')
+        arg_parser.add_argument('-d', '--disable', action='store_true')
+        arg_parser.add_argument('-p', '--protected', action='append')
+
+        (args, options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_setorgaccess()
@@ -1761,8 +1810,9 @@ def complete_softwarechannel_getorgaccesstree(self, text, line, beg, end):
     return tab_completer(self.list_base_channels(), text)
 
 def do_softwarechannel_getorgaccesstree(self, args):
+    arg_parser = get_argument_parser()
 
-    (args, _options) = parse_arguments(args)
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     # If no args are passed, we dump the org access for all base channels
     if not args:
@@ -1795,10 +1845,12 @@ def complete_softwarechannel_setorgaccesstree(self, text, line, beg, end):
     return tab_completer(self.list_base_channels(), text)
 
 def do_softwarechannel_setorgaccesstree(self, args):
-    options = [Option('-e', '--enable', action='store_true'),
-               Option('-d', '--disable', action='store_true'),
-               Option('-p', '--protected', action='append')]
-    (args, options) = parse_arguments(args, options)
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-e', '--enable', action='store_true')
+    arg_parser.add_argument('-d', '--disable', action='store_true')
+    arg_parser.add_argument('-p', '--protected', action='append')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if not args or not (options.enable or options.disable or options.protected):
         self.help_softwarechannel_setorgaccesstree()
@@ -1823,7 +1875,7 @@ def do_softwarechannel_setorgaccesstree(self, args):
 def help_softwarechannel_regenerateneededcache(self):
     print('softwarechannel_regenerateneededcache: ')
     print('Regenerate the needed errata and package cache for all systems')
-    print()
+    print('')
     print('usage: softwarechannel_regenerateneededcache')
 
 
@@ -1837,7 +1889,7 @@ def do_softwarechannel_regenerateneededcache(self, args):
 def help_softwarechannel_regenerateyumcache(self):
     print('softwarechannel_regenerateyumcache: ')
     print('Regenerate the YUM cache for a software channel')
-    print()
+    print('')
     print('usage: softwarechannel_regenerateyumcache <CHANNEL ...>')
 
 
@@ -1846,7 +1898,9 @@ def complete_softwarechannel_regenerateyumcache(self, text, line, beg, end):
 
 
 def do_softwarechannel_regenerateyumcache(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_regenerateyumcache()
@@ -1911,9 +1965,9 @@ def complete_softwarechannel_diff(self, text, line, beg, end):
 
 
 def do_softwarechannel_diff(self, args):
-    options = []
+    arg_parser = get_argument_parser()
 
-    (args, options) = parse_arguments(args, options)
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_diff()
@@ -1974,9 +2028,9 @@ def complete_softwarechannel_errata_diff(self, text, line, beg, end):
 
 
 def do_softwarechannel_errata_diff(self, args):
-    options = []
+    arg_parser = get_argument_parser()
 
-    (args, options) = parse_arguments(args, options)
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_errata_diff()
@@ -2027,9 +2081,10 @@ def complete_softwarechannel_sync(self, text, line, beg, end):
 
 
 def do_softwarechannel_sync(self, args):
-    options = [Option('-q', '--quiet', action='store_true')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-q', '--quiet', action='store_true')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_sync()
@@ -2082,7 +2137,7 @@ def do_softwarechannel_sync(self, args):
         print("packages common in both channels:")
         for i in (source_ids & target_ids):
             print(self.get_package_name(i))
-        print()
+        print('')
     else:
         logging.info("Omitting common packages in both specified channels")
 
@@ -2092,7 +2147,7 @@ def do_softwarechannel_sync(self, args):
         print('packages to add to channel "' + target_channel + '":')
         for i in source_only:
             print(self.get_package_name(i))
-        print()
+        print('')
 
     # check for packages only in the target channel
     target_only = target_ids.difference(source_ids)
@@ -2100,7 +2155,7 @@ def do_softwarechannel_sync(self, args):
         print('packages to remove from channel "' + target_channel + '":')
         for i in target_only:
             print(self.get_package_name(i))
-        print()
+        print('')
 
     if source_only or target_only:
         print("summary:")
@@ -2144,9 +2199,9 @@ def complete_softwarechannel_errata_sync(self, text, line, beg, end):
 
 
 def do_softwarechannel_errata_sync(self, args):
-    options = []
+    arg_parser = get_argument_parser()
 
-    (args, options) = parse_arguments(args, options)
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
         self.help_softwarechannel_errata_sync()
@@ -2194,7 +2249,7 @@ def do_softwarechannel_errata_sync(self, args):
     print("errata common in both channels:")
     for i in (source_ids & target_ids):
         print(i)
-    print()
+    print('')
 
     # check for errata only in the source channel
     source_only = list(source_ids.difference(target_ids))
@@ -2203,7 +2258,7 @@ def do_softwarechannel_errata_sync(self, args):
         print('errata to add to channel "' + target_channel + '":')
         for i in source_only:
             print(i)
-        print()
+        print('')
 
     # check for errata only in the target channel
     target_only = list(target_ids.difference(source_ids))
@@ -2212,7 +2267,7 @@ def do_softwarechannel_errata_sync(self, args):
         print('errata to remove from channel "' + target_channel + '":')
         for i in target_only:
             print(i)
-        print()
+        print('')
 
     if source_only or target_only:
         print("summary:")
@@ -2246,7 +2301,7 @@ def do_softwarechannel_errata_sync(self, args):
 def help_softwarechannel_syncrepos(self):
     print('softwarechannel_syncrepos: ')
     print('Sync users repos for a software channel')
-    print()
+    print('')
     print('usage: softwarechannel_syncrepos <CHANNEL ...>')
 
 
@@ -2255,7 +2310,9 @@ def complete_softwarechannel_syncrepos(self, text, line, beg, end):
 
 
 def do_softwarechannel_syncrepos(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_softwarechannel_syncrepos()
@@ -2274,18 +2331,18 @@ def do_softwarechannel_syncrepos(self, args):
 def help_softwarechannel_setsyncschedule(self):
     print('softwarechannel_setsyncschedule: ')
     print('Sets the repo sync schedule for a software channel')
-    print()
+    print('')
     print('usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>')
     print('Options:')
     print('    -e/--no-errata : Do not sync errata')
     print('    -f/--fail : Terminate upon any error')
     print('    -k/--sync-kickstart : Create kickstartable tree')
     print('    -l/--latest : Only download latest package versions when repo syncs')
-    print()
+    print('')
     print('The schedule is specified in Quartz CronTrigger format without enclosing quotes.')
     print('For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 1 * * ?')
     print('If <SCHEDULE> is left empty, it will be disabled.')
-    print()
+    print('')
 
 
 def complete_softwarechannel_setsyncschedule(self, text, line, beg, end):
@@ -2293,12 +2350,13 @@ def complete_softwarechannel_setsyncschedule(self, text, line, beg, end):
 
 
 def do_softwarechannel_setsyncschedule(self, args):
-    options = [Option('-e', '--no-errata', action='store_true', default=False),
-               Option('-f', '--fail', action='store_true', default=False),
-               Option('-k', '--sync-kickstart', action='store_true', default=False),
-               Option('-l', '--latest', action='store_true', default=False)]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-e', '--no-errata', action='store_true', default=False)
+    arg_parser.add_argument('-f', '--fail', action='store_true', default=False)
+    arg_parser.add_argument('-k', '--sync-kickstart', action='store_true', default=False)
+    arg_parser.add_argument('-l', '--latest', action='store_true', default=False)
 
-    (args, options) = parse_arguments(args, options, glob=False)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     params = dict((i.replace('_', '-'), getattr(options, i)) for i in ['no_errata', 'fail', 'sync_kickstart', 'latest'])
 
@@ -2317,7 +2375,7 @@ def do_softwarechannel_setsyncschedule(self, args):
 def help_softwarechannel_removesyncschedule(self):
     print('softwarechannel_removesyncschedule: ')
     print('Removes the repo sync schedule for a software channel')
-    print()
+    print('')
     print('usage: softwarechannel_removesyncschedule <CHANNEL>')
 
 
@@ -2326,7 +2384,9 @@ def complete_softwarechannel_removesyncschedule(self, text, line, beg, end):
 
 
 def do_softwarechannel_removesyncschedule(self, args):
-    (args, _options) = parse_arguments(args, glob=False)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) == 1:
         self.help_softwarechannel_removesyncschedule()
@@ -2368,7 +2428,7 @@ def do_softwarechannel_listsyncschedule(self, args):
     print(csched_fmt.format('-----', '---------------------', '---------------'))
 
     # Sort and print(the channel names and associated repo-sync schedule (if any))
-    for key,value in sorted(chan_name.iteritems(), key=lambda k,v: (v,k)):
+    for key,value in sorted(chan_name.items(), key=lambda k,v: (v,k)):
         print(csched_fmt.format(str(key), value, chan_sched[int(key)]))
 
 ####################
@@ -2389,7 +2449,9 @@ def complete_softwarechannel_addrepo(self, text, line, beg, end):
 
 
 def do_softwarechannel_addrepo(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_softwarechannel_addrepo()
@@ -2426,7 +2488,9 @@ def complete_softwarechannel_removerepo(self, text, line, beg, end):
 
 
 def do_softwarechannel_removerepo(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_softwarechannel_removerepo()
@@ -2450,7 +2514,9 @@ def complete_softwarechannel_listrepos(self, text, line, beg, end):
 
 
 def do_softwarechannel_listrepos(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if args:
         details = self.client.channel.software.getDetails(self.session, args[0])
@@ -2476,9 +2542,11 @@ def complete_softwarechannel_mirrorpackages(self, text, line, beg, end):
 
 
 def do_softwarechannel_mirrorpackages(self, args):
-    options = [Option('-l', '--latest', action='store_true')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-l', '--latest', action='store_true')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
+
     if not args:
         self.help_softwarechannel_mirrorpackages()
         return
@@ -2501,8 +2569,8 @@ def do_softwarechannel_mirrorpackages(self, args):
         else:
             print("Fetching package", package_file)
             try:
-                urllib.urlretrieve(package_url, package_file)
-            except urllib.ContentTooShortError:
+                urlretrieve(package_url, package_file)
+            except ContentTooShortError:
                 logging.error(
                     "Received package %s from channel %s is broken. Content is too short",
                     package_file, channel)

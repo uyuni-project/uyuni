@@ -8,7 +8,7 @@
 %define rhn_conf_dir %{_sysconfdir}/sysconfig/rhn
 %define cron_dir %{_sysconfdir}/cron.d
 
-%if 0%{?fedora} || 0%{?suse_version} > 1320
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %global default_py3 1
 %endif
@@ -17,7 +17,7 @@
 
 Name:           rhn-virtualization
 Summary:        Spacewalk action support for virualization
-Version:        5.4.70
+Version:        5.4.71
 Release:        1%{?dist}
 
 Group:          System Environment/Base
@@ -304,6 +304,9 @@ fi
 %endif
 
 %changelog
+* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 5.4.71-1
+- use python3 for rhel8 in rhn-virtualization
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 5.4.70-1
 - remove install/clean section initial cleanup
 - removed Group from specfile

@@ -1,4 +1,4 @@
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 8
 %global build_py3   1
 %global default_py3 1
 %endif
@@ -6,7 +6,7 @@
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:           spacewalk-abrt
-Version:        2.8.3
+Version:        2.8.4
 Release:        1%{?dist}
 Summary:        ABRT plug-in for rhn-check
 
@@ -90,6 +90,9 @@ service abrtd restart ||:
 %endif
 
 %changelog
+* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.4-1
+- use python3 on rhel8 in spacewalk-abrt
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
 - remove install/clean section initial cleanup
 - removed Group from specfile

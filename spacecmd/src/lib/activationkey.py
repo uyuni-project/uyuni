@@ -32,8 +32,10 @@
 
 import re
 import shlex
-import xmlrpclib
-from optparse import Option
+try:
+    from xmlrpc import client as xmlrpclib
+except ImportError:
+    import xmlrpclib
 from spacecmd.utils import *
 
 
@@ -53,7 +55,9 @@ def complete_activationkey_addpackages(self, text, line, beg, end):
 
 
 def do_activationkey_addpackages(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_addpackages()
@@ -87,7 +91,9 @@ def complete_activationkey_removepackages(self, text, line, beg, end):
 
 
 def do_activationkey_removepackages(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_removepackages()
@@ -118,7 +124,9 @@ def complete_activationkey_addgroups(self, text, line, beg, end):
 
 
 def do_activationkey_addgroups(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_addgroups()
@@ -162,7 +170,9 @@ def complete_activationkey_removegroups(self, text, line, beg, end):
 
 
 def do_activationkey_removegroups(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_removegroups()
@@ -197,7 +207,9 @@ def complete_activationkey_addentitlements(self, text, line, beg, end):
 
 
 def do_activationkey_addentitlements(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_addentitlements()
@@ -233,7 +245,9 @@ def complete_activationkey_removeentitlements(self, text, line, beg, end):
 
 
 def do_activationkey_removeentitlements(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_removeentitlements()
@@ -283,7 +297,9 @@ def complete_activationkey_addchildchannels(self, text, line, beg, end):
 
 
 def do_activationkey_addchildchannels(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_addchildchannels()
@@ -316,7 +332,9 @@ def complete_activationkey_removechildchannels(self, text, line, beg, end):
 
 
 def do_activationkey_removechildchannels(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_removechildchannels()
@@ -343,7 +361,9 @@ def complete_activationkey_listchildchannels(self, text, line, beg, end):
 
 
 def do_activationkey_listchildchannels(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_listchildchannels()
@@ -370,7 +390,9 @@ def complete_activationkey_listbasechannel(self, text, line, beg, end):
 
 
 def do_activationkey_listbasechannel(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_listbasechannel()
@@ -396,7 +418,9 @@ def complete_activationkey_listgroups(self, text, line, beg, end):
 
 
 def do_activationkey_listgroups(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_listgroups()
@@ -425,7 +449,9 @@ def complete_activationkey_listentitlements(self, text, line, beg, end):
 
 
 def do_activationkey_listentitlements(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_listentitlements()
@@ -452,7 +478,9 @@ def complete_activationkey_listpackages(self, text, line, beg, end):
 
 
 def do_activationkey_listpackages(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_listpackages()
@@ -482,7 +510,9 @@ def complete_activationkey_listconfigchannels(self, text, line, beg, end):
 
 
 def do_activationkey_listconfigchannels(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_listconfigchannels()
@@ -522,10 +552,11 @@ def complete_activationkey_addconfigchannels(self, text, line, beg, end):
 
 
 def do_activationkey_addconfigchannels(self, args):
-    options = [Option('-t', '--top', action='store_true'),
-               Option('-b', '--bottom', action='store_true')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-t', '--top', action='store_true')
+    arg_parser.add_argument('-b', '--bottom', action='store_true')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_activationkey_addconfigchannels()
@@ -575,7 +606,9 @@ def complete_activationkey_removeconfigchannels(self, text, line, beg, end):
 
 
 def do_activationkey_removeconfigchannels(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_removeconfigchannels()
@@ -603,7 +636,9 @@ def complete_activationkey_setconfigchannelorder(self, text, line, beg,
 
 
 def do_activationkey_setconfigchannelorder(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
         self.help_activationkey_setconfigchannelorder()
@@ -621,7 +656,7 @@ def do_activationkey_setconfigchannelorder(self, args):
     all_channels = self.do_configchannel_list('', True)
     new_channels = config_channel_order(all_channels, new_channels)
 
-    print()
+    print('')
     print('New Configuration Channels:')
     for i, new_channel in enumerate(new_channels, 1):
         print('[%i] %s' % (i, new_channel))
@@ -646,23 +681,24 @@ options:
 
 
 def do_activationkey_create(self, args):
-    options = [Option('-n', '--name', action='store'),
-               Option('-d', '--description', action='store'),
-               Option('-b', '--base-channel', action='store'),
-               Option('-e', '--entitlements', action='store'),
-               Option('-u', '--universal', action='store_true')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-n', '--name')
+    arg_parser.add_argument('-d', '--description')
+    arg_parser.add_argument('-b', '--base-channel')
+    arg_parser.add_argument('-e', '--entitlements')
+    arg_parser.add_argument('-u', '--universal', action='store_true')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         options.name = prompt_user('Name (blank to autogenerate):')
         options.description = prompt_user('Description [None]:')
 
-        print()
+        print('')
         print('Base Channels')
         print('-------------')
         print('\n'.join(sorted(self.list_base_channels())))
-        print()
+        print('')
 
         options.base_channel = prompt_user('Base Channel (blank for default):')
 
@@ -718,7 +754,9 @@ def complete_activationkey_delete(self, text, line, beg, end):
 
 
 def do_activationkey_delete(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_delete()
@@ -779,7 +817,9 @@ def complete_activationkey_listsystems(self, text, line, beg, end):
 
 
 def do_activationkey_listsystems(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_listsystems()
@@ -813,7 +853,9 @@ def complete_activationkey_details(self, text, line, beg, end):
 
 
 def do_activationkey_details(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_details()
@@ -909,7 +951,9 @@ def complete_activationkey_enableconfigdeployment(self, text, line, beg,
 
 
 def do_activationkey_enableconfigdeployment(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_enableconfigdeployment()
@@ -934,7 +978,9 @@ def complete_activationkey_disableconfigdeployment(self, text, line, beg,
 
 
 def do_activationkey_disableconfigdeployment(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_disableconfigdeployment()
@@ -963,7 +1009,9 @@ def complete_activationkey_setbasechannel(self, text, line, beg, end):
 
 
 def do_activationkey_setbasechannel(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_setbasechannel()
@@ -1009,7 +1057,9 @@ def complete_activationkey_setusagelimit(self, text, line, beg, end):
 
 
 def do_activationkey_setusagelimit(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_setusagelimit()
@@ -1054,7 +1104,9 @@ def complete_activationkey_setuniversaldefault(self, text, line, beg, end):
 
 
 def do_activationkey_setuniversaldefault(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_activationkey_setuniversaldefault()
@@ -1139,8 +1191,10 @@ def export_activationkey_getdetails(self, key):
 
 
 def do_activationkey_export(self, args):
-    options = [Option('-f', '--file', action='store')]
-    (args, options) = parse_arguments(args, options)
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-f', '--file')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     filename = ""
     if options.file != None:
@@ -1203,7 +1257,9 @@ def help_activationkey_import(self):
 
 
 def do_activationkey_import(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         logging.error("No filename passed")
@@ -1327,18 +1383,19 @@ def complete_activationkey_clone(self, text, line, beg, end):
 
 
 def do_activationkey_clone(self, args):
-    options = [Option('-c', '--clonename', action='store'),
-               Option('-x', '--regex', action='store')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-c', '--clonename')
+    arg_parser.add_argument('-x', '--regex')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
     allkeys = self.do_activationkey_list('', True)
 
     if is_interactive(options):
-        print()
+        print('')
         print('Activation Keys')
         print('------------------')
         print('\n'.join(sorted(allkeys)))
-        print()
+        print('')
 
         if len(args) == 1:
             print("Key to clone: %s" % args[0])
@@ -1516,9 +1573,9 @@ def complete_activationkey_diff(self, text, line, beg, end):
 
 
 def do_activationkey_diff(self, args):
-    options = []
+    arg_parser = get_argument_parser()
 
-    (args, options) = parse_arguments(args, options)
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
         self.help_activationkey_diff()
@@ -1549,7 +1606,7 @@ def do_activationkey_diff(self, args):
 
 def help_activationkey_disable(self):
     print('activationkey_disable: Disable an activation key')
-    print()
+    print('')
     print('usage: activationkey_disable KEY [KEY ...]')
 
 
@@ -1561,7 +1618,9 @@ def complete_activationkey_disable(self, text, line, beg, end):
 
 
 def do_activationkey_disable(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 1:
         self.help_activationkey_disable()
@@ -1579,7 +1638,7 @@ def do_activationkey_disable(self, args):
 
 def help_activationkey_enable(self):
     print('activationkey_enable: Enable an activation key')
-    print()
+    print('')
     print('usage: activationkey_enable KEY [KEY ...]')
 
 
@@ -1591,7 +1650,9 @@ def complete_activationkey_enable(self, text, line, beg, end):
 
 
 def do_activationkey_enable(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 1:
         self.help_activationkey_enable()
@@ -1609,7 +1670,7 @@ def do_activationkey_enable(self, args):
 
 def help_activationkey_setdescription(self):
     print('activationkey_setdescription: Set the activation key description')
-    print()
+    print('')
     print('usage: activationkey_setdescription KEY DESCRIPTION')
 
 
@@ -1621,7 +1682,9 @@ def complete_activationkey_setdescription(self, text, line, beg, end):
 
 
 def do_activationkey_setdescription(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_activationkey_setdescription()

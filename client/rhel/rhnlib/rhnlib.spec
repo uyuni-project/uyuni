@@ -1,4 +1,4 @@
-%if 0%{?fedora} || 0%{?suse_version} > 1320
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %endif
 
@@ -6,7 +6,7 @@
 
 Summary: Python libraries for the Spacewalk project
 Name: rhnlib
-Version: 2.8.6
+Version: 2.8.7
 Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -99,6 +99,9 @@ make -f Makefile.rhnlib
 %endif
 
 %changelog
+* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.7-1
+- rhel8 utilizes python3
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.6-1
 - remove install/clean section initial cleanup
 - removed Group from specfile
