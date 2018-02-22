@@ -43,17 +43,19 @@ Feature: Be able to list available channels and enable them
     And I should see "Total time:" in the output
     And I should see "Repo URL:" in the output
 
-  Scenario: Enable sles12-sp2-pool-x86_64
-    When I execute mgr-sync "add channel sles12-sp2-pool-x86_64"
+  Scenario: Enable sles12-sp3-pool-x86_64 (automatic enables all requires channels)
+    When I execute mgr-sync "add channel sles12-sp3-pool-x86_64"
     And I execute mgr-sync "list channels"
-    Then I should get "[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]"
-    And I should get "    [ ] SLES12-SP2-Updates for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-updates-x86_64]"
+    Then I should get "[I] SLES12-SP3-Pool for x86_64 SUSE Linux Enterprise Server 12 SP3 x86_64 [sles12-sp3-pool-x86_64]"
+    And I should get "    [I] SLES12-SP3-Updates for x86_64 SUSE Linux Enterprise Server 12 SP3 x86_64 [sles12-sp3-updates-x86_64]"
+    And I should get "    [ ] SLE-Module-Containers12-Pool for x86_64 SP2 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp2]"
 
-  Scenario: Enable sles12-sp2-updates-x86_64
-    When I execute mgr-sync "add channel sles12-sp2-updates-x86_64"
+  Scenario: Enable sle-module-containers12-pool-x86_64-sp3 (automatic enables all requires channels)
+    When I execute mgr-sync "add channel sle-module-containers12-pool-x86_64-sp3"
     And I execute mgr-sync "list channels"
-    Then I should get "[I] SLES12-SP2-Pool for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-pool-x86_64]"
-    And I should get "    [I] SLES12-SP2-Updates for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-updates-x86_64]"
+    Then I should get "[I] SLES12-SP3-Pool for x86_64 SUSE Linux Enterprise Server 12 SP3 x86_64 [sles12-sp3-pool-x86_64]"
+    And I should get "    [I] SLE-Module-Containers12-Pool for x86_64 SP2 Containers Module 12 x86_64 [sle-module-containers12-pool-x86_64-sp3]"
+    And I should get "    [I] SLE-Module-Containers12-Updates for x86_64 SP2 Containers Module 12 x86_64 [sle-module-containers12-updates-x86_64-sp3]"
 
   Scenario: Let mgr-sync time out
     When I remove the mgr-sync cache file
