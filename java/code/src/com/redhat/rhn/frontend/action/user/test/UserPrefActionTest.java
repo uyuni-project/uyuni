@@ -36,6 +36,7 @@ import org.apache.struts.action.ActionMapping;
 public class UserPrefActionTest extends RhnBaseTestCase {
 
     private static final Integer PAGE_SIZE = new Integer(50);
+    private static final Integer PREF_LOC = new Integer(7018);
 
     /**
      *
@@ -70,6 +71,7 @@ public class UserPrefActionTest extends RhnBaseTestCase {
         form.set("fax", Boolean.TRUE);
         form.set("mail", Boolean.FALSE);
         form.set("pagesize", PAGE_SIZE);
+        form.set("timezone", PREF_LOC);
         form.set("csvSeparator", ',');
         ActionForward rc = action.execute(mapping, form, request, response);
 
