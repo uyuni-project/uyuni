@@ -763,7 +763,7 @@ def do_softwarechannel_create(self, args):
     arg_parser.add_argument('-c', '--checksum')
     arg_parser.add_argument('-u', '--gpg_url')
     arg_parser.add_argument('-f', '--gpg_fingerprint')
-    arg_parser.add_argument('-g', '--disable_gpg_check')
+    arg_parser.add_argument('-g', '--disable_gpg_check', action='store_true')
 
     (args, options) = parse_command_arguments(args, arg_parser)
 
