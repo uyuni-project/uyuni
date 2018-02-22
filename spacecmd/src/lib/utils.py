@@ -38,7 +38,12 @@ import readline
 import shlex
 import sys
 import time
-import xmlrpclib
+import argparse
+
+try:
+    from xmlrpc import client as xmlrpclib
+except ImportError:
+    import xmlrpclib
 from collections import deque
 from datetime import datetime, timedelta
 from difflib import unified_diff
@@ -53,8 +58,7 @@ except ImportError:
 
 import rpm
 
-from spacecmd.optionparser import SpacecmdOptionParser
-
+from spacecmd.argumentparser import SpacecmdArgumentParser
 
 __EDITORS = ['vim', 'vi', 'nano', 'emacs']
 
@@ -67,18 +71,24 @@ class CustomJsonEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def parse_arguments(args, options=None, glob=True):
-    options = options or []
+def get_argument_parser():
+    return SpacecmdArgumentParser()
+
+def parse_command_arguments(command_args, argument_parser, glob=True):
     try:
-        parts = shlex.split(args)
+        parts = shlex.split(command_args)
 
         # allow simple globbing
         if glob:
             parts = [re.sub(r'\*', '.*', a) for a in parts]
 
-        parser = SpacecmdOptionParser(option_list=options)
-        (opts, leftovers) = parser.parse_args(args=parts)
-
+        argument_parser.add_argument('leftovers', nargs='*',
+                                     help=argparse.SUPPRESS)
+        opts = argument_parser.parse_args(args=parts)
+        if opts.leftovers:
+            leftovers = opts.leftovers
+        else:
+            leftovers = []
         return leftovers, opts
     except IndexError:
         return None, None
@@ -105,7 +115,7 @@ def load_cache(cachefile):
 
     if os.path.isfile(cachefile):
         try:
-            inputfile = open(cachefile, 'r')
+            inputfile = open(cachefile, 'rb')
             data = pickle.load(inputfile)
             inputfile.close()
         except EOFError:
@@ -237,7 +247,15 @@ def prompt_user(prompt, noblank=False, multiline=False):
                 print(prompt)
                 userinput = sys.stdin.read()
             else:
-                userinput = raw_input('%s ' % prompt)
+                try:
+                    # python 2 must call raw_input() because input()
+                    # also evaluates the user input and that causes
+                    # problems.
+                    userinput = raw_input('%s ' % prompt)
+                except NameError:
+                    # python 3 replaced raw_input() with input()...
+                    # it no longer evaulates the user input.
+                    userinput = input('%s ' % prompt)
             if noblank:
                 if userinput != '':
                     break

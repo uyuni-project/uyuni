@@ -1,7 +1,7 @@
 
 %{!?pylint_check: %global pylint_check 0}
 
-%if 0%{?fedora} || 0%{?suse_version} > 1320
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %global default_py3 1
 %endif
@@ -13,7 +13,7 @@ Summary:       Package uploader for the Spacewalk
 Group:         Applications/System
 License:       GPLv2
 URL:           https://github.com/spacewalkproject/spacewalk
-Version:       5.5.110
+Version:       5.5.111
 Release:       1%{?dist}
 Source0:       https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
@@ -127,6 +127,9 @@ spacewalk-python2-pylint $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{python_sitel
 %endif
 
 %changelog
+* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 5.5.111-1
+- use python3 on rhel8 in rhnpush
+
 * Tue Feb 13 2018 Eric Herget <eherget@redhat.com> 5.5.110-1
 - Update to use newly separated spacewalk-python[2|3]-pylint packages
 

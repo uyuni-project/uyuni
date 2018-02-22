@@ -29,28 +29,28 @@
 # invalid function name
 # pylint: disable=C0103
 
-from optparse import Option
 from spacecmd.utils import *
 
 
 def help_distribution_create(self):
     print('distribution_create: Create a Kickstart tree')
-    print('''usage: distribution_create [options])
+    print('''usage: distribution_create [options]
 
 options:
   -n NAME
   -p path to tree
   -b base channel to associate with
-  -t install type [fedora|rhel_4/5/6|suse|generic_rpm]''')
+  -t install type [fedora|rhel_4/5/6|generic_rpm]''')
 
 
 def do_distribution_create(self, args, update=False):
-    options = [Option('-n', '--name', action='store'),
-               Option('-p', '--path', action='store'),
-               Option('-b', '--base-channel', action='store'),
-               Option('-t', '--install-type', action='store')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-n', '--name')
+    arg_parser.add_argument('-p', '--path')
+    arg_parser.add_argument('-b', '--base-channel')
+    arg_parser.add_argument('-t', '--install-type')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     # fill in the name of the distribution when updating
     if update:
@@ -68,11 +68,11 @@ def do_distribution_create(self, args, update=False):
 
         options.base_channel = ''
         while options.base_channel == '':
-            print()
+            print('')
             print('Base Channels')
             print('-------------')
             print('\n'.join(sorted(self.list_base_channels())))
-            print()
+            print('')
 
             options.base_channel = prompt_user('Base Channel:')
 
@@ -87,11 +87,11 @@ def do_distribution_create(self, args, update=False):
 
         options.install_type = ''
         while options.install_type == '':
-            print()
+            print('')
             print('Install Types')
             print('-------------')
             print('\n'.join(sorted(install_types)))
-            print()
+            print('')
 
             options.install_type = prompt_user('Install Type:')
 
@@ -169,7 +169,9 @@ def complete_distribution_delete(self, text, line, beg, end):
 
 
 def do_distribution_delete(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_distribution_delete()
@@ -204,7 +206,9 @@ def complete_distribution_details(self, text, line, beg, end):
 
 
 def do_distribution_details(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_distribution_details()
@@ -251,7 +255,9 @@ def complete_distribution_rename(self, text, line, beg, end):
 
 
 def do_distribution_rename(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_distribution_rename()
@@ -267,12 +273,12 @@ def do_distribution_rename(self, args):
 
 def help_distribution_update(self):
     print('distribution_update: Update the path of a Kickstart tree')
-    print('''usage: distribution_update NAME [options])
+    print('''usage: distribution_update NAME [options]
 
 options:
   -p path to tree
   -b base channel to associate with
-  -t install type [fedora|rhel_4/5/6|suse|generic_rpm]''')
+  -t install type [fedora|rhel_4/5/6|generic_rpm]''')
 
 
 def complete_distribution_update(self, text, line, beg, end):

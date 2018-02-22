@@ -24,10 +24,12 @@
 # unused argument
 # pylint: disable=W0613
 
-from optparse import Option
 import logging
 import sys
-import xmlrpclib
+try:
+    from xmlrpc import client as xmlrpclib
+except ImportError:
+    import xmlrpclib
 from utils import CustomJsonEncoder
 from spacecmd.utils import *
 
@@ -51,11 +53,12 @@ examples:
 
 
 def do_api(self, args):
-    options = [Option('-A', '--args', default=''),
-               Option('-F', '--format', default=''),
-               Option('-o', '--output', default='')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-A', '--args', default='')
+    arg_parser.add_argument('-F', '--format', default='')
+    arg_parser.add_argument('-o', '--output', default='')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_api()
@@ -68,7 +71,7 @@ def do_api(self, args):
         try:
             output = open(options.output, "w")
         except IOError:
-            logging.warn("Could not open to write: " + options.output)
+            logging.warning("Could not open to write: " + options.output)
             logging.info("Fallback output to stdout")
 
             output = sys.stdout
@@ -78,7 +81,7 @@ def do_api(self, args):
     api = getattr(self.client, api_name, None)
 
     if not callable(api):
-        logging.warn("No such API: " + api_name)
+        logging.warning("No such API: " + api_name)
         return
 
     try:

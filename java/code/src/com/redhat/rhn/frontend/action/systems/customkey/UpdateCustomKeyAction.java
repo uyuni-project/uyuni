@@ -103,10 +103,13 @@ public class UpdateCustomKeyAction extends RhnAction implements Listable {
         helper.execute();
 
         if (context.wasDispatched("system.jsp.customkey.updatebutton")) {
-
             String description = (String)form.get(DESC_PARAM);
             if (description.length() < 2) {
                 createErrorMessage(request, "system.customkey.error.tooshort", null);
+                return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+            }
+            else if (description.length() > 4000) {
+                createErrorMessage(request, "system.customkey.error.descr_toolong", null);
                 return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
             }
 

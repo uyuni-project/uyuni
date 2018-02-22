@@ -39,7 +39,9 @@ def help_report_inactivesystems(self):
 
 
 def do_report_inactivesystems(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     # allow the user to set a limit on the number of days
     if len(args) == 1:
@@ -115,7 +117,9 @@ def help_report_errata(self):
 
 
 def do_report_errata(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         print('All errata requested - this may take a few minutes, please be patient!')
@@ -152,12 +156,14 @@ def do_report_errata(self, args):
 def help_report_ipaddresses(self):
     print('report_ipaddresses: List the hostname and IP of each system')
     print('usage: report_ipaddresses [<SYSTEMS>]')
-    print()
+    print('')
     print(self.HELP_SYSTEM_OPTS)
 
 
 def do_report_ipaddresses(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if args:
         # use the systems listed in the SSM
@@ -197,9 +203,9 @@ def do_report_ipaddresses(self, args):
 
         for system in sorted(report):
             print('%s  %s  %s' %
-                (system.ljust(system_max_size),
-                 report[system]['hostname'].ljust(hostname_max_size),
-                 report[system]['ip'].ljust(15)))
+                  (system.ljust(system_max_size),
+                   report[system]['hostname'].ljust(hostname_max_size),
+                   report[system]['ip'].ljust(15)))
 
 ####################
 
@@ -207,12 +213,14 @@ def do_report_ipaddresses(self, args):
 def help_report_kernels(self):
     print('report_kernels: List the running kernel of each system')
     print('usage: report_kernels [<SYSTEMS>]')
-    print()
+    print('')
     print(self.HELP_SYSTEM_OPTS)
 
 
 def do_report_kernels(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if args:
         # use the systems listed in the SSM
@@ -278,7 +286,7 @@ def do_report_duplicates(self, args):
                 print('%i  %s' % (dupe.get('id'), dupe.get('last_checkin')))
 
             if len(dupes_by_profile) > 1:
-                print()
+                print('')
 
     if self.check_api_version('10.11'):
         dupes_by_ip = self.client.system.listDuplicatesByIp(self.session)
@@ -302,7 +310,7 @@ def do_report_duplicates(self, args):
                                       dupe.get('last_checkin')))
 
                 if len(dupes_by_ip) > 1:
-                    print()
+                    print('')
 
         if dupes_by_mac:
             if add_separator:
@@ -320,7 +328,7 @@ def do_report_duplicates(self, args):
                                       dupe.get('last_checkin')))
 
                 if len(dupes_by_mac) > 1:
-                    print()
+                    print('')
 
         if dupes_by_hostname:
             if add_separator:
@@ -338,4 +346,4 @@ def do_report_duplicates(self, args):
                                       dupe.get('last_checkin')))
 
                 if len(dupes_by_hostname) > 1:
-                    print()
+                    print('')

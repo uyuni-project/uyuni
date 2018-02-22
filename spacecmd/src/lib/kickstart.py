@@ -32,10 +32,16 @@
 
 from getpass import getpass
 from operator import itemgetter
-from optparse import Option
-from urllib2 import urlopen, HTTPError
+try:
+    from urllib2 import urlopen, HTTPError
+except ImportError:
+    from urllib.request import urlopen
+    from urllib.error import HTTPError
 import re
-import xmlrpclib
+try:
+    from xmlrpc import client as xmlrpclib
+except ImportError:
+    import xmlrpclib
 from spacecmd.utils import *
 
 KICKSTART_OPTIONS = ['autostep', 'interactive', 'install', 'upgrade',
@@ -84,12 +90,13 @@ options:
 
 
 def do_kickstart_create(self, args):
-    options = [Option('-n', '--name', action='store'),
-               Option('-d', '--distribution', action='store'),
-               Option('-v', '--virt-type', action='store'),
-               Option('-p', '--root-password', action='store')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-n', '--name')
+    arg_parser.add_argument('-d', '--distribution')
+    arg_parser.add_argument('-v', '--virt-type')
+    arg_parser.add_argument('-p', '--root-password')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         options.name = prompt_user('Name:', noblank=True)
@@ -97,7 +104,7 @@ def do_kickstart_create(self, args):
         print('Virtualization Types')
         print('--------------------')
         print('\n'.join(sorted(self.VIRT_TYPES)))
-        print()
+        print('')
 
         options.virt_type = prompt_user('Virtualization Type [none]:')
         if options.virt_type == '' or options.virt_type not in self.VIRT_TYPES:
@@ -106,17 +113,17 @@ def do_kickstart_create(self, args):
         options.distribution = ''
         while options.distribution == '':
             trees = self.do_distribution_list('', True)
-            print()
+            print('')
             print('Distributions')
             print('-------------')
             print('\n'.join(sorted(trees)))
-            print()
+            print('')
 
             options.distribution = prompt_user('Select:')
 
         options.root_password = ''
         while options.root_password == '':
-            print()
+            print('')
             password1 = getpass('Root Password: ')
             password2 = getpass('Repeat Password: ')
 
@@ -168,7 +175,9 @@ def complete_kickstart_delete(self, text, line, beg, end):
 
 
 def do_kickstart_delete(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
         self.help_kickstart_delete()
@@ -211,12 +220,13 @@ def do_kickstart_import(self, args):
 
 
 def kickstart_import_file(self, raw, args):
-    options = [Option('-n', '--name', action='store'),
-               Option('-d', '--distribution', action='store'),
-               Option('-v', '--virt-type', action='store'),
-               Option('-f', '--file', action='store')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-n', '--name')
+    arg_parser.add_argument('-d', '--distribution')
+    arg_parser.add_argument('-v', '--virt-type')
+    arg_parser.add_argument('-f', '--file')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         options.name = prompt_user('Name:', noblank=True)
@@ -225,7 +235,7 @@ def kickstart_import_file(self, raw, args):
         print('Virtualization Types')
         print('--------------------')
         print('\n'.join(sorted(self.VIRT_TYPES)))
-        print()
+        print('')
 
         options.virt_type = prompt_user('Virtualization Type [none]:')
         if options.virt_type == '' or options.virt_type not in self.VIRT_TYPES:
@@ -234,11 +244,11 @@ def kickstart_import_file(self, raw, args):
         options.distribution = ''
         while options.distribution == '':
             trees = self.do_distribution_list('', True)
-            print()
+            print('')
             print('Distributions')
             print('-------------')
             print('\n'.join(sorted(trees)))
-            print()
+            print('')
 
             options.distribution = prompt_user('Select:')
     else:
@@ -308,7 +318,9 @@ def complete_kickstart_details(self, text, line, beg, end):
 
 
 def do_kickstart_details(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1:
         self.help_kickstart_details()
@@ -517,7 +529,9 @@ def complete_kickstart_getcontents(self, text, line, beg, end):
 
 
 def do_kickstart_getcontents(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_getcontents()
@@ -549,7 +563,9 @@ def complete_kickstart_rename(self, text, line, beg, end):
 
 
 def do_kickstart_rename(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_kickstart_rename()
@@ -577,7 +593,9 @@ def complete_kickstart_listcryptokeys(self, text, line, beg, end):
 
 
 def do_kickstart_listcryptokeys(self, args, doreturn=False):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listcryptokeys()
@@ -613,7 +631,9 @@ def complete_kickstart_addcryptokeys(self, text, line, beg, end):
 
 
 def do_kickstart_addcryptokeys(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_addcryptokeys()
@@ -651,7 +671,9 @@ def complete_kickstart_removecryptokeys(self, text, line, beg, end):
 
 
 def do_kickstart_removecryptokeys(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removecryptokeys()
@@ -681,7 +703,9 @@ def complete_kickstart_listactivationkeys(self, text, line, beg, end):
 
 
 def do_kickstart_listactivationkeys(self, args, doreturn=False):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listactivationkeys()
@@ -721,7 +745,9 @@ def complete_kickstart_addactivationkeys(self, text, line, beg, end):
 
 
 def do_kickstart_addactivationkeys(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_addactivationkeys()
@@ -761,7 +787,9 @@ def complete_kickstart_removeactivationkeys(self, text, line, beg,
 
 
 def do_kickstart_removeactivationkeys(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removeactivationkeys()
@@ -796,7 +824,9 @@ def complete_kickstart_enableconfigmanagement(self, text, line, beg,
 
 
 def do_kickstart_enableconfigmanagement(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_enableconfigmanagement()
@@ -825,7 +855,9 @@ def complete_kickstart_disableconfigmanagement(self, text, line, beg,
 
 
 def do_kickstart_disableconfigmanagement(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_disableconfigmanagement()
@@ -854,7 +886,9 @@ def complete_kickstart_enableremotecommands(self, text, line, beg,
 
 
 def do_kickstart_enableremotecommands(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_enableremotecommands()
@@ -882,7 +916,9 @@ def complete_kickstart_disableremotecommands(self, text, line, beg, end):
 
 
 def do_kickstart_disableremotecommands(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_disableremotecommands()
@@ -911,7 +947,9 @@ def complete_kickstart_setlocale(self, text, line, beg, end):
 
 
 def do_kickstart_setlocale(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_kickstart_setlocale()
@@ -948,7 +986,9 @@ def complete_kickstart_setselinux(self, text, line, beg, end):
 
 
 def do_kickstart_setselinux(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_kickstart_setselinux()
@@ -978,7 +1018,9 @@ def complete_kickstart_setpartitions(self, text, line, beg, end):
 
 
 def do_kickstart_setpartitions(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_setpartitions()
@@ -1027,7 +1069,9 @@ def complete_kickstart_setdistribution(self, text, line, beg, end):
 
 
 def do_kickstart_setdistribution(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 2:
         self.help_kickstart_setdistribution()
@@ -1056,7 +1100,9 @@ def complete_kickstart_enablelogging(self, text, line, beg, end):
 
 
 def do_kickstart_enablelogging(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_enablelogging()
@@ -1085,7 +1131,9 @@ def complete_kickstart_addvariable(self, text, line, beg, end):
 
 
 def do_kickstart_addvariable(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
         self.help_kickstart_addvariable()
@@ -1131,7 +1179,9 @@ def complete_kickstart_updatevariable(self, text, line, beg, end):
 
 
 def do_kickstart_updatevariable(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 3:
         self.help_kickstart_updatevariable()
@@ -1166,7 +1216,9 @@ def complete_kickstart_removevariables(self, text, line, beg, end):
 
 
 def do_kickstart_removevariables(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removevariables()
@@ -1203,7 +1255,9 @@ def complete_kickstart_listvariables(self, text, line, beg, end):
 
 
 def do_kickstart_listvariables(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listvariables()
@@ -1235,7 +1289,9 @@ def complete_kickstart_addoption(self, text, line, beg, end):
 
 
 def do_kickstart_addoption(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_addoption()
@@ -1296,7 +1352,9 @@ def complete_kickstart_removeoptions(self, text, line, beg, end):
 
 
 def do_kickstart_removeoptions(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removeoptions()
@@ -1336,7 +1394,9 @@ def complete_kickstart_listoptions(self, text, line, beg, end):
 
 
 def do_kickstart_listoptions(self, args):
-    (args, options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listoptions()
@@ -1368,7 +1428,9 @@ def complete_kickstart_listcustomoptions(self, text, line, beg, end):
 
 
 def do_kickstart_listcustomoptions(self, args):
-    (args, options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listcustomoptions()
@@ -1400,7 +1462,9 @@ def complete_kickstart_setcustomoptions(self, text, line, beg, end):
 
 
 def do_kickstart_setcustomoptions(self, args):
-    (args, options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_setcustomoptions()
@@ -1467,7 +1531,9 @@ def complete_kickstart_addchildchannels(self, text, line, beg, end):
 
 
 def do_kickstart_addchildchannels(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_addchildchannels()
@@ -1506,7 +1572,9 @@ def complete_kickstart_removechildchannels(self, text, line, beg,
 
 
 def do_kickstart_removechildchannels(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removechildchannels()
@@ -1543,7 +1611,9 @@ def complete_kickstart_listchildchannels(self, text, line, beg, end):
 
 
 def do_kickstart_listchildchannels(self, args, doreturn=False):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listchildchannels()
@@ -1580,7 +1650,9 @@ def complete_kickstart_addfilepreservations(self, text, line, beg, end):
 
 
 def do_kickstart_addfilepreservations(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_addfilepreservations()
@@ -1624,7 +1696,9 @@ def complete_kickstart_removefilepreservations(self, text, line, beg,
 
 
 def do_kickstart_removefilepreservations(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removefilepreservations()
@@ -1650,7 +1724,9 @@ def complete_kickstart_listpackages(self, text, line, beg, end):
 
 
 def do_kickstart_listpackages(self, args, doreturn=False):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listpackages()
@@ -1686,7 +1762,9 @@ def complete_kickstart_addpackages(self, text, line, beg, end):
 
 
 def do_kickstart_addpackages(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) >= 2:
         self.help_kickstart_addpackages()
@@ -1719,7 +1797,9 @@ def complete_kickstart_removepackages(self, text, line, beg, end):
 
 
 def do_kickstart_removepackages(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_kickstart_removepackages()
@@ -1753,7 +1833,9 @@ def complete_kickstart_listscripts(self, text, line, beg, end):
 
 
 def do_kickstart_listscripts(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_listscripts()
@@ -1775,7 +1857,7 @@ def do_kickstart_listscripts(self, args):
         print('Type:        %s' % script.get('script_type'))
         print('Chroot:      %s' % script.get('chroot'))
         print('Interpreter: %s' % script.get('interpreter'))
-        print()
+        print('')
         print('Contents')
         print('--------')
         print(script.get('contents'))
@@ -1804,14 +1886,15 @@ def complete_kickstart_addscript(self, text, line, beg, end):
 
 
 def do_kickstart_addscript(self, args):
-    options = [Option('-p', '--profile', action='store'),
-               Option('-e', '--execution-time', action='store'),
-               Option('-c', '--chroot', action='store_true'),
-               Option('-t', '--template', action='store_true'),
-               Option('-i', '--interpreter', action='store'),
-               Option('-f', '--file', action='store')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-p', '--profile')
+    arg_parser.add_argument('-e', '--execution-time')
+    arg_parser.add_argument('-c', '--chroot', action='store_true')
+    arg_parser.add_argument('-t', '--template', action='store_true')
+    arg_parser.add_argument('-i', '--interpreter')
+    arg_parser.add_argument('-f', '--file')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         if args:
@@ -1873,7 +1956,7 @@ def do_kickstart_addscript(self, args):
     if options.file:
         options.contents = read_file(options.file)
 
-    print()
+    print('')
     print('Profile Name:   %s' % options.profile)
     print('Execution Time: %s' % options.execution_time)
     print('Chroot:         %s' % options.chroot)
@@ -1909,7 +1992,9 @@ def complete_kickstart_removescript(self, text, line, beg, end):
 
 
 def do_kickstart_removescript(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         self.help_kickstart_removescript()
@@ -1931,7 +2016,7 @@ def do_kickstart_removescript(self, args):
 
     if not script_id:
         while script_id == 0:
-            print()
+            print('')
             userinput = prompt_user('Script ID:', noblank=True)
 
             try:
@@ -1963,18 +2048,19 @@ def complete_kickstart_clone(self, text, line, beg, end):
 
 
 def do_kickstart_clone(self, args):
-    options = [Option('-n', '--name', action='store'),
-               Option('-c', '--clonename', action='store')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-n', '--name')
+    arg_parser.add_argument('-c', '--clonename')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
         profiles = self.do_kickstart_list('', True)
-        print()
+        print('')
         print('Kickstart Profiles')
         print('------------------')
         print('\n'.join(sorted(profiles)))
-        print()
+        print('')
 
         options.name = prompt_user('Original Profile:', noblank=True)
 
@@ -2108,8 +2194,10 @@ def export_kickstart_getdetails(self, profile, kickstarts):
 
 
 def do_kickstart_export(self, args):
-    options = [Option('-f', '--file', action='store')]
-    (args, options) = parse_arguments(args, options)
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-f', '--file')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     filename = ""
     if options.file != None:
@@ -2174,7 +2262,9 @@ def help_kickstart_importjson(self):
 
 
 def do_kickstart_importjson(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not args:
         logging.error("Error, no filename passed")
@@ -2247,7 +2337,7 @@ def import_kickstart_fromdetails(self, ksdetails):
         # kickstarts from a server with the new API call to one without it,
         # so ensure the target satellite is at least as up-to-date as the
         # satellite where the export was performed.
-        if script.has_key('template'):
+        if 'template' in script:
             ret = self.client.kickstart.profile.addScript(self.session,
                                                           ksdetails['label'], script['name'], script['contents'],
                                                           script['interpreter'], script[
@@ -2328,7 +2418,7 @@ def import_kickstart_fromdetails(self, ksdetails):
     logging.warning(" * Details->Kernel Options")
     # We can export Post kernel options (sort of, see above)
     # if they exist on import, flag a warning
-    if ksdetails.has_key('post_kopts'):
+    if 'post_kopts' in ksdetails:
         logging.warning(" * Details->Post Kernel Options : %s" %
                         ksdetails['post_kopts'])
     return True
@@ -2384,9 +2474,9 @@ def complete_kickstart_diff(self, text, line, beg, end):
 
 
 def do_kickstart_diff(self, args):
-    options = []
+    arg_parser = get_argument_parser()
 
-    (args, options) = parse_arguments(args, options)
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) != 1 and len(args) != 2:
         self.help_kickstart_diff()
@@ -2428,7 +2518,9 @@ def complete_kickstart_getupdatetype(self, text, line, beg, end):
 
 
 def do_kickstart_getupdatetype(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
         self.help_kickstart_getupdatetype()
@@ -2468,16 +2560,17 @@ options:
 
 
 def do_kickstart_setupdatetype(self, args):
-    options = [Option('-u', '--update-type', action='store')]
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-u', '--update-type')
 
-    (args, options) = parse_arguments(args, options)
+    (args, options) = parse_command_arguments(args, arg_parser)
 
     if is_interactive(options):
 
         print('Update Types')
         print('--------------------')
         print('\n'.join(sorted(self.UPDATE_TYPES)))
-        print()
+        print('')
 
         options.update_type = prompt_user('Update Type [none]:')
         if options.update_type == '' or options.update_type not in self.UPDATE_TYPES:
@@ -2519,7 +2612,9 @@ def complete_kickstart_getsoftwaredetails(self, text, line, beg, end):
 
 
 def do_kickstart_getsoftwaredetails(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 1:
         self.help_kickstart_getsoftwaredetails()
@@ -2549,7 +2644,7 @@ def do_kickstart_getsoftwaredetails(self, args):
             print("Kickstart Label: %s" % label)
             print("noBase:          %s" % software_details.get("noBase"))
             print("ignoreMissing:   %s" % software_details.get("ignoreMissing"))
-            print()
+            print('')
 
 ####################
 
@@ -2579,7 +2674,9 @@ def complete_kickstart_setsoftwaredetails(self, text, line, beg, end):
 
 
 def do_kickstart_setsoftwaredetails(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
     length = len(args)
     kspkginfo = ['noBase', 'ignoreMissing']
     mode = ['True', 'False']

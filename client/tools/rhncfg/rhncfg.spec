@@ -8,7 +8,7 @@
 %global rhnconf %{_sysconfdir}/sysconfig/rhn
 %global client_caps_dir %{rhnconf}/clientCaps.d
 
-%if 0%{?fedora} || 0%{?suse_version} > 1320
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %global default_py3 1
 %endif
@@ -16,7 +16,7 @@
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name: rhncfg
-Version: 5.10.120
+Version: 5.10.121
 Release: 1%{?dist}
 Summary: Spacewalk Configuration Client Libraries
 Group:   Applications/System
@@ -294,6 +294,9 @@ fi
 %endif
 
 %changelog
+* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 5.10.121-1
+- use python3 on rhel8 in rhncfg
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 5.10.120-1
 - remove install/clean section initial cleanup
 - removed Group from specfile

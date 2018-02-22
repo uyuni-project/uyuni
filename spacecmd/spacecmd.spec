@@ -3,7 +3,7 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
 %endif
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %{!?pylint_check: %global pylint_check 1}
 %endif
 
@@ -13,7 +13,7 @@
 %endif
 
 Name:        spacecmd
-Version:     2.8.16
+Version:     2.8.17
 Release:     1%{?dist}
 Summary:     Command-line interface to Spacewalk and Red Hat Satellite servers
 
@@ -27,7 +27,11 @@ BuildArch:   noarch
 %endif
 
 %if 0%{?pylint_check}
-BuildRequires: spacewalk-pylint
+%if 0%{?build_py3}
+BuildRequires: spacewalk-python3-pylint
+%else
+BuildRequires: spacewalk-python2-pylint
+%endif
 %endif
 %if 0%{?build_py3}
 BuildRequires: python3
@@ -90,10 +94,12 @@ touch %{buildroot}/%{_sysconfdir}/spacecmd.conf
 touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 %{__chmod} 0644 %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 
+%if 0%{?suse_version}
 %if 0%{?build_py3}
 %py3_compile -O %{buildroot}/%{python_sitelib}
 %else
 %py_compile -O %{buildroot}/%{python_sitelib}
+%endif
 %endif
 
 %clean
@@ -101,8 +107,13 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 
 %check
 %if 0%{?pylint_check}
+%if 0%{?build_py3}
 PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
-	spacewalk-pylint $RPM_BUILD_ROOT%{python_sitelib}/spacecmd
+	  spacewalk-python3-pylint $RPM_BUILD_ROOT%{python_sitelib}/spacecmd
+%else
+PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
+	  spacewalk-python2-pylint $RPM_BUILD_ROOT%{python_sitelib}/spacecmd
+%endif
 %endif
 
 %files
@@ -116,6 +127,20 @@ PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 %doc %{_mandir}/man1/spacecmd.1.gz
 
 %changelog
+* Wed Feb 21 2018 Eric Herget <eherget@redhat.com> 2.8.17-1
+- PR602 - more python3 support updates
+- PR602 - Update to use newly separated spacewalk-python[2|3]-pylint packages
+- PR602 - switch to argparse from optparse
+- PR602 - fix fedora 26 build
+- PR602 - lint fixes
+- PR602 - use py_compile only on SUSE
+- PR602 - make lambda call python3 compatible
+- PR602 - make mkdir mode python3 compatible
+- PR602 - make exec python3 compatible
+- PR602 - make exceptions python3 compatible
+- PR602 - make print python3 compatible
+- PR602 - build with python3
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.16-1
 - removed %%%%defattr from specfile
 - removed Group from specfile

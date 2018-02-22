@@ -1,7 +1,7 @@
 # package renaming fun :(
 %define rhn_check	 spacewalk-check
 #
-%if 0%{?fedora} || 0%{?suse_version} > 1320
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %global default_py3 1
 %endif
@@ -10,7 +10,7 @@
 
 Summary: Support package for spacewalk koan interaction
 Name: spacewalk-koan
-Version: 2.8.6
+Version: 2.8.7
 Release: 1%{?dist}
 Group: System Environment/Kernel
 License: GPLv2
@@ -109,6 +109,9 @@ make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_si
 %endif
 
 %changelog
+* Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.7-1
+- use python3 on rhel8 in spacewalk-koan
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.6-1
 - remove install/clean section initial cleanup
 - removed Group from specfile
