@@ -534,10 +534,15 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer scheduleChain(User loggedInUser, String chainLabel, Date date) {
-        ActionChainFactory.schedule(
-                        this.acUtil.getActionChainByLabel(loggedInUser, chainLabel), date);
+        try {
+            ActionChainFactory.schedule(
+                            this.acUtil.getActionChainByLabel(loggedInUser, chainLabel), date);
 
-        return BaseHandler.VALID;
+            return BaseHandler.VALID;
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
