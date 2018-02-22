@@ -1,3 +1,4 @@
+- Uniform channel assignment for Salt (bsc#1077265)
 - fix race condition during enabling channel tokens (bsc#1085436)
 - fix presence ping (bsc#1080353)
 - Harmonize display of custom system information (bsc#979073)
