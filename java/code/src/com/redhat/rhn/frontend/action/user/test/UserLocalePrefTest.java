@@ -24,7 +24,7 @@ import java.util.Map;
 public class UserLocalePrefTest extends RhnMockStrutsTestCase {
 
     public void testDisplay() {
-        setRequestPathInfo("/account/LocalePreferences.do");
+        setRequestPathInfo("/users/UserPreferences.do");
         actionPerform();
         Map locales = (Map) getRequest().getAttribute("supportedLocales");
         List timezones = (List) getRequest().getAttribute("timezones");
@@ -37,7 +37,7 @@ public class UserLocalePrefTest extends RhnMockStrutsTestCase {
     public void testSubmit() {
         clearRequestParameters();
         List timezones = UserManager.lookupAllTimeZones();
-        setRequestPathInfo("/account/LocalePreferences.do");
+        setRequestPathInfo("/users/UserPreferences.do");
         addRequestParameter(UserLocalePrefAction.SUBMITTED, "true");
         addRequestParameter("preferredLocale", "pt_BR");
         addRequestParameter("timezone", timezones.get(0).toString());
