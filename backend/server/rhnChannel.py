@@ -1896,7 +1896,7 @@ class LiteServer:
             self.__class__.__name__, id(self), dict)
 
 
-def guess_suse_channels_for_server(server, org_id=None, user_id=None, none_ok=0, raise_exceptions=0):
+def guess_suse_channels_for_server(server, org_id=None, user_id=None, raise_exceptions=0):
     log_debug(3, server)
     suse_products = server.get_suse_products()
     if suse_products == {}:
@@ -1958,7 +1958,7 @@ def guess_channels_for_server(server, user_id=None, none_ok=0,
         if server.arch is None:
             server.arch = ret["arch"]
 
-    suse_channels = guess_suse_channels_for_server(server, server.org_id, user_id, none_ok, raise_exceptions)
+    suse_channels = guess_suse_channels_for_server(server, server.org_id, user_id, raise_exceptions)
     if suse_channels:
         return suse_channels
 
@@ -2293,4 +2293,3 @@ no_entitlement_message = _("""
 
   %(entitlement_url)s
 """)
-
