@@ -7,7 +7,6 @@ const MessageContainer = require('../components/messages').Messages;
 const {Table, Column, SearchField, Highlight} = require('../components/table');
 const Functions = require('../utils/functions');
 const Utils = Functions.Utils;
-const StatePersistedMixin = require('../components/util').StatePersistedMixin;
 
 const _DATA_ROOT_ID = 'baseProducts';
 
