@@ -3,6 +3,7 @@
 %global default_py3 1
 %endif
 
+%{!?python2_sitelib: %global python2_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Summary: DNF plugin for Spacewalk
