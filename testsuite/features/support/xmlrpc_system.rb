@@ -44,6 +44,11 @@ class XMLRPCSystemTest < XMLRPCBaseTest
     end
   end
 
+  # Schedule apply highstate
+  def schedule_apply_highstate(server, date, test)
+    @connection.call('system.schedule_apply_highstate', @sid, server, date, test)
+  end
+
   # Unsubscribe configuration channels from server
   def remove_channels(servers, channels)
     @connection.call('system.config.remove_channels', @sid, servers, channels)
