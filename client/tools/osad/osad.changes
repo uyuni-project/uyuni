@@ -1,3 +1,5 @@
+- remove unused python-xml requirement (bsc#1082211)
+
 -------------------------------------------------------------------
 Wed Jan 17 11:06:04 CET 2018 - jgonzalez@suse.com
 
