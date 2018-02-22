@@ -530,7 +530,8 @@ public class TaskomaticApi {
         Map<String, List<String>> params = new HashMap<>();
         List<String> actionChainId = Arrays.asList(Long.toString(actionchain.getId()));
         params.put("actionchain_id", actionChainId);
-        params.put("targets_ids", minionServers.stream()
+        params.put("target_ids", minionServers.stream()
+                .map(Server::getId)
                 .map(Object::toString)
                 .collect(toList()));
 
