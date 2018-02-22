@@ -15,11 +15,15 @@
 
 package com.suse.manager.webui.controllers;
 
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
+import com.redhat.rhn.manager.setup.ProductSyncException;
+import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
@@ -27,12 +31,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.model.products.Product;
 
+import com.suse.utils.Json;
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -77,6 +81,97 @@ public class ProductsController {
         data.put(REFRESH_RUNNING, String.valueOf(latestRun != null && latestRun.getEndTime() == null));
 
         return new ModelAndView(data, "products/show.jade");
+    }
+
+    public static String synchronizeProducts(Request request, Response response, User user) {
+        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
+            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
+        }
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateSUSEProducts(csm.getProducts());
+        }
+        catch (Exception e) {
+            log.fatal(e.getMessage(), e);
+            return Json.GSON.toJson(false);
+        }
+        return Json.GSON.toJson(true);
+    }
+
+    public static String synchronizeChannelFamilies(Request request, Response response, User user) {
+        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
+            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
+        }
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateChannelFamilies(csm.readChannelFamilies());
+        }
+        catch (Exception e) {
+            log.fatal(e.getMessage(), e);
+            return Json.GSON.toJson(false);
+        }
+        return Json.GSON.toJson(true);
+    }
+
+    public static String synchronizeChannels(Request request, Response response, User user) {
+          if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
+            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
+          }
+          try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateChannels(null);
+        }
+        catch (Exception e) {
+              log.fatal(e.getMessage(), e);
+              return Json.GSON.toJson(false);
+        }
+        return Json.GSON.toJson(true);
+    }
+
+    public static String synchronizeSubscriptions(Request request, Response response, User user) {
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateSubscriptions(csm.getSubscriptions());
+        }
+        catch (Exception e) {
+            log.fatal(e.getMessage(), e);
+            return Json.GSON.toJson(false);
+        }
+        return Json.GSON.toJson(true);
+    }
+
+    public static String synchronizeProductChannels(Request request, Response response, User user) {
+        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
+            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
+        }
+        try {
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
+        }
+        catch (Exception e) {
+            log.fatal(e.getMessage(), e);
+            return Json.GSON.toJson(false);
+        }
+        return Json.GSON.toJson(true);
+    }
+
+    public static String addProduct(Request request, Response response, User user) {
+        List<String> identifiers = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() {
+        }.getType());
+        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
+            throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
+        }
+        try {
+            if (log.isDebugEnabled()) {
+                log.debug("Add/Sync products: " + identifiers);
+            }
+            new ProductSyncManager().addProducts(identifiers, user);
+        }
+        catch (Exception e) {
+            log.fatal(e.getMessage(), e);
+            return Json.GSON.toJson(false);
+        }
+        return Json.GSON.toJson(true);
     }
 
     /**
