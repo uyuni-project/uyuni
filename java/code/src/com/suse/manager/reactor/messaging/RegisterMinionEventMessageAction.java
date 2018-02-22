@@ -263,8 +263,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
 
-            assignChannelsByActivationKey(minionId, server, grains, activationKeyLabel,
-                    activationKey);
+            subscribeMinionToChannels(minionId, server, grains, activationKey, activationKeyLabel);
 
             server.updateServerInfo();
 
@@ -494,28 +493,138 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 .isPresent();
     }
 
-    private void assignChannelsByActivationKey(String minionId, MinionServer server,
-            ValueMap grains, Optional<String> activationKeyLabel,
-            Optional<ActivationKey> activationKey) {
+    private Optional<SUSEProduct> identifyProduct(MinionServer server, ValueMap grains) {
+        if ("suse".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            Optional<List<ProductInfo>> productList =
+                    SALT_SERVICE.callSync(Zypper.listProducts(false), server.getMinionId());
+            return productList.flatMap(pl -> {
+                return pl.stream().filter(pif -> pif.getIsbase()).findFirst()
+                        .flatMap(pi -> {
+                            String osName = pi.getName().toLowerCase();
+                            String osVersion = pi.getVersion();
+                            String osArch = pi.getArch();
+                            String osRelease = pi.getRelease();
+                            Optional<SUSEProduct> suseProduct =
+                                    ofNullable(SUSEProductFactory.findSUSEProduct(osName,
+                                            osVersion, osRelease, osArch, true));
+                            if (!suseProduct.isPresent()) {
+                                LOG.warn("No product match found for: " + osName + " " +
+                                        osVersion + " " + osRelease + " " + osArch);
+                            }
+                            return suseProduct;
+                        });
+            });
+        }
+        else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
+                "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
+            Optional<Map<String, State.ApplyResult>> applyResultMap = SALT_SERVICE
+                    .applyState(server.getMinionId(), "packages.redhatproductinfo");
+            Optional<String> centosReleaseContent = applyResultMap.map(
+                    map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
+                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
+            Optional<String> rhelReleaseContent = applyResultMap.map(
+                    map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE))
+                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
+            Optional<String> whatProvidesRes = applyResultMap.map(map -> map
+                    .get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE))
+                    .map(r -> r.getChanges(CmdExecCodeAll.class)).map(c -> c.getStdout());
 
-        activationKey.map(ActivationKey::getChannels)
-                .ifPresent(channels -> channels.forEach(server::addChannel));
+            Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils.detectRhelProduct(
+                    server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);
+            return rhelProduct.flatMap(rhel -> {
+                if (!rhel.getSuseProduct().isPresent()) {
+                    LOG.warn("No product match found for: " + rhel.getName() + " " +
+                            rhel.getVersion() + " " + rhel.getRelease() + " " +
+                            server.getServerArch().getCompatibleChannelArch());
+                }
+                else {
+                    return rhel.getSuseProduct().map(sp -> {
+                        return sp;
+                    });
+                }
+                return Optional.empty();
+            });
+        }
+        return Optional.empty();
+    }
 
-        if (!activationKey.isPresent()) {
-            if (!activationKeyLabel.isPresent()) {
-                LOG.info("No base channel added, adding default channel " +
-                        "(if applicable)");
-                lookupAndAddDefaultChannels(server, grains);
-            }
-            else {
-                LOG.warn("Default channel(s) will NOT be added: " +
-                        "specified Activation Key " + activationKeyLabel.get() +
-                        " is not valid for minionId " + minionId);
-                addHistoryEvent(server, "Invalid Activation Key",
-                        "Specified Activation Key " + activationKeyLabel.get() +
-                                " is not valid. Default channel(s) NOT be added.");
+    private void subscribeMinionToChannels(String minionId, MinionServer server,
+            ValueMap grains, Optional<ActivationKey> activationKey,
+            Optional<String> activationKeyLabel) {
+
+        if (!activationKey.isPresent() && activationKeyLabel.isPresent()) {
+            LOG.warn(
+                    "Default channel(s) will NOT be subscribed to: specified Activation Key " +
+                            activationKeyLabel.get() + " is not valid for minionId " +
+                            minionId);
+            addHistoryEvent(server, "Invalid Activation Key",
+                    "Specified Activation Key " + activationKeyLabel.get() +
+                            " is not valid. Default channel(s) NOT subscribed to.");
+            return;
+        }
+
+        Optional<Channel> baseChannelFromActivationKey = activationKey.flatMap(ak -> {
+            return ofNullable(ak.getBaseChannel());
+        });
+
+        Optional<SUSEProduct> suseProduct = Optional.empty();
+        Optional<Channel> baseChannelForProduct = Optional.empty();
+
+        if (baseChannelFromActivationKey.isPresent()) {
+            // Base Channel has been explicitly set in Activation Key: adding
+            // only base channel
+            baseChannelForProduct = baseChannelFromActivationKey;
+        }
+        else {
+            // Base channel: SUSE Manager Default
+
+            suseProduct = identifyProduct(server, grains);
+            baseChannelForProduct = suseProduct.flatMap(sp -> {
+                return lookupBaseChannel(sp,
+                        server.getServerArch().getCompatibleChannelArch());
+            });
+
+            if (!baseChannelForProduct.isPresent()) {
+                LOG.warn("Server " + minionId +
+                        " has no Base Channel associated for product and " +
+                        "Activation Key does not contain Base channels. " +
+                        "System registered without a Base channel.");
+                addHistoryEvent(server,
+                        "No Base Channel for Product and Activation Key " +
+                                "does not contain Base channels.",
+                        "Server has no Base Channel associated for Product " +
+                                "and specified Activation Key does not contain Base channels. " +
+                                "System registered without a Base channel");
+                return;
             }
         }
+        final Optional<SUSEProduct> suseProd = suseProduct;
+
+        baseChannelForProduct.ifPresent(bcfp -> {
+            LOG.info("Subscribing to Base channel " + bcfp.getName());
+            server.addChannel(bcfp);
+            suseProd.ifPresent(sp -> {
+                lookupRequiredChannelsForProduct(bcfp, sp).forEach(channel -> {
+                    LOG.info("Subscribing to required child channel: " + bcfp.getName());
+                    server.addChannel(channel);
+                });
+            });
+            activationKey.ifPresent(ak -> {
+                ak.getChannels().stream().forEach(channel -> {
+                    Optional<Channel> parent = ofNullable(channel.getParentChannel());
+                    parent.ifPresent(parentChannel -> {
+                        if (parentChannel.getId().equals(bcfp.getId())) {
+                            LOG.info("Subscribing to channel: " + channel.getName());
+                            server.addChannel(channel);
+                        }
+                        else {
+                            LOG.warn("NOT subscribing to channel: " + channel.getName() +
+                                    " (not a child of " + bcfp.getName() + ").");
+                        }
+                    });
+                });
+            });
+        });
     }
 
     private ServerHistoryEvent addHistoryEvent(MinionServer server, String summary,
@@ -589,119 +698,35 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         );
     }
 
-    private void lookupAndAddDefaultChannels(MinionServer server, ValueMap grains) {
-        if ("suse".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            Optional<List<ProductInfo>> productList =
-                    SALT_SERVICE.callSync(Zypper.listProducts(false), server.getMinionId());
-            productList.ifPresent(pl -> {
-                pl.stream().filter(pif -> pif.getIsbase()).findFirst().ifPresent(pi -> {
-                    String osName = pi.getName().toLowerCase();
-                    String osVersion = pi.getVersion();
-                    String osArch = pi.getArch();
-                    String osRelease = pi.getRelease();
-                    Optional<SUSEProduct> suseProduct = ofNullable(SUSEProductFactory
-                            .findSUSEProduct(osName, osVersion, osRelease, osArch, true));
-                    if (!suseProduct.isPresent()) {
-                        LOG.warn("No product match found for: " + osName + " " + osVersion +
-                                " " + osRelease + " " + osArch);
-                    }
-
-                    Opt.stream(suseProduct).flatMap(sp ->
-                            lookupBaseAndRequiredChannels(osName, osVersion,
-                                    server.getServerArch().getCompatibleChannelArch(), sp)
-                    ).forEach(reqChan -> {
-                        LOG.info("Adding required channel: " + reqChan.getName());
-                        server.addChannel(reqChan);
-                    });
-                });
-            });
-        }
-        else if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            String minionId = server.getMinionId();
-
-            Optional<Map<String, State.ApplyResult>> applyResultMap = SALT_SERVICE
-                    .applyState(server.getMinionId(), "packages.redhatproductinfo");
-            Optional<String> centosReleaseContent =
-                    applyResultMap.map(map ->
-                        map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class))
-                    .map(c -> c.getStdout());
-            Optional<String> rhelReleaseContent =
-                    applyResultMap.map(map ->
-                        map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class))
-                    .map(c -> c.getStdout());
-            Optional<String> whatProvidesRes =
-                    applyResultMap.map(map ->
-                        map.get(
-                            PkgProfileUpdateSlsResult
-                                .PKG_PROFILE_WHATPROVIDES_SLES_RELEASE))
-                    .map(r -> r.getChanges(CmdExecCodeAll.class))
-                    .map(c -> c.getStdout());
-
-            Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils
-                    .detectRhelProduct(
-                            server, whatProvidesRes,
-                            rhelReleaseContent, centosReleaseContent);
-            rhelProduct
-                .ifPresent(rhel -> {
-                        ChannelArch arch =
-                                server.getServerArch().getCompatibleChannelArch();
-                        Opt.stream(rhel.getSuseProduct()).flatMap(sp ->
-                                lookupBaseAndRequiredChannels(
-                                        rhel.getName(), rhel.getVersion(),
-                                        arch, sp)
-                        ).forEach(reqChan -> {
-                            LOG.info("Adding required channel: " + reqChan.getName());
-                            server.addChannel(reqChan);
-                        });
-                        if (!rhel.getSuseProduct().isPresent()) {
-                            LOG.info("Not setting default channels for minion: " +
-                                    minionId + " os: " + rhel.getName() +
-                                    " " + rhel.getVersion() +
-                                    " " + arch.getName());
-                        }
-                    }
-                );
-        }
-    }
-
-    private Stream<Channel> lookupBaseAndRequiredChannels(String osName,
-            String osVersion, ChannelArch arch, SUSEProduct sp) {
+    private Optional<Channel> lookupBaseChannel(SUSEProduct sp, ChannelArch arch) {
         Optional<EssentialChannelDto> productBaseChannelDto =
                 ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(), arch));
-
-        return productBaseChannelDto.map(base ->
-            ofNullable(ChannelFactory.lookupById(base.getId())).map(c -> {
-                LOG.info("Base channel " + c.getName() + " found for OS: " + osName +
-                        ", version: " + osVersion + ", arch: " + arch.getName());
-                SUSEProductSet installedProducts = new SUSEProductSet();
-                installedProducts.setBaseProduct(sp);
-                Stream<Channel> requiredChannels = DistUpgradeManager
-                    .getRequiredChannels(installedProducts, c.getId())
-                    .stream()
-                    .flatMap(reqChan ->
-                        ofNullable(ChannelFactory.lookupById(reqChan.getId()))
-                            .map(Stream::of)
-                            .orElseGet(() -> {
-                                LOG.error("Can't retrieve required channel id " +
-                                        "from database");
-                                return Stream.empty();
-                            })
-                    );
-                return Stream.concat(
-                    Stream.of(c),
-                    requiredChannels
-                );
-            }).orElseGet(() -> {
-                LOG.error("Can't retrieve channel id from database");
-                return Stream.empty();
-            })
-        ).orElseGet(() -> {
-            LOG.info("Product Base channel not found - refresh SCC sync?");
-            return Stream.empty();
+        Optional<Channel> baseChannel = productBaseChannelDto.flatMap(base -> {
+            return ofNullable(ChannelFactory.lookupById(base.getId())).map(c -> {
+                LOG.info("Base channel " + c.getName() + " found for OS: " + sp.getName() +
+                        ", version: " + sp.getVersion() + ", arch: " + arch.getName());
+                return c;
+            });
         });
+        if (!baseChannel.isPresent()) {
+            LOG.warn("Product Base channel not found - refresh SCC sync?");
+            return Optional.empty();
+        }
+        return baseChannel;
+    }
+
+    private Stream<Channel> lookupRequiredChannelsForProduct(Channel baseChannel,
+            SUSEProduct sp) {
+        SUSEProductSet installedProducts = new SUSEProductSet();
+        installedProducts.setBaseProduct(sp);
+        return DistUpgradeManager
+                .getRequiredChannels(installedProducts, baseChannel.getId()).stream()
+                .flatMap(reqChan -> ofNullable(ChannelFactory.lookupById(reqChan.getId()))
+                        .map(Stream::of).orElseGet(() -> {
+                            LOG.error("Can't retrieve required channel id " +
+                                    "from database");
+                            return Stream.empty();
+                        }));
     }
 
     private Optional<String> rpmErrQueryRHELProvidesRelease(String minionId) {
