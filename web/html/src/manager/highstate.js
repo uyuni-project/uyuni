@@ -3,7 +3,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const Messages = require("../components/messages").Messages;
-const DateTimePicker = require("../components/datetimepicker").DateTimePicker;
+const {ActionSchedule} = require("../components/action-schedule");
 const AsyncButton = require("../components/buttons").AsyncButton;
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
@@ -146,6 +146,10 @@ var Highstate = React.createClass({
         this.setState({"earliest": date});
     },
 
+    onActionChainChanged: function(actionChain) {
+
+    },
+
     renderMinions: function() {
         const minionList = [];
         for(var system of minions) {
@@ -164,18 +168,13 @@ var Highstate = React.createClass({
                         <AsyncButton action={this.applyHighstate} name={t("Apply Highstate")} disabled={minions.length === 0} />
                     </div>
                 </div>
-                <div className="spacewalk-scheduler">
-                    <div className="form-horizontal">
-                        <div className="form-group">
-                            <label className="col-md-3 control-label">
-                                {t("Earliest:")}
-                            </label>
-                            <div className="col-md-6">
-                                <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={timezone} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+                <ActionSchedule timezone={timezone} localTime={localTime}
+                   earliest={this.state.earliest}
+                   actionChains={actionChains}
+                   onActionChainChanged={this.onActionChainChanged}
+                   onDateTimeChanged={this.onDateTimeChanged}/>
+
                 { minions.length === 1 ?
                     <MinionHighstateSingle data={minions[0]}/>
                     : <div className="panel panel-default">

@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.google.gson.JsonObject;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -224,12 +226,23 @@ public class MinionController {
      * @param response the response object
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView highstate(Request request, Response response) {
+    public static ModelAndView highstate(Request request, Response response, User user) {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
         Server server = ServerFactory.lookupById(new Long(serverId));
         data.put("server", server);
+        addActionChains(user, data);
         return new ModelAndView(data, "minion/highstate.jade");
+    }
+
+    private static void addActionChains(User user, Map<String, Object> data) {
+        data.put("actionChains", Json.GSON.toJson(ActionChainFactory.getActionChains(user)
+                .stream().map(ac -> {
+                    JsonObject tuple = new JsonObject();
+                    tuple.addProperty("id", ac.getId());
+                    tuple.addProperty("text", ac.getLabel());
+                    return tuple;
+                }).collect(Collectors.toList())));
     }
 
     /**
