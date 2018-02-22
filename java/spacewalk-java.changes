@@ -1,3 +1,4 @@
+- Uniform channel assignment for Salt (bsc#1077265)
 - fix race condition during enabling channel tokens (bsc#1085436)
 - Ensure transaction execution order when updating FQDNs for minions (bsc#1078427)
 - Harmonize display of custom system information (bsc#979073)
