@@ -1,4 +1,4 @@
-%if 0%{?fedora} || 0%{?suse_version} > 1320
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %global default_py3 1
 %endif
@@ -22,7 +22,7 @@ Group: System Environment/Base
 Source0: spacewalk-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.8.16
+Version: 2.8.18
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
@@ -44,7 +44,7 @@ Requires: %{pythonX}-%{name} = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: zypper
 %else
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 8
 Requires: dnf
 %else
 Requires: yum
@@ -66,9 +66,14 @@ BuildRequires: desktop-file-utils
 BuildRequires: fedora-logos
 BuildRequires: dnf
 %endif
+
 %if 0%{?rhel}
 BuildRequires: redhat-logos
+%if 0%{?rhel} >= 8
+BuildRequires: dnf
+%else
 BuildRequires: yum
+%endif
 %endif
 
 %description
@@ -183,7 +188,7 @@ Requires: %{pythonX}-spacewalk-check = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: zypp-plugin-spacewalk >= 0.4
 %else
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 8
 Requires: dnf-plugin-spacewalk >= 2.4.0
 %else
 Requires: yum-rhn-plugin >= 1.6.4-1
