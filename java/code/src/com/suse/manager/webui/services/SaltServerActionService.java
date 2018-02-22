@@ -18,9 +18,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainEntry;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -285,6 +282,44 @@ public class SaltServerActionService {
                         ActionFactory.save(serverAction);
                     }
                 });
+            });
+        }
+    }
+
+    /**
+     * Execute a given {@link ActionChain} via Salt.
+     *
+     * @param actionChainId the action chain id to execute
+     * @param minionIds a list containing target minion ids
+     */
+    public void executeActionChain(Long actionChainId, List<Long> minionIds) {
+        List<MinionServer> minions = new ArrayList<>();
+        minionIds.forEach(minionId -> {
+                MinionServerFactory.lookupById(minionId).ifPresent(minion -> {
+                        minions.add(minion);
+                });
+        });
+
+        // now prepare each call
+        for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
+                triggerActionChain(minions, actionChainId).entrySet()) {
+            LocalCall<?> call = entry.getKey();
+            final List<MinionServer> targetMinions;
+            Map<Boolean, List<MinionServer>> results;
+            targetMinions = entry.getValue();
+
+            results = executeActionChain(actionChainId, call, targetMinions);
+
+            results.get(true).forEach(minionServer -> {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Asynchronous call on minion: " +
+                            minionServer.getMinionId());
+                }
+            });
+
+            results.get(false).forEach(minionServer -> {
+                LOG.warn("Failed to schedule action chain for minion: " +
+                        minionServer.getMinionId());
             });
         }
     }
@@ -746,6 +781,15 @@ public class SaltServerActionService {
         return call;
     }
 
+    private Map<LocalCall<?>, List<MinionServer>> triggerActionChain(
+            List<MinionServer> minions, Long actionChainId) {
+        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
+        ret.put(State.apply(Arrays.asList(ACTIONCHAIN_START),
+                Optional.of(Collections.singletonMap("actionchain_id", actionChainId)),
+                Optional.of(true)), minions);
+        return ret;
+    }
+
     /**
      * @param actionIn the action
      * @param call the call
@@ -790,6 +834,47 @@ public class SaltServerActionService {
         }
         catch (SaltException ex) {
             LOG.debug("Failed to execute action: " + ex.getMessage());
+            Map<Boolean, List<MinionServer>> result = new HashMap<>();
+            result.put(true, Collections.emptyList());
+            result.put(false, minions);
+            return result;
+        }
+    }
+
+    /**
+     * @param actionChainIn the action chain
+     * @param call the call
+     * @param minions minions to target
+     * @return a map containing all minions partitioned by success
+     */
+    private Map<Boolean, List<MinionServer>> executeActionChain(Long actionChainId,
+            LocalCall<?> call, List<MinionServer> minions) {
+        // Prepare the metadata
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put("suma-action-chain", true);
+
+        List<String> minionIds = minions.stream().map(MinionServer::getMinionId)
+                .collect(Collectors.toList());
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Executing action chain for: " +
+                    minionIds.stream().collect(Collectors.joining(", ")));
+        }
+
+        try {
+            Map<Boolean, List<MinionServer>> result = new HashMap<>();
+
+            List<String> results = SaltService.INSTANCE
+                    .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
+                    .getMinions();
+
+            result = minions.stream().collect(Collectors
+                    .partitioningBy(minion -> results.contains(minion.getMinionId())));
+
+            return result;
+        }
+        catch (SaltException ex) {
+            LOG.debug("Failed to execute action chain: " + ex.getMessage());
             Map<Boolean, List<MinionServer>> result = new HashMap<>();
             result.put(true, Collections.emptyList());
             result.put(false, minions);
