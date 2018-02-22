@@ -5,7 +5,7 @@
 %define rhnsd		 spacewalksd
 #
 Name: spacewalksd
-Version: 5.0.35
+Version: 5.0.36
 Release: 1%{?dist}
 Summary: Spacewalk query daemon
 License: GPL-2.0
@@ -20,6 +20,7 @@ Provides: rhnsd = %{version}-%{release}
 Obsoletes: rhnsd < %{version}-%{release}
 
 Requires: %{rhn_check} >= 0.0.8
+BuildRequires: gcc
 %if 0%{?suse_version}
 Requires(post): aaa_base
 Requires(preun): aaa_base
