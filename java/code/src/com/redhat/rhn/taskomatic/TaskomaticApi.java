@@ -63,8 +63,8 @@ public class TaskomaticApi {
     public static final String MINION_ACTION_JOB_PREFIX = "minion-action-executor-";
     public static final String MINION_ACTION_JOB_DOWNLOAD_PREFIX =
             MINION_ACTION_JOB_PREFIX + "download-";
-    public static final String MINION_ACTIONCHAIN_BUNCH_LABEL = "minion-actionchain-executor-bunch";
-    public static final String MINION_ACTIONCHAIN_JOB_PREFIX = "minion-actionchain-executor-";
+    public static final String MINION_ACTIONCHAIN_BUNCH_LABEL = "minion-action-chain-executor-bunch";
+    public static final String MINION_ACTIONCHAIN_JOB_PREFIX = "minion-action-chain-executor-";
     private static final Logger LOG = Logger.getLogger(TaskomaticApi.class);
 
 
