@@ -97,6 +97,7 @@
 - features/srv_spacewalk_channel.feature
 - features/allcli_software_channels.feature
 - features/allcli_reboot.feature
+- features/srv_sync_products.feature
 ## Secondary features END ##
 
 
