@@ -39,9 +39,6 @@ BuildRequires: perl-interpreter
 BuildRequires: perl
 %endif
 Requires: %{pythonX}-%{name} = %{version}-%{release}
-%if 0%{?suse_version} >= 1110
-Requires: python-xml
-%endif
 Conflicts: osa-dispatcher < %{version}-%{release}
 Conflicts: osa-dispatcher > %{version}-%{release}
 %if 0%{?suse_version} >= 1210
