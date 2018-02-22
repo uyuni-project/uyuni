@@ -6,6 +6,8 @@ const Network = require('../utils/network');
 const MessageContainer = require('../components/messages').Messages;
 const {Table, Column, SearchField, Highlight} = require('../components/table');
 const Functions = require('../utils/functions');
+const PopUp = require("../components/popup").PopUp;
+const ModalButton = require("../components/dialogs").ModalButton;
 const Utils = Functions.Utils;
 
 const _DATA_ROOT_ID = 'baseProducts';
@@ -41,7 +43,8 @@ const Products = React.createClass({
       serverData: {_DATA_ROOT_ID : []},
       error: null,
       loading: true,
-      selectedItems: []
+      selectedItems: [],
+      showPopUp: false
     }
   },
 
@@ -87,6 +90,14 @@ const Products = React.createClass({
     const list = isAdd ? items : removed;
 
     this.setState({ selectedItems: items });
+  },
+
+  showPopUp: function() {
+    this.setState({showPopUp: true});
+  },
+
+  closePopUp: function() {
+    this.setState({showPopUp: false});
   },
 
   submit: function() {
@@ -135,12 +146,15 @@ const Products = React.createClass({
                   <div className='spacewalk-section-toolbar'>
                     <div className='action-button-wrapper'>
                       <div className='btn-group'>
-                        <button className='btn btn-default'
-                            id='refresh' data-toggle='tooltip'
-                            title={t('Refreshes the product catalog from the Customer Center')}>
-                          <i className='fa fa-refresh'></i>{t('Refresh')}
-                        </button>
-                        <button className='btn btn-success' id='synchronize' onClick={this.submit}>
+                        <ModalButton
+                            className='btn btn-default'
+                            id='sccRefresh'
+                            title={t('Refreshes the product catalog from the Customer Center')}
+                            text={t('Refresh')}
+                            target='scc-refresh-popup'
+                            onClick={() => this.showPopUp()}
+                        />
+                        <button className='btn btn-success' id='addProducts' onClick={this.submit}>
                           <i className='fa fa-plus'></i>{t('Add products')}
                         </button>
                       </div>
@@ -235,10 +249,9 @@ const Products = React.createClass({
               {pageContent}
             </div>
         </div>
-        <SCCDialog />
+        { this.state.showPopUp ? <SCCDialog onClose={() => this.closePopUp} /> : null }
         <div className='hidden' id='iss-master' data-iss-master={this.state.issMaster}></div>
         <div className='hidden' id='refresh-running' data-refresh-running={this.state.refreshRunning}></div>
-        <div className='hidden' id='sccconfig.jsp.refresh'>{t('Refreshing data from SUSE Customer Center')}</div>
         {footer}
       </div>
     )
@@ -256,44 +269,40 @@ const ErrorMessage = (props) => <MessageContainer items={
 
 const SCCDialog = React.createClass({
   render: function() {
-    return (
+    const contentPopup = (
       <div>
-        <div id='scc-migration-dialog' className='modal fade bs-example-modal-sm'
-            tabIndex='-1' role='dialog' aria-labelledby='scc-refresh-dialog-title' aria-hidden='true'>
-          <div className='modal-dialog modal-sm'>
-              <div className='modal-content'>
-                  <div className='modal-header'>
-                    <h4 className='modal-title'>
-                      <span id='scc-refresh-dialog-title'></span>
-                    </h4>
-                  </div>
-                  <div className='modal-body'>
-                      <p>{t('Please be patient, this might take several minutes.')}</p>
-                      <ul id='scc-task-list'>
-                      </ul>
-                      <div id='scc-migration-current-task'></div>
-                  </div>
-                  <div className='modal-footer row'>
-                      <div id='scc-migration-dialog-status' className='col-md-9 text-left'></div>
-                      <div className='col-md-3 text-right'>
-                        <button id='scc-migrate-dialog-close-btn' type='button' className='btn btn-default' data-dismiss='modal'>
-                          {t('Close')}
-                        </button>
-                      </div>
-                  </div>
-              </div>
-          </div>
-        </div>
+        <p>{t('Please be patient, this might take several minutes.')}</p>
+        <ul></ul>
+        <div>
+          <div>{t('Channels')}</div>
+          <div>{t('Channel Families')}</div>
+          <div>{t('Products')}</div>
+          <div>{t('Product Channles')}</div>
+          <div>{t('Subscriptions')}</div>
+          <div>{t('Completed')}</div>
 
-        <div className='hidden' id='sccconfig.jsp.channels'>{t('Channels')}</div>
-        <div className='hidden' id='sccconfig.jsp.channelfamilies'>{t('Channel Families')}</div>
-        <div className='hidden' id='sccconfig.jsp.products'>{t('Products')}</div>
-        <div className='hidden' id='sccconfig.jsp.productchannels'>{t('Product Channles')}</div>
-        <div className='hidden' id='sccconfig.jsp.subscriptions'>{t('Subscriptions')}</div>
-        <div className='hidden' id='sccconfig.jsp.completed'>{t('Completed')}</div>
-        <div className='hidden' id='sccconfig.jsp.failed'>{t('Operation not successful')}</div>
-        <div className='hidden' id='sccconfig.jsp.failed.details.link'>{t('Details')}</div>
+          <div>{t('Operation not successful')}</div>
+          <div>{t('Details')}</div>
+        </div>
       </div>
+    );
+
+    const footerPopup = (
+      <div>
+        <div className='col-md-9 text-left'></div>
+        <div className='col-md-3 text-right'>
+          <button className='btn btn-default' onClick={this.props.onClose}>{t('Close')}</button>
+        </div>
+      </div>
+    );
+    return (
+      <PopUp
+          id='scc-refresh-popup'
+          title={t('Refreshing data from SUSE Customer Center')}
+          content={contentPopup}
+          footer={footerPopup}
+          className='modal-sx'
+          onClosePopUp={this.props.onClose} />
     )
   }
 });
