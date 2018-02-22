@@ -13,9 +13,14 @@
         <html:form action="/activationkeys/channels/ChildChannels" styleClass="form-horizontal">
             <rhn:csrf />
             <p><bean:message key="activation-key.childchannels.jsp.summary"/></p>
-            <c:if test='${not empty baseChannel}'>
+            <c:choose>
+              <c:when test='${not empty baseChannel}'>
                 <p><bean:message key="activation-key.childchannels.jsp.blurb" arg0="${fn:escapeXml(baseChannel)}"/></p>
-            </c:if>
+              </c:when>
+              <c:otherwise>
+                <p><bean:message key="activation-key.childchannels.jsp.note"/></p>
+              </c:otherwise>
+            </c:choose>
             <div class="form-group">
                 <div class="col-md-6">
                 <table class="table">
