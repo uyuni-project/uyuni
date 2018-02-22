@@ -10,6 +10,8 @@ const Utils = Functions.Utils;
 const StatePersistedMixin = require('../components/util').StatePersistedMixin;
 const SCCDialog = require('./scc-refresh-dialog-jspf').SCCDialog;
 
+const _DATA_ROOT_ID = 'baseProducts';
+
 const setupWizartSteps = [
   {
     label: 'HTTP Proxy',
@@ -38,7 +40,7 @@ const Products = React.createClass({
       issMaster: issMaster_flag_from_backend,
       refreshNeeded: refreshNeeded_flag_from_backend,
       refreshRunning: refreshRunning_flag_from_backend,
-      serverData: {'baseProducts' : []},
+      serverData: {_DATA_ROOT_ID : []},
       error: null,
       loading: true,
       selectedItems: []
@@ -55,7 +57,7 @@ const Products = React.createClass({
     reloadData()
       .then(data => {
         currentObject.setState({
-          serverData: data['baseProducts'],
+          serverData: data[_DATA_ROOT_ID],
           error: null,
           loading: false
         });
