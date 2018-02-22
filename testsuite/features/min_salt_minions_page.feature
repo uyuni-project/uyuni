@@ -57,6 +57,33 @@ Feature: Management of minion keys
     When I get OS information of "sle-minion" from the Master
     Then it should contain a "SLES" text
 
+  Scenario: Delete profile of unreacheable minion
+    Given I am on the Systems overview page of this "sle-minion"
+    When I stop salt-minion on "sle-minion"
+    And I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    ### WORKAROUND - please remove when issue is fixed
+    # bsc#1080722 - Deleting profile of minions that cannot be reached by Salt lasts too long
+    And I wait for "240" seconds
+    Then I should see a "minion_unreachable" text
+    When I click on "Delete Profile Without Cleanup"
+    And I wait for "1" second
+    Then I should see a "has been deleted" text
+
+  Scenario: Cleanup: bootstrap again the minion
+    Given I am authorized
+    When I go to the bootstrapping page
+    Then I should see a "Bootstrap Minions" text
+    When I enter the hostname of "sle-minion" as hostname
+    And I enter "22" as "port"
+    And I enter "root" as "user"
+    And I enter "linux" as "password"
+    And I select the hostname of the proxy from "proxies"
+    And I click on "Bootstrap"
+    And I wait until I see "Successfully bootstrapped host! " text
+    And I wait until onboarding is completed for "sle-minion"
+
   Scenario: Cleanup: restore channels on the minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
