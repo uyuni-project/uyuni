@@ -282,6 +282,18 @@ public class Router implements SparkApplication {
         get("/manager/admin/setup/products",
                 withUserPreferences(withCsrfToken(withOrgAdmin(ProductsController::show))), jade);
         get("/manager/api/admin/products", withUser(ProductsController::data));
+        post("/manager/admin/setup/products",
+                withProductAdmin(ProductsController::addProduct));
+        post("/manager/admin/setup/sync/products",
+                withProductAdmin(ProductsController::synchronizeProducts));
+        post("/manager/admin/setup/sync/channelfamilies",
+                withProductAdmin(ProductsController::synchronizeChannelFamilies));
+        post("/manager/admin/setup/sync/channels",
+                withProductAdmin(ProductsController::synchronizeChannels));
+        post("/manager/admin/setup/sync/productchannels",
+                withProductAdmin(ProductsController::synchronizeProductChannels));
+        post("/manager/admin/setup/sync/subscriptions",
+                withProductAdmin(ProductsController::synchronizeSubscriptions));
     }
 
     private void initContentManagementRoutes(JadeTemplateEngine jade) {
