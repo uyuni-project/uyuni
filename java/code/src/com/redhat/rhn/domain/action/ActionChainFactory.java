@@ -33,6 +33,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 /**
  * Creates Action Chain related objects.
@@ -45,6 +47,9 @@ public class ActionChainFactory extends HibernateFactory {
 
     /** Singleton instance */
     private static ActionChainFactory singleton = new ActionChainFactory();
+
+    /** Taskomatic API **/
+    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /**
      * Default constructor.
@@ -314,8 +319,11 @@ public class ActionChainFactory extends HibernateFactory {
      * Schedules an Action Chain for execution.
      * @param actionChain the action chain to execute
      * @param date first action's minimum timestamp
+     * @throws TaskomaticApiException if there was a Taskomatic error
      */
-    public static void schedule(ActionChain actionChain, Date date) {
+    public static void schedule(ActionChain actionChain, Date date)
+        throws TaskomaticApiException {
+
         log.debug("Scheduling Action Chain " +  actionChain + " to date " + date);
         Map<Server, Action> latest = new HashMap<Server, Action>();
         int maxSortOrder = getNextSortOrderValue(actionChain);
@@ -338,6 +346,9 @@ public class ActionChainFactory extends HibernateFactory {
                 latest.put(server, action);
             }
         }
+
+        // Trigger Action Chain execution for Minions via Taskomatic
+        TASKOMATIC_API.scheduleActionChainExecution(actionChain);
         log.debug("Action Chain " + actionChain + " scheduled to date " + date +
             ", deleting");
         delete(actionChain);

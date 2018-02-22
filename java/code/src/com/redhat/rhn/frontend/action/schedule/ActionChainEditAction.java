@@ -27,8 +27,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -119,12 +121,20 @@ public class ActionChainEditAction extends RhnAction {
         DynaActionForm form, ActionChain actionChain) {
         Date date = getStrutsDelegate().readDatePicker(form, DATE_ATTRIBUTE,
             DatePicker.YEAR_RANGE_POSITIVE);
-        ActionChainFactory.schedule(actionChain, date);
-        ActionMessages messages = new ActionMessages();
-        messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-            "actionchain.jsp.scheduled", actionChain.getLabel()));
-        getStrutsDelegate().saveMessages(request, messages);
-        return mapping.findForward(TO_LIST_FORWARD);
+        try {
+            ActionChainFactory.schedule(actionChain, date);
+            ActionMessages messages = new ActionMessages();
+            messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                "actionchain.jsp.scheduled", actionChain.getLabel()));
+            getStrutsDelegate().saveMessages(request, messages);
+            return mapping.findForward(TO_LIST_FORWARD);
+        }
+        catch (TaskomaticApiException e) {
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError(errors, "taskscheduler.down");
+            getStrutsDelegate().saveMessages(request, errors);
+            return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+        }
     }
 
     /**
