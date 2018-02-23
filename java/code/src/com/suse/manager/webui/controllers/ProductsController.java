@@ -40,6 +40,7 @@ import com.suse.manager.model.products.Product;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.SparkApplicationHelper;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Json;
 import org.apache.log4j.Logger;
@@ -63,11 +64,6 @@ public class ProductsController {
     private static final String REFRESH_RUNNING = "refreshRunning";
 
     private static Logger log = Logger.getLogger(ImageBuildController.class);
-
-    private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
-            .serializeNulls()
-            .create();
 
     private ProductsController() { }
 
@@ -101,9 +97,9 @@ public class ProductsController {
         }
         catch (Exception e) {
             log.fatal(e.getMessage(), e);
-            return Json.GSON.toJson(false);
+            return SparkApplicationHelper.json(response, false);
         }
-        return Json.GSON.toJson(true);
+        return SparkApplicationHelper.json(response, true);
     }
 
     public static String synchronizeChannelFamilies(Request request, Response response, User user) {
@@ -116,9 +112,9 @@ public class ProductsController {
         }
         catch (Exception e) {
             log.fatal(e.getMessage(), e);
-            return Json.GSON.toJson(false);
+            return SparkApplicationHelper.json(response, false);
         }
-        return Json.GSON.toJson(true);
+        return SparkApplicationHelper.json(response, true);
     }
 
     public static String synchronizeChannels(Request request, Response response, User user) {
@@ -130,10 +126,10 @@ public class ProductsController {
             csm.updateChannels(null);
         }
         catch (Exception e) {
-              log.fatal(e.getMessage(), e);
-              return Json.GSON.toJson(false);
+            log.fatal(e.getMessage(), e);
+            return SparkApplicationHelper.json(response, false);
         }
-        return Json.GSON.toJson(true);
+        return SparkApplicationHelper.json(response, true);
     }
 
     public static String synchronizeSubscriptions(Request request, Response response, User user) {
@@ -143,9 +139,9 @@ public class ProductsController {
         }
         catch (Exception e) {
             log.fatal(e.getMessage(), e);
-            return Json.GSON.toJson(false);
+            return SparkApplicationHelper.json(response, false);
         }
-        return Json.GSON.toJson(true);
+        return SparkApplicationHelper.json(response, true);
     }
 
     public static String synchronizeProductChannels(Request request, Response response, User user) {
@@ -158,9 +154,9 @@ public class ProductsController {
         }
         catch (Exception e) {
             log.fatal(e.getMessage(), e);
-            return Json.GSON.toJson(false);
+            return SparkApplicationHelper.json(response, false);
         }
-        return Json.GSON.toJson(true);
+        return SparkApplicationHelper.json(response, true);
     }
 
     public static String addProduct(Request request, Response response, User user) {
@@ -177,9 +173,9 @@ public class ProductsController {
         }
         catch (Exception e) {
             log.fatal(e.getMessage(), e);
-            return Json.GSON.toJson(false);
+            return SparkApplicationHelper.json(response, false);
         }
-        return Json.GSON.toJson(true);
+        return SparkApplicationHelper.json(response, true);
     }
 
     /**
@@ -220,7 +216,6 @@ public class ProductsController {
             data.put("error", "Exception while fetching products: " + e.getMessage());
         }
 
-        response.type("application/json");
-        return GSON.toJson(data);
+        return SparkApplicationHelper.json(response, data);
     }
 }
