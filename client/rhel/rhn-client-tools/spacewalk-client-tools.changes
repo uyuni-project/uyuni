@@ -1,3 +1,5 @@
+- Fix up2date logging on FQDN collection exception
+  (bsc#1081607, bsc#1082019)
 - move dependency to python2 subpackage
 
 -------------------------------------------------------------------
