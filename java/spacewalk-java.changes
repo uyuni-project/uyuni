@@ -1,3 +1,4 @@
+- Fix NPE when retrieving OES repo (bsc#1082328)
 -------------------------------------------------------------------
 Wed Feb 14 12:56:19 CET 2018 - jgonzalez@suse.com
 
