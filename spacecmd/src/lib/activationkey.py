@@ -1717,7 +1717,9 @@ def complete_activationkey_setcontactmethod(self, text, line, beg, end):
 
 
 def do_activationkey_setcontactmethod(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args) == 2:
         self.help_activationkey_setcontactmethod()
