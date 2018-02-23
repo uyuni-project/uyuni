@@ -2243,8 +2243,8 @@ def do_system_listnotes(self, args):
 
 
 def help_system_listfqdns(self):
-    print 'system_listfqdns: List the associated FQDNs for a system'
-    print 'usage: system_listfqdns <SYSTEM>'
+    print('system_listfqdns: List the associated FQDNs for a system')
+    print('usage: system_listfqdns <SYSTEM>')
     print(self.HELP_SYSTEM_OPTS)
 
 
@@ -2271,12 +2271,12 @@ def do_system_listfqdns(self, args):
 
     for system in sorted(systems):
         if add_separator:
-            print self.SEPARATOR
+            print(self.SEPARATOR)
         add_separator = True
 
         if len(systems) > 1:
-            print 'System: %s' % system
-            print
+            print('System: %s' % system)
+            print('')
 
         system_id = self.get_system_id(system)
         if not system_id:
@@ -2285,14 +2285,14 @@ def do_system_listfqdns(self, args):
         fqdns = self.client.system.listFqdns(self.session, system_id)
 
         for f in fqdns:
-            print f
+            print(f)
 
 ####################
 
 def help_system_setbasechannel(self):
     print("system_setbasechannel: Set a system's base software channel")
     print('usage: system_setbasechannel <SYSTEMS> CHANNEL')
-    print()
+    print('')
     print(self.HELP_SYSTEM_OPTS)
 
 
@@ -2353,13 +2353,13 @@ def do_system_setbasechannel(self, args):
 ####################
 
 def help_system_schedulechangechannels(self):
-    print "system_schedulechangechannels: Schedule changing a system's software channels"
-    print '''usage: system_setbasechannel <SYSTEMS> [options]
+    print("system_schedulechangechannels: Schedule changing a system's software channels")
+    print('''usage: system_setbasechannel <SYSTEMS> [options]
 
 options:
   -b BASE_CHANNEL base channel label
   -c CHILD_CHANNEL child channel labels (allowed multiple times)
-  -s START_TIME time defaults to now'''
+  -s START_TIME time defaults to now''')
     print(self.HELP_SYSTEM_OPTS)
 
 
@@ -2412,14 +2412,14 @@ def do_system_schedulechangechannels(self, args):
         oldKids = self.client.system.listSubscribedChildChannels(self.session,
                                                        system_id)
         if add_separator:
-            print self.SEPARATOR
+            print(self.SEPARATOR)
         add_separator = True
 
-        print 'System:           %s' % system
-        print 'Old Base Channel: %s' % oldBase.get('label')
-        print 'Old Child Channels: %s' % ', '.join([k.get('label') for k in oldKids])
-        print 'New Base Channel: %s' % baseChannel
-        print 'New Child channels %s' % ', '.join(childChannels)
+        print('System:           %s' % system)
+        print('Old Base Channel: %s' % oldBase.get('label'))
+        print('Old Child Channels: %s' % ', '.join([k.get('label') for k in oldKids]))
+        print('New Base Channel: %s' % baseChannel)
+        print('New Child channels %s' % ', '.join(childChannels))
 
     if not self.user_confirm():
         return
@@ -2434,14 +2434,14 @@ def do_system_schedulechangechannels(self, args):
                                           baseChannel,
                                           childChannels,
                                           options.start_time)
-        print 'Scheduled action id: %s' % actionId
+        print('Scheduled action id: %s' % actionId)
 
 ####################
 
 def help_system_listbasechannel(self):
     print('system_listbasechannel: List the base channel for a system')
     print('usage: system_listbasechannel <SYSTEMS>')
-    print()
+    print('')
     print(self.HELP_SYSTEM_OPTS)
 
 
@@ -3852,7 +3852,7 @@ def help_system_setcontactmethod(self):
     print('system_setcontactmethod: Set the contact method for given system(s).')
     print('Available contact methods: ' + str(self.CONTACT_METHODS))
     print('usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>')
-    print()
+    print('')
     print(self.HELP_SYSTEM_OPTS)
 
 
