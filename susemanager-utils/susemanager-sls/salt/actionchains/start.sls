@@ -2,6 +2,5 @@
 start_action_chain:
   module.run:
     - name: mgractionchains.start
-	- arg:
-	  - {{ pillar['actionchain_id'] }}
+    - actionchain_id: {{ pillar['actionchain_id'] }}
 {% endif %}
