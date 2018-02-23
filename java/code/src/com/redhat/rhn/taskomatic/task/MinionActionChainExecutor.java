@@ -22,6 +22,7 @@ import org.quartz.JobExecutionContext;
 
 import java.util.Optional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Execute SUSE Manager actions via Salt.
@@ -45,9 +46,12 @@ public class MinionActionChainExecutor extends RhnJavaJob {
 
         // Measure time to calculate the total duration
         long start = System.currentTimeMillis();
-        long actionChainId = ((List<Long>) context.getJobDetail()
-                .getJobDataMap().get("actionchain_id")).get(0);
-        List<Long> targetServers = (List<Long>) context.getJobDetail().getJobDataMap().get("target_ids");
+        long actionChainId = Long.parseLong(((List<String>) context.getJobDetail()
+                .getJobDataMap().get("actionchain_id")).get(0));
+        List<Long> targetServers = ((List<String>) context.getJobDetail()
+                .getJobDataMap().get("target_ids")).stream()
+                        .map(target -> Long.parseLong(target))
+                        .collect(Collectors.toList());
         User user = Optional.ofNullable(context.getJobDetail().getJobDataMap().get("user_id"))
                 .map(id -> Long.parseLong(id.toString()))
                 .map(userId -> UserFactory.lookupById(userId))
