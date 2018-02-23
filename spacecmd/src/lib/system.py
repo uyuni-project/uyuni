@@ -2253,7 +2253,9 @@ def complete_system_listfqdns(self, text, line, beg, end):
 
 
 def do_system_listfqdns(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if not len(args):
         self.help_system_listfqdns()
@@ -2367,10 +2369,12 @@ def complete_system_schedulechangechannels(self, text, line, beg, end):
         return self.tab_complete_systems(text)
 
 def do_system_schedulechangechannels(self, args):
-    options = [Option('-b', '--base', action='store'),
-               Option('-c', '--child', action='append', default=[]),
-               Option('-s', '--start-time', action='store')]
-    (args, options) = parse_arguments(args, options)
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-b', '--base')
+    arg_parser.add_argument('-c', '--child', action='append', default=[])
+    arg_parser.add_argument('-s', '--start-time', action='store')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
     # import pdb;
     # pdb.set_trace()
     if len(args) < 1:
@@ -3862,7 +3866,9 @@ def complete_system_setcontactmethod(self, text, line, beg, end):
 
 
 def do_system_setcontactmethod(self, args):
-    (args, _options) = parse_arguments(args)
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
 
     if len(args) < 2:
         self.help_system_setcontactmethod()
