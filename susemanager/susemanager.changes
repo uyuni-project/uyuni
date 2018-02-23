@@ -1,3 +1,4 @@
+- add SLES4SAP-12-SP3-ppc64le as bootstrap repository (bsc#1082548)
 - Add align-rpm-buildtime script (bsc#1078056)
 
 -------------------------------------------------------------------
