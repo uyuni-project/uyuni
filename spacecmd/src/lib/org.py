@@ -32,7 +32,7 @@
 import logging
 from getpass import getpass
 from operator import itemgetter
-from spacecmd.utils import parse_arguments, prompt_user, is_interactive, tab_completer
+from spacecmd.utils import *
 
 _PREFIXES = ['Dr.', 'Mr.', 'Miss', 'Mrs.', 'Ms.']
 
