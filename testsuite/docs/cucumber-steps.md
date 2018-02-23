@@ -233,6 +233,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
   When I wait until I do not see "Apply highstate scheduled by admin" text, refreshing the page
   When I wait until I see the name of "sle-minion", refreshing the page
   When I wait until I do not see the name of "sle-minion", refreshing the page
+  When I wait until the table contains a "FINISHED" text in its first row, refreshing the page
   When I refresh page until I see "sle-minion" hostname as text
 ```
 
@@ -536,7 +537,6 @@ The check box can be identified by name, id or label text.
   When I stop salt-minion on "ceos-minion"
   When I start salt-minion on "ceos-minion"
   When I restart salt-minion on "ceos-minion"
-  Then salt-minion should be running on "sle-minion"
 ```
 
 * Control Salt processes
@@ -566,7 +566,7 @@ The check box can be identified by name, id or label text.
   When I delete "ceos-minion" key in the Salt master
   When I delete "sle-minion" from the Rejected section
   When I wait until Salt master sees "sle-minion" as "rejected"
-  Then the list of the "all" keys should contain "sle-minion" hostname
+  When I wait until the list of "all" keys contains the hostname of "sle-minion"
 ```
 
 * Remote commands via Salt

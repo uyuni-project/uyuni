@@ -1,4 +1,4 @@
-# Copyright (c) 2016 SUSE LLC
+# Copyright (c) 2016-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: System package list is updated if packages are manually installed or removed
@@ -14,8 +14,7 @@ Feature: System package list is updated if packages are manually installed or re
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I reload the page
-    And I reload the page until it does contain a "FINISHED" text in the table first row
+    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
 
   Scenario: Remove manually a package on a minion
     Given I am on the Systems overview page of this "sle-minion"
@@ -48,5 +47,4 @@ Feature: System package list is updated if packages are manually installed or re
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I reload the page
-    And I reload the page until it does contain a "FINISHED" text in the table first row
+    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page

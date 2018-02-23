@@ -55,8 +55,7 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    When I reload the page
-    And I reload the page until it does contain a "FINISHED" text in the table first row
+    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
 
 @sshminion
   Scenario: Install a package on the SSH minion

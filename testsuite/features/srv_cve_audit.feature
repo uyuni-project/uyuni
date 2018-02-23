@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: CVE Audit
@@ -18,8 +18,7 @@ Feature: CVE Audit
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I reload the page
-    And I reload the page until it does contain a "FINISHED" text in the table first row
+    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
 
   Scenario: Schedule channel data refresh
     Given I am authorized as "admin" with password "admin"
@@ -29,8 +28,7 @@ Feature: CVE Audit
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I reload the page
-    And I reload the page until it does contain a "FINISHED" text in the table first row
+    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
 
   Scenario: Display CVE audit page
     Given I am authorized as "admin" with password "admin"
@@ -89,8 +87,7 @@ Feature: CVE Audit
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I reload the page
-    And I reload the page until it does contain a "FINISHED" text in the table first row
+    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
     And I am logged in via XML-RPC cve audit as user "admin" and password "admin"
     When I call audit.list_systems_by_patch_status with CVE identifier "CVE-1999-9979"
     Then I should get status "NOT_AFFECTED" for this client
@@ -135,5 +132,4 @@ Feature: CVE Audit
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I reload the page
-    And I reload the page until it does contain a "FINISHED" text in the table first row
+    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
