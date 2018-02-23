@@ -131,7 +131,7 @@ class SpacewalkShell(Cmd):
 
         # terminate the shell
         if re.match('quit|exit|eof', line, re.I):
-            print()
+            print('')
             sys.exit(0)
 
         # don't attempt to login for some commands
