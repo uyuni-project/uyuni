@@ -440,6 +440,7 @@ class MgrSync(object):
         if product.isBase:
             for extprd in product.extensions:
                 if extprd.recommended and not no_recommends:
+                    print("Adding recommended product '{0}'".format(extprd.friendly_name))
                     ret.extend([c.label for c in extprd.channels if not c.optional])
         return ret
 
