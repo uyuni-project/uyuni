@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Fri Feb 23 10:30:03 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.17.1-1
+- Compatibility with Python 3
 - Fix typo (bsc#1081151)
 - Configure gpg_flag via spacecmd creating a channel (bsc#1080290)
 
