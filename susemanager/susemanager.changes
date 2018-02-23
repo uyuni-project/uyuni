@@ -1,3 +1,5 @@
+- add SLES4SAP-12-SP3-ppc64le as bootstrap repository (bsc#1082548)
+
 -------------------------------------------------------------------
 Fri Feb 02 13:07:51 CET 2018 - jgonzalez@suse.com
 
