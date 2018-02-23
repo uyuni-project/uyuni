@@ -59,7 +59,7 @@ Feature: Very first settings
     And I should see a "testing" text
 
   Scenario: Wait for refresh of list of products to finish
-    When I wait for mgr-sync refresh is finished
+    When I wait until mgr-sync refresh is finished
 
   Scenario: Check services which should run
     Then service "atftpd" is enabled on the server

@@ -212,8 +212,21 @@ Then(/^I shouldn't get "([^"]*)"$/) do |arg1|
   raise "'#{arg1}' found in output '#{$command_output}'" if found
 end
 
-Then(/^I wait for mgr-sync refresh is finished$/) do
-  $server.run_until_ok('ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json')
+Then(/^I wait until mgr-sync refresh is finished$/) do
+  # mgr-sync refresh is a slow operation, we don't use the default timeout
+  cmd = 'ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json'
+  refresh_timeout = 600
+  begin
+    Timeout.timeout(refresh_timeout) do
+      loop do
+        result, code = $server.run(cmd, false)
+        break if code.zero?
+        sleep 4
+      end
+    end
+  rescue Timeout::Error
+    raise "'mgr-sync refresh' did not finish in time:\n #{result}"
+  end
 end
 
 Then(/^I should see "(.*?)" in the output$/) do |arg1|
