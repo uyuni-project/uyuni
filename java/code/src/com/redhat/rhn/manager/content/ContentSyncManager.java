@@ -486,8 +486,10 @@ public class ContentSyncManager {
                 MgrSyncProductDto productDto = baseMap.get(base);
                 // if this is a new product
                 if (productDto == null) {
-                    SUSEProduct dbProduct =
-                            SUSEProductFactory.lookupByProductId(product.getId());
+                   SUSEProduct dbProduct = HibernateFactory.doWithoutAutoFlushing(
+                           () -> SUSEProductFactory.lookupByProductId(product.getId())
+                   );
+
                     PackageArch arch = dbProduct.getArch();
                     // and if the base channel arch matches the product arch
                     if (arch == null || arch.getLabel().equals(base.getArch())) {
