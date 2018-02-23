@@ -30,6 +30,39 @@ const _SETUP_WIZARD_STEPS = [
   }
 ];
 
+const _SCC_REFRESH_STEPS = [
+  {
+    label: 'Channels',
+    url: '/rhn/manager/admin/setup/sync/channels',
+    inProgress: false,
+    success: null
+  },
+  {
+    label: 'Channel Families',
+    url: '/rhn/manager/admin/setup/sync/channelfamilies',
+    inProgress: false,
+    success: null
+  },
+  {
+    label: 'Products',
+    url: '/rhn/manager/admin/setup/sync/products',
+    inProgress: false,
+    success: null
+  },
+  {
+    label: 'Product Channels',
+    url: '/rhn/manager/admin/setup/sync/productchannels',
+    inProgress: false,
+    success: null
+  },
+  {
+    label: 'Subscriptions',
+    url: '/rhn/manager/admin/setup/sync/subscriptions',
+    inProgress: false,
+    success: null
+  }
+];
+
 function reloadData() {
   return Network.get('/rhn/manager/api/admin/products', 'application/json').promise;
 }
@@ -44,7 +77,8 @@ const Products = React.createClass({
       error: null,
       loading: true,
       selectedItems: [],
-      showPopUp: false
+      showPopUp: false,
+      syncRunning: false,
     }
   },
 
@@ -100,6 +134,14 @@ const Products = React.createClass({
     this.setState({showPopUp: false});
   },
 
+  updateSyncRunning: function(syncStatus) {
+    // if it was running and now it's finished
+    if (this.state.syncRunning && !syncStatus) {
+      this.refreshServerData(); // reload data
+    }
+    this.setState({ syncRunning: syncStatus });
+  },
+
   submit: function() {
     alert(this.state.selectedItems);
   },
@@ -149,7 +191,12 @@ const Products = React.createClass({
                         <ModalButton
                             className='btn btn-default'
                             id='sccRefresh'
-                            title={t('Refreshes the product catalog from the Customer Center')}
+                            icon={'fa-refresh ' + (this.state.syncRunning ? 'fa-spin' : '')}
+                            title={
+                              this.state.syncRunning ?
+                                t('The product catalog refresh is runnig..')
+                                : t('Refreshes the product catalog from the Customer Center')
+                            }
                             text={t('Refresh')}
                             target='scc-refresh-popup'
                             onClick={() => this.showPopUp()}
@@ -249,7 +296,11 @@ const Products = React.createClass({
               {pageContent}
             </div>
         </div>
-        { this.state.showPopUp ? <SCCDialog onClose={() => this.closePopUp} /> : null }
+        <SCCDialog
+            onClose={() => this.closePopUp}
+            start={this.state.showPopUp && !this.state.syncRunning}
+            updateSyncRunning={(syncStatus) => this.updateSyncRunning(syncStatus)}
+          />
         <div className='hidden' id='iss-master' data-iss-master={this.state.issMaster}></div>
         <div className='hidden' id='refresh-running' data-refresh-running={this.state.refreshRunning}></div>
         {footer}
@@ -268,40 +319,152 @@ const ErrorMessage = (props) => <MessageContainer items={
 ;
 
 const SCCDialog = React.createClass({
+  getInitialState: function() {
+    return {
+      steps: _SCC_REFRESH_STEPS,
+      error: null,
+    }
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    if(nextProps.start && // I'm told to run
+        !this.isSyncRunning() && // I'm not running
+        !this.hasRun() // I have never run yet
+      ) {
+      this.startSync(); // let's do the sync then
+    }
+  },
+
+  // returns if the sync is running right now
+  isSyncRunning: function() {
+    return this.state.steps.some(s => s.inProgress);
+  },
+
+  // returns if the sync has run checking if
+  // there is at least one step with a valid 'success' flag value
+  // or the sync is running
+  hasRun: function() {
+    return this.state.steps.some(s => s.success != null) || this.isSyncRunning();
+  },
+
+  startSync: function() {
+    this.props.updateSyncRunning(true);
+    this.runSccRefreshStep(this.state.steps, 0); // start from the first element
+  },
+
+  restartSync: function() {
+    // reset state
+    _SCC_REFRESH_STEPS.forEach(s =>
+      {
+        s.inProgress = false;
+        s.success = null;
+      }
+    );
+    this.setState({ steps: _SCC_REFRESH_STEPS});
+    this.startSync();
+  },
+
+  finishSync: function() {
+    this.props.updateSyncRunning(false);
+  },
+
+  runSccRefreshStep: function(stepList, i) {
+    var currentObject = this;
+
+    // if i-step exists
+    if (stepList.length >= i+1) {
+      // run the i-step
+      var currentStep = stepList[i];
+      currentStep.inProgress = true;
+      currentObject.setState({
+        steps: stepList
+      });
+
+      Network.post(currentStep.url, 'application/json').promise.then(data => {
+        // set the result for the i-step
+        currentStep.success = data;
+        currentStep.inProgress = false;
+        currentObject.setState({
+          steps: stepList
+        });
+
+        // recoursive recall to run the next step
+        currentObject.runSccRefreshStep(stepList, i+1);
+      })
+      .catch(response => {
+        currentObject.setState({
+          error: response.status == 401 ? 'authentication' :
+            response.status >= 500 ? 'general' :
+            null,
+        });
+      });
+    }
+    else {
+      currentObject.finishSync();
+    }
+  },
+
   render: function() {
+    const failureLink = <a href='/rhn/admin/Catalina.do'>{t('Details')}</a>;
+    const failureResult = (
+      <span>
+        <i className='fa fa-exclamation-triangle text-warning' />
+        {t('Operation not successful: Empty reply from the server')}
+        ({failureLink})
+      </span>
+    );
+    const successResult = <span><i className='fa fa-check text-success' />{t('Completed')}</span>;
+
     const contentPopup = (
       <div>
         <p>{t('Please be patient, this might take several minutes.')}</p>
-        <ul></ul>
-        <div>
-          <div>{t('Channels')}</div>
-          <div>{t('Channel Families')}</div>
-          <div>{t('Products')}</div>
-          <div>{t('Product Channles')}</div>
-          <div>{t('Subscriptions')}</div>
-          <div>{t('Completed')}</div>
-
-          <div>{t('Operation not successful')}</div>
-          <div>{t('Details')}</div>
-        </div>
+        <ul id='scc-task-list' className='fa-ul'>
+          {
+            this.state.steps.map(s => 
+              {
+                return (
+                  <li>
+                    <i className={
+                      s.success != null ?
+                      (
+                        s.success ?
+                          'fa fa-li fa-check text-success'
+                          : 'fa fa-li fa-exclamation-triangle text-warning'
+                      )
+                      : s.inProgress ? 'fa fa-li fa-spinner fa-spin' : 'fa fa-li fa-circle-o text-muted'}
+                      /><span className={s.success == null ? 'text-muted' : ''}>{s.label}</span>
+                  </li>
+                )
+              }
+            )
+          }
+        </ul>
       </div>
     );
 
     const footerPopup = (
+      !this.isSyncRunning() && this.hasRun() ?
       <div>
-        <div className='col-md-9 text-left'></div>
-        <div className='col-md-3 text-right'>
-          <button className='btn btn-default' onClick={this.props.onClose}>{t('Close')}</button>
+        <div className='col-md-7 text-left'>
+          {
+            this.state.steps.every(s => s.success) ?
+              successResult : failureResult
+          }
+        </div>
+        <div className='col-md-5 text-left'>
+          <button className='btn btn-default' onClick={() => this.restartSync()}>{t('Sync again')}</button>
         </div>
       </div>
+      : null
     );
+
     return (
       <PopUp
           id='scc-refresh-popup'
           title={t('Refreshing data from SUSE Customer Center')}
           content={contentPopup}
           footer={footerPopup}
-          className='modal-sx'
+          className='modal-sm'
           onClosePopUp={this.props.onClose} />
     )
   }
