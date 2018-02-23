@@ -1241,18 +1241,16 @@ public class ContentSyncManager {
             if (cachedOESRepo == null) {
                 Credentials oesCreds = verifyOESRepo();
                 cachedOESRepo = new SCCRepository();
-                cachedOESRepo.setUrl(channel.getSourceUrl());
                 cachedOESRepo.setCredentials(oesCreds);
-                return cachedOESRepo;
             }
-            else if (cachedOESRepo.getCredentials() != null) {
-                cachedOESRepo.setUrl(channel.getSourceUrl());
+            else {
                 if (log.isDebugEnabled()) {
                     log.debug("Return cached OES availablity");
                 }
-                return cachedOESRepo;
             }
-            return null;
+
+            cachedOESRepo.setUrl(channel.getSourceUrl());
+            return cachedOESRepo.getCredentials() != null ? cachedOESRepo : null;
         }
 
         return findMatchingRepo(repos, sourceUrl);
