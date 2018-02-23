@@ -24,14 +24,14 @@ import java.util.Set;
 /**
  * A Product.
  */
-public class Product {
+public class Extension {
 
     /** The id. */
     private final Long id;
 
     /** The label. */
     private final String label;
-    
+
     /** The recommended flag. */
     private final boolean recommended;
 
@@ -39,23 +39,18 @@ public class Product {
 
     private final String identifier;
 
-    private final Set<Extension> extensions;
-
     /**
      * Instantiates a new Product.
      * @param idIn the id in
      * @param labelIn the label in
      * @param recommendedIn the recommended flag in
      */
-    public Product(Long idIn, String identifierIn,
-                   String labelIn, String archIn, Boolean recommendedIn,
-                   Set<Extension> extensionsIn) {
+    public Extension(Long idIn, String identifierIn, String labelIn, String archIn, Boolean recommendedIn) {
         id = idIn;
         label = labelIn;
         arch = archIn;
         identifier = identifierIn;
         recommended = recommendedIn;
-        extensions = extensionsIn;
     }
 
     /**
@@ -90,19 +85,15 @@ public class Product {
         return identifier;
     }
 
-    public Set<Extension> getExtensions() {
-        return extensions;
-    }
-
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Product)) {
+        if (!(other instanceof Extension)) {
             return false;
         }
-        Product otherProduct= (Product) other;
+        Extension otherProduct= (Extension) other;
         return new EqualsBuilder()
             .append(getId(), otherProduct.getId())
             .append(getLabel(), otherProduct.getLabel())

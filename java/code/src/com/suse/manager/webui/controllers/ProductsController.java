@@ -16,12 +16,18 @@
 package com.suse.manager.webui.controllers;
 
 import com.google.gson.reflect.TypeToken;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.setup.ProductSyncException;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
@@ -29,21 +35,23 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.manager.model.products.Extension;
 import com.suse.manager.model.products.Product;
 
+import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Json;
 import org.apache.log4j.Logger;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * Controller class providing backend code for the Products
@@ -193,7 +201,16 @@ public class ProductsController {
                     syncProduct.getIdent(),
                     syncProduct.getFriendlyName(),
                     syncProduct.getArch(),
-                    syncProduct.isRecommended()
+                    syncProduct.isRecommended(),
+                    syncProduct.getExtensions().stream().map(s ->
+                       new Extension(
+                           s.getId(),
+                           s.getIdent(),
+                           s.getFriendlyName(),
+                           s.getArch(),
+                           s.isRecommended()
+                       )
+                    ).collect(Collectors.toSet())
                 )
             ).collect(Collectors.toList());
             data.put("baseProducts", jsonProducts);
