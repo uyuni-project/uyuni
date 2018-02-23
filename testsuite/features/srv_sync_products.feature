@@ -9,17 +9,17 @@ Feature: Be able to list available products and enable them
   Scenario: List available products
     When I execute mgr-sync "list products" with user "admin" and password "admin"
     Then I should get "[I] SUSE Linux Enterprise Server 12 SP2 (x86_64)"
-    And I should get "[ ] SUSE Linux Enterprise Server 15 x86_64 (BETA) (x86_64)"
+    And I should get "[ ] SUSE Linux Enterprise Server 15 (x86_64)"
 
   Scenario: List all available products
     When I execute mgr-sync "list products -e"
-    Then I should get "[ ] SUSE Linux Enterprise Server 15 x86_64 (BETA) (x86_64)"
-    And I should get "  [ ] (R) Basesystem Module 15 x86_64 (BETA) (x86_64)"
+    Then I should get "[ ] SUSE Linux Enterprise Server 15 (x86_64)"
+    And I should get "  [ ] (R) Basesystem Module 15 (x86_64)"
     And I should get "  [ ] Containers Module 15 (x86_64)"
 
-  Scenario: Enable "SUSE Linux Enterprise Server 15 x86_64 (BETA) (x86_64)" with recommended modules
-    When I enable product "SUSE Linux Enterprise Server 15 x86_64 (BETA) (x86_64)"
-    Then I should get "Adding channels required by 'SUSE Linux Enterprise Server 15 x86_64 (BETA)' product
+  Scenario: Enable "SUSE Linux Enterprise Server 15 (x86_64)" with recommended modules
+    When I enable product "SUSE Linux Enterprise Server 15 (x86_64)"
+    Then I should get "Adding channels required by 'SUSE Linux Enterprise Server 15 ' product"
     And I should get "- sle-product-sles15-pool-x86_64"
     And I should get "- sle-product-sles15-updates-x86_64"
     And I should get "- sle-module-basesystem15-pool-x86_64"
@@ -30,9 +30,9 @@ Feature: Be able to list available products and enable them
     And I should get "- sle-manager-tools15-updates-x86_64"
     And I should get "Product successfully added"
 
-  Scenario: Enable "SUSE Linux Enterprise Server for SAP Applications 15 x86_64 (BETA) (x86_64)" without recommended modules
-    When I enable product "SUSE Linux Enterprise Server for SAP Applications 15 x86_64 (BETA) (x86_64)" without recommended
-    Then I should get "Adding channels required by 'SUSE Linux Enterprise Server for SAP Applications 15 x86_64 (BETA)' product
+  Scenario: Enable "SUSE Linux Enterprise Server for SAP Applications 15 (x86_64)" without recommended modules
+    When I enable product "SUSE Linux Enterprise Server for SAP Applications 15 (x86_64)" without recommended
+    Then I should get "Adding channels required by 'SUSE Linux Enterprise Server for SAP Applications 15' product"
     And I should get "- sle-product-sles_sap15-updates-x86_64"
     And I should get "- sle-product-sles_sap15-pool-x86_64"
     And I shouldn't get "sle-module-basesystem15-pool-x86_64-sap"
