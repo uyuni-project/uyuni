@@ -262,7 +262,7 @@ def prompt_user(prompt, noblank=False, multiline=False):
             else:
                 break
     except EOFError:
-        print()
+        print('')
         return ''
 
     if userinput != '':
@@ -456,7 +456,7 @@ def print_errata_list(errata):
 
     if rhba:
         if rhsa:
-            print()
+            print('')
 
         print('Bug Fix Errata')
         print('--------------')
@@ -465,7 +465,7 @@ def print_errata_list(errata):
 
     if rhea:
         if rhsa or rhba:
-            print()
+            print('')
 
         print('Enhancement Errata')
         print('------------------')
@@ -482,17 +482,17 @@ def config_channel_order(all_channels=None, new_channels=None):
         for i, new_channel in enumerate(new_channels, 1):
             print('%i. %s' % (i, new_channel))
 
-        print()
+        print('')
         action = prompt_user('a[dd], r[emove], c[lear], d[one]:')
 
         if re.match('a', action, re.I):
-            print()
+            print('')
             print('Available Configuration Channels')
             print('--------------------------------')
             for c in sorted(all_channels):
                 print(c)
 
-            print()
+            print('')
             channel = prompt_user('Channel:')
 
             if channel not in all_channels:
@@ -527,7 +527,7 @@ def config_channel_order(all_channels=None, new_channels=None):
         elif re.match('d', action, re.I):
             break
 
-        print()
+        print('')
 
     return new_channels
 
