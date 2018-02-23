@@ -224,6 +224,7 @@ public class MinionController {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView highstate(Request request, Response response, User user) {
