@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Patches display
@@ -17,8 +17,7 @@ Feature: Patches display
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I reload the page
-    And I reload the page until it does contain a "FINISHED" text in the table first row
+    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
 
   Scenario: Check all patches exist
     Given I am on the patches page
@@ -68,5 +67,4 @@ Feature: Patches display
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I reload the page
-    And I reload the page until it does contain a "FINISHED" text in the table first row
+    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
