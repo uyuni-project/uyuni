@@ -19,7 +19,7 @@ Feature: Be able to list available products and enable them
 
   Scenario: Enable "SUSE Linux Enterprise Server 15 (x86_64)" with recommended modules
     When I enable product "SUSE Linux Enterprise Server 15 (x86_64)"
-    Then I should get "Adding channels required by 'SUSE Linux Enterprise Server 15 ' product"
+    Then I should get "Adding channels required by 'SUSE Linux Enterprise Server 15' product"
     And I should get "- sle-product-sles15-pool-x86_64"
     And I should get "- sle-product-sles15-updates-x86_64"
     And I should get "- sle-module-basesystem15-pool-x86_64"
