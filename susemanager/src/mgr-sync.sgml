@@ -32,8 +32,7 @@
   <para>
    The <emphasis>mgr-sync</emphasis> command is a utility that allows you to
    work with SUSE Customer Center (SCC) for adding or syncing of products and
-   channels.  As well as enabling and refreshing SCC data.  This tool requires
-   that SCC is enabled by running <command>mgr-sync enable-scc</command>.
+   channels.  As well as enabling and refreshing SCC data.
   </para>
  </refsect1>
 
@@ -84,10 +83,6 @@
    must be specified after the name of the command and before any of the
    command arguments.
   </para>
-  <refsect2>
-   <title><command>enable-scc</command></title>
-   <para>Enable SCC.</para>
-  </refsect2>
 
   <refsect2>
    <title><command>list</command></title>
@@ -283,12 +278,6 @@
  <refsect1>
   <title>Examples</title>
   <variablelist>
-   <varlistentry>
-    <term>Enable SCC</term>
-    <listitem>
-     <screen>mgr-sync enable-scc</screen>
-    </listitem>
-   </varlistentry>
    <varlistentry>
     <term>Get an expanded list of channels.</term>
     <listitem>
