@@ -514,7 +514,7 @@ end
 When(/^I wait until the table contains a "([^"]*)" text in its first row, refreshing the page$/) do |text|
   # this step is used for long operations like refreshing caches, repositories, etc.
   # therefore we use a non-standard timeout
-  refresh_timeout = 300
+  refresh_timeout = 360
   begin
     Timeout.timeout(refresh_timeout) do
       loop do
