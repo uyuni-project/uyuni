@@ -511,25 +511,21 @@ Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, colum
   raise unless page.has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
 end
 
-Then(/^I reload the page until it does contain a "([^"]*)" text in the table (.*) row$/) do |text, row|
-  found = false
-  idx = %w[first second third fourth].index(row)
-  raise("Unknown row '#{row}'") unless idx
+When(/^I wait until the table contains a "([^"]*)" text in its first row, refreshing the page$/) do |text|
+  # this step is used for long operations like refreshing caches, repositories, etc.
+  # therefore we use a non-standard timeout
+  refresh_timeout = 300
   begin
-    Timeout.timeout(DEFAULT_TIMEOUT) do
+    Timeout.timeout(refresh_timeout) do
       loop do
-        if page.has_xpath?("//table//tr[#{idx + 1}]//td[contains(text(), '#{text}')]")
-          found = true
-          break
-        end
-        sleep(5)
         visit current_url
+        break if page.has_xpath?("//table//tr[1]//td[contains(text(), '#{text}')]")
+        sleep 4
       end
     end
   rescue Timeout::Error
-    raise "'#{text}' is not found in the '#{row}' row of the table after wait and reload page"
+    raise "'#{text}' is not found in the table's first row after #{refresh_timeout} seconds"
   end
-  raise unless found
 end
 
 Then(/^I should see a "([^"]*)" link in the (left menu|tab bar|tabs|content area)$/) do |arg1, arg2|

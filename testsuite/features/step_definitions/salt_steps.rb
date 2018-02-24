@@ -3,24 +3,6 @@ require 'timeout'
 require 'open-uri'
 require 'tempfile'
 
-Given(/^salt-minion is configured on "(.*?)"$/) do |minion|
-  node = get_target(minion)
-  # cleanup the key in case the image was reused
-  # to run the test twice
-  step %(I delete "#{minion}" key in the Salt master)
-  step %(I stop salt-minion on "#{minion}")
-  step %(I stop salt-master)
-  key = '/etc/salt/pki/minion/minion_master.pub'
-  if file_exists?(node, key)
-    file_delete(node, key)
-    puts "Key #{key} has been removed on minion"
-  end
-  cmd = " echo  \'master : #{$server.ip}\' > /etc/salt/minion.d/susemanager.conf"
-  node.run(cmd, false)
-  step %(I start salt-master)
-  step %(I start salt-minion on "#{minion}")
-end
-
 Given(/^the Salt master can reach "(.*?)"$/) do |minion|
   node = get_target(minion)
   begin
@@ -75,32 +57,35 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node.run('systemctl restart salt-minion', false) if minion == 'ceos-minion'
 end
 
-Then(/^salt-minion should be running on "(.*?)"$/) do |minion|
-  node = get_target(minion)
-  i = 0
-  # bsc 1056615
-  salt_st = 'rcsalt-minion status'
-  salt_st = 'systemctl status salt-minion' if minion == 'ceos-minion'
-  MAX_ITER = 40
-  loop do
-    _out, code = node.run(salt_st, false)
-    break if code.zero?
-    sleep 5
-    puts 'sleeping 5 secs, minion not active.'
-    i += 1
-    raise 'TIMEOUT; something wrong with minion status' if i == MAX_ITER
-  end
-end
-
 When(/^I list "(.*?)" keys at Salt Master$/) do |key_type|
-  $output, _code = $server.run("salt-key --list #{key_type}", false)
+  $output, return_code = $server.run("salt-key --list #{key_type}", false)
   $output.strip
 end
 
-Then(/^the list of the "(.*?)" keys should contain "(.*?)" hostname$/) do |key_type, minion|
+Then(/^I wait until the list of "(.*?)" keys contains the hostname of "(.*?)"$/) do |key_type, minion|
   node = get_target(minion)
-  $output, _code = $server.run("salt-key --list #{key_type}", false)
-  assert_match(node.full_hostname, $output, "minion #{node.full_hostname} is not listed as #{key_type} key on salt-master #{$output}")
+  cmd = "salt-key --list #{key_type}"
+  # we should get the Salt key in a reasonable delay
+  # therefore we try with a short, non-standard timeout
+  key_timeout = 10
+  begin
+    Timeout.timeout(key_timeout) do
+      loop do
+        $output, return_code = $server.run(cmd, false)
+        break if return_code.zero? && $output.include?(node.full_hostname)
+        sleep 1
+      end
+    end
+  rescue Timeout::Error
+    raise "Minion #{node.full_hostname} is not listed among #{key_type} keys on Salt master:\n#{$output}"
+  end
+end
+
+When(/^I wait until Salt master sees "(.*?)" as "(.*?)"$/) do |minion, key_type|
+  steps %(
+    When I list "#{key_type}" keys at Salt Master
+    And I wait until the list of "#{key_type}" keys contains the hostname of "#{minion}"
+  )
 end
 
 When(/^I wait until no Salt job is running on "(.*?)"$/) do |minion|
@@ -116,13 +101,6 @@ When(/^I wait until no Salt job is running on "(.*?)"$/) do |minion|
   rescue Timeout::Error
     raise "a Salt job is still running on #{minion} after timeout"
   end
-end
-
-When(/^I wait until Salt master sees "(.*?)" as "(.*?)"$/) do |minion, key_type|
-  steps %(
-    When I list "#{key_type}" keys at Salt Master
-    Then the list of the "#{key_type}" keys should contain "#{minion}" hostname
-  )
 end
 
 When(/^I wait until onboarding is completed for "([^"]*)"$/) do |system|
