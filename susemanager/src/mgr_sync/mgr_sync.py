@@ -176,7 +176,7 @@ class MgrSync(object):
             print("No channels found.")
             return
 
-        print "Available Channels{0}:\n".format(expand and " (full)" or "")
+        print("Available Channels{0}:\n".format(expand and " (full)" or ""))
         print("\nStatus:")
         print("  - [I] - channel is installed")
         print("  - [ ] - channel is not installed, but is available")
@@ -392,7 +392,8 @@ class MgrSync(object):
             return
 
         print("Available Products:\n")
-        print("\nStatus:")
+        print("(R) - recommended extension\n")
+        print("Status:")
         print("  - [I] - product is installed")
         print("  - [ ] - product is not installed, but is available")
         print("  - [U] - product is unavailable\n")
