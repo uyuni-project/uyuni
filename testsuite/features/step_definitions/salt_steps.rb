@@ -9,8 +9,8 @@ Given(/^the Salt master can reach "(.*?)"$/) do |minion|
     start = Time.now
     # 300 is the default 1st keepalive interval for the minion
     # where it realizes the connection is stuck
-    KEEPALIVE_TIMEOUT = 300
-    Timeout.timeout(KEEPALIVE_TIMEOUT) do
+    keepalive_timeout = 300
+    Timeout.timeout(keepalive_timeout) do
       # only try 3 times
       3.times do
         out, _code = $server.run("salt #{node.full_hostname} test.ping")
