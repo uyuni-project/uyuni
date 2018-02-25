@@ -22,7 +22,7 @@ SimpleCov.start
 server = ENV['SERVER']
 # maximal wait before giving up
 # the tests return much before that delay in case of success
-DEFAULT_TIMEOUT = 200
+DEFAULT_TIMEOUT = 250
 $stdout.sync = true
 Capybara.default_wait_time = 10
 
