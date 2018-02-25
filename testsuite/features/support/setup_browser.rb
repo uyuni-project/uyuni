@@ -20,9 +20,9 @@ ENV['IGNORECERT'] = '1'
 ## codecoverage gem
 SimpleCov.start
 server = ENV['SERVER']
-# minutes maximal wait before giving up
+# maximal wait before giving up
 # the tests return much before that delay in case of success
-DEFAULT_TIMEOUT = 250
+DEFAULT_TIMEOUT = 200
 $stdout.sync = true
 Capybara.default_wait_time = 10
 
