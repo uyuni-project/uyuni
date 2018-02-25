@@ -86,6 +86,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -137,6 +138,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
             } };
 
+    @SuppressWarnings("unchecked")
     private final ExpectationsFunction SLES_NO_AK_EXPECTATIONS = (saltServiceMock, key) ->
             new Expectations() {{
                 allowing(saltServiceMock).getMasterHostname(MINION_ID);
@@ -559,7 +561,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 }, DEFAULT_CONTACT_METHOD);
     }
 
-    @SuppressWarnings("unchecked")
     public void testRegisterMinionWithActivationKey() throws Exception {
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
@@ -575,22 +576,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, key)));
-                    List<ProductInfo> pil = new ArrayList<>();
-                    ProductInfo pi = new ProductInfo(
-                                product.getName(),
-                                product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
-                                true, true, "productline", Optional.of("registerrelease"),
-                                "test", "repo", "shortname", "summary", "vendor",
-                                product.getVersion());
-                    pil.add(pi);
-                    allowing(saltServiceMock).callSync(
-                             with(any(LocalCall.class)),
-                             with(any(String.class)));
-                    will(returnValue(Optional.of(pil)));
                 }},
                 (DEFAULT_CONTACT_METHOD) -> {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
                     key.setBaseChannel(baseChannelX8664);
+                    baseChannelX8664.getAccessibleChildrenFor(user)
+                            .forEach(channel -> key.addChannel(channel));
                     key.setOrg(user.getOrg());
 
                     ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
@@ -605,16 +596,81 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     MinionServer minion = optMinion.get();
                     assertEquals(MINION_ID, minion.getName());
 
-                    // base channel check
+                    // only channel associated with Activation Key and child
+                    // channels associated with it must be present
                     assertNotNull(minion.getBaseChannel());
+                    HashSet<Channel> channels = new HashSet<>();
+                    channels.add(baseChannelX8664);
+                    baseChannelX8664.getAccessibleChildrenFor(user)
+                    .forEach(channel -> channels.add(channel));
                     assertEquals(baseChannelX8664, minion.getBaseChannel());
-
+                    assertEquals(channels, minion.getChannels());
                     assertTrue(minion.getFqdns().isEmpty());
 
                     // Config channel check
                     assertEquals(1, minion.getConfigChannelCount());
                     assertTrue(minion.getConfigChannelStream().anyMatch(c -> "config-channel-1".equals(c.getLabel())));
                 }, DEFAULT_CONTACT_METHOD);
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testRegisterMinionWithActivationKeySUSEManagerDefault() throws Exception {
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
+        Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
+        ChannelFamily channelFamilyOther = createTestChannelFamily();
+        SUSEProduct productOther =
+                SUSEProductTestUtils.createTestSUSEProduct(channelFamilyOther);
+        Channel baseChannelX8664Other =
+                setupBaseAndRequiredChannels(channelFamilyOther, productOther);
+
+        executeTest((saltServiceMock, key) -> new Expectations() {
+
+            {
+                allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                will(returnValue(Optional.of(MINION_ID)));
+                allowing(saltServiceMock).getMachineId(MINION_ID);
+                will(returnValue(Optional.of(MACHINE_ID)));
+                allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                allowing(saltServiceMock).getGrains(MINION_ID);
+                will(returnValue(getGrains(MINION_ID, null, key)));
+                List<ProductInfo> pil = new ArrayList<>();
+                ProductInfo pi = new ProductInfo(product.getName(),
+                        product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
+                        true, true, "productline", Optional.of("registerrelease"), "test",
+                        "repo", "shortname", "summary", "vendor", product.getVersion());
+                pil.add(pi);
+                allowing(saltServiceMock).callSync(with(any(LocalCall.class)),
+                        with(any(String.class)));
+                will(returnValue(Optional.of(pil)));
+            }
+        }, (DEFAULT_CONTACT_METHOD) -> {
+            ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+            key.setBaseChannel(null);
+            // Channels unrelated to the product added as child channels in the
+            // Activation Key
+            baseChannelX8664Other.getAccessibleChildrenFor(user)
+                    .forEach(channel -> key.addChannel(channel));
+            key.setOrg(user.getOrg());
+            ActivationKeyFactory.save(key);
+            return key.getKey();
+        }, (optMinion, machineId, key) -> {
+            assertTrue(optMinion.isPresent());
+            MinionServer minion = optMinion.get();
+            assertEquals(MINION_ID, minion.getName());
+
+            assertNotNull(minion.getBaseChannel());
+            assertEquals(baseChannelX8664, minion.getBaseChannel());
+            HashSet<Channel> channels = new HashSet<>();
+
+            // Child channels for auto-selected product must be added
+            channels.add(baseChannelX8664);
+            baseChannelX8664.getAccessibleChildrenFor(user)
+                    .forEach(channel -> channels.add(channel));
+            assertEquals(channels, minion.getChannels());
+            assertTrue(minion.getFqdns().isEmpty());
+        }, DEFAULT_CONTACT_METHOD);
     }
 
     public void testRegisterRHELMinionWithoutActivationKey() throws Exception {
@@ -855,7 +911,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         return saltService;
     }
 
-    @SuppressWarnings("unchecked")
     private Optional<Map<String, Object>> getGrains(String minionId, String sufix, String akey) throws ClassNotFoundException, IOException {
         Map<String, Object> grains = new JsonParser<>(Grains.items(false).getReturnType()).parse(
                 readFile("dummy_grains" + (sufix != null ? "_" + sufix : "") + ".json"));
