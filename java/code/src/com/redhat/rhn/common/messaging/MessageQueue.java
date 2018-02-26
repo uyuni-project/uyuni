@@ -56,6 +56,8 @@ import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesAction;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
 
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -316,6 +318,10 @@ public class MessageQueue {
         // Deploy configuration files
         MessageQueue.registerAction(new SsmConfigFilesAction(),
                                     SsmConfigFilesEvent.class);
+
+        // Handle changes of channel assignments on minions
+        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
+                ChannelsChangedEventMessage.class);
     }
 }
 
