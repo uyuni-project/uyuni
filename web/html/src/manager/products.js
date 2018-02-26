@@ -3,7 +3,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const Network = require('../utils/network');
-const MessageContainer = require('../components/messages').Messages;
+const Messages = require('../components/messages').Messages;
 const {Table, Column, SearchField, Highlight} = require('../components/table');
 const Functions = require('../utils/functions');
 const PopUp = require("../components/popup").PopUp;
@@ -75,7 +75,7 @@ const Products = React.createClass({
       refreshNeeded: refreshNeeded_flag_from_backend,
       refreshRunning: refreshRunning_flag_from_backend,
       serverData: {_DATA_ROOT_ID : []},
-      error: null,
+      errors: [],
       loading: true,
       selectedItems: [],
       showPopUp: false,
@@ -94,18 +94,11 @@ const Products = React.createClass({
       .then(data => {
         currentObject.setState({
           serverData: data[_DATA_ROOT_ID],
-          error: null,
+          errors: [],
           loading: false
         });
       })
-      .catch(response => {
-        currentObject.setState({
-          error: response.status == 401 ? 'authentication' :
-            response.status >= 500 ? 'general' :
-            null,
-          loading: false
-        });
-      });
+      .catch(this.handleResponseError);
   },
 
   searchData: function(datum, criteria) {
@@ -147,6 +140,12 @@ const Products = React.createClass({
     alert(this.state.selectedItems);
   },
 
+  handleResponseError: function(jqXHR, arg = "") {
+    const msg = Network.responseErrorMessage(jqXHR,
+      (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
+    this.setState({ errors: this.state.errors.concat(msg) });
+  },
+
   render: function() {
     const data = this.state.serverData;
 
@@ -183,84 +182,81 @@ const Products = React.createClass({
       pageContent = (
         <div className='row' id='suse-products'>
           <div className='col-sm-9'>
-            {
-              this.state.error == null  ?
-                <div>
-                  <div className='spacewalk-section-toolbar'>
-                    <div className='action-button-wrapper'>
-                      <div className='btn-group'>
-                        <ModalButton
-                            className='btn btn-default'
-                            id='sccRefresh'
-                            icon={'fa-refresh ' + (this.state.syncRunning ? 'fa-spin' : '')}
-                            title={
-                              this.state.syncRunning ?
-                                t('The product catalog refresh is runnig..')
-                                : t('Refreshes the product catalog from the Customer Center')
-                            }
-                            text={t('Refresh')}
-                            target='scc-refresh-popup'
-                            onClick={() => this.showPopUp()}
-                        />
-                        {
+            <Messages items={this.state.errors}/>
+            <div>
+              <div className='spacewalk-section-toolbar'>
+                <div className='action-button-wrapper'>
+                  <div className='btn-group'>
+                    <ModalButton
+                        className='btn btn-default'
+                        id='sccRefresh'
+                        icon={'fa-refresh ' + (this.state.syncRunning ? 'fa-spin' : '')}
+                        title={
                           this.state.syncRunning ?
-                          <Button
-                              id="addProducts"
-                              icon="fa-plus"
-                              className='btn-default text-muted'
-                              title={t('The product catalog is still refreshing, please wait.')}
-                              text={t('Add products')}
-                          />
-                          :
-                          <Button
-                              id="addProducts"
-                              icon="fa-plus"
-                              className={'btn-success'}
-                              text={t('Add products')}
-                              handler={this.submit}
-                          />
+                            t('The product catalog refresh is runnig..')
+                            : t('Refreshes the product catalog from the Customer Center')
                         }
-                      </div>
-                    </div>
+                        text={t('Refresh')}
+                        target='scc-refresh-popup'
+                        onClick={() => this.showPopUp()}
+                    />
+                    {
+                      this.state.syncRunning ?
+                      <Button
+                          id="addProducts"
+                          icon="fa-plus"
+                          className='btn-default text-muted'
+                          title={t('The product catalog is still refreshing, please wait.')}
+                          text={t('Add products')}
+                      />
+                      :
+                      <Button
+                          id="addProducts"
+                          icon="fa-plus"
+                          className={'btn-success'}
+                          text={t('Add products')}
+                          handler={this.submit}
+                      />
+                    }
                   </div>
-                  <Table
-                    data={this.buildRows(data)}
-                    identifier={(row) => row['identifier']}
-                    cssClassFunction={''}
-                    initialSortColumnKey='label'
-                    initialSortDirection={1}
-                    initialItemsPerPage={userPrefPageSize}
-                    loading={this.state.loading}
-                    selectable={true}
-                    onSelect={this.handleSelectItems}
-                    selectedItems={this.state.selectedItems}
-                    searchField={
-                        <SearchField filter={this.searchData}
-                            criteria={''}
-                            placeholder={t('Filter by product name')} />
-                    }>
-                    <Column
-                      columnKey='label'
-                      comparator={Utils.sortByText}
-                      header={t('Product Name')}
-                      cell={ (row) => row['label']}
-                    />
-                    <Column
-                      columnKey='arch'
-                      comparator={Utils.sortByText}
-                      header={t('Architecture')}
-                      cell={ (row) => row['arch']}
-                    />
-                    <Column
-                      columnKey='recommended'
-                      comparator={Utils.sortByText}
-                      header={t('Recommended')}
-                      cell={ (row) => row['recommended']}
-                    />
-                  </Table>
                 </div>
-                : <ErrorMessage error={this.state.error} />
-            }
+              </div>
+              <Table
+                data={this.buildRows(data)}
+                identifier={(row) => row['identifier']}
+                cssClassFunction={''}
+                initialSortColumnKey='label'
+                initialSortDirection={1}
+                initialItemsPerPage={userPrefPageSize}
+                loading={this.state.loading}
+                selectable={true}
+                onSelect={this.handleSelectItems}
+                selectedItems={this.state.selectedItems}
+                searchField={
+                    <SearchField filter={this.searchData}
+                        criteria={''}
+                        placeholder={t('Filter by product name')} />
+                }>
+                <Column
+                  columnKey='label'
+                  comparator={Utils.sortByText}
+                  header={t('Product Name')}
+                  cell={ (row) => row['label']}
+                />
+                <Column
+                  columnKey='arch'
+                  comparator={Utils.sortByText}
+                  header={t('Architecture')}
+                  cell={ (row) => row['arch']}
+                />
+                <Column
+                  columnKey='recommended'
+                  comparator={Utils.sortByText}
+                  header={t('Recommended')}
+                  cell={ (row) => row['recommended']}
+                />
+              </Table>
+            </div>
           </div>
           <div className='col-sm-3 hidden-xs' id='wizard-faq'>
               <h4>{t("Why aren't all SUSE products displayed in the list?")}</h4>
@@ -325,20 +321,11 @@ const Products = React.createClass({
   }
 });
 
-const ErrorMessage = (props) => <MessageContainer items={
-  props.error == 'authentication' ?
-    MessagesUtils.warning(t('Session expired, please reload the page to see up-to-date data.')) :
-  props.error == 'general' ?
-    MessagesUtils.warning(t('Server error, please check log files.')) :
-  []
-} />
-;
-
 const SCCDialog = React.createClass({
   getInitialState: function() {
     return {
       steps: _SCC_REFRESH_STEPS,
-      error: null,
+      errors: [],
     }
   },
 
@@ -376,7 +363,7 @@ const SCCDialog = React.createClass({
         s.success = null;
       }
     );
-    this.setState({ steps: _SCC_REFRESH_STEPS});
+    this.setState({ steps: _SCC_REFRESH_STEPS, errors: []});
     this.startSync();
   },
 
@@ -407,17 +394,22 @@ const SCCDialog = React.createClass({
         // recoursive recall to run the next step
         currentObject.runSccRefreshStep(stepList, i+1);
       })
-      .catch(response => {
-        currentObject.setState({
-          error: response.status == 401 ? 'authentication' :
-            response.status >= 500 ? 'general' :
-            null,
-        });
-      });
+      .catch(this.handleResponseError);
     }
     else {
       currentObject.finishSync();
     }
+  },
+
+  handleResponseError: function(jqXHR, arg = "") {
+    this.finishSync();
+    const stepList = this.state.steps;
+    var currentStep = stepList.find(s => s.inProgress);
+    currentStep.inProgress = false;
+    currentStep.success = false;
+    const msg = Network.responseErrorMessage(jqXHR,
+      (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
+    this.setState({ steps: stepList, errors: this.state.errors.concat(msg) });
   },
 
   render: function() {
@@ -433,6 +425,7 @@ const SCCDialog = React.createClass({
 
     const contentPopup = (
       <div>
+        <Messages items={this.state.errors}/>
         <p>{t('Please be patient, this might take several minutes.')}</p>
         <ul id='scc-task-list' className='fa-ul'>
           {
