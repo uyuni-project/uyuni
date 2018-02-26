@@ -1,3 +1,6 @@
+- Add SUSE OpenStack Cloud 8 and SUSE OpenStack Cloud Crowbar 8 products (bsc#1080298)
+- Add SUSE Enterprise Storage 5 aarch64
+
 -------------------------------------------------------------------
 Wed Jan 17 13:32:59 CET 2018 - jgonzalez@suse.com
 
