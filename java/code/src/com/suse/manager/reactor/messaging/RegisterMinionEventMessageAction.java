@@ -277,6 +277,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             setServerPaths(server, master, isSaltSSH, saltSSHProxyId);
 
             ServerFactory.save(server);
+            giveCapabilities(server);
+
+            // Assign the Salt base entitlement by default
+            server.setBaseEntitlement(EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the server
             activationKey.ifPresent(ak -> {
@@ -304,14 +308,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     }).collect(Collectors.toSet())
                 );
                 StateFactory.save(serverStateRevision);
-            });
 
-            giveCapabilities(server);
-
-            // Assign the Salt base entitlement by default
-            server.setBaseEntitlement(EntitlementManager.SALT);
-
-            activationKey.ifPresent(ak -> {
+                // Set additional entitlements, if any
                 Set<Entitlement> validEntits = server.getOrg()
                         .getValidAddOnEntitlementsForOrg();
                 ak.getToken().getEntitlements().forEach(sg -> {
@@ -328,6 +326,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         }
                     }
                 });
+
+                // Subscribe to config channels assigned to the activation key
+                server.subscribeConfigChannels(ak.getAllConfigChannels(), ak.getCreator());
             });
 
             // get hardware and network async

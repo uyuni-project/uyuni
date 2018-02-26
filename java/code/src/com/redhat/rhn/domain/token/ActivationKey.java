@@ -398,6 +398,14 @@ public class ActivationKey extends BaseDomainHelper {
     }
 
     /**
+     * Returns all config channels associated to this activation key.
+     * @return the list of all config channels
+     */
+    public List<ConfigChannel> getAllConfigChannels() {
+        return getToken().getConfigChannels();
+    }
+
+    /**
      * sets the base channel.. clears child channels if it has to
      * @param chan the base channel associated to this activation key.
      */
