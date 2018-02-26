@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.action.renderers;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.webui.services.impl.SaltService;
 
@@ -40,6 +41,7 @@ public class TasksRenderer extends BaseFragmentRenderer {
         request.setAttribute("documentation", ConfigDefaults.get().isDocAvailable());
         request.setAttribute("amountOfMinions",
                 SaltService.INSTANCE.getKeys().getUnacceptedMinions().size());
+        request.setAttribute("requiringReboot", SystemManager.requiringRebootList(user, pc).size());
         RendererHelper.setTableStyle(request, null);
     }
 
