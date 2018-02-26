@@ -464,7 +464,7 @@ public class Token implements Identifiable {
     /**
      * @return the configChannels
      */
-    protected List getConfigChannels() {
+    protected List<ConfigChannel> getConfigChannels() {
         return configChannels;
     }
 
