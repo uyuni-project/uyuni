@@ -26,6 +26,9 @@ use Spacewalk::Setup;
 my $isSUSE = 0;
 
 sub os_fips_mode_on {
+        # For kernels without CONFIG_CRYPTO_FIPS enabled
+        return 0 if (!-e '/proc/sys/crypto/fips_enabled');
+
         my $sysctl = (-x '/usr/sbin/sysctl') ? '/usr/sbin/sysctl' : '/sbin/sysctl';
         my $ret = `$sysctl -n crypto.fips_enabled`;
         chomp($ret);
