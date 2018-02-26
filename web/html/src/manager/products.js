@@ -10,7 +10,7 @@ const Utils = Functions.Utils;
 
 const _DATA_ROOT_ID = 'baseProducts';
 
-const setupWizartSteps = [
+const _SETUP_WIZARD_STEPS = [
   {
     label: 'HTTP Proxy',
     url: '/rhn/admin/setup/ProxySettings.do',
@@ -113,7 +113,7 @@ const Products = React.createClass({
     const tabs = 
       <div className='spacewalk-content-nav'>
         <ul className='nav nav-tabs'>
-          { setupWizartSteps.map(step => <li className={step.active ? 'active' : ''}><a href={step.url}>{t(step.label)}</a></li>)}
+          { _SETUP_WIZARD_STEPS.map(step => <li className={step.active ? 'active' : ''}><a href={step.url}>{t(step.label)}</a></li>)}
         </ul>
       </div>;
 
@@ -204,25 +204,25 @@ const Products = React.createClass({
     }
 
     const prevStyle = { 'marginLeft': '10px' , 'verticalAlign': 'middle'};
-    const currentStepIndex = setupWizartSteps.indexOf(setupWizartSteps.find(step => step.active));
+    const currentStepIndex = _SETUP_WIZARD_STEPS.indexOf(_SETUP_WIZARD_STEPS.find(step => step.active));
     const footer =
       <div className='panel-footer'>
         <div className='btn-group'>  
           {
             currentStepIndex > 1 ?
-              <a className='btn btn-default' href={setupWizartSteps[currentStepIndex-1].url}>
+              <a className='btn btn-default' href={_SETUP_WIZARD_STEPS[currentStepIndex-1].url}>
                 <i className='fa fa-arrow-left'></i>{t('Prev')}
               </a> : null
           }
           {
-            currentStepIndex < (setupWizartSteps.length - 1) ?
-              <a className='btn btn-success' href={setupWizartSteps[currentStepIndex+1].url}>
+            currentStepIndex < (_SETUP_WIZARD_STEPS.length - 1) ?
+              <a className='btn btn-success' href={_SETUP_WIZARD_STEPS[currentStepIndex+1].url}>
                 <i className='fa fa-arrow-right'></i>{t('Next')}
               </a> : null
           }
         </div>
         <span style={prevStyle}>
-          { currentStepIndex+1 }&nbsp;{t('of')}&nbsp;{ setupWizartSteps.length }
+          { currentStepIndex+1 }&nbsp;{t('of')}&nbsp;{ _SETUP_WIZARD_STEPS.length }
         </span>
       </div>;
 
