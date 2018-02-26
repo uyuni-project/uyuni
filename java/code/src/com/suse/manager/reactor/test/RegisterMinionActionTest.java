@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -34,7 +35,6 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -55,6 +55,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -591,6 +592,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
                     key.setBaseChannel(baseChannelX8664);
                     key.setOrg(user.getOrg());
+
+                    ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
+                    proc.add(key.getAllConfigChannels(),
+                            ConfigTestUtils.createConfigChannel(user.getOrg(), "Config channel 1", "config-channel-1"));
+
                     ActivationKeyFactory.save(key);
                     return key.getKey();
                 },
@@ -604,6 +610,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(baseChannelX8664, minion.getBaseChannel());
 
                     assertTrue(minion.getFqdns().isEmpty());
+
+                    // Config channel check
+                    assertEquals(1, minion.getConfigChannelCount());
+                    assertTrue(minion.getConfigChannelStream().anyMatch(c -> "config-channel-1".equals(c.getLabel())));
                 }, DEFAULT_CONTACT_METHOD);
     }
 
