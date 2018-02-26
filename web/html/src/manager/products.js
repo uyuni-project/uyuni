@@ -8,6 +8,7 @@ const {Table, Column, SearchField, Highlight} = require('../components/table');
 const Functions = require('../utils/functions');
 const PopUp = require("../components/popup").PopUp;
 const ModalButton = require("../components/dialogs").ModalButton;
+const Button = require('../components/buttons').Button;
 const Utils = Functions.Utils;
 
 const _DATA_ROOT_ID = 'baseProducts';
@@ -201,9 +202,24 @@ const Products = React.createClass({
                             target='scc-refresh-popup'
                             onClick={() => this.showPopUp()}
                         />
-                        <button className='btn btn-success' id='addProducts' onClick={this.submit}>
-                          <i className='fa fa-plus'></i>{t('Add products')}
-                        </button>
+                        {
+                          this.state.syncRunning ?
+                          <Button
+                              id="addProducts"
+                              icon="fa-plus"
+                              className='btn-default text-muted'
+                              title={t('The product catalog is still refreshing, please wait.')}
+                              text={t('Add products')}
+                          />
+                          :
+                          <Button
+                              id="addProducts"
+                              icon="fa-plus"
+                              className={'btn-success'}
+                              text={t('Add products')}
+                              handler={this.submit}
+                          />
+                        }
                       </div>
                     </div>
                   </div>
