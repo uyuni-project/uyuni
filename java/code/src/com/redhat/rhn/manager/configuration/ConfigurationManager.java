@@ -79,6 +79,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ConfigurationManager
@@ -163,6 +164,16 @@ public class ConfigurationManager extends BaseManager {
         return makeDataResult(params, elabParams, pc, m);
     }
 
+    /**
+     * List all of the global channels a given user can see.
+     * @param user The user looking at channels.
+     * @return A list of the channels.
+     */
+    public List<ConfigChannel> listGlobalChannels(User user) {
+        return ConfigurationFactory.listGlobalChannels().stream()
+                .filter(c -> accessToChannel(user.getId(), c.getId()))
+                .collect(Collectors.toList());
+    }
 
     /**
      * List all of the global channels a given user can see
