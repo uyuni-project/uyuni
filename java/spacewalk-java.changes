@@ -1,3 +1,4 @@
+- Users who can view system should be able to delete it (bsc#1079652)
 - Set hostname before hardware refresh as well (bsc#1077760)
 - Make minion label unselectable on Visualization's 'Systems Grouping' view (bsc#1034037)
 - Fix home page link for "Register systems" (bsc#1065708)
