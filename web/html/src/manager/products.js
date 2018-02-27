@@ -46,7 +46,10 @@ const Products = React.createClass({
       errors: [],
       loading: true,
       selectedItems: [],
-      showPopUp: false,
+      showPopUp: // trigger the refresh at the first page load if
+        refreshNeeded_flag_from_backend &&
+        issMaster_flag_from_backend &&
+        !refreshRunning_flag_from_backend,
       syncRunning: false,
       addingProducts: false
     }
@@ -103,6 +106,10 @@ const Products = React.createClass({
     // if it was running and now it's finished
     if (this.state.syncRunning && !syncStatus) {
       this.refreshServerData(); // reload data
+    }
+
+    if (syncStatus) {
+      this.setState({ errors: MessagesUtils.info(t('The product catalog refresh is running..')) });
     }
     this.setState({ syncRunning: syncStatus });
   },
@@ -212,7 +219,7 @@ const Products = React.createClass({
                         icon={'fa-refresh ' + (this.state.syncRunning ? 'fa-spin' : '')}
                         title={
                           this.state.syncRunning ?
-                            t('The product catalog refresh is runnig..')
+                            t('The product catalog refresh is running..')
                             : t('Refreshes the product catalog from the Customer Center')
                         }
                         text={t('Refresh')}
@@ -305,7 +312,7 @@ const Products = React.createClass({
       <div className='responsive-wizard'>
         {title}
         {tabs}
-        <div className='panel panel-default' id='products-content' data-refresh-needed={this.state.refreshNeeded}>
+        <div className='panel panel-default' id='products-content'>
             <div className='panel-body'>
               {pageContent}
             </div>
@@ -315,8 +322,6 @@ const Products = React.createClass({
             start={this.state.showPopUp && !this.state.syncRunning}
             updateSyncRunning={(syncStatus) => this.updateSyncRunning(syncStatus)}
           />
-        <div className='hidden' id='iss-master' data-iss-master={this.state.issMaster}></div>
-        <div className='hidden' id='refresh-running' data-refresh-running={this.state.refreshRunning}></div>
         {footer}
       </div>
     )
