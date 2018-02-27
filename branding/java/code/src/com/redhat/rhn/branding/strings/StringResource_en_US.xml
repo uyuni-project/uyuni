@@ -1284,6 +1284,9 @@ As a Channel Administrator, you may change the base channels your systems are su
       <trans-unit id="kickstart.list.jsp.orgdefault">
         <source>This is your organizations default autoinstallation profile.</source>
       </trans-unit>
+      <trans-unit id="help.jsp.refguide.title">
+        <source>@@PRODUCT_NAME@@ Reference Guide</source>
+      </trans-unit>
       <trans-unit id="help.jsp.detailed">
         <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
       </trans-unit>
