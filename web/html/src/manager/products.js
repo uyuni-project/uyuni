@@ -87,10 +87,6 @@ const Products = React.createClass({
   },
 
   handleSelectItems: function(items) {
-    const removed = this.state.selectedItems.filter(i => !items.includes(i));
-    const isAdd = removed.length === 0;
-    const list = isAdd ? items : removed;
-
     this.setState({ selectedItems: items });
   },
 
