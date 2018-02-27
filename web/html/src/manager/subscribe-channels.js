@@ -4,7 +4,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {AsyncButton, Button} = require("../components/buttons");
-const {DateTimePicker} = require("../components/datetimepicker");
+const {ActionSchedule} = require("../components/action-schedule");
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Messages = require("../components/messages").Messages;
@@ -13,12 +13,14 @@ const {BootstrapPanel} = require("../components/panel");
 const {ChannelAnchorLink, ActionLink} = require("../components/links");
 
 import type JsonResult from "../utils/network";
+import type {ActionChain} from "../components/action-schedule";
 
 declare function t(msg: string): string;
 declare function t(msg: string, arg: string): string;
 declare function getServerId(): number;
 declare var localTime: string;
 declare var timezone: string;
+declare var actionChains: Array<ActionChain>;
 
 const msgMap = {
   "taskomatic_error": t("Error scheduling job in Taskomatic. Please check the logs."),
@@ -46,7 +48,8 @@ type SystemChannelsState = {
   availableBase: Array<ChannelDto>,
   availableChildren: Array<ChannelDto>,
   page: number,
-  scheduled: boolean
+  scheduled: boolean,
+  actionChain: ?ActionChain
 }
 
 class SystemChannels extends React.Component<SystemChannelsProps, SystemChannelsState> {
@@ -61,7 +64,8 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       availableBase: [],
       availableChildren: [],
       page: 1,
-      scheduled: false
+      scheduled: false,
+      actionChain: null
     };
   }
 
@@ -174,7 +178,8 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       JSON.stringify({
           base: this.state.selectedBase,
           children: selectedChildrenList,
-          earliest: Functions.Formats.LocalDateTime(this.state.earliest)
+          earliest: Functions.Formats.LocalDateTime(this.state.earliest),
+          actionChain: this.state.actionChain ? this.state.actionChain.text : null
       }), "application/json")
         .promise.then(data => {
             if (data.success) {
@@ -194,6 +199,10 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   onDateTimeChanged = (date) => {
       this.setState({earliest: date});
+  }
+
+  onActionChainChanged = (actionChain: ?ActionChain) => {
+    this.setState({actionChain: actionChain})
   }
 
   render() {
@@ -358,18 +367,12 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                   <ChannelAnchorLink id={c.id}/>
               </div>)
             }</div>
-            <div className="spacewalk-scheduler">
-                <div className="form-horizontal">
-                    <div className="form-group">
-                        <label className="col-md-3 control-label">
-                            {t("Earliest:")}
-                        </label>
-                        <div className="col-md-6">
-                            <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={timezone} />
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+            <ActionSchedule actionChains={actionChains}
+               earliest={this.state.earliest}
+               timezone={timezone} localTime={localTime}
+               onActionChainChanged={this.onActionChainChanged}
+               onDateTimeChanged={this.onDateTimeChanged}/>
         </div>
       </BootstrapPanel>
     );

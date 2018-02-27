@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
 import com.redhat.rhn.frontend.dto.ChildChannelDto;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnLookupDispatchAction;
@@ -146,6 +147,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
         }
         request.setAttribute(CURRENT_BASE_CHANNEL_ID, currentBaseChanId);
         SdcHelper.ssmCheck(request, s.getId(), user);
+        request.setAttribute("actionChainsJson", ActionChainHelper.actionChainsJson(user));
         return getStrutsDelegate().forwardParam(mapping.findForward(
                 RhnHelper.DEFAULT_FORWARD), RequestContext.SID, s.getId().toString());
     }
