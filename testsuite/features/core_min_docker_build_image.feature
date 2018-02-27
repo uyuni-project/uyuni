@@ -137,12 +137,12 @@ Feature: Build container images
   Scenario: Build some images via GUI
   Given I am authorized as "admin" with password "admin"
   And I navigate to images build webpage
-  When I enter "GUI_BUILDED_IMAGE" as "version"
+  When I enter "GUI_BUILT_IMAGE" as "version"
   And I select "suse_real_key" from "profileId"
   And I select sle-minion hostname in Build Host
   And I click on "submit-btn"
   And I wait for "5" seconds
-  Then I should see a "GUI_BUILDED_IMAGE" text
+  Then I should see a "GUI_BUILT_IMAGE" text
 
   Scenario: Login as docker image administrator and build an image
   Given I am authorized as "docker" with password "docker"
