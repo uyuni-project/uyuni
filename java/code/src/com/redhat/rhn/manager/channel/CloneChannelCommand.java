@@ -25,6 +25,9 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
+
+import java.util.Optional;
+
 /**
  * CreateChannelCommand - command to clone a channel.
  * @version $Rev$
@@ -43,14 +46,16 @@ public class CloneChannelCommand extends CreateChannelCommand {
         user = null;
         label = null;
         name = null;
-        summary = null;
-        archLabel = null;
-        checksum = null;
-        parentLabel = null;
-        parentId = null;
-        originalState = originalStateIn;
         original = cloneFrom;
-        gpgCheck = cloneFrom.isGPGCheck(); // set the original channel flag as the default value
+        originalState = originalStateIn;
+        summary = cloneFrom.getSummary();
+        checksum = cloneFrom.getChecksumTypeLabel();
+        gpgKeyUrl = cloneFrom.getGPGKeyUrl();
+        gpgKeyId = cloneFrom.getGPGKeyId();
+        gpgKeyFp = cloneFrom.getGPGKeyFp();
+        gpgCheck  = cloneFrom.isGPGCheck();
+        parentLabel = Optional.ofNullable(cloneFrom.getParentChannel()).map(pr->pr.getLabel()).orElse("");
+        archLabel = Optional.ofNullable(cloneFrom.getChannelArch()).map(ca->ca.getLabel()).orElse("");
     }
 
     /**
