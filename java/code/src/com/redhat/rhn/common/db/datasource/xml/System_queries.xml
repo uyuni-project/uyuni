@@ -558,7 +558,6 @@ ORDER by s1.name
 
 <mode name="most_critical_systems" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query name="available_to_user_with_errata" />
-  <elaborator name="system_overview_most_critical" />
   <elaborator name="system_config_files_with_diffs" />
 </mode>
 
@@ -1244,6 +1243,10 @@ SELECT  DISTINCT ST.element AS ID
                    SI.server_id AS IS_RHN_SATELLITE,
                    PI.server_id AS IS_RHN_PROXY,
                    TO_CHAR(Sinfo.checkin, 'YYYY-MM-DD HH24:MI:SS') AS LAST_CHECKIN,
+                   SO.SECURITY_ERRATA, SO.BUG_ERRATA, SO.ENHANCEMENT_ERRATA, SO.LOCKED,
+                   SO.OUTDATED_PACKAGES, SO.SERVER_NAME, SO.SERVER_ADMINS, SO.GROUP_COUNT,
+                   SO.MODIFIED, SO.CHANNEL_LABELS, SO.HISTORY_COUNT, SO.LAST_CHECKIN_DAYS_AGO,
+                   SO.PENDING_UPDATES, SO.OS, SO.RELEASE, SO.SERVER_ARCH_NAME, SO.LAST_CHECKIN,
                   (SELECT 1
                      FROM rhnServerFeaturesView SFV
                     WHERE SFV.server_id = S.id
@@ -1251,10 +1254,12 @@ SELECT  DISTINCT ST.element AS ID
     FROM rhnServerInfo SInfo, rhnUserServerPerms USP, rhnServer S
     LEFT OUTER JOIN rhnSatelliteInfo SI ON S.id = SI.server_id
     LEFT OUTER JOIN rhnProxyInfo PI ON S.id = PI.server_id
+    LEFT OUTER JOIN rhnServerOverview SO ON S.id = SO.server_id
    WHERE  USP.user_id = :user_id
      AND  S.id = USP.server_id
      AND  Sinfo.server_id = S.id
      AND ((SELECT count (*) FROM rhnServerErrataTypeView setv WHERE setv.server_id = s.id) > 0)
+   ORDER BY  SO.SECURITY_ERRATA DESC, SO.BUG_ERRATA DESC, SO.ENHANCEMENT_ERRATA DESC, S.name ASC
 </query>
 
 <query name="system_search_results" params="">
@@ -1344,15 +1349,6 @@ union
 select VI.host_system_id as ID, 1 as virtual_host
     from rhnVirtualInstance VI
         where VI.host_system_id in (%s)
-</query>
-
-<query name="system_overview_most_critical" params="">
- SELECT  SERVER_ID AS ID, SECURITY_ERRATA, BUG_ERRATA, ENHANCEMENT_ERRATA, OUTDATED_PACKAGES, SERVER_NAME,
-          SERVER_ADMINS, GROUP_COUNT, MODIFIED, CHANNEL_LABELS, HISTORY_COUNT,
-          LAST_CHECKIN_DAYS_AGO, PENDING_UPDATES, OS, RELEASE, SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED
-    FROM  rhnServerOverview
-   WHERE  server_id IN (%s)
-ORDER BY  SECURITY_ERRATA DESC, BUG_ERRATA DESC, ENHANCEMENT_ERRATA DESC
 </query>
 
 <query name="virtual_system_overview" params="">
