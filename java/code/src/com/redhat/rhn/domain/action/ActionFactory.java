@@ -40,6 +40,7 @@ import com.redhat.rhn.domain.action.kickstart.KickstartScheduleSyncAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -83,6 +84,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -297,6 +299,14 @@ public class ActionFactory extends HibernateFactory {
         }
 
         return sad;
+    }
+
+    public static ApplyStatesActionDetails createApplyStateDetails(Action action, List<String> mods, Optional<Boolean> test) {
+        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
+        details.setMods(mods);
+        test.ifPresent(t -> details.setTest(t));
+        details.setActionId(action.getId());
+        return details;
     }
 
     /**

@@ -45,18 +45,14 @@ class Combobox extends React.Component<ComboboxProps, ComboboxState> {
         data: this.props.data,
         createSearchChoice: function(term: string, data: Array<ComboboxItem>) {
           // returns a new search choice if term is new
-          var matchingChoices = $(data).filter(() => {
-            // "this" is bound by jquery to the select2 component
-            return this.text.localeCompare(term) == 0;
-          });
+          let matchingChoices = data.filter(item => item.text.localeCompare(term) == 0);
 
           if (matchingChoices.length == 0) {
             var sanitizedTerm = term.replace(/[',]/g, "");
             return {id: sanitizedTerm, text: sanitizedTerm};
           }
         },
-        maximumInputLength: 256,
-        // initSelection: (element, callback) => callback(element.data("combobox-options"))
+        maximumInputLength: 256
       });
 
       // init initial selection
@@ -75,12 +71,10 @@ class Combobox extends React.Component<ComboboxProps, ComboboxState> {
       });
 
       this.combobox.on("select2-selecting", (event) => {
-        console.log("change: " + event.val + " " + JSON.stringify(event.choice));
         this.props.onSelect(event.val);
       })
 
       this.combobox.on("change", (event) => {
-        console.log("change: " + event.val + " " + JSON.stringify(event.added))
         this.props.onSelect(event.val);
       });
     }
