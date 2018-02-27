@@ -1,3 +1,4 @@
+- Refresh pillar data when executing the subscribe channels action for ssh-push minions (bsc#1080349)
 - Disable taskomatic crash dumps when using openJDK.
 - Move locale preferences to user preferences menu.
 - Make minion label unselectable on Visualization's 'Systems Grouping' view (bsc#1034037)

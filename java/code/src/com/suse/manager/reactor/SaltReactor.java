@@ -22,8 +22,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
@@ -91,8 +89,6 @@ public class SaltReactor implements EventListener {
                 MinionStartEventMessage.class);
         MessageQueue.registerAction(new MinionStartEventMessageAction(),
                 MinionStartEventDatabaseMessage.class);
-        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
-                ChannelsChangedEventMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
         MessageQueue.registerAction(new JobReturnEventMessageAction(),
