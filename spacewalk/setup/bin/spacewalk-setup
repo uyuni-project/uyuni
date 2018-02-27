@@ -326,8 +326,13 @@ sub setup_cobbler {
       if (-e '/usr/lib/systemd/system/tftp.socket') {
         system("systemctl --quiet enable tftp.socket 2>&1");
       } else {
-        system("systemctl --quiet enable atftpd.service 2>&1");
-        system("systemctl start atftpd.service 2>&1");
+        if (-e '/usr/lib/systemd/system/atftpd.socket') {
+          system("systemctl --quiet enable atftpd.socket 2>&1");
+          system("systemctl start atftpd.socket 2>&1");
+        } else {
+          system("systemctl --quiet enable atftpd.service 2>&1");
+          system("systemctl start atftpd.service 2>&1");
+        }
       }
   }
 }
