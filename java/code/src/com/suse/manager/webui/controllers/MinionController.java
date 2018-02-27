@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 
+import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -237,13 +238,7 @@ public class MinionController {
     }
 
     private static void addActionChains(User user, Map<String, Object> data) {
-        data.put("actionChains", Json.GSON.toJson(ActionChainFactory.getActionChains(user)
-                .stream().map(ac -> {
-                    JsonObject tuple = new JsonObject();
-                    tuple.addProperty("id", ac.getId());
-                    tuple.addProperty("text", ac.getLabel());
-                    return tuple;
-                }).collect(Collectors.toList())));
+        data.put("actionChains", ActionChainHelper.actionChainsJson(user));
     }
 
     /**

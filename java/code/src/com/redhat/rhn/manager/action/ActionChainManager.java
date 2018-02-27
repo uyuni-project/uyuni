@@ -19,10 +19,15 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -34,11 +39,13 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -281,6 +288,28 @@ public class ActionChainManager {
                     script.getUsername(), script.getGroupname(), script.getTimeout(),
                     script.getScriptContents());
             ((ScriptRunAction)action).setScriptActionDetails(actionScript);
+            ActionFactory.save(action);
+        }
+        return result;
+    }
+
+    public static Set<Action> scheduleApplyStates(User user, List<Long> sids, List<String> mods, Optional<Boolean> test,
+                                                   Date earliest, ActionChain actionChain)
+            throws TaskomaticApiException {
+
+        ActionManager.checkSaltServers(sids);
+
+        Set<Long> sidSet = new HashSet<Long>();
+        sidSet.addAll(sids);
+
+        String name = "Apply " + (mods.isEmpty() ? "highstate" : "states " + mods.toString());
+
+        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_APPLY_STATES, name,
+                earliest, actionChain, null, sidSet);
+        for (Action action : result) {
+            ApplyStatesActionDetails applyState = ActionFactory.createApplyStateDetails(action,
+                    mods, test);
+            ((ApplyStatesAction)action).setDetails(applyState);
             ActionFactory.save(action);
         }
         return result;
@@ -628,6 +657,25 @@ public class ActionChainManager {
                 actionChain, null, rhelServers));
         }
 
+        return result;
+    }
+
+    public static Set<Action> scheduleSubscribeChannelsAction(User user,
+                                                              Set<Long> serverIds,
+                                                              Optional<Channel> base,
+                                                              Set<Channel> children,
+                                                              Date earliest,
+                                                              ActionChain actionChain)
+            throws TaskomaticApiException {
+        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe channels",
+                earliest, actionChain, null, serverIds);
+        for (Action action : result) {
+            SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
+            base.ifPresent(b -> details.setBaseChannel(b));
+            details.setChannels(children);
+            ((SubscribeChannelsAction)action).setDetails(details);
+            ActionFactory.save(action);
+        }
         return result;
     }
 }

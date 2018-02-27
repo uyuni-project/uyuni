@@ -22,6 +22,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -2224,7 +2225,7 @@ public class ActionManager extends BaseManager {
                                                                           Date earliest)
     throws TaskomaticApiException {
         SubscribeChannelsAction action = (SubscribeChannelsAction)ActionFactory
-                .createAction(ActionFactory.TYPE_SUBSCRIBE_CHANNELS, earliest);
+                .createAction(ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
         action.setName("Subscribe channels");
         action.setOrg(scheduler.getOrg());
         action.setSchedulerUser(scheduler);
@@ -2299,5 +2300,10 @@ public class ActionManager extends BaseManager {
 
         scheduleForExecution(action, new HashSet<>(sids));
         return action;
+    }
+
+    public static void checkSaltServers(List<Long> sids) {
+        // TODO
+
     }
 }

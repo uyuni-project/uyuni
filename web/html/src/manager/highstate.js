@@ -3,11 +3,13 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const Messages = require("../components/messages").Messages;
+const MessagesUtils = require("../components/messages").Utils;
 const {ActionSchedule} = require("../components/action-schedule");
 const AsyncButton = require("../components/buttons").AsyncButton;
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Formats = Functions.Formats;
+const {ActionLink, ActionChainLink} = require("../components/links");
 
 const messagesCounterLimit = 3;
 
@@ -122,24 +124,34 @@ var Highstate = React.createClass({
             "/rhn/manager/api/states/applyall",
             JSON.stringify({
                 ids: minions.map(m => m.id),
-                earliest: Formats.LocalDateTime(this.state.earliest)
+                earliest: Formats.LocalDateTime(this.state.earliest),
+                actionChain: this.state.actionChain ? this.state.actionChain.text : null
             }),
             "application/json"
         ).promise.then(data => {
-            this.state.messages.push(msg('info', <span>{t("Applying the highstate has been ")}
-                    <a href={"/rhn/schedule/ActionDetails.do?aid=" + data}>{t("scheduled")}</a>
-                    {t(".")}</span>))
+            const msg = MessagesUtils.info(this.state.actionChain ?
+                    <span>{t("Action has been successfully added to the ")}<ActionChainLink id={data}>{this.state.actionChain ? this.state.actionChain.text : ""}</ActionChainLink></span> :
+                    <span>{t("Applying the highstate has been ")}<ActionLink id={data}>{t("scheduled.")}</ActionLink></span>);
+
+            const msgs = this.state.messages.concat(msg);
 
             // Do not spam UI showing old messages
-            while (this.state.messages.length > messagesCounterLimit) {
-              this.state.messages.shift();
+            while (msgs.length > messagesCounterLimit) {
+              msgs.shift();
             }
 
             this.setState({
-                messages: this.state.messages
+                messages: msgs
             });
-        });
+        }).catch(this.handleResponseError);
+
         return request;
+    },
+
+    handleResponseError: function(jqXHR) {
+      this.setState({
+           messages: Network.responseErrorMessage(jqXHR)
+      });
     },
 
     onDateTimeChanged: function(date) {
@@ -147,7 +159,7 @@ var Highstate = React.createClass({
     },
 
     onActionChainChanged: function(actionChain) {
-
+        this.setState({actionChain: actionChain})
     },
 
     renderMinions: function() {
@@ -172,6 +184,7 @@ var Highstate = React.createClass({
                 <ActionSchedule timezone={timezone} localTime={localTime}
                    earliest={this.state.earliest}
                    actionChains={actionChains}
+                   actionChain={this.state.actionChain}
                    onActionChainChanged={this.onActionChainChanged}
                    onDateTimeChanged={this.onDateTimeChanged}/>
 
