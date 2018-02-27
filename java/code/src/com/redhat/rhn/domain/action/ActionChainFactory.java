@@ -17,12 +17,21 @@
  */
 package com.redhat.rhn.domain.action;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
+import com.redhat.rhn.domain.server.MinionServer;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
@@ -329,6 +338,8 @@ public class ActionChainFactory extends HibernateFactory {
         int maxSortOrder = getNextSortOrderValue(actionChain);
         Date dateInOrder = new Date(date.getTime());
 
+        Set<MinionServer> minions = new HashSet<>();
+
         for (int sortOrder = 0; sortOrder < maxSortOrder; sortOrder++) {
             for (ActionChainEntry entry : getActionChainEntries(actionChain, sortOrder)) {
                 Server server = entry.getServer();
@@ -344,14 +355,52 @@ public class ActionChainFactory extends HibernateFactory {
                 dateInOrder = DateUtils.addMilliseconds(dateInOrder, 1);
 
                 latest.put(server, action);
+
+                server.asMinionServer().ifPresent(minion -> minions.add(minion));
             }
         }
 
+        generateActionChainStates(actionChain, minions);
         // Trigger Action Chain execution for Minions via Taskomatic
         TASKOMATIC_API.scheduleActionChainExecution(actionChain);
         log.debug("Action Chain " + actionChain + " scheduled to date " + date +
             ", deleting");
         delete(actionChain);
+    }
+
+
+    private static void generateActionChainStates(ActionChain actionChain, Set<MinionServer> minions) {
+        // TODO throwaway code
+        for (MinionServer minion: minions) {
+            try (Writer fout = new FileWriter(new File("/srv/susemanager/salt/actionchains/actionchain_" + actionChain.getId() + "_" + minion.getMachineId() + "_1.sls"))) {
+                for (ActionChainEntry entry: actionChain.getEntries()) {
+                    if (ActionFactory.TYPE_APPLY_STATES.equals(entry.getAction().getActionType())) {
+                        ApplyStatesAction action = ActionFactory.getSession().get(ApplyStatesAction.class, entry.getAction().getId());
+                        fout.append(
+                                "action_" + entry.getAction().getId() +  ":\n" +
+                                "  module.run:\n" +
+                                "    - name: state.apply\n");
+                    }
+                    if (ActionFactory.TYPE_SCRIPT_RUN.equals(entry.getAction().getActionType())) {
+                        ScriptRunAction action = ActionFactory.getSession().get(ScriptRunAction.class, entry.getAction().getId());
+                        fout.append(
+                                "action_" + entry.getAction().getId() + ":\n" +
+                                "  module.run:\n" +
+                                "    - name: state.apply\n" +
+                                "    - mods: remotecommands\n" +
+                                "    - kwargs: {\n" +
+                                "        pillar: {\n" +
+                                "          mgr_remote_command: ls -l\n" +
+                                "        }\n" +
+                                "      }\n"
+                        );
+                    }
+
+                }
+            } catch (IOException e) {
+                log.error(e);
+            }
+        }
     }
 
     /**

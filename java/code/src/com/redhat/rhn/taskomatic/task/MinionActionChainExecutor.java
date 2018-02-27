@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.suse.manager.webui.services.SaltServerActionService;
@@ -64,7 +66,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
 
         log.info("Executing action chain: " + actionChainId);
 
-        saltServerActionService.executeActionChain(actionChainId, targetServers);
+        saltServerActionService.executeActionChain(user, actionChainId, targetServers);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;

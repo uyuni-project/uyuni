@@ -25,6 +25,8 @@ import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -1222,5 +1224,51 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(minion.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch1.getId())));
         assertTrue(minion.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2.getId())));
     }
+
+    public void testActionChainResponse() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
+                    with(any(SubscribeChannelsAction.class)));
+        } });
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        Date earliestAction = new Date();
+        ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(
+                user,
+                Arrays.asList(minion.getId()),
+                new ArrayList<>(),
+                earliestAction);
+
+        ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
+                "root", "root", new Long(10), "#!/bin/csh\necho hello");
+        ScriptRunAction runScript = ActionManager.scheduleScriptRun(
+                user, Arrays.asList(minion.getId()), "Run script test", sad, earliestAction);
+
+        ServerAction sa = ActionFactoryTest.createServerAction(minion, applyHighstate);
+        applyHighstate.addServerAction(sa);
+        HibernateFactory.getSession().flush();
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", minion.getMinionId());
+        placeholders.put("${action1-id}", applyHighstate.getId() + "");
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("action.chain.one.chunk.json", applyHighstate.getId(),
+                        placeholders));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
+        assertEquals(0L, (long)sa.getResultCode());
+        assertEquals(minion.getId(), sa.getServer().getId());
+        assertEquals("Successfully applied state(s): highstate", sa.getResultMsg());
+    }
+
 
 }

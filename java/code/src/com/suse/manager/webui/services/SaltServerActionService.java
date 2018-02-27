@@ -18,6 +18,9 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntry;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -70,7 +73,11 @@ import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -292,7 +299,7 @@ public class SaltServerActionService {
      * @param actionChainId the action chain id to execute
      * @param minionIds a list containing target minion ids
      */
-    public void executeActionChain(Long actionChainId, List<Long> minionIds) {
+    public void executeActionChain(User user, Long actionChainId, List<Long> minionIds) {
         List<MinionServer> minions = new ArrayList<>();
         minionIds.forEach(minionId -> {
                 MinionServerFactory.lookupById(minionId).ifPresent(minion -> {
@@ -308,7 +315,7 @@ public class SaltServerActionService {
             Map<Boolean, List<MinionServer>> results;
             targetMinions = entry.getValue();
 
-            results = executeActionChain(actionChainId, call, targetMinions);
+            results = executeActionChain(user, actionChainId, call, targetMinions);
 
             results.get(true).forEach(minionServer -> {
                 if (LOG.isDebugEnabled()) {
@@ -847,7 +854,7 @@ public class SaltServerActionService {
      * @param minions minions to target
      * @return a map containing all minions partitioned by success
      */
-    private Map<Boolean, List<MinionServer>> executeActionChain(Long actionChainId,
+    private Map<Boolean, List<MinionServer>> executeActionChain(User user, Long actionChainId,
             LocalCall<?> call, List<MinionServer> minions) {
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
@@ -862,13 +869,11 @@ public class SaltServerActionService {
         }
 
         try {
-            Map<Boolean, List<MinionServer>> result = new HashMap<>();
-
             List<String> results = SaltService.INSTANCE
                     .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
                     .getMinions();
 
-            result = minions.stream().collect(Collectors
+            Map<Boolean, List<MinionServer>> result = minions.stream().collect(Collectors
                     .partitioningBy(minion -> results.contains(minion.getMinionId())));
 
             return result;
@@ -881,4 +886,5 @@ public class SaltServerActionService {
             return result;
         }
     }
+
 }
