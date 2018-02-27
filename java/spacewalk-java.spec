@@ -596,6 +596,12 @@ find . -type f -name '*.xml' | xargs perl -CSAD -lne '
           END { exit $exit }'
 %endif
 
+# Crash dumps are disabled by default for openJDK, disable them
+# (only SUSE < 15 ships IBM Java with crash dumps enabled)
+%if 0%{?suse_version} >= 1500 || 0%{?is_opensuse}
+sed -i '/^wrapper\.java\.additional\.[0-9]=-Xdump:.\+/s/^/#/g' conf/default/rhn_taskomatic_daemon.conf
+%endif
+
 echo "Building apidoc docbook sources"
 %if 0%{?suse_version} >= 1500
 ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" init-install apidoc-docbook
@@ -605,12 +611,6 @@ ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat8" init-install apidoc-docbook
 cd build/reports/apidocs/docbook
 /usr/bin/xmllint --xinclude --postvalid book.xml > susemanager_api_doc.xml
 cd $RPM_BUILD_ROOT
-
-# disable crash dumps in IBM java (OpenJDK have them off by default)
-#if java -version 2>&1 | grep -q IBM ; then
-#    sed -i '/#wrapper\.java\.additional\.[0-9]=-Xdump:none/ { s/^#//; }' \
-#        conf/default/rhn_taskomatic_daemon.conf
-#fi
 
 %install
 export NO_BRP_CHECK_BYTECODE_VERSION=true
