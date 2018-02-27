@@ -24,7 +24,7 @@
 
         <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/reference_guide>
-                <bean:message key="help.jsp.refguide"/>
+                <bean:message key="help.jsp.refguide.title"/>
             </a>
             <br />
             <bean:message key="help.jsp.detailed"/>
