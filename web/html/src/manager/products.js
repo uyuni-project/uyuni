@@ -84,7 +84,9 @@ const Products = React.createClass({
   },
 
   componentWillMount: function() {
-    this.refreshServerData();
+    if (!this.state.refreshRunning) {
+      this.refreshServerData();
+    }
   },
 
   refreshServerData: function(dataUrlTag) {
