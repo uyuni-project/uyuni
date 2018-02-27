@@ -105,6 +105,8 @@ import com.suse.utils.Opt;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 
 import static com.suse.manager.webui.utils.salt.FilesDiffResult.SymLinkResult;
 import static com.suse.manager.webui.utils.salt.FilesDiffResult.DirectoryResult;
@@ -447,7 +449,8 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
-        Action action = serverAction.getParentAction();
+        Action action = unproxy(serverAction.getParentAction());
+
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
 
@@ -623,6 +626,15 @@ public class SaltUtils {
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
+    }
+
+    private Action unproxy(Action entity) {
+        Hibernate.initialize(entity);
+        if (entity instanceof HibernateProxy) {
+            entity = (Action) ((HibernateProxy) entity).getHibernateLazyInitializer()
+                    .getImplementation();
+        }
+        return entity;
     }
 
     /**
