@@ -1231,9 +1231,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
                     with(any(SubscribeChannelsAction.class)));
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
         Date earliestAction = new Date();
         ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(
@@ -1247,13 +1249,15 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ScriptRunAction runScript = ActionManager.scheduleScriptRun(
                 user, Arrays.asList(minion.getId()), "Run script test", sad, earliestAction);
 
-        ServerAction sa = ActionFactoryTest.createServerAction(minion, applyHighstate);
-        applyHighstate.addServerAction(sa);
+        ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
+        applyHighstate.addServerAction(saHighstate);
         HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
 
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("${minion-id}", minion.getMinionId());
         placeholders.put("${action1-id}", applyHighstate.getId() + "");
+        placeholders.put("${action2-id}", runScript.getId() + "");
 
         Optional<JobReturnEvent> event = JobReturnEvent.parse(
                 getJobReturnEvent("action.chain.one.chunk.json", applyHighstate.getId(),
@@ -1264,10 +1268,20 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
         messageAction.doExecute(message);
 
-        assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
-        assertEquals(0L, (long)sa.getResultCode());
-        assertEquals(minion.getId(), sa.getServer().getId());
-        assertEquals("Successfully applied state(s): highstate", sa.getResultMsg());
+        applyHighstate = (ApplyStatesAction)ActionFactory.lookupById(applyHighstate.getId());
+        saHighstate = applyHighstate.getServerActions().stream().findFirst().get();
+
+        assertEquals(ActionFactory.STATUS_COMPLETED, saHighstate.getStatus());
+        assertEquals(0L, (long)saHighstate.getResultCode());
+        assertEquals(minion.getId(), saHighstate.getServer().getId());
+        assertEquals("Successfully applied state(s): highstate", saHighstate.getResultMsg());
+
+        runScript = (ScriptRunAction)ActionFactory.lookupById(runScript.getId());
+        ServerAction saScript = runScript.getServerActions().stream().findFirst().get();
+
+        assertEquals(ActionFactory.STATUS_COMPLETED, saScript.getStatus());
+        assertEquals(0L, (long)saScript.getResultCode());
+        assertEquals(minion.getId(), saScript.getServer().getId());
     }
 
 

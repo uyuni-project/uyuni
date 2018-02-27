@@ -1,43 +1,71 @@
 {
-  "tag": "salt/job/20180224154554106091/ret/${minion-id}",
+  "tag": "salt/job/20180227231906912399/ret/${minion-id}",
   "data": {
     "fun_args": [
       {
         "queue": true,
         "pillar": {
-          "actionchain_id": 12
+          "actionchain_id": 19
         },
         "mods": [
           "actionchains.start"
         ]
       }
     ],
-    "jid": "20180224154554106091",
+    "jid": "20180227231906912399",
     "return": {
       "module_|-start_action_chain_|-mgractionchains.start_|-run": {
         "comment": "Module function mgractionchains.start executed",
         "name": "mgractionchains.start",
-        "start_time": "15:45:56.650930",
+        "start_time": "23:19:09.367834",
         "result": true,
-        "duration": 2713.64,
+        "duration": 3695.855,
         "__run_num__": 0,
         "changes": {
           "ret": {
-            "module_|-action_${action1-id}|-state.apply_|-run": {
+            "module_|-action_${action2-id}_|-state.apply_|-run": {
               "comment": "Module function state.apply executed",
               "name": "state.apply",
-              "start_time": "15:45:56.896000",
+              "start_time": "23:19:09.707166",
               "result": true,
-              "duration": 2462.526,
+              "duration": 116.155,
               "__run_num__": 0,
+              "changes": {
+                "ret": {
+                  "cmd_|-remote_command_|-ls -l_|-run": {
+                    "comment": "Command \"ls -l\" run",
+                    "name": "ls -l",
+                    "start_time": "23:19:09.803918",
+                    "result": true,
+                    "duration": 17.717,
+                    "__run_num__": 0,
+                    "changes": {
+                      "pid": 1501,
+                      "retcode": 0,
+                      "stderr": "",
+                      "stdout": "total 12\ndrwxr-xr-x  2 root root 4096 Sep 21  2014 bin\n-rwxr-xr-x  1 root root 1636 Sep 12 17:07 netcat.py\ndrwxr-xr-x 14 root root 4096 Jul 25  2017 salt"
+                    },
+                    "__id__": "remote_command"
+                  }
+                }
+              },
+              "__id__": "action_147"
+            },
+            "module_|-action_${action1-id}_|-state.apply_|-run": {
+              "comment": "Module function state.apply executed",
+              "name": "state.apply",
+              "start_time": "23:19:09.823508",
+              "result": true,
+              "duration": 3238.682,
+              "__run_num__": 1,
               "changes": {
                 "ret": {
                   "service_|-disable_osad_|-osad_|-dead": {
                     "comment": "The named service osad is not available",
                     "name": "osad",
-                    "start_time": "15:45:59.292177",
+                    "start_time": "23:19:12.985859",
                     "result": true,
-                    "duration": 8.246,
+                    "duration": 10.037,
                     "__run_num__": 8,
                     "changes": {},
                     "__id__": "disable_osad"
@@ -53,19 +81,19 @@
                     "comment": "File /etc/zypp/repos.d/susemanager:channels.repo is in the correct state",
                     "pchanges": {},
                     "name": "/etc/zypp/repos.d/susemanager:channels.repo",
-                    "start_time": "15:45:58.224996",
+                    "start_time": "23:19:11.097854",
                     "result": true,
-                    "duration": 47.204,
+                    "duration": 77.512,
                     "__run_num__": 0,
                     "changes": {},
                     "__id__": "mgrchannels_repo"
                   },
                   "service_|-disable_spacewalk-update-status_|-spacewalk-update-status_|-dead": {
-                    "comment": "The named service spacewalk-update-status is notavailable",
+                    "comment": "The named service spacewalk-update-status is not available",
                     "name": "spacewalk-update-status",
-                    "start_time": "15:45:59.283767",
+                    "start_time": "23:19:12.976762",
                     "result": true,
-                    "duration": 8.184,
+                    "duration": 8.866,
                     "__run_num__": 7,
                     "changes": {},
                     "__id__": "disable_spacewalk-update-status"
@@ -73,9 +101,9 @@
                   "service_|-disable_spacewalksd_|-rhnsd_|-dead": {
                     "comment": "The named service rhnsd is not available",
                     "name": "rhnsd",
-                    "start_time": "15:45:59.268089",
+                    "start_time": "23:19:12.951327",
                     "result": true,
-                    "duration": 15.452,
+                    "duration": 25.181,
                     "__run_num__": 6,
                     "changes": {},
                     "__id__": "disable_spacewalksd"
@@ -84,9 +112,9 @@
                     "comment": "File /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT is in the correct state",
                     "pchanges": {},
                     "name": "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT",
-                    "start_time": "15:45:58.272468",
+                    "start_time": "23:19:11.175545",
                     "result": true,
-                    "duration": 56.814,
+                    "duration": 21.583,
                     "__run_num__": 1,
                     "changes": {},
                     "__id__": "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT"
@@ -94,9 +122,9 @@
                   "service_|-mgr_salt_minion_|-salt-minion_|-running": {
                     "comment": "The service salt-minion is already running",
                     "name": "salt-minion",
-                    "start_time": "15:45:59.328428",
+                    "start_time": "23:19:13.024025",
                     "result": true,
-                    "duration": 29.051,
+                    "duration": 37.087,
                     "__run_num__": 12,
                     "changes": {},
                     "__id__": "mgr_salt_minion"
@@ -104,9 +132,9 @@
                   "pkg_|-remove_traditional_stack_|-remove_traditional_stack_|-removed": {
                     "comment": "All specified packages are already absent",
                     "name": "remove_traditional_stack",
-                    "start_time": "15:45:59.300649",
+                    "start_time": "23:19:12.996136",
                     "result": true,
-                    "duration": 13.4,
+                    "duration": 13.539,
                     "__run_num__": 9,
                     "changes": {},
                     "__id__": "remove_traditional_stack"
@@ -114,9 +142,9 @@
                   "pkg_|-pkg_removed_|-pkg_removed_|-removed": {
                     "comment": "All specified packages are already absent",
                     "name": "pkg_removed",
-                    "start_time": "15:45:58.812557",
+                    "start_time": "23:19:12.012714",
                     "result": true,
-                    "duration": 452.541,
+                    "duration": 935.01,
                     "__run_num__": 4,
                     "changes": {},
                     "__id__": "pkg_removed"
@@ -124,9 +152,9 @@
                   "pkg_|-mgr_salt_minion_|-salt-minion_|-installed": {
                     "comment": "Package salt-minion is already installed",
                     "name": "salt-minion",
-                    "start_time": "15:45:59.315783",
+                    "start_time": "23:19:13.011285",
                     "result": true,
-                    "duration": 12.202,
+                    "duration": 12.323,
                     "__run_num__": 11,
                     "changes": {},
                     "__id__": "mgr_salt_minion"
@@ -134,9 +162,9 @@
                   "pkg_|-pkg_installed_|-pkg_installed_|-installed": {
                     "comment": "No packages to install provided",
                     "name": "pkg_installed",
-                    "start_time": "15:45:58.811527",
+                    "start_time": "23:19:12.011806",
                     "result": true,
-                    "duration": 0.742,
+                    "duration": 0.683,
                     "__run_num__": 3,
                     "changes": {},
                     "__id__": "pkg_installed"
@@ -145,9 +173,9 @@
                     "comment": "File /etc/salt/minion.d/susemanager-mine.conf is in the correct state",
                     "pchanges": {},
                     "name": "/etc/salt/minion.d/susemanager-mine.conf",
-                    "start_time": "15:45:59.314235",
+                    "start_time": "23:19:13.009856",
                     "result": true,
-                    "duration": 1.377,
+                    "duration": 1.262,
                     "__run_num__": 10,
                     "changes": {},
                     "__id__": "mgr_mine_config"
@@ -155,28 +183,16 @@
                   "pkg_|-pkg_latest_|-pkg_latest_|-latest": {
                     "comment": "No packages to install provided",
                     "name": "pkg_latest",
-                    "start_time": "15:45:59.265416",
+                    "start_time": "23:19:12.948042",
                     "result": true,
-                    "duration": 0.6,
+                    "duration": 0.68,
                     "__run_num__": 5,
                     "changes": {},
                     "__id__": "pkg_latest"
                   }
                 }
               },
-              "__id__": "action_61"
-            },
-            "module_|-action_123_|-test.ping_|-run": {
-              "comment": "Module function test.ping executed",
-              "name": "test.ping",
-              "start_time": "15:45:59.359137",
-              "result": true,
-              "duration": 3.948,
-              "__run_num__": 1,
-              "changes": {
-                "ret": true
-              },
-              "__id__": "action_123"
+              "__id__": "action_146"
             }
           }
         },
@@ -186,7 +202,7 @@
     "retcode": 0,
     "success": true,
     "cmd": "_return",
-    "_stamp": "2018-02-24T14:45:57.098136",
+    "_stamp": "2018-02-27T22:19:10.801301",
     "fun": "state.apply",
     "out": "highstate",
     "id": "${minion-id}",

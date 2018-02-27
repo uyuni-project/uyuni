@@ -31,7 +31,6 @@ import java.util.Set;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.server.MinionServer;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
@@ -390,7 +389,8 @@ public class ActionChainFactory extends HibernateFactory {
                                 "    - mods: remotecommands\n" +
                                 "    - kwargs: {\n" +
                                 "        pillar: {\n" +
-                                "          mgr_remote_command: ls -l\n" +
+                                "          mgr_remote_command: " +
+                                action.getScriptActionDetails().getScriptContents().replaceAll("\r\n", "\n") +
                                 "        }\n" +
                                 "      }\n"
                         );
