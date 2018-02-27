@@ -4,6 +4,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const Network = require('../utils/network');
 const Messages = require('../components/messages').Messages;
+const MessagesUtils = require("../components/messages").Utils;
 const {Table, Column, SearchField, Highlight} = require('../components/table');
 const Functions = require('../utils/functions');
 const PopUp = require("../components/popup").PopUp;
@@ -80,6 +81,7 @@ const Products = React.createClass({
       selectedItems: [],
       showPopUp: false,
       syncRunning: false,
+      addingProducts: false
     }
   },
 
@@ -139,7 +141,30 @@ const Products = React.createClass({
   },
 
   submit: function() {
-    alert(this.state.selectedItems);
+    const currentObject = this;
+    currentObject.setState({ addingProducts: true });
+    Network.post(
+        '/rhn/manager/admin/setup/products',
+        JSON.stringify(currentObject.state.selectedItems), 'application/json'
+    ).promise.then(data => {
+      if(data) {
+        currentObject.setState(
+          {
+            errors: MessagesUtils.success(data),
+            selectedItems : [],
+            addingProducts: false}
+        );
+      }
+      else {
+        currentObject.setState(
+          {
+            errors: MessagesUtils.warning(data),
+            selectedItems : [],
+            addingProducts: false}
+        );
+      }
+    })
+    .catch(currentObject.handleResponseError);
   },
 
   handleResponseError: function(jqXHR, arg = "") {
@@ -181,6 +206,31 @@ const Products = React.createClass({
       );
     }
     else if (this.state.issMaster) {
+
+      const submitButtonTitle =
+        this.state.syncRunning ?
+          t('The product catalog is still refreshing, please wait.')
+          : this.state.selectedItems.length == 0 ?
+              t('Select some product first.')
+              : null;
+      const addProductButton = (
+        this.state.syncRunning || this.state.selectedItems.length == 0 || this.state.addingProducts ?
+        <Button
+            id="addProducts"
+            icon={this.state.addingProducts ? 'fa-plus-circle fa-spin' : 'fa-plus'}
+            className='btn-default text-muted'
+            title={submitButtonTitle}
+            text={t('Add products')}
+        />
+        :
+        <Button
+            id="addProducts"
+            icon="fa-plus"
+            className={'btn-success'}
+            text={t('Add products')}
+            handler={this.submit}
+        />
+      );
       pageContent = (
         <div className='row' id='suse-products'>
           <div className='col-sm-9'>
@@ -202,24 +252,7 @@ const Products = React.createClass({
                         target='scc-refresh-popup'
                         onClick={() => this.showPopUp()}
                     />
-                    {
-                      this.state.syncRunning ?
-                      <Button
-                          id="addProducts"
-                          icon="fa-plus"
-                          className='btn-default text-muted'
-                          title={t('The product catalog is still refreshing, please wait.')}
-                          text={t('Add products')}
-                      />
-                      :
-                      <Button
-                          id="addProducts"
-                          icon="fa-plus"
-                          className={'btn-success'}
-                          text={t('Add products')}
-                          handler={this.submit}
-                      />
-                    }
+                    {addProductButton}
                   </div>
                 </div>
               </div>
