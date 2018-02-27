@@ -1,5 +1,7 @@
 - Fix FIPS detection for kernels without CONFIG_CRYPTO_FIPS
   (as in openSUSE)
+- Enable and start atftpd.socket instead of atftpd.service when
+  atftp is using systemd natively.
 
 -------------------------------------------------------------------
 Wed Jan 17 10:40:16 CET 2018 - jgonzalez@suse.com
