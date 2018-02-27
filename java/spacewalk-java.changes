@@ -1,3 +1,4 @@
+- Fix "Most critical systems" list on "Home Overview" view (bsc#1081757)
 - Fix NPE when retrieving OES repo (bsc#1082328)
 - Subscribe to config channels when registering Salt systems with activation keys (bsc#1080807)
 - add rhn.conf salt_check_download_tokens parameter to disable token checking (bsc#1082119)

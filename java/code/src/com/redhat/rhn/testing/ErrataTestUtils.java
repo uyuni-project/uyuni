@@ -438,6 +438,25 @@ public class ErrataTestUtils {
     }
 
     /**
+     * Create a {@link Server} owned by a user, with channels and a specific
+     * server name.
+     * @param user the user
+     * @param channels the channels
+     * @param serverName the server name
+     * @return the newly created server
+     * @throws Exception if anything goes wrong
+     */
+    public static Server createTestServerWithName(User user, Collection<Channel> channels,
+            String serverName) throws Exception {
+        Server result = createTestServer(user, channels);
+        result.setName(serverName);
+
+        TestUtils.saveAndFlush(result);
+
+        return result;
+    }
+
+    /**
      * Copy errata details as in {@link ErrataFactory}.
      * @param copy
      * @param original
