@@ -354,6 +354,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         "':" + e.getMessage());
             }
 
+            // Should we apply the highstate?
+            boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
+
             // Apply initial states asynchronously
             List<String> statesToApply = new ArrayList<>();
             statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
@@ -366,13 +369,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             MessageQueue.publish(new ApplyStatesEventMessage(
                     server.getId(),
                     server.getCreator() != null ? server.getCreator().getId() : null,
-                    activationKey.isPresent() ? false : true,
+                    !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
                     statesToApply
             ));
-            // Call final Highstate when we have an activation key
-            if (activationKey.isPresent()) {
-                MessageQueue.publish(new ApplyStatesEventMessage(server.getId(),
-                        true, Collections.emptyList()));
+
+            // Call final highstate to deploy config channels if required
+            if (applyHighstate) {
+                MessageQueue.publish(new ApplyStatesEventMessage(server.getId(), true, Collections.emptyList()));
             }
         }
         catch (Throwable t) {

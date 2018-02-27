@@ -105,11 +105,13 @@
                 </label>
                 <div class="col-lg-6">
                     <div class="checkbox">
-                        <html:checkbox property="autoDeploy" styleId="enable-config-auto-deploy" />
-                        <br/>
+                        <label>
+                            <html:checkbox property="autoDeploy" styleId="enable-config-auto-deploy" />
+                            <bean:message key="activation-key.jsp.config-auto-deploy-tooltip"/>
+                        </label>
                     </div>
                     <span class="help-block">
-                        <bean:message key="activation-key.jsp.config-auto-deploy-tooltip"/>
+                        <rhn:tooltip key="activation-key.jsp.config-auto-deploy-highstate-tooltip"/>
                     </span>
                 </div>
             </div>
