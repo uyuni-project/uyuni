@@ -32,8 +32,6 @@ install -m 644 reports/data/* $RPM_BUILD_ROOT/%{_prefix}/share/spacewalk/reports
 install *.8 $RPM_BUILD_ROOT/%{_mandir}/man8
 chmod -x $RPM_BUILD_ROOT/%{_mandir}/man8/spacewalk-report.8*
 
-%clean
-
 %files
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/spacewalk-report

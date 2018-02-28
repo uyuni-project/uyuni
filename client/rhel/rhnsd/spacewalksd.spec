@@ -175,9 +175,6 @@ if [ "$1" -ge "1" ]; then
 fi
 %endif
 
-%clean
-
-
 %files -f rhnsd.lang
 %defattr(-,root,root)
 %dir %{_sysconfdir}/sysconfig/rhn

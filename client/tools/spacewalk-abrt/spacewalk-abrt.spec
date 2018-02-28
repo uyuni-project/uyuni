@@ -63,8 +63,6 @@ ln -s spacewalk-abrt%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/spacewalk-abrt
 
 %find_lang %{name}
 
-%clean
-
 %post
 service abrtd restart ||:
 

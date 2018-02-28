@@ -458,8 +458,6 @@ rm -f $RPM_BUILD_ROOT%{python3rhnroot}/common/__init__.py*
 %endif
 
 
-%clean
-
 %check
 cp %{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{pythonrhnroot}/common
 make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} test || :

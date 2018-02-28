@@ -39,8 +39,6 @@ install -m644 sysconfig.ssl-cert-check $RPM_BUILD_ROOT/%{_sysconfdir}/sysconfig/
 install -m755 ssl-cert-check $RPM_BUILD_ROOT/%{_bindir}/ssl-cert-check
 install -m644 ssl-cert-check.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 
-%clean
-
 %files
 %defattr(-,root,root,-)
 %dir %{_sysconfdir}/sysconfig/rhn

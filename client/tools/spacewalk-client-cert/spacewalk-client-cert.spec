@@ -40,9 +40,6 @@ make -f Makefile.spacewalk-client-cert
 make -f Makefile.spacewalk-client-cert install PREFIX=$RPM_BUILD_ROOT \
         PYTHONPATH=%{pypath}
 
-%clean
-
-
 %files
 %dir /etc/sysconfig/rhn
 %dir /etc/sysconfig/rhn/clientCaps.d

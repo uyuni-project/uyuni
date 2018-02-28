@@ -78,8 +78,6 @@ make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_si
 %endif
 
 
-%clean
-
 %files
 %defattr(-,root,root,-)
 %doc COPYING

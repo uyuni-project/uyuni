@@ -105,8 +105,6 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' rhn-proxy-activate.py
 %endif
 install -m 755 rhn-proxy-activate.py $RPM_BUILD_ROOT%{_bindir}/rhn-proxy-activate
 
-%clean
-
 %check
 %if 0%{?pylint_check}
 # check coding style

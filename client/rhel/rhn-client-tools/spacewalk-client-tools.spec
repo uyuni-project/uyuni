@@ -485,8 +485,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %endif
 
 
-%clean
-
 %if %{with test} && 0%{?fedora}
 %check
 

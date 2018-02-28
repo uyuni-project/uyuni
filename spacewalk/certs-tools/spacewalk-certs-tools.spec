@@ -122,8 +122,6 @@ ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 %endif
 %endif
 
-%clean
-
 %files
 %defattr(-,root,root,-)
 %dir %{rhnroot}/certs
