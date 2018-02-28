@@ -18,7 +18,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -227,7 +226,7 @@ public class StatesAPI {
         result.addAll(JSONConfigChannel.listOrdered(assignedStates));
 
         // Find matches among available channels
-        ConfigurationFactory.listGlobalChannels(user.getOrg()).stream()
+        ConfigurationManager.getInstance().listGlobalChannels(user).stream()
                 .filter(s -> s.getName().toLowerCase().contains(targetLowerCase))
                 .map(JSONConfigChannel::new)
                 .forEach(result::add);
