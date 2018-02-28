@@ -1,3 +1,9 @@
+-------------------------------------------------------------------
+Wed Feb 28 10:01:42 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.5.1-1
+- Make minion label unselectable on Visualization's
+ 'Systems Grouping' view (bsc#1034037)
 - Salt Formulas improvements (added a formula values group with add/remove functionality)
 
 -------------------------------------------------------------------
