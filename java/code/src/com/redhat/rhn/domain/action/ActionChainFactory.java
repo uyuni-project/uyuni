@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,6 +44,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.suse.manager.webui.services.SaltActionChainGeneratorService;
+import com.suse.manager.utils.MinionServerUtils;
 
 /**
  * Creates Action Chain related objects.
@@ -336,8 +340,7 @@ public class ActionChainFactory extends HibernateFactory {
         Map<Server, Action> latest = new HashMap<Server, Action>();
         int maxSortOrder = getNextSortOrderValue(actionChain);
         Date dateInOrder = new Date(date.getTime());
-
-        Set<MinionServer> minions = new HashSet<>();
+        Map<Server, List<Action>> minionActions = new HashMap<Server, List<Action>>();
 
         for (int sortOrder = 0; sortOrder < maxSortOrder; sortOrder++) {
             for (ActionChainEntry entry : getActionChainEntries(actionChain, sortOrder)) {
@@ -353,54 +356,29 @@ public class ActionChainFactory extends HibernateFactory {
                 // order to sort them correctly for display
                 dateInOrder = DateUtils.addMilliseconds(dateInOrder, 1);
 
-                latest.put(server, action);
+                if (MinionServerUtils.isMinionServer(server)) {
+                    if (minionActions.get(server) != null) {
+                        minionActions.get(server).add(action);
+                    }
+                    else {
+                        List<Action> actionList = new ArrayList<>();
+                        actionList.add(action);
+                        minionActions.put(server, actionList);
+                    }
+                }
 
-                server.asMinionServer().ifPresent(minion -> minions.add(minion));
+                latest.put(server, action);
             }
         }
 
-        generateActionChainStates(actionChain, minions);
-        // Trigger Action Chain execution for Minions via Taskomatic
-        TASKOMATIC_API.scheduleActionChainExecution(actionChain);
+        if (!minionActions.isEmpty()) {
+            // Trigger Action Chain execution for Minions via Taskomatic
+            SaltActionChainGeneratorService.INSTANCE.createActionChainSLSFiles(actionChain, minionActions);
+            TASKOMATIC_API.scheduleActionChainExecution(actionChain);
+        }
         log.debug("Action Chain " + actionChain + " scheduled to date " + date +
             ", deleting");
         delete(actionChain);
-    }
-
-
-    private static void generateActionChainStates(ActionChain actionChain, Set<MinionServer> minions) {
-        // TODO throwaway code
-        for (MinionServer minion: minions) {
-            try (Writer fout = new FileWriter(new File("/srv/susemanager/salt/actionchains/actionchain_" + actionChain.getId() + "_" + minion.getMachineId() + "_1.sls"))) {
-                for (ActionChainEntry entry: actionChain.getEntries()) {
-                    if (ActionFactory.TYPE_APPLY_STATES.equals(entry.getAction().getActionType())) {
-                        ApplyStatesAction action = ActionFactory.getSession().get(ApplyStatesAction.class, entry.getAction().getId());
-                        fout.append(
-                                "action_" + entry.getAction().getId() +  ":\n" +
-                                "  module.run:\n" +
-                                "    - name: state.apply\n");
-                    }
-                    if (ActionFactory.TYPE_SCRIPT_RUN.equals(entry.getAction().getActionType())) {
-                        ScriptRunAction action = ActionFactory.getSession().get(ScriptRunAction.class, entry.getAction().getId());
-                        fout.append(
-                                "action_" + entry.getAction().getId() + ":\n" +
-                                "  module.run:\n" +
-                                "    - name: state.apply\n" +
-                                "    - mods: remotecommands\n" +
-                                "    - kwargs: {\n" +
-                                "        pillar: {\n" +
-                                "          mgr_remote_command: " +
-                                action.getScriptActionDetails().getScriptContents().replaceAll("\r\n", "\n") +
-                                "        }\n" +
-                                "      }\n"
-                        );
-                    }
-
-                }
-            } catch (IOException e) {
-                log.error(e);
-            }
-        }
     }
 
     /**
