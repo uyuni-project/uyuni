@@ -5,7 +5,6 @@ Wed Feb 28 09:37:21 CET 2018 - jgonzalez@suse.com
 - Refresh pillar data when executing the subscribe channels action for ssh-push minions (bsc#1080349)
 - Disable taskomatic crash dumps when using openJDK.
 - Move locale preferences to user preferences menu.
-- Make minion label unselectable on Visualization's 'Systems Grouping' view (bsc#1034037)
 - Fix home page link for "Register systems" (bsc#1065708)
 - Remove previous activation keys on every (re-)activation (bsc#1031081)
 - Handle stderr from "virtual-host-gatherer" to avoid hanging (bsc#1067010)
