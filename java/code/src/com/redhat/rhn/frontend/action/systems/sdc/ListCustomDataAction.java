@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.struts.action.ActionForm;
@@ -82,6 +83,7 @@ public class ListCustomDataAction extends RhnAction {
             CustomDataValue val = server.getCustomDataValue(key);
             returnMap.put("cikid", val.getKey().getId());
             returnMap.put("label", val.getKey().getLabel());
+            returnMap.put("description", val.getKey().getDescription());
 
             if (val.getValue() != null) {
                 returnMap.put("value", val.getValue());
@@ -92,6 +94,7 @@ public class ListCustomDataAction extends RhnAction {
             pageList.add(returnMap);
         }
 
+        request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
         request.setAttribute(RequestContext.PAGE_LIST, pageList);
         request.setAttribute("system", server);
 
