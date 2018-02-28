@@ -1,5 +1,12 @@
+-------------------------------------------------------------------
+Wed Feb 28 10:13:24 CET 2018 - jgonzalez@suse.com
+
+- version 3.2.4-1
 - Make migration idempotent (bsc#1078749)
 - Fix: schema with proper extension (bsc#1079820)
+- 1542287 - purge records that would be violating unique constraint during fixup
+- 1542287 - we don't have solaris table anymore
+- 1541955 - Clone of an erratum doesn't have original erratum's severity
 
 -------------------------------------------------------------------
 Mon Feb 05 12:52:43 CET 2018 - jgonzalez@suse.com
