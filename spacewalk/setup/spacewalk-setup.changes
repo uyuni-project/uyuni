@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Feb 28 09:54:25 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.5.1-1
 - Fix FIPS detection for kernels without CONFIG_CRYPTO_FIPS
   (as in openSUSE)
 - Enable and start atftpd.socket instead of atftpd.service when
