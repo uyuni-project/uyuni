@@ -243,8 +243,6 @@ install -m 0755 mgr-proxy-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-proxy-ss
 install -m 0755 mgr-proxy-ssh-force-cmd $RPM_BUILD_ROOT/%{_sbindir}/mgr-proxy-ssh-force-cmd
 install -d -m 0755 $RPM_BUILD_ROOT/%{_var}/lib/spacewalk
 
-%clean
-
 %check
 %if 0%{?pylint_check}
 # check coding style

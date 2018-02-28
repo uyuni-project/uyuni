@@ -61,8 +61,6 @@ find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
 %check
 make test
 
-%clean
-
 %files
 %doc README LICENSE
 %{perl_vendorlib}/*

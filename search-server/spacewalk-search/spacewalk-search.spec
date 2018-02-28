@@ -161,8 +161,6 @@ ln -sf ../../etc/init.d/rhn-search $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
 # mybatis is build with newer API. This statements needs to stay, until we have a build with 1.5
 export NO_BRP_CHECK_BYTECODE_VERSION=true
 
-%clean
-
 %post
 was_running=0
 %if 0%{?suse_version} >= 1210

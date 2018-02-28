@@ -97,8 +97,6 @@ find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
 popd
 
 
-%clean
-
 %check
 %if 0%{?pylint_check}
 # check coding style

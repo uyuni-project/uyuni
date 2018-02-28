@@ -58,8 +58,6 @@ cd -
 
 %find_lang %{name}
 
-%clean
-
 %pre
 # 682820 - re-enable yum-rhn-plugin after package upgrade if the system is already registered
 export pluginconf='/etc/yum/pluginconf.d/rhnplugin.conf'

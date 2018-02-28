@@ -75,8 +75,6 @@ cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{python3rhnroo
 %endif
 %endif
 
-%clean
-
 %files
 %defattr(-,root,root)
 %dir %{pythonrhnroot}

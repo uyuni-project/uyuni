@@ -197,8 +197,6 @@ ln -s rhn-actions-control $RPM_BUILD_ROOT/%{_bindir}/mgr-actions-control
 %endif
 
 
-%clean
-
 %post
 if [ -f %{_localstatedir}/log/rhncfg-actions ]
 then 

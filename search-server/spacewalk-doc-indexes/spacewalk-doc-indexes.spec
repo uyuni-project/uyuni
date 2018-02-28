@@ -46,8 +46,6 @@ for lang in $LANGS; do
     cp -a %{crawl_output}/$lang/segments/* $RPM_BUILD_ROOT/%{_datadir}/rhn/search/indexes/docs/$lang/segments
 done
 
-%clean
-
 
 %files
 %{_prefix}/share/rhn/search/indexes/docs

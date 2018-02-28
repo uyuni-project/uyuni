@@ -1,3 +1,5 @@
+- remove empty clean section from spec (bsc#1083294)
+
 -------------------------------------------------------------------
 Wed Feb 28 09:28:24 CET 2018 - jgonzalez@suse.com
 

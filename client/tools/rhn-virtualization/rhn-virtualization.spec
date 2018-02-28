@@ -159,8 +159,6 @@ rm -f $RPM_BUILD_ROOT/%{_initrddir}/rhn-virtualization-host
 %endif
 
 
-%clean
-
 %if 0%{?suse_version}
 %post host
 if [ -d /proc/xen ]; then

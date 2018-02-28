@@ -84,9 +84,6 @@ make -f Makefile.rhnlib
 %endif
 
 
-%clean
-
-
 %files
 %defattr(-,root,root)
 %doc ChangeLog COPYING README TODO

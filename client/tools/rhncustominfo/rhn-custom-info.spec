@@ -57,8 +57,6 @@ install -m 644 rhn-custom-info.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 ln -s rhn-custom-info $RPM_BUILD_ROOT/%{_bindir}/mgr-custom-info
 %endif
 
-%clean
-
 %files
 %defattr(-,root,root,-)
 %{pypath}/custominfo/

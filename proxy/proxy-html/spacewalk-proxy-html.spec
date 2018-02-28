@@ -33,8 +33,6 @@ install -m 755 -d $RPM_BUILD_ROOT%{htmldir}
 install -m 755 -d $RPM_BUILD_ROOT%{htmldir}/_rhn_proxy
 install -m 644 _rhn_proxy/* $RPM_BUILD_ROOT%{htmldir}/_rhn_proxy/
 
-%clean
-
 %files
 %defattr(-,root,root)
 %dir %{htmldir}/_rhn_proxy

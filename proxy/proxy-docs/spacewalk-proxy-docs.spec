@@ -39,8 +39,6 @@ done
 install -m 644 LICENSE $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
 install -m 644 squid.conf.sample $RPM_BUILD_ROOT/%_defaultdocdir/%{name}/
 
-%clean
-
 %files
 %defattr(-,root,root)
 %docdir %_defaultdocdir/%{name}
