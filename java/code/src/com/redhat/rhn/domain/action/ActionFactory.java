@@ -595,6 +595,19 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Helper method to get a ScriptActionDetail by Action Id
+     * @param action the Action for whom we want to lookup the ScriptActionDetail
+     * @return The ScriptActionDetail corresponding to the action ID.
+     */
+    public static ScriptActionDetails lookupScriptActionDetails(Action action) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("action", action);
+        return (ScriptActionDetails)
+                singleton.lookupObjectByNamedQuery("ScriptActionDetails.findById",
+                        params, true);
+    }
+
+    /**
      * Helper method to get a ConfigRevisionAction by
      *  Action Config Revision Id
      * @param id the id of the ActionConfigRevision
