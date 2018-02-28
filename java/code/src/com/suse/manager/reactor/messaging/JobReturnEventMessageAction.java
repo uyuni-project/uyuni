@@ -54,7 +54,7 @@ import java.util.regex.Pattern;
  */
 public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
-    private static final Pattern ACTION_ID = Pattern.compile(".*\\|-action_(\\d+)_\\|.*");
+    private static final Pattern ACTION_ID = Pattern.compile(".*\\|-suma_action_(\\d+)_\\|.*");
 
     /**
      * Converts an event to json
