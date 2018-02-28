@@ -9,7 +9,7 @@ Feature: Register a salt-ssh system via XML-RPC
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
-    Then I wait until I see "has been deleted" text
+    And I wait until I see "has been deleted" text
     And I cleanup minion "ssh-minion"
 
 @sshminion

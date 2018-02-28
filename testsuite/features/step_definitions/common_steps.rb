@@ -8,7 +8,6 @@ When(/^I save a screenshot as "([^"]+)"$/) do |filename|
   save_screenshot(filename)
 end
 
-
 When(/^I wait for "(\d+)" seconds?$/) do |arg1|
   sleep(arg1.to_i)
 end
@@ -604,7 +603,7 @@ When(/^I remember when I scheduled an action$/) do
     $moments[moment] = val
   else
     $moments = {moment => val}
-  end  
+  end
 end
 
 Then(/^I should see "([^"]*)" at least (\d+) minutes after I scheduled an action$/) do |text, minutes|
@@ -617,7 +616,7 @@ Then(/^I should see "([^"]*)" at least (\d+) minutes after I scheduled an action
   raise "Time the action was scheduled not found in memory" unless defined?($moments) and $moments["schedule_action"]
   initial = $moments["schedule_action"]
   after = initial + Rational(1, 1440) * minutes.to_i
-  raise "#{text_time.to_s} is not #{minutes} minutes later than '#{initial.to_s}'" unless (text_time + Rational(1, 1440)) >= after 
+  raise "#{text_time.to_s} is not #{minutes} minutes later than '#{initial.to_s}'" unless (text_time + Rational(1, 1440)) >= after
 end
 
 # Valid claims:

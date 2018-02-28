@@ -29,6 +29,7 @@ The **secondary features** can be run any number of times, and the order is not 
 
 To know how to test with or without optional components like a proxy, a CentOS minion or a SSH minion, look at the [optional components instructions](docs/optional.md).
 
+
 # Contributing
 
 ## Procedure
@@ -45,6 +46,7 @@ Please read with attention the [guidelines](docs/Guidelines.md). They cover styl
 Check the [code coverage results](docs/codecoverage.md) after you have run the test suite with your code.
 
 There are also hints about how to [debug the testsuite](docs/Debug.md) and about [Pitfalls in writing the testsuite](docs/Pitfalls-test.md).
+
 
 # Branches used
 

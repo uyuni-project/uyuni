@@ -1,8 +1,8 @@
-## Unit-tests for cucumber. (Travis ci)
+## Unit-tests for cucumber. (Travis CI)
 
-This directory will concern unit-tests about the ruby code for testing the product.
+This directory will concern unit tests about the ruby code for testing the product.
 
-This scripts are runned during travis
+These scripts are run during Travis
 
 
 To improve the testsuite itself and its stability (avoid testsuite issues)
