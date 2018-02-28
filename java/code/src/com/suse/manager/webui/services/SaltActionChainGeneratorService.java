@@ -83,7 +83,7 @@ public enum SaltActionChainGeneratorService {
                     prevSaltMod = ((Map<String, Object>) output.get(stateId)).entrySet()
                             .iterator().next().getKey().split("\\.")[0];
                     prevStateId = stateId;
-                    output.putAll(addNextChunkStateExecution(stateId + "_next", prevSaltMod,
+                    output.putAll(addNextChunkStateExecution("schedule_next_chunk", prevSaltMod,
                             prevStateId, actionChain, chunk + 1));
                     saveChunkSLS(output, entry.getKey().getMachineId(), actionChain.getId(), chunk);
                     output.clear();
