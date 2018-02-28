@@ -14,7 +14,7 @@ Given(/^I am logged in via XML\-RPC system as user "([^"]*)" and password "([^"]
   systest.login(luser, password)
 end
 
-When(/^I call system\.listSystems\(\), I should get a list of them$/) do
+When(/^I call system\.list_systems\(\), I should get a list of them$/) do
   # This also assumes the test is called *after* the regular test.
   servers = systest.list_systems
   assert(servers.!empty?, "Expect: 'number of system' > 0, but found only '#{servers.length}' servers")

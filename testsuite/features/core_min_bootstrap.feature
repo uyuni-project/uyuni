@@ -50,7 +50,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
-    Then I should see a "has been deleted" text
+    Then I wait until I see "has been deleted" text
     And I cleanup minion "sle-minion"
 
   Scenario: Create minion activation key with channel and package list
@@ -137,7 +137,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     When I follow "Delete System"
     And I should see a "Confirm System Profile Deletion" text
     And I click on "Delete Profile"
-    Then I should see a "has been deleted" text
+    Then I wait until I see "has been deleted" text
       
   Scenario: Bootstrap a SLES minion with wrong hostname
      Given I am authorized
@@ -176,7 +176,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I should not see a "GenericSaltError({" text
      Then I should see a "port 11: Connection refused" text
 
-  Scenario: Bootstrap a sles minion permanently
+  Scenario: Bootstrap a SLES minion permanently
      Given I am authorized
      And I go to the bootstrapping page
      Then I should see a "Bootstrap Minions" text

@@ -166,7 +166,7 @@ Feature: Manage users
     Then I should see a "Preferences modified" text
     And radio button "radio-semicolon" is checked
 
-  Scenario: Configure the CSV separator char to comma
+  Scenario: Cleanup: configure the CSV separator char to comma
     Given I am authorized as "testing" with password "testing"
     And I follow "Your Preferences"
     And I choose ","

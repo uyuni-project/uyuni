@@ -1,25 +1,23 @@
-### HOWTO Patches/PKGs tests
+### How to test patches and packages
 
-###### [IMPROVE_ME]
+If you want to install packages and apply patches, you can have some trouble.
+Since each features need to be idempotent, you need to:
+ * not assume that some packages are present at beginning of your feature
+ * cleanup at end of feature.
 
-If you want to make pkgs install and patches, you can have some troubles.
+Basically, we use 2 repositories for test packages:
 
-Since each feature must be idempotent, you need to cleanup, and do not assume that some pkgs are present at beginn 
-of your feature.
+1) `Devel_Galaxy_BuildRepo`: contains lower version of packages, and is disabled by default;
+2) `Test channel`: contains patches with higher version of packages, and is enabled. It is created by core features.
 
-Basically,  we use 2 REPOS for test packages:
+Typical workflow for patches test:
 
-1) contains lower version of pkgs:  Devel_Galaxy_BuildRepo  **disabled by default** 
-2) contains patches with higher version of pkgs: Test channel **enabled, and created by core-feature.**
-
-### typical WORKFLOW for patches test
-
-0) enable the BuildRepo
-1) downgrade pkg(install) /Remove pkg
-3) schedule taskomatic run, and wait for finish. ( to retrieve patches avaibles)
+1) enable the BuildRepo
+2) downgrade package (install) or remove package
+3) schedule taskomatic run, and wait for it to finish (to retrieve patches available)
 4) make test with patch (install it etc)
-5) cleanup: remove pkg/patches and disable the buildRepo
+5) cleanup: remove packages and patches and disable the BuildRepo
 
-### Examples:
+Examples:
 
-Take a look on this feature: features/trad_check_patches_install.feature``
+Take a look at this feature: ``features/trad_check_patches_install.feature``

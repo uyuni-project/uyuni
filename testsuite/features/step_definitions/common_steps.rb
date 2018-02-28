@@ -23,7 +23,7 @@ When(/^I make the SSL certificate available to zypper$/) do
   cert_path = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
   trust_path = '/etc/pki/trust/anchors'
   $client.run("cd #{trust_path} && ln -sf #{cert_path}")
-  $client.run("update-ca-certificates")
+  $client.run('update-ca-certificates')
 end
 
 Then(/^I can see all system information for "([^"]*)"$/) do |target|
@@ -462,13 +462,13 @@ Then(/^file "([^"]*)" should exist on server$/) do |filename|
   $server.run("test -f #{filename}")
 end
 
-Then(/^file "([^"]*)" should not exist on server$/) do |filename|
-  $server.run("test ! -f #{filename}")
-end
-
 Then(/^file "([^"]*)" should exist on "([^"]*)"$/) do |filename, host|
   node = get_target(host)
   node.run("test -f #{filename}", true)
+end
+
+Then(/^file "([^"]*)" should not exist on server$/) do |filename|
+  $server.run("test ! -f #{filename}")
 end
 
 When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filename, host|

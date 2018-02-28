@@ -1,4 +1,4 @@
-# SUSE Manager automated test suite for 3.1 
+# SUSE Manager automated test suite
 
 # Introduction
 
@@ -51,6 +51,11 @@ There are also hints about how to [debug the testsuite](docs/Debug.md) and about
 # Branches used
 
 * Development (to be run against a HEAD version of SUSE Manager):
-  - Manager
-  - Manager-3.1
-  - Manager-3.0
+
+  * [`Manager`](https://github.com/SUSE/spacewalk-testsuite-base)
+
+* Release (to be run against a nightly or released *tagged* version of SUSE Manager):
+
+  * [`Manager-3.1`](https://github.com/SUSE/spacewalk/tree/manager31)
+  * [`Manager-3.0`](https://github.com/SUSE/spacewalk/tree/manager30)
+

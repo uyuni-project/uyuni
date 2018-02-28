@@ -99,6 +99,7 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
  * Don't use too many steps parameters (use cucumber tables)
  * Don't fall in the case where same step can trigger two different regular expressions
 
+
 ### Rules for Ruby implementation of steps
 
  * Don't use ```fail```, prefer minitest assertions like ```assert_equal```

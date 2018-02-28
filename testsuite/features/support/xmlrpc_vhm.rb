@@ -21,7 +21,7 @@ class XMLRPCVHMTest < XMLRPCBaseTest
   end
 
   def create(label, module_name, parameter)
-    @connection.call('virtualhostmanager.create', @sid, label, moduleName, parameter)
+    @connection.call('virtualhostmanager.create', @sid, label, module_name, parameter)
   end
 
   def delete(label)
