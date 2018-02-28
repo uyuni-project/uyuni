@@ -1,16 +1,23 @@
+-------------------------------------------------------------------
+Wed Feb 28 09:37:21 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.69.1-1
 - Refresh pillar data when executing the subscribe channels action for ssh-push minions (bsc#1080349)
 - Disable taskomatic crash dumps when using openJDK.
 - Move locale preferences to user preferences menu.
 - Make minion label unselectable on Visualization's 'Systems Grouping' view (bsc#1034037)
 - Fix home page link for "Register systems" (bsc#1065708)
 - Remove previous activation keys on every (re-)activation (bsc#1031081)
-- Clean up SUSE manager repos in bootstrap script for trad clients (bsc#1077997)
 - Handle stderr from "virtual-host-gatherer" to avoid hanging (bsc#1067010)
 - Unify methods to send email on a single API
 - Fix broken 'Add' links in system's config channel overview page (bsc#1079865)
 - Remove SUSE Manager repositories when deleting salt minions (bsc#1079847)
 - Fix issues in text for config management.
 - fix title of reference guide help entry (bsc#1079769)
+- 1541955 - Clone of an erratum doesn't have original erratum's severity
+- 1481329 - Lost an <rhn-tab-directory> tab in previous commit for this BZ
+- 1020318 - Fix refactored to take more, multiple, errors into account
+- 1020318 - Check description for max-len when updating
 
 -------------------------------------------------------------------
 Mon Feb 05 12:48:29 CET 2018 - jgonzalez@suse.com
