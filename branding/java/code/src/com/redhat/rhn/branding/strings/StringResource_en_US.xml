@@ -2541,6 +2541,12 @@ tree will not be usable for autoinstalling.
       <trans-unit id="activation-key.jsp.edit-basechannel-tooltip">
         <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source>
       </trans-unit>
+      <trans-unit id="activation-key.jsp.config-auto-deploy-tooltip">
+        <source> Deploy configuration files to systems on registration</source>
+      </trans-unit>
+      <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip">
+        <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
+      </trans-unit>
       <trans-unit id="targetsystems.jsp.summary">
         <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular rhncfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
       </trans-unit>
