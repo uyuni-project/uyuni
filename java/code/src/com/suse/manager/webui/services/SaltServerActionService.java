@@ -18,9 +18,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainEntry;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -73,11 +70,7 @@ import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -298,6 +291,7 @@ public class SaltServerActionService {
      *
      * @param actionChainId the action chain id to execute
      * @param minionIds a list containing target minion ids
+     * @param user the user executing the Action Chain
      */
     public void executeActionChain(User user, Long actionChainId, List<Long> minionIds) {
         List<MinionServer> minions = new ArrayList<>();

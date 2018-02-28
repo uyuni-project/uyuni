@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.google.gson.JsonObject;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
