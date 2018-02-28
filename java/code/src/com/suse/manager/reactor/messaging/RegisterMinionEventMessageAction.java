@@ -277,6 +277,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             setServerPaths(server, master, isSaltSSH, saltSSHProxyId);
 
             ServerFactory.save(server);
+            giveCapabilities(server);
+
+            // Assign the Salt base entitlement by default
+            server.setBaseEntitlement(EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the server
             activationKey.ifPresent(ak -> {
@@ -304,14 +308,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     }).collect(Collectors.toSet())
                 );
                 StateFactory.save(serverStateRevision);
-            });
 
-            giveCapabilities(server);
-
-            // Assign the Salt base entitlement by default
-            server.setBaseEntitlement(EntitlementManager.SALT);
-
-            activationKey.ifPresent(ak -> {
+                // Set additional entitlements, if any
                 Set<Entitlement> validEntits = server.getOrg()
                         .getValidAddOnEntitlementsForOrg();
                 ak.getToken().getEntitlements().forEach(sg -> {
@@ -328,6 +326,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         }
                     }
                 });
+
+                // Subscribe to config channels assigned to the activation key
+                server.subscribeConfigChannels(ak.getAllConfigChannels(), ak.getCreator());
             });
 
             // get hardware and network async
@@ -352,6 +353,9 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         "':" + e.getMessage());
             }
 
+            // Should we apply the highstate?
+            boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
+
             // Apply initial states asynchronously
             List<String> statesToApply = new ArrayList<>();
             statesToApply.add(ApplyStatesEventMessage.CERTIFICATE);
@@ -364,13 +368,13 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             MessageQueue.publish(new ApplyStatesEventMessage(
                     server.getId(),
                     server.getCreator() != null ? server.getCreator().getId() : null,
-                    activationKey.isPresent() ? false : true,
+                    !applyHighstate, // Refresh package list if we're not going to apply the highstate afterwards
                     statesToApply
             ));
-            // Call final Highstate when we have an activation key
-            if (activationKey.isPresent()) {
-                MessageQueue.publish(new ApplyStatesEventMessage(server.getId(),
-                        true, Collections.emptyList()));
+
+            // Call final highstate to deploy config channels if required
+            if (applyHighstate) {
+                MessageQueue.publish(new ApplyStatesEventMessage(server.getId(), true, Collections.emptyList()));
             }
         }
         catch (Throwable t) {
