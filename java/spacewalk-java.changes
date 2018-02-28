@@ -6,7 +6,6 @@
 - Refresh pillar data when executing the subscribe channels action for ssh-push minions (bsc#1080349)
 - Users who can view system should be able to delete it (bsc#1079652)
 - Set hostname before hardware refresh as well (bsc#1077760)
-- Make minion label unselectable on Visualization's 'Systems Grouping' view (bsc#1034037)
 - Fix home page link for "Register systems" (bsc#1065708)
 - Remove previous activation keys on every (re-)activation (bsc#1031081)
 - Clean up SUSE manager repos in bootstrap script for trad clients (bsc#1077997)

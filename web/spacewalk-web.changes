@@ -1,3 +1,4 @@
+- Make minion label unselectable on Visualization's 'Systems Grouping' view (bsc#1034037)
 - Allow scheduling the change of software channels as an action. The previous channels remain accessible
   to the registered system until the action is executed.
 
