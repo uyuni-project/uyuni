@@ -77,7 +77,7 @@ public enum SaltActionChainGeneratorService {
         for (Map.Entry<Server, List<Action>> entry : minionActions.entrySet()) {
             int chunk = 1;
             for (Action action : entry.getValue()) {
-                String stateId = "suma_actionchain_" + Long.toString(actionChain.getId()) + "_" + action.getId();
+                String stateId = "suma_action_" + action.getId();
                 if (ActionFactory.TYPE_REBOOT.equals(action.getActionType())) {
                     output.putAll(renderRebootAction(stateId, prevSaltMod, prevStateId, action));
                     prevSaltMod = ((Map<String, Object>) output.get(stateId)).entrySet()
