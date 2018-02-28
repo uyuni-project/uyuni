@@ -1,3 +1,9 @@
+-------------------------------------------------------------------
+Wed Feb 28 10:15:38 CET 2018 - jgonzalez@suse.com
+
+- version 3.2.4-1
+- Remove SUSE Manager repositories when deleting salt minions
+  (bsc#1079847)
 - Fix master tops merging when running salt>=2018
 
 -------------------------------------------------------------------
