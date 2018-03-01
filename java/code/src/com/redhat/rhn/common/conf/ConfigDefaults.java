@@ -224,32 +224,32 @@ public class ConfigDefaults {
      * Salt Minions presence ping timeouts in seconds
      */
     public static final String SALT_PRESENCE_PING_TIMEOUT =
-            "salt_presence_ping_timeout";
+            "java.salt_presence_ping_timeout";
     public static final String SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT =
-            "salt_presence_ping_gather_job_timeout";
+            "java.salt_presence_ping_gather_job_timeout";
 
     public static final String SALT_SSH_CONNECT_TIMEOUT =
-            "salt_ssh_connect_timeout";
+            "java.salt_ssh_connect_timeout";
 
     /**
      * Duration in hours of the time window for Salt minions to stage
      * packages in advance of scheduled installations or upgrades
      */
     public static final String SALT_CONTENT_STAGING_WINDOW =
-            "salt_content_staging_window";
+            "java.salt_content_staging_window";
 
     /**
      * Advance time, in hours, for the content staging window to open with
      * respect to the scheduled installation/upgrade time
      */
     public static final String SALT_CONTENT_STAGING_ADVANCE =
-            "salt_content_staging_advance";
+            "java.salt_content_staging_advance";
 
     /**
      * If true, check via JWT tokens that files requested by a minion are actually accessible by that minon.
      * Turning this flag to false disables the checks.
      */
-    public static final String SALT_CHECK_DOWNLOAD_TOKENS = "salt_check_download_tokens";
+    public static final String SALT_CHECK_DOWNLOAD_TOKENS = "java.salt_check_download_tokens";
 
 
     private ConfigDefaults() {
