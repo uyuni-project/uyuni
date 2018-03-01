@@ -127,7 +127,7 @@ public class CommonFactory extends HibernateFactory {
         url.setToken(token);
         Calendar pcal = Calendar.getInstance();
         pcal.setTime(expires);
-        pcal.add(Calendar.HOUR, c.getInt("server.satellite.tiny_url_timeout", 4));
+        pcal.add(Calendar.HOUR, c.getInt("java.server.satellite.tiny_url_timeout", 4));
         url.setExpires(new Date(pcal.getTimeInMillis()));
         return url;
     }
