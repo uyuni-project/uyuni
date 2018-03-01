@@ -59,7 +59,7 @@ end
 
 When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, target|
   node = get_target(target)
-  node.run("wget http://#{$server.ip}/#{file}", true, 500, 'root')
+  node.run("wget http://#{$server.ip}/#{file}")
 end
 
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
@@ -180,13 +180,13 @@ end
 
 When(/^I execute spacewalk\-channel and pass "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
-  $command_output, _code = $client.run(command, true, 500, 'root')
+  $command_output, _code = $client.run(command)
 end
 
 When(/^spacewalk\-channel fails with "([^"]*)"$/) do |arg1|
   command = "spacewalk-channel #{arg1}"
   # we are checking that the cmd should fail here
-  $command_output, code = $client.run(command, false, 500, 'root')
+  $command_output, code = $client.run(command, false)
   raise "#{command} should fail, but hasn't" if code.zero?
 end
 
@@ -310,7 +310,7 @@ And(/^I register "([^*]*)" as traditional client$/) do |client|
   command = 'wget --no-check-certificate ' \
             '-O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
             "http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
-  node.run(command, true, 500)
+  node.run(command)
   command = 'rhnreg_ks --username=admin --password=admin --force ' \
             "--serverUrl=#{registration_url} " \
             '--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
@@ -353,8 +353,9 @@ And(/I create dockerized minions$/) do
   master, _code = $minion.run('cat /etc/salt/minion.d/susemanager.conf')
   # build everything
   distros = %w[rhel6 rhel7 sles11sp4 sles12 sles12sp1]
+  docker_timeout = 2000
   distros.each do |os|
-    $minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/#{os}/ -t #{os}", true, 2000)
+    $minion.run("docker build https://gitlab.suse.de/galaxy/suse-manager-containers.git#master:minion-fabric/#{os}/ -t #{os}", true, docker_timeout)
     spawn_minion = '/etc/salt/minion; dbus-uuidgen > /etc/machine-id; salt-minion -l trace'
     $minion.run("docker run -h #{os} -d --entrypoint '/bin/sh' #{os} -c \"echo \'#{master}\' > #{spawn_minion}\"")
     puts "minion #{os} created and running"
@@ -396,7 +397,8 @@ When(/^I register this client for SSH push via tunnel$/) do
   `rm #{path}`
   # perform the registration
   filename = File.basename(path)
-  $server.run("expect #{filename}", true, 600, 'root')
+  bootstrap_timeout = 600
+  $server.run("expect #{filename}", true, bootstrap_timeout, 'root')
   # restore files from backups
   $server.run('mv /etc/hosts.BACKUP /etc/hosts')
   $server.run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
@@ -490,7 +492,8 @@ When(/^I configure the proxy$/) do
   # perform the configuration
   filename = File.basename(path)
   cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
-  $proxy.run(cmd, true, 600, 'root')
+  proxy_timeout = 600
+  $proxy.run(cmd, true, proxy_timeout, 'root')
 end
 
 Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
