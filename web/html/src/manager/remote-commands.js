@@ -3,6 +3,7 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {Button} = require("../components/buttons");
+const {Panel} = require("../components/panel")
 const Network = require("../utils/network");
 
 function object2map(obj) {
@@ -177,12 +178,7 @@ class RemoteCommand extends React.Component {
     return (
       <div>
           {msgs}
-          <div id="remote-root" className="spacewalk-toolbar-h1">
-            <h1>
-              <i className="fa fa-desktop"></i>
-              {t("Remote Commands")}
-            </h1>
-          </div>
+          <Panel title={t("Remote Commands")} helpUrl="/rhn/help/reference/en-US/ref.webui.salt.remote.commands.jsp" />
           <div className="panel panel-default">
             <div className="panel-body">
               <div className="row">

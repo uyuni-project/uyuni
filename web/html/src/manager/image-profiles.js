@@ -110,7 +110,7 @@ class ImageProfiles extends React.Component {
 
     return (
       <span>
-        <Panel title="Image Profiles" icon="fa-list" button={ panelButtons }>
+        <Panel title="Image Profiles" icon="fa-list" helpUrl="/rhn/help/reference/en-US/ref.webui.images.profiles.jsp#ref.webui.images.profiles" button={ panelButtons }>
           {this.state.messages}
           <Table
             data={this.state.imageprofiles}

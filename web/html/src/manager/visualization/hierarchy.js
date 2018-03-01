@@ -218,8 +218,17 @@ const Hierarchy = React.createClass({
   },
 
   render: function() {
+    var hurl = null;
+    if (title === "Virtualization Hierarchy") {
+      hurl = "/rhn/help/reference/en-US/ref.webui.systems.visualization.jsp#ref.webui.systems.visualization";
+    } else if(title === "Proxy Hierarchy") {
+      hurl = "/rhn/help/reference/en-US/ref.webui.systems.visualization.jsp#ref.webui.systems.proxy.visualzation";
+    } else if(title === "Systems Grouping" ) {
+      hurl = "/rhn/help/reference/en-US/ref.webui.systems.visualization.jsp#ref.webui.systems.grouping.visualzation";
+    }
+
     return (
-      <Panel title={t(title)}>
+      <Panel title={t(title)} helpUrl={hurl}>
         <button className='toggle-filter-button' onClick={this.showFilters}>
           {t((this.state.showFilters ? 'Hide' : 'Show') + ' filters')}
           <i className={"fa fa-caret-" + (this.state.showFilters ? 'up' : 'down')} aria-hidden="true"></i>

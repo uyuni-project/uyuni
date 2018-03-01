@@ -32,11 +32,21 @@ var Panel = React.createClass({
   },
 
   render: function() {
+    var help = this.props.helpUrl ?
+      (
+        <a href={this.props.helpUrl} target="_blank">
+          <i className="fa fa-question-circle spacewalk-help-link"></i>
+        </a>
+      ) : null;
+
     return (
       <div>
         <div className="spacewalk-toolbar-h1">
           {this.props.button}
-          <h1><i className={'fa ' + this.props.icon}></i>{t(this.props.title)}</h1>
+          <h1>
+            <i className={'fa ' + this.props.icon}></i>{t(this.props.title)}
+            {help}
+          </h1>
         </div>
         {this.props.children}
       </div>

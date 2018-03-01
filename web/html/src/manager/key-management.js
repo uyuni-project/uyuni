@@ -112,7 +112,9 @@ class KeyManagement extends React.Component {
     </div>;
     return (
       <span>
-        <Panel title={t("Keys")} icon="fa-desktop" button={ panelButtons }>
+        <Panel title={t("Keys")} icon="fa-desktop"
+               button={ panelButtons }
+               helpUrl="/rhn/help/reference/en-US/ref.webui.salt.jsp#ref.webui.salt.onboarding">
           <Table
               data={this.state.keys}
               identifier={this.rowKey}
