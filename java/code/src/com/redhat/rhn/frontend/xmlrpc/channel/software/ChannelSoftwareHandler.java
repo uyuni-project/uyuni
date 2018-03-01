@@ -47,9 +47,6 @@ import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
-import com.redhat.rhn.frontend.xmlrpc.DuplicateChannelLabelException;
-import com.redhat.rhn.frontend.xmlrpc.DuplicateChannelNameException;
-import com.redhat.rhn.frontend.xmlrpc.InvalidChannelArchException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
@@ -83,6 +80,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheWorker;
 
+import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -90,6 +88,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -606,6 +605,42 @@ public class ChannelSoftwareHandler extends BaseHandler {
     /**
      * Allows to modify channel attributes
      * @param loggedInUser The current user
+     * @param channelLabel label of channel to be modified
+     * @param details map of channel attributes to be changed
+     * @return 1 if edit was successful, exception thrown otherwise
+     *
+     * @xmlrpc.doc Allows to modify channel attributes
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "channelId", "channel id")
+     * @xmlrpc.param
+     *  #struct("channel_map")
+     *      #prop_desc("string", "checksum_label", "new channel repository checksum label
+     *          (optional)")
+     *      #prop_desc("string", "name", "new channel name (optional)")
+     *      #prop_desc("string", "summary", "new channel summary (optional)")
+     *      #prop_desc("string", "description", "new channel description (optional)")
+     *      #prop_desc("string", "maintainer_name", "new channel maintainer name
+     *          (optional)")
+     *      #prop_desc("string", "maintainer_email", "new channel email address
+     *          (optional)")
+     *      #prop_desc("string", "maintainer_phone", "new channel phone number (optional)")
+     *      #prop_desc("string", "gpg_key_url", "new channel gpg key url (optional)")
+     *      #prop_desc("string", "gpg_key_id", "new channel gpg key id (optional)")
+     *      #prop_desc("string", "gpg_key_fp", "new channel gpg key fingerprint
+     *          (optional)")
+     *      #prop_desc("string", "gpg_check", "enable/disable gpg check (optional)")
+     *
+     *  #struct_end()
+     *@xmlrpc.returntype #return_int_success()
+     */
+    public int setDetails(User loggedInUser, String channelLabel, Map<String, String> details) {
+        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
+        return setDetails(loggedInUser, channel.getId().intValue(), details);
+    }
+
+    /**
+     * Allows to modify channel attributes
+     * @param loggedInUser The current user
      * @param channelId id of channel to be modified
      * @param details map of channel attributes to be changed
      * @return 1 if edit was successful, exception thrown otherwise
@@ -629,14 +664,17 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      #prop_desc("string", "gpg_key_id", "new channel gpg key id (optional)")
      *      #prop_desc("string", "gpg_key_fp", "new channel gpg key fingerprint
      *          (optional)")
+     *      #prop_desc("string", "gpg_check", "enable/disable gpg check
+     *          (optional)")
      *  #struct_end()
 
      *@xmlrpc.returntype #return_int_success()
      */
     public int setDetails(User loggedInUser, Integer channelId, Map<String,
             String> details) {
-        Channel channel = lookupChannelById(loggedInUser, channelId.longValue());
+        channelAdminPermCheck(loggedInUser);
 
+        Channel channel = lookupChannelById(loggedInUser, channelId.longValue());
         Set<String> validKeys = new HashSet<String>();
         validKeys.add("checksum_label");
         validKeys.add("name");
@@ -648,52 +686,96 @@ public class ChannelSoftwareHandler extends BaseHandler {
         validKeys.add("gpg_key_url");
         validKeys.add("gpg_key_id");
         validKeys.add("gpg_key_fp");
+        validKeys.add("gpg_check");
         validateMap(validKeys, details);
 
         UpdateChannelCommand ucc = new UpdateChannelCommand(loggedInUser, channel);
 
-        if (details.containsKey("checksum_label")) {
-            ucc.setChecksumLabel(details.get("checksum_label"));
-        }
+        setChangedValues(ucc, details);
+
+        ucc.update(channelId.longValue());
+        ServerFactory.listMinionsByChannel(channelId).stream().forEach(ms -> {
+            SaltStateGeneratorService.INSTANCE.generatePillar(ms, false,
+                    Collections.emptySet());
+        });
+        return 1;
+    }
+
+    /**
+     * Set the values to the command.
+     * @param command CreateChannelCommand command
+     * @param details Map Key/value pairs of changed values
+     */
+    private void setChangedValues(CreateChannelCommand command, Map<String, String> details) {
 
         if (details.containsKey("name")) {
-            ucc.setName(details.get("name"));
+            command.setName(details.get("name"));
+        }
+
+        if (details.containsKey("label")) {
+            command.setLabel(details.get("label"));
+        }
+
+        if (details.containsKey("parent_label")) {
+            command.setParentLabel(details.get("parent_label"));
+        }
+
+        if (details.containsKey("arch_label")) {
+            command.setArchLabel(details.get("arch_label"));
+        }
+
+        if (details.containsKey("checksum")) {
+            command.setChecksumLabel(details.get("checksum"));
+        }
+        else if (details.containsKey("checksum_label")) {
+            command.setChecksumLabel(details.get("checksum_label"));
         }
 
         if (details.containsKey("summary")) {
-            ucc.setSummary(details.get("summary"));
+            command.setSummary(details.get("summary"));
         }
 
         if (details.containsKey("description")) {
-            ucc.setDescription(details.get("description"));
-        }
-
-        if (details.containsKey("maintainer_name")) {
-            ucc.setMaintainerName(details.get("maintainer_name"));
-        }
-
-        if (details.containsKey("maintainer_email")) {
-            ucc.setMaintainerEmail(details.get("maintainer_email"));
-        }
-
-        if (details.containsKey("maintainer_phone")) {
-            ucc.setMaintainerPhone(details.get("maintainer_phone"));
+            command.setDescription(details.get("description"));
         }
 
         if (details.containsKey("gpg_key_url")) {
-            ucc.setGpgKeyUrl(details.get("gpg_key_url"));
+            command.setGpgKeyUrl(details.get("gpg_key_url"));
+        }
+        else if (details.containsKey("gpg_url")) {
+            command.setGpgKeyUrl(details.get("gpg_url"));
         }
 
         if (details.containsKey("gpg_key_id")) {
-            ucc.setGpgKeyId(details.get("gpg_key_id"));
+            command.setGpgKeyId(details.get("gpg_key_id"));
+        }
+        else if (details.containsKey("gpg_id")) {
+            command.setGpgKeyId(details.get("gpg_key_id"));
         }
 
         if (details.containsKey("gpg_key_fp")) {
-            ucc.setGpgKeyFp(details.get("gpg_key_fp"));
+            command.setGpgKeyFp(details.get("gpg_key_fp"));
+        }
+        else if (details.containsKey("gpg_fingerprint")) {
+            command.setGpgKeyFp(details.get("gpg_fingerprint"));
         }
 
-       ucc.update(channelId.longValue());
-        return 1;
+        if (details.containsKey("gpg_check")) {
+            command.setGpgCheck(Boolean.parseBoolean(details.get("gpg_check")));
+        }
+
+        if (details.containsKey("maintainer_name")) {
+            command.setMaintainerName(details.get("maintainer_name"));
+        }
+
+        if (details.containsKey("maintainer_email")) {
+            command.setMaintainerEmail(details.get("maintainer_email"));
+        }
+
+        if (details.containsKey("maintainer_phone")) {
+            command.setMaintainerPhone(details.get("maintainer_phone"));
+        }
+
     }
 
     /**
@@ -1981,6 +2063,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *              gpg_id might be used as well")
      *          #prop_desc("string", "gpg_key_fp", "(optional),
      *              gpg_fingerprint might be used as well")
+     *          #prop_desc("string", "gpg_check", "(optional)")
      *          #prop_desc("string", "description", "(optional)")
      *          #prop_desc("string", "checksum", "either sha1 or sha256")
      *      #struct_end()
@@ -1990,8 +2073,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
     public int clone(User loggedInUser, String originalLabel,
             Map<String, String> channelDetails, Boolean originalState) {
 
+        channelAdminPermCheck(loggedInUser);
         // confirm that the user only provided valid keys in the map
-        Set<String> validKeys = new HashSet<String>();
+        Set<String> validKeys = new HashSet<>();
         validKeys.add("name");
         validKeys.add("label");
         validKeys.add("summary");
@@ -2003,97 +2087,19 @@ public class ChannelSoftwareHandler extends BaseHandler {
         validKeys.add("gpg_key_url");
         validKeys.add("gpg_key_id");
         validKeys.add("gpg_key_fp");
+        validKeys.add("gpg_check");
         validKeys.add("description");
         validKeys.add("checksum");
         validateMap(validKeys, channelDetails);
 
-        channelAdminPermCheck(loggedInUser);
-
-        String name = channelDetails.get("name");
-        String label = channelDetails.get("label");
-        String parentLabel = channelDetails.get("parent_label");
-        String archLabel = channelDetails.get("arch_label");
-        String summary = channelDetails.get("summary");
-        String description = channelDetails.get("description");
-        String checksum = channelDetails.get("checksum");
-
-        if (ChannelFactory.lookupByLabel(loggedInUser.getOrg(), label) != null) {
-            throw new DuplicateChannelLabelException(label);
-        }
-
-        if (ChannelFactory.doesChannelNameExist(name)) {
-            throw new DuplicateChannelNameException(name);
-        }
-
         Channel originalChan = lookupChannelByLabel(loggedInUser.getOrg(), originalLabel);
 
-        ChannelArch arch = null;
-        if (archLabel != null && archLabel.length() > 0) {
+        CloneChannelCommand ccc = new CloneChannelCommand(originalState, originalChan);
 
-            arch = ChannelFactory.lookupArchByName(archLabel);
-            if (arch == null) {
-                throw new InvalidChannelArchException(archLabel);
-            }
-        }
-        else {
-            arch = originalChan.getChannelArch();
-        }
+        ccc.setUser(loggedInUser);
+        setChangedValues(ccc, channelDetails);
 
-        if (checksum == null) {
-            checksum = originalChan.getChecksumTypeLabel();
-        }
-
-        String gpgUrl, gpgId, gpgFingerprint;
-        if (channelDetails.containsKey("gpg_key_url") ||
-                channelDetails.containsKey("gpg_url") ||
-                channelDetails.containsKey("gpg_key_id") ||
-                channelDetails.containsKey("gpg_id") ||
-                channelDetails.containsKey("gpg_key_fp") ||
-                channelDetails.containsKey("gpg_fingerprint")) {
-            // if one of the GPG information was set, use it
-            if (channelDetails.get("gpg_key_url") == null) {
-                gpgUrl = channelDetails.get("gpg_url");
-            }
-            else {
-                gpgUrl = channelDetails.get("gpg_key_url");
-            }
-            if (channelDetails.get("gpg_key_id") == null) {
-                gpgId = channelDetails.get("gpg_id");
-            }
-            else {
-                gpgId = channelDetails.get("gpg_key_id");
-            }
-            if (channelDetails.get("gpg_key_fp") == null) {
-                gpgFingerprint = channelDetails.get("gpg_fingerprint");
-            }
-            else {
-                gpgFingerprint = channelDetails.get("gpg_key_fp");
-            }
-        }
-        else {
-            // copy GPG info from the original channel
-            gpgUrl = originalChan.getGPGKeyUrl();
-            gpgId = originalChan.getGPGKeyId();
-            gpgFingerprint = originalChan.getGPGKeyFp();
-        }
-
-        CloneChannelCommand helper = new CloneChannelCommand(originalState.booleanValue(),
-                originalChan);
-        helper.setName(name);
-        helper.setArchLabel(arch.getLabel());
-        helper.setDescription(description);
-        helper.setGpgKeyFp(gpgFingerprint);
-        helper.setGpgKeyId(gpgId);
-        helper.setGpgKeyUrl(gpgUrl);
-        helper.setLabel(label);
-        if (parentLabel != null) {
-            helper.setParentLabel(parentLabel);
-        }
-        helper.setUser(loggedInUser);
-        helper.setSummary(summary);
-        helper.setChecksumLabel(checksum);
-
-        Channel clone = helper.create();
+        Channel clone = ccc.create();
         return clone.getId().intValue();
     }
 
@@ -2106,7 +2112,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Role channelRole = RoleFactory.lookupByLabel("channel_admin");
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
         if (!loggedInUser.hasRole(channelRole) && !loggedInUser.hasRole(orgAdminRole)) {
-            throw new PermissionException("Only Org Admins and Channel Admins can clone " +
+            throw new PermissionException("Only Org Admins and Channel Admins can clone or update " +
                     "channels.");
         }
     }
