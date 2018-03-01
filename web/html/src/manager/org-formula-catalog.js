@@ -50,7 +50,7 @@ var FormulaCatalog = React.createClass({
             })}/>;
         }
         return (
-            <Panel title="Formula Catalog" icon="spacewalk-icon-salt-add">
+            <Panel title="Formula Catalog" icon="spacewalk-icon-salt-add" helpUrl="/rhn/help/reference/en-US/ref.webui.salt.formula_catalog.jsp">
             {messages}
             <div>
               <Table

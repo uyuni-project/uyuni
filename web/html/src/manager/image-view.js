@@ -316,7 +316,8 @@ class ImageView extends React.Component {
 
     return (
       <span>
-        <Panel title={this.state.selected ? this.state.selected.name : t("Images")} icon={this.state.selected ? "fa-hdd-o" : "fa-list"} button={ panelButtons }>
+        <Panel title={this.state.selected ? this.state.selected.name : t("Images")} helpUrl="/rhn/help/reference/en-US/ref.webui.images.jsp#ref.webui.images.images"
+               icon={this.state.selected ? "fa-hdd-o" : "fa-list"} button={ panelButtons }>
           { this.state.messages.length > 0 && <Messages items={this.state.messages}/> }
           { this.state.selected ?
             <ImageViewDetails data={selected} onTabChange={() => this.updateView(getHashId(), getHashTab())}
