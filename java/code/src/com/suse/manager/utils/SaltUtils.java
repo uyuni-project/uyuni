@@ -489,7 +489,11 @@ public class SaltUtils {
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            CmdExecCodeAll result = Json.GSON.fromJson(jsonResult, CmdExecCodeAll.class);
+            Map<String, StateApplyResult<CmdExecCodeAll>> stateApplyResult = Json.GSON.fromJson(jsonResult,
+                    new TypeToken<Map<String, StateApplyResult<CmdExecCodeAll>>>() { }.getType());
+            CmdExecCodeAll result = stateApplyResult.entrySet().stream()
+                    .findFirst().map(e -> e.getValue().getChanges())
+                    .orElseGet(() -> new CmdExecCodeAll());
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = Optional.ofNullable(
                     scriptAction.getScriptActionDetails().getResults())
