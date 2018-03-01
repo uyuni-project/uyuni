@@ -10,7 +10,8 @@
 
     <rhn:toolbar base="h1" icon="header-activation-key"
                 creationUrl="/rhn/systems/customdata/CreateCustomKey.do"
-                creationType="customkey">
+                creationType="customkey"
+                helpUrl="/rhn/help/reference/en-US/ref.webui.systems.cust-info.jsp#ref.webui.systems.cust-info">
         <bean:message key="system.jsp.customkey.title"/>
     </rhn:toolbar>
 

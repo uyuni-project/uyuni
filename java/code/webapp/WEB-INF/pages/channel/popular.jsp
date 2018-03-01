@@ -17,8 +17,9 @@ function showFiltered() {
 </head>
 
 <body onLoad="onLoadStuff(3); showFiltered();">
-<rhn:toolbar base="h1" icon="header-channel">
-  <bean:message key="channel.nav.popular"/>
+<rhn:toolbar base="h1" icon="header-channel" 
+             helpUrl="/rhn/help/reference/en-US/ref.webui.channels.jsp#s3-sm-channel-list-popular">
+    <bean:message key="channel.nav.popular"/>
 </rhn:toolbar>
 
 <%@ include file="/WEB-INF/pages/common/fragments/channel/channel_tabs.jspf" %>

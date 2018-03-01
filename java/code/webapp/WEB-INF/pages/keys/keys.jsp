@@ -10,7 +10,8 @@
 <rhn:toolbar base="h1" icon="header-info"
                creationUrl="CryptoKeyCreate.do"
                creationType="keys"
-               imgAlt="info.alt.img">
+               imgAlt="info.alt.img"
+               helpUrl="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.keys">
   <bean:message key="keys.jsp.toolbar"/>
 </rhn:toolbar>
 

@@ -10,7 +10,8 @@
 </head>
 <body>
 
-<rhn:toolbar base="h1" icon="header-search">
+<rhn:toolbar base="h1" icon="header-search"
+             helpUrl="/rhn/help/reference/en-US/ch-openscap.jsp#idm139635691133968">
   <bean:message key="scapdiff.jsp.toolbar"/>
 </rhn:toolbar>
 
