@@ -9,7 +9,8 @@
 <rhn:toolbar base="h1" icon="header-info"
                creationUrl="RepoCreate.do"
                creationType="repos"
-               imgAlt="info.alt.img">
+               imgAlt="info.alt.img"
+               helpUrl="/rhn/help/reference/en-US/ref.webui.channels.manage.jsp#s4-chnlmgmt-cdetails-repos">
   <bean:message key="repos.jsp.header"/>
 </rhn:toolbar>
 <div class="page-summary">

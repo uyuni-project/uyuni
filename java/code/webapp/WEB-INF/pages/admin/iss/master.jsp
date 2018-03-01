@@ -8,7 +8,8 @@
 
         <rhn:toolbar base="h1" icon="repo-sync"
                      creationUrl="/rhn/admin/iss/EditSlave.do" creationType="slave"
-                     creationAcl="user_role(satellite_admin)">
+                     creationAcl="user_role(satellite_admin)"
+                     helpUrl="/rhn/help/reference/en-US/ref.webui.admin.iss.jsp#s3-sattools-iss-master">
             <bean:message key="iss.master.jsp.toolbar" />
         </rhn:toolbar>
 

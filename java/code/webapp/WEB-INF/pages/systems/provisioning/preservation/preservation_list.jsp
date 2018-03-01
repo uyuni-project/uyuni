@@ -8,7 +8,8 @@
 <rhn:toolbar base="h1" icon="header-kickstart"
     imgAlt="system.common.kickstartAlt"
     creationUrl="PreservationListCreate.do"
-    creationType="filelist">
+    creationType="filelist"
+    helpUrl="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.preserve">
   <bean:message key="preservation_list.jsp.toolbar"/>
 </rhn:toolbar>
 

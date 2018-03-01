@@ -13,7 +13,8 @@
 <rhn:toolbar base="h1" icon="header-channel-mapping"
                creationUrl="DistChannelMapEdit.do"
                creationType="distchannelmap"
-               iconAlt="info.alt.img">
+               iconAlt="info.alt.img"
+               helpUrl="/rhn/help/reference/en-US/ref.webui.channels.mapping.jsp#ref.webui.channels.mapping">
   <bean:message key="Distribution Channel Mapping"/>
 </rhn:toolbar>
 

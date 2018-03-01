@@ -10,7 +10,7 @@
 <head>
 </head>
 <body>
-<rhn:toolbar base="h1" icon="header-system" imgAlt="system.common.systemAlt">
+<rhn:toolbar base="h1" icon="header-system" imgAlt="system.common.systemAlt" helpUrl="/rhn/help/reference/en-US/ref.webui.systems.systems.jsp#ref.webui.systems.systems.currency">
   <bean:message key="systemcurrency.jsp.header"/>
 </rhn:toolbar>
 

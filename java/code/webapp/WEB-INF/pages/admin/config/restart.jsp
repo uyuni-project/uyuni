@@ -11,7 +11,8 @@
         </c:if>
 </head>
 <body  <c:if test="${requestScope.restart == 'true'}">onload="checkConnection(${requestScope.restartDelay})"</c:if> >
-    <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img">
+    <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img"
+                 helpUrl="/rhn/help/reference/en-US/ref.webui.admin.config.jsp#s3-sattools-config-restart">
       <bean:message key="restart.jsp.toolbar"/>
     </rhn:toolbar>
     <p>

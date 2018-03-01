@@ -10,7 +10,8 @@
                helpUrl="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.snippet"
                creationUrl="CobblerSnippetCreate.do"
                creationType="snippets"
-               iconAlt="info.alt.img">
+               iconAlt="info.alt.img"
+               helpUrl="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.snippet">
   <bean:message key="snippets.jsp.toolbar"/>
 </rhn:toolbar>
 <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/snippet_tabs.xml"
