@@ -1,3 +1,4 @@
+-Added function to update software channel. Moreover, some refactoring has been done(bsc#1076578)
 -------------------------------------------------------------------
 Fri Feb 23 12:14:59 CET 2018 - jgonzalez@suse.com
 

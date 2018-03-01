@@ -584,6 +584,7 @@ def do_softwarechannel_details(self, args):
         print('GPG Key:            %s' % details.get('gpg_key_id'))
         print('GPG Fingerprint:    %s' % details.get('gpg_key_fp'))
         print('GPG URL:            %s' % details.get('gpg_key_url'))
+        print('GPG CHECK:          %s' % details.get('gpg_check'))
 
         if trees:
             print('')
@@ -732,7 +733,120 @@ def do_softwarechannel_delete(self, args):
 
     for channel in children + parents:
         self.client.channel.software.delete(self.session, channel)
+####################
+def help_softwarechannel_update(self):
+    print('softwarechannel_update: Update a software channel')
+    print('''usage: softwarechannel_update LABEL(To identify the channel) [options]
+options:
+  -l LABEL(Required)
+  -n NAME
+  -s SUMMARY
+  -d DESCRIPTION
+  -c CHECKSUM %s
+  -u GPG-URL
+  -i GPG-ID
+  -f GPG-FINGERPRINT
+  -g DISABLE-GPG-CHECK''' % CHECKSUM)
 
+
+def do_softwarechannel_update(self, args):
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-n', '--name')
+    arg_parser.add_argument('-l', '--label')
+    arg_parser.add_argument('-s', '--summary')
+    arg_parser.add_argument('-d', '--description')
+    arg_parser.add_argument('-c', '--checksum')
+    arg_parser.add_argument('-u', '--gpg_url')
+    arg_parser.add_argument('-i', '--gpg_id')
+    arg_parser.add_argument('-f', '--gpg_fingerprint')
+    arg_parser.add_argument('-g', '--disable_gpg_check')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
+
+    if is_interactive(options):
+       options.label = prompt_user('Channel Label:', noblank=True)
+
+       print('')
+       print('New Name (blank to keep unchanged)')
+       print('------------')
+       print('')
+       options.name = prompt_user('Name:')
+
+       print('')
+       print('New Summary (blank to keep unchanged)')
+       print('------------')
+       print('')
+       options.summary = prompt_user('Summary:')
+
+       print('')
+       print 'New Description (blank to keep unchanged)'
+       print('------------')
+       print('')
+       options.description = prompt_user('Description:')
+
+       print('')
+       print('New Checksum type (blank to keep unchanged)')
+       print('------------')
+       print('\n'.join(sorted(self.CHECKSUM)))
+       print('')
+       options.checksum = prompt_user('Select:')
+
+       print('')
+       print('New GPG URL (blank to keep unchanged)')
+       print('------------')
+       print('')
+       options.gpg_url = prompt_user('GPG URL:')
+
+       print('')
+       print('New GPG ID (blank to keep unchanged)')
+       print('------------')
+       print('')
+       options.gpg_id = prompt_user('GPG ID:')
+
+       print('')
+       print('New GPG Fingerprint (blank to keep unchanged)')
+       print('------------')
+       print('')
+       options.gpg_fingerprint = prompt_user('GPG Fingerprint:')
+
+       print('')
+       print('Disable GPG CHECK (blank to keep unchanged)')
+       print('------------')
+       print('')
+       options.disable_gpg_check = prompt_user('Disable GPG Check [yes/no]? ')
+
+    if not options.label:
+        logging.error('A channel label is required to identify the channel')
+        return
+    if options.disable_gpg_check and options.disable_gpg_check not in ('yes','no'):
+        logging.error('Only [yes/no] values are acceptable for --disable_gpg_check')
+        return
+    details = {}
+    if options.name:
+        details['name'] = options.name
+
+    if options.summary:
+        details['summary'] = options.summary
+
+    if options.description:
+        details['description'] = options.description
+
+    if options.checksum:
+        details['checksum_label'] = options.checksum
+
+    if options.gpg_id:
+        details['gpg_key_id'] = options.gpg_id
+
+    if options.gpg_url:
+        details['gpg_key_url'] = options.gpg_url
+
+    if options.gpg_fingerprint:
+        details['gpg_key_fp'] = options.gpg_fingerprint
+
+    if options.disable_gpg_check:
+        details['gpg_check'] = str(not options.disable_gpg_check.lower() == "yes")
+
+    self.client.channel.software.setDetails(self.session, options.label, details)
 ####################
 
 
@@ -743,6 +857,7 @@ def help_softwarechannel_create(self):
 options:
   -n NAME
   -l LABEL
+  -s SUMMARY
   -p PARENT_CHANNEL
   -a ARCHITECTURE
   -c CHECKSUM %s
@@ -758,10 +873,12 @@ def do_softwarechannel_create(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-n', '--name')
     arg_parser.add_argument('-l', '--label')
+    arg_parser.add_argument('-s', '--summary')
     arg_parser.add_argument('-p', '--parent-channel')
     arg_parser.add_argument('-a', '--arch')
     arg_parser.add_argument('-c', '--checksum')
     arg_parser.add_argument('-u', '--gpg_url')
+    arg_parser.add_argument('-i', '--gpg_id')
     arg_parser.add_argument('-f', '--gpg_fingerprint')
     arg_parser.add_argument('-g', '--disable_gpg_check', action='store_true')
 
@@ -770,6 +887,7 @@ def do_softwarechannel_create(self, args):
     if is_interactive(options):
         options.name = prompt_user('Channel Name:', noblank=True)
         options.label = prompt_user('Channel Label:', noblank=True)
+        options.summary = prompt_user('Channel Summary:', noblank=True)
 
         print('Base Channels')
         print('-------------')
@@ -818,66 +936,60 @@ def do_softwarechannel_create(self, args):
         options.disable_gpg_check = self.user_confirm('Disable GPG Check [y/N]? ',
                                 nospacer=True, ignore_yes=True)
 
-    else:
-        if not options.name:
-            logging.error('A channel name is required')
-            return
+    if validate_required_data(options):
+        set_default_data(options)
+        gpgData = get_gpg_data(options)
+        self.client.channel.software.create(self.session, options.label, options.name, options.summary,
+                                            'channel-%s' % options.arch, options.parent_channel,
+                                            options.checksum, gpgData, not options.disable_gpg_check
+                                       )
 
-        if not options.label:
-            logging.error('A channel label is required')
-            return
-
-        if not options.arch:
-            options.arch = 'x86_64'
-
-        if not options.checksum:
-            options.checksum = 'sha256'
-
-# these are optional:
-#        if not ( options.gpg_url and options.gpg_id and options.gpg_fingerprint):
-#            logging.error('GPG url, id and fingerprint(are all required'))
-#            return
-
-        # default to make this a base channel
-        if not options.parent_channel:
-            options.parent_channel = ''
-
-    if options.gpg_url and options.gpg_id and options.gpg_fingerprint:
-        self.client.channel.software.create(self.session,
-                                            options.label,
-                                            options.name,
-                                            options.name, # summary
-                                            'channel-%s' % options.arch,
-                                            options.parent_channel,
-                                            options.checksum,
-                                            {'url' :         options.gpg_url,
-                                             'id' :          options.gpg_id,
-                                             'fingerprint' : options.gpg_fingerprint},
-                                             not options.disable_gpg_check
-                                           )
-    else:
-        if options.disable_gpg_check:
-            self.client.channel.software.create(self.session,
-                                            options.label,
-                                            options.name,
-                                            options.name, # summary
-                                            'channel-%s' % options.arch,
-                                            options.parent_channel,
-                                            options.checksum,
-                                            {'url' :         '',
-                                             'id' :          '',
-                                             'fingerprint' : ''},
-                                             not options.disable_gpg_check
-                                           )
-        else:
-            self.client.channel.software.create(self.session,
-                                            options.label,
-                                            options.name,
-                                            options.name,  # summary
-                                            'channel-%s' % options.arch,
-                                            options.parent_channel,
-                                            options.checksum)
 ####################
+
+
+def get_gpg_data(options):
+    gpgData = {}
+
+    if options.gpg_url:
+        gpgData['url'] = options.gpg_url
+
+    if options.gpg_id:
+        gpgData['id'] = options.gpg_id
+
+    if options.gpg_fingerprint:
+        gpgData['fingerprint'] = options.gpg_fingerprint
+
+    return gpgData
+####################
+
+
+def set_default_data(options):
+    if not options.arch:
+        options.arch = 'x86_64'
+
+    if not options.checksum:
+        options.checksum = 'sha256'
+
+    if not options.parent_channel:
+        options.parent_channel = ''
+####################
+
+
+def validate_required_data(options):
+    if not options.name:
+        logging.error('A channel name is required')
+        return False
+
+    if not options.label:
+        logging.error('A channel label is required')
+        return False
+
+    if not options.summary:
+        logging.error('A channel summary is required')
+        return False
+
+    return True
+######################
 
 
 def softwarechannel_check_existing(self, name, label):
@@ -894,6 +1006,7 @@ def softwarechannel_check_existing(self, name, label):
                           (label, cd['label']))
             return True
     return False
+########################
 
 
 def help_softwarechannel_clone(self):
@@ -909,6 +1022,7 @@ options:
   --gpg-url GPG_URL
   --gpg-id GPG_ID
   --gpg-fingerprint(GPG_FINGERPRINT)
+  --disable-gpg-check DISABLE_GPG_CHECK
   -o do not clone any patches
   --regex/-x "s/foo/bar" : Optional regex replacement,
         replaces foo with bar in the clone name and label''')
@@ -926,6 +1040,8 @@ def do_softwarechannel_clone(self, args):
     arg_parser.add_argument('--gpg-url')
     arg_parser.add_argument('--gpg-id')
     arg_parser.add_argument('--gpg-fingerprint')
+    arg_parser.add_argument('--disable-gpg-check')
+
 
     (args, options) = parse_command_arguments(args, arg_parser)
 
@@ -934,9 +1050,7 @@ def do_softwarechannel_clone(self, args):
         print('\n'.join(sorted(self.list_base_channels())))
         print('\n'.join(sorted(self.list_child_channels())))
 
-        options.source_channel = prompt_user('Select source channel:',
-                                             noblank=True)
-
+        options.source_channel = prompt_user('Select source channel:',noblank=True)
         options.name = prompt_user('Channel Name:', noblank=True)
         options.label = prompt_user('Channel Label:', noblank=True)
 
@@ -954,6 +1068,7 @@ def do_softwarechannel_clone(self, args):
             options.gpg_url = prompt_user('GPG URL:')
             options.gpg_id = prompt_user('GPG ID:')
             options.gpg_fingerprint = prompt_user('GPG Fingerprint:')
+            options.disable_gpg_check = prompt_user('Disable GPG Check [yes/no]? ')
 
         options.original_state = \
             self.user_confirm('Original State (No Errata) [y/N]:',
@@ -974,77 +1089,26 @@ def do_softwarechannel_clone(self, args):
         if not options.original_state:
             options.original_state = False
 
-        # If the -x/--regex option is passed, do a sed-style replacement over
-        # the name, label and description. from the source channel to create
-        # the name, label and description for the clone channel.
-        # This makes it easier to clone based on a known naming convention
         if options.regex:
-            # Expect option to be formatted like a sed-replacement, s/foo/bar
-            findstr = options.regex.split("/")[1]
-            replacestr = options.regex.split("/")[2]
-            logging.debug("--regex selected with %s, replacing %s with %s" %
-                          (options.regex, findstr, replacestr))
-
-            # If no name is passed we try to regex the source channel name
+            newvalues =do_regx_replacement(self,options.source_channel, options)
+            options.label = newvalues['label']
             if not options.name:
-                srcdetails = self.client.channel.software.getDetails(
-                    self.session, options.source_channel)
-                options.name = re.sub(findstr, replacestr, srcdetails['name'])
+                options.name = newvalues['name']
 
-            options.label = re.sub(findstr, replacestr, options.source_channel)
-            logging.debug("regex mode : %s %s %s" % (options.source_channel,
-                                                     options.name, options.label))
-
-    # Catch label or name which already exists
+    if options.disable_gpg_check and options.disable_gpg_check not in ('yes', 'no'):
+        logging.error('Only [yes/no] values are acceptable for --disable-gpg-check')
+        return
     if self.softwarechannel_check_existing(options.name, options.label):
         return
 
-    details = {'name': options.name,
-               'label': options.label,
-               'summary': options.name}
-
+    details = {'name': options.name, 'label': options.label}
     if options.parent_channel:
         details['parent_label'] = options.parent_channel
 
-    if options.gpg_copy:
-        srcdetails = self.client.channel.software.getDetails(self.session,
-                                                             options.source_channel)
-        if srcdetails['gpg_key_url']:
-            details['gpg_url'] = srcdetails['gpg_key_url']
-            logging.debug("copying gpg_key_url=%s" % srcdetails['gpg_key_url'])
-        if srcdetails['gpg_key_id']:
-            details['gpg_id'] = srcdetails['gpg_key_id']
-            logging.debug("copying gpg_key_id=%s" % srcdetails['gpg_key_id'])
-        if srcdetails['gpg_key_fp']:
-            details['gpg_fingerprint'] = srcdetails['gpg_key_fp']
-            logging.debug("copying gpg_key_fp=%s" % srcdetails['gpg_key_fp'])
+    clone_channel(self,options.source_channel, options, details)
 
-    if options.gpg_id:
-        details['gpg_id'] = options.gpg_id
-
-    if options.gpg_url:
-        details['gpg_url'] = options.gpg_url
-
-    if options.gpg_fingerprint:
-        details['gpg_fingerprint'] = options.gpg_fingerprint
-
-    # remove empty strings from the structure
-    to_remove = []
-    for key in details:
-        if details[key] == '':
-            to_remove.append(key)
-
-    for key in to_remove:
-        del details[key]
-
-    self.client.channel.software.clone(self.session,
-                                       options.source_channel,
-                                       details,
-                                       options.original_state)
 
 ####################
-
-
 def help_softwarechannel_clonetree(self):
     print('softwarechannel_clonetree: Clone a software channel and its child channels')
     print('''usage: softwarechannel_clonetree [options])
@@ -1059,6 +1123,7 @@ options:
   --gpg-url GPG_URL (applied to all channels)
   --gpg-id GPG_ID (applied to all channels)
   --gpg-fingerprint(GPG_FINGERPRINT (applied to all channels))
+  --disable-gpg-check DISABLE_GPG_CHECK(applied to all channels)
   -o do not clone any errata
   --regex/-x "s/foo/bar" : Optional regex replacement,
         replaces foo with bar in the clone name, label and description''')
@@ -1074,6 +1139,7 @@ def do_softwarechannel_clonetree(self, args):
     arg_parser.add_argument('--gpg-url')
     arg_parser.add_argument('--gpg-id')
     arg_parser.add_argument('--gpg-fingerprint')
+    arg_parser.add_argument('--disable-gpg-check')
 
     (args, options) = parse_command_arguments(args, arg_parser)
 
@@ -1081,22 +1147,18 @@ def do_softwarechannel_clonetree(self, args):
         print('Source Channels:')
         print('\n'.join(sorted(self.list_base_channels())))
 
-        options.source_channel = prompt_user('Select source channel:',
-                                             noblank=True)
-
+        options.source_channel = prompt_user('Select source channel:',noblank=True)
         options.prefix = prompt_user('Prefix:', noblank=True)
-
         options.gpg_copy = \
-            self.user_confirm('Copy source channel GPG details? [y/N]:',
-                              ignore_yes=True)
+            self.user_confirm('Copy source channel GPG details? [y/N]:', ignore_yes=True)
         if not options.gpg_copy:
             options.gpg_url = prompt_user('GPG URL:')
             options.gpg_id = prompt_user('GPG ID:')
             options.gpg_fingerprint = prompt_user('GPG Fingerprint:')
+            options.disable_gpg_check = prompt_user('Disable GPG Check [yes/no]? ')
 
         options.original_state = \
-            self.user_confirm('Original State (No Errata) [y/N]:',
-                              ignore_yes=True)
+            self.user_confirm('Original State (No Errata) [y/N]:', ignore_yes=True)
     else:
         if not options.source_channel:
             logging.error('A source channel is required')
@@ -1109,13 +1171,16 @@ def do_softwarechannel_clonetree(self, args):
         if not options.original_state:
             options.original_state = False
 
+    if options.disable_gpg_check and options.disable_gpg_check not in ('yes', 'no'):
+        logging.error('Only [yes/no] values are acceptable for --disable-gpg-check')
+        return
+
     channels = [options.source_channel]
     if not options.source_channel in self.list_base_channels():
         logging.error("Channel does not exist or is not a base channel!")
         self.help_softwarechannel_clonetree()
         return
-    logging.debug("--child mode specified, finding children of %s\n" %
-                  options.source_channel)
+    logging.debug("--child mode specified, finding children of %s\n" % options.source_channel)
     children = self.list_child_channels(parent=options.source_channel)
     logging.debug("Found children %s\n" % children)
     for c in children:
@@ -1125,30 +1190,16 @@ def do_softwarechannel_clonetree(self, args):
     parent_channel = None
     for ch in channels:
         logging.debug("Cloning %s" % ch)
-        # If the -x/--regex option is passed, do a sed-style replacement over
-        # the name, label and description. from the source channel to create
-        # the name, label and description for the clone channel.
-        # This makes it easier to clone based on a known naming convention
         label = None
         name = None
         if options.regex:
             # Expect option to be formatted like a sed-replacement, s/foo/bar
-            findstr = options.regex.split("/")[1]
-            replacestr = options.regex.split("/")[2]
-            logging.debug("--regex selected with %s, replacing %s with %s" %
-                          (options.regex, findstr, replacestr))
+            newvalues = do_regx_replacement(self, ch, options)
+            label = newvalues['label']
+            name = newvalues['name']
 
-            # regex the source channel name
-            srcdetails = self.client.channel.software.getDetails(
-                self.session, ch)
-            name = re.sub(findstr, replacestr, srcdetails['name'])
-
-            label = re.sub(findstr, replacestr, ch)
-            logging.debug("regex mode : %s %s %s" % (ch,
-                                                     name, label))
         elif options.prefix:
-            srcdetails = self.client.channel.software.getDetails(
-                self.session, ch)
+            srcdetails = self.client.channel.software.getDetails(self.session, ch)
             label = options.prefix + srcdetails['label']
             name = options.prefix + srcdetails['name']
         else:
@@ -1160,60 +1211,91 @@ def do_softwarechannel_clonetree(self, args):
         if self.softwarechannel_check_existing(name, label):
             return
 
-        details = {'name': name,
-                   'label': label,
-                   'summary': name}
-
+        details = {'name': name, 'label': label}
         if parent_channel:
             details['parent_label'] = parent_channel
-
-        if options.gpg_copy:
-            srcdetails = self.client.channel.software.getDetails(self.session,
-                                                                 ch)
-            if srcdetails['gpg_key_url']:
-                details['gpg_url'] = srcdetails['gpg_key_url']
-                logging.debug(
-                    "copying gpg_key_url=%s" % srcdetails['gpg_key_url'])
-            if srcdetails['gpg_key_id']:
-                details['gpg_id'] = srcdetails['gpg_key_id']
-                logging.debug(
-                    "copying gpg_key_id=%s" % srcdetails['gpg_key_id'])
-            if srcdetails['gpg_key_fp']:
-                details['gpg_fingerprint'] = srcdetails['gpg_key_fp']
-                logging.debug(
-                    "copying gpg_key_fp=%s" % srcdetails['gpg_key_fp'])
-
-        if options.gpg_id:
-            details['gpg_id'] = options.gpg_id
-
-        if options.gpg_url:
-            details['gpg_url'] = options.gpg_url
-
-        if options.gpg_fingerprint:
-            details['gpg_fingerprint'] = options.gpg_fingerprint
-
-        # remove empty strings from the structure
-        to_remove = []
-        for key in details:
-            if details[key] == '':
-                to_remove.append(key)
-
-        for key in to_remove:
-            del details[key]
-
-        logging.info("Cloning %s as %s" % (ch, details['label']))
-        self.client.channel.software.clone(self.session,
-                                           ch,
-                                           details,
-                                           options.original_state)
+        clone_channel(self, ch, options, details)
 
         # If this is the first call we are on the base-channel clone and we
         # need to set parent_channel to the new cloned base-channel label
         if not parent_channel:
             parent_channel = details['label']
 
+###################
+
+
+def clone_channel(self, channel, options, details) :
+
+    if options.gpg_copy:
+        srcdetails = self.client.channel.software.getDetails(self.session, channel)
+        copy_gpg_values_from_source(details, srcdetails);
+
+    if options.gpg_id:
+        details['gpg_id'] = options.gpg_id
+
+    if options.gpg_url:
+        details['gpg_url'] = options.gpg_url
+
+    if options.gpg_fingerprint:
+        details['gpg_fingerprint'] = options.gpg_fingerprint
+
+    if options.disable_gpg_check:
+        details['gpg_check'] = str(not options.disable_gpg_check.lower() == "yes")
+
+    # remove empty strings from the structure
+    to_remove = []
+    for key in details:
+        if details[key] == '':
+            to_remove.append(key)
+
+    for key in to_remove:
+        del details[key]
+    logging.info("Cloning %s as %s" % (channel, details['label']))
+    self.client.channel.software.clone(self.session,
+                                       channel,
+                                       details,
+                                       options.original_state)
+
+###################
+
+
+def copy_gpg_values_from_source(details, srcdetails):
+    if srcdetails['gpg_key_url']:
+        details['gpg_key_url'] = srcdetails['gpg_key_url']
+        logging.debug("copying gpg_key_url=%s" % srcdetails['gpg_key_url'])
+    if srcdetails['gpg_key_id']:
+        details['gpg_key_id'] = srcdetails['gpg_key_id']
+        logging.debug("copying gpg_key_id=%s" % srcdetails['gpg_key_id'])
+    if srcdetails['gpg_key_fp']:
+        details['gpg_key_fp'] = srcdetails['gpg_key_fp']
+        logging.debug("copying gpg_key_fp=%s" % srcdetails['gpg_key_fp'])
+    if srcdetails['gpg_check']:
+        details['gpg_check'] = str(srcdetails['gpg_check'])
+        logging.debug("copying gpg_check=%s" % srcdetails['gpg_check'])
 
 ####################
+
+
+# If the -x/--regex option is passed, do a sed-style replacement over
+# the name, label and description. from the source channel to create
+# the name, label and description for the clone channel.
+# This makes it easier to clone based on a known naming convention
+def do_regx_replacement(self,channel, options):
+    newvalues ={}
+    # Expect option to be formatted like a sed-replacement, s/foo/bar
+    findstr = options.regex.split("/")[1]
+    replacestr = options.regex.split("/")[2]
+    logging.debug("--regex selected with %s, replacing %s with %s" %(options.regex, findstr, replacestr))
+    srcdetails = self.client.channel.software.getDetails(self.session, channel)
+
+    newvalues['name'] = re.sub(findstr, replacestr, srcdetails['name'])
+    newvalues['label'] = re.sub(findstr, replacestr, channel)
+    logging.debug("regex mode : %s %s %s" % (options.source_channel,  newvalues['name'], newvalues['label']))
+
+    return newvalues;
+
+####################
+
 
 def help_softwarechannel_addpackages(self):
     print('softwarechannel_addpackages: Add packages to a software channel')
