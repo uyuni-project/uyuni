@@ -123,7 +123,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                 actionStateApply.isResult(),
                                 jobReturnEvent.getJobId(),
                                 actionStateApply.getChanges().getRet(),
-                                "state.apply");
+                                actionStateApply.getName());
                     }
                     else {
                         LOG.warn("Could not find action id in action chain state key: " + key);
