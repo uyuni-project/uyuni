@@ -8,30 +8,35 @@ const Button = require('../components/buttons').Button;
 
 const _SCC_REFRESH_STEPS = [
   {
+    id: 'scc-channels',
     label: 'Channels',
     url: '/rhn/manager/admin/setup/sync/channels',
     inProgress: false,
     success: null
   },
   {
+    id: 'scc-channel-families',
     label: 'Channel Families',
     url: '/rhn/manager/admin/setup/sync/channelfamilies',
     inProgress: false,
     success: null
   },
   {
+    id: 'scc-products',
     label: 'Products',
     url: '/rhn/manager/admin/setup/sync/products',
     inProgress: false,
     success: null
   },
   {
+    id: 'scc-product-channels',
     label: 'Product Channels',
     url: '/rhn/manager/admin/setup/sync/productchannels',
     inProgress: false,
     success: null
   },
   {
+    id: 'scc-subscriptions',
     label: 'Subscriptions',
     url: '/rhn/manager/admin/setup/sync/subscriptions',
     inProgress: false,
@@ -150,7 +155,7 @@ const SCCDialog = React.createClass({
             this.state.steps.map(s => 
               {
                 return (
-                  <li>
+                  <li key={s.id}>
                     <i className={
                       s.success != null ?
                       (

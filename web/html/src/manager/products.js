@@ -16,16 +16,19 @@ const _DATA_ROOT_ID = 'baseProducts';
 
 const _SETUP_WIZARD_STEPS = [
   {
+    id: 'wizard-step-proxy',
     label: 'HTTP Proxy',
     url: '/rhn/admin/setup/ProxySettings.do',
     active: false
   },
   {
+    id: 'wizard-step-credentials',
     label: 'Organization Credentials',
     url: '/rhn/admin/setup/MirrorCredentials.do',
     active: false
   },
   {
+    id: 'wizard-step-suse-products',
     label: 'SUSE Products',
     url: location.href.split(/\?|#/)[0],
     active: true
@@ -163,7 +166,7 @@ const Products = React.createClass({
     const tabs = 
       <div className='spacewalk-content-nav'>
         <ul className='nav nav-tabs'>
-          { _SETUP_WIZARD_STEPS.map(step => <li className={step.active ? 'active' : ''}><a href={step.url}>{t(step.label)}</a></li>)}
+          { _SETUP_WIZARD_STEPS.map(step => <li key={step.id} className={step.active ? 'active' : ''}><a href={step.url}>{t(step.label)}</a></li>)}
         </ul>
       </div>;
 
