@@ -31,25 +31,23 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
-
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.XMLChannel;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Manager class for interacting with SUSE products.
@@ -101,11 +99,18 @@ public class ProductSyncManager {
      * @param user the current user
      * @throws ProductSyncException if an error occurred
      */
-    public void addProducts(List<String> productIdents, User user)
-        throws ProductSyncException {
-        for (String productIdent : productIdents) {
-            addProduct(productIdent, user);
-        }
+    public Map<String, Optional<? extends Throwable>> addProducts(List<String> productIdents, User user) {
+        return productIdents.stream().collect(Collectors.toMap(
+                ident -> ident,
+                ident -> {
+                   try {
+                       addProduct(ident, user);
+                       return Optional.<Throwable>empty();
+                   } catch (ProductSyncException e) {
+                       return Optional.of(e);
+                   }
+               }
+        ));
     }
 
     /**

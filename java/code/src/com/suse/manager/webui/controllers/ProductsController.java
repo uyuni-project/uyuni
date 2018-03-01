@@ -16,43 +16,30 @@
 package com.suse.manager.webui.controllers;
 
 import com.google.gson.reflect.TypeToken;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
-import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
-import com.redhat.rhn.manager.setup.ProductSyncException;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.suse.manager.model.products.Extension;
 import com.suse.manager.model.products.Product;
-
-import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SparkApplicationHelper;
-import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Json;
 import org.apache.log4j.Logger;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import static java.util.Optional.ofNullable;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Controller class providing backend code for the Products
@@ -165,17 +152,23 @@ public class ProductsController {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
         }
-        try {
-            if (log.isDebugEnabled()) {
-                log.debug("Add/Sync products: " + identifiers);
-            }
-            new ProductSyncManager().addProducts(identifiers, user);
+        if (log.isDebugEnabled()) {
+            log.debug("Add/Sync products: " + identifiers);
         }
-        catch (Exception e) {
-            log.fatal(e.getMessage(), e);
-            return SparkApplicationHelper.json(response, false);
-        }
-        return SparkApplicationHelper.json(response, true);
+        Map<String, Optional<? extends Throwable>> stringOptionalMap =
+                new ProductSyncManager().addProducts(identifiers, user);
+
+        stringOptionalMap.forEach((k, v) -> {
+            v.ifPresent(error -> {
+                log.fatal("addProduct failed for " + k, error);
+            });
+        });
+
+        Map<String, Boolean> collect = stringOptionalMap.entrySet().stream().collect(Collectors.toMap(
+                Map.Entry::getKey,
+                kv -> kv.getValue().isPresent()
+        ));
+        return SparkApplicationHelper.json(response, collect);
     }
 
     /**
