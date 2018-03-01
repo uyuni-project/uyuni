@@ -17,7 +17,8 @@
 </head>
 
 <body onLoad="onLoadStuff(3); showFiltered();">
-<rhn:toolbar base="h1" icon="header-channel">
+<rhn:toolbar base="h1" icon="header-channel" 
+             helpUrl="/rhn/help/reference/en-US/ref.webui.channels.jsp#s3-sm-channel-list-popular">
     <bean:message key="channel.nav.popular"/>
 </rhn:toolbar>
 

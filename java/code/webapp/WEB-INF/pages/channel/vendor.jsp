@@ -17,7 +17,8 @@ function showFiltered() {
 </head>
 
 <body onLoad="onLoadStuff(3); showFiltered();">
-<rhn:toolbar base="h1" icon="header-channel" imgAlt="channels.overview.toolbar.imgAlt">
+<rhn:toolbar base="h1" icon="header-channel" imgAlt="channels.overview.toolbar.imgAlt"
+             helpUrl="/rhn/help/reference/en-US/ref.webui.channels.jsp#s3-sm-channel-list-redhat">
   <bean:message key="channel.nav.vendor"/>
 </rhn:toolbar>
 

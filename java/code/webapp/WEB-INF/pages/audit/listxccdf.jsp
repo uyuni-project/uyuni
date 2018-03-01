@@ -12,7 +12,8 @@
 
 <body>
 
-<rhn:toolbar base="h1" icon="header-system" imgAlt="audit.jsp.alt">
+<rhn:toolbar base="h1" icon="header-system" imgAlt="audit.jsp.alt"
+             helpUrl="/rhn/help/reference/en-US/ch-openscap.jsp#idm139635691157984">
   <bean:message key="system.audit.listscap.jsp.overview"/>
 </rhn:toolbar>
 

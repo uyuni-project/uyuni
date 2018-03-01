@@ -13,7 +13,8 @@
  miscText="${text}"
  miscImg="${img}"
  miscAlt="${text}"
- imgAlt="users.jsp.imgAlt">
+ imgAlt="users.jsp.imgAlt"
+ helpUrl="/rhn/help/reference/en-US/ref.webui.admin.org.jsp#s2-sattools-org-details-users">
  <bean:message key="org.allusers.title" />
 </rhn:toolbar>
 
