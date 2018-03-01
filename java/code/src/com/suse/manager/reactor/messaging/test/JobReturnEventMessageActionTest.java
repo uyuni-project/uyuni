@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -56,35 +57,21 @@ import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
-import com.suse.manager.webui.utils.MinionActionUtils;
-import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
-import com.suse.salt.netapi.calls.runner.Jobs;
-import com.suse.salt.netapi.datatypes.Arguments;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.parser.JsonParser;
-import com.suse.salt.netapi.parser.LocalDateTimeISOAdapter;
-import com.suse.salt.netapi.parser.OptionalTypeAdapterFactory;
-import com.suse.salt.netapi.parser.ResultSSHResultTypeAdapterFactory;
-import com.suse.salt.netapi.parser.ResultTypeAdapterFactory;
-import com.suse.salt.netapi.parser.StartTimeAdapter;
-import com.suse.salt.netapi.parser.StatsAdapter;
-import com.suse.salt.netapi.parser.XorTypeAdapterFactory;
-import com.suse.salt.netapi.parser.ZonedDateTimeISOAdapter;
 import com.suse.salt.netapi.results.Change;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
-import com.suse.utils.Json;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -94,16 +81,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Optional;
-import java.util.Set;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -1282,7 +1263,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(ActionFactory.STATUS_COMPLETED, saScript.getStatus());
         assertEquals(0L, (long)saScript.getResultCode());
         assertEquals(minion.getId(), saScript.getServer().getId());
+        ScriptResult scriptResult = runScript.getScriptActionDetails().getResults()
+                .stream()
+                .filter(res -> saScript.getServerId().equals(res.getServerId()))
+                .findFirst().get();
+        assertEquals("stdout:\n" +
+                "\n" +
+                "total 12\n" +
+                "drwxr-xr-x  2 root root 4096 Sep 21  2014 bin\n" +
+                "-rwxr-xr-x  1 root root 1636 Sep 12 17:07 netcat.py\n" +
+                "drwxr-xr-x 14 root root 4096 Jul 25  2017 salt\n",
+                new String(scriptResult.getOutput()));
     }
-
 
 }
