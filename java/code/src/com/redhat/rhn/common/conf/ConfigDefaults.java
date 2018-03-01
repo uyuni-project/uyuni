@@ -224,12 +224,12 @@ public class ConfigDefaults {
      * Salt Minions presence ping timeouts in seconds
      */
     public static final String SALT_PRESENCE_PING_TIMEOUT =
-            "salt_presence_ping_timeout";
+            "java.salt_presence_ping_timeout";
     public static final String SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT =
-            "salt_presence_ping_gather_job_timeout";
+            "java.salt_presence_ping_gather_job_timeout";
 
     public static final String SALT_SSH_CONNECT_TIMEOUT =
-            "salt_ssh_connect_timeout";
+            "java.salt_ssh_connect_timeout";
 
     private ConfigDefaults() {
     }
