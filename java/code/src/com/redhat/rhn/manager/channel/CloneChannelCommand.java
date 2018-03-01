@@ -36,6 +36,7 @@ public class CloneChannelCommand extends CreateChannelCommand {
 
     private boolean originalState;
     private Channel original;
+    private String DEFAULT_PREFIX = "clone-of-";
 
     /**
      * Constructor
@@ -44,8 +45,8 @@ public class CloneChannelCommand extends CreateChannelCommand {
      */
     public CloneChannelCommand(boolean originalStateIn, Channel cloneFrom) {
         user = null;
-        label = null;
-        name = null;
+        label = DEFAULT_PREFIX + cloneFrom.getLabel();
+        name =  DEFAULT_PREFIX + cloneFrom.getName();
         original = cloneFrom;
         originalState = originalStateIn;
         summary = cloneFrom.getSummary();

@@ -672,8 +672,9 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public int setDetails(User loggedInUser, Integer channelId, Map<String,
             String> details) {
-        Channel channel = lookupChannelById(loggedInUser, channelId.longValue());
+        channelAdminPermCheck(loggedInUser);
 
+        Channel channel = lookupChannelById(loggedInUser, channelId.longValue());
         Set<String> validKeys = new HashSet<String>();
         validKeys.add("checksum_label");
         validKeys.add("name");
@@ -2072,6 +2073,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     public int clone(User loggedInUser, String originalLabel,
             Map<String, String> channelDetails, Boolean originalState) {
 
+        channelAdminPermCheck(loggedInUser);
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<>();
         validKeys.add("name");
@@ -2089,8 +2091,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
         validKeys.add("description");
         validKeys.add("checksum");
         validateMap(validKeys, channelDetails);
-
-        channelAdminPermCheck(loggedInUser);
 
         Channel originalChan = lookupChannelByLabel(loggedInUser.getOrg(), originalLabel);
 
@@ -2112,7 +2112,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         Role channelRole = RoleFactory.lookupByLabel("channel_admin");
         Role orgAdminRole = RoleFactory.lookupByLabel("org_admin");
         if (!loggedInUser.hasRole(channelRole) && !loggedInUser.hasRole(orgAdminRole)) {
-            throw new PermissionException("Only Org Admins and Channel Admins can clone " +
+            throw new PermissionException("Only Org Admins and Channel Admins can clone or update " +
                     "channels.");
         }
     }
