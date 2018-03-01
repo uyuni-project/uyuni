@@ -165,7 +165,7 @@ class BootstrapMinions extends React.Component {
         ];
 
         return (
-        <Panel title={t("Bootstrap Minions")} icon="fa fa-rocket">
+        <Panel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="/rhn/help/reference/en-US/ref.webui.systems.bootstrapping.jsp#ref.webui.systems.bootstrapping">
             <p>{t('You can add systems to be managed by providing SSH credentials only. SUSE Manager will prepare the system remotely and will perform the registration.')}</p>
             {messages}
             <div className="form-horizontal">

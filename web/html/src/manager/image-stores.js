@@ -106,7 +106,7 @@ class ImageStores extends React.Component {
 
     return (
       <span>
-        <Panel title="Image Stores" icon="fa-list" button={ panelButtons }>
+        <Panel title="Image Stores" icon="fa-list" helpUrl="/rhn/help/reference/en-US/ref.webui.images.stores.jsp#ref.webui.images.stores" button={ panelButtons }>
           {this.state.messages}
           <Table
             data={this.state.imagestores}
