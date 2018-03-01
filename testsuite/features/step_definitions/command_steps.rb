@@ -287,7 +287,7 @@ When(/^I wait until file "(.*)" exists on server$/) do |file|
 end
 
 Then(/^I wait and check that "([^"]*)" has rebooted$/) do |target|
-  reboot_timeout = 400
+  reboot_timeout = 800
   node = get_target(target)
   check_shutdown(node.full_hostname, reboot_timeout)
   check_restart(node.full_hostname, get_target(target), reboot_timeout)
