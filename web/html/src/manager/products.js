@@ -5,12 +5,13 @@ const ReactDOM = require('react-dom');
 const Network = require('../utils/network');
 const Messages = require('../components/messages').Messages;
 const MessagesUtils = require("../components/messages").Utils;
-const {Table, Column, SearchField, Highlight} = require('../components/table');
+const {DataHandler, DataItem, SearchField, Highlight} = require('../components/data-handler');
 const Functions = require('../utils/functions');
 const Utils = Functions.Utils;
-const ModalButton = require("../components/dialogs").ModalButton;
+const {ModalButton, ModalLink} = require("../components/dialogs");
 const Button = require('../components/buttons').Button;
 const SCCDialog = require('./products-scc-dialog').SCCDialog;
+const PopUp = require("../components/popup").PopUp;
 
 const _DATA_ROOT_ID = 'baseProducts';
 
@@ -39,7 +40,7 @@ function reloadData() {
   return Network.get('/rhn/manager/api/admin/products', 'application/json').promise;
 }
 
-const Products = React.createClass({
+const ProductPageWrapper = React.createClass({
   getInitialState: function() {
     return {
       issMaster: issMaster_flag_from_backend,
@@ -78,18 +79,7 @@ const Products = React.createClass({
       .catch(this.handleResponseError);
   },
 
-  searchData: function(datum, criteria) {
-      if (criteria) {
-        return (datum.label).toLowerCase().includes(criteria.toLowerCase());
-      }
-      return true;
-  },
-
-  buildRows: function(message) {
-    return Object.keys(message).map((id) => message[id]);
-  },
-
-  handleSelectItems: function(items) {
+  handleSelectedItems: function(items) {
     this.setState({ selectedItems: items });
   },
 
@@ -229,41 +219,12 @@ const Products = React.createClass({
                   </div>
                 </div>
               </div>
-              <Table
-                data={this.buildRows(data)}
-                identifier={(row) => row['identifier']}
-                cssClassFunction={''}
-                initialSortColumnKey='label'
-                initialSortDirection={1}
-                initialItemsPerPage={userPrefPageSize}
-                loading={this.state.loading}
-                selectable={true}
-                onSelect={this.handleSelectItems}
-                selectedItems={this.state.selectedItems}
-                searchField={
-                    <SearchField filter={this.searchData}
-                        criteria={''}
-                        placeholder={t('Filter by product name')} />
-                }>
-                <Column
-                  columnKey='label'
-                  comparator={Utils.sortByText}
-                  header={t('Product Name')}
-                  cell={ (row) => row['label']}
-                />
-                <Column
-                  columnKey='arch'
-                  comparator={Utils.sortByText}
-                  header={t('Architecture')}
-                  cell={ (row) => row['arch']}
-                />
-                <Column
-                  columnKey='recommended'
-                  comparator={Utils.sortByText}
-                  header={t('Recommended')}
-                  cell={ (row) => row['recommended']}
-                />
-              </Table>
+              <Products
+                  data={this.state.serverData}
+                  loading={this.state.loading}
+                  handleSelectedItems={this.handleSelectedItems}
+                  selectedItems={this.state.selectedItems}
+              />
             </div>
           </div>
           <div className='col-sm-3 hidden-xs' id='wizard-faq'>
@@ -327,7 +288,238 @@ const Products = React.createClass({
   }
 });
 
+const Products = React.createClass({
+  handleSelectedItem: function(id) {
+    let arr = this.props.selectedItems;
+    if(arr.includes(id)) {
+      arr = arr.filter(i => i !== id);
+    } else {
+      arr = arr.concat([id]);
+    }
+    this.props.handleSelectedItems(arr);
+  },
+
+  searchData: function(datum, criteria) {
+    if (criteria) {
+      return (datum.label).toLowerCase().includes(criteria.toLowerCase());
+    }
+    return true;
+  },
+
+  buildRows: function(message) {
+    return Object.keys(message).map((id) => message[id]);
+  },
+
+  render: function() {
+    return (
+      <DataHandler
+        data={this.buildRows(this.props.data)}
+        identifier={(raw) => raw['identifier']}
+        initialItemsPerPage={userPrefPageSize}
+        loading={this.props.loading}
+        searchField={
+            <SearchField filter={this.searchData}
+                criteria={''}
+                placeholder={t('Filter by product name')} />
+        }>
+        <CheckList data={d => d}
+            nestedKey='extensions'
+            isSelectable={true}
+            handleSelectedItem={this.handleSelectedItem}
+            selectedItems={this.props.selectedItems}
+            styleClass='product-list'
+            isFirstLevel={true}
+        />
+      </DataHandler>
+    )
+  }
+});
+
+const CheckList = React.createClass({
+  getInitialState: function() {
+    return {
+      channelsItem: null
+    }
+  },
+
+  handleSelectedItem: function(id) {
+    this.props.handleSelectedItem(id);
+  },
+
+  showChannelsfor: function(item) {
+    this.setState({channelsItem: item});
+  },
+
+  render: function() {
+    const titlePopup = t('Product Channels - ') + (this.state.channelsItem != null ? this.state.channelsItem['label'] : '');
+    const contentPopup = 
+      this.state.channelsItem != null ?
+        (
+          <div>
+            {
+              this.state.channelsItem['channels'].filter(c => !c['optional']).length > 0 ?
+                <div>
+                  <h4>Mandatory Channels</h4>
+                  <ul className='product-channel-list'>
+                    {
+                      this.state.channelsItem['channels']
+                        .filter(c => !c['optional'])
+                        .map(c => <li>{c['summary']}&nbsp;<small>[{c['label']}]</small></li>)
+                    }
+                  </ul>
+                </div>
+                : null
+            }
+            {
+              this.state.channelsItem['channels'].filter(c => c['optional']).length > 0 ?
+                <div>
+                  <h4>Optional Channels</h4>
+                  <ul className='product-channel-list'>
+                    {
+                      this.state.channelsItem['channels']
+                        .filter(c => c['optional'])
+                        .map(c => <li>{c['summary']}&nbsp;<small>[{c['label']}]</small></li>)
+                    }
+                  </ul>
+                </div>
+                : null
+            }
+          </div>
+        )
+      : null ;
+
+    return (
+      this.props.data ?
+        <div>
+          <ul className={this.props.styleClass}>
+            {
+              this.props.data.map((l, index) =>
+              {
+                return (
+                  <CheckListItem item={l}
+                      handleSelectedItem={this.handleSelectedItem}
+                      selectedItems={this.props.selectedItems}
+                      nestedKey='extensions'
+                      isSelectable={true}
+                      isFirstLevel={true}
+                      index={index}
+                      showChannelsfor={this.showChannelsfor}
+                  />
+                )
+              })
+            }
+          </ul>
+          <PopUp
+              id='show-channels-popup'
+              title={titlePopup}
+              content={contentPopup}
+              className='modal-xs'
+          />
+        </div>
+        : null
+    )
+  }
+});
+
+const CheckListItem = React.createClass({
+  getInitialState: function() {
+    return {
+      visibleList: []
+    }
+  },
+
+  handleSubListVisibility: function(id) {
+    let arr = this.state.visibleList;
+    if(arr.includes(id)) {
+      arr = arr.filter(i => i !== id);
+    } else {
+      arr = arr.concat([id]);
+    }
+    this.setState({ visibleList: arr });
+  },
+
+  handleSelectedItem: function(id) {
+    this.props.handleSelectedItem(id);
+  },
+
+  render: function() {
+    const sublistVisible = this.state.visibleList.includes(this.props.item['identifier']);
+    var nestedData = [];
+    if (this.props.nestedKey) {
+      nestedData = this.props.item[this.props.nestedKey];
+    }
+    var openSubListIcon = sublistVisible ?
+      <i className={'fa fa-caret-down fa-1-6x pointer'}
+          onClick={() => this.handleSubListVisibility(this.props.item['identifier'])} />
+      :
+      <i className={'fa fa-caret-right fa-1-6x pointer'}
+          onClick={() => this.handleSubListVisibility(this.props.item['identifier'])} />;
+    let evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
+
+    
+
+    return (
+      <li className={evenOddClass} key={this.props.item['identifier']}>
+        <div className='product-element'>
+          <div className='right'>
+            <div className='d-inline-block fixed-small-col' title={t('Architecture')}>
+              {this.props.isFirstLevel ? this.props.item['arch'] : ''}
+            </div>
+            <div className='d-inline-block fixed-icon-col'>
+              <ModalLink
+                  id='showChannels'
+                  icon='fa-list'
+                  title={t('Show product\'s channels')}
+                  target='show-channels-popup'
+                  onClick={() => this.props.showChannelsfor(this.props.item)}
+              />
+            </div>
+            <div className='d-inline-block fixed-small-col' title={t('Product sync status')}>
+              [---%---]
+            </div>
+            <div className='d-inline-block fixed-icon-col'>
+              <Button className='btn-default btn-sm' icon='fa-refresh' disabled title={t('Resync product')} />
+            </div>
+          </div>
+          <div className='d-inline-block'>
+            &nbsp;
+            {
+              this.props.isSelectable ?
+                <input type='checkbox'
+                    value={this.props.item['identifier']}
+                    onChange={() => this.handleSelectedItem(this.props.item['identifier'])}
+                    checked={this.props.selectedItems.includes(this.props.item['identifier']) ? 'checked' : ''}
+                />
+                : null
+            }
+            &nbsp;&nbsp;
+            {
+              nestedData && nestedData.length > 0 ?
+              openSubListIcon
+              : <i className='fa' />
+            }
+            &nbsp;&nbsp;
+            {this.props.item['label']}
+            &nbsp;
+          </div>
+        </div>
+        { sublistVisible ?
+          <CheckList data={nestedData}
+              nestedKey={this.props.nestedKey}
+              isSelectable={this.props.isSelectable}
+              selectedItems={this.props.selectedItems}
+              handleSelectedItem={this.handleSelectedItem}
+              styleClass={this.props.styleClass}
+              isFirstLevel={false}
+          />
+          : null }
+      </li>
+    )
+  }
+});
+
+
 ReactDOM.render(
-  <Products />,
+  <ProductPageWrapper />,
   document.getElementById('products')
 );
