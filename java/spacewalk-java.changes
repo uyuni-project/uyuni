@@ -1,3 +1,4 @@
+- Set hostname before hardware refresh as well (bsc#1077760)
 - Adjusted the code to override software channel's gpg_check during clone(#bsc1080290)
 - Harmonize display of custom system information (bsc#979073)
 - Fix NPE when retrieving OES repo (bsc#1082328)

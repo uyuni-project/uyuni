@@ -241,6 +241,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             server.setCreated(new Date());
             server.setModified(server.getCreated());
             server.setContactMethod(getContactMethod(activationKey, isSaltSSH, minionId));
+            server.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
 
             server.setServerArch(
                     ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
