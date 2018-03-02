@@ -41,6 +41,8 @@ public class Product {
 
     private final Set<Extension> extensions;
 
+    private final Set<JsonChannel> channels;
+
     /**
      * Instantiates a new Product.
      * @param idIn the id in
@@ -49,13 +51,14 @@ public class Product {
      */
     public Product(Long idIn, String identifierIn,
                    String labelIn, String archIn, Boolean recommendedIn,
-                   Set<Extension> extensionsIn) {
+                   Set<Extension> extensionsIn, Set<JsonChannel> channelsIn) {
         id = idIn;
         label = labelIn;
         arch = archIn;
         identifier = identifierIn;
         recommended = recommendedIn;
         extensions = extensionsIn;
+        channels = channelsIn;
     }
 
     /**
@@ -92,6 +95,10 @@ public class Product {
 
     public Set<Extension> getExtensions() {
         return extensions;
+    }
+
+    public Set<JsonChannel> getChannels() {
+        return channels;
     }
 
     /**
