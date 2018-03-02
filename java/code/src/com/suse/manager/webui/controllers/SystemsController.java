@@ -96,7 +96,7 @@ public class SystemsController {
         catch (NumberFormatException e) {
             return json(response, HttpStatus.SC_BAD_REQUEST, JsonResult.success());
         }
-        Server server = ServerFactory.lookupById(sid);
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
 
         if (server.asMinionServer().isPresent()) {
             if (!Boolean.parseBoolean(noclean)) {
