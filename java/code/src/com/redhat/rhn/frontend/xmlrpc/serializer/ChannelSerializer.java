@@ -113,6 +113,7 @@ public class ChannelSerializer extends RhnXmlRpcCustomSerializer {
                 StringUtils.defaultString(c.getGPGKeyId()));
         helper.add("gpg_key_fp",
                 StringUtils.defaultString(c.getGPGKeyFp()));
+        helper.add("gpg_check", c.isGPGCheck());
 
         List<ContentSource> csList = new ArrayList<ContentSource>(c.getSources().size());
         if (!c.getSources().isEmpty()) {

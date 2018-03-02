@@ -1,3 +1,5 @@
+- Add function to update software channel through spacecmd
+
 -------------------------------------------------------------------
 Wed Feb 14 12:53:20 CET 2018 - jgonzalez@suse.com
 
@@ -15,7 +17,7 @@ Wed Jan 10 16:02:37 CET 2018 - jgonzalez@suse.com
 Fri Oct 20 13:23:55 CEST 2017 - jgonzalez@suse.com
 
 - version 2.5.5.9-1
-- Fix bug number in last changelog entry 
+- Fix bug number in last changelog entry
 
 -------------------------------------------------------------------
 Tue Jul 04 11:33:08 CEST 2017 - michele.bologna@suse.com

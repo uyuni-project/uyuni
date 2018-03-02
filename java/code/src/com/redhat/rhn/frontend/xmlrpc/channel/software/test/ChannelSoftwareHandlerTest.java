@@ -466,6 +466,35 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         channelDetailsEquality(c, result);
     }
 
+    public void testSetDetails() throws Exception {
+        ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
+        addRole(admin, RoleFactory.CHANNEL_ADMIN);
+        Channel c = ChannelFactoryTest.createTestChannel(admin);
+        assertNotNull(c);
+        assertNull(c.getParentChannel());
+
+        Channel  result = csh.getDetails(admin, c.getLabel());
+
+        Map<String, String> details = new HashMap<>();
+        details.put("checksum_label", "sha256");
+        details.put("name","new-name");
+        details.put("summary", "new-summary");
+        details.put("description", "new-dsc");
+        details.put("maintainer_name","foo");
+        details.put("maintainer_email","foo@bar.com");
+        details.put("maintainer_phone","+18098098");
+        details.put("gpg_key_url","http://gpg.url");
+        details.put("gpg_key_id","AE1234BC");
+        details.put("gpg_key_fp"," CA20 8686 2BD6 9DFC 65F6 ECC4 2191 80CD DB42 A60E");
+        details.put("gpg_check", "True");
+        csh.setDetails(admin,c.getLabel(),details);
+
+        channelDetailsEquality(c, result);
+
+        result = csh.getDetails(admin, c.getId().intValue());
+        channelDetailsEquality(c, result);
+    }
+
    public void testGetChannelLastBuildById() throws Exception {
        ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
        addRole(admin, RoleFactory.CHANNEL_ADMIN);
@@ -493,6 +522,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(original.getGPGKeyUrl(), result.getGPGKeyUrl());
         assertEquals(original.getGPGKeyId(), result.getGPGKeyId());
         assertEquals(original.getGPGKeyFp(), result.getGPGKeyFp());
+        assertEquals(original.isGPGCheck(), result.isGPGCheck());
         if (original.getEndOfLife() != null) {
             assertEquals(original.getEndOfLife().toString(),
                     result.getEndOfLife().toString());
@@ -777,6 +807,33 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         // errata cloning is tested in CloneErrataActionTest
 
         // Test that we're actually creating a cloned channel:
+        assertTrue(chan.isCloned());
+    }
+
+    public void testCloneWithOverrideGPGCheck() throws Exception {
+        Channel original = ChannelFactoryTest.createTestChannel(admin, false);
+        Package pack = PackageTest.createTestPackage(admin.getOrg());
+        Errata errata = ErrataFactoryTest.createTestPublishedErrata(
+                admin.getOrg().getId());
+        original.addPackage(pack);
+        original.addErrata(errata);
+
+        String label = "test-clone-label";
+        Map<String, String> details = new HashMap<String, String>();
+        details.put("name", "test-clone");
+        details.put("summary", "summary");
+        details.put("label", label);
+        details.put("checksum", "sha256");
+        details.put("gpg_check", "True");
+
+        int id = handler.clone(admin, original.getLabel(), details, false);
+        Channel chan = ChannelFactory.lookupById(new Long(id));
+        chan = (Channel) TestUtils.reload(chan);
+        assertNotNull(chan);
+        assertEquals(label, chan.getLabel());
+        assertEquals(1, chan.getPackages().size());
+        assertTrue(chan.isGPGCheck());
+
         assertTrue(chan.isCloned());
     }
 
