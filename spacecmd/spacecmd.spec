@@ -70,8 +70,6 @@ spacecmd is a command-line interface to Spacewalk and Red Hat Satellite servers
 # nothing to build
 
 %install
-%{__rm} -rf %{buildroot}
-
 %{__mkdir_p} %{buildroot}/%{_bindir}
 
 %if 0%{?build_py3}
@@ -101,9 +99,6 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 %py_compile -O %{buildroot}/%{python_sitelib}
 %endif
 %endif
-
-%clean
-%{__rm} -rf %{buildroot}
 
 %check
 %if 0%{?pylint_check}

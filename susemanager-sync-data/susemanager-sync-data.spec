@@ -19,14 +19,10 @@ This package contains data files with information used to channel syncing
 %build
 
 %install
-
 mkdir -p %{buildroot}/usr/share/susemanager/scc
 install -m 0644 channel_families.xml %{buildroot}/usr/share/susemanager/scc/channel_families.xml
 install -m 0644 channels.xml         %{buildroot}/usr/share/susemanager/scc/channels.xml
 install -m 0644 upgrade_paths.xml    %{buildroot}/usr/share/susemanager/scc/upgrade_paths.xml
-
-%clean
-rm -rf %{buildroot}
 
 
 %files

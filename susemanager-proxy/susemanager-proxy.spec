@@ -19,16 +19,12 @@ setup tasks.
 %build
 
 %install
-
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
 install -m 0644 suse-manager-proxy %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
 
 # YaST configuration
 mkdir -p %{buildroot}/etc/YaST2
 install -m 0644 firstboot-susemanager-proxy.xml %{buildroot}/etc/YaST2
-
-%clean
-rm -rf %{buildroot}
 
 
 %files

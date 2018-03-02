@@ -46,7 +46,6 @@ to the proxies.
 %build
 
 %install
-
 mkdir -p %{buildroot}/%{_var}/log/tftpsync
 install -p -D -m 644 susemanager-tftpsync-recv.conf %{buildroot}%{_sysconfdir}/apache2/conf.d/susemanager-tftpsync-recv.conf
 install -p -D -m 644 add.wsgi    %{buildroot}/srv/www/tftpsync/add
@@ -54,8 +53,6 @@ install -p -D -m 644 delete.wsgi %{buildroot}/srv/www/tftpsync/delete
 install -p -D -m 755 configure-tftpsync.sh %{buildroot}%{_sbindir}/configure-tftpsync.sh
 install -p -D -m 644 rhn_tftpsync.conf %{buildroot}/%{_datadir}/rhn/config-defaults/rhn_tftpsync.conf
 
-%clean
-rm -rf %{buildroot}
 
 %post
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi

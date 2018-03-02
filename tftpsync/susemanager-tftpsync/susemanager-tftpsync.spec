@@ -41,7 +41,6 @@ to the configured proxies.
 %build
 
 %install
-
 install -p -D -m 644 sync_post_tftpd_proxies.py %{buildroot}%{python_sitelib}/cobbler/modules/sync_post_tftpd_proxies.py
 install -p -D -m 644 MultipartPostHandler.py %{buildroot}%{python_sitelib}/cobbler/MultipartPostHandler.py
 install -p -D -m 755 configure-tftpsync.sh  %{buildroot}%{_sbindir}/configure-tftpsync.sh
@@ -50,9 +49,6 @@ install -p -D -m 755 configure-tftpsync.sh  %{buildroot}%{_sbindir}/configure-tf
 %py_compile %{buildroot}/
 %py_compile -O %{buildroot}/
 %endif
-
-%clean
-rm -rf %{buildroot}
 
 %post
 if [ -f "/etc/cobbler/settings" ]; then
