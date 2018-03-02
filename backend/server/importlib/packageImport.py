@@ -319,13 +319,11 @@ class PackageImport(ChannelPackageSubscription):
             self.backend.commit()
 
         self.backend.processChangeLog(self.changelog_data)
-        self.backend.processSuseProductFiles(self.suseProdfile_data)
-        self.backend.processSuseEulas(self.suseEula_data)
-
+        self.backend.processSuseProductFiles(SourcePackageImport.cleanup_text_data(self.suseProdfile_data))
+        self.backend.processSuseEulas(SourcePackageImport.cleanup_text_data(self.suseEula_data))
         ChannelPackageSubscription.fix(self)
-
-        self.backend.lookupSourceRPMs(self.sourceRPMs)
-        self.backend.lookupPackageGroups(self.groups)
+        self.backend.lookupSourceRPMs(SourcePackageImport.cleanup_text_data(self.sourceRPMs))
+        self.backend.lookupPackageGroups(SourcePackageImport.cleanup_text_data(self.groups))
         # Postprocess the gathered information
         self.__postprocess()
 
@@ -394,7 +392,8 @@ class PackageImport(ChannelPackageSubscription):
                 nv = entry['capability']
                 entry['capability_id'] = self.capabilities[nv]
         for c in package['changelog']:
-            c['changelog_data_id'] = self.changelog_data[(c['name'], c['time'], c['text'])]
+            c['changelog_data_id'] = self.changelog_data[(SourcePackageImport.cleanup_text_data(c['name']), c['time'],
+                                                          SourcePackageImport.cleanup_text_data(c['text']))]
         if package['product_files'] is not None:
             for p in package['product_files']:
                 p['prodfile_id'] = self.suseProdfile_data[(p['name'], p['evr'], p['package_arch_id'], p['vendor'], p['summary'], p['description'])]
@@ -500,6 +499,24 @@ class SourcePackageImport(Import):
             return
         # XXX Handle this better
         raise Exception("Different packages in the same batch")
+
+    @staticmethod
+    def cleanup_text_data(obj):
+        '''
+        Accidental garbage in the RPM binaries
+        might bring down the whole import process.
+        '''
+        if obj and isinstance(obj, (str, unicode)):
+            out = obj.decode('utf-8', errors='ignore')
+            return isinstance(obj, str) and out.encode('utf-8') or out
+        elif isinstance(obj, (list, tuple)):
+            return obj.__class__([SourcePackageImport.cleanup_text_data(x) for x in obj])
+        elif isinstance(obj, dict):
+            out = {}
+            for k, v in obj.items():
+                out[SourcePackageImport.cleanup_text_data(k)] = SourcePackageImport.cleanup_text_data(v)
+            return out
+        return obj
 
     def _processPackage(self, package):
         Import._processPackage(self, package)
