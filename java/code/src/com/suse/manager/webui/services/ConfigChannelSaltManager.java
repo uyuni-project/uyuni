@@ -33,6 +33,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Collections;
+import java.util.HashMap;
 
 import static com.redhat.rhn.domain.config.ConfigFileState.NORMAL;
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
@@ -265,7 +267,7 @@ public class ConfigChannelSaltManager {
      * @param file file
      * @return List of params map
      */
-    public List<Map<String, Object>> getFileStateParams(ConfigFile file) {
+    private List<Map<String, Object>> getFileStateParams(ConfigFile file) {
         Path filePath = Paths.get(file.getConfigFileName().getPath());
         if (filePath.getRoot() != null) {
             filePath = filePath.getRoot().relativize(filePath);
@@ -349,7 +351,7 @@ public class ConfigChannelSaltManager {
      * @param file file
      * @return List of params map
      */
-    public List<Map<String, Object>> getDirectoryStateParams(ConfigFile file) {
+    private List<Map<String, Object>> getDirectoryStateParams(ConfigFile file) {
         List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", file.getConfigFileName().getPath()));
         fileParams.add(singletonMap("makedirs", true));
@@ -370,13 +372,35 @@ public class ConfigChannelSaltManager {
      * @param file file
      * @return List of params map
      */
-    public List<Map<String, Object>> getSymLinkStateParams(ConfigFile file) {
+    private List<Map<String, Object>> getSymLinkStateParams(ConfigFile file) {
         List<Map<String, Object>> fileParams = new LinkedList<>();
         fileParams.add(singletonMap("name", file.getConfigFileName().getPath()));
         fileParams.add(singletonMap("target", file.getLatestConfigRevision().getConfigInfo()
                 .getTargetFileName().getPath()));
         fileParams.add(singletonMap("makedirs", true));
         return fileParams;
+    }
+
+    /**
+     * Get the revision parameters based on its type
+     * @param revision ConfigRevision revision
+     * @return Map containing all the parameters + the type
+     */
+    public Map<String, Object> getStateParameters(ConfigRevision revision) {
+        List<Map<String, Object>> fileParams = Collections.EMPTY_LIST;
+        if (revision.isFile()) {
+            fileParams = getFileStateParams(revision.getConfigFile());
+        }
+        else if (revision.isDirectory()) {
+            fileParams = getDirectoryStateParams(revision.getConfigFile());
+        }
+        else if (revision.isSymlink()) {
+            fileParams =  getSymLinkStateParams(revision.getConfigFile());
+        }
+        Map<String, Object> stateParameters = new HashMap<>();
+        stateParameters.put("type", revision.getConfigFileType().getLabel());
+        fileParams.stream().forEach(v -> stateParameters.putAll(v));
+        return stateParameters;
     }
 
     private List<Map<String, Object>> getModeParams(ConfigInfo configInfo) {

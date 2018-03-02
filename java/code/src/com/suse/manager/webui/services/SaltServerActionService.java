@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
+import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
@@ -40,6 +41,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.image.DockerfileProfile;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -54,7 +56,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.MinionServerUtils;
+import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
@@ -83,7 +85,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Takes {@link Action} objects to be executed via salt.
@@ -224,14 +225,12 @@ public class SaltServerActionService {
     public void execute(Action actionIn, boolean forcePackageListRefresh,
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
         List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
-                .map(serverActions -> serverActions.stream()
-                        .flatMap(action ->
-                                action.getServer().asMinionServer()
-                                        .map(Stream::of)
-                                        .orElse(Stream.empty()))
-                        .filter(m -> m.hasEntitlement(EntitlementManager.SALT))
-                        .filter(m -> m.getContactMethod().getLabel().equals("default"))
-                        .collect(Collectors.toList())
+                .map(serverActions -> MinionServerUtils.filterSaltMinions(serverActions.stream()
+                             .map(ServerAction::getServer)
+                             .collect(Collectors.toList()))
+                .filter(m -> m.hasEntitlement(EntitlementManager.SALT))
+                .filter(m -> m.getContactMethod().getLabel().equals("default"))
+                .collect(Collectors.toList())
                 )
                 .orElse(new LinkedList<>());
 
@@ -413,35 +412,31 @@ public class SaltServerActionService {
      * @param action action which has all the revisions
      * @return minions grouped by local call
      */
-    private Map<LocalCall<?>, List<MinionServer>> deployFiles(List<MinionServer> minions,
-            ConfigAction action) {
+    private Map<LocalCall<?>, List<MinionServer>> deployFiles(List<MinionServer> minions, ConfigAction action) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
-                .map(revAction -> revAction.getConfigRevision())
-                .map(revision -> {
-                    List<Map<String, Object>> fileParams = Collections.EMPTY_LIST;
-                    if (revision.isFile()) {
-                        fileParams = ConfigChannelSaltManager.getInstance()
-                                .getFileStateParams(revision.getConfigFile());
-                    }
-                    else if (revision.isDirectory()) {
-                        fileParams = ConfigChannelSaltManager.getInstance()
-                                .getDirectoryStateParams(revision.getConfigFile());
-                    }
-                    else if (revision.isSymlink()) {
-                        fileParams = ConfigChannelSaltManager.getInstance()
-                                .getSymLinkStateParams(revision.getConfigFile());
-                    }
-                    Map<String, Object> stateParameters = new HashMap<>();
-                    stateParameters.put("type", revision.getConfigFileType().getLabel());
-                    fileParams.stream().forEach(v -> stateParameters.putAll(v));
-                    return stateParameters;
-                }).collect(Collectors.toList());
-        ret.put(State.apply(Arrays.asList(CONFIG_DEPLOY_FILES),
-                Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
-                Optional.of(true)), minions);
+        Set<MinionServer> targetSet = new HashSet<>(minions);
+        Map<MinionServer, Set<ConfigRevision>> serverConfigMap = action.getConfigRevisionActions()
+                .stream()
+                .filter(cra -> targetSet.contains(cra.getServer()))
+                .collect(Collectors.groupingBy(
+                        cra -> cra.getServer().asMinionServer().get(),
+                        Collectors.mapping(ConfigRevisionAction::getConfigRevision, Collectors.toSet())));
+        Map<Set<ConfigRevision>, Set<MinionServer>> revsServersMap = serverConfigMap.entrySet()
+                .stream()
+                .collect(Collectors.groupingBy(entry -> entry.getValue(),
+                        Collectors.mapping(entry -> entry.getKey(), Collectors.toSet())));
+        revsServersMap.forEach((configRevisions, selectedServers) -> {
+            List<Map<String, Object>> fileStates = configRevisions
+                    .stream()
+                    .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
+                    .collect(Collectors.toList());
+            ret.put(State.apply(Arrays.asList(CONFIG_DEPLOY_FILES),
+                    Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
+                    Optional.of(true)), selectedServers.stream().collect(Collectors.toList()));
+        });
         return ret;
     }
+
     /**
      * Deploy files(files, directory, symlink) through state.apply
      *
@@ -449,37 +444,19 @@ public class SaltServerActionService {
      * @param action action which has all the revisions
      * @return minions grouped by local call
      */
-    private Map<LocalCall<?>, List<MinionServer>> diffFiles(List<MinionServer> minions,
-                                                              ConfigAction action) {
+    private Map<LocalCall<?>, List<MinionServer>> diffFiles(List<MinionServer> minions, ConfigAction action) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         List<Map<String, Object>> fileStates = action.getConfigRevisionActions().stream()
                 .map(revAction -> revAction.getConfigRevision())
-                .filter(revision->revision.isFile() ||
-                                  revision.isDirectory() ||
-                                  revision.isSymlink())
-                .map(revision -> {
-                    List<Map<String, Object>> fileParams = Collections.EMPTY_LIST;
-                    if (revision.isFile()) {
-                        fileParams = ConfigChannelSaltManager.getInstance()
-                                .getFileStateParams(revision.getConfigFile());
-                    }
-                    else if (revision.isDirectory()) {
-                        fileParams = ConfigChannelSaltManager.getInstance()
-                                .getDirectoryStateParams(revision.getConfigFile());
-                    }
-                    else if (revision.isSymlink()) {
-                        fileParams = ConfigChannelSaltManager.getInstance()
-                                .getSymLinkStateParams(revision.getConfigFile());
-                    }
-                    Map<String, Object> stateParameters = new HashMap<>();
-                    stateParameters.put("type", revision.getConfigFileType().getLabel());
-                    fileParams.stream().forEach(v -> stateParameters.putAll(v));
-                    return stateParameters;
-                }).collect(Collectors.toList());
+                .filter(revision -> revision.isFile() ||
+                        revision.isDirectory() ||
+                        revision.isSymlink())
+                .map(revision -> ConfigChannelSaltManager.getInstance().getStateParameters(revision))
+                .collect(Collectors.toList());
         ret.put(com.suse.manager.webui.utils.salt.State.apply(
-                        Arrays.asList(CONFIG_DIFF_FILES),
-                        Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
-                        Optional.of(true), Optional.of(true)), minions);
+                Arrays.asList(CONFIG_DIFF_FILES),
+                Optional.of(Collections.singletonMap(PARAM_FILES, fileStates)),
+                Optional.of(true), Optional.of(true)), minions);
         return ret;
     }
 
