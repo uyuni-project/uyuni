@@ -972,6 +972,12 @@ def set_default_data(options):
 
     if not options.parent_channel:
         options.parent_channel = ''
+
+    # Summary is a required field,
+    # but we don't want to break the interface
+    # then if it is not provided it is set to the 'name' value
+    if not options.summary:
+        options.summary = options.name
 ####################
 
 
@@ -982,10 +988,6 @@ def validate_required_data(options):
 
     if not options.label:
         logging.error('A channel label is required')
-        return False
-
-    if not options.summary:
-        logging.error('A channel summary is required')
         return False
 
     return True
