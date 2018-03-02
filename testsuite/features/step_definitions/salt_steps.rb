@@ -382,9 +382,10 @@ Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, mi
 end
 
 Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
-  url = "#{Capybara.app_host}/rhn/manager/download/#{channel}/getPackage/#{rpm}"
+  url = "https://#{$server.full_hostname}/rhn/manager/download/#{channel}/getPackage/#{rpm}"
   url = "#{url}?#{@token}" if @token
-  puts url
+  @download_path = nil
+  @download_error = nil
   Tempfile.open(rpm) do |tmpfile|
     @download_path = tmpfile.path
     begin
@@ -398,6 +399,7 @@ Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
 end
 
 Then(/^the download should get a (\d+) response$/) do |code|
+  refute_nil(@download_error)
   assert_equal(code.to_i, @download_error.io.status[0].to_i)
 end
 
