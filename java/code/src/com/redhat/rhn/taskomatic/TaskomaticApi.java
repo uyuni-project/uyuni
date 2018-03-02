@@ -31,7 +31,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.RepoSyncTask;
 
-import com.suse.manager.webui.utils.MinionServerUtils;
+import com.suse.manager.utils.MinionServerUtils;
 
 import org.apache.log4j.Logger;
 

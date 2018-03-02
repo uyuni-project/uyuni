@@ -1,3 +1,4 @@
+- Separate Salt calls based on config revisions and server grouping(bsc#1074854)
 - remove clean section from spec (bsc#1083294)
 - Added function to update software channel.
 - Fix NPE when retrieving OES repo (bsc#1082328)
