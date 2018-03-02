@@ -1,3 +1,5 @@
+- support SLE15 product family
+- rewrite products page into reactjs
 - Users who can view system should be able to delete it (bsc#1079652)
 - Set hostname before hardware refresh as well (bsc#1077760)
 - Separate Salt calls based on config revisions and server grouping(bsc#1074854)
