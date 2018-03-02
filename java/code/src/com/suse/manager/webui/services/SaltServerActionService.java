@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services;
 
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -79,6 +80,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -785,10 +787,18 @@ public class SaltServerActionService {
     private Map<LocalCall<?>, List<MinionServer>> triggerActionChain(
             List<MinionServer> minions, Long actionChainId) {
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(State.apply(Arrays.asList(ACTIONCHAIN_START),
-                Optional.of(Collections.singletonMap("actionchain_id", actionChainId)),
-                Optional.of(true)), minions);
+        ret.put(startActionChain(actionChainId), minions);
+//        ret.put(State.apply(Arrays.asList(ACTIONCHAIN_START),
+//                Optional.of(Collections.singletonMap("actionchain_id", actionChainId)),
+//                Optional.of(true)), minions);
+
         return ret;
+    }
+
+    public static LocalCall<Map<String, State.ApplyResult>> startActionChain(long actionChainId) {
+        List<String> args = new ArrayList<>(1);
+        args.add(Long.toString(actionChainId));
+        return new LocalCall("mgractionchains.start", Optional.of(args), Optional.empty(), new TypeToken<Map<String, State.ApplyResult>>() { });
     }
 
     /**
