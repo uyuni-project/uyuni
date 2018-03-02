@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetAddress6;
@@ -678,13 +679,14 @@ public class HardwareMapper {
 
     @SuppressWarnings("unchecked")
     private void extractFqdnsFromGrains(MinionServer serverIn, ValueMap grainsIn) {
-        Optional<Collection<?>> fqdnsFromGrains = grainsIn.getValueAsCollection("fqdns");
-        fqdnsFromGrains.ifPresent(fqdnsGrains -> {
-            Collection<String> fqndsFromGrains = (Collection<String>) fqdnsGrains;
-            serverIn.getFqdns().clear();
-            for (String fqdn : fqndsFromGrains) {
-                serverIn.addFqdn(fqdn);
-            }
+        grainsIn.getValueAsCollection("fqdns").ifPresent(col -> {
+            Collection<ServerFQDN> serverFQDNs = serverIn.getFqdns();
+            Collection<ServerFQDN> fqdnsFromGrains = ((Collection<String>) col).stream()
+                    .map(fqdn -> new ServerFQDN(serverIn, fqdn))
+                    .collect(Collectors.toList());
+
+            serverFQDNs.retainAll(fqdnsFromGrains);
+            serverFQDNs.addAll(fqdnsFromGrains);
         });
     }
 
