@@ -6,7 +6,8 @@ Given(/^I try download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
   if @token
     url = "#{url}?#{@token}"
   end
-  puts url
+  @download_path = nil
+  @download_error = nil
   Tempfile.open(rpm) do |tmpfile|
     @download_path = tmpfile.path
     begin
@@ -20,6 +21,7 @@ Given(/^I try download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
 end
 
 Then(/^the download should get a (\d+) response$/) do |code|
+  refute_nil(@download_error)
   assert_equal(code.to_i, @download_error.io.status[0].to_i)
 end
 
