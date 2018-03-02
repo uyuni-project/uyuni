@@ -494,6 +494,24 @@ class SourcePackageImport(Import):
         # XXX Handle this better
         raise Exception("Different packages in the same batch")
 
+    @staticmethod
+    def cleanup_text_data(obj):
+        '''
+        Accidental garbage in the RPM binaries
+        might bring down the whole import process.
+        '''
+        if obj and isinstance(obj, (str, unicode)):
+            out = obj.decode('utf-8', errors='ignore')
+            return isinstance(obj, str) and out.encode('utf-8') or out
+        elif isinstance(obj, (list, tuple)):
+            return obj.__class__([SourcePackageImport.cleanup_text_data(x) for x in obj])
+        elif isinstance(obj, dict):
+            out = {}
+            for k, v in obj.items():
+                out[SourcePackageImport.cleanup_text_data(k)] = SourcePackageImport.cleanup_text_data(v)
+            return out
+        return obj
+
     def _processPackage(self, package):
         Import._processPackage(self, package)
         # Fix the arch
