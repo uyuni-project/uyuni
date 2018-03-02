@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -111,9 +112,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
         isActionChainResult.filter(isActionChain -> isActionChain).ifPresent(isActionChain -> {
             jobResult.ifPresent(jsonResult -> {
-                ActionChainSlsResult actionChainResult = Json.GSON.fromJson(jsonResult, ActionChainSlsResult.class);
-                StateApplyResult<Ret<Map<String, StateApplyResult<Ret<JsonObject>>>>> actionChainRet = actionChainResult.getActionChainsStart();
-                actionChainRet.getChanges().getRet().forEach((key, actionStateApply) -> {
+
+                Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult = Json.GSON.fromJson(jsonResult,
+                        new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() { }.getType());
+
+                actionChainResult.forEach((key, actionStateApply) -> {
                     Matcher m = ACTION_ID.matcher(key);
                     if (m.find() && m.groupCount() > 0) {
                         Long retActionId = Long.parseLong(m.group(1));

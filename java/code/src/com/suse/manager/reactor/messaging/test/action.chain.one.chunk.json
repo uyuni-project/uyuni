@@ -1,210 +1,188 @@
 {
-  "tag": "salt/job/20180301171857761504/ret/${minion-id}",
+  "tag": "salt/job/20180301231955542441/ret/${minion-id}",
   "data": {
     "fun_args": [
-      {
-        "queue": true,
-        "pillar": {
-          "actionchain_id": 35
-        },
-        "mods": [
-          "actionchains.start"
-        ]
-      }
+      "41"
     ],
-    "jid": "20180301171857761504",
+    "jid": "20180301231955542441",
     "return": {
-      "module_|-start_action_chain_|-mgractionchains.start_|-run": {
-        "comment": "Module function mgractionchains.start executed",
-        "nam  e": "mgractionchains.start",
-        "start_time": "17:18:56.710227",
+      "module_|-suma_action_${action2-id}_|-state.apply_|-run": {
+        "comment": "Module function state.apply executed",
+        "name": "state.apply",
+        "start_time": "23:19:57.135700",
         "result": true,
-        "duration": 2942.335,
-        "__run_num__": 0,
+        "duration": 214.369,
+        "__run_num__": 1,
         "changes": {
           "ret": {
-            "module_|-suma_action_${action1-id}_|-state.apply_|-run": {
-              "comment": "Module function state.apply executed",
-              "name": "state.apply",
-              "start_time": "17:18:57.295454",
+            "cmd_|-remote_command_|-remote_command_|-script": {
+              "comment": "Command 'remote_command' run",
+              "name": "remote_command",
+              "start_time": "23:19:57.220170",
               "result": true,
-              "duration": 2354.777,
-              "__run_num__": 1,
-              "changes": {
-                "ret": {
-                  "service_|-disable_osad_|-osad_|-dead": {
-                    "comment": "The named service osad is not available",
-                    "name": "osad",
-                    "start_time": "17:18:59.522035",
-                    "result": true,
-                    "duration": 18.529,
-                    "__run_num__": 8,
-                    "changes": {},
-                    "__id__": "disable_osad"
-                  },
-                  "cmd_|-update-ca-certificates_|-/usr/sbin/update-ca-certificates_|-run": {
-                    "comment": "State wa    s not run because none of the onchanges reqs changed",
-                    "__run_num__": 2,
-                    "__sls__": "certs",
-                    "changes": {},
-                    "result": true
-                  },
-                  "file_|-mgrchannels_repo_|-/etc/zypp/repos.d/susema    nager:channels.repo_|-managed": {
-                    "comment": "File /etc/zypp/repos.d/susemanager:channels.repo is in the correct state",
-                    "pchanges": {},
-                    "name": "/etc/zypp/repos.d/susemanager:c    hannels.repo",
-                    "start_time": "17:18:58.826283",
-                    "result": true,
-                    "duration": 39.941,
-                    "__run_num__": 0,
-                    "changes": {},
-                    "__id__": "mgrchannels_repo"
-                  },
-                  "service_|-disable_spacewalk-update-status_|-spacewalk-update-status_|-dead": {
-                    "comment": "The named service spacewalk-update-status is not available",
-                    "name": "spacewalk-update-status",
-                    "start_time": "17    :18:59.508084",
-                    "result": true,
-                    "duration": 13.698,
-                    "__run_num__": 7,
-                    "changes": {},
-                    "__id__": "disable_spacewalk-update-status"
-                  },
-                  "service_|-disable_spacewalksd_|-rhnsd_|-dead    ": {
-                    "comment": "The named service rhnsd is not available",
-                    "name": "rhnsd",
-                    "start_time": "17:18:59.487424",
-                    "result": true,
-                    "duration": 20.24,
-                    "__run_num__": 6,
-                    "changes": {},
-                    "__id__": "disable_spacewalksd"
-                  },
-                  "file_|-/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT_|-/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT_|-managed": {
-                    "comment": "File /etc/    pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT is in the correct state",
-                    "pchanges": {},
-                    "name": "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT",
-                    "start_time": "17:18:58.866808",
-                    "result": true,
-                    "duration": 21.916,
-                    "__run_num__": 1,
-                    "changes": {},
-                    "__id__": "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT"
-                  },
-                  "service_|-mgr_salt_minion_|-salt-minion_|-running": {
-                    "comment": "The service salt-minion is already running",
-                    "name": "salt-minion",
-                    "start_time": "17:18:59.601668",
-                    "result": true,
-                    "duration": 46.668,
-                    "__run_num__": 12,
-                    "changes": {},
-                    "__id__": "mgr_salt_minion"
-                  },
-                  "pkg_|-remove_traditional_stack_|-remove_traditional_stack_|-removed": {
-                    "comment": "All specified packages are already absent",
-                    "    name": "remove_traditional_stack",
-                    "start_time": "17:18:59.541075",
-                    "result": true,
-                    "duration": 26.048,
-                    "__run_num__": 9,
-                    "changes": {},
-                    "__id__": "remove_traditional_stack"
-                  },
-                  "pkg_|-pkg_removed_|-pkg_removed_|-removed": {
-                    "comment": "All specified packages are already absent",
-                    "name": "pkg_removed",
-                    "start_time": "17:18:59.203233",
-                    "result": true,
-                    "d      uration": 281.175,
-                    "__run_num__": 4,
-                    "changes": {},
-                    "__id__": "pkg_removed"
-                  },
-                  "pkg_|-mgr_salt_minion_|-salt-minion_|-installed": {
-                    "comment": "Package salt-minion is already ins      talled",
-                    "name": "salt-minion",
-                    "start_time": "17:18:59.571613",
-                    "result": true,
-                    "duration": 28.821,
-                    "__run_num__": 11,
-                    "changes": {},
-                    "__id__": "mgr_salt_minion"
-                  },
-                  "pkg_|-pkg_installed_|-pkg_installed_|-installed": {
-                    "comment": "No packages to install provided",
-                    "name": "pkg_installed",
-                    "start_time": "17:18:59.201862",
-                    "result": true,
-                    "duration": 1.102,
-                    "__run_num__": 3,
-                    "changes": {},
-                    "__id__": "pkg_installed"
-                  },
-                  "file_|-mgr_mine_config_|-/etc/salt/minion.d/susemanager-mine.conf_|-managed": {
-                    "comment": "File /etc/salt/mini      on.d/susemanager-mine.conf is in the correct state",
-                    "pchanges": {},
-                    "name": "/etc/salt/minion.d/susemanager-mine.conf",
-                    "start_time": "17:18:59.567530",
-                    "result": true,
-                    "durat      ion": 3.73,
-                    "__run_num__": 10,
-                    "changes": {},
-                    "__id__": "mgr_mine_config"
-                  },
-                  "pkg_|-pkg_latest_|-pkg_latest_|-latest": {
-                    "comment": "No packages to install provided",
-                    "name": "pkg_latest",
-                    "start_time": "17:18:59.484982",
-                    "result": true,
-                    "duration": 0.973,
-                    "__run_num__": 5,
-                    "changes": {},
-                    "__id__": "pkg_latest"
-                  }
-                }
-              },
-              "__id__": "suma_action_219"
-            },
-            "module_|-suma_action_${action2-id}_|-state.apply_|-run": {
-              "comment": "Module function state.apply executed",
-              "name": "state.apply",
-              "start_time": "17:18:56.863144",
-              "result": true,
-              "duration": 431.33,
+              "duration": 127.67,
               "__run_num__": 0,
               "changes": {
-                "ret": {
-                  "cmd_|-remote_command_|-remote_command_|-script": {
-                    "comment": "Command 'remote_command' run",
-                    "name": "remote_command",
-                    "start_ti        me": "17:18:57.013597",
-                    "result": true,
-                    "duration": 273.033,
-                    "__run_num__": 0,
-                    "changes": {
-                      "pid": 13862,
-                      "retcode": 0,
-                      "stderr": "",
-                      "stdout": "total 12\ndrwxr-xr-x  2 root root 4096 Sep 21  2014 bin\n-rwxr-xr-x  1 root root 1636 Sep 12 17:07 netcat.py\ndrwxr-xr-x 14 root root 4096 Jul 25  2017 salt"
-                    },
-                    "__id__": "remote_command"
-                  }
-                }
+                "pid": 2141,
+                "retcode": 0,
+                "stderr": "",
+                "stdout": "total 12\ndrwxr-xr-x  2 root root 4096 Sep 21  2014 bin\n-rwxr-xr-x  1 root root 1636 Sep 12 17:07 netcat.py\ndrwxr-xr-x 14 root root 4096 Jul 25  2017 salt"
               },
-              "__id__": "suma_action_218"
+              "__id__": "remote_command"
             }
           }
         },
-        "__id__": "start_action_chain"
+        "__id__": "suma_action_255"
+      },
+      "module_|-suma_action_${action1-id}_|-state.apply_|-run": {
+        "comment": "Module function state.apply executed",
+        "name": "state.apply",
+        "start_time": "23:19:55.827744",
+        "result": true,
+        "duration": 1307.219,
+        "__run_num__": 0,
+        "changes": {
+          "ret": {
+            "service_|-disable_osad_|-osad_|-dead": {
+              "comment": "The named service osad is not available",
+              "name": "osad",
+              "start_time": "23:19:57.070140",
+              "result": true,
+              "duration": 9.38,
+              "__run_num__": 8,
+              "changes": {},
+              "__id__": "disable_osad"
+            },
+            "cmd_|-update-ca-certificates_|-/usr/sbin/update-ca-certificates_|-run": {
+              "comment": "State was not run because none of the onchanges reqs changed",
+              "__run_num__": 2,
+              "__sls__": "certs",
+              "changes": {},
+              "result": true
+            },
+            "file_|-mgrchannels_repo_|-/etc/zypp/repos.d/susemanager:channels.repo_|-managed": {
+              "comment": "File /etc/zypp/repos.d/susemanager:channels.repo is in the correct state",
+              "pchanges": {},
+              "name": "/etc/zypp/repos.d/susemanager:channels.repo",
+              "start_time": "23:19:56.694611",
+              "result": true,
+              "duration": 38.241,
+              "__run_num__": 0,
+              "changes": {},
+              "__id__": "mgrchannels_repo"
+            },
+            "service_|-disable_spacewalk-update-status_|-spacewalk-update-status_|-dead": {
+              "comment": "The named service spacewalk-update-status is not available",
+              "name": "spacewalk-update-status",
+              "start_time": "23:19:57.060776",
+              "result": true,
+              "duration": 8.98,
+              "__run_num__": 7,
+              "changes": {},
+              "__id__": "disable_spacewalk-update-status"
+            },
+            "service_|-disable_spacewalksd_|-rhnsd_|-dead": {
+              "comment": "The named service rhnsd is not available",
+              "name": "rhnsd",
+              "start_time": "23:19:57.046074",
+              "result": true,
+              "duration": 14.314,
+              "__run_num__": 6,
+              "changes": {},
+              "__id__": "disable_spacewalksd"
+            },
+            "file_|-/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT_|-/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT_|-managed": {
+              "comment": "File /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT is in the correct state",
+              "pchanges": {},
+              "name": "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT",
+              "start_time": "23:19:56.733280",
+              "result": true,
+              "duration": 17.96,
+              "__run_num__": 1,
+              "changes": {},
+              "__id__": "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT"
+            },
+            "service_|-mgr_salt_minion_|-salt-minion_|-running": {
+              "comment": "The service salt-minion is already running",
+              "name": "salt-minion",
+              "start_time": "23:19:57.109934",
+              "result": true,
+              "duration": 23.152,
+              "__run_num__": 12,
+              "changes": {},
+              "__id__": "mgr_salt_minion"
+            },
+            "pkg_|-remove_traditional_stack_|-remove_traditional_stack_|-removed": {
+              "comment": "All specified packages are already absent",
+              "name": "remove_traditional_stack",
+              "start_time": "23:19:57.079898",
+              "result": true,
+              "duration": 13.824,
+              "__run_num__": 9,
+              "changes": {},
+              "__id__": "remove_traditional_stack"
+            },
+            "pkg_|-pkg_removed_|-pkg_removed_|-removed": {
+              "comment": "All specified packages are already absent",
+              "name": "pkg_removed",
+              "start_time": "23:19:56.901769",
+              "result": true,
+              "duration": 141.871,
+              "__run_num__": 4,
+              "changes": {},
+              "__id__": "pkg_removed"
+            },
+            "pkg_|-mgr_salt_minion_|-salt-minion_|-installed": {
+              "comment": "Package salt-minion is already installed",
+              "name": "salt-minion",
+              "start_time": "23:19:57.096235",
+              "result": true,
+              "duration": 13.059,
+              "__run_num__": 11,
+              "changes": {},
+              "__id__": "mgr_salt_minion"
+            },
+            "pkg_|-pkg_installed_|-pkg_installed_|-installed": {
+              "comment": "No packages to install provided",
+              "name": "pkg_installed",
+              "start_time": "23:19:56.900107",
+              "result": true,
+              "duration": 1.27,
+              "__run_num__": 3,
+              "changes": {},
+              "__id__": "pkg_installed"
+            },
+            "file_|-mgr_mine_config_|-/etc/salt/minion.d/susemanager-mine.conf_|-managed": {
+              "comment": "File /etc/salt/minion.d/susemanager-mine.conf is in the correct state",
+              "pchanges": {},
+              "name": "/etc/salt/minion.d/susemanager-mine.conf",
+              "start_time": "23:19:57.094071",
+              "result": true,
+              "duration": 1.841,
+              "__run_num__": 10,
+              "changes": {},
+              "__id__": "mgr_mine_config"
+            },
+            "pkg_|-pkg_latest_|-pkg_latest_|-latest": {
+              "comment": "No packages to install provided",
+              "name": "pkg_latest",
+              "start_time": "23:19:57.044121",
+              "result": true,
+              "duration": 1.031,
+              "__run_num__": 5,
+              "changes": {},
+              "__id__": "pkg_latest"
+            }
+          }
+        },
+        "__id__": "suma_action_254"
       }
     },
     "retcode": 0,
     "success": true,
     "cmd": "_return",
-    "_stamp": "2018-03-01T16:19:01.077614",
-    "fun": "state.apply",
-    "out": "highstate",
+    "_stamp": "2018-03-01T22:19:57.245823",
+    "fun": "mgractionchains.start",
     "id": "${minion-id}",
     "metadata": {
       "suma-action-chain": true
