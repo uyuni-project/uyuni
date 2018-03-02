@@ -178,7 +178,7 @@ class RemoteCommand extends React.Component {
     return (
       <div>
           {msgs}
-          <Panel title={t("Remote Commands")} helpUrl="/rhn/help/reference/en-US/ref.webui.salt.remote.commands.jsp" />
+          <Panel title={t("Remote Commands")} icon="fa-desktop" helpUrl="/rhn/help/reference/en-US/ref.webui.salt.remote.commands.jsp" />
           <div className="panel panel-default">
             <div className="panel-body">
               <div className="row">
