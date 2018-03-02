@@ -1,3 +1,4 @@
+- rewrite products page into reactjs
 - remove clean section from spec (bsc#1083294)
 
 -------------------------------------------------------------------
