@@ -14,11 +14,10 @@
  */
 package com.redhat.rhn.common.conf;
 
-import org.apache.commons.lang3.StringUtils;
-
-
 import com.redhat.rhn.common.validator.HostPortValidator;
 import com.redhat.rhn.domain.kickstart.KickstartData;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 
@@ -185,17 +184,14 @@ public class ConfigDefaults {
     /**
      * Taskomatic defaults
      */
-    private static final String TASKOMATIC_CHANNEL_REPODATA_WORKERS
-        = "java.taskomatic_channel_repodata_workers";
+    private static final String TASKOMATIC_CHANNEL_REPODATA_WORKERS = "java.taskomatic_channel_repodata_workers";
 
     /**
      * HTTP proxy defaults
      */
     private static final String HTTP_PROXY = "server.satellite.http_proxy";
-    private static final String HTTP_PROXY_USERNAME =
-        "server.satellite.http_proxy_username";
-    private static final String HTTP_PROXY_PASSWORD =
-        "server.satellite.http_proxy_password";
+    private static final String HTTP_PROXY_USERNAME = "server.satellite.http_proxy_username";
+    private static final String HTTP_PROXY_PASSWORD = "server.satellite.http_proxy_password";
     private static final int DEFAULT_HTTP_PROXY_PORT = 80;
 
     /**
@@ -203,51 +199,40 @@ public class ConfigDefaults {
      */
     public static final String SCC_URL = "server.susemanager.scc_url";
 
-    public static final String MESSAGE_QUEUE_THREAD_POOL_SIZE =
-            "java.message_queue_thread_pool_size";
+    public static final String MESSAGE_QUEUE_THREAD_POOL_SIZE = "java.message_queue_thread_pool_size";
 
-    public static final String VIRTPOLLER_CACHE_EXPIRATION =
-            "server.susemanager.virtpoller.expire_time";
-    public static final String VIRTPOLLER_CACHE_FILE =
-            "server.susemanager.virtpoller.cache_file";
-    public static final String VIRTPOLLER_INTERVAL =
-            "server.susemanager.virtpoller.interval";
+    public static final String VIRTPOLLER_CACHE_EXPIRATION = "server.susemanager.virtpoller.expire_time";
+    public static final String VIRTPOLLER_CACHE_FILE = "server.susemanager.virtpoller.cache_file";
+    public static final String VIRTPOLLER_INTERVAL = "server.susemanager.virtpoller.interval";
 
     /**
      * Token lifetime in seconds
      */
-    public static final String TEMP_TOKEN_LIFETIME =
-            "server.susemanager.temp_token_lifetime";
-    public static final String TOKEN_LIFETIME =
-            "server.susemanager.token_lifetime";
+    public static final String TEMP_TOKEN_LIFETIME = "server.susemanager.temp_token_lifetime";
+    public static final String TOKEN_LIFETIME = "server.susemanager.token_lifetime";
 
     /**
      * Salt Minions presence ping timeouts in seconds
      */
-    public static final String SALT_PRESENCE_PING_TIMEOUT =
-            "java.salt_presence_ping_timeout";
-    public static final String SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT =
-            "java.salt_presence_ping_gather_job_timeout";
+    public static final String SALT_PRESENCE_PING_TIMEOUT = "java.salt_presence_ping_timeout";
+    public static final String SALT_PRESENCE_PING_GATHER_JOB_TIMEOUT = "java.salt_presence_ping_gather_job_timeout";
 
-    public static final String SALT_SSH_CONNECT_TIMEOUT =
-            "java.salt_ssh_connect_timeout";
+    public static final String SALT_SSH_CONNECT_TIMEOUT = "java.salt_ssh_connect_timeout";
 
     /**
      * Duration in hours of the time window for Salt minions to stage
      * packages in advance of scheduled installations or upgrades
      */
-    public static final String SALT_CONTENT_STAGING_WINDOW =
-            "java.salt_content_staging_window";
+    public static final String SALT_CONTENT_STAGING_WINDOW = "java.salt_content_staging_window";
 
     /**
      * Advance time, in hours, for the content staging window to open with
      * respect to the scheduled installation/upgrade time
      */
-    public static final String SALT_CONTENT_STAGING_ADVANCE =
-            "java.salt_content_staging_advance";
+    public static final String SALT_CONTENT_STAGING_ADVANCE = "java.salt_content_staging_advance";
 
     /**
-     * If true, check via JWT tokens that files requested by a minion are actually accessible by that minon.
+     * If true, check via JWT tokens that files requested by a minion are actually accessible by that minion.
      * Turning this flag to false disables the checks.
      */
     public static final String SALT_CHECK_DOWNLOAD_TOKENS = "java.salt_check_download_tokens";
