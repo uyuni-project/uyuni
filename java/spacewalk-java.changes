@@ -1,3 +1,4 @@
+- Ensure transaction execution order when updating FQDNs for minions (bsc#1078427)
 - Adjusted the code to override software channel's gpg_check during clone(#bsc1080290)
 - Fix "Most critical systems" list on "Home Overview" view (bsc#1081757)
 - Fix NPE when retrieving OES repo (bsc#1082328)
