@@ -8416,7 +8416,6 @@
                path="/WEB-INF/pages/admin/setup/mirror-credentials.jsp" />
     </action>
 
-    </action>
   </action-mappings>
 
   <!-- ===================================== -->
