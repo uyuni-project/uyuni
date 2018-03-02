@@ -17,7 +17,7 @@ package com.redhat.rhn.common.conf;
 import com.redhat.rhn.common.validator.HostPortValidator;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 
