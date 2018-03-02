@@ -1,3 +1,4 @@
+- support SLE15 product family
 - fix a race condition on lookup_evr (bsc#1090059)
 
 -------------------------------------------------------------------

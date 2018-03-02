@@ -1,3 +1,4 @@
+- rewrite products page into reactjs
 - Show channel label when listing config channels (bsc#1083278)
 - Fixup for channel assignments message text
 

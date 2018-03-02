@@ -1,3 +1,5 @@
+- support SLE15 product family
+- rewrite products page into reactjs
 - Update codebase for salt-netapi-client 0.14.0
 - Show channel label when listing config channels (bsc#1083278)
 - fix equals to display channels with same name but different label
