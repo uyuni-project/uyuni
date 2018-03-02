@@ -39,18 +39,22 @@ public class Extension {
 
     private final String identifier;
 
+    private final Set<JsonChannel> channels;
+
     /**
      * Instantiates a new Product.
      * @param idIn the id in
      * @param labelIn the label in
      * @param recommendedIn the recommended flag in
      */
-    public Extension(Long idIn, String identifierIn, String labelIn, String archIn, Boolean recommendedIn) {
+    public Extension(Long idIn, String identifierIn, String labelIn, String archIn, Boolean recommendedIn,
+                     Set<JsonChannel> channelsIn) {
         id = idIn;
         label = labelIn;
         arch = archIn;
         identifier = identifierIn;
         recommended = recommendedIn;
+        channels = channelsIn;
     }
 
     /**
@@ -83,6 +87,10 @@ public class Extension {
 
     public String getIdentifier() {
         return identifier;
+    }
+
+    public Set<JsonChannel> getChannels() {
+        return channels;
     }
 
     /**

@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.suse.manager.model.products.Extension;
+import com.suse.manager.model.products.JsonChannel;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.webui.utils.SparkApplicationHelper;
 import com.suse.utils.Json;
@@ -197,10 +198,28 @@ public class ProductsController {
                            s.getIdent(),
                            s.getFriendlyName(),
                            s.getArch(),
-                           s.isRecommended()
-                       )
-                    ).collect(Collectors.toSet())
-                )
+                           s.isRecommended(),
+                           syncProduct.getChannels().stream().map(c ->
+                                   new JsonChannel(
+                                           c.getName(),
+                                           c.getLabel(),
+                                           c.getSummary(),
+                                           c.getOptional(),
+                                           c.getStatus()
+                                   )
+                           ).collect(Collectors.toSet())
+                         )
+                      ).collect(Collectors.toSet()),
+                      syncProduct.getChannels().stream().map(c ->
+                              new JsonChannel(
+                                      c.getName(),
+                                      c.getLabel(),
+                                      c.getSummary(),
+                                      c.getOptional(),
+                                      c.getStatus()
+                            )
+                    ).collect(Collectors.toSet()))
+
             ).collect(Collectors.toList());
             data.put("baseProducts", jsonProducts);
         }
