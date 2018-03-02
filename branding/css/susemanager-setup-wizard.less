@@ -234,3 +234,71 @@ ul.subscriptions-list {
 .btn-default.text-muted {
   .text-muted!important;
 }
+
+.row-odd {
+  background-color: @spacewalk-background;
+}
+.row-even {
+  background-color: #fff;
+}
+
+ul.product-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  clear: both;
+  display: block;
+  li {
+    display: block;
+    overflow: auto;
+    border-bottom: 1px solid @spacewalk-gray-light;
+    .product-element {
+      overflow: auto;
+      padding: .5em;
+      * {
+        vertical-align: middle;
+      }
+    }
+  }
+  > li.list-row-odd {
+    .row-odd
+  }
+  > li.list-row-even {
+    .row-even
+  }
+  // > li.list-row-odd ul:first-child {
+  //   .row-even
+  // }
+  // > li.list-row-even ul:first-child {
+  //   .row-odd
+  // }
+  ul {
+    margin-top: .3em;
+    padding: 0;
+    li {
+      border: 0;
+      border-left: 1px solid @spacewalk-gray-light;
+      margin-left: 30px;
+      padding: 0.3em 0;
+    }
+    li:first-of-type {
+      border-top: 1px solid @spacewalk-gray-light;
+    }
+  }
+  ul.product-channel-list {
+    padding: 0;
+    margin: 0;
+    li {
+      list-style: disc;
+      border: none;
+      background: transparent;
+      padding: 0 1em;
+      margin: 0;
+    }
+  }
+}
+
+.right {
+  float: right;
+}
