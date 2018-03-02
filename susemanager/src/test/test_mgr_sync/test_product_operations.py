@@ -100,6 +100,7 @@ class ProductOperationsTest(unittest.TestCase):
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -180,6 +181,7 @@ Status:
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -235,6 +237,7 @@ Status:
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -264,6 +267,7 @@ Status:
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -293,6 +297,7 @@ Status:
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -324,6 +329,7 @@ Status:
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -355,6 +361,7 @@ Status:
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -416,6 +423,7 @@ Status:
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -482,6 +490,7 @@ Product successfully added"""
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -552,6 +561,7 @@ Product successfully added"""
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -627,6 +637,7 @@ Product successfully added"""
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -691,6 +702,7 @@ Product successfully added"""
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -732,6 +744,7 @@ All the available products have already been installed, nothing to do"""
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
@@ -770,6 +783,7 @@ All the available products have already been installed, nothing to do"""
 
         expected_output = """Available Products:
 
+(R) - recommended extension
 
 Status:
   - [I] - product is installed
