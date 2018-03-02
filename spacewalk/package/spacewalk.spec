@@ -170,8 +170,6 @@ db-backend = $i
 EOF
 done
 
-%clean
-rm -rf %{buildroot}
 
 %files common
 %{_sysconfdir}/spacewalk-release

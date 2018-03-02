@@ -93,8 +93,6 @@ ln -s ../../lib/oracle/%{icdir}/client64/lib/ojdbc7.jar $RPM_BUILD_ROOT/%{_javad
 %endif
 
 
-%clean
-
 %files
 %defattr(-,root,root,-)
 %ifarch x86_64 s390x ppc64le

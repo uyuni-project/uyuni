@@ -90,8 +90,6 @@ make -C suseRegister install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{python3_sitelib
 %endif
 %endif
 
-%clean
-rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)

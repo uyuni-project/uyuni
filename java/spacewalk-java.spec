@@ -778,8 +778,6 @@ find $RPM_BUILD_ROOT%{jardir} -name *.jar
 echo "#### SYMLINKS END ####"
 
 
-%clean
-
 %if 0%{?suse_version}
 %pre -n spacewalk-taskomatic
 %service_add_pre taskomatic.service

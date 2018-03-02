@@ -40,7 +40,6 @@ packages.
 a2x -d manpage -f manpage spacewalk-pylint.8.asciidoc
 
 %install
-rm -rf %{buildroot}
 install -d -m 755 %{buildroot}/%{_bindir}
 install -p -m 755 spacewalk-pylint %{buildroot}/%{_bindir}/
 install -d -m 755 %{buildroot}/%{_sysconfdir}
@@ -60,10 +59,6 @@ sed -i '/disable=/ s/,bad-continuation//g;' \
 %endif
 mkdir -p %{buildroot}/%{_mandir}/man8
 install -m 644 spacewalk-pylint.8 %{buildroot}/%{_mandir}/man8
-
-
-%clean
-rm -rf %{buildroot}
 
 
 %files

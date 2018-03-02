@@ -102,9 +102,6 @@ install -m 0644 yast/*.rb %{buildroot}%{_datadir}/YaST2/clients
 install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 install -m 0644 yast/susemanager_setup.desktop %{buildroot}%{_datadir}/applications/YaST2/
 
-%clean
-rm -rf %{buildroot}
-
 %check
 # we need to build a fake python dir. python did not work with
 # two site-package/spacewalk dirs having different content

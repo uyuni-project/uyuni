@@ -22,9 +22,6 @@ install -D -m 0755 check_suma_patches %{buildroot}/usr/lib/nagios/plugins/check_
 install -D -m 0755 check_suma_lastevent %{buildroot}/usr/lib/nagios/plugins/check_suma_lastevent
 install -D -m 0755 check_suma_common.py %{buildroot}/usr/lib/nagios/plugins/check_suma_common.py
 
-%clean
-rm -rf %{buildroot}
-
 %files
 %defattr(-,root,root,-)
 %dir /usr/lib/nagios

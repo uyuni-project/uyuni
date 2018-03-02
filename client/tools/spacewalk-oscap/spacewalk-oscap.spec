@@ -78,9 +78,6 @@ make -f Makefile.spacewalk-oscap install PREFIX=$RPM_BUILD_ROOT PYTHONPATH=%{pyt
 %endif
 
 
-%clean
-
-
 %files
 %defattr(-,root,root)
 %doc COPYING

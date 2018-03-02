@@ -30,7 +30,6 @@ Script, which will setup PostgreSQL database for Spacewalk.
 %build
 
 %install
-rm -rf %{buildroot}
 install -d -m 755 %{buildroot}/%{_bindir}
 install -m 0755 bin/* %{buildroot}/%{_bindir}
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d
@@ -41,12 +40,6 @@ install -m 0644 setup/*.conf %{buildroot}/%{_datadir}/spacewalk/setup/
 %if 0%{?fedora} >= 24
 sed -i '/^checkpoint_segments/d' %{buildroot}/%{_datadir}/spacewalk/setup/postgresql.conf
 %endif
-
-%check
-
-
-%clean
-rm -rf %{buildroot}
 
 
 %files

@@ -93,7 +93,6 @@ make %{?_smp_mflags}
 
 
 %install
-rm -rf %{buildroot}
 make pure_install PERL_INSTALL_ROOT=%{buildroot}
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -type d -depth -exec rmdir {} 2>/dev/null ';'
@@ -203,10 +202,6 @@ exit 0
 
 %check
 make test
-
-
-%clean
-rm -rf %{buildroot}
 
 
 %files

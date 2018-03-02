@@ -80,7 +80,6 @@ install -m 0644 update-messages.txt $RPM_BUILD_ROOT/usr/share/susemanager/
 
 install -m 755 schema-source-sanity-check.pl $RPM_BUILD_ROOT%{_bindir}/schema-source-sanity-check.pl
 
-%clean
 
 %if 0%{?suse_version}
 %post

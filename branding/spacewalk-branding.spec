@@ -94,7 +94,6 @@ rm -f css/bootstrap
 rm -f css/patternfly1
 
 %install
-rm -rf %{buildroot}
 install -d -m 755 %{buildroot}%{wwwdocroot}
 install -d -m 755 %{buildroot}%{wwwdocroot}/css
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk
@@ -126,9 +125,6 @@ ENDOFCONFIG
 cp -p conf/rhn_docs.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf
 ln -s %{_datadir}/patternfly1/resources/fonts/* %{buildroot}%{wwwdocroot}/fonts/
 %endif
-
-%clean
-rm -rf %{buildroot}
 
 
 %files

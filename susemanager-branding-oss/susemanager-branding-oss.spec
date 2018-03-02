@@ -30,9 +30,6 @@ install -m 644 eula.html $RPM_BUILD_ROOT/srv/www/htdocs/help/
 install -m 644 license.txt $RPM_BUILD_ROOT/%_defaultdocdir/susemanager/
 
 
-%clean
-rm -rf %{buildroot}
-
 %files
 %defattr(-,root,root,-)
 %docdir %_defaultdocdir/susemanager
