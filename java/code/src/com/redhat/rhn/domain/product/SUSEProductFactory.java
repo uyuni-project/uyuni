@@ -162,6 +162,14 @@ public class SUSEProductFactory extends HibernateFactory {
         return concat;
     }
 
+    /**
+     * Finds all mandetory channels for a given channel label.
+     *
+     * @param channelLabel channel label
+     * @param archByChannelLabel a function mapping from channel label to architecture.
+     *                           to filter out incompatible channels.
+     * @return a stream of suse product channels which are required by the channel
+     */
     public static Stream<SUSEProductChannel> findAllMandetoryChannels(String channelLabel,
             Function<String, String> archByChannelLabel) {
         List<SUSEProductChannel> suseProducts = SUSEProductFactory.lookupByChannelLabel(channelLabel);
