@@ -6,14 +6,14 @@ public class JsonChannel {
 
     private final String name;
     private final String label;
-    private final String summery;
+    private final String summary;
     private final boolean optional;
     private final MgrSyncStatus status;
 
     public JsonChannel(String nameIn, String labelIn, String summeryIn, boolean optionalIn, MgrSyncStatus statusIn) {
         this.name = nameIn;
         this.label = labelIn;
-        this.summery = summeryIn;
+        this.summary = summeryIn;
         this.optional = optionalIn;
         this.status = statusIn;
     }
@@ -30,8 +30,8 @@ public class JsonChannel {
         return name;
     }
 
-    public String getSummery() {
-        return summery;
+    public String getSummary() {
+        return summary;
     }
 
     public boolean isOptional() {
