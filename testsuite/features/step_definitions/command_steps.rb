@@ -48,6 +48,11 @@ When(/^I remove the mgr\-sync cache file$/) do
   $command_output = sshcmd('rm -f ~/.mgr-sync')[:stdout]
 end
 
+When(/^I refresh SCC$/) do
+  refresh_timeout = 600
+  $server.run('echo -e "admin\nadmin\n" | mgr-sync refresh', true, refresh_timeout)
+end
+
 When(/^I execute mgr\-sync refresh$/) do
   $command_output = sshcmd('mgr-sync refresh', ignore_err: true)[:stderr]
 end
