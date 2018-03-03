@@ -18,6 +18,8 @@ import com.redhat.rhn.domain.scc.SCCRepository;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.List;
 
 /**
@@ -47,8 +49,13 @@ public class SCCProduct {
     private List<SCCRepository> repositories;
     @SerializedName("predecessor_ids")
     private List<Integer> predecessorIds;
+    @SerializedName("online_predecessor_ids")
+    private List<Integer> onlinePredecessorIds;
+    @SerializedName("offline_predecessor_ids")
+    private List<Integer> offlinePredecessorIds;
     @SerializedName("product_type")
     private String productType;
+    private boolean recommended;
 
     /**
      * Default constructor.
@@ -186,10 +193,26 @@ public class SCCProduct {
     }
 
     /**
+     * @deprecated use {@link getOnlinePredecessorIds} or {@link getOfflinePredecessorIds} instead
      * @return the predecessor Ids
      */
+    @Deprecated
     public List<Integer> getPredecessorIds() {
         return predecessorIds;
+    }
+
+    /**
+     * @return the online predecessor Ids
+     */
+    public List<Integer> getOnlinePredecessorIds() {
+        return onlinePredecessorIds;
+    }
+
+    /**
+     * @return the offline predecessor Ids
+     */
+    public List<Integer> getOfflinePredecessorIds() {
+        return offlinePredecessorIds;
     }
 
     /**
@@ -207,14 +230,21 @@ public class SCCProduct {
     }
 
     /**
+     * @return the recommended
+     */
+    public boolean isRecommended() {
+        return recommended;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        return result;
+        return new HashCodeBuilder()
+                .append(id)
+                .append(recommended)
+                .toHashCode();
     }
 
     /**
@@ -232,7 +262,7 @@ public class SCCProduct {
             return false;
         }
         SCCProduct other = (SCCProduct) obj;
-        if (id != other.id) {
+        if (id != other.id || recommended != other.recommended) {
             return false;
         }
         return true;
@@ -295,10 +325,10 @@ public class SCCProduct {
     }
 
     /**
-     * @param predecessorIdsIn the predecessor Ids to set
+     * @param onlinePredecessorIdsIn the online predecessor Ids to set
      */
-    public void setPredecessorIds(List<Integer> predecessorIdsIn) {
-        this.predecessorIds = predecessorIdsIn;
+    public void setOnlinePredecessorIds(List<Integer> onlinePredecessorIdsIn) {
+        this.onlinePredecessorIds = onlinePredecessorIdsIn;
     }
 
     /**

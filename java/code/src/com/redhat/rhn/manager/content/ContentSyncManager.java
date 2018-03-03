@@ -27,9 +27,9 @@ import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
-import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -74,17 +74,19 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Content synchronization logic.
@@ -298,6 +300,48 @@ public class ContentSyncManager {
     }
 
     /**
+     * Return a fixed friendly name
+     * @param friendlyName input friendly name
+     * @param productClass product class
+     * @param archs known archs
+     * @return fixed friendly name
+     */
+    private static String makeFriendlyNameConsistent(String friendlyName, String productClass,
+            List<PackageArch> archs) {
+        if (friendlyName.endsWith(" (BETA)")) {
+            friendlyName = friendlyName.substring(0, friendlyName.length() - 7);
+        }
+        for (PackageArch arch : archs) {
+            if (friendlyName.endsWith(" " + arch.getLabel())) {
+                friendlyName = friendlyName.substring(0, friendlyName.length() -
+                        arch.getLabel().length() - 1);
+            }
+        }
+        if (friendlyName.endsWith(" VMWARE")) {
+            friendlyName = friendlyName.substring(0, friendlyName.length() - 7);
+        }
+
+        // make naming consistent: add VMWare suffix where appropriate
+        if (productClass != null && productClass.toLowerCase().contains("vmware")) {
+            friendlyName += " VMWare";
+        }
+        return friendlyName;
+    }
+
+    /**
+     * Recursivly walk the extensions and fix the friendly name
+     * @param product the scc product
+     * @param archs list of known archs
+     */
+    private static void adjustFriendlyName(SCCProduct product, List<PackageArch> archs) {
+        String friendlyName = makeFriendlyNameConsistent(product.getFriendlyName(), product.getProductClass(), archs);
+        product.setFriendlyName(friendlyName);
+        Optional.ofNullable(product.getExtensions()).orElseGet(Collections::emptyList).forEach(e -> {
+            adjustFriendlyName(e, archs);
+        });
+    }
+
+    /**
      * HACK: fixes data in SCC products that do not have it correct
      * To be removed when SCC team fixes this
      * @param products the products
@@ -305,28 +349,10 @@ public class ContentSyncManager {
     @SuppressWarnings("unchecked")
     public void addDirtyFixes(Collection<SCCProduct> products) {
         LinkedList<SCCProduct> missingProducts = new LinkedList<>();
-
+        List<PackageArch> archs = HibernateFactory.getSession().createCriteria(PackageArch.class).list();
         for (SCCProduct product : products) {
             // make naming consistent: strip arch or VMWARE suffix
-            String friendlyName = product.getFriendlyName();
-            List<PackageArch> archs =
-                    HibernateFactory.getSession().createCriteria(PackageArch.class).list();
-            for (PackageArch arch : archs) {
-                if (friendlyName.endsWith(" " + arch.getLabel())) {
-                    friendlyName = friendlyName.substring(0, friendlyName.length() -
-                        arch.getLabel().length() - 1);
-                }
-            }
-            if (friendlyName.endsWith(" VMWARE")) {
-                friendlyName = friendlyName.substring(0, friendlyName.length() - 7);
-            }
-
-            // make naming consistent: add VMWare suffix where appropriate
-            String productClass = product.getProductClass();
-            if (productClass != null && productClass.toLowerCase().contains("vmware")) {
-                friendlyName += " VMWare";
-            }
-            product.setFriendlyName(friendlyName);
+            adjustFriendlyName(product, archs);
 
             // add missing extension products if their base exists
             switch (product.getId()) {
@@ -383,16 +409,12 @@ public class ContentSyncManager {
      * Returns all available products in user-friendly format.
      * @param availableChannels list of available channels
      * @return list of all available products
-     * @throws ContentSyncException in case of an error
      */
-    public Collection<MgrSyncProductDto> listProducts(List<XMLChannel> availableChannels)
-        throws ContentSyncException {
+    public Collection<MgrSyncProductDto> listProducts(List<XMLChannel> availableChannels) {
         // get all products in the DB
-        Collection<XMLProduct> dbProducts = new HashSet<XMLProduct>();
-        for (SUSEProduct product : SUSEProductFactory.findAllSUSEProducts()) {
-            dbProducts.add(new XMLProduct(product.getFriendlyName(), product
-                    .getProductId(), product.getVersion()));
-        }
+        List<XMLProduct> dbProducts = SUSEProductFactory.findAllSUSEProducts().stream().map(
+            p -> new XMLProduct(p.getFriendlyName(), p.getProductId(), p.getVersion())
+        ).collect(Collectors.toList());
 
         // get all the channels we have an entitlement for
         Map<XMLProduct, Set<XMLChannel>> productToChannelMap =
@@ -422,33 +444,28 @@ public class ContentSyncManager {
             Map<XMLProduct, Set<XMLChannel>> productToChannelMap) {
 
         // get a map from channel labels to channels
-        Map<String, XMLChannel> labelsTochannels =
-                new HashMap<String, XMLChannel>();
-        for (Set<XMLChannel> channels : productToChannelMap.values()) {
-            for (XMLChannel channel : channels) {
-                labelsTochannels.put(channel.getLabel(), channel);
-            }
-        }
+        final Map<String, XMLChannel> channelByLabel = productToChannelMap.values().stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toMap(XMLChannel::getLabel, s -> s, (a, b) -> b));
+
 
         // get a map from every channel to its base channel
-        Map<XMLChannel, XMLChannel> baseChannels =
-                new HashMap<XMLChannel, XMLChannel>();
-        for (XMLChannel channel : labelsTochannels.values()) {
+        Map<XMLChannel, XMLChannel> baseChannelByChannel = new HashMap<>();
+        for (XMLChannel channel : channelByLabel.values()) {
             XMLChannel parent = channel;
-            while (!parent.getParent().equals("BASE")) {
-                parent = labelsTochannels.get(parent.getParent());
+            while (!parent.getParent().equals(BASE_CHANNEL)) {
+                parent = channelByLabel.get(parent.getParent());
             }
-            baseChannels.put(channel, parent);
+            baseChannelByChannel.put(channel, parent);
         }
 
         // convert every XMLProduct to dto objects (one per base channel)
-        SortedSet<MgrSyncProductDto> all = new TreeSet<MgrSyncProductDto>();
+        Set<MgrSyncProductDto> all = new TreeSet<>();
         for (XMLProduct product : products) {
-            Set<XMLChannel> channels = productToChannelMap.get(product);
-            Map<XMLChannel, MgrSyncProductDto> baseMap =
-                    new HashMap<XMLChannel, MgrSyncProductDto>();
-            for (XMLChannel channel : channels) {
-                XMLChannel base = baseChannels.get(channel);
+            Set<XMLChannel> productChannels = productToChannelMap.get(product);
+            Map<XMLChannel, MgrSyncProductDto> baseMap = new HashMap<>();
+            for (XMLChannel channel : productChannels) {
+                XMLChannel base = baseChannelByChannel.get(channel);
 
                 MgrSyncProductDto productDto = baseMap.get(base);
                 // if this is a new product
@@ -474,23 +491,21 @@ public class ContentSyncManager {
         }
 
         // divide base from extension products
-        Collection<MgrSyncProductDto> bases = new LinkedList<MgrSyncProductDto>();
-        Collection<MgrSyncProductDto> extensions = new LinkedList<MgrSyncProductDto>();
-        for (MgrSyncProductDto product : all) {
-            boolean isBase = false;
-            for (XMLChannel channel : product.getChannels()) {
-                if (channel.getParent().equals(BASE_CHANNEL)) {
-                    isBase = true;
-                    break;
-                }
-            }
-            if (isBase) {
-                bases.add(product);
-            }
-            else {
-                extensions.add(product);
-            }
-        }
+
+        Map<Boolean, List<MgrSyncProductDto>> partition = all.stream().collect(Collectors.partitioningBy(
+                product -> product.getChannels().stream()
+                        .anyMatch(channel -> channel.getParent().equals(BASE_CHANNEL))
+        ));
+        List<MgrSyncProductDto> bases = partition.get(true);
+        List<MgrSyncProductDto> extensions = partition.get(false);
+
+        //TODO: this is not optimal yet
+        Map<Long, List<Long>> recommendedForBase = SUSEProductFactory.allRecommendedExtensions().stream().collect(
+                Collectors.groupingBy(
+                        s -> s.getExtensionProduct().getProductId(),
+                        Collectors.mapping(s -> s.getRootProduct().getProductId(), Collectors.toList())
+                )
+        );
 
         // add base-extension relationships
         for (MgrSyncProductDto base : bases) {
@@ -498,7 +513,11 @@ public class ContentSyncManager {
                 for (XMLChannel baseChannel : base.getChannels()) {
                     for (XMLChannel extensionChannel : extension.getChannels()) {
                         if (extensionChannel.getParent().equals(baseChannel.getLabel())) {
+                            boolean recommended = recommendedForBase.getOrDefault(extension.getId(),
+                                    Collections.emptyList()).contains(base.getId());
+                            extension.setRecommended(recommended);
                             base.addExtension(extension);
+                            base.setRecommended(false);
                         }
                     }
                 }
@@ -911,17 +930,14 @@ public class ContentSyncManager {
         //FIXME: not used, we now refresh the cache in getSubscriptions(c). DELETE?
     }
 
-    /**
-     * Creates or updates entries in the SUSEProducts database table with a given list of
-     * {@link SCCProduct} objects.
-     *
-     * @param products list of products
-     * @throws ContentSyncException in case of an error
+    /*
+     * Walk the tree
      */
-    public void updateSUSEProducts(Collection<SCCProduct> products)
-            throws ContentSyncException {
-        Collection<SUSEProduct> processed = new LinkedList<SUSEProduct>();
-        for (SCCProduct p : products) {
+    private void updateSUSEProduct(SCCProduct p, SCCProduct root, Map<Integer, SUSEProduct> processed,
+            Collection<SUSEProductExtension> latestProductExtensions) {
+
+        SUSEProduct product = null;
+        if (!processed.containsKey(p.getId())) {
             // Create the channel family if it is not available
             String productClass = p.getProductClass();
             ChannelFamily cf = null;
@@ -930,7 +946,7 @@ public class ContentSyncManager {
             }
 
             // Update this product in the database if it is there
-            SUSEProduct product = SUSEProductFactory.findSUSEProduct(p.getIdentifier(),
+            product = SUSEProductFactory.findSUSEProduct(p.getIdentifier(),
                     p.getVersion(), p.getReleaseType(), p.getArch(), false);
             if (product != null) {
                 // it is not guaranteed for this ID to be stable in time, as it
@@ -947,10 +963,10 @@ public class ContentSyncManager {
                 product.setName(p.getIdentifier().toLowerCase());
                 // Version rarely can be null.
                 product.setVersion(p.getVersion() != null ?
-                                   p.getVersion().toLowerCase() : null);
+                        p.getVersion().toLowerCase() : null);
                 // Release Type often can be null.
                 product.setRelease(p.getReleaseType() != null ?
-                                   p.getReleaseType().toLowerCase() : null);
+                        p.getReleaseType().toLowerCase() : null);
                 product.setFriendlyName(p.getFriendlyName());
                 product.setFree(p.isFree());
 
@@ -959,19 +975,79 @@ public class ContentSyncManager {
                     // unsupported architecture, skip the product
                     log.error("Unknown architecture '" + p.getArch() +
                             "'. This may be caused by a missing database migration");
-                    continue;
+                    return;
                 }
                 product.setArch(pArch);
             }
             product.setBase(p.isBaseProduct());
             product.setChannelFamily(cf);
             SUSEProductFactory.save(product);
-            processed.add(product);
+            processed.put(p.getId(), product);
+        }
+        else {
+            product = SUSEProductFactory.lookupByProductId(p.getId());
         }
 
-        SUSEProductFactory.removeAllExcept(processed);
+        if (p.getExtensions() == null) {
+            return;
+        }
+        for (SCCProduct e : p.getExtensions()) {
+            updateSUSEProduct(e, root, processed, latestProductExtensions);
+            SUSEProduct suseExtPrd = SUSEProductFactory.lookupByProductId(e.getId());
+            SUSEProduct suseRootPrd = SUSEProductFactory.lookupByProductId(root.getId());
+            if (product != null && suseExtPrd != null && suseRootPrd != null) {
+                latestProductExtensions.add(
+                        new SUSEProductExtension(product, suseExtPrd, suseRootPrd, e.isRecommended()));
+            }
+        }
+    }
+    /**
+     * Creates or updates entries in the SUSEProducts database table with a given list of
+     * {@link SCCProduct} objects.
+     *
+     * @param products list of products
+     * @throws ContentSyncException in case of an error
+     */
+    public void updateSUSEProducts(Collection<SCCProduct> products)
+            throws ContentSyncException {
+        Map<Integer, SUSEProduct> processed = new HashMap<>();
+        List<SUSEProductExtension> latestProductExtensions =
+                new LinkedList<SUSEProductExtension>();
+        for (SCCProduct p : products) {
+            updateSUSEProduct(p, p, processed, latestProductExtensions);
+        }
+
+        SUSEProductFactory.removeAllExcept(processed.values());
+        assignManagerToolsChannels(products, latestProductExtensions);
+        // Sync the database list of product extensions with the updated one
+        SUSEProductFactory.mergeAllProductExtension(latestProductExtensions);
         updateUpgradePaths(products);
-        updateProductExtensions(products);
+    }
+
+    /**
+     * SUSE Manager Tools channel comes as base products from SCC and are not
+     * assigned to the real base products. They are an extension of the basesystem module
+     *
+     * @param products list of SCC products
+     * @param latestProductExtensions collection of all newly parsed products extensions
+     */
+    private void assignManagerToolsChannels(Collection<SCCProduct> products,
+            List<SUSEProductExtension> latestProductExtensions) {
+        // Add sle-manager-tools as recommended extension to all basesystem modules
+        for (SCCProduct p : products) {
+            if (p.getIdentifier().equals("sle-module-basesystem") && p.getVersion().equals("15")) {
+                SUSEProduct base = SUSEProductFactory.lookupByProductId(p.getId());
+                List<SUSEProduct> roots = SUSEProductFactory.findAllRootProductsOf(base);
+                for (SUSEProduct root : roots) {
+                    SUSEProduct ext = SUSEProductFactory.findSUSEProduct("sle-manager-tools", "15", null,
+                            root.getArch().getLabel(), true);
+                    SUSEProductExtension toolsExt = new SUSEProductExtension(base, ext, root, true);
+                    if (!latestProductExtensions.contains(toolsExt)) {
+                        latestProductExtensions.add(toolsExt);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -1106,83 +1182,29 @@ public class ContentSyncManager {
                     path.getFromProductId());
             SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
                     path.getToProductId());
-            if (isValidUpgradePath(fromProduct, toProduct)) {
-                latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
+            if (fromProduct == null || toProduct == null) {
+                continue;
             }
+            latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
         }
 
         // Iterate through products from SCC and check predecessor IDs
         for (SCCProduct p : products) {
-            if (p.getPredecessorIds() != null) {
+            if (p.getOnlinePredecessorIds() != null) {
                 SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(p.getId());
-                for (Integer predecessorId : p.getPredecessorIds()) {
+                for (Integer predecessorId : p.getOnlinePredecessorIds()) {
                     SUSEProduct fromProduct =
                             SUSEProductFactory.lookupByProductId(predecessorId);
-                    if (isValidUpgradePath(fromProduct, toProduct)) {
-                        latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
+                    if (fromProduct == null || toProduct == null) {
+                        continue;
                     }
+                    latestUpgradePaths.add(new SUSEUpgradePath(fromProduct, toProduct));
                 }
             }
         }
 
         // Sync the database list of upgrade paths with the updated one
         SUSEProductFactory.mergeAllUpgradePaths(latestUpgradePaths);
-    }
-
-    /**
-     * Recreate contents of the suseProductExtension table with extensions
-     * of products from SCC
-     *
-     * @param products Collection of SCC Products
-     * @throws ContentSyncException in case of an error
-     */
-    public void updateProductExtensions(Collection<SCCProduct> products)
-            throws ContentSyncException {
-        Collection<SUSEProductExtension> latestProductExtensions =
-                new LinkedList<SUSEProductExtension>();
-
-        Set<String> sourceTargetDone = new HashSet<>();
-        // Iterate through products from SCC and check extensions
-        for (SCCProduct baseProduct : products) {
-            if (baseProduct.getExtensions() == null) {
-                continue;
-            }
-            for (SCCProduct extensionProduct : baseProduct.getExtensions()) {
-                String ident = baseProduct.hashCode() + "-" + extensionProduct.hashCode();
-                if (!sourceTargetDone.contains(ident)) {
-                    // we do not check for extensions of targetProduct.
-                    // SCC repeat them in the output as a toplevel product.
-                    sourceTargetDone.add(ident);
-                    SUSEProduct suseBasePrd =
-                            SUSEProductFactory.lookupByProductId(baseProduct.getId());
-                    SUSEProduct suseExtPrd =
-                            SUSEProductFactory.lookupByProductId(extensionProduct.getId());
-                    if (suseBasePrd != null && suseExtPrd != null) {
-                        latestProductExtensions.add(
-                                new SUSEProductExtension(suseBasePrd, suseExtPrd));
-                    }
-                }
-            }
-        }
-
-        // Sync the database list of product extensions with the updated one
-        SUSEProductFactory.mergeAllProductExtension(latestProductExtensions);
-
-    }
-
-    /**
-     * Check if both products exist in the DB and it is a valid upgrade path.
-     *
-     * @param fromProduct the source product
-     * @param toProduct the destination product
-     */
-    private Boolean isValidUpgradePath(SUSEProduct fromProduct, SUSEProduct toProduct) {
-        if (fromProduct == null || toProduct == null) {
-            return false;
-        }
-        // Dirty Hack: prevent major version update from 11.X to 12.X
-        return !(fromProduct.getVersion().matches("^11(\\.\\d+)*$") &&
-                toProduct.getVersion().matches("^12(\\.\\d+)*$"));
     }
 
     /**

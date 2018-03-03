@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.product;
 
+import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.domain.server.InstalledProduct;
 
 import com.google.gson.Gson;
@@ -46,7 +47,8 @@ public class SUSEProductSet {
 
     private String serializedProductIDs = "";
 
-    // when calculating a target product set we ignore these products
+    // when calculating a target product set we ignore these products if the
+    // baseproduct version is less than 15.
     // sle-manager-tools: The tools channel is treated as part of the base product
     private static final List<String> PRODUCTNAME_BLACKLIST =
             Arrays.asList("sle-manager-tools");
@@ -137,7 +139,8 @@ public class SUSEProductSet {
             addonProducts = new ArrayList<SUSEProduct>();
         }
         if (addonProduct != null) {
-            if (PRODUCTNAME_BLACKLIST.contains(addonProduct.getName())) {
+            if (PRODUCTNAME_BLACKLIST.contains(addonProduct.getName()) &&
+                    new RpmVersionComparator().compare(addonProduct.getVersion(), "15") < 0) {
                 return;
             }
             addonProducts.add(addonProduct);

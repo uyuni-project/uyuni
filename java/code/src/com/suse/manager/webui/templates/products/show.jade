@@ -1,0 +1,18 @@
+include ../common.jade
+#products
+
+script(type='text/javascript').
+    const csrfToken = "#{csrf_token}";
+    const issMaster_flag_from_backend = #{issMaster};
+    const refreshNeeded_flag_from_backend = #{refreshNeeded};
+    const refreshRunning_flag_from_backend = #{refreshRunning};
+
++userPreferences
+script(src='/javascript/manager/products.bundle.js', type='text/javascript')
+
+script(src='/rhn/dwr/interface/ProductsRenderer.js', type='text/javascript')
+script(src='/rhn/dwr/interface/MgrSyncAJAX.js', type='text/javascript')
+script(src='/rhn/dwr/engine.js', type='text/javascript')
+script(src='/javascript/susemanager-scc-refresh-dialog.js', type='text/javascript')
+script(src='/javascript/susemanager-setup-wizard.js', type='text/javascript')
+script(src='/javascript/susemanager-setup-wizard-suse-products.js', type='text/javascript')

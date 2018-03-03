@@ -39,6 +39,10 @@ public class XMLProduct implements Comparable<XMLProduct> {
     @Attribute(required = false) // Sometimes can be absent for unknown reasons
     private String version;
 
+    /** end of life */
+    @Attribute
+    private String eol;
+
     /**
      * Default constructor for bean compatibility.
      */
@@ -106,6 +110,30 @@ public class XMLProduct implements Comparable<XMLProduct> {
      */
     public void setVersion(String versionIn) {
         this.version = versionIn;
+    }
+
+    /**
+     * True if this product reached end of life, false otherwise.
+     *
+     * @return eol
+     */
+    public Boolean getEol() {
+        return (this.eol + "").toUpperCase().equals("Y");
+    }
+
+
+    /**
+     * Sets if this product reached end of life.
+     *
+     * @param eolIn true if end of life
+     */
+    public void setEol(boolean eolIn) {
+        if (eolIn) {
+            this.eol = "Y";
+        }
+        else {
+            this.eol = "N";
+        }
     }
 
     /**

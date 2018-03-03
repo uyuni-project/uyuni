@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -30,9 +30,16 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * SUSEProductFactory - the class used to fetch and store
@@ -110,6 +117,81 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup SUSEProductChannels by channel label
+     * @param channelLabel the label
+     * @return list of SUSEProductChannels
+     */
+    public static List<SUSEProductChannel> lookupByChannelLabel(String channelLabel) {
+        Session session = HibernateFactory.getSession();
+        return (List<SUSEProductChannel>)session.getNamedQuery("SUSEProduct.byChannel")
+                .setParameter("label", channelLabel).list();
+    }
+
+    /**
+     * return all mandatory channels
+     * @param product the product
+     * @param base the root product
+     * @param baseChannelLabel the base channel label
+     * @return stream of SUSEProductChannel
+     */
+    public static Stream<SUSEProductChannel> findAllMandetoryChannels(SUSEProduct product, SUSEProduct base,
+            String baseChannelLabel) {
+        System.out.println("Product: " + product.getFriendlyName() + " " + product.getProductId());
+        System.out.println("Base: " + base.getFriendlyName() + " " + base.getProductId());
+        System.out.println("BaseChannelLabel: " + baseChannelLabel);
+        System.out.println();
+        product.getSuseProductChannels().stream().forEach(p -> {
+            System.out.println("channel: " + p.getChannelLabel() + " parent: " + p.getParentChannelLabel());
+        });
+        System.out.println();
+        System.out.println("Bases:");
+        SUSEProductFactory.findAllBaseProductsOf(product, base).forEach(p -> {
+            System.out.println(p.getFriendlyName());
+        });
+        System.out.println();
+        System.out.println();
+        Stream<SUSEProductChannel> concat = Stream.concat(
+                product.getSuseProductChannels().stream().filter(
+                        c -> baseChannelLabel.equals(c.getParentChannelLabel()) ||
+                                baseChannelLabel.equals(c.getChannelLabel())
+                ),
+                SUSEProductFactory.findAllBaseProductsOf(product, base).stream().flatMap(
+                        p -> findAllMandetoryChannels(p, base, baseChannelLabel)
+                )
+        );
+        return concat;
+    }
+
+    /**
+     * Finds all mandetory channels for a given channel label.
+     *
+     * @param channelLabel channel label
+     * @param archByChannelLabel a function mapping from channel label to architecture.
+     *                           to filter out incompatible channels.
+     * @return a stream of suse product channels which are required by the channel
+     */
+    public static Stream<SUSEProductChannel> findAllMandetoryChannels(String channelLabel,
+            Function<String, String> archByChannelLabel) {
+        List<SUSEProductChannel> suseProducts = SUSEProductFactory.lookupByChannelLabel(channelLabel);
+        SUSEProductChannel suseProductChannel = suseProducts.get(0);
+
+        Stream<SUSEProductChannel> suseProductChannelStream = Optional.ofNullable(
+                suseProductChannel.getParentChannelLabel()).map(parentChannelLabel -> {
+            List<SUSEProductChannel> suseProducts2 = SUSEProductFactory.lookupByChannelLabel(parentChannelLabel);
+            SUSEProductChannel baseProductChannel = suseProducts2.get(0);
+            return findAllMandetoryChannels(
+                    suseProductChannel.getProduct(),
+                    baseProductChannel.getProduct(),
+                    parentChannelLabel
+            );
+        }).orElseGet(() -> suseProductChannel.getProduct().getSuseProductChannels().stream());
+        return Stream.concat(Stream.of(suseProductChannel), suseProductChannelStream).filter(s -> {
+            return archByChannelLabel.apply(s.getChannelLabel()).equals(
+                    archByChannelLabel.apply(suseProductChannel.getChannelLabel()));
+        });
+    }
+
+    /**
      * Merge all {@link SUSEUpgradePath} from existing ones
      * and the ones passed as parameter.
      * @param newUpgradePaths the new list of upgradePaths to keep stored
@@ -131,20 +213,25 @@ public class SUSEProductFactory extends HibernateFactory {
     /**
      * Merge all {@link SUSEProductExtension} from existing ones
      * and the ones passed as parameter.
-     * @param newProductExtensions the new list of ProductExtensions to keep stored
+     * @param newExtensions the new list of ProductExtensions to keep stored
      */
-    public static void mergeAllProductExtension(
-            Collection<SUSEProductExtension> newProductExtensions) {
-        List<SUSEProductExtension> existingProductExtensions =
-                findAllSUSEProductExtensions();
-        for (SUSEProductExtension productExtension : existingProductExtensions) {
-            if (!newProductExtensions.contains(productExtension)) {
-                SUSEProductFactory.remove(productExtension);
+    public static void mergeAllProductExtension(List<SUSEProductExtension> newExtensions) {
+        List<SUSEProductExtension> existingExtensions = findAllSUSEProductExtensions();
+        for (SUSEProductExtension existingExtension : existingExtensions) {
+            if (!newExtensions.contains(existingExtension)) {
+                SUSEProductFactory.remove(existingExtension);
+            }
+            else {
+                SUSEProductExtension newExtension = newExtensions.get(newExtensions.indexOf(existingExtension));
+                if (newExtension.isRecommended() != existingExtension.isRecommended()) {
+                    existingExtension.setRecommended(newExtension.isRecommended());
+                    SUSEProductFactory.save(existingExtension);
+                }
             }
         }
-        for (SUSEProductExtension productExtension : newProductExtensions) {
-            if (!existingProductExtensions.contains(productExtension)) {
-                SUSEProductFactory.save(productExtension);
+        for (SUSEProductExtension newExtension : newExtensions) {
+            if (!existingExtensions.contains(newExtension)) {
+                SUSEProductFactory.save(newExtension);
             }
         }
     }
@@ -249,6 +336,18 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Return all {@link SUSEProductExtension} which are recommended
+     * @return SUSEProductExtensions which are recommended
+     */
+    public static List<SUSEProductExtension> allRecommendedExtensions() {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<SUSEProductExtension> criteria = builder.createQuery(SUSEProductExtension.class);
+        Root<SUSEProductExtension> root = criteria.from(SUSEProductExtension.class);
+        criteria.where(builder.equal(root.get("recommended"), true));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
      * Find all {@link SUSEProductChannel} relationships.
      * @return list of SUSE product channel relationships
      */
@@ -315,6 +414,56 @@ public class SUSEProductFactory extends HibernateFactory {
         Session session = getSession();
         Criteria c = session.createCriteria(SUSEProductExtension.class);
         return c.list();
+    }
+
+    /**
+     * Find all {@link SUSEProductExtension} of a product.
+     * @param base product to find extensions of
+     * @return list of product extension of the given product
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProduct> findAllExtensionProductsOf(SUSEProduct base) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("baseId", base.getId());
+        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllExtensionProductsOf", params);
+    }
+
+    /**
+     * Find all base products of a product.
+     * @param ext product to find bases for
+     * @return list of base products of the given product
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("extId", ext.getId());
+        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllBaseProductsOf", params);
+    }
+
+    /**
+     * Find all base products of a product in the tree of a specified root product.
+     * @param ext product to find bases for
+     * @param root the root product
+     * @return list of base products of the given product and root
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext, SUSEProduct root) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("extId", ext.getId());
+        params.put("rootId", root.getId());
+        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllBaseProductsForRootOf", params);
+    }
+
+    /**
+     * Find all root products of a product.
+     * @param base product to find roots for
+     * @return list of root products of the given product
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProduct> findAllRootProductsOf(SUSEProduct base) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("baseId", base.getId());
+        return singleton.listObjectsByNamedQuery("SUSEProductExtension.findAllRootProductsOf", params);
     }
 
     /**

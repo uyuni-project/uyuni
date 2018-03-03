@@ -1,3 +1,4 @@
+- support SLE15 product family
 - remove clean section from spec (bsc#1083294)
 - Add SUSE OpenStack Cloud 8 and SUSE OpenStack Cloud Crowbar 8 products (bsc#1080298)
 - Add SUSE Enterprise Storage 5 aarch64
