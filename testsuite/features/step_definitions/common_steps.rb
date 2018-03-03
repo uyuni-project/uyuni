@@ -333,10 +333,6 @@ When(/^I make the credentials primary$/) do
   raise unless find('i.fa-star-o').click
 end
 
-When(/^I refresh SCC$/) do
-  $server.run('echo -e "admin\nadmin\n" | mgr-sync refresh')
-end
-
 When(/^I delete the primary credentials$/) do
   raise unless find('i.fa-trash-o', match: :first).click
   step 'I click on "Delete"'
