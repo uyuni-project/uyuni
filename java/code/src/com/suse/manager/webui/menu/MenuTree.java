@@ -301,6 +301,7 @@ public class MenuTree {
                     .withPrimaryUrl("/rhn/admin/setup/ProxySettings.do")
                     .withAltUrl("/rhn/admin/setup/MirrorCredentials.do")
                     .withAltUrl("/rhn/admin/setup/SUSEProducts.do")
+                    .withAltUrl("/rhn/manager/admin/setup/products")
                     .withVisibility(adminRoles.get("satellite")))
                 .addChild(new MenuItem("Organizations")
                     .withPrimaryUrl("/rhn/admin/multiorg/Organizations.do")

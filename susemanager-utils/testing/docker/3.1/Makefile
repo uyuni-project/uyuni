@@ -69,6 +69,19 @@ suma-3.1-pgsql::
 	docker push $(REGISTRY)/$@:$(VERSION); \
 	popd
 
+suma-3.1-pgsql-4eclipse::
+	@echo "=================================="
+	@echo "Building $@"
+	@echo "=================================="
+	pushd $@; \
+	docker build -t $@ . || exit 1; \
+	docker tag $@ $@:$(VERSION); \
+	docker tag $@ $(REGISTRY)/$@; \
+	docker tag $@:$(VERSION) $(REGISTRY)/$@:$(VERSION); \
+	docker push $(REGISTRY)/$@ ; \
+	docker push $(REGISTRY)/$@:$(VERSION); \
+	popd
+
 suma-3.1-ora::
 	@echo "=================================="
 	@echo "Building $@"

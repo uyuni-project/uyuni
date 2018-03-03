@@ -32,8 +32,7 @@
   <para>
    The <emphasis>mgr-sync</emphasis> command is a utility that allows you to
    work with SUSE Customer Center (SCC) for adding or syncing of products and
-   channels.  As well as enabling and refreshing SCC data.  This tool requires
-   that SCC is enabled by running <command>mgr-sync enable-scc</command>.
+   channels.  As well as enabling and refreshing SCC data.
   </para>
  </refsect1>
 
@@ -84,10 +83,6 @@
    must be specified after the name of the command and before any of the
    command arguments.
   </para>
-  <refsect2>
-   <title><command>enable-scc</command></title>
-   <para>Enable SCC.</para>
-  </refsect2>
 
   <refsect2>
    <title><command>list</command></title>
@@ -173,14 +168,39 @@
    <para>
     Add products, channels or credentials. Channels will automatically be
     synced. <option>product|products</option> will add mandatory channels
-    for the given product interactively.
+    for the given product interactively. Channels can have dependencies to
+    other channels. Dependencies are automatically resolved and all required
+    channels will be added when adding a product or channel.
    </para>
+   <para>
+       Root products can recommend extensions. Recommended extensions are
+       marked with "(R)" in the product listing. When adding a root product
+       recommended extensions are automatically added as well.
+       While using the option <option>--no-recommends</option> no recommended
+       extension will be added.
+    </para>
    <variablelist>
     <varlistentry>
      <term><option>--from-mirror</option></term>
      <listitem>
       <para>
        URL of a local mirror like SMT.  Only used for downloading RPMs.
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term><option>--no-optional</option></term>
+     <listitem>
+      <para>
+       Don't show optional channels in interactive mode.
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term><option>--no-recommends</option></term>
+     <listitem>
+      <para>
+       Do not enable recommended extension automatically.
       </para>
      </listitem>
     </varlistentry>
@@ -284,21 +304,27 @@
   <title>Examples</title>
   <variablelist>
    <varlistentry>
-    <term>Enable SCC</term>
-    <listitem>
-     <screen>mgr-sync enable-scc</screen>
-    </listitem>
-   </varlistentry>
-   <varlistentry>
     <term>Get an expanded list of channels.</term>
     <listitem>
      <screen>mgr-sync list -e channels</screen>
     </listitem>
    </varlistentry>
    <varlistentry>
-    <term>Add all mandatory channels for products interactively.</term>
+       <term>
+           Add all mandatory channels for products interactively. In case a root product
+           is selected which has recommended extensions, they will be added as well.
+       </term>
     <listitem>
      <screen>mgr-sync add product</screen>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+       <term>
+           Add all mandatory channels for products interactively. Recommended extensions
+           will not be added automatically.
+       </term>
+    <listitem>
+     <screen>mgr-sync add product --no-recommends</screen>
     </listitem>
    </varlistentry>
    <varlistentry>
