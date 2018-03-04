@@ -4,6 +4,6 @@
     <condition property="struts-jars"
                value="struts/core struts/extras struts/taglib"
                else="struts struts-extras struts-taglib" >
-               <available file="/usr/share/java/struts/taglib.jar"/>
+               <available file="${java.lib.dir}/struts/taglib.jar"/>
     </condition>
 </project>

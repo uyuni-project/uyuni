@@ -587,6 +587,7 @@ class Erratum(Information):
         'keywords'          : [Keyword],
         'bugs'              : [Bug],
         'cve'               : [StringType],
+        'severity_id': IntType
     }
 
 

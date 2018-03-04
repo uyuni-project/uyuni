@@ -27,7 +27,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.69.1
+Version: 2.8.72
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0:   https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -1043,6 +1043,15 @@ fi
 %{_prefix}/share/rhn/search/lib/postgresql-jdbc.jar
 
 %changelog
+* Fri Mar 02 2018 Jiri Dostal <jdostal@redhat.com> 2.8.72-1
+- 1187053 - package search do not search through ppc64le packages by default
+
+* Tue Feb 27 2018 Jiri Dostal <jdostal@redhat.com> 2.8.71-1
+- Fix building java, silly mistake
+
+* Tue Feb 27 2018 Jiri Dostal <jdostal@redhat.com> 2.8.70-1
+- Allow fetching jars from different install-root
+
 * Mon Feb 19 2018 Grant Gainey 2.8.69-1
 - 1020318 - Check description for max-len when updating
 
