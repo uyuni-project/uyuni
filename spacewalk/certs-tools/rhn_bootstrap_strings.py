@@ -220,7 +220,7 @@ fi
 def getHeader(productName, options, orgCACert, isRpmYN, pubname, apachePubDirectory):
     # 11/22/16 options.gpg_key is now a comma-separated list of path.
     # Removing paths from options.gpg_key
-    org_gpg_key = ",".join([os.path.basename(gpg_key) for gpg_key in org_gpg_key.split(",")])
+    org_gpg_key = ",".join([os.path.basename(gpg_key) for gpg_key in options.gpg_key.split(",")])
     exit_call = " " if options.activation_keys or options.salt else "exit 1"
 
     return _header.format(productName=productName,
