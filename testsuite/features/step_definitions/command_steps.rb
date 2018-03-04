@@ -480,10 +480,21 @@ When(/^I install package "(.*?)" on this "(.*?)"$/) do |package, host|
   node.run(cmd)
 end
 
-And(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
+When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
   cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{pkg_name}.rpm"
-  node.run_until_ok(cmd)
+  cache_timeout = 600
+  begin
+    Timeout.timeout(cache_timeout) do
+      loop do
+        result, return_code = node.run(cmd, false)
+        break if return_code.zero?
+        sleep 2
+      end
+    end
+  rescue Timeout::Error
+    raise "Package #{pkg_name} was not cached after #{cache_timeout} seconds"
+  end
 end
 
 And(/^I create the "([^"]*)" bootstrap-repo for "([^"]*)" on the server$/) do |arch, target|
