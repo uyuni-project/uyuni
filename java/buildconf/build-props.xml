@@ -53,23 +53,23 @@
   <!-- =================== jar dependencies ======================= -->
   <property name="commons-lang" value="commons-lang3"/>
 
-  <available file="/usr/share/java/hibernate/hibernate-commons-annotations.jar" type="file"
+  <available file="${java.lib.dir}/hibernate/hibernate-commons-annotations.jar" type="file"
 	  property="hibernate-commons-annotations" value="hibernate/hibernate-commons-annotations"/>
-  <available file="/usr/share/java/hibernate-commons-annotations/hibernate-commons-annotations.jar" type="file"
+  <available file="${java.lib.dir}/hibernate-commons-annotations/hibernate-commons-annotations.jar" type="file"
 	  property="hibernate-commons-annotations" value="hibernate-commons-annotations/hibernate-commons-annotations"/>
-  <available file="/usr/share/java/hibernate-commons-annotations.jar" type="file"
+  <available file="${java.lib.dir}/hibernate-commons-annotations.jar" type="file"
 	  property="hibernate-commons-annotations" value="hibernate-commons-annotations" />
 
   <condition property="commons-validator" value="apache-commons-validator" else="commons-validator">
-    <available file="/usr/share/java/apache-commons-validator.jar" />
+    <available file="${java.lib.dir}/apache-commons-validator.jar" />
   </condition>
 
   <condition property="log4j-jars" value="log4j-1" else="log4j">
-    <available file="/usr/share/java/log4j-1.jar" />
+    <available file="${java.lib.dir}/log4j-1.jar" />
   </condition>
 
-  <available file="/usr/share/java/ehcache.jar" type="file" property="ehcache" value="ehcache" />
-  <available file="/usr/share/java/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
+  <available file="${java.lib.dir}/ehcache.jar" type="file" property="ehcache" value="ehcache" />
+  <available file="${java.lib.dir}/ehcache-core.jar" type="file" property="ehcache" value="ehcache-core" />
 
   <property name="hibernate3.2deps" value="hibernate3"/>
 
@@ -77,14 +77,14 @@
 
   <property name="hibernate5.2deps" value="hibernate-ehcache-5 hibernate-c3p0-5 hibernate-core-5 ${hibernate-commons-annotations} slf4j/api jboss-logging javassist slf4j/log4j12 ${ehcache} hibernate-jpa-2.1-api classmate statistics"/>
 
-  <available file="/usr/share/java/hibernate3.jar" type="file" property="hibernate" value="${hibernate3.2deps}" />
-  <available file="/usr/share/java/hibernate3/hibernate-core-3.jar" type="file" property="hibernate" value="${hibernate3.6deps}" />
-  <available file="/usr/share/java/hibernate-core-5.jar" type="file" property="hibernate" value="${hibernate5.2deps}" />
+  <available file="${java.lib.dir}/hibernate3.jar" type="file" property="hibernate" value="${hibernate3.2deps}" />
+  <available file="${java.lib.dir}/hibernate3/hibernate-core-3.jar" type="file" property="hibernate" value="${hibernate3.6deps}" />
+  <available file="${java.lib.dir}/hibernate-core-5.jar" type="file" property="hibernate" value="${hibernate5.2deps}" />
 
   <condition property="jmock-jars"
                 value="jmock jmock-cglib"
                  else="">
-    <available file="/usr/share/java/jmock.jar" />
+    <available file="${java.lib.dir}/jmock/jmock.jar" />
   </condition>
 
   <property name="boot.jar.dependencies" value="ivy" />
@@ -113,7 +113,7 @@
              postgresql-jdbc" />
 
   <condition property="ant-contrib.path" value="ant/ant-contrib" else="ant-contrib">
-      <available file="/usr/share/java/ant/ant-contrib.jar"/>
+      <available file="${java.lib.dir}/ant/ant-contrib.jar"/>
   </condition>
 
   <property name="build.jar.dependencies"

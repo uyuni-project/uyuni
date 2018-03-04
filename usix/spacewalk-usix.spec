@@ -1,4 +1,4 @@
-%if 0%{?fedora} || 0%{?suse_version} > 1320
+%if 0%{?fedora} || 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %global build_py3   1
 %endif
 
@@ -14,7 +14,7 @@
 %global pythonrhnroot %{python_sitelib}/spacewalk
 
 Name:	    spacewalk-usix
-Version:	2.8.1.1
+Version:	2.8.3
 Release:	1%{?dist}
 Summary:	Spacewalk server and client nano six library
 
@@ -28,14 +28,13 @@ BuildArch: noarch
 %endif
 
 Provides:	spacewalk-backend-usix = %{version}-%{release}
+Provides:       python2-spacewalk-usix = %{version}-%{release}
 Obsoletes: spacewalk-backend-usix < 2.8
-BuildRequires: python-devel
 
 %description
 Library for writing code that runs on Python 2 and 3
 
 %if 0%{?build_py3}
-
 %package -n python3-%{name}
 Summary: Spacewalk client micro six library
 Group: Applications/Internet
@@ -104,6 +103,13 @@ cp $RPM_BUILD_ROOT%{pythonrhnroot}/common/usix.py $RPM_BUILD_ROOT%{python3rhnroo
 %endif
 
 %changelog
+* Thu Mar 01 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.3-1
+- empty %%files section is required for a package to build as a metapackage
+
+* Wed Feb 28 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.2-1
+- split spacewalk-usix into python2 and python3 variants
+- build python3-spacewalk-usix also on rhel8
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.1-1
 - remove install/clean section initial cleanup
 - removed Group from specfile
