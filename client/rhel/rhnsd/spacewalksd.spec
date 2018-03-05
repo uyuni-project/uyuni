@@ -5,7 +5,7 @@
 %define rhnsd		 spacewalksd
 #
 Name: spacewalksd
-Version: 5.0.36.1
+Version: 5.0.36.2
 Release: 1%{?dist}
 Summary: Spacewalk query daemon
 License: GPL-2.0
