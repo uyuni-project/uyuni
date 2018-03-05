@@ -1,3 +1,5 @@
+- Prevent migration failure when multiple empty file contents are present (bsc#1083706, bsc#1083937)
+
 -------------------------------------------------------------------
 Mon Mar 05 09:08:34 CET 2018 - jgonzalez@suse.com
 
