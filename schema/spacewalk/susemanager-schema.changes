@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Mar 05 09:08:34 CET 2018 - jgonzalez@suse.com
+
+- version 3.2.5-1
 - support SLE15 product family
 - remove clean section from spec (bsc#1083294)
 
