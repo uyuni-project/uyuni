@@ -37,6 +37,7 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.utils.SaltUtils.PackageChangeOutcome;
 import com.suse.manager.webui.utils.salt.custom.ActionChainSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.salt.netapi.event.JobReturnEvent;
 
 import com.suse.salt.netapi.results.Ret;
@@ -55,7 +56,8 @@ import java.util.regex.Pattern;
  */
 public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
-    private static final Pattern ACTION_ID = Pattern.compile(".*\\|-suma_action_(\\d+)_\\|.*");
+    private static final Pattern ACTION_STATE_PATTERN =
+            Pattern.compile(".*\\|-suma_actionchain_(\\d+)_chunk_(\\d+)_action_(\\d+)_\\|.*");
 
     /**
      * Converts an event to json
@@ -116,10 +118,18 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult = Json.GSON.fromJson(jsonResult,
                         new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() { }.getType());
 
-                actionChainResult.forEach((key, actionStateApply) -> {
-                    Matcher m = ACTION_ID.matcher(key);
-                    if (m.find() && m.groupCount() > 0) {
-                        Long retActionId = Long.parseLong(m.group(1));
+                Integer chunk = null;
+                Long retActionChainId = null;
+                Boolean actionChainFailed = false;
+                //actionChainResult.forEach((key, actionStateApply) -> {
+                for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
+                    String key = entry.getKey();
+                    StateApplyResult<Ret<JsonElement>> actionStateApply = entry.getValue();
+                    Matcher m = ACTION_STATE_PATTERN.matcher(key);
+                    if (m.find() && m.groupCount() == 3) {
+                        retActionChainId = Long.parseLong(m.group(1));
+                        Long retActionId = Long.parseLong(m.group(3));
+                        chunk = Integer.parseInt(m.group(2));
                         handleAction(retActionId,
                                 jobReturnEvent.getMinionId(),
                                 actionStateApply.isResult() ? 0 : -1,
@@ -128,10 +138,14 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                 actionStateApply.getChanges().getRet(),
                                 actionStateApply.getName());
                     }
-                    else {
+                    else if (!key.contains("suma_reboot_action")) {
                         LOG.warn("Could not find action id in action chain state key: " + key);
                     }
-                });
+                }
+
+                // Removing the generated SLS file
+                SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
+                        retActionChainId, jobReturnEvent.getMinionId(), chunk, actionChainFailed);
             });
 
 
