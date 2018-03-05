@@ -4,7 +4,7 @@
 
 Name: rhn-custom-info
 Summary: Set and list custom values for Spacewalk-enabled machines
-Version: 5.4.43.1
+Version: 5.4.43.2
 Release: 1%{?dist}
 Group: Applications/System
 License: GPLv2
