@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Mon Mar 05 08:50:01 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.72.1-1
+- 1187053 - package search do not search through ppc64le packages by default
 - support SLE15 product family
 - rewrite products page into reactjs
 - Users who can view system should be able to delete it (bsc#1079652)
