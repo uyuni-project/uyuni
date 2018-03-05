@@ -73,11 +73,7 @@ SELECT
     'N',
     '{|',
     '|}'
-FROM DUAL
-WHERE NOT EXISTS (SELECT id
-                  FROM rhnConfigContent
-                  WHERE checksum_id IN (SELECT lookup_checksum('md5', 'd41d8cd98f00b204e9800998ecf8427e') FROM DUAL)
-            );
+FROM DUAL;
 
 -- REVISION
 SELECT lookup_config_info('root', 'root', 644, null, null) FROM dual;
@@ -93,7 +89,7 @@ SELECT
     sequence_nextval('rhn_confrevision_id_seq'),
     1,
     cf.id,
-    (SELECT id FROM rhnConfigContent WHERE checksum_id = lookup_checksum('md5', 'd41d8cd98f00b204e9800998ecf8427e')),
+    (SELECT MAX(id) FROM rhnConfigContent WHERE checksum_id = lookup_checksum('md5', 'd41d8cd98f00b204e9800998ecf8427e')),
     lookup_config_info('root', 'root', 644, null, null),
     (SELECT id FROM rhnConfigFileType WHERE label = 'sls')
 FROM rhnConfigFile cf
