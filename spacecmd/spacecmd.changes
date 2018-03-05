@@ -1,3 +1,11 @@
+-------------------------------------------------------------------
+Mon Mar 05 08:41:11 CET 2018 - jgonzalez@suse.com
+
+- version 2.8.20.1-1
+- 1536484 - Command spacecmd supports utf8 name of systems
+- 1484056 - updatefile and addfile are basically same calls
+- 1484056 - make configchannel_addfile fully non-interactive
+- 1445725 - display all checksum types, not just MD5
 - remove clean section from spec (bsc#1083294)
 - Added function to update software channel. Moreover, some
   refactoring has been done(bsc#1076578)
