@@ -1,6 +1,6 @@
 Name: spacewalk-ssl-cert-check
 Epoch:	 1
-Version: 2.8.1
+Version: 2.8.2
 Release: 1%{?dist}
 Summary: Check ssl certs for impending expiration
 Group:   Applications/System
