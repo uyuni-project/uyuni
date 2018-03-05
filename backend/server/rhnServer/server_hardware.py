@@ -1090,6 +1090,8 @@ class Hardware:
             class_type = InstallInformation
         elif hw_class == "netinterfaces":
             class_type = NetIfaceInformation
+        elif hw_class == "fqdn":
+            return
         elif hw_class == "sysinfo":
             # special case: we got info about a virtual host
             # where this system is running on

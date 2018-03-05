@@ -1,3 +1,4 @@
+- Fix: ignore fqdn information (bsc#1083925)
 -------------------------------------------------------------------
 Wed Feb 14 12:54:23 CET 2018 - jgonzalez@suse.com
 
