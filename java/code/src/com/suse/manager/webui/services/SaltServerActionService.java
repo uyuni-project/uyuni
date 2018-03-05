@@ -80,7 +80,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -295,7 +294,7 @@ public class SaltServerActionService {
      * @param minionIds a list containing target minion ids
      * @param user the user executing the Action Chain
      */
-    public void executeActionChain(User user, Long actionChainId, List<Long> minionIds) {
+    public void executeActionChain(User user, Long actionChainId, List<Long> actionIds, List<Long> minionIds) {
         List<MinionServer> minions = new ArrayList<>();
         minionIds.forEach(minionId -> {
                 MinionServerFactory.lookupById(minionId).ifPresent(minion -> {
@@ -305,24 +304,42 @@ public class SaltServerActionService {
 
         // now prepare each call
         for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
-                triggerActionChain(minions, actionChainId).entrySet()) {
+                startActionChainCall(minions, actionChainId).entrySet()) {
             LocalCall<?> call = entry.getKey();
-            final List<MinionServer> targetMinions;
-            Map<Boolean, List<MinionServer>> results;
-            targetMinions = entry.getValue();
 
-            results = executeActionChain(user, actionChainId, call, targetMinions);
+            List<MinionServer> targetMinions = entry.getValue();
+
+            Map<Boolean, List<MinionServer>> results =
+                    callAsyncActionChainStart(user, actionChainId, call, targetMinions);
+
+            // collect all server actions
+            List<ServerAction> serverActions = actionIds.stream()
+                    .map(ActionFactory::lookupById)
+                    .flatMap(a -> a.getServerActions().stream())
+                    .collect(Collectors.toList());
 
             results.get(true).forEach(minionServer -> {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Asynchronous call on minion: " +
                             minionServer.getMinionId());
                 }
+                serverActions.stream()
+                        .filter(sa -> sa.getServer().getId().equals(minionServer.getId()))
+                        .forEach(sa -> {
+                            sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                            ActionFactory.save(sa);
+                        });
             });
 
             results.get(false).forEach(minionServer -> {
                 LOG.warn("Failed to schedule action chain for minion: " +
                         minionServer.getMinionId());
+                serverActions.stream()
+                        .filter(sa -> sa.getServer().getId().equals(minionServer.getId()))
+                        .forEach(sa -> {
+                            sa.setStatus(ActionFactory.STATUS_FAILED);
+                            ActionFactory.save(sa);
+                        });
             });
         }
     }
@@ -784,21 +801,13 @@ public class SaltServerActionService {
         return call;
     }
 
-    private Map<LocalCall<?>, List<MinionServer>> triggerActionChain(
+    private Map<LocalCall<?>, List<MinionServer>> startActionChainCall(
             List<MinionServer> minions, Long actionChainId) {
-        Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        ret.put(startActionChain(actionChainId), minions);
-//        ret.put(State.apply(Arrays.asList(ACTIONCHAIN_START),
-//                Optional.of(Collections.singletonMap("actionchain_id", actionChainId)),
-//                Optional.of(true)), minions);
-
-        return ret;
-    }
-
-    public static LocalCall<Map<String, State.ApplyResult>> startActionChain(long actionChainId) {
         List<String> args = new ArrayList<>(1);
         args.add(Long.toString(actionChainId));
-        return new LocalCall("mgractionchains.start", Optional.of(args), Optional.empty(), new TypeToken<Map<String, State.ApplyResult>>() { });
+        LocalCall<?> call = new LocalCall("mgractionchains.start",
+                Optional.of(args), Optional.empty(), new TypeToken<Map<String, State.ApplyResult>>() { });
+        return Collections.singletonMap(call, minions);
     }
 
     /**
@@ -858,8 +867,8 @@ public class SaltServerActionService {
      * @param minions minions to target
      * @return a map containing all minions partitioned by success
      */
-    private Map<Boolean, List<MinionServer>> executeActionChain(User user, Long actionChainId,
-            LocalCall<?> call, List<MinionServer> minions) {
+    private Map<Boolean, List<MinionServer>> callAsyncActionChainStart(User user, Long actionChainId,
+                                                                       LocalCall<?> call, List<MinionServer> minions) {
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("suma-action-chain", true);

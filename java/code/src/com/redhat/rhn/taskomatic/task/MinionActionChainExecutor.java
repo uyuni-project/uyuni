@@ -52,6 +52,11 @@ public class MinionActionChainExecutor extends RhnJavaJob {
                 .getJobDataMap().get("target_ids")).stream()
                         .map(target -> Long.parseLong(target))
                         .collect(Collectors.toList());
+        List<Long> actionIds = ((List<String>) context.getJobDetail()
+                .getJobDataMap().get("action_ids")).stream()
+                .map(id -> Long.parseLong(id))
+                .collect(Collectors.toList());
+
         User user = Optional.ofNullable(context.getJobDetail().getJobDataMap().get("user_id"))
                 .map(id -> Long.parseLong(id.toString()))
                 .map(userId -> UserFactory.lookupById(userId))
@@ -64,7 +69,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
 
         log.info("Executing action chain: " + actionChainId);
 
-        saltServerActionService.executeActionChain(user, actionChainId, targetServers);
+        saltServerActionService.executeActionChain(user, actionChainId, actionIds, targetServers);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
