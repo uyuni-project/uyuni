@@ -1,5 +1,5 @@
 Name:		spacewalk-python3-pylint
-Version:	2.8.5.1
+Version:	2.8.5.2
 Release:	1%{?dist}
 Summary:	Pylint configuration for python3 spacewalk python packages
 
