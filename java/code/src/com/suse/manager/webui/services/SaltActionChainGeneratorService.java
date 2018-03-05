@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 
 import com.suse.manager.webui.utils.SaltActionChainState;
 
@@ -77,14 +78,12 @@ public enum SaltActionChainGeneratorService {
         for (Map.Entry<Server, List<Action>> entry : minionActions.entrySet()) {
             int chunk = 1;
             for (Action action : entry.getValue()) {
-                String stateId = "suma_action_" + action.getId();
+                String stateId = "suma_actionchain_" + actionChain.getId() + "_chunk_" + chunk + "_action_" + action.getId();
                 if (ActionFactory.TYPE_REBOOT.equals(action.getActionType())) {
-                    output.putAll(renderRebootAction(stateId, prevSaltMod, prevStateId, action));
-                    prevSaltMod = ((Map<String, Object>) output.get(stateId)).entrySet()
-                            .iterator().next().getKey().split("\\.")[0];
-                    prevStateId = stateId;
-                    output.putAll(addNextChunkStateExecution("schedule_next_chunk", prevSaltMod,
-                            prevStateId, actionChain, chunk + 1));
+                    String rebootStateId = "suma_reboot_action_" + action.getId();
+                    output.putAll(renderRebootAction(rebootStateId, prevSaltMod, prevStateId, action));
+                    output.putAll(addNextChunkStateExecution(rebootStateId + "_schedule_next_chunk", "cmd",
+                            rebootStateId, actionChain, chunk + 1));
                     saveChunkSLS(output, entry.getKey().getMachineId(), actionChain.getId(), chunk);
                     output.clear();
                     prevSaltMod = null;
@@ -107,9 +106,38 @@ public enum SaltActionChainGeneratorService {
         return true;
     }
 
+    public void removeActionChainSLSFiles(Long actionChainId, String minionId, Integer chunk,
+        Boolean actionChainFailed) {
+        MinionServerFactory.findByMinionId(minionId).ifPresent(minionServer -> {
+            Path targetDir = Paths.get(suseManagerStatesFilesRoot.toString(), ACTIONCHAIN_SLS_FOLDER);
+            Path targetFilePath = Paths.get(targetDir.toString(), getActionChainSLSFileName(actionChainId,
+                    minionServer.getMachineId(), chunk));
+            try {
+                Files.deleteIfExists(targetFilePath);
+                if (actionChainFailed) {
+                    // Remove also next SLS chunks because the Action Chain failed and these
+                    // files are not longer needed.
+                    String filePreffix = ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId + "_" +
+                            minionServer.getMachineId() + "_";
+                    Files.list(targetDir).filter(path -> path.toString().startsWith(filePreffix))
+                            .forEach(path -> {
+                                try {
+                                    Files.delete(path);
+                                }
+                                catch (IOException e) {
+                                    LOG.error(e.getMessage(), e);
+                                }
+                            });
+                }
+            }
+            catch (IOException e) {
+                LOG.error(e.getMessage(), e);
+            }
+        });
+    }
 
-    private String getActionChainSLSFileName(Long actionId, String machineId, Integer chunk) {
-        return (ACTIONCHAIN_SLS_FILE_PREFIX + Long.toString(actionId) +
+    private String getActionChainSLSFileName(Long actionChainId, String machineId, Integer chunk) {
+        return (ACTIONCHAIN_SLS_FILE_PREFIX + Long.toString(actionChainId) +
                 "_" + machineId + "_" + Integer.toString(chunk) + ".sls");
     }
 
@@ -139,12 +167,12 @@ public enum SaltActionChainGeneratorService {
         return ret;
     }
 
-    private void saveChunkSLS(Map<String, Object> output, String machineId, Long actionId, Integer chunk) {
+    private void saveChunkSLS(Map<String, Object> output, String machineId, Long actionChainId, Integer chunk) {
         Path targetDir = Paths.get(suseManagerStatesFilesRoot.toString(), ACTIONCHAIN_SLS_FOLDER);
         try {
             Files.createDirectories(targetDir);
             Path targetFilePath = Paths.get(targetDir.toString(),
-                    getActionChainSLSFileName(actionId, machineId, chunk));
+                    getActionChainSLSFileName(actionChainId, machineId, chunk));
             com.suse.manager.webui.utils.SaltStateGenerator saltStateGenerator =
                     new com.suse.manager.webui.utils.SaltStateGenerator(targetFilePath.toFile());
             saltStateGenerator.generate(new SaltActionChainState(output));
