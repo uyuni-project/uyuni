@@ -1105,7 +1105,7 @@ class Hardware:
             # Same trick: try-except and raise the exception so that Traceback
             # can send the e-mail
             try:
-                raise KeyError, "Unknwon class type `%s' for hardware '%s'" % (
+                raise KeyError, "Unknown class type `%s' for hardware '%s'" % (
                     hw_class, hardware)
             except:
                 Traceback(mail=1)
