@@ -217,13 +217,27 @@ public enum SaltActionChainGeneratorService {
             LOG.error("Could not write script to file " + scriptFile, e);
             throw new RuntimeException(e); // TODO to throw or not to throw ?
         }
-
-        Map<String, String> pillar = new HashMap<>();
-        pillar.put("mgr_remote_cmd_script",
-                "salt://" + ACTIONCHAIN_SLS_FOLDER + "/" + SCRIPTS_DIR + "/" + scriptFile);
-        pillar.put("mgr_remote_cmd_runas", scriptAction.getUsername());
-        return renderStateApply(stateId, prevSaltMod, prevStateId,
-                singletonList("remotecommands"), Optional.of(pillar));
+        Map<String, Object> entry = new LinkedHashMap<>();
+        entry.put("runas", scriptAction.getUsername());
+        entry.put("source", "salt://" + ACTIONCHAIN_SLS_FOLDER + "/" + SCRIPTS_DIR + "/" + scriptFile);
+        if (prevStateId != null) {
+            List<Map<String, String>> requireEntryList = new ArrayList<Map<String, String>>();
+            Map<String, String> requireEntry = new HashMap<>();
+            requireEntry.put(prevSaltMod, prevStateId);
+            requireEntryList.add(requireEntry);
+            entry.put("require", requireEntryList);
+        }
+        Map<String, Object> stateList = new HashMap<>();
+        List<Map<String, Object>> paramList = new ArrayList<Map<String, Object>>();
+        for (Map.Entry<String, Object> ent : entry.entrySet()) {
+            Map<String, Object> tempEntry = new HashMap<>();
+            tempEntry.put(ent.getKey(), ent.getValue());
+            paramList.add(tempEntry);
+        }
+        stateList.put("cmd.script", paramList);
+        Map<String, Object> ret = new HashMap<>();
+        ret.put(stateId, stateList);
+        return ret;
     }
 
     private Map<String, ?> renderApplyStatesAction(String stateId, String prevSaltMod, String prevStateId,
