@@ -1,3 +1,5 @@
+- fix error in inventory report (bsc#1083753)
+
 -------------------------------------------------------------------
 Mon Mar 05 08:54:25 CET 2018 - jgonzalez@suse.com
 

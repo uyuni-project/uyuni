@@ -61,10 +61,10 @@ sql:
 		to_char(rhnserver.created, 'YYYY-MM-DD HH24:MI:SS') as registration_time,
 		( select to_char(checkin, 'YYYY-MM-DD HH24:MI:SS') from rhnserverinfo where rhnserver.id = server_id ) as last_checkin_time,
 		running_kernel as kernel_version,
-		( select count(distinct rhnpackage.name_id) from rhnpackage, rhnServerNeededErrataCache
-			where rhnserver.id = rhnServerNeededErrataCache.server_id
-				and rhnServerNeededErrataCache.package_id = rhnpackage.id ) as packages_out_of_date,
-		( select count(*) from rhnServerNeededErrataCache where rhnserver.id = server_id and errata_id is not null) as errata_out_of_date,
+		( select count(distinct rhnpackage.name_id) from rhnpackage, rhnServerNeededCache
+			where rhnserver.id = rhnServerNeededCache.server_id
+				and rhnServerNeededCache.package_id = rhnpackage.id ) as packages_out_of_date,
+		( select count(*) from rhnServerNeededCache where rhnserver.id = server_id and errata_id is not null) as errata_out_of_date,
 		rhnchannel.name as software_channel,
 		rhnchannel.parent_channel as parent_channel,
 		rhnchannel.id as channel_id,
