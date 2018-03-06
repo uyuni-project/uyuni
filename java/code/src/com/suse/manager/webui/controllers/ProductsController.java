@@ -199,7 +199,7 @@ public class ProductsController {
                            s.getFriendlyName(),
                            s.getArch(),
                            s.isRecommended(),
-                           syncProduct.getChannels().stream().map(c ->
+                           s.getChannels().stream().map(c ->
                                    new JsonChannel(
                                            c.getName(),
                                            c.getLabel(),
