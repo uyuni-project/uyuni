@@ -447,9 +447,8 @@ end
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
   cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/#{pkg_name}.rpm"
-  cache_timeout = 600
   begin
-    Timeout.timeout(cache_timeout) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         result, return_code = node.run(cmd, false)
         break if return_code.zero?
@@ -457,7 +456,7 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
       end
     end
   rescue Timeout::Error
-    raise "Package #{pkg_name} was not cached after #{cache_timeout} seconds"
+    raise "Package #{pkg_name} was not cached after #{DEFAULT_TIMEOUT} seconds"
   end
 end
 
