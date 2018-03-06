@@ -135,10 +135,12 @@ public class MinionActionUtils {
                             return sa;
                         });
                     }).orElseGet(() -> {
-                        sa.setCompletionTime(new Date());
-                        sa.setResultMsg("There was no job cache entry.");
-                        sa.setStatus(ActionFactory.STATUS_FAILED);
-                        sa.setResultCode(-1L);
+                        if (!sa.getStatus().equals(ActionFactory.STATUS_QUEUED)) {
+                            sa.setCompletionTime(new Date());
+                            sa.setResultMsg("There was no job cache entry.");
+                            sa.setStatus(ActionFactory.STATUS_FAILED);
+                            sa.setResultCode(-1L);
+                        }
                         return sa;
                     });
             return serverAction;
