@@ -29,7 +29,6 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
@@ -125,6 +124,7 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
 import com.redhat.rhn.frontend.xmlrpc.user.XmlRpcUserHelper;
 import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.MissingEntitlementException;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeException;
@@ -560,12 +560,14 @@ public class SystemHandler extends BaseHandler {
                 .collect(Collectors.toList());
 
         try {
-            SubscribeChannelsAction action = ActionManager.scheduleSubscribeChannelsAction(loggedInUser,
+            Set<Action> action = ActionChainManager.scheduleSubscribeChannelsAction(loggedInUser,
                     Collections.singleton(server.getId()),
                     baseChannel,
                     childChannels,
-                    earliestOccurrence);
-            return action.getId();
+                    earliestOccurrence, null);
+            return action.stream().findFirst().map(Action::getId).orElseThrow(() ->
+                new RuntimeException("No action in schedule result")
+            );
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());

@@ -546,7 +546,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         changes.add(change1);
         Date earliest = new Date();
 
-        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, user);
+        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, null, user);
 
         assertEquals(2, results.size());
         assertEquals(2,
@@ -613,7 +613,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         Date earliest = new Date();
 
-        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, user);
+        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, null, user);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -713,7 +713,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         Date earliest = new Date();
 
-        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, user);
+        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, null, user);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -786,7 +786,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         Date earliest = new Date();
 
-        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, user);
+        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, null, user);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -883,7 +883,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         Date earliest = new Date();
 
-        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, user);
+        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, null, user);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -965,7 +965,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         Date earliest = new Date();
 
-        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, user);
+        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, null, user);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -1008,7 +1008,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         Date earliest = new Date();
 
-        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, user);
+        List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(changes, earliest, null, user);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
