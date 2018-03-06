@@ -44,7 +44,7 @@ var Panel = React.createClass({
         <div className="spacewalk-toolbar-h1">
           {this.props.button}
           <h1>
-            <i className={'fa ' + this.props.icon}></i>{t(this.props.title)}
+            <i className={'fa ' + this.props.icon}></i>{t(this.props.title)}&nbsp;
             {help}
           </h1>
         </div>
