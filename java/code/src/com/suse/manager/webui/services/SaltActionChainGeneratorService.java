@@ -112,22 +112,30 @@ public enum SaltActionChainGeneratorService {
             Path targetDir = Paths.get(suseManagerStatesFilesRoot.toString(), ACTIONCHAIN_SLS_FOLDER);
             Path targetFilePath = Paths.get(targetDir.toString(), getActionChainSLSFileName(actionChainId,
                     minionServer.getMachineId(), chunk));
+            // Add specified SLS chunk file to remove list
+            List<Path> filesToDelete = new ArrayList<>();
+            filesToDelete.add(targetFilePath);
+            // Add possible script files to remove list
+            Path scriptsDir = Paths.get(targetDir.toString(), SCRIPTS_DIR);
+            String filePattern = ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId + "_" +
+                    minionServer.getMachineId() + "_";
+            String scriptPattern = "script_suma_actionchain_" + actionChainId + "_chunk_" + chunk;
             try {
-                Files.deleteIfExists(targetFilePath);
+                for (Path path : Files.list(scriptsDir).filter(path ->
+                        path.toString().startsWith("script_" + filePattern)).collect(Collectors.toList())) {
+                    filesToDelete.add(path);
+                }
+                // Add also next SLS chunks because the Action Chain failed and these
+                // files are not longer needed.
                 if (actionChainFailed) {
-                    // Remove also next SLS chunks because the Action Chain failed and these
-                    // files are not longer needed.
-                    String filePreffix = ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId + "_" +
-                            minionServer.getMachineId() + "_";
-                    Files.list(targetDir).filter(path -> path.toString().startsWith(filePreffix))
-                            .forEach(path -> {
-                                try {
-                                    Files.delete(path);
-                                }
-                                catch (IOException e) {
-                                    LOG.error(e.getMessage(), e);
-                                }
-                            });
+                    filesToDelete.addAll(Files.list(targetDir).filter(path ->
+                            path.toString().startsWith(filePattern)).collect(Collectors.toList()));
+                    filesToDelete.addAll(Files.list(scriptsDir).filter(path ->
+                            path.toString().startsWith("script_" + filePattern)).collect(Collectors.toList()));
+                }
+                // Remove the files
+                for (Path path : filesToDelete) {
+                    Files.deleteIfExists(path);
                 }
             }
             catch (IOException e) {
@@ -189,7 +197,8 @@ public enum SaltActionChainGeneratorService {
 
         Path scriptsDir = Paths.get(suseManagerStatesFilesRoot.toString(),
                 ACTIONCHAIN_SLS_FOLDER, SCRIPTS_DIR);
-        String scriptFile = "script_" + action.getId() + ".sh";
+        String scriptFile = "script_" + stateId + ".sh";
+
         try {
             FileUtils.forceMkdir(scriptsDir.toFile()); // TODO set permissions?
             FileUtils.writeStringToFile(scriptsDir.resolve(scriptFile).toFile(),
@@ -235,7 +244,6 @@ public enum SaltActionChainGeneratorService {
 
         return singletonMap(stateId, singletonMap("module.run", params));
     }
-
 
     private Map<String, Object> renderRebootAction(String stateId, String prevSaltMod,
             String prevStateId, Action action) {
