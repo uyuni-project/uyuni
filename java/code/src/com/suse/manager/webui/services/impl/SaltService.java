@@ -789,7 +789,11 @@ public class SaltService {
                 Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { },
                 Optional.of(SALT_PRESENCE_TIMEOUT),
                 Optional.of(SALT_PRESENCE_GATHER_JOB_TIMEOUT))
-            .callSync(SALT_CLIENT, targetIn, SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            .callSync(SALT_CLIENT, targetIn, SALT_USER, SALT_PASSWORD, AuthModule.AUTO)
+            .entrySet().stream().filter(kv -> {
+                return kv.getValue().result().orElse(true);
+            })
+            .collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
     }
 
     /**
@@ -804,9 +808,11 @@ public class SaltService {
             new LocalCall<>("test.ping",
                 Optional.empty(), Optional.empty(), new TypeToken<Boolean>() { },
                 Optional.of(SALT_PRESENCE_TIMEOUT),
-                Optional.of(SALT_PRESENCE_GATHER_JOB_TIMEOUT)),
-            targetInSSH
-        );
+                Optional.of(SALT_PRESENCE_GATHER_JOB_TIMEOUT)), targetInSSH)
+                .entrySet().stream().filter(kv -> {
+                    return kv.getValue().result().orElse(true);
+                })
+                .collect(Collectors.toMap(k -> k.getKey(), v -> v.getValue()));
     }
 
     /**

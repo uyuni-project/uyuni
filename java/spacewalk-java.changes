@@ -1,3 +1,4 @@
+- fix presence ping (bsc#1080353)
 - Fix "Most critical systems" list on "Home Overview" view (bsc#1081757)
 
 -------------------------------------------------------------------
