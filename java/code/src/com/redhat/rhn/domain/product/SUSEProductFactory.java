@@ -136,20 +136,6 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Stream<SUSEProductChannel> findAllMandetoryChannels(SUSEProduct product, SUSEProduct base,
             String baseChannelLabel) {
-        System.out.println("Product: " + product.getFriendlyName() + " " + product.getProductId());
-        System.out.println("Base: " + base.getFriendlyName() + " " + base.getProductId());
-        System.out.println("BaseChannelLabel: " + baseChannelLabel);
-        System.out.println();
-        product.getSuseProductChannels().stream().forEach(p -> {
-            System.out.println("channel: " + p.getChannelLabel() + " parent: " + p.getParentChannelLabel());
-        });
-        System.out.println();
-        System.out.println("Bases:");
-        SUSEProductFactory.findAllBaseProductsOf(product, base).forEach(p -> {
-            System.out.println(p.getFriendlyName());
-        });
-        System.out.println();
-        System.out.println();
         Stream<SUSEProductChannel> concat = Stream.concat(
                 product.getSuseProductChannels().stream().filter(
                         c -> baseChannelLabel.equals(c.getParentChannelLabel()) ||
@@ -163,7 +149,7 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Finds all mandetory channels for a given channel label.
+     * Finds all mandatory channels for a given channel label.
      *
      * @param channelLabel channel label
      * @param archByChannelLabel a function mapping from channel label to architecture.
