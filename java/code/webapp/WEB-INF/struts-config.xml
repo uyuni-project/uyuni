@@ -4600,7 +4600,13 @@
 
     <!-- SSM\Channels -->
     <action path="/channel/ssm/ChannelSubscriptions"
-        forward="/WEB-INF/pages/channel/ssm/channelssub.jsp">
+          scope="request"
+          input="/WEB-INF/pages/channel/ssm/channelssub.jsp"
+          type="com.redhat.rhn.frontend.action.channel.ssm.SubscribeChannelsAction"
+          className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <forward name="default"
+               path="/WEB-INF/pages/channel/ssm/channelssub.jsp"/>
     </action>
 
     <action path="/channel/ssm/ChildSubscriptions"

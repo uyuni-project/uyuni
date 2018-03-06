@@ -18,6 +18,8 @@ package com.suse.manager.webui.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -39,7 +41,9 @@ import com.redhat.rhn.manager.ssm.SsmAllowedChildChannelsDto;
 import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
 import com.suse.manager.webui.utils.gson.SsmScheduleChannelChangesJson;
+import com.suse.manager.webui.utils.gson.SsmScheduleChannelChangesResultJson;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import spark.Request;
 import spark.Response;
@@ -172,8 +176,19 @@ public class SsmController {
         Date earliestDate = Date.from(
                 changes.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
         );
-        List<ScheduleChannelChangesResultDto> result =
-                SsmManager.scheduleChannelChanges(changes.getChanges(), earliestDate, user);
+
+        ActionChain actionChain = changes.getActionChain()
+                .filter(StringUtils::isNotEmpty)
+                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user))
+                .orElse(null);
+
+        List<ScheduleChannelChangesResultDto> scheduleResult =
+                SsmManager.scheduleChannelChanges(changes.getChanges(), earliestDate, actionChain, user);
+
+        SsmScheduleChannelChangesResultJson result = new SsmScheduleChannelChangesResultJson(
+                Optional.ofNullable(actionChain).map(ActionChain::getId),
+                scheduleResult
+        );
         return json(GSON, response, JsonResult.success(result));
     }
 

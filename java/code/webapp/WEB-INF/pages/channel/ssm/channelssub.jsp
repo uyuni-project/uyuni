@@ -17,6 +17,7 @@
         var timezone = "<%= com.suse.manager.webui.utils.ViewHelper.getInstance().renderTimezone() %>";
         var localTime = "<%= com.suse.manager.webui.utils.ViewHelper.getInstance().renderLocalTime() %>";
         var userPrefPageSize = <%= new com.redhat.rhn.frontend.struts.RequestContext(request).getCurrentUser().getPageSize() %>;
+        var actionChains = ${actionChainsJson};
   </script>
   <script src="/javascript/manager/ssm-subscribe-channels.bundle.js" type="text/javascript"></script>
 </body>

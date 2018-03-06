@@ -29,6 +29,7 @@ public class SsmScheduleChannelChangesJson {
 
     private Optional<LocalDateTime> earliest = Optional.empty();
     private List<ChannelChangeDto> changes = new ArrayList<>();
+    private Optional<String> actionChain = Optional.empty();
 
     /**
      * @return earliest date/time to execute
@@ -42,5 +43,12 @@ public class SsmScheduleChannelChangesJson {
      */
     public List<ChannelChangeDto> getChanges() {
         return changes;
+    }
+
+    /**
+     * @return actionChain to get
+     */
+    public Optional<String> getActionChain() {
+        return actionChain;
     }
 }

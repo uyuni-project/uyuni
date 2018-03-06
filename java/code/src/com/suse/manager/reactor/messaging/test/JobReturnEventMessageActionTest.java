@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -1157,10 +1158,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     public void testSubscribeChannelsActionSuccess() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionManager.setTaskomaticApi(taskomaticMock);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
-                    with(any(SubscribeChannelsAction.class)));
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -1177,11 +1177,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         channels.add(ch1);
         channels.add(ch2);
 
-        Action action = ActionManager.scheduleSubscribeChannelsAction(user,
+        Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(user,
                 Collections.singleton(minion.getId()),
                 baseChannel,
                 channels,
-                new Date());
+                new Date(),
+                null);
+
+        Action action = actions.stream().findFirst().get();
 
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
 

@@ -17,7 +17,8 @@ package com.redhat.rhn.manager.ssm;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -29,7 +30,7 @@ import com.redhat.rhn.frontend.action.channel.ssm.ChannelActionDAO;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.dto.SystemsPerChannelDto;
-import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
@@ -160,11 +161,12 @@ public class SsmManager {
      *
      * @param channelChanges changes to be scheduled
      * @param earliest earliest date/time to execute the actions
+     * @param actionChain the action chain to which to add the action. Can be null.
      * @param user the user that schedules the change
      * @return list of results
      */
     public static List<ScheduleChannelChangesResultDto> scheduleChannelChanges(
-            List<ChannelChangeDto> channelChanges, Date earliest, User user) {
+            List<ChannelChangeDto> channelChanges, Date earliest, ActionChain actionChain, User user) {
         List<ScheduleChannelChangesResultDto> schedulingResult = new ArrayList<>();
         // systems with a base channel
         for (SystemsPerChannelDto spc : ChannelManager.baseChannelsInSet(user)) {
@@ -177,17 +179,18 @@ public class SsmManager {
                         .filter(ch -> ch.getOldBaseId().map(currentBase.getId()::equals).orElse(false))
                         .collect(Collectors.toSet());
                 if (defaultBaseChange(srvChanges)) {
-                    handleDefaultBaseChannelChange(earliest, user, schedulingResult, srv, srvChanges);
+                    handleDefaultBaseChannelChange(earliest, actionChain, user, schedulingResult, srv, srvChanges);
                 }
                 else if (explicitChange(srvChanges)) {
-                    handleExplicitBaseChannelChange(earliest, user, schedulingResult,
+                    handleExplicitBaseChannelChange(earliest, actionChain, user, schedulingResult,
                             Optional.of(currentBase), srv, srvChanges.stream().findFirst().get());
                 }
                 else if (onlyChildChannelsChange(srvChanges)) {
                     ChannelChangeDto srvChange = srvChanges.stream().findFirst().get();
                     List<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange, srv.getBaseChannel());
                     schedulingResult.add(
-                            scheduleSubscribeChannelsAction(srv, Optional.empty(), childChannels, user, earliest));
+                            scheduleSubscribeChannelsAction(srv, Optional.empty(), childChannels, user, earliest,
+                                    actionChain));
                 }
                 else {
                     LOG.error("Invalid channel change for serverId=" + srv.getId());
@@ -202,10 +205,10 @@ public class SsmManager {
                     .filter(ch -> !ch.getOldBaseId().isPresent())
                     .collect(Collectors.toSet());
             if (defaultBaseChange(srvChanges)) {
-                handleDefaultBaseChannelChange(earliest, user, schedulingResult, srv, srvChanges);
+                handleDefaultBaseChannelChange(earliest, actionChain, user, schedulingResult, srv, srvChanges);
             }
             else if (explicitChange(srvChanges)) {
-                handleExplicitBaseChannelChange(earliest, user, schedulingResult, Optional.empty(), srv,
+                handleExplicitBaseChannelChange(earliest, actionChain, user, schedulingResult, Optional.empty(), srv,
                         srvChanges.stream().findFirst().get());
             }
             // no child-only changes possible in case of systems without a base channel
@@ -213,7 +216,7 @@ public class SsmManager {
         return schedulingResult;
     }
 
-    private static void handleExplicitBaseChannelChange(Date earliest, User user,
+    private static void handleExplicitBaseChannelChange(Date earliest, ActionChain actionChain, User user,
                                                         List<ScheduleChannelChangesResultDto> schedulingResult,
                                                         Optional<Channel> currentBase,
                                                         Server srv,
@@ -254,11 +257,12 @@ public class SsmManager {
 
             List<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange, newBaseChannel);
             schedulingResult.add(
-                    scheduleSubscribeChannelsAction(srv, Optional.of(newBaseChannel), childChannels, user, earliest));
+                    scheduleSubscribeChannelsAction(srv, Optional.of(newBaseChannel), childChannels, user, earliest,
+                            actionChain));
         }
     }
 
-    private static void handleDefaultBaseChannelChange(Date earliest, User user,
+    private static void handleDefaultBaseChannelChange(Date earliest, ActionChain actionChain, User user,
                                                        List<ScheduleChannelChangesResultDto> schedulingResult,
                                                        Server srv, Set<ChannelChangeDto> srvChanges) {
         Optional<Channel> guessedChannel =
@@ -276,7 +280,8 @@ public class SsmManager {
             Channel newBaseChannel = ChannelFactory.lookupById(srvChange.get().getNewBaseId().get());
             List<Channel> childChannels = getChildChannelsForChange(user, srv, srvChange.get(), newBaseChannel);
             schedulingResult.add(
-                    scheduleSubscribeChannelsAction(srv, Optional.of(newBaseChannel), childChannels, user, earliest));
+                    scheduleSubscribeChannelsAction(srv, Optional.of(newBaseChannel), childChannels, user, earliest,
+                            actionChain));
         }
         else {
             LOG.warn("No base channel change found for serverId=" + srv.getId());
@@ -287,16 +292,19 @@ public class SsmManager {
     private static ScheduleChannelChangesResultDto scheduleSubscribeChannelsAction(Server srv,
                                                                                    Optional<Channel> baseChannel,
                                                                                    List<Channel> childChannels,
-                                                                                   User user, Date earliest) {
+                                                                                   User user, Date earliest,
+                                                                                   ActionChain actionChain) {
         try {
-            SubscribeChannelsAction action = ActionManager.scheduleSubscribeChannelsAction(
+            Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(
                     user,
                     Collections.singleton(srv.getId()),
                     baseChannel,
                     childChannels,
-                    earliest
-                    );
-            return new ScheduleChannelChangesResultDto(SsmServerDto.from(srv), action.getId());
+                    earliest,
+                    actionChain);
+            long actionId = actions.stream().findFirst().map(a -> a.getId())
+                    .orElseThrow(() -> new RuntimeException("No subscribe channels actions was scheduled"));
+            return new ScheduleChannelChangesResultDto(SsmServerDto.from(srv), actionId);
         }
         catch (TaskomaticApiException e) {
             LOG.error("Taskomatic error scheduling subscribe channel action", e);

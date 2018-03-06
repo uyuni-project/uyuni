@@ -659,10 +659,22 @@ public class ActionChainManager {
         return result;
     }
 
+    /**
+     * Create subscribe channel actions for the given servers.
+     * @param user the user scheduling the actions
+     * @param serverIds the server ids
+     * @param base the base channel to set
+     * @param children the child channels to set
+     * @param earliest the earliest execution date
+     * @param actionChain the action chain or null
+     * @return created and schedule actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
     public static Set<Action> scheduleSubscribeChannelsAction(User user,
                                                               Set<Long> serverIds,
                                                               Optional<Channel> base,
-                                                              Set<Channel> children,
+                                                              Collection<Channel> children,
                                                               Date earliest,
                                                               ActionChain actionChain)
             throws TaskomaticApiException {
@@ -671,7 +683,8 @@ public class ActionChainManager {
         for (Action action : result) {
             SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
             base.ifPresent(b -> details.setBaseChannel(b));
-            details.setChannels(children);
+            details.setChannels(new HashSet<>(children));
+            details.setParentAction(action);
             ((SubscribeChannelsAction)action).setDetails(details);
             ActionFactory.save(action);
         }

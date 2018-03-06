@@ -57,6 +57,7 @@ import com.redhat.rhn.frontend.dto.ActionedSystem;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionIsChildException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
@@ -757,10 +758,9 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     public void testScheduleSubscribeChannels() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionManager.setTaskomaticApi(taskomaticMock);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
-                    with(any(SubscribeChannelsAction.class)));
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
         MinionServer srvr = MinionServerFactoryTest.createTestMinionServer(user);
@@ -772,11 +772,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Set<Channel> channels = new HashSet<>();
         channels.add(ch1);
         channels.add(ch2);
-        Action action = ActionManager.scheduleSubscribeChannelsAction(user,
+        Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(user,
                 Collections.singleton(srvr.getId()),
                 baseChannel,
                 channels,
-                new Date());
+                new Date(), null);
+
+        Action action = actions.stream().findFirst().get();
 
         assertTrue(action instanceof SubscribeChannelsAction);
         SubscribeChannelsAction sca = (SubscribeChannelsAction)action;

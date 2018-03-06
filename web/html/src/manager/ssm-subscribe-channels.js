@@ -4,17 +4,18 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {AsyncButton, Button} = require("../components/buttons");
-const {DateTimePicker} = require("../components/datetimepicker");
+const {ActionSchedule} = require("../components/action-schedule");
 const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const {Messages} = require("../components/messages");
 const {Table, Column} = require("../components/table");
 const {BootstrapPanel} = require("../components/panel");
 const MessagesUtils = require("../components/messages").Utils;
-const {ChannelLink, ActionLink, SystemLink} = require("../components/links");
+const {ChannelLink, ActionLink, ActionChainLink, SystemLink} = require("../components/links");
 const {PopUp} = require("../components/popup");
 
 import type JsonResult from "../utils/network";
+import type {ActionChain} from "../components/action-schedule";
 
 declare function t(msg: string): string;
 declare function t(msg: string, arg: string): string;
@@ -22,6 +23,7 @@ declare function getServerId(): number;
 declare var localTime: string;
 declare var timezone: string;
 declare var userPrefPageSize: string;
+declare var actionChains: Array<ActionChain>;
 
 const msgMap = {
   "taskomatic_error": t("Error scheduling job in Taskomatic. Please check the logs."),
@@ -397,12 +399,14 @@ type SummaryPageProps = {
   finalChanges: Array<ChannelChangeDto>,
   footer: Footer,
   onChangeEarliest: (earliest: Date) => void,
+  onChangeActionChain: (actionChain: ?ActionChain) => void
 }
 
 type SummaryPageState = {
   popupServersList: Array<SsmServerDto>,
   popupServersChannelName: string,
-  earliest: Date
+  earliest: Date,
+  actionChain: ?ActionChain
 }
 
 class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
@@ -412,7 +416,8 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
     this.state = {
       popupServersList: [],
       popupServersChannelName: "",
-      earliest: Functions.Utils.dateWithTimezone(localTime)
+      earliest: Functions.Utils.dateWithTimezone(localTime),
+      actionChain: null
     }
   }
 
@@ -440,6 +445,13 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
     this.setState({
       earliest: Functions.Utils.dateWithTimezone(newtime)
     })
+  }
+
+  onActionChainChanged = (actionChain: ?ActionChain) => {
+    this.setState({
+      actionChain: actionChain
+    });
+    this.props.onChangeActionChain(actionChain);
   }
 
   render() {
@@ -501,21 +513,18 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
       icon="spacewalk-icon-software-channels"
       footer={this.props.footer}>
       { rows }
-      <div className="spacewalk-scheduler">
-          <div className="form-horizontal">
-              <div className="form-group">
-                  <label className="col-md-3 control-label">
-                      {t("Earliest:")}
-                  </label>
-                  <div className="col-md-6">
-                      <DateTimePicker id="schedule" onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={timezone} />
-                  </div>
-              </div>
-          </div>
-      </div>
+
+      <ActionSchedule timezone={timezone} localTime={localTime}
+         earliest={this.state.earliest}
+         actionChains={actionChains}
+         actionChain={this.state.actionChain}
+         onActionChainChanged={this.onActionChainChanged}
+         onDateTimeChanged={this.onDateTimeChanged}/>
+
       <ServersListPopup servers={this.state.popupServersList} channelName={this.state.popupServersChannelName}
          title={t("Systems to subscribe to")}
          onClosePopUp={this.onCloseServersListPopup}/>
+
     </BootstrapPanel>;
   }
 
@@ -609,6 +618,7 @@ type SsmChannelState = {
   baseChanges: SsmBaseChannelChangesJson,
   finalChanges: Array<ChannelChangeDto>,
   earliest: Date,
+  actionChain: ?ActionChain,
   page: number,
   scheduleResults: Array<ScheduleChannelChangesResultDto>
 }
@@ -629,6 +639,11 @@ type ScheduleChannelChangesResultDto = {
   server: SsmServerDto,
   actionId: ?string,
   errorMessage: ?string
+}
+
+type SsmScheduleChannelChangesResultJson = {
+  actionChainId: number,
+  result: Array<ScheduleChannelChangesResultDto>
 }
 
 type FooterProps = {
@@ -657,6 +672,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
       finalChanges: [],
       page: 0,
       earliest: new Date(),
+      actionChain: null,
       scheduleResults: []
     }
   }
@@ -799,18 +815,29 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
     })
   }
 
+  onChangeActionChain = (actionChain: ?ActionChain) => {
+    this.setState({
+      actionChain: actionChain
+    })
+  }
+
   onConfirm = () => {
     const req : SsmScheduleChannelChangesJson = {
       earliest: Functions.Formats.LocalDateTime(this.state.earliest),
+      actionChain: this.state.actionChain ? this.state.actionChain.text : null,
       changes: this.state.finalChanges
     };
     return Network.post("/rhn/manager/systems/ssm/channels",
         JSON.stringify(req), "application/json")
         .promise
-        .then((data : JsonResult<Array<ScheduleChannelChangesResultDto>>) => {
+        .then((data : JsonResult<SsmScheduleChannelChangesResultJson>) => {
+          const msg = MessagesUtils.info(this.state.actionChain ?
+                  <span>{t("Action has been successfully added to the Action Chain ")}
+                    <ActionChainLink id={data.data.actionChainId }>{this.state.actionChain ? this.state.actionChain.text : ""}</ActionChainLink>.</span> :
+                  <span>{t("Channel changes scheduled.")}</span>);
           this.setState({
-            messages: MessagesUtils.info(t("Channel changes scheduled.")),
-            scheduleResults: data.data,
+            messages: msg,
+            scheduleResults: data.data.result,
             page: 3
           });
         })
@@ -861,6 +888,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
           allowedChanges={this.state.allowedChanges}
           finalChanges={this.state.finalChanges}
           onChangeEarliest={this.onChangeEarliest}
+          onChangeActionChain={this.onChangeActionChain}
           ref={(component) => window.schedulePage = component}
           footer={
             <Footer page={this.state.page}>

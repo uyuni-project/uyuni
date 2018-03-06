@@ -2206,42 +2206,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedule setting the channels.
-     *
-     * @param scheduler the user who is scheduling
-     * @param sids list of server ids
-     * @param baseChannel the base channel to set, if any
-     * @param channels the additional channels to subscribe
-     * @param earliest action will not be executed before this date
-     * @return the action object
-     * @throws TaskomaticApiException if the the action could not be
-     * scheduled in Taskomatic
-     */
-    public static SubscribeChannelsAction scheduleSubscribeChannelsAction(User scheduler,
-                                                                          Set<Long> sids,
-                                                                          Optional<Channel> baseChannel,
-                                                                          Collection<Channel> channels,
-                                                                          Date earliest)
-    throws TaskomaticApiException {
-        SubscribeChannelsAction action = (SubscribeChannelsAction)ActionFactory
-                .createAction(ActionFactory.TYPE_SUBSCRIBE_CHANNELS);
-        action.setName("Subscribe channels");
-        action.setOrg(scheduler.getOrg());
-        action.setSchedulerUser(scheduler);
-
-        SubscribeChannelsActionDetails actionDetails = new SubscribeChannelsActionDetails(
-                baseChannel.orElse(null),
-                new HashSet<>(channels));
-        actionDetails.setParentAction(action);
-        action.setDetails(actionDetails);
-        ActionFactory.save(action);
-        scheduleForExecution(action, sids);
-
-        taskomaticApi.scheduleSubscribeChannels(scheduler, action);
-        return action;
-    }
-
-    /**
      * Schedule image build
      *
      * @param scheduler the scheduler
