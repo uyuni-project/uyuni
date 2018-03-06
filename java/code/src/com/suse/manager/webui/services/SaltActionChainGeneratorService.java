@@ -117,21 +117,28 @@ public enum SaltActionChainGeneratorService {
             filesToDelete.add(targetFilePath);
             // Add possible script files to remove list
             Path scriptsDir = Paths.get(targetDir.toString(), SCRIPTS_DIR);
-            String filePattern = ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId + "_" +
-                    minionServer.getMachineId() + "_";
-            String scriptPattern = "script_suma_actionchain_" + actionChainId + "_chunk_" + chunk;
+            String filePattern = ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId +
+                    "_" + minionServer.getMachineId() + "_";
+            String scriptPattern = "script_suma_actionchain_" + actionChainId +
+                    "_chunk_" + chunk;
             try {
-                for (Path path : Files.list(scriptsDir).filter(path ->
-                        path.toString().startsWith("script_" + filePattern)).collect(Collectors.toList())) {
+                for (Path path : Files.list(scriptsDir)
+                        .filter(path -> path.toString().startsWith(
+                                Paths.get(scriptsDir.toString(), scriptPattern).toString()))
+                        .collect(Collectors.toList())) {
                     filesToDelete.add(path);
                 }
                 // Add also next SLS chunks because the Action Chain failed and these
                 // files are not longer needed.
                 if (actionChainFailed) {
-                    filesToDelete.addAll(Files.list(targetDir).filter(path ->
-                            path.toString().startsWith(filePattern)).collect(Collectors.toList()));
-                    filesToDelete.addAll(Files.list(scriptsDir).filter(path ->
-                            path.toString().startsWith("script_" + filePattern)).collect(Collectors.toList()));
+                    filesToDelete.addAll(Files.list(targetDir)
+                            .filter(path -> path.toString().startsWith(
+                                    Paths.get(scriptsDir.toString(), filePattern).toString()))
+                            .collect(Collectors.toList()));
+                    filesToDelete.addAll(Files.list(scriptsDir)
+                            .filter(path -> path.toString().startsWith(
+                                    Paths.get(scriptsDir.toString(), scriptPattern).toString()))
+                            .collect(Collectors.toList()));
                 }
                 // Remove the files
                 for (Path path : filesToDelete) {
