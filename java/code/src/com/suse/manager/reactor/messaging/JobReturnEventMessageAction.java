@@ -121,7 +121,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 Integer chunk = null;
                 Long retActionChainId = null;
                 Boolean actionChainFailed = false;
-                //actionChainResult.forEach((key, actionStateApply) -> {
                 for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
                     String key = entry.getKey();
                     StateApplyResult<Ret<JsonElement>> actionStateApply = entry.getValue();
@@ -143,9 +142,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     }
                 }
 
-                // Removing the generated SLS file
-                SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
-                        retActionChainId, jobReturnEvent.getMinionId(), chunk, actionChainFailed);
+                if (retActionChainId != null) {
+                    // Removing the generated SLS file
+                    SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
+                            retActionChainId, jobReturnEvent.getMinionId(), chunk, actionChainFailed);
+                }
             });
 
 
