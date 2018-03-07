@@ -462,9 +462,11 @@ const CheckListItem = React.createClass({
       <li className={evenOddClass} key={this.props.item['identifier']}>
         <div className='product-element'>
           <div className='right'>
+            &nbsp;
             <div className='d-inline-block fixed-small-col' title={t('Architecture')}>
               {this.props.isFirstLevel ? this.props.item['arch'] : ''}
             </div>
+            &nbsp;
             <div className='d-inline-block fixed-icon-col'>
               <ModalLink
                   id='showChannels'
@@ -474,12 +476,15 @@ const CheckListItem = React.createClass({
                   onClick={() => this.props.showChannelsfor(this.props.item)}
               />
             </div>
+            &nbsp;
             <div className='d-inline-block fixed-small-col' title={t('Product sync status')}>
               [---%---]
             </div>
+            &nbsp;
             <div className='d-inline-block fixed-icon-col'>
               <Button className='btn-default btn-sm' icon='fa-refresh' disabled title={t('Resync product')} />
             </div>
+            &nbsp;
           </div>
           <div className='d-inline-block'>
             &nbsp;
@@ -493,11 +498,13 @@ const CheckListItem = React.createClass({
                 : null
             }
             &nbsp;&nbsp;
-            {
-              nestedData && nestedData.length > 0 ?
-              openSubListIcon
-              : <i className='fa' />
-            }
+            <div className='d-inline-block fixed-icon-placeholder'>
+              {
+                nestedData && nestedData.length > 0 ?
+                openSubListIcon
+                : <i className='fa' />
+              }
+            </div>
             &nbsp;&nbsp;
             {this.props.item['label']}
             &nbsp;

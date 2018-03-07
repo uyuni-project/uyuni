@@ -253,9 +253,11 @@ ul.product-list {
     display: block;
     overflow: auto;
     border-bottom: 1px solid @spacewalk-gray-light;
+    padding-left: 10px;
     .product-element {
       overflow: auto;
-      padding: .5em;
+      padding: .3em;
+      margin-left: .3em;
       * {
         vertical-align: middle;
       }
@@ -267,23 +269,20 @@ ul.product-list {
   > li.list-row-even {
     .row-even
   }
-  // > li.list-row-odd ul:first-child {
-  //   .row-even
-  // }
-  // > li.list-row-even ul:first-child {
-  //   .row-odd
-  // }
   ul {
+    border-top: 1px solid @spacewalk-gray-light;
     margin-top: .3em;
-    padding: 0;
+    padding: 0 0 1em 0;
     li {
       border: 0;
-      border-left: 1px solid @spacewalk-gray-light;
-      margin-left: 30px;
+      margin-left: 18px;
       padding: 0.3em 0;
+      background-image: url('/img/susemanager/sub-list.png');
+      background-repeat: no-repeat;
+      background-position: left center;
     }
-    li:first-of-type {
-      border-top: 1px solid @spacewalk-gray-light;
+    li:last-of-type {
+      background-image: url('/img/susemanager/sub-list-last.png');
     }
   }
   ul.product-channel-list {
