@@ -7,7 +7,6 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-info"
-               helpUrl="/rhn/help/reference/en-US/ref.webui.systems.autoinst.jsp#ref.webui.systems.autoinst.snippet"
                creationUrl="CobblerSnippetCreate.do"
                creationType="snippets"
                iconAlt="info.alt.img"
