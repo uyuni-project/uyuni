@@ -1,9 +1,8 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# This product feature is only for trad_client
 
-Feature: Action chaining
+Feature: Action chaining traditinal clients
 
   Scenario: Pre-requisite: downgrade repo to lower version
     Given I am authorized as "admin" with password "admin"
