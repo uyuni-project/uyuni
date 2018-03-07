@@ -174,14 +174,6 @@ ul.subscriptions-list {
   margin-top: 0;
 }
 
-.product-sync-progress.progress  {
-  text-align: center;
-  margin-bottom: 0;
-  .progress-value {
-    //position: absolute;
-  }
-}
-
 #suse-products {
   tr.product-selected {
     background-color: #ffc;
@@ -189,14 +181,6 @@ ul.subscriptions-list {
   tr.product-provided {
     background-color: #eee;
   }
-
-  .product-status {
-    .progress {
-      background-color: #fff;
-      border: 1px solid #ddd;
-    }
-  }
-
   .product-status-label {
     .btn-link, a {
       color: white;
@@ -258,7 +242,7 @@ ul.product-list {
       overflow: auto;
       padding: .3em;
       margin-left: .3em;
-      * {
+      div {
         vertical-align: middle;
       }
     }
@@ -288,6 +272,7 @@ ul.product-list {
   ul.product-channel-list {
     padding: 0;
     margin: 0;
+    border: 0;
     li {
       list-style: disc;
       border: none;

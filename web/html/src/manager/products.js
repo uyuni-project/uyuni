@@ -12,6 +12,7 @@ const {ModalButton, ModalLink} = require("../components/dialogs");
 const Button = require('../components/buttons').Button;
 const SCCDialog = require('./products-scc-dialog').SCCDialog;
 const PopUp = require("../components/popup").PopUp;
+const ProgressBar = require("../components/progressbar").ProgressBar;
 
 const _DATA_ROOT_ID = 'baseProducts';
 
@@ -338,7 +339,7 @@ const Products = React.createClass({
 const CheckList = React.createClass({
   getInitialState: function() {
     return {
-      channelsItem: null
+      popupItem: null
     }
   },
 
@@ -347,38 +348,38 @@ const CheckList = React.createClass({
   },
 
   showChannelsfor: function(item) {
-    this.setState({channelsItem: item});
+    this.setState({popupItem: item});
   },
 
   render: function() {
-    const titlePopup = t('Product Channels - ') + (this.state.channelsItem != null ? this.state.channelsItem['label'] : '');
+    const titlePopup = t('Product Channels - ') + (this.state.popupItem != null ? this.state.popupItem['label'] : '');
     const contentPopup = 
-      this.state.channelsItem != null ?
+      this.state.popupItem != null ?
         (
           <div>
             {
-              this.state.channelsItem['channels'].filter(c => !c['optional']).length > 0 ?
+              this.state.popupItem['channels'].filter(c => !c.optional).length > 0 ?
                 <div>
                   <h4>Mandatory Channels</h4>
                   <ul className='product-channel-list'>
                     {
-                      this.state.channelsItem['channels']
-                        .filter(c => !c['optional'])
-                        .map(c => <li>{c['summary']}&nbsp;<small>[{c['label']}]</small></li>)
+                      this.state.popupItem['channels']
+                        .filter(c => !c.optional)
+                        .map(c => <li>{c.summary}&nbsp;<small>[{c.label}]</small></li>)
                     }
                   </ul>
                 </div>
                 : null
             }
             {
-              this.state.channelsItem['channels'].filter(c => c['optional']).length > 0 ?
+              this.state.popupItem['channels'].filter(c => c.optional).length > 0 ?
                 <div>
                   <h4>Optional Channels</h4>
                   <ul className='product-channel-list'>
                     {
-                      this.state.channelsItem['channels']
-                        .filter(c => c['optional'])
-                        .map(c => <li>{c['summary']}&nbsp;<small>[{c['label']}]</small></li>)
+                      this.state.popupItem['channels']
+                        .filter(c => c.optional)
+                        .map(c => <li>{c.summary}&nbsp;<small>[{c.label}]</small></li>)
                     }
                   </ul>
                 </div>
@@ -401,7 +402,7 @@ const CheckList = React.createClass({
                       selectedItems={this.props.selectedItems}
                       nestedKey='extensions'
                       isSelectable={true}
-                      isFirstLevel={true}
+                      isFirstLevel={this.props.isFirstLevel}
                       index={index}
                       showChannelsfor={this.showChannelsfor}
                   />
@@ -456,7 +457,10 @@ const CheckListItem = React.createClass({
           onClick={() => this.handleSubListVisibility(this.props.item['identifier'])} />;
     let evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
 
-    
+    const mandatoryChannelList = this.props.item['channels'].filter(c => !c.optional);
+    const syncedChannels = mandatoryChannelList.filter(c => c.status == 'INSTALLED').length;
+    const notSyncedChannels = mandatoryChannelList.filter(c => c.status == 'AVAILABLE').length;
+    const channelSyncProgress = Math.round(( syncedChannels / notSyncedChannels ) * 100);
 
     return (
       <li className={evenOddClass} key={this.props.item['identifier']}>
@@ -478,7 +482,7 @@ const CheckListItem = React.createClass({
             </div>
             &nbsp;
             <div className='d-inline-block fixed-small-col' title={t('Product sync status')}>
-              [---%---]
+              <ProgressBar progress={channelSyncProgress} />
             </div>
             &nbsp;
             <div className='d-inline-block fixed-icon-col'>
