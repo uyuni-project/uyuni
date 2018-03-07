@@ -2,6 +2,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 <html:html >
   <body>
@@ -17,28 +18,43 @@
       <p><bean:message key="sdc.details.customdata.summary"/></p>
     </div>
 
-    <c:choose>
-      <c:when test="${listEmpty == 1}">
-        <div class="list-empty-message">
-          <bean:message key="sdc.details.customdata.nosystems"/>
-        </div>
-      </c:when>
-      <c:otherwise>
-        <table class="details">
-          <c:forEach items="${pageList}" var="current" varStatus="loop">
-            <tr>
-              <th>${current.label}</th>
-              <td width="50%">
-                <pre><c:out value="${current.value}" /></pre>
-                <a href="/rhn/systems/details/UpdateCustomData.do?sid=${system.id}&cikid=${current.cikid}">
-                  <bean:message key="sdc.details.customdata.editvalue"/>
-                </a>
-              </td>
-            </tr>
-          </c:forEach>
-        </table>
-      </c:otherwise>
-    </c:choose>
+    <rl:listset name="keySet">
+      <rhn:csrf />
+      <rhn:submitted />
 
+      <rl:list dataset="pageList"
+          name="keyList"
+          emptykey="system.jsp.customkey.empty"
+          alphabarcolumn="label">
+
+        <rl:column sortable="true"
+            bound="false"
+            headerkey="system.jsp.customkey.keylabel"
+            sortattr="label"
+            defaultsort="asc">
+          <a href="/rhn/systems/customdata/UpdateCustomKey.do?cikid=${current.cikid}">
+            <c:out value="${current.label}" />
+          </a>
+        </rl:column>
+
+        <rl:column sortable="false"
+            bound="false"
+            headerkey="system.jsp.customkey.description">
+          <c:out value="${current.description}" />
+        </rl:column>
+
+        <rl:column sortable="false"
+            bound="false"
+            headerkey="system.jsp.customkey.value">
+          <a href="/rhn/systems/details/UpdateCustomData.do?sid=${system.id}&cikid=${current.cikid}">
+            <c:out value="${current.value}" />
+          </a>
+        </rl:column>
+      </rl:list>
+
+      <rl:csv dataset="pageList"
+          name="keyList"
+          exportColumns="label, description, value" />
+    </rl:listset>
   </body>
 </html:html>
