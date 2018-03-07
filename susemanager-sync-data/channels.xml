@@ -2524,6 +2524,11 @@
 			<product_id eol="N" name="sle-module-basesystem" version="15">1576</product_id>
 		</products>
 	</channel>
+	<channel arch="aarch64" description="&lt;p&gt; The SUSE Linux Enterprise Basesystem Module delivers the base system of the product. &lt;/p&gt;" eol="N" family="MODULE" is_signed="Y" label="sle-module-basesystem15-debuginfo-updates-aarch64" name="SLE-Module-Basesystem15-Debuginfo-Updates for aarch64" optional="Y" parent="sle-product-sles15-pool-aarch64" product_name="sle-module-basesystem" product_version="15" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Basesystem/15/aarch64/update_debug/" summary="Basesystem Module 15 aarch64" update_tag="SLE-Module-Basesystem">
+		<products>
+			<product_id eol="N" name="sle-module-basesystem" version="15">1589</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt; The SUSE Linux Enterprise Basesystem Module delivers the base system of the product. &lt;/p&gt;" eol="N" family="MODULE" is_signed="Y" label="sle-module-basesystem15-debuginfo-updates-ppc64le" name="SLE-Module-Basesystem15-Debuginfo-Updates for ppc64le" optional="Y" parent="sle-product-sles15-pool-ppc64le" product_name="sle-module-basesystem" product_version="15" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Basesystem/15/ppc64le/update_debug/" summary="Basesystem Module 15 ppc64le" update_tag="SLE-Module-Basesystem">
 		<products>
 			<product_id eol="N" name="sle-module-basesystem" version="15">1588</product_id>

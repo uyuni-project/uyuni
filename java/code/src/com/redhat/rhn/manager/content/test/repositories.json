@@ -17158,5 +17158,15 @@
     "installer_updates": false,
     "name": "SUSE-OpenStack-Cloud-Crowbar-8-Source-Pool",
     "url": "https://updates.suse.com/SUSE/Products/OpenStack-Cloud-Crowbar/8/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Basesystem15-Debuginfo-Updates for sle-15-aarch64",
+    "distro_target": "sle-15-aarch64",
+    "enabled": false,
+    "id": 3014,
+    "installer_updates": false,
+    "name": "SLE-Module-Basesystem15-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Basesystem/15/aarch64/update_debug/?my-fake-token"
   }
 ]
