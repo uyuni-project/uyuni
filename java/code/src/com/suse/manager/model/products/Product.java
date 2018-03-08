@@ -15,6 +15,8 @@
 
 package com.suse.manager.model.products;
 
+import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
+import com.suse.mgrsync.MgrSyncStatus;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -43,6 +45,8 @@ public class Product {
 
     private final Set<JsonChannel> channels;
 
+    private final MgrSyncStatus status;
+
     /**
      * Instantiates a new Product.
      * @param idIn the id in
@@ -51,6 +55,7 @@ public class Product {
      */
     public Product(Long idIn, String identifierIn,
                    String labelIn, String archIn, Boolean recommendedIn,
+                   MgrSyncStatus statusIn,
                    Set<Extension> extensionsIn, Set<JsonChannel> channelsIn) {
         id = idIn;
         label = labelIn;
@@ -59,6 +64,7 @@ public class Product {
         recommended = recommendedIn;
         extensions = extensionsIn;
         channels = channelsIn;
+        status = statusIn;
     }
 
     /**
@@ -99,6 +105,10 @@ public class Product {
 
     public Set<JsonChannel> getChannels() {
         return channels;
+    }
+
+    public MgrSyncStatus getStatus() {
+        return status;
     }
 
     /**

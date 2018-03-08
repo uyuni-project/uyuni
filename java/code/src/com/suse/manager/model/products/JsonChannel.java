@@ -1,6 +1,6 @@
 package com.suse.manager.model.products;
 
-import com.suse.mgrsync.MgrSyncStatus;
+import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 
 public class JsonChannel {
 
@@ -8,9 +8,9 @@ public class JsonChannel {
     private final String label;
     private final String summary;
     private final boolean optional;
-    private final MgrSyncStatus status;
+    private final SetupWizardProductDto.SyncStatus.SyncStage status;
 
-    public JsonChannel(String nameIn, String labelIn, String summeryIn, boolean optionalIn, MgrSyncStatus statusIn) {
+    public JsonChannel(String nameIn, String labelIn, String summeryIn, boolean optionalIn, SetupWizardProductDto.SyncStatus.SyncStage statusIn) {
         this.name = nameIn;
         this.label = labelIn;
         this.summary = summeryIn;
@@ -18,7 +18,7 @@ public class JsonChannel {
         this.status = statusIn;
     }
 
-    public MgrSyncStatus getStatus() {
+    public SetupWizardProductDto.SyncStatus.SyncStage getStatus() {
         return status;
     }
 
