@@ -17,9 +17,12 @@ package com.suse.manager.webui.controllers;
 
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
@@ -28,7 +31,8 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.suse.manager.model.products.Extension;
 import com.suse.manager.model.products.JsonChannel;
 import com.suse.manager.model.products.Product;
-import com.suse.manager.webui.utils.SparkApplicationHelper;
+import com.suse.manager.webui.utils.gson.JsonResult;
+import com.suse.mgrsync.XMLChannel;
 import com.suse.utils.Json;
 import org.apache.log4j.Logger;
 import spark.ModelAndView;
@@ -174,6 +178,28 @@ public class ProductsController {
         return json(response, collect);
     }
 
+    public static String getMandatoryChannels(Request request, Response response, User user) {
+        List<String> list = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>(){}.getType());
+        ContentSyncManager csm = new ContentSyncManager();
+        try {
+            Map<String, String> archByChannelLabel = csm.listChannels().stream().collect(Collectors.toMap(
+                    XMLChannel::getLabel,
+                    XMLChannel::getArch
+            ));
+            Map<String, List<String>> result = list.stream().collect(Collectors.toMap(
+                    channelLabel -> channelLabel,
+                    channelLabel ->
+                            SUSEProductFactory.findAllMandatoryChannels(channelLabel, archByChannelLabel::get)
+                                    .map(SUSEProductChannel::getChannelLabel)
+                                    .collect(Collectors.toList())
+            ));
+
+            return json(response, JsonResult.success(result));
+        } catch (ContentSyncException e) {
+            log.error("content sync error: ", e);
+            return json(response, JsonResult.error("content sync error. See logs for more info."));
+        }
+    }
     /**
      * Returns JSON data for the SUSE products
      *
