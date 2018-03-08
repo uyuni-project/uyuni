@@ -134,7 +134,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param baseChannelLabel the base channel label
      * @return stream of SUSEProductChannel
      */
-    public static Stream<SUSEProductChannel> findAllMandetoryChannels(SUSEProduct product, SUSEProduct base,
+    public static Stream<SUSEProductChannel> findAllMandatoryChannels(SUSEProduct product, SUSEProduct base,
             String baseChannelLabel) {
         Stream<SUSEProductChannel> concat = Stream.concat(
                 product.getSuseProductChannels().stream().filter(
@@ -142,7 +142,7 @@ public class SUSEProductFactory extends HibernateFactory {
                                 baseChannelLabel.equals(c.getChannelLabel())
                 ),
                 SUSEProductFactory.findAllBaseProductsOf(product, base).stream().flatMap(
-                        p -> findAllMandetoryChannels(p, base, baseChannelLabel)
+                        p -> findAllMandatoryChannels(p, base, baseChannelLabel)
                 )
         );
         return concat;
@@ -156,8 +156,8 @@ public class SUSEProductFactory extends HibernateFactory {
      *                           to filter out incompatible channels.
      * @return a stream of suse product channels which are required by the channel
      */
-    public static Stream<SUSEProductChannel> findAllMandetoryChannels(String channelLabel,
-            Function<String, String> archByChannelLabel) {
+    public static Stream<SUSEProductChannel> findAllMandatoryChannels(String channelLabel,
+                                                                      Function<String, String> archByChannelLabel) {
         List<SUSEProductChannel> suseProducts = SUSEProductFactory.lookupByChannelLabel(channelLabel);
         SUSEProductChannel suseProductChannel = suseProducts.get(0);
 
@@ -165,7 +165,7 @@ public class SUSEProductFactory extends HibernateFactory {
                 suseProductChannel.getParentChannelLabel()).map(parentChannelLabel -> {
             List<SUSEProductChannel> suseProducts2 = SUSEProductFactory.lookupByChannelLabel(parentChannelLabel);
             SUSEProductChannel baseProductChannel = suseProducts2.get(0);
-            return findAllMandetoryChannels(
+            return findAllMandatoryChannels(
                     suseProductChannel.getProduct(),
                     baseProductChannel.getProduct(),
                     parentChannelLabel
