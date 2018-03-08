@@ -45,7 +45,7 @@ Please read with attention the [guidelines](docs/Guidelines.md). They cover styl
 
 Check the [code coverage results](docs/codecoverage.md) after you have run the test suite with your code.
 
-There are also hints about how to [debug the testsuite](docs/Debug.md) and about [Pitfalls in writing the testsuite](docs/Pitfalls-test.md).
+There are also hints about [Pitfalls in writing the testsuite](docs/Pitfalls-test.md).
 
 
 # Branches used
