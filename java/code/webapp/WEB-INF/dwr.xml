@@ -79,19 +79,5 @@
             <include method="retrieveProxySettings" />
             <include method="verifyProxySettings" />
         </create>
-        <create creator="new" javascript="MgrSyncAJAX">
-            <param name="class" value="com.redhat.rhn.frontend.action.setupwizard.MgrSyncAJAXEndpoint" />
-            <include method="synchronizeChannels" />
-            <include method="synchronizeChannelFamilies" />
-            <include method="synchronizeProducts" />
-            <include method="synchronizeProductChannels" />
-            <include method="synchronizeSubscriptions" />
-            <include method="syncProducts" />
-        </create>
-        <convert match="com.redhat.rhn.frontend.action.setupwizard.MgrSyncAJAXEndpoint$MgrSyncException"
-                 converter="exception">
-            <param name='include' value='message' />
-        </convert>
-        <convert match="java.lang.StackTraceElement" converter="bean"/>
     </allow>
 </dwr>
