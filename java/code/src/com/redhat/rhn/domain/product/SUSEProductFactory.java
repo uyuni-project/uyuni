@@ -162,7 +162,8 @@ public class SUSEProductFactory extends HibernateFactory {
         SUSEProductChannel suseProductChannel = suseProducts.get(0);
 
         Stream<SUSEProductChannel> suseProductChannelStream = Optional.ofNullable(
-                suseProductChannel.getParentChannelLabel()).map(parentChannelLabel -> {
+                suseProductChannel.getParentChannelLabel()
+        ).map(parentChannelLabel -> {
             List<SUSEProductChannel> suseProducts2 = SUSEProductFactory.lookupByChannelLabel(parentChannelLabel);
             SUSEProductChannel baseProductChannel = suseProducts2.get(0);
             return findAllMandatoryChannels(
