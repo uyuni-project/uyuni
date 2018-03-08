@@ -15,6 +15,7 @@
 
 package com.suse.manager.model.products;
 
+import com.suse.mgrsync.MgrSyncStatus;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -41,6 +42,8 @@ public class Extension {
 
     private final Set<JsonChannel> channels;
 
+    private final MgrSyncStatus status;
+
     /**
      * Instantiates a new Product.
      * @param idIn the id in
@@ -48,13 +51,14 @@ public class Extension {
      * @param recommendedIn the recommended flag in
      */
     public Extension(Long idIn, String identifierIn, String labelIn, String archIn, Boolean recommendedIn,
-                     Set<JsonChannel> channelsIn) {
+                     MgrSyncStatus statusIn, Set<JsonChannel> channelsIn) {
         id = idIn;
         label = labelIn;
         arch = archIn;
         identifier = identifierIn;
         recommended = recommendedIn;
         channels = channelsIn;
+        status = statusIn;
     }
 
     /**
@@ -91,6 +95,10 @@ public class Extension {
 
     public Set<JsonChannel> getChannels() {
         return channels;
+    }
+
+    public MgrSyncStatus getStatus() {
+        return status;
     }
 
     /**
