@@ -1,5 +1,7 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2010-2018 Novell, Inc.
 # Licensed under the terms of the MIT license.
+
+require 'pathname'
 
 Given(/^I am on the Systems page$/) do
   step %(I am authorized)
@@ -48,7 +50,8 @@ Given(/profile "([^"]*)" exists/) do |arg1|
 end
 
 When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
-  attach_file(field, File.join(File.dirname(__FILE__), '/../upload_files/', path))
+  canonical_path = Pathname.new(File.join(File.dirname(__FILE__), '/../upload_files/', path)).cleanpath
+  attach_file(field, canonical_path)
 end
 
 When(/I view system with id "([^"]*)"/) do |arg1|
