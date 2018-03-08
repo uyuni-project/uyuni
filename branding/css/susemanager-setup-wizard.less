@@ -174,47 +174,6 @@ ul.subscriptions-list {
   margin-top: 0;
 }
 
-#suse-products {
-  tr.product-selected {
-    background-color: #ffc;
-  }
-  tr.product-provided {
-    background-color: #eee;
-  }
-  .product-status-label {
-    .btn-link, a {
-      color: white;
-      text-decoration: none;
-    }
-    .btn-link.product-sync-log-btn {
-      text-decoration: underline;
-    }
-  }
-
-  .product-add-btn, .product-retry-btn {
-    font-size: 0.7em;
-  }
-}
-
-.text-glow {
-  -webkit-stroke-width: 5.3px;
-  -webkit-stroke-color: #FFFFFF;
-  -webkit-fill-color: #FFFFFF;
-  text-shadow: 1px 0px 1px #fff;
-}
-
-.btn-3d {
-  background: #ffffff; /* Old browsers */
-  background: -moz-linear-gradient(top,  #ffffff 0%, #e7e7e7 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e7e7e7)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #ffffff 0%,#e7e7e7 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #ffffff 0%,#e7e7e7 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #ffffff 0%,#e7e7e7 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  #ffffff 0%,#e7e7e7 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e7e7e7',GradientType=0 ); /* IE6-9 */
-  .text-glow;
-}
-
 .btn-default.text-muted {
   .text-muted!important;
 }
@@ -240,7 +199,7 @@ ul.product-list {
     padding-left: 10px;
     .product-element {
       overflow: auto;
-      padding: .3em;
+      padding: .7em .3em .3em .3em;
       margin-left: .3em;
       div {
         vertical-align: middle;
@@ -260,7 +219,7 @@ ul.product-list {
     li {
       border: 0;
       border-top: 1px dashed @spacewalk-gray-light;
-      margin-left: 18px;
+      margin-left: 1em;
       padding: 0.3em 0;
       background-image: url('/img/susemanager/sub-list.png');
       background-repeat: no-repeat;
