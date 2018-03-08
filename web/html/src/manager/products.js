@@ -425,36 +425,30 @@ const CheckList = React.createClass({
 const CheckListItem = React.createClass({
   getInitialState: function() {
     return {
-      visibleList: []
+      isSublistVisible: false
     }
   },
 
-  handleSubListVisibility: function(id) {
-    let arr = this.state.visibleList;
-    if(arr.includes(id)) {
-      arr = arr.filter(i => i !== id);
-    } else {
-      arr = arr.concat([id]);
-    }
-    this.setState({ visibleList: arr });
+  handleSubListVisibility: function() {
+    this.setState({isSublistVisible: !this.state.isSublistVisible});
   },
 
   handleSelectedItem: function(id) {
     this.props.handleSelectedItem(id);
   },
 
-  render: function() {
-    const sublistVisible = this.state.visibleList.includes(this.props.item['identifier']);
-    var nestedData = [];
-    if (this.props.nestedKey) {
-      nestedData = this.props.item[this.props.nestedKey];
+  getNestedData: function() {
+    if (this.props.item &&
+        this.props.nestedKey &&
+        this.props.item[this.props.nestedKey] != null) {
+     return this.props.item[this.props.nestedKey];
     }
-    var openSubListIcon = sublistVisible ?
-      <i className={'fa fa-caret-down fa-1-6x pointer'}
-          onClick={() => this.handleSubListVisibility(this.props.item['identifier'])} />
-      :
-      <i className={'fa fa-caret-right fa-1-6x pointer'}
-          onClick={() => this.handleSubListVisibility(this.props.item['identifier'])} />;
+    return [];
+  },
+
+  render: function() {
+    const openSubListIconClass = this.state.isSublistVisible ? 'fa-caret-down' : 'fa-caret-right';
+
     let evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
 
     const mandatoryChannelList = this.props.item['channels'].filter(c => !c.optional);
@@ -471,7 +465,7 @@ const CheckListItem = React.createClass({
               {this.props.isFirstLevel ? this.props.item['arch'] : ''}
             </div>
             &nbsp;
-            <div className='d-inline-block fixed-icon-col'>
+            <div className='d-inline-block fixed-small-col'>
               <ModalLink
                   id='showChannels'
                   icon='fa-list'
@@ -485,7 +479,7 @@ const CheckListItem = React.createClass({
               <ProgressBar progress={channelSyncProgress} />
             </div>
             &nbsp;
-            <div className='d-inline-block fixed-icon-col'>
+            <div className='d-inline-block fixed-small-col'>
               <Button className='btn-default btn-sm' icon='fa-refresh' disabled title={t('Resync product')} />
             </div>
             &nbsp;
@@ -501,21 +495,21 @@ const CheckListItem = React.createClass({
                 />
                 : null
             }
-            &nbsp;&nbsp;
-            <div className='d-inline-block fixed-icon-placeholder'>
-              {
-                nestedData && nestedData.length > 0 ?
-                openSubListIcon
-                : <i className='fa' />
-              }
-            </div>
-            &nbsp;&nbsp;
+            &nbsp;
+            {
+              this.getNestedData().length > 0 ?
+                <div className='d-inline-block fixed-icon-placeholder'>
+                  <i className={'fa ' + openSubListIconClass + ' fa-1-6x pointer'} onClick={() => this.handleSubListVisibility()} />
+                </div>
+              : null
+            }
+            &nbsp;
             {this.props.item['label']}
             &nbsp;
           </div>
         </div>
-        { sublistVisible ?
-          <CheckList data={nestedData}
+        { this.state.isSublistVisible ?
+          <CheckList data={this.getNestedData()}
               nestedKey={this.props.nestedKey}
               isSelectable={this.props.isSelectable}
               selectedItems={this.props.selectedItems}
