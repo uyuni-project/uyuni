@@ -282,6 +282,7 @@ public class Router implements SparkApplication {
         get("/manager/admin/setup/products",
                 withUserPreferences(withCsrfToken(withOrgAdmin(ProductsController::show))), jade);
         get("/manager/api/admin/products", withUser(ProductsController::data));
+        post("/manager/api/admin/mandatoryChannels", withUser(ProductsController::getMandatoryChannels));
         post("/manager/admin/setup/products",
                 withProductAdmin(ProductsController::addProduct));
         post("/manager/admin/setup/sync/products",
