@@ -28,19 +28,17 @@ Feature: Test custom system info key value pairs
     And I enter "key-value" as "value"
     And I click on "Update Key"
     Then I should see a "key-label" text
-    And I should see a "key-value" text
-    And I should see a "Edit this value" link
+    And I should see a "key-value" link
 
   Scenario: Edit the value
     When I follow this client link
     And I follow "Custom Info"
-    And I follow "Edit this value"
+    And I follow "key-value"
     And I should see a "Edit Custom Value" text
     And I enter "key-value-edited" as "value"
     And I click on "Update Key"
     Then I should see a "key-label" text
-    And I should see a "key-value-edited" text
-    And I should see a "Edit this value" link
+    And I should see a "key-value-edited" link
 
   Scenario: Edit the key description
     When I follow "Custom System Info" in the left menu
@@ -56,7 +54,7 @@ Feature: Test custom system info key value pairs
     And I follow "key-label"
     And I follow this client link
     And I follow "Custom Info"
-    And I follow "Edit this value"
+    And I follow "key-value-edited"
     And I follow "Delete Value"
     And I click on "Remove Value"
     Then I should see a "No custom information defined for this system." text
