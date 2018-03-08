@@ -536,13 +536,11 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     LOG.warn("No product match found for: " + rhel.getName() + " " +
                             rhel.getVersion() + " " + rhel.getRelease() + " " +
                             server.getServerArch().getCompatibleChannelArch());
+                    return Optional.empty();
                 }
                 else {
-                    return rhel.getSuseProduct().map(sp -> {
-                        return sp;
-                    });
+                    return rhel.getSuseProduct();
                 }
-                return Optional.empty();
             });
         }
         return Optional.empty();
