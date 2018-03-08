@@ -290,6 +290,12 @@ const ProductPageWrapper = React.createClass({
 });
 
 const Products = React.createClass({
+  getInitialState: function() {
+    return {
+      popupItem: null
+    }
+  },
+
   handleSelectedItem: function(id) {
     let arr = this.props.selectedItems;
     if(arr.includes(id)) {
@@ -309,42 +315,6 @@ const Products = React.createClass({
 
   buildRows: function(message) {
     return Object.keys(message).map((id) => message[id]);
-  },
-
-  render: function() {
-    return (
-      <DataHandler
-        data={this.buildRows(this.props.data)}
-        identifier={(raw) => raw['identifier']}
-        initialItemsPerPage={userPrefPageSize}
-        loading={this.props.loading}
-        searchField={
-            <SearchField filter={this.searchData}
-                criteria={''}
-                placeholder={t('Filter by product name')} />
-        }>
-        <CheckList data={d => d}
-            nestedKey='extensions'
-            isSelectable={true}
-            handleSelectedItem={this.handleSelectedItem}
-            selectedItems={this.props.selectedItems}
-            styleClass='product-list'
-            isFirstLevel={true}
-        />
-      </DataHandler>
-    )
-  }
-});
-
-const CheckList = React.createClass({
-  getInitialState: function() {
-    return {
-      popupItem: null
-    }
-  },
-
-  handleSelectedItem: function(id) {
-    this.props.handleSelectedItem(id);
   },
 
   showChannelsfor: function(item) {
@@ -388,35 +358,66 @@ const CheckList = React.createClass({
           </div>
         )
       : null ;
+    return (
+      <div>
+        <DataHandler
+          data={this.buildRows(this.props.data)}
+          identifier={(raw) => raw['identifier']}
+          initialItemsPerPage={userPrefPageSize}
+          loading={this.props.loading}
+          searchField={
+              <SearchField filter={this.searchData}
+                  criteria={''}
+                  placeholder={t('Filter by product name')} />
+          }>
+          <CheckList data={d => d}
+              nestedKey='extensions'
+              isSelectable={true}
+              handleSelectedItem={this.handleSelectedItem}
+              selectedItems={this.props.selectedItems}
+              listStyleClass='table-style product-list'
+              isFirstLevel={true}
+              showChannelsfor={this.showChannelsfor}
+          />
+        </DataHandler>
+        <PopUp
+            id='show-channels-popup'
+            title={titlePopup}
+            content={contentPopup}
+            className='modal-xs'
+        />
+      </div>
+    )
+  }
+});
 
+const CheckList = React.createClass({
+  handleSelectedItem: function(id) {
+    this.props.handleSelectedItem(id);
+  },
+
+  render: function() {
     return (
       this.props.data ?
-        <div>
-          <ul className={this.props.styleClass}>
+        <ul className={this.props.listStyleClass}>
+          {
+            this.props.data.map((l, index) =>
             {
-              this.props.data.map((l, index) =>
-              {
-                return (
-                  <CheckListItem item={l}
-                      handleSelectedItem={this.handleSelectedItem}
-                      selectedItems={this.props.selectedItems}
-                      nestedKey='extensions'
-                      isSelectable={true}
-                      isFirstLevel={this.props.isFirstLevel}
-                      index={index}
-                      showChannelsfor={this.showChannelsfor}
-                  />
-                )
-              })
-            }
-          </ul>
-          <PopUp
-              id='show-channels-popup'
-              title={titlePopup}
-              content={contentPopup}
-              className='modal-xs'
-          />
-        </div>
+              return (
+                <CheckListItem item={l}
+                    handleSelectedItem={this.handleSelectedItem}
+                    selectedItems={this.props.selectedItems}
+                    nestedKey='extensions'
+                    isSelectable={true}
+                    isFirstLevel={this.props.isFirstLevel}
+                    index={index}
+                    showChannelsfor={this.props.showChannelsfor}
+                    listStyleClass={this.props.listStyleClass}
+                />
+              )
+            })
+          }
+        </ul>
         : null
     )
   }
@@ -514,8 +515,9 @@ const CheckListItem = React.createClass({
               isSelectable={this.props.isSelectable}
               selectedItems={this.props.selectedItems}
               handleSelectedItem={this.handleSelectedItem}
-              styleClass={this.props.styleClass}
+              listStyleClass={this.props.listStyleClass}
               isFirstLevel={false}
+              showChannelsfor={this.props.showChannelsfor}
           />
           : null }
       </li>
