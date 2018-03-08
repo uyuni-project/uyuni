@@ -22,7 +22,8 @@ Below is the list of Ruby gems used by the testsuite. It may change over time as
 
 ### Simulation of user interaction
 
-* ```capybara``` simulates user interaction with a web interface<br /> It can rely on different drivers for different web browsers.<br /> We use the ```poltergeist``` driver, which offers access to the ```PhantomJS``` headless web browser.
+* ```capybara``` simulates user interaction with a web interface<br /> It can rely on different drivers for different web browsers.<br />
+ We use the ```chromedriver``` driver, which offers access to the ```google Chrome``` web browser, (which we run in headless mode)
 
 ### Standard Ruby Library
 
