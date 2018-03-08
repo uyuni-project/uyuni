@@ -166,7 +166,7 @@ public class ProductSyncManager {
         StringBuilder debugDetails = new StringBuilder();
 
         for (Channel c : product.getMandatoryChannels()) {
-            SyncStatus channelStatus = getChannelSyncStatus(c);
+            SyncStatus channelStatus = getChannelSyncStatus(c.getLabel());
 
             if (StringUtils.isNotBlank(channelStatus.getDetails())) {
                 debugDetails.append(channelStatus.getDetails());
@@ -221,16 +221,16 @@ public class ProductSyncManager {
 
     /**
      * Get the synchronization status for a given channel.
-     * @param channel the channel
+     * @param channelLabel the channel label
      * @return channel sync status as string
      */
-    private SyncStatus getChannelSyncStatus(Channel channel) {
+    public SyncStatus getChannelSyncStatus(String channelLabel) {
         // Fall back to FAILED if no progress or success is detected
         SyncStatus channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
 
         // Check for success: is there metadata for this channel?
         com.redhat.rhn.domain.channel.Channel c =
-                ChannelFactory.lookupByLabel(channel.getLabel());
+                ChannelFactory.lookupByLabel(channelLabel);
 
         if (c == null) {
             return new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED);
@@ -314,7 +314,7 @@ public class ProductSyncManager {
         }
 
         // Check if channel metadata generation is in progress
-        if (ChannelManager.isChannelLabelInProgress(channel.getLabel())) {
+        if (ChannelManager.isChannelLabelInProgress(channelLabel)) {
             channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             return channelSyncStatus;
         }
@@ -323,7 +323,7 @@ public class ProductSyncManager {
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("channel_label", channel.getLabel());
+        params.put("channel_label", channelLabel);
         if (selector.execute(params).size() > 0) {
             channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             return channelSyncStatus;

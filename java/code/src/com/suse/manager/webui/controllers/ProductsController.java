@@ -186,6 +186,7 @@ public class ProductsController {
         Map<String, Object> data = new HashMap<>();
         try {
             ContentSyncManager csm = new ContentSyncManager();
+            ProductSyncManager psm = new ProductSyncManager();
             Collection<MgrSyncProductDto> products = csm.listProducts(csm.listChannels());
             List<Product> jsonProducts = products.stream().map(
                 syncProduct -> new Product(
@@ -194,6 +195,7 @@ public class ProductsController {
                     syncProduct.getFriendlyName(),
                     syncProduct.getArch(),
                     syncProduct.isRecommended(),
+                    syncProduct.getStatus(),
                     syncProduct.getExtensions().stream().map(s ->
                        new Extension(
                            s.getId(),
@@ -201,13 +203,14 @@ public class ProductsController {
                            s.getFriendlyName(),
                            s.getArch(),
                            s.isRecommended(),
+                           s.getStatus(),
                            s.getChannels().stream().map(c ->
                                    new JsonChannel(
                                            c.getName(),
                                            c.getLabel(),
                                            c.getSummary(),
                                            c.getOptional(),
-                                           c.getStatus()
+                                           psm.getChannelSyncStatus(c.getLabel()).getStage()
                                    )
                            ).collect(Collectors.toSet())
                          )
@@ -218,7 +221,7 @@ public class ProductsController {
                                       c.getLabel(),
                                       c.getSummary(),
                                       c.getOptional(),
-                                      c.getStatus()
+                                      psm.getChannelSyncStatus(c.getLabel()).getStage()
                             )
                     ).collect(Collectors.toSet()))
 
