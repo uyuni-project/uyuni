@@ -242,7 +242,7 @@ public class ContentSyncHandler extends BaseHandler {
         ));
 
         List<String> mandetoryChannelLabels =
-                SUSEProductFactory.findAllMandetoryChannels(channelLabel, archByChannelLabel::get)
+                SUSEProductFactory.findAllMandatoryChannels(channelLabel, archByChannelLabel::get)
                 .filter(s -> s.getChannel() == null)
                 .map(SUSEProductChannel::getChannelLabel)
                 .collect(Collectors.toList());
