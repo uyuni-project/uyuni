@@ -259,11 +259,15 @@ ul.product-list {
     padding: 0 0 1em 0;
     li {
       border: 0;
+      border-top: 1px dashed @spacewalk-gray-light;
       margin-left: 18px;
       padding: 0.3em 0;
       background-image: url('/img/susemanager/sub-list.png');
       background-repeat: no-repeat;
       background-position: left center;
+    }
+    li:first-of-type {
+      border-top: 0;
     }
     li:last-of-type {
       background-image: url('/img/susemanager/sub-list-last.png');
