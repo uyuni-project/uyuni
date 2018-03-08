@@ -3,6 +3,7 @@
 
 require 'jwt'
 require 'securerandom'
+require 'pathname'
 
 When(/^I save a screenshot as "([^"]+)"$/) do |filename|
   save_screenshot(filename)
@@ -227,7 +228,8 @@ Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |a
 end
 
 When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
-  attach_file(field, File.join(File.dirname(__FILE__), '/../upload_files/', path))
+  canonical_path = Pathname.new(File.join(File.dirname(__FILE__), '/../upload_files/', path)).cleanpath
+  attach_file(field, canonical_path)
 end
 
 When(/I view system with id "([^"]*)"/) do |arg1|
