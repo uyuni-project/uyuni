@@ -42,6 +42,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+
 /**
  * Controller class providing backend code for the Products
  */
@@ -85,9 +87,9 @@ public class ProductsController {
         }
         catch (Exception e) {
             log.fatal(e.getMessage(), e);
-            return SparkApplicationHelper.json(response, false);
+            return json(response, false);
         }
-        return SparkApplicationHelper.json(response, true);
+        return json(response, true);
     }
 
     public static String synchronizeChannelFamilies(Request request, Response response, User user) {
@@ -100,9 +102,9 @@ public class ProductsController {
         }
         catch (Exception e) {
             log.fatal(e.getMessage(), e);
-            return SparkApplicationHelper.json(response, false);
+            return json(response, false);
         }
-        return SparkApplicationHelper.json(response, true);
+        return json(response, true);
     }
 
     public static String synchronizeChannels(Request request, Response response, User user) {
@@ -115,9 +117,9 @@ public class ProductsController {
         }
         catch (Exception e) {
             log.fatal(e.getMessage(), e);
-            return SparkApplicationHelper.json(response, false);
+            return json(response, false);
         }
-        return SparkApplicationHelper.json(response, true);
+        return json(response, true);
     }
 
     public static String synchronizeSubscriptions(Request request, Response response, User user) {
@@ -127,9 +129,9 @@ public class ProductsController {
         }
         catch (Exception e) {
             log.fatal(e.getMessage(), e);
-            return SparkApplicationHelper.json(response, false);
+            return json(response, false);
         }
-        return SparkApplicationHelper.json(response, true);
+        return json(response, true);
     }
 
     public static String synchronizeProductChannels(Request request, Response response, User user) {
@@ -142,9 +144,9 @@ public class ProductsController {
         }
         catch (Exception e) {
             log.fatal(e.getMessage(), e);
-            return SparkApplicationHelper.json(response, false);
+            return json(response, false);
         }
-        return SparkApplicationHelper.json(response, true);
+        return json(response, true);
     }
 
     public static String addProduct(Request request, Response response, User user) {
@@ -169,7 +171,7 @@ public class ProductsController {
                 Map.Entry::getKey,
                 kv -> kv.getValue().isPresent()
         ));
-        return SparkApplicationHelper.json(response, collect);
+        return json(response, collect);
     }
 
     /**
@@ -228,6 +230,6 @@ public class ProductsController {
             data.put("error", "Exception while fetching products: " + e.getMessage());
         }
 
-        return SparkApplicationHelper.json(response, data);
+        return json(response, data);
     }
 }
