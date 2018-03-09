@@ -487,7 +487,7 @@ const CheckListItem = React.createClass({
     let showNestedDataIconContent;
     if (this.getNestedData().length > 0) {
       const openSubListIconClass = this.isSublistVisible() ? 'fa-caret-down' : 'fa-caret-right';
-      showNestedDataIconContent = <i className={'fa ' + openSubListIconClass + ' fa-1-6x pointer'}
+      showNestedDataIconContent = <i className={'fa ' + openSubListIconClass + ' fa-1-5x pointer'}
           onClick={() => this.handleSubListVisibility(this.props.item['identifier'])} />;
     }
     /*****/
@@ -534,8 +534,8 @@ const CheckListItem = React.createClass({
               onClick={() => this.props.showChannelsfor(this.props.item)}
           />
         </CustomDiv>
-        <CustomDiv className='col text-center' width={120} um='px'>{channelSyncContent}</CustomDiv>
-        <CustomDiv className='col text-center' width={40} um='px'>{resyncButtonContent}</CustomDiv>
+        <CustomDiv className='col text-center' width={110} um='px'>{channelSyncContent}</CustomDiv>
+        <CustomDiv className='col text-center' width={45} um='px'>{resyncButtonContent}</CustomDiv>
         { this.isSublistVisible() ?
           <CheckList data={this.getNestedData()}
               nestedKey={this.props.nestedKey}
