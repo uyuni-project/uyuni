@@ -97,20 +97,6 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     Given I am on the Systems overview page of this "sle-minion"
     Then I run spacecmd listevents for "sle-minion"
 
-@proxy
-  Scenario: Check connection from minion to proxy
-    Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Details" in the content area
-    And I follow "Connection" in the content area
-    Then I should see "proxy" hostname
-
-@proxy
-  Scenario: Check registration on proxy of minion
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Details" in the content area
-    And I follow "Proxy" in the content area
-    Then I should see "sle-minion" hostname
-
   Scenario: Verify that minion bootstrapped with activation key
      Given I am on the Systems overview page of this "sle-minion"
      Then I should see a "Activation Key: 	1-MINION-TEST" text
@@ -197,6 +183,20 @@ Feature: Be able to bootstrap a Salt minion via the GUI
      And I wait until I see the name of "sle-minion", refreshing the page
      And I wait until onboarding is completed for "sle-minion"
 
+@proxy
+  Scenario: Check connection from minion to proxy
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Details" in the content area
+    And I follow "Connection" in the content area
+    Then I should see "proxy" hostname
+
+@proxy
+  Scenario: Check registration on proxy of minion
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Details" in the content area
+    And I follow "Proxy" in the content area
+    Then I should see "sle-minion" hostname
+
   Scenario: Subscribe the SLES minion to a base channel
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
@@ -207,3 +207,6 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
+
+  Scenario: Detect latest Salt changes on the SLES minion
+    When I query latest Salt changes on "sle-minion"
