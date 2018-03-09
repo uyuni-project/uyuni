@@ -375,7 +375,7 @@ const Products = React.createClass({
               isSelectable={true}
               handleSelectedItem={this.handleSelectedItem}
               selectedItems={this.props.selectedItems}
-              listStyleClass='table-style product-list'
+              listStyleClass='product-list'
               isFirstLevel={true}
               showChannelsfor={this.showChannelsfor}
           />
@@ -426,12 +426,22 @@ const CheckList = React.createClass({
 const CheckListItem = React.createClass({
   getInitialState: function() {
     return {
-      isSublistVisible: false
+      itemsWithSublistVisible: []
     }
   },
 
-  handleSubListVisibility: function() {
-    this.setState({isSublistVisible: !this.state.isSublistVisible});
+  isSublistVisible: function() {
+    return this.state.itemsWithSublistVisible.includes(this.props.item['identifier']);
+  },
+
+  handleSubListVisibility: function(id) {
+    let arr = this.state.itemsWithSublistVisible;
+    if(arr.includes(id)) {
+      arr = arr.filter(i => i !== id);
+    } else {
+      arr = arr.concat([id]);
+    }
+    this.setState({itemsWithSublistVisible: arr});
   },
 
   handleSelectedItem: function(id) {
@@ -448,7 +458,7 @@ const CheckListItem = React.createClass({
   },
 
   render: function() {
-    const openSubListIconClass = this.state.isSublistVisible ? 'fa-caret-down' : 'fa-caret-right';
+    const openSubListIconClass = this.isSublistVisible() ? 'fa-caret-down' : 'fa-caret-right';
 
     let evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
 
@@ -459,57 +469,47 @@ const CheckListItem = React.createClass({
 
     return (
       <li className={evenOddClass} key={this.props.item['identifier']}>
-        <div className='product-element'>
-          <div className='right'>
-            &nbsp;
-            <div className='d-inline-block fixed-small-col' title={t('Architecture')}>
-              {this.props.isFirstLevel ? this.props.item['arch'] : ''}
-            </div>
-            &nbsp;
-            <div className='d-inline-block fixed-small-col'>
-              <ModalLink
-                  id='showChannels'
-                  icon='fa-list'
-                  title={t('Show product\'s channels')}
-                  target='show-channels-popup'
-                  onClick={() => this.props.showChannelsfor(this.props.item)}
-              />
-            </div>
-            &nbsp;
-            <div className='d-inline-block fixed-small-col' title={t('Product sync status')}>
-              <ProgressBar progress={channelSyncProgress} />
-            </div>
-            &nbsp;
-            <div className='d-inline-block fixed-small-col'>
-              <Button className='btn-default btn-sm' icon='fa-refresh' disabled title={t('Resync product')} />
-            </div>
-            &nbsp;
-          </div>
-          <div className='d-inline-block'>
-            &nbsp;
-            {
-              this.props.isSelectable ?
-                <input type='checkbox'
-                    value={this.props.item['identifier']}
-                    onChange={() => this.handleSelectedItem(this.props.item['identifier'])}
-                    checked={this.props.selectedItems.includes(this.props.item['identifier']) ? 'checked' : ''}
-                />
-                : null
-            }
-            &nbsp;
-            {
-              this.getNestedData().length > 0 ?
-                <div className='d-inline-block fixed-icon-placeholder'>
-                  <i className={'fa ' + openSubListIconClass + ' fa-1-6x pointer'} onClick={() => this.handleSubListVisibility()} />
-                </div>
-              : null
-            }
-            &nbsp;
-            {this.props.item['label']}
-            &nbsp;
-          </div>
-        </div>
-        { this.state.isSublistVisible ?
+        <CustomDiv className='col text-center' width={30} um='px'>
+          {
+            this.props.isSelectable ?
+            <input type='checkbox'
+                value={this.props.item['identifier']}
+                onChange={() => this.handleSelectedItem(this.props.item['identifier'])}
+                checked={this.props.selectedItems.includes(this.props.item['identifier']) ? 'checked' : ''}
+            />
+            : null
+          }
+        </CustomDiv>
+        <CustomDiv className='col text-center' width={20} um='px'>
+          {
+            this.getNestedData().length > 0 ?
+              <i className={'fa ' + openSubListIconClass + ' fa-1-6x pointer'}
+                  onClick={() => this.handleSubListVisibility(this.props.item['identifier'])} />
+            : null
+          }
+        </CustomDiv>
+        <CustomDiv className='col col-class-calc-width'>
+          {this.props.item['label']}
+        </CustomDiv>
+        <CustomDiv className='col' width={50} um='px' title={t('Architecture')}>
+          {this.props.isFirstLevel ? this.props.item['arch'] : ''}
+        </CustomDiv>
+        <CustomDiv className='col text-center' width={35} um='px'>
+          <ModalLink
+              id='showChannels'
+              icon='fa-list'
+              title={t('Show product\'s channels')}
+              target='show-channels-popup'
+              onClick={() => this.props.showChannelsfor(this.props.item)}
+          />
+        </CustomDiv>
+        <CustomDiv className='col text-center' width={120} um='px'>
+          <ProgressBar progress={channelSyncProgress} title={t('Product sync status')} />
+        </CustomDiv>
+        <CustomDiv className='col text-center' width={40} um='px'>
+          <Button className='btn-default btn-sm' icon='fa-refresh' disabled title={t('Resync product')} />
+        </CustomDiv>
+        { this.isSublistVisible() ?
           <CheckList data={this.getNestedData()}
               nestedKey={this.props.nestedKey}
               isSelectable={this.props.isSelectable}
@@ -525,6 +525,10 @@ const CheckListItem = React.createClass({
   }
 });
 
+const CustomDiv = (props) => {
+  const styleClass = { width : props.width + props.um };
+  return <div style={styleClass} className={'customDiv ' + props.className} title={props.title}>{props.children}</div>;
+}
 
 ReactDOM.render(
   <ProductPageWrapper />,

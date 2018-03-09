@@ -1206,25 +1206,6 @@ time:hover {
   cursor: pointer;
 }
 
-
-/**
-* behave like a column
-*/
-.fixed-icon-col {
-  width: 36px;
-  .text-center;
-}
-.fixed-small-col {
-  width: 80px;
-}
-.fixed-icon-placeholder {
-  width: 1em;
-  text-align: center;
-  > i {
-    margin: 0;
-  }
-}
-
 /**
 * use these classes to fix progress bar
 * to let the text overlaps the progress bar behind
@@ -1242,5 +1223,22 @@ time:hover {
   }
   .progress-bar {
     background-color: @susemanager-green;
+  }
+}
+
+/**
+* behave as a table
+*/
+.table-style {
+  display: table;
+  border-collapse: collapse;
+  .table-row  {
+    display: table-row;
+    .table-col {
+      display: table-cell;
+      border: 1px solid @spacewalk-gray-light;
+      padding: .2em;
+      vertical-align: middle;
+    }
   }
 }
