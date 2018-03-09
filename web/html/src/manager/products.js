@@ -13,6 +13,7 @@ const Button = require('../components/buttons').Button;
 const SCCDialog = require('./products-scc-dialog').SCCDialog;
 const PopUp = require("../components/popup").PopUp;
 const ProgressBar = require("../components/progressbar").ProgressBar;
+const CustomDiv = require("../components/custom-objects").CustomDiv;
 
 const _DATA_ROOT_ID = 'baseProducts';
 
@@ -471,42 +472,59 @@ const CheckListItem = React.createClass({
   },
 
   render: function() {
-    const openSubListIconClass = this.isSublistVisible() ? 'fa-caret-down' : 'fa-caret-right';
+    /** generate item selector content **/
+    const selectorContent =
+      this.props.isSelectable && this.props.item.status == _PRODUCT_STATUS.available ?
+        <input type='checkbox'
+            value={this.props.item['identifier']}
+            onChange={() => this.handleSelectedItem(this.props.item['identifier'])}
+            checked={this.props.selectedItems.includes(this.props.item['identifier']) ? 'checked' : ''}
+        />
+        : null;
+    /*****/
+
+    /** generate show nested list icon **/
+    let showNestedDataIconContent;
+    if (this.getNestedData().length > 0) {
+      const openSubListIconClass = this.isSublistVisible() ? 'fa-caret-down' : 'fa-caret-right';
+      showNestedDataIconContent = <i className={'fa ' + openSubListIconClass + ' fa-1-6x pointer'}
+          onClick={() => this.handleSubListVisibility(this.props.item['identifier'])} />;
+    }
+    /*****/
+
+    /** generate channel sync progress bar **/
+    let channelSyncContent;
+    if (this.props.item.status == _PRODUCT_STATUS.installed) {
+      const mandatoryChannelList = this.props.item['channels'].filter(c => !c.optional);
+
+      // if any failed sync channel, show the error only
+      if (mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
+        channelSyncContent = <span className="text-danged">{t('Sync failed')}</span>;
+      }
+      else {
+        const syncedChannels = mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.synced).length;
+        const toBeSyncedChannels = mandatoryChannelList.length;
+        const channelSyncProgress = Math.round(( syncedChannels / toBeSyncedChannels ) * 100);
+        channelSyncContent = <ProgressBar progress={channelSyncProgress} title={t('Product sync status')} />;
+      }
+    }
+    /*****/
+
+    /** generate product resync button **/
+    const resyncButtonContent =
+      this.props.item.status == _PRODUCT_STATUS.installed ?
+        <Button className='btn-default btn-sm' icon='fa-refresh' disabled title={t('Resync product')} />
+        : null;
+    /*****/
 
     let evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
 
-    const mandatoryChannelList = this.props.item['channels'].filter(c => !c.optional);
-    const syncedChannels = mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.synced).length;
-    const toBeSyncedChannels = mandatoryChannelList.length;
-    const channelSyncProgress = Math.round(( syncedChannels / toBeSyncedChannels ) * 100);
-
     return (
       <li className={evenOddClass} key={this.props.item['identifier']}>
-        <CustomDiv className='col text-center' width={30} um='px'>
-          {
-            this.props.isSelectable && this.props.item.status == _PRODUCT_STATUS.available ?
-            <input type='checkbox'
-                value={this.props.item['identifier']}
-                onChange={() => this.handleSelectedItem(this.props.item['identifier'])}
-                checked={this.props.selectedItems.includes(this.props.item['identifier']) ? 'checked' : ''}
-            />
-            : null
-          }
-        </CustomDiv>
-        <CustomDiv className='col text-center' width={20} um='px'>
-          {
-            this.getNestedData().length > 0 ?
-              <i className={'fa ' + openSubListIconClass + ' fa-1-6x pointer'}
-                  onClick={() => this.handleSubListVisibility(this.props.item['identifier'])} />
-            : null
-          }
-        </CustomDiv>
-        <CustomDiv className='col col-class-calc-width'>
-          {this.props.item['label']}
-        </CustomDiv>
-        <CustomDiv className='col' width={50} um='px' title={t('Architecture')}>
-          {this.props.isFirstLevel ? this.props.item['arch'] : ''}
-        </CustomDiv>
+        <CustomDiv className='col text-center' width={30} um='px'>{selectorContent}</CustomDiv>
+        <CustomDiv className='col text-center' width={20} um='px'>{showNestedDataIconContent}</CustomDiv>
+        <CustomDiv className='col col-class-calc-width'>{this.props.item['label']}</CustomDiv>
+        <CustomDiv className='col' width={50} um='px' title={t('Architecture')}>{this.props.isFirstLevel ? this.props.item['arch'] : ''}</CustomDiv>
         <CustomDiv className='col text-center' width={35} um='px'>
           <ModalLink
               id='showChannels'
@@ -516,23 +534,8 @@ const CheckListItem = React.createClass({
               onClick={() => this.props.showChannelsfor(this.props.item)}
           />
         </CustomDiv>
-        <CustomDiv className='col text-center' width={120} um='px'>
-          {
-            this.props.item.status == _PRODUCT_STATUS.installed ?
-              // if any failed sync channel, show the error only
-              mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0 ?
-              <span className="text-danged">{t('Sync failed')}</span>
-              : <ProgressBar progress={channelSyncProgress} title={t('Product sync status')} />
-            : null
-          }
-        </CustomDiv>
-        <CustomDiv className='col text-center' width={40} um='px'>
-          {
-            this.props.item.status == _PRODUCT_STATUS.installed ?
-              <Button className='btn-default btn-sm' icon='fa-refresh' disabled title={t('Resync product')} />
-              : null
-          }
-        </CustomDiv>
+        <CustomDiv className='col text-center' width={120} um='px'>{channelSyncContent}</CustomDiv>
+        <CustomDiv className='col text-center' width={40} um='px'>{resyncButtonContent}</CustomDiv>
         { this.isSublistVisible() ?
           <CheckList data={this.getNestedData()}
               nestedKey={this.props.nestedKey}
@@ -548,11 +551,6 @@ const CheckListItem = React.createClass({
     )
   }
 });
-
-const CustomDiv = (props) => {
-  const styleClass = { width : props.width + props.um };
-  return <div style={styleClass} className={'customDiv ' + props.className} title={props.title}>{props.children}</div>;
-}
 
 ReactDOM.render(
   <ProductPageWrapper />,
