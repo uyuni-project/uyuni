@@ -14,3 +14,10 @@ Feature: Verify the minion registration
     When I follow "Software" in the content area
     And I follow "List / Remove"
     Then I should see a "aaa_base" text
+
+  Scenario: Check that Hardware Refresh button works on a SLES Salt minion
+    Given I am on the Systems overview page of this "sle-minion"
+    And I follow "Hardware"
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    And I wait until event "Hardware List Refresh scheduled by admin" is completed
