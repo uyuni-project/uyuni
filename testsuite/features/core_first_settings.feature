@@ -92,3 +92,6 @@ Feature: Very first settings
     And I enter "P4$$word" as "HTTP Proxy Password"
     And I click on "Save and Verify"
     Then I see verification succeeded
+
+  Scenario: Detect latest Salt changes on the server
+    When I query latest Salt changes on "server"

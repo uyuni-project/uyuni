@@ -14,8 +14,15 @@ Then(/^"([^"]*)" should not be installed on "([^"]*)"$/) do |package, host|
   node.run("rpm -q #{package}; test $? -ne 0")
 end
 
+When(/^I query latest Salt changes on "(.*?)"$/) do |host|
+  node = get_target(host)
+  result, return_code = node.run("rpm -q --changelog salt")
+  result.split("\n")[0, 15].each do |line|
+    puts line
+  end
+end
 
-Then(/^I apply highstate on "(.*?)"$/) do |minion|
+When(/^I apply highstate on "(.*?)"$/) do |minion|
   node = get_target(minion)
   if minion == 'sle-minion'
     cmd = 'salt'
