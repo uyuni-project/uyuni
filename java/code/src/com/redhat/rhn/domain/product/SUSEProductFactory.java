@@ -149,7 +149,27 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Finds all mandatory channels for a given channel label.
+     * Finds the suse product channel for a given channel label.
+     * Note: does not work for all channel labels see comment in source.
+     * @param channelLabel channel label
+     * @return suse product channel
+     */
+    public static Optional<SUSEProductChannel> findProductByChannelLabel(String channelLabel) {
+        List<SUSEProductChannel> suseProducts = SUSEProductFactory.lookupByChannelLabel(channelLabel);
+        if (suseProducts.isEmpty()) {
+            return Optional.empty();
+        }
+        else {
+            // We take the first item since there can be more then one entry.
+            // All entries should point to the same "product" with only arch differences.
+            // The only exception to this is sles11 sp1/2 but they are out of maintenance
+            // and we decided to ignore this inconsistency until the great rewrite.
+            return Optional.of(suseProducts.get(0));
+        }
+    }
+
+    /**
+     * Finds all mandetory channels for a given channel label.
      *
      * @param channelLabel channel label
      * @param archByChannelLabel a function mapping from channel label to architecture.
@@ -158,14 +178,12 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static Stream<SUSEProductChannel> findAllMandatoryChannels(String channelLabel,
                                                                       Function<String, String> archByChannelLabel) {
-        List<SUSEProductChannel> suseProducts = SUSEProductFactory.lookupByChannelLabel(channelLabel);
-        SUSEProductChannel suseProductChannel = suseProducts.get(0);
+        SUSEProductChannel suseProductChannel = findProductByChannelLabel(channelLabel).get();
 
         Stream<SUSEProductChannel> suseProductChannelStream = Optional.ofNullable(
                 suseProductChannel.getParentChannelLabel()
         ).map(parentChannelLabel -> {
-            List<SUSEProductChannel> suseProducts2 = SUSEProductFactory.lookupByChannelLabel(parentChannelLabel);
-            SUSEProductChannel baseProductChannel = suseProducts2.get(0);
+            SUSEProductChannel baseProductChannel = findProductByChannelLabel(parentChannelLabel).get();
             return findAllMandatoryChannels(
                     suseProductChannel.getProduct(),
                     baseProductChannel.getProduct(),
