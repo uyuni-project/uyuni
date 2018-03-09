@@ -191,18 +191,22 @@ ul.product-list {
   margin: 0;
   overflow: auto;
   clear: both;
-  display: block;
+  width: 100%;
   li {
+    min-height: 3em;
     display: block;
     overflow: auto;
     border-bottom: 1px solid @spacewalk-gray-light;
     padding-left: 10px;
-    .product-element {
-      overflow: auto;
-      padding: .7em .3em .3em .3em;
-      margin-left: .3em;
-      div {
+    .col {
+      display: inline-block;
+      vertical-align: middle;
+      padding: .3em;
+      float: none;
+      > * {
+        display: inline-block;
         vertical-align: middle;
+        margin: .2em;
       }
     }
   }
@@ -219,7 +223,7 @@ ul.product-list {
     li {
       border: 0;
       border-top: 1px dashed @spacewalk-gray-light;
-      margin-left: 1em;
+      margin-left: 40px;
       padding: 0.3em 0;
       background-image: url('/img/susemanager/sub-list.png');
       background-repeat: no-repeat;
