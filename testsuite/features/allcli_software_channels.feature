@@ -100,7 +100,7 @@ Feature: Chanel subscription via SSM
     Then I should see "1" systems selected for SSM
     When I am on System Set Manager Overview
     And I follow "channel memberships" in the content area
-    And I select "System Default Base Channel" from drop-down in table line with "none"
+    And I select "System Default Base Channel" from drop-down in table line with "Test Base Channel"
     And I click on "Next"
     Then I should see a "Child Channels" text
     And I should see a "Couldn't determine new base channel" text
@@ -118,7 +118,7 @@ Feature: Chanel subscription via SSM
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
-    Then radio button "(none, disable service)" is checked
+    Then radio button "Test Base Channel" is checked
 
   Scenario: Cleanup: subscribe the SLES minion back to previous channels
     Given I am on the Systems overview page of this "sle-minion"
