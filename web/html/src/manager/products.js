@@ -37,6 +37,19 @@ const _SETUP_WIZARD_STEPS = [
   }
 ];
 
+const _PRODUCT_STATUS = {
+  installed: 'INSTALLED',
+  available: 'AVAILABLE',
+  unavailable: 'UNAVAILABLE'
+};
+
+const _CHANNEL_STATUS = {
+  notSynced: 'NOT_MIRRORED',
+  syncing: 'IN_PROGRESS',
+  synced: 'FINISHED',
+  failed: 'FAILED'
+};
+
 function reloadData() {
   return Network.get('/rhn/manager/api/admin/products', 'application/json').promise;
 }
@@ -463,15 +476,15 @@ const CheckListItem = React.createClass({
     let evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
 
     const mandatoryChannelList = this.props.item['channels'].filter(c => !c.optional);
-    const syncedChannels = mandatoryChannelList.filter(c => c.status == 'INSTALLED').length;
-    const notSyncedChannels = mandatoryChannelList.filter(c => c.status == 'AVAILABLE').length;
-    const channelSyncProgress = Math.round(( syncedChannels / notSyncedChannels ) * 100);
+    const syncedChannels = mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.synced).length;
+    const toBeSyncedChannels = mandatoryChannelList.length;
+    const channelSyncProgress = Math.round(( syncedChannels / toBeSyncedChannels ) * 100);
 
     return (
       <li className={evenOddClass} key={this.props.item['identifier']}>
         <CustomDiv className='col text-center' width={30} um='px'>
           {
-            this.props.isSelectable ?
+            this.props.isSelectable && this.props.item.status == _PRODUCT_STATUS.available ?
             <input type='checkbox'
                 value={this.props.item['identifier']}
                 onChange={() => this.handleSelectedItem(this.props.item['identifier'])}
@@ -504,10 +517,21 @@ const CheckListItem = React.createClass({
           />
         </CustomDiv>
         <CustomDiv className='col text-center' width={120} um='px'>
-          <ProgressBar progress={channelSyncProgress} title={t('Product sync status')} />
+          {
+            this.props.item.status == _PRODUCT_STATUS.installed ?
+              // if any failed sync channel, show the error only
+              mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0 ?
+              <span className="text-danged">{t('Sync failed')}</span>
+              : <ProgressBar progress={channelSyncProgress} title={t('Product sync status')} />
+            : null
+          }
         </CustomDiv>
         <CustomDiv className='col text-center' width={40} um='px'>
-          <Button className='btn-default btn-sm' icon='fa-refresh' disabled title={t('Resync product')} />
+          {
+            this.props.item.status == _PRODUCT_STATUS.installed ?
+              <Button className='btn-default btn-sm' icon='fa-refresh' disabled title={t('Resync product')} />
+              : null
+          }
         </CustomDiv>
         { this.isSublistVisible() ?
           <CheckList data={this.getNestedData()}
