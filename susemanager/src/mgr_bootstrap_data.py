@@ -276,7 +276,7 @@ PKGLIST15 = [
                 "python3-chardet",
                 "python3-Jinja2",
                 "python3-MarkupSafe",
-                "python3-msgpack-python",
+                "python3-msgpack",
                 "python3-psutil",
                 "python3-py",
                 "python3-pycrypto",
