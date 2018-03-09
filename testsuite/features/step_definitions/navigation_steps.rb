@@ -704,7 +704,6 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   end
 
   within(:xpath, path, visible: :all) do
-    button = find(:xpath, ".//button[@title = \"#{btn}\"]", visible: :all)
-    button.trigger('click')
+    find(:xpath, ".//button[@title = \"#{btn}\"]", visible: :all).click
   end
 end

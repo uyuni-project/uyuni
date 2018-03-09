@@ -7,15 +7,10 @@ require 'tmpdir'
 require 'base64'
 require 'capybara'
 require 'capybara/cucumber'
-require_relative 'cobbler_test'
 require 'simplecov'
-require 'capybara/poltergeist'
 require 'minitest/unit'
-# FIXME: is the cobbler_test.rb inclusion really needed?
-
-ENV['LANG'] = 'en_US.UTF-8'
-ENV['IGNORECERT'] = '1'
-# FIXME: these 2 variables why, for what are they set?
+require 'securerandom'
+require 'selenium-webdriver'
 
 ## codecoverage gem
 SimpleCov.start
@@ -31,46 +26,36 @@ def enable_assertions
   World(MiniTest::Assertions)
 end
 
-# this class is for phantomjs initialization
-class PhantomjsInit
-  attr_reader :options
-  def initialize
-    @options = ['--debug=no', '--ignore-ssl-errors=yes',
-                '--ssl-protocol=TLSv1', '--web-security=false']
-  end
-end
+# register chromedriver headless mode
+Capybara.register_driver(:headless_chrome) do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: { args: %w[headless disable-gpu window-size=1920,1080 no-sandbox] }
+  )
 
-def restart_driver
-  session_pool = Capybara.send('session_pool')
-  session_pool.each_value do |session|
-    driver = session.driver
-    driver.restart if driver.is_a?(Capybara::Poltergeist::Driver)
-  end
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    desired_capabilities: capabilities
+  )
 end
-
-# MAIN
-phantom = PhantomjsInit.new
-# Setups browser driver with capybara/poltergeist
-Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app,
-                                    phantomjs_options: phantom.options,
-                                    js_errors: false,
-                                    timeout: 250,
-                                    window_size: [1920, 1080],
-                                    debug: false)
-end
-Capybara.default_driver = :poltergeist
-Capybara.javascript_driver = :poltergeist
+Capybara.default_driver = :headless_chrome
+Capybara.javascript_driver = :headless_chrome
 Capybara.app_host = "https://#{server}"
-# don't run own server on a random port
-Capybara.run_server = false
-# At moment we have only phantomjs
 
-# always restart before each feature,
-# so we spare RAM and avoid RAM issues
-Before do
-  restart_driver
+# embed a screenshot after each failed scenario
+After do |scenario|
+  if scenario.failed?
+    img_name = "#{SecureRandom.urlsafe_base64}.png"
+    save_screenshot(img_name)
+    encoded_img = Base64.encode64(File.read(img_name))
+    FileUtils.rm_rf(img_name)
+    # embedding the base64 image in a cucumber html report
+    embed("data:image/png;base64,#{encoded_img}", 'image/png')
+  end
 end
+
+# enable minitest assertions in steps
+enable_assertions
 
 # do some tests only if the corresponding node exists
 Before('@proxy') do |scenario|
@@ -82,14 +67,3 @@ end
 Before('@sshminion') do |scenario|
   scenario.skip_invoke! unless $ssh_minion
 end
-
-# embed a screenshot after each failed scenario
-After do |scenario|
-  if scenario.failed?
-    encoded_img = page.driver.render_base64(:png, full: true)
-    embed("data:image/png;base64,#{encoded_img}", 'image/png')
-  end
-end
-
-# enable minitest assertions in steps
-enable_assertions
