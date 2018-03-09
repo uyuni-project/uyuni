@@ -328,6 +328,16 @@ public class ActionChainFactory extends HibernateFactory {
     }
 
     /**
+     * Set Action Chain as scheduled.
+     * @param actionChain the action chain to set as scheduled
+     */
+    public static void setAsScheduled(ActionChain actionChain) {
+        log.debug("Setting Action Chain " + actionChain + " as scheduled");
+        actionChain.setIsScheduled("Y");
+        actionChain.setLabel("--SCHEDULED--" + actionChain.getLabel());
+    }
+
+    /**
      * Schedules an Action Chain for execution.
      * @param actionChain the action chain to execute
      * @param date first action's minimum timestamp
@@ -376,9 +386,8 @@ public class ActionChainFactory extends HibernateFactory {
             SaltActionChainGeneratorService.INSTANCE.createActionChainSLSFiles(actionChain, minionActions);
             TASKOMATIC_API.scheduleActionChainExecution(actionChain);
         }
-        log.debug("Action Chain " + actionChain + " scheduled to date " + date +
-            ", deleting");
-        delete(actionChain);
+        log.debug("Action Chain " + actionChain + " scheduled to date " + date);
+        setAsScheduled(actionChain);
     }
 
     /**
