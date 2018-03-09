@@ -41,6 +41,10 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Then I should see "ceos-minion" hostname
 
 @centosminion
+  Scenario: Detect latest Salt changes on the CentOS minion
+    When I query latest Salt changes on "ceos-minion"
+
+@centosminion
   Scenario: Schedule an OpenSCAP audit job for the CentOS minion
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Audit" in the content area
