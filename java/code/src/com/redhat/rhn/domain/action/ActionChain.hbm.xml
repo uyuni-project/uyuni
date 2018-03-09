@@ -12,6 +12,7 @@
         <property name="label" column="label" type="string"/>
         <property name="created" column="created" type="timestamp" insert="false" update="false"/>
         <property name="modified" column="modified" type="timestamp" insert="false"/>
+        <property name="isScheduled" column="is_scheduled" type="string"/>
 
         <many-to-one name="user" column="user_id" not-null="true" class="com.redhat.rhn.domain.user.legacy.UserImpl"/>
         <set name="entries" inverse="true" lazy="true" cascade="all-delete-orphan">
