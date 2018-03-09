@@ -1,7 +1,10 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: openSCAP audit
+Feature: openSCAP audit of traditional client
+  In order to audit a traditional client
+  As an authorized user
+  I want to run an openSCAP scan on it
 
   Scenario: Schedule an audit job
     Given I am on the Systems overview page of this "sle-client"
@@ -23,7 +26,7 @@ Feature: openSCAP audit
     And I should see a "CCE-" text
     And I should see a "rule-" link
 
-  Scenario: Schedule an audit job using the suse profile
+  Scenario: Schedule an audit job using the SUSE profile
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Audit" in the content area
     And I follow "Schedule" in the content area
@@ -33,7 +36,7 @@ Feature: openSCAP audit
     And I run "rhn_check -vvv" on "sle-client"
     Then I should see a "XCCDF scan has been scheduled" text
 
-  Scenario: Check results of the audit job suse profile
+  Scenario: Check results of the audit job SUSE profile
     Given I am on the Systems overview page of this "sle-client"
     When I follow "Audit" in the content area
     And I follow "xccdf_org.open-scap_testresult_Default"

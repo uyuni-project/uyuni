@@ -1,10 +1,10 @@
 # Copyright (c) 2017-2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: openSCAP audits
-  In order to audit my Salt minions
+Feature: openSCAP audit of Salt minion
+  In order to audit a Salt minion
   As an authorized user
-  I want to run openSCAP scans on them
+  I want to run an openSCAP scan on it
 
   Scenario: Schedule an audit job on the minion
     Given I disable IPv6 forwarding on all interfaces of the SLE minion
