@@ -441,6 +441,14 @@ public class SaltUtils {
         // Set the result code defaulting to 0
         serverAction.setResultCode(retcode);
 
+        // If the State was not executed due 'require' statement
+        // we directly set the action to FAILED.
+        if (jsonResult == null && function == null) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setResultMsg("Prerequisite failed");
+            return;
+        }
+
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
