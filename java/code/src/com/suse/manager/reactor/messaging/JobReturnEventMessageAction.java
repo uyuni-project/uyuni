@@ -248,6 +248,16 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         throw e;
                     }
                 });
+
+                // Removing script SLS files
+                if (!action.get().getServerActions().stream()
+                        .filter(sa -> !sa.getStatus().equals(ActionFactory.STATUS_FAILED))
+                        .filter(sa -> !sa.getStatus().equals(ActionFactory.STATUS_COMPLETED))
+                        .findFirst()
+                        .isPresent()) {
+//                    SaltActionChainGeneratorService.INSTANCE.removeActionChainScriptFiles(
+//                            retActionChainId, jobReturnEvent.getMinionId(), chunk, actionChainFailed);
+                }
             });
         }
         else {

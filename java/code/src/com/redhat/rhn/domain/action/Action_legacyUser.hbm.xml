@@ -520,6 +520,14 @@ select sa.server_id
         ]]>
     </sql-query>
 
+   <sql-query name="Action.findActionChainEntries">
+        <![CDATA[
+select ace.action_id
+        from rhnActionChainEntry ace
+        where ace.action_id = :action_id
+        ]]>
+    </sql-query>
+
     <sql-query name="Action.pickupTime">
         <return-scalar type="timestamp" column="pickup_time"/>
         SELECT SA.PICKUP_TIME AS PICKUP_TIME
