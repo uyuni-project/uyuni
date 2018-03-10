@@ -444,6 +444,10 @@ const CheckListItem = React.createClass({
     }
   },
 
+  isSelected: function() {
+    return this.props.selectedItems.includes(this.props.item['identifier']);
+  },
+
   isSublistVisible: function() {
     return this.state.itemsWithSublistVisible.includes(this.props.item['identifier']);
   },
@@ -478,7 +482,7 @@ const CheckListItem = React.createClass({
         <input type='checkbox'
             value={this.props.item['identifier']}
             onChange={() => this.handleSelectedItem(this.props.item['identifier'])}
-            checked={this.props.selectedItems.includes(this.props.item['identifier']) ? 'checked' : ''}
+            checked={this.isSelected() ? 'checked' : ''}
         />
         : null;
     /*****/
