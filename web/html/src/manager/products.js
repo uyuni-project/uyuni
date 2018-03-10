@@ -205,7 +205,7 @@ const ProductPageWrapper = React.createClass({
             id="addProducts"
             icon="fa-plus"
             className={'btn-success'}
-            text={t('Add products')}
+            text={t('Add products') + (this.state.selectedItems.length > 0 ? ' (' + this.state.selectedItems.length + ')' : '')}
             handler={this.submit}
         />
       );
