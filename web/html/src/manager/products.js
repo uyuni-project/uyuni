@@ -443,6 +443,7 @@ const CheckList = React.createClass({
                     index={index}
                     showChannelsfor={this.props.showChannelsfor}
                     listStyleClass={this.props.listStyleClass}
+                    childrenDisabled={this.props.isFirstLevel ? false : this.props.childrenDisabled}
                 />
               )
             })
@@ -547,6 +548,7 @@ const CheckListItem = React.createClass({
             value={this.props.item['identifier']}
             onChange={() => this.handleSelectedItem(this.props.item['identifier'])}
             checked={this.state.isSelected ? 'checked' : ''}
+            disabled={this.props.childrenDisabled ? 'disabled' : ''}
         />
         : null;
     /*****/
@@ -637,6 +639,7 @@ const CheckListItem = React.createClass({
               listStyleClass={this.props.listStyleClass}
               isFirstLevel={false}
               showChannelsfor={this.props.showChannelsfor}
+              childrenDisabled={!this.state.isSelected}
           />
           : null }
       </li>
