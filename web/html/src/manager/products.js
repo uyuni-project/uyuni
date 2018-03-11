@@ -371,7 +371,7 @@ const Products = React.createClass({
                     {
                       this.state.popupItem['channels']
                         .filter(c => c.optional)
-                        .map(c => <li>{c.summary}&nbsp;<small>[{c.label}]</small></li>)
+                        .map(c => <li key={c.summary}>{c.summary}&nbsp;<small>[{c.label}]</small></li>)
                     }
                   </ul>
                 </div>
@@ -431,7 +431,9 @@ const CheckList = React.createClass({
             this.props.data.map((l, index) =>
             {
               return (
-                <CheckListItem item={l}
+                <CheckListItem
+                    key={l['identifier']}
+                    item={l}
                     handleSelectedItems={this.handleSelectedItems}
                     handleUnselectedItems={this.handleUnselectedItems}
                     selectedItems={this.props.selectedItems}
