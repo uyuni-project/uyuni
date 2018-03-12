@@ -98,6 +98,10 @@ const ProductPageWrapper = React.createClass({
     this.setState({ selectedItems: items });
   },
 
+  clearSelection: function() {
+    this.setState({ selectedItems: [] });
+  },
+
   showPopUp: function() {
     this.setState({showPopUp: true});
   },
@@ -184,7 +188,6 @@ const ProductPageWrapper = React.createClass({
       );
     }
     else if (this.state.issMaster) {
-
       const submitButtonTitle =
         this.state.syncRunning ?
           t('The product catalog is still refreshing, please wait.')
@@ -229,6 +232,14 @@ const ProductPageWrapper = React.createClass({
                         text={t('Refresh')}
                         target='scc-refresh-popup'
                         onClick={() => this.showPopUp()}
+                    />
+                    <Button
+                        id="clearSelection"
+                        icon='fa-eraser'
+                        className={'btn-default ' + (this.state.selectedItems.length == 0 ? 'text-muted' : '')}
+                        title={t('Clear products selection')}
+                        text={t('Clear')}
+                        handler={this.clearSelection}
                     />
                     {addProductButton}
                   </div>
