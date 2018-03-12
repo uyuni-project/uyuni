@@ -530,7 +530,7 @@ const CheckListItem = React.createClass({
       }
     }
   },
-  
+
   resyncProduct: function(id) {
     alert(id);
   },
@@ -560,26 +560,31 @@ const CheckListItem = React.createClass({
     /** generate show nested list icon **/
     let showNestedDataIconContent;
     if (this.getNestedData().length > 0) {
-      const openSubListIconClass = this.isSublistVisible() ? 'fa-caret-down' : 'fa-caret-right';
+      const openSubListIconClass = this.isSublistVisible() ? 'fa-angle-down' : 'fa-angle-right';
       showNestedDataIconContent = <i className={'fa ' + openSubListIconClass + ' fa-1-5x pointer'}
           onClick={() => this.handleSubListVisibility(this.props.item['identifier'])} />;
     }
     /*****/
 
-    /** generate recommended checkbox if needed **/
-    let recommendedCheckboxContent;
+    /** generate recommended toggler if needed **/
+    let recommendedTogglerContent;
     if (this.getNestedData().some(i => i.recommended)) {
-      recommendedCheckboxContent =
-        <span>
-          <input type='checkbox'
-              id={'recommended-' + this.props.item['identifier']}
-              value={this.props.item['identifier']}
-              onChange={() => this.handleWithRecommended()}
-              checked={this.state.withRecommended ? 'checked' : ''}
-          />
+      if (this.state.withRecommended) {
+      recommendedTogglerContent =
+        <span  className='pointer text-info' onClick={() => this.handleWithRecommended()}>
+          <i className='fa fa-1-5x fa-toggle-on' />
           &nbsp;
-          <small><label htmlFor={'recommended-' + this.props.item['identifier']}>{t('with recommended')}</label></small>
+          <small>{t('with recommended')}</small>
         </span>;
+      }
+      else {
+        recommendedTogglerContent =
+          <span className='pointer text-muted' onClick={() => this.handleWithRecommended()}>
+            <i className='fa fa-1-5x fa-toggle-off' />
+            &nbsp;
+            <small>{t('with recommended')}</small>
+          </span>;
+      }
     }
     /*****/
 
@@ -596,15 +601,16 @@ const CheckListItem = React.createClass({
         const syncedChannels = mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.synced).length;
         const toBeSyncedChannels = mandatoryChannelList.length;
         const channelSyncProgress = Math.round(( syncedChannels / toBeSyncedChannels ) * 100);
-        channelSyncContent = <ProgressBar progress={channelSyncProgress} title={t('Product sync status')} />;
+        channelSyncContent = <ProgressBar progress={channelSyncProgress} title={t('Product sync status')} width='70%'/>;
       }
     }
     /*****/
 
     /** generate product resync button **/
-    const resyncButtonContent =
+    const resyncActionContent =
       this.props.item.status == _PRODUCT_STATUS.installed ?
-        <Button className='btn-default btn-sm' icon='fa-refresh' disabled title={t('Resync product')} />
+        <i className='fa fa-refresh fa-1-5x pointer' title={t('Resync product')}
+            handler={() => this.resyncProduct(this.props.item['identifier'])} />
         : null;
     /*****/
 
@@ -613,16 +619,15 @@ const CheckListItem = React.createClass({
     return (
       <li className={evenOddClass} key={this.props.item['identifier']}>
         <CustomDiv className='col text-center' width={30} um='px'>{selectorContent}</CustomDiv>
-        <CustomDiv className='col text-center' width={20} um='px'>{showNestedDataIconContent}</CustomDiv>
-        <CustomDiv className='col col-class-calc-width'>
+        <CustomDiv className='col text-center' width={2} um='em'>{showNestedDataIconContent}</CustomDiv>
+        <CustomDiv className={'col col-class-calc-width ' + (this.props.item.recommended ? 'text-info' : '')}
+            title={this.props.item.recommended ? 'This extension is recommended' : ''}>
           {this.props.item['label']}
           &nbsp;
           {this.props.item.recommended ? '(r)' : ''}
-          &nbsp;
-          {recommendedCheckboxContent}
         </CustomDiv>
         <CustomDiv className='col' width={50} um='px' title={t('Architecture')}>{this.props.isFirstLevel ? this.props.item['arch'] : ''}</CustomDiv>
-        <CustomDiv className='col text-center' width={35} um='px'>
+        <CustomDiv className='col text-center' width={2} um='em'>
           <ModalLink
               id='showChannels'
               icon='fa-list'
@@ -631,8 +636,16 @@ const CheckListItem = React.createClass({
               onClick={() => this.props.showChannelsfor(this.props.item)}
           />
         </CustomDiv>
-        <CustomDiv className='col text-center' width={110} um='px'>{channelSyncContent}</CustomDiv>
-        <CustomDiv className='col text-center' width={45} um='px'>{resyncButtonContent}</CustomDiv>
+        {
+          this.props.item.status == _PRODUCT_STATUS.installed ?
+            <CustomDiv className='col text-center' width={180} um='px'>
+              {channelSyncContent}&nbsp;{resyncActionContent}
+            </CustomDiv>
+            :
+            <CustomDiv className='col text-center' width={180} um='px' title={t('With Recommended')}>
+              {recommendedTogglerContent}
+            </CustomDiv>
+        }
         { this.isSublistVisible() ?
           <CheckList data={this.getNestedData()}
               nestedKey={this.props.nestedKey}
