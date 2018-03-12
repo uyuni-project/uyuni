@@ -100,29 +100,6 @@ public class CredentialsFactory extends HibernateFactory {
     }
 
     /**
-     * Helper method for creating new SUSE Studio {@link Credentials} for a
-     * given user.
-     * @param user user to associate with these credentials
-     * @return new credentials for SUSE Studio
-     */
-    public static Credentials createStudioCredentials(User user) {
-        Credentials creds = createCredentials();
-        creds.setUser(user);
-        creds.setType(CredentialsFactory
-                .findCredentialsTypeByLabel(Credentials.TYPE_SUSESTUDIO));
-        return creds;
-    }
-
-    /**
-     * Helper method for looking up SUSE Studio credentials.
-     * @param user user
-     * @return credentials or null
-     */
-    public static Credentials lookupStudioCredentials(User user) {
-        return lookupByUserAndType(user, Credentials.TYPE_SUSESTUDIO);
-    }
-
-    /**
      * Helper method for creating new SCC {@link Credentials}
      * @return new credential with type SCC
      */
