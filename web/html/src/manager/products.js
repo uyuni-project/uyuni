@@ -656,7 +656,7 @@ const CheckListItem = React.createClass({
               listStyleClass={this.props.listStyleClass}
               isFirstLevel={false}
               showChannelsfor={this.props.showChannelsfor}
-              childrenDisabled={!this.state.isSelected}
+              childrenDisabled={!(this.state.isSelected || this.props.item.status == _PRODUCT_STATUS.installed)}
           />
           : null }
       </li>
