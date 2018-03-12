@@ -326,9 +326,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         }
                     }
                 });
-
-                // Subscribe to config channels assigned to the activation key
-                server.subscribeConfigChannels(ak.getAllConfigChannels(), ak.getCreator());
             });
 
             // get hardware and network async
@@ -346,7 +343,12 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
 
             // Generate pillar data
             try {
-                SaltStateGeneratorService.INSTANCE.registerServer(server);
+                SaltStateGeneratorService.INSTANCE.generatePillar(server);
+
+                // Subscribe to config channels assigned to the activation key or initialize empty channel profile
+                server.subscribeConfigChannels(
+                        activationKey.map(ActivationKey::getAllConfigChannels).orElse(Collections.emptyList()),
+                        creator.orElse(null));
             }
             catch (RuntimeException e) {
                 LOG.error("Error generating Salt files for server '" + minionId +

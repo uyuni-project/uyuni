@@ -377,18 +377,6 @@ public enum SaltStateGeneratorService {
     }
 
     /**
-     * Generate pillar and config channels assignments for a
-     * newly registered server.
-     * @param minion newly registered minion
-     */
-    public void registerServer(MinionServer minion) {
-        // create an empty revision ? -Too late now :(
-        generatePillar(minion);
-        generateStateAssignmentFile(getServerStateFileName(minion.getMachineId()), Collections.emptyList(),
-                suseManagerStatesFilesRoot);
-    }
-
-    /**
      * Remove pillars and config channels assignments of a server.
      * @param minion the minion
      */
