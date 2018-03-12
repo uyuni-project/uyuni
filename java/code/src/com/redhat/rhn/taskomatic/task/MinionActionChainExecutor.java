@@ -46,21 +46,8 @@ public class MinionActionChainExecutor extends RhnJavaJob {
 
         // Measure time to calculate the total duration
         long start = System.currentTimeMillis();
-        long actionChainId = Long.parseLong(((List<String>) context.getJobDetail()
-                .getJobDataMap().get("actionchain_id")).get(0));
-        List<Long> targetServers = ((List<String>) context.getJobDetail()
-                .getJobDataMap().get("target_ids")).stream()
-                        .map(target -> Long.parseLong(target))
-                        .collect(Collectors.toList());
-        List<Long> actionIds = ((List<String>) context.getJobDetail()
-                .getJobDataMap().get("action_ids")).stream()
-                .map(id -> Long.parseLong(id))
-                .collect(Collectors.toList());
-
-        User user = Optional.ofNullable(context.getJobDetail().getJobDataMap().get("user_id"))
-                .map(id -> Long.parseLong(id.toString()))
-                .map(userId -> UserFactory.lookupById(userId))
-                .orElse(null);
+        long actionChainId = Long.parseLong((String)context.getJobDetail()
+                .getJobDataMap().get("actionchain_id"));
 
         // TODO: At this point, the AC has been already removed from the DB
         // calculate offset between scheduled time of
@@ -69,7 +56,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
 
         log.info("Executing action chain: " + actionChainId);
 
-        saltServerActionService.executeActionChain(user, actionChainId, actionIds, targetServers);
+        saltServerActionService.executeActionChain(actionChainId);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;

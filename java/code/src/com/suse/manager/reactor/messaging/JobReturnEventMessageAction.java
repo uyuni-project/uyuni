@@ -51,13 +51,15 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX;
+
 /**
  * Handler class for {@link JobReturnEventMessage}.
  */
 public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
     private static final Pattern ACTION_STATE_PATTERN =
-            Pattern.compile(".*\\|-suma_actionchain_(\\d+)_chunk_(\\d+)_action_(\\d+)_\\|.*");
+            Pattern.compile(".*\\|-" + ACTION_STATE_ID_PREFIX + "(\\d+)_action_(\\d+)_.*");
 
     /**
      * Converts an event to json
@@ -125,9 +127,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     String key = entry.getKey();
                     StateApplyResult<Ret<JsonElement>> actionStateApply = entry.getValue();
                     Matcher m = ACTION_STATE_PATTERN.matcher(key);
-                    if (m.find() && m.groupCount() == 3) {
+                    if (m.find() && m.groupCount() == 2) {
                         retActionChainId = Long.parseLong(m.group(1));
-                        Long retActionId = Long.parseLong(m.group(3));
+                        Long retActionId = Long.parseLong(m.group(2));
                         chunk = Integer.parseInt(m.group(2));
                         handleAction(retActionId,
                                 jobReturnEvent.getMinionId(),

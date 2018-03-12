@@ -497,6 +497,7 @@ public class SaltUtils {
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
+            // TODO remove script file
             Map<String, StateApplyResult<CmdExecCodeAll>> stateApplyResult = Json.GSON.fromJson(jsonResult,
                     new TypeToken<Map<String, StateApplyResult<CmdExecCodeAll>>>() { }.getType());
             CmdExecCodeAll result = stateApplyResult.entrySet().stream()

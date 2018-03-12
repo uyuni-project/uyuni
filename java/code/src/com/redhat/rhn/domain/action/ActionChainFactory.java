@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -61,7 +62,7 @@ public class ActionChainFactory extends HibernateFactory {
     private static ActionChainFactory singleton = new ActionChainFactory();
 
     /** Taskomatic API **/
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private static TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     /**
      * Default constructor.
@@ -109,6 +110,10 @@ public class ActionChainFactory extends HibernateFactory {
                             requestor.getLogin());
         }
         return ac;
+    }
+
+    public static Optional<ActionChain> getActionChain(long id) {
+        return Optional.ofNullable(getSession().get(ActionChain.class, id));
     }
 
     /**
@@ -383,7 +388,6 @@ public class ActionChainFactory extends HibernateFactory {
 
         if (!minionActions.isEmpty()) {
             // Trigger Action Chain execution for Minions via Taskomatic
-            SaltActionChainGeneratorService.INSTANCE.createActionChainSLSFiles(actionChain, minionActions);
             TASKOMATIC_API.scheduleActionChainExecution(actionChain);
         }
         log.debug("Action Chain " + actionChain + " scheduled to date " + date);
@@ -431,5 +435,13 @@ public class ActionChainFactory extends HibernateFactory {
             ActionChainEntry entry) {
         actionChain.getEntries().remove(entry);
         removeActionChainEntrySortGaps(actionChain, entry.getSortOrder());
+    }
+
+    /**
+     * Set the TaskomatiApi for unit tests.
+     * @param taskomaticApi the TaskomatiApi to set
+     */
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApi) {
+        ActionChainFactory.TASKOMATIC_API = taskomaticApi;
     }
 }

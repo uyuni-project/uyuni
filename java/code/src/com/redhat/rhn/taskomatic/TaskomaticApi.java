@@ -46,11 +46,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
 
+import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Collectors.toList;
 
@@ -512,35 +514,22 @@ public class TaskomaticApi {
      */
     public void scheduleActionChainExecution(ActionChain actionchain)
         throws TaskomaticApiException {
-        Set<Server> minionServers = actionchain.getEntries().stream()
+        long minionCount = actionchain.getEntries().stream()
                 .map(ActionChainEntry::getAction)
                 .map(Action::getServerActions)
                 .flatMap(serverActions -> serverActions.stream())
-                .collect(toList()).stream()
                 .map(ServerAction::getServer)
-                .filter(s -> MinionServerUtils.isMinionServer(s))
-                .collect(toSet());
+                .filter(MinionServerUtils::isMinionServer)
+                .collect(Collectors.counting());
 
-        List<String> actionIds = actionchain.getEntries().stream()
-                .map(ActionChainEntry::getAction)
-                .map(Action::getId)
-                .map(id -> Long.toString(id))
-                .collect(toList());
-
-        if (minionServers.isEmpty()) {
+        if (minionCount == 0) {
             return;
         }
 
         Date earliestAction = actionchain.getEarliestAction();
 
-        Map<String, List<String>> params = new HashMap<>();
-        List<String> actionChainId = Arrays.asList(Long.toString(actionchain.getId()));
-        params.put("actionchain_id", actionChainId);
-        params.put("action_ids", actionIds);
-        params.put("target_ids", minionServers.stream()
-                .map(Server::getId)
-                .map(Object::toString)
-                .collect(toList()));
+        Map<String, String> params = new HashMap<>();
+        params.put("actionchain_id", Long.toString(actionchain.getId()));
 
         invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTIONCHAIN_BUNCH_LABEL,
                 MINION_ACTIONCHAIN_JOB_PREFIX + actionchain.getId(), params,

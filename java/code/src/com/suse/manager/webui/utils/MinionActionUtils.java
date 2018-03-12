@@ -222,4 +222,8 @@ public class MinionActionUtils {
                 .orElse(Optional.empty());
         return jid.flatMap(id -> salt.listJob(id));
     }
+
+    public static void cleanupMinionActionChains(SaltService instance) {
+        // TODO
+    }
 }
