@@ -45,4 +45,11 @@ public abstract class AbstractSaltRequisites implements SaltRequisistes {
             stateMap.putAll(singletonMap("require", requireEntries));
         }
     }
+
+    protected void addRequisites(List<Map<String, ?>> stateMap) {
+        // add requires (if any)
+        if (!requireEntries.isEmpty()) {
+            stateMap.add(singletonMap("require", requireEntries));
+        }
+    }
 }

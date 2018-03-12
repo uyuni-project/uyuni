@@ -19,6 +19,9 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntry;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -59,25 +62,33 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.utils.MinionServerUtils;
+import com.suse.manager.webui.utils.SaltState;
+import com.suse.manager.webui.utils.SaltModuleRun;
+import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -86,7 +97,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+import static java.util.Collections.singletonMap;
 
 /**
  * Takes {@link Action} objects to be executed via salt.
@@ -99,7 +116,7 @@ public class SaltServerActionService {
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
     private static final String ACTIONCHAIN_START = "actionchains.start";
-    private static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
+    public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
     private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
     private static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
     private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
@@ -109,14 +126,17 @@ public class SaltServerActionService {
     private static final String PARAM_PKGS = "param_pkgs";
     private static final String PARAM_PATCHES = "param_patches";
     private static final String PARAM_FILES = "param_files";
-
-
+    private static final String REMOTE_COMMANDS = "remotecommands";
 
     /** SLS pillar parameter name for the list of update stack patch names. */
     public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
 
     /** SLS pillar parameter name for the list of regular patch names. */
     public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
+
+    private SaltActionChainGeneratorService saltActionChainGeneratorService =
+            SaltActionChainGeneratorService.INSTANCE;
+
 
     /**
      * For a given action and list of minion servers return the salt call(s) that need to be
@@ -157,9 +177,7 @@ public class SaltServerActionService {
             return diffFiles(minions, (ConfigAction) actionIn);
         }
         else if (ActionFactory.TYPE_SCRIPT_RUN.equals(actionType)) {
-            ScriptAction scriptAction = (ScriptAction) actionIn;
-            String script = scriptAction.getScriptActionDetails().getScriptContents();
-            return remoteCommandAction(minions, script);
+            return remoteCommandAction(minions, (ScriptAction) actionIn);
         }
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
             ApplyStatesActionDetails actionDetails = ((ApplyStatesAction) actionIn).getDetails();
@@ -227,15 +245,8 @@ public class SaltServerActionService {
      */
     public void execute(Action actionIn, boolean forcePackageListRefresh,
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
-        List<MinionServer> minions = Optional.ofNullable(actionIn.getServerActions())
-                .map(serverActions -> MinionServerUtils.filterSaltMinions(serverActions.stream()
-                             .map(ServerAction::getServer)
-                             .collect(Collectors.toList()))
-                .filter(m -> m.hasEntitlement(EntitlementManager.SALT))
-                .filter(m -> m.getContactMethod().getLabel().equals("default"))
-                .collect(Collectors.toList())
-                )
-                .orElse(new LinkedList<>());
+
+        List<MinionServer> minions = getMinionServers(actionIn);
 
         // now prepare each call
         for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
@@ -288,61 +299,161 @@ public class SaltServerActionService {
     }
 
     /**
-     * Execute a given {@link ActionChain} via Salt.
+     * Call Salt to start the execution of the given action chain.
      *
-     * @param actionChainId the action chain id to execute
-     * @param minionIds a list containing target minion ids
-     * @param user the user executing the Action Chain
+     * @param actionChain the action chain to execute
+     * @param minions a list containing target minions
      */
-    public void executeActionChain(User user, Long actionChainId, List<Long> actionIds, List<Long> minionIds) {
-        List<MinionServer> minions = new ArrayList<>();
-        minionIds.forEach(minionId -> {
-                MinionServerFactory.lookupById(minionId).ifPresent(minion -> {
-                        minions.add(minion);
-                });
+    private void startActionChainExecution(ActionChain actionChain, Set<MinionServer> minions) {
+        // now prepare each call
+        Pair<LocalCall<?>, Set<MinionServer>> entry =
+                startActionChainCall(minions, actionChain.getId());
+
+        LocalCall<?> call = entry.getKey();
+        Set<MinionServer> targetMinions = entry.getValue();
+
+        Map<Boolean, ? extends Collection<MinionServer>> results =
+                callAsyncActionChainStart(actionChain.getId(), call, targetMinions);
+
+        // collect all server actions
+        List<ServerAction> serverActions =
+                actionChain.getEntries().stream()
+                        .map(ace -> ace.getAction())
+                        .flatMap(a -> a.getServerActions().stream())
+                        .collect(Collectors.toList());
+
+        results.get(true).forEach(minionServer -> {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Asynchronous call on minion: " +
+                        minionServer.getMinionId());
+            }
+            serverActions.stream()
+                    .filter(sa -> sa.getServer().getId().equals(minionServer.getId()))
+                    .forEach(sa -> {
+                        sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                        ActionFactory.save(sa);
+                    });
         });
 
-        // now prepare each call
-        for (Map.Entry<LocalCall<?>, List<MinionServer>> entry :
-                startActionChainCall(minions, actionChainId).entrySet()) {
-            LocalCall<?> call = entry.getKey();
-
-            List<MinionServer> targetMinions = entry.getValue();
-
-            Map<Boolean, List<MinionServer>> results =
-                    callAsyncActionChainStart(user, actionChainId, call, targetMinions);
-
-            // collect all server actions
-            List<ServerAction> serverActions = actionIds.stream()
-                    .map(ActionFactory::lookupById)
-                    .flatMap(a -> a.getServerActions().stream())
-                    .collect(Collectors.toList());
-
-            results.get(true).forEach(minionServer -> {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Asynchronous call on minion: " +
-                            minionServer.getMinionId());
-                }
-                serverActions.stream()
-                        .filter(sa -> sa.getServer().getId().equals(minionServer.getId()))
-                        .forEach(sa -> {
-                            sa.setStatus(ActionFactory.STATUS_PICKED_UP);
-                            ActionFactory.save(sa);
-                        });
-            });
-
-            results.get(false).forEach(minionServer -> {
-                LOG.warn("Failed to schedule action chain for minion: " +
-                        minionServer.getMinionId());
-                serverActions.stream()
-                        .filter(sa -> sa.getServer().getId().equals(minionServer.getId()))
-                        .forEach(sa -> {
-                            sa.setStatus(ActionFactory.STATUS_FAILED);
-                            ActionFactory.save(sa);
-                        });
-            });
-        }
+        results.get(false).forEach(minionServer -> {
+            LOG.warn("Failed to schedule action chain for minion: " +
+                    minionServer.getMinionId());
+            serverActions.stream()
+                    .filter(sa -> sa.getServer().getId().equals(minionServer.getId()))
+                    .forEach(sa -> {
+                        sa.setStatus(ActionFactory.STATUS_FAILED);
+                        ActionFactory.save(sa);
+                    });
+        });
     }
+
+    /**
+     * Prepare and execute the action chain.
+     *
+     * @param actionChainId id of the action chain to execute
+     */
+    public void executeActionChain(long actionChainId) {
+        ActionChain actionChain = ActionChainFactory
+                .getActionChain(actionChainId)
+                .orElseThrow(() -> new RuntimeException("Action chain id=" + actionChainId + " not found in db"));
+
+        // for each minion populate a list of ServerActions with the corresponding Salt call(s)
+        Map<MinionServer, List<Pair<ServerAction, List<LocalCall<?>>>>> minionCalls = new HashMap<>();
+
+        actionChain.getEntries().stream()
+                .sorted(Comparator.comparingInt(ActionChainEntry::getSortOrder))
+                .map(ActionChainEntry::getAction)
+                .forEach(actionIn -> {
+                    // TODO extract to common method
+                    List<MinionServer> minions = getMinionServers(actionIn);
+
+                    if (minions.isEmpty()) {
+                        return;
+                    }
+
+                    // get Salt calls for this action
+                    Map<LocalCall<?>, List<MinionServer>> actionCalls = callsForAction(actionIn, minions);
+
+                    // TODO how to handle staging jobs?
+
+                    // Salt calls for each minion
+                    Map<MinionServer, List<LocalCall<?>>> callsPerMinion =
+                            actionCalls.values().stream().flatMap(m -> m.stream())
+                                .collect(Collectors
+                                        .toMap(Function.identity(),
+                                                m -> actionCalls.entrySet()
+                                                        .stream()
+                                                        .filter(e -> e.getValue().contains(m))
+                                                        .map(e -> e.getKey())
+                                                        .collect(Collectors.toList())
+                                ));
+
+                    // append the Salt calls for this action to the list of calls of each minion
+                    callsPerMinion.forEach((minion, calls) -> {
+                        List<Pair<ServerAction, List<LocalCall<?>>>> currentCalls = minionCalls
+                                .getOrDefault(minion, new ArrayList<>());
+                        Optional<ServerAction> serverAction = actionIn.getServerActions().stream()
+                                .filter(sa -> sa.getServer().getId().equals(minion.getId()))
+                                .findFirst();
+                        serverAction.ifPresent(sa -> {
+                            Pair<ServerAction, List<LocalCall<?>>> serverActionCalls =
+                                    new ImmutablePair<>(sa, calls);
+                            currentCalls.add(serverActionCalls);
+                        });
+                        minionCalls.put(minion, currentCalls);
+                    });
+
+                });
+
+        // render local calls to salt states
+        minionCalls.forEach((minion, serverActionCalls) -> {
+            List<SaltState> states = serverActionCalls.stream()
+                    .flatMap(saCalls -> {
+                        ServerAction sa = saCalls.getKey();
+                        List<LocalCall<?>> calls = saCalls.getValue();
+                        return convertToState(actionChain.getId(), sa, calls).stream();
+                    }).collect(Collectors.toList());
+            saltActionChainGeneratorService.createActionChainSLSFiles(actionChain,
+                    minion, states);
+        });
+
+        startActionChainExecution(actionChain, minionCalls.keySet());
+    }
+
+    private List<MinionServer> getMinionServers(Action actionIn) {
+        return Optional.ofNullable(actionIn.getServerActions())
+                                .map(serverActions -> MinionServerUtils.filterSaltMinions(serverActions.stream()
+                                        .map(ServerAction::getServer)
+                                        .collect(Collectors.toList()))
+                                        .filter(m -> m.hasEntitlement(EntitlementManager.SALT))
+                                        .filter(m -> m.getContactMethod().getLabel().equals("default"))
+                                        .collect(Collectors.toList()))
+                                .orElse(new LinkedList<>());
+    }
+
+    private List<SaltState> convertToState(long actionChainId, ServerAction serverAction, List<LocalCall<?>> calls) {
+        String stateId = ACTION_STATE_ID_PREFIX + actionChainId + "_action_" + serverAction.getParentAction().getId();
+
+        return calls.stream().map(call -> {
+            Map<String, Object> payload = call.getPayload();
+            String fun = (String)payload.get("fun");
+            Map<String, ?> kwargs = (Map<String, ?>)payload.get("kwarg");
+            switch(fun) {
+                case "state.apply":
+                    List<String> mods = (List<String>)kwargs.get("mods");
+                    return new SaltModuleRun(stateId,
+                            "state.apply",
+                            singletonMap("mods", mods),
+                            singletonMap("pillar", kwargs.get("pillar")));
+                case "system.reboot":
+                    Integer time = (Integer)kwargs.get("at_time");
+                    return new SaltSystemReboot(stateId, time);
+                default:
+                    throw new RuntimeException("TODO add code");
+            }
+        }).collect(Collectors.toList());
+    }
+
 
     /**
      * This function will return a map with list of minions grouped by the
@@ -405,7 +516,7 @@ public class SaltServerActionService {
                 // See PR#2839
                 (a, b)-> a));
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGINSTALL),
-                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs)),
+                Optional.of(singletonMap(PARAM_PKGS, pkgs)),
                 Optional.of(true)), minions);
         return ret;
     }
@@ -418,7 +529,7 @@ public class SaltServerActionService {
                 // See PR#2839
                 (a, b)-> a));
         ret.put(State.apply(Arrays.asList(PACKAGES_PKGREMOVE),
-                Optional.of(Collections.singletonMap(PARAM_PKGS, pkgs)),
+                Optional.of(singletonMap(PARAM_PKGS, pkgs)),
                 Optional.of(true)), minions);
         return ret;
     }
@@ -521,13 +632,38 @@ public class SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionServer>> remoteCommandAction(
-            List<MinionServer> minions, String script) {
+            List<MinionServer> minions, ScriptAction scriptAction) {
+        String script = scriptAction.getScriptActionDetails().getScriptContents();
+
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-        // FIXME: This supports only bash at the moment
-        ret.put(Cmd.execCodeAll(
-                "bash",
-                // remove \r or bash will fail
-                script.replaceAll("\r\n", "\n")), minions);
+//        // FIXME: This supports only bash at the moment
+//        ret.put(Cmd.execCodeAll(
+//                "bash",
+//                // remove \r or bash will fail
+//                script.replaceAll("\r\n", "\n")), minions);
+
+        // write script to /srv/susemanager/salt/scripts/script_<id>.sh
+        Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
+        Path scriptFile = scriptsDir.resolve("script_" + scriptAction.getId() + ".sh");
+        try {
+            FileUtils.forceMkdir(scriptsDir.toFile()); // TODO set permissions?
+            FileUtils.writeStringToFile(scriptFile.toFile(),
+                    script.replaceAll("\r\n", "\n"));
+        }
+        catch (IOException e) {
+            LOG.error("Could not write script to file " + scriptFile, e);
+        }
+
+        // state.apply remotecommands
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("mgr_remote_cmd_script",
+                "salt://" + SCRIPTS_DIR + "/" + scriptFile.getFileName());
+        pillar.put("mgr_remote_cmd_runas",
+                scriptAction.getScriptActionDetails().getUsername());
+        ret.put(com.suse.manager.webui.utils.salt.State.apply(
+                Arrays.asList(REMOTE_COMMANDS),
+                Optional.of(pillar),
+                Optional.of(true), Optional.of(false)), minions);
         return ret;
     }
 
@@ -801,13 +937,13 @@ public class SaltServerActionService {
         return call;
     }
 
-    private Map<LocalCall<?>, List<MinionServer>> startActionChainCall(
-            List<MinionServer> minions, Long actionChainId) {
+    private Pair<LocalCall<?>, Set<MinionServer>> startActionChainCall(
+            Set<MinionServer> minions, Long actionChainId) {
         List<String> args = new ArrayList<>(1);
         args.add(Long.toString(actionChainId));
         LocalCall<?> call = new LocalCall("mgractionchains.start",
                 Optional.of(args), Optional.empty(), new TypeToken<Map<String, State.ApplyResult>>() { });
-        return Collections.singletonMap(call, minions);
+        return new ImmutablePair<>(call, minions);
     }
 
     /**
@@ -862,13 +998,13 @@ public class SaltServerActionService {
     }
 
     /**
-     * @param actionChainIn the action chain
+     * @param actionChainId the id of the action chain
      * @param call the call
      * @param minions minions to target
      * @return a map containing all minions partitioned by success
      */
-    private Map<Boolean, List<MinionServer>> callAsyncActionChainStart(User user, Long actionChainId,
-                                                                       LocalCall<?> call, List<MinionServer> minions) {
+    private Map<Boolean, ? extends Collection<MinionServer>> callAsyncActionChainStart(Long actionChainId,
+                                                                       LocalCall<?> call, Set<MinionServer> minions) {
         // Prepare the metadata
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("suma-action-chain", true);
@@ -886,18 +1022,25 @@ public class SaltServerActionService {
                     .callAsync(call.withMetadata(metadata), new MinionList(minionIds))
                     .getMinions();
 
-            Map<Boolean, List<MinionServer>> result = minions.stream().collect(Collectors
+            Map<Boolean, ? extends Collection<MinionServer>> result = minions.stream().collect(Collectors
                     .partitioningBy(minion -> results.contains(minion.getMinionId())));
 
             return result;
         }
         catch (SaltException ex) {
             LOG.debug("Failed to execute action chain: " + ex.getMessage());
-            Map<Boolean, List<MinionServer>> result = new HashMap<>();
-            result.put(true, Collections.emptyList());
+            Map<Boolean, Set<MinionServer>> result = new HashMap<>();
+            result.put(true, Collections.emptySet());
             result.put(false, minions);
             return result;
         }
     }
 
+    /**
+     * @param saltActionChainGeneratorServiceIn to set
+     */
+    public void setSaltActionChainGeneratorService(SaltActionChainGeneratorService
+                                                           saltActionChainGeneratorServiceIn) {
+        this.saltActionChainGeneratorService = saltActionChainGeneratorServiceIn;
+    }
 }
