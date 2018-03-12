@@ -193,16 +193,16 @@ ul.product-list {
   clear: both;
   width: 100%;
   li {
-    min-height: 3.5em;
-    line-height: 2em;
+    min-height: 3em;
+    line-height: 1.7em;
     display: block;
     overflow: auto;
     border-bottom: 1px solid @spacewalk-gray-light;
-    padding-left: 10px;
+    padding-left: .2em;
     .col {
       display: inline-block;
       vertical-align: middle;
-      padding: .3em;
+      padding: .7em .3em;
       float: none;
       * {
         vertical-align: middle;
@@ -231,12 +231,12 @@ ul.product-list {
       border: 0;
       border-top: 1px dashed @spacewalk-gray-light;
       margin-left: 43px;
-      padding: 0.3em 0;
       background-image: url('/img/susemanager/sub-list.png');
       background-repeat: no-repeat;
       background-position: left center;
-      min-height: 2.5em;
-      line-height: 1.5em;
+      .col {
+        padding: .3em;
+      }
     }
     li:first-of-type {
       border-top: 0;
