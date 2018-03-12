@@ -530,6 +530,10 @@ const CheckListItem = React.createClass({
       }
     }
   },
+  
+  resyncProduct: function(id) {
+    alert(id);
+  },
 
   getNestedData: function() {
     if (this.props.item &&
