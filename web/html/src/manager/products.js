@@ -580,20 +580,17 @@ const CheckListItem = React.createClass({
     /*****/
 
     /** generate product description content **/
-    let productLabelStatus = '';
-    if (this.state.isInstalled) {
-      productLabelStatus = 'text-muted';
-    }
-    else if (this.props.item.recommended) {
-      productLabelStatus = 'text-info';
-    }
-
+    const productLabelStatus = this.state.isInstalled ? 'text-muted' : '';
+    const handleDescriptionClick =
+      this.getNestedData().length > 0 ?
+        () => this.handleSubListVisibility(this.props.item['identifier'])
+        : null;
     let productDescriptionContent =
-      <span className={productLabelStatus}>
+      <span className={'cursor-default ' + productLabelStatus} onClick={handleDescriptionClick}>
         {this.props.item['label']}&nbsp;
         {
           this.props.item.recommended ?
-            <u title={'This extension is recommended'}>(recommended)</u>
+            <span className='text-info'>(<u title={'This extension is recommended'}>recommended</u>)</span>
             : null
         }
       </span>;
