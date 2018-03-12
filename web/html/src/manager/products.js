@@ -79,7 +79,8 @@ const ProductPageWrapper = React.createClass({
         issMaster_flag_from_backend &&
         !refreshRunning_flag_from_backend,
       syncRunning: false,
-      addingProducts: false
+      addingProducts: false,
+      archCriteria: '---'
     }
   },
 
@@ -87,6 +88,17 @@ const ProductPageWrapper = React.createClass({
     if (!this.state.refreshRunning) {
       this.refreshServerData();
     }
+  },
+
+  handleFilterArchChange: function(arch) {
+    this.setState({archCriteria: arch});
+  },
+
+  filterDataByArch: function(data) {
+    if(this.state.archCriteria != '---') {
+      return data.filter(p => p.arch == this.state.archCriteria);
+    }
+    return data;
   },
 
   refreshServerData: function(dataUrlTag) {
@@ -221,12 +233,28 @@ const ProductPageWrapper = React.createClass({
             handler={this.submit}
         />
       );
+      var arch = [];
+      Object.keys(this.state.serverData).map((id) => this.state.serverData[id])
+          .forEach(function(x) { if (!arch.includes(x.arch)) arch.push(x.arch); });
       pageContent = (
         <div className='row' id='suse-products'>
           <div className='col-sm-9'>
             <Messages items={this.state.errors}/>
             <div>
               <div className='spacewalk-section-toolbar'>
+                <div className='selector-button-wrapper'>
+                  {
+                    this.state.serverData != null ?
+                      <span className='d-inline-block'>
+                        <select className='form-control d-inline-block' onChange={(e) => this.handleFilterArchChange(e.target.value)}>
+                          <option value='---'>---</option>
+                          { arch.map(a => <option key={a} value={a}>{a}</option>) }
+                        </select>
+                        &nbsp;{t('Filter by architecture')}
+                      </span>
+                      : null
+                  }
+                </div>
                 <div className='action-button-wrapper'>
                   <div className='btn-group'>
                     <ModalButton
@@ -255,7 +283,7 @@ const ProductPageWrapper = React.createClass({
                 </div>
               </div>
               <Products
-                  data={this.state.serverData}
+                  data={this.filterDataByArch(this.state.serverData)}
                   loading={this.state.loading}
                   handleSelectedItems={this.handleSelectedItems}
                   selectedItems={this.state.selectedItems}
