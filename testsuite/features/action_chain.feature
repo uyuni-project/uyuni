@@ -5,6 +5,7 @@ Feature: Test action chaining
 
   Scenario: wait for taskomatic finished required jobs
     Given Patches are visible for the registered client
+    And I run "zypper -n in milkyway-dummy" on "sle-client" without error control
 
   Scenario: I add a package installation to an action chain
     Given I am on the Systems overview page of this client
@@ -42,7 +43,9 @@ Feature: Test action chaining
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
-    And I check "adaptec-firmware" in the list
+    And I enter "milkyway-dummy" in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter"
+    And I check "milkyway-dummy" in the list
     And I click on "Remove Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
@@ -86,7 +89,7 @@ Feature: Test action chaining
     And I should see a "1. Install or update hoag-dummy on 1 system" text
     And I should see a "2. Run a remote command on 1 system" text
     And I should see a "3. Apply patch(es) andromeda-dummy-6789 on 1 system" text
-    And I should see a "4. Remove adaptec-firmware from 1 system" text
+    And I should see a "4. Remove milkyway-dummy from 1 system" text
     And I should see a "5. Verify andromeda-dummy on 1 system" text
     And I should see a text like "6. Deploy.*/etc/mgr-test-file.cnf.*to 1 system"
     Then I should see a "7. Reboot 1 system" text
