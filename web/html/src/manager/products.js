@@ -51,6 +51,15 @@ const _CHANNEL_STATUS = {
   failed: 'FAILED'
 };
 
+const _COLS = {
+  selector: { width: 2, um: 'em' },
+  showSubList: { width: 2, um: 'em'},
+  description: { width: undefined, um: 'px'},
+  arch: { width: 6, um: 'em' },
+  channels: { width: 5, um: 'em' },
+  mix: { width: 12, um: 'em'}
+}
+
 function reloadData() {
   return Network.get('/rhn/manager/api/admin/products', 'application/json').promise;
 }
@@ -401,7 +410,7 @@ const Products = React.createClass({
           searchField={
               <SearchField filter={this.searchData}
                   criteria={''}
-                  placeholder={t('Filter by product name')} />
+                  placeholder={t('Filter by product Description')} />
           }>
           <CheckList data={d => d}
               nestedKey='extensions'
@@ -412,6 +421,7 @@ const Products = React.createClass({
               listStyleClass='product-list'
               isFirstLevel={true}
               showChannelsfor={this.showChannelsfor}
+              cols={_COLS}
           />
         </DataHandler>
         <PopUp
@@ -439,6 +449,18 @@ const CheckList = React.createClass({
       this.props.data ?
         <ul className={this.props.listStyleClass}>
           {
+            this.props.isFirstLevel ?
+              <li className='list-header'>
+                <CustomDiv className='col text-center' width={this.props.cols.selector.width} um={this.props.cols.selector.um}></CustomDiv>
+                <CustomDiv className='col text-center' width={this.props.cols.showSubList.width} um={this.props.cols.showSubList.um}></CustomDiv>
+                <CustomDiv className='col col-class-calc-width'>{t('Product Description')}</CustomDiv>
+                <CustomDiv className='col' width={this.props.cols.arch.width} um={this.props.cols.arch.um} title={t('Architecture')}>{t('Arch')}</CustomDiv>
+                <CustomDiv className='col text-center' width={this.props.cols.channels.width} um={this.props.cols.channels.um}>{t('Channels')}</CustomDiv>
+                <CustomDiv className='col text-right' width={this.props.cols.mix.width} um={this.props.cols.mix.um}></CustomDiv>
+              </li>
+              : null
+          }
+          {
             this.props.data.map((l, index) =>
             {
               return (
@@ -455,6 +477,7 @@ const CheckList = React.createClass({
                     showChannelsfor={this.props.showChannelsfor}
                     listStyleClass={this.props.listStyleClass}
                     childrenDisabled={this.props.isFirstLevel ? false : this.props.childrenDisabled}
+                    cols={this.props.cols}
                 />
               )
             })
@@ -640,7 +663,7 @@ const CheckListItem = React.createClass({
     const resyncActionContent =
       this.state.isInstalled ?
         <i className='fa fa-refresh fa-1-5x pointer' title={t('Resync product')}
-            handler={() => this.resyncProduct(this.props.item['identifier'])} />
+            onClick={() => this.resyncProduct(this.props.item['identifier'])} />
         : null;
     /*****/
 
@@ -648,13 +671,13 @@ const CheckListItem = React.createClass({
 
     return (
       <li className={evenOddClass} key={this.props.item['identifier']}>
-        <CustomDiv className='col text-center' width={30} um='px'>{selectorContent}</CustomDiv>
-        <CustomDiv className='col text-center' width={2} um='em'>{showNestedDataIconContent}</CustomDiv>
+        <CustomDiv className='col text-center' width={this.props.cols.selector.width} um={this.props.cols.selector.um}>{selectorContent}</CustomDiv>
+        <CustomDiv className='col text-center' width={this.props.cols.showSubList.width} um={this.props.cols.showSubList.um}>{showNestedDataIconContent}</CustomDiv>
         <CustomDiv className='col col-class-calc-width'>
           {productDescriptionContent}
         </CustomDiv>
-        <CustomDiv className='col' width={50} um='px' title={t('Architecture')}>{this.props.isFirstLevel ? this.props.item['arch'] : ''}</CustomDiv>
-        <CustomDiv className='col text-center' width={2} um='em'>
+        <CustomDiv className='col' width={this.props.cols.arch.width} um={this.props.cols.arch.um} title={t('Architecture')}>{this.props.isFirstLevel ? this.props.item['arch'] : ''}</CustomDiv>
+        <CustomDiv className='col text-center' width={this.props.cols.channels.width} um={this.props.cols.channels.um}>
           <ModalLink
               id='showChannels'
               icon='fa-list'
@@ -665,11 +688,11 @@ const CheckListItem = React.createClass({
         </CustomDiv>
         {
           this.state.isInstalled ?
-            <CustomDiv className='col text-right' width={160} um='px'>
+            <CustomDiv className='col text-right' width={this.props.cols.mix.width} um={this.props.cols.mix.um}>
               {channelSyncContent}&nbsp;{resyncActionContent}
             </CustomDiv>
             :
-            <CustomDiv className='col text-right' width={160} um='px' title={t('With Recommended')}>
+            <CustomDiv className='col text-right' width={this.props.cols.mix.width} um={this.props.cols.mix.um} title={t('With Recommended')}>
               {recommendedTogglerContent}
             </CustomDiv>
         }
@@ -684,6 +707,7 @@ const CheckListItem = React.createClass({
               isFirstLevel={false}
               showChannelsfor={this.props.showChannelsfor}
               childrenDisabled={!(this.state.isSelected || this.state.isInstalled)}
+              cols={this.props.cols}
           />
           : null }
       </li>
