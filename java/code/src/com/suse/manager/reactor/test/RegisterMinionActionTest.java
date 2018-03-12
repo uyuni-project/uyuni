@@ -16,6 +16,7 @@ package com.suse.manager.reactor.test;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
+import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -26,6 +27,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -66,6 +68,7 @@ import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -83,6 +86,7 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -121,7 +125,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @FunctionalInterface
     private interface Assertions {
 
-        void accept(Optional<MinionServer> minion, String machineId, String key);
+        void accept(Optional<MinionServer> minion, String machineId, String key) throws IOException;
 
     }
 
@@ -463,6 +467,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertEquals(baseChannelX8664, minion.getBaseChannel());
                     assertFalse(minion.getChannels().isEmpty());
                     assertTrue(minion.getChannels().size() > 1);
+
+                    // Check if the state assignment file is generated
+                    assertTrue(tmpSaltRoot.resolve("custom")
+                            .resolve("custom_" + minion.getMachineId() + ".sls").toFile()
+                            .exists());
                 }, DEFAULT_CONTACT_METHOD);
     }
 
@@ -519,6 +528,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
+        ConfigChannel cfgChannel = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Config channel 1", "config-channel-1");
 
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
@@ -547,6 +558,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
                     key.setBaseChannel(baseChannelX8664);
                     key.setOrg(user.getOrg());
+
+                    ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
+                    proc.add(key.getAllConfigChannels(), cfgChannel);
+
                     ActivationKeyFactory.save(key);
                     return key.getKey();
                 },
@@ -559,6 +574,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertNull(minion.getBaseChannel());
                     assertTrue(minion.getChannels().isEmpty());
 
+                    // State assignment file check
+                    Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + minion.getMachineId() + ".sls");
+                    assertTrue(slsPath.toFile().exists());
+                    assertFalse(new String(Files.readAllBytes(slsPath)).contains(
+                            ConfigChannelSaltManager.getInstance().getChannelStateName(cfgChannel)));
                 }, DEFAULT_CONTACT_METHOD);
     }
 
@@ -566,6 +586,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
+        ConfigChannel cfgChannel = ConfigTestUtils.createConfigChannel(user.getOrg(),
+                "Config channel 1", "config-channel-1");
 
         executeTest(
                 (saltServiceMock, key) -> new Expectations() {{
@@ -586,8 +608,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     key.setOrg(user.getOrg());
 
                     ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
-                    proc.add(key.getAllConfigChannels(),
-                            ConfigTestUtils.createConfigChannel(user.getOrg(), "Config channel 1", "config-channel-1"));
+                    proc.add(key.getAllConfigChannels(), cfgChannel);
 
                     ActivationKeyFactory.save(key);
                     return key.getKey();
@@ -611,6 +632,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     // Config channel check
                     assertEquals(1, minion.getConfigChannelCount());
                     assertTrue(minion.getConfigChannelStream().anyMatch(c -> "config-channel-1".equals(c.getLabel())));
+
+                    // State assignment file check
+                    Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + minion.getMachineId() + ".sls");
+                    assertTrue(slsPath.toFile().exists());
+                    assertContains(new String(Files.readAllBytes(slsPath)),
+                            ConfigChannelSaltManager.getInstance().getChannelStateName(cfgChannel));
                 }, DEFAULT_CONTACT_METHOD);
     }
 

@@ -29,7 +29,10 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.webui.services.ConfigChannelSaltManager;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +41,9 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
 
     public void testSubscribeChannels() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + server.getMachineId() + ".sls");
+        assertFalse(slsPath.toFile().exists());
+
         ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Channel 1", "cfg-channel-1");
 
         SaltConfigSubscriptionService.subscribeChannels(server, Collections.singletonList(channel1), user);
@@ -46,6 +52,9 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
         assertEquals(user, revision1.getCreator());
         assertEquals(1, revision1.getConfigChannels().size());
         assertTrue(revision1.getConfigChannels().stream().anyMatch(channel1::equals));
+        assertTrue(slsPath.toFile().exists());
+        assertContains(new String(Files.readAllBytes(slsPath)),
+                ConfigChannelSaltManager.getInstance().getChannelStateName(channel1));
 
         // Test for server groups
         ServerGroup serverGroup = ServerGroupTestUtils.createManaged(user);
