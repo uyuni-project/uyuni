@@ -579,6 +579,26 @@ const CheckListItem = React.createClass({
     }
     /*****/
 
+    /** generate product description content **/
+    let productLabelStatus = '';
+    if (this.state.isInstalled) {
+      productLabelStatus = 'text-muted';
+    }
+    else if (this.props.item.recommended) {
+      productLabelStatus = 'text-info';
+    }
+
+    let productDescriptionContent =
+      <span className={productLabelStatus}>
+        {this.props.item['label']}&nbsp;
+        {
+          this.props.item.recommended ?
+            <u title={'This extension is recommended'}>(recommended)</u>
+            : null
+        }
+      </span>;
+    /*****/
+
     /** generate recommended toggler if needed **/
     let recommendedTogglerContent;
     if (this.getNestedData().some(i => i.recommended)) {
@@ -587,7 +607,7 @@ const CheckListItem = React.createClass({
         <span  className='pointer text-info' onClick={() => this.handleWithRecommended()}>
           <i className='fa fa-1-5x fa-toggle-on' />
           &nbsp;
-          <small>{t('with recommended')}</small>
+          {t('with recommended')}
         </span>;
       }
       else {
@@ -595,7 +615,7 @@ const CheckListItem = React.createClass({
           <span className='pointer text-muted' onClick={() => this.handleWithRecommended()}>
             <i className='fa fa-1-5x fa-toggle-off' />
             &nbsp;
-            <small>{t('with recommended')}</small>
+            {t('with recommended')}
           </span>;
       }
     }
@@ -633,11 +653,8 @@ const CheckListItem = React.createClass({
       <li className={evenOddClass} key={this.props.item['identifier']}>
         <CustomDiv className='col text-center' width={30} um='px'>{selectorContent}</CustomDiv>
         <CustomDiv className='col text-center' width={2} um='em'>{showNestedDataIconContent}</CustomDiv>
-        <CustomDiv className={'col col-class-calc-width ' + (this.props.item.recommended ? 'text-info' : '')}
-            title={this.props.item.recommended ? 'This extension is recommended' : ''}>
-          {this.props.item['label']}
-          &nbsp;
-          {this.props.item.recommended ? '(r)' : ''}
+        <CustomDiv className='col col-class-calc-width'>
+          {productDescriptionContent}
         </CustomDiv>
         <CustomDiv className='col' width={50} um='px' title={t('Architecture')}>{this.props.isFirstLevel ? this.props.item['arch'] : ''}</CustomDiv>
         <CustomDiv className='col text-center' width={2} um='em'>
@@ -651,11 +668,11 @@ const CheckListItem = React.createClass({
         </CustomDiv>
         {
           this.state.isInstalled ?
-            <CustomDiv className='col text-center' width={180} um='px'>
+            <CustomDiv className='col text-right' width={160} um='px'>
               {channelSyncContent}&nbsp;{resyncActionContent}
             </CustomDiv>
             :
-            <CustomDiv className='col text-center' width={180} um='px' title={t('With Recommended')}>
+            <CustomDiv className='col text-right' width={160} um='px' title={t('With Recommended')}>
               {recommendedTogglerContent}
             </CustomDiv>
         }
