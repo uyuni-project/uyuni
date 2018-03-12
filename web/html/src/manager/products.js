@@ -471,12 +471,14 @@ const CheckListItem = React.createClass({
       itemsWithSublistVisible: [],
       withRecommended: true,
       isSelected: this.props.selectedItems.includes(this.props.item.identifier),
+      isInstalled: this.props.item.status == _PRODUCT_STATUS.installed,
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
     const isSelectedNew = nextProps.selectedItems.includes(this.props.item.identifier);
-    this.setState({isSelected: isSelectedNew});
+    const isInstalledNew = nextProps.item.status == _PRODUCT_STATUS.installed;
+    this.setState({isSelected: isSelectedNew, isInstalled: isInstalledNew});
   },
 
   isSublistVisible: function() {
@@ -601,7 +603,7 @@ const CheckListItem = React.createClass({
 
     /** generate channel sync progress bar **/
     let channelSyncContent;
-    if (this.props.item.status == _PRODUCT_STATUS.installed) {
+    if (this.state.isInstalled) {
       const mandatoryChannelList = this.props.item['channels'].filter(c => !c.optional);
 
       // if any failed sync channel, show the error only
@@ -619,7 +621,7 @@ const CheckListItem = React.createClass({
 
     /** generate product resync button **/
     const resyncActionContent =
-      this.props.item.status == _PRODUCT_STATUS.installed ?
+      this.state.isInstalled ?
         <i className='fa fa-refresh fa-1-5x pointer' title={t('Resync product')}
             handler={() => this.resyncProduct(this.props.item['identifier'])} />
         : null;
@@ -648,7 +650,7 @@ const CheckListItem = React.createClass({
           />
         </CustomDiv>
         {
-          this.props.item.status == _PRODUCT_STATUS.installed ?
+          this.state.isInstalled ?
             <CustomDiv className='col text-center' width={180} um='px'>
               {channelSyncContent}&nbsp;{resyncActionContent}
             </CustomDiv>
@@ -667,7 +669,7 @@ const CheckListItem = React.createClass({
               listStyleClass={this.props.listStyleClass}
               isFirstLevel={false}
               showChannelsfor={this.props.showChannelsfor}
-              childrenDisabled={!(this.state.isSelected || this.props.item.status == _PRODUCT_STATUS.installed)}
+              childrenDisabled={!(this.state.isSelected || this.state.isInstalled)}
           />
           : null }
       </li>
