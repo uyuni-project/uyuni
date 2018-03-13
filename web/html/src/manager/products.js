@@ -80,6 +80,7 @@ const ProductPageWrapper = React.createClass({
         !refreshRunning_flag_from_backend,
       syncRunning: false,
       addingProducts: false,
+      syncingSingleProducts: []
     }
   },
 
@@ -138,21 +139,45 @@ const ProductPageWrapper = React.createClass({
         '/rhn/manager/admin/setup/products',
         JSON.stringify(currentObject.state.selectedItems), 'application/json'
     ).promise.then(data => {
-      if(data) {
-        currentObject.setState(
-          {
-            errors: MessagesUtils.success(data),
-            selectedItems : [],
-            addingProducts: false}
-        );
+      // returned data format is { productId : isFailedFlag }
+      let failedProducts = currentObject.state.selectedItems.filter(id => data[id]).map(id => id);
+      let resultMessages = null;
+      if (failedProducts.length == 0) {
+        resultMessages = MessagesUtils.success('All the products were installed succesfully.')
       }
       else {
-        currentObject.setState(
-          {
-            errors: MessagesUtils.warning(data),
-            selectedItems : [],
-            addingProducts: false}
+        resultMessages = MessagesUtils.warning(
+          'The following product installations failed: \'' + failedProducts.reduce((a,b) => a + ', ' + b) + '\'. Please check log files.'
         );
+      }
+      currentObject.setState(
+        {
+          errors: resultMessages,
+          selectedItems : [],
+          addingProducts: false}
+      );
+      this.refreshServerData();
+    })
+    .catch(currentObject.handleResponseError);
+  },
+
+  resyncProduct: function(id, name) {
+    const currentObject = this;
+    var syncingSingleProductsInProgress = currentObject.state.syncingSingleProducts.concat([id]);
+    currentObject.setState({ syncingSingleProducts: syncingSingleProductsInProgress});
+    Network.post('/rhn/manager/admin/setup/products', JSON.stringify([id]), 'application/json').promise
+    .then(data => {
+      if(!data[id]) {
+        currentObject.setState({
+          errors: MessagesUtils.success('The product \'' + name + '\' sync has been scheduled successfully'),
+          syncingSingleProducts: syncingSingleProductsInProgress.filter(i => i != id)
+        });
+      }
+      else {
+        currentObject.setState({
+          errors: MessagesUtils.warning('The product \'' + name + '\' sync was not scheduled correctly. Please check server log files.'),
+          syncingSingleProducts: syncingSingleProductsInProgress.filter(i => i != id)
+        });
       }
     })
     .catch(currentObject.handleResponseError);
@@ -258,6 +283,8 @@ const ProductPageWrapper = React.createClass({
                   loading={this.state.loading}
                   handleSelectedItems={this.handleSelectedItems}
                   selectedItems={this.state.selectedItems}
+                  resyncProduct={this.resyncProduct}
+                  syncingSingleProducts={this.state.syncingSingleProducts}
               />
             </div>
           </div>
@@ -465,6 +492,8 @@ const Products = React.createClass({
               isFirstLevel={true}
               showChannelsfor={this.showChannelsfor}
               cols={_COLS}
+              resyncProduct={this.props.resyncProduct}
+              syncingSingleProducts={this.props.syncingSingleProducts}
           />
         </DataHandler>
         <PopUp
@@ -521,6 +550,8 @@ const CheckList = React.createClass({
                     listStyleClass={this.props.listStyleClass}
                     childrenDisabled={this.props.isFirstLevel ? false : this.props.childrenDisabled}
                     cols={this.props.cols}
+                    resyncProduct={this.props.resyncProduct}
+                    syncingSingleProducts={this.props.syncingSingleProducts}
                 />
               )
             })
@@ -538,6 +569,7 @@ const CheckListItem = React.createClass({
       withRecommended: true,
       isSelected: this.props.selectedItems.includes(this.props.item.identifier),
       isInstalled: this.props.item.status == _PRODUCT_STATUS.installed,
+      isScheduled: false,
     }
   },
 
@@ -610,8 +642,14 @@ const CheckListItem = React.createClass({
     }
   },
 
-  resyncProduct: function(id) {
-    alert(id);
+  isResyncActionInProgress: function(id) {
+    return this.props.syncingSingleProducts.includes(this.props.item['identifier']);
+  },
+
+  resyncProduct: function(id, label) {
+    if (!this.isResyncActionInProgress(id)){
+      this.props.resyncProduct(id, label);
+    }
   },
 
   getNestedData: function() {
@@ -691,7 +729,7 @@ const CheckListItem = React.createClass({
 
       // if any failed sync channel, show the error only
       if (mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
-        channelSyncContent = <span className="text-danged">{t('Sync failed')}</span>;
+        channelSyncContent = <span className="text-danger">{t('Sync failed')}</span>;
       }
       else {
         const syncedChannels = mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.synced).length;
@@ -703,10 +741,12 @@ const CheckListItem = React.createClass({
     /*****/
 
     /** generate product resync button **/
+    const resyncActionInProgress = this.isResyncActionInProgress(this.props.item['identifier']);
     const resyncActionContent =
       this.state.isInstalled ?
-        <i className='fa fa-refresh fa-1-5x pointer' title={t('Resync product')}
-            onClick={() => this.resyncProduct(this.props.item['identifier'])} />
+        <i className={'fa fa-refresh fa-1-5x pointer ' + (resyncActionInProgress ? 'fa-spin text-muted' : '')}
+            title={resyncActionInProgress ? t('Scheduling a product resync') : t('Resync product')}
+            onClick={() => this.resyncProduct(this.props.item['identifier'], this.props.item['label'])} />
         : null;
     /*****/
 
@@ -751,6 +791,8 @@ const CheckListItem = React.createClass({
               showChannelsfor={this.props.showChannelsfor}
               childrenDisabled={!(this.state.isSelected || this.state.isInstalled)}
               cols={this.props.cols}
+              resyncProduct={this.props.resyncProduct}
+              syncingSingleProducts={this.props.syncingSingleProducts}
           />
           : null }
       </li>
