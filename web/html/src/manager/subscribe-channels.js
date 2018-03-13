@@ -203,7 +203,10 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   }
 
   onDateTimeChanged = (date) => {
-      this.setState({earliest: date});
+      this.setState({
+        earliest: date,
+        actionChain: null
+      });
   }
 
   onActionChainChanged = (actionChain: ?ActionChain) => {
