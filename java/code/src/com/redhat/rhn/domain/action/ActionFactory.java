@@ -158,18 +158,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Check if Action is related to an Action Chain Entry
-     * @param actionId action id to check
-     * @return true if action is related with en ActionChainEntry
-     */
-    public static Boolean hasActionChainEntry(Long actionId) {
-        Session session = HibernateFactory.getSession();
-        List<Long> ids = session.getNamedQuery("Action.findActionChainEntries")
-                .setLong("action_id", actionId).list();
-        return !ids.isEmpty();
-    }
-
-    /**
      * Remove an action for an rhnset of system ids with the given label
      * @param actionId the action to remove
      * @param setLabel the set label to pull the ids from

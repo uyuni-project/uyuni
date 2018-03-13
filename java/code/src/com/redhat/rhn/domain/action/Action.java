@@ -422,12 +422,4 @@ public class Action extends BaseDomainHelper implements Serializable {
     public String getHistoryDetails(Server server, User currentUser) {
         return "";
     }
-
-    /**
-     * Check if the Action is related with an Action Chain Entry
-     * @return true if the Action is related to an ActionChainEntry
-     */
-    public Boolean hasActionChainEntry() {
-        return ActionFactory.hasActionChainEntry(getId());
-    }
 }
