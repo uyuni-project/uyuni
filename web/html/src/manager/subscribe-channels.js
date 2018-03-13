@@ -35,7 +35,8 @@ type ChannelDto = {
   id: number,
   name: string,
   custom: boolean,
-  subscribable: boolean
+  subscribable: boolean,
+  recommended: boolean
 }
 
 type SystemChannelsState = {
@@ -262,7 +263,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
           disabled={!c.subscribable}
           onChange={this.handleChildChange}/>
-        <label htmlFor={"child_" + c.id}>{c.name}</label>
+        <label htmlFor={"child_" + c.id}>{c.name}{c.recommended ? " (R)" : ""}</label>
         <ChannelAnchorLink id={c.id} newWindow={true}/>
       </div>)
     }
