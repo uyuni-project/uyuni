@@ -3,8 +3,8 @@
 
 Feature: Action chain tests for salt minions
 
-  # TODO: Scenario: add apply highstate to action-chain
-  # TODO: test ssm with trad-client 
+  # TODO: test docker image building via action chain.
+  #       xmlrpc junit or cucumber to clarify
 
   Scenario: [minion-action-chain] Pre-requisite: downgrade repo to lower version
     Given I am authorized as "admin" with password "admin"
@@ -123,10 +123,16 @@ Feature: Action chain tests for salt minions
 
   Scenario: [minion-action-chain]  Add a reboot action to the action chain
     Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Schedule System Reboot" in the content area
+    When I follow first "Schedule System Reboot"
     And I check radio button "schedule-by-action-chain"
     And I click on "Reboot system"
     Then I should see a "Action has been successfully added to the Action Chain" text
+
+  Scenario: Add apply highstate to minion action-chain
+    Given I am on the Systems overview page of this "sle-minion"
+     And I follow "States" in the content area
+     And I check radio button "schedule-by-action-chain"
+     And I click on "Apply Highstate"
 
   Scenario: [minion-action-chain] Verify the action chain list
     Given I am on the Systems overview page of this "sle-minion"
@@ -138,7 +144,8 @@ Feature: Action chain tests for salt minions
     And I should see a "3. Apply patch(es) andromeda-dummy-6789 on 1 system" text
     And I should see a "4. Remove milkyway-dummy from 1 system" text
     And I should see a text like "5. Deploy.*/etc/action-chain.cnf.*to 1 system"
-    Then I should see a "6. Reboot 1 system" text
+    And I should see a "6. Reboot 1 system" text
+    And I should see a "7. Apply Highstate" text
 
   Scenario: [minion-action-chain] Check that a different user cannot see the action chain
     Given I am authorized as "testing" with password "testing"
@@ -165,15 +172,50 @@ Feature: Action chain tests for salt minions
     And I check radio button "schedule-by-action-chain"
     And I click on "Schedule"
     Then I should see a "Action has been successfully added to the Action Chain" text
+ 
+  Scenario: Add apply highstate to minion action-chain
+    Given I am on the Systems overview page of this "sle-minion"
+     And I follow "States" in the content area
+     And I check radio button "schedule-by-action-chain"
+     And I click on "Apply Highstate"
 
   Scenario: [minion-action-chain] Execute the action chain from the web UI
-    Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Schedule"
-    And I follow "Action Chains"
+   Given I am on the Systems overview page of this "sle-minion"
+   When I follow "Schedule"
+   And I follow "Action Chains"
    And I follow "new action chain"
    And I should see a "1. Run a remote command on 1 system" text
    Then I click on "Save and Schedule"
    And I should see a "Action Chain new action chain has been scheduled for execution." text
+
+  Scenario: Add an action-chain using system-set-manager for trad-client and sle-minion
+   Given I am authorized as "admin" with password "admin"
+    And I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
+    And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
+    When I am on the System Overview page
+    And I check the "sle-minion" client
+    And I check the "sle-client" client
+    And I am on System Set Manager Overview
+    And I follow "Install" in the content area
+    And I follow "Test-Channel-x86_64" in the content area                                       
+    And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter"
+    And I check "andromeda-dummy" in the list
+    And I click on "Install Selected Packages"
+    Then I should see "sle-minion" hostname
+    Then I should see "sle-client" hostname
+    And I check radio button "schedule-by-action-chain"
+    And I click on "Confirm"
+    Then I should see a "Package installations are being scheduled" text
+
+  Scenario: Verify action-chain for 2 system-set-manager (traditional and sle minion)
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Schedule"
+    And I follow "Action Chains"
+    And I follow "new action chain"
+    And I should see a "1. Install or update andromeda-dummy on 2 systems" text
+    Then I click on "Save and Schedule"
+    And I should see a "Action Chain new action chain has been scheduled for execution." text
 
   Scenario: Cleanup: remove system from configuration channel
     Given I am authorized as "admin" with password "admin"
