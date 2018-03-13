@@ -67,6 +67,7 @@ const DataHandler = React.createClass({
     identifier: React.PropTypes.func.isRequired, // the unique key of the item
     cssClassFunction: React.PropTypes.func, // a function that return a css class for each item
     searchField: React.PropTypes.node, // the React Object that contains the filter search field
+    additionalFilters: React.PropTypes.node, // other filters to render but not handled here
     initialItemsPerPage: React.PropTypes.number, // the initial number of how many item-per-page to show
     selectable: React.PropTypes.bool, // enables item selection
     onSelect: React.PropTypes.func, // the handler to call when the table selection is updated. if this function is not provided, the select boxes won't be rendered
@@ -203,6 +204,9 @@ const DataHandler = React.createClass({
               selectedCount={this.state.selectedItems.length}
               selectable={this.state.selectable}
             >{this.props.searchField}
+              {
+                this.props.additionalFilters.map((filter, i) => <span key={'additional-filter-' + i}>{filter}&nbsp;</span>)
+              }
             </SearchPanel>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
                 <ItemsPerPageSelector key="itemsPerPageSelector"
