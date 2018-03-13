@@ -594,23 +594,22 @@ const CheckListItem = React.createClass({
   },
 
   handleSelectedItem: function(id) {
+    // add base product first (the server fails if it tries to add extentions first)
+    let arr = [id];
+
     // this item was selected but it is going to be removed from the selected set,
     // so all children are going to be removed as well
     if(this.state.isSelected) {
-      let arr = [];
-      arr = this.getNestedData().map(el => el.identifier);
-      arr = arr.concat([id]);
+      arr = arr.concat(this.getNestedData().map(el => el.identifier));
       this.handleUnselectedItems(arr);
     }
     else {
       // this item was not selected and it is going to be added to the selected set,
       // so if it has the recommended flag enabled,
       // all recommended children are going to be added as well
-      let arr = [];
       if (this.state.withRecommended) {
-        arr = this.getRecommendedChildren().map(el => el.identifier);
+        arr = arr.concat(this.getRecommendedChildren().map(el => el.identifier));
       }
-      arr = arr.concat([id]);
       this.handleSelectedItems(arr);
     }
   },
