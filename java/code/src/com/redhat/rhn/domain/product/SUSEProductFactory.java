@@ -424,6 +424,24 @@ public class SUSEProductFactory extends HibernateFactory {
         return (SUSEUpgradePath) c.uniqueResult();
     }
 
+    public static Optional<SUSEProductExtension> findSUSEProductExtension(SUSEProduct root,
+                                                           SUSEProduct base,
+                                                           SUSEProduct ext) {
+        Session session = getSession();
+
+        Criteria c = session.createCriteria(SUSEProductExtension.class)
+                .add(Restrictions.eq("rootProduct", root))
+                .add(Restrictions.eq("baseProduct", base))
+                .add(Restrictions.eq("extensionProduct", ext));
+        SUSEProductExtension result = (SUSEProductExtension) c.uniqueResult();
+        if (result == null) {
+            return Optional.empty();
+        }
+        else {
+            return Optional.of(result);
+        }
+    }
+
     /**
      * Find all {@link SUSEProductExtension}.
      * @return list of product extension
