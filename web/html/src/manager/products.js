@@ -80,7 +80,7 @@ const ProductPageWrapper = React.createClass({
         !refreshRunning_flag_from_backend,
       syncRunning: false,
       addingProducts: false,
-      archCriteria: '---'
+      archCriteria: []
     }
   },
 
@@ -90,13 +90,13 @@ const ProductPageWrapper = React.createClass({
     }
   },
 
-  handleFilterArchChange: function(arch) {
-    this.setState({archCriteria: arch});
+  handleFilterArchChange: function(target) {
+    this.setState({archCriteria: Array.from(target.selectedOptions).map(option => option.value)});
   },
 
   filterDataByArch: function(data) {
-    if(this.state.archCriteria != '---') {
-      return data.filter(p => p.arch == this.state.archCriteria);
+    if(this.state.archCriteria.length > 0) {
+      return data.filter(p => this.state.archCriteria.includes(p.arch));
     }
     return data;
   },
@@ -233,9 +233,9 @@ const ProductPageWrapper = React.createClass({
             handler={this.submit}
         />
       );
-      var arch = [];
+      var archs = [];
       Object.keys(this.state.serverData).map((id) => this.state.serverData[id])
-          .forEach(function(x) { if (!arch.includes(x.arch)) arch.push(x.arch); });
+          .forEach(function(x) { if (!archs.includes(x.arch)) archs.push(x.arch); });
       pageContent = (
         <div className='row' id='suse-products'>
           <div className='col-sm-9'>
@@ -246,9 +246,10 @@ const ProductPageWrapper = React.createClass({
                   {
                     this.state.serverData != null ?
                       <span className='d-inline-block'>
-                        <select className='form-control d-inline-block' onChange={(e) => this.handleFilterArchChange(e.target.value)}>
-                          <option value='---'>---</option>
-                          { arch.map(a => <option key={a} value={a}>{a}</option>) }
+                        <select className='form-control d-inline-block'
+                            multiple='multiple'
+                            onChange={(e) => this.handleFilterArchChange(e.target)}>
+                          { archs.map(a => <option key={a} value={a}>{a}</option>) }
                         </select>
                         &nbsp;{t('Filter by architecture')}
                       </span>
