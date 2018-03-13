@@ -56,11 +56,6 @@
         </create>
 
         <!-- SUSE specific -->
-        <create creator="new" javascript="ProductsRenderer">
-            <param name="class"
-                value="com.redhat.rhn.frontend.action.renderers.setupwizard.ProductsRenderer" />
-            <include method="renderAsync" />
-        </create>
         <create creator="new" javascript="MirrorCredentialsRenderer">
             <param name="class"
                 value="com.redhat.rhn.frontend.action.renderers.setupwizard.MirrorCredentialsRenderer" />
