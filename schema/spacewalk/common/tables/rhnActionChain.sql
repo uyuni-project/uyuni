@@ -19,6 +19,9 @@ CREATE TABLE rhnActionChain
                     CONSTRAINT rhn_actionchain_uid_fk
                         REFERENCES web_contact (id)
                         ON DELETE CASCADE,
+    is_scheduled    CHAR(1) DEFAULT ('N') NOT NULL
+                        CONSTRAINT rhn_actionchain_scheduled_yn
+                        CHECK (is_scheduled in ('Y', 'N')),
     created     DATE          DEFAULT(SYSDATE) NOT NULL,
     modified    DATE          DEFAULT(SYSDATE) NOT NULL
 )
