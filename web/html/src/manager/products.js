@@ -80,7 +80,6 @@ const ProductPageWrapper = React.createClass({
         !refreshRunning_flag_from_backend,
       syncRunning: false,
       addingProducts: false,
-      archCriteria: []
     }
   },
 
@@ -88,42 +87,6 @@ const ProductPageWrapper = React.createClass({
     if (!this.state.refreshRunning) {
       this.refreshServerData();
     }
-  },
-
-  componentDidMount: function() {
-    const currentObject = this;
-
-    //HACK: usage of JQuery here is needed to apply the select2js plugin
-    $('select#product-arch-filter.apply-select2js-on-this').each(function(i) {
-      var select = $(this);
-      // apply select2js only one time
-      if (!select.hasClass('select2js-applied')) {
-        select.addClass('select2js-applied');
-
-        var select2js = select.select2({placeholder: t('Filter by architecture')});
-        select2js.on("change", function(event) {
-          currentObject.handleFilterArchChange(select.val() || []);
-        });
-      }
-    });
-  },
-
-  getDistinctArchsFromData: function(data) {
-    var archs = [];
-    Object.keys(data).map((id) => data[id])
-        .forEach(function(x) { if (!archs.includes(x.arch)) archs.push(x.arch); });
-    return archs;
-  },
-
-  handleFilterArchChange: function(archs) {
-    this.setState({archCriteria: archs});
-  },
-
-  filterDataByArch: function(data) {
-    if(this.state.archCriteria.length > 0) {
-      return data.filter(p => this.state.archCriteria.includes(p.arch));
-    }
-    return data;
   },
 
   refreshServerData: function(dataUrlTag) {
@@ -263,11 +226,6 @@ const ProductPageWrapper = React.createClass({
             <Messages items={this.state.errors}/>
             <div>
               <div className='spacewalk-section-toolbar'>
-                <div className='multiple-select-wrapper'>
-                  <select id='product-arch-filter' className='form-control d-inline-block apply-select2js-on-this' multiple='multiple'>
-                    { this.getDistinctArchsFromData(this.state.serverData).map(a => <option key={a} value={a}>{a}</option>) }
-                  </select>
-                </div>
                 <div className='action-button-wrapper'>
                   <div className='btn-group'>
                     <ModalButton
@@ -296,7 +254,7 @@ const ProductPageWrapper = React.createClass({
                 </div>
               </div>
               <Products
-                  data={this.filterDataByArch(this.state.serverData)}
+                  data={this.state.serverData}
                   loading={this.state.loading}
                   handleSelectedItems={this.handleSelectedItems}
                   selectedItems={this.state.selectedItems}
@@ -367,8 +325,45 @@ const ProductPageWrapper = React.createClass({
 const Products = React.createClass({
   getInitialState: function() {
     return {
-      popupItem: null
+      popupItem: null,
+      archCriteria: []
     }
+  },
+
+  componentDidMount: function() {
+    const currentObject = this;
+
+    //HACK: usage of JQuery here is needed to apply the select2js plugin
+    $('select#product-arch-filter.apply-select2js-on-this').each(function(i) {
+      var select = $(this);
+      // apply select2js only one time
+      if (!select.hasClass('select2js-applied')) {
+        select.addClass('select2js-applied');
+
+        var select2js = select.select2({placeholder: t('Filter by architecture')});
+        select2js.on("change", function(event) {
+          currentObject.handleFilterArchChange(select.val() || []);
+        });
+      }
+    });
+  },
+
+  getDistinctArchsFromData: function(data) {
+    var archs = [];
+    Object.keys(data).map((id) => data[id])
+        .forEach(function(x) { if (!archs.includes(x.arch)) archs.push(x.arch); });
+    return archs;
+  },
+
+  handleFilterArchChange: function(archs) {
+    this.setState({archCriteria: archs});
+  },
+
+  filterDataByArch: function(data) {
+    if(this.state.archCriteria.length > 0) {
+      return data.filter(p => this.state.archCriteria.includes(p.arch));
+    }
+    return data;
   },
 
   handleSelectedItems: function(ids) {
@@ -441,13 +436,20 @@ const Products = React.createClass({
           </div>
         )
       : null ;
+    const archFilter =
+      <div className='multiple-select-wrapper'>
+        <select id='product-arch-filter' className='form-control d-inline-block apply-select2js-on-this' multiple='multiple'>
+          { this.getDistinctArchsFromData(this.props.data).map(a => <option key={a} value={a}>{a}</option>) }
+        </select>
+      </div>;
     return (
       <div>
         <DataHandler
-          data={this.buildRows(this.props.data)}
+          data={this.buildRows(this.filterDataByArch(this.props.data))}
           identifier={(raw) => raw['identifier']}
           initialItemsPerPage={userPrefPageSize}
           loading={this.props.loading}
+          additionalFilters={[archFilter]}
           searchField={
               <SearchField filter={this.searchData}
                   criteria={''}
