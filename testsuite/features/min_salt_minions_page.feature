@@ -63,9 +63,6 @@ Feature: Management of minion keys
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
-    ### WORKAROUND - please remove when issue is fixed
-    # bsc#1080722 - Deleting profile of minions that cannot be reached by Salt lasts too long
-    And I wait for "240" seconds
     Then I should see a "minion_unreachable" text
     When I click on "Delete Profile Without Cleanup"
     And I wait for "1" second
