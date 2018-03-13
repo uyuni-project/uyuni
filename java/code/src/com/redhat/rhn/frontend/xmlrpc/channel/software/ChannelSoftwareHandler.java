@@ -750,7 +750,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             command.setGpgKeyId(details.get("gpg_key_id"));
         }
         else if (details.containsKey("gpg_id")) {
-            command.setGpgKeyId(details.get("gpg_key_id"));
+            command.setGpgKeyId(details.get("gpg_id"));
         }
 
         if (details.containsKey("gpg_key_fp")) {
