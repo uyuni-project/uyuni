@@ -92,6 +92,9 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChainFactory.createActionChain(TestUtils.randomString(), user);
         ActionChainFactory.createActionChain(TestUtils.randomString(), user);
         ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        ActionChain scheduled = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        scheduled.setScheduled(true);
+        HibernateFactory.getSession().update(scheduled);
 
         assertEquals(previousSize + 3, ActionChainFactory.getActionChains(user).size());
     }
@@ -347,7 +350,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
         ActionChainFactory.schedule(actionChain, new Date());
 
-        assertDeleted(actionChain);
+//        assertDeleted(actionChain);
 
         // check actions are scheduled in correct order
         for (ActionChainEntry entry : actionChain.getEntries()) {

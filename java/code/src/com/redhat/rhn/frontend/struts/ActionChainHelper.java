@@ -92,8 +92,7 @@ public class ActionChainHelper {
         List<Map<String, String>> result = new LinkedList<Map<String, String>>();
         User u = new RequestContext(request).getCurrentUser();
         List<ActionChain> actionChains = ActionChainFactory
-            .getActionChainsByModificationDate(u).stream()
-                .filter(a -> !a.isScheduled()).collect(Collectors.toList());
+            .getActionChainsByModificationDate(u);
 
         for (ActionChain actionChain : actionChains) {
             populateActionChain(result, actionChain.getLabel());

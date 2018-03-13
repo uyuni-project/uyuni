@@ -46,7 +46,6 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.utils.MinionServerUtils;
 
 /**
@@ -83,6 +82,7 @@ public class ActionChainFactory extends HibernateFactory {
             .createCriteria(ActionChain.class)
             .add(Restrictions.eq("label", label))
             .add(Restrictions.eq("user", requestor))
+            .add(Restrictions.eq("scheduled", false))
             .uniqueResult();
     }
 
@@ -251,7 +251,7 @@ public class ActionChainFactory extends HibernateFactory {
     }
 
     /**
-     * Gets all action chains for a user.
+     * Gets all action chains for a user that are not scheduled for execution.
      * @param requestor the user whose chains we're looking for
      * @return action chains
      */
@@ -260,6 +260,7 @@ public class ActionChainFactory extends HibernateFactory {
         return getSession()
             .createCriteria(ActionChain.class)
             .add(Restrictions.eq("user", requestor))
+            .add(Restrictions.eq("scheduled", false))
             .addOrder(Order.asc("label"))
             .list();
     }
@@ -274,6 +275,7 @@ public class ActionChainFactory extends HibernateFactory {
         return getSession()
             .createCriteria(ActionChain.class)
             .add(Restrictions.eq("user", requestor))
+            .add(Restrictions.eq("scheduled", false))
             .addOrder(Order.desc("modified"))
             .list();
     }
@@ -333,16 +335,6 @@ public class ActionChainFactory extends HibernateFactory {
     }
 
     /**
-     * Set Action Chain as scheduled.
-     * @param actionChain the action chain to set as scheduled
-     */
-    public static void setAsScheduled(ActionChain actionChain) {
-        log.debug("Setting Action Chain " + actionChain + " as scheduled");
-        actionChain.setIsScheduled("Y");
-        actionChain.setLabel("--SCHEDULED--" + actionChain.getLabel());
-    }
-
-    /**
      * Schedules an Action Chain for execution.
      * @param actionChain the action chain to execute
      * @param date first action's minimum timestamp
@@ -390,8 +382,8 @@ public class ActionChainFactory extends HibernateFactory {
             // Trigger Action Chain execution for Minions via Taskomatic
             TASKOMATIC_API.scheduleActionChainExecution(actionChain);
         }
+        actionChain.setScheduled(true);
         log.debug("Action Chain " + actionChain + " scheduled to date " + date);
-        setAsScheduled(actionChain);
     }
 
     /**
