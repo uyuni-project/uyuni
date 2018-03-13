@@ -31,7 +31,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +59,6 @@ public class ActionChainListAction extends RhnAction implements Listable<ActionC
      * {@inheritDoc}
      */
     public List<ActionChain> getResult(RequestContext context) {
-        return ActionChainFactory.getActionChains(context.getCurrentUser()).stream()
-                .filter(ac -> !ac.isScheduled()).collect(Collectors.toList());
+        return ActionChainFactory.getActionChains(context.getCurrentUser());
     }
 }

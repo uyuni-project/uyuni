@@ -40,7 +40,7 @@ public class ActionChain extends BaseDomainHelper {
     private String label;
 
     /** The scheduled flag. */
-    private String isScheduled = "N";
+    private boolean scheduled;
 
     /** The user. */
     private User user;
@@ -88,27 +88,20 @@ public class ActionChain extends BaseDomainHelper {
     }
 
     /**
-     * Gets the isScheduled.
-     * @return the isScheduled
+     * Sets the scheduled flag.
+     * @param isScheduledIn whether the action has been scheduled or not
      */
-    public String getIsScheduled() {
-        return isScheduled;
+    public void setScheduled(boolean isScheduledIn) {
+        scheduled = isScheduledIn;
     }
 
     /**
-     * Sets the isScheduled.
-     * @param isScheduled indicate if action chain has been scheduled
+     * Indicates whether the action has been scheduled or not.
+     *
+     * @return scheduled to get
      */
-    public void setIsScheduled(String isScheduledIn) {
-        isScheduled = isScheduledIn;
-    }
-
-    /**
-     * Check if Action Chain has been scheduled.
-     * @return true if Action Chain has been scheduled
-     */
-    public Boolean isScheduled() {
-        return (getIsScheduled().equals("Y"));
+    public boolean isScheduled() {
+        return scheduled;
     }
 
     /**
