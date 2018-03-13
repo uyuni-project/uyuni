@@ -273,7 +273,9 @@ public class SystemsController {
                     children,
                     earliest,
                     actionChain);
-            return json(response, JsonResult.success(sca.stream().findFirst().map(a -> a.getId()).orElse(null)));
+            return json(response, JsonResult.success(
+                    actionChain != null ? actionChain.getId() :
+                    sca.stream().findFirst().map(a -> a.getId()).orElse(null)));
         }
         catch (TaskomaticApiException e) {
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,

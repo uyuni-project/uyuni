@@ -10,7 +10,7 @@ const Functions = require("../utils/functions");
 const Messages = require("../components/messages").Messages;
 const MessagesUtils = require("../components/messages").Utils;
 const {BootstrapPanel} = require("../components/panel");
-const {ChannelAnchorLink, ActionLink} = require("../components/links");
+const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("../components/links");
 
 import type JsonResult from "../utils/network";
 import type {ActionChain} from "../components/action-schedule";
@@ -183,9 +183,14 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       }), "application/json")
         .promise.then(data => {
             if (data.success) {
+              const msg = MessagesUtils.info(this.state.actionChain ?
+                     <span>{t("Action has been successfully added to the Action Chain ")}
+                          <ActionChainLink id={data.data}>{this.state.actionChain ? this.state.actionChain.text : ""}</ActionChainLink>.</span> :
+                       <span>{t("Changing the channels has been ")}
+                          <ActionLink id={data.data}>{t("scheduled")}.</ActionLink></span>);
+
               this.setState({
-                messages: MessagesUtils.info(<span>{t("Changing the channels has been ")}
-                        <ActionLink id={data.data}>{t("scheduled")}.</ActionLink></span>),
+                messages: msg,
                 scheduled: true
               });
             } else {
