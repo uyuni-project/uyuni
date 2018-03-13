@@ -55,8 +55,8 @@ public class CloneChannelCommand extends CreateChannelCommand {
         gpgKeyId = cloneFrom.getGPGKeyId();
         gpgKeyFp = cloneFrom.getGPGKeyFp();
         gpgCheck  = cloneFrom.isGPGCheck();
-        parentLabel = Optional.ofNullable(cloneFrom.getParentChannel()).map(pr->pr.getLabel()).orElse("");
-        archLabel = Optional.ofNullable(cloneFrom.getChannelArch()).map(ca->ca.getLabel()).orElse("");
+        parentId = Optional.ofNullable(cloneFrom.getParentChannel()).map(Channel::getId).orElse(null);
+        archLabel = Optional.ofNullable(cloneFrom.getChannelArch()).map(ChannelArch::getLabel).orElse("");
     }
 
     /**
