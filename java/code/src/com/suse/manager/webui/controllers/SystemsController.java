@@ -23,6 +23,11 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -300,6 +305,14 @@ public class SystemsController {
         StrutsDelegate.getInstance().saveMessages(req, errs);
     }
 
+    private static Channel getOriginal(Channel c) {
+        Channel c2 = c;
+        while (c2.isCloned()) {
+            c2 = c2.getOriginal();
+        }
+        return c2;
+    }
+
     /**
      * Get available child channels for a base channel.
      * @param request the request
@@ -332,12 +345,35 @@ public class SystemsController {
                 }
 
                 List<Channel> children = baseChannel.getAccessibleChildrenFor(user);
+
+                Channel rootChannel = getOriginal(baseChannel);
+                Optional<SUSEProductChannel> rootProduct = SUSEProductFactory.findProductByChannelLabel(rootChannel.getLabel());
+
                 List<ChannelsJson.ChannelJson> jsonList = children.stream()
                         .filter(c -> c.isSubscribable(user.getOrg(), server))
-                        .map(c -> new ChannelsJson.ChannelJson(c.getId(),
-                                c.getName(),
-                                c.isCustom(),
-                                c.isSubscribable(user.getOrg(), server)))
+                        .map(c -> {
+
+                            Channel original = getOriginal(c);
+                            boolean recommended = false;
+                            Optional<SUSEProductChannel> extProduct = SUSEProductFactory.findProductByChannelLabel(original.getLabel());
+                            if (extProduct.isPresent() && rootProduct.isPresent()) {
+                                List<SUSEProduct> allBaseProductsOf = SUSEProductFactory.findAllBaseProductsOf(extProduct.get().getProduct(), rootProduct.get().getProduct());
+                                recommended = allBaseProductsOf.stream().anyMatch(baseProduct -> {
+                                    return SUSEProductFactory.findSUSEProductExtension(
+                                            rootProduct.get().getProduct(), baseProduct, extProduct.get().getProduct()
+                                    ).map(SUSEProductExtension::isRecommended).orElse(false);
+                                });
+                            }
+                            else {
+                                recommended = false;
+                            }
+
+                            return new ChannelsJson.ChannelJson(c.getId(),
+                                    c.getName(),
+                                    c.isCustom(),
+                                    c.isSubscribable(user.getOrg(), server),
+                                    recommended);
+                        })
                         .collect(Collectors.toList());
                 return json(response, JsonResult.success(jsonList));
             }
