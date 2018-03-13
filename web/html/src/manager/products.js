@@ -90,8 +90,33 @@ const ProductPageWrapper = React.createClass({
     }
   },
 
-  handleFilterArchChange: function(target) {
-    this.setState({archCriteria: Array.from(target.selectedOptions).map(option => option.value)});
+  componentDidMount: function() {
+    const currentObject = this;
+
+    //HACK: usage of JQuery here is needed to apply the select2js plugin
+    $('select#product-arch-filter.apply-select2js-on-this').each(function(i) {
+      var select = $(this);
+      // apply select2js only one time
+      if (!select.hasClass('select2js-applied')) {
+        select.addClass('select2js-applied');
+
+        var select2js = select.select2({placeholder: t('Filter by architecture')});
+        select2js.on("change", function(event) {
+          currentObject.handleFilterArchChange(select.val() || []);
+        });
+      }
+    });
+  },
+
+  getDistinctArchsFromData: function(data) {
+    var archs = [];
+    Object.keys(data).map((id) => data[id])
+        .forEach(function(x) { if (!archs.includes(x.arch)) archs.push(x.arch); });
+    return archs;
+  },
+
+  handleFilterArchChange: function(archs) {
+    this.setState({archCriteria: archs});
   },
 
   filterDataByArch: function(data) {
@@ -177,8 +202,6 @@ const ProductPageWrapper = React.createClass({
   },
 
   render: function() {
-    const data = this.state.serverData;
-
     const title =
       <div className='spacewalk-toolbar-h1'>
         <h1>
@@ -233,28 +256,17 @@ const ProductPageWrapper = React.createClass({
             handler={this.submit}
         />
       );
-      var archs = [];
-      Object.keys(this.state.serverData).map((id) => this.state.serverData[id])
-          .forEach(function(x) { if (!archs.includes(x.arch)) archs.push(x.arch); });
+
       pageContent = (
         <div className='row' id='suse-products'>
           <div className='col-sm-9'>
             <Messages items={this.state.errors}/>
             <div>
               <div className='spacewalk-section-toolbar'>
-                <div className='selector-button-wrapper'>
-                  {
-                    this.state.serverData != null ?
-                      <span className='d-inline-block'>
-                        <select className='form-control d-inline-block'
-                            multiple='multiple'
-                            onChange={(e) => this.handleFilterArchChange(e.target)}>
-                          { archs.map(a => <option key={a} value={a}>{a}</option>) }
-                        </select>
-                        &nbsp;{t('Filter by architecture')}
-                      </span>
-                      : null
-                  }
+                <div className='multiple-select-wrapper'>
+                  <select id='product-arch-filter' className='form-control d-inline-block apply-select2js-on-this' multiple='multiple'>
+                    { this.getDistinctArchsFromData(this.state.serverData).map(a => <option key={a} value={a}>{a}</option>) }
+                  </select>
                 </div>
                 <div className='action-button-wrapper'>
                   <div className='btn-group'>
