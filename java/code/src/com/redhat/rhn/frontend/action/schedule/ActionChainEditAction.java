@@ -81,15 +81,6 @@ public class ActionChainEditAction extends RhnAction {
                 requestContext.getCurrentUser(),
                 Long.valueOf(request.getParameter(ACTION_CHAIN_ID_PARAMETER)));
 
-        if (actionChain.isScheduled()) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e = new LookupException("Action chain id: " +
-                    actionChain.getId() + " has been already scheduled");
-            e.setLocalizedTitle(ls.getMessage("lookup.jsp.title.actionchain"));
-            e.setLocalizedReason1(ls.getMessage("lookup.jsp.actionchain.reason1"));
-            throw e;
-        }
-
         if (isSubmitted(form)) {
             if (requestContext.wasDispatched("actionchain.jsp.delete")) {
                 return delete(mapping, request, actionChain);

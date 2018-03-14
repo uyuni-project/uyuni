@@ -39,9 +39,6 @@ public class ActionChain extends BaseDomainHelper {
     /** The label. */
     private String label;
 
-    /** The scheduled flag. */
-    private boolean scheduled;
-
     /** The user. */
     private User user;
 
@@ -88,23 +85,6 @@ public class ActionChain extends BaseDomainHelper {
     }
 
     /**
-     * Sets the scheduled flag.
-     * @param isScheduledIn whether the action has been scheduled or not
-     */
-    public void setScheduled(boolean isScheduledIn) {
-        scheduled = isScheduledIn;
-    }
-
-    /**
-     * Indicates whether the action has been scheduled or not.
-     *
-     * @return scheduled to get
-     */
-    public boolean isScheduled() {
-        return scheduled;
-    }
-
-    /**
      * Gets the user.
      * @return the user
      */
@@ -138,7 +118,6 @@ public class ActionChain extends BaseDomainHelper {
         return entries.stream().map(ActionChainEntry::getAction)
                 .map(Action::getEarliestAction).min(Date::compareTo).get();
     }
-
 
     /**
      * Sets the entries.
