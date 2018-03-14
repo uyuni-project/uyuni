@@ -675,6 +675,7 @@ const CheckListItem = React.createClass({
             onChange={() => this.handleSelectedItem(this.props.item['identifier'])}
             checked={this.state.isSelected ? 'checked' : ''}
             disabled={this.props.childrenDisabled ? 'disabled' : ''}
+            title={this.props.childrenDisabled ? t('To enable this product, the parent product should be selected first') : t('Select this product')}
         />
         : null;
     /*****/
