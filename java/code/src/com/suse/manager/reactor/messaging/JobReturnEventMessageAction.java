@@ -101,16 +101,18 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
         // Check first if the received event was triggered by a single action execution
         Optional<Long> actionId = getActionId(jobReturnEvent);
-        actionId.filter(id -> id > 0).ifPresent(id ->
+        actionId.filter(id -> id > 0).ifPresent(id -> {
                 jobResult.ifPresent(result ->
-                        handleAction(id,
+                    handleAction(id,
                             jobReturnEvent.getMinionId(),
                             jobReturnEvent.getData().getRetcode(),
                             jobReturnEvent.getData().isSuccess(),
                             jobReturnEvent.getJobId(),
                             jobResult.get(),
-                            jobReturnEvent.getData().getFun()))
-        );
+                            jobReturnEvent.getData().getFun()));
+
+                refreshPackagesIfNeeded(jobReturnEvent, function, jobResult);
+        });
 
         // Check if the event was triggered by an action chain execution
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
@@ -138,6 +140,9 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                                 jobReturnEvent.getJobId(),
                                 actionStateApply.getChanges().getRet(),
                                 actionStateApply.getName());
+
+                        refreshPackagesIfNeeded(jobReturnEvent, actionStateApply.getName(),
+                                Optional.of(actionStateApply.getChanges().getRet()));
                     }
                     else if (!key.contains("suma_reboot_action")) {
                         LOG.warn("Could not find action id in action chain state key: " + key);
@@ -154,6 +159,24 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
         });
 
+        // For all jobs: update minion last checkin
+        Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
+                jobReturnEvent.getMinionId());
+        if (minion.isPresent()) {
+            MinionServer m = minion.get();
+            m.updateServerInfo();
+            // for s390 update the host as well
+            if (m.getCpu() != null &&
+                CpuArchUtil.isS390(m.getCpu().getArch().getLabel())) {
+                VirtualInstance virtInstance = m.getVirtualInstance();
+                if (virtInstance != null && virtInstance.getHostSystem() != null) {
+                    virtInstance.getHostSystem().updateServerInfo();
+                }
+            }
+        }
+    }
+
+    private void refreshPackagesIfNeeded(JobReturnEvent jobReturnEvent, String function, Optional<JsonElement> jobResult) {
         MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
             .ifPresent(minionServer -> {
                 jobResult.ifPresent(result -> {
@@ -177,22 +200,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     }
                 });
             });
-
-        // For all jobs: update minion last checkin
-        Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
-                jobReturnEvent.getMinionId());
-        if (minion.isPresent()) {
-            MinionServer m = minion.get();
-            m.updateServerInfo();
-            // for s390 update the host as well
-            if (m.getCpu() != null &&
-                CpuArchUtil.isS390(m.getCpu().getArch().getLabel())) {
-                VirtualInstance virtInstance = m.getVirtualInstance();
-                if (virtInstance != null && virtInstance.getHostSystem() != null) {
-                    virtInstance.getHostSystem().updateServerInfo();
-                }
-            }
-        }
     }
 
     private void handleAction(long actionId, String minionId, int retcode, boolean success,
