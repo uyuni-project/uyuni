@@ -19,6 +19,9 @@ import com.google.gson.JsonObject;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 
+/**
+ * Event fired when an Action Chain starts executing.
+ */
 public class MgrActionChainsStart {
 
     private StateApplyResult<Ret<JsonObject>> start;

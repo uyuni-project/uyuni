@@ -16,25 +16,36 @@
 package com.suse.manager.webui.utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Collections.singletonMap;
 
+/**
+ * Represents a system reboot state run.
+ */
 public class SaltSystemReboot  extends AbstractSaltRequisites implements SaltState {
 
     private String id;
     private Optional<Integer> minutes = Optional.empty();
 
-    public SaltSystemReboot(String id, int minutes) {
-        this.id = id;
-        this.minutes = Optional.of(minutes);
+    /**
+     * Standard constructor.
+     * @param idIn state ID
+     * @param minutesIn minutes before rebooting
+     */
+    public SaltSystemReboot(String idIn, int minutesIn) {
+        this.id = idIn;
+        this.minutes = Optional.of(minutesIn);
     }
 
-    public SaltSystemReboot(String id) {
-        this.id = id;
+    /**
+     * Minimal constructor.
+     * @param idIn state ID
+     */
+    public SaltSystemReboot(String idIn) {
+        this.id = idIn;
     }
 
     @Override

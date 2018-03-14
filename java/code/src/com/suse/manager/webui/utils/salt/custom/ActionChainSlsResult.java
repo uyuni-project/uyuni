@@ -22,6 +22,9 @@ import com.suse.salt.netapi.results.StateApplyResult;
 
 import java.util.Map;
 
+/**
+ * Represents a result from an Action Chain SLS.
+ */
 public class ActionChainSlsResult {
 
     @SerializedName("module_|-start_action_chain_|-mgractionchains.start_|-run")

@@ -14,15 +14,9 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.quartz.JobExecutionContext;
-
-import java.util.Optional;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Execute SUSE Manager actions via Salt.

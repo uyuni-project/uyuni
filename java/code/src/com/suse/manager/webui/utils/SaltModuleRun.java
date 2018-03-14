@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2018 SUSE LLC
- * <p>
+ *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
  * implied, including the implied warranties of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- * <p>
+ *
  * Red Hat trademarks are not licensed under GPLv2. No permission is
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
@@ -16,53 +16,67 @@
 package com.suse.manager.webui.utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.singletonMap;
 
+/**
+ * Encapsulates the execution of a state.
+ */
 public class SaltModuleRun extends AbstractSaltRequisites implements SaltState {
     private String id;
     private String name;
     private Map<String, ?> args;
     private Map<String, ?> kwargs;
 
-    public SaltModuleRun(String id, String name, Map<String, ?> args) {
-        this.id = id;
-        this.name = name;
-        this.args = args;
+    /**
+     * Standard constructor
+     * @param idIn state id
+     * @param nameIn module name
+     * @param argsIn positional arguments
+     */
+    public SaltModuleRun(String idIn, String nameIn, Map<String, ?> argsIn) {
+        this.id = idIn;
+        this.name = nameIn;
+        this.args = argsIn;
     }
 
-    public SaltModuleRun(String id, String name, Map<String, ?> args, Map<String, ?> kwargs) {
-        this.id = id;
-        this.name = name;
-        this.args = args;
-        this.kwargs = kwargs;
+    /**
+     * Complete constructor
+     * @param idIn state id
+     * @param nameIn module name
+     * @param argsIn positional arguments
+     * @param kwargsIn keyword arguments
+     */
+    public SaltModuleRun(String idIn, String nameIn, Map<String, ?> argsIn, Map<String, ?> kwargsIn) {
+        this.id = idIn;
+        this.name = nameIn;
+        this.args = argsIn;
+        this.kwargs = kwargsIn;
     }
 
     @Override
     public Map<String, Object> getData() {
-        List<Map<String, ?>> args = new ArrayList<>();
-        args.add(singletonMap("name", name));
+        List<Map<String, ?>> arguments = new ArrayList<>();
+        arguments.add(singletonMap("name", name));
 
         if (this.args != null) {
-            args.addAll(this.args.entrySet()
+            arguments.addAll(this.args.entrySet()
                     .stream()
                     .map(e -> singletonMap(e.getKey(), e.getValue()))
                     .collect(Collectors.toList())
             );
         }
         if (this.kwargs != null) {
-            args.add(singletonMap("kwargs", this.kwargs));
+            arguments.add(singletonMap("kwargs", this.kwargs));
         }
 
-        addRequisites(args);
+        addRequisites(arguments);
 
         return singletonMap(id,
-                singletonMap("module.run", args)
+                singletonMap("module.run", arguments)
         );
     }
 

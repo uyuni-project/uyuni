@@ -15,7 +15,6 @@
 package com.suse.manager.reactor.messaging;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
@@ -35,7 +34,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.utils.SaltUtils.PackageChangeOutcome;
-import com.suse.manager.webui.utils.salt.custom.ActionChainSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.salt.netapi.event.JobReturnEvent;
@@ -176,7 +174,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         }
     }
 
-    private void refreshPackagesIfNeeded(JobReturnEvent jobReturnEvent, String function, Optional<JsonElement> jobResult) {
+    private void refreshPackagesIfNeeded(JobReturnEvent jobReturnEvent, String function,
+                                         Optional<JsonElement> jobResult) {
         MinionServerFactory.findByMinionId(jobReturnEvent.getMinionId())
             .ifPresent(minionServer -> {
                 jobResult.ifPresent(result -> {
