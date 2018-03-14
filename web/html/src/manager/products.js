@@ -80,7 +80,8 @@ const ProductPageWrapper = React.createClass({
         !refreshRunning_flag_from_backend,
       syncRunning: false,
       addingProducts: false,
-      syncingSingleProducts: []
+      scheduledItems: [],
+      scheduleResyncItems: []
     }
   },
 
@@ -163,20 +164,22 @@ const ProductPageWrapper = React.createClass({
 
   resyncProduct: function(id, name) {
     const currentObject = this;
-    var syncingSingleProductsInProgress = currentObject.state.syncingSingleProducts.concat([id]);
-    currentObject.setState({ syncingSingleProducts: syncingSingleProductsInProgress});
+    var scheduledItemsNew = currentObject.state.scheduledItems.concat([id]);
+    var scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
+    currentObject.setState({ scheduleResyncItems: scheduleResyncItemsNew});
     Network.post('/rhn/manager/admin/setup/products', JSON.stringify([id]), 'application/json').promise
     .then(data => {
       if(!data[id]) {
         currentObject.setState({
           errors: MessagesUtils.success('The product \'' + name + '\' sync has been scheduled successfully'),
-          syncingSingleProducts: syncingSingleProductsInProgress.filter(i => i != id)
+          scheduleResyncItems: scheduleResyncItemsNew.filter(i => i != id),
+          scheduledItems: currentObject.state.scheduledItems.concat([id])
         });
       }
       else {
         currentObject.setState({
           errors: MessagesUtils.warning('The product \'' + name + '\' sync was not scheduled correctly. Please check server log files.'),
-          syncingSingleProducts: syncingSingleProductsInProgress.filter(i => i != id)
+          scheduleResyncItems: scheduleResyncItemsNew.filter(i => i != id)
         });
       }
     })
@@ -284,7 +287,8 @@ const ProductPageWrapper = React.createClass({
                   handleSelectedItems={this.handleSelectedItems}
                   selectedItems={this.state.selectedItems}
                   resyncProduct={this.resyncProduct}
-                  syncingSingleProducts={this.state.syncingSingleProducts}
+                  scheduledItems={this.state.scheduledItems}
+                  scheduleResyncItems={this.state.scheduleResyncItems}
               />
             </div>
           </div>
@@ -493,7 +497,8 @@ const Products = React.createClass({
               showChannelsfor={this.showChannelsfor}
               cols={_COLS}
               resyncProduct={this.props.resyncProduct}
-              syncingSingleProducts={this.props.syncingSingleProducts}
+              scheduledItems={this.props.scheduledItems}
+              scheduleResyncItems={this.props.scheduleResyncItems}
           />
         </DataHandler>
         <PopUp
@@ -551,7 +556,8 @@ const CheckList = React.createClass({
                     childrenDisabled={this.props.isFirstLevel ? false : this.props.childrenDisabled}
                     cols={this.props.cols}
                     resyncProduct={this.props.resyncProduct}
-                    syncingSingleProducts={this.props.syncingSingleProducts}
+                    scheduledItems={this.props.scheduledItems}
+                    scheduleResyncItems={this.props.scheduleResyncItems}
                 />
               )
             })
@@ -567,7 +573,6 @@ const CheckListItem = React.createClass({
     return {
       itemsWithSublistVisible: [],
       withRecommended: true,
-      isScheduled: false,
     }
   },
 
@@ -663,13 +668,13 @@ const CheckListItem = React.createClass({
     }
   },
 
-  isResyncActionInProgress: function(id) {
-    return this.props.syncingSingleProducts.includes(this.props.item['identifier']);
+  scheduleResyncInProgress: function() {
+    return this.props.scheduleResyncItems.includes(this.props.item['identifier']);
   },
 
-  resyncProduct: function(id, label) {
-    if (!this.isResyncActionInProgress(id)){
-      this.props.resyncProduct(id, label);
+  resyncProduct: function() {
+    if (!this.scheduleResyncInProgress()){
+      this.props.resyncProduct(this.props.item['identifier'], this.props.item['label']);
     }
   },
 
@@ -750,8 +755,12 @@ const CheckListItem = React.createClass({
     if (this.isInstalled()) {
       const mandatoryChannelList = this.props.item['channels'].filter(c => !c.optional);
 
+      // if the product sync has just been scheduled
+      if (this.props.scheduledItems.includes(this.props.item.identifier)) {
+        channelSyncContent = <span className="text-info">{t('Sync scheduled')}</span>;
+      }
       // if any failed sync channel, show the error only
-      if (mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
+      else if (mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
         channelSyncContent = <span className="text-danger">{t('Sync failed')}</span>;
       }
       else {
@@ -764,12 +773,12 @@ const CheckListItem = React.createClass({
     /*****/
 
     /** generate product resync button **/
-    const resyncActionInProgress = this.isResyncActionInProgress(this.props.item['identifier']);
+    const resyncActionInProgress = this.scheduleResyncInProgress();
     const resyncActionContent =
       this.isInstalled() ?
         <i className={'fa fa-refresh fa-1-5x pointer ' + (resyncActionInProgress ? 'fa-spin text-muted' : '')}
             title={resyncActionInProgress ? t('Scheduling a product resync') : t('Resync product')}
-            onClick={() => this.resyncProduct(this.props.item['identifier'], this.props.item['label'])} />
+            onClick={this.resyncProduct} />
         : null;
     /*****/
 
@@ -817,7 +826,8 @@ const CheckListItem = React.createClass({
               childrenDisabled={!(this.isSelected() || this.isInstalled())}
               cols={this.props.cols}
               resyncProduct={this.props.resyncProduct}
-              syncingSingleProducts={this.props.syncingSingleProducts}
+              scheduledItems={this.props.scheduledItems}
+              scheduleResyncItems={this.props.scheduleResyncItems}
           />
           : null }
       </li>
