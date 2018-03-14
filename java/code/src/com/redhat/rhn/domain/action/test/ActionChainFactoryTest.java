@@ -92,9 +92,6 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChainFactory.createActionChain(TestUtils.randomString(), user);
         ActionChainFactory.createActionChain(TestUtils.randomString(), user);
         ActionChainFactory.createActionChain(TestUtils.randomString(), user);
-        ActionChain scheduled = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
-        scheduled.setScheduled(true);
-        HibernateFactory.getSession().update(scheduled);
 
         assertEquals(previousSize + 3, ActionChainFactory.getActionChains(user).size());
     }

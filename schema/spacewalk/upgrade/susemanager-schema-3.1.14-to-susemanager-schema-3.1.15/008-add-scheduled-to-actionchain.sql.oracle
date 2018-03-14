@@ -1,2 +1,0 @@
-ALTER TABLE rhnActionChain ADD COLUMN is_scheduled VARCHAR2(1) DEFAULT 'N' NOT NULL
-    CONSTRAINT rhn_actionchain_scheduled_yn check (is_scheduled in ('Y', 'N'));

@@ -1,4 +1,0 @@
--- oracle equivalent source sha1 8d2b8b45c0845709ab83beccf7a5024ab2c2db20
-
-ALTER TABLE rhnActionChain ADD COLUMN is_scheduled VARCHAR(1) DEFAULT 'N' NOT NULL
-    CONSTRAINT rhn_actionchain_scheduled_yn check (is_scheduled in ('Y', 'N'));
