@@ -1,3 +1,5 @@
+- Add detection of multiple rhnlib package installs
+
 -------------------------------------------------------------------
 Mon Mar 05 08:46:53 CET 2018 - jgonzalez@suse.com
 
