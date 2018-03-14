@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers;
 
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -39,11 +40,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
@@ -214,44 +211,68 @@ public class ProductsController {
             ContentSyncManager csm = new ContentSyncManager();
             ProductSyncManager psm = new ProductSyncManager();
             Collection<MgrSyncProductDto> products = csm.listProducts(csm.listChannels());
-            List<Product> jsonProducts = products.stream().map(
-                syncProduct -> new Product(
-                    syncProduct.getId(),
-                    syncProduct.getIdent(),
-                    syncProduct.getFriendlyName(),
-                    syncProduct.getArch(),
-                    syncProduct.isRecommended(),
-                    syncProduct.getStatus(),
-                    syncProduct.getExtensions().stream().map(s ->
-                       new Extension(
-                           s.getId(),
-                           s.getIdent(),
-                           s.getFriendlyName(),
-                           s.getArch(),
-                           s.isRecommended(),
-                           s.getStatus(),
-                           s.getChannels().stream().map(c ->
-                                   new JsonChannel(
-                                           c.getName(),
-                                           c.getLabel(),
-                                           c.getSummary(),
-                                           c.getOptional(),
-                                           psm.getChannelSyncStatus(c.getLabel()).getStage()
-                                   )
-                           ).collect(Collectors.toSet())
-                         )
-                      ).collect(Collectors.toSet()),
-                      syncProduct.getChannels().stream().map(c ->
-                              new JsonChannel(
-                                      c.getName(),
-                                      c.getLabel(),
-                                      c.getSummary(),
-                                      c.getOptional(),
-                                      psm.getChannelSyncStatus(c.getLabel()).getStage()
-                            )
-                    ).collect(Collectors.toSet()))
 
-            ).collect(Collectors.toList());
+            List<Product> jsonProducts = products.stream().map(syncProduct -> {
+                SUSEProduct rootProduct = SUSEProductFactory.lookupByProductId(syncProduct.getId());
+                HashSet<Extension> rootExtensions = new HashSet<>();
+
+                Map<Long, Extension> extensionByProductId = syncProduct.getExtensions().stream()
+                        .collect(Collectors.toMap(MgrSyncProductDto::getId, s -> new Extension(
+                                s.getId(),
+                                s.getIdent(),
+                                s.getFriendlyName(),
+                                s.getArch(),
+                                s.isRecommended(),
+                                s.getStatus(),
+                                s.getChannels().stream().map(c ->
+                                        new JsonChannel(
+                                                c.getName(),
+                                                c.getLabel(),
+                                                c.getSummary(),
+                                                c.getOptional(),
+                                                psm.getChannelSyncStatus(c.getLabel()).getStage()
+                                        )
+                                ).collect(Collectors.toSet()),
+                                new HashSet<>()
+                        )));
+
+                // recreate the extension tree from our flat representation
+                for (MgrSyncProductDto ext : syncProduct.getExtensions()) {
+                    long extProductId = ext.getId();
+                    SUSEProduct extProduct = SUSEProductFactory.lookupByProductId(extProductId);
+                    List<SUSEProduct> allBaseProductsOf = SUSEProductFactory
+                            .findAllBaseProductsOf(extProduct, rootProduct);
+                    for (SUSEProduct baseProduct : allBaseProductsOf) {
+                        if (baseProduct.getProductId() == rootProduct.getProductId()) {
+                            rootExtensions.add(extensionByProductId.get(extProductId));
+                        }
+                        else {
+                            Optional.ofNullable(extensionByProductId.get(baseProduct.getProductId())).ifPresent(e -> {
+                                e.getExtensions().add(extensionByProductId.get(extProductId));
+                            });
+                        }
+                    }
+                }
+
+                return new Product(
+                        syncProduct.getId(),
+                        syncProduct.getIdent(),
+                        syncProduct.getFriendlyName(),
+                        syncProduct.getArch(),
+                        syncProduct.isRecommended(),
+                        syncProduct.getStatus(),
+                        rootExtensions,
+                        syncProduct.getChannels().stream().map(c ->
+                                new JsonChannel(
+                                        c.getName(),
+                                        c.getLabel(),
+                                        c.getSummary(),
+                                        c.getOptional(),
+                                        psm.getChannelSyncStatus(c.getLabel()).getStage()
+                                )
+                        ).collect(Collectors.toSet()));
+
+            }).collect(Collectors.toList());
             data.put("baseProducts", jsonProducts);
         }
         catch (Exception e) {
