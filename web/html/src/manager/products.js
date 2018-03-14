@@ -763,31 +763,33 @@ const CheckListItem = React.createClass({
 
     return (
       <li className={evenOddClass} key={this.props.item['identifier']}>
-        <CustomDiv className='col text-center' width={this.props.cols.selector.width} um={this.props.cols.selector.um}>{selectorContent}</CustomDiv>
-        <CustomDiv className='col text-center' width={this.props.cols.showSubList.width} um={this.props.cols.showSubList.um}>{showNestedDataIconContent}</CustomDiv>
-        <CustomDiv className='col col-class-calc-width'>
-          {productDescriptionContent}
-        </CustomDiv>
-        <CustomDiv className='col' width={this.props.cols.arch.width} um={this.props.cols.arch.um} title={t('Architecture')}>{this.props.isFirstLevel ? this.props.item['arch'] : ''}</CustomDiv>
-        <CustomDiv className='col text-center' width={this.props.cols.channels.width} um={this.props.cols.channels.um}>
-          <ModalLink
-              id='showChannels'
-              icon='fa-list'
-              title={t('Show product\'s channels')}
-              target='show-channels-popup'
-              onClick={() => this.props.showChannelsfor(this.props.item)}
-          />
-        </CustomDiv>
-        {
-          this.state.isInstalled ?
-            <CustomDiv className='col text-right' width={this.props.cols.mix.width} um={this.props.cols.mix.um}>
-              {channelSyncContent}&nbsp;{resyncActionContent}
-            </CustomDiv>
-            :
-            <CustomDiv className='col text-right' width={this.props.cols.mix.width} um={this.props.cols.mix.um} title={t('With Recommended')}>
-              {recommendedTogglerContent}
-            </CustomDiv>
-        }
+        <div className='product-details-wrapper'>
+          <CustomDiv className='col text-center' width={this.props.cols.selector.width} um={this.props.cols.selector.um}>{selectorContent}</CustomDiv>
+          <CustomDiv className='col text-center' width={this.props.cols.showSubList.width} um={this.props.cols.showSubList.um}>{showNestedDataIconContent}</CustomDiv>
+          <CustomDiv className='col col-class-calc-width'>
+            {productDescriptionContent}
+          </CustomDiv>
+          <CustomDiv className='col' width={this.props.cols.arch.width} um={this.props.cols.arch.um} title={t('Architecture')}>{this.props.isFirstLevel ? this.props.item['arch'] : ''}</CustomDiv>
+          <CustomDiv className='col text-center' width={this.props.cols.channels.width} um={this.props.cols.channels.um}>
+            <ModalLink
+                id='showChannels'
+                icon='fa-list'
+                title={t('Show product\'s channels')}
+                target='show-channels-popup'
+                onClick={() => this.props.showChannelsfor(this.props.item)}
+            />
+          </CustomDiv>
+          {
+            this.state.isInstalled ?
+              <CustomDiv className='col text-right' width={this.props.cols.mix.width} um={this.props.cols.mix.um}>
+                {channelSyncContent}&nbsp;{resyncActionContent}
+              </CustomDiv>
+              :
+              <CustomDiv className='col text-right' width={this.props.cols.mix.width} um={this.props.cols.mix.um} title={t('With Recommended')}>
+                {recommendedTogglerContent}
+              </CustomDiv>
+          }
+        </div>
         { this.isSublistVisible() ?
           <CheckList data={this.getNestedData()}
               nestedKey={this.props.nestedKey}
