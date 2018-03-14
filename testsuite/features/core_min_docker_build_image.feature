@@ -96,7 +96,7 @@ Feature: Build container images
   And I enter "https://gitlab.suse.de/galaxy/suse-manager-containers.git#:test-profile" as "path"
   And I click on "create-btn"
 
-  Scenario: Create a simple real image profile with actvation key
+  Scenario: Create a simple real image profile with activation key
   Given I am authorized as "admin" with password "admin"
   And I follow "Images" in the left menu
   And I follow "Profiles" in the left menu
