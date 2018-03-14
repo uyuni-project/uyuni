@@ -716,15 +716,16 @@ const CheckListItem = React.createClass({
         {this.props.item['label']}&nbsp;
         {
           this.props.item.recommended ?
-            <span className='text-info'>(<u title={'This extension is recommended'}>recommended</u>)</span>
+            <span className='recommended-tag' title={'This extension is recommended'}>{t('recommended')}</span>
             : null
         }
       </span>;
     /*****/
 
     /** generate recommended toggler if needed **/
+    // only for root products
     let recommendedTogglerContent;
-    if (this.getNestedData().some(i => i.recommended)) {
+    if (this.props.isFirstLevel && this.getNestedData().some(i => i.recommended)) {
       if (this.state.withRecommended) {
       recommendedTogglerContent =
         <span  className='pointer text-info' onClick={() => this.handleWithRecommended()}>
