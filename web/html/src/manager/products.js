@@ -567,16 +567,29 @@ const CheckListItem = React.createClass({
     return {
       itemsWithSublistVisible: [],
       withRecommended: true,
-      isSelected: this.props.selectedItems.includes(this.props.item.identifier),
-      isInstalled: this.props.item.status == _PRODUCT_STATUS.installed,
       isScheduled: false,
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
-    const isSelectedNew = nextProps.selectedItems.includes(this.props.item.identifier);
-    const isInstalledNew = nextProps.item.status == _PRODUCT_STATUS.installed;
-    this.setState({isSelected: isSelectedNew, isInstalled: isInstalledNew});
+    if (this.props != nextProps) {
+      if (nextProps.selectedItems) {
+        const isSelectedOld = this.props.selectedItems.includes(this.props.item.identifier);
+        const isSelectedNew = nextProps.selectedItems.includes(this.props.item.identifier);
+
+        if (isSelectedOld != isSelectedNew) {
+          this.handleSelectedItem();
+        }
+      }
+    }
+  },
+
+  isSelected: function() {
+    return this.props.selectedItems.includes(this.props.item.identifier);
+  },
+
+  isInstalled: function() {
+    return this.props.item.status == _PRODUCT_STATUS.installed;
   },
 
   isSublistVisible: function() {
@@ -602,7 +615,7 @@ const CheckListItem = React.createClass({
 
     // this item was selected but it is going to be removed from the selected set,
     // so all children are going to be removed as well
-    if(this.state.isSelected) {
+    if(this.isSelected()) {
       arr = arr.concat(this.getNestedData().map(el => el.identifier));
       this.handleUnselectedItems(arr);
     }
@@ -639,7 +652,7 @@ const CheckListItem = React.createClass({
     const withRecommendedNow = !this.state.withRecommended;
     this.setState({withRecommended: withRecommendedNow});
     // only if this item is already selected
-    if (this.state.isSelected) {
+    if (this.isSelected()) {
       // if the recommended flag is now enabled, select all recommended children
       if (withRecommendedNow) {
         this.props.handleSelectedItems(this.getRecommendedChildren().map(el => el.identifier));
@@ -676,7 +689,7 @@ const CheckListItem = React.createClass({
         <input type='checkbox'
             value={this.props.item['identifier']}
             onChange={this.handleSelectedItem}
-            checked={this.state.isSelected ? 'checked' : ''}
+            checked={this.isSelected() ? 'checked' : ''}
             disabled={this.props.childrenDisabled ? 'disabled' : ''}
             title={this.props.childrenDisabled ? t('To enable this product, the parent product should be selected first') : t('Select this product')}
         />
@@ -693,7 +706,7 @@ const CheckListItem = React.createClass({
     /*****/
 
     /** generate product description content **/
-    const productLabelStatus = this.state.isInstalled ? 'text-muted' : '';
+    const productLabelStatus = this.isInstalled() ? 'text-muted' : '';
     const handleDescriptionClick =
       this.getNestedData().length > 0 ?
         () => this.handleSubListVisibility()
@@ -733,7 +746,7 @@ const CheckListItem = React.createClass({
 
     /** generate channel sync progress bar **/
     let channelSyncContent;
-    if (this.state.isInstalled) {
+    if (this.isInstalled()) {
       const mandatoryChannelList = this.props.item['channels'].filter(c => !c.optional);
 
       // if any failed sync channel, show the error only
@@ -752,7 +765,7 @@ const CheckListItem = React.createClass({
     /** generate product resync button **/
     const resyncActionInProgress = this.isResyncActionInProgress(this.props.item['identifier']);
     const resyncActionContent =
-      this.state.isInstalled ?
+      this.isInstalled() ?
         <i className={'fa fa-refresh fa-1-5x pointer ' + (resyncActionInProgress ? 'fa-spin text-muted' : '')}
             title={resyncActionInProgress ? t('Scheduling a product resync') : t('Resync product')}
             onClick={() => this.resyncProduct(this.props.item['identifier'], this.props.item['label'])} />
@@ -780,7 +793,7 @@ const CheckListItem = React.createClass({
             />
           </CustomDiv>
           {
-            this.state.isInstalled ?
+            this.isInstalled() ?
               <CustomDiv className='col text-right' width={this.props.cols.mix.width} um={this.props.cols.mix.um}>
                 {channelSyncContent}&nbsp;{resyncActionContent}
               </CustomDiv>
@@ -800,7 +813,7 @@ const CheckListItem = React.createClass({
               listStyleClass={this.props.listStyleClass}
               isFirstLevel={false}
               showChannelsfor={this.props.showChannelsfor}
-              childrenDisabled={!(this.state.isSelected || this.state.isInstalled)}
+              childrenDisabled={!(this.isSelected() || this.isInstalled())}
               cols={this.props.cols}
               resyncProduct={this.props.resyncProduct}
               syncingSingleProducts={this.props.syncingSingleProducts}
