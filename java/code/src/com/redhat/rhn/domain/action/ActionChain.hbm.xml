@@ -30,6 +30,16 @@
         ]]>
     </query>
 
+    <query name="ActionChain.getActionChainByLabel">
+        <![CDATA[
+            SELECT chain
+                FROM ActionChain chain
+                WHERE chain.label = :label
+                    AND chain.user = :user
+                    AND NOT EXISTS (SELECT entry FROM chain.entries entry JOIN ServerAction action ON entry.action.id = action.parentAction.id)
+        ]]>
+    </query>
+
     <query name="ActionChain.getActionChains">
         <![CDATA[
             SELECT chain
@@ -44,7 +54,6 @@
         <![CDATA[
             SELECT chain
                 FROM ActionChain chain
-                    JOIN chain.entries entry
                 WHERE chain.user = :user
                     AND NOT EXISTS (SELECT entry FROM chain.entries entry JOIN ServerAction action ON entry.action.id = action.parentAction.id)
                 ORDER BY chain.modified DESC

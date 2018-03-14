@@ -77,11 +77,13 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChain getActionChain(User requestor, String label) {
         log.debug("Looking up Action Chain with label " + label);
-        return (ActionChain) getSession()
-            .createCriteria(ActionChain.class)
-            .add(Restrictions.eq("label", label))
-            .add(Restrictions.eq("user", requestor))
-            .uniqueResult();
+        return (ActionChain) singleton.lookupObjectByNamedQuery(
+                "ActionChain.getActionChainByLabel",
+                new HashMap<String, Object>() { {
+                    put("user", requestor);
+                    put("label", label);
+                } }
+        );
     }
 
     /**
