@@ -1,3 +1,4 @@
+- fix presence ping (bsc#1080353)
 - Harmonize display of custom system information (bsc#979073)
 - add ref help links (bsc#1079535)
 - Ensure transaction execution order when updating FQDNs for minions (bsc#1078427)
