@@ -362,7 +362,7 @@ And(/^I register "([^*]*)" as traditional client$/) do |client|
   command = 'rhnreg_ks --username=admin --password=admin --force ' \
             "--serverUrl=#{registration_url} " \
             '--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
-            '--activationkey=1-MINION-TEST'
+            '--activationkey=1-SUSE-DEV-x86_64'
   node.run(command)
 end
 
