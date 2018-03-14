@@ -605,7 +605,13 @@ const CheckListItem = React.createClass({
     }
     else {
       // this item was not selected and it is going to be added to the selected set,
-      // so if it has the recommended flag enabled,
+
+      // if any required product, add them first
+      if (this.props.item.required) {
+        arr = this.props.item.required.concat(arr);
+      }
+
+      // if it has the recommended flag enabled,
       // all recommended children are going to be added as well
       if (this.state.withRecommended) {
         arr = arr.concat(this.getRecommendedChildren().map(el => el.identifier));
