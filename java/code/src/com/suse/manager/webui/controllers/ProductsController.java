@@ -242,6 +242,9 @@ public class ProductsController {
                     SUSEProduct extProduct = SUSEProductFactory.lookupByProductId(extProductId);
                     List<SUSEProduct> allBaseProductsOf = SUSEProductFactory
                             .findAllBaseProductsOf(extProduct, rootProduct);
+                    if (allBaseProductsOf.isEmpty()) {
+                        rootExtensions.add(extensionByProductId.get(extProductId));
+                    }
                     for (SUSEProduct baseProduct : allBaseProductsOf) {
                         if (baseProduct.getProductId() == rootProduct.getProductId()) {
                             rootExtensions.add(extensionByProductId.get(extProductId));
