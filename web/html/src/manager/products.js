@@ -583,7 +583,8 @@ const CheckListItem = React.createClass({
     return this.state.itemsWithSublistVisible.includes(this.props.item['identifier']);
   },
 
-  handleSubListVisibility: function(id) {
+  handleSubListVisibility: function() {
+    const id = this.props.item.identifier;
     let arr = this.state.itemsWithSublistVisible;
     if(arr.includes(id)) {
       arr = arr.filter(i => i !== id);
@@ -593,7 +594,9 @@ const CheckListItem = React.createClass({
     this.setState({itemsWithSublistVisible: arr});
   },
 
-  handleSelectedItem: function(id) {
+  handleSelectedItem: function() {
+    const id = this.props.item.identifier;
+
     // add base product first (the server fails if it tries to add extentions first)
     let arr = [id];
 
@@ -672,7 +675,7 @@ const CheckListItem = React.createClass({
       this.props.isSelectable && this.props.item.status == _PRODUCT_STATUS.available ?
         <input type='checkbox'
             value={this.props.item['identifier']}
-            onChange={() => this.handleSelectedItem(this.props.item['identifier'])}
+            onChange={this.handleSelectedItem}
             checked={this.state.isSelected ? 'checked' : ''}
             disabled={this.props.childrenDisabled ? 'disabled' : ''}
             title={this.props.childrenDisabled ? t('To enable this product, the parent product should be selected first') : t('Select this product')}
@@ -685,7 +688,7 @@ const CheckListItem = React.createClass({
     if (this.getNestedData().length > 0) {
       const openSubListIconClass = this.isSublistVisible() ? 'fa-angle-down' : 'fa-angle-right';
       showNestedDataIconContent = <i className={'fa ' + openSubListIconClass + ' fa-1-5x pointer'}
-          onClick={() => this.handleSubListVisibility(this.props.item['identifier'])} />;
+          onClick={this.handleSubListVisibility} />;
     }
     /*****/
 
@@ -693,7 +696,7 @@ const CheckListItem = React.createClass({
     const productLabelStatus = this.state.isInstalled ? 'text-muted' : '';
     const handleDescriptionClick =
       this.getNestedData().length > 0 ?
-        () => this.handleSubListVisibility(this.props.item['identifier'])
+        () => this.handleSubListVisibility()
         : null;
     let productDescriptionContent =
       <span className={'cursor-default ' + productLabelStatus} onClick={handleDescriptionClick}>
