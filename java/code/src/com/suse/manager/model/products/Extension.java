@@ -44,6 +44,8 @@ public class Extension {
 
     private final MgrSyncStatus status;
 
+    private final Set<Extension> extensions;
+
     /**
      * Instantiates a new Product.
      * @param idIn the id in
@@ -51,7 +53,7 @@ public class Extension {
      * @param recommendedIn the recommended flag in
      */
     public Extension(Long idIn, String identifierIn, String labelIn, String archIn, Boolean recommendedIn,
-                     MgrSyncStatus statusIn, Set<JsonChannel> channelsIn) {
+                     MgrSyncStatus statusIn, Set<JsonChannel> channelsIn, Set<Extension> extensionsIn) {
         id = idIn;
         label = labelIn;
         arch = archIn;
@@ -59,6 +61,7 @@ public class Extension {
         recommended = recommendedIn;
         channels = channelsIn;
         status = statusIn;
+        extensions = extensionsIn;
     }
 
     /**
@@ -99,6 +102,10 @@ public class Extension {
 
     public MgrSyncStatus getStatus() {
         return status;
+    }
+
+    public Set<Extension> getExtensions() {
+        return extensions;
     }
 
     /**
