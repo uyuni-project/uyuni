@@ -17,6 +17,7 @@
  */
 package com.redhat.rhn.frontend.action.schedule;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
@@ -133,7 +134,8 @@ public class ActionChainEditAction extends RhnAction {
             ActionErrors errors = new ActionErrors();
             getStrutsDelegate().addError(errors, "taskscheduler.down");
             getStrutsDelegate().saveMessages(request, errors);
-            return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+            HibernateFactory.getSession().clear();
+            return mapping.findForward(TO_LIST_FORWARD);
         }
     }
 
