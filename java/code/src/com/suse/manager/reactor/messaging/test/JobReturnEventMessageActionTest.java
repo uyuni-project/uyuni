@@ -63,6 +63,8 @@ import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Change;
+import com.suse.salt.netapi.results.Ret;
+import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
@@ -965,8 +967,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .getPath();
 
         JsonElement jsonElement = message.getJobReturnEvent().getData().getResult(JsonElement.class);
-        Openscap.OpenscapResult openscapResult = Json.GSON.fromJson(
-                jsonElement, Openscap.OpenscapResult.class);
+
+
+        TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
+                new TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>>() { };
+        Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
+                jsonElement, typeToken.getType());
+        Openscap.OpenscapResult openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
+                .orElseThrow(() -> new RuntimeException("missiong scap result"));
 
         SaltService saltServiceMock = mock(SaltService.class);
         context().checking(new Expectations() {{

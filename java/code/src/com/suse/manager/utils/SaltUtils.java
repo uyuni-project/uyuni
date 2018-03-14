@@ -826,8 +826,12 @@ public class SaltUtils {
         ScapAction scapAction = (ScapAction)action;
         Openscap.OpenscapResult openscapResult;
         try {
-            openscapResult = Json.GSON.fromJson(
-                    jsonResult, Openscap.OpenscapResult.class);
+            TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
+                    new TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>>() { };
+            Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
+                    jsonResult, typeToken.getType());
+            openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
+                    .orElseThrow(() -> new RuntimeException("missing scap result"));
         }
         catch (JsonSyntaxException e) {
             serverAction.setResultMsg("Error parsing minion response: " + jsonResult);
