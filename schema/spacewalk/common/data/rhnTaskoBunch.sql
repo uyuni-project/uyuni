@@ -99,4 +99,7 @@ INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
    VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'minion-action-executor-bunch', 'Execute actions on Minions', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+   VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'minion-action-chain-executor-bunch', 'Execute action chains on Minions', null);
+
 commit;
