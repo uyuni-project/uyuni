@@ -304,14 +304,12 @@ public class ActionFactory extends HibernateFactory {
     /**
      * Creates a ApplyStatesActionDetails related to the action.
      * @param action the related state apply action
-     * @param mods list of mods to include in the ApplyStatesActionDetails
      * @param test indicates test mode
      * @return ApplyStatesActionDetails for the releated action
      */
     public static ApplyStatesActionDetails createApplyStateDetails(Action action,
-            List<String> mods, Optional<Boolean> test) {
+            Optional<Boolean> test) {
         ApplyStatesActionDetails details = new ApplyStatesActionDetails();
-        details.setMods(mods);
         test.ifPresent(t -> details.setTest(t));
         details.setActionId(action.getId());
         return details;

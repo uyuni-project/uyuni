@@ -296,7 +296,6 @@ public class ActionChainManager {
      * Schedules the application of states to minions
      * @param user the requesting user
      * @param sids list of system IDs
-     * @param mods list of mods to include in the ApplyStatesActionDetails
      * @param test for test mode
      * @param earliest earliest execution date
      * @param actionChain Action Chain instance
@@ -304,7 +303,7 @@ public class ActionChainManager {
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
      */
-    public static Set<Action> scheduleApplyStates(User user, List<Long> sids, List<String> mods, Optional<Boolean> test,
+    public static Set<Action> scheduleApplyStates(User user, List<Long> sids, Optional<Boolean> test,
                                                    Date earliest, ActionChain actionChain)
             throws TaskomaticApiException {
 
@@ -313,13 +312,11 @@ public class ActionChainManager {
         Set<Long> sidSet = new HashSet<Long>();
         sidSet.addAll(sids);
 
-        String name = "Apply " + (mods.isEmpty() ? "highstate" : "states " + mods.toString());
-
-        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_APPLY_STATES, name,
+        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_APPLY_STATES, "Apply highstate",
                 earliest, actionChain, null, sidSet);
         for (Action action : result) {
             ApplyStatesActionDetails applyState = ActionFactory.createApplyStateDetails(action,
-                    mods, test);
+                    test);
             ((ApplyStatesAction)action).setDetails(applyState);
             ActionFactory.save(action);
         }
