@@ -292,6 +292,18 @@ public class ActionChainManager {
         return result;
     }
 
+    /**
+     * Schedules the application of states to minions
+     * @param user the requesting user
+     * @param sids list of system IDs
+     * @param mods list of mods to include in the ApplyStatesActionDetails
+     * @param test for test mode
+     * @param earliest earliest execution date
+     * @param actionChain Action Chain instance
+     * @return a set of Actions
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
     public static Set<Action> scheduleApplyStates(User user, List<Long> sids, List<String> mods, Optional<Boolean> test,
                                                    Date earliest, ActionChain actionChain)
             throws TaskomaticApiException {

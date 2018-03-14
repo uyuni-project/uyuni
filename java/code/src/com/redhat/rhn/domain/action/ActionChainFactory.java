@@ -36,7 +36,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -61,7 +60,7 @@ public class ActionChainFactory extends HibernateFactory {
     private static ActionChainFactory singleton = new ActionChainFactory();
 
     /** Taskomatic API **/
-    private static TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
      * Default constructor.
@@ -113,6 +112,11 @@ public class ActionChainFactory extends HibernateFactory {
         return ac;
     }
 
+    /**
+     * Returns an Action Chain given its ID
+     * @param id the chain ID
+     * @return an Action Chain or empty
+     */
     public static Optional<ActionChain> getActionChain(long id) {
         return Optional.ofNullable(getSession().get(ActionChain.class, id));
     }
@@ -377,7 +381,7 @@ public class ActionChainFactory extends HibernateFactory {
 
         if (!minionActions.isEmpty()) {
             // Trigger Action Chain execution for Minions via Taskomatic
-            TASKOMATIC_API.scheduleActionChainExecution(actionChain);
+            taskomaticApi.scheduleActionChainExecution(actionChain);
         }
         log.debug("Action Chain " + actionChain + " scheduled to date " + date);
     }
@@ -427,9 +431,9 @@ public class ActionChainFactory extends HibernateFactory {
 
     /**
      * Set the TaskomatiApi for unit tests.
-     * @param taskomaticApi the TaskomatiApi to set
+     * @param taskomaticApiIn the TaskomatiApi to set
      */
-    public static void setTaskomaticApi(TaskomaticApi taskomaticApi) {
-        ActionChainFactory.TASKOMATIC_API = taskomaticApi;
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        ActionChainFactory.taskomaticApi = taskomaticApiIn;
     }
 }

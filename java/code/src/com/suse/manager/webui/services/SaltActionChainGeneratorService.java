@@ -16,26 +16,16 @@ package com.suse.manager.webui.services;
 
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.services.SaltServerActionService.PACKAGES_PKGINSTALL;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.singletonMap;
 
-import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 
 import com.suse.manager.webui.utils.AbstractSaltRequisites;
 import com.suse.manager.webui.utils.SaltModuleRun;
-import com.suse.manager.webui.utils.SaltActionChainState;
 
 import com.suse.manager.webui.utils.SaltState;
-import com.suse.manager.webui.utils.SaltStateGenerator;
 import com.suse.manager.webui.utils.SaltSystemReboot;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
@@ -48,7 +38,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -76,10 +65,19 @@ public class SaltActionChainGeneratorService {
 
     private Path suseManagerStatesFilesRoot;
 
+    /**
+     * Default constructor.
+     */
     public SaltActionChainGeneratorService() {
         suseManagerStatesFilesRoot = Paths.get(SUMA_STATE_FILES_ROOT_PATH);
     }
 
+    /**
+     * Generates SLS files for an Action Chain.
+     * @param actionChain the chain
+     * @param minion a minion to execute the chain on
+     * @param states a list of states
+     */
     public void createActionChainSLSFiles(ActionChain actionChain, MinionServer minion, List<SaltState> states) {
         int chunk = 1;
         List<SaltState> fileStates = new LinkedList<>();
@@ -150,6 +148,13 @@ public class SaltActionChainGeneratorService {
         return split;
     }
 
+    /**
+     * Cleans up generated SLS files.
+     * @param actionChainId an Action Chain ID
+     * @param minionId a minion ID
+     * @param chunk the chunk number
+     * @param actionChainFailed whether the Action Chain failed or not
+     */
     public void removeActionChainSLSFiles(Long actionChainId, String minionId, Integer chunk,
         Boolean actionChainFailed) {
         MinionServerFactory.findByMinionId(minionId).ifPresent(minionServer -> {
@@ -201,10 +206,10 @@ public class SaltActionChainGeneratorService {
      * Generate file name for the action chain chunk file.
      * Public only for unit tests.
      *
-     * @param actionChainId
-     * @param minionServer
-     * @param chunk
-     * @return
+     * @param actionChainId an Action Chain ID
+     * @param minionServer a minion instance
+     * @param chunk a chunk number
+     * @return the file name
      */
     public String getActionChainSLSFileName(Long actionChainId, MinionServer minionServer, Integer chunk) {
         return (ACTIONCHAIN_SLS_FILE_PREFIX + Long.toString(actionChainId) +

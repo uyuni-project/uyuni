@@ -223,6 +223,10 @@ public class MinionActionUtils {
         return jid.flatMap(id -> salt.listJob(id));
     }
 
+    /**
+     * Cleans up Action Chain records.
+     * @param instance a SaltService instance
+     */
     public static void cleanupMinionActionChains(SaltService instance) {
         // TODO
     }
