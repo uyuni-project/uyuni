@@ -1,3 +1,5 @@
+- add missing python3 packages to bootstrap JeOS image (bsc#1085044)
+
 -------------------------------------------------------------------
 Mon Mar 05 09:02:55 CET 2018 - jgonzalez@suse.com
 
