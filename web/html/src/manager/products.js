@@ -445,18 +445,18 @@ const Products = React.createClass({
   },
 
   render: function() {
-    const titlePopup = t('Product Channels - ') + (this.state.popupItem != null ? this.state.popupItem['label'] : '');
+    const titlePopup = t('Product Channels - ') + (this.state.popupItem != null ? this.state.popupItem.label : '');
     const contentPopup = 
       this.state.popupItem != null ?
         (
           <div>
             {
-              this.state.popupItem['channels'].filter(c => !c.optional).length > 0 ?
+              this.state.popupItem.channels.filter(c => !c.optional).length > 0 ?
                 <div>
                   <h4>Mandatory Channels</h4>
                   <ul className='product-channel-list'>
                     {
-                      this.state.popupItem['channels']
+                      this.state.popupItem.channels
                         .filter(c => !c.optional)
                         .map(c => <li>{c.summary}&nbsp;<small>[{c.label}]</small></li>)
                     }
@@ -465,12 +465,12 @@ const Products = React.createClass({
                 : null
             }
             {
-              this.state.popupItem['channels'].filter(c => c.optional).length > 0 ?
+              this.state.popupItem.channels.filter(c => c.optional).length > 0 ?
                 <div>
                   <h4>Optional Channels</h4>
                   <ul className='product-channel-list'>
                     {
-                      this.state.popupItem['channels']
+                      this.state.popupItem.channels
                         .filter(c => c.optional)
                         .map(c => <li key={c.summary}>{c.summary}&nbsp;<small>[{c.label}]</small></li>)
                     }
@@ -491,7 +491,7 @@ const Products = React.createClass({
       <div>
         <DataHandler
           data={this.buildRows(this.filterDataByArch(this.props.data))}
-          identifier={(raw) => raw['identifier']}
+          identifier={(raw) => raw.identifier}
           initialItemsPerPage={userPrefPageSize}
           loading={this.props.loading}
           additionalFilters={[archFilter]}
@@ -559,7 +559,7 @@ const CheckList = React.createClass({
             {
               return (
                 <CheckListItem
-                    key={l['identifier']}
+                    key={l.identifier}
                     item={l}
                     handleSelectedItems={this.handleSelectedItems}
                     handleUnselectedItems={this.handleUnselectedItems}
@@ -606,7 +606,7 @@ const CheckListItem = React.createClass({
   },
 
   isSublistVisible: function() {
-    return this.state.itemsWithSublistVisible.includes(this.props.item['identifier']);
+    return this.state.itemsWithSublistVisible.includes(this.props.item.identifier);
   },
 
   handleSubListVisibility: function() {
@@ -687,12 +687,12 @@ const CheckListItem = React.createClass({
   },
 
   scheduleResyncInProgress: function() {
-    return this.props.scheduleResyncItems.includes(this.props.item['identifier']);
+    return this.props.scheduleResyncItems.includes(this.props.item.identifier);
   },
 
   resyncProduct: function() {
     if (!this.scheduleResyncInProgress()){
-      this.props.resyncProduct(this.props.item['identifier'], this.props.item['label']);
+      this.props.resyncProduct(this.props.item.identifier, this.props.item.label);
     }
   },
 
@@ -709,7 +709,7 @@ const CheckListItem = React.createClass({
     const selectorContent =
       this.props.isSelectable && currentItem.status == _PRODUCT_STATUS.available ?
         <input type='checkbox'
-            value={currentItem['identifier']}
+            value={currentItem.identifier}
             onChange={this.handleSelectedItem}
             checked={this.isSelected() ? 'checked' : ''}
             disabled={this.props.childrenDisabled ? 'disabled' : ''}
@@ -735,7 +735,7 @@ const CheckListItem = React.createClass({
         : null;
     let productDescriptionContent =
       <span className={'cursor-default ' + productLabelStatus} onClick={handleDescriptionClick}>
-        {currentItem['label']}&nbsp;
+        {currentItem.label}&nbsp;
         {
           currentItem.recommended ?
             <span className='recommended-tag' title={'This extension is recommended'}>{t('recommended')}</span>
@@ -770,7 +770,7 @@ const CheckListItem = React.createClass({
     /** generate channel sync progress bar **/
     let channelSyncContent;
     if (this.isInstalled()) {
-      const mandatoryChannelList = currentItem['channels'].filter(c => !c.optional);
+      const mandatoryChannelList = currentItem.channels.filter(c => !c.optional);
 
       // if the product sync has just been scheduled
       if (this.props.scheduledItems.includes(currentItem.identifier)) {
@@ -802,7 +802,7 @@ const CheckListItem = React.createClass({
     let evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
 
     return (
-      <li className={evenOddClass} key={currentItem['identifier']}>
+      <li className={evenOddClass} key={currentItem.identifier}>
         <div className='product-details-wrapper'>
           <CustomDiv className='col text-center' width={this.props.cols.selector.width} um={this.props.cols.selector.um}>
             {selectorContent}
@@ -814,7 +814,7 @@ const CheckListItem = React.createClass({
             {productDescriptionContent}
           </CustomDiv>
           <CustomDiv className='col' width={this.props.cols.arch.width} um={this.props.cols.arch.um} title={t('Architecture')}>
-            {this.props.isFirstLevel ? currentItem['arch'] : ''}
+            {this.props.isFirstLevel ? currentItem.arch : ''}
           </CustomDiv>
           <CustomDiv className='col text-center' width={this.props.cols.channels.width} um={this.props.cols.channels.um}>
             <ModalLink
