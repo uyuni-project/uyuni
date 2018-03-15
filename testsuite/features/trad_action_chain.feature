@@ -221,6 +221,7 @@ Feature: Action chaining traditinal clients
     And I should see scheduled action, called "System reboot scheduled by admin"
     Then I cancel all scheduled actions
     And there should be no more any scheduled actions
+    And I delete the action chain
 
   Scenario: Cleanup: remove system from configuration channel
     Given I am authorized as "admin" with password "admin"
