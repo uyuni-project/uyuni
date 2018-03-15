@@ -706,16 +706,20 @@ const CheckListItem = React.createClass({
   render: function() {
     const currentItem = this.props.item;
     /** generate item selector content **/
-    const selectorContent =
-      this.props.isSelectable && currentItem.status == _PRODUCT_STATUS.available ?
+    let selectorContent = null;
+    if (this.props.isSelectable && currentItem.status == _PRODUCT_STATUS.available) {
+      selectorContent =
         <input type='checkbox'
             value={currentItem.identifier}
             onChange={this.handleSelectedItem}
             checked={this.isSelected() ? 'checked' : ''}
             disabled={this.props.childrenDisabled ? 'disabled' : ''}
             title={this.props.childrenDisabled ? t('To enable this product, the parent product should be selected first') : t('Select this product')}
-        />
-        : null;
+        />;
+    }
+    else if (this.isInstalled()) {
+      selectorContent = <input type='checkbox' checked='checked' disabled='disabled' title={t('This product is installed.')} />;
+    }
     /*****/
 
     /** generate show nested list icon **/
@@ -728,7 +732,7 @@ const CheckListItem = React.createClass({
     /*****/
 
     /** generate product description content **/
-    const productLabelStatus = this.isInstalled() ? 'text-muted' : '';
+    const productLabelStatus = this.isInstalled() ? 'product-installed-description' : '';
     const handleDescriptionClick =
       this.getNestedData(currentItem).length > 0 ?
         () => this.handleSubListVisibility()
