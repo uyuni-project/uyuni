@@ -64,7 +64,12 @@ function reloadData() {
   return Network.get('/rhn/manager/api/admin/products', 'application/json').promise;
 }
 
-const ProductPageWrapper = React.createClass({
+
+/**
+ * Generate the page wrapper, tabs, scc-popup,
+ * and everything around the product list except the list
+*/
+const ProductsPageWrapper = React.createClass({
   getInitialState: function() {
     return {
       issMaster: issMaster_flag_from_backend,
@@ -353,6 +358,10 @@ const ProductPageWrapper = React.createClass({
   }
 });
 
+
+/**
+ * Show the products data
+*/
 const Products = React.createClass({
   getInitialState: function() {
     return {
@@ -512,6 +521,9 @@ const Products = React.createClass({
   }
 });
 
+/**
+ * Generate a custom list of elements for the products data
+*/
 const CheckList = React.createClass({
   handleSelectedItems: function(ids) {
     this.props.handleSelectedItems(ids);
@@ -568,6 +580,10 @@ const CheckList = React.createClass({
   }
 });
 
+/**
+ * A component to generate a list item which contains
+ * all information for a single product
+*/
 const CheckListItem = React.createClass({
   getInitialState: function() {
     return {
@@ -836,6 +852,6 @@ const CheckListItem = React.createClass({
 });
 
 ReactDOM.render(
-  <ProductPageWrapper />,
+  <ProductsPageWrapper />,
   document.getElementById('products')
 );
