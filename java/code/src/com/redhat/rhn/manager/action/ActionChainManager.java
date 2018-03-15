@@ -25,10 +25,18 @@ import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.image.ImageInfo;
+import com.redhat.rhn.domain.image.ImageInfoCustomDataValue;
+import com.redhat.rhn.domain.image.ImageInfoFactory;
+import com.redhat.rhn.domain.image.ImageProfile;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -39,6 +47,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -698,5 +707,79 @@ public class ActionChainManager {
             ActionFactory.save(action);
         }
         return result;
+    }
+
+    /**
+     * Schedule an Image Build
+     * @param buildHostId The ID of the build host
+     * @param version the tag/version of the resulting image
+     * @param profile the profile
+     * @param earliest earliest build
+     * @param actionChain the action chain to add to or null
+     * @param user the current user
+     * @return the action ID
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static ImageBuildAction scheduleImageBuild(long buildHostId, String version, ImageProfile profile,
+                                     Date earliest, ActionChain actionChain, User user) throws TaskomaticApiException {
+        MinionServer server = ServerFactory.lookupById(buildHostId).asMinionServer().get();
+
+        if (!server.hasContainerBuildHostEntitlement()) {
+            throw new IllegalArgumentException("Server is not a build host.");
+        }
+
+        // Schedule the build
+        version = version.isEmpty() ? "latest" : version;
+
+        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_IMAGE_BUILD, "Image Build " + profile.getLabel(),
+                earliest, actionChain, null, Collections.singleton(server.getId()));
+
+        ImageBuildAction action = (ImageBuildAction)result.stream().findFirst()
+                .orElseThrow(() -> new RuntimeException("Action scheduling result missing"));
+
+        action.setName("Image Build " + profile.getLabel());
+        action.setOrg(user != null ?
+                user.getOrg() : OrgFactory.getSatelliteOrg());
+        action.setSchedulerUser(user);
+
+        ImageBuildActionDetails actionDetails = new ImageBuildActionDetails();
+        actionDetails.setVersion(version);
+        actionDetails.setImageProfileId(profile.getProfileId());
+        action.setDetails(actionDetails);
+        ActionFactory.save(action);
+
+        // Load or create an image info entry
+        ImageInfo info =
+                ImageInfoFactory.lookupByName(profile.getLabel(), version, profile.getTargetStore().getId())
+                        .orElseGet(ImageInfo::new);
+
+        info.setName(profile.getLabel());
+        info.setVersion(version);
+        info.setStore(profile.getTargetStore());
+        info.setOrg(server.getOrg());
+        info.setBuildAction(action);
+        info.setProfile(profile);
+        info.setBuildServer(server);
+        if (profile.getToken() != null) {
+            info.setChannels(new HashSet<>(profile.getToken().getChannels()));
+        }
+
+        // Image arch should be the same as the build host
+        // If this is not the case, we can set the correct value in the inspect action
+        // return event
+        info.setImageArch(server.getServerArch());
+
+        // Checksum will be available from inspect
+
+        // Copy custom data values from image profile
+        if (profile.getCustomDataValues() != null) {
+            profile.getCustomDataValues().forEach(cdv -> info.getCustomDataValues()
+                    .add(new ImageInfoCustomDataValue(cdv, info)));
+        }
+
+        ImageInfoFactory.save(info);
+
+        return action;
     }
 }

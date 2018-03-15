@@ -36,7 +36,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.criterion.Restrictions;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;

@@ -65,7 +65,6 @@ import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltSystemReboot;
-import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.manager.webui.utils.TokenBuilder;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -365,10 +364,10 @@ public class SaltServerActionService {
                 .sorted(Comparator.comparingInt(ActionChainEntry::getSortOrder))
                 .map(ActionChainEntry::getAction)
                 .forEach(actionIn -> {
-                    // TODO extract to common method
                     List<MinionServer> minions = getMinionServers(actionIn);
 
                     if (minions.isEmpty()) {
+                        LOG.warn("No server actions for action id=" + actionIn.getId());
                         return;
                     }
 

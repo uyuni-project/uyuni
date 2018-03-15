@@ -4,12 +4,15 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 const Panel = require("../components/panel").Panel;
 const Messages = require("../components/messages").Messages;
+const MessagesUtils = require("../components/messages").Utils;
 const Network = require("../utils/network");
 const {SubmitButton, LinkButton} = require("../components/buttons");
 const Functions = require("../utils/functions");
 const Input = require("../components/input");
+const {ActionLink, ActionChainLink} = require("../components/links");
+const {ActionSchedule} = require("../components/action-schedule");
 
-/* global profileId, hostId, version, localTime, timezone */
+/* global profileId, hostId, version, localTime, timezone, actionChains */
 const typeMap = {
   "dockerfile": "Dockerfile"
 };
@@ -35,7 +38,7 @@ class BuildImage extends React.Component {
       messages: []
     };
 
-    ["handleProfileChange", "onFormChange", "onValidate", "onBuild"]
+    ["handleProfileChange", "onFormChange", "onValidate", "onBuild", "onDateTimeChanged", "onActionChainChanged"]
       .forEach(method => this[method] = this[method].bind(this));
 
     this.getProfiles();
@@ -139,16 +142,35 @@ class BuildImage extends React.Component {
     });
   }
 
+  onDateTimeChanged(date) {
+      this.state.model.earliest = date;
+      this.state.model.actionChain = null;
+      this.setState({
+        actionChain: null
+      });
+  }
+
+  onActionChainChanged(actionChain) {
+    this.state.model.actionChain = actionChain.text;
+    this.setState({
+      actionChain: actionChain
+    });
+  }
+
   onBuild(model) {
     Network.post("/rhn/manager/api/cm/build/" + this.state.model.profileId,
       JSON.stringify(model),
       "application/json"
     ).promise.then(data => {
       if (data.success) {
+        const msg = MessagesUtils.info(this.state.model.actionChain ?
+               <span>{t("Action has been successfully added to the Action Chain ")}
+                    <ActionChainLink id={data.data}>{this.state.model.actionChain}</ActionChainLink>.</span> :
+                 <span>{t("Building the image has been ")}
+                    <ActionLink id={data.data}>{t("scheduled")}.</ActionLink></span>);
+
         this.setState({
-          messages: <Messages items={data.messages.map(msg => {
-            return {severity: "info", text: msgMap[msg]};
-          })}/>
+          messages: msg
         });
         window.location = "/rhn/manager/cm/images";
       } else {
@@ -222,7 +244,7 @@ class BuildImage extends React.Component {
   render() {
     return (
       <Panel title={t("Build Image")} icon="fa fa-cogs" helpUrl="/rhn/help/reference/en-US/ref.webui.images.build.jsp#ref.webui.images.build">
-        {this.state.messages}
+        <Messages items={this.state.messages}/>
         <Input.Form model={this.state.model} className="image-build-form"
           onChange={this.onFormChange} onSubmit={this.onBuild}
           onValidate={this.onValidate} divClass="col-md-7">
@@ -249,7 +271,12 @@ class BuildImage extends React.Component {
             }
           </Input.Select>
 
-          <Input.DateTime label={t("Earliest")} name="earliest" required labelClass="col-md-3" divClass="col-md-9" timezone={timezone} />
+          <ActionSchedule timezone={timezone} localTime={localTime}
+             earliest={this.state.model.earliest}
+             actionChains={actionChains}
+             actionChain={this.state.model.actionChain}
+             onActionChainChanged={this.onActionChainChanged}
+             onDateTimeChanged={this.onDateTimeChanged}/>
 
           <Input.FormGroup>
             <div className="col-md-offset-3 col-md-9">
