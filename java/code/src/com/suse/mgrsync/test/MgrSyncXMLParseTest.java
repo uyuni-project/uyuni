@@ -136,7 +136,7 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      */
     public void testReadFamilies() throws Exception {
         List<XMLChannelFamily> families = readFamilies();
-        assertEquals(63, families.size());
+        assertTrue("Not enough families read from file", families.size() > 63);
     }
 
     /**
@@ -145,6 +145,6 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      */
     public void testReadUpgradePaths() throws Exception {
         List<XMLUpgradePath> paths = readUpgradePaths();
-        assertEquals(101, paths.size());
+        assertTrue("Not enough Upgrade Paths read from file", paths.size() > 100);
     }
 }
