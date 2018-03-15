@@ -643,7 +643,7 @@ const CheckListItem = React.createClass({
 
       // if it has the recommended flag enabled,
       // all recommended children are going to be added as well
-      if (this.state.withRecommended) {
+      if (this.state.withRecommended && this.props.isFirstLevel) {
         arr = arr.concat(this.getRecommendedChildrenTree(currentItem).map(el => el.identifier));
       }
       this.handleSelectedItems(arr);
