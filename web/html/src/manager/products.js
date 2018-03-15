@@ -737,19 +737,20 @@ const CheckListItem = React.createClass({
     let showNestedDataIconContent;
     if (this.getNestedData(currentItem).length > 0) {
       const openSubListIconClass = this.isSublistVisible() ? 'fa-angle-down' : 'fa-angle-right';
-      showNestedDataIconContent = <i className={'fa ' + openSubListIconClass + ' fa-1-5x pointer'}
+      showNestedDataIconContent = <i className={'fa ' + openSubListIconClass + ' fa-1-5x pointer product-hover'}
           onClick={() => this.handleVisibleSublist(currentItem.identifier)} />;
     }
     /*****/
 
     /** generate product description content **/
-    const productLabelStatus = this.isInstalled() ? 'product-installed-description' : '';
-    const handleDescriptionClick =
-      this.getNestedData(currentItem).length > 0 ?
-        () => this.handleSubListVisibility()
-        : null;
+    let handleDescriptionClick = null;
+    let hoverableDescriptionClass = '';
+    if (this.getNestedData(currentItem).length > 0) {
+      handleDescriptionClick = () => this.handleVisibleSublist(currentItem.identifier);
+      hoverableDescriptionClass = 'product-hover pointer';
+    }
     let productDescriptionContent =
-      <span className={'cursor-default ' + productLabelStatus} onClick={handleDescriptionClick}>
+      <span className={'product-description ' + hoverableDescriptionClass} onClick={handleDescriptionClick}>
         {currentItem.label}&nbsp;
         {
           currentItem.recommended ?
@@ -814,11 +815,11 @@ const CheckListItem = React.createClass({
         : null;
     /*****/
 
-    let evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
-
+    const evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
+    const productStatus = this.isInstalled() ? 'product-installed' : '';
     return (
       <li className={evenOddClass} key={currentItem.identifier}>
-        <div className='product-details-wrapper'>
+        <div className={'product-details-wrapper ' + productStatus}>
           <CustomDiv className='col text-center' width={this.props.cols.selector.width} um={this.props.cols.selector.um}>
             {selectorContent}
           </CustomDiv>

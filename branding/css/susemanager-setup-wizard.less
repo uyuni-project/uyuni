@@ -203,6 +203,31 @@ ul.product-list {
     display: block;
     overflow: auto;
     border-bottom: 1px solid @spacewalk-gray-light;
+    .product-details-wrapper {
+      .recommended-tag {
+        background-color: @spacewalk-yellow;
+        padding: 0 .5em;
+        border-radius: 2px;
+        font-size: 85%;
+      }
+      .text-muted {
+        .recommended-tag {
+          background-color: @spacewalk-gray-light;
+        }
+      }
+      .product-hover:hover {
+        color: @spacewalk-orange-light;
+      }
+    }
+    .product-installed {
+      .product-description {
+        color: @spacewalk-green-dark;
+      }
+      .recommended-tag {
+        background-color: @spacewalk-gray-light;
+        color: @spacewalk-gray-dark;
+      }
+    }
     .col {
       display: inline-block;
       vertical-align: middle;
@@ -222,16 +247,17 @@ ul.product-list {
       }
     }
   }
-  > li.list-row-odd {
+  li.list-row-odd {
     .row-odd
   }
-  > li.list-row-even {
+  li.list-row-even {
     .row-even
   }
   ul {
     border-top: 1px solid @spacewalk-gray-light;
     padding: 0 0 1em 0;
     li {
+      background-color: transparent!important;
       border: 0;
       margin-left: 3em;
       > .product-details-wrapper {
@@ -239,15 +265,13 @@ ul.product-list {
         background-image: url('/img/susemanager/sub-list.png');
         background-repeat: no-repeat;
         background-position: left center;
-        .product-installed-description {
-          color: @spacewalk-blue-light;
-          .recommended-tag {
-            background-color: @spacewalk-gray;
-          }
-        }
       }
       .col {
         padding: .3em;
+      }
+      ul {
+        border-left: 1px solid @spacewalk-gray-light;
+        border-collapse: collapse;
       }
     }
     li:first-of-type {
@@ -258,6 +282,9 @@ ul.product-list {
     li:last-of-type {
       > .product-details-wrapper {
         background-image: url('/img/susemanager/sub-list-last.png');
+      }
+      > ul {
+        border-left: 0;
       }
     }
   }
@@ -286,17 +313,5 @@ ul.product-list {
       height: 30px!important;
       .form-control;
     }
-  }
-}
-
-.recommended-tag {
-  background-color: @susemanager-blue-light-tag;
-  padding: 0 .3em;
-  border-radius: 2px;
-  font-size: 85%;
-}
-.text-muted {
-  .recommended-tag {
-    background-color: @spacewalk-gray-light;
   }
 }
