@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <channelfamilies>
 	<family default_nodecount="0" label="SLE-HAE-PPC" name="SUSE Linux Enterprise High Availability Extension (PPC)"/>
+	<family default_nodecount="0" label="HPC-X86" name="SUSE Linux Enterprise High Performance Computing (x86)"/>
 	<family default_nodecount="0" label="10040" name="SUSE Linux Enterprise Point of Service"/>
 	<family default_nodecount="0" label="RES" name="SUSE Linux Enterprise RedHat Expanded Support"/>
 	<family default_nodecount="0" label="AiO-PPC" name="SUSE Linux Enterprise Server for SAP Power"/>
@@ -55,6 +56,7 @@
 	<family default_nodecount="0" label="SMS-X86" name="SUSE Manager Server X86-64"/>
 	<family default_nodecount="0" label="SLES-X86-VMWARE" name="SUSE Linux Enterprise Server for VMware"/>
 	<family default_nodecount="0" label="13319" name="SUSE Linux Enterprise Real Time"/>
+	<family default_nodecount="0" label="HPC-ARM64" name="SUSE Linux Enterprise High Performance Computing (ARM64)"/>
 	<family default_nodecount="0" label="SES-ARM" name="SUSE Enterprise Storage (ARM64)"/>
 	<family default_nodecount="0" label="SLE-HAE-GEO" name="GEO Clustering for SLE HA Extension"/>
 	<family default_nodecount="0" label="SLES-ARM64" name="SUSE Linux Enterprise Server (ARM64)"/>
