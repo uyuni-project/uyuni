@@ -208,5 +208,9 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
+  # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
+  Scenario: Check the new channel is working
+    When I refresh the metadata for "sle-minion"
+
   Scenario: Detect latest Salt changes on the SLES minion
     When I query latest Salt changes on "sle-minion"
