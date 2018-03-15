@@ -381,7 +381,8 @@ const Products = React.createClass({
   getInitialState: function() {
     return {
       popupItem: null,
-      archCriteria: []
+      archCriteria: [],
+      visibleSubList: []
     }
   },
 
@@ -442,6 +443,16 @@ const Products = React.createClass({
 
   showChannelsfor: function(item) {
     this.setState({popupItem: item});
+  },
+
+  handleVisibleSublist: function(id) {
+    let arr = this.state.visibleSubList;
+    if(arr.includes(id)) {
+      arr = arr.filter(i => i !== id);
+    } else {
+      arr = arr.concat([id]);
+    }
+    this.setState({visibleSubList: arr});
   },
 
   render: function() {
@@ -513,6 +524,8 @@ const Products = React.createClass({
               resyncProduct={this.props.resyncProduct}
               scheduledItems={this.props.scheduledItems}
               scheduleResyncItems={this.props.scheduleResyncItems}
+              handleVisibleSublist={this.handleVisibleSublist}
+              visibleSubList={this.state.visibleSubList}
           />
         </DataHandler>
         <PopUp
@@ -536,6 +549,10 @@ const CheckList = React.createClass({
 
   handleUnselectedItems: function(ids) {
     this.props.handleUnselectedItems(ids);
+  },
+
+  handleVisibleSublist: function(id) {
+    this.props.handleVisibleSublist(id);
   },
 
   render: function() {
@@ -575,6 +592,8 @@ const CheckList = React.createClass({
                     resyncProduct={this.props.resyncProduct}
                     scheduledItems={this.props.scheduledItems}
                     scheduleResyncItems={this.props.scheduleResyncItems}
+                    handleVisibleSublist={this.handleVisibleSublist}
+                    visibleSubList={this.props.visibleSubList}
                 />
               )
             })
@@ -592,7 +611,6 @@ const CheckList = React.createClass({
 const CheckListItem = React.createClass({
   getInitialState: function() {
     return {
-      itemsWithSublistVisible: [],
       withRecommended: true,
     }
   },
@@ -606,18 +624,11 @@ const CheckListItem = React.createClass({
   },
 
   isSublistVisible: function() {
-    return this.state.itemsWithSublistVisible.includes(this.props.item.identifier);
+    return this.props.visibleSubList.includes(this.props.item.identifier);
   },
 
-  handleSubListVisibility: function() {
-    const id = this.props.item.identifier;
-    let arr = this.state.itemsWithSublistVisible;
-    if(arr.includes(id)) {
-      arr = arr.filter(i => i !== id);
-    } else {
-      arr = arr.concat([id]);
-    }
-    this.setState({itemsWithSublistVisible: arr});
+  handleVisibleSublist: function(id) {
+    this.props.handleVisibleSublist(id);
   },
 
   handleSelectedItem: function() {
@@ -727,7 +738,7 @@ const CheckListItem = React.createClass({
     if (this.getNestedData(currentItem).length > 0) {
       const openSubListIconClass = this.isSublistVisible() ? 'fa-angle-down' : 'fa-angle-right';
       showNestedDataIconContent = <i className={'fa ' + openSubListIconClass + ' fa-1-5x pointer'}
-          onClick={this.handleSubListVisibility} />;
+          onClick={() => this.handleVisibleSublist(currentItem.identifier)} />;
     }
     /*****/
 
@@ -855,6 +866,8 @@ const CheckListItem = React.createClass({
               resyncProduct={this.props.resyncProduct}
               scheduledItems={this.props.scheduledItems}
               scheduleResyncItems={this.props.scheduleResyncItems}
+              handleVisibleSublist={this.handleVisibleSublist}
+              visibleSubList={this.props.visibleSubList}
           />
           : null }
       </li>
