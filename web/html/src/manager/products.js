@@ -597,19 +597,6 @@ const CheckListItem = React.createClass({
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    if (this.props != nextProps) {
-      if (nextProps.selectedItems) {
-        const isSelectedOld = this.props.selectedItems.includes(this.props.item.identifier);
-        const isSelectedNew = nextProps.selectedItems.includes(this.props.item.identifier);
-
-        if (isSelectedOld != isSelectedNew) {
-          this.handleSelectedItem();
-        }
-      }
-    }
-  },
-
   isSelected: function() {
     return this.props.selectedItems.includes(this.props.item.identifier);
   },
@@ -643,7 +630,7 @@ const CheckListItem = React.createClass({
     // this item was selected but it is going to be removed from the selected set,
     // so all children are going to be removed as well
     if(this.isSelected()) {
-      arr = arr.concat(this.getNestedData(currentItem).map(el => el.identifier));
+      arr = arr.concat(this.getChildrenTree(currentItem).map(el => el.identifier));
       this.handleUnselectedItems(arr);
     }
     else {
@@ -657,14 +644,23 @@ const CheckListItem = React.createClass({
       // if it has the recommended flag enabled,
       // all recommended children are going to be added as well
       if (this.state.withRecommended) {
-        arr = arr.concat(this.getRecommendedChildren(currentItem).map(el => el.identifier));
+        arr = arr.concat(this.getRecommendedChildrenTree(currentItem).map(el => el.identifier));
       }
       this.handleSelectedItems(arr);
     }
   },
 
-  getRecommendedChildren: function(item) {
-    return this.getNestedData(item).filter(el => el.recommended);
+  getChildrenTree: function(item) {
+    var arr = this.getNestedData(item);
+    let nestedArr = [];
+    arr.forEach(child => {
+      nestedArr = nestedArr.concat(this.getChildrenTree(child))
+    });
+    return arr.concat(nestedArr);
+  },
+
+  getRecommendedChildrenTree: function(item){
+      return this.getChildrenTree(item).filter(el => el.recommended);
   },
 
   handleSelectedItems: function(ids) {
@@ -682,10 +678,10 @@ const CheckListItem = React.createClass({
     if (this.isSelected()) {
       // if the recommended flag is now enabled, select all recommended children
       if (withRecommendedNow) {
-        this.props.handleSelectedItems(this.getRecommendedChildren(this.props.item).map(el => el.identifier));
+        this.props.handleSelectedItems(this.getRecommendedChildrenTree(this.props.item).map(el => el.identifier));
       }
       else {
-        this.props.handleUnselectedItems(this.getRecommendedChildren(this.props.item).map(el => el.identifier));
+        this.props.handleUnselectedItems(this.getRecommendedChildrenTree(this.props.item).map(el => el.identifier));
       }
     }
   },
