@@ -36,6 +36,7 @@
 
 # IDEMPOTENT
 
+- features/min_activationkey.feature
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
 - features/trad_reboot.feature
