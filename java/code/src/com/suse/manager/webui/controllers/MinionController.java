@@ -235,8 +235,13 @@ public class MinionController {
         return new ModelAndView(data, "minion/highstate.jade");
     }
 
-    private static void addActionChains(User user, Map<String, Object> data) {
-        data.put("actionChains", ActionChainHelper.actionChainsJson(user));
+    /**
+     * Utility method for adding a list of action chains to the model.
+     * @param user the user
+     * @param model the model
+     */
+    public static void addActionChains(User user, Map<String, Object> model) {
+        model.put("actionChains", ActionChainHelper.actionChainsJson(user));
     }
 
     /**
