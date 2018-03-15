@@ -634,7 +634,8 @@ const CheckListItem = React.createClass({
   },
 
   handleSelectedItem: function() {
-    const id = this.props.item.identifier;
+    const currentItem = this.props.item;
+    const id = currentItem.identifier;
 
     // add base product first (the server fails if it tries to add extentions first)
     let arr = [id];
@@ -642,28 +643,28 @@ const CheckListItem = React.createClass({
     // this item was selected but it is going to be removed from the selected set,
     // so all children are going to be removed as well
     if(this.isSelected()) {
-      arr = arr.concat(this.getNestedData().map(el => el.identifier));
+      arr = arr.concat(this.getNestedData(currentItem).map(el => el.identifier));
       this.handleUnselectedItems(arr);
     }
     else {
       // this item was not selected and it is going to be added to the selected set,
 
       // if any required product, add them first
-      if (this.props.item.required) {
-        arr = this.props.item.required.concat(arr);
+      if (currentItem.required) {
+        arr = currentItem.required.concat(arr);
       }
 
       // if it has the recommended flag enabled,
       // all recommended children are going to be added as well
       if (this.state.withRecommended) {
-        arr = arr.concat(this.getRecommendedChildren().map(el => el.identifier));
+        arr = arr.concat(this.getRecommendedChildren(currentItem).map(el => el.identifier));
       }
       this.handleSelectedItems(arr);
     }
   },
 
-  getRecommendedChildren: function() {
-    return this.getNestedData().filter(el => el.recommended);
+  getRecommendedChildren: function(item) {
+    return this.getNestedData(item).filter(el => el.recommended);
   },
 
   handleSelectedItems: function(ids) {
@@ -681,10 +682,10 @@ const CheckListItem = React.createClass({
     if (this.isSelected()) {
       // if the recommended flag is now enabled, select all recommended children
       if (withRecommendedNow) {
-        this.props.handleSelectedItems(this.getRecommendedChildren().map(el => el.identifier));
+        this.props.handleSelectedItems(this.getRecommendedChildren(this.props.item).map(el => el.identifier));
       }
       else {
-        this.props.handleUnselectedItems(this.getRecommendedChildren().map(el => el.identifier));
+        this.props.handleUnselectedItems(this.getRecommendedChildren(this.props.item).map(el => el.identifier));
       }
     }
   },
@@ -699,21 +700,20 @@ const CheckListItem = React.createClass({
     }
   },
 
-  getNestedData: function() {
-    if (this.props.item &&
-        this.props.nestedKey &&
-        this.props.item[this.props.nestedKey] != null) {
-     return this.props.item[this.props.nestedKey];
+  getNestedData: function(item) {
+    if (item && this.props.nestedKey && item[this.props.nestedKey] != null) {
+     return item[this.props.nestedKey];
     }
     return [];
   },
 
   render: function() {
+    const currentItem = this.props.item;
     /** generate item selector content **/
     const selectorContent =
-      this.props.isSelectable && this.props.item.status == _PRODUCT_STATUS.available ?
+      this.props.isSelectable && currentItem.status == _PRODUCT_STATUS.available ?
         <input type='checkbox'
-            value={this.props.item['identifier']}
+            value={currentItem['identifier']}
             onChange={this.handleSelectedItem}
             checked={this.isSelected() ? 'checked' : ''}
             disabled={this.props.childrenDisabled ? 'disabled' : ''}
@@ -724,7 +724,7 @@ const CheckListItem = React.createClass({
 
     /** generate show nested list icon **/
     let showNestedDataIconContent;
-    if (this.getNestedData().length > 0) {
+    if (this.getNestedData(currentItem).length > 0) {
       const openSubListIconClass = this.isSublistVisible() ? 'fa-angle-down' : 'fa-angle-right';
       showNestedDataIconContent = <i className={'fa ' + openSubListIconClass + ' fa-1-5x pointer'}
           onClick={this.handleSubListVisibility} />;
@@ -734,14 +734,14 @@ const CheckListItem = React.createClass({
     /** generate product description content **/
     const productLabelStatus = this.isInstalled() ? 'text-muted' : '';
     const handleDescriptionClick =
-      this.getNestedData().length > 0 ?
+      this.getNestedData(currentItem).length > 0 ?
         () => this.handleSubListVisibility()
         : null;
     let productDescriptionContent =
       <span className={'cursor-default ' + productLabelStatus} onClick={handleDescriptionClick}>
-        {this.props.item['label']}&nbsp;
+        {currentItem['label']}&nbsp;
         {
-          this.props.item.recommended ?
+          currentItem.recommended ?
             <span className='recommended-tag' title={'This extension is recommended'}>{t('recommended')}</span>
             : null
         }
@@ -751,7 +751,7 @@ const CheckListItem = React.createClass({
     /** generate recommended toggler if needed **/
     // only for root products
     let recommendedTogglerContent;
-    if (this.props.isFirstLevel && this.getNestedData().some(i => i.recommended)) {
+    if (this.props.isFirstLevel && this.getNestedData(currentItem).some(i => i.recommended)) {
       if (this.state.withRecommended) {
       recommendedTogglerContent =
         <span  className='pointer text-info' onClick={() => this.handleWithRecommended()}>
@@ -774,10 +774,10 @@ const CheckListItem = React.createClass({
     /** generate channel sync progress bar **/
     let channelSyncContent;
     if (this.isInstalled()) {
-      const mandatoryChannelList = this.props.item['channels'].filter(c => !c.optional);
+      const mandatoryChannelList = currentItem['channels'].filter(c => !c.optional);
 
       // if the product sync has just been scheduled
-      if (this.props.scheduledItems.includes(this.props.item.identifier)) {
+      if (this.props.scheduledItems.includes(currentItem.identifier)) {
         channelSyncContent = <span className="text-info">{t('Sync scheduled')}</span>;
       }
       // if any failed sync channel, show the error only
@@ -806,21 +806,27 @@ const CheckListItem = React.createClass({
     let evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
 
     return (
-      <li className={evenOddClass} key={this.props.item['identifier']}>
+      <li className={evenOddClass} key={currentItem['identifier']}>
         <div className='product-details-wrapper'>
-          <CustomDiv className='col text-center' width={this.props.cols.selector.width} um={this.props.cols.selector.um}>{selectorContent}</CustomDiv>
-          <CustomDiv className='col text-center' width={this.props.cols.showSubList.width} um={this.props.cols.showSubList.um}>{showNestedDataIconContent}</CustomDiv>
+          <CustomDiv className='col text-center' width={this.props.cols.selector.width} um={this.props.cols.selector.um}>
+            {selectorContent}
+          </CustomDiv>
+          <CustomDiv className='col text-center' width={this.props.cols.showSubList.width} um={this.props.cols.showSubList.um}>
+            {showNestedDataIconContent}
+          </CustomDiv>
           <CustomDiv className='col col-class-calc-width'>
             {productDescriptionContent}
           </CustomDiv>
-          <CustomDiv className='col' width={this.props.cols.arch.width} um={this.props.cols.arch.um} title={t('Architecture')}>{this.props.isFirstLevel ? this.props.item['arch'] : ''}</CustomDiv>
+          <CustomDiv className='col' width={this.props.cols.arch.width} um={this.props.cols.arch.um} title={t('Architecture')}>
+            {this.props.isFirstLevel ? currentItem['arch'] : ''}
+          </CustomDiv>
           <CustomDiv className='col text-center' width={this.props.cols.channels.width} um={this.props.cols.channels.um}>
             <ModalLink
                 id='showChannels'
                 icon='fa-list'
                 title={t('Show product\'s channels')}
                 target='show-channels-popup'
-                onClick={() => this.props.showChannelsfor(this.props.item)}
+                onClick={() => this.props.showChannelsfor(currentItem)}
             />
           </CustomDiv>
           {
@@ -835,7 +841,7 @@ const CheckListItem = React.createClass({
           }
         </div>
         { this.isSublistVisible() ?
-          <CheckList data={this.getNestedData()}
+          <CheckList data={this.getNestedData(currentItem)}
               nestedKey={this.props.nestedKey}
               isSelectable={this.props.isSelectable}
               selectedItems={this.props.selectedItems}
