@@ -110,8 +110,22 @@ const ProductsPageWrapper = React.createClass({
       .catch(this.handleResponseError);
   },
 
-  handleSelectedItems: function(items) {
-    this.setState({ selectedItems: items });
+  handleSelectedItems: function(ids) {
+    let arr = this.state.selectedItems;
+    ids.forEach(id => {
+      if(!arr.includes(id)) {
+        arr = arr.concat([id]);
+      }
+    });
+    this.setState({ selectedItems: arr });
+  },
+
+  handleUnselectedItems: function(ids) {
+    let arr = this.state.selectedItems;
+    ids.forEach(id => {
+      arr = arr.filter(i => i !== id);
+    });
+    this.setState({ selectedItems: arr });
   },
 
   clearSelection: function() {
@@ -290,6 +304,7 @@ const ProductsPageWrapper = React.createClass({
                   data={this.state.serverData}
                   loading={this.state.loading}
                   handleSelectedItems={this.handleSelectedItems}
+                  handleUnselectedItems={this.handleUnselectedItems}
                   selectedItems={this.state.selectedItems}
                   resyncProduct={this.resyncProduct}
                   scheduledItems={this.state.scheduledItems}
@@ -407,21 +422,11 @@ const Products = React.createClass({
   },
 
   handleSelectedItems: function(ids) {
-    let arr = this.props.selectedItems;
-    ids.forEach(id => {
-      if(!arr.includes(id)) {
-        arr = arr.concat([id]);
-      }
-    });
-    this.props.handleSelectedItems(arr);
+    this.props.handleSelectedItems(ids);
   },
 
   handleUnselectedItems: function(ids) {
-    let arr = this.props.selectedItems;
-    ids.forEach(id => {
-      arr = arr.filter(i => i !== id);
-    });
-    this.props.handleSelectedItems(arr);
+    this.props.handleUnSelectedItems(ids);
   },
 
   searchData: function(datum, criteria) {
@@ -498,8 +503,8 @@ const Products = React.createClass({
           <CheckList data={d => d}
               nestedKey='extensions'
               isSelectable={true}
-              handleSelectedItems={this.handleSelectedItems}
-              handleUnselectedItems={this.handleUnselectedItems}
+              handleSelectedItems={this.props.handleSelectedItems}
+              handleUnselectedItems={this.props.handleUnselectedItems}
               selectedItems={this.props.selectedItems}
               listStyleClass='product-list'
               isFirstLevel={true}
