@@ -110,22 +110,18 @@ const ProductsPageWrapper = React.createClass({
       .catch(this.handleResponseError);
   },
 
-  handleSelectedItems: function(ids) {
+  handleSelectedItems: function(items) {
     let arr = this.state.selectedItems;
-    ids.forEach(id => {
-      if(!arr.includes(id)) {
-        arr = arr.concat([id]);
-      }
-    });
-    this.setState({ selectedItems: arr });
+    // add all items those are not yet in the existsing set
+    arr = arr.concat(items.filter(i => !arr.map(a => a.identifier).includes(i.identifier)));
+    this.setState({selectedItems: arr});
   },
 
-  handleUnselectedItems: function(ids) {
+  handleUnselectedItems: function(items) {
     let arr = this.state.selectedItems;
-    ids.forEach(id => {
-      arr = arr.filter(i => i !== id);
-    });
-    this.setState({ selectedItems: arr });
+    // keep all items in the existsing set those are not in the unselected items
+    arr = arr.filter(a => !items.map(i => i.identifier).includes(a.identifier));
+    this.setState({selectedItems: arr});
   },
 
   clearSelection: function() {
@@ -157,17 +153,17 @@ const ProductsPageWrapper = React.createClass({
     currentObject.setState({ addingProducts: true });
     Network.post(
         '/rhn/manager/admin/setup/products',
-        JSON.stringify(currentObject.state.selectedItems), 'application/json'
+        JSON.stringify(currentObject.state.selectedItems.map(i => i.identifier)), 'application/json'
     ).promise.then(data => {
       // returned data format is { productId : isFailedFlag }
-      let failedProducts = currentObject.state.selectedItems.filter(id => data[id]).map(id => id);
+      let failedProducts = currentObject.state.selectedItems.filter(i => data[i.identifier]);
       let resultMessages = null;
       if (failedProducts.length == 0) {
         resultMessages = MessagesUtils.success('All the products were installed succesfully.')
       }
       else {
         resultMessages = MessagesUtils.warning(
-          'The following product installations failed: \'' + failedProducts.reduce((a,b) => a + ', ' + b) + '\'. Please check log files.'
+          'The following product installations failed: \'' + failedProducts.reduce((a,b) => a.label + ', ' + b.label) + '\'. Please check log files.'
         );
       }
       currentObject.setState(
@@ -422,12 +418,12 @@ const Products = React.createClass({
     return data;
   },
 
-  handleSelectedItems: function(ids) {
-    this.props.handleSelectedItems(ids);
+  handleSelectedItems: function(items) {
+    this.props.handleSelectedItems(items);
   },
 
-  handleUnselectedItems: function(ids) {
-    this.props.handleUnSelectedItems(ids);
+  handleUnselectedItems: function(items) {
+    this.props.handleUnSelectedItems(items);
   },
 
   searchData: function(datum, criteria) {
@@ -543,12 +539,12 @@ const Products = React.createClass({
  * Generate a custom list of elements for the products data
 */
 const CheckList = React.createClass({
-  handleSelectedItems: function(ids) {
-    this.props.handleSelectedItems(ids);
+  handleSelectedItems: function(items) {
+    this.props.handleSelectedItems(items);
   },
 
-  handleUnselectedItems: function(ids) {
-    this.props.handleUnselectedItems(ids);
+  handleUnselectedItems: function(items) {
+    this.props.handleUnselectedItems(items);
   },
 
   handleVisibleSublist: function(id) {
@@ -616,7 +612,7 @@ const CheckListItem = React.createClass({
   },
 
   isSelected: function() {
-    return this.props.selectedItems.includes(this.props.item.identifier);
+    return this.props.selectedItems.filter(i => i.identifier == this.props.item.identifier).length == 1;
   },
 
   isInstalled: function() {
@@ -636,12 +632,12 @@ const CheckListItem = React.createClass({
     const id = currentItem.identifier;
 
     // add base product first (the server fails if it tries to add extentions first)
-    let arr = [id];
+    var arr = [this.props.item];
 
     // this item was selected but it is going to be removed from the selected set,
     // so all children are going to be removed as well
     if(this.isSelected()) {
-      arr = arr.concat(this.getChildrenTree(currentItem).map(el => el.identifier));
+      arr = arr.concat(this.getChildrenTree(currentItem));
       this.handleUnselectedItems(arr);
     }
     else {
@@ -649,13 +645,13 @@ const CheckListItem = React.createClass({
 
       // if any required product, add them first
       if (currentItem.required) {
-        arr = currentItem.required.concat(arr);
+        arr = arr.concat(currentItem.required);
       }
 
       // if it has the recommended flag enabled,
       // all recommended children are going to be added as well
       if (this.state.withRecommended && this.props.isFirstLevel) {
-        arr = arr.concat(this.getRecommendedChildrenTree(currentItem).map(el => el.identifier));
+        arr = arr.concat(this.getRecommendedChildrenTree(currentItem));
       }
       this.handleSelectedItems(arr);
     }
@@ -674,12 +670,12 @@ const CheckListItem = React.createClass({
       return this.getChildrenTree(item).filter(el => el.recommended);
   },
 
-  handleSelectedItems: function(ids) {
-    this.props.handleSelectedItems(ids);
+  handleSelectedItems: function(items) {
+    this.props.handleSelectedItems(items);
   },
 
-  handleUnselectedItems: function(ids) {
-    this.props.handleUnselectedItems(ids);
+  handleUnselectedItems: function(items) {
+    this.props.handleUnselectedItems(items);
   },
 
   handleWithRecommended: function() {
@@ -687,12 +683,14 @@ const CheckListItem = React.createClass({
     this.setState({withRecommended: withRecommendedNow});
     // only if this item is already selected
     if (this.isSelected()) {
+      const arr = this.getRecommendedChildrenTree(this.props.item);
       // if the recommended flag is now enabled, select all recommended children
       if (withRecommendedNow) {
-        this.props.handleSelectedItems(this.getRecommendedChildrenTree(this.props.item).map(el => el.identifier));
+        this.props.handleSelectedItems(arr);
       }
+      // else unselected them all
       else {
-        this.props.handleUnselectedItems(this.getRecommendedChildrenTree(this.props.item).map(el => el.identifier));
+        this.props.handleUnselectedItems(arr);
       }
     }
   },
