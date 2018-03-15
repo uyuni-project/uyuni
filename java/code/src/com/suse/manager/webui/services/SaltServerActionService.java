@@ -636,13 +636,7 @@ public class SaltServerActionService {
         String script = scriptAction.getScriptActionDetails().getScriptContents();
 
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
-//        // FIXME: This supports only bash at the moment
-//        ret.put(Cmd.execCodeAll(
-//                "bash",
-//                // remove \r or bash will fail
-//                script.replaceAll("\r\n", "\n")), minions);
-
-        // write script to /srv/susemanager/salt/scripts/script_<id>.sh
+        // write script to /srv/susemanager/salt/scripts/script_<action_id>.sh
         Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
         Path scriptFile = scriptsDir.resolve("script_" + scriptAction.getId() + ".sh");
         try {
