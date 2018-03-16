@@ -199,6 +199,7 @@ Feature: Action chaining traditinal clients
 
   Scenario: Add operations to the action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    And I want to operate on this "sle-client"
     When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
@@ -213,6 +214,7 @@ Feature: Action chaining traditinal clients
 
   Scenario: Run the action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    And I want to operate on this "sle-client"
     When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
     And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
