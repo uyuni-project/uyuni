@@ -3,13 +3,14 @@
 
 Feature: Salt package states
 
-  Scenario: Pre-requisite: install milkyway-dummy-1.0 and virgo-dummy-1.0 packages
+  Scenario: Pre-requisite: install old packages on SLES minion
     Given I am authorized as "admin" with password "admin"
     Then I apply highstate on "sle-minion"
     And I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
     And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion" without error control
     When I follow "Admin"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"
@@ -105,11 +106,12 @@ Feature: Salt package states
     And I run "rcsalt-minion restart" on "sle-minion"
     And I should see a "No reply from minion" text in element "highstate"
 
-  Scenario: Cleanup: remove milkyway-dummy and virgo-dummy packages from SLES minion
+  Scenario: Cleanup: remove old packages from SLES minion
     Given I am authorized as "admin" with password "admin"
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n rm milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
+    And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
     And I run "zypper -n ref" on "sle-minion"
     When I follow "Admin"
     And I follow "Task Schedules"
