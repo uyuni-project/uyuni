@@ -446,42 +446,6 @@ const Products = React.createClass({
   },
 
   render: function() {
-    const titlePopup = t('Product Channels - ') + (this.state.popupItem != null ? this.state.popupItem.label : '');
-    const contentPopup = 
-      this.state.popupItem != null ?
-        (
-          <div>
-            {
-              this.state.popupItem.channels.filter(c => !c.optional).length > 0 ?
-                <div>
-                  <h4>Mandatory Channels</h4>
-                  <ul className='product-channel-list'>
-                    {
-                      this.state.popupItem.channels
-                        .filter(c => !c.optional)
-                        .map(c => <li key={c.label}>{c.summary}&nbsp;<small>[{c.label}]</small></li>)
-                    }
-                  </ul>
-                </div>
-                : null
-            }
-            {
-              this.state.popupItem.channels.filter(c => c.optional).length > 0 ?
-                <div>
-                  <h4>Optional Channels</h4>
-                  <ul className='product-channel-list'>
-                    {
-                      this.state.popupItem.channels
-                        .filter(c => c.optional)
-                        .map(c => <li key={c.summary}>{c.summary}&nbsp;<small>[{c.label}]</small></li>)
-                    }
-                  </ul>
-                </div>
-                : null
-            }
-          </div>
-        )
-      : null ;
     const archFilter =
       <div className='multiple-select-wrapper'>
         <select id='product-arch-filter' className='form-control d-inline-block apply-select2js-on-this' multiple='multiple'>
@@ -519,12 +483,7 @@ const Products = React.createClass({
               readOnlyMode={this.props.readOnlyMode}
           />
         </DataHandler>
-        <PopUp
-            id='show-channels-popup'
-            title={titlePopup}
-            content={contentPopup}
-            className='modal-xs'
-        />
+        <ChannelsPopUp item={this.state.popupItem} />
       </div>
     )
   }
@@ -875,6 +834,73 @@ const CheckListItem = React.createClass({
           />
           : null }
       </li>
+    )
+  }
+});
+
+const ChannelsPopUp = (props) => {
+  const titlePopup = t('Product Channels - ') + (props.item != null ? props.item.label : '');
+  const contentPopup =
+    props.item != null ?
+      (
+        <div>
+          <ChannelList title='Mandatory Channels'
+              items={props.item.channels.filter(c => !c.optional)
+                .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()))
+              }
+              className={'product-channel-list'} />
+          <ChannelList title='Optional Channels'
+              items={props.item.channels.filter(c => c.optional)
+                .sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase()))
+              }
+              className={'product-channel-list'} />
+        </div>
+      )
+    : null ;
+  return (
+    <PopUp
+        id='show-channels-popup'
+        title={titlePopup}
+        content={contentPopup}
+        className='modal-xs'
+    />
+  );
+}
+
+const ChannelList = React.createClass({
+  decodeChannelStatus:function(status) {
+    let decoded = '';
+    switch(status) {
+      case _CHANNEL_STATUS.notSynced:
+        decoded = <span className='text-muted'>{t('not synced')}</span>; break;
+      case _CHANNEL_STATUS.syncing:
+        decoded = <span className='text-info'>{t('sync in progress')}</span>; break;
+      case _CHANNEL_STATUS.synced:
+        decoded = <span className='text-success'>{t('synced')}</span>; break;
+      case _CHANNEL_STATUS.failed:
+        decoded = <span className='text-danger'>{t('sync failed')}</span>; break;
+    }
+    return decoded;
+  },
+
+  render:function() {
+    return (
+      this.props.items.length > 0 ?
+      <div>
+        <h4>{this.props.title}</h4>
+        <ul className={this.props.className}>
+          {
+            this.props.items
+              .map(c =>
+                  <li key={c.label}>
+                    <div><strong>{c.summary}</strong>&nbsp;{this.decodeChannelStatus(c.status)}</div>
+                    <div>{c.label}</div>
+                  </li>
+              )
+          }
+        </ul>
+      </div>
+      : null
     )
   }
 });
