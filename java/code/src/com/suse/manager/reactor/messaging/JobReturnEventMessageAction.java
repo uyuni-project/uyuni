@@ -142,7 +142,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         refreshPackagesIfNeeded(jobReturnEvent, actionStateApply.getName(),
                                 Optional.ofNullable(actionStateApply.getChanges().getRet()));
                     }
-                    else if (!key.contains("suma_reboot_action")) {
+                    else if (!key.contains("schedule_next_chunk")) {
                         LOG.warn("Could not find action id in action chain state key: " + key);
                     }
                 }
