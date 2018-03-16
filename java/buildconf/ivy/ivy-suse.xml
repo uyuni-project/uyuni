@@ -90,7 +90,6 @@
         <dependency org="suse" name="stringtree-json" rev="2.0.9" />
         <dependency org="suse" name="struts" rev="1.2.9" />
         <dependency org="suse" name="strutstest" rev="2.1.3" />
-        <dependency org="suse" name="susestudio-java-client" rev="0.1.4" />
         <dependency org="suse" name="taglibs-standard-impl" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-jstlel" rev="1.2.5" />
         <dependency org="suse" name="taglibs-standard-spec" rev="1.2.5" />
