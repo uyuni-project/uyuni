@@ -105,7 +105,10 @@ const ProductsPageWrapper = React.createClass({
         currentObject.setState({
           serverData: data[_DATA_ROOT_ID],
           errors: [],
-          loading: false
+          loading: false,
+          selectedItems: [],
+          scheduleResyncItems: [],
+          scheduledItems: [],
         });
       })
       .catch(this.handleResponseError);
