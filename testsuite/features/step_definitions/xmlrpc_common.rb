@@ -305,11 +305,6 @@ Given(/^I am logged in via XML\-RPC actionchain as user "(.*?)" and password "(.
   rpc.login(luser, password)
   syschaintest.login(luser, password)
   scdrpc.login(luser, password)
-
-  # Flush all chains
-  rpc.list_chains.each do |label|
-    rpc.delete_chain(label)
-  end
 end
 
 Given(/^I want to operate on this "(.*?)"$/) do |target|
@@ -341,6 +336,16 @@ end
 Then(/^I delete an action chain, labeled "(.*?)"$/) do |label|
   begin
     rpc.delete_chain(label)
+  rescue XMLRPC::FaultException => e
+    raise format('deleteChain: XML-RPC failure, code %s: %s', e.faultCode, e.fault_string)
+  end
+end
+
+Then(/^I delete all action chains$/) do
+  begin
+    rpc.list_chains().each do |label|
+      rpc.delete_chain(label)
+    end
   rescue XMLRPC::FaultException => e
     raise format('deleteChain: XML-RPC failure, code %s: %s', e.faultCode, e.fault_string)
   end
