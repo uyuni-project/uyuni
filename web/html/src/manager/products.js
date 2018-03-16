@@ -474,7 +474,7 @@ const Products = React.createClass({
                     {
                       this.state.popupItem.channels
                         .filter(c => !c.optional)
-                        .map(c => <li>{c.summary}&nbsp;<small>[{c.label}]</small></li>)
+                        .map(c => <li key={c.label}>{c.summary}&nbsp;<small>[{c.label}]</small></li>)
                     }
                   </ul>
                 </div>
