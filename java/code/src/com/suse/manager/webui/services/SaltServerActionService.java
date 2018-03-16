@@ -78,6 +78,9 @@ import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
 import org.apache.commons.lang3.tuple.Pair;
 
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -137,6 +140,14 @@ public class SaltServerActionService {
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
 
+    private Action unproxy(Action entity) {
+        Hibernate.initialize(entity);
+        if (entity instanceof HibernateProxy) {
+            entity = (Action) ((HibernateProxy) entity).getHibernateLazyInitializer()
+                    .getImplementation();
+        }
+        return entity;
+    }
 
     /**
      * For a given action and list of minion servers return the salt call(s) that need to be
@@ -149,6 +160,7 @@ public class SaltServerActionService {
     public Map<LocalCall<?>, List<MinionServer>> callsForAction(Action actionIn,
             List<MinionServer> minions) {
         ActionType actionType = actionIn.getActionType();
+        actionIn = unproxy(actionIn);
         if (ActionFactory.TYPE_ERRATA.equals(actionType)) {
             ErrataAction errataAction = (ErrataAction) actionIn;
             Set<Long> errataIds = errataAction.getErrata().stream()
