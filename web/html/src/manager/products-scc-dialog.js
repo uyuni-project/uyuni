@@ -3,7 +3,6 @@
 const React = require('react');
 const Network = require('../utils/network');
 const Messages = require('../components/messages').Messages;
-const PopUp = require("../components/popup").PopUp;
 const Button = require('../components/buttons').Button;
 
 const _SCC_REFRESH_STEPS = [
@@ -52,8 +51,8 @@ const SCCDialog = React.createClass({
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    if(nextProps.start && // I'm told to run
+  componentWillMount: function() {
+    if(this.props.forceStart && // I'm told to run
         !this.isSyncRunning() && // I'm not running
         !this.hasRun() // I have never run yet
       ) {
@@ -74,24 +73,22 @@ const SCCDialog = React.createClass({
   },
 
   startSync: function() {
-    this.props.updateSyncRunning(true);
+    if (this.hasRun()) {
+      // reset state
+      _SCC_REFRESH_STEPS.forEach(s =>
+        {
+          s.inProgress = false;
+          s.success = null;
+        }
+      );
+      this.setState({ steps: _SCC_REFRESH_STEPS, errors: []});
+    }
+    this.props.updateSccSyncRunning(true);
     this.runSccRefreshStep(this.state.steps, 0); // start from the first element
   },
 
-  restartSync: function() {
-    // reset state
-    _SCC_REFRESH_STEPS.forEach(s =>
-      {
-        s.inProgress = false;
-        s.success = null;
-      }
-    );
-    this.setState({ steps: _SCC_REFRESH_STEPS, errors: []});
-    this.startSync();
-  },
-
   finishSync: function() {
-    this.props.updateSyncRunning(false);
+    this.props.updateSccSyncRunning(false);
   },
 
   runSccRefreshStep: function(stepList, i) {
@@ -136,68 +133,68 @@ const SCCDialog = React.createClass({
   },
 
   render: function() {
-    const failureLink = <a href='/rhn/admin/Catalina.do'>{t('Details')}</a>;
-    const failureResult = (
-      <span>
-        <i className='fa fa-exclamation-triangle text-warning' />
-        {t('Operation not successful: Empty reply from the server')}
-        ({failureLink})
-      </span>
-    );
-    const successResult = <span><i className='fa fa-check text-success' />{t('Completed')}</span>;
-
-    const contentPopup = (
-      <div>
-        <Messages items={this.state.errors}/>
-        <p>{t('Please be patient, this might take several minutes.')}</p>
-        <ul id='scc-task-list' className='fa-ul'>
-          {
-            this.state.steps.map(s => 
-              {
-                return (
-                  <li key={s.id}>
-                    <i className={
-                      s.success != null ?
-                      (
-                        s.success ?
-                          'fa fa-li fa-check text-success'
-                          : 'fa fa-li fa-exclamation-triangle text-warning'
-                      )
-                      : s.inProgress ? 'fa fa-li fa-spinner fa-spin' : 'fa fa-li fa-circle-o text-muted'}
-                      /><span className={s.success == null ? 'text-muted' : ''}>{s.label}</span>
-                  </li>
-                )
-              }
-            )
-          }
-        </ul>
-      </div>
-    );
-
-    const footerPopup = (
-      !this.isSyncRunning() && this.hasRun() ?
-      <div>
-        <div className='col-md-7 text-left'>
-          {
-            this.state.steps.every(s => s.success) ?
-              successResult : failureResult
-          }
-        </div>
-        <div className='col-md-5 text-left'>
-          <button className='btn btn-default' onClick={() => this.restartSync()}>{t('Sync again')}</button>
-        </div>
-      </div>
-      : null
-    );
-
     return (
-      <PopUp
-          id='scc-refresh-popup'
-          title={t('Refreshing data from SUSE Customer Center')}
-          content={contentPopup}
-          footer={footerPopup}
-          className='modal-sm'
-          onClosePopUp={this.props.onClose} />
+      <div className='text-left'>
+        <h4>{t('Refreshing data from SUSE Customer Center')}</h4>
+        
+        <div className='d-block'>
+          <Messages items={this.state.errors}/>
+          <p>{ this.isSyncRunning() ? t('Please be patient, this might take several minutes.') : null }</p>
+          <ul id='scc-task-list' className='fa-ul'>
+            {
+              this.state.steps.map(s => 
+                {
+                  return (
+                    <li key={s.id}>
+                      <i className={
+                        s.success != null ?
+                        (
+                          s.success ?
+                            'fa fa-li fa-check text-success'
+                            : 'fa fa-li fa-exclamation-triangle text-warning'
+                        )
+                        : s.inProgress ? 'fa fa-li fa-spinner fa-spin' : 'fa fa-li fa-circle-o text-muted'}
+                        /><span className={s.success == null ? 'text-muted' : ''}>{s.label}</span>
+                    </li>
+                  )
+                }
+              )
+            }
+          </ul>
+        </div>
+
+        <div className='d-block'>
+          <div className='col-md-7 text-left'>
+            {
+              !this.isSyncRunning() && this.hasRun() ?
+                this.state.steps.every(s => s.success) ?
+                  <span><i className='fa fa-check text-success' />{t('Completed')}</span>
+                  : 
+                  <span>
+                    <i className='fa fa-exclamation-triangle text-warning' />
+                    {t('Operation not successful: Empty reply from the server')}
+                    (<a href='/rhn/admin/Catalina.do'>{t('Details')}</a>)
+                  </span>
+              : null
+            }
+          </div>
+          <div className='col-md-5 text-left'>
+            <Button
+                id='scc-refresh-button'
+                className='btn btn-default'
+                disabled={this.isSyncRunning() ? 'disabled' : ''}
+                handler={this.startSync}
+                title={
+                  this.isSyncRunning() ?
+                    t('The product catalog refresh is running..')
+                    : t('Refreshes the product catalog from the Customer Center')
+                }
+                icon={'fa-refresh ' + (this.isSyncRunning() ? 'fa-spin' : '')}
+                text={t('Refresh')}
+            />
+          </div>
+        </div>
+      </div>
     )
   }
 });

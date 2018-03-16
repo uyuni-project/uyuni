@@ -79,11 +79,7 @@ const ProductsPageWrapper = React.createClass({
       errors: [],
       loading: true,
       selectedItems: [],
-      showPopUp: // trigger the refresh at the first page load if
-        refreshNeeded_flag_from_backend &&
-        issMaster_flag_from_backend &&
-        !refreshRunning_flag_from_backend,
-      syncRunning: false,
+      sccSyncRunning: false,
       addingProducts: false,
       scheduledItems: [],
       scheduleResyncItems: []
@@ -94,6 +90,11 @@ const ProductsPageWrapper = React.createClass({
     if (!this.state.refreshRunning) {
       this.refreshServerData();
     }
+  },
+
+  forceStartSccSync: function() {
+    // trigger the refresh at the first page load if
+    return refreshNeeded_flag_from_backend && issMaster_flag_from_backend && !refreshRunning_flag_from_backend
   },
 
   refreshServerData: function(dataUrlTag) {
@@ -128,24 +129,17 @@ const ProductsPageWrapper = React.createClass({
     this.setState({ selectedItems: [] });
   },
 
-  showPopUp: function() {
-    this.setState({showPopUp: true});
-  },
-
-  closePopUp: function() {
-    this.setState({showPopUp: false});
-  },
-
-  updateSyncRunning: function(syncStatus) {
+  updateSccSyncRunning: function(sccSyncStatus) {
     // if it was running and now it's finished
-    if (this.state.syncRunning && !syncStatus) {
+    if (this.state.sccSyncRunning && !sccSyncStatus) {
       this.refreshServerData(); // reload data
+      this.setState({ errors: [] });
     }
 
-    if (syncStatus) {
+    if (sccSyncStatus) {
       this.setState({ errors: MessagesUtils.info(t('The product catalog refresh is running..')) });
     }
-    this.setState({ syncRunning: syncStatus });
+    this.setState({ sccSyncRunning: sccSyncStatus });
   },
 
   submit: function() {
@@ -239,13 +233,13 @@ const ProductsPageWrapper = React.createClass({
     }
     else if (this.state.issMaster) {
       const submitButtonTitle =
-        this.state.syncRunning ?
+        this.state.sccSyncRunning ?
           t('The product catalog is still refreshing, please wait.')
           : this.state.selectedItems.length == 0 ?
               t('Select some product first.')
               : null;
       const addProductButton = (
-        this.state.syncRunning || this.state.selectedItems.length == 0 || this.state.addingProducts ?
+        this.state.sccSyncRunning || this.state.selectedItems.length == 0 || this.state.addingProducts ?
         <Button
             id="addProducts"
             icon={this.state.addingProducts ? 'fa-plus-circle fa-spin' : 'fa-plus'}
@@ -271,19 +265,6 @@ const ProductsPageWrapper = React.createClass({
               <div className='spacewalk-section-toolbar'>
                 <div className='action-button-wrapper'>
                   <div className='btn-group'>
-                    <ModalButton
-                        className='btn btn-default'
-                        id='sccRefresh'
-                        icon={'fa-refresh ' + (this.state.syncRunning ? 'fa-spin' : '')}
-                        title={
-                          this.state.syncRunning ?
-                            t('The product catalog refresh is running..')
-                            : t('Refreshes the product catalog from the Customer Center')
-                        }
-                        text={t('Refresh')}
-                        target='scc-refresh-popup'
-                        onClick={() => this.showPopUp()}
-                    />
                     <Button
                         id="clearSelection"
                         icon='fa-eraser'
@@ -317,6 +298,11 @@ const ProductsPageWrapper = React.createClass({
                 }
               </ul>
             </div>
+            <hr/>
+            <SCCDialog
+                forceStart={this.forceStartSccSync()}
+                updateSccSyncRunning={(sccSyncStatus) => this.updateSccSyncRunning(sccSyncStatus)}
+              />
             <hr/>
               <h4>{t("Why aren't all SUSE products displayed in the list?")}</h4>
               <p>{t('The products displayed on this list are directly linked to your \
@@ -367,11 +353,6 @@ const ProductsPageWrapper = React.createClass({
               {pageContent}
             </div>
         </div>
-        <SCCDialog
-            onClose={() => this.closePopUp}
-            start={this.state.showPopUp && !this.state.syncRunning}
-            updateSyncRunning={(syncStatus) => this.updateSyncRunning(syncStatus)}
-          />
         {footer}
       </div>
     )
