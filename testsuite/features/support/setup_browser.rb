@@ -51,6 +51,7 @@ After do |scenario|
     FileUtils.rm_rf(img_name)
     #embedding the base64 image in a cucumber html report
     embed("data:image/png;base64,#{encoded_img}", 'image/png')
+    debug_server_on_realtime_failure
   end
 end
 
@@ -66,4 +67,14 @@ Before('@centosminion') do |scenario|
 end
 Before('@sshminion') do |scenario|
   scenario.skip_invoke! unless $ssh_minion
+end
+
+## this is for having more infos about the errors.
+
+def debug_server_on_realtime_failure
+   puts
+   puts '#' * 55 + 'var/log/rhn_web_ui.log' + '#' * 55
+   out, _code = $server.run('tail -n35 /var/log/rhn/rhn_web_ui.log')
+   puts out
+   puts '#' * 131
 end
