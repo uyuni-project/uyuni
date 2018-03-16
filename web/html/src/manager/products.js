@@ -468,12 +468,13 @@ const Products = React.createClass({
           <CheckList data={d => d}
               nestedKey='extensions'
               isSelectable={true}
+              selectedItems={this.props.selectedItems}
               handleSelectedItems={this.props.handleSelectedItems}
               handleUnselectedItems={this.props.handleUnselectedItems}
-              selectedItems={this.props.selectedItems}
               listStyleClass='product-list'
-              isFirstLevel={true}
+              treeLevel={1}
               showChannelsfor={this.showChannelsfor}
+              childrenDisabled={false}
               cols={_COLS}
               resyncProduct={this.props.resyncProduct}
               scheduledItems={this.props.scheduledItems}
@@ -493,16 +494,8 @@ const Products = React.createClass({
  * Generate a custom list of elements for the products data
 */
 const CheckList = React.createClass({
-  handleSelectedItems: function(items) {
-    this.props.handleSelectedItems(items);
-  },
-
-  handleUnselectedItems: function(items) {
-    this.props.handleUnselectedItems(items);
-  },
-
-  handleVisibleSublist: function(id) {
-    this.props.handleVisibleSublist(id);
+  isRootLevel: function(level) {
+    return level == 1;
   },
 
   render: function() {
@@ -510,7 +503,7 @@ const CheckList = React.createClass({
       this.props.data ?
         <ul className={this.props.listStyleClass}>
           {
-            this.props.isFirstLevel ?
+            this.isRootLevel(this.props.treeLevel) ?
               <li className='list-header'>
                 <CustomDiv className='col text-center' width={this.props.cols.selector.width} um={this.props.cols.selector.um}></CustomDiv>
                 <CustomDiv className='col text-center' width={this.props.cols.showSubList.width} um={this.props.cols.showSubList.um}></CustomDiv>
@@ -528,23 +521,23 @@ const CheckList = React.createClass({
                 <CheckListItem
                     key={l.identifier}
                     item={l}
-                    handleSelectedItems={this.handleSelectedItems}
-                    handleUnselectedItems={this.handleUnselectedItems}
-                    selectedItems={this.props.selectedItems}
                     nestedKey={this.props.nestedKey}
-                    isSelectable={true}
-                    isFirstLevel={this.props.isFirstLevel}
-                    index={index}
-                    showChannelsfor={this.props.showChannelsfor}
+                    isSelectable={this.props.isSelectable}
+                    handleSelectedItems={this.props.handleSelectedItems}
+                    handleUnselectedItems={this.props.handleUnselectedItems}
+                    selectedItems={this.props.selectedItems}
                     listStyleClass={this.props.listStyleClass}
-                    childrenDisabled={this.props.isFirstLevel ? false : this.props.childrenDisabled}
+                    treeLevel={this.props.treeLevel}
+                    showChannelsfor={this.props.showChannelsfor}
+                    childrenDisabled={this.props.childrenDisabled}
                     cols={this.props.cols}
                     resyncProduct={this.props.resyncProduct}
                     scheduledItems={this.props.scheduledItems}
                     scheduleResyncItems={this.props.scheduleResyncItems}
-                    handleVisibleSublist={this.handleVisibleSublist}
+                    handleVisibleSublist={this.props.handleVisibleSublist}
                     visibleSubList={this.props.visibleSubList}
                     readOnlyMode={this.props.readOnlyMode}
+                    index={index}
                 />
               )
             })
@@ -566,6 +559,10 @@ const CheckListItem = React.createClass({
     }
   },
 
+  isRootLevel: function(level) {
+    return level == 1;
+  },
+
   isSelected: function() {
     return this.props.selectedItems.filter(i => i.identifier == this.props.item.identifier).length == 1;
   },
@@ -576,10 +573,6 @@ const CheckListItem = React.createClass({
 
   isSublistVisible: function() {
     return this.props.visibleSubList.includes(this.props.item.identifier);
-  },
-
-  handleVisibleSublist: function(id) {
-    this.props.handleVisibleSublist(id);
   },
 
   handleSelectedItem: function() {
@@ -605,7 +598,7 @@ const CheckListItem = React.createClass({
 
       // if it has the recommended flag enabled,
       // all recommended children are going to be added as well
-      if (this.state.withRecommended && this.props.isFirstLevel) {
+      if (this.state.withRecommended && this.isRootLevel(this.props.treeLevel)) {
         arr = arr.concat(this.getRecommendedChildrenTree(currentItem));
       }
       this.handleSelectedItems(arr);
@@ -691,7 +684,7 @@ const CheckListItem = React.createClass({
     if (this.getNestedData(currentItem).length > 0) {
       const openSubListIconClass = this.isSublistVisible() ? 'fa-angle-down' : 'fa-angle-right';
       showNestedDataIconContent = <i className={'fa ' + openSubListIconClass + ' fa-1-5x pointer product-hover'}
-          onClick={() => this.handleVisibleSublist(currentItem.identifier)} />;
+          onClick={() => this.props.handleVisibleSublist(currentItem.identifier)} />;
     }
     /*****/
 
@@ -699,7 +692,7 @@ const CheckListItem = React.createClass({
     let handleDescriptionClick = null;
     let hoverableDescriptionClass = '';
     if (this.getNestedData(currentItem).length > 0) {
-      handleDescriptionClick = () => this.handleVisibleSublist(currentItem.identifier);
+      handleDescriptionClick = () => this.props.handleVisibleSublist(currentItem.identifier);
       hoverableDescriptionClass = 'product-hover pointer';
     }
     let productDescriptionContent =
@@ -716,7 +709,7 @@ const CheckListItem = React.createClass({
     /** generate recommended toggler if needed **/
     // only for root products
     let recommendedTogglerContent;
-    if (this.props.isFirstLevel && this.getNestedData(currentItem).some(i => i.recommended)) {
+    if (this.isRootLevel(this.props.treeLevel) && this.getNestedData(currentItem).some(i => i.recommended)) {
       if (this.state.withRecommended) {
       recommendedTogglerContent =
         <span  className='pointer text-info' onClick={() => this.handleWithRecommended()}>
@@ -791,7 +784,7 @@ const CheckListItem = React.createClass({
             {productDescriptionContent}
           </CustomDiv>
           <CustomDiv className='col' width={this.props.cols.arch.width} um={this.props.cols.arch.um} title={t('Architecture')}>
-            {this.props.isFirstLevel ? currentItem.arch : ''}
+            {this.isRootLevel(this.props.treeLevel) ? currentItem.arch : ''}
           </CustomDiv>
           <CustomDiv className='col text-center' width={this.props.cols.channels.width} um={this.props.cols.channels.um}>
             <ModalLink
@@ -821,14 +814,14 @@ const CheckListItem = React.createClass({
               handleSelectedItems={this.handleSelectedItems}
               handleUnselectedItems={this.handleUnselectedItems}
               listStyleClass={this.props.listStyleClass}
-              isFirstLevel={false}
+              treeLevel={this.props.treeLevel + 1}
               showChannelsfor={this.props.showChannelsfor}
               childrenDisabled={!(this.isSelected() || this.isInstalled())}
               cols={this.props.cols}
               resyncProduct={this.props.resyncProduct}
               scheduledItems={this.props.scheduledItems}
               scheduleResyncItems={this.props.scheduleResyncItems}
-              handleVisibleSublist={this.handleVisibleSublist}
+              handleVisibleSublist={this.props.handleVisibleSublist}
               visibleSubList={this.props.visibleSubList}
               readOnlyMode={this.props.readOnlyMode}
           />
