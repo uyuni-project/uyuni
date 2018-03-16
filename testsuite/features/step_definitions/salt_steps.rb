@@ -168,19 +168,6 @@ Then(/^"(.*?)" should be registered$/) do |host|
   assert_includes(@rpc.list_systems.map { |s| s['name'] }, node.full_hostname)
 end
 
-When(/^I enter as remote command a script to watch a picked-up test file$/) do
-  steps %(
-    When I enter as remote command this script in
-      """
-      #!/bin/bash
-      while [ ! -f /tmp/PICKED-UP-#{$PROCESS_ID}.test ]
-      do
-        sleep 1
-      done
-      rm /tmp/PICKED-UP-#{$PROCESS_ID}.test
-      """)
-end
-
 # user salt steps
 Given(/^I am authorized as an example user with no roles$/) do
   @rpc = XMLRPCUserTest.new(ENV['SERVER'])
