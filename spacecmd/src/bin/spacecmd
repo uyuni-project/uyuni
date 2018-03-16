@@ -30,7 +30,7 @@ import codecs
 import locale
 from ConfigParser import SafeConfigParser
 from optparse import Option, OptionParser
-from socket import gethostname
+from socket import getfqdn
 
 _INTRO = '''Welcome to spacecmd, a command-line interface to Spacewalk.
 
@@ -105,7 +105,7 @@ if __name__ == '__main__':
     if shell.options.server:
         shell.config['server'] = shell.options.server
     else:
-        shell.config['server'] = gethostname()
+        shell.config['server'] = getfqdn()
 
     # create an empty configuration file if one's not present
     if not os.path.isfile(user_conf_file):
