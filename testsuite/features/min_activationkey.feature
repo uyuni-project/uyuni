@@ -78,8 +78,6 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And the Salt master can reach "sle-minion"
     And I wait for "orion-dummy" to be installed on this "sle-minion"
     And I wait for "perseus-dummy" to be installed on this "sle-minion"
-    And I remove package "orion-dummy" from this "sle-minion"
-    And I remove package "perseus-dummy" from this "sle-minion"
 
   Scenario: Check system ID of bootstrapped minion
     Given I am on the Systems overview page of this "sle-minion"
@@ -101,6 +99,19 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     When I follow "View Files" in the content area
     Then I should see a "/etc/euler.conf" text
     And I should see a "Key Channel" text
+
+  Scenario: Cleanup: remove the package states
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "States" in the content area
+    And I follow "Packages"
+    Then I should see a "Package States" text
+    When I change the state of "orion-dummy" to "Unmanaged" and ""
+    And I change the state of "perseus-dummy" to "Unmanaged" and ""
+    Then I should see a "2 Changes" text
+    When I click save
+    And I click apply
+    And I remove package "orion-dummy" from this "sle-minion"
+    And I remove package "perseus-dummy" from this "sle-minion"
 
   Scenario: Cleanup: remove the key configuration channel
     Given I am authorized as "admin" with password "admin"
