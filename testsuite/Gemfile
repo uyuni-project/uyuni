@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-# FIXME:
 # this gems cannot be updated to major, because
 # they requires Ruby version >= 2.2. (we need first to upgrade ruby to 2.2.2)
 gem 'cucumber', '2.0.0'
@@ -8,14 +7,14 @@ gem 'rack', '1.6.8'
 gem 'rack-test', '0.7.0'
 # This gems are latest stable
 gem 'capybara', '2.16.0'
-gem 'nokogiri', '1.8.1'
-gem 'rake', '12.3.0'
-gem 'simplecov', '0.15.1'
-gem 'poltergeist', '1.17.0'
-gem 'net-ssh', '4.2.0'
-gem 'mime-types', '3.1'
-gem 'selenium-webdriver', '3.8.0'
 gem 'jwt', '2.1.0'
-gem 'websocket-driver', '0.7.0'
-gem 'websocket', '1.2.5'
+gem 'mime-types', '3.1'
+gem 'net-ssh', '4.2.0'
+gem 'nokogiri', '1.8.1'
+gem 'poltergeist', '1.17.0'
+gem 'rake', '12.3.0'
+gem 'selenium-webdriver', '3.8.0'
+gem 'simplecov', '0.15.1'
 gem 'twopence'
+gem 'websocket', '1.2.5'
+gem 'websocket-driver', '0.7.0'

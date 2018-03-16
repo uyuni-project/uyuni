@@ -97,5 +97,14 @@ After do |scenario|
   if scenario.failed?
     encoded_img = page.driver.render_base64(:png, :full => true)
     embed("data:image/png;base64,#{encoded_img}", 'image/png')
+    debug_server_on_realtime_failure
   end
+end
+
+def debug_server_on_realtime_failure
+  puts
+  puts '#' * 55 + 'var/log/rhn_web_ui.log' + '#' * 55
+  out, _code = $server.run('tail -n35 /var/log/rhn/rhn_web_ui.log')
+  puts out
+  puts '#' * 131
 end
