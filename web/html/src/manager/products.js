@@ -283,6 +283,7 @@ const ProductsPageWrapper = React.createClass({
               <Products
                   data={this.state.serverData}
                   loading={this.state.loading}
+                  readOnlyMode={this.state.sccSyncRunning}
                   handleSelectedItems={this.handleSelectedItems}
                   handleUnselectedItems={this.handleUnselectedItems}
                   selectedItems={this.state.selectedItems}
@@ -515,6 +516,7 @@ const Products = React.createClass({
               scheduleResyncItems={this.props.scheduleResyncItems}
               handleVisibleSublist={this.handleVisibleSublist}
               visibleSubList={this.state.visibleSubList}
+              readOnlyMode={this.props.readOnlyMode}
           />
         </DataHandler>
         <PopUp
@@ -583,6 +585,7 @@ const CheckList = React.createClass({
                     scheduleResyncItems={this.props.scheduleResyncItems}
                     handleVisibleSublist={this.handleVisibleSublist}
                     visibleSubList={this.props.visibleSubList}
+                    readOnlyMode={this.props.readOnlyMode}
                 />
               )
             })
@@ -715,7 +718,7 @@ const CheckListItem = React.createClass({
             value={currentItem.identifier}
             onChange={this.handleSelectedItem}
             checked={this.isSelected() ? 'checked' : ''}
-            disabled={this.props.childrenDisabled ? 'disabled' : ''}
+            disabled={this.props.readOnlyMode || this.props.childrenDisabled ? 'disabled' : ''}
             title={this.props.childrenDisabled ? t('To enable this product, the parent product should be selected first') : t('Select this product')}
         />;
     }
@@ -798,11 +801,19 @@ const CheckListItem = React.createClass({
 
     /** generate product resync button **/
     const resyncActionInProgress = this.scheduleResyncInProgress();
+    const conditionalIconClass = this.props.readOnlyMode ? 'text-muted' : resyncActionInProgress ? 'fa-spin text-muted' : '';
+    const conditionalIconTitle =
+        this.props.readOnlyMode ?
+          t('SCC product catalog in progress')
+          : resyncActionInProgress ?
+              t('Scheduling a product resync')
+              : t('Resync product');
+    const conditionalIconAction = !this.props.readOnlyMode ? () => this.resyncProduct() : null;
     const resyncActionContent =
       this.isInstalled() ?
-        <i className={'fa fa-refresh fa-1-5x pointer ' + (resyncActionInProgress ? 'fa-spin text-muted' : '')}
-            title={resyncActionInProgress ? t('Scheduling a product resync') : t('Resync product')}
-            onClick={this.resyncProduct} />
+        <i className={'fa fa-refresh fa-1-5x pointer ' + conditionalIconClass}
+            title={conditionalIconTitle}
+            onClick={conditionalIconAction} />
         : null;
     /*****/
 
@@ -860,6 +871,7 @@ const CheckListItem = React.createClass({
               scheduleResyncItems={this.props.scheduleResyncItems}
               handleVisibleSublist={this.handleVisibleSublist}
               visibleSubList={this.props.visibleSubList}
+              readOnlyMode={this.props.readOnlyMode}
           />
           : null }
       </li>
