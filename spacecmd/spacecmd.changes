@@ -1,3 +1,6 @@
+- Connect to API using FQDN instead of hostname to avoid SSL
+  validation problems (bsc#1085667)
+
 -------------------------------------------------------------------
 Mon Mar 05 08:41:11 CET 2018 - jgonzalez@suse.com
 
