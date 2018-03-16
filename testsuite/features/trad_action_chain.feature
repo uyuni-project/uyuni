@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 
-Feature: Action chaining traditinal clients
+Feature: Action Chains on traditional clients
 
   Scenario: Pre-requisite: downgrade repo to lower version
     Given I am authorized as "admin" with password "admin"
