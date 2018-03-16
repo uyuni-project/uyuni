@@ -134,7 +134,7 @@ const SCCDialog = React.createClass({
 
   render: function() {
     return (
-      <div className='text-left'>
+      <div className='panel panel-default panel-body text-left'>
         <h4>{t('Refresh data from SUSE Customer Center')}</h4>
         
         <div className='d-block'>
@@ -163,36 +163,32 @@ const SCCDialog = React.createClass({
           </ul>
         </div>
 
-        <div className='d-block'>
-          <div className='col-md-7 text-left'>
-            {
-              !this.isSyncRunning() && this.hasRun() ?
-                this.state.steps.every(s => s.success) ?
-                  <span><i className='fa fa-check text-success' />{t('Completed')}</span>
-                  : 
-                  <span>
-                    <i className='fa fa-exclamation-triangle text-warning' />
-                    {t('Operation not successful: Empty reply from the server')}
-                    (<a href='/rhn/admin/Catalina.do'>{t('Details')}</a>)
-                  </span>
-              : null
-            }
-          </div>
-          <div className='col-md-5 text-left'>
-            <Button
-                id='scc-refresh-button'
-                className='btn btn-default'
-                disabled={this.isSyncRunning() ? 'disabled' : ''}
-                handler={this.startSync}
-                title={
-                  this.isSyncRunning() ?
-                    t('The product catalog refresh is running..')
-                    : t('Refreshes the product catalog from the Customer Center')
-                }
-                icon={'fa-refresh ' + (this.isSyncRunning() ? 'fa-spin' : '')}
-                text={t('Refresh')}
-            />
-          </div>
+        <div className='text-left'>
+          <Button
+              id='scc-refresh-button'
+              className='btn btn-default'
+              disabled={this.isSyncRunning() ? 'disabled' : ''}
+              handler={this.startSync}
+              title={
+                this.isSyncRunning() ?
+                  t('The product catalog refresh is running..')
+                  : t('Refreshes the product catalog from the Customer Center')
+              }
+              icon={'fa-refresh ' + (this.isSyncRunning() ? 'fa-spin' : '')}
+              text={t('Refresh')}
+          />
+          {
+            !this.isSyncRunning() && this.hasRun() ?
+              this.state.steps.every(s => s.success) ?
+                <span><i className='fa fa-check text-success' />{t('Completed')}</span>
+                :
+                <div>
+                  <i className='fa fa-exclamation-triangle text-warning' />
+                  {t('Operation not successful: Empty reply from the server')}
+                  (<a href='/rhn/admin/Catalina.do'>{t('Details')}</a>)
+                </div>
+            : null
+          }
         </div>
       </div>
     )

@@ -294,19 +294,19 @@ const ProductsPageWrapper = React.createClass({
             </div>
           </div>
           <div className='col-sm-3 hidden-xs' id='wizard-faq'>
-            <div>
-              <h4>Product selected to be installed</h4>
-              <ul className='text-left'>
+            <SCCDialog
+                forceStart={this.forceStartSccSync()}
+                updateSccSyncRunning={(sccSyncStatus) => this.updateSccSyncRunning(sccSyncStatus)}
+              />
+            <hr/>
+            <div className='text-left'>
+              <h4>Selected products</h4>
+              <ul>
                 {
                   this.state.selectedItems.map(i => <li key={i.identifier}>{i.label} [{i.arch}]</li>)
                 }
               </ul>
             </div>
-            <hr/>
-            <SCCDialog
-                forceStart={this.forceStartSccSync()}
-                updateSccSyncRunning={(sccSyncStatus) => this.updateSccSyncRunning(sccSyncStatus)}
-              />
             <hr/>
               <h4>{t("Why aren't all SUSE products displayed in the list?")}</h4>
               <p>{t('The products displayed on this list are directly linked to your \
