@@ -135,7 +135,7 @@ const SCCDialog = React.createClass({
   render: function() {
     return (
       <div className='text-left'>
-        <h4>{t('Refreshing data from SUSE Customer Center')}</h4>
+        <h4>{t('Refresh data from SUSE Customer Center')}</h4>
         
         <div className='d-block'>
           <Messages items={this.state.errors}/>
