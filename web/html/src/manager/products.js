@@ -466,22 +466,26 @@ const Products = React.createClass({
                   placeholder={t('Filter by product Description')} />
           }>
           <CheckList data={d => d}
-              nestedKey='extensions'
-              isSelectable={true}
-              selectedItems={this.props.selectedItems}
+              bypassProps={
+                {
+                  nestedKey: 'extensions',
+                  isSelectable: true,
+                  selectedItems: this.props.selectedItems,
+                  listStyleClass: 'product-list',
+                  showChannelsfor: this.showChannelsfor,
+                  cols: _COLS,
+                  resyncProduct: this.props.resyncProduct,
+                  scheduledItems: this.props.scheduledItems,
+                  scheduleResyncItems: this.props.scheduleResyncItems,
+                  handleVisibleSublist: this.handleVisibleSublist,
+                  visibleSubList: this.state.visibleSubList,
+                  readOnlyMode: this.props.readOnlyMode
+                }
+              }
               handleSelectedItems={this.props.handleSelectedItems}
               handleUnselectedItems={this.props.handleUnselectedItems}
-              listStyleClass='product-list'
               treeLevel={1}
-              showChannelsfor={this.showChannelsfor}
               childrenDisabled={false}
-              cols={_COLS}
-              resyncProduct={this.props.resyncProduct}
-              scheduledItems={this.props.scheduledItems}
-              scheduleResyncItems={this.props.scheduleResyncItems}
-              handleVisibleSublist={this.handleVisibleSublist}
-              visibleSubList={this.state.visibleSubList}
-              readOnlyMode={this.props.readOnlyMode}
           />
         </DataHandler>
         <ChannelsPopUp item={this.state.popupItem} />
@@ -501,16 +505,16 @@ const CheckList = React.createClass({
   render: function() {
     return (
       this.props.data ?
-        <ul className={this.props.listStyleClass}>
+        <ul className={this.props.bypassProps.listStyleClass}>
           {
             this.isRootLevel(this.props.treeLevel) ?
               <li className='list-header'>
-                <CustomDiv className='col text-center' width={this.props.cols.selector.width} um={this.props.cols.selector.um}></CustomDiv>
-                <CustomDiv className='col text-center' width={this.props.cols.showSubList.width} um={this.props.cols.showSubList.um}></CustomDiv>
+                <CustomDiv className='col text-center' width={this.props.bypassProps.cols.selector.width} um={this.props.bypassProps.cols.selector.um}></CustomDiv>
+                <CustomDiv className='col text-center' width={this.props.bypassProps.cols.showSubList.width} um={this.props.bypassProps.cols.showSubList.um}></CustomDiv>
                 <CustomDiv className='col col-class-calc-width'>{t('Product Description')}</CustomDiv>
-                <CustomDiv className='col' width={this.props.cols.arch.width} um={this.props.cols.arch.um} title={t('Architecture')}>{t('Arch')}</CustomDiv>
-                <CustomDiv className='col text-center' width={this.props.cols.channels.width} um={this.props.cols.channels.um}>{t('Channels')}</CustomDiv>
-                <CustomDiv className='col text-right' width={this.props.cols.mix.width} um={this.props.cols.mix.um}></CustomDiv>
+                <CustomDiv className='col' width={this.props.bypassProps.cols.arch.width} um={this.props.bypassProps.cols.arch.um} title={t('Architecture')}>{t('Arch')}</CustomDiv>
+                <CustomDiv className='col text-center' width={this.props.bypassProps.cols.channels.width} um={this.props.bypassProps.cols.channels.um}>{t('Channels')}</CustomDiv>
+                <CustomDiv className='col text-right' width={this.props.bypassProps.cols.mix.width} um={this.props.bypassProps.cols.mix.um}></CustomDiv>
               </li>
               : null
           }
@@ -521,22 +525,11 @@ const CheckList = React.createClass({
                 <CheckListItem
                     key={l.identifier}
                     item={l}
-                    nestedKey={this.props.nestedKey}
-                    isSelectable={this.props.isSelectable}
+                    bypassProps={this.props.bypassProps}
                     handleSelectedItems={this.props.handleSelectedItems}
                     handleUnselectedItems={this.props.handleUnselectedItems}
-                    selectedItems={this.props.selectedItems}
-                    listStyleClass={this.props.listStyleClass}
                     treeLevel={this.props.treeLevel}
-                    showChannelsfor={this.props.showChannelsfor}
                     childrenDisabled={this.props.childrenDisabled}
-                    cols={this.props.cols}
-                    resyncProduct={this.props.resyncProduct}
-                    scheduledItems={this.props.scheduledItems}
-                    scheduleResyncItems={this.props.scheduleResyncItems}
-                    handleVisibleSublist={this.props.handleVisibleSublist}
-                    visibleSubList={this.props.visibleSubList}
-                    readOnlyMode={this.props.readOnlyMode}
                     index={index}
                 />
               )
@@ -564,7 +557,7 @@ const CheckListItem = React.createClass({
   },
 
   isSelected: function() {
-    return this.props.selectedItems.filter(i => i.identifier == this.props.item.identifier).length == 1;
+    return this.props.bypassProps.selectedItems.filter(i => i.identifier == this.props.item.identifier).length == 1;
   },
 
   isInstalled: function() {
@@ -572,7 +565,7 @@ const CheckListItem = React.createClass({
   },
 
   isSublistVisible: function() {
-    return this.props.visibleSubList.includes(this.props.item.identifier);
+    return this.props.bypassProps.visibleSubList.includes(this.props.item.identifier);
   },
 
   handleSelectedItem: function() {
@@ -644,18 +637,18 @@ const CheckListItem = React.createClass({
   },
 
   scheduleResyncInProgress: function() {
-    return this.props.scheduleResyncItems.includes(this.props.item.identifier);
+    return this.props.bypassProps.scheduleResyncItems.includes(this.props.item.identifier);
   },
 
   resyncProduct: function() {
     if (!this.scheduleResyncInProgress()){
-      this.props.resyncProduct(this.props.item.identifier, this.props.item.label);
+      this.props.bypassProps.resyncProduct(this.props.item.identifier, this.props.item.label);
     }
   },
 
   getNestedData: function(item) {
-    if (item && this.props.nestedKey && item[this.props.nestedKey] != null) {
-     return item[this.props.nestedKey];
+    if (item && this.props.bypassProps.nestedKey && item[this.props.bypassProps.nestedKey] != null) {
+     return item[this.props.bypassProps.nestedKey];
     }
     return [];
   },
@@ -664,13 +657,13 @@ const CheckListItem = React.createClass({
     const currentItem = this.props.item;
     /** generate item selector content **/
     let selectorContent = null;
-    if (this.props.isSelectable && currentItem.status == _PRODUCT_STATUS.available) {
+    if (this.props.bypassProps.isSelectable && currentItem.status == _PRODUCT_STATUS.available) {
       selectorContent =
         <input type='checkbox'
             value={currentItem.identifier}
             onChange={this.handleSelectedItem}
             checked={this.isSelected() ? 'checked' : ''}
-            disabled={this.props.readOnlyMode || this.props.childrenDisabled ? 'disabled' : ''}
+            disabled={this.props.bypassProps.readOnlyMode || this.props.childrenDisabled ? 'disabled' : ''}
             title={this.props.childrenDisabled ? t('To enable this product, the parent product should be selected first') : t('Select this product')}
         />;
     }
@@ -684,7 +677,7 @@ const CheckListItem = React.createClass({
     if (this.getNestedData(currentItem).length > 0) {
       const openSubListIconClass = this.isSublistVisible() ? 'fa-angle-down' : 'fa-angle-right';
       showNestedDataIconContent = <i className={'fa ' + openSubListIconClass + ' fa-1-5x pointer product-hover'}
-          onClick={() => this.props.handleVisibleSublist(currentItem.identifier)} />;
+          onClick={() => this.props.bypassProps.handleVisibleSublist(currentItem.identifier)} />;
     }
     /*****/
 
@@ -692,7 +685,7 @@ const CheckListItem = React.createClass({
     let handleDescriptionClick = null;
     let hoverableDescriptionClass = '';
     if (this.getNestedData(currentItem).length > 0) {
-      handleDescriptionClick = () => this.props.handleVisibleSublist(currentItem.identifier);
+      handleDescriptionClick = () => this.props.bypassProps.handleVisibleSublist(currentItem.identifier);
       hoverableDescriptionClass = 'product-hover pointer';
     }
     let productDescriptionContent =
@@ -735,7 +728,7 @@ const CheckListItem = React.createClass({
       const mandatoryChannelList = currentItem.channels.filter(c => !c.optional);
 
       // if the product sync has just been scheduled
-      if (this.props.scheduledItems.includes(currentItem.identifier)) {
+      if (this.props.bypassProps.scheduledItems.includes(currentItem.identifier)) {
         channelSyncContent = <span className="text-info">{t('Sync scheduled')}</span>;
       }
       // if any failed sync channel, show the error only
@@ -753,14 +746,14 @@ const CheckListItem = React.createClass({
 
     /** generate product resync button **/
     const resyncActionInProgress = this.scheduleResyncInProgress();
-    const conditionalIconClass = this.props.readOnlyMode ? 'text-muted' : resyncActionInProgress ? 'fa-spin text-muted' : '';
+    const conditionalIconClass = this.props.bypassProps.readOnlyMode ? 'text-muted' : resyncActionInProgress ? 'fa-spin text-muted' : '';
     const conditionalIconTitle =
-        this.props.readOnlyMode ?
+        this.props.bypassProps.readOnlyMode ?
           t('SCC product catalog in progress')
           : resyncActionInProgress ?
               t('Scheduling a product resync')
               : t('Resync product');
-    const conditionalIconAction = !this.props.readOnlyMode ? () => this.resyncProduct() : null;
+    const conditionalIconAction = !this.props.bypassProps.readOnlyMode ? () => this.resyncProduct() : null;
     const resyncActionContent =
       this.isInstalled() ?
         <i className={'fa fa-refresh fa-1-5x pointer ' + conditionalIconClass}
@@ -772,58 +765,47 @@ const CheckListItem = React.createClass({
     const evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
     const productStatus = this.isInstalled() ? 'product-installed' : '';
     return (
-      <li className={evenOddClass} key={currentItem.identifier}>
+      <li className={evenOddClass + ' ' + (this.isSublistVisible() ? 'sublistOpen' : '')} key={currentItem.identifier}>
         <div className={'product-details-wrapper ' + productStatus}>
-          <CustomDiv className='col text-center' width={this.props.cols.selector.width} um={this.props.cols.selector.um}>
+          <CustomDiv className='col text-center' width={this.props.bypassProps.cols.selector.width} um={this.props.bypassProps.cols.selector.um}>
             {selectorContent}
           </CustomDiv>
-          <CustomDiv className='col text-center' width={this.props.cols.showSubList.width} um={this.props.cols.showSubList.um}>
+          <CustomDiv className='col text-center' width={this.props.bypassProps.cols.showSubList.width} um={this.props.bypassProps.cols.showSubList.um}>
             {showNestedDataIconContent}
           </CustomDiv>
           <CustomDiv className='col col-class-calc-width'>
             {productDescriptionContent}
           </CustomDiv>
-          <CustomDiv className='col' width={this.props.cols.arch.width} um={this.props.cols.arch.um} title={t('Architecture')}>
+          <CustomDiv className='col' width={this.props.bypassProps.cols.arch.width} um={this.props.bypassProps.cols.arch.um} title={t('Architecture')}>
             {this.isRootLevel(this.props.treeLevel) ? currentItem.arch : ''}
           </CustomDiv>
-          <CustomDiv className='col text-center' width={this.props.cols.channels.width} um={this.props.cols.channels.um}>
+          <CustomDiv className='col text-center' width={this.props.bypassProps.cols.channels.width} um={this.props.bypassProps.cols.channels.um}>
             <ModalLink
                 id='showChannels'
                 icon='fa-list'
                 title={t('Show product\'s channels')}
                 target='show-channels-popup'
-                onClick={() => this.props.showChannelsfor(currentItem)}
+                onClick={() => this.props.bypassProps.showChannelsfor(currentItem)}
             />
           </CustomDiv>
           {
             this.isInstalled() ?
-              <CustomDiv className='col text-right' width={this.props.cols.mix.width} um={this.props.cols.mix.um}>
+              <CustomDiv className='col text-right' width={this.props.bypassProps.cols.mix.width} um={this.props.bypassProps.cols.mix.um}>
                 {channelSyncContent}&nbsp;{resyncActionContent}
               </CustomDiv>
               :
-              <CustomDiv className='col text-right' width={this.props.cols.mix.width} um={this.props.cols.mix.um} title={t('With Recommended')}>
+              <CustomDiv className='col text-right' width={this.props.bypassProps.cols.mix.width} um={this.props.bypassProps.cols.mix.um} title={t('With Recommended')}>
                 {recommendedTogglerContent}
               </CustomDiv>
           }
         </div>
         { this.isSublistVisible() ?
           <CheckList data={this.getNestedData(currentItem)}
-              nestedKey={this.props.nestedKey}
-              isSelectable={this.props.isSelectable}
-              selectedItems={this.props.selectedItems}
+              bypassProps={this.props.bypassProps}
               handleSelectedItems={this.handleSelectedItems}
               handleUnselectedItems={this.handleUnselectedItems}
-              listStyleClass={this.props.listStyleClass}
               treeLevel={this.props.treeLevel + 1}
-              showChannelsfor={this.props.showChannelsfor}
               childrenDisabled={!(this.isSelected() || this.isInstalled())}
-              cols={this.props.cols}
-              resyncProduct={this.props.resyncProduct}
-              scheduledItems={this.props.scheduledItems}
-              scheduleResyncItems={this.props.scheduleResyncItems}
-              handleVisibleSublist={this.props.handleVisibleSublist}
-              visibleSubList={this.props.visibleSubList}
-              readOnlyMode={this.props.readOnlyMode}
           />
           : null }
       </li>
