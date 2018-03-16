@@ -190,21 +190,21 @@ Feature: Action Chains on traditional clients
 
   Scenario: Create an action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
-    And I call actionchain.list_chains() if label "Quick Brown Fox" is there
+    When I call XML-RPC createChain with chainLabel "throwaway_chain"
+    And I call actionchain.list_chains() if label "throwaway_chain" is there
     Then I delete the action chain
-    And there should be no action chain with the label "Quick Brown Fox"
-    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
-    Then I call actionchain.rename_chain() to rename it from "Quick Brown Fox" to "Slow Gray Elephant"
-    And there should be a new action chain with the label "Slow Gray Elephant"
-    And I delete an action chain, labeled "Slow Gray Elephant"
-    And there should be no action chain with the label "Slow Gray Elephant"
-    And no action chain with the label "Quick Brown Fox"
+    And there should be no action chain with the label "throwaway_chain"
+    When I call XML-RPC createChain with chainLabel "throwaway_chain"
+    Then I call actionchain.rename_chain() to rename it from "throwaway_chain" to "throwaway_chain_renamed"
+    And there should be a new action chain with the label "throwaway_chain_renamed"
+    And I delete an action chain, labeled "throwaway_chain_renamed"
+    And there should be no action chain with the label "throwaway_chain_renamed"
+    And no action chain with the label "throwaway_chain"
 
   Scenario: Add operations to the action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     And I want to operate on this "sle-client"
-    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
+    When I call XML-RPC createChain with chainLabel "throwaway_chain"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
     And I call actionchain.add_package_upgrade()
@@ -219,7 +219,7 @@ Feature: Action Chains on traditional clients
   Scenario: Run and cancel an action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     And I want to operate on this "sle-client"
-    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
+    When I call XML-RPC createChain with chainLabel "throwaway_chain"
     And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
