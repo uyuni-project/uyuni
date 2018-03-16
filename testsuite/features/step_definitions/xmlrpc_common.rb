@@ -301,26 +301,21 @@ scdrpc = XMLRPCScheduleTest.new(ENV['SERVER'])
 
 # Auth
 Given(/^I am logged in via XML\-RPC actionchain as user "(.*?)" and password "(.*?)"$/) do |luser, password|
-  # Find target server once.
-  unless $client_id
-    rpc.login(luser, password)
-    syschaintest.login(luser, password)
-    scdrpc.login(luser, password)
-
-    servers = syschaintest.list_systems
-    refute_nil(servers)
-
-    hostname = $client.full_hostname
-    $client_id = servers
-                 .select { |s| s['name'] == hostname }
-                 .map { |s| s['id'] }.first
-    refute_nil($client_id, "Client #{hostname} is not yet registered?")
-  end
+  # Authenticate
+  rpc.login(luser, password)
+  syschaintest.login(luser, password)
+  scdrpc.login(luser, password)
 
   # Flush all chains
   rpc.list_chains.each do |label|
     rpc.delete_chain(label)
   end
+end
+
+Given(/^I want to operate on this "(.*?)"$/) do |target|
+  hostname = get_target(target).full_hostname
+  $client_id = syschaintest.search_by_name(hostname).first["id"]
+  refute_nil($client_id, "Could not find system with hostname #{hostname}")
 end
 
 # Listing chains
