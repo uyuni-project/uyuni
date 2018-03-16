@@ -1,3 +1,5 @@
+- Connect to API using FQDN instead of hostname to avoid SSL
+  validation problems (bsc#1085667)
 - Add function to update software channel through spacecmd
 
 -------------------------------------------------------------------
