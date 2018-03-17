@@ -44,7 +44,6 @@
 - features/trad_migrate_to_minion.feature
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
-- features/trad_reboot.feature
 - features/srv_change_password.feature
 - features/min_salt_software_states.feature
 - features/trad_metadata_check.feature
@@ -56,7 +55,6 @@
 - features/min_salt_install_with_staging.feature
 - features/srv_xmlrpc_activationkey.feature
 - features/allcli_overview_systems_details.feature
-- features/min_salt_reboot_test.feature
 - features/min_docker_xmlrpc.feature
 - features/srv_distro_cobbler.feature
 - features/srv_mainpage.feature
@@ -95,7 +93,7 @@
 - features/srv_patches_page.feature
 - features/srv_spacewalk_channel.feature
 - features/allcli_software_channels.feature
-
+- features/allcli_reboot.feature
 ## Secondary features END ##
 
 
