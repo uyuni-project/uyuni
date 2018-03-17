@@ -40,6 +40,7 @@
 
 - features/min_bootstrap_xmlrpc.feature
 - features/min_ssh_bootstrap_xmlrpc.feature
+- features/min_activationkey.feature
 - features/trad_migrate_to_minion.feature
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
