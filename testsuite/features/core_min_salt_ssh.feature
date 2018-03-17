@@ -68,12 +68,3 @@ Feature: Be able to bootstrap a Salt host managed via salt-ssh
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled by admin" is completed
     Then "hoag-dummy-1.1-2.1" should be installed on "ssh-minion"
-
-@sshminion
-  Scenario: Reboot the SSH-managed SLES minion
-    Given I am on the Systems overview page of this "ssh-minion"
-    When I follow first "Schedule System Reboot"
-    Then I should see a "System Reboot Confirmation" text
-    And I should see a "Reboot system" button
-    When I click on "Reboot system"
-    Then I wait and check that "ssh-minion" has rebooted
