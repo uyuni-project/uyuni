@@ -72,16 +72,6 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     And I should see a "REDHAT_SUPPORT_PRODUCT" text
 
 @centosminion
-  Scenario: Reboot the CentOS minion
-    Given I am on the Systems overview page of this "ceos-minion"
-    When I follow first "Schedule System Reboot"
-    Then I should see a "System Reboot Confirmation" text
-    And I should see a "Reboot system" button
-    When I click on "Reboot system"
-    Then I wait and check that "ceos-minion" has rebooted
-    And I wait until "salt-minion" service is up and running on "ceos-minion"
-
-@centosminion
   Scenario: Check the results of the OpenSCAP scan on the CentOS minion
     Given I am on the Systems overview page of this "ceos-minion"
     When I follow "Audit" in the content area
