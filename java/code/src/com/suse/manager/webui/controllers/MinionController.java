@@ -200,6 +200,7 @@ public class MinionController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("minions", Json.GSON.toJson(minions));
+        addActionChains(user, data);
         return new ModelAndView(data, "ssm/highstate.jade");
     }
 
