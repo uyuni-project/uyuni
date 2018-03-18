@@ -16,10 +16,15 @@ package com.suse.manager.webui.utils;
 
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
@@ -27,9 +32,12 @@ import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.runner.Jobs.Info;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.results.Result;
+import com.suse.salt.netapi.results.Ret;
+import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import org.apache.log4j.Logger;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -225,9 +233,75 @@ public class MinionActionUtils {
 
     /**
      * Cleans up Action Chain records.
-     * @param instance a SaltService instance
+     * @param salt a SaltService instance
      */
-    public static void cleanupMinionActionChains(SaltService instance) {
-        // TODO
+    public static void cleanupMinionActionChains(SaltService salt) {
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put(ScheduleMetadata.SUMA_ACTION_CHAIN, true);
+
+        // get only jobs since the last cleanup
+        LocalDateTime startTime = LocalDateTime.now()
+                .minus(1, ChronoUnit.HOURS);
+
+        Optional<Map<String, Jobs.ListJobsEntry>> actionChainsJobs =
+                salt.jobsByMetadata(metadata, startTime, LocalDateTime.now());
+
+        actionChainsJobs.ifPresent(jidsMap -> {
+            jidsMap.keySet().forEach(jid -> {
+                salt.listJob(jid).ifPresent(jobInfo -> {
+                    TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>> typeToken =
+                            new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() { };
+
+                    jobInfo.getMinions().forEach(minionId -> {
+                        try {
+                            Optional<Map<String, StateApplyResult<Ret<JsonElement>>>> jobResult =
+                                    jobInfo.getResult(minionId, typeToken);
+
+                            jobResult.ifPresent(res -> {
+                                res.entrySet().stream().forEach(e -> {
+
+                                    Optional<SaltActionChainGeneratorService.ActionChainStateId> stateId =
+                                            SaltActionChainGeneratorService.parseActionChainStateId(e.getKey());
+
+                                    if (stateId.isPresent()) {
+                                        long retActionId = stateId.get().getActionId();
+
+                                        Optional<ServerAction> serverAction = Optional.ofNullable(ActionFactory.lookupById(retActionId))
+                                                .flatMap(action -> action
+                                                        .getServerActions()
+                                                        .stream()
+                                                        .filter(sa -> sa.getServer().asMinionServer().isPresent())
+                                                        .filter(sa -> sa.getServer().asMinionServer().get().getMinionId().equals(minionId)).findFirst());
+
+                                        if (serverAction.isPresent() &&
+                                                (ActionFactory.STATUS_COMPLETED.equals(serverAction.get().getStatus()) ||
+                                                ActionFactory.STATUS_FAILED.equals(serverAction.get().getStatus()))) {
+                                            return;
+                                        }
+
+                                        StateApplyResult<Ret<JsonElement>> stateApplyResult = e.getValue();
+                                        JobReturnEventMessageAction.handleAction(retActionId,
+                                                minionId,
+                                                stateApplyResult.isResult() ? 0 : -1,
+                                                stateApplyResult.isResult(),
+                                                jid,
+                                                stateApplyResult.getChanges().getRet(),
+                                                stateApplyResult.getName()
+                                        );
+                                    }
+                                });
+                            });
+
+                        }
+                        catch (JsonSyntaxException e) {
+                            // expected, not all jobInfos will have a state apply result
+                            LOG.debug("Could not get result from job " + jid + ": " + e.getMessage());
+                        }
+                    });
+                });
+            });
+        });
     }
+
+
 }

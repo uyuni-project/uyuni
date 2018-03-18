@@ -60,6 +60,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.SaltState;
@@ -83,9 +84,16 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -430,6 +438,9 @@ public class SaltServerActionService {
         });
 
         startActionChainExecution(actionChain, minionCalls.keySet());
+
+        // action chain no longer needed, delete it
+        ActionChainFactory.delete(actionChain);
     }
 
     private List<MinionServer> getMinionServers(Action actionIn) {
@@ -444,7 +455,8 @@ public class SaltServerActionService {
     }
 
     private List<SaltState> convertToState(long actionChainId, ServerAction serverAction, List<LocalCall<?>> calls) {
-        String stateId = ACTION_STATE_ID_PREFIX + actionChainId + "_action_" + serverAction.getParentAction().getId();
+        String stateId = SaltActionChainGeneratorService.createStateId(actionChainId,
+                serverAction.getParentAction().getId());
 
         return calls.stream().map(call -> {
             Map<String, Object> payload = call.getPayload();
@@ -649,10 +661,27 @@ public class SaltServerActionService {
 
         Map<LocalCall<?>, List<MinionServer>> ret = new HashMap<>();
         // write script to /srv/susemanager/salt/scripts/script_<action_id>.sh
-        Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
-        Path scriptFile = scriptsDir.resolve("script_" + scriptAction.getId() + ".sh");
+        Path scriptFile = SaltUtils.getScriptPath(scriptAction.getId());
         try {
-            FileUtils.forceMkdir(scriptsDir.toFile()); // TODO set permissions?
+            FileSystem fileSystem = FileSystems.getDefault();
+            UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+            UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
+
+            // make sure parent dir exists
+            if (!Files.exists(scriptFile.getParent())) {
+                FileAttribute<Set<PosixFilePermission>> dirAttributes =
+                        PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rwxr-xr-x"));
+
+                Files.createDirectory(scriptFile.getParent(), dirAttributes);
+                // make sure correct user is set
+                Files.setOwner(scriptFile.getParent(), tomcatUser);
+
+            }
+            FileAttribute<Set<PosixFilePermission>> fileAttributes =
+                    PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("r--r--r--"));
+            Files.createFile(scriptFile, fileAttributes);
+            Files.setOwner(scriptFile, tomcatUser);
+
             FileUtils.writeStringToFile(scriptFile.toFile(),
                     script.replaceAll("\r\n", "\n"));
         }

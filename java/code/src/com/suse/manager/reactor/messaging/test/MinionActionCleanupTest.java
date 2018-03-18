@@ -14,14 +14,25 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
+import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -44,15 +55,21 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -127,6 +144,22 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         return jsonParser.parse(eventString);
     }
 
+    private Jobs.Info listJob(String filename, String minion1Id, List<String> actions1, String minion2Id, List<String> actions2) throws Exception {
+        Path path = new File(TestUtils.findTestData(
+                "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
+        String eventString = Files.lines(path)
+                .collect(Collectors.joining("\n"))
+                .replaceAll("\\$minion_1", minion1Id)
+                .replaceAll("\\$minion_2", minion2Id)
+                .replaceAll("\\$action_1_1", actions1.get(0))
+                .replaceAll("\\$action_1_2", actions1.get(1))
+                .replaceAll("\\$action_2_1", actions2.get(0))
+                .replaceAll("\\$action_2_2", actions2.get(1));
+
+        JsonParser<Jobs.Info> jsonParser = new JsonParser<>(new TypeToken<Jobs.Info>() {});
+        return jsonParser.parse(eventString);
+    }
+
     private Map<String, Jobs.ListJobsEntry> jobsByMetadata(String filename, long actionId) throws Exception {
         Path path = new File(TestUtils.findTestData(
                 "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
@@ -136,4 +169,99 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         JsonParser<Map<String, Jobs.ListJobsEntry>> jsonParser = new JsonParser<>(new TypeToken<Map<String, Jobs.ListJobsEntry>>() {});
         return jsonParser.parse(eventString);
     }
+
+    public void testMinionActionChainCleanupAllCompleted() throws Exception {
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion2.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        SaltService saltServiceMock = mock(SaltService.class);
+
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
+        ActionChainFactory.setTaskomaticApi(taskomaticMock);
+
+
+        Date earliest = Date.from(ZonedDateTime.now()
+                .minus(2, ChronoUnit.HOURS)
+                .toInstant());
+
+        String label = TestUtils.randomString();
+        ActionChain actionChain = ActionChainFactory.getOrCreateActionChain(label, user);
+
+        Set<Action> applyStates = ActionChainManager
+                .scheduleApplyStates(user, Arrays.asList(minion1.getId(), minion2.getId()), Optional.of(false), earliest, actionChain);
+        assertEquals(2, applyStates.size());
+
+        ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
+                "root", "root", new Long(10), "#!/bin/csh\necho hello");
+        Set<Action> scriptRun = ActionChainManager.scheduleScriptRuns(
+                user, Arrays.asList(minion1.getId(), minion2.getId()), "Run script test", sad, earliest, actionChain);
+        assertEquals(2, scriptRun.size());
+
+        HibernateFactory.getSession().flush();
+
+        Action action1_1 = actionChain.getEntries().stream()
+                .filter(e -> e.getServer().equals(minion1))
+                .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
+                .map(e -> e.getAction())
+                .findFirst().get();
+        Action action1_2 = actionChain.getEntries().stream()
+                .filter(e -> e.getServer().equals(minion1))
+                .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
+                .map(e -> e.getAction())
+                .findFirst().get();
+        Action action2_1 = actionChain.getEntries().stream()
+                .filter(e -> e.getServer().equals(minion2))
+                .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
+                .map(e -> e.getAction())
+                .findFirst().get();
+        Action action2_2 = actionChain.getEntries().stream()
+                .filter(e -> e.getServer().equals(minion2))
+                .filter(e -> e.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
+                .map(e -> e.getAction())
+                .findFirst().get();
+
+        context().checking(new Expectations() {
+            {
+                allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+                allowing(taskomaticMock).scheduleActionChainExecution(with(any(ActionChain.class)));
+
+                allowing(saltServiceMock).jobsByMetadata(with(any(Object.class)), with(any(LocalDateTime.class)), with(any(LocalDateTime.class)));
+                will(returnValue(Optional.of(jobsByMetadata("jobs.list_jobs.actionchains.json", 0))));
+
+                mockListJob("20180316234939446951");
+                mockListJob("20180317134012978804");
+                mockListJob("20180317134013012209");
+                mockListJob("20180317134233760065");
+            }
+
+            private void mockListJob(String jid) throws Exception {
+                allowing(saltServiceMock).listJob(jid);
+                will(returnValue(Optional.of(listJob("jobs.list_jobs." + jid + ".json",
+                        minion1.getMinionId(), Arrays.asList(action1_1.getId() + "", action1_2.getId() + ""),
+                        minion2.getMinionId(), Arrays.asList(action2_1.getId() + "", action2_2.getId() + "")))));
+            }
+        });
+
+        ActionChainFactory.schedule(actionChain, earliest);
+
+        ActionChainFactory.delete(actionChain);
+
+        MinionActionUtils.cleanupMinionActionChains(saltServiceMock);
+
+        assertActionCompleted(action1_1);
+        assertActionCompleted(action1_2);
+        assertActionCompleted(action2_1);
+        assertActionCompleted(action2_2);
+    }
+
+    private void assertActionCompleted(Action action) {
+        assertEquals(1, action.getServerActions().size());
+        assertEquals(ActionFactory.STATUS_COMPLETED, action.getServerActions().stream().findFirst().get().getStatus());
+    }
+
 }
