@@ -14,7 +14,7 @@ Feature: System package list is updated if packages are manually installed or re
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Remove manually a package on a minion
     Given I am on the Systems overview page of this "sle-minion"
@@ -47,4 +47,4 @@ Feature: System package list is updated if packages are manually installed or re
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
