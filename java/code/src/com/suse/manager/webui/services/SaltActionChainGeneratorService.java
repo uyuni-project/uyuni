@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 
 import com.suse.manager.webui.utils.AbstractSaltRequisites;
+import com.suse.manager.webui.utils.IdentifiableSaltState;
 import com.suse.manager.webui.utils.SaltModuleRun;
 
 import com.suse.manager.webui.utils.SaltState;
@@ -43,6 +44,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -58,10 +61,17 @@ public class SaltActionChainGeneratorService {
     public static final SaltActionChainGeneratorService INSTANCE = new SaltActionChainGeneratorService();
 
     public static final String ACTION_STATE_ID_PREFIX = "mgr_actionchain_";
+    public static final String ACTION_STATE_ID_ACTION_PREFIX = "_action_";
+    public static final String ACTION_STATE_ID_CHUNK_PREFIX = "_chunk_";
     public static final String ACTIONCHAIN_SLS_FOLDER = "actionchains";
 
     private static final String ACTIONCHAIN_SLS_FILE_PREFIX = "actionchain_";
     private static final String SCRIPTS_DIR = "scripts";
+
+    public static final Pattern ACTION_STATE_PATTERN =
+            Pattern.compile(".*\\|-" + ACTION_STATE_ID_PREFIX + "(\\d+)" +
+                    ACTION_STATE_ID_ACTION_PREFIX + "(\\d+)" +
+                    ACTION_STATE_ID_CHUNK_PREFIX + "(\\d+).*");
 
     private Path suseManagerStatesFilesRoot;
 
@@ -86,6 +96,10 @@ public class SaltActionChainGeneratorService {
                 lastRef(fileStates).ifPresent(ref -> {
                     ((AbstractSaltRequisites)state).addRequire(ref.getKey(), ref.getValue());
                 });
+            }
+            if (state instanceof IdentifiableSaltState) {
+                IdentifiableSaltState modRun = (IdentifiableSaltState)state;
+                modRun.setId(modRun.getId() + ACTION_STATE_ID_CHUNK_PREFIX + chunk);
             }
             fileStates.add(state);
 
@@ -245,5 +259,63 @@ public class SaltActionChainGeneratorService {
      */
     public void setSuseManagerStatesFilesRoot(Path suseManagerStatesFilesRootIn) {
         this.suseManagerStatesFilesRoot = suseManagerStatesFilesRootIn;
+    }
+
+    public static String createStateId(long actionChainId, Long actionId) {
+        return ACTION_STATE_ID_PREFIX + actionChainId +
+                ACTION_STATE_ID_ACTION_PREFIX + actionId;
+    }
+
+    public static final class ActionChainStateId {
+
+        long actionChainId;
+        long actionId;
+        int chunk;
+
+        public ActionChainStateId(long actionChainId, long actionId, int chunk) {
+            this.actionChainId = actionChainId;
+            this.actionId = actionId;
+            this.chunk = chunk;
+        }
+
+        /**
+         * @return actionChainId to get
+         */
+        public long getActionChainId() {
+            return actionChainId;
+        }
+
+        /**
+         * @return actionId to get
+         */
+        public long getActionId() {
+            return actionId;
+        }
+
+        /**
+         * @return chunk to get
+         */
+        public int getChunk() {
+            return chunk;
+        }
+    }
+
+    public static Optional<ActionChainStateId> parseActionChainStateId(String stateId) {
+        Matcher m = ACTION_STATE_PATTERN.matcher(stateId);
+        if (m.find() && m.groupCount() == 3) {
+            try {
+                return Optional.of(
+                        new ActionChainStateId(
+                                Long.parseLong(m.group(1)),
+                                Long.parseLong(m.group(2)),
+                                Integer.parseInt(m.group(3))
+                        )
+                );
+            }
+            catch (NumberFormatException e) {
+                LOG.error("Error parsing action chain state id: " + stateId, e);
+            }
+        }
+        return Optional.empty();
     }
 }

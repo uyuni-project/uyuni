@@ -25,7 +25,7 @@ import static java.util.Collections.singletonMap;
 /**
  * Encapsulates the execution of a state.
  */
-public class SaltModuleRun extends AbstractSaltRequisites implements SaltState {
+public class SaltModuleRun extends AbstractSaltRequisites implements IdentifiableSaltState {
     private String id;
     private String name;
     private Map<String, ?> args;
@@ -85,6 +85,13 @@ public class SaltModuleRun extends AbstractSaltRequisites implements SaltState {
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     * @param idIn to set
+     */
+    public void setId(String idIn) {
+        this.id = idIn;
     }
 
     /**

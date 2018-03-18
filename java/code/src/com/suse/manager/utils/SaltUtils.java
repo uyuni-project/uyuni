@@ -108,13 +108,17 @@ import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
 
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.utils.salt.FilesDiffResult.SymLinkResult;
 import static com.suse.manager.webui.utils.salt.FilesDiffResult.DirectoryResult;
 import static com.suse.manager.webui.utils.salt.FilesDiffResult.FileResult;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.ByteBuffer;
@@ -497,7 +501,6 @@ public class SaltUtils {
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            // TODO remove script file
             Map<String, StateApplyResult<CmdExecCodeAll>> stateApplyResult = Json.GSON.fromJson(jsonResult,
                     new TypeToken<Map<String, StateApplyResult<CmdExecCodeAll>>>() { }.getType());
             CmdExecCodeAll result = stateApplyResult.entrySet().stream()
@@ -543,6 +546,14 @@ public class SaltUtils {
                 sb.append("\n");
             }
             scriptResult.setOutput(sb.toString().getBytes());
+
+            Path scriptPath = getScriptPath(action.getId());
+            try {
+                Files.deleteIfExists(scriptPath);
+            } catch (IOException e) {
+                LOG.warn("Could not delete script file " + scriptPath, e);
+            }
+
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD)) {
             handleImageBuildData(serverAction, jsonResult);
@@ -639,6 +650,11 @@ public class SaltUtils {
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
+    }
+
+    public static Path getScriptPath(Long scriptActionId) {
+        Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
+        return scriptsDir.resolve("script_" + scriptActionId + ".sh");
     }
 
     private Action unproxy(Action entity) {

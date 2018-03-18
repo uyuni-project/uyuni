@@ -41,6 +41,7 @@ import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -49,15 +50,14 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_ACTION_PREFIX;
+import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_CHUNK_PREFIX;
 import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX;
 
 /**
  * Handler class for {@link JobReturnEventMessage}.
  */
 public class JobReturnEventMessageAction extends AbstractDatabaseAction {
-
-    private static final Pattern ACTION_STATE_PATTERN =
-            Pattern.compile(".*\\|-" + ACTION_STATE_ID_PREFIX + "(\\d+)_action_(\\d+)_.*");
 
     /**
      * Converts an event to json
@@ -120,18 +120,18 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult = Json.GSON.fromJson(jsonResult,
                         new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() { }.getType());
 
-                Integer chunk = null;
+                int chunk = 1;
                 Long retActionChainId = null;
                 Boolean actionChainFailed = false;
                 for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
                     String key = entry.getKey();
                     StateApplyResult<Ret<JsonElement>> actionStateApply = entry.getValue();
-                    Matcher m = ACTION_STATE_PATTERN.matcher(key);
-                    if (m.find() && m.groupCount() == 2) {
-                        retActionChainId = Long.parseLong(m.group(1));
-                        Long retActionId = Long.parseLong(m.group(2));
-                        chunk = Integer.parseInt(m.group(2));
-                        handleAction(retActionId,
+                    Optional<SaltActionChainGeneratorService.ActionChainStateId> stateId =
+                            SaltActionChainGeneratorService.parseActionChainStateId(key);
+                    if (stateId.isPresent()) {
+                        retActionChainId = stateId.get().getActionChainId();
+                        chunk = stateId.get().getChunk();
+                        handleAction(stateId.get().getActionId(),
                                 jobReturnEvent.getMinionId(),
                                 actionStateApply.isResult() ? 0 : -1,
                                 actionStateApply.isResult(),
@@ -201,7 +201,7 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             });
     }
 
-    private void handleAction(long actionId, String minionId, int retcode, boolean success,
+    public static void handleAction(long actionId, String minionId, int retcode, boolean success,
                               String jobId, JsonElement jsonResult, String function) {
         // Lookup the corresponding action
         Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId));
@@ -256,16 +256,6 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                         throw e;
                     }
                 });
-
-                // Removing script SLS files
-                if (!action.get().getServerActions().stream()
-                        .filter(sa -> !sa.getStatus().equals(ActionFactory.STATUS_FAILED))
-                        .filter(sa -> !sa.getStatus().equals(ActionFactory.STATUS_COMPLETED))
-                        .findFirst()
-                        .isPresent()) {
-//                    SaltActionChainGeneratorService.INSTANCE.removeActionChainScriptFiles(
-//                            retActionChainId, jobReturnEvent.getMinionId(), chunk, actionChainFailed);
-                }
             });
         }
         else {
