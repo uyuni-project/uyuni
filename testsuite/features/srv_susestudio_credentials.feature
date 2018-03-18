@@ -1,36 +1,33 @@
-# Copyright (c) 2015-17 SUSE LLC
+# Copyright (c) 2015-18 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Create external system or API credentials
-  In order to access external systems or APIs
-  As the testing user
-  I want to create credentials
+Feature:  SUSE Studio credentials page
 
-  Scenario: Fail to create empty credentials
+  Scenario: Fail to create empty SUSE Studio credentials
     Given I am on the Credentials page
     When I click on "Update Credentials"
     Then I should see a "Your credentials are incomplete" text
 
-  Scenario: Fail to create credentials wthout API key
+  Scenario: Fail to create SUSE Studio credentials wthout API key
     Given I am on the Credentials page
     When I enter "foobar-user" as "studio_user"
     And I click on "Update Credentials"
     Then I should see a "Your credentials are incomplete" text
 
-  Scenario: Fail to create credentials without API user
+  Scenario: Fail to create SUSE Studio credentials without API user
     Given I am on the Credentials page
     When I enter "foobar-key" as "studio_key"
     And I click on "Update Credentials"
     Then I should see a "Your credentials are incomplete" text
 
-  Scenario: Create credentials succesfully
+  Scenario: Create SUSE Studio credentials succesfully
     Given I am on the Credentials page
     When I enter "foobar-user" as "studio_user"
     And I enter "foobar-key" as "studio_key"
     And I click on "Update Credentials"
     Then I should see a "Your credentials were successfully updated." text
 
-  Scenario: Delete credentials
+  Scenario: Delete SUSE Studio credentials
     Given I am on the Credentials page
     When I follow "delete credentials"
     Then I should see a "foobar-user" text
