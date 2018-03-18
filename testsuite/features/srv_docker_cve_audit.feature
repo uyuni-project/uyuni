@@ -14,7 +14,7 @@ Feature: CVE audit for content management
     And I follow "cve-server-channels-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Audit images, searching for a known CVE number
     When I follow "Audit" in the left menu
