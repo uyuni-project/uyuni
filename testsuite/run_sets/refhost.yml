@@ -15,7 +15,6 @@
 - features/core_srv_create_repository.feature
 - features/core_srv_systemspage.feature
 - features/core_srv_users.feature
-- features/core_srv_credentials.feature
 - features/core_srv_create_activationkey.feature
 # initialize clients
 - features/core_trad_register_client.feature
@@ -37,6 +36,7 @@
 # IDEMPOTENT
 
 - features/min_activationkey.feature
+- features/srv_susestudio_credentials.feature
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
 - features/srv_change_password.feature

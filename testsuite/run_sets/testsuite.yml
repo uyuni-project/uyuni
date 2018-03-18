@@ -15,7 +15,6 @@
 - features/core_srv_create_repository.feature
 - features/core_srv_systemspage.feature
 - features/core_srv_users.feature
-- features/core_srv_credentials.feature
 - features/core_srv_create_activationkey.feature
 # initialize SUSE Manager proxy
 - features/core_proxy.feature
@@ -39,6 +38,7 @@
 # IDEMPOTENT
 
 - features/min_bootstrap_xmlrpc.feature
+- features/srv_susestudio_credentials.feature
 - features/min_ssh_bootstrap_xmlrpc.feature
 - features/min_activationkey.feature
 - features/trad_migrate_to_minion.feature
