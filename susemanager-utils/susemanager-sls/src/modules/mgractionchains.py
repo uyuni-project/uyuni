@@ -96,7 +96,12 @@ def start(actionchain_id):
 
         salt '*' mgractionchains.start 123
     '''
-    #TODO: We should kill previously stored action before starting a new one?
+    if os.path.isfile(_get_ac_storage_filenamepath()):
+        msg = "Action Chain '{0}' cannot be started. There is already another " \
+              "Action Chain being executed. Please check on '{1}'".format(
+                actionchain_id, _get_ac_storage_filenamepath())
+        log.error(msg)
+        raise CommandExecutionError(msg)
     target_sls = _calculate_sls(actionchain_id, __grains__['machine_id'], 1)
     log.debug("Starting execution of SUSE Manager Action Chains ID "
               "'{0}' -> Target SLS: {1}".format(actionchain_id, target_sls))
