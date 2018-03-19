@@ -38,4 +38,3 @@ Feature: Reboot systems managed via SUSE Manager
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I wait and check that "ceos-minion" has rebooted
-    And I wait until "salt-minion" service is up and running on "ceos-minion"
