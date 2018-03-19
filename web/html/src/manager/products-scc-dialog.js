@@ -135,11 +135,10 @@ const SCCDialog = React.createClass({
   render: function() {
     return (
       <div className='panel panel-default panel-body text-left'>
-        <h4>{t('Refresh data from SUSE Customer Center')}</h4>
-        
+        <h4>{t('Refresh the product catalog from SUSE Customer Center')}</h4>
+        <hr/>
         <div className='d-block'>
           <Messages items={this.state.errors}/>
-          <p>{ this.isSyncRunning() ? t('Please be patient, this might take several minutes.') : null }</p>
           <ul id='scc-task-list' className='fa-ul'>
             {
               this.state.steps.map(s => 
@@ -162,32 +161,29 @@ const SCCDialog = React.createClass({
             }
           </ul>
         </div>
-
         <div className='text-left'>
           <Button
               id='scc-refresh-button'
               className='btn btn-default'
               disabled={this.isSyncRunning() ? 'disabled' : ''}
               handler={this.startSync}
-              title={
-                this.isSyncRunning() ?
-                  t('The product catalog refresh is running..')
-                  : t('Refreshes the product catalog from the Customer Center')
-              }
               icon={'fa-refresh ' + (this.isSyncRunning() ? 'fa-spin' : '')}
               text={t('Refresh')}
           />
           {
-            !this.isSyncRunning() && this.hasRun() ?
-              this.state.steps.every(s => s.success) ?
-                <span><i className='fa fa-check text-success' />{t('Completed')}</span>
-                :
-                <div>
-                  <i className='fa fa-exclamation-triangle text-warning' />
-                  {t('Operation not successful: Empty reply from the server')}
-                  (<a href='/rhn/admin/Catalina.do'>{t('Details')}</a>)
-                </div>
-            : null
+            this.isSyncRunning() ?
+              <p>{t('Please be patient, this might take several minutes.')}</p>
+              :
+              this.hasRun() ?
+                this.state.steps.every(s => s.success) ?
+                  <span><i className='fa fa-check text-success' />{t('Completed')}</span>
+                  :
+                  <div>
+                    <i className='fa fa-exclamation-triangle text-warning' />
+                    {t('Operation not successful: Empty reply from the server')}
+                    (<a href='/rhn/admin/Catalina.do'>{t('Details')}</a>)
+                  </div>
+                : null
           }
         </div>
       </div>
