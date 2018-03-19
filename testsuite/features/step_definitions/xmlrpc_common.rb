@@ -373,8 +373,8 @@ Then(/^no action chain with the label "(.*?)"$/) do |label|
 end
 
 # Schedule scenario
-When(/^I call actionchain\.add_script_run\(\) with the script like "(.*?)"$/) do |script|
-  refute(rpc.add_script_run($client_id, script, $chain_label) < 1)
+When(/^I call actionchain\.add_script_run\(\) with the script "(.*?)"$/) do |script|
+  refute(rpc.add_script_run($client_id, "#!/bin/bash\n" + script, $chain_label) < 1)
 end
 
 Then(/^I should be able to see all these actions in the action chain$/) do

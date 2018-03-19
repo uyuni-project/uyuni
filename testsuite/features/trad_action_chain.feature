@@ -206,7 +206,7 @@ Feature: Action chaining
     And I call actionchain.add_package_removal()
     And I call actionchain.add_package_upgrade()
     And I call actionchain.add_package_verify()
-    And I call actionchain.add_script_run() with the script like "#!/bin/bash\nexit 1;"
+    And I call actionchain.add_script_run() with the script "exit 1;"
     And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I call actionchain.remove_action on each action within the chain
