@@ -98,7 +98,6 @@ Feature: Add a repository to a channel
     Given I am authorized as "admin" with password "admin"
     When I follow "Admin"
     And I follow "Task Schedules"
-    And I follow "Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"

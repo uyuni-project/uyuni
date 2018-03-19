@@ -16,7 +16,6 @@ Feature: Action chaining
     And I run "rhn_check -vvv" on "sle-client"
     And I follow "Admin"
     And I follow "Task Schedules"
-    And I follow "Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
