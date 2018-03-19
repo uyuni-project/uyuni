@@ -219,8 +219,11 @@ ul.product-list {
         color: @spacewalk-orange-light;
       }
     }
+    .product-details-wrapper:hover {
+      background-color: #ededed;
+    }
     .product-installed {
-      .product-description {
+      .product-description, i {
         color: @spacewalk-green-dark;
       }
       .recommended-tag {
@@ -314,4 +317,8 @@ ul.product-list {
       .form-control;
     }
   }
+}
+
+.spacewalk-section-toolbar {
+  margin-top: 0;
 }
