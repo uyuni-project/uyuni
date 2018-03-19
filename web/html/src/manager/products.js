@@ -556,12 +556,18 @@ const CheckListItem = React.createClass({
     }
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    if (this.isSelected(nextProps.item, nextProps.bypassProps.selectedItems)) {
+      this.handleWithRecommendedState(nextProps.bypassProps.selectedItems);
+    }
+  },
+
   isRootLevel: function(level) {
     return level == 1;
   },
 
-  isSelected: function() {
-    return this.props.bypassProps.selectedItems.filter(i => i.identifier == this.props.item.identifier).length == 1;
+  isSelected: function(item, selectedItems) {
+    return selectedItems.filter(i => i.identifier == item.identifier).length == 1;
   },
 
   isInstalled: function() {
@@ -581,7 +587,7 @@ const CheckListItem = React.createClass({
 
     // this item was selected but it is going to be removed from the selected set,
     // so all children are going to be removed as well
-    if(this.isSelected()) {
+    if(this.isSelected(currentItem, this.props.bypassProps.selectedItems)) {
       arr = arr.concat(this.getChildrenTree(currentItem));
       this.handleUnselectedItems(arr);
     }
@@ -627,7 +633,7 @@ const CheckListItem = React.createClass({
     const withRecommendedNow = !this.state.withRecommended;
     this.setState({withRecommended: withRecommendedNow});
     // only if this item is already selected
-    if (this.isSelected()) {
+    if (this.isSelected(this.props.item, this.props.bypassProps.selectedItems)) {
       const arr = this.getRecommendedChildrenTree(this.props.item);
       // if the recommended flag is now enabled, select all recommended children
       if (withRecommendedNow) {
@@ -637,6 +643,17 @@ const CheckListItem = React.createClass({
       else {
         this.props.handleUnselectedItems(arr);
       }
+    }
+  },
+
+  // check if all recommended children are in the selection set,
+  // and set the 'withRecommended' flag state accordingly
+  handleWithRecommendedState: function(arr) {
+    // it matters only for the root node
+    if (this.props.treeLevel == 1) {
+      this.setState({withRecommended:
+        this.getRecommendedChildrenTree(this.props.item).every(i => arr.includes(i)) ?
+          true : false});
     }
   },
 
@@ -666,7 +683,7 @@ const CheckListItem = React.createClass({
         <input type='checkbox'
             value={currentItem.identifier}
             onChange={this.handleSelectedItem}
-            checked={this.isSelected() ? 'checked' : ''}
+            checked={this.isSelected(currentItem, this.props.bypassProps.selectedItems) ? 'checked' : ''}
             disabled={this.props.bypassProps.readOnlyMode || this.props.childrenDisabled ? 'disabled' : ''}
             title={this.props.childrenDisabled ? t('To enable this product, the parent product should be selected first') : t('Select this product')}
         />;
@@ -805,7 +822,7 @@ const CheckListItem = React.createClass({
               handleSelectedItems={this.handleSelectedItems}
               handleUnselectedItems={this.handleUnselectedItems}
               treeLevel={this.props.treeLevel + 1}
-              childrenDisabled={!(this.isSelected() || this.isInstalled())}
+              childrenDisabled={!(this.isSelected(currentItem, this.props.bypassProps.selectedItems) || this.isInstalled())}
           />
           : null }
       </li>
