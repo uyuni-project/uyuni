@@ -230,7 +230,6 @@ public class ActionChainHandler extends BaseHandler {
                                    String chainLabel) {
 
         Server server = this.acUtil.getServerById(serverId, loggedInUser);
-        this.acUtil.ensureNotSalt(server);
 
         try {
             return ActionChainManager.scheduleRebootAction(
@@ -300,7 +299,6 @@ public class ActionChainHandler extends BaseHandler {
         }
 
         Server server = this.acUtil.getServerById(serverId, loggedInUser);
-        this.acUtil.ensureNotSalt(server);
 
         try {
             return ActionChainManager
@@ -339,7 +337,6 @@ public class ActionChainHandler extends BaseHandler {
         }
 
         Server server = this.acUtil.getServerById(serverId, loggedInUser);
-        this.acUtil.ensureNotSalt(server);
 
         try {
             return ActionChainManager
@@ -419,7 +416,6 @@ public class ActionChainHandler extends BaseHandler {
         }
 
         Server server = this.acUtil.getServerById(serverId, loggedInUser);
-        this.acUtil.ensureNotSalt(server);
 
         try {
             return ActionChainManager
@@ -463,10 +459,6 @@ public class ActionChainHandler extends BaseHandler {
     public Integer addScriptRun(User loggedInUser, Integer serverId, String chainLabel,
             String scriptLabel, String uid, String gid,
             Integer timeout, String scriptBody) {
-
-        Server server = this.acUtil.getServerById(serverId, loggedInUser);
-        this.acUtil.ensureNotSalt(server);
-
         List<Long> systems = new ArrayList<Long>();
         systems.add((long) serverId);
 
@@ -581,8 +573,6 @@ public class ActionChainHandler extends BaseHandler {
         validKeys.add("filePath");
         validKeys.add("revision");
         revisionSpecifiers.stream().forEach(specifier -> validateMap(validKeys, specifier));
-
-        this.acUtil.ensureNotSalt(this.acUtil.getServerById(serverId, loggedInUser));
 
         List<Long> server = new ArrayList<>();
         server.add(serverId.longValue());
