@@ -707,22 +707,13 @@ const CheckListItem = React.createClass({
     // only for root products
     let recommendedTogglerContent;
     if (this.isRootLevel(this.props.treeLevel) && this.getNestedData(currentItem).some(i => i.recommended)) {
-      if (this.state.withRecommended) {
       recommendedTogglerContent =
-        <span  className='pointer text-info' onClick={() => this.handleWithRecommended()}>
-          <i className='fa fa-1-5x fa-toggle-on' />
-          &nbsp;
-          {t('with recommended')}
-        </span>;
-      }
-      else {
-        recommendedTogglerContent =
-          <span className='pointer text-muted' onClick={() => this.handleWithRecommended()}>
-            <i className='fa fa-1-5x fa-toggle-off' />
-            &nbsp;
-            {t('with recommended')}
-          </span>;
-      }
+        <Button
+            className={'btn btn-default btn-sm ' + (this.state.withRecommended ? 'text-info' : 'text-muted')}
+            handler={() => this.handleWithRecommended()}
+            icon={'fa-1-5x with-margin ' + (this.state.withRecommended ? 'fa-toggle-on' : 'fa-toggle-off')}
+            text={t('with recommended')}
+        />;
     }
     /*****/
 
