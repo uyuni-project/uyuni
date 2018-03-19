@@ -2,11 +2,8 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Action chain tests for salt minions
-
-  # TODO: test docker image building via action chain.
-  #       xmlrpc junit or cucumber to clarify
-
-  Scenario: [minion-action-chain] Pre-requisite: downgrade repo to lower version
+ 
+ Scenario: [minion-action-chain] Pre-requisite: downgrade repo to lower version
     Given I am authorized as "admin" with password "admin"
     When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
@@ -121,18 +118,18 @@ Feature: Action chain tests for salt minions
     And I click on "Deploy Files to Selected Systems"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
+  Scenario: Add apply highstate to minion action-chain
+    Given I am on the Systems overview page of this "sle-minion"
+     And I follow "States" in the content area
+     And I check radio button "schedule-by-action-chain"
+     And I click on "Apply Highstate"
+
   Scenario: [minion-action-chain]  Add a reboot action to the action chain
     Given I am on the Systems overview page of this "sle-minion"
     When I follow first "Schedule System Reboot"
     And I check radio button "schedule-by-action-chain"
     And I click on "Reboot system"
     Then I should see a "Action has been successfully added to the Action Chain" text
-
-  Scenario: Add apply highstate to minion action-chain
-    Given I am on the Systems overview page of this "sle-minion"
-     And I follow "States" in the content area
-     And I check radio button "schedule-by-action-chain"
-     And I click on "Apply Highstate"
 
   Scenario: [minion-action-chain] Verify the action chain list
     Given I am on the Systems overview page of this "sle-minion"
@@ -144,22 +141,22 @@ Feature: Action chain tests for salt minions
     And I should see a "3. Apply patch(es) andromeda-dummy-6789 on 1 system" text
     And I should see a "4. Remove milkyway-dummy from 1 system" text
     And I should see a text like "5. Deploy.*/etc/action-chain.cnf.*to 1 system"
-    And I should see a "6. Reboot 1 system" text
-    And I should see a "7. Apply Highstate" text
+    And I should see a "6. Apply Highstate" text
+    And I should see a "7. Reboot system" text
+
+  Scenario: [minion-action-chain] Execute the action chain from the web UI
+   Given I am on the Systems overview page of this "sle-minion"
+   When I follow "Schedule"
+   And I follow "Action Chains"
+   And I follow "new action chain"
+   Then I click on "Save and Schedule"
+   And I should see a "Action Chain new action chain has been scheduled for execution." text
 
   Scenario: [minion-action-chain] Check that a different user cannot see the action chain
     Given I am authorized as "testing" with password "testing"
     When I follow "Schedule"
     And I follow "Action Chains"
     Then I should not see a "new action chain" link
-
-  Scenario: [minion-action-chain] Delete the action chain
-     Given I am authorized as "admin" with password "admin"
-     Then I follow "Schedule"
-     And I follow "Action Chains"
-     And I follow "new action chain"
-     And I follow "delete action chain" in the content area
-     Then I click on "Delete"
 
   Scenario: [minion-action-chain] Add a remote command to the new action chain
     Given I am on the Systems overview page of this "sle-minion"
@@ -172,21 +169,14 @@ Feature: Action chain tests for salt minions
     And I check radio button "schedule-by-action-chain"
     And I click on "Schedule"
     Then I should see a "Action has been successfully added to the Action Chain" text
- 
-  Scenario: Add apply highstate to minion action-chain
-    Given I am on the Systems overview page of this "sle-minion"
-     And I follow "States" in the content area
-     And I check radio button "schedule-by-action-chain"
-     And I click on "Apply Highstate"
 
-  Scenario: [minion-action-chain] Execute the action chain from the web UI
-   Given I am on the Systems overview page of this "sle-minion"
-   When I follow "Schedule"
-   And I follow "Action Chains"
-   And I follow "new action chain"
-   And I should see a "1. Run a remote command on 1 system" text
-   Then I click on "Save and Schedule"
-   And I should see a "Action Chain new action chain has been scheduled for execution." text
+  Scenario: [minion-action-chain] Delete the action chain
+     Given I am authorized as "admin" with password "admin"
+     Then I follow "Schedule"
+     And I follow "Action Chains"
+     And I follow "new action chain"
+     And I follow "delete action chain" in the content area
+     Then I click on "Delete"
 
   Scenario: Add an action-chain using system-set-manager for trad-client and sle-minion
    Given I am authorized as "admin" with password "admin"
@@ -207,6 +197,11 @@ Feature: Action chain tests for salt minions
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
     Then I should see a "Package installations are being scheduled" text
+
+  Scenario: Verify that action-chains are executed with success
+    Given I wait until event "Apply Highstate" is completed for "sle-minion"
+    And I wait until event "System reboot" is completed for "sle-minion"
+    And "milkyway-dummy" should not be installed on "sle-minion"
 
   Scenario: Verify action-chain for 2 system-set-manager (traditional and sle minion)
     Given I am on the Systems overview page of this "sle-minion"
@@ -242,3 +237,4 @@ Feature: Action chain tests for salt minions
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n rm milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-minion" without error control
+    And I run "rm -f /etc/action-chain.cnf" on "sle-minion" without error control
