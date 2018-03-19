@@ -140,7 +140,7 @@ const ProductsPageWrapper = React.createClass({
     }
 
     if (sccSyncStatus) {
-      this.setState({ errors: MessagesUtils.info(t('The product catalog refresh is running..')) });
+      this.setState({ errors: MessagesUtils.info(t('The product catalog refresh is running...')) });
     }
     this.setState({ sccSyncRunning: sccSyncStatus });
   },
@@ -299,14 +299,18 @@ const ProductsPageWrapper = React.createClass({
                 updateSccSyncRunning={(sccSyncStatus) => this.updateSccSyncRunning(sccSyncStatus)}
               />
             <hr/>
-            <div className='text-left'>
-              <h4>Selected products</h4>
-              <ul>
-                {
-                  this.state.selectedItems.map(i => <li key={i.identifier}>{i.label} [{i.arch}]</li>)
-                }
-              </ul>
-            </div>
+            {
+              this.state.selectedItems.length > 0 ?
+                <div className='text-left'>
+                  <h4>Selected products</h4>
+                  <ul>
+                    {
+                      this.state.selectedItems.map(i => <li key={i.identifier}>{i.label} [{i.arch}]</li>)
+                    }
+                  </ul>
+                </div>
+                : null
+            }
             <hr/>
               <h4>{t("Why aren't all SUSE products displayed in the list?")}</h4>
               <p>{t('The products displayed on this list are directly linked to your \
@@ -668,7 +672,7 @@ const CheckListItem = React.createClass({
         />;
     }
     else if (this.isInstalled()) {
-      selectorContent = <input type='checkbox' checked='checked' disabled='disabled' title={t('This product is installed.')} />;
+      selectorContent = <i className='fa fa-info product-installed' title={t('This product is installed.')} />
     }
     /*****/
 
@@ -739,26 +743,31 @@ const CheckListItem = React.createClass({
         const syncedChannels = mandatoryChannelList.filter(c => c.status == _CHANNEL_STATUS.synced).length;
         const toBeSyncedChannels = mandatoryChannelList.length;
         const channelSyncProgress = Math.round(( syncedChannels / toBeSyncedChannels ) * 100);
-        channelSyncContent = <ProgressBar progress={channelSyncProgress} title={t('Product sync status')} width='70%'/>;
+        channelSyncContent = <ProgressBar progress={channelSyncProgress} title={t('Product sync status')} width='60%'/>;
       }
     }
     /*****/
 
     /** generate product resync button **/
     const resyncActionInProgress = this.scheduleResyncInProgress();
-    const conditionalIconClass = this.props.bypassProps.readOnlyMode ? 'text-muted' : resyncActionInProgress ? 'fa-spin text-muted' : '';
-    const conditionalIconTitle =
+    const conditionalResyncClass = this.props.bypassProps.readOnlyMode ? 'text-muted' : resyncActionInProgress ? 'fa-spin text-muted' : '';
+    const resyncDisabled = this.props.bypassProps.readOnlyMode || resyncActionInProgress;
+    const conditionalResyncTitle =
         this.props.bypassProps.readOnlyMode ?
           t('SCC product catalog in progress')
           : resyncActionInProgress ?
               t('Scheduling a product resync')
               : t('Resync product');
-    const conditionalIconAction = !this.props.bypassProps.readOnlyMode ? () => this.resyncProduct() : null;
+    const conditionalResyncAction = !this.props.bypassProps.readOnlyMode ? () => this.resyncProduct() : null;
     const resyncActionContent =
       this.isInstalled() ?
-        <i className={'fa fa-refresh fa-1-5x pointer ' + conditionalIconClass}
-            title={conditionalIconTitle}
-            onClick={conditionalIconAction} />
+        <Button
+            className='btn btn-default btn-sm'
+            disabled={resyncDisabled ? 'disabled' : ''}
+            handler={conditionalResyncAction}
+            icon={'fa-refresh fa-1-5x pointer ' + conditionalResyncClass}
+            title={conditionalResyncTitle}
+        />
         : null;
     /*****/
 
