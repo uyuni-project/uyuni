@@ -200,14 +200,14 @@ public class SaltActionChainGeneratorService {
                 // files are not longer needed.
                 if (actionChainFailed) {
                     //FIXME: script files are reused by multiple minions
-                    //filesToDelete.addAll(Files.list(targetDir)
-                    //        .filter(path -> path.toString().startsWith(
-                    //                Paths.get(targetDir.toString(), filePattern).toString()))
-                    //        .collect(Collectors.toList()));
-                    filesToDelete.addAll(Files.list(scriptsDir)
+                    filesToDelete.addAll(Files.list(targetDir)
                             .filter(path -> path.toString().startsWith(
-                                    Paths.get(scriptsDir.toString(), scriptPattern).toString()))
+                                    Paths.get(targetDir.toString(), filePattern).toString()))
                             .collect(Collectors.toList()));
+                    //filesToDelete.addAll(Files.list(scriptsDir)
+                    //        .filter(path -> path.toString().startsWith(
+                    //                Paths.get(scriptsDir.toString(), scriptPattern).toString()))
+                    //        .collect(Collectors.toList()));
                 }
                 // Remove the files
                 for (Path path : filesToDelete) {

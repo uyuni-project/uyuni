@@ -45,10 +45,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_ACTION_PREFIX;
 import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_CHUNK_PREFIX;
@@ -122,7 +125,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
                 int chunk = 1;
                 Long retActionChainId = null;
-                Boolean actionChainFailed = false;
+                Long lastActionId = null;
+                boolean actionChainFailed = false;
                 for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
                     String key = entry.getKey();
                     StateApplyResult<Ret<JsonElement>> actionStateApply = entry.getValue();
@@ -131,7 +135,11 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                     if (stateId.isPresent()) {
                         retActionChainId = stateId.get().getActionChainId();
                         chunk = stateId.get().getChunk();
-                        handleAction(stateId.get().getActionId(),
+                        lastActionId = stateId.get().getActionId();
+                        if (!actionStateApply.isResult()) {
+                            actionChainFailed = true;
+                        }
+                        handleAction(lastActionId,
                                 jobReturnEvent.getMinionId(),
                                 actionStateApply.isResult() ? 0 : -1,
                                 actionStateApply.isResult(),
@@ -148,6 +156,34 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                 }
 
                 if (retActionChainId != null) {
+                    if (actionChainFailed) {
+                         LOG.error("Action Chain falla");
+                         // Set rest of actions as FAILED due prerequisite failed.
+                         Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
+                                jobReturnEvent.getMinionId());
+                         if (minion.isPresent()) {
+                             LOG.error("Minion presente");
+                            Stack<Long> actionIdsDependencies = new Stack<>();
+                            actionIdsDependencies.push(lastActionId);
+                            while (!actionIdsDependencies.empty()) {
+                                Long acId = actionIdsDependencies.pop();
+                                 LOG.error("Proceso acId: " + acId);
+                                List<ServerAction> serverActions = ActionFactory.listServerActionsForServer(minion.get());
+                                serverActions = serverActions.stream()
+                                    .filter(s -> (s.getParentAction().getPrerequisite() != null))
+                                    .filter(s -> s.getParentAction().getPrerequisite().getId().equals(acId))
+                                    .collect(Collectors.toList());
+                                LOG.error("New Depend: " + serverActions);
+                                for (ServerAction sa : serverActions) {
+                                    actionIdsDependencies.push(sa.getParentAction().getId());
+                                    sa.setCompletionTime(new Date());
+                                    sa.setResultCode(new Long(-1));
+                                    sa.setStatus(ActionFactory.STATUS_FAILED);
+                                    sa.setResultMsg("Prerequisite failed");
+                                }
+                            }
+                        }
+                    }
                     // Removing the generated SLS file
                     SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
                             retActionChainId, jobReturnEvent.getMinionId(), chunk, actionChainFailed);
