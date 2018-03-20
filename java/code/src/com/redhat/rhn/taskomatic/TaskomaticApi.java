@@ -517,6 +517,7 @@ public class TaskomaticApi {
                 .flatMap(serverActions -> serverActions.stream())
                 .map(ServerAction::getServer)
                 .filter(MinionServerUtils::isMinionServer)
+                .filter(m -> !MinionServerUtils.isSshPushMinion(m))
                 .collect(Collectors.counting());
 
         if (minionCount == 0) {
