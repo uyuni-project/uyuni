@@ -109,10 +109,9 @@ public class MinionActionExecutor extends RhnJavaJob {
         }
 
         log.info("Executing action: " + actionId);
+        handleTraditionalClients(user, action);
         saltServerActionService.execute(action, forcePackageListRefresh,
                 isStagingJob, Optional.ofNullable(stagingJobMinionServerId));
-
-        handleTraditionalClients(user, action);
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;
