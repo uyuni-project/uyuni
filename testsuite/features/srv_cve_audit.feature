@@ -125,11 +125,3 @@ Feature: CVE Audit
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control
     And I run "zypper -n rm milkyway-dummy" on "sle-client" without error control
     And I run "rhn_check -vvv" on "sle-client" without error control
-    When I follow "Admin"
-    And I follow "Task Schedules"
-    And I follow "Task Schedules"
-    And I follow "errata-cache-default"
-    And I follow "errata-cache-bunch"
-    And I click on "Single Run Schedule"
-    Then I should see a "bunch was scheduled" text
-    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
