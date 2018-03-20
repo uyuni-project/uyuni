@@ -224,20 +224,21 @@ Then(/^I shouldn't get "([^"]*)"$/) do |arg1|
   raise "'#{arg1}' found in output '#{$command_output}'" if found
 end
 
+$space = 'spacecmd -u admin -p admin '
 Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
-  cmd = 'ls /var/lib/spacewalk/scc/scc-data/*organizations_orders.json'
+  cmd = "#{$space} api sync.content.listProducts | grep ''"
   refresh_timeout = 600
   begin
     Timeout.timeout(refresh_timeout) do
       loop do
         result, code = $server.run(cmd, false)
         break if code.zero?
-        sleep 4
+        sleep 1
       end
     end
   rescue Timeout::Error
-    raise "'mgr-sync refresh' did not finish in time:\n #{result}"
+    raise "'mgr-sync refresh' did not finish in time"
   end
 end
 
@@ -352,7 +353,6 @@ When(/^I wait for the openSCAP audit to finish$/) do
   end
 end
 
-$space = 'spacecmd -u admin -p admin '
 And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
   host = get_target(target)
   cmd = "#{$space} system_listevents #{host.full_hostname} | head -n5"
