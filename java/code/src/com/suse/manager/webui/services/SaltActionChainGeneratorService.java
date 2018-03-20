@@ -35,6 +35,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.attribute.UserPrincipalLookupService;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -233,7 +237,11 @@ public class SaltActionChainGeneratorService {
     private void saveChunkSLS(List<SaltState> states, MinionServer minion, long actionChainId, int chunk) {
         Path targetDir = Paths.get(suseManagerStatesFilesRoot.toString(), ACTIONCHAIN_SLS_FOLDER);
         try {
+            FileSystem fileSystem = FileSystems.getDefault();
+            UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+            UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
             Files.createDirectories(targetDir);
+            Files.setOwner(targetDir, tomcatUser);
         }
         catch (IOException e) {
             LOG.error("Could not create action chain directory " + targetDir, e);
