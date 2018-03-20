@@ -1,3 +1,5 @@
+- Fix index out of bound exception when os-release query returns multiple
+  package names for RHEL/CentOS (bsc#1076931)
 - More specific message for empty custom system info
 
 -------------------------------------------------------------------
