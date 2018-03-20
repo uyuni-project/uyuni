@@ -761,7 +761,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                 "centos".equalsIgnoreCase(grains.getValueAsString("os"))) {
             MinionList target = new MinionList(Arrays.asList(minionId));
             Optional<Result<String>> whatprovidesRes = SALT_SERVICE.runRemoteCommand(target,
-                    "rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release")
+                    "rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release")
                     .entrySet()
                     .stream()
                     .findFirst()
@@ -773,7 +773,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                             err2 -> rpmErrQueryRHELProvidesRelease(minionId),
                             err3 -> rpmErrQueryRHELProvidesRelease(minionId),
                             err4 -> rpmErrQueryRHELProvidesRelease(minionId)),
-                    r -> Optional.of(r)
+                    r -> Optional.of(r.split("\\r?\\n")[0]) // Take the first line if multiple results return
             ))
             .flatMap(pkg ->
                 SALT_SERVICE.runRemoteCommand(target,
