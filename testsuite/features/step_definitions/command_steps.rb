@@ -99,6 +99,10 @@ When(/^I check the tomcat logs for errors$/) do
   end
 end
 
+Then(/^I restart Taskomatic$/) do
+  sshcmd('rctaskomatic restart')
+end
+
 Then(/^I restart the spacewalk service$/) do
   sshcmd('spacewalk-service restart')
   sleep(5)

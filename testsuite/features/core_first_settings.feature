@@ -9,7 +9,7 @@ Feature: Very first settings
   ### WORKAROUND - please remove when issue is fixed
   # bsc#1077780 - "JDBCConnectionException: could not prepare statement" after bootstrapping minion
   Scenario: Temporary workaround against bsc#1077780
-    Given I restart the spacewalk service
+    Given I restart Taskomatic
 
   Scenario: Create admin user and first organization
     Given I access the host the first time
