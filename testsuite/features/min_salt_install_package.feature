@@ -36,10 +36,3 @@ Feature: Install a patch on the client via Salt through the UI
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n ref" on "sle-minion"
-    When I follow "Admin"
-    And I follow "Task Schedules"
-    And I follow "errata-cache-default"
-    And I follow "errata-cache-bunch"
-    And I click on "Single Run Schedule"
-    Then I should see a "bunch was scheduled" text
-    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows

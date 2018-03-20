@@ -46,7 +46,7 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         break if page.has_content?(text)
-        sleep 3
+        sleep 1
         page.evaluate_script 'window.location.reload()'
       end
     end
@@ -538,7 +538,7 @@ When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINI
       end
     end
   rescue Timeout::Error
-    raise "'#{text}' is not found in the table's first row after #{refresh_timeout} seconds"
+    raise "Task does not look FINISHED after #{refresh_timeout} seconds"
   end
 end
 
