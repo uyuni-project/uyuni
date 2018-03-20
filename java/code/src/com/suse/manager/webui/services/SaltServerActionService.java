@@ -16,6 +16,7 @@ package com.suse.manager.webui.services;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
@@ -519,6 +520,9 @@ public class SaltServerActionService {
 
             });
         });
+        // we must be sure that tokens and action Details are in the database
+        // before we return and send the salt calls to update the minions.
+        HibernateFactory.commitTransaction();
 
         return ret;
     }
