@@ -36,6 +36,7 @@ const pages = {
   'subscription-matching': './manager/subscription-matching.js',
   'taskotop': './manager/taskotop.js',
   'virtualhostmanager': './manager/virtualhostmanager.js',
+  'virtualization/guests/list/guests-list.renderer': './manager/virtualization/guests/list/guests-list.renderer.js',
 }
 
 Object.keys(pages).forEach((key) => {
