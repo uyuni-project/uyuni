@@ -1,3 +1,5 @@
+- Fix index out of bound exception when os-release query returns multiple
+  package names for RHEL/CentOS (bsc#1076931)
 - More specific message for empty custom system info
 - fix presence ping (bsc#1080353)
 - Set hostname before hardware refresh as well (bsc#1077760)

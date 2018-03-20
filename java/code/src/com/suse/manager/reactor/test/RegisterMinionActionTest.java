@@ -46,12 +46,9 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.test.DistUpgradeManagerTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -578,8 +575,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, "rhel", null)));
 
-                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server")))));
+                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
+                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" redhat-release-server"));
                     will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
@@ -615,8 +612,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, "rhel", key)));
 
-                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server")))));
+                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
+                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server\n")))));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" redhat-release-server"));
                     will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
@@ -659,8 +656,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, "res", null)));
 
-                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("sles_es-release-server")))));
+                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
+                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("sles_es-release-server\n")))));
 
                     allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" sles_es-release-server"));
                     will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
