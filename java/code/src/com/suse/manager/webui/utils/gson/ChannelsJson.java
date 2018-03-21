@@ -50,7 +50,7 @@ public class ChannelsJson {
          * @param nameIn the name
          * @param customIn custom channel flag
          * @param subscribableIn subscribable flag
-         * @param recommendedIn recommented flag
+         * @param recommendedIn the channel is recommended by its parent channel
          */
         public ChannelJson(Long idIn, String nameIn, boolean customIn, boolean subscribableIn, boolean recommendedIn) {
             this.id = idIn;
