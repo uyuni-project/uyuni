@@ -157,7 +157,7 @@
              jcommon stringtree-json postgresql-jdbc
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec quartz
              ${suse-common-jars} velocity
-             concurrent simple-core snakeyaml simple-xml susestudio-java-client" />
+             concurrent simple-core snakeyaml simple-xml" />
 
   <property name="dist.jar.dependencies"
       value="antlr objectweb-asm/asm bcel c3p0 cglib
@@ -169,7 +169,7 @@
              ${tomcat-jars} log4j redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
-             tanukiwrapper postgresql-jdbc snakeyaml simple-xml susestudio-java-client
+             tanukiwrapper postgresql-jdbc snakeyaml simple-xml
              ${suse-common-jars} ${suse-runtime-jars}
 	     xalan-j2 xerces-j2 xml-commons-apis simple-core ${ehcache}" />
 
