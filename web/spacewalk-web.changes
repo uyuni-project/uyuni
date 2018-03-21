@@ -1,3 +1,4 @@
+- Remove SUSE Studio based image deployments
 - Fix for the system channels UI, hide the corresponding title and horizontal line if list of
   SUSE or custom channels is empty
 
