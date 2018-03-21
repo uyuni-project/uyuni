@@ -23,10 +23,6 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductChannel;
-import com.redhat.rhn.domain.product.SUSEProductExtension;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -69,7 +65,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
@@ -307,14 +302,6 @@ public class SystemsController {
         StrutsDelegate.getInstance().saveMessages(req, errs);
     }
 
-    private static Channel getOriginal(Channel c) {
-        Channel c2 = c;
-        while (c2.isCloned()) {
-            c2 = c2.getOriginal();
-        }
-        return c2;
-    }
-
     /**
      * Get available child channels for a base channel.
      * @param request the request
@@ -348,7 +335,7 @@ public class SystemsController {
 
                 List<Channel> children = baseChannel.getAccessibleChildrenFor(user);
 
-                Map<Long, Boolean> channelRecommendedFlags = computeChannelRecommendedFlags(
+                Map<Long, Boolean> channelRecommendedFlags = ChannelManager.computeChannelRecommendedFlags(
                         baseChannel,
                         children.stream().filter(c -> c.isSubscribable(user.getOrg(), server)));
 
@@ -368,32 +355,6 @@ public class SystemsController {
                         JsonResult.error("invalid_channel_id"));
             }
         });
-    }
-
-    /**
-     * Computes child channel "recommended" flags based on the original of their parent channel.
-     *
-     * @param baseChannel the base channel channel
-     * @param childChannels the stream of child channels
-     * @return the map from channel id to boolean containing the information about the "recommended" flag.
-     */
-    public static Map<Long,Boolean> computeChannelRecommendedFlags(Channel baseChannel, Stream<Channel> childChannels) {
-        Channel originalBaseChannel = getOriginal(baseChannel);
-        Optional<SUSEProductChannel> rootProduct = SUSEProductFactory.findProductByChannelLabel(originalBaseChannel.getLabel());
-        return childChannels.collect(Collectors.toMap(
-                c -> c.getId(),
-                c -> {
-                    Channel original = getOriginal(c);
-                    Optional<SUSEProductChannel> extProduct = SUSEProductFactory.findProductByChannelLabel(original.getLabel());
-                    if (extProduct.isPresent() && rootProduct.isPresent()) {
-                        List<SUSEProduct> allBaseProductsOf = SUSEProductFactory.findAllBaseProductsOf(extProduct.get().getProduct(), rootProduct.get().getProduct());
-                        return allBaseProductsOf.stream().anyMatch(baseProduct ->
-                                SUSEProductFactory.findSUSEProductExtension(
-                                        rootProduct.get().getProduct(), baseProduct, extProduct.get().getProduct()
-                                ).map(SUSEProductExtension::isRecommended).orElse(false));
-                    }
-                    return false;
-                }));
     }
 
 }
