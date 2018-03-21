@@ -136,7 +136,7 @@ When(/^I check the tomcat logs for errors$/) do
 end
 
 Then(/^I restart the spacewalk service$/) do
-  sshcmd('spacewalk-service restart')
+  $server.run('spacewalk-service restart')
   sleep(5)
 end
 
