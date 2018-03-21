@@ -235,7 +235,6 @@ end
 
 Given(/^I access the host the first time$/) do
   visit Capybara.app_host
-  # fail if not page.has_content?("Create Spacewalk Administrator")
   raise unless page.has_content?('Create SUSE Manager Administrator')
 end
 
