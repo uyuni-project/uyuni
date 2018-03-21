@@ -264,13 +264,13 @@ end
 $space = 'spacecmd -u admin -p admin '
 Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
-  cmd = "#{$space} api sync.content.listProducts | grep ''"
+  cmd = "#{$space} api sync.content.listProducts"
   refresh_timeout = 600
   begin
     Timeout.timeout(refresh_timeout) do
       loop do
         result, code = $server.run(cmd, false)
-        break if code.zero?
+        break if result.include? "SLES"
         sleep 1
       end
     end
