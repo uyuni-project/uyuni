@@ -3,7 +3,7 @@
 mgr_registries_login_inspect:
   module.run:
     - name: dockerng.login
-    - registries: {{ pillar.get('docker-registries').keys() }}
+    - registries: {{ pillar.get('docker-registries', {}).keys() }}
 
 mgr_image_profileupdate:
   module.run:
@@ -14,11 +14,15 @@ mgr_image_profileupdate:
     - dryrun: True
     - kwargs:
         entrypoint: ""
+    - require:
+      - module: mgr_registries_login_inspect
 
 mgr_image_inspect:
   module.run:
     - name: dockerng.inspect
     - m_name: "{{ pillar.get('imagename') }}"
+    - require:
+      - module: mgr_registries_login_inspect
 
 mgr_container_remove:
   module.run:

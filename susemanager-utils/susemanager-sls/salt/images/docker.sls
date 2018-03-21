@@ -1,7 +1,7 @@
 mgr_registries_login:
   module.run:
     - name: dockerng.login
-    - registries: {{ pillar.get('docker-registries').keys() }}
+    - registries: {{ pillar.get('docker-registries', {}).keys() }}
 
 mgr_buildimage:
   module.run:
