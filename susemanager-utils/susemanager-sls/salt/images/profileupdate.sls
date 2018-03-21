@@ -1,5 +1,10 @@
 {% set container_name = salt['pillar.get']('mgr_container_name', 'mgr_container_' ~ range(1, 10000) | random )  %}
 
+mgr_registries_login_inspect:
+  module.run:
+    - name: dockerng.login
+    - registries: {{ pillar.get('docker-registries').keys() }}
+
 mgr_image_profileupdate:
   module.run:
     - name: dockerng.sls_build
