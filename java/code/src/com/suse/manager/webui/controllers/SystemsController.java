@@ -21,7 +21,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductExtension;
@@ -62,10 +61,12 @@ import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
@@ -336,34 +337,17 @@ public class SystemsController {
 
                 List<Channel> children = baseChannel.getAccessibleChildrenFor(user);
 
-                Channel rootChannel = getOriginal(baseChannel);
-                Optional<SUSEProductChannel> rootProduct = SUSEProductFactory.findProductByChannelLabel(rootChannel.getLabel());
+                Map<Long, Boolean> channelRecommendedFlags = computeChannelRecommendedFlags(
+                        baseChannel,
+                        children.stream().filter(c -> c.isSubscribable(user.getOrg(), server)));
 
                 List<ChannelsJson.ChannelJson> jsonList = children.stream()
                         .filter(c -> c.isSubscribable(user.getOrg(), server))
-                        .map(c -> {
-
-                            Channel original = getOriginal(c);
-                            boolean recommended = false;
-                            Optional<SUSEProductChannel> extProduct = SUSEProductFactory.findProductByChannelLabel(original.getLabel());
-                            if (extProduct.isPresent() && rootProduct.isPresent()) {
-                                List<SUSEProduct> allBaseProductsOf = SUSEProductFactory.findAllBaseProductsOf(extProduct.get().getProduct(), rootProduct.get().getProduct());
-                                recommended = allBaseProductsOf.stream().anyMatch(baseProduct -> {
-                                    return SUSEProductFactory.findSUSEProductExtension(
-                                            rootProduct.get().getProduct(), baseProduct, extProduct.get().getProduct()
-                                    ).map(SUSEProductExtension::isRecommended).orElse(false);
-                                });
-                            }
-                            else {
-                                recommended = false;
-                            }
-
-                            return new ChannelsJson.ChannelJson(c.getId(),
-                                    c.getName(),
-                                    c.isCustom(),
-                                    c.isSubscribable(user.getOrg(), server),
-                                    recommended);
-                        })
+                        .map(c -> new ChannelsJson.ChannelJson(c.getId(),
+                                c.getName(),
+                                c.isCustom(),
+                                c.isSubscribable(user.getOrg(), server),
+                                channelRecommendedFlags.get(c.getId())))
                         .collect(Collectors.toList());
                 return json(response, JsonResult.success(jsonList));
             }
@@ -375,5 +359,30 @@ public class SystemsController {
         });
     }
 
+    /**
+     * Computes child channel "recommended" flags based on the original of their parent channel.
+     *
+     * @param baseChannel the base channel channel
+     * @param childChannels the stream of child channels
+     * @return the map from channel id to boolean containing the information about the "recommended" flag.
+     */
+    public static Map<Long,Boolean> computeChannelRecommendedFlags(Channel baseChannel, Stream<Channel> childChannels) {
+        Channel originalBaseChannel = getOriginal(baseChannel);
+        Optional<SUSEProductChannel> rootProduct = SUSEProductFactory.findProductByChannelLabel(originalBaseChannel.getLabel());
+        return childChannels.collect(Collectors.toMap(
+                c -> c.getId(),
+                c -> {
+                    Channel original = getOriginal(c);
+                    Optional<SUSEProductChannel> extProduct = SUSEProductFactory.findProductByChannelLabel(original.getLabel());
+                    if (extProduct.isPresent() && rootProduct.isPresent()) {
+                        List<SUSEProduct> allBaseProductsOf = SUSEProductFactory.findAllBaseProductsOf(extProduct.get().getProduct(), rootProduct.get().getProduct());
+                        return allBaseProductsOf.stream().anyMatch(baseProduct ->
+                                SUSEProductFactory.findSUSEProductExtension(
+                                        rootProduct.get().getProduct(), baseProduct, extProduct.get().getProduct()
+                                ).map(SUSEProductExtension::isRecommended).orElse(false));
+                    }
+                    return false;
+                }));
+    }
 
 }
