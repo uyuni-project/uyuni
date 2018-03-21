@@ -53,6 +53,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The current plan for this class is to manage all SSM operations. However, as more is
@@ -543,6 +544,26 @@ public class SsmManager {
         });
         // else no change for systems without a base channel =>
         // there are no child channels to show
+
+        // TEMPORARY HACK: re-iterate and set the recommended flag for the child channels
+        // this is not optimal from the complexity POV (for each child channel we perform
+        // a bunch of DB queries)
+        result.forEach(change -> {
+            Optional<SsmChannelDto> newBaseChannelDto = change.getNewBaseChannel();
+
+            Optional<Channel> newRootChannel = newBaseChannelDto
+                    .map(channelDto -> ChannelManager.lookupByIdAndUser(channelDto.getId(), user))
+                    .map(channel -> ChannelManager.getOriginalChannel(channel));
+
+            newRootChannel.ifPresent(rootChannel -> {
+                Stream<Channel> childChannelStream = change.getChildChannels().stream()
+                        .map(channelDto -> ChannelManager.lookupByIdAndUser(channelDto.getId(), user));
+                Map<Long, Boolean> channelRecommendedFlags =
+                        ChannelManager.computeChannelRecommendedFlags(rootChannel, childChannelStream);
+                change.getChildChannels().forEach(childChannelDto ->
+                        childChannelDto.setRecommended(channelRecommendedFlags.get(childChannelDto.getId())));
+            });
+        });
 
         return result;
     }
