@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.suse.manager.webui.utils.AbstractSaltRequisites;
 import com.suse.manager.webui.utils.IdentifiableSaltState;
 import com.suse.manager.webui.utils.SaltModuleRun;
+import com.suse.manager.webui.utils.SaltPkgInstalled;
 
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
@@ -105,14 +106,26 @@ public class SaltActionChainGeneratorService {
                 IdentifiableSaltState modRun = (IdentifiableSaltState)state;
                 modRun.setId(modRun.getId() + ACTION_STATE_ID_CHUNK_PREFIX + chunk);
             }
-            fileStates.add(state);
-
             if (mustSplit(state)) {
-                fileStates.add(endChunk(actionChain, chunk, lastRef(fileStates)));
-
-                saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
-                chunk++;
-                fileStates.clear();
+                if (isSaltUpgrade(state)) {
+                    fileStates.add(endChunk(actionChain, chunk, lastRef(fileStates)));
+                    fileStates.add(state);
+                    fileStates.add(stopIfPreviousFailed(lastRef(fileStates)));
+                    saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
+                    fileStates.clear();
+                    chunk++;
+                    fileStates.add(checkSaltUpgradeChunk(state));
+                }
+                else {
+                    fileStates.add(state);
+                    fileStates.add(endChunk(actionChain, chunk, lastRef(fileStates)));
+                    saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
+                    chunk++;
+                    fileStates.clear();
+                }
+            }
+            else {
+                fileStates.add(state);
             }
         }
         saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
@@ -125,6 +138,29 @@ public class SaltActionChainGeneratorService {
         SaltModuleRun modRun = new SaltModuleRun("schedule_next_chunk", "mgractionchains.next", args);
         lastRef.ifPresent(ref -> modRun.addRequire(ref.getKey(), ref.getValue()));
         return modRun;
+    }
+
+    private SaltState stopIfPreviousFailed(Optional<Pair<String, String>> lastRef) {
+        Map<String, Object> args = new LinkedHashMap<>(1);
+        Map<String, String> onFailedEntry = new LinkedHashMap<>(1);
+		List<Object> onFailedList = new ArrayList<>();
+        lastRef.ifPresent(ref -> {
+            onFailedEntry.put(ref.getKey(), ref.getValue());
+			onFailedList.add(onFailedEntry);
+            args.put("onfail", onFailedList);
+        });
+        SaltModuleRun modRun = new SaltModuleRun("clean_action_chain_if_previous_failed", "mgractionchains.clean", args);
+        return modRun;
+    }
+
+    private SaltState checkSaltUpgradeChunk(SaltState state) {
+        SaltModuleRun moduleRun = (SaltModuleRun) state;
+        Map<String, Map<String, String>> paramPkgs = (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
+        SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
+        for (Map.Entry<String, String> entry : paramPkgs.get("param_pkgs").entrySet()) {
+            pkgInstalled.addPackage(entry.getKey(), entry.getValue());
+        }
+        return pkgInstalled;
     }
 
     private Optional<Pair<String, String>> lastRef(List<SaltState> fileStates) {
@@ -147,18 +183,37 @@ public class SaltActionChainGeneratorService {
         return Optional.empty();
     }
 
+    private boolean isSaltUpgrade(SaltState state) {
+        if (state instanceof SaltModuleRun) {
+            SaltModuleRun moduleRun = (SaltModuleRun)state;
+
+            if (moduleRun.getArgs() != null && ((List) moduleRun.getArgs().get("mods")).contains(PACKAGES_PKGINSTALL)) {
+                if (moduleRun.getKwargs() != null) {
+                    Map<String, Map<String, String>> paramPkgs = (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
+                    if (!paramPkgs.get("param_pkgs").entrySet().stream()
+                            .filter(entry -> entry.getKey().equals("salt"))
+                            .map(entry -> entry.getKey())
+                            .collect(Collectors.toList()).isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     private boolean mustSplit(SaltState state) {
         boolean split = false;
         if (state instanceof SaltModuleRun) {
             SaltModuleRun moduleRun = (SaltModuleRun)state;
 
-            if (moduleRun.getArgs() != null && PACKAGES_PKGINSTALL.equals(moduleRun.getArgs().get("mods"))) {
-                // TODO check if salt pkg is updated in order to split
+            if (moduleRun.getArgs() != null && ((List) moduleRun.getArgs().get("mods")).contains(PACKAGES_PKGINSTALL) &&
+                    isSaltUpgrade(state)) {
+                split = true;
             }
             if ("system.reboot".equalsIgnoreCase(moduleRun.getName())) {
                 split = true;
             }
-
         }
         else if (state instanceof SaltSystemReboot) {
             split = true;
