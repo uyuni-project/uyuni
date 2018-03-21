@@ -11,7 +11,7 @@
         <dependency org="suse" name="quartz" rev="2.3.0" />
         <dependency org="suse" name="tanukiwrapper" rev="3.2.3" />
         <dependency org="suse" name="log4j" rev="1.2.15" />
-        <dependency org="suse" name="nutch" rev="2008-12-01_04-01-21" />
+        <dependency org="suse" name="nutch-core" rev="1.0" />
         <dependency org="suse" name="junit" rev="3.8.2" />
         <dependency org="suse" name="c3p0" rev="0.9.1.2" />
         <dependency org="suse" name="picocontainer" rev="1.3" />
