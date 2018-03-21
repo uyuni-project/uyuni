@@ -19,7 +19,7 @@ Feature: Action chain tests for salt minions
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I reload the page
-    And I reload the page until it does contain a "FINISHED" text in the table first row
+    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
 
   Scenario: [minion-action-chain] Add a package installation to an action chain
     Given I am on the Systems overview page of this "sle-minion"
@@ -142,7 +142,7 @@ Feature: Action chain tests for salt minions
     And I should see a "4. Remove milkyway-dummy from 1 system" text
     And I should see a text like "5. Deploy.*/etc/action-chain.cnf.*to 1 system"
     And I should see a "6. Apply Highstate" text
-    And I should see a "7. Reboot system" text
+    And I should see a "7. Reboot 1 system" text
 
   Scenario: [minion-action-chain] Execute the action chain from the web UI
    Given I am on the Systems overview page of this "sle-minion"
@@ -199,9 +199,8 @@ Feature: Action chain tests for salt minions
     Then I should see a "Package installations are being scheduled" text
 
   Scenario: Verify that action-chains are executed with success
-    Given I wait until event "Apply Highstate" is completed for "sle-minion"
-    And I wait until event "System reboot" is completed for "sle-minion"
-    And "milkyway-dummy" should not be installed on "sle-minion"
+    Given "virgo-dummy" should be installed on "sle-minion"
+    Then I wait and check that "sle-minion" has rebooted
 
   Scenario: Verify action-chain for 2 system-set-manager (traditional and sle minion)
     Given I am on the Systems overview page of this "sle-minion"
