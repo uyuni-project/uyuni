@@ -118,10 +118,6 @@ When(/^I select "(.*?)" as the origin channel$/) do |label|
   step %(I select "#{label}" from "original_id")
 end
 
-Then(/^I sync "([^"]*)" channel$/) do |channel|
-  $server.run("spacewalk-repo-sync -c #{channel}", true, 130_000, 'root')
-end
-
 Then(/^I add "([^"]*)" channel$/) do |channel|
   $server.run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}")
 end
