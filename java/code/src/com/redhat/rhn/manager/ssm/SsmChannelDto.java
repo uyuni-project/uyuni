@@ -25,6 +25,7 @@ public class SsmChannelDto {
     private long id;
     private String name;
     private boolean custom;
+    private boolean recommended;
 
     /**
      * Constructor.
@@ -36,6 +37,7 @@ public class SsmChannelDto {
         this.id = idIn;
         this.name = nameIn;
         this.custom = customIn;
+        this.recommended = false;
     }
 
     /**
@@ -57,6 +59,24 @@ public class SsmChannelDto {
      */
     public boolean isCustom() {
         return custom;
+    }
+
+    /**
+     * Gets the recommended flag.
+     *
+     * @return the recommended flag
+     */
+    public boolean isRecommended() {
+        return recommended;
+    }
+
+    /**
+     * Sets the recommended flag.
+     *
+     * @param recommendedIn - the recommended flag
+     */
+    public void setRecommended(boolean recommendedIn) {
+        recommended = recommendedIn;
     }
 
     /**
