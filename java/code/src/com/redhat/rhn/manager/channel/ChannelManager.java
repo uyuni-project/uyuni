@@ -2725,12 +2725,12 @@ public class ChannelManager extends BaseManager {
      * @return the map from channel id to boolean containing the information about the "recommended" flag.
      */
     public static Map<Long,Boolean> computeChannelRecommendedFlags(Channel baseChannel, Stream<Channel> childChannels) {
-        Channel originalBaseChannel = getOriginal(baseChannel);
+        Channel originalBaseChannel = getOriginalChannel(baseChannel);
         Optional<SUSEProductChannel> rootProduct = SUSEProductFactory.findProductByChannelLabel(originalBaseChannel.getLabel());
         return childChannels.collect(Collectors.toMap(
                 c -> c.getId(),
                 c -> {
-                    Channel original = getOriginal(c);
+                    Channel original = getOriginalChannel(c);
                     Optional<SUSEProductChannel> extProduct = SUSEProductFactory.findProductByChannelLabel(original.getLabel());
                     if (extProduct.isPresent() && rootProduct.isPresent()) {
                         List<SUSEProduct> allBaseProductsOf = SUSEProductFactory.findAllBaseProductsOf(extProduct.get().getProduct(), rootProduct.get().getProduct());
@@ -2743,11 +2743,4 @@ public class ChannelManager extends BaseManager {
                 }));
     }
 
-    private static Channel getOriginal(Channel c) {
-        Channel c2 = c;
-        while (c2.isCloned()) {
-            c2 = c2.getOriginal();
-        }
-        return c2;
-    }
 }
