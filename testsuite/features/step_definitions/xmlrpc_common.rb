@@ -456,8 +456,9 @@ Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
 end
 
 Then(/^I cancel all scheduled actions$/) do
-  scdrpc.list_in_progress_actions.each do |action|
-    # One-by-one, this is against single call in the API on purpose.
+  scdrpc.list_in_progress_actions.select do |action|
+    !action['prerequisite']
+  end.each do |action|
     scdrpc.cancel_actions([action['id']])
     puts "\t- Removed \"" + action['name'] + '" action'
   end
