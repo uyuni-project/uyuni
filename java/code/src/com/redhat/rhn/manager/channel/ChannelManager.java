@@ -2726,17 +2726,17 @@ public class ChannelManager extends BaseManager {
      */
     public static Map<Long,Boolean> computeChannelRecommendedFlags(Channel baseChannel, Stream<Channel> childChannels) {
         Channel originalBaseChannel = getOriginalChannel(baseChannel);
-        Optional<SUSEProductChannel> rootProduct = SUSEProductFactory.findProductByChannelLabel(originalBaseChannel.getLabel());
+        Optional<SUSEProductChannel> baseChannelProduct = SUSEProductFactory.findProductByChannelLabel(originalBaseChannel.getLabel());
         return childChannels.collect(Collectors.toMap(
                 c -> c.getId(),
                 c -> {
                     Channel original = getOriginalChannel(c);
                     Optional<SUSEProductChannel> extProduct = SUSEProductFactory.findProductByChannelLabel(original.getLabel());
-                    if (extProduct.isPresent() && rootProduct.isPresent()) {
-                        List<SUSEProduct> allBaseProductsOf = SUSEProductFactory.findAllBaseProductsOf(extProduct.get().getProduct(), rootProduct.get().getProduct());
+                    if (extProduct.isPresent() && baseChannelProduct.isPresent()) {
+                        List<SUSEProduct> allBaseProductsOf = SUSEProductFactory.findAllBaseProductsOf(extProduct.get().getProduct(),  baseChannelProduct.get().getProduct());
                         return allBaseProductsOf.stream().anyMatch(baseProduct ->
                                 SUSEProductFactory.findSUSEProductExtension(
-                                        rootProduct.get().getProduct(), baseProduct, extProduct.get().getProduct()
+                                         baseChannelProduct.get().getProduct(), baseProduct, extProduct.get().getProduct()
                                 ).map(SUSEProductExtension::isRecommended).orElse(false));
                     }
                     return false;
