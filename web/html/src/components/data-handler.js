@@ -32,6 +32,7 @@ const SearchField = (props) =>
     placeholder={props.placeholder}
     type="text"
     onChange={(e) => props.onSearch(e.target.value)}
+    name={props.name}
   />
 ;
 
