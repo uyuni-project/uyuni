@@ -144,3 +144,10 @@ def resume():
     log.debug("Resuming execution of SUSE Manager Action Chain -> Target SLS: "
               "{0}".format(next_chunk))
     return __salt__['state.sls'](next_chunk)
+
+def clean():
+    '''
+    Clean execution of an Action Chain by removing '_mgractionchains.conf'.
+    '''
+    _read_next_ac_chunk()
+    return True
