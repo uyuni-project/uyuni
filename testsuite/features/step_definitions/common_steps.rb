@@ -58,21 +58,6 @@ When(/^I wait until event "([^"]*)" is completed$/) do |event|
   )
 end
 
-When(/^I wait until event "([^"]*)" is completed for "([^"]*)" $/) do |event, target|
-  steps %(
-    I am on the Systems overview page of this "#{target}"
-    When I follow "Events" in the content area
-    And I follow "Pending"
-    And I wait for "1" second
-    And I wait until I do not see "#{event}" text, refreshing the page
-    And I follow "History"
-    And I wait for "1" second
-    And I wait until I see "#{event}" text, refreshing the page
-    And I follow first "#{event}"
-    And I wait until I see "This action's status is: Completed." text, refreshing the page
-  )
-end
-
 # spacewalk errors steps
 Then(/^I control that up2date logs on client under test contains no Traceback error$/) do
   cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
