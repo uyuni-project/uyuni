@@ -335,7 +335,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
               { allowed.childChannels.map(child =>
                 <dt className="row">
                   <div className="col-md-6">
-                    <ChannelLink id={child.id} newWindow={true}>{ child.name }</ChannelLink>
+                    <ChannelLink id={child.id} newWindow={true}>{ child.name + (child.recommended ? " (R)" : "") }</ChannelLink>
                   </div>
                   <div className="col-md-4">
                     <div className="row radio">
@@ -499,7 +499,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
               { allowed.childChannels.map(child =>
                 <dt className="row">
                   <div className="col-md-6">
-                    <ChannelLink id={child.id} newWindow={true}>{ child.name }</ChannelLink>
+                    <ChannelLink id={child.id} newWindow={true}>{ child.name + (child.recommended ? " (R)" : "") }</ChannelLink>
                   </div>
                   <div className="col-md-4">
                     { actionLabelMap[this.getChildAction(allowed, child.id)] }
