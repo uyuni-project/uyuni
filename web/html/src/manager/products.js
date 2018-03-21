@@ -452,7 +452,7 @@ const Products = React.createClass({
   render: function() {
     const archFilter =
       <div className='multiple-select-wrapper'>
-        <select id='product-arch-filter' className='form-control d-inline-block apply-select2js-on-this' multiple='multiple'>
+        <select id='product-arch-filter' name='product-arch-filter' className='form-control d-inline-block apply-select2js-on-this' multiple='multiple'>
           { this.getDistinctArchsFromData(this.props.data).map(a => <option key={a} value={a}>{a}</option>) }
         </select>
       </div>;
@@ -467,7 +467,9 @@ const Products = React.createClass({
           searchField={
               <SearchField filter={this.searchData}
                   criteria={''}
-                  placeholder={t('Filter by product Description')} />
+                  placeholder={t('Filter by product Description')}
+                  name='product-description-filter'
+              />
           }>
           <CheckList data={d => d}
               bypassProps={
