@@ -11,7 +11,7 @@
 <c:set var="pageList" value="${requestScope.pageList}" />
 
 <rhn:toolbar base="h1" icon="header-organisation"
-  helpUrl="/rhn/help/reference/en-US/ref.webui.overview.org.trust.jsp">
+  helpUrl="/rhn/help/reference/en-US/ref.webui.overview.org.jsp#ref.webui.overview.org.trust">
   <bean:message key="organizations.jsp.toolbar"/>
 </rhn:toolbar>
 

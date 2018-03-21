@@ -22,7 +22,8 @@ function modifyUploadCheckbox(checkbox) {
         miscText="${text}"
         miscImg="${img}"
         miscAlt="${text}"
-        imgAlt="users.jsp.imgAlt">
+        imgAlt="users.jsp.imgAlt"
+        helpUrl="/rhn/help/reference/en-US/ref.webui.overview.org.jsp#ref.webui.overview.org.config">
       <c:out escapeXml="true" value="${org.name}" />
     </rhn:toolbar>
 

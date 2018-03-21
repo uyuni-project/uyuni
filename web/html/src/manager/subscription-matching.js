@@ -71,7 +71,7 @@ const SubscriptionMatching = React.createClass({
               {t("Edit Virtual Host Managers")}
           </a>
         </div>
-        <Panel title={t("Subscription Matching")} icon="spacewalk-icon-subscription-counting" helpUrl="rhn/help/reference/en-US/ref.webui.audit.subscription.jsp#ref.webui.audit.subscription" />
+        <Panel title={t("Subscription Matching")} icon="spacewalk-icon-subscription-counting" helpUrl="/rhn/help/reference/en-US/ref.webui.audit.subscription.jsp" />
         <ErrorMessage error={this.state.error} />
         <SubscriptionMatchingTabContainer data={data} onPinChanged={this.onPinChanged} />
         <MatcherRunPanel
