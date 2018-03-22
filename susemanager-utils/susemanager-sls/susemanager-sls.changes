@@ -1,3 +1,5 @@
+- perform docker login before building and inspecting images (bsc#1085635)
+
 -------------------------------------------------------------------
 Mon Mar 05 09:09:19 CET 2018 - jgonzalez@suse.com
 
