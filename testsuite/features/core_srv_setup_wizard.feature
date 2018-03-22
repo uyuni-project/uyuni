@@ -25,16 +25,22 @@ Feature: The Setup Wizard
   Scenario: Play with the products page
     When I refresh SCC
     And I follow "SUSE Products" in the content area
-    And I wait until I see "RHEL Expanded Support 5" text
-    Then I should see a "Available Products Below" text
-    And I should see a "Architecture" text
+    And I wait until I see "Product Description" text
+    And I should see a "Arch" text
     And I should see a "Channels" text
-    And I should see a "Status" text
     And I should not see a "WebYaST 1.3" text
+    And I enter "RHEL Expanded Support 5" in the css "input[name='product-description-filter']"
+    And I should see a "RHEL Expanded Support 5" text
+    Then I enter "" in the css "input[name='product-description-filter']"
+    Then I enter "SUSE Linux Enterprise Server 12 SP2" in the css "input[name='product-description-filter']"
+    # the following css is produced by the select2js plugin that overwrites the input[name='product-arch-filter']
+    Then I enter "x86_64" in the css "div#s2id_product-arch-filter > ul > li > input"
     When I select "SUSE Linux Enterprise Server 12 SP2" as a product for the "x86_64" architecture
+    And I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP2" with arch "x86_64"
+    Then I should see a "Legacy Module 12" text
     And I select the addon "Legacy Module 12" for the product "SUSE Linux Enterprise Server 12 SP2" with arch "x86_64"
     And I click the Add Product button
-    And I wait for "20" seconds
+    And I wait for "120" seconds
     Then the products should be added
 
   Scenario: View the channels list in the products page
