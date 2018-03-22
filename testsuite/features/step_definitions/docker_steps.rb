@@ -107,10 +107,12 @@ And(/^container "([^"]*)" built successfully$/) do |name|
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         idetails = cont_op.get_image_details(image_id)
-        if idetails['buildStatus'] == 'completed'
+        if idetails['buildStatus'] == 'completed' and idetails['inspectStatus'] == 'completed'
           break
         elsif idetails['buildStatus'] == 'failed'
           raise "image build failed."
+        elsif idetails['inspectStatus'] == 'failed'
+          raise "image inspect failed."
         end
         sleep 5
       end
