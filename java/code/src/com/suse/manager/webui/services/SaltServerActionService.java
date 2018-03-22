@@ -110,9 +110,7 @@ import java.util.HashSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 

@@ -41,7 +41,6 @@ import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -49,13 +48,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Stack;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_ACTION_PREFIX;
-import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_CHUNK_PREFIX;
-import static com.suse.manager.webui.services.SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX;
 
 /**
  * Handler class for {@link JobReturnEventMessage}.
@@ -168,7 +162,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                             while (!actionIdsDependencies.empty()) {
                                 Long acId = actionIdsDependencies.pop();
                                  LOG.error("Proceso acId: " + acId);
-                                List<ServerAction> serverActions = ActionFactory.listServerActionsForServer(minion.get());
+                                List<ServerAction> serverActions =
+                                        ActionFactory.listServerActionsForServer(minion.get());
                                 serverActions = serverActions.stream()
                                     .filter(s -> (s.getParentAction().getPrerequisite() != null))
                                     .filter(s -> s.getParentAction().getPrerequisite().getId().equals(acId))
@@ -237,6 +232,17 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
             });
     }
 
+    /**
+     * Update the action properly based on the Job results from Salt.
+     *
+     * @param actionId the ID of the Action to handle
+     * @param minionId the ID of the Minion who performed the action
+     * @param retcode the retcode returned
+     * @param success indicates if the job executed successfully
+     * @param jobId the ID of the Salt job.
+     * @param jsonResult the json results from the Salt job.
+     * @param function the Salt function executed.
+     */
     public static void handleAction(long actionId, String minionId, int retcode, boolean success,
                               String jobId, JsonElement jsonResult, String function) {
         // Lookup the corresponding action
