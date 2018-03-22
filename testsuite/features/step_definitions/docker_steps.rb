@@ -100,25 +100,19 @@ And(/^container "([^"]*)" built successfully$/) do |name|
       break
     end
   end
-  if image_id == 0
-    raise 'unable to find the image id'
-  end
+  raise 'unable to find the image id' if image_id.zero?
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         idetails = cont_op.get_image_details(image_id)
-        if idetails['buildStatus'] == 'completed' and idetails['inspectStatus'] == 'completed'
-          break
-        elsif idetails['buildStatus'] == 'failed'
-          raise "image build failed."
-        elsif idetails['inspectStatus'] == 'failed'
-          raise "image inspect failed."
-        end
+        break if idetails['buildStatus'] == 'completed' && idetails['inspectStatus'] == 'completed'
+        raise 'image build failed.' if idetails['buildStatus'] == 'failed'
+        raise 'image inspect failed.' if idetails['inspectStatus'] == 'failed'
         sleep 5
       end
     end
   rescue Timeout::Error
-    raise "image build failed. Timeout"
+    raise 'image build failed. Timeout'
   end
 end
 
