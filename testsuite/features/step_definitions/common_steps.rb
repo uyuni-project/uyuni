@@ -347,53 +347,34 @@ When(/^I view the primary subscription list for asdf$/) do
 end
 
 When(/^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/) do |product, architecture|
-  within(:xpath, "(//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]])[1]") do
-    raise unless find('button.product-add-btn').click
-    begin
-      # wait to finish scheduling
-      Timeout.timeout(DEFAULT_TIMEOUT) do
-        loop do
-          begin
-            break unless find('button.product-add-btn').visible?
-            sleep 2
-          rescue Capybara::ElementNotFound
-            break
-          end
-        end
-      end
-    rescue Timeout::Error
-      puts 'timeout reached'
-    end
+  xpath = "(//span[contains(text(), '#{product}')]/ancestor::div[@class=\"product-details-wrapper\"]"
+  xpath += "[div[contains(text(), '#{architecture}')]])[1]"
+  within(:xpath, xpath) do
+    raise unless find('input[type="checkbox"]', match: :first).click
   end
 end
 
-When(/^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/) do |addon, product, archi|
-  # xpath query is too long, so breaking up on multiple lines.
-  xpath =  "//span[contains(text(), '#{product}')]/"
-  xpath += "ancestor::tr[td[contains(text(), '#{archi}')]]/following::span"
-  xpath += "[contains(text(), '#{addon}')]/../.."
+And(/^I open the sub-list of the product "(.*?)" with arch "(.*?)"$/) do |product, architecture|
+  xpath = "(//span[contains(text(), '#{product}')]/ancestor::div[@class=\"product-details-wrapper\"]"
+  xpath += "[div[contains(text(), '#{architecture}')]])[1]"
   within(:xpath, xpath) do
-    raise unless find('button.product-add-btn').click
-    begin
-      # wait to finish scheduling
-      Timeout.timeout(DEFAULT_TIMEOUT) do
-        loop do
-          begin
-            break unless find('button.product-add-btn').visible?
-            sleep 2
-          rescue Capybara::ElementNotFound
-            break
-          end
-        end
-      end
-    rescue Timeout::Error
-      puts 'timeout reached'
-    end
+    raise unless find('i.fa-angle-down').click
+  end
+end
+
+When(/^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/) do |addon, product, architecture|
+  # xpath query is too long, so breaking up on multiple lines.
+  xpath = "(//span[contains(text(), '#{product}')]/ancestor::div[@class=\"product-details-wrapper\"]"
+  xpath += "[div[contains(text(), '#{architecture}')]]/ancestor::div[@class=\"product-details-wrapper\"]"
+  xpath += "/ul/li/div[@class=\"product-details-wrapper\"][div[contains(text(). '#{addon}')]])[1]"
+
+  within(:xpath, xpath) do
+    raise unless find('input[type="checkbox"]', match: :first).click
   end
 end
 
 When(/^I click the Add Product button$/) do
-  raise unless find('button#synchronize').click
+  raise unless find('button#addProducts').click
 end
 
 When(/^the products should be added$/) do
