@@ -131,7 +131,7 @@ Feature: Action chaining
 
   Scenario: Add a reboot action to the action chain
     Given I am on the Systems overview page of this "sle-client"
-    When I follow "Schedule System Reboot" in the content area
+    When I follow first "Schedule System Reboot"
     And I check radio button "schedule-by-action-chain"
     And I click on "Reboot system"
     Then I should see a "Action has been successfully added to the Action Chain" text
