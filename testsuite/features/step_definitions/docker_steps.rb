@@ -90,6 +90,36 @@ And(/^I navigate to images build webpage$/) do
   visit("https://#{$server.full_hostname}/rhn/manager/cm/build")
 end
 
+And(/^container "([^"]*)" built successfully$/) do |name|
+  cont_op.login('admin', 'admin')
+  images_list = cont_op.list_images
+  image_id = 0
+  images_list.each do |element|
+    if element['name'] == name
+      image_id = element['id']
+      break
+    end
+  end
+  if image_id == 0
+    raise 'unable to find the image id'
+  end
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        idetails = cont_op.get_image_details(image_id)
+        if idetails['buildStatus'] == 'completed'
+          break
+        elsif idetails['buildStatus'] == 'failed'
+          raise "image build failed."
+        end
+        sleep 5
+      end
+    end
+  rescue Timeout::Error
+    raise "image build failed. Timeout"
+  end
+end
+
 And(/^all "([^"]*)" container images should be built correctly in the GUI$/) do |count|
   def ck_container_imgs(count)
     Timeout.timeout(DEFAULT_TIMEOUT) do
