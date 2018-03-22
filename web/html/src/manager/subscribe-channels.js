@@ -140,7 +140,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       if (event.target.checked) {
         selectedChildrenList.push(child);
       } else {
-        selectedChildrenList.splice(selectedChildrenList.findIndex(e => e.id.toString() == event.target.value));
+        selectedChildrenList.splice(selectedChildrenList.findIndex(e => e.id.toString() == event.target.value), 1);
       }
 
     }
