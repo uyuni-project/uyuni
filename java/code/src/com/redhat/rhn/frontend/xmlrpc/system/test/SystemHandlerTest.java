@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.redhat.rhn.manager.action.ActionChainManager;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -152,6 +153,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         setThreadingPolicy(new Synchroniser());
         setImposteriser(ClassImposteriser.INSTANCE);
     }};
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+
+    }
 
     public void testGetNetworkDevices() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -540,7 +547,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testScheduleChangeChannels() throws Exception {
         SystemHandler handler = getMockedHandler();
-        ActionManager.setTaskomaticApi(handler.getTaskomaticApi());
+        ActionChainManager.setTaskomaticApi(handler.getTaskomaticApi());
 
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Channel child1 = ChannelFactoryTest.createTestChannel(admin);

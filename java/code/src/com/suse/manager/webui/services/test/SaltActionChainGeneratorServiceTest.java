@@ -71,6 +71,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
 
         SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
         service.setSuseManagerStatesFilesRoot(stateFilesRoot);
+        service.setSkipSetOwner(true);
         service.createActionChainSLSFiles(actionChain, minion1, states);
 
         String fileContent = FileUtils
@@ -79,7 +80,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         .resolve(service
                                 .getActionChainSLSFileName(actionChain.getId(), minion1, 1))
                         .toFile());
-        assertEquals(("mgr_actionchain_131_action_1:\n" +
+        assertEquals(("mgr_actionchain_131_action_1_chunk_1:\n" +
                         "    module.run:\n" +
                         "    -   name: state.apply\n" +
                         "    -   mods: remotecommands\n" +
@@ -87,11 +88,11 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "            pillar:\n" +
                         "                mgr_remote_cmd_script: salt://scripts/script_1.sh\n" +
                         "                mgr_remote_cmd_runas: foobar\n" +
-                        "mgr_actionchain_131_action_2:\n" +
+                        "mgr_actionchain_131_action_2_chunk_1:\n" +
                         "    module.run:\n" +
                         "    -   name: state.apply\n" +
                         "    -   require:\n" +
-                        "        -   module: mgr_actionchain_131_action_1\n").replaceAll("131", actionChain.getId() + ""),
+                        "        -   module: mgr_actionchain_131_action_1_chunk_1\n").replaceAll("131", actionChain.getId() + ""),
                 fileContent);
 
         assertFalse(stateFilesRoot
@@ -136,6 +137,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
 
         SaltActionChainGeneratorService service = new SaltActionChainGeneratorService();
         service.setSuseManagerStatesFilesRoot(stateFilesRoot);
+        service.setSkipSetOwner(true);
         service.createActionChainSLSFiles(actionChain, minion1, states);
 
         String fileContent = FileUtils
@@ -144,7 +146,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         .resolve(service
                                 .getActionChainSLSFileName(actionChain.getId(), minion1, 1))
                         .toFile());
-        assertEquals(("mgr_actionchain_131_action_1:\n" +
+        assertEquals(("mgr_actionchain_131_action_1_chunk_1:\n" +
                         "    module.run:\n" +
                         "    -   name: state.apply\n" +
                         "    -   mods: remotecommands\n" +
@@ -152,19 +154,19 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "            pillar:\n" +
                         "                mgr_remote_cmd_script: salt://scripts/script_1.sh\n" +
                         "                mgr_remote_cmd_runas: foobar\n" +
-                        "mgr_actionchain_131_action_2:\n" +
+                        "mgr_actionchain_131_action_2_chunk_1:\n" +
                         "    module.run:\n" +
                         "    -   name: system.reboot\n" +
                         "    -   at_time: 1\n" +
                         "    -   require:\n" +
-                        "        -   module: mgr_actionchain_131_action_1\n" +
+                        "        -   module: mgr_actionchain_131_action_1_chunk_1\n" +
                         "schedule_next_chunk:\n" +
                         "    module.run:\n" +
                         "    -   name: mgractionchains.next\n" +
                         "    -   actionchain_id: 131\n" +
                         "    -   chunk: 2\n" +
                         "    -   require:\n" +
-                        "        -   module: mgr_actionchain_131_action_2\n").replaceAll("131", actionChain.getId() + ""),
+                        "        -   module: mgr_actionchain_131_action_2_chunk_1\n").replaceAll("131", actionChain.getId() + ""),
                 fileContent);
         fileContent = FileUtils
                 .readFileToString(stateFilesRoot
@@ -172,7 +174,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         .resolve(service
                                 .getActionChainSLSFileName(actionChain.getId(), minion1, 2))
                         .toFile());
-        assertEquals(("mgr_actionchain_131_action_3:\n" +
+        assertEquals(("mgr_actionchain_131_action_3_chunk_2:\n" +
                 "    module.run:\n" +
                 "    -   name: state.apply\n").replaceAll("131", actionChain.getId() + ""), fileContent);
     }

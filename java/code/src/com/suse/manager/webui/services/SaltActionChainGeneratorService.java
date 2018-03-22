@@ -36,6 +36,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.DirectoryStream;
 import java.nio.file.attribute.UserPrincipal;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.FileSystem;
@@ -79,6 +80,7 @@ public class SaltActionChainGeneratorService {
                     ACTION_STATE_ID_CHUNK_PREFIX + "(\\d+).*");
 
     private Path suseManagerStatesFilesRoot;
+    private boolean skipSetOwner;
 
     /**
      * Default constructor.
@@ -98,7 +100,7 @@ public class SaltActionChainGeneratorService {
         List<SaltState> fileStates = new LinkedList<>();
         for (SaltState state: states) {
             if (state instanceof AbstractSaltRequisites) {
-                lastRef(fileStates).ifPresent(ref -> {
+                prevRequisiteRef(fileStates).ifPresent(ref -> {
                     ((AbstractSaltRequisites)state).addRequire(ref.getKey(), ref.getValue());
                 });
             }
@@ -108,9 +110,9 @@ public class SaltActionChainGeneratorService {
             }
             if (mustSplit(state)) {
                 if (isSaltUpgrade(state)) {
-                    fileStates.add(endChunk(actionChain, chunk, lastRef(fileStates)));
+                    fileStates.add(endChunk(actionChain, chunk, prevRequisiteRef(fileStates)));
                     fileStates.add(state);
-                    fileStates.add(stopIfPreviousFailed(lastRef(fileStates)));
+                    fileStates.add(stopIfPreviousFailed(prevRequisiteRef(fileStates)));
                     saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
                     fileStates.clear();
                     chunk++;
@@ -118,7 +120,7 @@ public class SaltActionChainGeneratorService {
                 }
                 else {
                     fileStates.add(state);
-                    fileStates.add(endChunk(actionChain, chunk, lastRef(fileStates)));
+                    fileStates.add(endChunk(actionChain, chunk, prevRequisiteRef(fileStates)));
                     saveChunkSLS(fileStates, minion, actionChain.getId(), chunk);
                     chunk++;
                     fileStates.clear();
@@ -166,22 +168,28 @@ public class SaltActionChainGeneratorService {
         return pkgInstalled;
     }
 
-    private Optional<Pair<String, String>> lastRef(List<SaltState> fileStates) {
+    /**
+     * Get a requisite reference to the last state in the list.
+     * @param fileStates salt state list
+     * @return a requisite reference
+     */
+    private Optional<Pair<String, String>> prevRequisiteRef(List<SaltState> fileStates) {
         if (fileStates.size() > 0) {
-            SaltState lastState = fileStates.get(fileStates.size() - 1);
-            return lastState.getData().entrySet().stream().findFirst().map(entry -> {
-                String prevMod = ((Map<String, ?>)entry.getValue()).entrySet().stream().findFirst().map(ent -> {
+            SaltState previousState = fileStates.get(fileStates.size() - 1);
+            return previousState.getData().entrySet().stream().findFirst().map(entry ->
+                ((Map<String, ?>)entry.getValue()).entrySet().stream().findFirst().map(ent -> {
                     String[] stateMod = ent.getKey().split("\\.");
                     if (stateMod.length == 2) {
                         return stateMod[0];
                     }
                     else {
-                        // TODO throw err ?
+                        throw new RuntimeException("Could not get Salt requisite reference for " + ent.getKey());
                     }
-                    return "";
-                }).orElse(""); // TODO orElse throw err ?
-                return new ImmutablePair<>(prevMod, entry.getKey());
-            });
+                })
+                        .map(mod -> new ImmutablePair<>(mod, entry.getKey()))
+                        .orElseThrow(() ->
+                                new RuntimeException("Could not get Salt requisite reference for " + entry.getKey()))
+            );
         }
         return Optional.empty();
     }
@@ -190,8 +198,10 @@ public class SaltActionChainGeneratorService {
         if (state instanceof SaltModuleRun) {
             SaltModuleRun moduleRun = (SaltModuleRun)state;
 
-            if (moduleRun.getArgs() != null &&
-                    ((List) moduleRun.getArgs().get("mods")).contains(PACKAGES_PKGINSTALL)) {
+            Optional<String> mods = getModsString(moduleRun);
+
+            if (mods.isPresent() &&
+                    mods.get().contains(PACKAGES_PKGINSTALL)) {
                 if (moduleRun.getKwargs() != null) {
                     Map<String, Map<String, String>> paramPkgs =
                             (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
@@ -212,8 +222,10 @@ public class SaltActionChainGeneratorService {
         if (state instanceof SaltModuleRun) {
             SaltModuleRun moduleRun = (SaltModuleRun)state;
 
-            if (moduleRun.getArgs() != null &&
-                    ((List) moduleRun.getArgs().get("mods")).contains(PACKAGES_PKGINSTALL) && isSaltUpgrade(state)) {
+            Optional<String> mods = getModsString(moduleRun);
+
+            if (mods.isPresent() &&
+                    mods.get().contains(PACKAGES_PKGINSTALL) && isSaltUpgrade(state)) {
                 split = true;
             }
             if ("system.reboot".equalsIgnoreCase(moduleRun.getName())) {
@@ -225,6 +237,23 @@ public class SaltActionChainGeneratorService {
         }
         return split;
     }
+
+    private Optional<String> getModsString(SaltModuleRun moduleRun) {
+        if (moduleRun.getArgs() == null) {
+            return Optional.empty();
+        }
+        if (moduleRun.getArgs().get("mods") instanceof String) {
+            return Optional.of((String)moduleRun.getArgs().get("mods"));
+        }
+        else if (moduleRun.getArgs().get("mods") instanceof List) {
+            return Optional.of(((List)moduleRun.getArgs().get("mods"))
+                    .stream()
+                    .collect(Collectors.joining(","))
+                    .toString());
+        }
+        return Optional.empty();
+    }
+
 
     /**
      * Cleans up generated SLS files.
@@ -243,35 +272,22 @@ public class SaltActionChainGeneratorService {
             List<Path> filesToDelete = new ArrayList<>();
             filesToDelete.add(targetFilePath);
             // Add possible script files to remove list
-            Path scriptsDir = Paths.get(targetDir.toString(), SCRIPTS_DIR);
             String filePattern = ACTIONCHAIN_SLS_FILE_PREFIX + actionChainId +
                     "_" + minionServer.getMachineId() + "_";
-            String scriptPattern = "script_suma_actionchain_" + actionChainId +
-                    "_chunk_" + chunk;
             try {
-                //FIXME: script files are reused by multiple minions
-                //for (Path path : Files.list(scriptsDir)
-                //        .filter(path -> path.toString().startsWith(
-                //                Paths.get(scriptsDir.toString(), scriptPattern).toString()))
-                //        .collect(Collectors.toList())) {
-                //    filesToDelete.add(path);
-                //}
-                // Add also next SLS chunks because the Action Chain failed and these
-                // files are not longer needed.
                 if (actionChainFailed) {
-                    //FIXME: script files are reused by multiple minions
-                    filesToDelete.addAll(Files.list(targetDir)
-                            .filter(path -> path.toString().startsWith(
-                                    Paths.get(targetDir.toString(), filePattern).toString()))
-                            .collect(Collectors.toList()));
-                    //filesToDelete.addAll(Files.list(scriptsDir)
-                    //        .filter(path -> path.toString().startsWith(
-                    //                Paths.get(scriptsDir.toString(), scriptPattern).toString()))
-                    //        .collect(Collectors.toList()));
-                }
-                // Remove the files
-                for (Path path : filesToDelete) {
-                    Files.deleteIfExists(path);
+                    // Add also next SLS chunks because the Action Chain failed and these
+                    // files are not longer needed.
+                    try (DirectoryStream<Path> stream = Files.newDirectoryStream(targetDir, filePattern + "*.sls")) {
+                        stream.forEach(slsFile -> {
+                            try {
+                                Files.deleteIfExists(slsFile);
+                            }
+                            catch (IOException e) {
+                                LOG.error(e.getMessage(), e);
+                            }
+                        });
+                    }
                 }
             }
             catch (IOException e) {
@@ -297,13 +313,14 @@ public class SaltActionChainGeneratorService {
     private void saveChunkSLS(List<SaltState> states, MinionServer minion, long actionChainId, int chunk) {
         Path targetDir = Paths.get(suseManagerStatesFilesRoot.toString(), ACTIONCHAIN_SLS_FOLDER);
         try {
-            FileSystem fileSystem = FileSystems.getDefault();
-            UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
-            UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
             Files.createDirectories(targetDir);
-            Files.setOwner(targetDir, tomcatUser);
-        }
-        catch (IOException e) {
+            if (!skipSetOwner) {
+                FileSystem fileSystem = FileSystems.getDefault();
+                UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+                UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
+                Files.setOwner(targetDir, tomcatUser);
+            }
+        } catch (IOException e) {
             LOG.error("Could not create action chain directory " + targetDir, e);
             throw new RuntimeException(e);
         }
@@ -406,5 +423,12 @@ public class SaltActionChainGeneratorService {
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * @param skipSetOwenerIn to set
+     */
+    public void setSkipSetOwner(boolean skipSetOwenerIn) {
+        this.skipSetOwner = skipSetOwenerIn;
     }
 }
