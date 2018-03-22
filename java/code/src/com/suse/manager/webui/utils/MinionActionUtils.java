@@ -18,7 +18,6 @@ package com.suse.manager.webui.utils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -266,16 +265,20 @@ public class MinionActionUtils {
                                     if (stateId.isPresent()) {
                                         long retActionId = stateId.get().getActionId();
 
-                                        Optional<ServerAction> serverAction = Optional.ofNullable(ActionFactory.lookupById(retActionId))
+                                        Optional<ServerAction> serverAction =
+                                                Optional.ofNullable(ActionFactory.lookupById(retActionId))
                                                 .flatMap(action -> action
                                                         .getServerActions()
                                                         .stream()
                                                         .filter(sa -> sa.getServer().asMinionServer().isPresent())
-                                                        .filter(sa -> sa.getServer().asMinionServer().get().getMinionId().equals(minionId)).findFirst());
+                                                        .filter(sa -> sa.getServer().asMinionServer().get()
+                                                                .getMinionId().equals(minionId)).findFirst());
 
                                         if (serverAction.isPresent() &&
-                                                (ActionFactory.STATUS_COMPLETED.equals(serverAction.get().getStatus()) ||
-                                                ActionFactory.STATUS_FAILED.equals(serverAction.get().getStatus()))) {
+                                                (ActionFactory.STATUS_COMPLETED
+                                                        .equals(serverAction.get().getStatus()) ||
+                                                ActionFactory.STATUS_FAILED
+                                                        .equals(serverAction.get().getStatus()))) {
                                             return;
                                         }
 

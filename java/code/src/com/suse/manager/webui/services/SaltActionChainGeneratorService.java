@@ -143,19 +143,21 @@ public class SaltActionChainGeneratorService {
     private SaltState stopIfPreviousFailed(Optional<Pair<String, String>> lastRef) {
         Map<String, Object> args = new LinkedHashMap<>(1);
         Map<String, String> onFailedEntry = new LinkedHashMap<>(1);
-		List<Object> onFailedList = new ArrayList<>();
+        List<Object> onFailedList = new ArrayList<>();
         lastRef.ifPresent(ref -> {
             onFailedEntry.put(ref.getKey(), ref.getValue());
-			onFailedList.add(onFailedEntry);
+            onFailedList.add(onFailedEntry);
             args.put("onfail", onFailedList);
         });
-        SaltModuleRun modRun = new SaltModuleRun("clean_action_chain_if_previous_failed", "mgractionchains.clean", args);
+        SaltModuleRun modRun = new SaltModuleRun("clean_action_chain_if_previous_failed",
+                "mgractionchains.clean", args);
         return modRun;
     }
 
     private SaltState checkSaltUpgradeChunk(SaltState state) {
         SaltModuleRun moduleRun = (SaltModuleRun) state;
-        Map<String, Map<String, String>> paramPkgs = (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
+        Map<String, Map<String, String>> paramPkgs =
+                (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
         SaltPkgInstalled pkgInstalled = new SaltPkgInstalled();
         for (Map.Entry<String, String> entry : paramPkgs.get("param_pkgs").entrySet()) {
             pkgInstalled.addPackage(entry.getKey(), entry.getValue());
@@ -187,9 +189,11 @@ public class SaltActionChainGeneratorService {
         if (state instanceof SaltModuleRun) {
             SaltModuleRun moduleRun = (SaltModuleRun)state;
 
-            if (moduleRun.getArgs() != null && ((List) moduleRun.getArgs().get("mods")).contains(PACKAGES_PKGINSTALL)) {
+            if (moduleRun.getArgs() != null &&
+                    ((List) moduleRun.getArgs().get("mods")).contains(PACKAGES_PKGINSTALL)) {
                 if (moduleRun.getKwargs() != null) {
-                    Map<String, Map<String, String>> paramPkgs = (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
+                    Map<String, Map<String, String>> paramPkgs =
+                            (Map<String, Map<String, String>>) moduleRun.getKwargs().get("pillar");
                     if (!paramPkgs.get("param_pkgs").entrySet().stream()
                             .filter(entry -> entry.getKey().equals("salt"))
                             .map(entry -> entry.getKey())
@@ -207,8 +211,8 @@ public class SaltActionChainGeneratorService {
         if (state instanceof SaltModuleRun) {
             SaltModuleRun moduleRun = (SaltModuleRun)state;
 
-            if (moduleRun.getArgs() != null && ((List) moduleRun.getArgs().get("mods")).contains(PACKAGES_PKGINSTALL) &&
-                    isSaltUpgrade(state)) {
+            if (moduleRun.getArgs() != null &&
+                    ((List) moduleRun.getArgs().get("mods")).contains(PACKAGES_PKGINSTALL) && isSaltUpgrade(state)) {
                 split = true;
             }
             if ("system.reboot".equalsIgnoreCase(moduleRun.getName())) {

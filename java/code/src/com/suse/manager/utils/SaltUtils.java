@@ -550,7 +550,8 @@ public class SaltUtils {
             Path scriptPath = getScriptPath(action.getId());
             try {
                 Files.deleteIfExists(scriptPath);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 LOG.warn("Could not delete script file " + scriptPath, e);
             }
 
@@ -652,6 +653,11 @@ public class SaltUtils {
         }
     }
 
+    /**
+     * Return the path where scripts from Remote Commands Actions are stored.
+     * @param scriptActionId the ID of the ScriptAction
+     * @return a Path object to the storage.
+     */
     public static Path getScriptPath(Long scriptActionId) {
         Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
         return scriptsDir.resolve("script_" + scriptActionId + ".sh");
