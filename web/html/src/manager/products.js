@@ -14,6 +14,7 @@ const SCCDialog = require('./products-scc-dialog').SCCDialog;
 const PopUp = require("../components/popup").PopUp;
 const ProgressBar = require("../components/progressbar").ProgressBar;
 const CustomDiv = require("../components/custom-objects").CustomDiv;
+const Toggler = require("../components/toggler");
 
 const _DATA_ROOT_ID = 'baseProducts';
 
@@ -727,11 +728,9 @@ const CheckListItem = React.createClass({
     let recommendedTogglerContent;
     if (this.isRootLevel(this.props.treeLevel) && this.getNestedData(currentItem).some(i => i.recommended)) {
       recommendedTogglerContent =
-        <Button
-            className={'btn btn-default btn-sm ' + (this.state.withRecommended ? 'text-info' : 'text-muted')}
+        <Toggler.WithRecommended
+            enabled={this.state.withRecommended}
             handler={() => this.handleWithRecommended()}
-            icon={'fa-1-5x with-margin ' + (this.state.withRecommended ? 'fa-toggle-on' : 'fa-toggle-off')}
-            text={t('with recommended')}
         />;
     }
     /*****/
