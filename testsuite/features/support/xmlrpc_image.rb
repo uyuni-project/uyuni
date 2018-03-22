@@ -6,6 +6,10 @@ class XMLRPCImageTest < XMLRPCBaseTest
     @connection.call('image.delete', @sid, imageid)
   end
 
+  def get_image_details(imageid)
+    @connection.call('image.get_details', @sid, imageid)
+  end
+
   def schedule_image_build(profile_label, version_build, build_hostid, date)
     @connection.call('image.schedule_image_build', @sid, profile_label, version_build, build_hostid, date)
   end
