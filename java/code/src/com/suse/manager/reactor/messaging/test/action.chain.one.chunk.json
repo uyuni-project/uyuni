@@ -6,7 +6,7 @@
     ],
     "jid": "20180301231955542441",
     "return": {
-      "module_|-mgr_actionchain_140_action_${action2-id}_|-state.apply_|-run": {
+      "module_|-mgr_actionchain_140_action_${action2-id}_chunk_1_|-state.apply_|-run": {
         "comment": "Module function state.apply executed",
         "name": "state.apply",
         "start_time": "23:19:57.135700",
@@ -34,7 +34,7 @@
         },
         "__id__": "suma_action_255"
       },
-      "module_|-mgr_actionchain_140_action_${action1-id}_|-state.apply_|-run": {
+      "module_|-mgr_actionchain_140_action_${action1-id}_chunk_1_|-state.apply_|-run": {
         "comment": "Module function state.apply executed",
         "name": "state.apply",
         "start_time": "23:19:55.827744",

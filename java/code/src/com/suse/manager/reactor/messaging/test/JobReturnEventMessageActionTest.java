@@ -1168,7 +1168,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);

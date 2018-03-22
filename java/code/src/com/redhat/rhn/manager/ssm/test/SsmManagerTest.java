@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
@@ -137,8 +138,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         }
         setImposteriser(ClassImposteriser.INSTANCE);
         taskomaticMock = mock(TaskomaticApi.class);
-        ActionManager.setTaskomaticApi(taskomaticMock);
-
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
     }
 
     /**
