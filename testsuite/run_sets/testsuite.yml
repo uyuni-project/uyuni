@@ -64,6 +64,7 @@
 - features/trad_baremetal_discovery.feature
 - features/trad_action_chain.feature
 - features/min_salt_formulas.feature
+- features/srv_docker_auth_test.feature
 - features/srv_docker_advanced_test.feature
 - features/srv_docker_cve_audit.feature
 - features/min_salt_install_package.feature

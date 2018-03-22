@@ -1,5 +1,7 @@
-- Allow scheduling the change of software channels as an action. The previous channels remain accessible
-  to the registered system until the action is executed.
+- perform docker login before building and inspecting images (bsc#1085635)
+- Allow scheduling the change of software channels as an action.
+  The previous channels remain accessible to the registered system
+  until the action is executed.
 
 -------------------------------------------------------------------
 Wed Jan 31 09:35:04 CET 2018 - jgonzalez@suse.com
