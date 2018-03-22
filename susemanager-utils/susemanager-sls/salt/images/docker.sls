@@ -1,3 +1,8 @@
+mgr_registries_login:
+  module.run:
+    - name: dockerng.login
+    - registries: {{ pillar.get('docker-registries', {}).keys() }}
+
 mgr_buildimage:
   module.run:
     - name: dockerng.build
@@ -6,6 +11,8 @@ mgr_buildimage:
     - buildargs:
         repo: "{{ pillar.get('repo') }}"
         cert: "{{ pillar.get('cert') }}"
+    - require:
+      - module: mgr_registries_login
 
 mgr_pushimage:
   module.run:
@@ -13,3 +20,4 @@ mgr_pushimage:
     - image: "{{ pillar.get('imagename') }}"
     - require:
       - module: mgr_buildimage
+      - module: mgr_registries_login
