@@ -33,8 +33,7 @@ Feature: Test image building with authenticated registry
     And I select "portus_profile" from "profileId"
     And I select sle-minion hostname in Build Host
     And I click on "submit-btn"
-    And I wait for "5" seconds
-    Then I should see a "portus_profile" text
+    Then I wait until I see "portus_profile" text
 
   Scenario: Verify the status of images
     Given I am authorized as "admin" with password "admin"
