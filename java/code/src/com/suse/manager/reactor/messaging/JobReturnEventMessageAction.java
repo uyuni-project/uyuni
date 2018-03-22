@@ -162,8 +162,8 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
                             while (!actionIdsDependencies.empty()) {
                                 Long acId = actionIdsDependencies.pop();
                                  LOG.error("Proceso acId: " + acId);
-                                List<ServerAction> serverActions =
-                                        ActionFactory.listServerActionsForServer(minion.get());
+                                List<ServerAction> serverActions = ActionFactory
+                                        .listServerActionsForServer(minion.get());
                                 serverActions = serverActions.stream()
                                     .filter(s -> (s.getParentAction().getPrerequisite() != null))
                                     .filter(s -> s.getParentAction().getPrerequisite().getId().equals(acId))

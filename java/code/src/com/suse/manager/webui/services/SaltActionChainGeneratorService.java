@@ -149,8 +149,9 @@ public class SaltActionChainGeneratorService {
             onFailedList.add(onFailedEntry);
             args.put("onfail", onFailedList);
         });
-        SaltModuleRun modRun = new SaltModuleRun("clean_action_chain_if_previous_failed",
-                "mgractionchains.clean", args);
+        SaltModuleRun modRun =
+                new SaltModuleRun("clean_action_chain_if_previous_failed",
+                        "mgractionchains.clean", args);
         return modRun;
     }
 
@@ -328,21 +329,37 @@ public class SaltActionChainGeneratorService {
         this.suseManagerStatesFilesRoot = suseManagerStatesFilesRootIn;
     }
 
+    /**
+     * Create the Salt state id string specific to the given action chain and action.
+     *
+     * @param actionChainId action chain id
+     * @param actionId action id
+     * @return state id string
+     */
     public static String createStateId(long actionChainId, Long actionId) {
         return ACTION_STATE_ID_PREFIX + actionChainId +
                 ACTION_STATE_ID_ACTION_PREFIX + actionId;
     }
 
+    /**
+     * Value class encapsulating the components of a state id
+     * used in action chain state files.
+     */
     public static final class ActionChainStateId {
 
-        long actionChainId;
-        long actionId;
-        int chunk;
+        private long actionChainId;
+        private long actionId;
+        private int chunk;
 
-        public ActionChainStateId(long actionChainId, long actionId, int chunk) {
-            this.actionChainId = actionChainId;
-            this.actionId = actionId;
-            this.chunk = chunk;
+        /**
+         * @param actionChainIdIn action chain id
+         * @param actionIdIn action id
+         * @param chunkIn chunk number
+         */
+        public ActionChainStateId(long actionChainIdIn, long actionIdIn, int chunkIn) {
+            this.actionChainId = actionChainIdIn;
+            this.actionId = actionIdIn;
+            this.chunk = chunkIn;
         }
 
         /**
@@ -367,6 +384,11 @@ public class SaltActionChainGeneratorService {
         }
     }
 
+    /**
+     * Parse a Salt state id used in action chain sls files.
+     * @param stateId the state id string
+     * @return the action chain id, action id and chunk
+     */
     public static Optional<ActionChainStateId> parseActionChainStateId(String stateId) {
         Matcher m = ACTION_STATE_PATTERN.matcher(stateId);
         if (m.find() && m.groupCount() == 3) {

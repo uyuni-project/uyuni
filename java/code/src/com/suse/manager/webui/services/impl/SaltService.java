@@ -568,6 +568,8 @@ public class SaltService {
      * Return the jobcache filtered by metadata and start and end time.
      *
      * @param metadata search metadata
+     * @param startTime jobs start time
+     * @param endTime jobs end time
      * @return list of running jobs
      */
     public Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata,
