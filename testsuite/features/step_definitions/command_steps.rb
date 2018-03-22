@@ -18,7 +18,8 @@ When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
   result, return_code = node.run("rpm -q --changelog salt")
   result.split("\n")[0, 15].each do |line|
-    puts line.scrub
+    line.force_encoding("UTF-8")
+    puts line
   end
 end
 
