@@ -18,6 +18,7 @@ After:
 - [ ] No tests: *add explanation why*
 - [ ] Unit tests
 - [ ] Cucumber tests
+- [ ] After merge: Cucumber testsuite passes
 
 ## Links
 
