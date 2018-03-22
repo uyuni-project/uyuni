@@ -604,8 +604,15 @@ public class ActionChainManager {
             Action action = ActionManager.createAction(user, type, name, earliest);
             ActionManager.scheduleForExecution(action, serverIds);
             result.add(action);
-
-            taskomaticApi.scheduleActionExecution(action);
+            if (ActionFactory.TYPE_SUBSCRIBE_CHANNELS.equals(type)) {
+                // Subscribing to channels is handled by the MinionActionExecutor even
+                // for traditional clients. Also the user must be passed for traditional
+                // clients.
+                taskomaticApi.scheduleSubscribeChannels(user, (SubscribeChannelsAction)action);
+            }
+            else {
+                taskomaticApi.scheduleActionExecution(action);
+            }
             if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(type)) {
                 MinionActionManager.scheduleStagingJobsForMinions(action, user);
             }
