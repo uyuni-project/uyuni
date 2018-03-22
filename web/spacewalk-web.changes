@@ -1,3 +1,4 @@
+- Fixed behavior on child channels unselecting when multiple channels were unselected
 - add ref help links (bsc#1079535)
 - Make minion label unselectable on Visualization's 'Systems Grouping' view (bsc#1034037)
 - Allow scheduling the change of software channels as an action. The previous channels remain accessible
