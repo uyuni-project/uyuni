@@ -442,9 +442,11 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
 
 
   setScheduleTime = (newtime) => {
+    const time = new Date(newtime);
     this.setState({
-      earliest: Functions.Utils.dateWithTimezone(newtime)
-    })
+      earliest: time
+    });
+    this.props.onChangeEarliest(time);
   }
 
   onActionChainChanged = (actionChain: ?ActionChain) => {
