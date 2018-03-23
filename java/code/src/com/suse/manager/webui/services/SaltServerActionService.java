@@ -615,9 +615,11 @@ public class SaltServerActionService {
                     Map<String, Object> pillar = new HashMap<>();
                     Map<String, Object> dockerRegistries = dockerRegPillar(imageStores);
                     pillar.put("docker-registries", dockerRegistries);
-                    String name = profile.getTargetStore().getUri() + "/" +
-                            profile.getLabel() + ":" + version.orElse("");
-                    pillar.put("imagename", name);
+                    String repoPath = profile.getTargetStore().getUri() + "/" + profile.getLabel();
+                    String tag = version.orElse("");
+                    pillar.put("imagerepopath", repoPath);
+                    pillar.put("imagetag", tag);
+                    pillar.put("imagename", repoPath + ":" + tag);
                     pillar.put("builddir", profile.getPath());
 
                     String host = SaltStateGeneratorService.getChannelHost(minion);
