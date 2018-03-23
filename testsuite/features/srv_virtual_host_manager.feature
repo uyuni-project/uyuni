@@ -53,13 +53,14 @@ Feature: Virtual host manager web UI
      And I should see a "NSX-l3gateway" text
 
   Scenario: Delete Virtual Host Manager
-   Given I am on the Systems page
+    Given I am on the Systems page
     When I follow "Virtual Host Managers"
     And I follow "file-vmware"
     And I click on "Delete"
+    And I wait for "1" second
     And I click on "Delete" in "Delete Virtual Host Manager" modal
-    Then I should see a "Virtual Host Manager has been deleted." text
-     And I should see a "No Virtual Host Managers." text
+    And I wait until I see "Virtual Host Manager has been deleted." text
+    Then I should see a "No Virtual Host Managers." text
 
   Scenario: Cleanup: delete virtual host 10.162.186.111
    Given I am on the Systems page
