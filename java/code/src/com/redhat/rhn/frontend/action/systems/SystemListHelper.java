@@ -14,17 +14,13 @@
  */
 package com.redhat.rhn.frontend.action.systems;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemCurrency;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.taglibs.IconTag;
-import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * SystemListHelper - helper class with some list display functions
@@ -60,15 +56,10 @@ public class SystemListHelper {
         HtmlTag url = new HtmlTag("a");
         IconTag i = new IconTag();
 
-        if (next instanceof VirtualSystemOverview) {
-            VirtualSystemOverview vso = (VirtualSystemOverview)next;
-            if (vso.getSystemId() != null) {
-                vso.setId(vso.getSystemId());
-            }
-        }
+        next.updateStatusType(user);
+        String type = next.getStatusType();
 
-        if (next.getEntitlement() == null ||
-            next.getEntitlement().isEmpty()) {
+        if (type.equals(SystemOverview.STATUS_TYPE_UNENTITLED)) {
             i.setType("system-unknown");
             i.setTitle("systemlist.jsp.unentitled");
             if (user.hasRole(RoleFactory.ORG_ADMIN)) {
@@ -76,50 +67,36 @@ public class SystemListHelper {
                     next.getId());
             }
         }
-        else if (checkinOverdue(next)) {
-            //status = "awol"
+        else if (type.equals(SystemOverview.STATUS_TYPE_AWOL)) {
             i.setType("system-unknown");
             i.setTitle("systemlist.jsp.notcheckingin");
         }
-        else if (SystemManager.isKickstarting(user, next.getId())) {
-            //status = "kickstarting";
+        else if (type.equals(SystemOverview.STATUS_TYPE_KICKSTARTING)) {
             url.setAttribute("href",
                     "/rhn/systems/details/kickstart/SessionStatus.do?sid=" +
                     next.getId());
             i.setType("system-kickstarting");
             i.setTitle("systemlist.jsp.kickstart");
         }
-        else if (next.getEnhancementErrata() + next.getBugErrata() +
-                     next.getSecurityErrata() > 0 &&
-                     !SystemManager.hasUnscheduledErrata(user, next.getId())) {
-            //status = "updates scheduled";
+        else if (type.equals(SystemOverview.STATUS_TYPE_UPDATES_SCHEDULED)) {
             url.setAttribute("href",
                     "/rhn/systems/details/history/Pending.do?sid=" +
                     next.getId());
             i.setType("action-pending");
             i.setTitle("systemlist.jsp.updatesscheduled");
         }
-        else if (SystemManager.countActions(next.getId()) > 0) {
-            //status = "actions scheduled";
+        else if (type.equals(SystemOverview.STATUS_TYPE_ACTIONS_SCHEDULED)) {
             url.setAttribute("href",
                     "/rhn/systems/details/history/Pending.do?sid=" +
                     next.getId());
             i.setType("action-pending");
             i.setTitle("systemlist.jsp.actionsscheduled");
         }
-        else if ((next.getEnhancementErrata() == null ||
-                  next.getEnhancementErrata() == 0) &&
-                 next.getBugErrata() == 0 &&
-                 next.getSecurityErrata() == 0 &&
-                 next.getOutdatedPackages() == 0 &&
-                 SystemManager.countPackageActions(next.getId()) == 0) {
-
-            //status = "up2date";
+        else if (type.equals(SystemOverview.STATUS_TYPE_UP2DATE)) {
             i.setType("system-ok");
             i.setTitle("systemlist.jsp.up2date");
         }
-        else if (next.getSecurityErrata() > 0) {
-            //status = "critical";
+        else if (type.equals(SystemOverview.STATUS_TYPE_CRITICAL)) {
             url.setAttribute("href",
                     "/rhn/systems/details/ErrataList.do?sid=" +
                     next.getId() + "&type=" +
@@ -127,8 +104,7 @@ public class SystemListHelper {
             i.setType("system-crit");
             i.setTitle("systemlist.jsp.critical");
         }
-        else if (next.getOutdatedPackages() > 0) {
-            //status = "updates";
+        else if (type.equals(SystemOverview.STATUS_TYPE_UPDATES)) {
             url.setAttribute("href",
                     "/rhn/systems/details/packages/UpgradableList.do?sid=" +
                     next.getId());
@@ -180,14 +156,6 @@ public class SystemListHelper {
         }
         next.setStatusDisplay(statusDisplay);
 
-    }
-
-    private static boolean checkinOverdue(SystemOverview systemData) {
-        Long threshold = new Long(Config.get().getInt(
-                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD));
-
-        return systemData.getLastCheckinDaysAgo() != null &&
-                systemData.getLastCheckinDaysAgo().compareTo(threshold) > 0;
     }
 
 }
