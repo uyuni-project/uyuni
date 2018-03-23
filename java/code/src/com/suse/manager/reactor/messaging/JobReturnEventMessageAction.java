@@ -151,24 +151,20 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
 
                 if (retActionChainId != null) {
                     if (actionChainFailed) {
-                         LOG.error("Action Chain falla");
                          // Set rest of actions as FAILED due prerequisite failed.
                          Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
                                 jobReturnEvent.getMinionId());
                          if (minion.isPresent()) {
-                             LOG.error("Minion presente");
                             Stack<Long> actionIdsDependencies = new Stack<>();
                             actionIdsDependencies.push(lastActionId);
                             while (!actionIdsDependencies.empty()) {
                                 Long acId = actionIdsDependencies.pop();
-                                 LOG.error("Proceso acId: " + acId);
                                 List<ServerAction> serverActions = ActionFactory
                                         .listServerActionsForServer(minion.get());
                                 serverActions = serverActions.stream()
                                     .filter(s -> (s.getParentAction().getPrerequisite() != null))
                                     .filter(s -> s.getParentAction().getPrerequisite().getId().equals(acId))
                                     .collect(Collectors.toList());
-                                LOG.error("New Depend: " + serverActions);
                                 for (ServerAction sa : serverActions) {
                                     actionIdsDependencies.push(sa.getParentAction().getId());
                                     sa.setCompletionTime(new Date());
