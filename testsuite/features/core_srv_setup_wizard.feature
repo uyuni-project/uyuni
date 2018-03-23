@@ -32,22 +32,22 @@ Feature: The Setup Wizard
     And I enter "RHEL Expanded Support 5" in the css "input[name='product-description-filter']"
     And I should see a "RHEL Expanded Support 5" text
     Then I enter "" in the css "input[name='product-description-filter']"
-    Then I enter "SUSE Linux Enterprise Server 12 SP2" in the css "input[name='product-description-filter']"
-    # the following css is produced by the select2js plugin that overwrites the input[name='product-arch-filter']
-    Then I enter "x86_64" in the css "div#s2id_product-arch-filter > ul > li > input"
-    When I select "SUSE Linux Enterprise Server 12 SP2" as a product for the "x86_64" architecture
-    And I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP2" with arch "x86_64"
+    And I enter "SUSE Linux Enterprise Server 12 SP2" in the css "input[name='product-description-filter']"
+    And I select "x86_64" in the dropdown list of the architecture filter
+    When I select "SUSE Linux Enterprise Server 12 SP2" as a product
+    And I open the sub-list of the product "SUSE Linux Enterprise Server 12 SP2"
     Then I should see a "Legacy Module 12" text
-    And I select the addon "Legacy Module 12" for the product "SUSE Linux Enterprise Server 12 SP2" with arch "x86_64"
+    When I select the addon "Legacy Module 12"
     And I click the Add Product button
     And I wait for "120" seconds
     Then the products should be added
 
   Scenario: View the channels list in the products page
     When I follow "SUSE Products" in the content area
-    And I wait until I see "RHEL Expanded Support 5" text
-    And I click the channel list of product "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2" for the "x86_64" architecture
+    And I wait until I see "Product Description" text
+    And I enter "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2" in the css "input[name='product-description-filter']"
+    And I select "x86_64" in the dropdown list of the architecture filter
+    And I click the channel list of product "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2"
     Then I should see a "Product Channels" text
     And I should see a "Mandatory Channels" text
     And I should see a "Optional Channels" text
-    And I should see a "Close" text

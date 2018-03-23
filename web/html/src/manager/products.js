@@ -799,7 +799,8 @@ const CheckListItem = React.createClass({
           </CustomDiv>
           <CustomDiv className='col text-center' width={this.props.bypassProps.cols.channels.width} um={this.props.bypassProps.cols.channels.um}>
             <ModalLink
-                id='showChannels'
+                id={'showChannelsFor-' + currentItem.identifier}
+                className='showChannels'
                 icon='fa-list'
                 title={t('Show product\'s channels')}
                 target='show-channels-popup'
