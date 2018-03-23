@@ -343,31 +343,31 @@ When(/^I view the primary subscription list for asdf$/) do
   end
 end
 
-When(/^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/) do |product, architecture|
-  xpath = "(//span[contains(text(), '#{product}')]/ancestor::div[@class=\"product-details-wrapper\"]"
-  xpath += "[div[contains(text(), '#{architecture}')]])[1]"
-  within(:xpath, xpath) do
-    raise unless find('input[type="checkbox"]', match: :first).click
-  end
+And(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |architecture|
+  # let the the select2js box filter open the hidden options
+  raise unless find(:xpath, "//div[@id='s2id_product-arch-filter']/ul/li/input").click
+  # select the desired option
+  raise unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
 end
 
-And(/^I open the sub-list of the product "(.*?)" with arch "(.*?)"$/) do |product, architecture|
-  xpath = "(//span[contains(text(), '#{product}')]/ancestor::div[@class=\"product-details-wrapper\"]"
-  xpath += "[div[contains(text(), '#{architecture}')]])[1]"
-  within(:xpath, xpath) do
-    raise unless find('i.fa-angle-down').click
-  end
+When(/^I select "([^\"]*)" as a product$/) do |product|
+  # click on the checkbox to select the product
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
+  raise unless find(:xpath, xpath).click
 end
 
-When(/^I select the addon "(.*?)" for the product "(.*?)" with arch "(.*?)"$/) do |addon, product, architecture|
-  # xpath query is too long, so breaking up on multiple lines.
-  xpath = "(//span[contains(text(), '#{product}')]/ancestor::div[@class=\"product-details-wrapper\"]"
-  xpath += "[div[contains(text(), '#{architecture}')]]/ancestor::div[@class=\"product-details-wrapper\"]"
-  xpath += "/ul/li/div[@class=\"product-details-wrapper\"][div[contains(text(). '#{addon}')]])[1]"
+And(/^I open the sub-list of the product "(.*?)"$/) do |product|
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
+  # within(:xpath, xpath) do
+  #   raise unless find('i.fa-angle-down').click
+  # end
+  raise unless find(:xpath, xpath).click
+end
 
-  within(:xpath, xpath) do
-    raise unless find('input[type="checkbox"]', match: :first).click
-  end
+When(/^I select the addon "(.*?)"$/) do |addon|
+  # click on the checkbox of the sublist to select the addon product
+  xpath = "//span[contains(text(), '#{addon}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
+  raise unless find(:xpath, xpath).click
 end
 
 When(/^I click the Add Product button$/) do
@@ -382,10 +382,9 @@ When(/^the products should be added$/) do
   raise unless output[:stdout].include? sle_module
 end
 
-When(/^I click the channel list of product "(.*?)" for the "(.*?)" architecture$/) do |product, architecture|
-  within(:xpath, "//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]]") do
-    raise unless find('.product-channels-btn').click
-  end
+When(/^I click the channel list of product "(.*?)"$/) do |product|
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/a[contains(@class, 'showChannels')]"
+  raise unless find(:xpath, xpath).click
 end
 
 Then(/^I see verification succeeded/) do
