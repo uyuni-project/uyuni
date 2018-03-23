@@ -16,7 +16,7 @@ Feature: Patches display
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Check all patches exist
     Given I am on the patches page
@@ -59,11 +59,3 @@ Feature: Patches display
     And I run "zypper -n rm --oldpackage andromeda-dummy-1.0-4.1" on "sle-client" without error control
     And I run "zypper -n rm --oldpackage virgo-dummy-1.0-1.1" on "sle-client" without error control
     And I run "rhn_check -vvv" on "sle-client" without error control
-    And I follow "Admin"
-    And I follow "Task Schedules"
-    And I follow "Task Schedules"
-    And I follow "errata-cache-default"
-    And I follow "errata-cache-bunch"
-    And I click on "Single Run Schedule"
-    Then I should see a "bunch was scheduled" text
-    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page

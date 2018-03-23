@@ -46,7 +46,7 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
         break if page.has_content?(text)
-        sleep 3
+        sleep 1
         page.evaluate_script 'window.location.reload()'
       end
     end
@@ -510,7 +510,7 @@ Then(/^I should see a "([^"]*)" link in the table (.*) column$/) do |link, colum
   raise unless page.has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
 end
 
-When(/^I wait until the table contains a "([^"]*)" text in its first row, refreshing the page$/) do |text|
+When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows$/) do
   # this step is used for long operations like refreshing caches, repositories, etc.
   # therefore we use a non-standard timeout
   refresh_timeout = 500
@@ -518,12 +518,27 @@ When(/^I wait until the table contains a "([^"]*)" text in its first row, refres
     Timeout.timeout(refresh_timeout) do
       loop do
         visit current_url
-        break if page.has_xpath?("//table//tr[1]//td[contains(text(), '#{text}')]")
-        sleep 4
+        # get all texts in the table column under the "Status" header
+        under_status = "//tr/td[count(//th[contains(*/text(), 'Status')]/preceding-sibling::*) + 1]"
+        statuses = page.all(:xpath, under_status).map(&:text)
+
+        # disregard any number of initial SKIPPED rows
+        # this is expected when Taskomatic triggers the same task concurrently
+        first_non_skipped = statuses.drop_while do |status|
+          status == 'SKIPPED'
+        end.first
+
+        # halt in case we are done, or if an error is detected
+        break if first_non_skipped == 'FINISHED'
+        raise('Taskomatic task was INTERRUPTED') if first_non_skipped == 'INTERRUPTED'
+
+        # otherwise either no row is shown yet, or the task is still RUNNING
+        # continue waiting
+        sleep 1
       end
     end
   rescue Timeout::Error
-    raise "'#{text}' is not found in the table's first row after #{refresh_timeout} seconds"
+    raise "Task does not look FINISHED after #{refresh_timeout} seconds"
   end
 end
 
