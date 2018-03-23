@@ -23,6 +23,7 @@ Summary:        Static Salt state files for SUSE Manager
 Group:          Applications/Internet
 Source:         %{name}-%{version}.tar.gz
 Requires(pre):  coreutils
+Requires:       susemanager-build-keys-web >= 12.0.1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 

@@ -1,10 +1,10 @@
 gpgkeys:
   res6tools:
-    name: gpg-pubkey-307e3d54-53287cdc
-    file: sle11-gpg-pubkey-307e3d54-53287cdc.key
+    name: gpg-pubkey-307e3d54
+    file: sle11-gpg-pubkey-307e3d54.key
   res7tools:
-    name: gpg-pubkey-39db7c82-510a966b
-    file: sle12-gpg-pubkey-39db7c82-510a966b.key
+    name: gpg-pubkey-39db7c82
+    file: sle12-gpg-pubkey-39db7c82.key
   res:
-    name: gpg-pubkey-0182b964-4911a584
-    file: res-gpg-pubkey-0182b964-4911a584.key
+    name: gpg-pubkey-0182b964
+    file: res-gpg-pubkey-0182b964.key
