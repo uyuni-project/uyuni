@@ -11,13 +11,20 @@ Feature: Salt package states
     And I run "zypper -n in --oldpackage milkyway-dummy-1.0" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage virgo-dummy-1.0" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0" on "sle-minion" without error control
-    When I follow "Admin"
+
+  Scenario: Pre-requisite: ensure the errata cache is computed
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Software" in the content area
+    And I follow "List / Remove" in the content area
+    And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0" text
+    Then I follow "Admin"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
-    And I click on "Single Run Schedule"
-    Then I should see a "bunch was scheduled" text
-    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
+    Then I click on "Single Run Schedule"
+    And I should see a "bunch was scheduled" text
+    Then I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Accepted minion has a base channel
     Given I am on the Systems overview page of this "sle-minion"
@@ -113,10 +120,3 @@ Feature: Salt package states
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
     And I run "zypper -n ref" on "sle-minion"
-    When I follow "Admin"
-    And I follow "Task Schedules"
-    And I follow "errata-cache-default"
-    And I follow "errata-cache-bunch"
-    And I click on "Single Run Schedule"
-    Then I should see a "bunch was scheduled" text
-    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
