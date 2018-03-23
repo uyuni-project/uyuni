@@ -233,7 +233,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
   When I wait until I do not see "Apply highstate scheduled by admin" text, refreshing the page
   When I wait until I see the name of "sle-minion", refreshing the page
   When I wait until I do not see the name of "sle-minion", refreshing the page
-  When I wait until the table contains a "FINISHED" text in its first row, refreshing the page
+  When I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
   When I refresh page until I see "sle-minion" hostname as text
 ```
 

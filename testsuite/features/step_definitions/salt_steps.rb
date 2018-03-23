@@ -255,7 +255,7 @@ Then(/^I click on the css "(.*)" until page does contain "([^"]*)" text$/) do |c
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
-        unless page.has_content?(text)
+        if page.has_content?(text)
           found = true
           break
         end

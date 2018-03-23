@@ -32,7 +32,7 @@ Feature: Install a package to the traditional client
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-    And I wait until the table contains a "FINISHED" text in its first row, refreshing the page
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Install a patch to the traditional client
     Given I am on the Systems overview page of this "sle-client"
