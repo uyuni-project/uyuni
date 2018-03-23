@@ -320,7 +320,8 @@ public class SaltActionChainGeneratorService {
                 UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
                 Files.setOwner(targetDir, tomcatUser);
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             LOG.error("Could not create action chain directory " + targetDir, e);
             throw new RuntimeException(e);
         }
