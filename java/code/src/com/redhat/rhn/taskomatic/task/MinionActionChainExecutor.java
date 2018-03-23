@@ -14,14 +14,21 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntry;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.suse.manager.webui.services.SaltServerActionService;
 
+import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 
 /**
  * Execute SUSE Manager actions via Salt.
  */
 public class MinionActionChainExecutor extends RhnJavaJob {
+
+    private static final Logger LOG = Logger.getLogger(MinionActionChainExecutor.class);
 
     private static final int ACTION_DATABASE_GRACE_TIME = 10000;
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
@@ -43,6 +50,29 @@ public class MinionActionChainExecutor extends RhnJavaJob {
         long actionChainId = Long.parseLong((String)context.getJobDetail()
                 .getJobDataMap().get("actionchain_id"));
 
+        ActionChain actionChain = ActionChainFactory
+                .getActionChain(actionChainId)
+                .orElse(null);
+
+        if (actionChain == null) {
+            LOG.error("Action chain not found id=" + actionChainId);
+            return;
+        }
+
+        long serverActionsCount = countServerActions(actionChain);
+        if (serverActionsCount == 0) {
+            LOG.warn("Waiting " + ACTION_DATABASE_GRACE_TIME + "ms for the Tomcat transaction to complete.");
+            // give a second chance, just in case this was scheduled immediately
+            // and the scheduling transaction did not have the time to commit
+            try {
+                Thread.sleep(ACTION_DATABASE_GRACE_TIME);
+            }
+            catch (InterruptedException e) {
+                // never happens
+            }
+            HibernateFactory.getSession().clear();
+        }
+
         // TODO: At this point, the AC has been already removed from the DB
         // calculate offset between scheduled time of
         // actions and (now) to avoid execution in case it
@@ -58,11 +88,10 @@ public class MinionActionChainExecutor extends RhnJavaJob {
         }
     }
 
-    /**
-     * Needed only for unit tests.
-     * @param saltServerActionServiceIn to set
-     */
-    public void setSaltServerActionService(SaltServerActionService saltServerActionServiceIn) {
-        this.saltServerActionService = saltServerActionServiceIn;
+    private long countServerActions(ActionChain actionChain) {
+        return actionChain.getEntries().stream()
+                .map(ActionChainEntry::getAction)
+                .flatMap(action -> action.getServerActions().stream())
+                .count();
     }
 }
