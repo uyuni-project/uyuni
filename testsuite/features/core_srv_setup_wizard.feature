@@ -42,6 +42,17 @@ Feature: The Setup Wizard
     And I wait for "120" seconds
     Then the products should be added
 
+  Scenario: Select product with recommended enabled
+    And I follow "SUSE Products" in the content area
+    And I wait until I see "Product Description" text
+    And I enter "SUSE Linux Enterprise Server 15" in the css "input[name='product-description-filter']"
+    And I select "x86_64" in the dropdown list of the architecture filter
+    And I open the sub-list of the product "SUSE Linux Enterprise Server 15"
+    Then I should see a "Basesystem Module 15" text
+    And I should see that the "Basesystem Module 15" product is "recommended"
+    When I select "SUSE Linux Enterprise Server 15" as a product
+    Then I should see the "Basesystem Module 15" selected
+
   Scenario: View the channels list in the products page
     When I follow "SUSE Products" in the content area
     And I wait until I see "Product Description" text

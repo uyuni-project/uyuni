@@ -373,6 +373,17 @@ When(/^I select the addon "(.*?)"$/) do |addon|
   raise unless find(:xpath, xpath).click
 end
 
+And(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommended|
+  xpath = "//span[contains(text(), '#{product}')]/../span[contains(text(), '#{recommended}')]"
+  raise unless find(:xpath, xpath)
+end
+
+Then(/^I should see the "(.*?)" selected$/) do |product|
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
+  product_identifier = find(:xpath, xpath)['data-identifier']
+  raise unless has_checked_field?('checkbox-for-' + product_identifier)
+end
+
 When(/^I click the Add Product button$/) do
   raise unless find('button#addProducts').click
 end
