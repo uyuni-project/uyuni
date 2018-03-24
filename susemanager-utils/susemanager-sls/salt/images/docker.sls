@@ -2,12 +2,12 @@
 
 mgr_registries_login:
   module.run:
-    - name: dockermod.login
+    - name: docker.login
     - registries: {{ pillar.get('docker-registries', {}).keys() }}
 
 mgr_buildimage:
   module.run:
-    - name: dockermod.build
+    - name: docker.build
 {%- if pillar.get('imagerepopath') is defined %}
     - repository: "{{ pillar.get('imagerepopath') }}"
     - tag: "{{ pillar.get('imagetag', 'latest') }}"
@@ -24,7 +24,7 @@ mgr_buildimage:
 
 mgr_pushimage:
   module.run:
-    - name: dockermod.push
+    - name: docker.push
     - image: "{{ pillar.get('imagename') }}"
     - require:
       - module: mgr_buildimage
