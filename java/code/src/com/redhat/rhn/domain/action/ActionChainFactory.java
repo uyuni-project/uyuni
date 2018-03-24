@@ -17,22 +17,14 @@
  */
 package com.redhat.rhn.domain.action;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.action.script.ScriptRunAction;
-import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
