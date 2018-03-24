@@ -241,6 +241,7 @@ Requires: cglib < 0:2.2
 %else
 Requires: cglib
 %endif
+Requires: dwr >= 3
 
 %if 0%{?suse_version}
 BuildRequires: perl
