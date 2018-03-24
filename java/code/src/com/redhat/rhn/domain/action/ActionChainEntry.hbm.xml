@@ -12,7 +12,7 @@
         <property name="created" column="created" type="date" insert="false" update="false"/>
         <property name="modified" column="modified" type="date" insert="false" update="false"/>
 
-        <one-to-one name="action" constrained="true"/>
+        <one-to-one name="action" constrained="true" lazy="false"/>
         <many-to-one name="actionChain" column="actionchain_id" not-null="true" class="com.redhat.rhn.domain.action.ActionChain"/>
         <many-to-one name="server" column="server_id" not-null="true" class="com.redhat.rhn.domain.server.Server"/>
     </class>

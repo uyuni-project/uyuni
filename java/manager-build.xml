@@ -245,6 +245,35 @@
     </exec>
   </target>
 
+  <target name="deploy-salt-files" depends="open-ssh-socket" description="Deploy Salt files">
+    <condition property="spacewalk.upstream">
+      <not>
+        <available file="${basedir}/../susemanager" type="dir"/>
+      </not>
+    </condition>
+    <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
+    <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
+
+    <echo message="Copying Salt sls files to remote host...${salt.state.files.dir}"/>
+    <exec executable="rsync">
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/salt/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/" />
+    </exec>
+    <echo message="Copying Salt grains, beacons, and modules to remote host...${salt.state.files.dir}"/>
+    <exec executable="rsync">
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/src/grains/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_grains/" />
+    </exec>
+    <exec executable="rsync">
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/src/beacons/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_beacons/" />
+    </exec>
+    <exec executable="rsync">
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/src/modules/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_modules/" />
+    </exec>
+    <echo message="Copying Salt reactor to remote host...${salt.reactor.files.dir}"/>
+    <exec executable="rsync">
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/reactor/ ${deploy.user}@${deploy.host}:${salt.reactor.files.dir}/" />
+    </exec>
+  </target>
+
   <target name="restart-tomcat" depends="open-ssh-socket" description="Restart the tomcat process">
     <echo message="Launching Tomcat restart..."/>
     <exec executable="ssh">

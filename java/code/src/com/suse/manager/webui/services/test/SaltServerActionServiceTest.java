@@ -15,35 +15,61 @@
 package com.suse.manager.webui.services.test;
 
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.config.ConfigAction;
+import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.utils.SaltModuleRun;
+import com.suse.manager.webui.utils.SaltState;
+import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.salt.netapi.calls.LocalCall;
+import org.jmock.Expectations;
+import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 
-public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
+public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        setImposteriser(ClassImposteriser.INSTANCE);
+    }
 
     public void testPackageUpdate() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -73,11 +99,11 @@ public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
         Action action = ActionManager.createAction(user, ActionFactory.TYPE_PACKAGES_UPDATE,
                 "test action", Date.from(now.toInstant()));
         ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
-        flushAndEvict(action);
+        TestUtils.flushAndEvict(action);
         Action updateAction = ActionFactory.lookupById(action.getId());
 
         Map<LocalCall<?>, List<MinionServer>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction, mins);
-        assertNotEmpty(result.values());
+        RhnBaseTestCase.assertNotEmpty(result.values());
     }
 
     public void testDeployFiles() throws Exception {
@@ -113,5 +139,79 @@ public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
         ActionFactory.addConfigRevisionToAction(revision3, minion4, configAction);
         Map<LocalCall<?>, List<MinionServer>> result = SaltServerActionService.INSTANCE.callsForAction(configAction, minions);
         assertEquals(result.size(), 3);
+    }
+
+    public void testExecuteActionChain() throws Exception {
+        SaltActionChainGeneratorService generatorService = new SaltActionChainGeneratorService() {
+            @Override
+            public void createActionChainSLSFiles(ActionChain actionChain, MinionServer minion, List<SaltState> states) {
+                assertEquals(3, states.size());
+                SaltModuleRun scriptRun = (SaltModuleRun)states.get(0);
+                SaltSystemReboot reboot = (SaltSystemReboot)states.get(1);
+                SaltModuleRun highstate = (SaltModuleRun)states.get(2);
+
+                long scriptActionId = actionChain.getEntries().stream()
+                        .filter(ace -> ace.getServer().equals(minion) && ace.getAction().getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN))
+                        .map(ace -> ace.getActionId())
+                        .findFirst().get();
+                long rebootActionId = actionChain.getEntries().stream()
+                        .filter(ace -> ace.getServer().equals(minion) && ace.getAction().getActionType().equals(ActionFactory.TYPE_REBOOT))
+                        .map(ace -> ace.getActionId())
+                        .findFirst().get();
+                long highstateActionId = actionChain.getEntries().stream()
+                        .filter(ace -> ace.getServer().equals(minion) && ace.getAction().getActionType().equals(ActionFactory.TYPE_APPLY_STATES))
+                        .map(ace -> ace.getActionId())
+                        .findFirst().get();
+                assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + scriptActionId,
+                        scriptRun.getId());
+                assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + rebootActionId,
+                        reboot.getId());
+                assertEquals(SaltActionChainGeneratorService.ACTION_STATE_ID_PREFIX + actionChain.getId() + "_action_" + highstateActionId,
+                        highstate.getId());
+            }
+        };
+
+        SaltServerActionService.INSTANCE.setSaltActionChainGeneratorService(generatorService);
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionChainFactory.setTaskomaticApi(taskomaticMock);
+
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion2.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        Server server1 = ServerFactoryTest.createTestServer(user);
+        SystemManager.giveCapability(server1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        String label = TestUtils.randomString();
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+
+
+        Date earliestAction = new Date();
+
+        ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
+                "root", "root", new Long(10), "#!/bin/csh\necho hello");
+        Set<Action> scriptActions = ActionChainManager.scheduleScriptRuns(user,
+                Arrays.asList(minion1.getId(), minion2.getId(), server1.getId()),
+                "script", sad, earliestAction, actionChain);
+
+        Set<Long> allServerIds = new HashSet<>();
+        Collections.addAll(allServerIds, minion1.getId(), minion2.getId(), server1.getId());
+
+        Set<Action> rebootActions = ActionChainManager.scheduleRebootActions(user,
+                allServerIds, earliestAction, actionChain);
+
+        Set<Action> highstateActions = ActionChainManager.scheduleApplyStates(user,
+                Arrays.asList(minion1.getId(), minion2.getId()), Optional.empty(),
+                earliestAction, actionChain);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionChainExecution(with(any(ActionChain.class)));
+        } });
+
+        ActionChainFactory.schedule(actionChain, earliestAction);
+
+        SaltServerActionService.INSTANCE.executeActionChain(actionChain.getId());
     }
 }

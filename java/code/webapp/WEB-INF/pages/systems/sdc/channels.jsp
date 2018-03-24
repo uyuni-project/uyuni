@@ -16,6 +16,8 @@
         var csrfToken="<%= com.redhat.rhn.common.security.CSRFTokenValidator.getToken(session) %>";
         var timezone = "<%= com.suse.manager.webui.utils.ViewHelper.getInstance().renderTimezone() %>";
         var localTime = "<%= com.suse.manager.webui.utils.ViewHelper.getInstance().renderLocalTime() %>";
+        var actionChains = ${actionChainsJson};
+
         function getServerId(){
             return ${system.id};
         }

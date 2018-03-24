@@ -2549,6 +2549,12 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="actionchain.jsp.states.apply">
+        <source>Apply Highstate</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="actionchain.jsp.deleted">
         <source>Action Chain {0} deleted.</source>
         <context-group name="ctx">

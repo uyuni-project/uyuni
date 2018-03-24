@@ -1,23 +1,43 @@
 {
-  "tag": "salt/job/20170217154208936549/ret/minionsles12sp1.test.local",
+  "tag": "salt/job/20180314154432175258/ret/minionsles12sp1.test.local",
   "data": {
     "fun_args": [
-      "eval --profile Default /usr/share/openscap/scap-yast2sec-xccdf.xml"
+      "scap",
+      {
+        "pillar": {
+          "mgr_scap_params": "eval --profile Default /usr/share/openscap/scap-yast2sec-xccdf.xml"
+        }
+      }
     ],
-    "jid": "20170217154208936549",
+    "jid": "20180314154432175258",
     "return": {
-      "upload_dir": "/tmp/tmpCtlaWO",
-      "success": true,
-      "error": null
+      "module_|-mgr_scap_|-openscap.xccdf_|-run": {
+        "comment": "Module function openscap.xccdf executed",
+        "name": "openscap.xccdf",
+        "start_time": "15:44:31.729974",
+        "result": true,
+        "duration": 1184.761,
+        "__run_num__": 0,
+        "changes": {
+          "ret": {
+            "upload_dir": "/tmp/tmpUOfChe",
+            "returncode": 2,
+            "success": true,
+            "error": ""
+          }
+        },
+        "__id__": "mgr_scap"
+      }
     },
     "retcode": 0,
     "success": true,
     "cmd": "_return",
-    "_stamp": "2017-02-17T15:42:09.851051",
-    "fun": "openscap.xccdf",
+    "_stamp": "2018-03-14T14:44:33.547871",
+    "fun": "state.apply",
     "id": "minionsles12sp1.test.local",
+    "out": "highstate",
     "metadata": {
-      "suma-action-id": 123
+      "suma-action-id": 59
     }
   }
 }

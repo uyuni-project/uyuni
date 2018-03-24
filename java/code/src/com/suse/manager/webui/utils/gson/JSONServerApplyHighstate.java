@@ -29,6 +29,9 @@ public class JSONServerApplyHighstate {
     /** The earliest execution date */
     private Optional<LocalDateTime> earliest = Optional.empty();
 
+    /** The action chain to which to add */
+    private Optional<String> actionChain = Optional.empty();
+
     /**
      * @return the server id
      */
@@ -41,5 +44,12 @@ public class JSONServerApplyHighstate {
      */
     public Optional<LocalDateTime> getEarliest() {
         return earliest;
+    }
+
+    /**
+     * @return the action chain to which to add the action
+     */
+    public Optional<String> getActionChain() {
+        return actionChain;
     }
 }

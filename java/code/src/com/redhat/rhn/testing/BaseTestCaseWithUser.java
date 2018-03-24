@@ -23,6 +23,8 @@ import org.apache.commons.io.FileUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
+
 /**
  * Basic test class class with a User
  */
@@ -46,6 +48,7 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
                 .toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
+        Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
     }
 
     /**

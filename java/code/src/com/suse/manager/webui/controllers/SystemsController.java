@@ -18,7 +18,9 @@ package com.suse.manager.webui.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -28,7 +30,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
-import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -42,6 +44,7 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.JsonResult;
 import com.suse.manager.webui.utils.gson.SubscribeChannelsJson;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -253,18 +256,26 @@ public class SystemsController {
                     JsonResult.error("child_not_found_or_not_authorized", e.getMessage()));
         }
 
+        ActionChain actionChain = json.getActionChain()
+                .filter(StringUtils::isNotEmpty)
+                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user))
+                .orElse(null);
+
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
         Date earliest = Date.from(
                 json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
         );
 
         try {
-            SubscribeChannelsAction sca = ActionManager.scheduleSubscribeChannelsAction(user,
+            Set<Action> sca = ActionChainManager.scheduleSubscribeChannelsAction(user,
                     Collections.singleton(serverId),
                     base,
                     children,
-                    earliest);
-            return json(response, JsonResult.success(sca.getId()));
+                    earliest,
+                    actionChain);
+            return json(response, JsonResult.success(
+                    actionChain != null ? actionChain.getId() :
+                    sca.stream().findFirst().map(a -> a.getId()).orElse(null)));
         }
         catch (TaskomaticApiException e) {
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,

@@ -19,6 +19,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.Channel;
@@ -43,6 +45,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
@@ -59,6 +62,8 @@ public class TaskomaticApi {
     public static final String MINION_ACTION_JOB_PREFIX = "minion-action-executor-";
     public static final String MINION_ACTION_JOB_DOWNLOAD_PREFIX =
             MINION_ACTION_JOB_PREFIX + "download-";
+    public static final String MINION_ACTIONCHAIN_BUNCH_LABEL = "minion-action-chain-executor-bunch";
+    public static final String MINION_ACTIONCHAIN_JOB_PREFIX = "minion-action-chain-executor-";
     private static final Logger LOG = Logger.getLogger(TaskomaticApi.class);
 
 
@@ -496,6 +501,37 @@ public class TaskomaticApi {
         invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
                 MINION_ACTION_JOB_PREFIX + action.getId(), params,
                 action.getEarliestAction());
+    }
+
+    /**
+     * Schedule an Action Chain execution for Salt minions.
+     *
+     * @param actionchain the actionchain to be executed
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleActionChainExecution(ActionChain actionchain)
+        throws TaskomaticApiException {
+        long minionCount = actionchain.getEntries().stream()
+                .map(ActionChainEntry::getAction)
+                .map(Action::getServerActions)
+                .flatMap(serverActions -> serverActions.stream())
+                .map(ServerAction::getServer)
+                .filter(MinionServerUtils::isMinionServer)
+                .filter(m -> !MinionServerUtils.isSshPushMinion(m))
+                .collect(Collectors.counting());
+
+        if (minionCount == 0) {
+            return;
+        }
+
+        Date earliestAction = actionchain.getEarliestAction();
+
+        Map<String, String> params = new HashMap<>();
+        params.put("actionchain_id", Long.toString(actionchain.getId()));
+
+        invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTIONCHAIN_BUNCH_LABEL,
+                MINION_ACTIONCHAIN_JOB_PREFIX + actionchain.getId(), params,
+                earliestAction);
     }
 
     /**

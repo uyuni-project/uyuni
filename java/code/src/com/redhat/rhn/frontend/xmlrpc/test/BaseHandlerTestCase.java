@@ -27,6 +27,8 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
+
 public class BaseHandlerTestCase extends RhnBaseTestCase {
     /*
      * admin - Org Admin
@@ -77,6 +79,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
                 .toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
+        Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
     }
 
     protected void addRole(User user, Role role) {

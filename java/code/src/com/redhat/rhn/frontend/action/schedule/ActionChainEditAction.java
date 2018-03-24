@@ -17,6 +17,7 @@
  */
 package com.redhat.rhn.frontend.action.schedule;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
@@ -27,8 +28,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -97,7 +100,7 @@ public class ActionChainEditAction extends RhnAction {
         try {
             return ActionChainFactory.getActionChain(user, actionChainId);
         }
-        catch (ObjectNotFoundException notFoundException) {
+        catch (ObjectNotFoundException objectNotFoundException) {
             LocalizationService ls = LocalizationService.getInstance();
             LookupException e = new LookupException("Could not find action chain id: " +
                     actionChainId);
@@ -119,12 +122,21 @@ public class ActionChainEditAction extends RhnAction {
         DynaActionForm form, ActionChain actionChain) {
         Date date = getStrutsDelegate().readDatePicker(form, DATE_ATTRIBUTE,
             DatePicker.YEAR_RANGE_POSITIVE);
-        ActionChainFactory.schedule(actionChain, date);
-        ActionMessages messages = new ActionMessages();
-        messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-            "actionchain.jsp.scheduled", actionChain.getLabel()));
-        getStrutsDelegate().saveMessages(request, messages);
-        return mapping.findForward(TO_LIST_FORWARD);
+        try {
+            ActionChainFactory.schedule(actionChain, date);
+            ActionMessages messages = new ActionMessages();
+            messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+                "actionchain.jsp.scheduled", actionChain.getLabel()));
+            getStrutsDelegate().saveMessages(request, messages);
+            return mapping.findForward(TO_LIST_FORWARD);
+        }
+        catch (TaskomaticApiException e) {
+            ActionErrors errors = new ActionErrors();
+            getStrutsDelegate().addError(errors, "taskscheduler.down");
+            getStrutsDelegate().saveMessages(request, errors);
+            HibernateFactory.getSession().clear();
+            return mapping.findForward(TO_LIST_FORWARD);
+        }
     }
 
     /**
