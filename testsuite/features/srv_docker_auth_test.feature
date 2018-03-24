@@ -9,7 +9,7 @@ Feature: Test image building with authenticated registry
     And I follow "Stores" in the left menu
     And I follow "Create"
     And I enter "portus" as "label"
-    And I enter "portus.mgr.suse.de:5000" as "uri"
+    And I enter "portus.mgr.suse.de:5000/cucutest" as "uri"
     And I check "useCredentials"
     And I enter "cucutest" as "username"
     And I enter "cucusecret" as "password"
