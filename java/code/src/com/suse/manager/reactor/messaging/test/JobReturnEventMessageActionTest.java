@@ -25,6 +25,9 @@ import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.image.ImageInfo;
@@ -32,6 +35,7 @@ import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -54,35 +58,23 @@ import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
-import com.suse.manager.webui.utils.MinionActionUtils;
-import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
-import com.suse.salt.netapi.calls.runner.Jobs;
-import com.suse.salt.netapi.datatypes.Arguments;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.parser.JsonParser;
-import com.suse.salt.netapi.parser.LocalDateTimeISOAdapter;
-import com.suse.salt.netapi.parser.OptionalTypeAdapterFactory;
-import com.suse.salt.netapi.parser.ResultSSHResultTypeAdapterFactory;
-import com.suse.salt.netapi.parser.ResultTypeAdapterFactory;
-import com.suse.salt.netapi.parser.StartTimeAdapter;
-import com.suse.salt.netapi.parser.StatsAdapter;
-import com.suse.salt.netapi.parser.XorTypeAdapterFactory;
-import com.suse.salt.netapi.parser.ZonedDateTimeISOAdapter;
 import com.suse.salt.netapi.results.Change;
+import com.suse.salt.netapi.results.Ret;
+import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
-import com.suse.utils.Json;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -92,16 +84,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Optional;
-import java.util.Set;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -981,8 +967,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .getPath();
 
         JsonElement jsonElement = message.getJobReturnEvent().getData().getResult(JsonElement.class);
-        Openscap.OpenscapResult openscapResult = Json.GSON.fromJson(
-                jsonElement, Openscap.OpenscapResult.class);
+
+
+        TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
+                new TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>>() { };
+        Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
+                jsonElement, typeToken.getType());
+        Openscap.OpenscapResult openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
+                .orElseThrow(() -> new RuntimeException("missiong scap result"));
 
         SaltService saltServiceMock = mock(SaltService.class);
         context().checking(new Expectations() {{
@@ -1174,10 +1166,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     public void testSubscribeChannelsActionSuccess() throws Exception {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionManager.setTaskomaticApi(taskomaticMock);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
-                    with(any(SubscribeChannelsAction.class)));
+            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
@@ -1194,11 +1185,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         channels.add(ch1);
         channels.add(ch2);
 
-        Action action = ActionManager.scheduleSubscribeChannelsAction(user,
+        Set<Action> actions = ActionChainManager.scheduleSubscribeChannelsAction(user,
                 Collections.singleton(minion.getId()),
                 baseChannel,
                 channels,
-                new Date());
+                new Date(),
+                null);
+
+        Action action = actions.stream().findFirst().get();
 
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
 
@@ -1221,6 +1215,76 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, minion.getChildChannels().size());
         assertTrue(minion.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch1.getId())));
         assertTrue(minion.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2.getId())));
+    }
+
+    public void testActionChainResponse() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
+                    with(any(SubscribeChannelsAction.class)));
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
+
+        Date earliestAction = new Date();
+        ApplyStatesAction applyHighstate = ActionManager.scheduleApplyStates(
+                user,
+                Arrays.asList(minion.getId()),
+                new ArrayList<>(),
+                earliestAction);
+
+        ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
+                "root", "root", new Long(10), "#!/bin/csh\necho hello");
+        ScriptRunAction runScript = ActionManager.scheduleScriptRun(
+                user, Arrays.asList(minion.getId()), "Run script test", sad, earliestAction);
+
+        ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
+        applyHighstate.addServerAction(saHighstate);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", minion.getMinionId());
+        placeholders.put("${action1-id}", applyHighstate.getId() + "");
+        placeholders.put("${action2-id}", runScript.getId() + "");
+
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("action.chain.one.chunk.json", applyHighstate.getId(),
+                        placeholders));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        // Process the event message
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.doExecute(message);
+
+        applyHighstate = (ApplyStatesAction)ActionFactory.lookupById(applyHighstate.getId());
+        saHighstate = applyHighstate.getServerActions().stream().findFirst().get();
+
+        assertEquals(ActionFactory.STATUS_COMPLETED, saHighstate.getStatus());
+        assertEquals(0L, (long)saHighstate.getResultCode());
+        assertEquals(minion.getId(), saHighstate.getServer().getId());
+        assertEquals("Successfully applied state(s): highstate", saHighstate.getResultMsg());
+
+        runScript = (ScriptRunAction)ActionFactory.lookupById(runScript.getId());
+        ServerAction saScript = runScript.getServerActions().stream().findFirst().get();
+
+        assertEquals(ActionFactory.STATUS_COMPLETED, saScript.getStatus());
+        assertEquals(0L, (long)saScript.getResultCode());
+        assertEquals(minion.getId(), saScript.getServer().getId());
+        ScriptResult scriptResult = runScript.getScriptActionDetails().getResults()
+                .stream()
+                .filter(res -> saScript.getServerId().equals(res.getServerId()))
+                .findFirst().get();
+        assertEquals("stdout:\n" +
+                "\n" +
+                "total 12\n" +
+                "drwxr-xr-x  2 root root 4096 Sep 21  2014 bin\n" +
+                "-rwxr-xr-x  1 root root 1636 Sep 12 17:07 netcat.py\n" +
+                "drwxr-xr-x 14 root root 4096 Jul 25  2017 salt\n",
+                new String(scriptResult.getOutput()));
     }
 
 }

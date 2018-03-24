@@ -101,7 +101,7 @@ public class Router implements SparkApplication {
                 withCsrfToken(MinionController::minionCustomStates),
                 jade);
         get("/manager/systems/details/highstate",
-                withCsrfToken(MinionController::highstate),
+                withCsrfToken(withUser(MinionController::highstate)),
                 jade);
         get("/manager/multiorg/details/custom",
                 withCsrfToken(MinionController::orgCustomStates),

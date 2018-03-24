@@ -46,9 +46,21 @@ const SystemLink = (props: SystemLinkProps) =>
   { props.children }
   </a>;
 
+type ActionChainLinkProps = {
+  id: string|number,
+  newWindow?: boolean,
+  children?: React.Node
+}
+
+const ActionChainLink = (props: ActionChainLinkProps) =>
+  <a href={"/rhn/schedule/ActionChain.do?id=" + props.id} target={props.newWindow ? "_blank" : "_self"}>
+  { props.children }
+  </a>;
+
 module.exports = {
   ChannelAnchorLink: ChannelAnchorLink,
   ChannelLink: ChannelLink,
   ActionLink: ActionLink,
-  SystemLink: SystemLink
+  SystemLink: SystemLink,
+  ActionChainLink: ActionChainLink
 }

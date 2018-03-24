@@ -23,12 +23,16 @@ public class ScheduleMetadata {
 
     public static final String SUMA_ACTION_ID = "suma-action-id";
     public static final String SUMA_FORCE_PGK_LIST_REFRESH = "suma-force-pkg-list-refresh";
+    public static final String SUMA_ACTION_CHAIN = "suma-action-chain";
 
     @SerializedName(SUMA_ACTION_ID)
     private long sumaActionId = 0L;
 
     @SerializedName(SUMA_FORCE_PGK_LIST_REFRESH)
     private boolean forcePackageListRefresh;
+
+    @SerializedName(SUMA_ACTION_CHAIN)
+    private boolean actionChain;
 
     /**
      * @param sumaActionIdIn the action id
@@ -49,5 +53,12 @@ public class ScheduleMetadata {
      */
     public boolean isForcePackageListRefresh() {
         return forcePackageListRefresh;
+    }
+
+    /**
+     * @return actionChain to get
+     */
+    public boolean isActionChain() {
+        return actionChain;
     }
 }

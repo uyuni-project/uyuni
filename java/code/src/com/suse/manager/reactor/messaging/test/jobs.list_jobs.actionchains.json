@@ -1,0 +1,51 @@
+{
+    "20180317134012978804": {
+        "Function": "mgractionchains.resume", 
+        "Target": "$minion_2",
+        "Target-type": "glob", 
+        "User": "salt", 
+        "StartTime": "2018, Mar 17 13:40:12.978804", 
+        "Arguments": [], 
+        "Metadata": {
+            "suma-action-chain": true
+        }
+    }, 
+    "20180316234939446951": {
+        "Function": "mgractionchains.resume", 
+        "Target": "$minion_1",
+        "Target-type": "glob", 
+        "User": "salt", 
+        "StartTime": "2018, Mar 16 23:49:39.446951", 
+        "Arguments": [], 
+        "Metadata": {
+            "suma-action-chain": true
+        }
+    }, 
+    "20180317134013012209": {
+        "Function": "mgractionchains.resume", 
+        "Target": "$minion_1",
+        "Target-type": "glob", 
+        "User": "salt", 
+        "StartTime": "2018, Mar 17 13:40:13.012209", 
+        "Arguments": [], 
+        "Metadata": {
+            "suma-action-chain": true
+        }
+    }, 
+   "20180317134233760065": {
+        "Function": "mgractionchains.start", 
+        "Target": [
+            "$minion_1",
+            "$minion_2"
+        ], 
+        "Target-type": "list", 
+        "User": "admin", 
+        "StartTime": "2018, Mar 17 13:42:33.760065", 
+        "Arguments": [
+            "239"
+        ], 
+        "Metadata": {
+            "suma-action-chain": true
+        }
+    } 
+}

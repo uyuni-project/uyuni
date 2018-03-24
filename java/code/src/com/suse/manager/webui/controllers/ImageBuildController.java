@@ -20,6 +20,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -31,13 +34,14 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.token.ActivationKey;
-import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
+import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -47,6 +51,7 @@ import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.utils.ImagesUtil;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.ViewHelper;
@@ -100,6 +105,7 @@ public class ImageBuildController {
      */
     public static ModelAndView rebuild(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
+        MinionController.addActionChains(user, model);
         Optional<ImageInfo> imageInfo;
         try {
             imageInfo = ImageInfoFactory
@@ -131,7 +137,7 @@ public class ImageBuildController {
      */
     public static ModelAndView buildView(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
-
+        MinionController.addActionChains(user, model);
         // Parse optional query string parameters
         try {
             model.put("profileId", StringUtils.isNotBlank(req.queryParams("profile")) ?
@@ -234,12 +240,20 @@ public class ImageBuildController {
      */
     public static class ScheduleRequest {
         private LocalDateTime earliest;
+        private Optional<String> actionChain = Optional.empty();
 
         /**
          * @return the earliest
          */
         public LocalDateTime getEarliest() {
             return earliest;
+        }
+
+        /**
+         * @return actionChain to get
+         */
+        public Optional<String> getActionChain() {
+            return actionChain;
         }
     }
 
@@ -338,6 +352,7 @@ public class ImageBuildController {
         try {
             buildRequest = new GsonBuilder()
                     .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+                    .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
                     .create().fromJson(request.body(), BuildRequest.class);
         }
         catch (JsonParseException e) {
@@ -347,15 +362,23 @@ public class ImageBuildController {
 
         Date scheduleDate = getScheduleDate(buildRequest);
 
+        ActionChain actionChain = buildRequest.getActionChain()
+                .filter(StringUtils::isNotEmpty)
+                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user))
+                .orElse(null);
+
+
         Long profileId = Long.parseLong(request.params("id"));
         Optional<ImageProfile> maybeProfile =
                 ImageProfileFactory.lookupByIdAndOrg(profileId, user.getOrg());
 
+
         return maybeProfile.flatMap(ImageProfile::asDockerfileProfile).map(profile -> {
             try {
-                ImageInfoFactory.scheduleBuild(buildRequest.buildHostId,
-                        buildRequest.getVersion(), profile, scheduleDate, user);
-                return json(response, JsonResult.successMessage("build_scheduled"));
+                ImageBuildAction action = ActionChainManager.scheduleImageBuild(buildRequest.buildHostId,
+                        buildRequest.getVersion(), profile, scheduleDate, actionChain, user);
+                return json(response, JsonResult.success(actionChain != null ?
+                        actionChain.getId() : action.getId()));
             }
             catch (TaskomaticApiException e) {
                 log.error("Could not schedule image build:", e);

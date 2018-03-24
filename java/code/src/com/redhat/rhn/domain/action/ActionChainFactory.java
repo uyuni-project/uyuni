@@ -20,19 +20,23 @@ package com.redhat.rhn.domain.action;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.suse.manager.utils.MinionServerUtils;
 
 /**
  * Creates Action Chain related objects.
@@ -45,6 +49,9 @@ public class ActionChainFactory extends HibernateFactory {
 
     /** Singleton instance */
     private static ActionChainFactory singleton = new ActionChainFactory();
+
+    /** Taskomatic API **/
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
      * Default constructor.
@@ -61,11 +68,13 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChain getActionChain(User requestor, String label) {
         log.debug("Looking up Action Chain with label " + label);
-        return (ActionChain) getSession()
-            .createCriteria(ActionChain.class)
-            .add(Restrictions.eq("label", label))
-            .add(Restrictions.eq("user", requestor))
-            .uniqueResult();
+        return (ActionChain) singleton.lookupObjectByNamedQuery(
+                "ActionChain.getActionChainByLabel",
+                new HashMap<String, Object>() { {
+                    put("user", requestor);
+                    put("label", label);
+                } }
+        );
     }
 
     /**
@@ -81,17 +90,28 @@ public class ActionChainFactory extends HibernateFactory {
         if (id == null) {
             return null;
         }
-        ActionChain ac = (ActionChain) getSession()
-                        .createCriteria(ActionChain.class)
-                        .add(Restrictions.eq("id", id))
-                        .add(Restrictions.eq("user", requestor))
-                        .uniqueResult();
+        ActionChain ac = (ActionChain) singleton.lookupObjectByNamedQuery(
+            "ActionChain.getActionChain",
+            new HashMap<String, Object>() { {
+                put("user", requestor);
+                put("id", id);
+            } }
+        );
         if (ac == null) {
             throw new ObjectNotFoundException(ActionChain.class,
                             "ActionChain Id " + id + " not found for User " +
                             requestor.getLogin());
         }
         return ac;
+    }
+
+    /**
+     * Returns an Action Chain given its ID
+     * @param id the chain ID
+     * @return an Action Chain or empty
+     */
+    public static Optional<ActionChain> getActionChain(long id) {
+        return Optional.ofNullable(getSession().get(ActionChain.class, id));
     }
 
     /**
@@ -229,17 +249,16 @@ public class ActionChainFactory extends HibernateFactory {
     }
 
     /**
-     * Gets all action chains for a user.
+     * Gets all action chains for a user that are not scheduled for execution.
      * @param requestor the user whose chains we're looking for
      * @return action chains
      */
     @SuppressWarnings("unchecked")
     public static List<ActionChain> getActionChains(User requestor) {
-        return getSession()
-            .createCriteria(ActionChain.class)
-            .add(Restrictions.eq("user", requestor))
-            .addOrder(Order.asc("label"))
-            .list();
+        return singleton.listObjectsByNamedQuery(
+                "ActionChain.getActionChains",
+                new HashMap<String, Object>() { { put("user", requestor); } }
+        );
     }
 
     /**
@@ -249,11 +268,10 @@ public class ActionChainFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ActionChain> getActionChainsByModificationDate(User requestor) {
-        return getSession()
-            .createCriteria(ActionChain.class)
-            .add(Restrictions.eq("user", requestor))
-            .addOrder(Order.desc("modified"))
-            .list();
+        return singleton.listObjectsByNamedQuery(
+                "ActionChain.getActionChainsByModificationDate",
+                new HashMap<String, Object>() { { put("user", requestor); } }
+        );
     }
 
     /**
@@ -314,12 +332,16 @@ public class ActionChainFactory extends HibernateFactory {
      * Schedules an Action Chain for execution.
      * @param actionChain the action chain to execute
      * @param date first action's minimum timestamp
+     * @throws TaskomaticApiException if there was a Taskomatic error
      */
-    public static void schedule(ActionChain actionChain, Date date) {
+    public static void schedule(ActionChain actionChain, Date date)
+        throws TaskomaticApiException {
+
         log.debug("Scheduling Action Chain " +  actionChain + " to date " + date);
         Map<Server, Action> latest = new HashMap<Server, Action>();
         int maxSortOrder = getNextSortOrderValue(actionChain);
         Date dateInOrder = new Date(date.getTime());
+        Map<Server, List<Action>> minionActions = new HashMap<Server, List<Action>>();
 
         for (int sortOrder = 0; sortOrder < maxSortOrder; sortOrder++) {
             for (ActionChainEntry entry : getActionChainEntries(actionChain, sortOrder)) {
@@ -335,12 +357,26 @@ public class ActionChainFactory extends HibernateFactory {
                 // order to sort them correctly for display
                 dateInOrder = DateUtils.addMilliseconds(dateInOrder, 1);
 
+                if (MinionServerUtils.isMinionServer(server)) {
+                    if (minionActions.get(server) != null) {
+                        minionActions.get(server).add(action);
+                    }
+                    else {
+                        List<Action> actionList = new ArrayList<>();
+                        actionList.add(action);
+                        minionActions.put(server, actionList);
+                    }
+                }
+
                 latest.put(server, action);
             }
         }
-        log.debug("Action Chain " + actionChain + " scheduled to date " + date +
-            ", deleting");
-        delete(actionChain);
+
+        if (!minionActions.isEmpty()) {
+            // Trigger Action Chain execution for Minions via Taskomatic
+            taskomaticApi.scheduleActionChainExecution(actionChain);
+        }
+        log.debug("Action Chain " + actionChain + " scheduled to date " + date);
     }
 
     /**
@@ -384,5 +420,13 @@ public class ActionChainFactory extends HibernateFactory {
             ActionChainEntry entry) {
         actionChain.getEntries().remove(entry);
         removeActionChainEntrySortGaps(actionChain, entry.getSortOrder());
+    }
+
+    /**
+     * Set the TaskomatiApi for unit tests.
+     * @param taskomaticApiIn the TaskomatiApi to set
+     */
+    public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
+        ActionChainFactory.taskomaticApi = taskomaticApiIn;
     }
 }

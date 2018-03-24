@@ -70,6 +70,7 @@ import java.nio.file.attribute.GroupPrincipal;
 import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipalLookupService;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -561,6 +562,19 @@ public class SaltService {
      */
     public Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata) {
         return callSync(Jobs.listJobs(metadata));
+    }
+
+    /**
+     * Return the jobcache filtered by metadata and start and end time.
+     *
+     * @param metadata search metadata
+     * @param startTime jobs start time
+     * @param endTime jobs end time
+     * @return list of running jobs
+     */
+    public Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata,
+                                                                    LocalDateTime startTime, LocalDateTime endTime) {
+        return callSync(Jobs.listJobs(metadata, startTime, endTime));
     }
 
     /**

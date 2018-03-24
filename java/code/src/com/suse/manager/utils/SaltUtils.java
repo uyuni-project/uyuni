@@ -105,14 +105,20 @@ import com.suse.utils.Opt;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 import static com.suse.manager.webui.utils.salt.FilesDiffResult.SymLinkResult;
 import static com.suse.manager.webui.utils.salt.FilesDiffResult.DirectoryResult;
 import static com.suse.manager.webui.utils.salt.FilesDiffResult.FileResult;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.ByteBuffer;
@@ -439,6 +445,14 @@ public class SaltUtils {
         // Set the result code defaulting to 0
         serverAction.setResultCode(retcode);
 
+        // If the State was not executed due 'require' statement
+        // we directly set the action to FAILED.
+        if (jsonResult == null && function == null) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setResultMsg("Prerequisite failed");
+            return;
+        }
+
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
@@ -447,7 +461,8 @@ public class SaltUtils {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
         }
 
-        Action action = serverAction.getParentAction();
+        Action action = unproxy(serverAction.getParentAction());
+
         if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
             ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
 
@@ -486,7 +501,11 @@ public class SaltUtils {
             serverAction.setResultMsg(message);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SCRIPT_RUN)) {
-            CmdExecCodeAll result = Json.GSON.fromJson(jsonResult, CmdExecCodeAll.class);
+            Map<String, StateApplyResult<CmdExecCodeAll>> stateApplyResult = Json.GSON.fromJson(jsonResult,
+                    new TypeToken<Map<String, StateApplyResult<CmdExecCodeAll>>>() { }.getType());
+            CmdExecCodeAll result = stateApplyResult.entrySet().stream()
+                    .findFirst().map(e -> e.getValue().getChanges())
+                    .orElseGet(() -> new CmdExecCodeAll());
             ScriptRunAction scriptAction = (ScriptRunAction) action;
             ScriptResult scriptResult = Optional.ofNullable(
                     scriptAction.getScriptActionDetails().getResults())
@@ -527,6 +546,15 @@ public class SaltUtils {
                 sb.append("\n");
             }
             scriptResult.setOutput(sb.toString().getBytes());
+
+            Path scriptPath = getScriptPath(action.getId());
+            try {
+                Files.deleteIfExists(scriptPath);
+            }
+            catch (IOException e) {
+                LOG.warn("Could not delete script file " + scriptPath, e);
+            }
+
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_IMAGE_BUILD)) {
             handleImageBuildData(serverAction, jsonResult);
@@ -623,6 +651,25 @@ public class SaltUtils {
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
+    }
+
+    /**
+     * Return the path where scripts from Remote Commands Actions are stored.
+     * @param scriptActionId the ID of the ScriptAction
+     * @return a Path object to the storage.
+     */
+    public static Path getScriptPath(Long scriptActionId) {
+        Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
+        return scriptsDir.resolve("script_" + scriptActionId + ".sh");
+    }
+
+    private Action unproxy(Action entity) {
+        Hibernate.initialize(entity);
+        if (entity instanceof HibernateProxy) {
+            entity = (Action) ((HibernateProxy) entity).getHibernateLazyInitializer()
+                    .getImplementation();
+        }
+        return entity;
     }
 
     /**
@@ -801,8 +848,12 @@ public class SaltUtils {
         ScapAction scapAction = (ScapAction)action;
         Openscap.OpenscapResult openscapResult;
         try {
-            openscapResult = Json.GSON.fromJson(
-                    jsonResult, Openscap.OpenscapResult.class);
+            TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>> typeToken =
+                    new TypeToken<Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>>>() { };
+            Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
+                    jsonResult, typeToken.getType());
+            openscapResult = stateResult.entrySet().stream().findFirst().map(e -> e.getValue().getChanges().getRet())
+                    .orElseThrow(() -> new RuntimeException("missing scap result"));
         }
         catch (JsonSyntaxException e) {
             serverAction.setResultMsg("Error parsing minion response: " + jsonResult);

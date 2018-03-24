@@ -1,0 +1,20 @@
+{
+    "Function": "mgractionchains.resume", 
+    "jid": "20180317134013012209", 
+    "Result": {
+        "$minion_1": {
+            "return": null
+        }
+    }, 
+    "Target": "$minion_1",
+    "Target-type": "glob", 
+    "User": "salt", 
+    "StartTime": "2018, Mar 17 13:40:13.012209", 
+    "Metadata": {
+        "suma-action-chain": true
+    }, 
+    "Minions": [
+        "$minion_1"
+    ], 
+    "Arguments": []
+}

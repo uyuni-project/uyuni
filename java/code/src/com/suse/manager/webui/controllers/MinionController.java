@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 
+import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -199,6 +200,7 @@ public class MinionController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("minions", Json.GSON.toJson(minions));
+        addActionChains(user, data);
         return new ModelAndView(data, "ssm/highstate.jade");
     }
 
@@ -222,14 +224,25 @@ public class MinionController {
      *
      * @param request the request object
      * @param response the response object
+     * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView highstate(Request request, Response response) {
+    public static ModelAndView highstate(Request request, Response response, User user) {
         String serverId = request.queryParams("sid");
         Map<String, Object> data = new HashMap<>();
         Server server = ServerFactory.lookupById(new Long(serverId));
         data.put("server", server);
+        addActionChains(user, data);
         return new ModelAndView(data, "minion/highstate.jade");
+    }
+
+    /**
+     * Utility method for adding a list of action chains to the model.
+     * @param user the user
+     * @param model the model
+     */
+    public static void addActionChains(User user, Map<String, Object> model) {
+        model.put("actionChains", ActionChainHelper.actionChainsJson(user));
     }
 
     /**

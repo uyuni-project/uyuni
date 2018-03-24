@@ -16,6 +16,9 @@ package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
@@ -34,6 +37,7 @@ import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
+import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.SaltConfigurable;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -55,6 +59,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.utils.SaltInclude;
 import com.suse.manager.webui.utils.gson.StateTargetType;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
 import org.apache.log4j.Logger;
@@ -394,14 +399,22 @@ public class StatesAPI {
                         return server.getId();
                     }).collect(Collectors.toList());
 
-            ApplyStatesAction action = ActionManager.scheduleApplyHighstate(user, minionIds,
-                    getScheduleDate(json), Optional.empty());
+            ActionChain actionChain = json.getActionChain()
+                    .filter(StringUtils::isNotEmpty)
+                    .map(label -> ActionChainFactory.getOrCreateActionChain(label, user))
+                    .orElse(null);
 
-            TASKOMATIC_API.scheduleActionExecution(action);
+            Set<Action> actions = ActionChainManager.scheduleApplyStates(user, minionIds,
+                    Optional.of(false), getScheduleDate(json), actionChain);
 
-            return GSON.toJson(action.getId());
+            if (actionChain != null) {
+                return GSON.toJson(actionChain.getId());
+            }
+            return GSON.toJson(actions.stream().findFirst().map(Action::getId)
+                    .orElseThrow(() -> new RuntimeException("No action in schedule result")));
         }
         catch (Exception e) {
+            LOG.error("Could not apply highstate", e);
             res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }

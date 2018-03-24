@@ -4,6 +4,8 @@ const Functions = require("../utils/functions.js");
 const MessagesUtils = require("../components/messages.js").Utils;
 
 export type JsonResult<T> = {
+  success: boolean,
+  messages: List<String>,
   data: T
 }
 

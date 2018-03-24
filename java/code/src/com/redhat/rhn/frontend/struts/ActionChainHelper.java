@@ -17,12 +17,14 @@
  */
 package com.redhat.rhn.frontend.struts;
 
+import com.google.gson.JsonObject;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.utils.Json;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.DynaActionForm;
@@ -32,6 +34,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -124,5 +127,20 @@ public class ActionChainHelper {
      */
     public static String sanitizeLabel(String label) {
         return label.replaceAll("[,\"]", "");
+    }
+
+    /**
+     * Get the action chains available to the give user in JSON.
+     * @param user the user
+     * @return JSON list with action chain objects
+     */
+    public static String actionChainsJson(User user) {
+        return Json.GSON.toJson(ActionChainFactory.getActionChains(user)
+                .stream().map(ac -> {
+                    JsonObject tuple = new JsonObject();
+                    tuple.addProperty("id", ac.getId());
+                    tuple.addProperty("text", ac.getLabel());
+                    return tuple;
+                }).collect(Collectors.toList()));
     }
 }

@@ -1,0 +1,21 @@
+{
+    "Function": "mgractionchains.resume", 
+    "jid": "20180316234939446951", 
+    "Result": {
+        "$minion_1": {
+            "return": "'mgractionchains.resume' is not available.", 
+            "out": "nested"
+        }
+    }, 
+    "Target": "$minion_1",
+    "Target-type": "glob", 
+    "User": "salt", 
+    "StartTime": "2018, Mar 16 23:49:39.446951", 
+    "Metadata": {
+        "suma-action-chain": true
+    }, 
+    "Minions": [
+        "$minion_1"
+    ], 
+    "Arguments": []
+}

@@ -1,3 +1,4 @@
+- Add Action Chain support for Salt clients.
 - Fixed behavior on child channels unselecting when multiple channels were unselected
 - add ref help links (bsc#1079535)
 

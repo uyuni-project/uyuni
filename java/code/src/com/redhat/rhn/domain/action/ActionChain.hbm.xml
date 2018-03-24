@@ -20,6 +20,46 @@
         </set>
     </class>
 
+    <query name="ActionChain.getActionChain">
+        <![CDATA[
+            SELECT chain
+                FROM ActionChain chain
+                WHERE chain.id = :id
+                    AND chain.user = :user
+                    AND NOT EXISTS (SELECT entry FROM chain.entries entry JOIN ServerAction action ON entry.action.id = action.parentAction.id)
+        ]]>
+    </query>
+
+    <query name="ActionChain.getActionChainByLabel">
+        <![CDATA[
+            SELECT chain
+                FROM ActionChain chain
+                WHERE chain.label = :label
+                    AND chain.user = :user
+                    AND NOT EXISTS (SELECT entry FROM chain.entries entry JOIN ServerAction action ON entry.action.id = action.parentAction.id)
+        ]]>
+    </query>
+
+    <query name="ActionChain.getActionChains">
+        <![CDATA[
+            SELECT chain
+                FROM ActionChain chain
+                WHERE chain.user = :user
+                    AND NOT EXISTS (SELECT entry FROM chain.entries entry JOIN ServerAction action ON entry.action.id = action.parentAction.id)
+                ORDER BY chain.label ASC
+        ]]>
+    </query>
+
+    <query name="ActionChain.getActionChainsByModificationDate">
+        <![CDATA[
+            SELECT chain
+                FROM ActionChain chain
+                WHERE chain.user = :user
+                    AND NOT EXISTS (SELECT entry FROM chain.entries entry JOIN ServerAction action ON entry.action.id = action.parentAction.id)
+                ORDER BY chain.modified DESC
+        ]]>
+    </query>
+
     <query name="ActionChain.getNextSortOrderValue">
         <![CDATA[
             SELECT COALESCE(MAX(entry.sortOrder) + 1, 0)
