@@ -4,12 +4,12 @@
 
 mgr_registries_login_inspect:
   module.run:
-    - name: dockermod.login
+    - name: docker.login
     - registries: {{ pillar.get('docker-registries', {}).keys() }}
 
 mgr_image_profileupdate:
   module.run:
-    - name: dockermod.sls_build
+    - name: docker.sls_build
     - m_name: "{{ container_name }}"
     - base: "{{ pillar.get('imagename') }}"
     - mods: packages.profileupdate
@@ -21,14 +21,14 @@ mgr_image_profileupdate:
 
 mgr_image_inspect:
   module.run:
-    - name: dockermod.inspect
+    - name: docker.inspect
     - m_name: "{{ pillar.get('imagename') }}"
     - require:
       - module: mgr_registries_login_inspect
 
 mgr_container_remove:
   module.run:
-    - name: dockermod.rm
+    - name: docker.rm
     - args: [ "{{ container_name }}" ]
     - force: False
     - onlyif:
@@ -36,7 +36,7 @@ mgr_container_remove:
 
 mgr_image_remove:
   module.run:
-    - name: dockermod.rmi
+    - name: docker.rmi
     - m_names:
       - "{{ pillar.get('imagename') }}"
     - force: False
