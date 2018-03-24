@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.8.6.1
+Version: 2.8.7
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -92,6 +92,9 @@ fi
 
 
 %changelog
+* Mon Mar 19 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.7-1
+- Regenerating .po and .pot files for yum-rhn-plugin.
+
 * Fri Mar 02 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.6-1
 - Change man section 8 to 5
 

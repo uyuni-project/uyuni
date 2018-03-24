@@ -32,13 +32,19 @@
 %global m2crypto python-m2crypto
 %endif
 
+%if  0%{?fedora} >= 28  || 0%{?rhel} >= 8
+%global python_prefix python2
+%else
+%global python_prefix python
+%endif
+
 %global pythonrhnroot %{python_sitelib}/spacewalk
 
 Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.8.52.1
+Version: 2.8.56
 Release: 1%{?dist}
 URL:       https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -52,7 +58,7 @@ Requires: python, rpm-python
 Requires: /etc/rhn
 Requires: rhnlib >= 2.5.74
 # for Debian support
-Requires: python-debian
+Requires: %{python_prefix}-debian
 Requires: %{name}-libs == %{version}-%{release}
 %if 0%{?suse_version} > 1320
 Requires: python-pyliblzma
@@ -78,8 +84,9 @@ BuildRequires:  python2-gzipstream
 %endif
 BuildRequires: rhnlib >= 2.5.74
 BuildRequires: rpm-python
-#BuildRequires: python-crypto
-BuildRequires: python-debian
+#BuildRequires: %{python_prefix}-crypto
+BuildRequires: %{python_prefix}-debian
+
 BuildRequires: yum
 BuildRequires: %{m2crypto}
 %endif
@@ -931,6 +938,24 @@ rm -f %{rhnconf}/rhnSecret.py*
 %endif
 
 %changelog
+* Fri Mar 23 2018 Jan Dobes <jdobes@redhat.com> 2.8.56-1
+- fixing incorrect syntax of format string
+- fixing incorrect syntax of format string
+- pylint: Unused variable 'frag' (unused-variable)
+
+* Fri Mar 23 2018 Jiri Dostal <jdostal@redhat.com> 2.8.55-1
+- refactoring ljust methods in print
+- Hack: Try to build an URL that works for SUSE SCC downloads, based on PR #617
+
+* Wed Mar 21 2018 Jiri Dostal <jdostal@redhat.com> 2.8.54-1
+- Make spec file follow guidelines for fedora28+
+
+* Tue Mar 20 2018 Jiri Dostal <jdostal@redhat.com> 2.8.53-1
+- Fixing newline error in translation
+- Updating copyright years for 2018
+- Regenerating .po and .pot files for spacewalk-backend.
+- Updating .po translations from Zanata
+
 * Thu Mar 01 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.52-1
 - require python2 version of spacewalk-usix for backend server
 

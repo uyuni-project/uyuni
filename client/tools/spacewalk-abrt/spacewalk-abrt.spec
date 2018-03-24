@@ -3,10 +3,14 @@
 %global default_py3 1
 %endif
 
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 )
+%global build_py2   1
+%endif
+
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Name:           spacewalk-abrt
-Version:        2.8.4.2
+Version:        2.8.5
 Release:        1%{?dist}
 Summary:        ABRT plug-in for rhn-check
 
@@ -25,6 +29,7 @@ Requires:       abrt-cli
 %description
 spacewalk-abrt - rhn-check plug-in for collecting information about crashes handled by ABRT.
 
+%if 0%{?build_py2}
 %package -n python2-%{name}
 Summary:        ABRT plug-in for rhn-check
 BuildRequires:  python
@@ -32,6 +37,7 @@ Requires:       python2-rhn-client-tools
 Requires:       python2-rhn-check
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
+%endif
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
@@ -50,8 +56,10 @@ Python 3 specific files for %{name}.
 make -f Makefile.spacewalk-abrt
 
 %install
+%if 0%{?build_py2}
 make -f Makefile.spacewalk-abrt install PREFIX=$RPM_BUILD_ROOT \
                 PYTHON_PATH=%{python_sitelib} PYTHON_VERSION=%{python_version}
+%endif
 %if 0%{?build_py3}
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/bin/spacewalk-abrt
 make -f Makefile.spacewalk-abrt install PREFIX=$RPM_BUILD_ROOT \
@@ -77,9 +85,11 @@ service abrtd restart ||:
 %{_bindir}/spacewalk-abrt
 %{_mandir}/man8/*
 
+%if 0%{?build_py2}
 %files -n python2-%{name}
 %{_bindir}/spacewalk-abrt-%{python_version}
 %{python_sitelib}/spacewalk_abrt/
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
@@ -88,6 +98,11 @@ service abrtd restart ||:
 %endif
 
 %changelog
+* Tue Mar 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.5-1
+- don't build python2 subpackages on systems with default python3
+- Regenerating .po and .pot files for spacewalk-abrt.
+- Updating .po translations from Zanata
+
 * Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.4-1
 - use python3 on rhel8 in spacewalk-abrt
 
