@@ -10,7 +10,7 @@ mgr_registries_login_inspect:
 mgr_image_profileupdate:
   module.run:
     - name: docker.sls_build
-    - m_name: "{{ container_name }}"
+    - repository: "{{ container_name }}"
     - base: "{{ pillar.get('imagename') }}"
     - mods: packages.profileupdate
     - dryrun: True
@@ -21,7 +21,7 @@ mgr_image_profileupdate:
 
 mgr_image_inspect:
   module.run:
-    - name: docker.inspect
+    - name: docker.inspect_image
     - m_name: "{{ pillar.get('imagename') }}"
     - require:
       - module: mgr_registries_login_inspect
