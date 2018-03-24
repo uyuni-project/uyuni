@@ -6,7 +6,7 @@
 %global default_py3 1
 %endif
 
-%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 )
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
 %global build_py2   1
 %endif
 
@@ -97,9 +97,6 @@ install -d $RPM_BUILD_ROOT/%{python_sitelib}
 make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{python_sitelib} \
     MANDIR=%{_mandir} PYTHON_VERSION=%{python_version}
 %endif
-%if 0%{?suse_version}
-ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
-%endif
 
 %if 0%{?build_py3}
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' rhnpush
@@ -110,6 +107,9 @@ make -f Makefile.rhnpush install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} 
 
 %define default_suffix %{?default_py3:-%{python3_version}}%{!?default_py3:-%{python_version}}
 ln -s rhnpush%{default_suffix} $RPM_BUILD_ROOT%{_bindir}/rhnpush
+%if 0%{?suse_version}
+ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
+%endif
 
 %check
 %if 0%{?pylint_check}
