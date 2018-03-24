@@ -684,6 +684,7 @@ const CheckListItem = React.createClass({
     if (this.props.bypassProps.isSelectable && currentItem.status == _PRODUCT_STATUS.available) {
       selectorContent =
         <input type='checkbox'
+            id={'checkbox-for-' + currentItem.identifier}
             value={currentItem.identifier}
             onChange={this.handleSelectedItem}
             checked={this.isSelected(currentItem, this.props.bypassProps.selectedItems) ? 'checked' : ''}
@@ -784,7 +785,7 @@ const CheckListItem = React.createClass({
     const productStatus = this.isInstalled() ? 'product-installed' : '';
     return (
       <li className={evenOddClass + ' ' + (this.isSublistVisible() ? 'sublistOpen' : '')} key={currentItem.identifier}>
-        <div className={'product-details-wrapper ' + productStatus}>
+        <div className={'product-details-wrapper ' + productStatus} data-identifier={currentItem.identifier}>
           <CustomDiv className='col text-center' width={this.props.bypassProps.cols.selector.width} um={this.props.bypassProps.cols.selector.um}>
             {selectorContent}
           </CustomDiv>
