@@ -6,11 +6,15 @@
 %global default_py3 1
 %endif
 
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 )
+%global build_py2   1
+%endif
+
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
 Summary: Support package for spacewalk koan interaction
 Name: spacewalk-koan
-Version: 2.8.7.2
+Version: 2.8.8
 Release: 1%{?dist}
 Group: System Environment/Kernel
 License: GPLv2
@@ -34,6 +38,7 @@ Requires: %{rhn_check}
 %description
 Support package for spacewalk koan interaction.
 
+%if 0%{?build_py2}
 %package -n python2-%{name}
 Summary: Support package for spacewalk koan interaction
 BuildRequires:  python
@@ -42,6 +47,7 @@ Requires:       %{name} = %{version}-%{release}
 
 %description -n python2-%{name}
 Python 2 specific files for %{name}.
+%endif
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
@@ -62,8 +68,10 @@ Python 3 specific files for %{name}.
 make -f Makefile.spacewalk-koan all
 
 %install
+%if 0%{?build_py2}
 make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python_sitelib} \
     MANDIR=%{_mandir}
+%endif
 
 %if 0%{?build_py3}
 make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} \
@@ -86,6 +94,7 @@ make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_si
 %config(noreplace)  %{_sysconfdir}/sysconfig/rhn/clientCaps.d/kickstart
 %{_sbindir}/*
 
+%if 0%{?build_py2}
 %files -n python2-%{name}
 %defattr(-,root,root,-)
 %dir %{python_sitelib}/rhn
@@ -93,6 +102,7 @@ make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_si
 %{python_sitelib}/rhn/actions/
 %if 0%{?suse_version}
 %dir %{python_sitelib}/rhn
+%endif
 %endif
 
 %if 0%{?build_py3}
@@ -107,6 +117,9 @@ make -f Makefile.spacewalk-koan install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_si
 %endif
 
 %changelog
+* Tue Mar 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.8-1
+- don't build python2 subpackages on systems with default python3
+
 * Tue Feb 20 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.7-1
 - use python3 on rhel8 in spacewalk-koan
 

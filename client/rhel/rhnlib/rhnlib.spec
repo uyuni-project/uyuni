@@ -6,7 +6,7 @@
 
 Summary: Python libraries for the Spacewalk project
 Name: rhnlib
-Version: 2.8.8
+Version: 2.8.10
 Release: 1%{?dist}
 URL:     https://github.com/spacewalkproject/spacewalk
 Source0: https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -18,7 +18,11 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch: noarch
 %endif
+%if 0%{?fedora} >= 28 || 0%{?rhel} >= 8
+BuildRequires: python2-devel
+%else
 BuildRequires: python-devel
+%endif
 Provides: python2-rhnlib = %{version}-%{release}
 Obsoletes: python-rhnlib < %{version}-%{release}
 Obsoletes: rhnlib < %{version}-%{release}
@@ -96,6 +100,12 @@ make -f Makefile.rhnlib
 %endif
 
 %changelog
+* Wed Mar 21 2018 Jiri Dostal <jdostal@redhat.com> 2.8.10-1
+- Updating copyright years for 2018
+
+* Mon Mar 19 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.9-1
+- be compliant with new packaging guidelines when requiring python2 packages
+
 * Fri Mar 09 2018 Tomas Kasparek <tkasparek@redhat.com> 2.8.8-1
 - don't use undefined variable
 
