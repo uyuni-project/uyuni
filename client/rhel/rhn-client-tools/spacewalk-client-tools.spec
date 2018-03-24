@@ -3,6 +3,10 @@
 %global default_py3 1
 %endif
 
+%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
+%global build_py2   1
+%endif
+
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 %{!?python2_sitelib: %global python2_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
@@ -80,6 +84,7 @@ BuildRequires: yum
 Spacewalk Client Tools provides programs and libraries to allow your
 system to receive software updates from Spacewalk.
 
+%if 0%{?build_py2}
 %package -n python2-%{name}
 Summary: Support programs and libraries for Spacewalk
 Provides: python-%{name} = %{version}-%{release}
@@ -138,6 +143,7 @@ BuildRequires: rpm-python
 
 %description -n python2-%{name}
 Python 2 specific files of %{name}.
+%endif
 
 %if 0%{?build_py3}
 %package -n python3-%{name}
@@ -199,6 +205,7 @@ Requires: yum-rhn-plugin >= 1.6.4-1
 spacewalk-check polls a SUSE Manager or Spacewalk server to find and execute
 scheduled actions.
 
+%if 0%{?build_py2}
 %package -n python2-spacewalk-check
 Summary: Check for RHN actions
 Provides: python-spacewalk-check = %{version}-%{release}
@@ -209,6 +216,7 @@ Requires: spacewalk-check = %{version}-%{release}
 
 %description -n python2-spacewalk-check
 Python 2 specific files for rhn-check.
+%endif
 
 %if 0%{?build_py3}
 %package -n python3-spacewalk-check
@@ -238,6 +246,7 @@ Requires: suseRegisterInfo
 spacewalk-client-setup contains programs and utilities to configure a system to use
 SUSE Manager or Spacewalk.
 
+%if 0%{?build_py2}
 %package -n python2-spacewalk-client-setup
 Summary: Configure and register an Spacewalk client
 Provides: python-spacewalk-client-setup = %{version}-%{release}
@@ -257,6 +266,7 @@ Requires: python-newt
 
 %description -n python2-spacewalk-client-setup
 Python 2 specific files for spacewalk-client-setup.
+%endif
 
 %if 0%{?build_py3}
 %package -n python3-spacewalk-client-setup
@@ -288,6 +298,7 @@ Requires: pam >= 0.72
 rhn-setup-gnome contains a GTK+ graphical interface for configuring and
 registering a system with a Red Hat Satellite or Spacewalk server.
 
+%if 0%{?build_py2}
 %package -n python2-spacewalk-client-setup-gnome
 Summary: Configure and register an RHN/Spacewalk client
 Provides: python-spacewalk-client-setup-gnome = %{version}-%{release}
@@ -306,6 +317,7 @@ Requires: liberation-sans-fonts
 
 %description -n python2-spacewalk-client-setup-gnome
 Python 2 specific files for spacewalk-client-setup-gnome.
+%endif
 
 %if 0%{?build_py3}
 %package -n python3-spacewalk-client-setup-gnome
@@ -333,9 +345,11 @@ Python 3 specific files for spacewalk-client-setup-gnome.
 make -f Makefile.rhn-client-tools
 
 %install
+%if 0%{?build_py2}
 make -f Makefile.rhn-client-tools install VERSION=%{version}-%{release} \
         PYTHONPATH=%{python_sitelib} PYTHONVERSION=%{python_version} \
         PREFIX=$RPM_BUILD_ROOT MANPATH=%{_mandir}
+%endif
 %if 0%{?build_py3}
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' src/actions/*.py src/bin/*.py test/*.py
 make -f Makefile.rhn-client-tools
@@ -371,22 +385,28 @@ install 50-spacewalk-client.preset $RPM_BUILD_ROOT/%{_presetdir}
 rm -f $RPM_BUILD_ROOT%{_datadir}/rhn/actions/errata.py*
 %endif
 
+%if 0%{?build_py2}
 %if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
 rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_hal.*
 %else
 rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_gudev.*
 rm $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/hardware_udev.*
 %endif
+%endif
 
 %if 0%{?rhel} == 5
+%if 0%{?build_py2}
 rm -rf $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/firstboot
+%endif
 rm -f $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_register.*
 %endif
 %if 0%{?rhel} == 6
 rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/modules/rhn_*_*.*
 %endif
 %if ! 0%{?rhel} || 0%{?rhel} > 6
+%if 0%{?build_py2}
 rm -rf $RPM_BUILD_ROOT%{python_sitelib}/up2date_client/firstboot
+%endif
 rm -rf $RPM_BUILD_ROOT%{_datadir}/firstboot/
 %endif
 %if 0%{?build_py3}
@@ -523,6 +543,7 @@ make -f Makefile.rhn-client-tools test
 %{_presetdir}/50-spacewalk-client.preset
 %endif
 
+%if 0%{?build_py2}
 %files -n python2-%{name}
 %defattr(-,root,root,-)
 %{_sbindir}/rhn-profile-sync-%{python_version}
@@ -548,6 +569,7 @@ make -f Makefile.rhn-client-tools test
 %{python_sitelib}/up2date_client/capabilities.*
 %{python_sitelib}/up2date_client/rhncli.*
 %{python_sitelib}/up2date_client/pkgplatform.*
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-%{name}
@@ -607,6 +629,7 @@ make -f Makefile.rhn-client-tools test
 %{_sbindir}/spacewalk-update-status
 %{_sbindir}/mgr-update-status
 
+%if 0%{?build_py2}
 %files -n python2-spacewalk-check
 %defattr(-,root,root,-)
 %{_sbindir}/rhn_check-%{python_version}
@@ -620,6 +643,7 @@ make -f Makefile.rhn-client-tools test
 %{python_sitelib}/rhn/actions/reboot.*
 %{python_sitelib}/rhn/actions/rhnsd.*
 %{python_sitelib}/rhn/actions/up2date_config.*
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-spacewalk-check
@@ -672,6 +696,7 @@ make -f Makefile.rhn-client-tools test
 %endif
 %endif
 
+%if 0%{?build_py2}
 %files -n python2-spacewalk-client-setup
 %defattr(-,root,root,-)
 %{_sbindir}/rhn_register-%{python_version}
@@ -681,6 +706,7 @@ make -f Makefile.rhn-client-tools test
 %{python2_sitelib}/up2date_client/pmPlugin.*
 %{python2_sitelib}/up2date_client/tui.*
 %{python2_sitelib}/up2date_client/rhnreg_constants.*
+%endif
 
 %if 0%{?build_py3}
 %files -n python3-spacewalk-client-setup
@@ -731,6 +757,7 @@ make -f Makefile.rhn-client-tools test
 %dir %{_datadir}/firstboot/modules
 %endif
 
+%if 0%{?build_py2}
 %files -n python2-spacewalk-client-setup-gnome
 %defattr(-,root,root,-)
 %{python_sitelib}/up2date_client/messageWindow.*
@@ -759,6 +786,7 @@ make -f Makefile.rhn-client-tools test
 %{python_sitelib}/up2date_client/firstboot/rhn_create_profile_gui.*
 %{python_sitelib}/up2date_client/firstboot/rhn_review_gui.*
 %{python_sitelib}/up2date_client/firstboot/rhn_finish_gui.*
+%endif
 %endif
 %endif
 
