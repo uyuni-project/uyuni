@@ -10,6 +10,7 @@ Feature: Very first settings
   # bsc#1077780 - "JDBCConnectionException: could not prepare statement" after bootstrapping minion
   Scenario: Temporary workaround against bsc#1077780
     Given I restart Taskomatic
+    And I wait for Taskomatic to be ready
 
   Scenario: Create admin user and first organization
     Given I access the host the first time

@@ -104,6 +104,10 @@ Then(/^I restart Taskomatic$/) do
   $server.run('rctaskomatic restart')
 end
 
+And(/^I wait for Taskomatic to be ready$/) do
+  $server.run('/usr/sbin/spacewalk-startup-helper wait-for-taskomatic')
+end
+
 Then(/^I restart the spacewalk service$/) do
   $server.run('spacewalk-service restart')
   sleep(5)
