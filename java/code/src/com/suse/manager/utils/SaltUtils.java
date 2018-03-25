@@ -1077,7 +1077,7 @@ public class SaltUtils {
         }
 
         // Update live patching version
-        server.setKernelLiveVersion(Optional.ofNullable(result.getKernelLiveVersionInfo())
+        server.setKernelLiveVersion(result.getKernelLiveVersionInfo()
                 .map(klv -> klv.getChanges().getRet()).filter(Objects::nonNull)
                 .map(KernelLiveVersionInfo::getKernelLiveVersion).orElse(null));
 
