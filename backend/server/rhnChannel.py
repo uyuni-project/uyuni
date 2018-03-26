@@ -1911,6 +1911,16 @@ def guess_suse_channels_for_server(server, org_id=None, user_id=None, raise_exce
         log_error("Missing baseproduct in ", server)
         return None
 
+    all_products = []
+    rootProductId = suseLib.findProduct(baseproduct)
+    exts = suseLib.findAllExtensionProductsOf(rootProductId, rootProductId)
+    while len(exts) > 0:
+        all_products = all_products + exts
+        exts_next = []
+        for ext in exts:
+            exts_next = exts_next + suseLib.findAllExtensionProductsOf(ext.pop("id", None), rootProductId)
+        exts = exts_next
+
     basechannels = suseLib.channelForProduct(baseproduct, suse_products['ostarget'], user_id=user_id, org_id=org_id)
     if not basechannels or basechannels == []:
         return None
@@ -1918,7 +1928,7 @@ def guess_suse_channels_for_server(server, org_id=None, user_id=None, raise_exce
 
     # search childchannels of the base product which should be added too
     childchannels = {}
-    for product in suse_products['products']:
+    for product in suse_products['products'] + all_products:
         ccs = suseLib.channelForProduct(product, suse_products['ostarget'], bc['id'], user_id=user_id, org_id=org_id)
         if ccs:
             for cc in ccs:
