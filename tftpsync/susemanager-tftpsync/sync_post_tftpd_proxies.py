@@ -156,6 +156,13 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler', logger=None
     except:
         pass
 
+    count = 0
+    while not os.path.exists(fn) and count < 10:
+        count += 1
+        if _DEBUG:
+            logger.debug("%s does not exist yet - retrying (try %s)" % (fn, count))
+        time.sleep(1)
+
     mtime = os.stat(fn).st_mtime
     key = None
     needpush = True
