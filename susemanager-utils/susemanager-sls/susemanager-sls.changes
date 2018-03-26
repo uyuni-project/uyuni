@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Mar 26 09:15:31 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.6-1
 - Provide new Salt module and Reactor to handle Action Chains on Minions
 - use dockermod with new salt and user repository/tag option for build
 - adapt names for gpg keys which have been changed
