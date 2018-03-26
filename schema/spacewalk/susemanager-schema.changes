@@ -1,3 +1,5 @@
+- handle duplicate serverpackage entries while fixing duplicate evr ids (bsc#1075345)
+- Add Adelaide timezone to selectable timezones (bsc#1063891)
 - Add schema migration to support Action Chain for Minions.
 - Prevent migration failure when multiple empty file contents are present (bsc#1083706, bsc#1083937)
 
