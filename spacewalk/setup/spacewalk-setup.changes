@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Mon Mar 26 09:04:58 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.5.3-1
+- Sync with upstream (bsc#1083294)
 - Configure Salt Reactor for handle Action Chain execution on Minions
 
 -------------------------------------------------------------------
