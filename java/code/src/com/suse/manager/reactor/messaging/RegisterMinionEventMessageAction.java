@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -77,15 +78,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -602,7 +595,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             LOG.info("Subscribing to Base channel " + bcfp.getName());
             server.addChannel(bcfp);
             suseProd.ifPresent(sp -> {
-                lookupRequiredChannelsForProduct(bcfp, sp).forEach(channel -> {
+                lookupRequiredChannelsForProduct(sp).collect(Collectors.toSet()).forEach(channel -> {
                     LOG.info("Subscribing to required child channel: " + bcfp.getName());
                     server.addChannel(channel);
                 });
@@ -713,18 +706,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         return baseChannel;
     }
 
-    private Stream<Channel> lookupRequiredChannelsForProduct(Channel baseChannel,
-            SUSEProduct sp) {
-        SUSEProductSet installedProducts = new SUSEProductSet();
-        installedProducts.setBaseProduct(sp);
-        return DistUpgradeManager
-                .getRequiredChannels(installedProducts, baseChannel.getId()).stream()
-                .flatMap(reqChan -> ofNullable(ChannelFactory.lookupById(reqChan.getId()))
-                        .map(Stream::of).orElseGet(() -> {
-                            LOG.error("Can't retrieve required channel id " +
-                                    "from database");
-                            return Stream.empty();
-                        }));
+    private Stream<Channel> lookupRequiredChannelsForProduct(SUSEProduct sp) {
+        return recommendedChannelsByBaseProduct(sp);
     }
 
     private Optional<String> rpmErrQueryRHELProvidesRelease(String minionId) {
@@ -752,6 +735,36 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                                         StringUtils.splitPreserveAllTokens(linetoks[1], ",")
                                         )));
     }
+
+    private Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct base) {
+            return recommendedChannelsByBaseProduct(base, base);
+    }
+
+    private Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct root, SUSEProduct base) {
+        List<SUSEProduct> allExtensionProductsOf =
+                        SUSEProductFactory.findAllExtensionProductsOf(base);
+
+                Stream<Channel> channelStream = base.getSuseProductChannels()
+                        .stream()
+                        .map(SUSEProductChannel::getChannel)
+                        .filter(Objects::nonNull);
+
+                Stream<Channel> stream = allExtensionProductsOf.stream().flatMap(ext -> {
+                return SUSEProductFactory.findSUSEProductExtension(root, base, ext).map(pe -> {
+                    if (pe.isRecommended()) {
+                        return recommendedChannelsByBaseProduct(root, ext);
+                    } else {
+                        return Stream.<Channel>empty();
+                    }
+                }).orElseGet(Stream::empty);
+            });
+
+        return Stream.concat(
+            channelStream,
+            stream
+        );
+    }
+
 
     private String getOsRelease(String minionId, ValueMap grains) {
         // java port of up2dataUtils._getOSVersionAndRelease()
