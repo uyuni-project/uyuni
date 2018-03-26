@@ -40,20 +40,6 @@ public class ImagesProfileUpdateSlsResult {
     /**
      * @return getter
      */
-    public Optional<StateApplyResult<Ret<PkgProfileUpdateSlsResult>>> getDockerngSlsBuild() {
-        return dockerngSlsBuild;
-    }
-
-    /**
-     * @return getter
-     */
-    public Optional<StateApplyResult<Ret<ImageInspectSlsResult>>> getDockerngInspect() {
-        return dockerngInspect;
-    }
-
-    /**
-     * @return getter
-     */
     public Optional<StateApplyResult<Ret<PkgProfileUpdateSlsResult>>> getDockerSlsBuild() {
         if (dockerngSlsBuild.isPresent()) {
             return dockerSlsBuild;
