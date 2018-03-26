@@ -98,6 +98,7 @@ public class ProductSyncManager {
      * @param productIdents the product ident list
      * @param user the current user
      * @throws ProductSyncException if an error occurred
+     * @return a map of added products and an error message if any
      */
     public Map<String, Optional<? extends Throwable>> addProducts(List<String> productIdents, User user) {
         return productIdents.stream().collect(Collectors.toMap(
@@ -106,7 +107,8 @@ public class ProductSyncManager {
                    try {
                        addProduct(ident, user);
                        return Optional.<Throwable>empty();
-                   } catch (ProductSyncException e) {
+                   }
+                   catch (ProductSyncException e) {
                        return Optional.of(e);
                    }
                }
