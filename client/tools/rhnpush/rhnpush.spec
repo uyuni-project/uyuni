@@ -17,7 +17,7 @@ Summary:       Package uploader for the Spacewalk
 Group:         Applications/System
 License:       GPLv2
 URL:           https://github.com/spacewalkproject/spacewalk
-Version:       5.5.113
+Version:       5.5.113.1
 Release:       1%{?dist}
 Source0:       https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
