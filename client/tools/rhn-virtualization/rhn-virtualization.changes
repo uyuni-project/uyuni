@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Mar 26 08:35:00 CEST 2018 - jgonzalez@suse.com
+
+- version 5.4.72.1-1
+- Sync with upstream (bsc#1083294)
+- Build python2 packages on SUSE systems
+
+-------------------------------------------------------------------
 Mon Mar 05 09:15:28 CET 2018 - jgonzalez@suse.com
 
 - version 5.4.71.2-1
