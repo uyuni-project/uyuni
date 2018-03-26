@@ -41,7 +41,7 @@ public class ImagesProfileUpdateSlsResult {
      * @return getter
      */
     public StateApplyResult<Ret<PkgProfileUpdateSlsResult>> getDockerSlsBuild() {
-        if (dockerngSlsBuild.isPresent()) {
+        if (dockerSlsBuild.isPresent()) {
             return dockerSlsBuild.get();
         }
         return dockerngSlsBuild.get();
