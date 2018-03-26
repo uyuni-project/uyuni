@@ -11,6 +11,7 @@ declare duplicate record;
 declare nevra_orig record;
 declare nevra_dup record;
 declare snapshotitem record;
+declare serverpackage record;
 begin
   for original in select min(id) as id
           from rhnpackageevr
@@ -56,7 +57,23 @@ begin
       update rhnserverprofilepackage set evr_id = original.id where evr_id = duplicate.id;
       update rhntransactionpackage set evr_id = original.id where evr_id = duplicate.id;
       update rhnversioninfo set evr_id = original.id where evr_id = duplicate.id;
-      update rhnserverpackage set evr_id = original.id where evr_id = duplicate.id;
+
+      for serverpackage in select * from rhnserverpackage where evr_id = duplicate.id loop
+          begin
+            update rhnserverpackage set evr_id = original.id where evr_id = duplicate.id and
+                server_id = serverpackage.server_id and
+                name_id = serverpackage.name_id and
+                evr_id = serverpackage.evr_id and
+                package_arch_id = serverpackage.package_arch_id;
+          exception when unique_violation then
+            delete from rhnserverpackage where evr_id = duplicate.id and
+                server_id = serverpackage.server_id and
+                name_id = serverpackage.name_id and
+                evr_id = serverpackage.evr_id and
+                package_arch_id = serverpackage.package_arch_id;
+          end;
+      end loop;
+
       update suseImageInfoPackage set evr_id = original.id where evr_id = duplicate.id;
       update susePackageState set evr_id = original.id where evr_id = duplicate.id;
       update suseproductfile set evr_id = original.id where evr_id = duplicate.id;
