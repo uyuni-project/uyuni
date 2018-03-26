@@ -40,20 +40,20 @@ public class ImagesProfileUpdateSlsResult {
     /**
      * @return getter
      */
-    public Optional<StateApplyResult<Ret<PkgProfileUpdateSlsResult>>> getDockerSlsBuild() {
+    public StateApplyResult<Ret<PkgProfileUpdateSlsResult>> getDockerSlsBuild() {
         if (dockerngSlsBuild.isPresent()) {
-            return dockerSlsBuild;
+            return dockerSlsBuild.get();
         }
-        return dockerngSlsBuild;
+        return dockerngSlsBuild.get();
     }
 
     /**
      * @return getter
      */
-    public Optional<StateApplyResult<Ret<ImageInspectSlsResult>>> getDockerInspect() {
+    public StateApplyResult<Ret<ImageInspectSlsResult>> getDockerInspect() {
         if (dockerInspect.isPresent()) {
-            return dockerInspect;
+            return dockerInspect.get();
         }
-        return dockerngInspect;
+        return dockerngInspect.get();
     }
 }
