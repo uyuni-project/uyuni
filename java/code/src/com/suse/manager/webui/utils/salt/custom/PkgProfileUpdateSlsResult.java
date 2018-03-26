@@ -25,6 +25,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Object representation of the results of a call to state.apply
@@ -41,7 +42,7 @@ public class PkgProfileUpdateSlsResult {
 
     @SerializedName("module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|" +
             "-run")
-    private StateApplyResult<Ret<KernelLiveVersionInfo>> kernelLiveVersionInfo;
+    private Optional<StateApplyResult<Ret<KernelLiveVersionInfo>>> kernelLiveVersionInfo = Optional.empty();
 
     @SerializedName("module_|-grains_update_|-grains.items_|-run")
     private StateApplyResult<Ret<Map<String, Object>>> grains;
@@ -66,7 +67,7 @@ public class PkgProfileUpdateSlsResult {
      *
      * @return the live patching info
      */
-    public StateApplyResult<Ret<KernelLiveVersionInfo>> getKernelLiveVersionInfo() {
+    public Optional<StateApplyResult<Ret<KernelLiveVersionInfo>>> getKernelLiveVersionInfo() {
         return kernelLiveVersionInfo;
     }
 
