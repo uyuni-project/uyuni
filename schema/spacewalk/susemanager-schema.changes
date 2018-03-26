@@ -1,3 +1,8 @@
+-------------------------------------------------------------------
+Mon Mar 26 15:09:48 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.6-1
+- Enable upgrades from 3.1
 - Allow scheduling the change of software channels as an action. The previous channels remain accessible
   to the registered system until the action is executed.
 - handle duplicate serverpackage entries while fixing duplicate evr ids (bsc#1075345)
