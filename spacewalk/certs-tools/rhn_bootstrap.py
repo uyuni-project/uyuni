@@ -673,12 +673,14 @@ def main():
     """
 
     if '--salt' in sys.argv:
-        print >> sys.stderr, '-' * 65
-        print >> sys.stderr, 'DEPRECATION WARNING:\n' \
+        sys.stderr.write('-' * 65)
+        sys.stderr.write('\n')
+        sys.stderr.write('DEPRECATION WARNING:\n' \
         '\tThe option "--salt" is default and has been deprecated.\n' \
         '\tThis option should not be specified anymore.' \
-        '\tIt will be not recognized in the next release!'
-        print >> sys.stderr, '-' * 65
+        '\tIt will be not recognized in the next release!\n')
+        sys.stderr.write('-' * 65)
+        sys.stderr.write('\n')
 
     options = processCommandline()
     copyFiles(options)
