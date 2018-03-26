@@ -1017,8 +1017,8 @@ public class SaltUtils {
         ActionStatus as = ActionFactory.STATUS_COMPLETED;
         serverAction.setResultMsg("Success");
 
-        if (result.getDockerInspect().isPresent() && result.getDockerInspect().get().isResult()) {
-            ImageInspectSlsResult iret = result.getDockerInspect().get().getChanges().getRet();
+        if (result.getDockerInspect().isResult()) {
+            ImageInspectSlsResult iret = result.getDockerInspect().getChanges().getRet();
             imageInfo.setChecksum(ImageInfoFactory.convertChecksum(iret.getId()));
             ImageBuildHistory history = new ImageBuildHistory();
             history.setImageInfo(imageInfo);
@@ -1034,18 +1034,13 @@ public class SaltUtils {
             imageInfo.getBuildHistory().add(history);
         }
         else {
-            if (result.getDockerInspect().isPresent()) {
-                serverAction.setResultMsg(result.getDockerInspect().get().getComment());
-            }
-            else {
-                serverAction.setResultMsg("State returned unexpected result");
-            }
+            serverAction.setResultMsg(result.getDockerInspect().getComment());
             as = ActionFactory.STATUS_FAILED;
         }
 
-        if (result.getDockerSlsBuild().isPresent() && result.getDockerSlsBuild().get().isResult()) {
+        if (result.getDockerSlsBuild().isResult()) {
             PkgProfileUpdateSlsResult ret =
-                    result.getDockerSlsBuild().get().getChanges().getRet();
+                    result.getDockerSlsBuild().getChanges().getRet();
 
             Optional.of(ret.getInfoInstalled().getChanges().getRet())
             .map(saltPkgs -> saltPkgs.entrySet().stream()
@@ -1082,10 +1077,8 @@ public class SaltUtils {
             }
         }
         else {
-            if (result.getDockerSlsBuild().isPresent()) {
-                // do not fail the action when no packages are returned
-                serverAction.setResultMsg(result.getDockerSlsBuild().get().getComment());
-            }
+            // do not fail the action when no packages are returned
+            serverAction.setResultMsg(result.getDockerSlsBuild().getComment());
         }
 
         serverAction.setStatus(as);
