@@ -1,3 +1,10 @@
+-------------------------------------------------------------------
+Mon Mar 26 08:54:04 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.75.1-1
+- Sync with upstream (bsc#1083294)
+- 1542556 - Prevent deletion of last SW admin if disabled
+- 1544350 - Add possibility to manage errata severity via API/WebUI
 - Add Action Chain support for Salt clients.
 - Uniform channel assignment for Salt (bsc#1077265)
 - fix race condition during enabling channel tokens (bsc#1085436)
