@@ -18,28 +18,42 @@ import com.google.gson.annotations.SerializedName;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 
+import java.util.Optional;
+
 /**
  * Result structure from images.profileupdate
  */
 public class ImagesProfileUpdateSlsResult {
 
     @SerializedName("module_|-mgr_image_profileupdate_|-dockerng.sls_build_|-run")
-    private StateApplyResult<Ret<PkgProfileUpdateSlsResult>> dockerngSlsBuild;
+    private Optional<StateApplyResult<Ret<PkgProfileUpdateSlsResult>>> dockerngSlsBuild = Optional.empty();
 
     @SerializedName("module_|-mgr_image_inspect_|-dockerng.inspect_|-run")
-    private StateApplyResult<Ret<ImageInspectSlsResult>> dockerngInspect;
+    private Optional<StateApplyResult<Ret<ImageInspectSlsResult>>> dockerngInspect = Optional.empty();
+
+    @SerializedName("module_|-mgr_image_profileupdate_|-docker.sls_build_|-run")
+    private Optional<StateApplyResult<Ret<PkgProfileUpdateSlsResult>>> dockerSlsBuild = Optional.empty();
+
+    @SerializedName("module_|-mgr_image_inspect_|-docker.inspect_image_|-run")
+    private Optional<StateApplyResult<Ret<ImageInspectSlsResult>>> dockerInspect = Optional.empty();
 
     /**
      * @return getter
      */
-    public StateApplyResult<Ret<PkgProfileUpdateSlsResult>> getDockerngSlsBuild() {
-        return dockerngSlsBuild;
+    public StateApplyResult<Ret<PkgProfileUpdateSlsResult>> getDockerSlsBuild() {
+        if (dockerngSlsBuild.isPresent()) {
+            return dockerSlsBuild.get();
+        }
+        return dockerngSlsBuild.get();
     }
 
     /**
      * @return getter
      */
-    public StateApplyResult<Ret<ImageInspectSlsResult>> getDockerngInspect() {
-        return dockerngInspect;
+    public StateApplyResult<Ret<ImageInspectSlsResult>> getDockerInspect() {
+        if (dockerInspect.isPresent()) {
+            return dockerInspect.get();
+        }
+        return dockerngInspect.get();
     }
 }
