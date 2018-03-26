@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Mar 26 09:13:09 CEST 2018 - jgonzalez@suse.com
+
+- version 5.0.37.1-1
+- Sync with upstream (bsc#1083294)
+- Updating .po translations from Zanata
+
+-------------------------------------------------------------------
 Mon Mar 05 09:23:33 CET 2018 - jgonzalez@suse.com
 
 - version 5.0.36.2-1
