@@ -397,6 +397,11 @@ public class XMLChannel {
             .toString();
     }
 
+    /**
+     * Copy the current object into a new one
+     *
+     * @return a new XMLChannel that is a copy of the current one
+     */
     public XMLChannel copy() {
         XMLChannel xmlChannel = new XMLChannel();
         xmlChannel.setArch(this.getArch());
@@ -416,7 +421,8 @@ public class XMLChannel {
         xmlChannel.distribution = this.getDistribution();
         if (this.getProducts() == null) {
             xmlChannel.setProducts(null);
-        } else {
+        }
+        else {
             xmlChannel.setProducts(this.getProducts().stream().map(XMLProduct::copy).collect(Collectors.toList()));
         }
         return xmlChannel;

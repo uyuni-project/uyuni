@@ -40,7 +40,12 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
@@ -78,6 +83,14 @@ public class ProductsController {
         return new ModelAndView(data, "products/show.jade");
     }
 
+    /**
+     * Trigger a synchronization of Products
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return a JSON flag of the success/failed result
+     */
     public static String synchronizeProducts(Request request, Response response, User user) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
@@ -93,6 +106,14 @@ public class ProductsController {
         return json(response, true);
     }
 
+    /**
+     * Trigger a synchronization of Channel Families
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return a JSON flag of the success/failed result
+     */
     public static String synchronizeChannelFamilies(Request request, Response response, User user) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
@@ -108,6 +129,14 @@ public class ProductsController {
         return json(response, true);
     }
 
+    /**
+     * Trigger a synchronization of Channels
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return a JSON flag of the success/failed result
+     */
     public static String synchronizeChannels(Request request, Response response, User user) {
           if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
@@ -123,6 +152,14 @@ public class ProductsController {
         return json(response, true);
     }
 
+    /**
+     * Trigger a synchronization of Subscriptions
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return a JSON flag of the success/failed result
+     */
     public static String synchronizeSubscriptions(Request request, Response response, User user) {
         try {
             ContentSyncManager csm = new ContentSyncManager();
@@ -135,6 +172,14 @@ public class ProductsController {
         return json(response, true);
     }
 
+    /**
+     * Trigger a synchronization of Product Channels
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return a JSON flag of the success/failed result
+     */
     public static String synchronizeProductChannels(Request request, Response response, User user) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
@@ -150,9 +195,16 @@ public class ProductsController {
         return json(response, true);
     }
 
+    /**
+     * Add products to be mirrored in the SUSE Manager Server
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the map of requested products with a success/failed flag in a JSON format
+     */
     public static String addProduct(Request request, Response response, User user) {
-        List<String> identifiers = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() {
-        }.getType());
+        List<String> identifiers = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() { }.getType());
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN to synchronize products");
         }
@@ -175,8 +227,16 @@ public class ProductsController {
         return json(response, collect);
     }
 
+    /**
+     * Return Mandatory Channels
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the collection of Mandatory Channels in a JSON format
+     */
     public static String getMandatoryChannels(Request request, Response response, User user) {
-        List<String> list = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>(){}.getType());
+        List<String> list = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() { }.getType());
         ContentSyncManager csm = new ContentSyncManager();
         try {
             Map<String, String> archByChannelLabel = csm.listChannels().stream().collect(Collectors.toMap(
@@ -192,7 +252,8 @@ public class ProductsController {
             ));
 
             return json(response, JsonResult.success(result));
-        } catch (ContentSyncException e) {
+        }
+        catch (ContentSyncException e) {
             log.error("content sync error: ", e);
             return json(response, JsonResult.error("content sync error. See logs for more info."));
         }
