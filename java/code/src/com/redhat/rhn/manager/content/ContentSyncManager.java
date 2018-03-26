@@ -135,7 +135,7 @@ public class ContentSyncManager {
 
     // SCC JSON files location in rhn.conf
     public static final String RESOURCE_PATH = "server.susemanager.fromdir";
-    private static final Object lock = new Object();
+    private static final Object LOCK = new Object();
     private static List<XMLChannel> xmlChannelsCache = null;
 
     /**
@@ -168,15 +168,22 @@ public class ContentSyncManager {
         upgradePathsXML = file;
     }
 
+
+    /**
+     * Read channels from xml and return a list
+     * @return a list  of XMLChannels
+     * @throws ContentSyncException
+     */
     public List<XMLChannel> readChannels() throws ContentSyncException {
         if (xmlChannelsCache == null) {
-            synchronized (lock) {
+            synchronized (LOCK) {
                 if (xmlChannelsCache == null) {
                     xmlChannelsCache = readChannelsOld();
                 }
             }
             return xmlChannelsCache.stream().map(XMLChannel::copy).collect(Collectors.toList());
-        } else {
+        }
+        else {
             return xmlChannelsCache.stream().map(XMLChannel::copy).collect(Collectors.toList());
         }
 

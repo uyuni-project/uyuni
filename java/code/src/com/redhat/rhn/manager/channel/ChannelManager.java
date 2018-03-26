@@ -2724,19 +2724,28 @@ public class ChannelManager extends BaseManager {
      * @param childChannels the stream of child channels
      * @return the map from channel id to boolean containing the information about the "recommended" flag.
      */
-    public static Map<Long,Boolean> computeChannelRecommendedFlags(Channel baseChannel, Stream<Channel> childChannels) {
+    public static Map<Long, Boolean> computeChannelRecommendedFlags(
+            Channel baseChannel, Stream<Channel> childChannels) {
         Channel originalBaseChannel = getOriginalChannel(baseChannel);
-        Optional<SUSEProductChannel> baseChannelProduct = SUSEProductFactory.findProductByChannelLabel(originalBaseChannel.getLabel());
+        Optional<SUSEProductChannel> baseChannelProduct =
+                SUSEProductFactory.findProductByChannelLabel(originalBaseChannel.getLabel());
         return childChannels.collect(Collectors.toMap(
                 c -> c.getId(),
                 c -> {
                     Channel original = getOriginalChannel(c);
-                    Optional<SUSEProductChannel> extProduct = SUSEProductFactory.findProductByChannelLabel(original.getLabel());
+                    Optional<SUSEProductChannel> extProduct =
+                            SUSEProductFactory.findProductByChannelLabel(original.getLabel());
                     if (extProduct.isPresent() && baseChannelProduct.isPresent()) {
-                        List<SUSEProduct> allBaseProductsOf = SUSEProductFactory.findAllBaseProductsOf(extProduct.get().getProduct(),  baseChannelProduct.get().getProduct());
+                        List<SUSEProduct> allBaseProductsOf =
+                                SUSEProductFactory.findAllBaseProductsOf(
+                                        extProduct.get().getProduct(),
+                                        baseChannelProduct.get().getProduct()
+                                );
                         return allBaseProductsOf.stream().anyMatch(baseProduct ->
                                 SUSEProductFactory.findSUSEProductExtension(
-                                         baseChannelProduct.get().getProduct(), baseProduct, extProduct.get().getProduct()
+                                         baseChannelProduct.get().getProduct(),
+                                         baseProduct,
+                                         extProduct.get().getProduct()
                                 ).map(SUSEProductExtension::isRecommended).orElse(false));
                     }
                     return false;

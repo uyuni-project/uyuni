@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013 SUSE LLC
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -49,8 +49,13 @@ public class Extension {
     /**
      * Instantiates a new Product.
      * @param idIn the id in
+     * @param identifierIn the unique identifier
      * @param labelIn the label in
+     * @param archIn the arch in
      * @param recommendedIn the recommended flag in
+     * @param statusIn the {@link MgtSyncStatus} in
+     * @param channelsIn the set of channels in
+     * @param extensionsIn the set of extensions in
      */
     public Extension(Long idIn, String identifierIn, String labelIn, String archIn, Boolean recommendedIn,
                      MgrSyncStatus statusIn, Set<JsonChannel> channelsIn, Set<Extension> extensionsIn) {
@@ -66,7 +71,7 @@ public class Extension {
 
     /**
      * Gets the id.
-     * @return the id 
+     * @return the id
      */
     public Long getId() {
         return id;
@@ -88,22 +93,37 @@ public class Extension {
         return recommended;
     }
 
+    /**
+     * @return the architecture
+     */
     public String getArch() {
         return arch;
     }
 
+    /**
+     * @return the identifier
+     */
     public String getIdentifier() {
         return identifier;
     }
 
+    /**
+     * @return the set of channels
+     */
     public Set<JsonChannel> getChannels() {
         return channels;
     }
 
+    /**
+     * @return the {@link MgrSyncStatus} status
+     */
     public MgrSyncStatus getStatus() {
         return status;
     }
 
+    /**
+     * @return the extensions set
+     */
     public Set<Extension> getExtensions() {
         return extensions;
     }
@@ -116,10 +136,13 @@ public class Extension {
         if (!(other instanceof Extension)) {
             return false;
         }
-        Extension otherProduct= (Extension) other;
+        Extension otherProduct = (Extension) other;
         return new EqualsBuilder()
             .append(getId(), otherProduct.getId())
             .append(getLabel(), otherProduct.getLabel())
+            .append(getArch(), otherProduct.getArch())
+            .append(getIdentifier(), otherProduct.getIdentifier())
+            .append(isRecommended(), otherProduct.isRecommended())
             .isEquals();
     }
 
@@ -131,6 +154,9 @@ public class Extension {
         return new HashCodeBuilder()
             .append(getId())
             .append(getLabel())
+            .append(getArch())
+            .append(getIdentifier())
+            .append(isRecommended())
             .toHashCode();
     }
 
@@ -142,6 +168,9 @@ public class Extension {
         return new ToStringBuilder(this)
         .append("id", getId())
         .append("label", getLabel())
+        .append("arch", getArch())
+        .append("identifier", getIdentifier())
+        .append("isRecommended", isRecommended())
         .toString();
     }
 }

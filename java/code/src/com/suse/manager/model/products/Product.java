@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013 SUSE LLC
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,7 +15,6 @@
 
 package com.suse.manager.model.products;
 
-import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
 import com.suse.mgrsync.MgrSyncStatus;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -33,7 +32,7 @@ public class Product {
 
     /** The label. */
     private final String label;
-    
+
     /** The recommended flag. */
     private final boolean recommended;
 
@@ -50,13 +49,18 @@ public class Product {
     /**
      * Instantiates a new Product.
      * @param idIn the id in
+     * @param identifierIn the unique identifier of the Product
      * @param labelIn the label in
+     * @param archIn the architecture in
      * @param recommendedIn the recommended flag in
+     * @param statusIn the {@link MgrSyncStatus} in
+     * @param extensionsIn the set of extensions
+     * @param channelsIn the set of channels in
      */
     public Product(Long idIn, String identifierIn,
                    String labelIn, String archIn, Boolean recommendedIn,
-                   MgrSyncStatus statusIn,
-                   Set<Extension> extensionsIn, Set<JsonChannel> channelsIn) {
+                   MgrSyncStatus statusIn, Set<Extension> extensionsIn,
+                   Set<JsonChannel> channelsIn) {
         id = idIn;
         label = labelIn;
         arch = archIn;
@@ -69,7 +73,7 @@ public class Product {
 
     /**
      * Gets the id.
-     * @return the id 
+     * @return the id
      */
     public Long getId() {
         return id;
@@ -91,22 +95,42 @@ public class Product {
         return recommended;
     }
 
+    /**
+     * Gets the architecture value.
+     * @return the architecture
+     */
     public String getArch() {
         return arch;
     }
 
+    /**
+     * Gets the identifiervalue.
+     * @return the identifier
+     */
     public String getIdentifier() {
         return identifier;
     }
 
+    /**
+     * Gets the extensions set.
+     * @return the extensions set
+     */
     public Set<Extension> getExtensions() {
         return extensions;
     }
 
+    /**
+     * Gets the channels set.
+     * @return the channels set
+     */
     public Set<JsonChannel> getChannels() {
         return channels;
     }
 
+    /**
+     * Gets the status value.
+     * @return the {@link MgrSyncStatus} value
+     */
     public MgrSyncStatus getStatus() {
         return status;
     }
@@ -119,11 +143,14 @@ public class Product {
         if (!(other instanceof Product)) {
             return false;
         }
-        Product otherProduct= (Product) other;
+        Product otherProduct = (Product) other;
         return new EqualsBuilder()
-            .append(getId(), otherProduct.getId())
-            .append(getLabel(), otherProduct.getLabel())
-            .isEquals();
+                .append(getId(), otherProduct.getId())
+                .append(getLabel(), otherProduct.getLabel())
+                .append(getArch(), otherProduct.getArch())
+                .append(getIdentifier(), otherProduct.getIdentifier())
+                .append(isRecommended(), otherProduct.isRecommended())
+                .isEquals();
     }
 
     /**
@@ -132,9 +159,12 @@ public class Product {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-            .append(getId())
-            .append(getLabel())
-            .toHashCode();
+                .append(getId())
+                .append(getLabel())
+                .append(getArch())
+                .append(getIdentifier())
+                .append(isRecommended())
+                .toHashCode();
     }
 
     /**
@@ -143,8 +173,11 @@ public class Product {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-        .append("id", getId())
-        .append("label", getLabel())
-        .toString();
+                .append("id", getId())
+                .append("label", getLabel())
+                .append("arch", getArch())
+                .append("identifier", getIdentifier())
+                .append("isRecommended", isRecommended())
+                .toString();
     }
 }
