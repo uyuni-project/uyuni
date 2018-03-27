@@ -583,7 +583,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Set<SUSEProduct> suseProducts = identifyProduct(server, grains);
             Map<Boolean, List<SUSEProduct>> collect = suseProducts.stream()
                     .collect(Collectors.partitioningBy(SUSEProduct::isBase));
-            baseProduct = Optional.ofNullable(collect.get(true).get(0));
+            baseProduct = Optional.ofNullable(collect.get(true))
+                    .flatMap(s -> s.stream().findFirst());
             extProducts = collect.get(false);
         }
 
