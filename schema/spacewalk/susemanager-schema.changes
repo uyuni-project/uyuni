@@ -1,3 +1,4 @@
+- Fix: migration from 3.0 to 3.1 related to rhnServerNetwork (bsc#1086996)
 - remove update of not existing table (bsc#1087131)
 - handle duplicate rhnserverpackage (bsc#1075345)
 - Prevent migration failure when multiple empty file contents are present (bsc#1083706, bsc#1083937)
