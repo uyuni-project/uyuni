@@ -340,7 +340,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                   }
                 </h4>
               </div>
-              <div
+              <div>
                 <Toggler.WithRecommended
                    enabled={this.areRecommendedChildrenSelected(allowed)}
                    handler={() => this.toggleRecommended(allowed)} />
