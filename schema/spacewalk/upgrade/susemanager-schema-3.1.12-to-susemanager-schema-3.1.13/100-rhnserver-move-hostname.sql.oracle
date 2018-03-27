@@ -1,47 +1,33 @@
-declare
-    column_exists exception;
-    pragma exception_init (column_exists , -01430);
-begin
-    execute immediate 'ALTER TABLE rhnServer ADD hostname VARCHAR2(128)';
-
-
-    exception when column_exists then null;
-end;
-/
-
-UPDATE rhnServer
-  SET hostname = (
-    SELECT rhnServerNetwork.hostname
-      FROM rhnServerNetwork
-      WHERE rhnServerNetwork.id = (
-        SELECT rhnServerNetwork.id
-          FROM rhnServerNetwork
-          WHERE server_id = rhnServer.id
-            AND id <= ALL (
-              SELECT rhnServerNetwork.id
-                FROM rhnServerNetwork
-                WHERE server_id = rhnServer.id
-            )
-      )
-  );
-
-DECLARE
-  l_cnt integer;
 BEGIN
-  SELECT COUNT(*)
-    INTO l_cnt
-    FROM dba_tab_columns
-   WHERE table_name = 'rhnServerNetwork'
-     AND column_name = 'hostname';
+  declare
+      column_exists exception;
+      pragma exception_init (column_exists , -01430);
+  begin
+      execute immediate 'ALTER TABLE rhnServer ADD hostname VARCHAR2(128)';
 
-  IF( l_cnt = 1 )
-  THEN
-    EXECUTE IMMEDIATE 'ALTER TABLE rhnServerNetwork DROP COLUMN hostname';
-  END IF;
-END;
-/
 
-declare
+      exception when column_exists then null;
+  end;
+
+  begin
+    execute immediate 'UPDATE rhnServer
+    SET hostname = (
+      SELECT rhnServerNetwork.hostname
+        FROM rhnServerNetwork
+        WHERE rhnServerNetwork.id = (
+          SELECT rhnServerNetwork.id
+            FROM rhnServerNetwork
+            WHERE server_id = rhnServer.id
+              AND id <= ALL (
+                SELECT rhnServerNetwork.id
+                  FROM rhnServerNetwork
+                  WHERE server_id = rhnServer.id
+              )
+        )
+    )';
+  end;
+
+  declare
   already_exists  exception;
   columns_indexed exception;
   pragma exception_init( already_exists, -955 );
@@ -56,4 +42,13 @@ exception
   when already_exists or columns_indexed then
   dbms_output.put_line( 'skipped' );
 end;
+
+EXCEPTION
+  WHEN OTHERS THEN
+    IF SQLCODE = -942 THEN
+      DBMS_OUTPUT.put_line('the table did not exist. Safe to ignore!');
+    ELSE
+      RAISE;
+    END IF;
+END;
 /
