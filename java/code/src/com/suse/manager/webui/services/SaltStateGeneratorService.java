@@ -148,7 +148,7 @@ public enum SaltStateGeneratorService {
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 
         Map<String, Object> chanPillar = new HashMap<>();
-        minion.getAccessTokens().forEach(accessToken -> {
+        minion.getAccessTokens().stream().filter(AccessToken::getValid).forEach(accessToken -> {
             accessToken.getChannels().forEach(chan -> {
                 Map<String, Object> chanProps = getChannelPillarData(minion, accessToken, chan);
 
