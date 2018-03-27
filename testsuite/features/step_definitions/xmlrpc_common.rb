@@ -309,7 +309,7 @@ end
 
 Given(/^I want to operate on this "(.*?)"$/) do |target|
   hostname = get_target(target).full_hostname
-  $client_id = syschaintest.search_by_name(hostname).first["id"]
+  $client_id = syschaintest.search_by_name(hostname).first['id']
   refute_nil($client_id, "Could not find system with hostname #{hostname}")
 end
 
@@ -343,7 +343,7 @@ end
 
 Then(/^I delete all action chains$/) do
   begin
-    rpc.list_chains().each do |label|
+    rpc.list_chains.each do |label|
       rpc.delete_chain(label)
     end
   rescue XMLRPC::FaultException => e
@@ -456,9 +456,11 @@ Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
 end
 
 Then(/^I cancel all scheduled actions$/) do
-  scdrpc.list_in_progress_actions.select do |action|
-    !action['prerequisite']
-  end.each do |action|
+  actions = scdrpc.list_in_progress_actions.reject do |action|
+    action['prerequisite']
+  end
+
+  actions.each do |action|
     scdrpc.cancel_actions([action['id']])
     puts "\t- Removed \"" + action['name'] + '" action'
   end
