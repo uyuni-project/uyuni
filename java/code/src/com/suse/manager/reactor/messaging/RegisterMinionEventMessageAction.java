@@ -764,35 +764,34 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     }
 
     private Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct root, SUSEProduct base) {
-        String rootChannelLabel = root.getSuseProductChannels().stream()
+        return root.getSuseProductChannels().stream()
                 .filter(c -> c.getParentChannelLabel() == null)
                 .map(SUSEProductChannel::getChannelLabel)
-                .findFirst().get();
-        List<SUSEProduct> allExtensionProductsOf =
-                        SUSEProductFactory.findAllExtensionProductsOf(base);
+                .findFirst().map(rootChannelLabel -> {
+                    List<SUSEProduct> allExtensionProductsOf =
+                            SUSEProductFactory.findAllExtensionProductsOf(base);
 
-                Stream<Channel> channelStream = base.getSuseProductChannels()
-                        .stream()
-                        .map(SUSEProductChannel::getChannel)
-                        .filter(Objects::nonNull)
-                        .filter(c -> c.getParentChannel() == null ||
-                            c.getParentChannel().getLabel().equals(rootChannelLabel));
+                    Stream<Channel> channelStream = base.getSuseProductChannels()
+                            .stream()
+                            .map(SUSEProductChannel::getChannel)
+                            .filter(Objects::nonNull)
+                            .filter(c -> c.getParentChannel() == null || c.getParentChannel().getLabel().equals(rootChannelLabel));
 
-                Stream<Channel> stream = allExtensionProductsOf.stream().flatMap(ext -> {
-                return SUSEProductFactory.findSUSEProductExtension(root, base, ext).map(pe -> {
-                    if (pe.isRecommended()) {
-                        return recommendedChannelsByBaseProduct(root, ext);
-                    }
-                    else {
-                        return Stream.<Channel>empty();
-                    }
+                    Stream<Channel> stream = allExtensionProductsOf.stream().flatMap(ext -> {
+                        return SUSEProductFactory.findSUSEProductExtension(root, base, ext).map(pe -> {
+                            if (pe.isRecommended()) {
+                                return recommendedChannelsByBaseProduct(root, ext);
+                            } else {
+                                return Stream.<Channel>empty();
+                            }
+                        }).orElseGet(Stream::empty);
+                    });
+
+                    return Stream.concat(
+                            channelStream,
+                            stream
+                    );
                 }).orElseGet(Stream::empty);
-            });
-
-        return Stream.concat(
-            channelStream,
-            stream
-        );
     }
 
 
