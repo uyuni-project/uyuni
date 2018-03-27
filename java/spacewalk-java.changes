@@ -1,3 +1,4 @@
+- reorder styles import
 - prevent NPE when no image build history details are available (bsc#1092161)
 - Show channel label when listing config channels (bsc#1083278)
 - fix equals to display channels with same name but different label
