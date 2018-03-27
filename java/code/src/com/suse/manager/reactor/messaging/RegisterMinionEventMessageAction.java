@@ -764,13 +764,18 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
     }
 
     private Stream<Channel> recommendedChannelsByBaseProduct(SUSEProduct root, SUSEProduct base) {
+        String rootChannelLabel = root.getSuseProductChannels().stream()
+                .filter(c -> c.getParentChannelLabel() == null)
+                .map(SUSEProductChannel::getChannelLabel)
+                .findFirst().get();
         List<SUSEProduct> allExtensionProductsOf =
                         SUSEProductFactory.findAllExtensionProductsOf(base);
 
                 Stream<Channel> channelStream = base.getSuseProductChannels()
                         .stream()
                         .map(SUSEProductChannel::getChannel)
-                        .filter(Objects::nonNull);
+                        .filter(Objects::nonNull)
+                        .filter(c -> c.getParentChannel() == null || c.getParentChannel().getLabel().equals(rootChannelLabel));
 
                 Stream<Channel> stream = allExtensionProductsOf.stream().flatMap(ext -> {
                 return SUSEProductFactory.findSUSEProductExtension(root, base, ext).map(pe -> {
