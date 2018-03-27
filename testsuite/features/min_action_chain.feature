@@ -1,9 +1,9 @@
 # Copyright (c) 2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Action chain tests for salt minions
+Feature: Action chain on salt minions
 
- Scenario: [minion-action-chain] Pre-requisite: downgrade repo to lower version
+  Scenario: Pre-requisite: downgrade repositories to lower version on Salt minion
     Given I am authorized as "admin" with password "admin"
     When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
     And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
@@ -12,26 +12,29 @@ Feature: Action chain tests for salt minions
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
 
-  Scenario: [minion-action-chain] Pre-requisite: ensure the errata cache is computed
+  Scenario: Pre-requisite: wait until downgrade is finished
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0-4.1" text
-    Then I follow "Admin"
+
+  Scenario: Pre-requisite: ensure the errata cache is computed before testing on Salt minion
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Admin"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
-    Then I click on "Single Run Schedule"
-    And I should see a "bunch was scheduled" text
-    Then I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-  Scenario: [minion-action-chain] Pre-requisite: remove all Action Chains
+  Scenario: Pre-requisite: remove all action chains before testing on Salt minion
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-    Then I delete all action chains
+    When I delete all action chains
     And I cancel all scheduled actions
 
-  Scenario: [minion-action-chain] Add a patch installation to the action chain
+  Scenario: Add a patch installation to the action chain on Salt minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
@@ -41,7 +44,7 @@ Feature: Action chain tests for salt minions
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: [minion-action-chain] Add a package removal to the action chain
+  Scenario: Add a package removal to the action chain on Salt minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "List / Remove" in the content area
@@ -53,7 +56,7 @@ Feature: Action chain tests for salt minions
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: [minion-action-chain] Add a package installation to an action chain
+  Scenario: Add a package installation to an action chain on Salt minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
@@ -63,24 +66,24 @@ Feature: Action chain tests for salt minions
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: [minion-action-chain] Create a configuration channel for testing action chains
+  Scenario: Create a configuration channel for testing action chain on Salt minion
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-    When I follow "Create Config Channel"
+    And I follow "Create Config Channel"
     And I enter "Action Chain Channel" as "cofName"
     And I enter "actionchainchannel" as "cofLabel"
     And I enter "This is a test channel" as "cofDescription"
     And I click on "Create Config Channel"
     Then I should see a "Action Chain Channel" text
 
-  Scenario: [minion-action-chain] Add a configuration file to configuration channel
+  Scenario: Add a configuration file to configuration channel for testing action chain on Salt minion
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
-    When I follow "Action Chain Channel"
+    And I follow "Action Chain Channel"
     And I follow "Create Configuration File or Directory"
     And I enter "/etc/action-chain.cnf" as "cffPath"
     And I enter "Testchain=YES_PLEASE" in the editor
@@ -88,13 +91,13 @@ Feature: Action chain tests for salt minions
     Then I should see a "Revision 1 of /etc/action-chain.cnf from channel Action Chain Channel" text
     And I should see a "Update Configuration File" button
 
-  Scenario: [minion-action-chain] Subscribe system to configuration channel
+  Scenario: Subscribe system to configuration channel for testing action chain on Salt minion
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
-    When I follow "Systems" in the left menu
+    When I follow "Home" in the left menu
+    And I follow "Systems" in the left menu
     And I follow "Overview" in the left menu
     And I follow this "sle-minion" link
-    When I follow "Configuration" in the content area
+    And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
     And I check "Action Chain Channel" in the list
@@ -102,9 +105,9 @@ Feature: Action chain tests for salt minions
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
 
-  Scenario: [minion-action-chain] Add a configuration file deployment to the action chain
+  Scenario: Add a configuration file deployment to the action chain on Salt minion
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Action Chain Channel"
@@ -116,20 +119,20 @@ Feature: Action chain tests for salt minions
     And I click on "Deploy Files to Selected Systems"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: Add apply highstate to minion action-chain
+  Scenario: Add apply highstate to action chain on Salt minion
     Given I am on the Systems overview page of this "sle-minion"
-     And I follow "States" in the content area
-     And I check radio button "schedule-by-action-chain"
-     And I click on "Apply Highstate"
+    When I follow "States" in the content area
+    And I check radio button "schedule-by-action-chain"
+    And I click on "Apply Highstate"
 
-  Scenario: [minion-action-chain]  Add a reboot action to the action chain
+  Scenario: Add a reboot action to the action chain on Salt minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow first "Schedule System Reboot"
     And I check radio button "schedule-by-action-chain"
     And I click on "Reboot system"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: [minion-action-chain] Add a remote command to the action chain
+  Scenario: Add a remote command to the action chain on Salt minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Remote Command"
     And I enter as remote command this script in
@@ -141,12 +144,12 @@ Feature: Action chain tests for salt minions
     And I click on "Schedule"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: [minion-action-chain] Verify the action chain list
+  Scenario: Verify the action chain list on Salt minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
-    And I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
+    Then I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
     And I should see a "2. Remove milkyway-dummy from 1 system" text
     And I should see a "3. Install or update virgo-dummy on 1 system" text
     And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"
@@ -154,25 +157,25 @@ Feature: Action chain tests for salt minions
     And I should see a "6. Reboot 1 system" text
     And I should see a "7. Run a remote command on 1 system" text
 
-  Scenario: [minion-action-chain] Check that a different user cannot see the action chain
+  Scenario: Check that a different user cannot see the action chain for Salt minion
     Given I am authorized as "testing" with password "testing"
     When I follow "Schedule"
     And I follow "Action Chains"
     Then I should not see a "new action chain" link
 
-  Scenario: [minion-action-chain] Execute the action chain from the web UI
-   Given I am on the Systems overview page of this "sle-minion"
-   When I follow "Schedule"
-   And I follow "Action Chains"
-   And I follow "new action chain"
-   Then I click on "Save and Schedule"
-   And I should see a "Action Chain new action chain has been scheduled for execution." text
+  Scenario: Execute the action chain from the web UI on Salt minion
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Schedule"
+    And I follow "Action Chains"
+    And I follow "new action chain"
+    Then I click on "Save and Schedule"
+    And I should see a "Action Chain new action chain has been scheduled for execution." text
 
-   Scenario: Verify that the action chain was executed successfully
-    Then I wait for "virgo-dummy" to be installed on this "sle-minion"
-    When I wait until file "/tmp/action_chain_one_system_done" exists on "sle-minion"
+  Scenario: Verify that the action chain was executed successfully
+    When I wait for "virgo-dummy" to be installed on this "sle-minion"
+    And I wait until file "/tmp/action_chain_one_system_done" exists on "sle-minion"
 
-  Scenario: [minion-action-chain] Add a remote command to the new action chain
+  Scenario: Add a remote command to the new action chain on Salt minion
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Remote Command"
     And I enter as remote command this script in
@@ -184,17 +187,17 @@ Feature: Action chain tests for salt minions
     And I click on "Schedule"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
-  Scenario: [minion-action-chain] Delete the action chain
-     Given I am authorized as "admin" with password "admin"
-     Then I follow "Schedule"
-     And I follow "Action Chains"
-     And I follow "new action chain"
-     And I follow "delete action chain" in the content area
-     Then I click on "Delete"
+  Scenario: Delete the action chain for Salt minion
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Schedule"
+    And I follow "Action Chains"
+    And I follow "new action chain"
+    And I follow "delete action chain" in the content area
+    Then I click on "Delete"
 
-  Scenario: Add an action-chain using system-set-manager for trad-client and sle-minion
-   Given I am authorized as "admin" with password "admin"
-    And I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
+  Scenario: Add an action chain using system set manager for traditional client and Salt minion
+    Given I am authorized as "admin" with password "admin"
+    When I run "zypper -n rm andromeda-dummy" on "sle-client" without error control
     And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
     When I am on the System Overview page
     And I check the "sle-minion" client
@@ -207,11 +210,11 @@ Feature: Action chain tests for salt minions
     And I check "andromeda-dummy" in the list
     And I click on "Install Selected Packages"
     Then I should see "sle-minion" hostname
-    Then I should see "sle-client" hostname
-    And I check radio button "schedule-by-action-chain"
+    And I should see "sle-client" hostname
+    When I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
     Then I should see a "Package installations are being scheduled" text
-    And I am on System Set Manager Overview
+    When I am on System Set Manager Overview
     And I follow "remote commands" in the content area
     And I enter as remote command this script in
       """
@@ -221,9 +224,9 @@ Feature: Action chain tests for salt minions
     And I check radio button "schedule-by-action-chain"
     And I click on "Schedule"
     Then I should see "sle-minion" hostname
-    Then I should see "sle-client" hostname
+    And I should see "sle-client" hostname
 
-  Scenario: Verify action-chain for 2 system-set-manager (traditional and sle minion)
+  Scenario: Verify action chain for two systems
     Given I am on the Systems overview page of this "sle-minion"
     And I run "rhn-actions-control --enable-all" on "sle-client"
     When I follow "Schedule"
@@ -235,8 +238,9 @@ Feature: Action chain tests for salt minions
     And I should see a "Action Chain new action chain has been scheduled for execution." text
 
   Scenario: Verify that the action chain from the system set manager was executed successfully
-    And I run "rhn_check -vvv" on "sle-client"
-    Then I wait until file "/tmp/action_chain_done" exists on "sle-client"
+    Given I am authorized as "admin" with password "admin"
+    When I run "rhn_check -vvv" on "sle-client"
+    And I wait until file "/tmp/action_chain_done" exists on "sle-client"
     And I wait until file "/tmp/action_chain_done" exists on "sle-minion"
     Then "andromeda-dummy" should be installed on "sle-client"
     And "andromeda-dummy" should be installed on "sle-minion"
@@ -244,7 +248,7 @@ Feature: Action chain tests for salt minions
   Scenario: Cleanup: roll back action chain effects
     Given I am on the Systems overview page of this "sle-minion"
     When I run "rm /tmp/action_chain_done" on "sle-minion" without error control
-    When I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
+    And I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-minion"
@@ -252,15 +256,15 @@ Feature: Action chain tests for salt minions
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0-4.1" text
-    Then I follow "Admin"
+    And I follow "Admin"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
-    Then I click on "Single Run Schedule"
-    And I should see a "bunch was scheduled" text
-    Then I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-  Scenario: Add operations to the action chain via XML-RPC
+  Scenario: Add operations to the action chain via XML-RPC for Salt minions
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     And I want to operate on this "sle-minion"
     When I call XML-RPC createChain with chainLabel "throwaway_chain"
@@ -271,10 +275,10 @@ Feature: Action chain tests for salt minions
     And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I call actionchain.remove_action on each action within the chain
-    Then I should be able to see that the current action chain is empty
+    Then the current action chain should be empty
     And I delete the action chain
 
-  Scenario: Run an action chain via XML-RPC
+  Scenario: Run an action chain via XML-RPC on Salt minion
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     And I want to operate on this "sle-minion"
     When I call XML-RPC createChain with chainLabel "multiple_scripts"
@@ -289,7 +293,7 @@ Feature: Action chain tests for salt minions
     Then file "/tmp/action_chain.log" should contain "123" on "sle-minion"
     And there should be no more any scheduled actions
 
-  Scenario: Cleanup: remove system from configuration channel
+  Scenario: Cleanup: remove Salt client from configuration channel
     Given I am authorized as "admin" with password "admin"
     And I follow "Home" in the left menu
     When I follow "Configuration" in the left menu
@@ -300,22 +304,22 @@ Feature: Action chain tests for salt minions
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
 
-  Scenario: Cleanup: remove configuration channel
+  Scenario: Cleanup: remove configuration channel for Salt minion
     Given I am authorized as "admin" with password "admin"
-    And I follow "Home" in the left menu
+    When I follow "Home" in the left menu
     And I follow "Configuration" in the left menu
     And I follow "Configuration Channels" in the left menu
     And I follow "Action Chain Channel"
     And I follow "Delete Channel"
     And I click on "Delete Config Channel"
 
-  Scenario: Cleanup: remove packages and repository used in action chain
+  Scenario: Cleanup: remove packages and repository used in action chain for Salt minion
     When I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n rm milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-minion" without error control
 
-  Scenario: Cleanup: remove temporary files
+  Scenario: Cleanup: remove temporary files for testing action chains on Salt minion
     When I run "rm -f /tmp/action_chain.log" on "sle-minion" without error control
     And I run "rm -f /tmp/action_chain_done" on "sle-minion" without error control
     And I run "rm -f /etc/action-chain.cnf" on "sle-minion" without error control
