@@ -17,17 +17,6 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 ExcludeArch: aarch64
 
-BuildRequires: hadoop
-BuildRequires: nutch-core
-BuildRequires: picocontainer
-BuildRequires: lucene
-BuildRequires: apache-mybatis
-Requires: hadoop
-Requires: nutch-core
-Requires: picocontainer
-Requires: lucene
-Requires: apache-mybatis
-
 BuildRequires: junit
 #Requires: apache-ibatis-sqlmap
 Requires: c3p0 >= 0.9.1
@@ -101,7 +90,7 @@ BuildRequires: systemd
 %endif
 %if 0%{?suse_version}
 BuildRequires: doc-indexes
-Requires:      nutch-core
+Requires:      nutch
 %endif
 
 %description
@@ -139,6 +128,9 @@ install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -p -m 644 dist/%{name}-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/
 # using install -m does not preserve the symlinks
 cp -d lib/* $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/lib
+# bnc#918852 hadoop hardcodes the log4j adapter for commons-logging
+# which we don't have
+zip -d $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/lib/hadoop-0.18.1-core.jar commons-logging.properties
 
 install -p -m 644 src/config/etc/logrotate.d/rhn-search $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn-search
 install -p -m 755 src/config/rhn-search $RPM_BUILD_ROOT%{_sbindir}
@@ -155,7 +147,7 @@ ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BU
 sed -i 's/log4j.jar/log4j-1.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 %endif
 %if 0%{?suse_version} >= 1315
-sed -i 's/^wrapper.java.classpath.19=.*/wrapper.java.classpath.19=\/usr\/share\/nutch\/nutch-core-1.0.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
+sed -i 's/^wrapper.java.classpath.19=.*/wrapper.java.classpath.19=\/usr\/share\/nutch\/nutch-2008-12-01_04-01-21.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 %endif
 
 # add rc link
