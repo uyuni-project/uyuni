@@ -1,3 +1,4 @@
+- reorder styles import
 - fix URL for new products page (bsc#1092492)
 - Show channel label when listing config channels (bsc#1083278)
 
