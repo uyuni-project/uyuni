@@ -182,6 +182,7 @@ public class MinionController {
         data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(new Long(grpId),
                 user.getOrg()).getName());
         data.put("minions", Json.GSON.toJson(minions));
+        addActionChains(user, data);
         return new ModelAndView(data, "groups/highstate.jade");
     }
 
