@@ -333,9 +333,14 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                           {t("You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel.")}
                         </div>
                       }>
-                      <Toggler.WithRecommended
-                         enabled={this.areRecommendedChildrenSelected()}
-                         handler={() => this.toggleRecommended()} />
+                      <div style={{"overflow": "auto"}} >
+                        <div style={{"float": "right"}}>
+                          <Toggler.WithRecommended
+                             enabled={this.areRecommendedChildrenSelected()}
+                             handler={() => this.toggleRecommended()} />
+                        </div>
+                      </div>
+                      <hr />
                       <div>{ baseChannels } </div>
                     </BootstrapPanel>
                   </div>
