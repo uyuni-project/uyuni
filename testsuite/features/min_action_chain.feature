@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Action chain tests for salt minions
- 
+
  Scenario: [minion-action-chain] Pre-requisite: downgrade repo to lower version
     Given I am authorized as "admin" with password "admin"
     When I run "zypper -n mr -e Devel_Galaxy_BuildRepo" on "sle-minion"
@@ -11,15 +11,25 @@ Feature: Action chain tests for salt minions
     And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-minion"
     And I run "zypper -n ref" on "sle-minion"
-    And I follow "Admin"
-    And I follow "Task Schedules"
+
+  Scenario: [minion-action-chain] Pre-requisite: ensure the errata cache is computed
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Software" in the content area
+    And I follow "List / Remove" in the content area
+    And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0-4.1" text
+    Then I follow "Admin"
     And I follow "Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
-    And I click on "Single Run Schedule"
-    Then I should see a "bunch was scheduled" text
-    And I reload the page
-    And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+    Then I click on "Single Run Schedule"
+    And I should see a "bunch was scheduled" text
+    Then I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+
+  Scenario: [minion-action-chain] Pre-requisite: remove all Action Chains
+    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    Then I delete all action chains
+    And I cancel all scheduled actions
 
   Scenario: [minion-action-chain] Add a package installation to an action chain
     Given I am on the Systems overview page of this "sle-minion"
@@ -152,6 +162,10 @@ Feature: Action chain tests for salt minions
    Then I click on "Save and Schedule"
    And I should see a "Action Chain new action chain has been scheduled for execution." text
 
+   Scenario: Verify that the action chain was executed successfully
+     Given I wait and check that "sle-minion" has rebooted
+     Then "virgo-dummy" should be installed on "sle-minion"
+
   Scenario: [minion-action-chain] Check that a different user cannot see the action chain
     Given I am authorized as "testing" with password "testing"
     When I follow "Schedule"
@@ -187,7 +201,7 @@ Feature: Action chain tests for salt minions
     And I check the "sle-client" client
     And I am on System Set Manager Overview
     And I follow "Install" in the content area
-    And I follow "Test-Channel-x86_64" in the content area                                       
+    And I follow "Test-Channel-x86_64" in the content area
     And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
     And I click on the css "button.spacewalk-button-filter"
     And I check "andromeda-dummy" in the list
@@ -197,19 +211,83 @@ Feature: Action chain tests for salt minions
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
     Then I should see a "Package installations are being scheduled" text
-
-  Scenario: Verify that action-chains are executed with success
-    Given "virgo-dummy" should be installed on "sle-minion"
-    Then I wait and check that "sle-minion" has rebooted
+    And I am on System Set Manager Overview
+    And I follow "remote commands" in the content area
+    And I enter as remote command this script in
+      """
+      #!/bin/bash
+      touch /tmp/action_chain_done
+      """
+    And I check radio button "schedule-by-action-chain"
+    And I click on "Schedule"
+    Then I should see "sle-minion" hostname
+    Then I should see "sle-client" hostname
 
   Scenario: Verify action-chain for 2 system-set-manager (traditional and sle minion)
     Given I am on the Systems overview page of this "sle-minion"
+    And I run "rhn-actions-control --enable-all" on "sle-client"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
     And I should see a "1. Install or update andromeda-dummy on 2 systems" text
+    And I should see a "2. Run a remote command on 2 systems" text
     Then I click on "Save and Schedule"
     And I should see a "Action Chain new action chain has been scheduled for execution." text
+
+  Scenario: Verify that the action chain from the system set manager was executed successfully
+    And I run "rhn_check -vvv" on "sle-client"
+    Then I wait until file "/tmp/action_chain_done" exists on "sle-client"
+    And I wait until file "/tmp/action_chain_done" exists on "sle-minion"
+    Then "andromeda-dummy" should be installed on "sle-client"
+    And "andromeda-dummy" should be installed on "sle-minion"
+
+  Scenario: Cleanup: roll back action chain effects
+    Given I am on the Systems overview page of this "sle-minion"
+    When I run "rm /tmp/action_chain_done" on "sle-minion" without error control
+    When I run "zypper -n rm andromeda-dummy" on "sle-minion" without error control
+    And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
+    And I run "zypper -n in milkyway-dummy" on "sle-minion" without error control
+    And I run "zypper -n in --oldpackage andromeda-dummy-1.0-4.1" on "sle-minion"
+    When I follow "Software" in the content area
+    And I follow "List / Remove" in the content area
+    And I enter "andromeda-dummy" in the css "input[placeholder='Filter by Package Name: ']"
+    And I click on the css "button.spacewalk-button-filter" until page does contain "andromeda-dummy-1.0-4.1" text
+    Then I follow "Admin"
+    And I follow "Task Schedules"
+    And I follow "errata-cache-default"
+    And I follow "errata-cache-bunch"
+    Then I click on "Single Run Schedule"
+    And I should see a "bunch was scheduled" text
+    Then I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+
+  Scenario: Add operations to the action chain via XML-RPC
+    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    And I want to operate on this "sle-minion"
+    When I call XML-RPC createChain with chainLabel "throwaway_chain"
+    And I call actionchain.add_package_install()
+    And I call actionchain.add_package_removal()
+    And I call actionchain.add_package_upgrade()
+    And I call actionchain.add_script_run() with the script "exit 1;"
+    And I call actionchain.add_system_reboot()
+    Then I should be able to see all these actions in the action chain
+    When I call actionchain.remove_action on each action within the chain
+    Then I should be able to see that the current action chain is empty
+    And I delete the action chain
+
+  Scenario: Run an action chain via XML-RPC
+    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    And I want to operate on this "sle-minion"
+    When I call XML-RPC createChain with chainLabel "multiple_scripts"
+    And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
+    And I call actionchain.add_script_run() with the script "echo -n 2 >> /tmp/action_chain.log"
+    And I call actionchain.add_script_run() with the script "echo -n 3 >> /tmp/action_chain.log"
+    And I call actionchain.add_script_run() with the script "touch /tmp/action_chain_done"
+    Then I should be able to see all these actions in the action chain
+    When I schedule the action chain
+    Then there should be no more my action chain
+    When I wait until file "/tmp/action_chain_done" exists on "sle-minion"
+    Then file "/tmp/action_chain.log" should contain "123" on "sle-minion"
+    And there should be no more any scheduled actions
 
   Scenario: Cleanup: remove system from configuration channel
     Given I am authorized as "admin" with password "admin"
@@ -236,4 +314,8 @@ Feature: Action chain tests for salt minions
     And I run "zypper -n rm virgo-dummy" on "sle-minion" without error control
     And I run "zypper -n rm milkyway-dummy" on "sle-minion" without error control
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-minion" without error control
+
+  Scenario: Cleanup: remove temporary files
+    When I run "rm -f /tmp/action_chain.log" on "sle-minion" without error control
+    And I run "rm -f /tmp/action_chain_done" on "sle-minion" without error control
     And I run "rm -f /etc/action-chain.cnf" on "sle-minion" without error control

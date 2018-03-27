@@ -26,7 +26,7 @@ class XMLRPCActionChain < XMLRPCBaseTest
   def add_script_run(system, script, label)
     @connection.call('actionchain.add_script_run',
                      @sid, system, label, 'root', 'root', 300,
-                     Base64.encode64(script))
+                     Base64.strict_encode64(script))
   end
 
   def list_chain_actions(label)
