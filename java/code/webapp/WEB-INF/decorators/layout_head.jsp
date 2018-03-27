@@ -22,6 +22,18 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- import default fonts/icons styles -->
+    <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css" />
+    <!-- import custom fonts/icons styles -->
+    <link rel="stylesheet" href="/fonts/font-spacewalk/css/spacewalk-font.css" />
+
+    <!-- import plugins styles -->
+    <link rel="stylesheet" href="/css/jquery.timepicker.css" />
+    <link rel="stylesheet" href="/css/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="/javascript/select2/select2.css" />
+    <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css" />
+
+    <!-- import spacewalk styles -->
     <rhn:require acl="is(development_environment)">
       <link rel="stylesheet/less" type="text/css" href="/css/spacewalk.less" />
       <script>less = { env: 'development' };</script>
@@ -30,14 +42,6 @@
     <rhn:require acl="not is(development_environment)">
       <link rel="stylesheet" href="/css/spacewalk.css" />
     </rhn:require>
-    <link rel="stylesheet" href="/css/jquery.timepicker.css" />
-    <link rel="stylesheet" href="/css/bootstrap-datepicker.css" />
-
-    <link rel="stylesheet" href="/javascript/select2/select2.css" />
-    <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css" />
-
-    <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="/fonts/font-spacewalk/css/spacewalk-font.css" />
 
     <script src="/javascript/jquery.js"></script>
     <script src="/javascript/bootstrap.js"></script>
