@@ -13,6 +13,7 @@ const {BootstrapPanel} = require("../components/panel");
 const MessagesUtils = require("../components/messages").Utils;
 const {ChannelLink, ActionLink, SystemLink} = require("../components/links");
 const {PopUp} = require("../components/popup");
+const Toggler = require("../components/toggler");
 
 import type JsonResult from "../utils/network";
 
@@ -281,6 +282,35 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     this.props.onChangeChild(allowedChannels, childId, action)
   }
 
+  toggleRecommended = (change: SsmAllowedChildChannelsDto) => {
+    const recommendedChangeIds = change.childChannels
+      .filter(channel => channel.recommended)
+      .map(channel => getAllowedChangeId(change, channel.id));
+
+    if (this.areRecommendedChildrenSelected(change)) {
+      recommendedChangeIds
+        .filter(changeId => this.state.selections.get(changeId) === "SUBSCRIBE")
+        .forEach(changeId => this.state.selections.set(changeId, "NO_CHANGE"));
+    } else {
+      recommendedChangeIds
+        .filter(changeId => this.state.selections.get(changeId) !== "SUBSCRIBE")
+        .forEach(changeId => this.state.selections.set(changeId, "SUBSCRIBE"));
+    }
+
+    this.setState({selections: this.state.selections});
+  }
+
+  areRecommendedChildrenSelected = (change: SsmAllowedChildChannelsDto) => {
+    const recommendedChannels = change.childChannels
+      .filter(channel => channel.recommended);
+    const recommendedNonSubscribeActions = recommendedChannels
+      .map(channel => getAllowedChangeId(change, channel.id))
+      .map(changeId => this.state.selections.get(changeId))
+      .filter(action => action !== "SUBSCRIBE");
+
+    return recommendedChannels.length > 0 && recommendedNonSubscribeActions.length == 0;
+  }
+
   showServersListPopUp = (channelName: string, servers: Array<SsmServerDto>) => {
     this.setState({
         popupServersList: servers,
@@ -307,6 +337,11 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                      t("(Couldn't determine new base channel)")
                   }
                 </h4>
+              </div>
+              <div
+                <Toggler.WithRecommended
+                   enabled={this.areRecommendedChildrenSelected(allowed)}
+                   handler={() => this.toggleRecommended(allowed)} />
               </div>
               <div className="col-md-4 text-right">
                 <strong>
