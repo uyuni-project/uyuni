@@ -71,10 +71,7 @@ When(/^I check radio button "(.*?)"$/) do |arg1|
 end
 
 When(/^I enter as remote command this script in$/) do |multiline|
-  within(:xpath, '//section') do
-    x = find('textarea#fSptInput')
-    x.set(multiline) # find("#{arg1}") #.set(lines)
-  end
+  find(:xpath, '//textarea[@name="script_body"]').set(multiline)
 end
 
 # bare metal

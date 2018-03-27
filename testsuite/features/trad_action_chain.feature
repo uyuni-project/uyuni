@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 
-Feature: Action chaining traditinal clients
+Feature: Action Chains on traditional clients
 
   Scenario: Pre-requisite: downgrade repo to lower version
     Given I am authorized as "admin" with password "admin"
@@ -20,6 +20,10 @@ Feature: Action chaining traditinal clients
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+
+  Scenario: Pre-requisite: remove all Action Chains
+    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    Then I delete all action chains
 
   Scenario: Add a package installation to an action chain
     Given I am on the Systems overview page of this "sle-client"
@@ -186,20 +190,21 @@ Feature: Action chaining traditinal clients
 
   Scenario: Create an action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
-    And I call actionchain.list_chains() if label "Quick Brown Fox" is there
+    When I call XML-RPC createChain with chainLabel "throwaway_chain"
+    And I call actionchain.list_chains() if label "throwaway_chain" is there
     Then I delete the action chain
-    And there should be no action chain with the label "Quick Brown Fox"
-    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
-    Then I call actionchain.rename_chain() to rename it from "Quick Brown Fox" to "Slow Gray Elephant"
-    And there should be a new action chain with the label "Slow Gray Elephant"
-    And I delete an action chain, labeled "Slow Gray Elephant"
-    And there should be no action chain with the label "Slow Gray Elephant"
-    And no action chain with the label "Quick Brown Fox"
+    And there should be no action chain with the label "throwaway_chain"
+    When I call XML-RPC createChain with chainLabel "throwaway_chain"
+    Then I call actionchain.rename_chain() to rename it from "throwaway_chain" to "throwaway_chain_renamed"
+    And there should be a new action chain with the label "throwaway_chain_renamed"
+    And I delete an action chain, labeled "throwaway_chain_renamed"
+    And there should be no action chain with the label "throwaway_chain_renamed"
+    And no action chain with the label "throwaway_chain"
 
   Scenario: Add operations to the action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
+    And I want to operate on this "sle-client"
+    When I call XML-RPC createChain with chainLabel "throwaway_chain"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
     And I call actionchain.add_package_upgrade()
@@ -211,9 +216,10 @@ Feature: Action chaining traditinal clients
     Then I should be able to see that the current action chain is empty
     And I delete the action chain
 
-  Scenario: Run the action chain via XML-RPC
+  Scenario: Run and cancel an action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-    When I call XML-RPC createChain with chainLabel "Quick Brown Fox"
+    And I want to operate on this "sle-client"
+    When I call XML-RPC createChain with chainLabel "throwaway_chain"
     And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
@@ -222,6 +228,21 @@ Feature: Action chaining traditinal clients
     Then I cancel all scheduled actions
     And there should be no more any scheduled actions
     And I delete the action chain
+
+  Scenario: Run an action chain via XML-RPC
+    Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
+    And I want to operate on this "sle-client"
+    And I run "rhn-actions-control --enable-all" on "sle-client"
+    When I call XML-RPC createChain with chainLabel "multiple_scripts"
+    And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
+    And I call actionchain.add_script_run() with the script "echo -n 2 >> /tmp/action_chain.log"
+    And I call actionchain.add_script_run() with the script "echo -n 3 >> /tmp/action_chain.log"
+    Then I should be able to see all these actions in the action chain
+    When I schedule the action chain
+    Then there should be no more my action chain
+    When I run "rhn_check -vvv" on "sle-client"
+    Then file "/tmp/action_chain.log" should contain "123" on "sle-client"
+    And there should be no more any scheduled actions
 
   Scenario: Cleanup: remove system from configuration channel
     Given I am authorized as "admin" with password "admin"
@@ -248,3 +269,6 @@ Feature: Action chaining traditinal clients
     And I run "zypper -n rm virgo-dummy" on "sle-client" without error control
     And I run "zypper -n rm milkyway-dummy" on "sle-client" without error control
     And I run "zypper -n mr -d Devel_Galaxy_BuildRepo" on "sle-client" without error control
+
+  Scenario: Cleanup: remove temporary files
+    When I run "rm -f /tmp/action_chain.log" on "sle-minion" without error control

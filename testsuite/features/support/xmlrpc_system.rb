@@ -6,6 +6,10 @@ class XMLRPCSystemTest < XMLRPCBaseTest
     @connection.call('system.list_systems', @sid)
   end
 
+  def search_by_name(name)
+    @connection.call('system.search_by_name', @sid, name)
+  end
+
   # Get the list of latest installable packages for a given system.
   def list_all_installable_packages(server)
     @connection.call('system.list_all_installable_packages', @sid, server)
