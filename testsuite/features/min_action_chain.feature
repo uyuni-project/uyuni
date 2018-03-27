@@ -31,28 +31,6 @@ Feature: Action chain tests for salt minions
     Then I delete all action chains
     And I cancel all scheduled actions
 
-  Scenario: [minion-action-chain] Add a package installation to an action chain
-    Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Software" in the content area
-    And I follow "Install New Packages" in the content area
-    And I check "virgo-dummy" in the list
-    And I click on "Install Selected Packages"
-    And I check radio button "schedule-by-action-chain"
-    And I click on "Confirm"
-    Then I should see a "Action has been successfully added to the Action Chain" text
-
-  Scenario: [minion-action-chain] Add a remote command to the action chain
-    Given I am on the Systems overview page of this "sle-minion"
-    When I follow "Remote Command"
-    And I enter as remote command this script in
-      """
-      #!/bin/bash
-      touch /root/12345
-      """
-    And I check radio button "schedule-by-action-chain"
-    And I click on "Schedule"
-    Then I should see a "Action has been successfully added to the Action Chain" text
-
   Scenario: [minion-action-chain] Add a patch installation to the action chain
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Software" in the content area
@@ -71,6 +49,16 @@ Feature: Action chain tests for salt minions
     And I click on the css "button.spacewalk-button-filter"
     And I check "milkyway-dummy" in the list
     And I click on "Remove Packages"
+    And I check radio button "schedule-by-action-chain"
+    And I click on "Confirm"
+    Then I should see a "Action has been successfully added to the Action Chain" text
+
+  Scenario: [minion-action-chain] Add a package installation to an action chain
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Software" in the content area
+    And I follow "Install New Packages" in the content area
+    And I check "virgo-dummy" in the list
+    And I click on "Install Selected Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
@@ -141,18 +129,36 @@ Feature: Action chain tests for salt minions
     And I click on "Reboot system"
     Then I should see a "Action has been successfully added to the Action Chain" text
 
+  Scenario: [minion-action-chain] Add a remote command to the action chain
+    Given I am on the Systems overview page of this "sle-minion"
+    When I follow "Remote Command"
+    And I enter as remote command this script in
+      """
+      #!/bin/bash
+      touch /tmp/action_chain_one_system_done
+      """
+    And I check radio button "schedule-by-action-chain"
+    And I click on "Schedule"
+    Then I should see a "Action has been successfully added to the Action Chain" text
+
   Scenario: [minion-action-chain] Verify the action chain list
     Given I am on the Systems overview page of this "sle-minion"
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
-    And I should see a "1. Install or update virgo-dummy on 1 system" text
-    And I should see a "2. Run a remote command on 1 system" text
-    And I should see a "3. Apply patch(es) andromeda-dummy-6789 on 1 system" text
-    And I should see a "4. Remove milkyway-dummy from 1 system" text
-    And I should see a text like "5. Deploy.*/etc/action-chain.cnf.*to 1 system"
-    And I should see a "6. Apply Highstate" text
-    And I should see a "7. Reboot 1 system" text
+    And I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
+    And I should see a "2. Remove milkyway-dummy from 1 system" text
+    And I should see a "3. Install or update virgo-dummy on 1 system" text
+    And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"
+    And I should see a "5. Apply Highstate" text
+    And I should see a "6. Reboot 1 system" text
+    And I should see a "7. Run a remote command on 1 system" text
+
+  Scenario: [minion-action-chain] Check that a different user cannot see the action chain
+    Given I am authorized as "testing" with password "testing"
+    When I follow "Schedule"
+    And I follow "Action Chains"
+    Then I should not see a "new action chain" link
 
   Scenario: [minion-action-chain] Execute the action chain from the web UI
    Given I am on the Systems overview page of this "sle-minion"
@@ -163,14 +169,8 @@ Feature: Action chain tests for salt minions
    And I should see a "Action Chain new action chain has been scheduled for execution." text
 
    Scenario: Verify that the action chain was executed successfully
-     Given I wait and check that "sle-minion" has rebooted
-     Then "virgo-dummy" should be installed on "sle-minion"
-
-  Scenario: [minion-action-chain] Check that a different user cannot see the action chain
-    Given I am authorized as "testing" with password "testing"
-    When I follow "Schedule"
-    And I follow "Action Chains"
-    Then I should not see a "new action chain" link
+    Then I wait for "virgo-dummy" to be installed on this "sle-minion"
+    When I wait until file "/tmp/action_chain_one_system_done" exists on "sle-minion"
 
   Scenario: [minion-action-chain] Add a remote command to the new action chain
     Given I am on the Systems overview page of this "sle-minion"
@@ -319,3 +319,4 @@ Feature: Action chain tests for salt minions
     When I run "rm -f /tmp/action_chain.log" on "sle-minion" without error control
     And I run "rm -f /tmp/action_chain_done" on "sle-minion" without error control
     And I run "rm -f /etc/action-chain.cnf" on "sle-minion" without error control
+    And I run "rm -f /tmp/action_chain_one_system_done" on "sle-minion" without error control
