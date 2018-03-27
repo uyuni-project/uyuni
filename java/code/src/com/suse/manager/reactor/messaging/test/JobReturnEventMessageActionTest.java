@@ -56,8 +56,10 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
+import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.JobReturnEvent;
@@ -1195,8 +1197,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Action action = actions.stream().findFirst().get();
 
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
-
         action.addServerAction(sa);
+
+        SaltServerActionService.INSTANCE.setCommitTransaction(false);
+        Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE.callsForAction(action, Arrays.asList(minion));
 
         HibernateFactory.getSession().flush();
 
@@ -1215,6 +1219,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, minion.getChildChannels().size());
         assertTrue(minion.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch1.getId())));
         assertTrue(minion.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2.getId())));
+
+        assertEquals(3, minion.getAccessTokens().size());
+        assertTokenChannel(minion, base);
+        assertTokenChannel(minion, ch1);
+        assertTokenChannel(minion, ch2);
+    }
+
+    private void assertTokenChannel(MinionServer minion, Channel channel) {
+        assertTrue(channel.getLabel(), minion.getAccessTokens().stream()
+                .filter(token -> token.getChannels().size() == 1 && token.getChannels().contains(channel))
+                .findFirst().isPresent());
     }
 
     public void testActionChainResponse() throws Exception {
