@@ -579,7 +579,8 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
         }
         else {
             Set<SUSEProduct> suseProducts = identifyProduct(server, grains);
-            Map<Boolean, List<SUSEProduct>> collect = suseProducts.stream().collect(Collectors.partitioningBy(SUSEProduct::isBase));
+            Map<Boolean, List<SUSEProduct>> collect = suseProducts.stream()
+                    .collect(Collectors.partitioningBy(SUSEProduct::isBase));
             baseProduct = Optional.ofNullable(collect.get(true).get(0));
             extProducts = collect.get(false);
         }
@@ -773,13 +774,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                         .stream()
                         .map(SUSEProductChannel::getChannel)
                         .filter(Objects::nonNull)
-                        .filter(c -> c.getParentChannel() == null || c.getParentChannel().getLabel().equals(rootChannelLabel));
+                        .filter(c -> c.getParentChannel() == null ||
+                            c.getParentChannel().getLabel().equals(rootChannelLabel));
 
                 Stream<Channel> stream = allExtensionProductsOf.stream().flatMap(ext -> {
                 return SUSEProductFactory.findSUSEProductExtension(root, base, ext).map(pe -> {
                     if (pe.isRecommended()) {
                         return recommendedChannelsByBaseProduct(root, ext);
-                    } else {
+                    }
+                    else {
                         return Stream.<Channel>empty();
                     }
                 }).orElseGet(Stream::empty);
