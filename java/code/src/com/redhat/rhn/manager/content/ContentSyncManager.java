@@ -168,11 +168,11 @@ public class ContentSyncManager {
         upgradePathsXML = file;
     }
 
-
     /**
      * Read channels from xml and return a list
+     *
      * @return a list  of XMLChannels
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of an error
      */
     public List<XMLChannel> readChannels() throws ContentSyncException {
         if (xmlChannelsCache == null) {
