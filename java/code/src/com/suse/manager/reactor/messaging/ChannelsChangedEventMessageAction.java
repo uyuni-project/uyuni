@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Handle changes of channel assignments on minions: trigger a refresh of the errata cache,
@@ -72,12 +73,13 @@ public class ChannelsChangedEventMessageAction extends AbstractDatabaseAction {
             // Regenerate the pillar data
             SaltStateGeneratorService.INSTANCE.generatePillar(minion,
                     true,
-                    msg.getAccessTokenId() != null ?
-                            AccessTokenFactory.lookupById(msg.getAccessTokenId())
-                                    .map(Collections::singleton)
-                                    .orElseThrow(() ->
-                                            new RuntimeException(
-                                                    "AccessToken not found id=" + msg.getServerId())) :
+                    msg.getAccessTokenIds() != null ?
+                            msg.getAccessTokenIds().stream()
+                                    .map(tokenId -> AccessTokenFactory.lookupById(tokenId)
+                                            .orElseThrow(() ->
+                                                    new RuntimeException(
+                                                            "AccessToken not found id=" + msg.getServerId())))
+                                    .collect(Collectors.toList()) :
                             Collections.emptyList()
                     );
 

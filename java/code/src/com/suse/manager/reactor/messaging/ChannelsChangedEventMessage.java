@@ -19,6 +19,8 @@ import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 /**
  * Trigger actions whenever a server's channel assignments were changed. Execution of the
  * action will wait until the current transaction has been committed as we are implementing
@@ -29,7 +31,7 @@ public class ChannelsChangedEventMessage implements EventDatabaseMessage {
     private final long serverId;
     private final Long userId;
     private final Transaction transaction;
-    private Long accessTokenId;
+    private List<Long> accessTokenIds;
     private boolean scheduleApplyChannelsState;
 
     /**
@@ -37,12 +39,12 @@ public class ChannelsChangedEventMessage implements EventDatabaseMessage {
      *
      * @param serverIdIn the server id
      * @param userIdIn the user id
-     * @param accessTokenIdIn id of the access token that's used for the new channels
+     * @param accessTokenIdsIn id of the access token that's used for the new channels
      */
-    public ChannelsChangedEventMessage(long serverIdIn, long userIdIn, Long accessTokenIdIn) {
+    public ChannelsChangedEventMessage(long serverIdIn, long userIdIn, List<Long> accessTokenIdsIn) {
         this.serverId = serverIdIn;
         this.userId = userIdIn;
-        this.accessTokenId = accessTokenIdIn;
+        this.accessTokenIds = accessTokenIdsIn;
         this.transaction = HibernateFactory.getSession().getTransaction();
     }
 
@@ -51,15 +53,15 @@ public class ChannelsChangedEventMessage implements EventDatabaseMessage {
      *
      * @param serverIdIn the server id
      * @param userIdIn the user id
-     * @param accessTokenIdIn id of the access token that's used for the new channels
+     * @param accessTokenIdsIn id of the access token that's used for the new channels
      * @param scheduleApplyChannelsStateIn whether to schedule applying the channels state
      * for Salt minions
      */
-    public ChannelsChangedEventMessage(long serverIdIn, long userIdIn, Long accessTokenIdIn,
+    public ChannelsChangedEventMessage(long serverIdIn, long userIdIn, List<Long> accessTokenIdsIn,
                                        boolean scheduleApplyChannelsStateIn) {
         this.serverId = serverIdIn;
         this.userId = userIdIn;
-        this.accessTokenId = accessTokenIdIn;
+        this.accessTokenIds = accessTokenIdsIn;
         this.transaction = HibernateFactory.getSession().getTransaction();
         this.scheduleApplyChannelsState = scheduleApplyChannelsStateIn;
     }
@@ -136,8 +138,8 @@ public class ChannelsChangedEventMessage implements EventDatabaseMessage {
     /**
      * @return accessTokenId to get
      */
-    public Long getAccessTokenId() {
-        return accessTokenId;
+    public List<Long> getAccessTokenIds() {
+        return accessTokenIds;
     }
 
     @Override

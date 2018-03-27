@@ -143,6 +143,8 @@ public class SaltServerActionService {
     /** SLS pillar parameter name for the list of regular patch names. */
     public static final String PARAM_REGULAR_PATCHES = "param_regular_patches";
 
+    private boolean commitTransaction = true;
+
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
 
@@ -719,41 +721,51 @@ public class SaltServerActionService {
             List<AccessToken> tokens = new ArrayList<>();
 
             // generate access tokens
-            Set<Channel> allChannels = new HashSet<>();
+            Set<Channel> allChannels = new HashSet();
             allChannels.addAll(actionDetails.getChannels());
             if (actionDetails.getBaseChannel() != null) {
                 allChannels.add(actionDetails.getBaseChannel());
             }
-            AccessToken newToken = AccessTokenFactory.generate(minion, allChannels)
-                    .orElseThrow(() ->
-                            new RuntimeException("Could not generate new token for " +
-                                    minion.getMinionId()));
-            newToken.setValid(false);
-            // persist the access tokens to be activated by the Salt job return event
-            // if the state.apply channels returns successfully
-            actionDetails.getAccessTokens().add(newToken);
 
-            tokens.add(newToken);
+            List<AccessToken> newTokens = allChannels.stream()
+                    .map(channel ->
+                            AccessTokenFactory.generate(minion, Collections.singleton(channel))
+                                    .orElseThrow(() ->
+                                            new RuntimeException(
+                                                    "Could not generate new channel access token for minion " +
+                                                            minion.getMinionId() + " and channel " +
+                                                            channel.getName())))
+                    .collect(Collectors.toList());
 
-            tokens.forEach(accessToken -> {
-                Map<String, Object> chanPillar = new HashMap<>();
+            newTokens.forEach(newToken -> {
+                // persist the access tokens to be activated by the Salt job return event
+                // if the state.apply channels returns successfully
+                newToken.setValid(false);
+                actionDetails.getAccessTokens().add(newToken);
+            });
+
+            Map<String, Object> chanPillar = new HashMap<>();
+            newTokens.forEach(accessToken ->
                 accessToken.getChannels().forEach(chan -> {
                     Map<String, Object> chanProps =
                             SaltStateGeneratorService.getChannelPillarData(minion, accessToken, chan);
                     chanPillar.put(chan.getLabel(), chanProps);
-                });
-                Map<String, Object> pillar = new HashMap<>();
-                pillar.put("_mgr_channels_items_name", "mgr_channels_new");
-                pillar.put("mgr_channels_new", chanPillar);
+                })
+            );
 
-                ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.CHANNELS),
-                        Optional.of(pillar), Optional.of(true)), Collections.singletonList(minion));
+            Map<String, Object> pillar = new HashMap<>();
+            pillar.put("_mgr_channels_items_name", "mgr_channels_new");
+            pillar.put("mgr_channels_new", chanPillar);
 
-            });
+            ret.put(State.apply(Arrays.asList(ApplyStatesEventMessage.CHANNELS),
+                    Optional.of(pillar), Optional.of(true)), Collections.singletonList(minion));
+
         });
-        // we must be sure that tokens and action Details are in the database
-        // before we return and send the salt calls to update the minions.
-        HibernateFactory.commitTransaction();
+        if (commitTransaction) {
+            // we must be sure that tokens and action Details are in the database
+            // before we return and send the salt calls to update the minions.
+            HibernateFactory.commitTransaction();
+        }
 
         return ret;
     }
@@ -1081,5 +1093,15 @@ public class SaltServerActionService {
     public void setSaltActionChainGeneratorService(SaltActionChainGeneratorService
                                                            saltActionChainGeneratorServiceIn) {
         this.saltActionChainGeneratorService = saltActionChainGeneratorServiceIn;
+    }
+
+    /**
+     * Whether to commit hibernate transaction or not. Default is commit.
+     * Only used in unit tests.
+     *
+     * @param commitTransactionIn flag to set
+     */
+    public void setCommitTransaction(boolean commitTransactionIn) {
+        this.commitTransaction = commitTransactionIn;
     }
 }

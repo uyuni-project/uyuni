@@ -27,9 +27,11 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.sql.Date;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
@@ -85,17 +87,17 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
         testMinionServer.getChannels().add(base);
         testMinionServer.getChannels().add(child);
 
-        assertEquals(0, AccessTokenFactory.unneededTokens(testMinionServer).size());
+        assertEquals(0, AccessTokenFactory.unneededTokens(testMinionServer, Collections.emptySet()).size());
 
         assertTrue(AccessTokenFactory.generate(testMinionServer, Collections.singleton(base)).isPresent());
         assertTrue(AccessTokenFactory.generate(testMinionServer, Collections.singleton(child)).isPresent());
 
-        assertEquals(0, AccessTokenFactory.unneededTokens(testMinionServer).size());
+        assertEquals(0, AccessTokenFactory.unneededTokens(testMinionServer, Collections.emptySet()).size());
 
         testMinionServer.getChannels().remove(child);
         MinionServer minionServer = TestUtils.saveAndReload(testMinionServer);
         assertEquals(1, minionServer.getChannels().size());
-        assertEquals(1, AccessTokenFactory.unneededTokens(minionServer).size());
+        assertEquals(1, AccessTokenFactory.unneededTokens(minionServer, Collections.emptySet()).size());
 
     }
 
@@ -146,6 +148,78 @@ public class AccessTokenFactoryTest extends BaseTestCaseWithUser {
 
         testMinionServer.getChannels().remove(child);
         assertTrue(AccessTokenFactory.refreshTokens(testMinionServer));
+    }
+
+    public void testRefreshSame() throws Exception{
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        Channel base = ChannelFactoryTest.createBaseChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(user);
+        child.setParentChannel(base);
+        testMinionServer.getChannels().add(base);
+        testMinionServer.getChannels().add(child);
+
+        boolean refreshed = AccessTokenFactory.refreshTokens(testMinionServer);
+        assertTrue(refreshed);
+
+        Set<Channel> channels = new HashSet<>();
+        channels.add(base);
+        channels.add(child);
+
+        assertEquals(2, testMinionServer.getAccessTokens().size());
+
+        Set<AccessToken> oldTokens = new HashSet<>(testMinionServer.getAccessTokens());
+        assertTrue(oldTokens.stream().allMatch(AccessToken::getValid));
+
+        AccessToken newToken1 = AccessTokenFactory.generate(testMinionServer, Collections.singleton(base)).get();
+        newToken1.setValid(false);
+
+        AccessToken newToken2 = AccessTokenFactory.generate(testMinionServer, Collections.singleton(child)).get();
+        newToken2.setValid(false);
+
+        testMinionServer.getAccessTokens().add(newToken1);
+        testMinionServer.getAccessTokens().add(newToken2);
+
+        AccessTokenFactory.refreshTokens(testMinionServer, Arrays.asList(newToken1, newToken2));
+
+        assertTrue(newToken1.getValid());
+        assertNotNull(newToken1.getMinion());
+        assertTrue(newToken2.getValid());
+        assertNotNull(newToken2.getMinion());
+
+        assertTrue(oldTokens.stream().allMatch(t -> !t.getValid()));
+        assertTrue(oldTokens.stream().allMatch(t -> t.getMinion() == null));
+    }
+
+    public void testRefreshNoInitialTokens() throws Exception{
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        Channel base = ChannelFactoryTest.createBaseChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(user);
+        child.setParentChannel(base);
+
+        AccessTokenFactory.refreshTokens(testMinionServer);
+
+        Set<Channel> channels = new HashSet<>();
+        channels.add(base);
+        channels.add(child);
+
+        assertEquals(0, testMinionServer.getAccessTokens().size());
+
+        AccessToken newToken1 = AccessTokenFactory.generate(testMinionServer, Collections.singleton(base)).get();
+        newToken1.setValid(false);
+
+        AccessToken newToken2 = AccessTokenFactory.generate(testMinionServer, Collections.singleton(child)).get();
+        newToken2.setValid(false);
+
+        testMinionServer.getAccessTokens().add(newToken1);
+        testMinionServer.getAccessTokens().add(newToken2);
+
+        AccessTokenFactory.refreshTokens(testMinionServer, Arrays.asList(newToken1, newToken2));
+
+        assertTrue(newToken1.getValid());
+        assertNotNull(newToken1.getMinion());
+        assertTrue(newToken2.getValid());
+        assertNotNull(newToken2.getMinion());
+
     }
 
 }
