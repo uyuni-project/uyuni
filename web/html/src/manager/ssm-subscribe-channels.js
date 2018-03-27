@@ -331,14 +331,12 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
           <div key={getAllowedChangeId(allowed, "")}>
             <div className="row">
               <div className="col-md-8">
-                <h4>
+                <h4 style={{"float": "left", "padding-right": "10px"}}>
                   { allowed.newBaseChannel ?
                     <ChannelLink id={allowed.newBaseChannel.id} newWindow={true}>{allowed.newBaseChannel.name}</ChannelLink> :
                      t("(Couldn't determine new base channel)")
                   }
                 </h4>
-              </div>
-              <div>
                 <Toggler.WithRecommended
                    enabled={this.areRecommendedChildrenSelected(allowed)}
                    handler={() => this.toggleRecommended(allowed)} />
