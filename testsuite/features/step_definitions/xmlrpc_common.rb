@@ -436,7 +436,7 @@ When(/^I call actionchain\.remove_action on each action within the chain$/) do
   end
 end
 
-Then(/^I should be able to see that the current action chain is empty$/) do
+Then(/^the current action chain should be empty$/) do
   assert_empty(rpc.list_chain_actions($chain_label))
 end
 
