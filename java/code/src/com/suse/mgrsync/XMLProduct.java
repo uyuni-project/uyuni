@@ -171,4 +171,17 @@ public class XMLProduct implements Comparable<XMLProduct> {
     public int compareTo(XMLProduct other) {
         return new CompareToBuilder().append(id, other.id).toComparison();
     }
+
+    /**
+     * Copy the current object into a new one
+     *
+     * @return a new XMLProduct that is a copy of the current one
+     */
+    public XMLProduct copy() {
+        XMLProduct xmlProduct = new XMLProduct();
+        xmlProduct.setId(this.getId());
+        xmlProduct.setName(this.getName());
+        xmlProduct.setVersion(this.getVersion());
+        return xmlProduct;
+    }
 }

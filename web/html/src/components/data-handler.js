@@ -32,39 +32,9 @@ const SearchField = (props) =>
     placeholder={props.placeholder}
     type="text"
     onChange={(e) => props.onSearch(e.target.value)}
+    name={props.name}
   />
 ;
-
-const Column = (props) => {
-  let content = null;
-  if (typeof props.cell === "function") {
-    content = props.cell(props.data, props.criteria);
-  } else {
-    content = props.cell;
-  }
-  return <td className={props.columnClass}>{content}</td>;
-}
-
-const Header = (props) => {
-  const thStyle = props.width ? { width: props.width } : null;
-
-  let thClass = props.className || "";
-
-  if (props.comparator) {
-    thClass += (thClass ? " " : "") + (props.sortDirection == 0 ? "" : (props.sortDirection > 0 ? "ascSort" : "descSort"));
-    const newDirection = props.sortDirection == 0 ? 1 : props.sortDirection * -1;
-
-    return (
-      <th style={ thStyle } className={ thClass }>
-        <a href="#" className="orderBy"
-            onClick={() => props.onSortChange(props.columnKey, newDirection)}>
-          {props.children}
-        </a>
-      </th>
-    );
-  }
-  return <th style={ thStyle } className={ thClass }>{props.children}</th>;
-}
 
 const Highlight = (props) => {
   let text = props.text;
@@ -90,21 +60,20 @@ const Highlight = (props) => {
   return <span key="hl">{chunk1}{chunk2}{chunk3}</span>;
 }
 
-const Table = React.createClass({
+const DataHandler = React.createClass({
   mixins: [StatePersistedMixin],
 
   propTypes: {
-    data: React.PropTypes.arrayOf(React.PropTypes.any).isRequired, // any type of data in and array, where each element is a row data
-    identifier: React.PropTypes.func.isRequired, // the unique key of the row
-    initialSortColumnKey: React.PropTypes.string, // the column key name of the initial sorted column
-    initialSortDirection: React.PropTypes.number, // 1 for ascending, -1 for descending
-    cssClassFunction: React.PropTypes.func, // a function that return a css class for each row
+    data: React.PropTypes.arrayOf(React.PropTypes.any).isRequired, // any type of data in and array, where each element is an item data
+    identifier: React.PropTypes.func.isRequired, // the unique key of the item
+    cssClassFunction: React.PropTypes.func, // a function that return a css class for each item
     searchField: React.PropTypes.node, // the React Object that contains the filter search field
-    initialItemsPerPage: React.PropTypes.number, // the initial number of how many row-per-page to show
+    additionalFilters: React.PropTypes.node, // other filters to render but not handled here
+    initialItemsPerPage: React.PropTypes.number, // the initial number of how many item-per-page to show
     selectable: React.PropTypes.bool, // enables item selection
     onSelect: React.PropTypes.func, // the handler to call when the table selection is updated. if this function is not provided, the select boxes won't be rendered
     selectedItems: React.PropTypes.array, // the identifiers for selected items
-    emptyText: React.PropTypes.string, // The message which is shown when there are no rows to display
+    emptyText: React.PropTypes.string, // The message which is shown when there are no items to display
     loading: React.PropTypes.bool, // if data is loading
     loadingText: React.PropTypes.string, // The message which is shown when the data is loading
   },
@@ -116,8 +85,6 @@ const Table = React.createClass({
       currentPage: 1,
       itemsPerPage: this.props.initialItemsPerPage || 15,
       criteria: null,
-      sortColumnKey: this.props.initialSortColumnKey || null,
-      sortDirection: this.props.initialSortDirection || 1,
       selectedItems: this.props.selectedItems || [],
       selectable: this.props.selectable,
       loading: this.props.loading || false,
@@ -134,9 +101,9 @@ const Table = React.createClass({
   },
 
   getLastPage: function(data, criteria, itemsPerPage) {
-    const rowCount = data.filter(this.getFilter(criteria)).length;
+    const itemCount = data.filter(this.getFilter(criteria)).length;
 
-    const lastPage = Math.ceil(rowCount / itemsPerPage);
+    const lastPage = Math.ceil(itemCount / itemsPerPage);
     return lastPage > 0 ? lastPage : 1;
   },
 
@@ -152,17 +119,7 @@ const Table = React.createClass({
   },
 
   getProcessedData: function() {
-    const comparators = React.Children.toArray(this.props.children)
-      .filter((child) => child.type === Column)
-      .filter((column) => column.props.columnKey == this.state.sortColumnKey)
-      .map((column) => column.props.comparator);
-
-    const comparator = comparators.length > 0 ?
-      comparators[0] : ((a, b) => 0);
-
-    return this.props.data
-        .filter(this.getFilter(this.state.criteria))
-        .sort((a, b) => comparator(a, b, this.state.sortColumnKey, this.state.sortDirection));
+    return this.props.data.filter(this.getFilter(this.state.criteria));
   },
 
   onSearch: function(criteria) {
@@ -186,13 +143,6 @@ const Table = React.createClass({
     this.setState({currentPage: page});
   },
 
-  onSortChange: function(sortColumnKey, sortDirection) {
-    this.setState({
-      sortColumnKey: sortColumnKey,
-      sortDirection: sortDirection
-    });
-  },
-
   setSelection: function(selection) {
     if(this.props.onSelect) {
       this.props.onSelect(selection);
@@ -200,28 +150,6 @@ const Table = React.createClass({
   },
 
   render: function() {
-    const headers = React.Children.toArray(this.props.children)
-        .filter((child) => child.type === Column)
-        .map((column, index) => {
-            if (column.props.header) {
-                const sortDirection = column.props.columnKey == this.state.sortColumnKey ?
-                  this.state.sortDirection :
-                  0;
-                return <Header
-                    key={index}
-                    columnKey={column.props.columnKey}
-                    sortDirection={sortDirection}
-                    onSortChange={this.onSortChange}
-                    width={column.props.width}
-                    comparator={column.props.comparator}
-                    className={column.props.headerClass}>
-                        {column.props.header}
-                    </Header>;
-            } else {
-                return <Header key={index} className={column.props.headerClass}/>;
-            }
-        });
-
     const filteredData = this.getProcessedData();
 
     const itemsPerPage = this.state.itemsPerPage;
@@ -232,24 +160,7 @@ const Table = React.createClass({
     const fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
     const currItems = filteredData.slice(firstItemIndex, firstItemIndex + itemsPerPage);
-    const currIds = currItems.map(item => this.props.identifier(item));
     const isEmpty = itemCount === 0;
-
-    const handleSelectAll = (sel) => {
-        let arr = this.state.selectedItems;
-        if(sel) {
-            arr = arr.concat(currIds.filter(id => !arr.includes(id)));
-        } else {
-            arr = arr.filter(id => !currIds.includes(id));
-        }
-        this.setSelection(arr);
-    };
-
-    if(this.state.selectable) {
-        const allSelected = currIds.length > 0 && currIds.every(id => this.state.selectedItems.includes(id));
-        const checkbox = <Header><input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)}/></Header>;
-        headers.unshift(checkbox);
-    }
 
     const handleSelect = (id, sel) => {
         let arr = this.state.selectedItems;
@@ -261,26 +172,8 @@ const Table = React.createClass({
         this.setSelection(arr);
     };
 
-    const rows = currItems.map((datum, index) => {
-        const cells = React.Children.toArray(this.props.children)
-          .filter((child) => child.type === Column)
-          .map((column) => React.cloneElement(column, {data: datum, criteria: this.state.criteria})
-        );
-
-        if(this.state.selectable) {
-          const checkbox = <Column cell={
-            <input type="checkbox"
-                checked={this.state.selectedItems.includes(this.props.identifier(datum))}
-                onChange={(e) => handleSelect(this.props.identifier(datum), e.target.checked)}
-            />
-          }/>;
-          cells.unshift(checkbox);
-        }
-
-        let rowClass = this.props.cssClassFunction ? this.props.cssClassFunction(datum, index) : "";
-        let evenOddClass = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
-        return <tr className={rowClass + " " + evenOddClass} key={this.props.identifier(datum)} >{cells}</tr>;
-    });
+    const dataItems = React.Children.toArray(this.props.children)
+        .map(item => React.cloneElement(item, {data: currItems, criteria: this.state.criteria}));
 
     const handleSearchPanelClear = () => {
         this.setSelection([]);
@@ -312,6 +205,9 @@ const Table = React.createClass({
               selectedCount={this.state.selectedItems.length}
               selectable={this.state.selectable}
             >{this.props.searchField}
+              {
+                this.props.additionalFilters.map((filter, i) => <span key={'additional-filter-' + i}>{filter}&nbsp;</span>)
+              }
             </SearchPanel>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
                 <ItemsPerPageSelector key="itemsPerPageSelector"
@@ -333,17 +229,8 @@ const Table = React.createClass({
                 <h4>{emptyText}</h4>
               </div>
               :
-              <div>
-                <div className="table-responsive">
-                  <table className="table table-striped vertical-middle">
-                    <thead>
-                      <tr>{headers}</tr>
-                    </thead>
-                    <tbody>
-                      {rows}
-                    </tbody>
-                  </table>
-                </div>
+              <div className="table-responsive">
+                {dataItems}
               </div>
             )
           }
@@ -363,8 +250,7 @@ const Table = React.createClass({
 });
 
 module.exports = {
-    Table : Table,
-    Column : Column,
+    DataHandler : DataHandler,
     SearchField: SearchField,
     Highlight: Highlight
 }

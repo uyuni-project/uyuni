@@ -363,6 +363,25 @@ def findProduct(product):
     return product_id
 
 
+def findAllExtensionProductsOf(baseId, rootId):
+    vals = {
+        'baseId': baseId,
+        'rootID': rootId
+    }
+    h = rhnSQL.prepare(
+        """
+        SELECT distinct ext.id, ext.release, ext.version, pa.label arch, ext.name, ext.base baseproduct
+                FROM SUSEProductExtension pe
+                JOIN SUSEProducts base on base.id = pe.base_pdid
+                JOIN SUSEProducts ext on pe.ext_pdid = ext.id
+                JOIN rhnpackagearch pa on pa.id = ext.arch_type_id
+            WHERE base.id = :baseId and pe.root_pdid = :rootId and pe.recommended = 'Y';
+        """
+    )
+    h.execute(**vals)
+    rs = h.fetchall_dict()
+    return rs or []
+
 def channelForProduct(product, ostarget, parent_id=None, org_id=None,
                       user_id=None):
     """Find Channels for a given product and ostarget.

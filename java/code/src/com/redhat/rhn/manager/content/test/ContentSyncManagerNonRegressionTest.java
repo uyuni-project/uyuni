@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -40,6 +43,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -251,4 +256,5 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
         }
     }
+
 }

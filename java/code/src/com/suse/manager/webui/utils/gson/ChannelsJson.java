@@ -41,6 +41,24 @@ public class ChannelsJson {
         private String name;
         private boolean custom;
         private boolean subscribable;
+        private boolean recommended;
+
+        /**
+         * Instantiates a new Channel json.
+         *
+         * @param idIn   the id
+         * @param nameIn the name
+         * @param customIn custom channel flag
+         * @param subscribableIn subscribable flag
+         * @param recommendedIn the channel is recommended by its parent channel
+         */
+        public ChannelJson(Long idIn, String nameIn, boolean customIn, boolean subscribableIn, boolean recommendedIn) {
+            this.id = idIn;
+            this.name = nameIn;
+            this.custom = customIn;
+            this.subscribable = subscribableIn;
+            this.recommended = recommendedIn;
+        }
 
         /**
          * Instantiates a new Channel json.
@@ -51,10 +69,7 @@ public class ChannelsJson {
          * @param subscribableIn subscribable flag
          */
         public ChannelJson(Long idIn, String nameIn, boolean customIn, boolean subscribableIn) {
-            this.id = idIn;
-            this.name = nameIn;
-            this.custom = customIn;
-            this.subscribable = subscribableIn;
+            this(idIn, nameIn, customIn, subscribableIn, false);
         }
 
         /**
@@ -83,6 +98,13 @@ public class ChannelsJson {
          */
         public boolean isSubscribable() {
             return subscribable;
+        }
+
+        /**
+         * @return recommented to get
+         */
+        public boolean isRecommended() {
+            return recommended;
         }
     }
 

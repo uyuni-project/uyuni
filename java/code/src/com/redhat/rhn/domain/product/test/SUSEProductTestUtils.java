@@ -71,6 +71,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         product.setRelease("test");
         product.setProductId(new Random().nextInt(999999));
+        product.setBase(true);
 
         TestUtils.saveAndReload(product);
 
