@@ -247,45 +247,17 @@ public abstract class ConfigActionHelper {
      * Makes messages that look like
      * 1 file and 5 directories and 0 symlinks
      * 2 files and 1 directory and 0 symlinks
-     * No files or directories or symlinks
-     * Very standard i18nized counts messages
-     * used in various places in config management.
-     * @param count the ConfigFileCount object,
-     *          that stores info on the number of files and directories
-     * @param url the url to wrap the messages if so desired
-     * @param includeAddUrlForEmpty include "Add" section for empty
-     * @return the properly formatted File and Directories helper messages ..
-     */
-    public static String makeFileCountsMessage(ConfigFileCount count,
-                                               String url,
-                                               boolean includeAddUrlForEmpty) {
-        return makeFileCountsMessage(count, url, false, includeAddUrlForEmpty);
-    }
-
-    /**
-     * Makes messages that look like
-     * 1 file and 5 directories and 0 symlinks
-     * 2 files and 1 directory and 0 symlinks
      * No files or directories and 0 symlinks
      * Very standard i18nized counts messages
      * used in various places in config management.
      * @param count the ConfigFileCount object,
      *          that stores info on the number of files and directories
      * @param url the url to wrap the messages if so desired
-     * @param includeEmptyFilesAndDirs force the inclusion of both
-     *                             the file and directory information
-     *                             even if their count is 0.
-     *                         for example:
-     *                         if  this param == true
-     *                              return "0 files and 1 directory and 0 symlinks"
-     *                         else
-     *                              return "1 directory"
      * @param includeAddUrlForEmpty include "Add" section for empty
      * @return the properly formatted File and Directories helper messages ..
      */
     public static String makeFileCountsMessage(ConfigFileCount count,
                                                String url,
-                                               boolean includeEmptyFilesAndDirs,
                                                boolean includeAddUrlForEmpty) {
         long fileCount = count.getFiles(), slsCount = count.getSlsFiles(),
                 dirCount = count.getDirectories(), symlinkCount = count.getSymlinks();
@@ -305,26 +277,6 @@ public abstract class ConfigActionHelper {
                 return service.getMessage(key, url);
             }
             return service.getMessage(key);
-        }
-
-        /* now we know there is at least one file/dir/symlink/sls
-         * so all we need to do is make all NONEs into PLURALs
-         */
-        if (includeEmptyFilesAndDirs) {
-            if (fileSuffix == NONE) {
-                fileSuffix = PLURAL;
-            }
-            if (symlinkSuffix == NONE) {
-                symlinkSuffix = PLURAL;
-            }
-            if (dirSuffix == NONE) {
-                dirSuffix = PLURAL;
-            }
-            if (slsSuffix == NONE) {
-                slsSuffix = PLURAL;
-            }
-            key = "config." + "sls_" + slsSuffix + "_files_" + fileSuffix +
-                  "_dirs_" + dirSuffix + "_symlinks_" + symlinkSuffix;
         }
 
         String message = service.getMessage(key, new Object[] {

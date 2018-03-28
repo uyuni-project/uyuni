@@ -446,7 +446,7 @@ public class ConfigChannelDto extends BaseDto {
             symlinks = symlinksOnlyCount.intValue();
         }
         ConfigFileCount count = ConfigFileCount.create(files, slsFiles,  dirs, symlinks);
-        return ConfigActionHelper.makeFileCountsMessage(count, null, false, false);
+        return ConfigActionHelper.makeFileCountsMessage(count, null, false);
     }
 
     /**
