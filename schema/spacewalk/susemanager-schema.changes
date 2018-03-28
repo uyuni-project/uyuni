@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Mar 29 01:26:41 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.7-1
 - SLE15 support: recommended/required flag for products and channels
 - remove update of not existing table (bsc#1087131)
 - handle duplicate rhnserverpackage (bsc#1075345)
