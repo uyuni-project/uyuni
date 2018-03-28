@@ -2,8 +2,7 @@
 
 const React = require("react");
 const PropTypes = React.PropTypes;
-const Button = require("../buttons").Button;
-const Dialog = require("./Dialog").Dialog;
+const DangerDialog = require("./DangerDialog").DangerDialog;
 
 /**
  * A pop-up dialog for delete confirmation.
@@ -12,35 +11,17 @@ const Dialog = require("./Dialog").Dialog;
  * This 'item' will be passed to the 'onConfirm' and 'onClosePopUp' handlers.
  */
 function DeleteDialog(props) {
-    const buttons = <div>
-        <Button
-            className="btn-danger"
-            text={t("Delete")}
-            title={t("Delete")}
-            icon="fa-trash"
-            handler={() => {
-                if(props.onConfirm) props.onConfirm(props.item);
-                $('#' + props.id).modal('hide');
-            }}
-        />
-        <Button
-            className="btn-default"
-            text={t("Cancel")}
-            title={t("Cancel")}
-            icon="fa-close"
-            handler={() => {
-                $('#' + props.id).modal('hide');
-            }}
-        />
-    </div>;
-
     return (
-        <Dialog
+        <DangerDialog
           id={props.id}
+          onClosePopUp={props.onClosePopUp}
           className={props.className}
-          content={props.content}
           title={props.title}
-          buttons={buttons}
+          content={props.content}
+          item={props.item}
+          onConfirm={props.onConfirm}
+          submitText={t("Delete")}
+          submitIcon="fa-trash"
           />
     );
 }
