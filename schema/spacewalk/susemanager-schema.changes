@@ -1,3 +1,6 @@
+- remove update of not existing table (bsc#1087131)
+- handle duplicate rhnserverpackage (bsc#1075345)
+
 -------------------------------------------------------------------
 Mon Mar 26 15:09:48 CEST 2018 - jgonzalez@suse.com
 
