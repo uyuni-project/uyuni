@@ -1,5 +1,9 @@
+-------------------------------------------------------------------
+Thu Mar 29 01:24:22 CEST 2018 - jgonzalez@suse.com
+
+- version 2.8.75.2-1
 - SLE15 support: recommended/required flag for products and channels
-- add more missing help links(bsc#1085852)
+- add more missing help links (bsc#1085852)
 
 -------------------------------------------------------------------
 Mon Mar 26 08:54:04 CEST 2018 - jgonzalez@suse.com
