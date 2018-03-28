@@ -610,6 +610,11 @@ header, nav.navbar-pf {
       float: right;
       width: auto;
     }
+    .spacewalk-list-filter {
+      input {
+        margin-bottom: .5em;
+      }
+    }
   }
 }
 
@@ -1167,6 +1172,7 @@ time:hover {
 .errata-critical {
   color: @spacewalk-red;
 }
+
 .edit-group-heading {
     position: relative;
 }
@@ -1190,4 +1196,67 @@ time:hover {
     color: @spacewalk-gray-dark;
     opacity: 0.65;
     cursor: not-allowed;
+}
+
+/**
+* Simulate bootstrap 4 rule behavior
+*
+* Note: keep this as a single style rule
+*/
+.d-inline-block {
+  display: inline-block;
+}
+.d-block {
+  display: block;
+  overflow: auto;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.cursor-default {
+  cursor: default;
+}
+
+i.fa.pointer {
+  min-width: 1em;
+}
+
+/**
+* use these classes to fix progress bar
+* to let the text overlaps the progress bar behind
+*/
+.progress-bar-wrapper {
+  position: relative;
+  text-align: center;
+  margin-bottom: 0;
+  line-height: 1.3em;
+  .progress-bar-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+  .progress-bar {
+    background-color: @susemanager-green;
+  }
+}
+
+/**
+* behave as a table
+*/
+.table-style {
+  display: table;
+  border-collapse: collapse;
+  .table-row  {
+    display: table-row;
+    .table-col {
+      display: table-cell;
+      border: 1px solid @spacewalk-gray-light;
+      padding: .2em;
+      vertical-align: middle;
+    }
+  }
 }

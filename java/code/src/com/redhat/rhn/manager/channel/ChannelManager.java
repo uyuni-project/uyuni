@@ -40,6 +40,10 @@ import com.redhat.rhn.domain.channel.ReleaseChannelMap;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -91,6 +95,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * ChannelManager
@@ -2716,4 +2722,40 @@ public class ChannelManager extends BaseManager {
     public static List<SsmChannelDto> findChildChannelsByParentInSSM(User user, long parentId) {
         return ChannelFactory.findChildChannelsByParentInSSM(user, parentId);
     }
+
+    /**
+     * Computes child channel "recommended" flags based on the original of their parent channel.
+     *
+     * @param baseChannel the base channel channel
+     * @param childChannels the stream of child channels
+     * @return the map from channel id to boolean containing the information about the "recommended" flag.
+     */
+    public static Map<Long, Boolean> computeChannelRecommendedFlags(
+            Channel baseChannel, Stream<Channel> childChannels) {
+        Channel originalBaseChannel = getOriginalChannel(baseChannel);
+        Optional<SUSEProductChannel> baseChannelProduct =
+                SUSEProductFactory.findProductByChannelLabel(originalBaseChannel.getLabel());
+        return childChannels.collect(Collectors.toMap(
+                c -> c.getId(),
+                c -> {
+                    Channel original = getOriginalChannel(c);
+                    Optional<SUSEProductChannel> extProduct =
+                            SUSEProductFactory.findProductByChannelLabel(original.getLabel());
+                    if (extProduct.isPresent() && baseChannelProduct.isPresent()) {
+                        List<SUSEProduct> allBaseProductsOf =
+                                SUSEProductFactory.findAllBaseProductsOf(
+                                        extProduct.get().getProduct(),
+                                        baseChannelProduct.get().getProduct()
+                                );
+                        return allBaseProductsOf.stream().anyMatch(baseProduct ->
+                                SUSEProductFactory.findSUSEProductExtension(
+                                         baseChannelProduct.get().getProduct(),
+                                         baseProduct,
+                                         extProduct.get().getProduct()
+                                ).map(SUSEProductExtension::isRecommended).orElse(false));
+                    }
+                    return false;
+                }));
+    }
+
 }

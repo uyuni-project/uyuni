@@ -135,6 +135,8 @@ public class ContentSyncManager {
 
     // SCC JSON files location in rhn.conf
     public static final String RESOURCE_PATH = "server.susemanager.fromdir";
+    private static final Object LOCK = new Object();
+    private static List<XMLChannel> xmlChannelsCache = null;
 
     /**
      * Default constructor.
@@ -167,12 +169,33 @@ public class ContentSyncManager {
     }
 
     /**
+     * Read channels from xml and return a list
+     *
+     * @return a list  of XMLChannels
+     * @throws ContentSyncException in case of an error
+     */
+    public List<XMLChannel> readChannels() throws ContentSyncException {
+        if (xmlChannelsCache == null) {
+            synchronized (LOCK) {
+                if (xmlChannelsCache == null) {
+                    xmlChannelsCache = readChannelsOld();
+                }
+            }
+            return xmlChannelsCache.stream().map(XMLChannel::copy).collect(Collectors.toList());
+        }
+        else {
+            return xmlChannelsCache.stream().map(XMLChannel::copy).collect(Collectors.toList());
+        }
+
+    }
+
+    /**
      * Read the channels.xml file.
      *
      * @return List of parsed channels
      * @throws ContentSyncException in case of an error
      */
-    public List<XMLChannel> readChannels() throws ContentSyncException {
+    public List<XMLChannel> readChannelsOld() throws ContentSyncException {
         try {
             Persister persister = new Persister();
             List<XMLChannel> channels = persister.read(
@@ -470,8 +493,10 @@ public class ContentSyncManager {
                 MgrSyncProductDto productDto = baseMap.get(base);
                 // if this is a new product
                 if (productDto == null) {
-                    SUSEProduct dbProduct =
-                            SUSEProductFactory.lookupByProductId(product.getId());
+                   SUSEProduct dbProduct = HibernateFactory.doWithoutAutoFlushing(
+                           () -> SUSEProductFactory.lookupByProductId(product.getId())
+                   );
+
                     PackageArch arch = dbProduct.getArch();
                     // and if the base channel arch matches the product arch
                     if (arch == null || arch.getLabel().equals(base.getArch())) {

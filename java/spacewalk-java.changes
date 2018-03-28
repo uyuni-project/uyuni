@@ -1,3 +1,4 @@
+- SLE15 support: recommended/required flag for products and channels
 - add more missing help links(bsc#1085852)
 
 -------------------------------------------------------------------

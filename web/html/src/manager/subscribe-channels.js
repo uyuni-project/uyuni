@@ -9,6 +9,7 @@ const Network = require("../utils/network");
 const Functions = require("../utils/functions");
 const Messages = require("../components/messages").Messages;
 const MessagesUtils = require("../components/messages").Utils;
+const Toggler = require("../components/toggler");
 const {BootstrapPanel} = require("../components/panel");
 const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("../components/links");
 
@@ -37,7 +38,8 @@ type ChannelDto = {
   id: number,
   name: string,
   custom: boolean,
-  subscribable: boolean
+  subscribable: boolean,
+  recommended: boolean
 }
 
 type SystemChannelsState = {
@@ -135,16 +137,20 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   }
 
   handleChildChange = (event: SyntheticInputEvent<*>) => {
-    let child : ?ChannelDto = this.state.availableChildren.find(c => c.id.toString() == event.target.value);
+    this.selectChildChannel(parseInt(event.target.value), event.target.checked);
+  }
+
+  selectChildChannel = (childChannelId, select) => {
+    let child : ?ChannelDto = this.state.availableChildren.find(c => c.id == childChannelId);
     let selectedChildrenList : ?Array<ChannelDto>;
     if (child && this.state.selectedBase) {
       selectedChildrenList =  this.state.selectedChildren.get(this.state.selectedBase.id);
     }
     if (selectedChildrenList && child) {
-      if (event.target.checked) {
+      if (select) {
         selectedChildrenList.push(child);
       } else {
-        selectedChildrenList.splice(selectedChildrenList.findIndex(e => e.id.toString() == event.target.value), 1);
+        selectedChildrenList.splice(selectedChildrenList.findIndex(e => e.id == childChannelId), 1);
       }
 
     }
@@ -170,6 +176,29 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       return this.state.selectedChildren.get(this.state.selectedBase.id)
     }
     return null;
+  }
+
+  toggleRecommended = () => {
+    const recommendedSelected = this.areRecommendedChildrenSelected();
+    const selectedChildrenIds = (this.getSelectedChildren() || []).map(channel => channel.id);
+    if (recommendedSelected) {
+      const selectedRecommendedChildren = this.state.availableChildren
+          .filter(channel => channel.recommended && selectedChildrenIds.includes(channel.id))
+      selectedRecommendedChildren.forEach(channel => this.selectChildChannel(channel.id, false));
+    } else {
+      const unselectedRecommendedChildren = this.state.availableChildren
+          .filter(channel => channel.recommended && !selectedChildrenIds.includes(channel.id))
+      unselectedRecommendedChildren.forEach(channel => this.selectChildChannel(channel.id, true));
+    }
+  }
+
+  areRecommendedChildrenSelected = () : Boolean => {
+    const selectedChildrenIds = (this.getSelectedChildren() || []).map(channel => channel.id);
+    const recommendedChildren = this.state.availableChildren.filter(channel => channel.recommended);
+    const selectedRecommendedChildren = recommendedChildren.filter(channel => selectedChildrenIds.includes(channel.id));
+    const unselectedRecommendedChildren = recommendedChildren.filter(channel => !selectedChildrenIds.includes(channel.id));
+
+    return selectedRecommendedChildren.length > 0 && unselectedRecommendedChildren.length == 0;
   }
 
   handleConfirm = () => {
@@ -275,7 +304,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
           disabled={!c.subscribable}
           onChange={this.handleChildChange}/>
-        <label htmlFor={"child_" + c.id}>{c.name}</label>
+        <label htmlFor={"child_" + c.id}>{c.name}{c.recommended ? " (R)" : ""}</label>
         <ChannelAnchorLink id={c.id} newWindow={true}/>
       </div>)
     }
@@ -304,7 +333,15 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                           {t("You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel.")}
                         </div>
                       }>
-                        <div>{ baseChannels } </div>
+                      <div style={{"overflow": "auto"}} >
+                        <div style={{"float": "right"}}>
+                          <Toggler.WithRecommended
+                             enabled={this.areRecommendedChildrenSelected()}
+                             handler={() => this.toggleRecommended()} />
+                        </div>
+                      </div>
+                      <hr />
+                      <div>{ baseChannels } </div>
                     </BootstrapPanel>
                   </div>
                   <div className="col-md-6">
