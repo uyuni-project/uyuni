@@ -248,7 +248,7 @@ public class OverviewAction extends RhnAction {
 
             Object [] params = new Object[2];
 
-            params[0] = ConfigActionHelper.makeFileCountsMessage(total, null, true,
+            params[0] = ConfigActionHelper.makeFileCountsMessage(total, null,
                     !(server instanceof MinionServer));
             params[1] = ACTION_DETAILS_URL + "?aid=" + ca.getId() + "&sid=" +
                     server.getId();
