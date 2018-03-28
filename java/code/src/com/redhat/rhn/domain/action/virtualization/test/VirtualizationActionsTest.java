@@ -16,10 +16,23 @@ package com.redhat.rhn.domain.action.virtualization.test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationGuestPackageInstall;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationHostPackageInstall;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationStartAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendAction;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class VirtualizationActionsTest extends BaseTestCaseWithUser {
 
@@ -43,5 +56,47 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         assertNotNull(a);
         assertTrue(a instanceof VirtualizationHostPackageInstall);
 
+    }
+
+    public void testDomainLifecycleActions() throws Exception {
+        HashMap<ActionType, Class<? extends BaseVirtualizationAction>> types = new HashMap<>();
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_DELETE, VirtualizationDeleteAction.class);
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_REBOOT, VirtualizationRebootAction.class);
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_RESUME, VirtualizationResumeAction.class);
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN, VirtualizationShutdownAction.class);
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_START, VirtualizationStartAction.class);
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_SUSPEND, VirtualizationSuspendAction.class);
+
+        for (Entry<ActionType, Class<? extends BaseVirtualizationAction>> entry : types.entrySet()) {
+            Action a = ActionFactoryTest.createAction(user, entry.getKey());
+            flushAndEvict(a);
+
+            Action a1 = ActionFactory.lookupById(a.getId());
+            assertNotNull(a1);
+
+            assertTrue(entry.getValue().isInstance(a1));
+        }
+    }
+
+    public void testSetMemory() throws Exception {
+        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
+        flushAndEvict(a);
+
+        Action a1 = ActionFactory.lookupById(a.getId());
+        assertNotNull(a1);
+
+        VirtualizationSetMemoryAction va = (VirtualizationSetMemoryAction)a1;
+        assertEquals(Integer.valueOf(1234), va.getMemory());
+    }
+
+    public void testSetVcpus() throws Exception {
+        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS);
+        flushAndEvict(a);
+
+        Action a1 = ActionFactory.lookupById(a.getId());
+        assertNotNull(a1);
+
+        VirtualizationSetVcpusAction va = (VirtualizationSetVcpusAction)a1;
+        assertEquals(Integer.valueOf(12), va.getVcpu());
     }
 }
