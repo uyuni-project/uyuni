@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 29 01:28:50 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.7-1
+- Do not execute sumautil.get_kernel_live_version when inspecting an image
+
+-------------------------------------------------------------------
 Mon Mar 26 09:15:31 CEST 2018 - jgonzalez@suse.com
 
 - version 3.2.6-1
