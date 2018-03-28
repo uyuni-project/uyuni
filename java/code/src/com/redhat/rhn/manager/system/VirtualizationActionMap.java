@@ -81,7 +81,11 @@ public class VirtualizationActionMap {
         shutdownMap.put("paused", ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
 
         deleteMap = new HashMap();
-        deleteMap.put("destroy", ActionFactory.TYPE_VIRTUALIZATION_DESTROY);
+        deleteMap.put("running", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
+        deleteMap.put("stopped", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
+        deleteMap.put("crashed", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
+        deleteMap.put("paused", ActionFactory.TYPE_VIRTUALIZATION_DELETE);
+
 
         setMemoryMap = new HashMap();
         setMemoryMap.put("running", ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
@@ -103,6 +107,7 @@ public class VirtualizationActionMap {
         actionMap.put("shutdown", shutdownMap);
         actionMap.put("setMemory", setMemoryMap);
         actionMap.put("setVcpu", setVcpusMap);
+        actionMap.put("delete", deleteMap);
     }
 
     /**

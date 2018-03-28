@@ -338,6 +338,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                   discriminator-value="51" lazy="true">
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction"
+                discriminator-value="507" lazy="true">
+          <join table="rhnActionVirtDelete">
+            <key column="action_id"/>
+            <property name="uuid"/>
+          </join>
+        </subclass>
+
 
         <!-- PackageActions: 1, 3, 4, 8, 13, 14, 33 -->
         <!-- PackageAction is abstract - the subclasses only get instantiated -->
@@ -451,7 +459,8 @@ select {ra.*}
     (select NULL as uuid from dual) ra_5_,
     (select NULL as uuid from dual) ra_6_,
     (select NULL as uuid, NULL as memory from dual) ra_7_,
-    (select NULL as uuid, NULL as vcpu from dual) ra_8_
+    (select NULL as uuid, NULL as vcpu from dual) ra_8_,
+    (select NULL as uuid from dual) ra_10_
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -545,7 +554,8 @@ select sa.server_id
                      (select NULL as uuid from dual) ra_5_,
                      (select NULL as uuid from dual) ra_6_,
                      (select NULL as uuid, NULL as memory from dual) ra_7_,
-                     (select NULL as uuid, NULL as vcpu from dual) ra_8_
+                     (select NULL as uuid, NULL as vcpu from dual) ra_8_,
+                     (select NULL as uuid from dual) ra_10_
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id

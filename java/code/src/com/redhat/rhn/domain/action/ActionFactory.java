@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
@@ -409,6 +410,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_DESTROY)) {
             retval = new VirtualizationDestroyAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_DELETE)) {
+            retval = new VirtualizationDeleteAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_SET_MEMORY)) {
             retval = new VirtualizationSetMemoryAction();
@@ -1202,5 +1206,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_SUBSCRIBE_CHANNELS =
             lookupActionTypeByLabel("channels.subscribe");
+
+    /**
+     * The constant representing "Deletes a virtual domain." [ID:507]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_DELETE =
+            lookupActionTypeByLabel("virt.delete");
 }
 
