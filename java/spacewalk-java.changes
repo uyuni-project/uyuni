@@ -1,3 +1,4 @@
+- Removed unused/broken option for sys details page (bsc#1082268)
 - Log debug message if required cloned children do not exist when finding Service Pack migration alternatives
 - fix constraint violation errors when onboarding (bsc#1089468)
 - Update Spark to version 2.7.2 (bsc#1089101)
