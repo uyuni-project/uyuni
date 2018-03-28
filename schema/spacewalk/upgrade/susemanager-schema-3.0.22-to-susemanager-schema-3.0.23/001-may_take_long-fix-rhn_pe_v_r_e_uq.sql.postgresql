@@ -74,7 +74,6 @@ begin
           end;
       end loop;
 
-      update suseImageInfoPackage set evr_id = original.id where evr_id = duplicate.id;
       update susePackageState set evr_id = original.id where evr_id = duplicate.id;
       update suseproductfile set evr_id = original.id where evr_id = duplicate.id;
       delete from rhnpackageevr where id = duplicate.id;
