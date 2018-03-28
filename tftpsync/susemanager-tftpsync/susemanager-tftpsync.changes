@@ -1,6 +1,7 @@
 -------------------------------------------------------------------
-Tue Mar 27 09:03:02 CEST 2018 - mantel@suse.de
+Thu Mar 29 01:30:36 CEST 2018 - jgonzalez@suse.com
 
+- version 3.2.3-1
 - work around possible race in tftpsync (bsc#1081714)
 
 -------------------------------------------------------------------
