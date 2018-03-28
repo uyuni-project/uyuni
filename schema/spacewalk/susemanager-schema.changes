@@ -1,3 +1,5 @@
+- remove update of not existing table (bsc#1087131)
+
 -------------------------------------------------------------------
 Wed Feb 14 13:00:52 CET 2018 - jgonzalez@suse.com
 
