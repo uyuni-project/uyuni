@@ -91,7 +91,7 @@ Requires: %{name} = %{version}-%{release}
 Requires: python
 Requires: rhnlib >= 2.8.3
 Requires: spacewalk-usix
-Requires: jabberpy
+Requires: python-jabberpy
 Requires: python2-rhn-client-tools >= 2.8.4
 Requires: python2-osa-common = %{version}
 %if 0%{?rhel} && 0%{?rhel} <= 5
@@ -120,7 +120,7 @@ Python 3 specific files for %{name}
 %package -n python2-osa-common
 Summary: OSA common files
 Group:    System Environment/Daemons
-Requires: jabberpy
+Requires: python-jabberpy
 Conflicts: %{name} < %{version}-%{release}
 Conflicts: %{name} > %{version}-%{release}
 Obsoletes: osa-common < %{version}-%{release}
@@ -177,7 +177,7 @@ Requires: python2
 BuildRequires: python-devel
 Requires: python
 %endif
-Requires: jabberpy
+Requires: python-jabberpy
 Requires: python2-osa-common = %{version}-%{release}
 %description -n python2-osa-dispatcher
 Python 2 specific files for osa-dispatcher.
