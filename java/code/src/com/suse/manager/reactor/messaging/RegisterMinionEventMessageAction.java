@@ -777,13 +777,15 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                             .stream()
                             .map(SUSEProductChannel::getChannel)
                             .filter(Objects::nonNull)
-                            .filter(c -> c.getParentChannel() == null || c.getParentChannel().getLabel().equals(rootChannelLabel));
+                            .filter(c -> c.getParentChannel() == null ||
+                                    c.getParentChannel().getLabel().equals(rootChannelLabel));
 
                     Stream<Channel> stream = allExtensionProductsOf.stream().flatMap(ext -> {
                         return SUSEProductFactory.findSUSEProductExtension(root, base, ext).map(pe -> {
                             if (pe.isRecommended()) {
                                 return recommendedChannelsByBaseProduct(root, ext);
-                            } else {
+                            }
+                            else {
                                 return Stream.<Channel>empty();
                             }
                         }).orElseGet(Stream::empty);
