@@ -1,3 +1,5 @@
+- use full package name python-jabberpy as dependency (bsc#1087299)
+
 -------------------------------------------------------------------
 Mon Mar 26 08:30:09 CEST 2018 - jgonzalez@suse.com
 
