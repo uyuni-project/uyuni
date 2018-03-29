@@ -235,12 +235,11 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   }
 
   toggleRecommended = () => {
-    const recommendedSelected = this.areRecommendedChildrenSelected();
-    const selectedChildrenIds = (this.getSelectedChildren() || []).map(channel => channel.id); // todo
-    if (recommendedSelected) {
+    if (this.areRecommendedChildrenSelected()) {
       const selectedRecommendedChildren = this.getSelectedChildren().filter(channel => channel.recommended);
       selectedRecommendedChildren.forEach(channel => this.selectChildChannel(channel.id, false));
     } else {
+      const selectedChildrenIds = (this.getSelectedChildren() || []).map(channel => channel.id);
       const unselectedRecommendedChildren = Array.from(this.state.availableChildren.values())
           .filter(channel => channel.recommended && !selectedChildrenIds.includes(channel.id))
       unselectedRecommendedChildren.forEach(channel => this.selectChildChannel(channel.id, true));
