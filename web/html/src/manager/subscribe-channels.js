@@ -188,18 +188,18 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   selectChildChannel = (childChannelId, select) => {
     const child : ?ChannelDto = this.state.availableChildren.get(childChannelId);
-    let selectedChildrenIds : ?Set<number>;
-    if (child && this.state.selectedBase) {
-      selectedChildrenIds = this.state.selectedChildrenIds.get(this.state.selectedBase.id);
+    if (child == null || this.state.selectedBase == null) {
+      return;
     }
-    if (selectedChildrenIds && child) {
+    const selectedChildrenIds = this.state.selectedChildrenIds.get(this.state.selectedBase.id);
+    if (selectedChildrenIds) {
       if (select) {
         const dependingChannelIds = this.state.requiredChannels.get(child.id) || [];
         Array.from(dependingChannelIds)
           .filter(channel => channel.id !== child.id)
           .forEach(channelId => selectedChildrenIds.add(channelId));
         selectedChildrenIds.add(child.id);
-      } else {
+      } else { // unselect
         const dependingChannelIds = this.state.requiredByChannels.get(child.id) || [];
         Array.from(dependingChannelIds)
           .filter(channel => channel.id !== child.id)
