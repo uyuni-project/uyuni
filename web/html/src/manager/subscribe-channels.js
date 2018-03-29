@@ -48,7 +48,8 @@ type SystemChannelsState = {
   selectedBase: ?ChannelDto,
   selectedChildrenIds: Map<number, Set<number>>, // base channel id -> set<child channel id>
   availableBase: Array<ChannelDto>,
-  availableChildren: Array<ChannelDto>,
+  // mapping channel ids to their DTOs
+  availableChildren: Map<number, ChannelDto>,
   // channel dependencies: which child channels are required by a child channel?
   requiredChannels: Map<number, Set<number>>,
   // channel dependencies: by which child channels is a child channel required?
@@ -68,7 +69,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       selectedBase: null,
       selectedChildrenIds: new Map(),
       availableBase: [],
-      availableChildren: [],
+      availableChildren: new Map(),
       requiredChannels: new Map(),
       requiredByChannels: new Map(),
       page: 1,
@@ -110,7 +111,9 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       .promise.then((data : JsonResult<Array<ChannelDto>>) => {
         this.setState({
           // sort child channels by name to have a consistent order in the UI
-          availableChildren: data.data.sort((a, b) => a.name.localeCompare(b.name))
+          availableChildren: new Map(data.data
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map(channel => [channel.id, channel]))
         });
         this.getChannelDependencies(); // todo make part of promise chain?
       })
@@ -135,7 +138,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   getChannelDependencies = () => {
     // TODO cache stuff to avoid repeated calls
-    const childrenIds : Array<number> = this.state.availableChildren.map(channel => channel.id);
+    const childrenIds : Array<number> = Array.from(this.state.availableChildren.keys());
 
     Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json")
       .promise.then((response : JsonResult<Map<number, Array<number>>>) => {
@@ -172,7 +175,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       selectedBase: baseId > -1 ?
           this.state.availableBase.find(c => c.id == baseId) :
           this.getNoBase(),
-      availableChildren: [],
+      availableChildren: new Map(),
       selectedChildrenIds: this.state.selectedChildrenIds
     });
 
@@ -188,7 +191,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   }
 
   selectChildChannel = (childChannelId, select) => {
-    const child : ?ChannelDto = this.state.availableChildren.find(c => c.id == childChannelId);
+    const child : ?ChannelDto = this.state.availableChildren.get(childChannelId);
     let selectedChildrenIds : ?Set<number>;
     if (child && this.state.selectedBase) {
       selectedChildrenIds = this.state.selectedChildrenIds.get(this.state.selectedBase.id);
@@ -228,7 +231,9 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
   getSelectedChildren = () : ?Array<ChannelDto> => {
     if (this.state.selectedBase && this.state.selectedBase.id) {
       const selectedChildrenIds = this.state.selectedChildrenIds.get(this.state.selectedBase.id);
-      return this.state.availableChildren.filter(channel => selectedChildrenIds.has(channel.id));
+      return Array.from(selectedChildrenIds)
+        .map(channelId => this.state.availableChildren.get(channelId))
+        .filter(channel => channel !== undefined);
     }
     return null;
   }
@@ -237,11 +242,10 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     const recommendedSelected = this.areRecommendedChildrenSelected();
     const selectedChildrenIds = (this.getSelectedChildren() || []).map(channel => channel.id); // todo
     if (recommendedSelected) {
-      const selectedRecommendedChildren = this.state.availableChildren
-          .filter(channel => channel.recommended && selectedChildrenIds.includes(channel.id))
+      const selectedRecommendedChildren = this.getSelectedChildren().filter(channel => channel.recommended);
       selectedRecommendedChildren.forEach(channel => this.selectChildChannel(channel.id, false));
     } else {
-      const unselectedRecommendedChildren = this.state.availableChildren
+      const unselectedRecommendedChildren = Array.from(this.state.availableChildren.values())
           .filter(channel => channel.recommended && !selectedChildrenIds.includes(channel.id))
       unselectedRecommendedChildren.forEach(channel => this.selectChildChannel(channel.id, true));
     }
@@ -249,7 +253,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   areRecommendedChildrenSelected = () : Boolean => {
     const selectedChildrenIds = (this.getSelectedChildren() || []).map(channel => channel.id);
-    const recommendedChildren = this.state.availableChildren.filter(channel => channel.recommended);
+    const recommendedChildren = Array.from(this.state.availableChildren.values()).filter(channel => channel.recommended);
     const selectedRecommendedChildren = recommendedChildren.filter(channel => selectedChildrenIds.includes(channel.id));
     const unselectedRecommendedChildren = recommendedChildren.filter(channel => !selectedChildrenIds.includes(channel.id));
 
@@ -358,7 +362,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     if (this.state.availableChildren) {
       let selectedChildrenList = this.getSelectedChildren();
 
-      childChannels = this.state.availableChildren.map(c => <div className="checkbox">
+      childChannels = Array.from(this.state.availableChildren.values()).map(c => <div className="checkbox">
         <input type="checkbox" value={c.id} id={"child_" + c.id}
           checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
           disabled={!c.subscribable}
@@ -472,7 +476,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                  <hr/>
             </div>
             <div>{
-              this.state.availableChildren && this.state.availableChildren.map(c => <div className="checkbox">
+              this.state.availableChildren && Array.from(this.state.availableChildren.values()).map(c => <div className="checkbox">
                   <input type="checkbox" value={c.id}
                     checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
                     disabled={true}/>
