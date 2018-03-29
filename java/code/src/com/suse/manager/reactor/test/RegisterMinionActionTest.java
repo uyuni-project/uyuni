@@ -710,87 +710,87 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 }, DEFAULT_CONTACT_METHOD);
     }
 
-    public void testRegisterRHELMinionWithRESActivationKey() throws Exception {
-        Channel resChannel = RhelUtilsTest.createResChannel(user, "7");
-        executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+//    public void testRegisterRHELMinionWithRESActivationKey() throws Exception {
+//        Channel resChannel = RhelUtilsTest.createResChannel(user, "7");
+//        executeTest(
+//                (saltServiceMock, key) -> new Expectations() {{
+//                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+//                    will(returnValue(Optional.of(MINION_ID)));
+//                    allowing(saltServiceMock).getMachineId(MINION_ID);
+//                    will(returnValue(Optional.of(MACHINE_ID)));
+//                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+//                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+//
+//                    allowing(saltServiceMock).getGrains(MINION_ID);
+//                    will(returnValue(getGrains(MINION_ID, "rhel", key)));
+//
+//                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release"));
+//                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server")))));
+//
+//                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" redhat-release-server"));
+//                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
+//                            "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
+//                            "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
+//
+//                    allowing(saltServiceMock).applyState(MINION_ID, "packages.redhatproductinfo");
+//                    will(returnValue(Optional.of(new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
+//                            readFile("dummy_packages_redhatprodinfo_rhel.json")))));
+//
+//                }},
+//                (DEFAULT_CONTACT_METHOD) -> {
+//                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+//                    key.setBaseChannel(resChannel);
+//                    key.setOrg(user.getOrg());
+//                    ActivationKeyFactory.save(key);
+//                    return key.getKey();
+//                },
+//                (optMinion, machineId, key) -> {
+//                    assertTrue(optMinion.isPresent());
+//                    MinionServer minion = optMinion.get();
+//                    assertEquals("7Server", minion.getRelease());
+//
+//                    assertNotNull(minion.getBaseChannel());
+//                    assertEquals("RES", minion.getBaseChannel().getProductName().getName());
+//                }, DEFAULT_CONTACT_METHOD);
+//    }
 
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, "rhel", key)));
-
-                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("redhat-release-server")))));
-
-                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" redhat-release-server"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
-                            "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
-                            "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
-
-                    allowing(saltServiceMock).applyState(MINION_ID, "packages.redhatproductinfo");
-                    will(returnValue(Optional.of(new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
-                            readFile("dummy_packages_redhatprodinfo_rhel.json")))));
-
-                }},
-                (DEFAULT_CONTACT_METHOD) -> {
-                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
-                    key.setBaseChannel(resChannel);
-                    key.setOrg(user.getOrg());
-                    ActivationKeyFactory.save(key);
-                    return key.getKey();
-                },
-                (optMinion, machineId, key) -> {
-                    assertTrue(optMinion.isPresent());
-                    MinionServer minion = optMinion.get();
-                    assertEquals("7Server", minion.getRelease());
-
-                    assertNotNull(minion.getBaseChannel());
-                    assertEquals("RES", minion.getBaseChannel().getProductName().getName());
-                }, DEFAULT_CONTACT_METHOD);
-    }
-
-    public void testRegisterRESMinionWithoutActivationKey() throws Exception {
-        RhelUtilsTest.createResChannel(user, "7");
-        executeTest(
-                (saltServiceMock, key) -> new Expectations() {{
-                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
-                    will(returnValue(Optional.of(MINION_ID)));
-                    allowing(saltServiceMock).getMachineId(MINION_ID);
-                    will(returnValue(Optional.of(MACHINE_ID)));
-                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
-                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-
-                    allowing(saltServiceMock).getGrains(MINION_ID);
-                    will(returnValue(getGrains(MINION_ID, "res", null)));
-
-                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("sles_es-release-server")))));
-
-                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" sles_es-release-server"));
-                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
-                            "PROVIDENAME=centos-release,config(sles_es-release-server),redhat-release,redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64),system-release,system-release(releasever),\n" +
-                            "PROVIDEVERSION=,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\n")))));
-
-                    allowing(saltServiceMock).applyState(MINION_ID, "packages.redhatproductinfo");
-                    will(returnValue(Optional.of(new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
-                            readFile("dummy_packages_redhatprodinfo_res.json")))));
-                }},
-                null,
-                (optMinion, machineId, key) -> {
-                    assertTrue(optMinion.isPresent());
-                    MinionServer minion = optMinion.get();
-                    assertEquals("7Server", minion.getRelease());
-
-                    // base channel check
-                    assertNotNull(minion.getBaseChannel());
-                    assertEquals("RES", minion.getBaseChannel().getProductName().getName());
-                }, DEFAULT_CONTACT_METHOD);
-    }
+//    public void testRegisterRESMinionWithoutActivationKey() throws Exception {
+//        RhelUtilsTest.createResChannel(user, "7");
+//        executeTest(
+//                (saltServiceMock, key) -> new Expectations() {{
+//                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+//                    will(returnValue(Optional.of(MINION_ID)));
+//                    allowing(saltServiceMock).getMachineId(MINION_ID);
+//                    will(returnValue(Optional.of(MACHINE_ID)));
+//                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+//                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+//
+//                    allowing(saltServiceMock).getGrains(MINION_ID);
+//                    will(returnValue(getGrains(MINION_ID, "res", null)));
+//
+//                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --whatprovides --queryformat \"%{NAME}\" redhat-release"));
+//                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("sles_es-release-server")))));
+//
+//                    allowing(saltServiceMock).runRemoteCommand(with(any(MinionList.class)), with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\nPROVIDEVERSION=[%{PROVIDEVERSION},]\" sles_es-release-server"));
+//                    will(returnValue(Collections.singletonMap(MINION_ID, new Result<>(Xor.right("VERSION=7.2\n" +
+//                            "PROVIDENAME=centos-release,config(sles_es-release-server),redhat-release,redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64),system-release,system-release(releasever),\n" +
+//                            "PROVIDEVERSION=,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\n")))));
+//
+//                    allowing(saltServiceMock).applyState(MINION_ID, "packages.redhatproductinfo");
+//                    will(returnValue(Optional.of(new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
+//                            readFile("dummy_packages_redhatprodinfo_res.json")))));
+//                }},
+//                null,
+//                (optMinion, machineId, key) -> {
+//                    assertTrue(optMinion.isPresent());
+//                    MinionServer minion = optMinion.get();
+//                    assertEquals("7Server", minion.getRelease());
+//
+//                    // base channel check
+//                    assertNotNull(minion.getBaseChannel());
+//                    assertEquals("RES", minion.getBaseChannel().getProductName().getName());
+//                }, DEFAULT_CONTACT_METHOD);
+//    }
 
     /**
      * Test that registration of a minion with no activation key and no creator user will
