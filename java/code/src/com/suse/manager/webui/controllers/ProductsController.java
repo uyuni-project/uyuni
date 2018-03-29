@@ -16,6 +16,7 @@
 package com.suse.manager.webui.controllers;
 
 import com.google.gson.reflect.TypeToken;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
@@ -236,18 +237,18 @@ public class ProductsController {
      * @return the collection of Mandatory Channels in a JSON format
      */
     public static String getMandatoryChannels(Request request, Response response, User user) {
-        List<String> list = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() { }.getType());
+        List<Long> channelIdList = Json.GSON.fromJson(request.body(), new TypeToken<List<Long>>() { }.getType());
         ContentSyncManager csm = new ContentSyncManager();
         try {
             Map<String, String> archByChannelLabel = csm.listChannels().stream().collect(Collectors.toMap(
                     XMLChannel::getLabel,
                     XMLChannel::getArch
             ));
-            Map<String, List<String>> result = list.stream().collect(Collectors.toMap(
-                    channelLabel -> channelLabel,
-                    channelLabel ->
-                            SUSEProductFactory.findAllMandatoryChannels(channelLabel, archByChannelLabel::get)
-                                    .map(SUSEProductChannel::getChannelLabel)
+            Map<Long, List<Long>> result = channelIdList.stream().collect(Collectors.toMap(
+                    channelId -> channelId,
+                    channelId ->
+                            SUSEProductFactory.findAllMandatoryChannels(ChannelFactory.lookupById(channelId).getLabel(), archByChannelLabel::get)
+                                    .map(productChannel -> productChannel.getChannel().getId())
                                     .collect(Collectors.toList())
             ));
 
