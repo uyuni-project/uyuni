@@ -301,6 +301,20 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     this.setState({actionChain: actionChain})
   }
 
+  makeTitle = (channelId) => {
+    const channelLines = (channels) => {
+      return Array.from(channels || new Set())
+        .map(channelId => this.state.availableChildren.get(channelId))
+        .filter(channel => channel != null)
+        .map(channel => channel.name)
+        .reduce((channelName1, channelName2) => channelName1 + "\n" + channelName2, "");
+    }
+    const requiredChannels = channelLines(this.state.requiredChannels.get(channelId));
+    const requiredByChannels = channelLines(this.state.requiredByChannels.get(channelId));
+    return "Required channels: \n" + (requiredChannels || "(none)") + "\n\n"
+      + "Require this channel: \n" + (requiredByChannels || "(none)");
+  }
+
   render() {
     return (<span>
       <Messages items={this.state.messages}/>
@@ -367,7 +381,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
           disabled={!c.subscribable}
           onChange={this.handleChildChange}/>
-        <label htmlFor={"child_" + c.id}>{c.name}{c.recommended ? " (R)" : ""}</label>
+        <label title={this.makeTitle(c.id)} htmlFor={"child_" + c.id}>{c.name}{c.recommended ? " (R)" : ""}</label>
         <ChannelAnchorLink id={c.id} newWindow={true}/>
       </div>)
     }
