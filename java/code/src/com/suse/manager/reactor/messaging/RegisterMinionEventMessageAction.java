@@ -601,7 +601,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     );
                 },
                 ak -> {
-                    return Opt.fold(
+                    return Opt.<Channel, Set<Channel>>fold(
                             Optional.ofNullable(ak.getBaseChannel()),
                             // AktivationKey without base channel (SUSE Manager Default)
                             () -> {
