@@ -27,7 +27,7 @@ const SearchPanel = (props) =>
 ;
 
 const SearchField = (props) =>
-  <input className="form-control table-input-search"
+  <input className="form-control table-input-search with-bottom-margin"
     value={props.criteria}
     placeholder={props.placeholder}
     type="text"
