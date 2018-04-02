@@ -113,6 +113,12 @@ public class JobReturnEventMessageAction extends AbstractDatabaseAction {
         Optional<Boolean> isActionChainResult = isActionChainResult(jobReturnEvent);
         isActionChainResult.filter(isActionChain -> isActionChain).ifPresent(isActionChain -> {
             jobResult.ifPresent(jsonResult -> {
+                // The Salt reactor triggers a "suma-action-chain" job (mgractionchains.resume) at
+                // 'minion/startup/event/'. This means the result might not be a JSON in case of
+                // a Salt error when the 'mgractionchains' custom module is not yet deployed.
+                if ((jobReturnEvent.getData().getRetcode() == 254) && !(jobReturnEvent.getData().isSuccess())) {
+                    return;
+                }
 
                 Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult = Json.GSON.fromJson(jsonResult,
                         new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() { }.getType());
