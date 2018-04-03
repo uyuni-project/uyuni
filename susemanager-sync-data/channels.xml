@@ -6856,17 +6856,22 @@
 			<product_id name="SUSE_SLES" version="11.4">1303</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" family="AiO" is_signed="Y" label="sle11-security-module-x86_64-sap-sp3" name="SLE11-Security-Module for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" update_tag="secsp3">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 x86_64" family="7261" is_signed="Y" label="sle11-security-module-x86_64" name="SLE11-Security-Module for x86_64" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 x86_64" update_tag="secsp3">
+		<products>
+			<product_id name="SUSE_SLES" version="11.3">814</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 x86_64" family="AiO" is_signed="Y" label="sle11-security-module-x86_64-sap-sp3" name="SLE11-Security-Module for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 x86_64" update_tag="secsp3">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.3">1131</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" family="AiO" is_signed="Y" label="sle11-security-module-x86_64-sap-sp4" name="SLE11-Security-Module for x86_64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" update_tag="secsp3">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 x86_64" family="AiO" is_signed="Y" label="sle11-security-module-x86_64-sap-sp4" name="SLE11-Security-Module for x86_64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 x86_64" update_tag="secsp3">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1329</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" family="7261" is_signed="Y" label="sle11-security-module-x86_64-sles-sp4" name="SLE11-Security-Module for x86_64 SLES-SP4" optional="Y" parent="sles11-sp4-pool-x86_64" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" update_tag="secsp3">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 x86_64" family="7261" is_signed="Y" label="sle11-security-module-x86_64-sles-sp4" name="SLE11-Security-Module for x86_64 SLES-SP4" optional="Y" parent="sles11-sp4-pool-x86_64" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 x86_64" update_tag="secsp3">
 		<products>
 			<product_id name="SUSE_SLES" version="11.4">1300</product_id>
 		</products>
