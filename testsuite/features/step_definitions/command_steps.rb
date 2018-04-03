@@ -45,39 +45,33 @@ Then(/^I wait until "([^"]*)" service is up and running on "([^"]*)"$/) do |serv
 end
 
 When(/^I enable product "([^"]*)"$/) do |prd|
-    list_output = sshcmd("mgr-sync list products", ignore_err: true)[:stdout]
-    executed = false
-    linenum = 0
-    list_output.each_line do |line|
-        if not /^ *\[ \]/.match(line)
-            next
-        end
-        linenum += 1
-        if line.include? prd
-            executed = true
-            $command_output = sshcmd("echo '#{linenum}' | mgr-sync add product", ignore_err: true)[:stdout]
-            break
-        end
-    end
-    raise "#{$command_output}" unless executed
+  list_output = sshcmd("mgr-sync list products", ignore_err: true)[:stdout]
+  executed = false
+  linenum = 0
+  list_output.each_line do |line|
+    next unless /^ *\[ \]/ =~ line
+    linenum += 1
+    next unless line.include? prd
+    executed = true
+    $command_output = sshcmd("echo '#{linenum}' | mgr-sync add product", ignore_err: true)[:stdout]
+    break
+  end
+  raise $command_output.to_s unless executed
 end
 
 When(/^I enable product "([^"]*)" without recommended$/) do |prd|
-    list_output = sshcmd("mgr-sync list products", ignore_err: true)[:stdout]
-    executed = false
-    linenum = 0
-    list_output.each_line do |line|
-        if not /^ *\[ \]/.match(line)
-            next
-        end
-        linenum += 1
-        if line.include? prd
-            executed = true
-            $command_output = sshcmd("echo '#{linenum}' | mgr-sync add product --no-recommends", ignore_err: true)[:stdout]
-            break
-        end
-    end
-    raise "#{$command_output}" unless executed
+  list_output = sshcmd("mgr-sync list products", ignore_err: true)[:stdout]
+  executed = false
+  linenum = 0
+  list_output.each_line do |line|
+    next unless /^ *\[ \]/ =~ line
+    linenum += 1
+    next unless line.include? prd
+    executed = true
+    $command_output = sshcmd("echo '#{linenum}' | mgr-sync add product --no-recommends", ignore_err: true)[:stdout]
+    break
+  end
+  raise $command_output.to_s unless executed
 end
 
 When(/^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/) do |arg1, u, p|
