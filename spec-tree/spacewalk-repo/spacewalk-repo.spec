@@ -128,6 +128,9 @@ grep -h ^gpgkey= $RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/*.repo \
 %{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-spacewalk-nightly-client
 
 %changelog
+* Tue Apr 03 2018 Jiri Dostal <jdostal@redhat.com> 2.9-0
+- Bumping package versions for repo
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8-10
 - remove install/clean section initial cleanup
 - removed Group from specfile
