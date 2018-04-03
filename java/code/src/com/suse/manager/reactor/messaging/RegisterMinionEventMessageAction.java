@@ -533,7 +533,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils.detectRhelProduct(
                     server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);
             return Opt.stream(rhelProduct).flatMap(rhel -> {
-                if (rhel.getSuseProduct().isPresent()) {
+                if (!rhel.getSuseProduct().isPresent()) {
                     LOG.warn("No product match found for: " + rhel.getName() + " " +
                             rhel.getVersion() + " " + rhel.getRelease() + " " +
                             server.getServerArch().getCompatibleChannelArch());
@@ -561,15 +561,6 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                             " is not valid. Default channel(s) NOT subscribed to.");
             return;
         }
-
-        Optional<Channel> baseChannelFromActivationKey = activationKey.flatMap(ak -> {
-            return ofNullable(ak.getBaseChannel());
-        });
-
-        Optional<SUSEProduct> activationKeyBaseProduct = baseChannelFromActivationKey.flatMap(
-                base -> SUSEProductFactory.findProductByChannelLabel(base.getLabel())
-        ).map(SUSEProductChannel::getProduct);
-
 
         Set<Channel> channelsToAssign = Opt.fold(
                 activationKey,
