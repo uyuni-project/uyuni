@@ -1,3 +1,4 @@
+- Rewrite virtual guests list page in reactjs
 - Fix NullPointerException when refreshing deleted software channel (bsc#1094992)
 - Subscribe saltbooted minion to software channels, respect activation key in final registration steps
 - Fix script is deleted too early (bsc#1105807)
