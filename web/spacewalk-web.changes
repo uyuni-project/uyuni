@@ -1,3 +1,6 @@
+- Fix for the system channels UI, hide the corresponding title and horizontal line if list of
+  SUSE or custom channels is empty
+
 -------------------------------------------------------------------
 Wed Apr 04 12:13:32 CEST 2018 - jgonzalez@suse.com
 
