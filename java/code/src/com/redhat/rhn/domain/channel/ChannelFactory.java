@@ -977,7 +977,8 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     * Find child channel ids with the given parent in SSM.
+     * Find child channels that can be subscribed by the user and have the arch compatible
+     * with the servers in the SSM.
      *
      * @param user user
      * @param parentChannelId id of the parent channel
