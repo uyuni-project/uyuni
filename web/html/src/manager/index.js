@@ -37,6 +37,7 @@ const pages = {
   'taskotop': './manager/taskotop.js',
   'virtualhostmanager': './manager/virtualhostmanager.js',
   'virtualization/guests/list/guests-list.renderer': './manager/virtualization/guests/list/guests-list.renderer.js',
+  'virtualization/guests/edit/guests-edit.renderer': './manager/virtualization/guests/edit/guests-edit.renderer.js',
 }
 
 Object.keys(pages).forEach((key) => {

@@ -327,6 +327,8 @@ public class Router implements SparkApplication {
     private void initVirtualizationRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/guests/:sid",
                 withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::show))), jade);
+        get("/manager/systems/details/virtualization/guests/:sid/edit/:guestuuid",
+                withUserPreferences(withCsrfToken(withUser(VirtualGuestsController::edit))), jade);
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
                 withUser(VirtualGuestsController::data));
         post("/manager/api/systems/details/virtualization/guests/:sid/:action",

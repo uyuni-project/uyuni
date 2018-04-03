@@ -6,7 +6,7 @@ const MessagesUtils = require("components/messages").Utils;
 const {Table, Column, SearchField, Highlight} = require("components/table");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
-const {AsyncButton} = require("components/buttons");
+const {LinkButton, AsyncButton} = require("components/buttons");
 const {DeleteDialog} = require("components/dialog/DeleteDialog");
 const {DangerDialog} = require("components/dialog/DangerDialog");
 const {ModalButton} = require("components/dialog/ModalButton");
@@ -365,6 +365,12 @@ class GuestsList extends React.Component {
                               { state == 'running' && this.createModalButton('suspend', modals_data, row) }
                               { state != 'stopped' && this.createModalButton('shutdown', modals_data, row) }
                               { (state == 'paused' || state == 'running') && this.createModalButton('restart', modals_data, row) }
+                              <LinkButton
+                                title={t("Edit")}
+                                className="btn-default btn-sm"
+                                icon="fa-edit"
+                                href={`/rhn/manager/systems/details/virtualization/guests/${this.props.server_id}/edit/${row.uuid}`}
+                              />
                               { this.props.salt_entitled && this.createModalButton('delete', modals_data, row) }
                             </div>;
                         }}

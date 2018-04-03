@@ -37,13 +37,17 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.utils.gson.VirtualGuestsBaseActionJson;
+import com.suse.manager.webui.utils.gson.VirtualGuestsUpdateActionJson;
 
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -154,6 +158,7 @@ public class VirtualGuestsController {
         actionsMap.put("setVcpu", VirtualGuestSetterActionJson.class);
         actionsMap.put("setMemory", VirtualGuestSetterActionJson.class);
         actionsMap.put("delete", VirtualGuestsBaseActionJson.class);
+        actionsMap.put("update", VirtualGuestsUpdateActionJson.class);
 
         Long serverId;
         try {
@@ -187,7 +192,10 @@ public class VirtualGuestsController {
             ActionType type = VirtualizationActionCommand.lookupActionType(guest.getStateLabel(), action);
             if (data.getUuids().contains(guest.getUuid())) {
                 String result = null;
-                if (type != null) {
+                if (data instanceof VirtualGuestsUpdateActionJson) {
+                    result = triggerGuestUpdateAction(host, guest, user, (VirtualGuestsUpdateActionJson)data);
+                }
+                else if (type != null) {
                     if (data instanceof VirtualGuestSetterActionJson) {
                         result = triggerGuestSetterAction(host, guest, action, type, user,
                                                           ((VirtualGuestSetterActionJson)data).getValue());
@@ -202,6 +210,73 @@ public class VirtualGuestsController {
         }
 
         return json(response, actionResults);
+    }
+
+    /**
+     * Display the edit page of a virtual guest
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView edit(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+
+        Long hostId;
+        try {
+            hostId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        // Use uuids since the IDs may change
+        String guestUuid = request.params("guestuuid");
+
+        Server host;
+        try {
+            host = SystemManager.lookupByIdAndUser(hostId, user);
+        }
+        catch (LookupException e) {
+            throw new NotFoundException();
+        }
+        DataResult<VirtualSystemOverview> guests =
+                SystemManager.virtualGuestsForHostList(user, hostId, null);
+
+        Optional<VirtualSystemOverview> guest = guests.stream().
+                filter(item -> item.getUuid().equals(guestUuid)).findFirst();
+
+        if (!guest.isPresent()) {
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
+
+        /* For system-common.jade */
+        data.put("server", host);
+        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(hostId));
+
+        /* For the rest of the template */
+        data.put("guest", GSON.toJson(guest.get()));
+        data.put("isSalt", host.hasEntitlement(EntitlementManager.SALT));
+        return new ModelAndView(data, "virtualization/guests/edit.jade");
+    }
+
+    private static String triggerGuestUpdateAction(Server host,
+                                                   VirtualSystemOverview guest,
+                                                   User user,
+                                                   VirtualGuestsUpdateActionJson data) {
+        List<String> results = new ArrayList<>();
+        // Comparing against the DB data may not be accurate, but that will change with virt.running state soon
+        if (data.getVcpu() != guest.getVcpus()) {
+            results.add(triggerGuestSetterAction(host, guest, "setVcpu", ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
+                                                 user, data.getVcpu()));
+        }
+        if (data.getMemory() != guest.getMemory()) {
+            results.add(triggerGuestSetterAction(host, guest, "setMemory",
+                                                 ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
+                                                 user, data.getMemory()));
+        }
+        return GSON.toJson(results);
     }
 
     private static String triggerGuestSetterAction(Server host,
