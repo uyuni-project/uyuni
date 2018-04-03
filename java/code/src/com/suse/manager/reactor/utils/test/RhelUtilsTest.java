@@ -169,6 +169,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         c.setOrg(user.getOrg());
 
         SUSEProduct suseProduct = new SUSEProduct();
+        suseProduct.setBase(true);
         suseProduct.setName("res");
         suseProduct.setVersion(version);
         suseProduct.setRelease(null);
@@ -186,7 +187,10 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         spc.setChannel(c);
         spc.setChannelLabel(c.getLabel());
         spc.setProduct(suseProduct);
-        spc.setParentChannelLabel("res-x86_64-server-" + version);
+        //spc.setParentChannelLabel("res-x86_64-server-" + version);
+
+        suseProduct.setSuseProductChannels(Collections.singleton(spc));
+
         TestUtils.saveAndFlush(spc);
 
         ChannelFactory.save(c);
