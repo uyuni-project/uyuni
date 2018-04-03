@@ -310,6 +310,51 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, allowedWithBase.getServers().size());
         assertTrue(allowedNoBase.getServers().stream().anyMatch(s -> s.getId() == server2.getId()));
         assertTrue(allowedNoBase.getServers().stream().anyMatch(s -> s.getId() == server3.getId()));
+
+        assertEquals(2, allowedNoBase.getChildChannels().size());
+        assertTrue(allowedNoBase.getChildChannels().stream()
+                .filter(cc -> cc.getId() == childChannel1.getId()).findAny().isPresent());
+        assertTrue(allowedNoBase.getChildChannels().stream()
+                .filter(cc -> cc.getId() == childChannel2.getId()).findAny().isPresent());
+    }
+
+    /**
+     * Test change to default for 2 servers with no base channel.
+     * @throws Exception
+     */
+    public void testComputeAllowedChannelChangesTwoServersWithoutBase() throws Exception {
+        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(user, true);
+
+        installSUSEProductOnServer(product, server1);
+        installSUSEProductOnServer(product, server2);
+        HibernateFactory.getSession().flush();
+
+        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        set.addElement(server1.getId() + "");
+        set.addElement(server2.getId() + "");
+        RhnSetManager.store(set);
+
+        SsmBaseChannelChangesDto changes = new SsmBaseChannelChangesDto();
+        // no base -> default
+        changes.getChanges().add(new SsmBaseChannelChangesDto.Change(-1, -1));
+
+        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
+
+        assertEquals(1, result.size());
+
+        SsmAllowedChildChannelsDto allowedNoBase =
+                result.stream().filter(a -> !a.getOldBaseChannel().isPresent()).findFirst().get();
+        assertEquals(baseChannel.getId(), (Long)allowedNoBase.getNewBaseChannel().get().getId());
+        assertTrue(allowedNoBase.isNewBaseDefault());
+        assertTrue(allowedNoBase.getServers().stream().anyMatch(s -> s.getId() == server1.getId()));
+        assertTrue(allowedNoBase.getServers().stream().anyMatch(s -> s.getId() == server2.getId()));
+
+        assertEquals(2, allowedNoBase.getChildChannels().size());
+        assertTrue(allowedNoBase.getChildChannels().stream()
+                .filter(cc -> cc.getId() == childChannel1.getId()).findAny().isPresent());
+        assertTrue(allowedNoBase.getChildChannels().stream()
+                .filter(cc -> cc.getId() == childChannel2.getId()).findAny().isPresent());
     }
 
     /**
