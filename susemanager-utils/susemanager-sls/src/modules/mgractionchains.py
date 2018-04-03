@@ -134,7 +134,7 @@ def resume():
     '''
     next_chunk = _read_next_ac_chunk()
     if not next_chunk:
-        return
+        return {}
     if type(next_chunk) != dict:
         err_str = "Not able to resume Action Chain execution! Malformed " \
                   "'_mgractionchains.conf' found: {0}".format(next_chunk)
