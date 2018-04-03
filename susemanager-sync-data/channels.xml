@@ -6549,6 +6549,26 @@
 			<product_id eol="N" name="SLES_HPC" version="15">1732</product_id>
 		</products>
 	</channel>
+	<channel arch="aarch64" description="&lt;p&gt; SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. &lt;/p&gt; &lt;p&gt; The SUSE Linux Enterprise Server for High Performance Computing (HPC) delivers specific tools commonly used for high performance, numerically intensive workloads. &lt;/p&gt;" eol="N" family="HPC-ARM64" is_signed="Y" label="sle-product-hpc15-debuginfo-pool-aarch64" name="SLE-Product-HPC15-Debuginfo-Pool for aarch64" optional="Y" parent="sle-product-hpc-15-pool-aarch64" product_name="SLES_HPC" product_version="15" source_url="https://updates.suse.com/SUSE/Products/SLE-Product-HPC/15/aarch64/product_debug/" summary="SUSE Linux Enterprise High Performance Computing 15 aarch64" update_tag="SLE-HPC">
+		<products>
+			<product_id eol="N" name="SLES_HPC" version="15">1731</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. &lt;/p&gt; &lt;p&gt; The SUSE Linux Enterprise Server for High Performance Computing (HPC) delivers specific tools commonly used for high performance, numerically intensive workloads. &lt;/p&gt;" eol="N" family="HPC-X86" is_signed="Y" label="sle-product-hpc15-debuginfo-pool-x86_64" name="SLE-Product-HPC15-Debuginfo-Pool for x86_64" optional="Y" parent="sle-product-hpc-15-pool-x86_64" product_name="SLES_HPC" product_version="15" source_url="https://updates.suse.com/SUSE/Products/SLE-Product-HPC/15/x86_64/product_debug/" summary="SUSE Linux Enterprise High Performance Computing 15 x86_64" update_tag="SLE-HPC">
+		<products>
+			<product_id eol="N" name="SLES_HPC" version="15">1732</product_id>
+		</products>
+	</channel>
+	<channel arch="aarch64" description="&lt;p&gt; SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. &lt;/p&gt; &lt;p&gt; The SUSE Linux Enterprise Server for High Performance Computing (HPC) delivers specific tools commonly used for high performance, numerically intensive workloads. &lt;/p&gt;" eol="N" family="HPC-ARM64" is_signed="Y" label="sle-product-hpc15-debuginfo-updates-aarch64" name="SLE-Product-HPC15-Debuginfo-Updates for aarch64" optional="Y" parent="sle-product-hpc-15-pool-aarch64" product_name="SLES_HPC" product_version="15" source_url="https://updates.suse.com/SUSE/Updates/SLE-Product-HPC/15/aarch64/update_debug/" summary="SUSE Linux Enterprise High Performance Computing 15 aarch64" update_tag="SLE-HPC">
+		<products>
+			<product_id eol="N" name="SLES_HPC" version="15">1731</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. &lt;/p&gt; &lt;p&gt; The SUSE Linux Enterprise Server for High Performance Computing (HPC) delivers specific tools commonly used for high performance, numerically intensive workloads. &lt;/p&gt;" eol="N" family="HPC-X86" is_signed="Y" label="sle-product-hpc15-debuginfo-updates-x86_64" name="SLE-Product-HPC15-Debuginfo-Updates for x86_64" optional="Y" parent="sle-product-hpc-15-pool-x86_64" product_name="SLES_HPC" product_version="15" source_url="https://updates.suse.com/SUSE/Updates/SLE-Product-HPC/15/x86_64/update_debug/" summary="SUSE Linux Enterprise High Performance Computing 15 x86_64" update_tag="SLE-HPC">
+		<products>
+			<product_id eol="N" name="SLES_HPC" version="15">1732</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." eol="N" family="7260" is_signed="Y" label="sle-product-sled15-pool-x86_64" name="SLE-Product-SLED15-Pool for x86_64" optional="N" parent="BASE" product_name="SLED" product_version="15" source_url="https://updates.suse.com/SUSE/Products/SLE-Product-SLED/15/x86_64/product/" summary="SUSE Linux Enterprise Desktop 15 x86_64" update_tag="SLE-DESKTOP">
 		<products>
 			<product_id eol="N" name="SLED" version="15">1609</product_id>
@@ -8861,17 +8881,22 @@
 			<product_id eol="N" name="SUSE_SLES" version="11.4">1303</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" eol="N" family="AiO" is_signed="Y" label="sle11-security-module-x86_64-sap-sp3" name="SLE11-Security-Module for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" update_tag="secsp3">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 x86_64" eol="N" family="7261" is_signed="Y" label="sle11-security-module-x86_64" name="SLE11-Security-Module for x86_64" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 x86_64" update_tag="secsp3">
+		<products>
+			<product_id eol="N" name="SUSE_SLES" version="11.3">814</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 x86_64" eol="N" family="AiO" is_signed="Y" label="sle11-security-module-x86_64-sap-sp3" name="SLE11-Security-Module for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 x86_64" update_tag="secsp3">
 		<products>
 			<product_id eol="N" name="SUSE_SLES_SAP" version="11.3">1131</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" eol="N" family="AiO" is_signed="Y" label="sle11-security-module-x86_64-sap-sp4" name="SLE11-Security-Module for x86_64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" update_tag="secsp3">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 x86_64" eol="N" family="AiO" is_signed="Y" label="sle11-security-module-x86_64-sap-sp4" name="SLE11-Security-Module for x86_64 SAP-SP4" optional="Y" parent="sle11-sp4-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 x86_64" update_tag="secsp3">
 		<products>
 			<product_id eol="N" name="SUSE_SLES_SAP" version="11.4">1329</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" eol="N" family="7261" is_signed="Y" label="sle11-security-module-x86_64-sles-sp4" name="SLE11-Security-Module for x86_64 SLES-SP4" optional="Y" parent="sles11-sp4-pool-x86_64" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP3" update_tag="secsp3">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 x86_64" eol="N" family="7261" is_signed="Y" label="sle11-security-module-x86_64-sles-sp4" name="SLE11-Security-Module for x86_64 SLES-SP4" optional="Y" parent="sles11-sp4-pool-x86_64" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 x86_64" update_tag="secsp3">
 		<products>
 			<product_id eol="N" name="SUSE_SLES" version="11.4">1300</product_id>
 		</products>
