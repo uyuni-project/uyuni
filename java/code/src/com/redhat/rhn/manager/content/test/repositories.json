@@ -13691,6 +13691,46 @@
   },
   {
     "autorefresh": true,
+    "description": "SLE-Live-Patching12-SP3-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2467,
+    "installer_updates": false,
+    "name": "SLE-Live-Patching12-SP3-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Live-Patching/12-SP3/ppc64le/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Live-Patching12-SP3-Debuginfo-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2468,
+    "installer_updates": false,
+    "name": "SLE-Live-Patching12-SP3-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Live-Patching/12-SP3/ppc64le/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Live-Patching12-SP3-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2469,
+    "installer_updates": false,
+    "name": "SLE-Live-Patching12-SP3-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Live-Patching/12-SP3/ppc64le/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Live-Patching12-SP3-Debuginfo-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2470,
+    "installer_updates": false,
+    "name": "SLE-Live-Patching12-SP3-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Live-Patching/12-SP3/ppc64le/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
     "description": "SUSE-OpenStack-Cloud-Continuous-Delivery-6-Updates for sle-12-x86_64",
     "distro_target": "sle-12-x86_64",
     "enabled": true,
@@ -15911,6 +15951,56 @@
   },
   {
     "autorefresh": true,
+    "description": "SLE-HA12-SP4-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2819,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP4-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-HA/12-SP4/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-HA12-SP4-Debuginfo-Updates for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2820,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP4-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-HA/12-SP4/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-HA12-SP4-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": true,
+    "id": 2821,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP4-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP4/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-HA12-SP4-Debuginfo-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2822,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP4-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP4/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-HA12-SP4-Source-Pool for sle-12-x86_64",
+    "distro_target": "sle-12-x86_64",
+    "enabled": false,
+    "id": 2823,
+    "installer_updates": false,
+    "name": "SLE-HA12-SP4-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP4/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
     "description": "SLE-HA12-SP4-Updates for sle-12-s390x",
     "distro_target": "sle-12-s390x",
     "enabled": true,
@@ -17168,5 +17258,225 @@
     "installer_updates": false,
     "name": "SLE-Module-Basesystem15-Debuginfo-Updates",
     "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Basesystem/15/aarch64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Product-HPC-15-Updates for sle-15-aarch64",
+    "distro_target": "sle-15-aarch64",
+    "enabled": true,
+    "id": 3015,
+    "installer_updates": false,
+    "name": "SLE-Product-HPC-15-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-HPC/15/aarch64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Product-HPC-15-Pool for sle-15-aarch64",
+    "distro_target": "sle-15-aarch64",
+    "enabled": true,
+    "id": 3016,
+    "installer_updates": false,
+    "name": "SLE-Product-HPC-15-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HPC/15/aarch64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Product-HPC-15-Updates for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": true,
+    "id": 3017,
+    "installer_updates": false,
+    "name": "SLE-Product-HPC-15-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Product-HPC/15/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Product-HPC-15-Pool for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": true,
+    "id": 3018,
+    "installer_updates": false,
+    "name": "SLE-Product-HPC-15-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HPC/15/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-HPC15-Updates for sle-15-aarch64",
+    "distro_target": "sle-15-aarch64",
+    "enabled": true,
+    "id": 3019,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC15-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HPC/15/aarch64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-HPC15-Debuginfo-Updates for sle-15-aarch64",
+    "distro_target": "sle-15-aarch64",
+    "enabled": false,
+    "id": 3020,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC15-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HPC/15/aarch64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC15-Pool for sle-15-aarch64",
+    "distro_target": "sle-15-aarch64",
+    "enabled": true,
+    "id": 3021,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC15-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/15/aarch64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC15-Debuginfo-Pool for sle-15-aarch64",
+    "distro_target": "sle-15-aarch64",
+    "enabled": false,
+    "id": 3022,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC15-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/15/aarch64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC15-Source-Pool for sle-15-aarch64",
+    "distro_target": "sle-15-aarch64",
+    "enabled": false,
+    "id": 3023,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC15-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/15/aarch64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-HPC15-Updates for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": true,
+    "id": 3024,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC15-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HPC/15/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-HPC15-Debuginfo-Updates for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": false,
+    "id": 3025,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC15-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-HPC/15/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC15-Pool for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": true,
+    "id": 3026,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC15-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/15/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC15-Debuginfo-Pool for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": false,
+    "id": 3027,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC15-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/15/x86_64/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-HPC15-Source-Pool for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": false,
+    "id": 3028,
+    "installer_updates": false,
+    "name": "SLE-Module-HPC15-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-HPC/15/x86_64/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Live-Patching15-Updates for sle-15-ppc64le",
+    "distro_target": "sle-15-ppc64le",
+    "enabled": true,
+    "id": 3029,
+    "installer_updates": false,
+    "name": "SLE-Module-Live-Patching15-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Live-Patching/15/ppc64le/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Live-Patching15-Debuginfo-Updates for sle-15-ppc64le",
+    "distro_target": "sle-15-ppc64le",
+    "enabled": false,
+    "id": 3030,
+    "installer_updates": false,
+    "name": "SLE-Module-Live-Patching15-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Live-Patching/15/ppc64le/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Live-Patching15-Pool for sle-15-ppc64le",
+    "distro_target": "sle-15-ppc64le",
+    "enabled": true,
+    "id": 3031,
+    "installer_updates": false,
+    "name": "SLE-Module-Live-Patching15-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Live-Patching/15/ppc64le/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Live-Patching15-Debuginfo-Pool for sle-15-ppc64le",
+    "distro_target": "sle-15-ppc64le",
+    "enabled": false,
+    "id": 3032,
+    "installer_updates": false,
+    "name": "SLE-Module-Live-Patching15-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Live-Patching/15/ppc64le/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Live-Patching15-Updates for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": true,
+    "id": 3033,
+    "installer_updates": false,
+    "name": "SLE-Module-Live-Patching15-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Live-Patching/15/x86_64/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SLE-Module-Live-Patching15-Debuginfo-Updates for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": false,
+    "id": 3034,
+    "installer_updates": false,
+    "name": "SLE-Module-Live-Patching15-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Live-Patching/15/x86_64/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Live-Patching15-Pool for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": true,
+    "id": 3035,
+    "installer_updates": false,
+    "name": "SLE-Module-Live-Patching15-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Live-Patching/15/x86_64/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SLE-Module-Live-Patching15-Debuginfo-Pool for sle-15-x86_64",
+    "distro_target": "sle-15-x86_64",
+    "enabled": false,
+    "id": 3036,
+    "installer_updates": false,
+    "name": "SLE-Module-Live-Patching15-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Live-Patching/15/x86_64/product_debug/?my-fake-token"
   }
 ]
