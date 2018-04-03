@@ -222,32 +222,36 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       const customOptions = this.state.availableBase
         .filter(c => c.custom);
 
-      baseChannels.push(
-        <div>
-          <h4>{t("SUSE Channels")}</h4>
-          { baseOptions.map(c => <div className="radio">
-              <input type="radio" value={c.id} id={"base_" + c.id}
-                checked={c.id === (this.state.selectedBase && this.state.selectedBase.id)}
-                onChange={this.handleBaseChange}/>
-              <label htmlFor={"base_" + c.id}>{c.name}</label>
-              <ChannelAnchorLink id={c.id} newWindow={true}/>
-            </div>)
-          }
-          <hr/>
-      </div>)
-      baseChannels.push(
-        <div>
-          <h4>{t("Custom Channels")}</h4>
-          { customOptions.map(c => <div className="radio">
-              <input type="radio" value={c.id} id={"base_" + c.id}
-                checked={c.id === (this.state.selectedBase && this.state.selectedBase.id)}
-                onChange={this.handleBaseChange}/>
-              <label htmlFor={"base_" + c.id}>{c.name}</label>
-              <ChannelAnchorLink id={c.id} newWindow={true}/>
-            </div>)
-          }
-          <hr/>
-      </div>)
+      if (baseOptions.length > 0) {
+        baseChannels.push(
+          <div>
+            <h4>{t("SUSE Channels")}</h4>
+            { baseOptions.map(c => <div className="radio">
+                <input type="radio" value={c.id} id={"base_" + c.id}
+                  checked={c.id === (this.state.selectedBase && this.state.selectedBase.id)}
+                  onChange={this.handleBaseChange}/>
+                <label htmlFor={"base_" + c.id}>{c.name}</label>
+                <ChannelAnchorLink id={c.id} newWindow={true}/>
+              </div>)
+            }
+            <hr/>
+        </div>);
+      }
+      if (customOptions.length > 0) {
+        baseChannels.push(
+          <div>
+            <h4>{t("Custom Channels")}</h4>
+            { customOptions.map(c => <div className="radio">
+                <input type="radio" value={c.id} id={"base_" + c.id}
+                  checked={c.id === (this.state.selectedBase && this.state.selectedBase.id)}
+                  onChange={this.handleBaseChange}/>
+                <label htmlFor={"base_" + c.id}>{c.name}</label>
+                <ChannelAnchorLink id={c.id} newWindow={true}/>
+              </div>)
+            }
+            <hr/>
+        </div>);
+      }
     }
 
     if (this.state.availableChildren) {
