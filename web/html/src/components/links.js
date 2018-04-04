@@ -16,11 +16,14 @@ const ChannelAnchorLink = (props: ChannelAnchorLinkProps) =>
 type ChannelLinkProps = {
   id: string|number,
   newWindow?: boolean,
-  children?: React.Node
+  children?: React.Node,
+  title: string
 }
 
 const ChannelLink = (props: ChannelLinkProps) =>
-  <a href={`/rhn/channels/ChannelDetail.do?cid=${props.id}`} target={props.newWindow ? "_blank" : "_self"}>
+  <a href={`/rhn/channels/ChannelDetail.do?cid=${props.id}`}
+    target={props.newWindow ? "_blank" : "_self"}
+    title={props.title}>
   { props.children }
   </a>;
 

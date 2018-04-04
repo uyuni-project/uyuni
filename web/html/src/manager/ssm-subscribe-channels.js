@@ -245,7 +245,11 @@ type ChildChannelProps = {
 type ChildChannelState = {
   selections: Map<string, string>,
   popupServersList: Array<SsmServerDto>,
-  popupServersChannelName: string
+  popupServersChannelName: string,
+  // channel dependencies: which child channels are required by a child channel?
+  requiredChannels: Map<number, Set<number>>,
+  // channel dependencies: by which child channels is a child channel required?
+  requiredByChannels: Map<number, Set<number>>
 }
 
 class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelState> {
@@ -262,7 +266,9 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     this.state = {
       selections : selections,
       popupServersList: [],
-      popupServersChannelName: ""
+      popupServersChannelName: "",
+      requiredChannels: new Map(),
+      requiredByChannels: new Map()
     }
   }
 
@@ -289,7 +295,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
   getChannelDependencies = () => {
     // TODO cache stuff to avoid repeated calls
     const childrenIds : Array<number> = Array.from(this.props.childChannels
-      .flatMap(channel => channel.childChannels.map(channel => channel.id)));
+      .flatMap(dto => dto.childChannels.map(channel => channel.id)));
 
     Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json").promise
       .then((response : JsonResult<Map<number, Array<number>>>) => {
@@ -340,6 +346,21 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
       this.setState({selections: this.state.selections});
       this.props.onChangeChild(allowedChannels, channelId, action);
     });
+  }
+
+  // todo extract
+  makeTitle = (channelId) => {
+    const channelLines = (channelIds) => {
+      return this.props.childChannels
+        .flatMap(dto => dto.childChannels)
+        .filter(channel => (channelIds || new Set()).has(channel.id))
+        .map(channel => channel.name)
+        .reduce((channelName1, channelName2) => channelName1 + "\n" + channelName2, "");
+    }
+    const requiredChannels = channelLines(this.state.requiredChannels.get(channelId));
+    const requiredByChannels = channelLines(this.state.requiredByChannels.get(channelId));
+    return "Required channels: \n" + (requiredChannels || "(none)") + "\n\n"
+      + "Require this channel: \n" + (requiredByChannels || "(none)");
   }
 
   toggleRecommended = (change: SsmAllowedChildChannelsDto) => {
@@ -426,7 +447,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
               { allowed.childChannels.map(child =>
                 <dt className="row">
                   <div className="col-md-6">
-                    <ChannelLink id={child.id} newWindow={true}>{ child.name + (child.recommended ? " (R)" : "") }</ChannelLink>
+                    <ChannelLink title={this.makeTitle(child.id)} id={child.id} newWindow={true}>{ child.name + (child.recommended ? " (R)" : "") }</ChannelLink>
                   </div>
                   <div className="col-md-4">
                     <div className="row radio">
