@@ -107,15 +107,34 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
 
   getAccessibleChildren = (baseId) => {
     // TODO cache children to avoid repeated calls
-    Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels/${baseId}/accessible-children`)
-      .promise.then((data : JsonResult<Array<ChannelDto>>) => {
+    Network.get(`/rhn/manager/api/systems/${this.props.serverId}/channels/${baseId}/accessible-children`).promise
+      .then((data : JsonResult<Array<ChannelDto>>) => {
+        const availableChildren = new Map(data.data
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map(channel => [channel.id, channel]));
         this.setState({
           // sort child channels by name to have a consistent order in the UI
-          availableChildren: new Map(data.data
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map(channel => [channel.id, channel]))
+          availableChildren: availableChildren
         });
-        this.getChannelDependencies(); // todo make part of promise chain?
+        const childrenIds : Array<number> = Array.from(availableChildren.keys());
+        return Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json").promise;
+      })
+      .then((data : JsonResult<Map<number, Array<number>>>) => {
+        const requiredChannels = new Map(Object.entries(data.data)
+          .map(entry => {
+            const channelId = parseInt(entry[0]);
+            const requiredChannelList = entry[1];
+            return [
+              channelId,
+              new Set(requiredChannelList.filter(requiredId => requiredId !== channelId && !this.state.availableBase.map(channel => channel.id).includes(requiredId)))
+            ];
+          }));
+
+        const requiredByChannels = this.computeReverseDependencies(requiredChannels);
+
+        this.setState({requiredChannels: requiredChannels,
+                       requiredByChannels: requiredByChannels})
+
       })
       .catch(this.handleResponseError);
   }
@@ -134,30 +153,6 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
     return Array.from(dependencyMap.keys())
         .flatMap(key => Array.from(dependencyMap.get(key)).map(val => [val, key]))
         .reduce(mergeEntries, new Map());
-  }
-
-  getChannelDependencies = () => {
-    // TODO cache stuff to avoid repeated calls
-    const childrenIds : Array<number> = Array.from(this.state.availableChildren.keys());
-
-    Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json")
-      .promise.then((response : JsonResult<Map<number, Array<number>>>) => {
-        const requiredChannels = new Map(Object.entries(response.data)
-          .map(entry => {
-            const channelId = parseInt(entry[0]);
-            const requiredChannelList = entry[1];
-            return [
-              channelId,
-              new Set(requiredChannelList.filter(requiredId => requiredId !== channelId && !this.state.availableBase.map(channel => channel.id).includes(requiredId)))
-            ];
-          }));
-
-        const requiredByChannels = this.computeReverseDependencies(requiredChannels);
-
-        this.setState({requiredChannels: requiredChannels,
-                       requiredByChannels: requiredByChannels})
-      })
-      .catch(this.handleResponseError);
   }
 
   handleResponseError = (jqXHR, arg = "") => {
