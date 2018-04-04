@@ -268,6 +268,51 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     }
   }
 
+  componentDidMount() {
+    this.getChannelDependencies();
+  }
+
+  computeReverseDependencies = (dependencyMap) => { // todo extract this to common code!
+    // merges entry e to the accMap
+    const mergeEntries = (accMap, e) => {
+        if (accMap.has(e[0])) {
+            accMap.get(e[0]).add(e[1]);
+        } else {
+            accMap.set(e[0], new Set([e[1]]));
+        }
+        return accMap;
+    }
+
+    return Array.from(dependencyMap.keys())
+        .flatMap(key => Array.from(dependencyMap.get(key)).map(val => [val, key]))
+        .reduce(mergeEntries, new Map());
+  }
+
+  getChannelDependencies = () => {
+    // TODO cache stuff to avoid repeated calls
+    const childrenIds : Array<number> = Array.from(this.props.childChannels
+      .flatMap(channel => channel.childChannels.map(channel => channel.id)));
+
+    Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json").promise
+      .then((response : JsonResult<Map<number, Array<number>>>) => {
+        const requiredChannels = new Map(Object.entries(response.data)
+          .map(entry => {
+            const channelId = parseInt(entry[0]);
+            const requiredChannelList = entry[1];
+            return [
+              channelId,
+              new Set(requiredChannelList.filter(requiredId => requiredId !== channelId && childrenIds.includes(requiredId)))
+            ];
+          }));
+
+        const requiredByChannels = this.computeReverseDependencies(requiredChannels);
+
+        this.setState({requiredChannels: requiredChannels,
+                       requiredByChannels: requiredByChannels})
+      })
+      .catch(err => console.log(err.statusText));
+  }
+
   getChangeId = (change: ChannelChangeDto, childId: string) => {
     return (change.oldBaseId ? change.oldBaseId : "none") +
     "_" +
