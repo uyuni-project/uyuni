@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Apr 04 12:14:25 CEST 2018 - jgonzalez@suse.com
+
+- version 3.2.8-1
 - Fix 'mgractionchains.resume' output when nothing to resume (bsc#1087401)
 
 -------------------------------------------------------------------
