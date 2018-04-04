@@ -1,3 +1,4 @@
+- Bugfix: assign correct channel on bootstrap (bsc#1087842)
 - Prevent JSON parsing error when 'mgractionchains' module is not deployed.
 
 -------------------------------------------------------------------
