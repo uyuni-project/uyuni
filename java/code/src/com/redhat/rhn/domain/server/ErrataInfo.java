@@ -60,6 +60,7 @@ public class ErrataInfo {
      *
      * @param nameIn the name in
      * @param updateStackIn the update stack in
+     * @param includeSaltIn the include salt in
      */
     public ErrataInfo(String nameIn, boolean updateStackIn, boolean includeSaltIn) {
         name = nameIn;
