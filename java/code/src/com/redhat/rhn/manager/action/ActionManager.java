@@ -2259,12 +2259,4 @@ public class ActionManager extends BaseManager {
         scheduleForExecution(action, new HashSet<>(sids));
         return action;
     }
-
-    /**
-     * Checks that the specified IDs belong to minions
-     * @param sids the system IDs
-     */
-    public static void checkSaltServers(List<Long> sids) {
-        // TODO
-    }
 }

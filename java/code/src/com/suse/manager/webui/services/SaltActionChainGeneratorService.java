@@ -198,20 +198,20 @@ public class SaltActionChainGeneratorService {
     private Optional<Pair<String, String>> prevRequisiteRef(List<SaltState> fileStates) {
         if (fileStates.size() > 0) {
             SaltState previousState = fileStates.get(fileStates.size() - 1);
-            return previousState.getData().entrySet().stream().findFirst().map(entry ->
-                ((Map<String, ?>)entry.getValue()).entrySet().stream().findFirst().map(ent -> {
-                    String[] stateMod = ent.getKey().split("\\.");
-                    if (stateMod.length == 2) {
-                        return stateMod[0];
-                    }
-                    else {
-                        throw new RuntimeException("Could not get Salt requisite reference for " + ent.getKey());
-                    }
-                })
-                        .map(mod -> new ImmutablePair<>(mod, entry.getKey()))
-                        .orElseThrow(() ->
-                                new RuntimeException("Could not get Salt requisite reference for " + entry.getKey()))
-            );
+            return previousState.getData().entrySet().stream().findFirst()
+                .map(entry -> ((Map<String, ?>)entry.getValue()).entrySet().stream()
+                    .findFirst().map(ent -> {
+                        String[] stateMod = ent.getKey().split("\\.");
+                        if (stateMod.length == 2) {
+                            return stateMod[0];
+                        }
+                        else {
+                            throw new RuntimeException("Could not get Salt requisite reference for " + ent.getKey());
+                        }
+                    })
+                    .map(mod -> new ImmutablePair<>(mod, entry.getKey()))
+                    .orElseThrow(() ->
+                         new RuntimeException("Could not get Salt requisite reference for " + entry.getKey())));
         }
         return Optional.empty();
     }
