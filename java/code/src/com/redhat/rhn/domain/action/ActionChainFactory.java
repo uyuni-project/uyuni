@@ -20,7 +20,6 @@ package com.redhat.rhn.domain.action;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -36,7 +35,6 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.utils.MinionServerUtils;
 
 /**
  * Creates Action Chain related objects.
