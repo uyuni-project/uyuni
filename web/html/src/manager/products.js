@@ -693,7 +693,7 @@ const CheckListItem = React.createClass({
         />;
     }
     else if (this.isInstalled()) {
-      selectorContent = <i className='fa fa-info product-installed' title={t('This product is installed.')} />
+      selectorContent = <i className='fa fa-check product-installed' title={t('This product is installed.')} />
     }
     /*****/
 
@@ -775,7 +775,7 @@ const CheckListItem = React.createClass({
             className='btn btn-default btn-sm'
             disabled={resyncDisabled ? 'disabled' : ''}
             handler={conditionalResyncAction}
-            icon={'fa-refresh fa-1-5x pointer ' + conditionalResyncClass}
+            icon={'fa-refresh pointer ' + conditionalResyncClass}
             title={conditionalResyncTitle}
         />
         : null;
