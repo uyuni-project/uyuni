@@ -1,3 +1,4 @@
+- More specific message for empty custom system info
 - Properly invalidate channel access tokens when changing to the same channels (bsc#1085660)
 - Uniform channel assignment for Salt (bsc#1077265)
 - fix race condition during enabling channel tokens (bsc#1085436)

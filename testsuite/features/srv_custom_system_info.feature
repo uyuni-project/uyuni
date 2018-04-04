@@ -54,7 +54,7 @@ Feature: Custom system info key-value pairs
     And I follow "key-value-edited"
     And I follow "Delete Value"
     And I click on "Remove Value"
-    Then I should see a "No Custom Info Keys Found" text
+    Then I should see a "No custom information defined for this system." text
 
   Scenario: Delete the key
     When I follow "Custom System Info" in the left menu
