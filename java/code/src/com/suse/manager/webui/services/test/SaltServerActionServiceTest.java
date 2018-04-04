@@ -14,9 +14,13 @@
  */
 package com.suse.manager.webui.services.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
+import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -35,12 +39,14 @@ import com.suse.salt.netapi.calls.LocalCall;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
@@ -113,5 +119,73 @@ public class SaltServerActionServiceTest extends BaseTestCaseWithUser {
         ActionFactory.addConfigRevisionToAction(revision3, minion4, configAction);
         Map<LocalCall<?>, List<MinionServer>> result = SaltServerActionService.INSTANCE.callsForAction(configAction, minions);
         assertEquals(result.size(), 3);
+    }
+
+    public void testSubscribeChannels() throws Exception {
+        Channel base = ChannelFactoryTest.createBaseChannel(user);
+        Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch1.setParentChannel(base);
+        TestUtils.saveAndFlush(ch1);
+        Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        ch2.setParentChannel(base);
+        TestUtils.saveAndFlush(ch2);
+
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+
+        final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+        SubscribeChannelsAction action = (SubscribeChannelsAction)ActionManager.createAction(user, ActionFactory.TYPE_SUBSCRIBE_CHANNELS, "Subscribe to channels",
+                Date.from(now.toInstant()));
+
+        SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
+        details.setBaseChannel(base);
+        details.setChannels(Arrays.asList(ch1, ch2).stream().collect(Collectors.toSet()));
+        action.setDetails(details);
+        details.setParentAction(action);
+        HibernateFactory.getSession().save(details);
+
+        ActionFactory.addServerToAction(minion1, action);
+
+        SaltServerActionService.INSTANCE.setCommitTransaction(false);
+        Map<LocalCall<?>, List<MinionServer>> calls = SaltServerActionService.INSTANCE.callsForAction(action, Arrays.asList(minion1));
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        assertEquals(1, calls.size());
+
+        Map<String, Object> pillar = (Map<String, Object>)((Map<String, Object>)calls.keySet().stream().findFirst().get().getPayload().get("kwarg")).get("pillar");
+        assertEquals("mgr_channels_new", pillar.get("_mgr_channels_items_name"));
+        Map<String, Object> channels = (Map<String, Object>)pillar.get("mgr_channels_new");
+        assertEquals(3, channels.size());
+        assertTrue(channels.keySet().contains(base.getLabel()));
+        assertTrue(channels.keySet().contains(ch1.getLabel()));
+        assertTrue(channels.keySet().contains(ch2.getLabel()));
+
+        assertTokenPillarValue(base, action, channels);
+        assertTokenPillarValue(ch1, action, channels);
+        assertTokenPillarValue(ch2, action, channels);
+
+        action = (SubscribeChannelsAction)ActionFactory.lookupById(action.getId());
+
+        assertEquals(3,  action.getDetails().getAccessTokens().size());
+        assertTrue(action.getDetails().getAccessTokens().stream()
+                .allMatch(token ->
+                        token.getStart().toInstant().isAfter(now.toInstant()) &&
+                        token.getStart().toInstant().isBefore(now.toInstant().plus(10, ChronoUnit.SECONDS))));
+        assertTrue(action.getDetails().getAccessTokens().stream().allMatch(token -> !token.getValid()));
+        assertTokenExists(base, action);
+        assertTokenExists(ch1, action);
+        assertTokenExists(ch2, action);
+    }
+
+    private void assertTokenExists(Channel channel, SubscribeChannelsAction action) {
+        assertEquals(1, action.getDetails().getAccessTokens().stream()
+                .filter(token -> token.getChannels().size() == 1 && token.getChannels().contains(channel)).count());
+    }
+
+    private void assertTokenPillarValue(Channel channel, SubscribeChannelsAction action, Map<String, Object> channels) {
+        AccessToken tokenForChannel = action.getDetails().getAccessTokens().stream()
+                .filter(token -> token.getChannels().contains(channel)).findFirst().get();
+        assertEquals(tokenForChannel.getToken(), ((Map<String, Object>)channels.get(channel.getLabel())).get("token"));
     }
 }

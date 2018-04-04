@@ -98,13 +98,20 @@ public class AccessTokenFactory extends HibernateFactory {
      * the minion does not need.
      *
      * @param minion minion to check
+     * @param tokensToActivate the new tokens to activate
      * @return list of tokens
      */
-    public static List<AccessToken> unneededTokens(MinionServer minion) {
-        return minion.getAccessTokens().stream().filter(token -> {
+    public static List<AccessToken> unneededTokens(MinionServer minion, Collection<AccessToken> tokensToActivate) {
+        return minion.getAccessTokens().stream()
+                .filter(token -> !tokensToActivate.contains(token))
+                .filter(token -> {
             // we only keep the token linked to the minion
             // if all channels it provides access to are needed
-            return !minion.getChannels().containsAll(token.getChannels());
+            // or if the tokens to activate don't have the same channels
+            return !minion.getChannels().containsAll(token.getChannels()) ||
+                    tokensToActivate.stream()
+                            .anyMatch(newToken ->
+                                    newToken.getChannels().containsAll(token.getChannels()));
         }).collect(Collectors.toList());
     }
 
@@ -134,7 +141,7 @@ public class AccessTokenFactory extends HibernateFactory {
      * @return boolean indicating if something change
      */
     public static boolean refreshTokens(MinionServer minion, Collection<AccessToken> tokensToActivate) {
-        List<AccessToken> unneededTokens = unneededTokens(minion);
+        List<AccessToken> unneededTokens = unneededTokens(minion, tokensToActivate);
         Set<AccessToken> all = minion.getAccessTokens();
         all.removeAll(unneededTokens);
 
