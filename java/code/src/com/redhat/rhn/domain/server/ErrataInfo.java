@@ -25,6 +25,9 @@ public class ErrataInfo {
     /** The update stack bit. */
     private boolean updateStack;
 
+    /** The include Salt bit. */
+    private boolean includeSalt;
+
     /**
      * Gets the name.
      *
@@ -44,14 +47,24 @@ public class ErrataInfo {
     }
 
     /**
+     * Checks if errata includes Salt upgrade.
+     *
+     * @return true, if errata includes Salt upgrade.
+     */
+    public boolean includeSalt() {
+        return includeSalt;
+    }
+
+    /**
      * Instantiates a new errata info.
      *
      * @param nameIn the name in
      * @param updateStackIn the update stack in
      */
-    public ErrataInfo(String nameIn, boolean updateStackIn) {
+    public ErrataInfo(String nameIn, boolean updateStackIn, boolean includeSaltIn) {
         name = nameIn;
         updateStack = updateStackIn;
+        includeSalt = includeSaltIn;
     }
 
     /**

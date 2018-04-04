@@ -1095,14 +1095,14 @@ public class ServerFactory extends HibernateFactory {
                         String name = (String) row[2];
                         String tag = (String) row[3];
                         if (StringUtils.isBlank(tag)) {
-                            return new ErrataInfo(name, (boolean)row[4]);
+                            return new ErrataInfo(name, (boolean)row[4], (boolean)row[5]);
                         }
                         if (name.matches("^([C-Z][A-Z]-)*SUSE-(.*)$")) {
                             return new ErrataInfo(name.replaceFirst("SUSE", "SUSE-" + tag),
-                                    (boolean)row[4]);
+                                    (boolean)row[4], (boolean)row[5]);
                         }
                         else {
-                            return new ErrataInfo(tag + "-" + name, (boolean)row[4]);
+                            return new ErrataInfo(tag + "-" + name, (boolean)row[4], (boolean)row[5]);
                         }
                     }, Collectors.toSet())
                 )
