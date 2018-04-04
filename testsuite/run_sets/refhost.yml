@@ -36,7 +36,6 @@
 # IDEMPOTENT
 
 - features/min_activationkey.feature
-- features/srv_susestudio_credentials.feature
 - features/trad_need_reboot.feature
 - features/trad_ssh_push.feature
 - features/srv_change_password.feature
