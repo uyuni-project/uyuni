@@ -38,7 +38,6 @@
 # IDEMPOTENT
 
 - features/min_bootstrap_xmlrpc.feature
-- features/srv_susestudio_credentials.feature
 - features/min_ssh_bootstrap_xmlrpc.feature
 - features/min_activationkey.feature
 - features/trad_migrate_to_minion.feature

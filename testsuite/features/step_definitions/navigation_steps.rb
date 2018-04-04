@@ -255,15 +255,6 @@ When(/^I am on the Organizations page$/) do
     )
 end
 
-# Credential Page steps
-Given(/^I am on the Credentials page$/) do
-  steps %(
-    When I am authorized as "testing" with password "testing"
-    And I follow "User Account"
-    And I follow "Credentials"
-    )
-end
-
 # access the multi-clients/minions
 Given(/^I am on the Systems overview page of this "(.*?)"$/) do |target|
   node = get_target(target)
