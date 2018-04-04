@@ -101,6 +101,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProfileLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
+import com.redhat.rhn.frontend.xmlrpc.NoActionInScheduleException;
 import com.redhat.rhn.frontend.xmlrpc.NoPushClientException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchActionException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchCobblerSystemRecordException;
@@ -567,7 +568,7 @@ public class SystemHandler extends BaseHandler {
                     childChannels,
                     earliestOccurrence, null);
             return action.stream().findFirst().map(Action::getId).orElseThrow(() ->
-                new RuntimeException("No action in schedule result")
+                    new NoActionInScheduleException()
             );
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
