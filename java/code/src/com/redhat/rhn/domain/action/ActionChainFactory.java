@@ -356,26 +356,12 @@ public class ActionChainFactory extends HibernateFactory {
                 // Increment 'earliest' time by a millisecond for each chain action in
                 // order to sort them correctly for display
                 dateInOrder = DateUtils.addMilliseconds(dateInOrder, 1);
-
-                if (MinionServerUtils.isMinionServer(server)) {
-                    if (minionActions.get(server) != null) {
-                        minionActions.get(server).add(action);
-                    }
-                    else {
-                        List<Action> actionList = new ArrayList<>();
-                        actionList.add(action);
-                        minionActions.put(server, actionList);
-                    }
-                }
-
                 latest.put(server, action);
             }
         }
 
-        if (!minionActions.isEmpty()) {
-            // Trigger Action Chain execution for Minions via Taskomatic
-            taskomaticApi.scheduleActionChainExecution(actionChain);
-        }
+        // Trigger Action Chain execution for Minions via Taskomatic
+        taskomaticApi.scheduleActionChainExecution(actionChain);
         log.debug("Action Chain " + actionChain + " scheduled to date " + date);
     }
 

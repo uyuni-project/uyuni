@@ -125,8 +125,8 @@ public class ActionChainEditAction extends RhnAction {
         try {
             ActionChainFactory.schedule(actionChain, date);
             ActionMessages messages = new ActionMessages();
-            messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-                "actionchain.jsp.scheduled", actionChain.getLabel()));
+            messages.add(ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage("actionchain.jsp.scheduled", actionChain.getLabel()));
             getStrutsDelegate().saveMessages(request, messages);
             return mapping.findForward(TO_LIST_FORWARD);
         }

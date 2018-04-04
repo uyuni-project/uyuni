@@ -324,8 +324,8 @@ public class ActionChainManager {
         Set<Action> result = scheduleActions(user, ActionFactory.TYPE_APPLY_STATES, "Apply highstate",
                 earliest, actionChain, null, sidSet);
         for (Action action : result) {
-            ApplyStatesActionDetails applyState = ActionFactory.createApplyStateDetails(action,
-                    test);
+            ApplyStatesActionDetails applyState = new ApplyStatesActionDetails();
+            applyState.setActionId(action.getId());
             ((ApplyStatesAction)action).setDetails(applyState);
             ActionFactory.save(action);
         }
