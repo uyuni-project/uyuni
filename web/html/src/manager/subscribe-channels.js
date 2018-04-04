@@ -358,7 +358,12 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
           disabled={!c.subscribable}
           onChange={this.handleChildChange}/>
-        <label title={this.makeTitle(c.id)} htmlFor={"child_" + c.id}>{c.name}{c.recommended ? " (R)" : ""}</label>
+        <label title={this.makeTitle(c.id)} htmlFor={"child_" + c.id}>{c.name}</label>
+        {
+          c.recommended
+            ? <span className='recommended-tag-base' title={'This extension is recommended'}>{t('recommended')}</span>
+            : null
+        }
         <ChannelAnchorLink id={c.id} newWindow={true}/>
       </div>)
     }
