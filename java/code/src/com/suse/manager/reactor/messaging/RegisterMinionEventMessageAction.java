@@ -533,7 +533,7 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils.detectRhelProduct(
                     server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);
             return Opt.stream(rhelProduct).flatMap(rhel -> {
-                if (rhel.getSuseProduct().isPresent()) {
+                if (!rhel.getSuseProduct().isPresent()) {
                     LOG.warn("No product match found for: " + rhel.getName() + " " +
                             rhel.getVersion() + " " + rhel.getRelease() + " " +
                             server.getServerArch().getCompatibleChannelArch());
@@ -562,83 +562,95 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
             return;
         }
 
-        Optional<Channel> baseChannelFromActivationKey = activationKey.flatMap(ak -> {
-            return ofNullable(ak.getBaseChannel());
-        });
+        Set<Channel> channelsToAssign = Opt.fold(
+                activationKey,
+                // No ActivationKey
+                () -> {
+                    Set<SUSEProduct> suseProducts = identifyProduct(server, grains);
+                    Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
+                            .collect(Collectors.partitioningBy(SUSEProduct::isBase));
 
-        Optional<SUSEProduct> activationKeyBaseProduct = baseChannelFromActivationKey.flatMap(
-                base -> SUSEProductFactory.findProductByChannelLabel(base.getLabel())
-        ).map(SUSEProductChannel::getProduct);
+                    Optional<SUSEProduct> baseProductOpt = Optional.ofNullable(baseAndExtProd.get(true))
+                            .flatMap(s -> s.stream().findFirst());
+                    List<SUSEProduct> extProducts = baseAndExtProd.get(false);
 
+                    return Opt.fold(
+                            baseProductOpt,
+                            // No ActivationKey and no base product identified
+                            () -> {
+                                LOG.warn("Server " + minionId + "has no identifyable base product" +
+                                        " and will register without base channel assignment");
+                                return Collections.emptySet();
+                            },
+                            baseProduct -> {
+                                return Stream.concat(
+                                        lookupRequiredChannelsForProduct(baseProduct),
+                                        extProducts.stream()
+                                            .flatMap(ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
+                                ).collect(Collectors.toSet());
+                            }
+                    );
+                },
+                ak -> {
+                    return Opt.<Channel, Set<Channel>>fold(
+                            Optional.ofNullable(ak.getBaseChannel()),
+                            // AktivationKey without base channel (SUSE Manager Default)
+                            () -> {
+                                Set<SUSEProduct> suseProducts = identifyProduct(server, grains);
+                                Map<Boolean, List<SUSEProduct>> baseAndExtProd = suseProducts.stream()
+                                        .collect(Collectors.partitioningBy(SUSEProduct::isBase));
 
-        Optional<SUSEProduct> baseProduct = Optional.empty();
-        List<SUSEProduct> extProducts = Collections.emptyList();
+                                Optional<SUSEProduct> baseProductOpt = Optional.ofNullable(baseAndExtProd.get(true))
+                                        .flatMap(s -> s.stream().findFirst());
+                                List<SUSEProduct> extProducts = baseAndExtProd.get(false);
 
-        if (activationKeyBaseProduct.isPresent()) {
-            baseProduct = activationKeyBaseProduct;
-        }
-        else {
-            Set<SUSEProduct> suseProducts = identifyProduct(server, grains);
-            Map<Boolean, List<SUSEProduct>> collect = suseProducts.stream()
-                    .collect(Collectors.partitioningBy(SUSEProduct::isBase));
-            baseProduct = Optional.ofNullable(collect.get(true))
-                    .flatMap(s -> s.stream().findFirst());
-            extProducts = collect.get(false);
-        }
+                                return Opt.fold(
+                                        baseProductOpt,
+                                        // ActivationKey and no base product identified
+                                        () -> {
+                                            LOG.warn("Server " + minionId + "has no identifyable base product" +
+                                                    " and will register without base channel assignment");
+                                            return Collections.emptySet();
+                                        },
+                                        baseProduct -> {
+                                            return Stream.concat(
+                                                    lookupRequiredChannelsForProduct(baseProduct),
+                                                    extProducts.stream().flatMap(
+                                                            ext -> recommendedChannelsByBaseProduct(baseProduct, ext))
+                                            ).collect(Collectors.toSet());
+                                        }
+                                );
+                            },
+                            baseChannel -> {
+                                return Opt.fold(
+                                        SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel()),
+                                        () -> {
+                                            // ActivationKey with custom channel
+                                            return Stream.concat(
+                                                    Stream.of(baseChannel),
+                                                    ak.getChannels().stream()
+                                            ).collect(Collectors.toSet());
+                                        },
+                                        baseProduct -> {
+                                            // ActivationKey with vendor or cloned vendor channel
+                                            return Stream.concat(
+                                                    lookupRequiredChannelsForProduct(baseProduct.getProduct()),
+                                                    ak.getChannels().stream()
+                                                            .filter(c ->
+                                                                    c.getParentChannel() != null &&
+                                                                    c.getParentChannel().getId()
+                                                                        .equals(baseChannel.getId())
+                                                            )
+                                            ).collect(Collectors.toSet());
 
+                                        }
+                                );
+                            }
+                    );
+                }
+        );
 
-        if (!baseProduct.isPresent()) {
-            LOG.warn("Server " + minionId +
-                    " has no Base Channel associated for product and " +
-                    "Activation Key does not contain Base channels. " +
-                    "System registered without a Base channel.");
-            addHistoryEvent(server,
-                    "No Base Channel for Product and Activation Key " +
-                            "does not contain Base channels.",
-                    "Server has no Base Channel associated for Product " +
-                            "and specified Activation Key does not contain Base channels. " +
-                            "System registered without a Base channel");
-            return;
-        }
-
-        final List<SUSEProduct> bla = extProducts;
-
-        baseProduct.ifPresent(base -> {
-            Map<Boolean, List<Channel>> baseAndExt = Stream.concat(
-                    lookupRequiredChannelsForProduct(base),
-                    bla.stream().flatMap(ext -> recommendedChannelsByBaseProduct(base, ext))
-            ).collect(Collectors.toSet()).stream()
-             .collect(Collectors.partitioningBy(Channel::isBaseChannel));
-
-            if (baseAndExt.get(true).isEmpty()) {
-                LOG.info("base channel not synced for product: " + base.getFriendlyName());
-                return;
-            }
-
-            Channel bcfp = baseAndExt.get(true).get(0);
-
-            server.addChannel(bcfp);
-            baseAndExt.get(false).forEach(reqChan -> {
-                LOG.info("Adding required channel: " + reqChan.getName());
-                server.addChannel(reqChan);
-            });
-
-            activationKey.ifPresent(ak -> {
-                ak.getChannels().forEach(channel -> {
-                    Optional<Channel> parent = ofNullable(channel.getParentChannel());
-                    parent.ifPresent(parentChannel -> {
-                        if (parentChannel.getId().equals(bcfp.getId())) {
-                            LOG.info("Subscribing to channel: " + channel.getName());
-                            server.addChannel(channel);
-                        }
-                        else {
-                            LOG.warn("NOT subscribing to channel: " + channel.getName() +
-                                    " (not a child of " + bcfp.getName() + ").");
-                        }
-                    });
-                });
-            });
-        });
+        channelsToAssign.forEach(server::addChannel);
     }
 
     private ServerHistoryEvent addHistoryEvent(MinionServer server, String summary,
@@ -771,8 +783,10 @@ public class RegisterMinionEventMessageAction extends AbstractDatabaseAction {
                     List<SUSEProduct> allExtensionProductsOf =
                             SUSEProductFactory.findAllExtensionProductsOf(base);
 
-                    Stream<Channel> channelStream = base.getSuseProductChannels()
-                            .stream()
+
+
+                    Stream<Channel> channelStream = SUSEProductFactory.findAllSUSEProductChannels().stream()
+                            .filter(pc -> pc.getProduct().equals(base))
                             .map(SUSEProductChannel::getChannel)
                             .filter(Objects::nonNull)
                             .filter(c -> c.getParentChannel() == null ||
