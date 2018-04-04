@@ -449,7 +449,12 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
               { allowed.childChannels.map(child =>
                 <dt className="row">
                   <div className="col-md-6">
-                    <ChannelLink title={this.makeTitle(child.id)} id={child.id} newWindow={true}>{ child.name + (child.recommended ? " (R)" : "") }</ChannelLink>
+                    <ChannelLink title={this.makeTitle(child.id)} id={child.id} newWindow={true}>{ child.name }</ChannelLink>
+                    {
+                      child.recommended
+                        ? <span className='recommended-tag-base' title={'This extension is recommended'}>{t('recommended')}</span>
+                        : null
+                    }
                   </div>
                   <div className="col-md-4">
                     <div className="row radio">
