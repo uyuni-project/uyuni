@@ -21,7 +21,6 @@ import static com.suse.manager.webui.services.SaltServerActionService.PARAM_UPDA
 import static com.suse.manager.webui.services.SaltServerActionService.PARAM_REGULAR_PATCHES;
 
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 
