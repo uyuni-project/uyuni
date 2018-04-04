@@ -302,20 +302,6 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
-     * Creates a ApplyStatesActionDetails related to the action.
-     * @param action the related state apply action
-     * @param test indicates test mode
-     * @return ApplyStatesActionDetails for the releated action
-     */
-    public static ApplyStatesActionDetails createApplyStateDetails(Action action,
-            Optional<Boolean> test) {
-        ApplyStatesActionDetails details = new ApplyStatesActionDetails();
-        test.ifPresent(t -> details.setTest(t));
-        details.setActionId(action.getId());
-        return details;
-    }
-
-    /**
      * Check to see if a server has a pending kickstart scheduled
      * @param serverId server
      * @return true if found, otherwise false
@@ -597,19 +583,6 @@ public class ActionFactory extends HibernateFactory {
         params.put("id", actionConfigRevisionId);
         return (ConfigRevisionActionResult)
                 singleton.lookupObjectByNamedQuery("ConfigRevisionActionResult.findById",
-                        params, true);
-    }
-
-    /**
-     * Helper method to get a ScriptActionDetail by Action Id
-     * @param action the Action for whom we want to lookup the ScriptActionDetail
-     * @return The ScriptActionDetail corresponding to the action ID.
-     */
-    public static ScriptActionDetails lookupScriptActionDetails(Action action) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("action", action);
-        return (ScriptActionDetails)
-                singleton.lookupObjectByNamedQuery("ScriptActionDetails.findById",
                         params, true);
     }
 
