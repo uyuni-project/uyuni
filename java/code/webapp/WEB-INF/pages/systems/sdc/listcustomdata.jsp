@@ -24,7 +24,7 @@
 
       <rl:list dataset="pageList"
           name="keyList"
-          emptykey="system.jsp.customkey.empty"
+          emptykey="sdc.details.customdata.nosystems"
           alphabarcolumn="label">
 
         <rl:column sortable="true"
