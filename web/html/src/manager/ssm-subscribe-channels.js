@@ -320,11 +320,26 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     (childId ? childId : "");
   }
 
-  onChangeChild = (allowedChannels: SsmAllowedChildChannelsDto, childId: string, action: string) => {
-    const allowedId = getAllowedChangeId(allowedChannels, childId);
-    this.state.selections.set(allowedId, action);
-    this.setState({selections: this.state.selections});
-    this.props.onChangeChild(allowedChannels, childId, action)
+  onChangeChild = (allowedChannels: SsmAllowedChildChannelsDto, childId: number, action: string) => {
+    let dependencies = [];
+    if (action === "SUBSCRIBE") {
+      dependencies = Array.from(this.state.requiredChannels.get(childId));
+    } else if (action === "UNSUBSCRIBE") {
+      dependencies = Array.from(this.state.requiredByChannels.get(childId));
+    } else if (action === "NO_CHANGE") {
+      // in this case we can't make any assumptions about the actual assignment of the channel,
+      // let's reset both the forward and backward deps
+      dependencies = Array.from(this.state.requiredChannels.get(childId))
+        .concat(Array.from(this.state.requiredByChannels.get(childId)));
+    }
+
+    // change the channel AND its dependencies
+    [childId].concat(dependencies).forEach(channelId => {
+      const allowedId = getAllowedChangeId(allowedChannels, channelId);
+      this.state.selections.set(allowedId, action);
+      this.setState({selections: this.state.selections});
+      this.props.onChangeChild(allowedChannels, channelId, action);
+    });
   }
 
   toggleRecommended = (change: SsmAllowedChildChannelsDto) => {
