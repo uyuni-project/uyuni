@@ -139,7 +139,12 @@ public class SystemEventDto extends BaseDto implements Serializable {
      * @return datetime string
      */
     public String getCompletedString() {
-        return LocalizationService.getInstance().formatCustomDate(completed);
+        if (completed != null) {
+            return LocalizationService.getInstance().formatCustomDate(completed);
+        }
+        else {
+            return "";
+        }
     }
 
     /**

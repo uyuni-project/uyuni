@@ -1090,6 +1090,8 @@ class Hardware:
             class_type = InstallInformation
         elif hw_class == "netinterfaces":
             class_type = NetIfaceInformation
+        elif hw_class == "fqdn":
+            return
         elif hw_class == "sysinfo":
             # special case: we got info about a virtual host
             # where this system is running on
@@ -1103,7 +1105,7 @@ class Hardware:
             # Same trick: try-except and raise the exception so that Traceback
             # can send the e-mail
             try:
-                raise KeyError, "Unknwon class type `%s' for hardware '%s'" % (
+                raise KeyError, "Unknown class type `%s' for hardware '%s'" % (
                     hw_class, hardware)
             except:
                 Traceback(mail=1)
