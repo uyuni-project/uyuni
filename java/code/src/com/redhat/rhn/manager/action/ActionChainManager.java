@@ -45,6 +45,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.utils.MinionServerUtils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -316,7 +318,11 @@ public class ActionChainManager {
                                                    Date earliest, ActionChain actionChain)
             throws TaskomaticApiException {
 
-        ActionManager.checkSaltServers(sids);
+        if (!sids.stream().map(sid -> ServerFactory.lookupById(sid))
+                .filter(server -> !MinionServerUtils.isMinionServer(server))
+                .collect(Collectors.toList()).isEmpty()) {
+            throw new IllegalArgumentException("Server ids include non minion servers.");
+        }
 
         Set<Long> sidSet = new HashSet<Long>();
         sidSet.addAll(sids);
