@@ -1,3 +1,4 @@
+- Handle Salt upgrade inside an Action Chain via patch installation.
 - Change the endpoint for the mandatory channels retrieval to work with IDs instead of labels
 - Remove SUSE Studio based image deployments
 - add support for Prometheus monitoring
