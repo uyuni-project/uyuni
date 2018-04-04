@@ -127,7 +127,7 @@ public class SaltServerActionService {
     private static final String ACTIONCHAIN_START = "actionchains.start";
     public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";
     private static final String PACKAGES_PKGDOWNLOAD = "packages.pkgdownload";
-    private static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
+    public static final String PACKAGES_PATCHINSTALL = "packages.patchinstall";
     private static final String PACKAGES_PATCHDOWNLOAD = "packages.patchdownload";
     private static final String PACKAGES_PKGREMOVE = "packages.pkgremove";
     private static final String CONFIG_DEPLOY_FILES = "configuration.deploy_files";
@@ -526,6 +526,11 @@ public class SaltServerActionService {
                         .sorted()
                         .collect(Collectors.toList())
                 );
+                if (!entry.getKey().stream()
+                        .filter(e -> e.includeSalt())
+                        .collect(Collectors.toList()).isEmpty()) {
+                    params.put("include_salt_upgrade", true);
+                }
                 return State.apply(
                         Arrays.asList(PACKAGES_PATCHINSTALL),
                         Optional.of(params),
