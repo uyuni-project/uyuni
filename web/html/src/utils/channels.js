@@ -3,14 +3,19 @@
 
 declare function t(msg: string): string;
 
-// Converts sets of channel names into a human-readable tooltip
+// Converts array of channel names into a human-readable tooltip
 // containing information about channel dependencies
+// return null if the channel is not involved in any dependencies
 function dependenciesTooltip(
-  requiredChannels: Set<string>,
-  requiredByChannels: Set<string>) : string
+  requiredChannels: Array<string>,
+  requiredByChannels: Array<string>) : ?string
 {
+  if (requiredChannels.length === 0 && requiredByChannels.length === 0) {
+    return null;
+  }
+
   const channelLines = (channelNames) => {
-    return Array.from(channelNames || new Set())
+    return channelNames
       .reduce((channelName1, channelName2) => channelName1 + "\n" + channelName2, "");
   }
 
