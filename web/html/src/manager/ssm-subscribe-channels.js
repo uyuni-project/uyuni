@@ -276,14 +276,10 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
   }
 
   componentDidMount() {
-    this.getChannelDependencies();
-  }
-
-  getChannelDependencies = () => {
+    // get channel dependencies
     // TODO cache stuff to avoid repeated calls
     const childrenIds : Array<number> = Array.from(this.props.childChannels
       .flatMap(dto => dto.childChannels.map(channel => channel.id)));
-
     Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json").promise
       .then((response : JsonResult<Map<number, Array<number>>>) => {
         this.setState(ChannelUtils.processChannelDependencies(response.data));
