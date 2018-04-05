@@ -1,3 +1,4 @@
+- Change the endpoint for the mandatory channels retrieval to work with IDs instead of labels
 - SLE15 support: recommended/required flag for products and channels
 - support SLE15 product family
 - rewrite products page into reactjs
