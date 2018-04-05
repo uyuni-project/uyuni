@@ -413,4 +413,16 @@ public class ActionChainFactory extends HibernateFactory {
     public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
         ActionChainFactory.taskomaticApi = taskomaticApiIn;
     }
+
+    /**
+     * Check if an Action Chain contains any minion in default contact method as target
+     * @param actionChain the action chain
+     * @return if the action chains contains any minion in default contact method
+     */
+    public static boolean isActionChainTargettingDefaultMinions(final ActionChain actionChain) {
+        return ((Long)singleton.lookupObjectByNamedQuery(
+            "ActionChain.countDefaultMinionsInActionChain",
+            new HashMap<String, Object>() { { put("actionchain_id", actionChain.getId()); } }
+        ) > 0);
+    }
 }
