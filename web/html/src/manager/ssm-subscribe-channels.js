@@ -14,6 +14,7 @@ const MessagesUtils = require("../components/messages").Utils;
 const {ChannelLink, ActionLink, SystemLink} = require("../components/links");
 const {PopUp} = require("../components/popup");
 const Toggler = require("../components/toggler");
+const ChannelUtils = require("../utils/channels");
 
 import type JsonResult from "../utils/network";
 
@@ -348,19 +349,16 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     });
   }
 
-  // todo extract
-  makeTitle = (channelId) => {
-    const channelLines = (channelIds) => {
+  dependenciesTooltip = (channelId) => {
+    const resolveChannelNames = (channelIds) => {
       return this.props.childChannels
         .flatMap(dto => dto.childChannels)
         .filter(channel => (channelIds || new Set()).has(channel.id))
-        .map(channel => channel.name)
-        .reduce((channelName1, channelName2) => channelName1 + "\n" + channelName2, "");
+        .map(channel => channel.name);
     }
-    const requiredChannels = channelLines(this.state.requiredChannels.get(channelId));
-    const requiredByChannels = channelLines(this.state.requiredByChannels.get(channelId));
-    return "Required channels: \n" + (requiredChannels || "(none)") + "\n\n"
-      + "Require this channel: \n" + (requiredByChannels || "(none)");
+    return ChannelUtils.dependenciesTooltip(
+      resolveChannelNames(this.state.requiredChannels.get(channelId)),
+      resolveChannelNames(this.state.requiredByChannels.get(channelId)));
   }
 
   toggleRecommended = (change: SsmAllowedChildChannelsDto) => {
@@ -447,7 +445,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
               { allowed.childChannels.map(child =>
                 <dt className="row">
                   <div className="col-md-6">
-                    <ChannelLink title={this.makeTitle(child.id)} id={child.id} newWindow={true}>{ child.name }</ChannelLink>
+                    <ChannelLink title={this.dependenciesTooltip(child.id)} id={child.id} newWindow={true}>{ child.name }</ChannelLink>
                     {
                       child.recommended
                         ? <span className='recommended-tag-base' title={'This extension is recommended'}>{t('recommended')}</span>

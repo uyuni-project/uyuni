@@ -11,7 +11,7 @@ const Messages = require("../components/messages").Messages;
 const MessagesUtils = require("../components/messages").Utils;
 const Toggler = require("../components/toggler");
 const {BootstrapPanel} = require("../components/panel");
-const {ChannelAnchorLink, ActionLink} = require("../components/links");
+const ChannelUtils = require("../utils/channels");
 
 import type JsonResult from "../utils/network";
 
@@ -278,18 +278,16 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       this.setState({earliest: date});
   }
 
-  makeTitle = (channelId) => {
-    const channelLines = (channels) => {
-      return Array.from(channels || new Set())
+  dependenciesTooltip = (channelId) => {
+    const resolveChannelNames = (channelIds) => {
+      return Array.from(channelIds || new Set())
         .map(channelId => this.state.availableChildren.get(channelId))
         .filter(channel => channel != null)
-        .map(channel => channel.name)
-        .reduce((channelName1, channelName2) => channelName1 + "\n" + channelName2, "");
+        .map(channel => channel.name);
     }
-    const requiredChannels = channelLines(this.state.requiredChannels.get(channelId));
-    const requiredByChannels = channelLines(this.state.requiredByChannels.get(channelId));
-    return "Required channels: \n" + (requiredChannels || "(none)") + "\n\n"
-      + "Require this channel: \n" + (requiredByChannels || "(none)");
+    return ChannelUtils.dependenciesTooltip(
+      resolveChannelNames(this.state.requiredChannels.get(channelId)),
+      resolveChannelNames(this.state.requiredByChannels.get(channelId)));
   }
 
   render() {
@@ -358,7 +356,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
           disabled={!c.subscribable}
           onChange={this.handleChildChange}/>
-        <label title={this.makeTitle(c.id)} htmlFor={"child_" + c.id}>{c.name}</label>
+        <label title={this.dependenciesTooltip(c.id)} htmlFor={"child_" + c.id}>{c.name}</label>
         {
           c.recommended
             ? <span className='recommended-tag-base' title={'This extension is recommended'}>{t('recommended')}</span>
