@@ -414,7 +414,15 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
               { allowed.childChannels.map(child =>
                 <dt className="row">
                   <div className="col-md-6">
-                    <ChannelLink title={this.dependenciesTooltip(child.id)} id={child.id} newWindow={true}>{ child.name }</ChannelLink>
+                    <ChannelLink id={child.id} newWindow={true}>{ child.name }</ChannelLink> &nbsp;
+                    {
+                      this.dependenciesTooltip(child.id)
+                        ? <a href="#">
+                            <i className="fa fa-info-circle spacewalk-help-link" title={this.dependenciesTooltip(child.id)}></i>
+                          </a>
+                        : null
+                    }
+                    &nbsp;
                     {
                       child.recommended
                         ? <span className='recommended-tag-base' title={'This extension is recommended'}>{t('recommended')}</span>

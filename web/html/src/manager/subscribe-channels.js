@@ -344,7 +344,15 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           checked={selectedChildrenList && selectedChildrenList.some(child => child.id === c.id)}
           disabled={!c.subscribable}
           onChange={this.handleChildChange}/>
-        <label title={this.dependenciesTooltip(c.id)} htmlFor={"child_" + c.id}>{c.name}</label>
+        <label title={this.dependenciesTooltip(c.id)} htmlFor={"child_" + c.id}>{c.name}</label> &nbsp;
+        {
+          this.dependenciesTooltip(c.id)
+            ? <a href="#">
+                <i className="fa fa-info-circle spacewalk-help-link" title={this.dependenciesTooltip(c.id)}></i>
+              </a>
+            : null
+        }
+        &nbsp;
         {
           c.recommended
             ? <span className='recommended-tag-base' title={'This extension is recommended'}>{t('recommended')}</span>
