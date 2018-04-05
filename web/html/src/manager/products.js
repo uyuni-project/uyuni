@@ -58,7 +58,7 @@ const _COLS = {
   description: { width: undefined, um: 'px'},
   arch: { width: 6, um: 'em' },
   channels: { width: 5, um: 'em' },
-  mix: { width: 12, um: 'em'}
+  mix: { width: 13, um: 'em'}
 }
 
 function reloadData() {
