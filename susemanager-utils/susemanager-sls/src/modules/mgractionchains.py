@@ -105,7 +105,7 @@ def start(actionchain_id):
     target_sls = _calculate_sls(actionchain_id, __grains__['machine_id'], 1)
     log.debug("Starting execution of SUSE Manager Action Chains ID "
               "'{0}' -> Target SLS: {1}".format(actionchain_id, target_sls))
-    return __salt__['state.sls'](target_sls)
+    return __salt__['state.sls'](target_sls, queue=True)
 
 def next(actionchain_id, chunk):
     '''
@@ -143,7 +143,7 @@ def resume():
     next_chunk = next_chunk.get('next_chunk')
     log.debug("Resuming execution of SUSE Manager Action Chain -> Target SLS: "
               "{0}".format(next_chunk))
-    return __salt__['state.sls'](next_chunk)
+    return __salt__['state.sls'](next_chunk, queue=True)
 
 def clean():
     '''
