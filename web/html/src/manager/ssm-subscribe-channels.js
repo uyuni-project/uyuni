@@ -286,20 +286,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
 
     Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json").promise
       .then((response : JsonResult<Map<number, Array<number>>>) => {
-        const requiredChannels = new Map(Object.entries(response.data)
-          .map(entry => {
-            const channelId = parseInt(entry[0]);
-            const requiredChannelList = entry[1];
-            return [
-              channelId,
-              new Set(requiredChannelList.filter(requiredId => requiredId !== channelId && childrenIds.includes(requiredId)))
-            ];
-          }));
-
-        const requiredByChannels = ChannelUtils.computeReverseDependencies(requiredChannels);
-
-        this.setState({requiredChannels: requiredChannels,
-                       requiredByChannels: requiredByChannels})
+        this.setState(ChannelUtils.processChannelDependencies(response.data));
       })
       .catch(err => console.log(err.statusText));
   }
