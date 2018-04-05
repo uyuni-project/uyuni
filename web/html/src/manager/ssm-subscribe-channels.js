@@ -279,22 +279,6 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     this.getChannelDependencies();
   }
 
-  computeReverseDependencies = (dependencyMap) => { // todo extract this to common code!
-    // merges entry e to the accMap
-    const mergeEntries = (accMap, e) => {
-        if (accMap.has(e[0])) {
-            accMap.get(e[0]).add(e[1]);
-        } else {
-            accMap.set(e[0], new Set([e[1]]));
-        }
-        return accMap;
-    }
-
-    return Array.from(dependencyMap.keys())
-        .flatMap(key => Array.from(dependencyMap.get(key)).map(val => [val, key]))
-        .reduce(mergeEntries, new Map());
-  }
-
   getChannelDependencies = () => {
     // TODO cache stuff to avoid repeated calls
     const childrenIds : Array<number> = Array.from(this.props.childChannels
@@ -312,7 +296,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
             ];
           }));
 
-        const requiredByChannels = this.computeReverseDependencies(requiredChannels);
+        const requiredByChannels = ChannelUtils.computeReverseDependencies(requiredChannels);
 
         this.setState({requiredChannels: requiredChannels,
                        requiredByChannels: requiredByChannels})

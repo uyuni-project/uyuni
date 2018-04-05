@@ -131,29 +131,13 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
             ];
           }));
 
-        const requiredByChannels = this.computeReverseDependencies(requiredChannels);
+        const requiredByChannels = ChannelUtils.computeReverseDependencies(requiredChannels);
 
         this.setState({requiredChannels: requiredChannels,
                        requiredByChannels: requiredByChannels})
 
       })
       .catch(this.handleResponseError);
-  }
-
-  computeReverseDependencies = (dependencyMap) => {
-    // merges entry e to the accMap
-    const mergeEntries = (accMap, e) => {
-        if (accMap.has(e[0])) {
-            accMap.get(e[0]).add(e[1]);
-        } else {
-            accMap.set(e[0], new Set([e[1]]));
-        }
-        return accMap;
-    }
-
-    return Array.from(dependencyMap.keys())
-        .flatMap(key => Array.from(dependencyMap.get(key)).map(val => [val, key]))
-        .reduce(mergeEntries, new Map());
   }
 
   handleResponseError = (jqXHR, arg = "") => {
