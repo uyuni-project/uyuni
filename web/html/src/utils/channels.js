@@ -40,7 +40,26 @@ function computeReverseDependencies(dependencyMap : Map<number, Set<number>>) : 
       .reduce(mergeEntries, new Map());
 }
 
+function processChannelDependencies(requiredChannelsRaw) {
+  const requiredChannels = new Map(Object.entries(requiredChannelsRaw)
+    .map(entry => {
+      const channelId = parseInt(entry[0]);
+      const requiredChannelList = entry[1];
+      return [
+        channelId,
+        new Set(requiredChannelList.filter(requiredId => requiredId !== channelId))
+      ];
+    }));
+
+  const requiredByChannels = computeReverseDependencies(requiredChannels);
+
+  return {
+    requiredChannels: requiredChannels,
+    requiredByChannels: requiredByChannels
+  };
+}
+
 module.exports = {
   dependenciesTooltip: dependenciesTooltip,
-  computeReverseDependencies:  computeReverseDependencies
+  processChannelDependencies: processChannelDependencies
 }

@@ -121,21 +121,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
         return Network.post('/rhn/manager/api/admin/mandatoryChannels', JSON.stringify(childrenIds), "application/json").promise;
       })
       .then((data : JsonResult<Map<number, Array<number>>>) => {
-        const requiredChannels = new Map(Object.entries(data.data)
-          .map(entry => {
-            const channelId = parseInt(entry[0]);
-            const requiredChannelList = entry[1];
-            return [
-              channelId,
-              new Set(requiredChannelList.filter(requiredId => requiredId !== channelId && !this.state.availableBase.map(channel => channel.id).includes(requiredId)))
-            ];
-          }));
-
-        const requiredByChannels = ChannelUtils.computeReverseDependencies(requiredChannels);
-
-        this.setState({requiredChannels: requiredChannels,
-                       requiredByChannels: requiredByChannels})
-
+        this.setState(ChannelUtils.processChannelDependencies(data.data));
       })
       .catch(this.handleResponseError);
   }
