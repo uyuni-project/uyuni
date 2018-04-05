@@ -177,23 +177,23 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return a stream of suse product channels which are required by the channel
      */
     public static Stream<SUSEProductChannel> findAllMandatoryChannels(String channelLabel,
-                                                                      Function<String, String> archByChannelLabel) {
-        SUSEProductChannel suseProductChannel = findProductByChannelLabel(channelLabel).get();
-
-        Stream<SUSEProductChannel> suseProductChannelStream = Optional.ofNullable(
-                suseProductChannel.getParentChannelLabel()
-        ).map(parentChannelLabel -> {
-            SUSEProductChannel baseProductChannel = findProductByChannelLabel(parentChannelLabel).get();
-            return findAllMandatoryChannels(
-                    suseProductChannel.getProduct(),
-                    baseProductChannel.getProduct(),
-                    parentChannelLabel
-            );
-        }).orElseGet(() -> suseProductChannel.getProduct().getSuseProductChannels().stream());
-        return Stream.concat(Stream.of(suseProductChannel), suseProductChannelStream).filter(s -> {
-            return archByChannelLabel.apply(s.getChannelLabel()).equals(
-                    archByChannelLabel.apply(suseProductChannel.getChannelLabel()));
-        });
+            Function<String, String> archByChannelLabel) {
+        return findProductByChannelLabel(channelLabel).map(suseProductChannel -> {
+            Stream<SUSEProductChannel> suseProductChannelStream = Optional.ofNullable(
+                    suseProductChannel.getParentChannelLabel()
+            ).map(parentChannelLabel -> {
+                SUSEProductChannel baseProductChannel = findProductByChannelLabel(parentChannelLabel).get();
+                return findAllMandatoryChannels(
+                        suseProductChannel.getProduct(),
+                        baseProductChannel.getProduct(),
+                        parentChannelLabel
+                );
+            }).orElseGet(() -> suseProductChannel.getProduct().getSuseProductChannels().stream());
+            return Stream.concat(Stream.of(suseProductChannel), suseProductChannelStream).filter(s -> {
+                return archByChannelLabel.apply(s.getChannelLabel()).equals(
+                        archByChannelLabel.apply(suseProductChannel.getChannelLabel()));
+            });
+        }).orElse(Stream.empty());
     }
 
     /**
