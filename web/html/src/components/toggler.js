@@ -6,12 +6,11 @@ const Button = require('./buttons').Button;
 const WithRecommended = React.createClass({
   render:function() {
     return (
-      <Button
-          className={'btn btn-default btn-sm ' + (this.props.enabled ? 'text-info' : 'text-muted')}
-          handler={this.props.handler}
-          icon={'fa-1-5x with-margin ' + (this.props.enabled ? 'fa-toggle-on' : 'fa-toggle-off')}
-          text={t('with recommended')}
-      />
+      <span onClick={this.props.handler} className='pointer v-middle'>
+        <i className={'v-middle fa ' + (this.props.enabled ? 'fa-toggle-on text-success' : 'fa-toggle-off')} />
+        &nbsp;
+        <span className='v-middle'>{t('include recommended')}</span>
+      </span>
     )
   }
 });
