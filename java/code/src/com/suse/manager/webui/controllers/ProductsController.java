@@ -19,7 +19,6 @@ import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -246,10 +245,10 @@ public class ProductsController {
             ));
             Map<Long, List<Long>> result = channelIdList.stream().collect(Collectors.toMap(
                     channelId -> channelId,
-                    channelId ->
-                            SUSEProductFactory.findAllMandatoryChannels(ChannelFactory.lookupById(channelId).getLabel(), archByChannelLabel::get)
-                                    .map(productChannel -> productChannel.getChannel().getId())
-                                    .collect(Collectors.toList())
+                    channelId -> SUSEProductFactory.findAllMandatoryChannels(
+                            ChannelFactory.lookupById(channelId).getLabel(), archByChannelLabel::get)
+                                .map(productChannel -> productChannel.getChannel().getId())
+                                .collect(Collectors.toList())
             ));
 
             return json(response, JsonResult.success(result));
