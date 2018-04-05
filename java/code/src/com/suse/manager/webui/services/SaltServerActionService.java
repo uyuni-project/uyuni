@@ -387,7 +387,9 @@ public class SaltServerActionService {
                     List<MinionServer> minions = getMinionServers(actionIn);
 
                     if (minions.isEmpty()) {
-                        LOG.warn("No server actions for action id=" + actionIn.getId());
+                        // When an Action Chain contains an Action which does not target
+                        // any minion we don't generate any Salt call.
+                        LOG.debug("No server actions for action id=" + actionIn.getId());
                         return;
                     }
 
