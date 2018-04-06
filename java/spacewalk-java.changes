@@ -1,3 +1,5 @@
+- Fix in SSM channls UI, if all systems in SSM do not have a base channel the corresponding
+  child channels are not displayed on the subsequent page
 - Prevent stripping curly braces when creating config states (bsc#1085500)
 - Fix index out of bound exception when os-release query returns multiple
   package names for RHEL/CentOS (bsc#1076931)

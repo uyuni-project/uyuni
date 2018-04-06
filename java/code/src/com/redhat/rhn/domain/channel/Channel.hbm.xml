@@ -270,7 +270,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                     rhnServerChannelArchCompat scac,
                     rhnChannel c,
                     rhnUserServerPerms usp,
-                    rhnServerChannel sc,
                     rhnSet st,
                     rhnServer s
     where   st.user_id = :user_id
@@ -278,7 +277,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             and st.element = s.id
             and usp.user_id = :user_id
             and st.element = usp.server_id
-            and st.element = sc.server_id
             and s.server_arch_id = scac.server_arch_id
             and scac.channel_arch_id = c.channel_arch_id
             and c.id = cfm.channel_id
