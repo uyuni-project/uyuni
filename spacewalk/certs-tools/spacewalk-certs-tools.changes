@@ -1,3 +1,5 @@
+- Clean up SUSE manager repos in bootstrap script for trad clients (bsc#1077997)
+
 -------------------------------------------------------------------
 Tue Nov 28 12:33:58 CET 2017 - jgonzalez@suse.com
 
