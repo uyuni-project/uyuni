@@ -8,9 +8,9 @@ type ChannelAnchorLinkProps = {
 }
 
 const ChannelAnchorLink = (props: ChannelAnchorLinkProps) =>
-  <a className="icon-link" href={`/rhn/channels/ChannelDetail.do?cid=${props.id}`}
+  <a className="channel-anchor-link" href={`/rhn/channels/ChannelDetail.do?cid=${props.id}`}
     target={props.newWindow ? "_blank" : "_self"}>
-      <i className="fa fa-link"></i>
+      <i className="fa fa-link fa-right"></i>
   </a>;
 
 type ChannelLinkProps = {

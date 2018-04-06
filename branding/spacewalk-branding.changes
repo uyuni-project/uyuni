@@ -1,3 +1,5 @@
+- Add missing left margin at Software Channels WebUI icon links to
+  channels (bsc#1083329)
 - Allow scheduling the change of software channels as an action. The previous channels remain accessible
   to the registered system until the action is executed.
 - Add a tip about config file macro delimiters and Salt
