@@ -726,6 +726,7 @@ public class HardwareMapper {
                     .filter(addr -> !"::1".equals(addr));
 
         server.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
+        LOG.warn("-----fqdn Grains"+grains.getOptionalAsString("fqdn"));
         extractFqdnsFromGrains(server, grains);
 
         // remove interfaces not present in the Salt result

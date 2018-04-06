@@ -32,8 +32,10 @@ import org.apache.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -44,6 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * ConfigurationFactory.  For use when dealing with ConfigChannel, ConfigChannelType,
@@ -387,6 +390,28 @@ public class ConfigurationFactory extends HibernateFactory {
                         add(Restrictions.eq("configChannelType", cct)).
                         uniqueResult();
         return c;
+    }
+
+    /**
+     * Lookup a Global('normal' or 'state') ConfigChannel by its label. A config channel
+     * is uniquely identified by label, org id and channel type
+     * @param label The label for the ConfigChannel
+     * @param org the org to which the config channel belongs.
+     * @return the ConfigChannel found or null if not found.
+     */
+    public static Optional<ConfigChannel> lookupGlobalConfigChannelByLabel(String label, Org org) {
+        Session session = HibernateFactory.getSession();
+        return Optional.ofNullable(
+                (ConfigChannel) session.createCriteria(ConfigChannel.class).
+                add(Restrictions.eq("org", org)).
+                add(Restrictions.eq("label", label)).
+                add(Restrictions.or(
+                        Restrictions.eq("configChannelType", ConfigChannelType.normal()),
+                        Restrictions.eq("configChannelType", ConfigChannelType.state()))
+                ).
+                uniqueResult()
+        );
+
     }
 
     /**

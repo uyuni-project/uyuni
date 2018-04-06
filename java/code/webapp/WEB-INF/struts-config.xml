@@ -832,6 +832,7 @@
       <form-property name="cofLabel"       type="java.lang.String"/>
       <form-property name="cofDescription" type="java.lang.String"/>
       <form-property name="contents"       type="java.lang.String"/>
+      <form-property name="type"           type="java.lang.Boolean"/>
       <form-property name="editing"        type="java.lang.Boolean"/>
       <form-property name="creating"       type="java.lang.Boolean"/>
       <form-property name="submitted"      type="java.lang.Boolean"/>

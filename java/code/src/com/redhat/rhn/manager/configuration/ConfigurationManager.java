@@ -2009,22 +2009,42 @@ public class ConfigurationManager extends BaseManager {
     public ConfigChannel lookupConfigChannel(User user,
             String label,
             ConfigChannelType cct) {
-        ConfigChannel cc = ConfigurationFactory.
-                lookupConfigChannelByLabel(label,
-                        user.getOrg(),
-                        cct);
-
+        ConfigChannel cc = ConfigurationFactory.lookupConfigChannelByLabel(label, user.getOrg(), cct);
         if (cc == null || !accessToChannel(user.getId(), cc.getId())) {
-            LocalizationService ls = LocalizationService.getInstance();
-            LookupException e =
-                    new LookupException("Could not find config channel " +
-                            "with label=" + label);
-            e.setLocalizedTitle(ls.getMessage("lookup.configchan.title"));
-            e.setLocalizedReason1(ls.getMessage("lookup.configchan.reason1"));
-            e.setLocalizedReason2(ls.getMessage("lookup.configchan.reason2"));
-            throw e;
+           throwChannelLookUpException(label);
         }
         return cc;
+    }
+
+    /**
+     * Looks up a  global('normal', 'state') config channel, if the given user has access to it.
+     * @param user The user requesting to lookup a config channel.
+     * @param label The label for the ConfigChannel
+     * @return The sought for config channel.
+     */
+    public ConfigChannel lookupGlobalConfigChannel(User user, String label) {
+        Optional<ConfigChannel> configChannel =
+                ConfigurationFactory.lookupGlobalConfigChannelByLabel(label, user.getOrg());
+       /* return configChannel.filter(cc->
+            accessToChannel(user.getId(), cc.getId())
+        ).orElseThrow(()->throwChannelLookUpException(label));*/
+        return configChannel.filter(cc->
+                accessToChannel(user.getId(), cc.getId())
+        ).orElse(null);
+    }
+
+    /**
+     * Throw the customized lookup exception when channel doesn't exist or is inaccessible
+     * @param channelLabel
+     */
+    private LookupException throwChannelLookUpException(String channelLabel) {
+        LocalizationService ls = LocalizationService.getInstance();
+        LookupException e = new LookupException("Could not find config channel with label=" + channelLabel);
+        e.setLocalizedTitle(ls.getMessage("lookup.configchan.title"));
+        e.setLocalizedReason1(ls.getMessage("lookup.configchan.reason1"));
+        e.setLocalizedReason2(ls.getMessage("lookup.configchan.reason2"));
+        return e;
+
     }
 
     /**
@@ -2499,11 +2519,10 @@ public class ConfigurationManager extends BaseManager {
      * @return true if there already exists such a channel/false otherwise.
      */
     public static boolean conflictingChannelExists(String label, ConfigChannelType cct, Org org) {
-        if (cct.getLabel().equals(ConfigChannelType.STATE) ||
-                cct.getLabel().equals(ConfigChannelType.NORMAL)) {
+        if (cct.getLabel().equals(ConfigChannelType.STATE) ||  cct.getLabel().equals(ConfigChannelType.NORMAL)) {
             // if global channel, we want to be a bit stricter
             return channelExists(label, ConfigChannelType.state(), org) ||
-                    channelExists(label, ConfigChannelType.normal(), org);
+                   channelExists(label, ConfigChannelType.normal(), org);
         }
         else {
             return channelExists(label, cct, org);
