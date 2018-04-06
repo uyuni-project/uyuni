@@ -190,6 +190,9 @@
         </context-group>
       </trans-unit>
       <!--# Struts Validator Error Messages-->
+      <trans-unit id="errors.invalid.value">
+          <source>Only valid values for {0} are ({1})</source>
+      </trans-unit>
       <trans-unit id="errors.suffix">
         <source>&lt;/li&gt;</source>
         <context-group name="ctx">
@@ -12154,7 +12157,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.sls-edit">
-        <source>SLS Contents&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
+        <source>SLS Contents</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
