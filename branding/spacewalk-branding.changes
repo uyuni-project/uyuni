@@ -1,3 +1,4 @@
+- Remove SUSE Manager repositories when deleting salt minions (bsc#1079847)
 - Add missing left margin at Software Channels WebUI icon links to
   channels (bsc#1083329)
 - Allow scheduling the change of software channels as an action. The previous channels remain accessible
