@@ -7749,7 +7749,10 @@
 
      <action path="/channels/ConfirmTargetSystems"
         type="com.redhat.rhn.frontend.action.channel.TargetSystemsConfirmAction"
-            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping"
+             name="datePickerForm"
+             scope="request"
+             parameter="dispatch">
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default" path="/WEB-INF/pages/channel/confirmtargetsystems.jsp" />
         <forward name="success" path="/channels/TargetSystems.do" redirect="true" />

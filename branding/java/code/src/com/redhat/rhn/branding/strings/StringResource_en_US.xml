@@ -2904,6 +2904,9 @@ You may grant provisioning entitlements _here_.
       <trans-unit id="filedetails.jsp.note.macrosalt">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
       </trans-unit>
+      <trans-unit id="channels.subscribe.target.systems.channel.scheduled">
+        <source>Subscribing {0} system(s) to channel {1} has been scheduled.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

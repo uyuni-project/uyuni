@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.channel;
 
+import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
@@ -21,24 +22,37 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListRhnSetHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.DynaActionForm;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
 
 /**
  *
@@ -46,6 +60,8 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Rev$
  */
 public class TargetSystemsConfirmAction extends RhnAction implements Listable {
+
+    private static final Logger LOG = Logger.getLogger(TargetSystemsConfirmAction.class);
 
     /**
      *
@@ -58,6 +74,7 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
+        DynaActionForm form = (DynaActionForm) formIn;
 
         Long cid = requestContext.getRequiredParam(RequestContext.CID);
         Channel chan = ChannelManager.lookupByIdAndUser(cid, user);
@@ -69,22 +86,35 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable {
 
         request.setAttribute("channel_name", chan.getName());
         request.setAttribute("cid", chan.getId());
+        request.setAttribute("date", this.getStrutsDelegate().prepopulateDatePicker(
+                request, form, "date", DatePicker.YEAR_RANGE_POSITIVE));
+
         if (helper.isDispatched()) {
             RhnSet set = TargetSystemsAction.getSetDecl(chan).get(user);
             List<Server> servers = new ArrayList<Server>();
             for (Long id : set.getElementValues()) {
                 Server s  = SystemManager.lookupByIdAndUser(id, user);
-                SystemManager.subscribeServerToChannel(user, s, chan);
                 servers.add(s);
             }
             Map<String, Object> params = new HashMap<String, Object>();
             params.put(RequestContext.CID, cid);
-            ActionMessages msgs = new ActionMessages();
-            if (servers.size() > 0) {
-                msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                        new ActionMessage("channeltarget.success", servers.size(),
-                                chan.getName()));
-                getStrutsDelegate().saveMessages(request, msgs);
+            try {
+                scheduleSubscribeChannels(form, user, servers, chan, request);
+                ActionMessages msgs = new ActionMessages();
+                if (servers.size() > 0) {
+                    msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                            new ActionMessage("channels.subscribe.target.systems.channel.scheduled",
+                                    servers.size(),
+                                    chan.getName()));
+                    getStrutsDelegate().saveMessages(request, msgs);
+                }
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error("Could not schedule subscribe to channel " + chan.getName(), e);
+                ActionErrors errors = new ActionErrors();
+                getStrutsDelegate().addError("taskscheduler.down", errors);
+                getStrutsDelegate().saveMessages(request, errors);
+                request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
             }
 
             return getStrutsDelegate().forwardParams(mapping.findForward("success"),
@@ -93,6 +123,29 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
+    private void scheduleSubscribeChannels(DynaActionForm form, User user, List<Server> servers, Channel channel,
+                                           HttpServletRequest request)
+            throws TaskomaticApiException {
+        if (channel.isBaseChannel()) {
+            LOG.error("Subscribing to base channel not allowed");
+            getStrutsDelegate().saveMessage("base.channel.subscribe.not.allowed", request);
+            return;
+        }
+
+        Date scheduleDate = getStrutsDelegate().readDatePicker(
+                form, "date", DatePicker.YEAR_RANGE_POSITIVE);
+
+        for (Server server : servers) {
+            Set<Channel> childChannels = new HashSet<>();
+            childChannels.addAll(server.getChildChannels());
+            childChannels.add(channel);
+            ActionManager.scheduleSubscribeChannelsAction(user,
+                    singleton(server.getId()),
+                    Optional.ofNullable(server.getBaseChannel()),
+                    !channel.isBaseChannel() ? childChannels : emptySet(),
+                    scheduleDate);
+        }
+    }
 
     /**
      *
@@ -104,7 +157,5 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable {
         Channel chan = ChannelManager.lookupByIdAndUser(cid, user);
         return SystemManager.inSet(user, TargetSystemsAction.getSetDecl(chan).getLabel());
     }
-
-
 
 }
