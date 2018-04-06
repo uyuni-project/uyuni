@@ -1,4 +1,4 @@
-package com.suse.manager.webui.utils.salt.com.suse.manager.webui.utils.salt.test;
+package com.suse.manager.webui.utils.salt.test;
 
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
