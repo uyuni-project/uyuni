@@ -1,3 +1,5 @@
+- fix missing package for bootstrapping rhel7 (bsc#1087055)
+
 -------------------------------------------------------------------
 Mon Mar 26 09:14:33 CEST 2018 - jgonzalez@suse.com
 
