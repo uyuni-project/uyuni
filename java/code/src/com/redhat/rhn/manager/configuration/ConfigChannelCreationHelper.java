@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.configuration;
 
+import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -23,7 +24,12 @@ import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.redhat.rhn.manager.configuration.file.ConfigFileData;
+import com.redhat.rhn.manager.configuration.file.SLSFileData;
 import org.apache.struts.action.DynaActionForm;
+
+import java.io.IOException;
+
 
 
 /**
@@ -128,6 +134,25 @@ public class ConfigChannelCreationHelper {
     }
 
     /**
+     * Get the channel type object based on it's label
+     * @param channelType channel type label
+     * @return ConfigChannelType ConfigChannelType
+     */
+    public ConfigChannelType getGlobalChannelType(String channelType) {
+        ValidatorResult result = new ValidatorResult();
+        ConfigChannelType ct = ConfigChannelType.lookup(channelType);
+        if (!(ct.getLabel().equals(ConfigChannelType.NORMAL) || ct.getLabel().equals(ConfigChannelType.STATE))) {
+            String validValues = String.join(",", ConfigChannelType.NORMAL, ConfigChannelType.STATE);
+            result.addError(new ValidatorError("errors.invalid.value",
+                    "'Configuration Channel Type'",  validValues));
+        }
+        if (!result.isEmpty()) {
+            throw new ValidatorException(result);
+        }
+        return ct;
+    }
+
+    /**
      * Creates a new config channel
      * @param user needed for authentication.
      * @return the created channel
@@ -184,5 +209,25 @@ public class ConfigChannelCreationHelper {
         cc.setLabel(label);
         cc.setName(name);
         cc.setDescription(description);
+    }
+
+    /**
+     * Helper method create the init.sls file for state channel
+     * @param user needed for authorization
+     * @param channel config channel
+     * @param contents contents for init.sls file
+     */
+    public void createInitSlsFile(User user, ConfigChannel channel, String contents) {
+        if (channel.isStateChannel()) {
+            ConfigFileData data = new SLSFileData(contents);
+            try {
+                ConfigFileBuilder.getInstance().create(data, user, channel);
+            }
+            catch (IOException e) {
+                String msg = "Error creating init.sls file .\n" +  e.getMessage();
+                throw new FaultException(1021, "ConfigChannelCreationException", msg);
+            }
+        }
+
     }
 }
