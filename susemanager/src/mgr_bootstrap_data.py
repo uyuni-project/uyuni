@@ -204,6 +204,7 @@ RES6 = [
 RES7 = [
         "salt",
         "salt-minion",
+        "python2-salt",
         "python-futures",
         "python-jinja2",
         "python-msgpack-python",
