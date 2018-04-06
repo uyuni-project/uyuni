@@ -47,6 +47,10 @@
                 </rl:list>
                 <rhn:submitted/>
 
+                <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf">
+                    <jsp:param name="noactionchain" value="true" />
+                </jsp:include>
+
                         <div class="text-right">
                                 <hr />
                                 <input class="btn btn-default" type="submit" name="dispatch"  value="<bean:message key='ssmchildsubs.jsp.subscribe'/>" </input>
