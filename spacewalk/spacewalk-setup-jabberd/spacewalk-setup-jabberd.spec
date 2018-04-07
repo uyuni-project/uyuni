@@ -1,5 +1,5 @@
 Name:           spacewalk-setup-jabberd
-Version:        2.8.3.2
+Version:        2.8.5
 Release:        1%{?dist}
 Summary:        Tools to setup jabberd for Spacewalk
 Group:          Applications/System
@@ -71,6 +71,12 @@ make test
 /usr/share/spacewalk/setup/jabberd/manage_database -s >/dev/null ||:
 
 %changelog
+* Tue Mar 27 2018 Jiri Dostal <jdostal@redhat.com> 2.8.5-1
+- Revert "1533052 - Add FQDN detection to setup and config utilities."
+
+* Tue Mar 27 2018 Jiri Dostal <jdostal@redhat.com> 2.8.4-1
+- 1533052 - Add FQDN detection to setup and config utilities.
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 2.8.3-1
 - removed Group from specfile
 - removed BuildRoot from specfiles
