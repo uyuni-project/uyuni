@@ -261,7 +261,7 @@ public class ErrataHandler extends BaseHandler {
         errataMap.put("type",
                 StringUtils.defaultString(errata.getAdvisoryType()));
         if (errata.getSeverity() != null) {
-            errataMap.put("severity_id", errata.getSeverity().getId());
+            errataMap.put("severity", errata.getSeverity().getLocalizedLabel());
         }
 
 
@@ -298,6 +298,7 @@ public class ErrataHandler extends BaseHandler {
      *          #prop("string", "references")
      *          #prop("string", "notes")
      *          #prop("string", "solution")
+     *          #prop("string", "severity")
      *          #prop_desc("array", "bugs", "'bugs' is the key into the struct")
      *              #array()
      *                 #struct("bug")
@@ -344,7 +345,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("solution");
         validKeys.add("bugs");
         validKeys.add("keywords");
-        validKeys.add("severity_id");
+        validKeys.add("severity");
         if (errata.isPublished()) {
             validKeys.add("cves");
         }
@@ -460,9 +461,9 @@ public class ErrataHandler extends BaseHandler {
             errata.setNotes((String)details.get("notes"));
         }
         if ("Security Advisory".equals(errata.getAdvisoryType())) {
-            if (details.containsKey("severity_id")) {
-                Integer sevId = (Integer) details.get("severity_id");
-                errata.setSeverity(Severity.getById(sevId));
+            if (details.containsKey("severity")) {
+                String sevName = (String) details.get("severity");
+                errata.setSeverity(Severity.getByName(sevName));
             }
         }
         else if (errata.getSeverity() != null) {
@@ -1167,6 +1168,7 @@ public class ErrataHandler extends BaseHandler {
      *  String "solution" the solution of the errata
      *  String "references" references of the errata to be created
      *  String "notes" notes on the errata
+     *  String "severity" is name of given security advisory severity
      * @param bugs a List of maps consisting of 'id' Integers and 'summary' strings
      * @param keywords a List of keywords for the errata
      * @param packageIds a List of package Id packageId Integers
@@ -1194,6 +1196,7 @@ public class ErrataHandler extends BaseHandler {
      *          #prop("string", "references")
      *          #prop("string", "notes")
      *          #prop("string", "solution")
+     *          #prop("string", "severity")
      *       #struct_end()
      *  @xmlrpc.param
      *       #array()
@@ -1231,7 +1234,7 @@ public class ErrataHandler extends BaseHandler {
         validKeys.add("references");
         validKeys.add("notes");
         validKeys.add("solution");
-        validKeys.add("severity_id");
+        validKeys.add("severity");
         validateMap(validKeys, errataInfo);
 
         validKeys.clear();
@@ -1264,7 +1267,7 @@ public class ErrataHandler extends BaseHandler {
         String solution = (String) getRequiredAttribute(errataInfo, "solution");
         String references = (String) errataInfo.get("references");
         String notes = (String) errataInfo.get("notes");
-        Integer severityId = (Integer) errataInfo.get("severity_id");
+        String severity = (String) errataInfo.get("severity");
 
         Errata newErrata = ErrataManager.lookupByAdvisory(advisoryName,
                 loggedInUser.getOrg());
@@ -1301,7 +1304,7 @@ public class ErrataHandler extends BaseHandler {
         newErrata.setErrataFrom(errataFrom);
         newErrata.setRefersTo(references);
         newErrata.setNotes(notes);
-        newErrata.setSeverity(Severity.getById(severityId));
+        newErrata.setSeverity(Severity.getByName(severity));
 
         for (Iterator<Map<String, Object>> itr = bugs.iterator(); itr.hasNext();) {
             Map<String, Object> bugMap = itr.next();

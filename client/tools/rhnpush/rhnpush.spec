@@ -6,9 +6,7 @@
 %global default_py3 1
 %endif
 
-%if ( 0%{?fedora} && 0%{?fedora} < 28 ) || ( 0%{?rhel} && 0%{?rhel} < 8 ) || 0%{?suse_version}
 %global build_py2   1
-%endif
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 
