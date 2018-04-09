@@ -1,3 +1,5 @@
+- Add option to schedule the software channels change in
+  software -> channels -> channel -> target systems (bsc#1088246)
 - Fix config channel assignment when registering with an activation key (bsc#1084134)
 - Fix in SSM channls UI, if all systems in SSM do not have a base channel the corresponding
   child channels are not displayed on the subsequent page
