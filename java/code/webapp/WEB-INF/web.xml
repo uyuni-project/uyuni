@@ -238,6 +238,14 @@
 
     <load-on-startup>2</load-on-startup>
   </servlet>
+  
+  <!--
+      Prometheus servlet target for exposing metrics
+  -->
+   <servlet>
+        <servlet-name>metrics</servlet-name>
+        <servlet-class>io.prometheus.client.exporter.MetricsServlet</servlet-class>
+    </servlet>
 
   <!--
       XMLRPC servlet target for XMLRPC web service requests
@@ -333,6 +341,11 @@
     <url-pattern>/rpc/api/*</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>metrics</servlet-name>
+    <url-pattern>/metrics</url-pattern>
+  </servlet-mapping>
+  
   <servlet-mapping>
         <servlet-name>RedirectServlet</servlet-name>
         <url-pattern>/Redirect/*</url-pattern>
