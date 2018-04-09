@@ -66,8 +66,8 @@ end
 
 # This function tests whether a file exists on a node
 def file_exists?(node, file)
-  _out, _local, _remote, code = node.test_and_store_results_together("test -f #{file}", 'root', 500)
-  code.zero?
+  _out, local, _remote, code = node.test_and_store_results_together("test -f #{file}", 'root', 500)
+  code.zero? && local.zero?
 end
 
 # This function deletes a file from a node
