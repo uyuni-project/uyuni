@@ -436,6 +436,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("solution", TestUtils.randomString());
         errataInfo.put("references", TestUtils.randomString());
         errataInfo.put("notes", TestUtils.randomString());
+        errataInfo.put("severity", "important");
     }
 
     public void testAdvisoryLength() throws Exception {
