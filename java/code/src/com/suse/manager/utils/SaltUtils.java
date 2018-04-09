@@ -689,11 +689,12 @@ public class SaltUtils {
             serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
             SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
 
-            // activate the new token
-            Optional<AccessToken> tokenOpt = sca.getDetails().getAccessTokens()
+            // activate the new tokens
+            List<Long> newTokenIds = sca.getDetails().getAccessTokens()
                     .stream()
                     .filter(ac -> ac.getMinion().getId().equals(serverAction.getServer().getId()))
-                    .findFirst();
+                    .map(AccessToken::getId)
+                    .collect(Collectors.toList());
 
             // if successful update channels in db and trigger pillar refresh
             SystemManager.updateServerChannels(
@@ -701,9 +702,7 @@ public class SaltUtils {
                     serverAction.getServer(),
                     Optional.ofNullable(sca.getDetails().getBaseChannel()),
                     sca.getDetails().getChannels(),
-                    tokenOpt
-                            .map(AccessToken::getId)
-                            .orElse(null));
+                    newTokenIds);
         }
         else {
             Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
