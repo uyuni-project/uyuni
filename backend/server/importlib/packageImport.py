@@ -221,7 +221,7 @@ class PackageImport(ChannelPackageSubscription):
         ChannelPackageSubscription._processPackage(self, package)
 
         # Process package groups
-        group = package['package_group']
+        group = self._fix_encoding(package['package_group']).strip()
         if group not in self.groups:
             self.groups[group] = None
         sourceRPM = package['source_rpm']
@@ -372,7 +372,7 @@ class PackageImport(ChannelPackageSubscription):
 
     def __postprocessPackage(self, package):
         """ populate the columns foo_id with id numbers from appropriate hashes """
-        package['package_group'] = self.groups[package['package_group']]
+        package['package_group'] = self.groups[self._fix_encoding(package['package_group']).strip()]
         source_rpm = package['source_rpm']
         if source_rpm is not None:
             source_rpm = self.sourceRPMs[source_rpm]
