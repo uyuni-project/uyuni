@@ -463,9 +463,12 @@ public class SaltServerActionService {
             switch(fun) {
                 case "state.apply":
                     List<String> mods = (List<String>)kwargs.get("mods");
+                    Map<String, Object> args = new HashMap<>();
+                    args.put("mods", mods);
+                    args.put("queue", true);
                     return new SaltModuleRun(stateId,
                             "state.apply",
-                            singletonMap("mods", mods),
+                            args,
                             singletonMap("pillar", kwargs.get("pillar")));
                 case "system.reboot":
                     Integer time = (Integer)kwargs.get("at_time");
