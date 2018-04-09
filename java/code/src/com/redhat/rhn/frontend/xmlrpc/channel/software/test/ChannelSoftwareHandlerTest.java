@@ -916,6 +916,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("solution", TestUtils.randomString());
         errataInfo.put("references", TestUtils.randomString());
         errataInfo.put("notes", TestUtils.randomString());
+        errataInfo.put("severity", "unspecified");
 
         List<Integer> packages = new ArrayList<Integer>();
         List<Map<String, Object>> bugs = new ArrayList<Map<String, Object>>();
@@ -954,6 +955,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("solution", TestUtils.randomString());
         errataInfo.put("references", TestUtils.randomString());
         errataInfo.put("notes", TestUtils.randomString());
+        errataInfo.put("severity", "unspecified");
 
         List<Integer> packages = new ArrayList<Integer>();
         List<Map<String, Object>> bugs = new ArrayList<Map<String, Object>>();
@@ -1000,6 +1002,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         errataInfo.put("solution", TestUtils.randomString());
         errataInfo.put("references", TestUtils.randomString());
         errataInfo.put("notes", TestUtils.randomString());
+        errataInfo.put("severity", "unspecified");
 
         List<Integer> packages = new ArrayList<Integer>();
         List<Map<String, Object>> bugs = new ArrayList<Map<String, Object>>();
