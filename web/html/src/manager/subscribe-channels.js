@@ -308,7 +308,16 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                                <ChannelAnchorLink id={this.state.selectedBase.id} newWindow={true}/>}
                         </div>
                         <hr/>
-                        <div>{ childChannels } </div>
+                        { childChannels && childChannels.length > 0 ?
+                            <div>{ childChannels } </div> :
+                            <div>
+                              { this.state.selectedBase && this.state.selectedBase.id > -1 ?
+                                <span><i className="fa fa-exclamation-triangle fa-1-5x" title={t("No child channels available.")}/>
+                                  {t("No child channels available.")}</span>
+                                : undefined }
+                            </div>
+                        }
+
                     </BootstrapPanel>
                   </div>
             </div>
@@ -361,7 +370,13 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                   <label>{c.name}</label>
                   <ChannelAnchorLink id={c.id}/>
               </div>)
-            }</div>
+            }
+            {  this.state.availableChildren.length == 0 && this.state.selectedBase && this.state.selectedBase.id > -1 ?
+                <div><i className="fa fa-exclamation-triangle fa-1-5x" title={t("No child channels available.")}/>
+                    {t("No child channels available.")}</div> :
+                undefined }
+
+          </div>
             <div className="spacewalk-scheduler">
                 <div className="form-horizontal">
                     <div className="form-group">
