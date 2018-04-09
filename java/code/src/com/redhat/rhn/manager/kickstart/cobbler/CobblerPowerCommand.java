@@ -95,9 +95,7 @@ public class CobblerPowerCommand extends CobblerCommand {
                         }
                     }
                     catch (XmlRpcException e) {
-                        log.error(org.apache.velocity.util.StringUtils.stackTrace(e));
-                        log.error(org.apache.velocity.util.StringUtils.stackTrace(e
-                            .getCause()));
+                        log.error(e);
                     }
                     if (success) {
                         log.debug("Power management operation " + operation.toString() +

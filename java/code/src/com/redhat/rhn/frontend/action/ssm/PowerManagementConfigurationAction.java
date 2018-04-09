@@ -36,7 +36,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
-import org.apache.velocity.util.StringUtils;
 import org.cobbler.XmlRpcException;
 
 import java.util.LinkedList;
@@ -87,8 +86,7 @@ public class PowerManagementConfigurationAction extends RhnAction implements Lis
                     }
                 }
                 catch (XmlRpcException e) {
-                    log.error(StringUtils.stackTrace(e));
-                    log.error(StringUtils.stackTrace(e.getCause()));
+                    log.error(e);
                 }
             }
 
