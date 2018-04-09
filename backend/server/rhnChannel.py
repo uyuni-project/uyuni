@@ -1815,6 +1815,7 @@ select pc.id, pc.label
   from rhnChannel c
   join rhnServerChannel sc on c.parent_channel = sc.channel_id
   join rhnChannel pc on c.parent_channel = pc.id
+ where sc.server_id = :sid
  group by pc.id, pc.label
 """)
 
@@ -1854,14 +1855,6 @@ def subscribe_channel(server_id, channel, username, password):
              server_parent_channel['id'] != channel_details['parent_channel'] ):
             log_error("Server is not subscribed to parent of channel %s." % channel)
             raise rhnFault(32, "Server is not subscribed to parent of channel %s." % channel)
-
-    # check if server is subscribed to the parent of the given channel
-    h = rhnSQL.prepare(_query_parent_channel_subscribed)
-    h.execute(sid=server_id, channel=str(channel))
-    ret = h.fetchone_dict()
-    if not ret:
-        log_error("Parent of channel %s is not subscribed to server" % channel)
-        raise rhnFault(32, "Parent of channel %s is not subscribed to server" % channel)
 
     # check specific channel subscription permissions
     h = rhnSQL.prepare(_query_can_subscribe)
