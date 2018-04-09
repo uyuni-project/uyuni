@@ -115,23 +115,21 @@ Feature: Build container images
 
   Scenario: Build same images with different versions
   Given I am authorized as "admin" with password "admin"
-  And I schedule the build of image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
+  When I schedule the build of image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
   And I schedule the build of image "suse_simple" with version "Latest_simple" via XML-RPC calls
   Then all "5" container images should be built correctly in the GUI
 
   Scenario: Delete image via XML-RPC calls
   Given I am authorized as "admin" with password "admin"
-  And I delete the image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
+  When I delete the image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
   And I delete the image "suse_simple" with version "Latest_simple" via XML-RPC calls
-  And the image "suse_simple" with version "Latest_key-activation1" doesn't exist via XML-RPC calls
+  Then the image "suse_simple" with version "Latest_key-activation1" doesn't exist via XML-RPC calls
   And the image "suse_simple" with version "Latest_simple" doesn't exist via XML-RPC calls
-  And I schedule the build of image "suse_simple" with version "Latest_simple" via XML-RPC calls
-  And I schedule the build of image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
-  And I wait for "60" seconds
 
-  Scenario: Verify the status of images
+  Scenario: Rebuild the images
   Given I am authorized as "admin" with password "admin"
-  And I navigate to images webpage
+  When I schedule the build of image "suse_simple" with version "Latest_simple" via XML-RPC calls
+  And I schedule the build of image "suse_key" with version "Latest_key-activation1" via XML-RPC calls
   Then all "5" container images should be built correctly in the GUI
 
   Scenario: Build some images via GUI

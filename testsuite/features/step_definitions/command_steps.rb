@@ -255,21 +255,20 @@ Then(/^I shouldn't get "([^"]*)"$/) do |arg1|
   raise "'#{arg1}' found in output '#{$command_output}'" if found
 end
 
-$space = 'spacecmd -u admin -p admin '
 Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
-  cmd = "#{$space} api sync.content.listProducts"
-  refresh_timeout = 600
+  cmd = "spacecmd -u admin -p admin api sync.content.listProducts"
+  refresh_timeout = 900
   begin
     Timeout.timeout(refresh_timeout) do
       loop do
         result, code = $server.run(cmd, false)
         break if result.include? "SLES"
-        sleep 1
+        sleep 5
       end
     end
   rescue Timeout::Error
-    raise "'mgr-sync refresh' did not finish in time"
+    raise "'mgr-sync refresh' did not finish in #{refresh_timeout} seconds"
   end
 end
 
@@ -386,8 +385,8 @@ end
 
 And(/I check status "([^"]*)" with spacecmd on "([^"]*)"$/) do |status, target|
   host = get_target(target)
-  cmd = "#{$space} system_listevents #{host.full_hostname} | head -n5"
-  $server.run("#{$space} clear_caches")
+  cmd = "spacecmd -u admin -p admin system_listevents #{host.full_hostname} | head -n5"
+  $server.run("spacecmd -u admin -p admin clear_caches")
   out, _code = $server.run(cmd)
   raise "#{out} should contain #{status}" unless out.include? status
 end

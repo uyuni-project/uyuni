@@ -118,11 +118,12 @@ end
 
 And(/^all "([^"]*)" container images should be built correctly in the GUI$/) do |count|
   def ck_container_imgs(count)
-    Timeout.timeout(DEFAULT_TIMEOUT) do
+    build_timeout = 320
+    Timeout.timeout(build_timeout) do
+      step %(I navigate to images webpage)
       raise 'error detected while building images' if has_xpath?("//*[contains(@title, 'Failed')]")
       break if has_xpath?("//*[contains(@title, 'Built')]", count: count)
       sleep 5
-      step %(I navigate to images webpage)
     end
   rescue Timeout::Error
     raise 'at least one image was not built correctly'
