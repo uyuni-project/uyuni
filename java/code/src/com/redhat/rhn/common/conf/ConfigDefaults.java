@@ -171,6 +171,9 @@ public class ConfigDefaults {
 
     public static final String CONFIG_KEY_SUDO_USER = "ssh_push_sudo_user";
 
+    /** Prometheus metric export flag */
+    public static final String PROMETHEUS_MONITORING_ENABLED = "prometheus_monitoring_enabled";
+
     /**
      * System Currency defaults
      */
@@ -793,6 +796,14 @@ public class ConfigDefaults {
      */
     public int getSaltPresencePingTimeout() {
         return Config.get().getInt(SALT_PRESENCE_PING_TIMEOUT, 4);
+    }
+
+    /**
+     * Returns true if Prometheus monitoring is enabled
+     * @return true if Prometheus monitoring is enabled
+     */
+    public boolean isPrometheusMonitoringEnabled() {
+        return Config.get().getBoolean(PROMETHEUS_MONITORING_ENABLED);
     }
 
     /**

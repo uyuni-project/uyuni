@@ -27,7 +27,7 @@ import com.redhat.rhn.taskomatic.TaskoXmlRpcServer;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
-
+import com.suse.manager.metrics.PrometheusExporter;
 import org.apache.log4j.Logger;
 import org.hibernate.Transaction;
 import org.quartz.Scheduler;
@@ -41,6 +41,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+
 import static java.util.stream.Collectors.toSet;
 
 /**
@@ -119,6 +120,9 @@ public class SchedulerKernel {
             }
             xmlrpcServer = new TaskoXmlRpcServer(Config.get());
             xmlrpcServer.start();
+
+            PrometheusExporter.INSTANCE.startHttpServer();
+            PrometheusExporter.INSTANCE.registerScheduler(SchedulerKernel.scheduler, "taskomatic");
         }
         catch (SchedulerException e) {
             e.printStackTrace();

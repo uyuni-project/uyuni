@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.metrics.PrometheusExporter;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessageAction;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
@@ -51,6 +52,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.websocket.CloseReason;
 
@@ -103,6 +105,9 @@ public class SaltReactor implements EventListener {
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
         connectToEventStream();
+
+        // register the executor service for exporting metrics
+        PrometheusExporter.INSTANCE.registerThreadPool((ThreadPoolExecutor) this.executorService, "salt_reactor");
 
         SaltService.INSTANCE.setReactor(this);
     }
