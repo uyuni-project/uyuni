@@ -1,3 +1,4 @@
+- Apply Salt states in queue mode when executing Action Chains.
 - Fix config channel assignment when registering with an activation key (bsc#1084134)
 - Prevent stripping curly braces when creating config states (bsc#1085500)
 - Fix index out of bound exception when os-release query returns multiple
