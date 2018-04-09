@@ -1,3 +1,4 @@
+- Fix encoding for RPM package group in reposync (bsc#1083001)
 - add --no-packages option to spacewalk-repo-sync
 - use --force-all-errata only to re-sync patches
   --deep-verify still used for package checksum check and single
