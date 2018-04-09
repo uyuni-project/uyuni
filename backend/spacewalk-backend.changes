@@ -1,3 +1,5 @@
+- Fix encoding for RPM package group in reposync (bsc#1083001)
+
 -------------------------------------------------------------------
 Fri Mar 09 16:28:12 CET 2018 - jgonzalez@suse.com
 
