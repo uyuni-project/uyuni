@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Apr 10 09:31:59 CEST 2018 - jgonzalez@suse.com
+
+- version 2.7.73.12-1
 - Fix encoding for RPM package group in reposync (bsc#1083001)
 - add --no-packages option to spacewalk-repo-sync
 - use --force-all-errata only to re-sync patches
