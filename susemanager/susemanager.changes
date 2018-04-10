@@ -1,4 +1,8 @@
-- add SLES4SAP-12-SP3-ppc64le as bootstrap repository (bsc#1082548)
+-------------------------------------------------------------------
+Tue Apr 10 10:15:50 CEST 2018 - jgonzalez@suse.com
+
+- version 3.1.13-1
+- Add SLES4SAP-12-SP3-ppc64le as bootstrap repository (bsc#1082548)
 - Add align-rpm-buildtime script (bsc#1078056)
 
 -------------------------------------------------------------------
