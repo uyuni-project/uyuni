@@ -114,3 +114,11 @@ Feature: Add a repository to a channel
     And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
+
+  Scenario: Reposync handles wrong encoding on RPM attributes
+    Given I am authorized as "admin" with password "admin"
+    When I follow "Home" in the left menu
+    And I follow "Channels"
+    And I follow "Test-Channel-x86_64"
+    And I follow "Packages" in the content area
+    Then I should see a "blackhole-dummy" text
