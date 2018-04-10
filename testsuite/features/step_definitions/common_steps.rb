@@ -198,7 +198,7 @@ When(/^I trigger cobbler system record$/) do
   space = 'spacecmd -u admin -p admin'
   host = $client.full_hostname
   $server.run("#{space} clear_caches")
-  out, _code = $server.run("#{$space} system_details #{host}")
+  out, _code = $server.run("#{space} system_details #{host}")
   unless out.include? 'ssh-push-tunnel'
     # normal traditional client
     steps %(
