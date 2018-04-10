@@ -16,11 +16,11 @@ URL: https://fedorahosted.org/spacewalk
 Source0: %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
-BuildRequires: nutch
+BuildRequires: nutch-core
 BuildRequires: susemanager-jsp_en >= 1.2
 BuildRequires: release-notes-susemanager >= 1.2
 BuildRequires: xerces-j2
-Requires: nutch
+Requires: nutch-core
 Requires: susemanager-jsp_en >= 1.2
 Requires: release-notes-susemanager >= 1.2
 BuildArch: noarch
@@ -105,4 +105,3 @@ done
 - updated documentation indexes
 - index actual documentation
 - Bumping package versions for 2.1.
-
