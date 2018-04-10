@@ -17081,6 +17081,56 @@
   },
   {
     "autorefresh": true,
+    "description": "SUSE-Manager-Server-3.2-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2977,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.2-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.2/ppc64le/update/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
+    "description": "SUSE-Manager-Server-3.2-Debuginfo-Updates for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2978,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.2-Debuginfo-Updates",
+    "url": "https://updates.suse.com/SUSE/Updates/SUSE-Manager-Server/3.2/ppc64le/update_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.2-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": true,
+    "id": 2979,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.2-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/ppc64le/product/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.2-Debuginfo-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2980,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.2-Debuginfo-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/ppc64le/product_debug/?my-fake-token"
+  },
+  {
+    "autorefresh": false,
+    "description": "SUSE-Manager-Server-3.2-Source-Pool for sle-12-ppc64le",
+    "distro_target": "sle-12-ppc64le",
+    "enabled": false,
+    "id": 2981,
+    "installer_updates": false,
+    "name": "SUSE-Manager-Server-3.2-Source-Pool",
+    "url": "https://updates.suse.com/SUSE/Products/SUSE-Manager-Server/3.2/ppc64le/product_source/?my-fake-token"
+  },
+  {
+    "autorefresh": true,
     "description": "SUSE-Manager-Server-3.2-Updates for sle-12-s390x",
     "distro_target": "sle-12-s390x",
     "enabled": true,
