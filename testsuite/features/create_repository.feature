@@ -81,3 +81,10 @@ Feature: Adding repository to a channel
     And I follow "Sync"
     When I click on "Sync Now"
     Then I should see a "Repository sync scheduled for SLES11-SP3-Updates i586 Channel." text
+
+  Scenario: Reposync handles wrong encoding on RPM attributes
+    Given I am authorized as "admin" with password "admin"
+    And I follow "Channels"
+    And I follow "SLES11-SP3-Updates x86_64 Channel"
+    When I follow "Packages" in the content area
+    Then I should see a "blackhole-dummy" text
