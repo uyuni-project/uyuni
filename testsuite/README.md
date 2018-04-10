@@ -61,3 +61,14 @@ Add a file into `run_sets/$name.yml` and then execute `rake cucumber:$name`.
 ## License
 
 * The testsuite is licensed under the MIT license. See the `MIT-LICENSE.txt` file included in the distribution.
+
+# Dummy packages used by the Testsuite
+Some of the scenarios that are tested on this testsuite make use of some external testing repositories which contain dummy packages. These packages are used to test package and patch installation and upgrade.
+
+The repositories are:
+- https://build.suse.de/project/show/Devel:Galaxy:BuildRepo - For packages which must be installed on the client systems already.
+- https://build.suse.de/project/show/Devel:Galaxy:TestsuiteRepo - Provides packages for "Test-Channel-x86_64" channel.
+
+## Type of provided packages
+- Normal dummy package: `andromeda-dummy`, `hoag-dummy`, `orion-dummy`, `milkyway-dummy`, etc.
+- Wrong encoding of RPM attributes package: `blackhole-dummy`
